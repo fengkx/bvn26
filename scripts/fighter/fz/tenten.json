@@ -1,0 +1,75 @@
+{
+  "format": "bvn26-as2-scripts-v1",
+  "game_file": "game/fighter/fz/tenten.swf",
+  "swf_sha256": "92fb3b604867432aa405def3aa30a5cae36c74985bc99043255abb801e6dc9b2",
+  "scripts": [
+    {
+      "path": "DefineSprite_15/frame_1/DoAction.as",
+      "source": "stop();\r\nvar played = 0;\r\n"
+    },
+    {
+      "path": "DefineSprite_15/frame_10/DoAction.as",
+      "source": "stop();\r\n"
+    },
+    {
+      "path": "DefineSprite_16/frame_1/PlaceObject2_15_1/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitmc.hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + 20;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "path": "DefineSprite_16/frame_10/PlaceObject2_15_5/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitmc.hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + 20;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "path": "DefineSprite_16/frame_15/PlaceObject2_15_7/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitmc.hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + 20;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "path": "DefineSprite_16/frame_20/PlaceObject2_15_9/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitmc.hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + 20;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "path": "DefineSprite_16/frame_30/DoAction.as",
+      "source": "stop();\r\n"
+    },
+    {
+      "path": "DefineSprite_16/frame_5/PlaceObject2_15_3/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitmc.hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + 20;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}\r\nvar inited;\r\nvar _this = this;\r\nvar bs = 0;\r\nvar hited = 0;\r\nvar attacking = false;\r\n_X = _Y = -200;\r\nif(!inited)\r\n{\r\n   trace(\"fz inited\");\r\n   inited = true;\r\n   _this.sn = _this._name != \"p1fz\" ? 2 : 1;\r\n   _this.pn = _this.sn != 1 ? 1 : 2;\r\n}\r\nvar _si = 0;\r\nstop();\r\nvar gjl = [];\r\ngjl.atm1pw = 20;\r\ngjl.atm1zl = 1;\r\ngjl.atm1up = 0;\r\ngjl.atm1x = 2;\r\ngjl.atm1tm = 800;\r\ngjl.atm1dz = \"被打\";\r\ngjl.atm2pw = 80;\r\ngjl.atm2zl = 5;\r\ngjl.atm2up = 0;\r\ngjl.atm2x = 10;\r\ngjl.atm2tm = 0;\r\ngjl.atm2dz = \"击飞\";\r\n"
+    },
+    {
+      "path": "frame_114/DoAction.as",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "path": "frame_118/DoAction.as",
+      "source": "_root.fzccXg(this);\r\n"
+    },
+    {
+      "path": "frame_13/DoAction.as",
+      "source": "动作 = 1;\r\n"
+    },
+    {
+      "path": "frame_16/DoAction.as",
+      "source": "_root.bsd(pn,\"XG_fzbs\",true);\r\n"
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source": "play();\r\n_root.fzccXg(this);\r\n"
+    },
+    {
+      "path": "frame_38/DoAction.as",
+      "source": "_root.bsw(pn);\r\n"
+    },
+    {
+      "path": "frame_44/DoAction.as",
+      "source": "_root.shine(9461816);\r\n"
+    },
+    {
+      "path": "frame_78/PlaceObject2_32_13/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      _X = _X + 20;\r\n   }\r\n}\r\n"
+    }
+  ]
+}

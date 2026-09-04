@@ -1,0 +1,721 @@
+{
+  "format": "bvn26-implementation-tasks-v1",
+  "as_of": "2026-09-03",
+  "status_values": [
+    "pending",
+    "in_progress",
+    "blocked",
+    "completed"
+  ],
+  "path_convention": "B 阶段输出已随包交付；M0-M7 输出是未来目标路径，当前不存在。",
+  "estimate_policy": "未校准的预计人日保持 null；M0、M3、M5 后用实际结果细化。",
+  "tasks": [
+    {
+      "id": "B-01",
+      "phase": "B",
+      "title": "锁定普通 2.6 基准与外部资源",
+      "status": "completed",
+      "depends_on": [],
+      "requirements": [
+        "TR-04",
+        "TR-08"
+      ],
+      "outputs": [
+        "manifest.json",
+        "docs/BASELINE_AUDIT.md",
+        "game/"
+      ],
+      "acceptance": "75 文件、74 外部依赖、路径大小写及 SWF 结构核对通过；历史作者原包未获证明的限制必须保留。",
+      "evidence": [
+        "manifest.json",
+        "docs/BASELINE_AUDIT.md"
+      ],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "B-02",
+      "phase": "B",
+      "title": "整理原脚本并保留精确来源",
+      "status": "completed",
+      "depends_on": [
+        "B-01"
+      ],
+      "requirements": [
+        "TR-04"
+      ],
+      "outputs": [
+        "scripts/"
+      ],
+      "acceptance": "62 个脚本 bundle 与对应 SWF 哈希绑定；原路径、8,853 个片段内容和合法空帧保留。",
+      "evidence": [
+        "manifest.json",
+        "scripts/main.json"
+      ],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "B-03",
+      "phase": "B",
+      "title": "交付规格、契约、计划与验证工具",
+      "status": "completed",
+      "depends_on": [
+        "B-02"
+      ],
+      "requirements": [
+        "TR-06",
+        "TR-08"
+      ],
+      "outputs": [
+        "SPEC.md",
+        "IMPLEMENTATION_PLAN.md",
+        "spec/",
+        "plan/",
+        "tools/",
+        "docs/"
+      ],
+      "acceptance": "资料校验、schema 与示例、文档链接和任务依赖校验通过；不得标记为 Godot 实现完成。",
+      "evidence": [
+        "docs/PACKAGE_CHECKS.md"
+      ],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M0-01",
+      "phase": "M0",
+      "title": "建立 Godot 与最小 Web 导出环境",
+      "status": "in_progress",
+      "depends_on": [
+        "B-03"
+      ],
+      "requirements": [
+        "FR-10",
+        "TR-01",
+        "TR-08"
+      ],
+      "outputs": [
+        "godot/project.godot",
+        "godot/export_presets.cfg",
+        "evidence/environment.md"
+      ],
+      "acceptance": "锁定引擎/模板版本；Chromium、Firefox、Safari 空场景启动并有日志和版本记录。",
+      "evidence": [
+        "evidence/environment.md"
+      ],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M0-02",
+      "phase": "M0",
+      "title": "建立原版对照与捕获环境",
+      "status": "pending",
+      "depends_on": [
+        "B-03"
+      ],
+      "requirements": [
+        "TR-02",
+        "TR-07"
+      ],
+      "outputs": [
+        "evidence/reference-environment.md",
+        "evidence/oracle/"
+      ],
+      "acceptance": "记录播放器或模拟器身份；固定初态与输入可复现，捕获来源、插桩 diff、资源哈希齐全；参照不可用时标 blocked。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M0-03",
+      "phase": "M0",
+      "title": "探测调度、时钟、暂停和加载帧率",
+      "status": "pending",
+      "depends_on": [
+        "M0-02"
+      ],
+      "requirements": [
+        "TR-02",
+        "TR-03",
+        "TR-05"
+      ],
+      "outputs": [
+        "spec/execution-profile.json",
+        "evidence/probes/"
+      ],
+      "acceptance": "解决 U-01/U-02/U-06；记录 goto、enterFrame、对象生命周期、定时器及四代援助推进结论；未解决项阻塞相关核心实现。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M0-04",
+      "phase": "M0",
+      "title": "核对模式、键位、人物形态和地图可达性",
+      "status": "pending",
+      "depends_on": [
+        "M0-02"
+      ],
+      "requirements": [
+        "FR-01",
+        "FR-02",
+        "FR-06",
+        "FR-07",
+        "FR-12"
+      ],
+      "outputs": [
+        "evidence/menu-catalog.md",
+        "plan/coverage.json"
+      ],
+      "acceptance": "64 条配置、10 张地图与原菜单对应；四类 modo 分支可见名称、默认键位和不可达条目都有证据。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M1-01",
+      "phase": "M1",
+      "title": "建立 SWF 标签、符号和脚本分类清单",
+      "status": "completed",
+      "depends_on": [
+        "B-03"
+      ],
+      "requirements": [
+        "TR-04",
+        "TR-06"
+      ],
+      "outputs": [
+        "tools/importer/",
+        "data/source-inventory.json"
+      ],
+      "acceptance": "所有输入文件可追溯；区分已支持、与玩法无关、待处理标签/脚本；不得漏掉 ClipAction。",
+      "evidence": [
+        "data/source-inventory.json",
+        "tools/tests/test_source_inventory.py"
+      ],
+      "estimated_person_days": null,
+      "actual_person_days": 0.125
+    },
+    {
+      "id": "M1-02",
+      "phase": "M1",
+      "title": "实现素材与嵌套时间轴转换器",
+      "status": "pending",
+      "depends_on": [
+        "M1-01",
+        "M0-03"
+      ],
+      "requirements": [
+        "TR-03",
+        "TR-04",
+        "TR-06"
+      ],
+      "outputs": [
+        "tools/importer/",
+        "data/intermediate/",
+        "godot/assets/"
+      ],
+      "acceptance": "鸣人、一护和现世的矩阵/注册点/帧标签/遮罩/声音事件可复现导出；重复导入输出一致。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M1-03",
+      "phase": "M1",
+      "title": "导入动作参数、判定区域和有序事件",
+      "status": "pending",
+      "depends_on": [
+        "M1-02"
+      ],
+      "requirements": [
+        "FR-04",
+        "FR-05",
+        "TR-04",
+        "TR-06"
+      ],
+      "outputs": [
+        "data/actions/",
+        "data/collision/",
+        "data/unresolved-events.json"
+      ],
+      "acceptance": "数值、时序、区域、取消和 hook 均可定位来源；未知项不写默认值，发布数据编译严格失败。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M1-04",
+      "phase": "M1",
+      "title": "验证导出素材和视觉对齐",
+      "status": "pending",
+      "depends_on": [
+        "M1-02",
+        "M0-02"
+      ],
+      "requirements": [
+        "FR-09",
+        "TR-04"
+      ],
+      "outputs": [
+        "evidence/importer/",
+        "evidence/visual-differences.json"
+      ],
+      "acceptance": "静态与动画抽样覆盖镜像、父子变换、滤镜、深度和音频；首次错误可定位源符号/帧。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M2-01",
+      "phase": "M2",
+      "title": "实现固定步进、动作调度和时钟域",
+      "status": "pending",
+      "depends_on": [
+        "M0-01",
+        "M0-03",
+        "M1-03"
+      ],
+      "requirements": [
+        "TR-02",
+        "TR-03"
+      ],
+      "outputs": [
+        "godot/core/simulation/",
+        "godot/core/actions/"
+      ],
+      "acceptance": "按已验证 ExecutionProfile 推进；stop/play/暂停/恢复/创建删除与原版案例一致。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M2-02",
+      "phase": "M2",
+      "title": "实现输入、移动与原数值语义",
+      "status": "pending",
+      "depends_on": [
+        "M2-01",
+        "M0-04"
+      ],
+      "requirements": [
+        "FR-02",
+        "FR-03",
+        "TR-05"
+      ],
+      "outputs": [
+        "godot/core/input/",
+        "godot/core/fighter/",
+        "evidence/movement/"
+      ],
+      "acceptance": "同输入/同帧顺序、镜像、跳跃、冲刺、边界和 undefined 等实际分支对照；不凭默认物理调手感。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M2-03",
+      "phase": "M2",
+      "title": "实现判定变换与命中候选优先级",
+      "status": "pending",
+      "depends_on": [
+        "M2-02"
+      ],
+      "requirements": [
+        "FR-04",
+        "FR-05",
+        "TR-05"
+      ],
+      "outputs": [
+        "godot/core/collision/",
+        "evidence/collision/"
+      ],
+      "acceptance": "U-03/U-04 有结论；相切、重叠、多对象、相互攻击、镜像和墙角通过 AT-07。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M2-04",
+      "phase": "M2",
+      "title": "实现伤害、硬直、击退、防御和冻结",
+      "status": "pending",
+      "depends_on": [
+        "M2-03"
+      ],
+      "requirements": [
+        "FR-04",
+        "FR-05",
+        "TR-03"
+      ],
+      "outputs": [
+        "godot/core/combat/",
+        "evidence/combat/"
+      ],
+      "acceptance": "同一攻击的命中帧、HP/气量、状态、击退和硬直逐项匹配；AT-05/06/08 代表用例通过。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M2-05",
+      "phase": "M2",
+      "title": "建立重放、逐帧日志与首次差异工具",
+      "status": "pending",
+      "depends_on": [
+        "M2-01",
+        "M0-02"
+      ],
+      "requirements": [
+        "TR-02",
+        "TR-07"
+      ],
+      "outputs": [
+        "godot/debug/",
+        "tools/compare_trace.py",
+        "evidence/replay/"
+      ],
+      "acceptance": "输入/初态/随机来源显式记录；报告首次不同 tick/实体/字段；原版与合成数据明确区分。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M3-01",
+      "phase": "M3",
+      "title": "完成鸣人与一护基础形态全部动作",
+      "status": "pending",
+      "depends_on": [
+        "M2-04",
+        "M2-05",
+        "M1-04"
+      ],
+      "requirements": [
+        "FR-03",
+        "FR-04",
+        "FR-05",
+        "FR-09"
+      ],
+      "outputs": [
+        "godot/data/fighters/",
+        "evidence/slice-actions/"
+      ],
+      "acceptance": "两者可达基础形态招式逐项盘点、导入与对照；不能以单个普攻代替完整动作集。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M3-02",
+      "phase": "M3",
+      "title": "完成现世地图与一场对战闭环",
+      "status": "pending",
+      "depends_on": [
+        "M3-01"
+      ],
+      "requirements": [
+        "FR-01",
+        "FR-07",
+        "FR-08"
+      ],
+      "outputs": [
+        "godot/scenes/battle/",
+        "godot/data/maps/",
+        "evidence/slice-match/"
+      ],
+      "acceptance": "AI 关闭的双方从开场到胜负、结果与重开可用；视角/边界/场景音乐正确。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M3-03",
+      "phase": "M3",
+      "title": "通过切片逐帧回归并测量开发成本",
+      "status": "pending",
+      "depends_on": [
+        "M3-02"
+      ],
+      "requirements": [
+        "TR-02",
+        "TR-07"
+      ],
+      "outputs": [
+        "evidence/slice-report.md",
+        "plan/estimates.json"
+      ],
+      "acceptance": "镜像、墙角、空中、同时攻击和边界取消通过；按共用机制/内容/验证分别记录投入。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M4-01",
+      "phase": "M4",
+      "title": "验证真实对战 Web 输入与生命周期",
+      "status": "pending",
+      "depends_on": [
+        "M3-03"
+      ],
+      "requirements": [
+        "FR-02",
+        "FR-10"
+      ],
+      "outputs": [
+        "godot/platform/web/",
+        "evidence/web-matrix.md"
+      ],
+      "acceptance": "三类桌面浏览器同键盘双人、NumPad、重映射、全屏/DPI、失焦释放与恢复通过 AT-13。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M4-02",
+      "phase": "M4",
+      "title": "实现音频解锁、设置持久化与资源回收",
+      "status": "pending",
+      "depends_on": [
+        "M4-01"
+      ],
+      "requirements": [
+        "FR-09",
+        "FR-10",
+        "FR-11"
+      ],
+      "outputs": [
+        "godot/platform/",
+        "evidence/audio-settings.md"
+      ],
+      "acceptance": "用户手势启动声音、暂停恢复、存储失败与重置可处理；重复对战/返回无声音或对象泄漏。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M4-03",
+      "phase": "M4",
+      "title": "测量性能、加载与内存并冻结预算",
+      "status": "pending",
+      "depends_on": [
+        "M4-02"
+      ],
+      "requirements": [
+        "TR-07",
+        "TR-08"
+      ],
+      "outputs": [
+        "evidence/performance.json",
+        "spec/performance-budget.json"
+      ],
+      "acceptance": "记录设备、浏览器、首次/缓存加载、p95 逻辑/渲染耗时和内存峰值；不通过降低战斗频率达标。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M5-01",
+      "phase": "M5",
+      "title": "实现共享 SWF 形态转换与状态继承",
+      "status": "pending",
+      "depends_on": [
+        "M4-03"
+      ],
+      "requirements": [
+        "FR-06"
+      ],
+      "outputs": [
+        "godot/core/forms/",
+        "evidence/forms/"
+      ],
+      "acceptance": "U-07 解决；以 WKframe 代表角色验证切换条件、HP/气量/位置/援助状态继承后再推广。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M5-02",
+      "phase": "M5",
+      "title": "实现援助、投射物、多段及特殊机制",
+      "status": "pending",
+      "depends_on": [
+        "M5-01"
+      ],
+      "requirements": [
+        "FR-04",
+        "FR-05",
+        "FR-06",
+        "FR-07"
+      ],
+      "outputs": [
+        "godot/core/mechanics/",
+        "evidence/mechanics/"
+      ],
+      "acceptance": "每类机制至少一个原版代表案例，含援助回收/被打断、特殊受击和超必杀冻结；未知 hook 阻止发布。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M5-03",
+      "phase": "M5",
+      "title": "实现原 AI 与共享随机消费",
+      "status": "pending",
+      "depends_on": [
+        "M5-02",
+        "M2-05"
+      ],
+      "requirements": [
+        "FR-08",
+        "TR-02"
+      ],
+      "outputs": [
+        "godot/core/ai/",
+        "evidence/ai/"
+      ],
+      "acceptance": "U-05 解决；记录随机消费者顺序，同 tape 决策/行为匹配；不以自创 AI 替代。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M6-01",
+      "phase": "M6",
+      "title": "接入并验证全人物、形态、援助和地图",
+      "status": "pending",
+      "depends_on": [
+        "M5-03",
+        "M0-04"
+      ],
+      "requirements": [
+        "FR-06",
+        "FR-07",
+        "FR-12"
+      ],
+      "outputs": [
+        "godot/data/",
+        "plan/coverage.json",
+        "evidence/content/"
+      ],
+      "acceptance": "64 配置/10 地图逐项落实，按真实角色类型验证；不可达或不适用项附证据，不将 false 批量置 true。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M6-02",
+      "phase": "M6",
+      "title": "完成原菜单、模式、关卡与设置流程",
+      "status": "pending",
+      "depends_on": [
+        "M5-03",
+        "M0-04"
+      ],
+      "requirements": [
+        "FR-01",
+        "FR-08",
+        "FR-11",
+        "FR-12"
+      ],
+      "outputs": [
+        "godot/scenes/ui/",
+        "godot/core/modes/",
+        "evidence/modes/"
+      ],
+      "acceptance": "所有模式入口、选人/援助/地图、关卡、计时/胜负/继续/返回路径回归通过。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M6-03",
+      "phase": "M6",
+      "title": "补齐全内容画面、音频和演出差异",
+      "status": "pending",
+      "depends_on": [
+        "M6-01",
+        "M6-02",
+        "M1-04"
+      ],
+      "requirements": [
+        "FR-07",
+        "FR-09"
+      ],
+      "outputs": [
+        "evidence/visual-audio/",
+        "evidence/differences.json"
+      ],
+      "acceptance": "原素材/帧时长/注册点/层级/音效循环匹配；所有可见差异逐项处理，不靠放宽阈值关闭。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M7-01",
+      "phase": "M7",
+      "title": "执行完整发布验收",
+      "status": "pending",
+      "depends_on": [
+        "M6-03"
+      ],
+      "requirements": [
+        "FR-12",
+        "TR-01",
+        "TR-08"
+      ],
+      "outputs": [
+        "evidence/release-report.md",
+        "evidence/acceptance-results.json"
+      ],
+      "acceptance": "AT-01～16 均有实测结果和证据；未解释可见/玩法差异为零，覆盖项完整；缺基准证据不称一比一。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M7-02",
+      "phase": "M7",
+      "title": "生成纯 Godot Web 发布物和版本清单",
+      "status": "pending",
+      "depends_on": [
+        "M7-01"
+      ],
+      "requirements": [
+        "TR-01",
+        "TR-08"
+      ],
+      "outputs": [
+        "dist/web/",
+        "dist/build-manifest.json"
+      ],
+      "acceptance": "没有 SWF/AS2/Ruffle/AVM 或原始分析脚本；冷启动、缓存升级、缺资源错误与回滚经过验证。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    },
+    {
+      "id": "M7-03",
+      "phase": "M7",
+      "title": "交付部署、重建和维护说明",
+      "status": "pending",
+      "depends_on": [
+        "M7-02"
+      ],
+      "requirements": [
+        "TR-07",
+        "TR-08"
+      ],
+      "outputs": [
+        "docs/BUILD.md",
+        "docs/RELEASE.md",
+        "docs/KNOWN_DIFFERENCES.md"
+      ],
+      "acceptance": "从锁定输入可重建发布物；工具版本、构建步骤、浏览器报告、限制与维护回归指南齐全。",
+      "evidence": [],
+      "estimated_person_days": null,
+      "actual_person_days": null
+    }
+  ]
+}

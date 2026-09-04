@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bvn26:action:1",
+  "title": "BVN 2.6 action v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "action"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "status": {
+      "enum": [
+        "extracted_partial",
+        "synthetic_example",
+        "ready"
+      ]
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "fighter_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "source_swf": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_ref": {
+      "type": "object",
+      "properties": {
+        "bundle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "script_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "bundle",
+        "script_path"
+      ],
+      "additionalProperties": false
+    },
+    "damage": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "hurt_time_ms": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "push_x": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "lift_y": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "impact_level": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "hit_reaction": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "duration_ticks": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "op": {
+            "enum": [
+              "set_velocity",
+              "add_velocity",
+              "open_hitbox",
+              "close_hitbox",
+              "play_sound",
+              "spawn_effect",
+              "set_invulnerable",
+              "cancel_window",
+              "change_action",
+              "set_pause",
+              "native_hook"
+            ]
+          },
+          "args": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "tick",
+          "order",
+          "op",
+          "args"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "hitboxes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]*$"
+          },
+          "space": {
+            "enum": [
+              "fighter_local",
+              "world"
+            ]
+          },
+          "shape": {
+            "enum": [
+              "rect",
+              "polygon"
+            ]
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "x",
+                "y"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 2
+          },
+          "source_symbol_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_frame": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "id",
+          "space",
+          "shape",
+          "points",
+          "source_symbol_id",
+          "source_frame"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "id",
+    "status",
+    "notes",
+    "fighter_id",
+    "source_swf",
+    "source_sha256",
+    "source_ref",
+    "damage",
+    "hurt_time_ms",
+    "push_x",
+    "lift_y",
+    "impact_level",
+    "hit_reaction",
+    "duration_ticks",
+    "events",
+    "hitboxes"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ready"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "duration_ticks": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    }
+  ]
+}

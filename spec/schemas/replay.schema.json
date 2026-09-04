@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bvn26:replay:1",
+  "title": "BVN 2.6 replay v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "replay"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "purpose": {
+      "enum": [
+        "synthetic_format_example",
+        "original_comparison",
+        "engine_regression"
+      ]
+    },
+    "baseline_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "execution_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "initial_state": {
+      "type": "object",
+      "properties": {
+        "mode_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "map_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "player": {
+                "enum": [
+                  1,
+                  2
+                ]
+              },
+              "catalog_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "form_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_.-]*$"
+              },
+              "position": {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "x",
+                  "y"
+                ],
+                "additionalProperties": false
+              },
+              "facing": {
+                "enum": [
+                  -1,
+                  1
+                ]
+              },
+              "hp": {
+                "type": "number"
+              },
+              "energy": {
+                "type": "number"
+              },
+              "ai_enabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "player",
+              "catalog_id",
+              "form_id",
+              "position",
+              "facing",
+              "hp",
+              "energy",
+              "ai_enabled"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "settings": {
+          "type": "object"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "mode_id",
+        "map_id",
+        "players",
+        "settings",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "random": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "seeded",
+            "recorded_tape"
+          ]
+        },
+        "seed": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tape": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMaximum": 1
+          }
+        }
+      },
+      "required": [
+        "mode",
+        "seed",
+        "tape"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "seeded"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "seed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "tape": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "recorded_tape"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "seed": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "player": {
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "held": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "up",
+                "down",
+                "left",
+                "right",
+                "attack",
+                "jump",
+                "dash",
+                "skill",
+                "power",
+                "assist"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "pressed": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "up",
+                "down",
+                "left",
+                "right",
+                "attack",
+                "jump",
+                "dash",
+                "skill",
+                "power",
+                "assist"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "released": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "up",
+                "down",
+                "left",
+                "right",
+                "attack",
+                "jump",
+                "dash",
+                "skill",
+                "power",
+                "assist"
+              ]
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "tick",
+          "order",
+          "player",
+          "held",
+          "pressed",
+          "released"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "id",
+    "purpose",
+    "baseline_sha256",
+    "execution_profile",
+    "notes",
+    "initial_state",
+    "random",
+    "inputs"
+  ],
+  "additionalProperties": false
+}

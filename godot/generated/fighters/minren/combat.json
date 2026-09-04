@@ -1,0 +1,593 @@
+{
+  "format": "bvn26-combat-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "fighter_id": "鸣人",
+  "simulation_hz": 30,
+  "source": {
+    "fighter_slice": "data/slices/minren-base.json",
+    "timeline": "data/slices/minren-base.timeline.json",
+    "script_bundle": "scripts/fighter/minren.json",
+    "timeline_symbol_id": 764
+  },
+  "movement": {
+    "speed_per_tick": 8,
+    "standing": {
+      "start_frame": 1,
+      "end_frame": 9
+    },
+    "walking": {
+      "start_frame": 10,
+      "end_frame": 19
+    }
+  },
+  "combo": {
+    "labels": [
+      "砍1",
+      "砍2",
+      "砍3"
+    ],
+    "transitions": [
+      {
+        "from": "砍1",
+        "to": "砍2",
+        "start_frame": 176,
+        "end_frame": 181,
+        "condition": "normal_attack_held",
+        "source_path": "DefineSprite_764/frame_176/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "3038388a2a69844e7b5b72604c162b0a32211e8d02ce176a711d52812cf00081",
+        "action_bytes_sha256": "7188bd07502d0e07df7f4d92c9d65ba9f1a99b9547c5f6b5b7d077b297c8194e"
+      },
+      {
+        "from": "砍2",
+        "to": "砍3",
+        "start_frame": 194,
+        "end_frame": 202,
+        "condition": "normal_attack_held",
+        "source_path": "DefineSprite_764/frame_194/PlaceObject2_16_38/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "24919e7e29f2194c8caaa0b2e2ae8c987042625562d881fcd4f7e07e32a2814a",
+        "action_bytes_sha256": "f031426bdee33a1e938dcc184555ed7706d504563adc001b7b7d888939862ab4"
+      }
+    ]
+  },
+  "special": {
+    "entry_label": "必杀",
+    "energy_cost": 100,
+    "transitions": [
+      {
+        "from": "必杀",
+        "to": "必杀1",
+        "frame": 538,
+        "condition": "source_condition",
+        "source_path": "DefineSprite_764/frame_538/DoAction.as",
+        "source_sha256": "974a0e34f3bdde08153b0646103914aa3d7ab08158ac6bf1f11eced7716b853c"
+      },
+      {
+        "from": "必杀",
+        "to": "必杀0",
+        "frame": 542,
+        "condition": "always",
+        "source_path": "DefineSprite_764/frame_542/DoAction.as",
+        "source_sha256": "cac4304bf2aeed09c6f8bc1851b7fa1ca83c8e3287e0dff1a9ecfbfd6f67f744"
+      },
+      {
+        "from": "必杀1",
+        "to": "必杀0",
+        "frame": 586,
+        "condition": "timeline_fallthrough"
+      }
+    ],
+    "cost_source_path": "DefineSprite_764/frame_505/DoAction.as",
+    "cost_source_sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e"
+  },
+  "hitbox_windows": {
+    "砍1": [
+      {
+        "instance_name": "k1atm",
+        "start_frame": 174,
+        "end_frame": 176
+      }
+    ],
+    "砍2": [
+      {
+        "instance_name": "k1atm",
+        "start_frame": 191,
+        "end_frame": 194
+      }
+    ],
+    "砍3": [
+      {
+        "instance_name": "k2atm",
+        "start_frame": 211,
+        "end_frame": 214
+      }
+    ],
+    "必杀": [
+      {
+        "instance_name": "bs1atm",
+        "start_frame": 531,
+        "end_frame": 539
+      }
+    ],
+    "必杀1": [
+      {
+        "instance_name": "bs3atm",
+        "start_frame": 547,
+        "end_frame": 571
+      },
+      {
+        "instance_name": "bsatm",
+        "start_frame": 572,
+        "end_frame": 575
+      }
+    ]
+  },
+  "action_exits": {
+    "砍1": {
+      "frame": 182,
+      "target": "站立",
+      "source_path": "DefineSprite_764/frame_182/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "砍2": {
+      "frame": 205,
+      "target": "站立",
+      "source_path": "DefineSprite_764/frame_205/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "砍3": {
+      "frame": 234,
+      "target": "站立",
+      "source_path": "DefineSprite_764/frame_234/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "被打": {
+      "frame": 1024,
+      "target": "站立",
+      "source_path": "DefineSprite_764/frame_1024/DoAction.as",
+      "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
+    },
+    "必杀0": {
+      "frame": 597,
+      "target": "站立",
+      "source_path": "DefineSprite_764/frame_597/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    }
+  },
+  "hurt": {
+    "label": "被打",
+    "stop_frame": 1020,
+    "hitstun_ticks_formula": "hitstun_ms / 1000 * 30",
+    "source_path": "DefineSprite_764/frame_1020/DoAction.as",
+    "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+  },
+  "attacks": {
+    "k1": {
+      "damage": 15,
+      "impact_strength": 2,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 2,
+      "hitstun_ms": 300,
+      "reaction_label": "被打"
+    },
+    "k2": {
+      "damage": 30,
+      "impact_strength": 2,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 600,
+      "reaction_label": "被打"
+    },
+    "k3": {
+      "damage": 40,
+      "impact_strength": 2,
+      "vertical_impulse": 7,
+      "horizontal_impulse": 5,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "bs": {
+      "damage": 100,
+      "impact_strength": 5,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "bs1": {
+      "damage": 10,
+      "impact_strength": 4,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 1000,
+      "reaction_label": "被打"
+    },
+    "bs3": {
+      "damage": 30,
+      "impact_strength": 4,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 0,
+      "hitstun_ms": 800,
+      "reaction_label": "被打"
+    }
+  },
+  "indexed_source_events": [
+    {
+      "action": "站立",
+      "frame": 1,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_1/DoAction.as",
+      "source_sha256": "67ef57fda43786d357ad6f039a63e3ef029de4d6c2eb36e4ce4b147010ed71cf"
+    },
+    {
+      "action": "站立",
+      "frame": 1,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "552614720eac86a13093bb10e6732d7e05222b348c079e5ac6cd6118ad947ec7"
+    },
+    {
+      "action": "站立",
+      "frame": 1,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_1/PlaceObject2_2_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "落2",
+      "frame": 101,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_101/DoAction.as",
+      "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+    },
+    {
+      "action": "被打",
+      "frame": 1014,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_1014/DoAction.as",
+      "source_sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155"
+    },
+    {
+      "action": "被打",
+      "frame": 1015,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_1015/DoAction.as",
+      "source_sha256": "a70f7b00382927dcb89b970656bc905839113d7af180dae43aa869dec2523aab"
+    },
+    {
+      "action": "被打",
+      "frame": 1016,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_1016/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "820f6d41d52a2df712ecc60a0f87a933ebe00f55e376951756a9d91d3940bb36"
+    },
+    {
+      "action": "被打",
+      "frame": 1017,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_1017/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "被打",
+      "frame": 1020,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_1020/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "action": "被打",
+      "frame": 1024,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_1024/DoAction.as",
+      "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
+    },
+    {
+      "action": "落地",
+      "frame": 116,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_116/DoAction.as",
+      "source_sha256": "254f13f0db54ab20a90ae1668ab15d48b30e8bca3b4be9634ac2f485d73d3e8f"
+    },
+    {
+      "action": "落地",
+      "frame": 116,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_116/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f3bddb1fde31648861b8017538a5812ec7e720bb8209a8fbf9f939f3cb117bcc"
+    },
+    {
+      "action": "落地",
+      "frame": 119,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_119/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "走",
+      "frame": 13,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_13/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "砍1",
+      "frame": 171,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_171/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "action": "砍1",
+      "frame": 172,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_172/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "84c7df01901ae6ecf8044a4ad61f008822d724586f9700fa5d682c70917b27a6"
+    },
+    {
+      "action": "砍1",
+      "frame": 176,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_176/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "3038388a2a69844e7b5b72604c162b0a32211e8d02ce176a711d52812cf00081"
+    },
+    {
+      "action": "砍1",
+      "frame": 182,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_182/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "砍2",
+      "frame": 188,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_188/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "action": "砍2",
+      "frame": 190,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_190/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "4b5b0b8cd00a1a07a11bc12b23d5897342e71260c34faee7ee1bf40ff81b5043"
+    },
+    {
+      "action": "砍2",
+      "frame": 194,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_194/PlaceObject2_16_38/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "24919e7e29f2194c8caaa0b2e2ae8c987042625562d881fcd4f7e07e32a2814a"
+    },
+    {
+      "action": "站立",
+      "frame": 2,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_2/DoAction.as",
+      "source_sha256": "5945dc9bd06c19062d43c753efb05816891856090f3e54f16b42c4353f79d871"
+    },
+    {
+      "action": "砍2",
+      "frame": 205,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_205/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "砍3",
+      "frame": 208,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_208/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "action": "瞬步",
+      "frame": 21,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_21/DoAction.as",
+      "source_sha256": "959104852cd78b4021ce0f7f48631e3ed0cf0b71c94da436fa97f3d887390590"
+    },
+    {
+      "action": "瞬步",
+      "frame": 21,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_21/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0d74d2c03a6bbe32b481aebfaa1bdf300c72317a0bc1d0e11e6da9b406f4fbb1"
+    },
+    {
+      "action": "砍3",
+      "frame": 211,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_211/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "7c9e707451b145c346d6b224b0790f9449aed10d79afb81335c9a846e66e73df"
+    },
+    {
+      "action": "砍3",
+      "frame": 217,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_217/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e4a389aa481067282e4aa1e7d01abd5ea7360b96c066f592c47b643ca393447f"
+    },
+    {
+      "action": "砍3",
+      "frame": 234,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_234/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "瞬步",
+      "frame": 30,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_30/PlaceObject2_2_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "瞬步",
+      "frame": 35,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_35/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "跳",
+      "frame": 42,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_42/DoAction.as",
+      "source_sha256": "b890a77fc0b2700bee5d0bb3f7b92b99349b6a62d2f20d8d115b30d037b3613a"
+    },
+    {
+      "action": "跳",
+      "frame": 42,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_42/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "15d993e9b1598e78ddb3e8ca35054bb2a562bea05b7c388fbcae371981dc8ff2"
+    },
+    {
+      "action": "跳",
+      "frame": 50,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_50/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0e74ab6cac90234a068c43bdd8851d4525e750d49fbd8dc7d579dc727df256c3"
+    },
+    {
+      "action": "必杀",
+      "frame": 505,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_505/DoAction.as",
+      "source_sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e"
+    },
+    {
+      "action": "必杀",
+      "frame": 507,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_507/DoAction.as",
+      "source_sha256": "772e9963b1331951f0a7a4d83b5ef76859c43115361ec9a51d74b7bf4210c240"
+    },
+    {
+      "action": "必杀",
+      "frame": 530,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_530/DoAction.as",
+      "source_sha256": "8b4d2146b59f91ec3e0d1b5910b7bb9ddc3b89d13cafd56dc493ecaec42c360f"
+    },
+    {
+      "action": "必杀",
+      "frame": 530,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_530/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "05e5547fb599f06fe3191d2bf352a5e7fdd5ba4ef5ee798018d947a5ffb8b04f"
+    },
+    {
+      "action": "必杀",
+      "frame": 530,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_530/PlaceObject2_2_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "必杀",
+      "frame": 538,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_538/DoAction.as",
+      "source_sha256": "974a0e34f3bdde08153b0646103914aa3d7ab08158ac6bf1f11eced7716b853c"
+    },
+    {
+      "action": "必杀",
+      "frame": 542,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_542/DoAction.as",
+      "source_sha256": "cac4304bf2aeed09c6f8bc1851b7fa1ca83c8e3287e0dff1a9ecfbfd6f67f744"
+    },
+    {
+      "action": "必杀1",
+      "frame": 545,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_545/DoAction.as",
+      "source_sha256": "1a3c5e4d88c35bf80cbc22f3dbd26ab86bd4e1990deb75e41d2f018a04b5d66f"
+    },
+    {
+      "action": "落",
+      "frame": 56,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_56/DoAction.as",
+      "source_sha256": "8e9c06fc81a61e04678abae1c01b81280c25d36522c0d5b5ab8721fb9c6ffb8a"
+    },
+    {
+      "action": "落",
+      "frame": 56,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_56/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "1dd832a1ce74067bd825f06d162d2b22e4c1a2c467a47e0dba4c6b9b2e29ac9e"
+    },
+    {
+      "action": "必杀1",
+      "frame": 572,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_572/DoAction.as",
+      "source_sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5"
+    },
+    {
+      "action": "必杀1",
+      "frame": 582,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_582/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "必杀0",
+      "frame": 597,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_597/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "落",
+      "frame": 68,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_68/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    {
+      "action": "跳2",
+      "frame": 72,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_72/DoAction.as",
+      "source_sha256": "77d8ecec992ad9b2739d382fb920a33b321349fcb0a770339700673228ce12b4"
+    },
+    {
+      "action": "跳2",
+      "frame": 72,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_72/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "a5e83704d5060297001dd8191822a1fdb310052896c4d0d1f9d69ca1f9a495f0"
+    },
+    {
+      "action": "站立",
+      "frame": 8,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_8/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "跳2",
+      "frame": 83,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_83/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "092e6f38f29accd57b1b3367b69d2128273fbf865dda02bb9e6ba70780771c6e"
+    },
+    {
+      "action": "落2",
+      "frame": 89,
+      "kind": "frame_action",
+      "path": "DefineSprite_764/frame_89/DoAction.as",
+      "source_sha256": "8e9c06fc81a61e04678abae1c01b81280c25d36522c0d5b5ab8721fb9c6ffb8a"
+    },
+    {
+      "action": "落2",
+      "frame": 89,
+      "kind": "clip_action",
+      "path": "DefineSprite_764/frame_89/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "767f0d510bc837c4f8ed84dd2c726b752ce3806104bd8670ea9debc210d94b6d"
+    }
+  ]
+}

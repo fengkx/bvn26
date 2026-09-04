@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bvn26:trace:1",
+  "title": "BVN 2.6 trace v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "trace"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "purpose": {
+      "enum": [
+        "synthetic_format_example",
+        "comparison_capture"
+      ]
+    },
+    "origin": {
+      "enum": [
+        "original_player",
+        "reference_emulator",
+        "godot",
+        "synthetic"
+      ]
+    },
+    "replay_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "execution_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "capture": {
+      "type": "object",
+      "properties": {
+        "runtime": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instrumentation": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "runtime",
+        "version",
+        "environment",
+        "instrumentation"
+      ],
+      "additionalProperties": false
+    },
+    "frames": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tick": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "phase": {
+            "type": "string",
+            "minLength": 1
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "player": {
+                  "enum": [
+                    1,
+                    2
+                  ]
+                },
+                "position": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "state": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "source_frame": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "hp": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "energy": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "unobserved_fields": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "position",
+                      "state",
+                      "source_frame",
+                      "hp",
+                      "energy"
+                    ]
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "player",
+                "position",
+                "state",
+                "source_frame",
+                "hp",
+                "energy",
+                "unobserved_fields"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "order": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "entity_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "event": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "payload": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "order",
+                "entity_id",
+                "event",
+                "payload"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "tick",
+          "phase",
+          "players",
+          "events"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "id",
+    "purpose",
+    "origin",
+    "replay_id",
+    "execution_profile",
+    "notes",
+    "capture",
+    "frames"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "origin": {
+            "const": "synthetic"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "purpose": {
+            "const": "synthetic_format_example"
+          }
+        }
+      }
+    }
+  ]
+}
