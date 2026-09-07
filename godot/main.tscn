@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://main.gd" id="1_main"]
 [ext_resource type="Script" path="res://timeline_preview.gd" id="2_timeline"]
+[ext_resource type="Script" path="res://fighter_runtime.gd" id="3_fighter"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -39,28 +40,32 @@ show_collision_shapes = false
 [node name="Naruto" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(160, 300)
-script = ExtResource("2_timeline")
+script = ExtResource("3_fighter")
 fighter_directory = "res://generated/fighters/minren"
+display_depth = 1
+facing = 1
 
 [node name="Ichigo" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(440, 300)
 scale = Vector2(-1, 1)
-script = ExtResource("2_timeline")
+script = ExtResource("3_fighter")
 fighter_directory = "res://generated/fighters/yihu"
+display_depth = 2
+facing = -1
 
 [node name="Content" type="VBoxContainer" parent="."]
 z_index = 100
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.0
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -190.0
-offset_right = 220.0
-offset_bottom = 86.0
+anchor_bottom = 0.0
+offset_left = -280.0
+offset_top = 8.0
+offset_right = 280.0
+offset_bottom = 145.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 14
@@ -68,34 +73,42 @@ theme_override_constants/separation = 14
 [node name="Title" type="Label" parent="Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.77, 0.22, 1)
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 20
 text = "BLEACH VS NARUTO 2.6"
 horizontal_alignment = 1
 
 [node name="Status" type="Label" parent="Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.83, 0.86, 0.92, 1)
-theme_override_font_sizes/font_size = 18
-text = "Native source-timeline preview"
+theme_override_font_sizes/font_size = 14
+text = "Native 30 Hz combat slice"
 horizontal_alignment = 1
 
 [node name="Config" type="Label" parent="Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.67, 0.76, 1)
-theme_override_font_sizes/font_size = 14
-text = "1/2/3: combo  ·  4: hurt  ·  5: special"
+theme_override_font_sizes/font_size = 12
+text = "P1 WASD + J K L U I O  ·  P2 arrows + Num1–Num6"
 horizontal_alignment = 1
 
 [node name="TickLabel" type="Label" parent="Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.44, 0.78, 1, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "Fixed simulation tick: 0"
+horizontal_alignment = 1
+
+[node name="StateLabel" type="Label" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "Loading combat state"
 horizontal_alignment = 1
 
 [node name="Notice" type="Label" parent="Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.59, 0.66, 1)
-text = "SWF frames and AS2-derived data · combat scheduling still pending"
+text = "Use physical keys; switch the browser input method to English"
 horizontal_alignment = 1

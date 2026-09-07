@@ -38,8 +38,8 @@ def contiguous_windows(frames: list[int]) -> list[dict[str, int]]:
 
 def target_ranges(fighter: dict[str, Any]) -> dict[str, dict[str, int]]:
     result = {}
-    for group_name in ("movement", "ground_combo", "hurt", "special"):
-        for label, span in fighter["actions"][group_name].items():
+    for group_name, actions in fighter["actions"].items():
+        for label, span in actions.items():
             result[label] = {**span, "group": group_name}
     return result
 

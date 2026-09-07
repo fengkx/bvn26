@@ -7,7 +7,7 @@
     "blocked",
     "completed"
   ],
-  "path_convention": "B 阶段输出已随包交付；M0-M7 输出是未来目标路径，当前不存在。",
+  "path_convention": "B 阶段输出已随包交付；M0-M3 已有部分开发产物，只有满足任务验收后才能将对应状态标为 completed。",
   "estimate_policy": "未校准的预计人日保持 null；M0、M3、M5 后用实际结果细化。",
   "tasks": [
     {
@@ -310,7 +310,7 @@
         "godot/core/fighter/",
         "evidence/movement/"
       ],
-      "acceptance": "同输入/同帧顺序、镜像、跳跃、冲刺、边界和 undefined 等实际分支对照；不凭默认物理调手感。",
+      "acceptance": "原版 P1 W/S/A/D+J/K/L/U/I/O 与 P2 方向键+Num1-Num6 全部接入；同输入/同帧顺序、镜像、跳跃、冲刺、长按防御、方向组合、招式位移、边界和 undefined 等实际分支对照；不凭默认物理调手感。",
       "evidence": [],
       "estimated_person_days": null,
       "actual_person_days": null
@@ -402,7 +402,7 @@
         "godot/data/fighters/",
         "evidence/slice-actions/"
       ],
-      "acceptance": "两者可达基础形态招式逐项盘点、导入与对照；不能以单个普攻代替完整动作集。",
+      "acceptance": "两者可达基础形态招式逐项盘点、导入与对照；覆盖近攻/三连、跳跃与空中分支、冲刺、远攻、必杀、召唤、防御与防御受击、所有带位移招式，以及受击/击退/击飞/倒地/恢复；不能以单个普攻或只有贴图的动作代替完整动作集。",
       "evidence": [],
       "estimated_person_days": null,
       "actual_person_days": null

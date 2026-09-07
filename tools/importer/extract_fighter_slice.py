@@ -186,6 +186,17 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
             selected_spans[group][label] = all_spans[label]
             selected_ranges.append(all_spans[label])
 
+    # Runtime input handling needs every labeled state, even while the combat
+    # model still validates only the first vertical slice. Keeping the extra
+    # labels in their own group preserves the existing combat-model contract.
+    selected_labels = {
+        label for group in selected_spans.values() for label in group
+    }
+    selected_spans["extended_actions"] = {
+        label: span for label, span in all_spans.items() if label not in selected_labels
+    }
+    selected_ranges.extend(selected_spans["extended_actions"].values())
+
     timeline_scripts = []
     for script in scripts:
         match = FRAME_PATH_RE.match(script["path"])
@@ -209,14 +220,10 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
         raise ValueError(f"Missing movement constants in {load_script['path']}")
 
     all_hit_parameters = extract_hit_parameters(root_init["source"])
-    selected_attack_ids = ["k1", "k2", "k3"] + sorted(
-        attack for attack in all_hit_parameters if attack.startswith("bs")
-    )
-    hit_parameters = {
-        attack: all_hit_parameters[attack]
-        for attack in selected_attack_ids
-        if attack in all_hit_parameters
-    }
+    # Every move reads its damage and hit reaction from the fighter's root
+    # attack table. Limiting this to the first combo and special made the
+    # extended timelines visible but unable to hit anything.
+    hit_parameters = dict(sorted(all_hit_parameters.items()))
 
     shared_paths = ["DefineSprite_16/frame_1/DoAction.as", "DefineSprite_2/frame_1/DoAction.as"]
     shared_scripts = [

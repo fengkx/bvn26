@@ -104,8 +104,9 @@ def definition_dependencies(tag: ET.Element) -> set[int]:
     return dependencies
 
 
-def first_frame_display_list(sprite: ET.Element) -> list[dict[str, Any]]:
+def sprite_display_frames(sprite: ET.Element) -> list[list[dict[str, Any]]]:
     display_list: dict[int, dict[str, Any]] = {}
+    frames = []
     for tag in sprite.findall("./subTags/item"):
         tag_type = tag.attrib["type"]
         if tag_type in ("PlaceObject2Tag", "PlaceObject3Tag"):
@@ -123,11 +124,17 @@ def first_frame_display_list(sprite: ET.Element) -> list[dict[str, Any]]:
                 display_list[depth] = {
                     key: value for key, value in delta.items() if key != "move"
                 }
+                display_list[depth]["placed_frame"] = len(frames) + 1
         elif tag_type in ("RemoveObjectTag", "RemoveObject2Tag"):
             display_list.pop(int(tag.attrib["depth"]), None)
         elif tag_type == "ShowFrameTag":
-            return [display_list[key] for key in sorted(display_list)]
-    return []
+            frames.append(copy.deepcopy([display_list[key] for key in sorted(display_list)]))
+    return frames
+
+
+def first_frame_display_list(sprite: ET.Element) -> list[dict[str, Any]]:
+    frames = sprite_display_frames(sprite)
+    return frames[0] if frames else []
 
 
 def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -186,7 +193,9 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             definition["referenced_character_ids"] = sorted(dependencies)
         if "frameCount" in tag.attrib:
             definition["frame_count"] = int(tag.attrib["frameCount"])
-            definition["first_frame_display_list"] = first_frame_display_list(tag)
+            sprite_frames = sprite_display_frames(tag)
+            definition["first_frame_display_list"] = sprite_frames[0] if sprite_frames else []
+            definition["display_list_frames"] = sprite_frames
         if "_externalFile" in tag.attrib:
             definition["external_file"] = tag.attrib["_externalFile"]
         definitions.append(definition)
@@ -236,6 +245,7 @@ def extract_frames(xml_path: Path, sprite_id: int) -> dict[str, Any]:
                 display_list[depth] = {
                     key: value for key, value in delta.items() if key != "move"
                 }
+                display_list[depth]["placed_frame"] = len(frames) + 1
             pending_changes.append({"type": "place", **delta})
         elif tag_type in ("RemoveObjectTag", "RemoveObject2Tag"):
             depth = int(tag.attrib["depth"])

@@ -47,6 +47,43 @@ func play_action(label: String) -> void:
 	push_error("Unknown extracted action label: %s" % label)
 
 
+func current_source_frame() -> int:
+	return _current_frame
+
+
+func action_range(label: String) -> Dictionary:
+	for group: Dictionary in _fighter.get("actions", {}).values():
+		if group.has(label):
+			return group[label]
+	return {}
+
+
+func advance_source_frame(loop_action: bool = true) -> void:
+	if _current_frame >= _action_end:
+		if not loop_action:
+			return
+		_current_frame = _action_start
+	else:
+		_current_frame += 1
+	_render_frame()
+
+
+func instance_local_bounds(instance_name: String) -> Rect2:
+	if not _frames.has(_current_frame):
+		return Rect2()
+	for placement: Dictionary in _frames[_current_frame]["display_list"]:
+		if str(placement.get("name", "")) == instance_name:
+			return _placement_bounds(placement)
+	return Rect2()
+
+
+func instance_global_bounds(instance_name: String) -> Rect2:
+	var local_bounds := instance_local_bounds(instance_name)
+	if local_bounds.has_area():
+		return _transform_rect(global_transform, local_bounds)
+	return Rect2()
+
+
 func _load_data() -> void:
 	_timeline = _read_json("%s/timeline.json" % fighter_directory)
 	var fighter_path := "%s/fighter.json" % fighter_directory
@@ -77,7 +114,7 @@ func _render_frame() -> void:
 		return
 	var frame: Dictionary = _frames[_current_frame]
 	for placement: Dictionary in frame["display_list"]:
-		_render_placement(placement, Transform2D.IDENTITY, 1.0, 0)
+		_render_placement(placement, Transform2D.IDENTITY, 1.0, 0, _current_frame)
 	queue_redraw()
 
 
@@ -85,7 +122,8 @@ func _render_placement(
 	placement: Dictionary,
 	parent_transform: Transform2D,
 	parent_alpha: float,
-	parent_depth: int
+	parent_depth: int,
+	timeline_frame: int
 ) -> void:
 	var character_id := int(placement.get("character_id", -1))
 	if not _definitions.has(character_id):
@@ -100,8 +138,15 @@ func _render_placement(
 		alpha *= float(color_transform.get("alphaMultTerm", 256)) / 256.0
 	var depth := parent_depth + int(placement["depth"])
 	if definition["type"] == "DefineSpriteTag":
-		for child: Dictionary in definition.get("first_frame_display_list", []):
-			_render_placement(child, placement_transform, alpha, depth)
+		var sprite_frames: Array = definition.get("display_list_frames", [])
+		var local_frame := _nested_frame(placement, timeline_frame, sprite_frames.size())
+		var children: Array = (
+			sprite_frames[local_frame - 1]
+			if not sprite_frames.is_empty()
+			else definition.get("first_frame_display_list", [])
+		)
+		for child: Dictionary in children:
+			_render_placement(child, placement_transform, alpha, depth, local_frame)
 		return
 	var fills: Array = definition.get("bitmap_fills", [])
 	if not definition["type"].begins_with("DefineShape"):
@@ -115,12 +160,47 @@ func _render_placement(
 		var sprite := Sprite2D.new()
 		sprite.centered = false
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		sprite.texture = load("%s/%s" % [fighter_directory, _assets[bitmap_id]])
+		var source_texture: Texture2D = load("%s/%s" % [fighter_directory, _assets[bitmap_id]])
 		sprite.z_index = depth + fill_index
 		var bitmap_transform := _matrix_transform(fill.get("matrix", {}), 0.05)
-		sprite.transform = placement_transform * bitmap_transform
+		var draw_transform := bitmap_transform
+		var texture_region := _shape_texture_region(definition, bitmap_transform, source_texture)
+		if texture_region.has_area():
+			var atlas := AtlasTexture.new()
+			atlas.atlas = source_texture
+			atlas.region = texture_region
+			sprite.texture = atlas
+			draw_transform.origin = bitmap_transform * texture_region.position
+		else:
+			sprite.texture = source_texture
+		sprite.transform = placement_transform * draw_transform
 		sprite.modulate.a = alpha
 		add_child(sprite)
+
+
+func _shape_texture_region(
+	definition: Dictionary,
+	bitmap_transform: Transform2D,
+	texture: Texture2D
+) -> Rect2:
+	if not definition.has("shape_bounds_twips") or bitmap_transform.determinant() == 0.0:
+		return Rect2()
+	var bounds: Dictionary = definition["shape_bounds_twips"]
+	var shape_rect := Rect2(
+		Vector2(float(bounds["Xmin"]), float(bounds["Ymin"])) / 20.0,
+		Vector2(
+			float(bounds["Xmax"] - bounds["Xmin"]),
+			float(bounds["Ymax"] - bounds["Ymin"])
+		) / 20.0
+	)
+	var raw_region := _transform_rect(bitmap_transform.affine_inverse(), shape_rect)
+	var start := Vector2(floorf(raw_region.position.x), floorf(raw_region.position.y))
+	var finish := Vector2(ceilf(raw_region.end.x), ceilf(raw_region.end.y))
+	start = start.max(Vector2.ZERO)
+	finish = finish.min(Vector2(texture.get_width(), texture.get_height()))
+	if finish.x <= start.x or finish.y <= start.y:
+		return Rect2()
+	return Rect2(start, finish - start)
 
 
 func _matrix_transform(matrix: Dictionary, basis_scale: float) -> Transform2D:
@@ -138,6 +218,73 @@ func _matrix_transform(matrix: Dictionary, basis_scale: float) -> Transform2D:
 			float(matrix.get("translateY", 0)) / 20.0
 		)
 	)
+
+
+func _placement_bounds(placement: Dictionary, timeline_frame: int = _current_frame) -> Rect2:
+	var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
+	if definition.is_empty():
+		return Rect2()
+	var local_bounds := _definition_bounds(definition, placement, timeline_frame)
+	if not local_bounds.has_area():
+		return Rect2()
+	return _transform_rect(
+		_matrix_transform(placement.get("matrix", {}), 1.0),
+		local_bounds
+	)
+
+
+func _definition_bounds(
+	definition: Dictionary,
+	placement: Dictionary,
+	timeline_frame: int
+) -> Rect2:
+	if definition.has("shape_bounds_twips"):
+		var bounds: Dictionary = definition["shape_bounds_twips"]
+		return Rect2(
+			Vector2(float(bounds["Xmin"]), float(bounds["Ymin"])) / 20.0,
+			Vector2(
+				float(bounds["Xmax"] - bounds["Xmin"]),
+				float(bounds["Ymax"] - bounds["Ymin"])
+			) / 20.0
+		)
+	if definition["type"] != "DefineSpriteTag":
+		return Rect2()
+	var sprite_frames: Array = definition.get("display_list_frames", [])
+	var local_frame := _nested_frame(placement, timeline_frame, sprite_frames.size())
+	var children: Array = (
+		sprite_frames[local_frame - 1]
+		if not sprite_frames.is_empty()
+		else definition.get("first_frame_display_list", [])
+	)
+	var result := Rect2()
+	for child: Dictionary in children:
+		var child_bounds := _placement_bounds(child, local_frame)
+		if not child_bounds.has_area():
+			continue
+		result = child_bounds if not result.has_area() else result.merge(child_bounds)
+	return result
+
+
+func _nested_frame(placement: Dictionary, timeline_frame: int, frame_count: int) -> int:
+	if frame_count <= 1:
+		return 1
+	var placed_frame := int(placement.get("placed_frame", timeline_frame))
+	return posmod(maxi(0, timeline_frame - placed_frame), frame_count) + 1
+
+
+func _transform_rect(transform_2d: Transform2D, rectangle: Rect2) -> Rect2:
+	var corners := [
+		transform_2d * rectangle.position,
+		transform_2d * Vector2(rectangle.end.x, rectangle.position.y),
+		transform_2d * rectangle.end,
+		transform_2d * Vector2(rectangle.position.x, rectangle.end.y),
+	]
+	var minimum: Vector2 = corners[0]
+	var maximum: Vector2 = corners[0]
+	for corner: Vector2 in corners.slice(1):
+		minimum = minimum.min(corner)
+		maximum = maximum.max(corner)
+	return Rect2(minimum, maximum - minimum)
 
 
 func _draw() -> void:

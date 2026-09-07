@@ -188,14 +188,15 @@ class TimelineGeometryTests(unittest.TestCase):
                     "depth": 2,
                     "character_id": 9,
                     "matrix": {"translateX": 20, "translateY": -40},
+                    "placed_frame": 1,
                     "ratio": 5,
                 },
-                {"depth": 3, "character_id": 10},
+                {"depth": 3, "character_id": 10, "placed_frame": 2},
             ],
         )
         self.assertEqual(
             result["frames"][2]["display_list"],
-            [{"depth": 3, "character_id": 10}],
+            [{"depth": 3, "character_id": 10, "placed_frame": 2}],
         )
         self.assertEqual(
             result["definitions"],
@@ -215,7 +216,18 @@ class TimelineGeometryTests(unittest.TestCase):
                             "depth": 1,
                             "character_id": 9,
                             "matrix": {"translateX": 5, "translateY": 10},
+                            "placed_frame": 1,
                         }
+                    ],
+                    "display_list_frames": [
+                        [
+                            {
+                                "depth": 1,
+                                "character_id": 9,
+                                "matrix": {"translateX": 5, "translateY": 10},
+                                "placed_frame": 1,
+                            }
+                        ]
                     ],
                 },
             ],

@@ -84,6 +84,81 @@
         "start_frame": 467,
         "end_frame": 490
       }
+    ],
+    "跳砍": [
+      {
+        "instance_name": "tkatm",
+        "start_frame": 131,
+        "end_frame": 132
+      }
+    ],
+    "跳招": [
+      {
+        "instance_name": "zh1atm",
+        "start_frame": 150,
+        "end_frame": 158
+      }
+    ],
+    "砍技1": [
+      {
+        "instance_name": "kj1atm",
+        "start_frame": 250,
+        "end_frame": 251
+      }
+    ],
+    "砍技2": [
+      {
+        "instance_name": "kj21atm",
+        "start_frame": 289,
+        "end_frame": 294
+      },
+      {
+        "instance_name": "kj2atm",
+        "start_frame": 295,
+        "end_frame": 298
+      }
+    ],
+    "招1": [
+      {
+        "instance_name": "zh1atm",
+        "start_frame": 327,
+        "end_frame": 341
+      }
+    ],
+    "招2": [
+      {
+        "instance_name": "zh20atm",
+        "start_frame": 359,
+        "end_frame": 369
+      }
+    ],
+    "招21": [
+      {
+        "instance_name": "zh2atm",
+        "start_frame": 372,
+        "end_frame": 374
+      }
+    ],
+    "招3": [
+      {
+        "instance_name": "zh1atm",
+        "start_frame": 421,
+        "end_frame": 428
+      }
+    ],
+    "上必杀": [
+      {
+        "instance_name": "sbsatm",
+        "start_frame": 548,
+        "end_frame": 561
+      }
+    ],
+    "超必杀": [
+      {
+        "instance_name": "cbsatm",
+        "start_frame": 606,
+        "end_frame": 627
+      }
     ]
   },
   "action_exits": {
@@ -126,6 +201,22 @@
     "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
   },
   "attacks": {
+    "bs": {
+      "damage": 300,
+      "impact_strength": 5,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 20,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "cbs": {
+      "damage": 450,
+      "impact_strength": 5,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 40,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
     "k1": {
       "damage": 40,
       "impact_strength": 1,
@@ -150,12 +241,76 @@
       "hitstun_ms": 600,
       "reaction_label": "被打"
     },
-    "bs": {
-      "damage": 300,
+    "kj1": {
+      "damage": 80,
+      "impact_strength": 13,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 8,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "kj2": {
+      "damage": 60,
+      "impact_strength": 4,
+      "vertical_impulse": 12,
+      "horizontal_impulse": 1,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "kj21": {
+      "damage": 20,
+      "impact_strength": 1,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 1,
+      "hitstun_ms": 100,
+      "reaction_label": "被打"
+    },
+    "sbs": {
+      "damage": 250,
+      "impact_strength": 5,
+      "vertical_impulse": 8,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "tk": {
+      "damage": 30,
+      "impact_strength": 1,
+      "vertical_impulse": -6,
+      "horizontal_impulse": 2,
+      "hitstun_ms": 300,
+      "reaction_label": "被打"
+    },
+    "tz": {
+      "damage": 80,
+      "impact_strength": 5,
+      "vertical_impulse": -5,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 300,
+      "reaction_label": "击飞"
+    },
+    "zh1": {
+      "damage": 80,
       "impact_strength": 5,
       "vertical_impulse": 0,
-      "horizontal_impulse": 20,
-      "hitstun_ms": 0,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 300,
+      "reaction_label": "击飞"
+    },
+    "zh2": {
+      "damage": 80,
+      "impact_strength": 6,
+      "vertical_impulse": 3,
+      "horizontal_impulse": 8,
+      "hitstun_ms": 700,
+      "reaction_label": "被打"
+    },
+    "zh3": {
+      "damage": 80,
+      "impact_strength": 5,
+      "vertical_impulse": 6,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 300,
       "reaction_label": "击飞"
     }
   },
@@ -189,6 +344,34 @@
       "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
     },
     {
+      "action": "万解",
+      "frame": 1032,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_1032/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "万解",
+      "frame": 1052,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_1052/DoAction.as",
+      "source_sha256": "5bfd9ad4d193695032067801ead5a30760b36da065b4740288ecaf2e41e19f36"
+    },
+    {
+      "action": "万解",
+      "frame": 1055,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_1055/DoAction.as",
+      "source_sha256": "cec97a876ae222f598bab97d7829af7ee183b61e1accb10afcc3f1e2e0d03171"
+    },
+    {
+      "action": "万解",
+      "frame": 1058,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_1058/DoAction.as",
+      "source_sha256": "571df4526f82a11ac83f2998b2b58c9a64bf20e05e02ab711383d10e883a1685"
+    },
+    {
       "action": "落地",
       "frame": 116,
       "kind": "frame_action",
@@ -210,11 +393,81 @@
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
     },
     {
+      "action": "跳砍",
+      "frame": 127,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_127/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "4a3d5198d7e26c6c29544e249d92617d4d1b4c26f679eaf5d940b6ba7df7863d"
+    },
+    {
+      "action": "跳砍",
+      "frame": 128,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_128/DoAction.as",
+      "source_sha256": "9b79c9423446b2ba8f6b389e4d8c56548a32adc976bbd8513c19784bfaf4888b"
+    },
+    {
       "action": "走",
       "frame": 13,
       "kind": "frame_action",
       "path": "DefineSprite_638/frame_13/DoAction.as",
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "跳砍",
+      "frame": 134,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_134/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "跳砍",
+      "frame": 134,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_134/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "4b237c7b0825d2de3bc034664c6a0d1ce1284a3fd5c8d45aec502b26449b415d"
+    },
+    {
+      "action": "跳砍",
+      "frame": 138,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_138/DoAction.as",
+      "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+    },
+    {
+      "action": "跳招",
+      "frame": 143,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_143/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "4b7593137ebccd7df8febe0305c44d19ecc77a32bc4c16efa89fbe66e0c75fc7"
+    },
+    {
+      "action": "跳招",
+      "frame": 144,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_144/DoAction.as",
+      "source_sha256": "18f6a5fb5ded6f1e33c0d1692f764b48da97d03cc8fddc22a1780fad044e4b59"
+    },
+    {
+      "action": "跳招",
+      "frame": 150,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_150/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "跳招",
+      "frame": 150,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_150/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "99181aed71bf633e58f5d8af1d2d83e6d13f0ad59c56ed2381fbe847420aca40"
+    },
+    {
+      "action": "跳招",
+      "frame": 165,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_165/DoAction.as",
+      "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
     },
     {
       "action": "砍1",
@@ -336,6 +589,90 @@
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
     },
     {
+      "action": "砍技1",
+      "frame": 233,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_233/DoAction.as",
+      "source_sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3"
+    },
+    {
+      "action": "砍技1",
+      "frame": 246,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_246/DoAction.as",
+      "source_sha256": "972fdc2c1ee7d0ebd047bc4f70e546aec63e08ccd0b72514b4ad8424200358ff"
+    },
+    {
+      "action": "砍技1",
+      "frame": 247,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_247/DoAction.as",
+      "source_sha256": "804439b2808628500257a76fd4ee5251e916898a7f8cc8cf72896e942abd3652"
+    },
+    {
+      "action": "砍技1",
+      "frame": 248,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_248/DoAction.as",
+      "source_sha256": "972fdc2c1ee7d0ebd047bc4f70e546aec63e08ccd0b72514b4ad8424200358ff"
+    },
+    {
+      "action": "砍技1",
+      "frame": 249,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_249/DoAction.as",
+      "source_sha256": "804439b2808628500257a76fd4ee5251e916898a7f8cc8cf72896e942abd3652"
+    },
+    {
+      "action": "砍技1",
+      "frame": 258,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_258/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "砍技1",
+      "frame": 278,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_278/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "砍技2",
+      "frame": 285,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_285/DoAction.as",
+      "source_sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3"
+    },
+    {
+      "action": "砍技2",
+      "frame": 296,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_296/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "砍技2",
+      "frame": 300,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_300/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "砍技2",
+      "frame": 305,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_305/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "b7661979f53133714aff47acad919a7d7545d70c30c645cb68223970a0f502f6"
+    },
+    {
+      "action": "砍技2",
+      "frame": 312,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_312/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
       "action": "瞬步",
       "frame": 32,
       "kind": "clip_action",
@@ -343,11 +680,95 @@
       "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
     },
     {
+      "action": "招1",
+      "frame": 321,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_321/DoAction.as",
+      "source_sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+    },
+    {
+      "action": "招1",
+      "frame": 326,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_326/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "招1",
+      "frame": 327,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_327/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "87f6dfba986569ef8c1d3d2da2b5ca249e6f8727da6f3300e4f61e74ee01b62e"
+    },
+    {
+      "action": "招1",
+      "frame": 342,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_342/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
       "action": "瞬步",
       "frame": 35,
       "kind": "frame_action",
       "path": "DefineSprite_638/frame_35/DoAction.as",
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招1",
+      "frame": 350,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_350/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招2",
+      "frame": 358,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_358/DoAction.as",
+      "source_sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3"
+    },
+    {
+      "action": "招2",
+      "frame": 359,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_359/DoAction.as",
+      "source_sha256": "959104852cd78b4021ce0f7f48631e3ed0cf0b71c94da436fa97f3d887390590"
+    },
+    {
+      "action": "招2",
+      "frame": 359,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_359/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e115e420c6066335abe85cd8e1eb69cf56aa185005bbf935de18b2582fca9651"
+    },
+    {
+      "action": "招21",
+      "frame": 379,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "53e6a603fb79392b9f75d94bcb888af8dc7dbc6dcac381bb07bd75c066ae34bd"
+    },
+    {
+      "action": "招21",
+      "frame": 390,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_390/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招3",
+      "frame": 415,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_415/DoAction.as",
+      "source_sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+    },
+    {
+      "action": "招3",
+      "frame": 419,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_419/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
     },
     {
       "action": "跳",
@@ -362,6 +783,34 @@
       "kind": "clip_action",
       "path": "DefineSprite_638/frame_42/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
       "source_sha256": "15d993e9b1598e78ddb3e8ca35054bb2a562bea05b7c388fbcae371981dc8ff2"
+    },
+    {
+      "action": "招3",
+      "frame": 421,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_421/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "fef48b0790914e5f2602974c580a8dec56cc130663bc583b7b4448f63aea98d6"
+    },
+    {
+      "action": "招3",
+      "frame": 429,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_429/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "招3",
+      "frame": 429,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_429/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "86bb4471470953433892c1711bccc62c615f72807ffd69e729a1f6de56df659d"
+    },
+    {
+      "action": "招3",
+      "frame": 437,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_437/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
     },
     {
       "action": "必杀",
@@ -420,6 +869,41 @@
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
     },
     {
+      "action": "上必杀",
+      "frame": 529,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_529/DoAction.as",
+      "source_sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e"
+    },
+    {
+      "action": "上必杀",
+      "frame": 530,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_530/DoAction.as",
+      "source_sha256": "1e6ac8a66e70756e83307e54131e414e32f6a7772fdec0b03232513e5b5b5551"
+    },
+    {
+      "action": "上必杀",
+      "frame": 542,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_542/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25"
+    },
+    {
+      "action": "上必杀",
+      "frame": 543,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_543/PlaceObject2_2_41/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "上必杀",
+      "frame": 548,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_548/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
       "action": "落",
       "frame": 56,
       "kind": "frame_action",
@@ -434,11 +918,109 @@
       "source_sha256": "1dd832a1ce74067bd825f06d162d2b22e4c1a2c467a47e0dba4c6b9b2e29ac9e"
     },
     {
+      "action": "上必杀",
+      "frame": 562,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_562/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "上必杀",
+      "frame": 572,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_572/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "超必杀",
+      "frame": 583,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_583/DoAction.as",
+      "source_sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1"
+    },
+    {
+      "action": "超必杀",
+      "frame": 585,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_585/DoAction.as",
+      "source_sha256": "13aba2481911a1e022ff1c8d4848da46bd8631e48a81659d815782a83972bec7"
+    },
+    {
+      "action": "超必杀",
+      "frame": 601,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_601/DoAction.as",
+      "source_sha256": "ef5d0335d54a16e73e60ca8c281b8e2697660a15c5dc7f246d984922bdcdb993"
+    },
+    {
+      "action": "超必杀",
+      "frame": 602,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_602/PlaceObject2_2_56/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "超必杀",
+      "frame": 606,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_606/DoAction.as",
+      "source_sha256": "dfa8e47f5d1d95a3089caba2d90d1a8f8f67f37ffe14241b3d5852e17f00f7b9"
+    },
+    {
+      "action": "超必杀",
+      "frame": 631,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_631/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "超必杀",
+      "frame": 639,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_639/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招换",
+      "frame": 657,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_657/DoAction.as",
+      "source_sha256": "9a4e1df3b75d75b39859f0968d785f77d37ac0a8433d1017068d334da3f65753"
+    },
+    {
       "action": "落",
       "frame": 68,
       "kind": "frame_action",
       "path": "DefineSprite_638/frame_68/DoAction.as",
       "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    {
+      "action": "招换",
+      "frame": 682,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_682/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "防御2",
+      "frame": 715,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_715/DoAction.as",
+      "source_sha256": "c79c57fe780892f8a30745b2003f21b14e03cdd4b32f99798fe31014ffd7b9ba"
+    },
+    {
+      "action": "防御2",
+      "frame": 715,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750"
+    },
+    {
+      "action": "防御2",
+      "frame": 715,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_715/PlaceObject2_2_56/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef"
     },
     {
       "action": "跳2",
@@ -453,6 +1035,55 @@
       "kind": "clip_action",
       "path": "DefineSprite_638/frame_72/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
       "source_sha256": "a5e83704d5060297001dd8191822a1fdb310052896c4d0d1f9d69ca1f9a495f0"
+    },
+    {
+      "action": "防御2",
+      "frame": 722,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_722/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "防住",
+      "frame": 726,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_726/DoAction.as",
+      "source_sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155"
+    },
+    {
+      "action": "防住",
+      "frame": 726,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_726/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "9aff64fd97286135684e203c95eab8ccb6275d8e91f9babf73d4064d505c5460"
+    },
+    {
+      "action": "防住",
+      "frame": 727,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_727/DoAction.as",
+      "source_sha256": "cc3a9a83c3520d0e6ec7212374de40a64d7fa13337e03c572b380bc0b50b49de"
+    },
+    {
+      "action": "防住",
+      "frame": 729,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_729/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef"
+    },
+    {
+      "action": "防住",
+      "frame": 731,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_731/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f8c45bc590e3677cdd9c881a4d2e0f08a7474a26feb01f17db38df2769a701f6"
+    },
+    {
+      "action": "防住",
+      "frame": 735,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_735/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
     },
     {
       "action": "被打",
@@ -497,6 +1128,62 @@
       "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
     },
     {
+      "action": "击飞",
+      "frame": 751,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_751/DoAction.as",
+      "source_sha256": "3d2e60b632e641408e73682b4e270113e69a7f17483f991da9ff5baa235e91ba"
+    },
+    {
+      "action": "击飞",
+      "frame": 752,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_752/DoAction.as",
+      "source_sha256": "199b3ff7630d12585e1d7c77d60d58609e063b7028f54d6a5dd6f0078493ea59"
+    },
+    {
+      "action": "击飞",
+      "frame": 753,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_753/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "9848c11dc3a3e4b1cf1933b347f15901bef201cb0b702c273e2bb5d21f44d90b"
+    },
+    {
+      "action": "击飞",
+      "frame": 759,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_759/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "action": "击落地",
+      "frame": 763,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_763/DoAction.as",
+      "source_sha256": "0857faf6455fb0d653d39f90f2ec476c4ac51ff49a817e9a701adf18d3f15835"
+    },
+    {
+      "action": "击落地",
+      "frame": 763,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_763/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "81288a38fc1ff90270ebad5d537f0b6ca79760db2b93b64846ae3bfaa46c1eff"
+    },
+    {
+      "action": "击落地",
+      "frame": 777,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_777/DoAction.as",
+      "source_sha256": "e6ca4a79578cbb546594bd65ac4d2d2aad15c20ec5c951c3dc9a7c4b8fd5371c"
+    },
+    {
+      "action": "击落地",
+      "frame": 793,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_793/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
       "action": "站立",
       "frame": 8,
       "kind": "frame_action",
@@ -504,11 +1191,53 @@
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
     },
     {
+      "action": "起身",
+      "frame": 803,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_803/DoAction.as",
+      "source_sha256": "8d23d84b12e136d5b2b06a528b88fe1aedb91b39aa50aad17afd66ff0cb5be7f"
+    },
+    {
+      "action": "起身",
+      "frame": 804,
+      "kind": "clip_action",
+      "path": "DefineSprite_638/frame_804/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c99afb396036e5858bad62112ad9b4830014d6a99d4991aef37fba22a137bbab"
+    },
+    {
+      "action": "起身",
+      "frame": 813,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_813/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "开场",
+      "frame": 823,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_823/DoAction.as",
+      "source_sha256": "75da4bf137c019a91cb5648913735b8aa18615b6f37acaa6a061ed4ba0aec672"
+    },
+    {
+      "action": "开场",
+      "frame": 825,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_825/DoAction.as",
+      "source_sha256": "33a4f0db67fbae495243fdb38278a68fbec9cda2667ab91011c6b16e55f08344"
+    },
+    {
       "action": "跳2",
       "frame": 83,
       "kind": "clip_action",
       "path": "DefineSprite_638/frame_83/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
       "source_sha256": "092e6f38f29accd57b1b3367b69d2128273fbf865dda02bb9e6ba70780771c6e"
+    },
+    {
+      "action": "开场",
+      "frame": 883,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_883/DoAction.as",
+      "source_sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642"
     },
     {
       "action": "落2",
@@ -523,6 +1252,41 @@
       "kind": "clip_action",
       "path": "DefineSprite_638/frame_89/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
       "source_sha256": "767f0d510bc837c4f8ed84dd2c726b752ce3806104bd8670ea9debc210d94b6d"
+    },
+    {
+      "action": "胜利",
+      "frame": 924,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_924/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "action": "失败",
+      "frame": 952,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_952/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "action": "万解",
+      "frame": 963,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_963/DoAction.as",
+      "source_sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1"
+    },
+    {
+      "action": "万解",
+      "frame": 967,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_967/DoAction.as",
+      "source_sha256": "ae99ead61465f4997f54be9d1c1607c301dd15e96b9f776b79ededd62e286838"
+    },
+    {
+      "action": "万解",
+      "frame": 992,
+      "kind": "frame_action",
+      "path": "DefineSprite_638/frame_992/DoAction.as",
+      "source_sha256": "26723c6ff35605e4b5b4a8c93d6cbf0770232ec8ac88d7101767fcb6aa6d30c1"
     }
   ]
 }

@@ -80,11 +80,113 @@
         "start_frame": 446,
         "end_frame": 527
       }
+    },
+    "extended_actions": {
+      "跳砍": {
+        "start_frame": 127,
+        "end_frame": 142
+      },
+      "跳招": {
+        "start_frame": 143,
+        "end_frame": 172
+      },
+      "砍技1": {
+        "start_frame": 232,
+        "end_frame": 283
+      },
+      "砍技2": {
+        "start_frame": 284,
+        "end_frame": 319
+      },
+      "招1": {
+        "start_frame": 320,
+        "end_frame": 356
+      },
+      "招2": {
+        "start_frame": 357,
+        "end_frame": 370
+      },
+      "招21": {
+        "start_frame": 371,
+        "end_frame": 413
+      },
+      "招3": {
+        "start_frame": 414,
+        "end_frame": 445
+      },
+      "上必杀": {
+        "start_frame": 528,
+        "end_frame": 581
+      },
+      "超必杀": {
+        "start_frame": 582,
+        "end_frame": 651
+      },
+      "招换": {
+        "start_frame": 652,
+        "end_frame": 713
+      },
+      "防御": {
+        "start_frame": 714,
+        "end_frame": 714
+      },
+      "防御2": {
+        "start_frame": 715,
+        "end_frame": 725
+      },
+      "防住": {
+        "start_frame": 726,
+        "end_frame": 737
+      },
+      "击飞": {
+        "start_frame": 751,
+        "end_frame": 762
+      },
+      "击落地": {
+        "start_frame": 763,
+        "end_frame": 801
+      },
+      "起身": {
+        "start_frame": 802,
+        "end_frame": 821
+      },
+      "开场": {
+        "start_frame": 822,
+        "end_frame": 901
+      },
+      "胜利": {
+        "start_frame": 902,
+        "end_frame": 931
+      },
+      "失败": {
+        "start_frame": 932,
+        "end_frame": 961
+      },
+      "万解": {
+        "start_frame": 962,
+        "end_frame": 1073
+      }
     }
   },
   "hit_parameters": {
     "source_path": "frame_1/DoAction.as",
     "attacks": {
+      "bs": {
+        "damage": 300,
+        "impact_strength": 5,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 20,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
+      "cbs": {
+        "damage": 450,
+        "impact_strength": 5,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 40,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
       "k1": {
         "damage": 40,
         "impact_strength": 1,
@@ -109,12 +211,76 @@
         "hitstun_ms": 600,
         "reaction_label": "被打"
       },
-      "bs": {
-        "damage": 300,
+      "kj1": {
+        "damage": 80,
+        "impact_strength": 13,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 8,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
+      "kj2": {
+        "damage": 60,
+        "impact_strength": 4,
+        "vertical_impulse": 12,
+        "horizontal_impulse": 1,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "kj21": {
+        "damage": 20,
+        "impact_strength": 1,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 1,
+        "hitstun_ms": 100,
+        "reaction_label": "被打"
+      },
+      "sbs": {
+        "damage": 250,
+        "impact_strength": 5,
+        "vertical_impulse": 8,
+        "horizontal_impulse": 3,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
+      "tk": {
+        "damage": 30,
+        "impact_strength": 1,
+        "vertical_impulse": -6,
+        "horizontal_impulse": 2,
+        "hitstun_ms": 300,
+        "reaction_label": "被打"
+      },
+      "tz": {
+        "damage": 80,
+        "impact_strength": 5,
+        "vertical_impulse": -5,
+        "horizontal_impulse": 3,
+        "hitstun_ms": 300,
+        "reaction_label": "击飞"
+      },
+      "zh1": {
+        "damage": 80,
         "impact_strength": 5,
         "vertical_impulse": 0,
-        "horizontal_impulse": 20,
-        "hitstun_ms": 0,
+        "horizontal_impulse": 3,
+        "hitstun_ms": 300,
+        "reaction_label": "击飞"
+      },
+      "zh2": {
+        "damage": 80,
+        "impact_strength": 6,
+        "vertical_impulse": 3,
+        "horizontal_impulse": 8,
+        "hitstun_ms": 700,
+        "reaction_label": "被打"
+      },
+      "zh3": {
+        "damage": 80,
+        "impact_strength": 5,
+        "vertical_impulse": 6,
+        "horizontal_impulse": 3,
+        "hitstun_ms": 300,
         "reaction_label": "击飞"
       }
     }
@@ -289,6 +455,66 @@
       "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
     },
     {
+      "frame": 127,
+      "path": "DefineSprite_638/frame_127/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "4a3d5198d7e26c6c29544e249d92617d4d1b4c26f679eaf5d940b6ba7df7863d",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.sw == false)\r\n      {\r\n         if(moveLeft())\r\n         {\r\n            _parent._parent._x -= _parent.speed;\r\n         }\r\n         if(moveRight())\r\n         {\r\n            _parent._parent._x += _parent.speed;\r\n         }\r\n      }\r\n      _parent._parent._y -= 1;\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 128,
+      "path": "DefineSprite_638/frame_128/DoAction.as",
+      "sha256": "9b79c9423446b2ba8f6b389e4d8c56548a32adc976bbd8513c19784bfaf4888b",
+      "source": "khit = 1;\r\n动作 = 1;\r\n"
+    },
+    {
+      "frame": 134,
+      "path": "DefineSprite_638/frame_134/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 134,
+      "path": "DefineSprite_638/frame_134/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "4b237c7b0825d2de3bc034664c6a0d1ce1284a3fd5c8d45aec502b26449b415d",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(moveLeft())\r\n      {\r\n         _parent._parent._x -= _parent.speed;\r\n      }\r\n      if(moveRight())\r\n      {\r\n         _parent._parent._x += _parent.speed;\r\n      }\r\n      if(airMagichit())\r\n      {\r\n         _parent.gotoAndPlay(\"跳招\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 138,
+      "path": "DefineSprite_638/frame_138/DoAction.as",
+      "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8",
+      "source": "gotoAndStop(\"落2\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 143,
+      "path": "DefineSprite_638/frame_143/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "4b7593137ebccd7df8febe0305c44d19ecc77a32bc4c16efa89fbe66e0c75fc7",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.sw == false)\r\n      {\r\n         if(_parent._parent._xscale > 0)\r\n         {\r\n            _parent._parent._x -= 1;\r\n         }\r\n         else\r\n         {\r\n            _parent._parent._x += 1;\r\n         }\r\n      }\r\n      _parent._parent._y -= 1;\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 144,
+      "path": "DefineSprite_638/frame_144/DoAction.as",
+      "sha256": "18f6a5fb5ded6f1e33c0d1692f764b48da97d03cc8fddc22a1780fad044e4b59",
+      "source": "khit = 1;\r\njump = 1;\r\n动作 = 1;\r\nql += 5;\r\n"
+    },
+    {
+      "frame": 150,
+      "path": "DefineSprite_638/frame_150/DoAction.as",
+      "sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a",
+      "source": "_root.shine(9697014);\r\n"
+    },
+    {
+      "frame": 150,
+      "path": "DefineSprite_638/frame_150/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "99181aed71bf633e58f5d8af1d2d83e6d13f0ad59c56ed2381fbe847420aca40",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + movspeed;\r\n         _Y = _Y + movspeed;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 165,
+      "path": "DefineSprite_638/frame_165/DoAction.as",
+      "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8",
+      "source": "gotoAndStop(\"落2\");\r\nplay();\r\n"
+    },
+    {
       "frame": 173,
       "path": "DefineSprite_638/frame_173/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
       "sha256": "e8e2865713ed71aa7e668afe28f21131fcc62c10ecae524d8205055900677f40",
@@ -367,6 +593,174 @@
       "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
     },
     {
+      "frame": 233,
+      "path": "DefineSprite_638/frame_233/DoAction.as",
+      "sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3",
+      "source": "动作 = 1;\r\nql += 10;\r\n"
+    },
+    {
+      "frame": 246,
+      "path": "DefineSprite_638/frame_246/DoAction.as",
+      "sha256": "972fdc2c1ee7d0ebd047bc4f70e546aec63e08ccd0b72514b4ad8424200358ff",
+      "source": "_root._y -= 2;\r\n"
+    },
+    {
+      "frame": 247,
+      "path": "DefineSprite_638/frame_247/DoAction.as",
+      "sha256": "804439b2808628500257a76fd4ee5251e916898a7f8cc8cf72896e942abd3652",
+      "source": "_root._y += 2;\r\n"
+    },
+    {
+      "frame": 248,
+      "path": "DefineSprite_638/frame_248/DoAction.as",
+      "sha256": "972fdc2c1ee7d0ebd047bc4f70e546aec63e08ccd0b72514b4ad8424200358ff",
+      "source": "_root._y -= 2;\r\n"
+    },
+    {
+      "frame": 249,
+      "path": "DefineSprite_638/frame_249/DoAction.as",
+      "sha256": "804439b2808628500257a76fd4ee5251e916898a7f8cc8cf72896e942abd3652",
+      "source": "_root._y += 2;\r\n"
+    },
+    {
+      "frame": 258,
+      "path": "DefineSprite_638/frame_258/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 278,
+      "path": "DefineSprite_638/frame_278/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 285,
+      "path": "DefineSprite_638/frame_285/DoAction.as",
+      "sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3",
+      "source": "动作 = 1;\r\nql += 10;\r\n"
+    },
+    {
+      "frame": 296,
+      "path": "DefineSprite_638/frame_296/DoAction.as",
+      "sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a",
+      "source": "_root.shine(9697014);\r\n"
+    },
+    {
+      "frame": 300,
+      "path": "DefineSprite_638/frame_300/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 305,
+      "path": "DefineSprite_638/frame_305/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "b7661979f53133714aff47acad919a7d7545d70c30c645cb68223970a0f502f6",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(bishaUP())\r\n      {\r\n         _parent.gotoAndPlay(\"上必杀\");\r\n      }\r\n      if(jump())\r\n      {\r\n         _parent.gotoAndPlay(\"跳\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 312,
+      "path": "DefineSprite_638/frame_312/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 321,
+      "path": "DefineSprite_638/frame_321/DoAction.as",
+      "sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c",
+      "source": "动作 = 1;\r\nql += 5;\r\n"
+    },
+    {
+      "frame": 326,
+      "path": "DefineSprite_638/frame_326/DoAction.as",
+      "sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a",
+      "source": "_root.shine(9697014);\r\n"
+    },
+    {
+      "frame": 327,
+      "path": "DefineSprite_638/frame_327/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "87f6dfba986569ef8c1d3d2da2b5ca249e6f8727da6f3300e4f61e74ee01b62e",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitmc.hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + movspeed;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 342,
+      "path": "DefineSprite_638/frame_342/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 350,
+      "path": "DefineSprite_638/frame_350/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 358,
+      "path": "DefineSprite_638/frame_358/DoAction.as",
+      "sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3",
+      "source": "动作 = 1;\r\nql += 10;\r\n"
+    },
+    {
+      "frame": 359,
+      "path": "DefineSprite_638/frame_359/DoAction.as",
+      "sha256": "959104852cd78b4021ce0f7f48631e3ed0cf0b71c94da436fa97f3d887390590",
+      "source": "_root.shunbuxg(_parent);\r\n"
+    },
+    {
+      "frame": 359,
+      "path": "DefineSprite_638/frame_359/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "e115e420c6066335abe85cd8e1eb69cf56aa185005bbf935de18b2582fca9651",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.sw == false)\r\n      {\r\n         if(_parent._parent._xscale < 0)\r\n         {\r\n            if(_parent.zh20atm.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n            {\r\n               _parent.gotoAndPlay(\"招21\");\r\n            }\r\n            else\r\n            {\r\n               _parent._parent._x -= _parent.speed * 3;\r\n            }\r\n         }\r\n         else if(_parent.zh20atm.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n         {\r\n            _parent.gotoAndPlay(\"招21\");\r\n         }\r\n         else\r\n         {\r\n            _parent._parent._x += _parent.speed * 3;\r\n         }\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 379,
+      "path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "53e6a603fb79392b9f75d94bcb888af8dc7dbc6dcac381bb07bd75c066ae34bd",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.sw == false)\r\n      {\r\n         if(bishaSuper())\r\n         {\r\n            _parent.gotoAndPlay(\"超必杀\");\r\n         }\r\n         if(bisha())\r\n         {\r\n            _parent.gotoAndPlay(\"必杀\");\r\n         }\r\n         if(magichit3())\r\n         {\r\n            _parent.gotoAndPlay(\"招3\");\r\n         }\r\n         if(magichit1())\r\n         {\r\n            _parent.gotoAndPlay(\"招1\");\r\n         }\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 390,
+      "path": "DefineSprite_638/frame_390/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 415,
+      "path": "DefineSprite_638/frame_415/DoAction.as",
+      "sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c",
+      "source": "动作 = 1;\r\nql += 5;\r\n"
+    },
+    {
+      "frame": 419,
+      "path": "DefineSprite_638/frame_419/DoAction.as",
+      "sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a",
+      "source": "_root.shine(9697014);\r\n"
+    },
+    {
+      "frame": 421,
+      "path": "DefineSprite_638/frame_421/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "fef48b0790914e5f2602974c580a8dec56cc130663bc583b7b4448f63aea98d6",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + movspeed;\r\n         _Y = _Y - movspeed;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 429,
+      "path": "DefineSprite_638/frame_429/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 429,
+      "path": "DefineSprite_638/frame_429/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "86bb4471470953433892c1711bccc62c615f72807ffd69e729a1f6de56df659d",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(rush())\r\n      {\r\n         _parent.gotoAndPlay(\"瞬步\");\r\n      }\r\n      if(jump())\r\n      {\r\n         _parent.gotoAndPlay(\"跳\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 437,
+      "path": "DefineSprite_638/frame_437/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
       "frame": 447,
       "path": "DefineSprite_638/frame_447/DoAction.as",
       "sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e",
@@ -409,6 +803,162 @@
       "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
     },
     {
+      "frame": 529,
+      "path": "DefineSprite_638/frame_529/DoAction.as",
+      "sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e",
+      "source": "动作 = 3;\r\nbs = 1;\r\nql -= 100;\r\n"
+    },
+    {
+      "frame": 530,
+      "path": "DefineSprite_638/frame_530/DoAction.as",
+      "sha256": "1e6ac8a66e70756e83307e54131e414e32f6a7772fdec0b03232513e5b5b5551",
+      "source": "_root.bsd(pn);\r\n_root.showFace(pn,\"一户1\");\r\n"
+    },
+    {
+      "frame": 542,
+      "path": "DefineSprite_638/frame_542/DoAction.as",
+      "sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "source": "_root.bsw(pn);\r\n"
+    },
+    {
+      "frame": 543,
+      "path": "DefineSprite_638/frame_543/PlaceObject2_2_41/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 548,
+      "path": "DefineSprite_638/frame_548/DoAction.as",
+      "sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a",
+      "source": "_root.shine(9697014);\r\n"
+    },
+    {
+      "frame": 562,
+      "path": "DefineSprite_638/frame_562/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 572,
+      "path": "DefineSprite_638/frame_572/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 583,
+      "path": "DefineSprite_638/frame_583/DoAction.as",
+      "sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1",
+      "source": "动作 = 3;\r\nbs = 1;\r\nql -= 300;\r\n"
+    },
+    {
+      "frame": 585,
+      "path": "DefineSprite_638/frame_585/DoAction.as",
+      "sha256": "13aba2481911a1e022ff1c8d4848da46bd8631e48a81659d815782a83972bec7",
+      "source": "_root.cbsd(pn);\r\n_root.showFace(pn,\"一户2\");\r\n"
+    },
+    {
+      "frame": 601,
+      "path": "DefineSprite_638/frame_601/DoAction.as",
+      "sha256": "ef5d0335d54a16e73e60ca8c281b8e2697660a15c5dc7f246d984922bdcdb993",
+      "source": "_root.cbsw(pn);\r\n"
+    },
+    {
+      "frame": 602,
+      "path": "DefineSprite_638/frame_602/PlaceObject2_2_56/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 606,
+      "path": "DefineSprite_638/frame_606/DoAction.as",
+      "sha256": "dfa8e47f5d1d95a3089caba2d90d1a8f8f67f37ffe14241b3d5852e17f00f7b9",
+      "source": "_root.shine(9697014);\r\n_root.shine();\r\n"
+    },
+    {
+      "frame": 631,
+      "path": "DefineSprite_638/frame_631/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 639,
+      "path": "DefineSprite_638/frame_639/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 657,
+      "path": "DefineSprite_638/frame_657/DoAction.as",
+      "sha256": "9a4e1df3b75d75b39859f0968d785f77d37ac0a8433d1017068d334da3f65753",
+      "source": "doZhaoHuan();\r\n"
+    },
+    {
+      "frame": 682,
+      "path": "DefineSprite_638/frame_682/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 715,
+      "path": "DefineSprite_638/frame_715/DoAction.as",
+      "sha256": "c79c57fe780892f8a30745b2003f21b14e03cdd4b32f99798fe31014ffd7b9ba",
+      "source": "动作 = 2;\r\n"
+    },
+    {
+      "frame": 715,
+      "path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(defence())\r\n      {\r\n         _parent.gotoAndPlay(\"防御2\");\r\n      }\r\n      if(skill1())\r\n      {\r\n         _parent.gotoAndPlay(\"砍技1\");\r\n      }\r\n      if(magichit2())\r\n      {\r\n         _parent.gotoAndPlay(\"招2\");\r\n      }\r\n      if(bishaSuper())\r\n      {\r\n         _parent.gotoAndPlay(\"超必杀\");\r\n      }\r\n      doDropDown();\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 715,
+      "path": "DefineSprite_638/frame_715/PlaceObject2_2_56/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef",
+      "source": "onClipEvent(enterFrame){\r\n   fangyu();\r\n}\r\n"
+    },
+    {
+      "frame": 722,
+      "path": "DefineSprite_638/frame_722/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 726,
+      "path": "DefineSprite_638/frame_726/DoAction.as",
+      "sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155",
+      "source": "play();\r\n"
+    },
+    {
+      "frame": 726,
+      "path": "DefineSprite_638/frame_726/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "9aff64fd97286135684e203c95eab8ccb6275d8e91f9babf73d4064d505c5460",
+      "source": "onClipEvent(enterFrame){\r\n   _parent.fangyux();\r\n}\r\n"
+    },
+    {
+      "frame": 727,
+      "path": "DefineSprite_638/frame_727/DoAction.as",
+      "sha256": "cc3a9a83c3520d0e6ec7212374de40a64d7fa13337e03c572b380bc0b50b49de",
+      "source": "onDefence();\r\n"
+    },
+    {
+      "frame": 729,
+      "path": "DefineSprite_638/frame_729/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef",
+      "source": "onClipEvent(enterFrame){\r\n   fangyu();\r\n}\r\n"
+    },
+    {
+      "frame": 731,
+      "path": "DefineSprite_638/frame_731/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "f8c45bc590e3677cdd9c881a4d2e0f08a7474a26feb01f17db38df2769a701f6",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.game[\"p\" + _parent.pn].mc.sw == false)\r\n   {\r\n      if(defence())\r\n      {\r\n         _parent.gotoAndPlay(\"防御2\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 735,
+      "path": "DefineSprite_638/frame_735/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
       "frame": 738,
       "path": "DefineSprite_638/frame_738/DoAction.as",
       "sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155",
@@ -443,6 +993,144 @@
       "path": "DefineSprite_638/frame_748/DoAction.as",
       "sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a",
       "source": "jump = 0;\r\njumped = 1;\r\ngotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 751,
+      "path": "DefineSprite_638/frame_751/DoAction.as",
+      "sha256": "3d2e60b632e641408e73682b4e270113e69a7f17483f991da9ff5baa235e91ba",
+      "source": "hited = 0;\r\nplay();\r\n"
+    },
+    {
+      "frame": 752,
+      "path": "DefineSprite_638/frame_752/DoAction.as",
+      "sha256": "199b3ff7630d12585e1d7c77d60d58609e063b7028f54d6a5dd6f0078493ea59",
+      "source": "onBeHit(true);\r\n"
+    },
+    {
+      "frame": 753,
+      "path": "DefineSprite_638/frame_753/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "9848c11dc3a3e4b1cf1933b347f15901bef201cb0b702c273e2bb5d21f44d90b",
+      "source": "onClipEvent(enterFrame){\r\n   _parent.beidax(true);\r\n}\r\n"
+    },
+    {
+      "frame": 759,
+      "path": "DefineSprite_638/frame_759/DoAction.as",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n"
+    },
+    {
+      "frame": 763,
+      "path": "DefineSprite_638/frame_763/DoAction.as",
+      "sha256": "0857faf6455fb0d653d39f90f2ec476c4ac51ff49a817e9a701adf18d3f15835",
+      "source": "_root.touchFloorEffect(_parent);\r\n"
+    },
+    {
+      "frame": 763,
+      "path": "DefineSprite_638/frame_763/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "81288a38fc1ff90270ebad5d537f0b6ca79760db2b93b64846ae3bfaa46c1eff",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(standup())\r\n      {\r\n         _parent.gotoAndPlay(\"起身\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 777,
+      "path": "DefineSprite_638/frame_777/DoAction.as",
+      "sha256": "e6ca4a79578cbb546594bd65ac4d2d2aad15c20ec5c951c3dc9a7c4b8fd5371c",
+      "source": "if(sw == true)\r\n{\r\n   stop();\r\n}\r\n"
+    },
+    {
+      "frame": 793,
+      "path": "DefineSprite_638/frame_793/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 803,
+      "path": "DefineSprite_638/frame_803/DoAction.as",
+      "sha256": "8d23d84b12e136d5b2b06a528b88fe1aedb91b39aa50aad17afd66ff0cb5be7f",
+      "source": "_root._y = 0;\r\n"
+    },
+    {
+      "frame": 804,
+      "path": "DefineSprite_638/frame_804/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "c99afb396036e5858bad62112ad9b4830014d6a99d4991aef37fba22a137bbab",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_parent._parent._xscale < 0)\r\n      {\r\n         _parent._parent._x += _parent.speed * 0.8;\r\n      }\r\n      else\r\n      {\r\n         _parent._parent._x -= _parent.speed * 0.8;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 813,
+      "path": "DefineSprite_638/frame_813/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 823,
+      "path": "DefineSprite_638/frame_823/DoAction.as",
+      "sha256": "75da4bf137c019a91cb5648913735b8aa18615b6f37acaa6a061ed4ba0aec672",
+      "source": "kcplayed = 1;\r\n"
+    },
+    {
+      "frame": 825,
+      "path": "DefineSprite_638/frame_825/DoAction.as",
+      "sha256": "33a4f0db67fbae495243fdb38278a68fbec9cda2667ab91011c6b16e55f08344",
+      "source": "kcplayed = 3;\r\n"
+    },
+    {
+      "frame": 883,
+      "path": "DefineSprite_638/frame_883/DoAction.as",
+      "sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642",
+      "source": "kcplayed = 2;\r\ngotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 924,
+      "path": "DefineSprite_638/frame_924/DoAction.as",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n"
+    },
+    {
+      "frame": 952,
+      "path": "DefineSprite_638/frame_952/DoAction.as",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n"
+    },
+    {
+      "frame": 963,
+      "path": "DefineSprite_638/frame_963/DoAction.as",
+      "sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1",
+      "source": "动作 = 3;\r\nbs = 1;\r\nql -= 300;\r\n"
+    },
+    {
+      "frame": 967,
+      "path": "DefineSprite_638/frame_967/DoAction.as",
+      "sha256": "ae99ead61465f4997f54be9d1c1607c301dd15e96b9f776b79ededd62e286838",
+      "source": "wankai_start();\r\n_root.showFace(pn,\"一户万解\");\r\n"
+    },
+    {
+      "frame": 992,
+      "path": "DefineSprite_638/frame_992/DoAction.as",
+      "sha256": "26723c6ff35605e4b5b4a8c93d6cbf0770232ec8ac88d7101767fcb6aa6d30c1",
+      "source": "_root.hideFace(pn);\r\n"
+    },
+    {
+      "frame": 1032,
+      "path": "DefineSprite_638/frame_1032/DoAction.as",
+      "sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a",
+      "source": "_root.shine(9697014);\r\n"
+    },
+    {
+      "frame": 1052,
+      "path": "DefineSprite_638/frame_1052/DoAction.as",
+      "sha256": "5bfd9ad4d193695032067801ead5a30760b36da065b4740288ecaf2e41e19f36",
+      "source": "wankai();\r\n"
+    },
+    {
+      "frame": 1055,
+      "path": "DefineSprite_638/frame_1055/DoAction.as",
+      "sha256": "cec97a876ae222f598bab97d7829af7ee183b61e1accb10afcc3f1e2e0d03171",
+      "source": "_parent.gotoAndStop(2);\r\n"
+    },
+    {
+      "frame": 1058,
+      "path": "DefineSprite_638/frame_1058/DoAction.as",
+      "sha256": "571df4526f82a11ac83f2998b2b58c9a64bf20e05e02ab711383d10e883a1685",
+      "source": "trace(\"hz\");\r\n"
     }
   ],
   "validation_notice": "Frame spans come from SWF labels and values come from exact AS2 assignments. Execution order and collision geometry remain pending M0-03/M1-02 evidence."
