@@ -63,6 +63,8 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str,
     hide_frames: list[int] = []
     drain_events: list[dict[str, Any]] = []
     indexed = []
+    presentation_events = []
+    clip_load_events = []
     for script in bundle["scripts"]:
         record = {
             "path": script["path"],
@@ -76,8 +78,25 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str,
         record["frame"] = frame
         if script["path"].endswith("frame_1/DoAction.as"):
             attacks.update(extract_attacks(script["source"]))
-        if "_root.fzccXg(this)" in script["source"] and frame > 2:
-            hide_frames.append(frame)
+        source = script["source"]
+        if "_root.fzccXg(this)" in source:
+            presentation_events.append({"frame": frame, "op": "effect", "xg": "XG_fzcc", "source_path": script["path"]})
+        for call in re.finditer(r'_root\.(bsd|bsw)\(pn(?:,"([^"]+)")?(?:,(true|false))?\)', source):
+            presentation_events.append({
+                "frame": frame, "op": "super_start" if call[1] == "bsd" else "super_end",
+                "kind": call[1], "xg": call[2] or "XG_bs", "helper": call[3] == "true",
+                "source_path": script["path"],
+            })
+        for call in re.finditer(r'_root\.shine\((\d+)\)', source):
+            presentation_events.append({"frame": frame, "op": "shine", "color": int(call[1]), "source_path": script["path"]})
+        placement = re.search(r'/PlaceObject2_(\d+)_(\d+)/', script["path"])
+        if placement and 'onClipEvent(load)' in source:
+            if '_root.game["p" + _parent.pn]._x - _parent._x' not in source:
+                raise ValueError(f"Unsupported helper load script: {script['path']}")
+            clip_load_events.append({
+                "frame": frame, "op": "aim_opponent_x", "character_id": int(placement[1]),
+                "depth": int(placement[2]), "source_path": script["path"],
+            })
         for drain in ENERGY_DRAIN.finditer(script["source"]):
             drain_events.append(
                 {
@@ -104,6 +123,8 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str,
         "end_frame": swf["root_frames"],
         "hide_frames": sorted(set(hide_frames)),
         "attacks": attacks,
+        "presentation_events": sorted(presentation_events, key=lambda event: event["frame"]),
+        "clip_load_events": clip_load_events,
         "drain_events": sorted(drain_events, key=lambda item: item["frame"]),
         "indexed_source_events": indexed,
     }

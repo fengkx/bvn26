@@ -1,13 +1,13 @@
 {
   "format": "bvn26-implementation-tasks-v1",
-  "as_of": "2026-09-03",
+  "as_of": "2026-09-08",
   "status_values": [
     "pending",
     "in_progress",
     "blocked",
     "completed"
   ],
-  "path_convention": "B 阶段输出已随包交付；M0-M3 已有部分开发产物，只有满足任务验收后才能将对应状态标为 completed。",
+  "path_convention": "outputs 是目标交付路径；current_artifacts 是已存在的局部产物。pending 可包含已实现但未通过源优先及原版对照闸门的工作；证据存在不代表验收通过。",
   "estimate_policy": "未校准的预计人日保持 null；M0、M3、M5 后用实际结果细化。",
   "tasks": [
     {
@@ -124,9 +124,15 @@
         "evidence/oracle/"
       ],
       "acceptance": "记录播放器或模拟器身份；固定初态与输入可复现，捕获来源、插桩 diff、资源哈希齐全；参照不可用时标 blocked。",
-      "evidence": [],
+      "evidence": [
+        "evidence/reference-environment.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "原生播放器已启动锁定原版；固定对战初态、输入和逐帧捕获仍缺。",
+      "current_artifacts": [
+        "evidence/reference-environment.md"
+      ]
     },
     {
       "id": "M0-03",
@@ -146,9 +152,17 @@
         "evidence/probes/"
       ],
       "acceptance": "解决 U-01/U-02/U-06；记录 goto、enterFrame、对象生命周期、定时器及四代援助推进结论；未解决项阻塞相关核心实现。",
-      "evidence": [],
+      "evidence": [
+        "spec/execution-profile.json",
+        "evidence/probes/schedule/README.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "已有原生调度探针，profile 为 provisional；嵌套创建首回调、OS 焦点、同时命中待确认。",
+      "current_artifacts": [
+        "spec/execution-profile.json",
+        "evidence/probes/schedule/README.md"
+      ]
     },
     {
       "id": "M0-04",
@@ -218,9 +232,17 @@
         "godot/assets/"
       ],
       "acceptance": "鸣人、一护和现世的矩阵/注册点/帧标签/遮罩/声音事件可复现导出；重复导入输出一致。",
-      "evidence": [],
+      "evidence": [
+        "evidence/fighter-slice.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "切片与十图转换已有产物；完整语义、滤镜和原版视觉验收未完成。",
+      "current_artifacts": [
+        "evidence/fighter-slice.md",
+        "godot/generated/fighters/minren/assets.json",
+        "godot/generated/stages/catalog/catalog.json"
+      ]
     },
     {
       "id": "M1-03",
@@ -244,7 +266,13 @@
       "acceptance": "数值、时序、区域、取消和 hook 均可定位来源；未知项不写默认值，发布数据编译严格失败。",
       "evidence": [],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "已有动作、判定和共用受击编译数据；未知事件与全形态完整性未验收。",
+      "current_artifacts": [
+        "data/actions/minren-base.json",
+        "data/actions/yihu-base.json",
+        "data/actions/hit_receive.json"
+      ]
     },
     {
       "id": "M1-04",
@@ -264,9 +292,19 @@
         "evidence/visual-differences.json"
       ],
       "acceptance": "静态与动画抽样覆盖镜像、父子变换、滤镜、深度和音频；首次错误可定位源符号/帧。",
-      "evidence": [],
+      "evidence": [
+        "evidence/fighter-slice.md",
+        "evidence/health-hud.md",
+        "evidence/combat/combo-presentation.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "已有局部图形检查记录，缺系统原版逐帧视觉差异报告。",
+      "current_artifacts": [
+        "evidence/fighter-slice.md",
+        "evidence/health-hud.md",
+        "evidence/combat/combo-presentation.md"
+      ]
     },
     {
       "id": "M2-01",
@@ -287,9 +325,17 @@
         "godot/core/actions/"
       ],
       "acceptance": "按已验证 ExecutionProfile 推进；stop/play/暂停/恢复/创建删除与原版案例一致。",
-      "evidence": [],
+      "evidence": [
+        "spec/execution-profile.json"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "切片固定步进及冻结已实现；ExecutionProfile 未定稿。",
+      "current_artifacts": [
+        "godot/fighter_runtime.gd",
+        "godot/super_runtime.gd",
+        "spec/execution-profile.json"
+      ]
     },
     {
       "id": "M2-02",
@@ -313,7 +359,12 @@
       "acceptance": "原版 P1 W/S/A/D+J/K/L/U/I/O 与 P2 方向键+Num1-Num6 全部接入；同输入/同帧顺序、镜像、跳跃、冲刺、长按防御、方向组合、招式位移、边界和 undefined 等实际分支对照；不凭默认物理调手感。",
       "evidence": [],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "默认键位、移动、跳跃与取消已有源断言；原版同输入轨迹缺失。",
+      "current_artifacts": [
+        "godot/command_catalog.gd",
+        "godot/tests/combat_smoke.gd"
+      ]
     },
     {
       "id": "M2-03",
@@ -333,9 +384,16 @@
         "evidence/collision/"
       ],
       "acceptance": "U-03/U-04 有结论；相切、重叠、多对象、相互攻击、镜像和墙角通过 AT-07。",
-      "evidence": [],
+      "evidence": [
+        "evidence/combat/review-2026-09-08.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "矩阵、实例寿命和候选顺序已有实现；AT-07 原版对照未完成。",
+      "current_artifacts": [
+        "godot/combat_resolver.gd",
+        "evidence/combat/review-2026-09-08.md"
+      ]
     },
     {
       "id": "M2-04",
@@ -354,10 +412,22 @@
         "godot/core/combat/",
         "evidence/combat/"
       ],
-      "acceptance": "同一攻击的命中帧、HP/气量、状态、击退和硬直逐项匹配；AT-05/06/08 代表用例通过。",
-      "evidence": [],
+      "acceptance": "同一攻击的命中帧、HP/气量、状态、击退和硬直逐项匹配；重击/破防/连击/必杀黑底与立绘横幅按 docs/HIT_RECEIVE_SOP.md 步骤 A→E 落地（35 角色共用链锁定、按形态编译 gjlN 与 showFace 标签、hits/HUD/ts_face/blackStg 有源不变量和原版同输入对照）；AT-05/06/08 代表用例通过。",
+      "evidence": [
+        "evidence/combat/review-2026-09-08.md",
+        "evidence/combat/combo-presentation.md",
+        "evidence/health-hud.md",
+        "evidence/combat/current-moves-sop.md",
+        "evidence/combat/current-moves-audit.json"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "受击、HUD、必杀和冻结已有局部实现及复核；SOP 步骤 E 缺失，保持 pending。",
+      "current_artifacts": [
+        "evidence/combat/review-2026-09-08.md",
+        "evidence/combat/combo-presentation.md",
+        "evidence/health-hud.md"
+      ]
     },
     {
       "id": "M2-05",
@@ -403,9 +473,18 @@
         "evidence/slice-actions/"
       ],
       "acceptance": "两者可达基础形态招式逐项盘点、导入与对照；覆盖近攻/三连、跳跃与空中分支、冲刺、远攻、必杀、召唤、防御与防御受击、所有带位移招式，以及受击/击退/击飞/倒地/恢复；不能以单个普攻或只有贴图的动作代替完整动作集。",
-      "evidence": [],
+      "evidence": [
+        "evidence/combat/current-moves-sop.md",
+        "evidence/combat/current-moves-audit.json"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "两基础形态动作已有开发切片；完整动作及原版对照仍未通过。",
+      "current_artifacts": [
+        "godot/generated/fighters/minren/combat.json",
+        "godot/generated/fighters/yihu/combat.json",
+        "godot/tests/combat_smoke.gd"
+      ]
     },
     {
       "id": "M3-02",
@@ -426,9 +505,17 @@
         "evidence/slice-match/"
       ],
       "acceptance": "AI 关闭的双方从开场到胜负、结果与重开可用；视角/边界/场景音乐正确。",
-      "evidence": [],
+      "evidence": [
+        "evidence/content/stages.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "可进入对战、训练、选图并返回菜单；KO 演出、下一回合、结果闭环及 BGM 接线仍缺。",
+      "current_artifacts": [
+        "godot/main.gd",
+        "godot/game_session.gd",
+        "evidence/content/stages.md"
+      ]
     },
     {
       "id": "M3-03",
@@ -554,9 +641,17 @@
         "evidence/mechanics/"
       ],
       "acceptance": "每类机制至少一个原版代表案例，含援助回收/被打断、特殊受击和超必杀冻结；未知 hook 阻止发布。",
-      "evidence": [],
+      "evidence": [
+        "evidence/kon-helper.md",
+        "evidence/helper-presentation.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "我爱罗与魂已接入切片；全机制与原版代表案例未验收。",
+      "current_artifacts": [
+        "evidence/kon-helper.md",
+        "evidence/helper-presentation.md"
+      ]
     },
     {
       "id": "M5-03",
@@ -573,12 +668,24 @@
       ],
       "outputs": [
         "godot/core/ai/",
-        "evidence/ai/"
+        "evidence/ai/",
+        "docs/AI_SPEC.md",
+        "tools/analyze_ai.py"
       ],
       "acceptance": "U-05 解决；记录随机消费者顺序，同 tape 决策/行为匹配；不以自创 AI 替代。",
-      "evidence": [],
+      "evidence": [
+        "docs/AI_SPEC.md",
+        "evidence/ai/source-audit.json",
+        "evidence/ai/README.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "已有全库静态审计；原 AI 运行时、共享随机消费与同 tape 对照未实现。",
+      "current_artifacts": [
+        "docs/AI_SPEC.md",
+        "evidence/ai/source-audit.json",
+        "tools/analyze_ai.py"
+      ]
     },
     {
       "id": "M6-01",
@@ -597,12 +704,21 @@
       "outputs": [
         "godot/data/",
         "plan/coverage.json",
-        "evidence/content/"
+        "evidence/content/",
+        "godot/generated/stages/catalog/"
       ],
       "acceptance": "64 配置/10 地图逐项落实，按真实角色类型验证；不可达或不适用项附证据，不将 false 批量置 true。",
-      "evidence": [],
+      "evidence": [
+        "evidence/content/stages.md",
+        "evidence/content/map-selection/README.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "十图已导入并接入选图；全人物形态、地图动态行为和逐项验收仍缺。",
+      "current_artifacts": [
+        "evidence/content/stages.md",
+        "godot/generated/stages/catalog/catalog.json"
+      ]
     },
     {
       "id": "M6-02",
@@ -622,12 +738,25 @@
       "outputs": [
         "godot/scenes/ui/",
         "godot/core/modes/",
-        "evidence/modes/"
+        "evidence/modes/",
+        "godot/map_selection.gd"
       ],
       "acceptance": "所有模式入口、选人/援助/地图、关卡、计时/胜负/继续/返回路径回归通过。",
-      "evidence": [],
+      "evidence": [
+        "evidence/pause-menu.md",
+        "evidence/combat/current-moves-sop.md",
+        "evidence/combat/current-moves-audit.json",
+        "evidence/content/map-selection/README.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "标题、键位、选图、暂停与返回已有切片；选人援助、AI 模式、关卡和完整流程未完成。",
+      "current_artifacts": [
+        "evidence/pause-menu.md",
+        "godot/map_selection.gd",
+        "godot/key_settings.gd",
+        "godot/tests/menu_smoke.gd"
+      ]
     },
     {
       "id": "M6-03",

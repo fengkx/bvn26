@@ -1,0 +1,1 @@
+stop(); trace("MAP_CONFIRM elapsed_ms="+(getTimer()-_root.mapConfirmTime));

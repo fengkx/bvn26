@@ -1,6 +1,6 @@
 # BVN 2.6 → Godot Web 技术规格
 
-版本：1.0；日期：2026-09-03；状态：实施基线，尚无 Godot 成品。
+版本：1.0；基线日期：2026-09-03；状态同步：2026-09-08。已有原生 Godot Web 开发切片，未完成发布验收。
 
 ## 1. 目标与完成定义
 
@@ -22,9 +22,9 @@
 | 语言与渲染 | GDScript，Compatibility，单线程 Web 导出 |
 | 首发平台 | 桌面 Chromium/Firefox/Safari，键盘本地单人/双人；按 M0 记录具体浏览器版本 |
 | 开发分析工具 | Python ≥3.10、Java ≥17、JPEXS 26.2.1 |
-| Godot 工程位置 | 后续创建 `godot/`；本包目前不存在该工程 |
+| Godot 工程位置 | 已建立 `godot/`；当前为两角色开发切片 |
 
-Godot 版本与 Web 导出依据见 [来源说明](docs/SOURCES.md)。版本选择是工程决定，尚未在本项目运行验证。64 条人物配置包含形态与援助，不等于 64 名可选角色。覆盖率以 `plan/coverage.json` 与实际原菜单共同确定。
+Godot 版本与 Web 导出依据见 [来源说明](docs/SOURCES.md)。引擎与同版模板已有无头及 Chrome Web 启动记录，Firefox/Safari 仍待实测，见 [环境证据](evidence/environment.md)。64 条人物配置包含形态与援助，不等于 64 名可选角色。覆盖率以 `plan/coverage.json` 与实际原菜单共同确定。
 
 `Brx86/BVN2.6` 是 29 FPS 的“社长改”。仅使用其中 25 个与本基准逐字节相同的资源；49 个不同资源保留之前匹配入口的版本。完整审计见 [基准报告](docs/BASELINE_AUDIT.md)。
 

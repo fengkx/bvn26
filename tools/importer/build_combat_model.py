@@ -14,6 +14,11 @@ _IMPORTER_DIR = Path(__file__).resolve().parent
 if str(_IMPORTER_DIR) not in sys.path:
     sys.path.insert(0, str(_IMPORTER_DIR))
 from command_catalog import build_command_catalog  # noqa: E402
+from compile_hit_receive import (  # noqa: E402
+    compile_fighter_hit_receive,
+    compile_shared_hit_receive,
+    extract_function,
+)
 
 
 SCRIPT_PATH = re.compile(
@@ -22,6 +27,9 @@ SCRIPT_PATH = re.compile(
 PLACEMENT_PATH = re.compile(r"^PlaceObject[23]_(?P<character>\d+)_(?P<depth>\d+)/")
 GOTO = re.compile(r'gotoAnd(?:Play|Stop)\("(?P<label>[^\"]+)"\)')
 UNCONDITIONAL_GOTO_STOP = re.compile(r'gotoAndStop\("(?P<label>[^\"]+)"\)')
+EXIT_IMPULSE = re.compile(
+    r"(?P<name>yup|htx|jhp|zl)\s*=\s*(?P<value>-?\d+(?:\.\d+)?)\s*;"
+)
 ENERGY_COST = re.compile(r"ql\s*-=\s*(?P<cost>\d+)")
 ENERGY_DELTA = re.compile(r"ql\s*(?P<operator>\+=|-=)\s*(?P<value>\d+(?:\.\d+)?)")
 SCREEN_FLASH = re.compile(r"_root\.shine\(\s*(?P<color>\d*)\s*\)")
@@ -37,7 +45,77 @@ XSCALE_MOVE = re.compile(
 PARENT_X = re.compile(r"_parent\._parent\._x\s*(?P<op>\+=|-=)\s*(?P<expr>[^;]+);")
 PARENT_Y = re.compile(r"_parent\._parent\._y\s*(?P<op>\+=|-=)\s*(?P<expr>[^;]+);")
 XSCALE_TEST = re.compile(r"_parent\._parent\._xscale\s*(?P<cmp><|>)\s*0")
+SCALE_X_SPEED = re.compile(
+    r"_parent\._parent\._x\s*(?P<op>\+=|-=)\s*"
+    r"_parent\.speed\s*\*\s*(?P<num>\d+(?:\.\d+)?)\s*\*\s*"
+    r"_parent\._parent\.scale_X"
+)
+PIXEL_X = re.compile(
+    r"_parent\._parent\._x\s*(?P<op>\+=|-=)\s*(?P<num>\d+(?:\.\d+)?)\s*;"
+)
+PIXEL_Y = re.compile(
+    r"_parent\._parent\._y\s*(?P<op>\+=|-=)\s*(?P<num>\d+(?:\.\d+)?)\s*;"
+)
+STEER_LEFT = re.compile(
+    r"if\s*\(\s*moveLeft\s*\(\s*\)\s*\)\s*\{[^}]*"
+    r"_parent\._parent\._x\s*-=\s*_parent\.speed"
+)
+STEER_RIGHT = re.compile(
+    r"if\s*\(\s*moveRight\s*\(\s*\)\s*\)\s*\{[^}]*"
+    r"_parent\._parent\._x\s*\+=\s*_parent\.speed"
+)
 MOVE_X = re.compile(r"moveX\((?P<value>-?\d+(?:\.\d+)?)\)")
+PLACE_AT_OPPONENT_X = re.compile(
+    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)\._x\s*=\s*"
+    r"_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x"
+)
+PLACE_AT_OPPONENT_Y = re.compile(
+    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)\._y\s*=\s*"
+    r"_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._y"
+    r"(?:\s*(?P<y_op>[+-])\s*(?P<y_num>\d+(?:\.\d+)?))?"
+)
+# Player-wrapper flash. Not a named clip.
+# Unconditional: `_parent._x/_y = opponent._x/_y` [±pixels] and optional jump.
+# Facing: both branches assign `_xscale` then `_x` from opponent._x ± pixels
+# or `bdmn._width[*N]`. Y may use `bdmn._height[*N]` after the if/else.
+PARENT_WARP_X = re.compile(
+    r"_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x"
+    r"(?:\s*(?P<x_op>[+-])\s*(?:"
+    r"(?P<x_num>\d+(?:\.\d+)?)"
+    r"|"
+    r"_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\.mc\.bdmn\._width"
+    r"(?:\s*\*\s*(?P<wfac>\d+(?:\.\d+)?))?"
+    r"))?\s*;"
+)
+PARENT_WARP_Y = re.compile(
+    r"_parent\._y\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._y"
+    r"(?:\s*(?P<y_op>[+-])\s*(?:"
+    r"(?P<y_num>\d+(?:\.\d+)?)"
+    r"|"
+    r"_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\.mc\.bdmn\._height"
+    r"(?:\s*\*\s*(?P<hfac>\d+(?:\.\d+)?))?"
+    r"))?\s*;"
+)
+FACING_BODY_WARP = re.compile(
+    r"if\s*\(\s*_parent\._xscale\s*(?P<cmp>[<>])\s*0\s*\)\s*\{\s*"
+    r"_parent\._xscale\s*=\s*(?P<then_scale>-?\d+)\s*;\s*"
+    r"(?P<then_x>_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x[^;]*;)\s*"
+    r"\}\s*else\s*\{\s*"
+    r"_parent\._xscale\s*=\s*(?P<else_scale>-?\d+)\s*;\s*"
+    r"(?P<else_x>_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x[^;]*;)\s*"
+    r"\}",
+    re.S,
+)
+JUMP_ASSIGN = re.compile(r"\bjump\s*=\s*1\s*;")
+# Locomotion/guard loops that DATA_CONTRACTS keep unwired so walk and
+# held-guard pin stay intact. 落地/瞬步/防住 early gotos are compiled.
+UNWIRED_EXIT_PAIRS = {
+    ("走", "站立"),
+    ("防御2", "站立"),
+    ("站立", "站立"),
+    ("落", "落"),
+    ("落2", "落2"),
+}
 CONTACT_GOTO = re.compile(
     r"hitTest\([^)]+\)[\s\S]{0,240}?gotoAndPlay\(\"(?P<label>[^\"]+)\"\)"
 )
@@ -59,6 +137,23 @@ NESTED_FRAME_SCRIPT = re.compile(
     r"^DefineSprite_(?P<sprite>\d+)/frame_(?P<frame>\d+)/DoAction"
 )
 CLIP_RENAME = re.compile(r"(?:this\.)?_name\s*=\s*\"(?P<name>[^\"]+)\"")
+# Frame DoAction that overwrites a named clip's local _x so the clip
+# registration sits on the opponent container. Facing flip is the
+# `_parent._xscale > 0` branch; optional _y uses the same clip name.
+PLACE_AT_OPPONENT_X = re.compile(
+    r"if\s*\(\s*_parent\._xscale\s*>\s*0\s*\)\s*\{\s*"
+    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)\._x\s*=\s*"
+    r"_root\.game\[\"p\"\s*\+\s*pn\]\._x\s*-\s*_parent\._x\s*;\s*"
+    r"\}\s*else\s*\{\s*"
+    r"(?P=name)\._x\s*=\s*_parent\._x\s*-\s*_root\.game\[\"p\"\s*\+\s*pn\]\._x\s*;\s*"
+    r"\}",
+    re.S,
+)
+PLACE_AT_OPPONENT_Y = re.compile(
+    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)\._y\s*=\s*"
+    r"_root\.game\[\"p\"\s*\+\s*pn\]\._y\s*-\s*_parent\._y"
+    r"(?:\s*(?P<y_op>[+-])\s*(?P<y_num>\d+(?:\.\d+)?))?\s*;"
+)
 CHECK_DEAD = re.compile(
     r"function checkDead\(fly\)\s*\{(?P<body>.*?)\nfunction ",
     re.S,
@@ -116,6 +211,108 @@ def parse_horizontal_motion(source: str) -> tuple[float, bool] | None:
     return (factor if facing_forward else -factor), rounded
 
 
+def parse_place_at_opponent(source: str) -> dict[str, Any] | None:
+    match = PLACE_AT_OPPONENT_X.search(source)
+    if match is None:
+        return None
+    name = match["name"]
+    if name == "_parent":
+        return None
+    result: dict[str, Any] = {
+        "instance_name": name,
+        "op": "place_at_opponent",
+        "place_x": True,
+    }
+    y_match = PLACE_AT_OPPONENT_Y.search(source)
+    if y_match is not None and y_match["name"] == name:
+        result["place_y"] = True
+        extra = 0.0
+        if y_match["y_num"]:
+            extra = float(y_match["y_num"])
+            if y_match["y_op"] == "-":
+                extra = -extra
+        if extra:
+            result["y_pixels"] = extra
+    return result
+
+
+def _signed_pixel(match: re.Match[str], op_key: str, num_key: str) -> float:
+    if not match[num_key]:
+        return 0.0
+    extra = float(match[num_key])
+    return -extra if match[op_key] == "-" else extra
+
+
+def _xscale_facing(scale: str) -> int:
+    return 1 if float(scale) > 0 else -1
+
+
+def _warp_x_fields(source: str) -> dict[str, Any] | None:
+    match = PARENT_WARP_X.search(source)
+    if match is None:
+        return None
+    fields: dict[str, Any] = {}
+    extra_x = _signed_pixel(match, "x_op", "x_num")
+    if extra_x:
+        fields["x_pixels"] = extra_x
+    elif match["x_op"] and match["x_num"] is None:
+        factor = float(match["wfac"]) if match["wfac"] else 1.0
+        fields["x_bdmn_width"] = -factor if match["x_op"] == "-" else factor
+    return fields
+
+
+def _apply_warp_y(result: dict[str, Any], source: str) -> None:
+    y_match = PARENT_WARP_Y.search(source)
+    if y_match is None:
+        return
+    result["place_y"] = True
+    extra_y = _signed_pixel(y_match, "y_op", "y_num")
+    if extra_y:
+        result["y_pixels"] = extra_y
+    elif y_match["y_op"] and y_match["y_num"] is None:
+        factor = float(y_match["hfac"]) if y_match["hfac"] else 1.0
+        result["y_bdmn_height"] = -factor if y_match["y_op"] == "-" else factor
+
+
+def parse_body_warp(source: str) -> dict[str, Any] | None:
+    facing = FACING_BODY_WARP.search(source)
+    if facing is not None:
+        then_x = _warp_x_fields(facing["then_x"])
+        else_x = _warp_x_fields(facing["else_x"])
+        if then_x is None or else_x is None:
+            return None
+        then_branch = {"set_facing": _xscale_facing(facing["then_scale"]), **then_x}
+        else_branch = {"set_facing": _xscale_facing(facing["else_scale"]), **else_x}
+        result: dict[str, Any] = {
+            "op": "warp_to_opponent",
+            "place_x": True,
+        }
+        if facing["cmp"] == ">":
+            result["xscale_gt_0"] = then_branch
+            result["xscale_lt_0"] = else_branch
+        else:
+            result["xscale_lt_0"] = then_branch
+            result["xscale_gt_0"] = else_branch
+        _apply_warp_y(result, source)
+        if JUMP_ASSIGN.search(source):
+            result["set_jump"] = True
+        return result
+    if re.search(r"_xscale|bdmn", source):
+        return None
+    x_fields = _warp_x_fields(source)
+    if x_fields is None:
+        return None
+    result = {
+        "op": "warp_to_opponent",
+        "place_x": True,
+        **x_fields,
+    }
+    _apply_warp_y(result, source)
+    if JUMP_ASSIGN.search(source):
+        result["set_jump"] = True
+    return result
+
+
 def parse_jumping_step(source: str) -> int | None:
     match = ON_JUMPING.search(source)
     if match is None:
@@ -123,29 +320,66 @@ def parse_jumping_step(source: str) -> int | None:
     return int(match["step"])
 
 
+def parse_scale_x_motion(source: str) -> float | None:
+    match = SCALE_X_SPEED.search(source)
+    if match is None:
+        return None
+    factor = float(match["num"])
+    return factor if match["op"] == "+=" else -factor
+
+
+def parse_pixel_horizontal(source: str) -> float | None:
+    scale_test = XSCALE_TEST.search(source)
+    pixel = PIXEL_X.search(source)
+    if scale_test is None or pixel is None:
+        return None
+    if SPEED_EXPR.fullmatch(pixel["num"].strip()) is not None:
+        return None
+    value = float(pixel["num"])
+    facing_forward = (scale_test["cmp"] == ">" and pixel["op"] == "+=") or (
+        scale_test["cmp"] == "<" and pixel["op"] == "-="
+    )
+    return value if facing_forward else -value
+
+
 def parse_fighter_motion(source: str) -> dict[str, Any] | None:
-    if "moveLeft()" in source or "moveRight()" in source:
-        return None
-    if "_parent._parent.scale_X" in source:
-        return None
     motion: dict[str, Any] = {}
-    horizontal = parse_horizontal_motion(source)
-    if horizontal is not None:
-        motion["forward_speed_factor"] = horizontal[0]
-        motion["round_forward"] = horizontal[1]
+    scale_x = parse_scale_x_motion(source)
+    if scale_x is not None:
+        motion["forward_speed_factor"] = scale_x
+        motion["round_forward"] = False
+    else:
+        horizontal = parse_horizontal_motion(source)
+        if horizontal is not None:
+            motion["forward_speed_factor"] = horizontal[0]
+            motion["round_forward"] = horizontal[1]
+    if STEER_LEFT.search(source) or STEER_RIGHT.search(source):
+        motion["steer_speed_factor"] = 1.0
     move = MOVE_X.search(source)
     if move is not None:
         motion["forward_pixels"] = float(move["value"])
+    else:
+        pixel_x = parse_pixel_horizontal(source)
+        if pixel_x is not None:
+            motion["forward_pixels"] = pixel_x
     y_move = PARENT_Y.search(source)
     if y_move is not None:
         parsed = parse_speed_factor(y_move["expr"])
-        if parsed is None:
-            return None
-        factor, rounded = parsed
-        motion["vertical_speed_factor"] = (
-            factor if y_move["op"] == "+=" else -factor
-        )
-        motion["round_vertical"] = rounded
+        if parsed is not None:
+            factor, rounded = parsed
+            motion["vertical_speed_factor"] = (
+                factor if y_move["op"] == "+=" else -factor
+            )
+            motion["round_vertical"] = rounded
+        else:
+            pixel_y = PIXEL_Y.search(source)
+            if pixel_y is not None:
+                value = float(pixel_y["num"])
+                motion["vertical_pixels"] = (
+                    value if pixel_y["op"] == "+=" else -value
+                )
+            else:
+                return None
     contact = CONTACT_GOTO.search(source)
     if contact is not None and "_X =" not in source:
         motion["contact_cancel_to"] = contact["label"]
@@ -161,6 +395,8 @@ def parse_fighter_motion(source: str) -> dict[str, Any] | None:
             "forward_speed_factor",
             "forward_pixels",
             "vertical_speed_factor",
+            "vertical_pixels",
+            "steer_speed_factor",
         )
     ):
         return None
@@ -191,6 +427,111 @@ def span_has_unconditional_terminal(scripts: list[dict[str, Any]], label: str) -
         if script["source"].strip() == "stop();":
             return True
     return False
+
+
+def _merge_nested_atm_windows(
+    hitbox_windows: dict[str, list[dict[str, Any]]],
+    ranges: dict[str, dict[str, int]],
+    frames_by_number: dict[int, dict[str, Any]],
+    script_bundle: dict[str, Any],
+) -> None:
+    """Root PlaceObject names plus nested `_name = "*atm"` DoAction.
+
+    鸣人 上必杀 has no root *atm. DefineSprite_489 is placed as fensheng
+    (683–724); frame_11/24 DoAction rename this to sbsatm/sbs2atm.
+    Local frame 1 is the PlaceObject root frame.
+    """
+    seen: set[tuple[str, str, int, int]] = set()
+    for label, span in ranges.items():
+        for frame_number in range(span["start_frame"], span["end_frame"] + 1):
+            frame = frames_by_number.get(frame_number)
+            if frame is None:
+                continue
+            for placement in frame["display_list"]:
+                character_id = int(placement.get("character_id", 0) or 0)
+                if not character_id:
+                    continue
+                placed_name = str(placement.get("name", "") or "")
+                placed_frame = int(placement.get("placed_frame", frame_number))
+                clip = parse_clip_timeline(script_bundle, character_id)
+                for rename in clip.get("rename_frames", []):
+                    instance_name = str(rename["instance_name"])
+                    if not instance_name.endswith("atm"):
+                        continue
+                    local = int(rename["frame"])
+                    start = placed_frame + local - 1
+                    if start < span["start_frame"] or start > span["end_frame"]:
+                        continue
+                    end = _nested_rename_end(
+                        frames_by_number,
+                        span,
+                        character_id,
+                        placed_name,
+                        placed_frame,
+                        start,
+                        clip,
+                        local,
+                    )
+                    key = (label, instance_name, start, end)
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    hitbox_windows.setdefault(label, []).append(
+                        {
+                            "instance_name": instance_name,
+                            "start_frame": start,
+                            "end_frame": end,
+                            "placed_name": placed_name,
+                            "character_id": character_id,
+                            "source_path": rename["source_path"],
+                            "source_sha256": rename["source_sha256"],
+                        }
+                    )
+        if label in hitbox_windows:
+            hitbox_windows[label].sort(
+                key=lambda item: (item["start_frame"], item["instance_name"])
+            )
+
+
+def _nested_rename_end(
+    frames_by_number: dict[int, dict[str, Any]],
+    span: dict[str, int],
+    character_id: int,
+    placed_name: str,
+    placed_frame: int,
+    start: int,
+    clip: dict[str, Any],
+    local_start: int,
+) -> int:
+    next_local = min(
+        (
+            int(item["frame"])
+            for item in clip.get("rename_frames", [])
+            if int(item["frame"]) > local_start
+        ),
+        default=0,
+    )
+    stop_after = min(
+        (int(frame) for frame in clip.get("stop_frames", []) if int(frame) > local_start),
+        default=0,
+    )
+    last = span["end_frame"]
+    if next_local:
+        last = min(last, placed_frame + next_local - 2)
+    if stop_after:
+        last = min(last, placed_frame + stop_after - 2)
+    for frame_number in range(start, last + 1):
+        frame = frames_by_number.get(frame_number)
+        if frame is None:
+            return max(start, frame_number - 1)
+        present = any(
+            int(item.get("character_id", 0) or 0) == character_id
+            and str(item.get("name", "") or "") == placed_name
+            for item in frame["display_list"]
+        )
+        if not present:
+            return max(start, frame_number - 1)
+    return last
 
 
 def compile_timeline_fallthroughs(
@@ -237,6 +578,41 @@ def parse_unconditional_exit(source: str) -> str | None:
     return matches[0]["label"]
 
 
+def parse_exit_impulses(source: str) -> dict[str, int | float]:
+    """Assignments on the same frame as an unconditional goto, e.g. yup/htx.
+
+    Source: 鸣人 超必杀2 frame 942 sets yup/htx then gotoAndStop(\"击飞\").
+    """
+    impulses: dict[str, int | float] = {}
+    for match in EXIT_IMPULSE.finditer(source):
+        raw = match["value"]
+        impulses[match["name"]] = float(raw) if "." in raw else int(raw)
+    return impulses
+
+
+def extract_launch_stop(
+    scripts: list[dict[str, Any]], launch_label: str
+) -> dict[str, Any]:
+    """Unconditional stop() on the launch label. 鸣人 击飞@1035, 一护 击飞@759."""
+    if not launch_label:
+        return {}
+    stops = [
+        script
+        for script in scripts
+        if script["action"] == launch_label
+        and script["kind"] == "frame_action"
+        and script["source"].strip() == "stop();"
+    ]
+    if not stops:
+        return {}
+    stop = min(stops, key=lambda item: int(item["frame"]))
+    return {
+        "launch_stop_frame": stop["frame"],
+        "launch_stop_source_path": stop["path"],
+        "launch_stop_source_sha256": stop["source_sha256"],
+    }
+
+
 def parse_projectile_motion(source: str) -> dict[str, Any] | None:
     if "_X = _X" not in source and "_Y = _Y" not in source:
         return None
@@ -252,6 +628,33 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
         if hit_goto is not None:
             motion["on_hit_goto_frame"] = int(hit_goto["frame"])
     return motion or None
+
+
+def enrich_cancel_lifetimes(
+    catalog: dict[str, Any],
+    frames_by_number: dict[int, dict[str, Any]],
+    scripts: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Clip enterFrame lasts until that PlaceObject is removed or replaced."""
+    by_path = {item["path"]: item for item in scripts}
+    for window in catalog.get("cancel_windows", []):
+        if window.get("kind") != "input" or window.get("end_frame"):
+            continue
+        script = by_path.get(window.get("source_path", ""))
+        if script is None:
+            continue
+        match = SCRIPT_PATH.match(script["path"])
+        if match is None:
+            continue
+        path_tail = match["kind"]
+        placement_match = PLACEMENT_PATH.match(path_tail)
+        if placement_match is None:
+            continue
+        end_frame, _hash = clip_lifetime(
+            frames_by_number, script["frame"], int(placement_match["depth"])
+        )
+        window["end_frame"] = end_frame
+    return catalog
 
 
 def helper_from_catalog(fighter_id: str) -> dict[str, Any]:
@@ -478,6 +881,13 @@ def build_model(
     fighter = json.loads(fighter_path.read_text(encoding="utf-8"))
     timeline = json.loads(timeline_path.read_text(encoding="utf-8"))
     script_bundle = json.loads(scripts_path.read_text(encoding="utf-8"))
+    main_bundle = json.loads(
+        (scripts_path.resolve().parent.parent / "main.json").read_text(encoding="utf-8")
+    )
+    shared_hit_receive = compile_shared_hit_receive(
+        main_bundle,
+        swf_path=scripts_path.resolve().parent.parent.parent / "game/main.swf",
+    )
     sprite_id = int(fighter["source"]["timeline_symbol_id"])
     ranges = target_ranges(fighter)
     frames_by_number = {int(frame["frame"]): frame for frame in timeline["frames"]}
@@ -519,6 +929,9 @@ def build_model(
                 for name in sorted(named_frames)
                 for window in contiguous_windows(named_frames[name])
             ]
+    _merge_nested_atm_windows(
+        hitbox_windows, ranges, frames_by_number, script_bundle
+    )
 
     combo_labels = list(fighter["actions"]["ground_combo"])
     combo_transitions = []
@@ -556,32 +969,29 @@ def build_model(
         )
 
     timeline_fallthroughs = compile_timeline_fallthroughs(ranges, scripts)
-    stand_exit_actions = {
-        *combo_labels,
-        *fighter["actions"]["hurt"],
-        *fighter["actions"]["special"],
-        *(item["to"] for item in timeline_fallthroughs),
-    }
     exits = {}
     for script in scripts:
         if script["kind"] != "frame_action":
             continue
         target = parse_unconditional_exit(script["source"])
-        if target is None or target == script["action"]:
+        if target is None:
             continue
-        if target == "站立" and script["action"] not in stand_exit_actions:
+        if (script["action"], target) in UNWIRED_EXIT_PAIRS:
             continue
-        if target != "站立" and target not in ("落", "落2"):
-            continue
+        # Self-goto pins a clip until land/contact cancel. 鸣人 螺旋手里剑1@902
+        # loops until touchFloor → 超必杀2. Skipping these used to _finish_action
+        # into 落 and drop cbsatm. Locomotion self-pins stay in UNWIRED_EXIT_PAIRS.
         current = exits.get(script["action"])
         if current is not None and current["frame"] <= script["frame"]:
             continue
-        exits[script["action"]] = {
+        record = {
             "frame": script["frame"],
             "target": target,
             "source_path": script["path"],
             "source_sha256": script["source_sha256"],
         }
+        record.update(parse_exit_impulses(script["source"]))
+        exits[script["action"]] = record
 
     hurt_label = next(iter(fighter["actions"]["hurt"]))
     stop_scripts = [
@@ -674,8 +1084,40 @@ def build_model(
                 }
             )
 
+    clip_placements = []
+    body_warps = []
+    for script in scripts:
+        if script["kind"] != "frame_action":
+            continue
+        warp = parse_body_warp(script["source"])
+        if warp is not None:
+            body_warps.append(
+                {
+                    "action": script["action"],
+                    "frame": script["frame"],
+                    **warp,
+                    "source_path": script["path"],
+                    "source_sha256": script["source_sha256"],
+                }
+            )
+            continue
+        placement = parse_place_at_opponent(script["source"])
+        if placement is None:
+            continue
+        clip_placements.append(
+            {
+                "action": script["action"],
+                "frame": script["frame"],
+                **placement,
+                "source_path": script["path"],
+                "source_sha256": script["source_sha256"],
+            }
+        )
+
     helper = helper_from_catalog(fighter["fighter_id"])
     summon_events = []
+    summon_source = next((extract_function(s["source"], "doZhaoHuan") for s in scripts if "function doZhaoHuan" in s["source"]), None)
+    summon_bs = re.search(r"\bbs\s*=\s*(\d+)", summon_source or "")
     for script in scripts:
         if script["kind"] != "frame_action":
             continue
@@ -683,11 +1125,14 @@ def build_model(
             continue
         if "doZhaoHuan()" not in script["source"]:
             continue
+        if summon_bs is None:
+            raise ValueError("doZhaoHuan is missing its source bs assignment")
         summon_events.append(
             {
                 "action": script["action"],
                 "frame": script["frame"],
                 "energy_delta": -100,
+                "set_bs": int(summon_bs[1]),
                 **helper,
                 "source_path": script["path"],
                 "source_sha256": script["source_sha256"],
@@ -780,6 +1225,11 @@ def build_model(
             }
         )
 
+    death = extract_death(script_bundle, sprite_id, scripts, ranges)
+    launch_stop = extract_launch_stop(
+        scripts, (death or {}).get("launch_label", "击飞")
+    )
+
     return {
         "format": "bvn26-combat-model-v1",
         "status": "reverse_engineering_intermediate",
@@ -818,15 +1268,37 @@ def build_model(
             "hitstun_ticks_formula": "hitstun_ms / 1000 * 30",
             "source_path": stop_scripts[0]["path"],
             "source_sha256": stop_scripts[0]["source_sha256"],
+            **launch_stop,
         },
-        "death": extract_death(script_bundle, sprite_id, scripts, ranges),
+        "death": death,
         "attacks": fighter["hit_parameters"]["attacks"],
+        **compile_fighter_hit_receive(
+            script_bundle,
+            scripts,
+            next(
+                item["source"]
+                for item in script_bundle["scripts"]
+                if item["path"] == "frame_1/DoAction.as"
+            ),
+            sprite_id,
+        ),
+        "hit_fx": shared_hit_receive["hit_fx"],
+        "combo_hud": shared_hit_receive["combo_hud"],
+        "super_presentation": shared_hit_receive["super_presentation"],
         "hit_priority": extract_hit_priority(script_bundle),
         "energy_events": sorted(
             energy_events, key=lambda item: (item["frame"], item["action"])
         ),
         "presentation_events": sorted(
             presentation_events, key=lambda item: (item["frame"], item["action"])
+        ),
+        "clip_placements": sorted(
+            clip_placements,
+            key=lambda item: (item["frame"], item["instance_name"]),
+        ),
+        "body_warps": sorted(
+            body_warps,
+            key=lambda item: (item["frame"], item["action"]),
         ),
         "motion_windows": sorted(
             motion_windows,
@@ -843,8 +1315,12 @@ def build_model(
         "summon_events": sorted(
             summon_events, key=lambda item: (item["frame"], item["action"])
         ),
-        "command_catalog": build_command_catalog(
-            fighter, script_bundle, scripts, motion_windows
+        "command_catalog": enrich_cancel_lifetimes(
+            build_command_catalog(
+                fighter, script_bundle, scripts, motion_windows
+            ),
+            frames_by_number,
+            scripts,
         ),
         "indexed_source_events": [
             {key: value for key, value in script.items() if key != "source"}

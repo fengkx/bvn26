@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://main.gd" id="1_main"]
 [ext_resource type="Script" path="res://timeline_preview.gd" id="2_timeline"]
 [ext_resource type="Script" path="res://fighter_runtime.gd" id="3_fighter"]
 [ext_resource type="Script" path="res://energy_bar.gd" id="4_energy"]
 [ext_resource type="Script" path="res://game_world.gd" id="5_game"]
+[ext_resource type="Script" path="res://title_menu.gd" id="6_menu"]
+[ext_resource type="Script" path="res://key_settings.gd" id="7_keys"]
+[ext_resource type="Script" path="res://combo_hud.gd" id="8_combo"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -24,14 +27,34 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.035, 0.043, 0.063, 1)
 
+[node name="BlackMu" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("2_timeline")
+fighter_directory = "res://generated/main/blackMu"
+initial_frame = 1
+autoplay = false
+show_collision_shapes = false
+
+[node name="TsFace" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("2_timeline")
+fighter_directory = "res://generated/main/ts_face"
+initial_frame = 1
+autoplay = false
+show_collision_shapes = false
+
 [node name="Game" type="Node2D" parent="."]
 unique_name_in_owner = true
+visible = false
 script = ExtResource("5_game")
 
 [node name="CurrentWorld" type="Node2D" parent="Game"]
 unique_name_in_owner = true
 script = ExtResource("2_timeline")
 fighter_directory = "res://generated/stages/current_world"
+preserve_root_depths = true
 initial_frame = 2
 autoplay = false
 show_collision_shapes = false
@@ -53,7 +76,9 @@ fighter_directory = "res://generated/fighters/yihu"
 display_depth = 2
 facing = -1
 
-[node name="Content" type="VBoxContainer" parent="."]
+[node name="FightHud" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+visible = false
 z_index = 100
 layout_mode = 1
 anchors_preset = 8
@@ -69,28 +94,29 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 14
 
-[node name="Title" type="Label" parent="Content"]
+[node name="Title" type="Label" parent="FightHud"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.77, 0.22, 1)
 theme_override_font_sizes/font_size = 20
 text = "BLEACH VS NARUTO 2.6"
 horizontal_alignment = 1
 
-[node name="Status" type="Label" parent="Content"]
+[node name="Status" type="Label" parent="FightHud"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.83, 0.86, 0.92, 1)
 theme_override_font_sizes/font_size = 14
 text = "Native 30 Hz combat slice"
 horizontal_alignment = 1
 
-[node name="Config" type="Label" parent="Content"]
+[node name="Config" type="Label" parent="FightHud"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.67, 0.76, 1)
 theme_override_font_sizes/font_size = 12
 text = "P1 WASD + J K L U I O  ·  P2 arrows + Num1–Num6"
 horizontal_alignment = 1
 
-[node name="TickLabel" type="Label" parent="Content"]
+[node name="TickLabel" type="Label" parent="FightHud"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.44, 0.78, 1, 1)
@@ -98,7 +124,7 @@ theme_override_font_sizes/font_size = 12
 text = "Fixed simulation tick: 0"
 horizontal_alignment = 1
 
-[node name="StateLabel" type="Label" parent="Content"]
+[node name="StateLabel" type="Label" parent="FightHud"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.9)
@@ -106,34 +132,72 @@ theme_override_font_sizes/font_size = 12
 text = "Loading combat state"
 horizontal_alignment = 1
 
-[node name="Notice" type="Label" parent="Content"]
+[node name="Notice" type="Label" parent="FightHud"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.59, 0.66, 1)
 text = "Use physical keys; switch the browser input method to English"
 horizontal_alignment = 1
 
+[node name="ComboHud" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 120
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("8_combo")
+
 [node name="NarutoEnergy" type="Control" parent="."]
 unique_name_in_owner = true
+visible = false
 z_index = 110
 layout_mode = 0
 offset_left = 0.0
 offset_top = 360.0
-offset_right = 145.0
+offset_right = 170.0
 offset_bottom = 398.0
 mouse_filter = 2
 script = ExtResource("4_energy")
 
 [node name="IchigoEnergy" type="Control" parent="."]
 unique_name_in_owner = true
+visible = false
 z_index = 110
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -145.0
+offset_left = -170.0
 offset_top = 360.0
 offset_bottom = 398.0
 grow_horizontal = 0
 mouse_filter = 2
 script = ExtResource("4_energy")
 mirrored = true
+
+[node name="TitleMenu" type="Control" parent="."]
+unique_name_in_owner = true
+z_index = 200
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_menu")
+
+[node name="KeySettings" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 200
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_keys")

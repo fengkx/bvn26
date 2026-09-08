@@ -1,0 +1,1980 @@
+{
+  "status": "partial_not_source_parity_accepted",
+  "fighters": {
+    "minren": {
+      "source": {
+        "fighter_slice": "data/slices/minren-base.json",
+        "timeline": "data/slices/minren-base.timeline.json",
+        "script_bundle": "scripts/fighter/minren.json",
+        "timeline_symbol_id": 764
+      },
+      "labels": 42,
+      "wired_labels": 36,
+      "form_attack_counts": {
+        "1": 21,
+        "2": 16,
+        "3": 16
+      },
+      "gaps": [
+        {
+          "kind": "command",
+          "label": "失败",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "cinematic"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "开场",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "cinematic"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "空中必杀",
+          "slot": "bishaAir",
+          "reason": "missing_timeline",
+          "has_timeline": false,
+          "contexts": [
+            "air",
+            "dash"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "胜利",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "cinematic"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "螺旋手里剑1",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "timeline"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "跳招2",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "air"
+          ]
+        },
+        {
+          "kind": "predicate",
+          "slot": "hide",
+          "reason": "no_dispatch_label"
+        }
+      ],
+      "moves": [
+        {
+          "label": "万解",
+          "slot": "wankai",
+          "source_frames": [
+            1239,
+            1436
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1240/DoAction.as",
+            "DefineSprite_764/frame_1245/DoAction.as",
+            "DefineSprite_764/frame_1379/DoAction.as",
+            "DefineSprite_764/frame_1380/DoAction.as",
+            "DefineSprite_764/frame_1381/DoAction.as",
+            "DefineSprite_764/frame_1382/DoAction.as",
+            "DefineSprite_764/frame_1385/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [
+            {
+              "action": "万解",
+              "frame": 1245,
+              "source_path": "DefineSprite_764/frame_1245/DoAction.as",
+              "source_sha256": "23073188828a7b0f7584495e02566488779af7ca931892937f066130c4e8a17b",
+              "op": "super_start",
+              "kind": "cbsd",
+              "xg": "XG_cbs",
+              "face_label": "鸣人3"
+            }
+          ],
+          "container_gotos": [
+            "DefineSprite_764/frame_1382/DoAction.as"
+          ],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "上必杀",
+          "slot": "bishaUP",
+          "source_frames": [
+            609,
+            749
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_609/DoAction.as",
+            "DefineSprite_764/frame_610/DoAction.as",
+            "DefineSprite_764/frame_611/DoAction.as",
+            "DefineSprite_764/frame_681/DoAction.as",
+            "DefineSprite_764/frame_681/PlaceObject2_2_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_683/DoAction.as",
+            "DefineSprite_764/frame_683/DoAction_2.as",
+            "DefineSprite_764/frame_725/DoAction.as",
+            "DefineSprite_764/frame_735/DoAction.as"
+          ],
+          "exit": {
+            "frame": 735,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_735/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [
+            {
+              "action": "上必杀",
+              "frame": 611,
+              "source_path": "DefineSprite_764/frame_611/DoAction.as",
+              "source_sha256": "9e4c8ce5d35f59fb2d15830316645a98da7c2fcc0cd02b9e444fb91806578a54",
+              "op": "super_start",
+              "kind": "bsd",
+              "xg": "XG_bs",
+              "face_label": "鸣人1"
+            },
+            {
+              "action": "上必杀",
+              "frame": 681,
+              "source_path": "DefineSprite_764/frame_681/DoAction.as",
+              "source_sha256": "8b4d2146b59f91ec3e0d1b5910b7bb9ddc3b89d13cafd56dc493ecaec42c360f",
+              "op": "super_end",
+              "kind": "bsw"
+            }
+          ],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "击落地",
+          "slot": null,
+          "source_frames": [
+            1039,
+            1075
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1039/DoAction.as",
+            "DefineSprite_764/frame_1039/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1053/DoAction.as",
+            "DefineSprite_764/frame_1064/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1069/DoAction.as"
+          ],
+          "exit": {
+            "frame": 1069,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_1069/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "击飞",
+          "slot": null,
+          "source_frames": [
+            1027,
+            1038
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1027/DoAction.as",
+            "DefineSprite_764/frame_1028/DoAction.as",
+            "DefineSprite_764/frame_1029/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1035/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "失败",
+          "slot": null,
+          "source_frames": [
+            1209,
+            1238
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1229/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "开场",
+          "slot": null,
+          "source_frames": [
+            1099,
+            1178
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1100/DoAction.as",
+            "DefineSprite_764/frame_1102/DoAction.as",
+            "DefineSprite_764/frame_1160/DoAction.as"
+          ],
+          "exit": {
+            "frame": 1160,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_1160/DoAction.as",
+            "source_sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "必杀",
+          "slot": "bisha",
+          "source_frames": [
+            504,
+            542
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_505/DoAction.as",
+            "DefineSprite_764/frame_507/DoAction.as",
+            "DefineSprite_764/frame_530/DoAction.as",
+            "DefineSprite_764/frame_530/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_530/PlaceObject2_2_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_538/DoAction.as",
+            "DefineSprite_764/frame_542/DoAction.as"
+          ],
+          "exit": {
+            "frame": 542,
+            "target": "必杀0",
+            "source_path": "DefineSprite_764/frame_542/DoAction.as",
+            "source_sha256": "cac4304bf2aeed09c6f8bc1851b7fa1ca83c8e3287e0dff1a9ecfbfd6f67f744"
+          },
+          "super_events": [
+            {
+              "action": "必杀",
+              "frame": 507,
+              "source_path": "DefineSprite_764/frame_507/DoAction.as",
+              "source_sha256": "772e9963b1331951f0a7a4d83b5ef76859c43115361ec9a51d74b7bf4210c240",
+              "op": "super_start",
+              "kind": "bsd",
+              "xg": "XG_bs",
+              "face_label": "鸣人2"
+            },
+            {
+              "action": "必杀",
+              "frame": 530,
+              "source_path": "DefineSprite_764/frame_530/DoAction.as",
+              "source_sha256": "8b4d2146b59f91ec3e0d1b5910b7bb9ddc3b89d13cafd56dc493ecaec42c360f",
+              "op": "super_end",
+              "kind": "bsw"
+            }
+          ],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "必杀0",
+          "slot": null,
+          "source_frames": [
+            586,
+            608
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_597/DoAction.as"
+          ],
+          "exit": {
+            "frame": 597,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_597/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "必杀1",
+          "slot": null,
+          "source_frames": [
+            543,
+            585
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_545/DoAction.as",
+            "DefineSprite_764/frame_572/DoAction.as",
+            "DefineSprite_764/frame_582/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招1",
+          "slot": "magichit1",
+          "source_frames": [
+            375,
+            411
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_376/DoAction.as",
+            "DefineSprite_764/frame_382/PlaceObject2_260_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_382/PlaceObject2_260_28/CLIPACTIONRECORD onClipEvent(load).as",
+            "DefineSprite_764/frame_385/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_401/DoAction.as",
+            "DefineSprite_764/frame_401/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_408/DoAction.as"
+          ],
+          "exit": {
+            "frame": 408,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_408/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招2",
+          "slot": "magichit2",
+          "source_frames": [
+            412,
+            471
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_413/DoAction.as",
+            "DefineSprite_764/frame_446/DoAction.as",
+            "DefineSprite_764/frame_458/DoAction.as"
+          ],
+          "exit": {
+            "frame": 458,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_458/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招3",
+          "slot": "magichit3",
+          "source_frames": [
+            472,
+            503
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_473/DoAction.as",
+            "DefineSprite_764/frame_478/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_485/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_491/DoAction.as"
+          ],
+          "exit": {
+            "frame": 491,
+            "target": "落",
+            "source_path": "DefineSprite_764/frame_491/DoAction.as",
+            "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招换",
+          "slot": "zhaoHuan",
+          "source_frames": [
+            951,
+            989
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_951/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_956/DoAction.as",
+            "DefineSprite_764/frame_981/DoAction.as"
+          ],
+          "exit": {
+            "frame": 981,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_981/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "瞬步",
+          "slot": "rush",
+          "source_frames": [
+            20,
+            39
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_21/DoAction.as",
+            "DefineSprite_764/frame_21/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_30/PlaceObject2_2_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_35/DoAction.as"
+          ],
+          "exit": {
+            "frame": 35,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_35/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍1",
+          "slot": "nornalhit",
+          "source_frames": [
+            170,
+            186
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_171/DoAction.as",
+            "DefineSprite_764/frame_172/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_176/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_182/DoAction.as"
+          ],
+          "exit": {
+            "frame": 182,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_182/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍2",
+          "slot": null,
+          "source_frames": [
+            187,
+            206
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_188/DoAction.as",
+            "DefineSprite_764/frame_190/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_194/PlaceObject2_16_38/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_205/DoAction.as"
+          ],
+          "exit": {
+            "frame": 205,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_205/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍3",
+          "slot": null,
+          "source_frames": [
+            207,
+            235
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_208/DoAction.as",
+            "DefineSprite_764/frame_211/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_217/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_234/DoAction.as"
+          ],
+          "exit": {
+            "frame": 234,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_234/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍4",
+          "slot": null,
+          "source_frames": [
+            236,
+            259
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_237/DoAction.as",
+            "DefineSprite_764/frame_238/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_246/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_256/DoAction.as"
+          ],
+          "exit": {
+            "frame": 256,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_256/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍技1",
+          "slot": "skill1",
+          "source_frames": [
+            260,
+            290
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_261/DoAction.as",
+            "DefineSprite_764/frame_273/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍技12",
+          "slot": null,
+          "source_frames": [
+            291,
+            321
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_292/DoAction.as",
+            "DefineSprite_764/frame_299/DoAction.as",
+            "DefineSprite_764/frame_313/DoAction.as"
+          ],
+          "exit": {
+            "frame": 313,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_313/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍技2",
+          "slot": "skill2",
+          "source_frames": [
+            322,
+            374
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_323/DoAction.as",
+            "DefineSprite_764/frame_327/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_333/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_349/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_350/DoAction.as",
+            "DefineSprite_764/frame_358/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_364/DoAction.as"
+          ],
+          "exit": {
+            "frame": 364,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_364/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "空中必杀",
+          "slot": "bishaAir",
+          "source_frames": [
+            null,
+            null
+          ],
+          "dispatch_status": "missing_timeline",
+          "source_event_paths": [],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "站立",
+          "slot": null,
+          "source_frames": [
+            1,
+            9
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1/DoAction.as",
+            "DefineSprite_764/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1/PlaceObject2_2_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_2/DoAction.as",
+            "DefineSprite_764/frame_8/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "胜利",
+          "slot": null,
+          "source_frames": [
+            1179,
+            1208
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1201/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "落",
+          "slot": null,
+          "source_frames": [
+            56,
+            71
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_56/DoAction.as",
+            "DefineSprite_764/frame_56/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_68/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "落2",
+          "slot": "jumpDown",
+          "source_frames": [
+            89,
+            114
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_101/DoAction.as",
+            "DefineSprite_764/frame_89/DoAction.as",
+            "DefineSprite_764/frame_89/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "落地",
+          "slot": null,
+          "source_frames": [
+            115,
+            126
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_116/DoAction.as",
+            "DefineSprite_764/frame_116/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_119/DoAction.as"
+          ],
+          "exit": {
+            "frame": 119,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_119/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "螺旋手里剑1",
+          "slot": null,
+          "source_frames": [
+            886,
+            903
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_764/frame_886/PlaceObject2_16_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_902/DoAction.as"
+          ],
+          "exit": {
+            "frame": 902,
+            "target": "螺旋手里剑1",
+            "source_path": "DefineSprite_764/frame_902/DoAction.as",
+            "source_sha256": "07df37d65c3ceaec8aabb381c543a9a32a3fb93f0e2e28b04fb586af310c0214"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "被打",
+          "slot": null,
+          "source_frames": [
+            1014,
+            1026
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1014/DoAction.as",
+            "DefineSprite_764/frame_1015/DoAction.as",
+            "DefineSprite_764/frame_1016/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1017/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1020/DoAction.as",
+            "DefineSprite_764/frame_1024/DoAction.as"
+          ],
+          "exit": {
+            "frame": 1024,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_1024/DoAction.as",
+            "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "走",
+          "slot": null,
+          "source_frames": [
+            10,
+            19
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_13/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "起身",
+          "slot": null,
+          "source_frames": [
+            1076,
+            1098
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1077/DoAction.as",
+            "DefineSprite_764/frame_1078/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1087/DoAction.as"
+          ],
+          "exit": {
+            "frame": 1087,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_1087/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "超必杀",
+          "slot": "bishaSuper",
+          "source_frames": [
+            750,
+            885
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_751/DoAction.as",
+            "DefineSprite_764/frame_752/DoAction.as",
+            "DefineSprite_764/frame_829/DoAction.as",
+            "DefineSprite_764/frame_832/DoAction.as",
+            "DefineSprite_764/frame_881/DoAction.as",
+            "DefineSprite_764/frame_884/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [
+            {
+              "action": "超必杀",
+              "frame": 752,
+              "source_path": "DefineSprite_764/frame_752/DoAction.as",
+              "source_sha256": "7b408187a6cb21ca4290e8ccfb0ff77cea92d27f846227056e463164387a528e",
+              "op": "super_start",
+              "kind": "cbsd",
+              "xg": "XG_cbs",
+              "face_label": "鸣人2"
+            },
+            {
+              "action": "超必杀",
+              "frame": 829,
+              "source_path": "DefineSprite_764/frame_829/DoAction.as",
+              "source_sha256": "b2c3199d47e043d6b41d1702b5817321f6847e22bef05066fd3563862a852677",
+              "op": "super_end",
+              "kind": "cbsw"
+            }
+          ],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "超必杀2",
+          "slot": null,
+          "source_frames": [
+            904,
+            950
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_904/DoAction.as",
+            "DefineSprite_764/frame_905/DoAction.as",
+            "DefineSprite_764/frame_906/DoAction.as",
+            "DefineSprite_764/frame_907/DoAction.as",
+            "DefineSprite_764/frame_908/DoAction.as",
+            "DefineSprite_764/frame_942/DoAction.as"
+          ],
+          "exit": {
+            "frame": 942,
+            "target": "击飞",
+            "source_path": "DefineSprite_764/frame_942/DoAction.as",
+            "source_sha256": "3892fa78d7dc5f0cd2a8f9c325d8f40be90d6327105f70d42f1c7b6de892d36f",
+            "yup": 5,
+            "htx": 15,
+            "jhp": 0,
+            "zl": 0
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳",
+          "slot": "jump",
+          "source_frames": [
+            40,
+            55
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_42/DoAction.as",
+            "DefineSprite_764/frame_42/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_50/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳2",
+          "slot": "jump",
+          "source_frames": [
+            72,
+            88
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_72/DoAction.as",
+            "DefineSprite_764/frame_72/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_83/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳招",
+          "slot": "airMagichit",
+          "source_frames": [
+            143,
+            154
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_144/DoAction.as",
+            "DefineSprite_764/frame_151/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳招2",
+          "slot": null,
+          "source_frames": [
+            155,
+            162
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_764/frame_155/DoAction.as",
+            "DefineSprite_764/frame_161/DoAction.as"
+          ],
+          "exit": {
+            "frame": 161,
+            "target": "跳招2",
+            "source_path": "DefineSprite_764/frame_161/DoAction.as",
+            "source_sha256": "8a5b02eafac4720540a08cd30a21c5af582eaa11f53b72a82ea7db8d3615ada6"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳招3",
+          "slot": null,
+          "source_frames": [
+            163,
+            169
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_168/DoAction.as"
+          ],
+          "exit": {
+            "frame": 168,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_168/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳砍",
+          "slot": "airhit",
+          "source_frames": [
+            127,
+            142
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_127/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_128/DoAction.as",
+            "DefineSprite_764/frame_134/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_138/DoAction.as"
+          ],
+          "exit": {
+            "frame": 138,
+            "target": "落2",
+            "source_path": "DefineSprite_764/frame_138/DoAction.as",
+            "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "防住",
+          "slot": null,
+          "source_frames": [
+            1002,
+            1013
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_1002/DoAction.as",
+            "DefineSprite_764/frame_1002/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1003/DoAction.as",
+            "DefineSprite_764/frame_1005/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1007/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_1011/DoAction.as"
+          ],
+          "exit": {
+            "frame": 1011,
+            "target": "站立",
+            "source_path": "DefineSprite_764/frame_1011/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "防御",
+          "slot": "defence",
+          "source_frames": [
+            990,
+            990
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "防御2",
+          "slot": "defence",
+          "source_frames": [
+            991,
+            1001
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_764/frame_991/DoAction.as",
+            "DefineSprite_764/frame_991/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_991/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_764/frame_998/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        }
+      ]
+    },
+    "yihu": {
+      "source": {
+        "fighter_slice": "data/slices/yihu-base.json",
+        "timeline": "data/slices/yihu-base.timeline.json",
+        "script_bundle": "scripts/fighter/yihu.json",
+        "timeline_symbol_id": 638
+      },
+      "labels": 35,
+      "wired_labels": 30,
+      "form_attack_counts": {
+        "1": 14,
+        "2": 15,
+        "3": 19
+      },
+      "gaps": [
+        {
+          "kind": "command",
+          "label": "失败",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "cinematic"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "开场",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "cinematic"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "招21",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "timeline"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "空中必杀",
+          "slot": "bishaAir",
+          "reason": "missing_timeline",
+          "has_timeline": false,
+          "contexts": [
+            "air",
+            "dash"
+          ]
+        },
+        {
+          "kind": "command",
+          "label": "胜利",
+          "slot": null,
+          "reason": "catalog_only",
+          "has_timeline": true,
+          "contexts": [
+            "cinematic"
+          ]
+        },
+        {
+          "kind": "predicate",
+          "slot": "hide",
+          "reason": "no_dispatch_label"
+        }
+      ],
+      "moves": [
+        {
+          "label": "万解",
+          "slot": "wankai",
+          "source_frames": [
+            962,
+            1073
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_1032/DoAction.as",
+            "DefineSprite_638/frame_1052/DoAction.as",
+            "DefineSprite_638/frame_1055/DoAction.as",
+            "DefineSprite_638/frame_1058/DoAction.as",
+            "DefineSprite_638/frame_963/DoAction.as",
+            "DefineSprite_638/frame_967/DoAction.as",
+            "DefineSprite_638/frame_992/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [
+            {
+              "action": "万解",
+              "frame": 967,
+              "source_path": "DefineSprite_638/frame_967/DoAction.as",
+              "source_sha256": "ae99ead61465f4997f54be9d1c1607c301dd15e96b9f776b79ededd62e286838",
+              "face_label": "一户万解",
+              "op": "show_face"
+            }
+          ],
+          "container_gotos": [
+            "DefineSprite_638/frame_1055/DoAction.as"
+          ],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "上必杀",
+          "slot": "bishaUP",
+          "source_frames": [
+            528,
+            581
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_529/DoAction.as",
+            "DefineSprite_638/frame_530/DoAction.as",
+            "DefineSprite_638/frame_542/DoAction.as",
+            "DefineSprite_638/frame_543/PlaceObject2_2_41/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_548/DoAction.as",
+            "DefineSprite_638/frame_562/DoAction.as",
+            "DefineSprite_638/frame_572/DoAction.as"
+          ],
+          "exit": {
+            "frame": 572,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_572/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [
+            {
+              "action": "上必杀",
+              "frame": 530,
+              "source_path": "DefineSprite_638/frame_530/DoAction.as",
+              "source_sha256": "1e6ac8a66e70756e83307e54131e414e32f6a7772fdec0b03232513e5b5b5551",
+              "op": "super_start",
+              "kind": "bsd",
+              "xg": "XG_bs",
+              "face_label": "一户1"
+            },
+            {
+              "action": "上必杀",
+              "frame": 542,
+              "source_path": "DefineSprite_638/frame_542/DoAction.as",
+              "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+              "op": "super_end",
+              "kind": "bsw"
+            }
+          ],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "击落地",
+          "slot": null,
+          "source_frames": [
+            763,
+            801
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_763/DoAction.as",
+            "DefineSprite_638/frame_763/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_777/DoAction.as",
+            "DefineSprite_638/frame_793/DoAction.as"
+          ],
+          "exit": {
+            "frame": 793,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_793/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "击飞",
+          "slot": null,
+          "source_frames": [
+            751,
+            762
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_751/DoAction.as",
+            "DefineSprite_638/frame_752/DoAction.as",
+            "DefineSprite_638/frame_753/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_759/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "失败",
+          "slot": null,
+          "source_frames": [
+            932,
+            961
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_638/frame_952/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "开场",
+          "slot": null,
+          "source_frames": [
+            822,
+            901
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_638/frame_823/DoAction.as",
+            "DefineSprite_638/frame_825/DoAction.as",
+            "DefineSprite_638/frame_883/DoAction.as"
+          ],
+          "exit": {
+            "frame": 883,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_883/DoAction.as",
+            "source_sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "必杀",
+          "slot": "bisha",
+          "source_frames": [
+            446,
+            527
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_447/DoAction.as",
+            "DefineSprite_638/frame_450/DoAction.as",
+            "DefineSprite_638/frame_463/DoAction.as",
+            "DefineSprite_638/frame_464/PlaceObject2_2_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_467/DoAction.as",
+            "DefineSprite_638/frame_491/DoAction.as",
+            "DefineSprite_638/frame_521/DoAction.as"
+          ],
+          "exit": {
+            "frame": 521,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_521/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [
+            {
+              "action": "必杀",
+              "frame": 450,
+              "source_path": "DefineSprite_638/frame_450/DoAction.as",
+              "source_sha256": "1e6ac8a66e70756e83307e54131e414e32f6a7772fdec0b03232513e5b5b5551",
+              "op": "super_start",
+              "kind": "bsd",
+              "xg": "XG_bs",
+              "face_label": "一户1"
+            },
+            {
+              "action": "必杀",
+              "frame": 463,
+              "source_path": "DefineSprite_638/frame_463/DoAction.as",
+              "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+              "op": "super_end",
+              "kind": "bsw"
+            }
+          ],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招1",
+          "slot": "magichit1",
+          "source_frames": [
+            320,
+            356
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_321/DoAction.as",
+            "DefineSprite_638/frame_326/DoAction.as",
+            "DefineSprite_638/frame_327/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_342/DoAction.as",
+            "DefineSprite_638/frame_350/DoAction.as"
+          ],
+          "exit": {
+            "frame": 350,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_350/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招2",
+          "slot": "magichit2",
+          "source_frames": [
+            357,
+            370
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_358/DoAction.as",
+            "DefineSprite_638/frame_359/DoAction.as",
+            "DefineSprite_638/frame_359/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招21",
+          "slot": null,
+          "source_frames": [
+            371,
+            413
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_390/DoAction.as"
+          ],
+          "exit": {
+            "frame": 390,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_390/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招3",
+          "slot": "magichit3",
+          "source_frames": [
+            414,
+            445
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_415/DoAction.as",
+            "DefineSprite_638/frame_419/DoAction.as",
+            "DefineSprite_638/frame_421/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_429/DoAction.as",
+            "DefineSprite_638/frame_429/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_437/DoAction.as"
+          ],
+          "exit": {
+            "frame": 437,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_437/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "招换",
+          "slot": "zhaoHuan",
+          "source_frames": [
+            652,
+            713
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_657/DoAction.as",
+            "DefineSprite_638/frame_682/DoAction.as"
+          ],
+          "exit": {
+            "frame": 682,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_682/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "瞬步",
+          "slot": "rush",
+          "source_frames": [
+            20,
+            39
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_20/DoAction.as",
+            "DefineSprite_638/frame_21/DoAction.as",
+            "DefineSprite_638/frame_21/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_32/PlaceObject2_2_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_35/DoAction.as"
+          ],
+          "exit": {
+            "frame": 35,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_35/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍1",
+          "slot": "nornalhit",
+          "source_frames": [
+            173,
+            189
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_173/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_174/DoAction.as",
+            "DefineSprite_638/frame_175/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_181/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_185/DoAction.as"
+          ],
+          "exit": {
+            "frame": 185,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_185/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍2",
+          "slot": null,
+          "source_frames": [
+            190,
+            209
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_191/DoAction.as",
+            "DefineSprite_638/frame_192/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_198/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_208/DoAction.as"
+          ],
+          "exit": {
+            "frame": 208,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_208/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍3",
+          "slot": null,
+          "source_frames": [
+            210,
+            231
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_211/DoAction.as",
+            "DefineSprite_638/frame_212/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_230/DoAction.as"
+          ],
+          "exit": {
+            "frame": 230,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_230/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍技1",
+          "slot": "skill1",
+          "source_frames": [
+            232,
+            283
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_233/DoAction.as",
+            "DefineSprite_638/frame_246/DoAction.as",
+            "DefineSprite_638/frame_247/DoAction.as",
+            "DefineSprite_638/frame_248/DoAction.as",
+            "DefineSprite_638/frame_249/DoAction.as",
+            "DefineSprite_638/frame_258/DoAction.as",
+            "DefineSprite_638/frame_278/DoAction.as"
+          ],
+          "exit": {
+            "frame": 278,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_278/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "砍技2",
+          "slot": "skill2",
+          "source_frames": [
+            284,
+            319
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_285/DoAction.as",
+            "DefineSprite_638/frame_296/DoAction.as",
+            "DefineSprite_638/frame_300/DoAction.as",
+            "DefineSprite_638/frame_305/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_312/DoAction.as"
+          ],
+          "exit": {
+            "frame": 312,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_312/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "空中必杀",
+          "slot": "bishaAir",
+          "source_frames": [
+            null,
+            null
+          ],
+          "dispatch_status": "missing_timeline",
+          "source_event_paths": [],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "站立",
+          "slot": null,
+          "source_frames": [
+            1,
+            9
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_1/DoAction.as",
+            "DefineSprite_638/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_1/PlaceObject2_2_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_2/DoAction.as",
+            "DefineSprite_638/frame_8/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "胜利",
+          "slot": null,
+          "source_frames": [
+            902,
+            931
+          ],
+          "dispatch_status": "catalog_only",
+          "source_event_paths": [
+            "DefineSprite_638/frame_924/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "落",
+          "slot": null,
+          "source_frames": [
+            56,
+            71
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_56/DoAction.as",
+            "DefineSprite_638/frame_56/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_68/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "落2",
+          "slot": "jumpDown",
+          "source_frames": [
+            89,
+            114
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_101/DoAction.as",
+            "DefineSprite_638/frame_89/DoAction.as",
+            "DefineSprite_638/frame_89/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "落地",
+          "slot": null,
+          "source_frames": [
+            115,
+            126
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_116/DoAction.as",
+            "DefineSprite_638/frame_116/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_119/DoAction.as"
+          ],
+          "exit": {
+            "frame": 119,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_119/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "被打",
+          "slot": null,
+          "source_frames": [
+            738,
+            750
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_738/DoAction.as",
+            "DefineSprite_638/frame_739/DoAction.as",
+            "DefineSprite_638/frame_740/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_741/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_744/DoAction.as",
+            "DefineSprite_638/frame_748/DoAction.as"
+          ],
+          "exit": {
+            "frame": 748,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_748/DoAction.as",
+            "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "走",
+          "slot": null,
+          "source_frames": [
+            10,
+            19
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_13/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "起身",
+          "slot": null,
+          "source_frames": [
+            802,
+            821
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_803/DoAction.as",
+            "DefineSprite_638/frame_804/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_813/DoAction.as"
+          ],
+          "exit": {
+            "frame": 813,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_813/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "超必杀",
+          "slot": "bishaSuper",
+          "source_frames": [
+            582,
+            651
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_583/DoAction.as",
+            "DefineSprite_638/frame_585/DoAction.as",
+            "DefineSprite_638/frame_601/DoAction.as",
+            "DefineSprite_638/frame_602/PlaceObject2_2_56/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_606/DoAction.as",
+            "DefineSprite_638/frame_631/DoAction.as",
+            "DefineSprite_638/frame_639/DoAction.as"
+          ],
+          "exit": {
+            "frame": 639,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_639/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [
+            {
+              "action": "超必杀",
+              "frame": 585,
+              "source_path": "DefineSprite_638/frame_585/DoAction.as",
+              "source_sha256": "13aba2481911a1e022ff1c8d4848da46bd8631e48a81659d815782a83972bec7",
+              "op": "super_start",
+              "kind": "cbsd",
+              "xg": "XG_cbs",
+              "face_label": "一户2"
+            },
+            {
+              "action": "超必杀",
+              "frame": 601,
+              "source_path": "DefineSprite_638/frame_601/DoAction.as",
+              "source_sha256": "ef5d0335d54a16e73e60ca8c281b8e2697660a15c5dc7f246d984922bdcdb993",
+              "op": "super_end",
+              "kind": "cbsw"
+            }
+          ],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳",
+          "slot": "jump",
+          "source_frames": [
+            40,
+            55
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_42/DoAction.as",
+            "DefineSprite_638/frame_42/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_50/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳2",
+          "slot": "jump",
+          "source_frames": [
+            72,
+            88
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_72/DoAction.as",
+            "DefineSprite_638/frame_72/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_83/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳招",
+          "slot": "airMagichit",
+          "source_frames": [
+            143,
+            172
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_143/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_144/DoAction.as",
+            "DefineSprite_638/frame_150/DoAction.as",
+            "DefineSprite_638/frame_150/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_165/DoAction.as"
+          ],
+          "exit": {
+            "frame": 165,
+            "target": "落2",
+            "source_path": "DefineSprite_638/frame_165/DoAction.as",
+            "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "跳砍",
+          "slot": "airhit",
+          "source_frames": [
+            127,
+            142
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_127/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_128/DoAction.as",
+            "DefineSprite_638/frame_134/DoAction.as",
+            "DefineSprite_638/frame_134/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_138/DoAction.as"
+          ],
+          "exit": {
+            "frame": 138,
+            "target": "落2",
+            "source_path": "DefineSprite_638/frame_138/DoAction.as",
+            "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "防住",
+          "slot": null,
+          "source_frames": [
+            726,
+            737
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_726/DoAction.as",
+            "DefineSprite_638/frame_726/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_727/DoAction.as",
+            "DefineSprite_638/frame_729/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_731/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_735/DoAction.as"
+          ],
+          "exit": {
+            "frame": 735,
+            "target": "站立",
+            "source_path": "DefineSprite_638/frame_735/DoAction.as",
+            "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          },
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "防御",
+          "slot": "defence",
+          "source_frames": [
+            714,
+            714
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        },
+        {
+          "label": "防御2",
+          "slot": "defence",
+          "source_frames": [
+            715,
+            725
+          ],
+          "dispatch_status": "wired",
+          "source_event_paths": [
+            "DefineSprite_638/frame_715/DoAction.as",
+            "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_715/PlaceObject2_2_56/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "DefineSprite_638/frame_722/DoAction.as"
+          ],
+          "exit": null,
+          "super_events": [],
+          "container_gotos": [],
+          "original_same_input_acceptance": "not_recorded"
+        }
+      ]
+    }
+  }
+}

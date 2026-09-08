@@ -9,6 +9,23 @@ import shutil
 from pathlib import Path
 
 
+def _timeline_start_sound_ids(timeline: dict) -> set[int]:
+    return {
+        int(event["sound_id"])
+        for frame in timeline.get("frames", [])
+        for event in frame.get("events", [])
+        if event.get("type") == "start_sound" and "sound_id" in event
+    }
+
+
+def _workspace_sound(workspace: Path, sound_id: int) -> Path | None:
+    matches = sorted(workspace.glob(f"*_assets/sounds/{sound_id}.mp3"))
+    if matches:
+        return matches[0]
+    fallback = workspace / "sounds" / f"{sound_id}.mp3"
+    return fallback if fallback.is_file() else None
+
+
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -44,8 +61,16 @@ def materialize(
         external_file = definition.get("external_file")
         if external_file is None:
             continue
+        # images-png holds JPEXS PNG exports with the original alpha merged
+        # back in; sound ids share the numbering space, so only bitmaps may
+        # fall back to it.
         combined_png = workspace / "images-png" / f"{definition['character_id']}.png"
-        source = combined_png if combined_png.is_file() else workspace / external_file
+        is_bitmap = Path(external_file).suffix.lower() in (".png", ".jpg", ".jpeg")
+        source = (
+            combined_png
+            if is_bitmap and combined_png.is_file()
+            else workspace / external_file
+        )
         if not source.is_file():
             raise FileNotFoundError(source)
         destination = output_dir / f"{definition['character_id']}{source.suffix.lower()}"
@@ -54,6 +79,25 @@ def materialize(
             {
                 "character_id": definition["character_id"],
                 "source_external_file": external_file,
+                "materialized_source": source.relative_to(workspace).as_posix(),
+                "path": destination.name,
+                "bytes": destination.stat().st_size,
+                "sha256": file_sha256(destination),
+            }
+        )
+    copied_ids = {int(item["character_id"]) for item in assets}
+    for sound_id in sorted(_timeline_start_sound_ids(timeline)):
+        if sound_id in copied_ids:
+            continue
+        source = _workspace_sound(workspace, sound_id)
+        if source is None:
+            continue
+        destination = output_dir / f"{sound_id}{source.suffix.lower()}"
+        shutil.copyfile(source, destination)
+        assets.append(
+            {
+                "character_id": sound_id,
+                "source_external_file": source.relative_to(workspace).as_posix(),
                 "materialized_source": source.relative_to(workspace).as_posix(),
                 "path": destination.name,
                 "bytes": destination.stat().st_size,

@@ -7,8 +7,10 @@ extends RefCounted
 
 
 static func resolve_pair(first: FighterRuntime, second: FighterRuntime) -> void:
-	var first_contact := first.attack_contact(second)
-	var second_contact := second.attack_contact(first)
+	# Source checkHit() returns null when !gameRunning() (root zhanting or
+	# opponent.sw). Sample both sides first so simultaneous hits stay unordered.
+	var first_contact := first.attack_contact(second) if second._game_running() else {}
+	var second_contact := second.attack_contact(first) if first._game_running() else {}
 	if not first_contact.is_empty():
 		first.apply_attack_contact(first_contact, second)
 	if not second_contact.is_empty():
@@ -16,6 +18,9 @@ static func resolve_pair(first: FighterRuntime, second: FighterRuntime) -> void:
 
 
 static func resolve_body_pair(first: FighterRuntime, second: FighterRuntime) -> void:
+	# Source on_enterframe returns before body pressure when `_root.zhanting`.
+	if first.root_zhanting or second.root_zhanting:
+		return
 	# Each source player clip runs the same pressure routine. Preserve p1 then
 	# p2 evaluation so the second fighter observes displacement from the first.
 	first.resolve_body_collision(second)
@@ -28,6 +33,11 @@ static func resolve_helpers(helpers: Array, fighters: Array) -> void:
 			continue
 		for fighter in fighters:
 			if fighter == helper.owner_fighter:
+				continue
+			# Source defender.checkHit() returns before fighter, helper, and stage
+			# lookup when gameRunning() is false. A stopped helper can retain an
+			# active display-list hitbox, but it must not deal damage while paused.
+			if not fighter._game_running():
 				continue
 			var contact: Dictionary = helper.attack_contact(fighter)
 			if not contact.is_empty():

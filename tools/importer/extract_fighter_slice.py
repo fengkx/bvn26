@@ -19,8 +19,10 @@ from typing import Any
 TOOLS_DIR = Path(__file__).resolve().parents[1]
 REPO_ROOT = TOOLS_DIR.parent
 sys.path.insert(0, str(TOOLS_DIR))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from inspect_swf import inspect  # noqa: E402
+from compile_hit_receive import extract_attacks_by_form  # noqa: E402
 
 
 COMMON_ACTION_GROUPS = {
@@ -224,6 +226,7 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
     # attack table. Limiting this to the first combo and special made the
     # extended timelines visible but unable to hit anything.
     hit_parameters = dict(sorted(all_hit_parameters.items()))
+    attacks_by_form = extract_attacks_by_form(root_init["source"])
 
     shared_paths = ["DefineSprite_16/frame_1/DoAction.as", "DefineSprite_2/frame_1/DoAction.as"]
     shared_scripts = [
@@ -253,6 +256,7 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
         "hit_parameters": {
             "source_path": root_init["path"],
             "attacks": hit_parameters,
+            "attacks_by_form": attacks_by_form,
         },
         "shared_control_scripts": shared_scripts,
         "timeline_scripts": timeline_scripts,

@@ -61,36 +61,10 @@ KEY_TO_BUTTON = {
     "右": "right",
 }
 
-# First-match order currently used by FighterRuntime.stand. catalog_only
-# slots stay in the table but are not auto-dispatched.
-STAND_PRIORITY = {
-    "bishaUP": 10,
-    "bishaSuper": 11,
-    "bisha": 12,
-    "zhaoHuan": 20,
-    "magichit3": 30,
-    "magichit2": 31,
-    "magichit1": 32,
-    "skill2": 40,
-    "skill1": 41,
-    "nornalhit": 42,
-    "rush": 50,
-    "wankai": 55,
-    "jump": 60,
-    "defence": 70,
-}
-
-AIR_PRIORITY = {
-    "bishaAir": 10,
-    "airMagichit": 20,
-    "airhit": 30,
-}
-
-GUARD_PRIORITY = {
-    "bishaSuper": 10,
-    "skill1": 20,
-    "magichit2": 30,
-}
+# Source doAllAction / onDefence / onJumping are sequential if+goto.
+# dispatch_order is the 0-based index in that function.
+# Stand/air/dash consume the first leaving goto: the 站立 helper is removed.
+# Guard later-wins: onDefence pins 防御2 (same clip) then keeps going.
 
 DEFAULT_ENERGY = {
     "bisha": 100,
@@ -137,6 +111,7 @@ WIRED_LABELS = {
     "跳砍",
     "跳招",
     "跳招3",
+    "砍4",
     "防御",
     "防御2",
     "防住",
@@ -146,12 +121,14 @@ WIRED_LABELS = {
     "起身",
 }
 
-WIRED_CANCELS = {
-    ("砍1", "砍2"),
-    ("砍2", "砍3"),
-    ("砍技1", "砍技12"),
-    ("跳招", "跳招3"),
-    ("螺旋手里剑1", "超必杀2"),
+# Already consumed by dedicated runtime paths. Generic cancel dispatch
+# must not also fire these or it double-jumps / breaks guard pin.
+HANDLED_ELSEWHERE_CANCELS = {
+    ("防御2", "砍技1"),
+    ("防御2", "招2"),
+    ("防御2", "超必杀"),
+    ("防御2", "防御2"),
+    ("防住", "防御2"),
 }
 
 KIS_RE = re.compile(
@@ -287,6 +264,8 @@ def build_command_catalog(
                 "contexts": [],
                 "handler": HANDLERS.get(label, "start_action"),
                 "dispatch_priority": None,
+                "dispatch_order": None,
+                "dispatch_orders": {},
                 "energy_min": 0,
                 "source_dispatch": [],
             }
@@ -296,7 +275,7 @@ def build_command_catalog(
         body = extract_function(source, func_name)
         if not body:
             continue
-        for match in IF_GOTO_RE.finditer(body):
+        for order, match in enumerate(IF_GOTO_RE.finditer(body)):
             pred = match["pred"]
             label = match["label"]
             slot_targets[(context, pred)] = label
@@ -312,6 +291,8 @@ def build_command_catalog(
                     "contexts": [context],
                     "handler": HANDLERS.get(label, "start_action"),
                     "dispatch_priority": None,
+                    "dispatch_order": order,
+                    "dispatch_orders": {context: order},
                     "energy_min": predicates[pred]["energy_min"],
                     "source_dispatch": [],
                 }
@@ -322,13 +303,14 @@ def build_command_catalog(
             entry["energy_min"] = predicates[pred]["energy_min"]
             if func_name not in entry["source_dispatch"]:
                 entry["source_dispatch"].append(func_name)
-            priority = {
-                "stand": STAND_PRIORITY,
-                "air": AIR_PRIORITY,
-                "guard": GUARD_PRIORITY,
-            }.get(context, {}).get(pred)
-            if priority is not None:
-                entry["dispatch_priority"] = priority
+            # First function per context keeps the order (doAllAction, not doStand).
+            if context in ("stand", "air", "guard"):
+                orders = entry.setdefault("dispatch_orders", {})
+                if context not in orders:
+                    orders[context] = order
+                if entry.get("dispatch_order") is None:
+                    entry["dispatch_order"] = order
+                    entry["dispatch_priority"] = order
 
     entries = []
     for label, entry in labels.items():
@@ -344,7 +326,8 @@ def build_command_catalog(
     for script in timeline_scripts:
         if script.get("kind") != "clip_action":
             continue
-        for match in IF_GOTO_RE.finditer(script["source"]):
+        clip_matches = list(IF_GOTO_RE.finditer(script["source"]))
+        for order, match in enumerate(clip_matches):
             origin = script["action"]
             target = match["label"]
             pred = match["pred"]
@@ -352,7 +335,7 @@ def build_command_catalog(
             if key in seen_cancels:
                 continue
             seen_cancels.add(key)
-            wired = (origin, target) in WIRED_CANCELS
+            handled = (origin, target) in HANDLED_ELSEWHERE_CANCELS
             cancel_windows.append(
                 {
                     "from": origin,
@@ -361,7 +344,10 @@ def build_command_catalog(
                     "combo": "true" in match["args"],
                     "start_frame": script["frame"],
                     "kind": "input",
-                    "implementation": "wired" if wired else "catalog_only",
+                    "dispatch_order": order,
+                    "implementation": (
+                        "handled_elsewhere" if handled else "wired"
+                    ),
                     "source_path": script["path"],
                     "source_sha256": script["source_sha256"],
                 }
@@ -375,7 +361,7 @@ def build_command_catalog(
             if field not in window:
                 continue
             target = str(window[field])
-            wired = (origin, target) in WIRED_CANCELS
+            handled = (origin, target) in HANDLED_ELSEWHERE_CANCELS
             cancel_windows.append(
                 {
                     "from": origin,
@@ -385,7 +371,9 @@ def build_command_catalog(
                     "start_frame": window["start_frame"],
                     "end_frame": window.get("end_frame"),
                     "kind": kind,
-                    "implementation": "wired" if wired else "catalog_only",
+                    "implementation": (
+                        "handled_elsewhere" if handled else "wired"
+                    ),
                     "source_path": window.get("source_path"),
                     "source_sha256": window.get("source_sha256"),
                 }
@@ -408,7 +396,7 @@ def build_command_catalog(
                 }
             )
     for window in cancel_windows:
-        if window["implementation"] != "wired":
+        if window["implementation"] == "catalog_only":
             gaps.append(
                 {
                     "kind": "cancel",

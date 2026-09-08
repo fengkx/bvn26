@@ -12,9 +12,7 @@
   },
   "start_frame": 2,
   "end_frame": 85,
-  "hide_frames": [
-    85
-  ],
+  "hide_frames": [],
   "attacks": {
     "atm1": {
       "damage": 30,
@@ -25,6 +23,51 @@
       "reaction_label": "被打"
     }
   },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 16,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_16/DoAction.as"
+    },
+    {
+      "frame": 38,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_38/DoAction.as"
+    },
+    {
+      "frame": 44,
+      "op": "shine",
+      "color": 9461816,
+      "source_path": "frame_44/DoAction.as"
+    },
+    {
+      "frame": 85,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_85/DoAction.as"
+    }
+  ],
+  "clip_load_events": [
+    {
+      "frame": 44,
+      "op": "aim_opponent_x",
+      "character_id": 48,
+      "depth": 2,
+      "source_path": "frame_44/PlaceObject2_48_2/CLIPACTIONRECORD onClipEvent(load).as"
+    }
+  ],
   "drain_events": [],
   "indexed_source_events": [
     {

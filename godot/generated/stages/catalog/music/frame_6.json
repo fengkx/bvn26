@@ -1,0 +1,58 @@
+{
+  "format": "bvn26-stage-music-v1",
+  "source": {
+    "load_sound": "scripts/main.json :: DefineSprite_1900/frame_1/DoAction.as loadSound()",
+    "start_game": "scripts/main.json :: frame_8/DoAction.as startGame()",
+    "music_dir": "music/"
+  },
+  "selection": {
+    "p2selt": "一护",
+    "cur_stage": "静涎亭",
+    "is_naruto": false,
+    "steps": [
+      {
+        "random_below": 0.8,
+        "file": "ichigo.mp3",
+        "source": "fighter_catalog.一护.music"
+      },
+      {
+        "random_below": 0.5,
+        "file": "bleach.mp3",
+        "source": "bleachMusic"
+      },
+      {
+        "otherwise": true,
+        "file": "village.mp3",
+        "source": "map_catalog.静涎亭.music"
+      }
+    ]
+  },
+  "playback": {
+    "start_offset_seconds": 0,
+    "loops": 999,
+    "volume_percent": 80
+  },
+  "files": [
+    {
+      "file": "bleach.mp3",
+      "source_path": "game/music/bleach.mp3",
+      "path": "bleach.mp3",
+      "bytes": 179404,
+      "sha256": "ebe1c7363cbd8159f1efad4b92b618509931c5438870a6434cce2148d15c097e"
+    },
+    {
+      "file": "ichigo.mp3",
+      "source_path": "game/music/ichigo.mp3",
+      "path": "ichigo.mp3",
+      "bytes": 259623,
+      "sha256": "e11ecd653d29015267182404f0d6c241219d0dae09a98ad6c68de931da76cfe4"
+    },
+    {
+      "file": "village.mp3",
+      "source_path": "game/music/village.mp3",
+      "path": "village.mp3",
+      "bytes": 299718,
+      "sha256": "cec97a7365c41bc8297b2fa0984f8bd72285e9394d27fd50303dee1397b4e2d1"
+    }
+  ]
+}

@@ -4,7 +4,9 @@
 `game/main.swf` 的 Flash 体验，不是「手感接近」或「像格斗游戏该有的样子」。
 
 查阅路径见 [REVERSE_ENGINEERING.md](REVERSE_ENGINEERING.md)。对照与发布门槛见
-[VALIDATION.md](VALIDATION.md)。本页约束**怎么写代码**；验收页约束**怎么证明对**。
+[VALIDATION.md](VALIDATION.md)。重击、破防、连击次数、命中火花、防御挡住和必杀黑底/立绘横幅的逐步落地见
+[HIT_RECEIVE_SOP.md](HIT_RECEIVE_SOP.md)。本页约束**怎么写代码**；验收页约束**怎么证明对**；
+受击链 SOP 约束**先编什么、测什么、运行时许不许可什么**。
 
 ## 原版是什么
 
@@ -57,6 +59,10 @@ BVN 2.6 的招式不是「招式名 + 物理公式」。运行语义来自：
 | 按角色在 GDScript 里写特殊位移/高度/伤害 | 先加编译规则，再让运行时消费通用字段 |
 | 用 schema / 中间 JSON 合法代替行为验收 | schema 只证明字段形状 |
 | 改阈值、改基准输出来消差异 | 保留 tape 与阈值；差异要回到源 |
+| 对调 Flash `rotateSkew0`/`rotateSkew1`，或特效盖住就当命中 | 按 JPEXS `Matrix.transform` 建变换；画面斩击和 `*atm` 常是不同剪辑 |
+| 按动作名锁死同名 `*atm` | `getHitObj` 无已命中标记；新 `PlaceObject` 可再中，须在显示列表变化时清记录 |
+| 把 `_parent._x = opponent._x` 写成前冲，或跳上去也放大框必中 | 编 `body_warps`：832 只闪 X，同一水平面才能让 `*atm` 碰到 `bdmn`。面向/`bdmn._width` 编成 `xscale_*` 分支，不得按角色猜像素，也不得把其他形态 Sprite 编进当前切片 |
+| 给「被打」加 `zhongli`，或手写抓取绑死对手 | `beidax` 非击飞不加重力；`cbs2` 的 `yup` 悬停，884 闪到对手身边；最后 `cbsatm` 才击飞对手 |
 
 已发生的反面例子（不得重演）：
 
@@ -64,6 +70,10 @@ BVN 2.6 的招式不是「招式名 + 物理公式」。运行语义来自：
   源是 step 1 七次 `14+13+…+8 = 77`，低于墙顶 78.65。
 - 鸣人下+J：`砍技1`（260–290）没有终端脚本，空挥也进 `砍技12` 炸开；
   `kj10atm` 命中只是提前 `gotoAndPlay("砍技12")`。把 290 当成回站立，就会「有时不炸」。
+- 大招受击：一护 `sbsatm`/`cbsatm`、鸣人 `cbs3atm` 是 `scale=0` 的旋转框。对调旋转分量后刀口收到身后，特效盖住对手也不结算。无旋转的 `k1atm` 测不出这个问题。细则见 [HIT_RECEIVE_SOP.md](HIT_RECEIVE_SOP.md) 第 1.2 节。
+- 鸣人下+I：`超必杀@832` 是 `_parent._x = opponent._x`，不是前冲。同一水平面才能让 `cbs1atm` 碰到 `bdmn`；跳到上面 Y 仍差一截。不得放大框或按角色补高度。
+- 下+I 击中后带着走：源不是抓取。`beidax` 在「被打」里不加 `zhongli`，`cbs2` 把人抬住，884 攻击方闪到 `对手._y-40`。给「被打」加重力会提前落地，最后 `cbsatm@932` 击飞对手对不上。攻击方 942 自跳「击飞」不是对手受击。`cbsd@752`–`cbsw@829` 已按源停对手播放头；`blackMu`/`ts_face` 跟编译字段走。
+- 手测「还能漏」不能证明该放大框。MATRIX、实例寿命、只抄 X 的闪现、`cbsd` 停对手，缺哪条补哪条编译/解释；没有步骤 E 轨迹不得称一比一。
 
 ## 编译优先于手写
 
@@ -71,8 +81,13 @@ BVN 2.6 的招式不是「招式名 + 物理公式」。运行语义来自：
 `data/actions/*` 与 `godot/generated/fighters/*/combat.json`。运行时只解释已编译字段。
 
 当前由源编译、禁止改回角色硬编码的字段包括：`motion_windows`、`jump_windows`、
-`action_exits`、`timeline_fallthroughs`、`presentation_events`、`command_catalog`、
-`hit_priority`。缺字段时补编译器，不要在 `FighterRuntime` 里写 `if fighter == "鸣人"`。
+`action_exits`、`timeline_fallthroughs`、`presentation_events`、`clip_placements`、
+`body_warps`、
+`command_catalog`、
+`hit_priority`。受击链落地后还必须由源编译、禁止手写的字段见
+[HIT_RECEIVE_SOP.md](HIT_RECEIVE_SOP.md) 步骤 B（`attacks_by_form`、`hits_reset_frames`、
+`on_be_hit_frames`、`hit_fx`、`showFace`/`bsd` 等）。缺字段时补编译器，不要在
+`FighterRuntime` 里写 `if fighter == "鸣人"`。
 
 重建命令见 [OPERATIONS.md](OPERATIONS.md)。改编译器或契约后跑
 `tools/verify.py`、`tools/check_handoff.py`；契约变更加跑 `tools/validate_contracts.py`。
@@ -81,11 +96,11 @@ BVN 2.6 的招式不是「招式名 + 物理公式」。运行语义来自：
 
 Godot `combat_smoke.gd` 与 `tools/tests` 的断言对象是源行为，不是当前实现的形状。
 
-- 通过：一跳顶点 77 且单跳落不回 `ban2`；空挥 `砍技1` 仍进 `砍技12` 并在 292 闪光、313 回站立。
-- 不通过：为了让现有错误实现变绿而改期望值、放宽阈值、删除断言。
+- 通过：一跳顶点 77 且单跳落不回 `ban2`；空挥 `砍技1` 仍进 `砍技12` 并在 292 闪光、313 回站立；旋转 `*atm` 在身前相交并进源 `htype`。
+- 不通过：为了让现有错误实现变绿而改期望值、放宽阈值、删除断言。只测轴对齐的 `k1atm`/`bs1atm` 就宣称大招受击完成。
 
 对照顺序（与 [VALIDATION.md](VALIDATION.md) 一致，不可只看最后血量）：
 
-输入锁存 → 动作与源帧 → 创建/移除的区域 → 碰撞候选顺序 → 伤害/状态/计时 → 位置 → 视听事件。
+输入锁存 → 动作与源帧 → 创建/移除的区域 → 碰撞候选顺序 → 伤害/状态/`hits`/破防 → 位置 → 视听（火花、顿帧、闪光、连击板、`bar2`、黑底、立绘横幅）。
 
 没有固定输入的原版逐帧轨迹时，相关 M2/M3 任务保持未完成。截图和「能玩」只证明开发路径可运行。

@@ -5,7 +5,8 @@ extends Node2D
 @export var initial_action: String = "砍1"
 @export var initial_frame: int = 1
 @export var autoplay: bool = true
-@export var show_collision_shapes: bool = true
+@export var show_collision_shapes: bool = false
+@export var preserve_root_depths: bool = false
 
 var _timeline: Dictionary
 var _fighter: Dictionary
@@ -17,6 +18,25 @@ var _action_end: int
 var _current_frame: int
 var _instance_local_offsets: Dictionary = {}
 var _instance_local_frames: Dictionary = {}
+var hidden_instance_names: PackedStringArray = []
+# Source StartSound on the current timeline frame. Hit sparks use the
+# same SOUNDENVELOPE scale in hit_effect_runtime.gd.
+const SOUND_ENVELOPE_MAX := 32768.0
+var last_sound_ids: Array[int] = []
+var _sound_played_frame: int = -1
+var _cxform_shader: Shader
+
+# Flash CXFORMWITHALPHA: src * (mult/256) + add. Add is 0-255 in the XML.
+const CXFORM_SHADER := """
+shader_type canvas_item;
+uniform vec4 cx_mul = vec4(1.0);
+uniform vec4 cx_add = vec4(0.0);
+
+void fragment() {
+	vec4 tex = texture(TEXTURE, UV);
+	COLOR = vec4(tex.rgb * cx_mul.rgb + cx_add.rgb * tex.a, tex.a * cx_mul.a);
+}
+"""
 
 
 func _ready() -> void:
@@ -223,6 +243,11 @@ func unnamed_sprite_local_frame(character_id: int) -> int:
 	return 0
 
 
+func set_hidden_instances(names: PackedStringArray) -> void:
+	hidden_instance_names = names
+	refresh_display()
+
+
 func refresh_display() -> void:
 	_render_frame()
 
@@ -275,14 +300,65 @@ func _read_json(path: String) -> Dictionary:
 
 func _render_frame() -> void:
 	for child in get_children():
+		if child.name == "SoundLayer":
+			continue
 		child.queue_free()
 	if not _frames.has(_current_frame):
 		return
 	var frame: Dictionary = _frames[_current_frame]
 	var wrapper := _wrapper_transform()
 	for placement: Dictionary in frame["display_list"]:
-		_render_placement(placement, wrapper, 1.0, 0, _current_frame, 0)
+		_render_placement(placement, wrapper, 1.0, int(placement["depth"]) if preserve_root_depths else 0, _current_frame, 0)
+	_play_start_sounds()
 	queue_redraw()
+
+
+func _sound_layer() -> Node:
+	var layer := get_node_or_null("SoundLayer")
+	if layer == null:
+		layer = Node.new()
+		layer.name = "SoundLayer"
+		add_child(layer)
+	return layer
+
+
+func _play_start_sounds() -> void:
+	if _sound_played_frame == _current_frame:
+		return
+	_sound_played_frame = _current_frame
+	last_sound_ids.clear()
+	if not _frames.has(_current_frame):
+		return
+	for event: Dictionary in _frames[_current_frame].get("events", []):
+		if str(event.get("type", "")) != "start_sound":
+			continue
+		var sound_id := int(event.get("sound_id", -1))
+		if not _assets.has(sound_id):
+			continue
+		var stream: AudioStream = load("%s/%s" % [fighter_directory, _assets[sound_id]])
+		if stream == null:
+			continue
+		var player := AudioStreamPlayer.new()
+		player.stream = stream
+		player.volume_db = _sound_volume_db(event)
+		player.finished.connect(player.queue_free)
+		_sound_layer().add_child(player)
+		player.play()
+		last_sound_ids.append(sound_id)
+
+
+func _sound_volume_db(event: Dictionary) -> float:
+	var envelope: Array = event.get("envelope", [])
+	if envelope.is_empty():
+		return 0.0
+	var record: Dictionary = envelope[0]
+	var level := (
+		float(record.get("left_level", SOUND_ENVELOPE_MAX))
+		+ float(record.get("right_level", SOUND_ENVELOPE_MAX))
+	) / 2.0
+	if level <= 0.0:
+		return -80.0
+	return linear_to_db(level / SOUND_ENVELOPE_MAX)
 
 
 func _render_placement(
@@ -291,25 +367,37 @@ func _render_placement(
 	parent_alpha: float,
 	parent_depth: int,
 	timeline_frame: int,
-	clip_age: int = 0
+	clip_age: int = 0,
+	parent_rgb_mul: Color = Color(1, 1, 1, 1),
+	parent_rgb_add: Color = Color(0, 0, 0, 0)
 ) -> void:
 	var character_id := int(placement.get("character_id", -1))
 	if not _definitions.has(character_id):
 		return
 	var definition: Dictionary = _definitions[character_id]
 	var placement_transform := parent_transform * _placement_transform(placement)
-	var alpha := parent_alpha
-	if placement.has("color_transform"):
-		var color_transform: Dictionary = placement["color_transform"]
-		alpha *= float(color_transform.get("alphaMultTerm", 256)) / 256.0
-	var depth := parent_depth + int(placement["depth"])
+	var color_transform: Dictionary = placement.get("color_transform", {})
+	var placement_mul := _cxform_mul(color_transform)
+	var placement_add := _cxform_add(color_transform)
+	var alpha := parent_alpha * placement_mul.a
+	var rgb_mul := _cxform_combine_mul(parent_rgb_mul, placement_mul)
+	var rgb_add := _cxform_combine_add(
+		parent_rgb_mul, parent_rgb_add, placement_mul, placement_add
+	)
+	# Display lists are depth-sorted. Traverse each subtree contiguously;
+	# child depths are local to their SWF container, never added globally.
+	var depth := parent_depth
+	var instance_name := str(placement.get("name", ""))
+	if instance_name != "":
+		for hidden_name in hidden_instance_names:
+			if hidden_name == instance_name:
+				return
 	if definition["type"] == "DefineSpriteTag":
 		var sprite_frames: Array = definition.get("display_list_frames", [])
 		var local_frame := _nested_frame(
 			placement, timeline_frame, sprite_frames.size(), clip_age
 		)
 		var child_age := clip_age
-		var instance_name := str(placement.get("name", ""))
 		if instance_name != "" and _instance_local_frames.has(instance_name):
 			child_age = int(_instance_local_frames[instance_name].get("age", 0))
 		var children: Array = (
@@ -319,7 +407,14 @@ func _render_placement(
 		)
 		for child: Dictionary in children:
 			_render_placement(
-				child, placement_transform, alpha, depth, local_frame, child_age
+				child,
+				placement_transform,
+				alpha,
+				depth,
+				local_frame,
+				child_age,
+				rgb_mul,
+				rgb_add
 			)
 		return
 	var fills: Array = definition.get("bitmap_fills", [])
@@ -335,7 +430,7 @@ func _render_placement(
 		sprite.centered = false
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		var source_texture: Texture2D = load("%s/%s" % [fighter_directory, _assets[bitmap_id]])
-		sprite.z_index = depth + fill_index
+		sprite.z_index = depth
 		var bitmap_transform := _matrix_transform(fill.get("matrix", {}), 0.05)
 		var draw_transform := bitmap_transform
 		var texture_region := _shape_texture_region(definition, bitmap_transform, source_texture)
@@ -348,8 +443,122 @@ func _render_placement(
 		else:
 			sprite.texture = source_texture
 		sprite.transform = placement_transform * draw_transform
-		sprite.modulate.a = alpha
+		_apply_cxform(sprite, rgb_mul, rgb_add, alpha)
 		add_child(sprite)
+	if not usable_fills.is_empty():
+		return
+	_render_solid_fills(definition, placement_transform, depth, rgb_mul, rgb_add, alpha)
+
+
+func _render_solid_fills(
+	definition: Dictionary,
+	placement_transform: Transform2D,
+	depth: int,
+	rgb_mul: Color,
+	rgb_add: Color,
+	alpha: float
+) -> void:
+	# fillStyleType 0. blackMu frame 2 is one black rectangle; render the
+	# compiled shape AABB rather than a homemade full-viewport overlay.
+	if not definition.has("shape_bounds_twips"):
+		return
+	var fills: Array = definition.get("solid_fills", [])
+	if fills.is_empty():
+		return
+	var bounds: Dictionary = definition["shape_bounds_twips"]
+	var x0 := float(bounds["Xmin"]) / 20.0
+	var y0 := float(bounds["Ymin"]) / 20.0
+	var x1 := float(bounds["Xmax"]) / 20.0
+	var y1 := float(bounds["Ymax"]) / 20.0
+	for fill_index in fills.size():
+		var fill: Dictionary = fills[fill_index]
+		var poly := Polygon2D.new()
+		poly.polygon = PackedVector2Array(
+			[Vector2(x0, y0), Vector2(x1, y0), Vector2(x1, y1), Vector2(x0, y1)]
+		)
+		var fill_color := Color(
+			float(fill.get("red", 0)) / 255.0,
+			float(fill.get("green", 0)) / 255.0,
+			float(fill.get("blue", 0)) / 255.0,
+			float(fill.get("alpha", 255)) / 255.0
+		)
+		fill_color = Color(
+			fill_color.r * rgb_mul.r + rgb_add.r * fill_color.a,
+			fill_color.g * rgb_mul.g + rgb_add.g * fill_color.a,
+			fill_color.b * rgb_mul.b + rgb_add.b * fill_color.a,
+			fill_color.a * alpha
+		)
+		poly.color = fill_color
+		poly.z_index = depth
+		poly.transform = placement_transform
+		add_child(poly)
+
+
+func _cxform_mul(color_transform: Dictionary) -> Color:
+	if color_transform.is_empty() or str(color_transform.get("hasMultTerms", "false")) != "true":
+		return Color(1, 1, 1, 1)
+	return Color(
+		float(color_transform.get("redMultTerm", 256)) / 256.0,
+		float(color_transform.get("greenMultTerm", 256)) / 256.0,
+		float(color_transform.get("blueMultTerm", 256)) / 256.0,
+		float(color_transform.get("alphaMultTerm", 256)) / 256.0
+	)
+
+
+func _cxform_add(color_transform: Dictionary) -> Color:
+	if color_transform.is_empty() or str(color_transform.get("hasAddTerms", "false")) != "true":
+		return Color(0, 0, 0, 0)
+	return Color(
+		float(color_transform.get("redAddTerm", 0)) / 255.0,
+		float(color_transform.get("greenAddTerm", 0)) / 255.0,
+		float(color_transform.get("blueAddTerm", 0)) / 255.0,
+		float(color_transform.get("alphaAddTerm", 0)) / 255.0
+	)
+
+
+func _cxform_combine_mul(parent_mul: Color, child_mul: Color) -> Color:
+	return Color(
+		parent_mul.r * child_mul.r,
+		parent_mul.g * child_mul.g,
+		parent_mul.b * child_mul.b,
+		parent_mul.a * child_mul.a
+	)
+
+
+func _cxform_combine_add(
+	parent_mul: Color, parent_add: Color, child_mul: Color, child_add: Color
+) -> Color:
+	return Color(
+		parent_mul.r * child_add.r + parent_add.r,
+		parent_mul.g * child_add.g + parent_add.g,
+		parent_mul.b * child_add.b + parent_add.b,
+		parent_mul.a * child_add.a + parent_add.a
+	)
+
+
+func _cxform_is_identity(rgb_mul: Color, rgb_add: Color) -> bool:
+	return (
+		is_equal_approx(rgb_mul.r, 1.0)
+		and is_equal_approx(rgb_mul.g, 1.0)
+		and is_equal_approx(rgb_mul.b, 1.0)
+		and is_equal_approx(rgb_add.r, 0.0)
+		and is_equal_approx(rgb_add.g, 0.0)
+		and is_equal_approx(rgb_add.b, 0.0)
+	)
+
+
+func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: float) -> void:
+	sprite.modulate.a = alpha
+	if _cxform_is_identity(rgb_mul, rgb_add):
+		return
+	if _cxform_shader == null:
+		_cxform_shader = Shader.new()
+		_cxform_shader.code = CXFORM_SHADER
+	var material := ShaderMaterial.new()
+	material.shader = _cxform_shader
+	material.set_shader_parameter("cx_mul", Vector4(rgb_mul.r, rgb_mul.g, rgb_mul.b, 1.0))
+	material.set_shader_parameter("cx_add", Vector4(rgb_add.r, rgb_add.g, rgb_add.b, 0.0))
+	sprite.material = material
 
 
 func _shape_texture_region(
@@ -384,13 +593,18 @@ func _placement_transform(placement: Dictionary) -> Transform2D:
 
 
 func _matrix_transform(matrix: Dictionary, basis_scale: float) -> Transform2D:
+	# Flash MATRIX / JPEXS Matrix.transform:
+	# x' = scaleX * x + rotateSkew1 * y + translateX
+	# y' = rotateSkew0 * x + scaleY * y + translateY
+	# Godot columns are (a, b) then (c, d), so rotateSkew0 is the x-axis
+	# y component and rotateSkew1 is the y-axis x component.
 	return Transform2D(
 		Vector2(
 			float(matrix.get("scaleX", 1.0)) * basis_scale,
-			float(matrix.get("rotateSkew1", 0.0)) * basis_scale
+			float(matrix.get("rotateSkew0", 0.0)) * basis_scale
 		),
 		Vector2(
-			float(matrix.get("rotateSkew0", 0.0)) * basis_scale,
+			float(matrix.get("rotateSkew1", 0.0)) * basis_scale,
 			float(matrix.get("scaleY", 1.0)) * basis_scale
 		),
 		Vector2(

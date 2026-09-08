@@ -19,6 +19,8 @@
 | 鸣人招式数值 | `scripts/fighter/minren.json` → `frame_1/DoAction.as` |
 | 鸣人受击规则 | 同上 → `DefineSprite_2/frame_1/DoAction.as` |
 | 鸣人共用控制 | 同上 → `DefineSprite_16/frame_1/DoAction.as` |
+| 电脑 AI、五档难度、随机与续招窗口 | [AI_SPEC.md](AI_SPEC.md)；全库分组与两基础切片的源证据见 [AI 审计](../evidence/ai/source-audit.json) |
+| 重击/破防/连击/必杀横幅（全角色共用） | [HIT_RECEIVE_SOP.md](HIT_RECEIVE_SOP.md)；`bdxg`/`p1hits`/`showFace`/`blackStg` 在 `scripts/main.json` |
 | 一护 | `scripts/fighter/yihu.json`，用源方法名查找，不套用鸣人的 Sprite ID |
 
 ## 从一个动作向外追踪

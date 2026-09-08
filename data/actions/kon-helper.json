@@ -12,9 +12,7 @@
   },
   "start_frame": 2,
   "end_frame": 102,
-  "hide_frames": [
-    102
-  ],
+  "hide_frames": [],
   "attacks": {
     "atm1": {
       "damage": 10,
@@ -25,6 +23,37 @@
       "reaction_label": "被打"
     }
   },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 15,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_15/DoAction.as"
+    },
+    {
+      "frame": 30,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_30/DoAction.as"
+    },
+    {
+      "frame": 102,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_102/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
   "drain_events": [
     {
       "frame": 72,

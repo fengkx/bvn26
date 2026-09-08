@@ -37,9 +37,9 @@
 
 先使用 AI 关闭、固定初始站位、随机条件受控的最小场景；记录原版实际随机消费或明确排除不参与该案例的随机条件。重放相同输入，按已确认的调度阶段抓取数据。
 
-实现或修改机制前先完成 [SOURCE_FIRST.md](SOURCE_FIRST.md) 的五问。未完成闸门的改动即使能玩、schema 合法、单测变绿，也不算对照通过。
+实现或修改机制前先完成 [SOURCE_FIRST.md](SOURCE_FIRST.md) 的五问。重击、破防、连击、命中火花与必杀黑底/立绘横幅还须走完 [HIT_RECEIVE_SOP.md](HIT_RECEIVE_SOP.md) 的步骤 A→E。未完成闸门的改动即使能玩、schema 合法、单测变绿，也不算对照通过。
 
-比较顺序：输入锁存 → 动作与源帧 → 创建/移除的区域 → 碰撞候选顺序 → 伤害/状态/计时 → 位置 → 视听事件。只比较最后血量容易遗漏抵消的错误。
+比较顺序：输入锁存 → 动作与源帧 → 创建/移除的区域 → 碰撞候选顺序 → 伤害/状态/`hits`/破防 → 位置 → 视听（火花、顿帧、闪光、连击板、`bar2`、黑底、立绘横幅）。只比较最后血量容易遗漏抵消的错误。
 
 回归断言原版不变量（源路径能指到的标签、帧、高度、是否进入下一标签），禁止把「猜的顶点」「只有命中才播后续」写成期望后再改实现去凑。发现实现与源不一致时改实现或编译器，不放宽阈值、不改基准输出。
 
@@ -52,6 +52,23 @@
 原位图/裁切内容必须正确。抗锯齿误差不能掩盖轮廓位移、错误动画帧或判定反馈；存在未解决可见差异时，记录为未完成。任何数值阈值先在已正确样本上确定并记录，不在修不好的样本上临时放宽。
 
 声音逻辑触发 tick 与循环点应匹配。浏览器输出延迟独立测量，不把设备延迟当技能事件时序差异。比较受击/必杀多个声音的叠加、暂停/恢复和角色切换后的清理。
+
+声音来源要能追到源标签：对照时先核该剪辑那一帧的 `StartSound` `soundId` 与 `SOUNDINFO` 音量，再听观感。命中/防住/元素/必杀火花（`XG_*` 第 1 帧）与角色/我爱罗援助时间轴上的 `StartSound` 已按 `soundId` 接线；剪辑 `unloadMovie` 时火花音随节点停。`XG_bs`/`XG_cbs` 的 `in_point`/`out_point` 截断尚未实现，对照必杀音时会听到多出的尾巴。`stageSound` BGM 已接入选图后的对战，逐地图编译的清单保留原版随机选曲顺序；不能用「听起来差不多」的替代音顶上。
+
+`stageSound` 的选曲要按源顺序对随机：先 `p2selt` 曲目（`Math.random() < 0.8`），再 `bleach.mp3`/`naruto.mp3`（`< 0.5`），否则地图曲目。对照时记录这一两次随机消费，不能只核最终播了哪首。
+
+当前可跑的检查：
+
+```bash
+python3 tools/verify.py
+python3 tools/check_handoff.py
+python3 -m unittest discover -s tools/tests
+godot --headless --path godot -s res://tests/combat_smoke.gd
+godot --headless --path godot -s res://tests/menu_smoke.gd
+godot --headless --path godot -s res://tests/stage_sound_smoke.gd
+```
+
+无头音频用 dummy 驱动，`AudioStreamPlayer` 起过声音的用例退出时会报 `ObjectDB` 泄漏与 `resources still in use`；这是驱动不混音导致 playback 不回收，不代表用例失败，但也不得用它掩盖真实的节点泄漏。
 
 ## 内容覆盖策略
 

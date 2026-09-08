@@ -1,0 +1,58 @@
+{
+  "format": "bvn26-stage-music-v1",
+  "source": {
+    "load_sound": "scripts/main.json :: DefineSprite_1900/frame_1/DoAction.as loadSound()",
+    "start_game": "scripts/main.json :: frame_8/DoAction.as startGame()",
+    "music_dir": "music/"
+  },
+  "selection": {
+    "p2selt": "\u4e00\u62a4",
+    "cur_stage": "\u73b0\u4e16",
+    "is_naruto": false,
+    "steps": [
+      {
+        "random_below": 0.8,
+        "file": "ichigo.mp3",
+        "source": "fighter_catalog.\u4e00\u62a4.music"
+      },
+      {
+        "random_below": 0.5,
+        "file": "bleach.mp3",
+        "source": "bleachMusic"
+      },
+      {
+        "otherwise": true,
+        "file": "city.mp3",
+        "source": "map_catalog.\u73b0\u4e16.music"
+      }
+    ]
+  },
+  "playback": {
+    "start_offset_seconds": 0,
+    "loops": 999,
+    "volume_percent": 80
+  },
+  "files": [
+    {
+      "file": "bleach.mp3",
+      "source_path": "game/music/bleach.mp3",
+      "path": "bleach.mp3",
+      "bytes": 179404,
+      "sha256": "ebe1c7363cbd8159f1efad4b92b618509931c5438870a6434cce2148d15c097e"
+    },
+    {
+      "file": "city.mp3",
+      "source_path": "game/music/city.mp3",
+      "path": "city.mp3",
+      "bytes": 304733,
+      "sha256": "93444fbc27bcefc390174d057b65702deb82d33607457c648ecdbe8115ec4048"
+    },
+    {
+      "file": "ichigo.mp3",
+      "source_path": "game/music/ichigo.mp3",
+      "path": "ichigo.mp3",
+      "bytes": 259623,
+      "sha256": "e11ecd653d29015267182404f0d6c241219d0dae09a98ad6c68de931da76cfe4"
+    }
+  ]
+}

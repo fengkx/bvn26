@@ -3,6 +3,8 @@ extends TimelinePreview
 
 signal hit_effect_requested(effect_name: String, source_position: Vector2, source_facing: int)
 signal screen_flash_requested(color_rgb24: int)
+signal combo_hud_requested(board_pn: int, hit_count: int)
+signal super_event_applied(event: Dictionary)
 
 @export var display_depth: int = 1
 @export var facing: int = 1
@@ -10,7 +12,22 @@ signal screen_flash_requested(color_rgb24: int)
 var fighter_name: String
 var action: String = "站立"
 var health: float = 1000.0
+var displayed_health: float = 1000.0
+var max_health: float = 1000.0
 var energy: float = 0.0
+# Source mc.hits. Incremented in onBeHit; HUD only if hits > 1.
+var hits: int = 0
+var last_combo_board: int = 0
+var zhanting: bool = false
+# Source _root.zhanting. gameRunning() is false for both fighters while set.
+var root_zhanting: bool = false
+# Source mc.bs. Caster sets 1 in bsd(); stopMc skips clips with bs != 0.
+var bs: int = 0
+# Source mc.hited. stopMc/playMc skip when hited != 0.
+var hited: int = 0
+var last_super: Dictionary = {}
+var super_runtime
+var super_helpers: Array = []
 var hitstun_ticks: int = 0
 var timeline_playing: bool = true
 var last_event: String = "ready"
@@ -22,6 +39,10 @@ var body_forward_velocity: float = 0.0
 # Source mc.sw from checkDead(); locks input and blocks 起身 / 站立.
 var sw: bool = false
 var player_slot: String = ""
+# Source `_root.modo`. Default matches frame_7; 4 is 格斗练习.
+var modo: int = 1
+# Source mc.beida: onBeHit0 sets 1; 站立 is frame 1 and re-runs `var beida = 0`.
+var beida: int = 0
 
 var _combat: Dictionary
 var _commands: CommandCatalog = CommandCatalog.new()
@@ -51,9 +72,17 @@ var _jumpinggg: bool = false
 var _energy_event_applied: bool = false
 var _summon_applied: bool = false
 var _presentation_events_applied: Dictionary = {}
+var _super_events_applied: Dictionary = {}
+var _clip_placements_applied: Dictionary = {}
+var _body_warps_applied: Dictionary = {}
+var _scripted_jump: bool = false
+var _placement_owned: Dictionary = {}
 var helper_spawn: Dictionary = {}
 var opponent: FighterRuntime
 var last_hit_effect: String = ""
+# Same-tick cancel must not drop a sourced hit: start_action clears
+# _hit_instances and the display list before main.gd resolve_pair.
+var _stashed_attack: Dictionary = {}
 
 
 func _ready() -> void:
@@ -62,6 +91,8 @@ func _ready() -> void:
 	_combat = _read_json("%s/combat.json" % fighter_directory)
 	_commands.load_combat(_combat)
 	fighter_name = str(_combat.get("fighter_id", "fighter"))
+	displayed_health = health
+	max_health = health
 	_ground_y = position.y
 	set_facing(facing)
 	start_action("站立")
@@ -91,6 +122,7 @@ func advance_timeline() -> void:
 			_finish_action()
 			return
 	advance_source_frame(true)
+	_expire_absent_hit_instances()
 
 
 func enter_frame(input_state: Dictionary) -> void:
@@ -104,19 +136,49 @@ func enter_frame(input_state: Dictionary) -> void:
 	_guard_held = bool(input_state.get("down", false))
 	guarding = action in ["防御", "防御2", "防住"] and _guard_held
 	# Source frame DoAction (gotoAndStop) runs when the playhead enters the
-	# frame, before that frame's clip enterFrame motion.
+	# frame, before that frame's clip enterFrame motion / cancel.
 	_apply_action_exit()
-	_run_source_motion()
+	_apply_hits_reset()
+	_apply_super_events()
+	_apply_clip_placements()
+	_apply_body_warps()
+	# Motion clips wrap `_x/_y` in `if(_root.zhanting == false)`.
+	if not root_zhanting:
+		_run_source_motion(input_state)
 	if _update_dash_motion():
+		if _game_running():
+			_dispatch_cancels(input_state)
 		return
-	if not _uses_scripted_flight() and _update_air_motion(input_state):
+	# Clip enterFrame cancels run on the current action before the
+	# stand/walk early return that used to swallow 落地/砍3/瞬步.
+	# Source: those clips wrap the body in if(gameRunning()).
+	if _game_running() and _dispatch_cancels(input_state):
 		return
+	# 击飞/被打/击落地 run beidax(), not on_enterframe zhongli. Checking
+	# this before air motion keeps a grounded self-goto 击飞 on that clip
+	# instead of snapping to 落地.
 	if _is_hurt_action(action):
+		# Source beidax() returns before movement and time++ while the root is
+		# paused. stopMc intentionally leaves hited clips playing, so this gate
+		# must freeze the callback without freezing their playhead.
+		if root_zhanting:
+			return
 		_update_hurt_motion()
+		# on_enterframe() is a clip action on the wrapper's PlaceObject of the
+		# body mc, so it keeps resolving the floor during 被打/击飞. Its
+		# jump == 1 early return sits inside the `_y < floorY` branch only, so a
+		# downward yup is pulled back by `if(_y > floorY - 10) _y = floorY`.
+		if position.y >= _ground_y:
+			position.y = _ground_y
 		if action == "被打" and not timeline_playing:
 			hitstun_ticks = maxi(0, hitstun_ticks - 1)
 			if hitstun_ticks == 0:
 				timeline_playing = true
+		return
+	# Source on_enterframe returns here when `_root.zhanting`. Dash already ran.
+	if root_zhanting:
+		return
+	if not _uses_scripted_flight() and _update_air_motion(input_state):
 		return
 	if _update_hurt_fall():
 		return
@@ -142,15 +204,12 @@ func enter_frame(input_state: Dictionary) -> void:
 		_update_air_motion(input_state)
 		return
 
-	if action in ["砍1", "砍2"] and bool(input_state.get("attack", false)):
-		for transition: Dictionary in _combat["combo"]["transitions"]:
-			if transition["from"] == action and _frame_in(transition):
-				start_action(str(transition["to"]))
-				return
-
 	# Guard and stand buttons come from the shared command catalog
-	# (doAllAction / onDefence predicates). New fighters only need their
-	# combat.json slots; directional specials win by dispatch_priority.
+	# (doAllAction / onDefence). Stand takes the first leaving goto;
+	# guard later-wins because onDefence pins 防御2 then keeps going.
+	# Source DefineSprite_16 enterFrame: if(gameRunning()) doAllAction().
+	if not _game_running():
+		return
 	if action in ["防御", "防御2"]:
 		if _dispatch_catalog("guard", input_state):
 			return
@@ -182,14 +241,13 @@ func run_frame_actions() -> void:
 	_apply_source_energy_event()
 	_apply_summon_event()
 	_apply_presentation_events()
-	if (
-		action == "被打"
-		and not _hurt_stop_applied
-		and current_source_frame() == int(_combat["hurt"]["stop_frame"])
-	):
+	_apply_clip_placements()
+	_apply_body_warps()
+	_chase_displayed_health()
+	if not _hurt_stop_applied and current_source_frame() == _action_stop_frame():
 		timeline_playing = false
 		_hurt_stop_applied = true
-		last_event = "hurt_stop"
+		last_event = "launch_stop" if action == _death_launch_label() else "hurt_stop"
 		return
 	if _should_stop_dead_knockdown():
 		timeline_playing = false
@@ -224,15 +282,27 @@ func receive_attack(attack: Dictionary, attacker_facing: int) -> void:
 		health = maxf(0.0, health - damage / 10.0)
 		change_energy(damage / 15.0)
 		_guard_horizontal_step = attacker_facing * float(attack["horizontal_impulse"])
+		last_hit_effect = _guard_effect_for_strength(impact_strength, _defence_xgtype())
+		if last_hit_effect != "":
+			hit_effect_requested.emit(last_hit_effect, position, facing)
 		start_action("防住")
 		last_event = "guard_%s" % attack.get("instance_name", "unknown")
-		# Source onDefence() ends with checkDead(false).
+		# Source onDefence() ends with checkDead(false). No hits++.
 		_check_dead(false)
 		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 		return
 	last_hit_effect = _hit_effect_for_strength(impact_strength)
 	if last_hit_effect != "":
 		hit_effect_requested.emit(last_hit_effect, position, facing)
+	# Source onBeHit0(): 动作=-1; beida=1; then goto the hit label.
+	beida = 1
+	hited = 1
+	# Source onBeHit(): hits++; HUD only when hits > 1.
+	hits += 1
+	last_combo_board = 0
+	if hits > 1:
+		last_combo_board = opponent_pn()
+		combo_hud_requested.emit(last_combo_board, hits)
 	health = maxf(0.0, health - damage)
 	change_energy(damage / 10.0)
 	_hurt_motion_ticks = 0
@@ -251,23 +321,50 @@ func receive_attack(attack: Dictionary, attacker_facing: int) -> void:
 	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
-func _hit_effect_for_strength(strength: int) -> String:
+func _normalized_impact_strength(strength: int) -> int:
 	# beida()/fangyu() remove the >10 guard-break marker before bdxg().
-	var presentation_strength := strength - 10 if strength > 10 else strength
-	match presentation_strength:
-		1:
-			return "XG_kan"
-		2:
-			return "XG_qdj"
-		3:
-			return "XG_qdjx"
-		4:
-			return "XG_mfdj"
-		5:
-			return "XG_mfdjx"
-		6:
-			return "XG_kanx"
-	return ""
+	return strength - 10 if strength > 10 else strength
+
+
+func _hit_fx_table(name: String) -> Dictionary:
+	var hit_fx: Dictionary = _combat.get("hit_fx", {})
+	if hit_fx.has(name):
+		return hit_fx[name]
+	return {}
+
+
+func _clip_for_strength(table_name: String, strength: int) -> String:
+	var table := _hit_fx_table(table_name)
+	return str(table.get(str(_normalized_impact_strength(strength)), ""))
+
+
+func _hit_effect_for_strength(strength: int) -> String:
+	return _clip_for_strength("bdxg", strength)
+
+
+func _guard_effect_for_strength(strength: int, xgtype: int) -> String:
+	return _clip_for_strength("bdfyxg2" if xgtype == 2 else "bdfyxg", strength)
+
+
+func _defence_xgtype() -> int:
+	var sprite := int(_combat.get("source", {}).get("timeline_symbol_id", 0))
+	for item: Dictionary in _combat.get("on_defence_frames", []):
+		if int(item.get("sprite_id", 0)) != sprite:
+			continue
+		if int(item.get("frame", -1)) != current_source_frame():
+			continue
+		return int(item.get("xgtype", 1))
+	return 1
+
+
+func instance_global_bounds(instance_name: String) -> Rect2:
+	var bounds := super.instance_global_bounds(instance_name)
+	if bounds.has_area():
+		return bounds
+	var placed := _placed_name_for_hitbox(instance_name)
+	if placed != "" and placed != instance_name:
+		return super.instance_global_bounds(placed)
+	return Rect2()
 
 
 func incoming_attack_hits(attacker: FighterRuntime) -> bool:
@@ -316,6 +413,9 @@ func resolve_body_collision(other: FighterRuntime) -> void:
 
 
 func attack_contact(defender: FighterRuntime) -> Dictionary:
+	if not _stashed_attack.is_empty() and defender == opponent:
+		return _stashed_attack.duplicate()
+	_expire_absent_hit_instances()
 	var body := defender.instance_global_bounds("bdmn")
 	if not body.has_area():
 		return {}
@@ -336,6 +436,8 @@ func _ordered_attack_instances() -> PackedStringArray:
 	for instance_name in current_named_instances():
 		if str(instance_name).ends_with("atm"):
 			visible[str(instance_name)] = true
+	for instance_name in _aliased_hitbox_names():
+		visible[instance_name] = true
 	var ordered := PackedStringArray()
 	for instance_name in _combat.get("hit_priority", {}).get("instances", []):
 		var name := str(instance_name)
@@ -349,6 +451,7 @@ func _ordered_attack_instances() -> PackedStringArray:
 
 
 func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
+	_stashed_attack = {}
 	var action_was_special := _is_special_action(action)
 	var was_guarded := (
 		defender.guarding and int(attack.get("impact_strength", 0)) <= 10
@@ -360,6 +463,7 @@ func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
 
 
 func active_attack() -> Dictionary:
+	_expire_absent_hit_instances()
 	for instance_name in current_named_instances():
 		if not instance_name.ends_with("atm") or _hit_instances.has(instance_name):
 			continue
@@ -367,6 +471,31 @@ func active_attack() -> Dictionary:
 		if not attack.is_empty() and instance_global_bounds(instance_name).has_area():
 			return attack
 	return {}
+
+
+func _aliased_hitbox_names() -> PackedStringArray:
+	var result := PackedStringArray()
+	var frame := current_source_frame()
+	for window: Dictionary in _combat.get("hitbox_windows", {}).get(action, []):
+		var name := str(window.get("instance_name", ""))
+		if not name.ends_with("atm"):
+			continue
+		if frame < int(window.get("start_frame", 0)) or frame > int(window.get("end_frame", 0)):
+			continue
+		if str(window.get("placed_name", "")) != "":
+			result.append(name)
+	return result
+
+
+func _placed_name_for_hitbox(instance_name: String) -> String:
+	var frame := current_source_frame()
+	for window: Dictionary in _combat.get("hitbox_windows", {}).get(action, []):
+		if str(window.get("instance_name", "")) != instance_name:
+			continue
+		if frame < int(window.get("start_frame", 0)) or frame > int(window.get("end_frame", 0)):
+			continue
+		return str(window.get("placed_name", ""))
+	return ""
 
 
 func _attack_from_instance(instance_name: String) -> Dictionary:
@@ -387,6 +516,20 @@ func mark_attack_hit(instance_name: String) -> void:
 	_hit_instances[instance_name] = true
 
 
+func _expire_absent_hit_instances() -> void:
+	# Source getHitObj() has no already-hit flag. A removed clip is gone;
+	# a later PlaceObject with the same name is a new instance and can hit.
+	var live: Dictionary = {}
+	for instance_name in current_named_instances():
+		if str(instance_name).ends_with("atm"):
+			live[str(instance_name)] = true
+	for instance_name in _aliased_hitbox_names():
+		live[instance_name] = true
+	for instance_name in _hit_instances.keys().duplicate():
+		if not live.has(instance_name):
+			_hit_instances.erase(instance_name)
+
+
 func _apply_action_exit() -> bool:
 	if not _combat["action_exits"].has(action):
 		return false
@@ -395,6 +538,10 @@ func _apply_action_exit() -> bool:
 		return false
 	var target := str(exit["target"])
 	var leave_scripted_flight := _uses_scripted_flight()
+	if target == _death_launch_label():
+		# Source 超必杀2@942: yup/htx then gotoAndStop("击飞"); play().
+		# beidax(true) keeps applying those until touch → 击落地.
+		_begin_self_launch(exit)
 	start_action(target)
 	# 招3 sets jump=1 so on_enterframe skips zhongli; goto "落" then
 	# 落 frame 56 does jump=0 and gravity is _root.zhongli.
@@ -405,6 +552,15 @@ func _apply_action_exit() -> bool:
 	return true
 
 
+func _begin_self_launch(exit: Dictionary) -> void:
+	# Player wrapper: moveX(-htx) => _x += -htx * scale_X; moveY(-yup) goes up.
+	_hurt_motion_ticks = 0
+	_hurt_horizontal_step = -float(facing) * float(exit.get("htx", 0.0))
+	_hurt_vertical_step = -float(exit.get("yup", 0.0))
+	_launched = true
+	_hurt_falling = true
+
+
 func start_action(label: String) -> void:
 	if sw and not _is_death_sequence_action(label):
 		return
@@ -413,14 +569,24 @@ func start_action(label: String) -> void:
 		push_error("Missing source action for %s: %s" % [fighter_name, label])
 		return
 	action = label
+	if label == "站立":
+		beida = 0
+		hited = 0
+	if label == _death_launch_label():
+		# Source 击飞 first frame: hited = 0; play();
+		hited = 0
 	guarding = label in ["防御", "防御2", "防住"] and _guard_held
 	if label != "防住":
 		_guard_horizontal_step = 0.0
-	if label == "被打":
+	if label == "被打" or label == _death_launch_label():
 		_hurt_stop_applied = false
 	_energy_event_applied = false
 	_summon_applied = false
 	_presentation_events_applied.clear()
+	_super_events_applied.clear()
+	_clear_clip_placements()
+	_body_warps_applied.clear()
+	_scripted_jump = false
 	# Keep helper_spawn until GameWorld consumes yfgj(). start_action("站立")
 	# on the same tick must not drop doZhaoHuan's placement.
 	timeline_playing = true
@@ -437,6 +603,37 @@ func _try_start_action(label: String) -> bool:
 		return false
 	start_action(label)
 	return true
+
+
+func _dispatch_cancels(input_state: Dictionary) -> bool:
+	var window := _commands.match_cancel(
+		action, current_source_frame(), input_state, energy
+	)
+	if window.is_empty():
+		return false
+	var label := str(window.get("to", ""))
+	if label == "" or label == action:
+		return false
+	# Sample the current display list before start_action swaps it.
+	_stash_current_attack()
+	var entry := _commands.entry(label)
+	var handler := str(entry.get("handler", "start_action"))
+	if handler == "start_jump":
+		_start_jump(false)
+		return true
+	if handler == "start_dash":
+		_start_dash(false, false)
+		return true
+	return _try_start_action(label)
+
+
+func _stash_current_attack() -> void:
+	_stashed_attack = {}
+	if opponent == null or not is_instance_valid(opponent):
+		return
+	var contact := attack_contact(opponent)
+	if not contact.is_empty():
+		_stashed_attack = contact
 
 
 func _dispatch_catalog(context: String, input_state: Dictionary) -> bool:
@@ -575,8 +772,11 @@ func _start_dash(up: bool, down: bool) -> void:
 		airborne = true
 		start_action("落")
 		return
-	_dash_ticks = 11
-	_dash_velocity = Vector2(float(_combat["movement"]["speed_per_tick"]) * 2.5 * facing, 0.0)
+	# Horizontal 瞬步 motion comes from the clip enterFrame
+	# (`speed * 2.5 * scale_X`). Do not also run _dash_ticks or the
+	# compiled cancel windows on that clip never fire.
+	_dash_ticks = 0
+	_dash_velocity = Vector2.ZERO
 	start_action("瞬步")
 
 
@@ -602,9 +802,6 @@ func _finish_action() -> void:
 			timeline_playing = false
 			last_event = "death_stop"
 		return
-	if action == "击落地":
-		start_action("起身")
-		return
 	var fallthrough := _timeline_fallthrough_target()
 	if fallthrough != "":
 		# Adjacent labels with no stop/goto keep playing. 砍技1 has no
@@ -624,7 +821,7 @@ func _timeline_fallthrough_target() -> String:
 	return ""
 
 
-func _run_source_motion() -> void:
+func _run_source_motion(input_state: Dictionary = {}) -> void:
 	var frame := current_source_frame()
 	var speed := float(_combat["movement"]["speed_per_tick"])
 	for window: Dictionary in _combat.get("motion_windows", []):
@@ -642,8 +839,18 @@ func _run_source_motion() -> void:
 			if window.has("contact_cancel_to") and _sweep_motion_contact(window, distance):
 				return
 			_move_forward(distance)
+		if window.has("steer_speed_factor"):
+			var steer := (
+				int(input_state.get("right", false))
+				- int(input_state.get("left", false))
+			)
+			if steer != 0:
+				_move_world_x(steer * speed * float(window["steer_speed_factor"]))
+				set_facing(steer)
 		if window.has("forward_pixels"):
 			_move_forward(float(window["forward_pixels"]))
+		if window.has("vertical_pixels"):
+			position.y += float(window["vertical_pixels"])
 		if window.has("vertical_speed_factor"):
 			var previous_y := position.y
 			var rise := speed * float(window["vertical_speed_factor"])
@@ -669,10 +876,18 @@ func _run_source_motion() -> void:
 
 
 func _uses_scripted_flight() -> bool:
+	# Source `jump = 1` on the player wrapper skips on_enterframe zhongli
+	# until the next start_action. 超必杀@884 sets this before fallthrough.
+	if _scripted_jump:
+		return true
 	for window: Dictionary in _combat.get("motion_windows", []):
 		if str(window.get("action", "")) != action:
 			continue
-		if window.has("vertical_speed_factor") or window.has("land_cancel_to"):
+		if (
+			window.has("vertical_speed_factor")
+			or window.has("vertical_pixels")
+			or window.has("land_cancel_to")
+		):
 			return true
 	return false
 
@@ -766,10 +981,11 @@ func _update_projectiles() -> void:
 		if existed and not jumped_hit:
 			_advance_clip_playhead(instance_name, projectile)
 	for instance_name in _instance_local_offsets.keys():
-		if not live.has(instance_name):
-			_instance_local_offsets.erase(instance_name)
-			_instance_local_frames.erase(instance_name)
-			moved = true
+		if live.has(instance_name) or _placement_owned.has(instance_name):
+			continue
+		_instance_local_offsets.erase(instance_name)
+		_instance_local_frames.erase(instance_name)
+		moved = true
 	if moved:
 		refresh_display()
 
@@ -817,18 +1033,24 @@ func _projectile_blocked(instance_name: String) -> bool:
 
 
 func _update_hurt_motion() -> void:
-	# The source beidax() keeps applying hitx/yup while the hurt timeline is
-	# stopped. A one-off impulse changes HP but is almost invisible on screen.
+	# Source beidax(): moveX/moveY for time<=13; then yup=0 and non-flying
+	# htx=0. No zhongli. 被打 stays at the yup height until tdtime/play().
+	# 击飞 keeps falling via the flying branch after time>15.
 	if _hurt_motion_ticks <= 13:
 		_move_world_x(_hurt_horizontal_step)
 		position.y += _hurt_vertical_step
 	_hurt_motion_ticks += 1
-	if _hurt_motion_ticks > 15:
+	if _hurt_motion_ticks == 16 and not _launched and position.y < _ground_y:
+		airborne = true
+	if _hurt_motion_ticks > 15 and _launched:
 		_update_hurt_fall()
 
 
 func _update_hurt_fall() -> bool:
 	if not _hurt_falling:
+		return false
+	# beidax() non-flying never applies zhongli. Hover until 被打 ends.
+	if not _launched and action == "被打":
 		return false
 	if _hurt_motion_ticks <= 15:
 		_hurt_motion_ticks += 1
@@ -889,6 +1111,8 @@ func _apply_summon_event() -> void:
 			continue
 		change_energy(float(event.get("energy_delta", -100)))
 		helper_spawn = _yfgj_spawn(event)
+		if event.get("set_bs") != null:
+			bs = int(event["set_bs"])
 		_summon_applied = true
 		last_event = "summon_%s" % event.get("helper_id", "helper")
 		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
@@ -906,6 +1130,146 @@ func _apply_presentation_events() -> void:
 		_presentation_events_applied[event_key] = true
 		if event.get("op") == "screen_flash":
 			screen_flash_requested.emit(int(event.get("color_rgb24", 0xFFFFFF)))
+
+
+func _apply_body_warps() -> void:
+	# Source `_parent._x/_y = _root.game["p"+pn]._x/_y` writes the player
+	# container, not a named clip. 832 copies X only, so a jump-height
+	# defender stays outside later *atm AABBs.
+	if opponent == null or not is_instance_valid(opponent):
+		return
+	for event: Dictionary in _combat.get("body_warps", []):
+		if str(event.get("action", "")) != action:
+			continue
+		if int(event.get("frame", -1)) != current_source_frame():
+			continue
+		if str(event.get("op", "")) != "warp_to_opponent":
+			continue
+		var event_key := "%s:%d" % [action, current_source_frame()]
+		if _body_warps_applied.has(event_key):
+			continue
+		var branch: Dictionary = event
+		if event.has("xscale_gt_0"):
+			branch = event["xscale_gt_0"] if facing > 0 else event["xscale_lt_0"]
+			if branch.has("set_facing"):
+				set_facing(int(branch["set_facing"]))
+		var body := opponent.instance_global_bounds("bdmn")
+		var body_size := body.size if body.has_area() else Vector2.ZERO
+		if bool(event.get("place_x", true)):
+			position.x = (
+				opponent.position.x
+				+ float(branch.get("x_pixels", 0.0))
+				+ body_size.x * float(branch.get("x_bdmn_width", 0.0))
+			)
+		if bool(event.get("place_y", false)):
+			position.y = (
+				opponent.position.y
+				+ float(event.get("y_pixels", 0.0))
+				+ body_size.y * float(event.get("y_bdmn_height", 0.0))
+			)
+		if bool(event.get("set_jump", false)):
+			_scripted_jump = true
+			airborne = true
+		_body_warps_applied[event_key] = true
+
+
+func _apply_clip_placements() -> void:
+	_expire_clip_placements()
+	if opponent == null or not is_instance_valid(opponent):
+		return
+	for event: Dictionary in _combat.get("clip_placements", []):
+		if str(event.get("action", "")) != action:
+			continue
+		if int(event.get("frame", -1)) != current_source_frame():
+			continue
+		if str(event.get("op", "")) != "place_at_opponent":
+			continue
+		var instance_name := str(event.get("instance_name", ""))
+		if instance_name == "":
+			continue
+		var event_key := "%s:%d:%s" % [action, current_source_frame(), instance_name]
+		if _clip_placements_applied.has(event_key):
+			continue
+		var origin := named_instance_origin(instance_name)
+		if origin == Vector2.INF:
+			continue
+		# Source overwrites clip._x/_y. PlaceObject translate is replaced,
+		# so the Godot offset subtracts the remaining matrix origin.
+		# xscale > 0: _x = opponent._x - parent._x
+		# else:       _x = parent._x - opponent._x
+		var offset := instance_local_offset(instance_name)
+		if bool(event.get("place_x", true)):
+			var local_x := (opponent.position.x - position.x) * float(facing)
+			offset.x = local_x - origin.x
+		if bool(event.get("place_y", false)):
+			var local_y := opponent.position.y - position.y
+			local_y += float(event.get("y_pixels", 0.0))
+			offset.y = local_y - origin.y
+		set_instance_local_offset(instance_name, offset)
+		_placement_owned[instance_name] = true
+		_clip_placements_applied[event_key] = true
+		refresh_display()
+
+
+func _expire_clip_placements() -> void:
+	var live: Dictionary = {}
+	for instance_name in current_named_instances():
+		live[str(instance_name)] = true
+	for instance_name in _placement_owned.keys().duplicate():
+		if live.has(instance_name):
+			continue
+		_instance_local_offsets.erase(instance_name)
+		_placement_owned.erase(instance_name)
+
+
+func _clear_clip_placements() -> void:
+	for instance_name in _placement_owned.keys():
+		_instance_local_offsets.erase(instance_name)
+	_placement_owned.clear()
+	_clip_placements_applied.clear()
+
+
+func opponent_pn() -> int:
+	# Source: pn = _parent._name != "p1" ? 1 : 2
+	return 1 if player_slot == "p2" else 2
+
+
+func _apply_hits_reset() -> void:
+	var sprite := int(_combat.get("source", {}).get("timeline_symbol_id", 0))
+	for item: Dictionary in _combat.get("hits_reset_frames", []):
+		if int(item.get("sprite_id", 0)) != sprite:
+			continue
+		if int(item.get("frame", -1)) != current_source_frame():
+			continue
+		hits = 0
+		last_combo_board = 0
+		return
+
+
+func _apply_super_events() -> void:
+	for event: Dictionary in _combat.get("super_events", []):
+		if str(event.get("action", "")) != action:
+			continue
+		if int(event.get("frame", -1)) != current_source_frame():
+			continue
+		var event_key := "%s:%d:%s" % [action, current_source_frame(), event.get("op", "")]
+		if _super_events_applied.has(event_key):
+			continue
+		_super_events_applied[event_key] = true
+		last_super = event.duplicate()
+		_ensure_super_runtime().apply(event, self, opponent, super_helpers)
+		super_event_applied.emit(last_super)
+
+
+func _chase_displayed_health() -> void:
+	# Source DefineSprite_1814: bar2 only chases when hits == 0, at maxhp/500.
+	if hits != 0:
+		return
+	var step := max_health / 500.0
+	if displayed_health > health:
+		displayed_health = maxf(health, displayed_health - step)
+	elif displayed_health < health:
+		displayed_health = minf(health, displayed_health + step)
 
 
 func _yfgj_spawn(event: Dictionary) -> Dictionary:
@@ -995,6 +1359,16 @@ func _death_launch_label() -> String:
 	return label if not action_range(label).is_empty() else "击飞"
 
 
+func _action_stop_frame() -> int:
+	# 被打 stop(); and 击飞 stop() (鸣人 1035 / 一护 759). Playhead stays
+	# while beidax keeps running. Label end_frame is not this stop.
+	if action == str(_combat.get("hurt", {}).get("label", "被打")):
+		return int(_combat.get("hurt", {}).get("stop_frame", 0))
+	if action == _death_launch_label():
+		return int(_combat.get("hurt", {}).get("launch_stop_frame", 0))
+	return 0
+
+
 func _death_down_label() -> String:
 	var label := str(_death_data().get("down_label", "击落地"))
 	return label if not action_range(label).is_empty() else "击落地"
@@ -1002,6 +1376,23 @@ func _death_down_label() -> String:
 
 func _is_death_sequence_action(label: String) -> bool:
 	return label == _death_launch_label() or label == _death_down_label()
+
+
+func _ensure_super_runtime():
+	if super_runtime == null:
+		super_runtime = load("res://super_runtime.gd").new()
+		super_runtime.shine_requested.connect(
+			func(color_rgb24: int) -> void:
+				screen_flash_requested.emit(color_rgb24)
+		)
+	return super_runtime
+
+
+func _game_running() -> bool:
+	# Source: return _root.zhanting == false && opponent.mc.sw == false.
+	if root_zhanting or (opponent != null and is_instance_valid(opponent) and opponent.root_zhanting):
+		return false
+	return opponent == null or not is_instance_valid(opponent) or not opponent.sw
 
 
 func _combat_input_locked() -> bool:
@@ -1025,6 +1416,8 @@ func _check_dead(flying: bool) -> bool:
 	if sw:
 		return false
 	if health > 0.0:
+		return false
+	if modo == 4:
 		return false
 	if _death_data().is_empty() and action_range("击飞").is_empty():
 		return false
@@ -1093,12 +1486,18 @@ func snapshot() -> Dictionary:
 		"x": position.x,
 		"facing": facing,
 		"health": health,
+		"displayed_health": displayed_health,
+		"hits": hits,
 		"energy": energy,
 		"hitstun_ticks": hitstun_ticks,
 		"timeline_playing": timeline_playing,
 		"airborne": airborne,
 		"guarding": guarding,
 		"sw": sw,
+		"beida": beida,
+		"zhanting": zhanting,
+		"bs": bs,
+		"hited": hited,
 		"event": last_event,
 		"helper_spawn": helper_spawn,
 	}

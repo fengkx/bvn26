@@ -17,6 +17,8 @@ PROBES = {
     "clip_lifecycle": True,
     "callback_order": True,
     "sibling_order": 2,
+    "ai_parent_goto": True,
+    "ai_parent_function": True,
 }
 
 

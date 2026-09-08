@@ -89,6 +89,37 @@ def character_id(tag: ET.Element) -> int | None:
     return None
 
 
+def sound_info(tag: ET.Element) -> dict[str, Any]:
+    """SOUNDINFO on StartSound: envelope levels are 0..32768 volume scales."""
+    info = tag.find("soundInfo")
+    if info is None:
+        return {}
+    result: dict[str, Any] = {}
+    for attribute, key in (
+        ("syncStop", "sync_stop"),
+        ("syncNoMultiple", "sync_no_multiple"),
+    ):
+        if info.attrib.get(attribute) == "true":
+            result[key] = True
+    for flag, attribute, key in (
+        ("hasInPoint", "inPoint", "in_point"),
+        ("hasOutPoint", "outPoint", "out_point"),
+        ("hasLoops", "loopCount", "loop_count"),
+    ):
+        if info.attrib.get(flag) == "true":
+            result[key] = int(info.attrib[attribute])
+    if info.attrib.get("hasEnvelope") == "true":
+        result["envelope"] = [
+            {
+                "pos44": int(record.attrib["pos44"]),
+                "left_level": int(record.attrib["leftLevel"]),
+                "right_level": int(record.attrib["rightLevel"]),
+            }
+            for record in info.findall("./envelopeRecords/item")
+        ]
+    return result
+
+
 def definition_dependencies(tag: ET.Element) -> set[int]:
     dependencies = set()
     for descendant in tag.iter():
@@ -137,6 +168,28 @@ def first_frame_display_list(sprite: ET.Element) -> list[dict[str, Any]]:
     return frames[0] if frames else []
 
 
+def sound_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """DefineSound tags reached by StartSound on the extracted frames."""
+    wanted = {
+        int(event["sound_id"])
+        for frame in frames
+        for event in frame.get("events", [])
+        if event.get("type") == "start_sound"
+    }
+    definitions = []
+    for tag in root.findall("./tags/item"):
+        if tag.attrib.get("type") != "DefineSoundTag":
+            continue
+        sound_id = int(tag.attrib["soundId"])
+        if sound_id not in wanted:
+            continue
+        definition: dict[str, Any] = {"character_id": sound_id, "type": "DefineSoundTag"}
+        if "_externalFile" in tag.attrib:
+            definition["external_file"] = tag.attrib["_externalFile"]
+        definitions.append(definition)
+    return definitions
+
+
 def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
     wanted = {
         placement["character_id"]
@@ -175,19 +228,37 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
                 key: int(bounds.attrib[key]) for key in ("Xmin", "Ymin", "Xmax", "Ymax")
             }
         bitmap_fills = []
+        solid_fills = []
         for fill in tag.findall(".//fillStyles/item"):
-            if "bitmapId" not in fill.attrib:
+            fill_style_type = int(fill.attrib.get("fillStyleType", -1))
+            if "bitmapId" in fill.attrib:
+                bitmap_fill: dict[str, Any] = {
+                    "bitmap_id": int(fill.attrib["bitmapId"]),
+                    "fill_style_type": fill_style_type,
+                }
+                matrix = fill.find("bitmapMatrix")
+                if matrix is not None:
+                    bitmap_fill["matrix"] = attributes(matrix)
+                bitmap_fills.append(bitmap_fill)
                 continue
-            bitmap_fill: dict[str, Any] = {
-                "bitmap_id": int(fill.attrib["bitmapId"]),
-                "fill_style_type": int(fill.attrib["fillStyleType"]),
+            if fill_style_type != 0:
+                continue
+            color = fill.find("color")
+            if color is None:
+                continue
+            solid: dict[str, Any] = {
+                "fill_style_type": 0,
+                "red": int(color.attrib.get("red", 0)),
+                "green": int(color.attrib.get("green", 0)),
+                "blue": int(color.attrib.get("blue", 0)),
             }
-            matrix = fill.find("bitmapMatrix")
-            if matrix is not None:
-                bitmap_fill["matrix"] = attributes(matrix)
-            bitmap_fills.append(bitmap_fill)
+            if "alpha" in color.attrib:
+                solid["alpha"] = int(color.attrib["alpha"])
+            solid_fills.append(solid)
         if bitmap_fills:
             definition["bitmap_fills"] = bitmap_fills
+        if solid_fills:
+            definition["solid_fills"] = solid_fills
         dependencies = definition_dependencies(tag)
         if dependencies:
             definition["referenced_character_ids"] = sorted(dependencies)
@@ -199,6 +270,8 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
         if "_externalFile" in tag.attrib:
             definition["external_file"] = tag.attrib["_externalFile"]
         definitions.append(definition)
+    definitions.extend(sound_definitions(root, frames))
+    definitions.sort(key=lambda item: item["character_id"])
     return definitions
 
 
@@ -235,7 +308,11 @@ def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
             pending_labels.append(tag.attrib["name"])
         elif tag_type == "StartSoundTag":
             pending_events.append(
-                {"type": "start_sound", "sound_id": int(tag.attrib["soundId"])}
+                {
+                    "type": "start_sound",
+                    "sound_id": int(tag.attrib["soundId"]),
+                    **sound_info(tag),
+                }
             )
         elif tag_type == "DoActionTag":
             pending_events.append(

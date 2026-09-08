@@ -1,6 +1,6 @@
 # 死神 VS 火影 2.6 · Godot Web 移植交接包
 
-版本 1.0 · 2026-09-03
+版本 1.0 · 基线 2026-09-03 · 状态同步 2026-09-08
 
 目标是把普通 2.6 移植为在桌面浏览器运行的原生 Godot 游戏。包内已有锁定资源、反编译脚本、技术规格、实施计划、数据接口和验收办法，并已开始实现可运行的鸣人/一护/现世开发切片；它仍不是完整或逐帧验收通过的网页成品。
 
@@ -9,7 +9,7 @@
 1. [SPEC.md](SPEC.md)：范围、12 项功能要求、8 项技术要求和一比一验收边界。
 2. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)：M0–M7 实施顺序、阶段门槛与估算方法。
 3. [当前状态](docs/STATUS.md)：已完成事项、风险和下一步。
-4. [架构](docs/ARCHITECTURE.md) → [逆向手册](docs/REVERSE_ENGINEERING.md) → [源优先闸门](docs/SOURCE_FIRST.md) → [数据契约](docs/DATA_CONTRACTS.md)。
+4. [架构](docs/ARCHITECTURE.md) → [逆向手册](docs/REVERSE_ENGINEERING.md) → [源优先闸门](docs/SOURCE_FIRST.md) → [受击链落地 SOP](docs/HIT_RECEIVE_SOP.md) → [数据契约](docs/DATA_CONTRACTS.md)。
 5. [验收计划](docs/VALIDATION.md)与[操作手册](docs/OPERATIONS.md)：如何取得对照证据、使用工具和准备后续 Web 导出。
 
 ## 包内内容
@@ -23,11 +23,12 @@
 | `spec/schemas/` | Asset、Fighter、Action、Replay、Trace 五类 JSON Schema |
 | `spec/examples/` | 五份可校验格式示例；部分来自静态提取，部分为合成格式，均非完整运行数据 |
 | [任务表](plan/tasks.json) | 含依赖、产物、验收条件和状态的实施任务；未来产物路径不代表文件已存在 |
-| [内容覆盖表](plan/coverage.json) | 64 条人物配置与 10 条地图的逐项检查起点；运行验证全部未开始 |
+| [电脑 AI 复刻规格](docs/AI_SPEC.md) | 五档难度、随机/时间轴决策、控制器变体、感知区域与待验证项；仅静态分析 |
+| [内容覆盖表](plan/coverage.json) | 64 条人物配置与 10 条地图的逐项检查起点；逐项完整验收尚未通过，局部实现见状态页 |
 | `tools/` | 资源校验、SWF 结构检查、脚本查阅、契约与交接包检查工具 |
 | [来源说明](docs/SOURCES.md) | 来源链接、版本依据和证据限制 |
 | [本次校验记录](docs/PACKAGE_CHECKS.md) | 已执行的资料验证与明确未验证的运行内容 |
-| [AGENTS.md](AGENTS.md) | 后续开发者或编码助手的接手约束；实现机制前必读 [源优先闸门](docs/SOURCE_FIRST.md) |
+| [AGENTS.md](AGENTS.md) | 后续开发者或编码助手的接手约束；实现机制前必读 [源优先闸门](docs/SOURCE_FIRST.md)；重击/破防/连击/必杀横幅按 [受击链落地 SOP](docs/HIT_RECEIVE_SOP.md) |
 
 人物配置数包含形态和援助，不等于可选角色数。原始 SWF 和脚本仅用于开发分析，未来发布物必须不包含 Flash/AS2/AVM/Ruffle 运行依赖。
 
@@ -64,4 +65,4 @@ Windows 对应使用 `.venv\Scripts\python.exe`。资源校验与脚本查阅只
 
 ## 接下来做什么
 
-从 `M0-01` 建立 Godot 最小 Web 工程、`M0-02` 建立原版参照环境开始。先校准调度和导入，再完成鸣人/一护基础形态的一场完整对战，随后扩展机制和全内容。保持未验证项可见，不把资料完整、可启动、可战斗和一比一完成混为同一状态。
+Godot Web 工程和原生 Flash 参照播放器已建立；先补 `M0-01` 的 Firefox/Safari 实测、`M0-02` 的固定输入捕获和 `M0-03` 的未决探针。先校准调度和导入，再完成鸣人/一护基础形态的一场完整对战，随后扩展机制和全内容。保持未验证项可见，不把资料完整、可启动、可战斗和一比一完成混为同一状态。

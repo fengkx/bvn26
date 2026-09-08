@@ -73,14 +73,81 @@ func _run() -> void:
 	naruto.position.y = ground_y
 	naruto.airborne = false
 
+	# DefineSprite_764/frame_42 StartSound soundId=40.
+	naruto.start_action("跳")
+	while naruto.current_source_frame() < 42:
+		naruto.advance_timeline()
+	assert(naruto.current_source_frame() == 42)
+	assert(40 in naruto.last_sound_ids)
+	naruto.start_action("站立")
+	naruto.position.y = ground_y
+	naruto.airborne = false
+
 	naruto.start_action("站立")
 	naruto.enter_frame({"dash": true})
 	assert(naruto.action == "瞬步")
+	while naruto.current_source_frame() < 21:
+		naruto.advance_timeline()
 	var dash_x := naruto.position.x
 	naruto.enter_frame({})
 	assert(naruto.position.x == dash_x + 20.0)
-	for _tick in range(10):
+	naruto.energy = 100.0
+	naruto.enter_frame({"special": true})
+	assert(naruto.action == "必杀")
+	naruto.start_action("落地")
+	while naruto.current_source_frame() < 116:
+		naruto.advance_timeline()
+	naruto.enter_frame({"attack": true})
+	assert(naruto.action == "砍1")
+	naruto.start_action("砍3")
+	while naruto.current_source_frame() < 217:
+		naruto.advance_timeline()
+	naruto.enter_frame({"attack": true})
+	assert(naruto.action == "砍4")
+	naruto.configure_stage(0.0, [])
+	naruto.position.y = 0.0
+	naruto.start_action("超必杀2")
+	while naruto.current_source_frame() < 942:
+		naruto.advance_timeline()
+	naruto.enter_frame({})
+	assert(naruto.action == "击飞")
+	# Source 942 sets yup/htx then 击飞; beidax lands to 击落地. Do not
+	# wipe _hurt_falling here — that hid the stuck-in-击飞 bug.
+	for _tick in range(80):
+		naruto.advance_timeline()
 		naruto.enter_frame({})
+		naruto.run_frame_actions()
+		if naruto.action in ["击落地", "起身", "站立"]:
+			break
+	assert(naruto.action in ["击落地", "起身", "站立"])
+	naruto._launched = false
+	naruto._hurt_falling = false
+	naruto.position.y = naruto._ground_y
+	naruto.start_action("站立")
+	naruto.enter_frame({"down": true, "attack": true, "ranged": true})
+	# doAllAction first leaving goto is defence() → 防御.
+	# Source: DefineSprite_16/frame_1/DoAction.as doAllAction.
+	assert(naruto.action == "防御")
+	naruto.enter_frame({"down": true, "attack": true, "ranged": true})
+	# onDefence later goto: magichit2 after skill1 / 防御2 pin.
+	assert(naruto.action == "招2")
+	naruto.energy = 100.0
+	naruto.start_action("站立")
+	naruto.enter_frame({"up": true, "special": true})
+	# bishaUP before bisha; first leaving goto from 站立 is 上必杀.
+	assert(naruto.action == "上必杀")
+	naruto.start_action("击落地")
+	while naruto.current_source_frame() < 1039:
+		naruto.advance_timeline()
+	naruto.enter_frame({"dash": true})
+	# 击落地 clip standup() → 起身. Source: DefineSprite_764/frame_1039.
+	assert(naruto.action == "起身")
+	naruto.start_action("击落地")
+	while naruto.current_source_frame() < 1069:
+		naruto.advance_timeline()
+	naruto.enter_frame({})
+	# Unconditional gotoAndStop("站立") at 1069, not 起身.
+	assert(naruto.action == "站立")
 
 	naruto.start_action("站立")
 	naruto.enter_frame({"ranged": true})
@@ -114,7 +181,9 @@ func _run() -> void:
 	naruto.configure_stage(rasengan_ground, [])
 	var rasengan_x := naruto.position.x
 	naruto.enter_frame({"up": true, "ranged": true})
+	# doAllAction: magichit3 before magichit1; 站立 helper is removed on 招3.
 	assert(naruto.action == "招3")
+	# continue the sourced 招3 clip already entered from 上+招
 	var rasengan_ticks := 0
 	var saw_zh32 := false
 	while naruto.action == "招3" and rasengan_ticks < 40:
@@ -219,6 +288,45 @@ func _run() -> void:
 	assert(naruto.action == "防住")
 	assert(naruto.health == guard_health - 3.0)
 	assert(is_equal_approx(naruto.energy, guard_energy + 2.0))
+	assert(naruto.hits == 0)
+	assert(naruto.last_combo_board == 0)
+
+	# Source fangyu(): zl <= 10 stays on 防住 and plays bdfyxg, no hits++.
+	naruto.start_action("防御2")
+	naruto.enter_frame({"down": true})
+	var blocked_hits := naruto.hits
+	naruto.receive_attack(
+		{
+			"damage": 15,
+			"impact_strength": 2,
+			"horizontal_impulse": 2,
+			"hitstun_ms": 300,
+			"instance_name": "k1atm",
+		},
+		1
+	)
+	assert(naruto.action == "防住")
+	assert(naruto.hits == blocked_hits)
+	assert(naruto.last_hit_effect == "XG_fyq")
+	assert(naruto.last_combo_board == 0)
+
+	# Source bdfyxg() case 1: a blocked 斩 (zl=1) plays XG_fykan, the blue
+	# blade burst, not the XG_fyq ring.
+	naruto.start_action("防御2")
+	naruto.enter_frame({"down": true})
+	naruto.receive_attack(
+		{
+			"damage": 10,
+			"impact_strength": 1,
+			"horizontal_impulse": 2,
+			"hitstun_ms": 300,
+			"instance_name": "k1atm",
+		},
+		1
+	)
+	assert(naruto.action == "防住")
+	assert(naruto.hits == blocked_hits)
+	assert(naruto.last_hit_effect == "XG_fykan")
 
 	# Source fangyu(): zl 15 is encoded as guard-breaking strength 5. Down+J
 	# must launch through guard and request the large blue-white XG_mfdjx hit.
@@ -240,6 +348,8 @@ func _run() -> void:
 	assert(naruto.health == break_health - 100.0)
 	assert(naruto.action == "击飞")
 	assert(naruto.last_hit_effect == "XG_mfdjx")
+	assert(naruto.hits == blocked_hits + 1)
+	assert(naruto.last_combo_board == 0)
 	naruto._launched = false
 	naruto._hurt_falling = false
 	naruto._hurt_horizontal_step = 0.0
@@ -435,6 +545,18 @@ func _run() -> void:
 	ichigo.start_action("站立")
 	ichigo.set_facing(1)
 
+	ichigo.start_action("砍技1")
+	while ichigo.current_source_frame() < 278:
+		ichigo.advance_timeline()
+	ichigo.enter_frame({})
+	assert(ichigo.action == "站立")
+	ichigo.start_action("砍1")
+	ichigo.energy = 300.0
+	while ichigo.current_source_frame() < 173:
+		ichigo.advance_timeline()
+	ichigo.enter_frame({"attack": true, "jump": true})
+	assert(ichigo.action == "万解")
+	ichigo.start_action("站立")
 	ichigo.energy = 300.0
 	ichigo.enter_frame({"special": true})
 	assert(ichigo.action == "必杀")
@@ -474,6 +596,331 @@ func _run() -> void:
 	assert(ichigo.instance_global_bounds("bdmn").has_area())
 	assert(ichigo.incoming_attack_hits(naruto))
 	assert(naruto.energy == 3.0)
+
+	# Flash MATRIX / JPEXS Matrix.transform on DefineSprite_2 (0,0)-(1319,810)
+	# twips. yihu 上必杀 sbsatm@548 is a 90° box: scale=0, rotateSkew0=-1.1421814,
+	# rotateSkew1=3.7250671. Swapping the skews turns this into a tall strip
+	# behind the attacker; source AABB is a wide slash in front.
+	# Source: scripts/fighter/yihu.json getHitObj() + timeline frame 548.
+	ichigo.health = 1000.0
+	ichigo.hits = 0
+	ichigo.sw = false
+	ichigo.position = Vector2(250.0, 0.0)
+	ichigo.start_action("站立")
+	ichigo.set_facing(-1)
+	ichigo.energy = 100.0
+	ichigo.start_action("上必杀")
+	while ichigo.current_source_frame() < 548:
+		ichigo.advance_timeline()
+	assert(ichigo.current_source_frame() == 548)
+	var sbs_local := ichigo.instance_local_bounds("sbsatm")
+	assert(sbs_local.has_area())
+	assert(sbs_local.size.x > 140.0)
+	assert(sbs_local.size.y < 90.0)
+	assert(sbs_local.end.x > 40.0)
+	naruto.health = 1000.0
+	naruto.hits = 0
+	naruto.sw = false
+	naruto.position = Vector2(200.0, 0.0)
+	naruto.start_action("站立")
+	naruto.set_facing(1)
+	assert(naruto.incoming_attack_hits(ichigo))
+	assert(naruto.action == "击飞")
+	assert(naruto.hits == 1)
+	assert(is_equal_approx(naruto.health, 750.0))
+	assert(naruto.last_hit_effect == "XG_mfdjx")
+
+	# yihu 超必杀 cbsatm@606: same rotated DefineSprite_2 convention.
+	naruto.health = 1000.0
+	naruto.hits = 0
+	naruto.sw = false
+	naruto._launched = false
+	naruto._hurt_falling = false
+	naruto.position = Vector2(200.0, 0.0)
+	naruto.start_action("站立")
+	ichigo.health = 1000.0
+	ichigo.energy = 300.0
+	ichigo.position = Vector2(250.0, 0.0)
+	ichigo.start_action("超必杀")
+	while ichigo.current_source_frame() < 606:
+		ichigo.advance_timeline()
+	assert(ichigo.current_source_frame() == 606)
+	var cbs_local := ichigo.instance_local_bounds("cbsatm")
+	assert(cbs_local.has_area())
+	assert(cbs_local.size.x > 90.0)
+	assert(cbs_local.end.x > 40.0)
+	assert(naruto.incoming_attack_hits(ichigo))
+	assert(naruto.action == "击飞")
+	assert(is_equal_approx(naruto.health, 550.0))
+
+	# minren 超必杀2 cbs3atm@904 then a new PlaceObject cbsatm@932.
+	# getHitObj() has no already-hit flag; a later PlaceObject can connect.
+	naruto.health = 1000.0
+	naruto.hits = 0
+	naruto.sw = false
+	naruto._launched = false
+	naruto._hurt_falling = false
+	naruto.energy = 300.0
+	naruto.position = Vector2(200.0, 0.0)
+	naruto.set_facing(1)
+	naruto.start_action("超必杀2")
+	ichigo.health = 1000.0
+	ichigo.hits = 0
+	ichigo.sw = false
+	ichigo._launched = false
+	ichigo._hurt_falling = false
+	ichigo.position = Vector2(250.0, 0.0)
+	ichigo.start_action("站立")
+	while naruto.current_source_frame() < 904:
+		naruto.advance_timeline()
+	assert(naruto.current_source_frame() == 904)
+	var cbs3_local := naruto.instance_local_bounds("cbs3atm")
+	assert(cbs3_local.has_area())
+	assert(cbs3_local.size.x > 140.0)
+	assert(cbs3_local.end.x > 40.0)
+	assert(ichigo.incoming_attack_hits(naruto))
+	assert(ichigo.action == "被打")
+	assert(ichigo.hits == 1)
+	assert(is_equal_approx(ichigo.health, 970.0))
+	ichigo.start_action("站立")
+	ichigo.hits = 1
+	while naruto.current_source_frame() < 932:
+		naruto.advance_timeline()
+	assert(naruto.current_source_frame() == 932)
+	assert(ichigo.incoming_attack_hits(naruto))
+	assert(ichigo.action == "击飞")
+	assert(is_equal_approx(ichigo.health, 770.0))
+
+	# Source DefineSprite_764/frame_832/DoAction.as copies wrapper _x only.
+	# Same ground plane: after the flash, cbs1atm@837 can hit. A defender
+	# at jump height keeps its Y, so that *atm misses. Do not enlarge boxes.
+	# frame_884 then writes _x, _y-40, and jump=1.
+	naruto.health = 1000.0
+	naruto.hits = 0
+	naruto.sw = false
+	naruto._launched = false
+	naruto._hurt_falling = false
+	naruto.energy = 300.0
+	naruto.position = Vector2(150.0, 0.0)
+	naruto.set_facing(1)
+	ichigo.health = 1000.0
+	ichigo.hits = 0
+	ichigo.sw = false
+	ichigo._launched = false
+	ichigo._hurt_falling = false
+	ichigo.position = Vector2(400.0, 0.0)
+	ichigo.start_action("站立")
+	naruto.start_action("超必杀")
+	while naruto.current_source_frame() < 832:
+		naruto.advance_timeline()
+	assert(naruto.current_source_frame() == 832)
+	naruto.enter_frame({})
+	naruto.run_frame_actions()
+	assert(is_equal_approx(naruto.position.x, ichigo.position.x))
+	assert(is_equal_approx(naruto.position.y, 0.0))
+	while naruto.current_source_frame() < 837:
+		naruto.advance_timeline()
+		naruto.enter_frame({})
+		naruto.run_frame_actions()
+	assert(naruto.current_source_frame() == 837)
+	assert(naruto.instance_global_bounds("cbs1atm").has_area())
+	assert(ichigo.incoming_attack_hits(naruto))
+	assert(ichigo.hits == 1)
+
+	ichigo.start_action("站立")
+	ichigo.health = 1000.0
+	ichigo.hits = 0
+	ichigo.position = Vector2(400.0, -80.0)
+	naruto.position = Vector2(150.0, 0.0)
+	naruto.energy = 300.0
+	naruto.start_action("超必杀")
+	while naruto.current_source_frame() < 832:
+		naruto.advance_timeline()
+	naruto.enter_frame({})
+	naruto.run_frame_actions()
+	assert(is_equal_approx(naruto.position.x, 400.0))
+	assert(is_equal_approx(naruto.position.y, 0.0))
+	while naruto.current_source_frame() < 837:
+		naruto.advance_timeline()
+		naruto.enter_frame({})
+		naruto.run_frame_actions()
+	assert(naruto.current_source_frame() == 837)
+	assert(naruto.attack_contact(ichigo).is_empty())
+	assert(ichigo.action == "站立")
+	assert(ichigo.hits == 0)
+
+	ichigo.position = Vector2(400.0, 0.0)
+	naruto.position = Vector2(150.0, 0.0)
+	naruto.energy = 300.0
+	naruto.start_action("超必杀")
+	while naruto.current_source_frame() < 884:
+		naruto.advance_timeline()
+		naruto.enter_frame({})
+		naruto.run_frame_actions()
+	assert(naruto.current_source_frame() == 884)
+	assert(is_equal_approx(naruto.position.x, 400.0))
+	assert(is_equal_approx(naruto.position.y, -40.0))
+	assert(naruto.action == "超必杀")
+
+	# Full 下+I: beidax 被打 has no zhongli, so cbs2 yup keeps the defender
+	# up. 884 warps the attacker to opponent.y-40. cbsatm@932 is 击飞.
+	# Source: DefineSprite_764/frame_832,884,886,942 and gjl cbs/cbs2.
+	ichigo.health = 1000.0
+	ichigo.hits = 0
+	ichigo.sw = false
+	ichigo._launched = false
+	ichigo._hurt_falling = false
+	ichigo.position = Vector2(400.0, 0.0)
+	ichigo.start_action("站立")
+	naruto.position = Vector2(150.0, 0.0)
+	naruto.energy = 300.0
+	naruto.start_action("超必杀")
+	var saw_cbs2_hover := false
+	var saw_warp_to_hover := false
+	var saw_cbs_launch := false
+	for _tick in range(200):
+		naruto.advance_timeline()
+		ichigo.advance_timeline()
+		naruto.enter_frame({})
+		ichigo.enter_frame({})
+		CombatResolverScript.resolve_body_pair(naruto, ichigo)
+		CombatResolverScript.resolve_pair(naruto, ichigo)
+		naruto.run_frame_actions()
+		ichigo.run_frame_actions()
+		if (
+			naruto.current_source_frame() >= 861
+			and naruto.current_source_frame() < 884
+			and naruto.action == "超必杀"
+			and ichigo.position.y < -80.0
+		):
+			saw_cbs2_hover = true
+		if (
+			naruto.action == "超必杀"
+			and naruto.current_source_frame() == 884
+			and ichigo.position.y < -40.0
+			and is_equal_approx(naruto.position.x, ichigo.position.x)
+			and is_equal_approx(naruto.position.y, ichigo.position.y - 40.0)
+		):
+			saw_warp_to_hover = true
+		if ichigo.action == "击飞" and ichigo.last_event == "hit_cbsatm":
+			saw_cbs_launch = true
+			break
+	assert(saw_cbs2_hover)
+	assert(saw_warp_to_hover)
+	assert(saw_cbs_launch)
+	naruto.start_action("站立")
+	naruto.position = Vector2(200.0, 0.0)
+	naruto.energy = 0.0
+	ichigo.health = 1000.0
+	ichigo.hits = 0
+	ichigo.position = Vector2(200.0, 0.0)
+	ichigo.start_action("站立")
+
+	# Facing / bdmn warps are on yihu DefineSprite_1672 (招3@442, 上必杀@555),
+	# not the current 638 slice. Lock the interpreter only.
+	var original_combat: Dictionary = ichigo._combat
+	var warp_combat: Dictionary = ichigo._combat.duplicate(true)
+	warp_combat["body_warps"] = [
+		{
+			"action": "招3",
+			"frame": 442,
+			"op": "warp_to_opponent",
+			"place_x": true,
+			"place_y": true,
+			"xscale_gt_0": {"set_facing": -1, "x_pixels": 100.0},
+			"xscale_lt_0": {"set_facing": 1, "x_pixels": -100.0},
+		},
+		{
+			"action": "上必杀",
+			"frame": 555,
+			"op": "warp_to_opponent",
+			"place_x": true,
+			"place_y": true,
+			"xscale_gt_0": {"set_facing": -1, "x_bdmn_width": -0.7},
+			"xscale_lt_0": {"set_facing": 1, "x_bdmn_width": 0.7},
+			"y_bdmn_height": 0.5,
+		},
+	]
+	ichigo._combat = warp_combat
+	naruto.position = Vector2(400.0, 0.0)
+	naruto.start_action("站立")
+	ichigo.position = Vector2(150.0, 0.0)
+	ichigo.set_facing(1)
+	ichigo.start_action("招3")
+	while ichigo.current_source_frame() < 442:
+		ichigo.advance_timeline()
+	assert(ichigo.current_source_frame() == 442)
+	ichigo.root_zhanting = true
+	ichigo.enter_frame({})
+	assert(ichigo.facing == -1)
+	assert(is_equal_approx(ichigo.position.x, 500.0))
+	assert(is_equal_approx(ichigo.position.y, 0.0))
+	ichigo.set_facing(-1)
+	ichigo.position = Vector2(150.0, 0.0)
+	ichigo.start_action("招3")
+	while ichigo.current_source_frame() < 442:
+		ichigo.advance_timeline()
+	ichigo.root_zhanting = true
+	ichigo.enter_frame({})
+	assert(ichigo.facing == 1)
+	assert(is_equal_approx(ichigo.position.x, 300.0))
+	ichigo.root_zhanting = false
+	var stand_body := naruto.instance_global_bounds("bdmn")
+	assert(stand_body.has_area())
+	ichigo.set_facing(1)
+	ichigo.position = Vector2(150.0, 0.0)
+	ichigo.start_action("上必杀")
+	while ichigo.current_source_frame() < 555:
+		ichigo.advance_timeline()
+	assert(ichigo.current_source_frame() == 555)
+	ichigo.root_zhanting = true
+	ichigo.enter_frame({})
+	stand_body = naruto.instance_global_bounds("bdmn")
+	assert(ichigo.facing == -1)
+	assert(is_equal_approx(ichigo.position.x, naruto.position.x - stand_body.size.x * 0.7))
+	assert(is_equal_approx(ichigo.position.y, naruto.position.y + stand_body.size.y * 0.5))
+	ichigo.root_zhanting = false
+	ichigo._combat = original_combat
+	ichigo.position = Vector2(200.0, 0.0)
+	ichigo.start_action("站立")
+	naruto.position = Vector2(200.0, 0.0)
+
+	# minren 砍技2: kj21atm is a new PlaceObject at 331 and again at 338.
+	# Source getHitObj() can connect both windows after the first clip leaves.
+	naruto.start_action("站立")
+	naruto.position = Vector2(200.0, 0.0)
+	naruto.set_facing(1)
+	naruto.start_action("砍技2")
+	ichigo.health = 1000.0
+	ichigo.hits = 0
+	ichigo.sw = false
+	ichigo._launched = false
+	ichigo._hurt_falling = false
+	ichigo.position = Vector2(200.0, 0.0)
+	ichigo.start_action("站立")
+	while naruto.current_source_frame() < 331:
+		naruto.advance_timeline()
+	assert(naruto.current_source_frame() == 331)
+	assert(ichigo.incoming_attack_hits(naruto))
+	assert(ichigo.hits == 1)
+	var after_first_kj21 := ichigo.health
+	ichigo.start_action("站立")
+	ichigo.hits = 1
+	while naruto.current_source_frame() < 338:
+		naruto.advance_timeline()
+	assert(naruto.current_source_frame() == 338)
+	assert(ichigo.incoming_attack_hits(naruto))
+	assert(ichigo.hits == 2)
+	assert(ichigo.health < after_first_kj21)
+	ichigo.energy = 0.0
+	ichigo.hits = 0
+	ichigo.sw = false
+	ichigo._launched = false
+	ichigo._hurt_falling = false
+	ichigo.start_action("站立")
+	naruto.energy = 0.0
+	naruto.hits = 0
+	naruto.start_action("站立")
 
 	naruto.health = 199.0
 	naruto.energy = 0.0
@@ -548,9 +995,10 @@ func _run() -> void:
 
 	naruto.start_action("站立")
 	naruto.enter_frame({"down": true, "jump": true})
-	# doAllAction evaluates jump after defence on the main floor, so K wins;
-	# doDropDown only replaces it with 落2 while standing on a ban.
-	assert(naruto.action == "跳")
+	# doAllAction first leaving goto is defence(); jump() is later and does
+	# not run after the 站立 helper is removed. Drop-through is only
+	# doDropDown while standing on a ban, handled before catalog dispatch.
+	assert(naruto.action == "防御")
 	naruto.airborne = false
 
 	# 现世 Flash world coords: floorY=-25, ban2 from main.swf frame 现世
@@ -650,6 +1098,207 @@ func _run() -> void:
 	assert(ichigo.action == "击飞")
 	assert(ichigo.last_hit_effect == "XG_qdjx")
 
+	# SOP D: hits++ only in onBeHit; HUD only when hits > 1; 站立 frame 2
+	# clears; bar2 chases only after that at maxhp/500.
+	naruto.player_slot = "p1"
+	ichigo.player_slot = "p2"
+	ichigo.hits = 0
+	ichigo.last_combo_board = 0
+	ichigo.health = 1000.0
+	ichigo.displayed_health = 1000.0
+	ichigo.max_health = 1000.0
+	ichigo.start_action("被打")
+	ichigo.receive_attack(
+		{
+			"damage": 15,
+			"impact_strength": 2,
+			"horizontal_impulse": 2,
+			"hitstun_ms": 300,
+			"reaction_label": "被打",
+			"instance_name": "k1atm",
+		},
+		1
+	)
+	assert(ichigo.hits == 1)
+	assert(ichigo.last_combo_board == 0)
+	ichigo.run_frame_actions()
+	assert(is_equal_approx(ichigo.displayed_health, 1000.0))
+	ichigo.receive_attack(
+		{
+			"damage": 15,
+			"impact_strength": 2,
+			"horizontal_impulse": 2,
+			"hitstun_ms": 300,
+			"reaction_label": "被打",
+			"instance_name": "k1atm",
+		},
+		1
+	)
+	assert(ichigo.hits == 2)
+	assert(ichigo.last_combo_board == 1)
+	ichigo.run_frame_actions()
+	assert(is_equal_approx(ichigo.displayed_health, 1000.0))
+	var hud_script = load("res://combo_hud.gd")
+	var hud: ComboHud = hud_script.new()
+	root.add_child(hud)
+	hud.load_spec("res://generated/main/hit_receive.json")
+	hud.play(1, 2)
+	assert(not hud.showing(1))
+	hud.tick()
+	assert(hud.showing(1))
+	assert(hud.displayed_hits(1) == 2)
+	assert(not hud.showing(2))
+	ichigo.start_action("站立")
+	assert(ichigo.hits == 2)
+	ichigo.enter_frame({})
+	assert(ichigo.hits == 2)
+	assert(ichigo.current_source_frame() == 1)
+	ichigo.advance_timeline()
+	ichigo.enter_frame({})
+	assert(ichigo.current_source_frame() == 2)
+	assert(ichigo.hits == 0)
+	ichigo.run_frame_actions()
+	assert(is_equal_approx(ichigo.displayed_health, 998.0))
+
+	# Source bsd@507: _root.zhanting, shine, blackStg, stopMc(opponent),
+	# showFace(pn,"鸣人2") on face_p1.
+	var super_presentation_script = load("res://super_presentation.gd")
+	var super_runtime_script = load("res://super_runtime.gd")
+	var presentation = super_presentation_script.new()
+	presentation.load_spec("res://generated/main/hit_receive.json")
+	var director = super_runtime_script.new()
+	director.presentation = presentation
+	naruto.player_slot = "p1"
+	ichigo.player_slot = "p2"
+	naruto.opponent = ichigo
+	ichigo.opponent = naruto
+	naruto.super_runtime = director
+	ichigo.super_runtime = director
+	ichigo.start_action("站立")
+	ichigo.timeline_playing = true
+	var ichigo_frame := ichigo.current_source_frame()
+	naruto.airborne = false
+	naruto.position.y = naruto._ground_y
+	naruto.start_action("必杀")
+	for _tick in range(10):
+		if naruto.current_source_frame() >= 507 and naruto.action == "必杀":
+			break
+		naruto.advance_timeline()
+	assert(naruto.action == "必杀")
+	assert(naruto.current_source_frame() == 507)
+	naruto.enter_frame({})
+	assert(naruto.action == "必杀")
+	assert(naruto.zhanting)
+	assert(naruto.bs == 1)
+	assert(director.zhanting)
+	assert(ichigo.root_zhanting)
+	assert(not ichigo.timeline_playing)
+	assert(not presentation.bgmc_visible)
+	assert(not presentation.fgmc_visible)
+	assert(presentation.black_mu_frame == 2)
+	assert(presentation.black_overlay_visible())
+	assert(str(naruto.last_super.get("face_label", "")) == "鸣人2")
+	assert(str(naruto.last_super.get("kind", "")) == "bsd")
+	assert(str(naruto.last_super.get("xg", "")) == "XG_bs")
+	assert(presentation.face_label == "鸣人2")
+	assert(presentation.active_slot == "face_p1")
+	assert(presentation.portrait_frame("鸣人2") == 23)
+	ichigo.advance_timeline()
+	assert(ichigo.current_source_frame() == ichigo_frame)
+	var frozen_x := ichigo.position.x
+	ichigo.enter_frame({"right": true})
+	assert(ichigo.action == "站立")
+	assert(ichigo.position.x == frozen_x)
+	for _tick in range(30):
+		if naruto.current_source_frame() >= 530 and naruto.action == "必杀":
+			break
+		naruto.advance_timeline()
+	assert(naruto.action == "必杀")
+	assert(naruto.current_source_frame() == 530)
+	naruto.enter_frame({})
+	assert(not naruto.zhanting)
+	assert(naruto.bs == 0)
+	assert(not director.zhanting)
+	assert(ichigo.timeline_playing)
+	assert(presentation.bgmc_visible)
+	assert(presentation.black_mu_frame == 1)
+	assert(not presentation.black_overlay_visible())
+	assert(presentation.face_label == "")
+	naruto.start_action("站立")
+	director.reset(naruto, ichigo, [])
+
+	# cbsd@752 uses XG_cbs and 焦点=caster. Source cbsd(pn) → 焦点 p1 when pn==2.
+	ichigo.start_action("站立")
+	naruto.start_action("超必杀")
+	for _tick in range(20):
+		if naruto.current_source_frame() >= 752 and naruto.action == "超必杀":
+			break
+		naruto.advance_timeline()
+	assert(naruto.action == "超必杀")
+	assert(naruto.current_source_frame() == 752)
+	naruto.enter_frame({})
+	assert(str(naruto.last_super.get("kind", "")) == "cbsd")
+	assert(str(naruto.last_super.get("xg", "")) == "XG_cbs")
+	assert(str(naruto.last_super.get("face_label", "")) == "鸣人2")
+	assert(director.last_focus == "p1")
+	assert(not ichigo.timeline_playing)
+	assert(presentation.black_mu_frame == 2)
+	var freeze_y := ichigo.position.y
+	var freeze_frame := ichigo.current_source_frame()
+	for _tick in range(20):
+		ichigo.advance_timeline()
+		ichigo.enter_frame({"jump": true, "right": true})
+		assert(ichigo.action == "站立")
+		assert(is_equal_approx(ichigo.position.y, freeze_y))
+		assert(ichigo.current_source_frame() == freeze_frame)
+	for _tick in range(90):
+		if naruto.current_source_frame() >= 829 and naruto.action == "超必杀":
+			break
+		naruto.advance_timeline()
+	assert(naruto.current_source_frame() == 829)
+	naruto.enter_frame({})
+	assert(str(naruto.last_super.get("kind", "")) == "cbsw")
+	assert(director.last_focus == "all")
+	assert(not director.zhanting)
+	assert(ichigo.timeline_playing)
+	assert(presentation.black_mu_frame == 1)
+	naruto.start_action("站立")
+	director.reset(naruto, ichigo, [])
+
+	# Source beidax() returns on root zhanting before movement and time++.
+	# stopMc deliberately does not stop hited clips, so verify callback state
+	# separately from the playhead.
+	ichigo.start_action("站立")
+	ichigo.health = 1000.0
+	ichigo.receive_attack(naruto._combat.attacks.cbs2, 1)
+	var hurt_freeze_position := ichigo.position
+	var hurt_freeze_ticks := ichigo._hurt_motion_ticks
+	director.apply({"op": "super_start", "kind": "cbsd"}, naruto, ichigo)
+	assert(ichigo.timeline_playing)
+	ichigo.enter_frame({})
+	assert(ichigo.position == hurt_freeze_position)
+	assert(ichigo._hurt_motion_ticks == hurt_freeze_ticks)
+	director.reset(naruto, ichigo, [])
+	ichigo.start_action("站立")
+
+	# Defender checkHit() shares gameRunning() across fighter/helper/stage
+	# candidates. A stopped helper's visible atm must not deal damage.
+	gaara.activate(
+		{"x": 200.0, "y": 0.0, "facing": 1, "start_frame": 2},
+		naruto
+	)
+	gaara.play_source_frame(44)
+	var helper_bounds := gaara.instance_global_bounds("atm1")
+	var defender_bounds := ichigo.instance_global_bounds("bdmn")
+	ichigo.position += helper_bounds.get_center() - defender_bounds.get_center()
+	director.apply({"op": "super_start", "kind": "cbsd"}, naruto, ichigo, [gaara])
+	assert(not gaara.timeline_playing)
+	var helper_freeze_health := ichigo.health
+	CombatResolverScript.resolve_helpers([gaara], [naruto, ichigo])
+	assert(ichigo.health == helper_freeze_health)
+	director.reset(naruto, ichigo, [gaara])
+	gaara.deactivate()
+
 	ichigo.health = 1000.0
 	ichigo.position = Vector2(200.0, 0.0)
 	ichigo.configure_stage(0.0, [])
@@ -671,6 +1320,62 @@ func _run() -> void:
 		ichigo.run_frame_actions()
 	assert(ichigo.position.y == 0.0)
 	assert(ichigo.action in ["击落地", "起身", "站立"])
+
+	# fangyu(): cbs1 zl 1 stays blocked, cbs3 zl 14 removes the marker and
+	# leaves for 被打 with cbs3up = -3, so beidax() pushes the body down.
+	# on_enterframe() is a clip action on the wrapper's PlaceObject of the body
+	# mc (frame_1/PlaceObject2_638_1, frame_2/PlaceObject2_1180_1), so it keeps
+	# resolving the floor through 被打: its jump == 1 early return only covers
+	# `_y < floorY`, and `if(_y > floorY - 10) _y = floorY` pins the defender.
+	ichigo.health = 1000.0
+	ichigo.position = Vector2(200.0, 0.0)
+	ichigo.configure_stage(0.0, [])
+	ichigo.start_action("防御2")
+	ichigo.enter_frame({"down": true})
+	assert(ichigo.guarding)
+	ichigo.receive_attack(naruto._combat.attacks.cbs1, 1)
+	assert(ichigo.action == "防住")
+	assert(ichigo.last_hit_effect == "XG_fykan")
+	assert(ichigo.position.y == 0.0)
+	ichigo.start_action("防御2")
+	ichigo.enter_frame({"down": true})
+	ichigo.receive_attack(naruto._combat.attacks.cbs3, 1)
+	assert(ichigo.action == "被打")
+	assert(ichigo.last_hit_effect == "XG_mfdj")
+	for _tick in range(30):
+		ichigo.advance_timeline()
+		ichigo.enter_frame({"down": true})
+		ichigo.run_frame_actions()
+		assert(ichigo.position.y <= 0.0)
+
+	# 下+I is bishaSuper → 超必杀. 超必杀2@942 self-goto 击飞 with yup/htx;
+	# beidax(true) must still land to 击落地 and leave for 站立. Source:
+	# DefineSprite_764/frame_942 and frame_1027–1035 / 击落地@1069.
+	# doAllAction first leaving goto is defence(); onDefence later-wins 超必杀.
+	naruto.sw = false
+	naruto.health = 1000.0
+	naruto.position = Vector2(200.0, 0.0)
+	naruto.configure_stage(0.0, [])
+	naruto.start_action("站立")
+	naruto.energy = 300.0
+	naruto.enter_frame({"down": true, "special": true})
+	assert(naruto.action == "防御")
+	naruto.advance_timeline()
+	naruto.enter_frame({"down": true, "special": true})
+	assert(naruto.action == "超必杀")
+	var recovered := false
+	for _tick in range(400):
+		naruto.advance_timeline()
+		naruto.enter_frame({})
+		naruto.run_frame_actions()
+		if naruto.action == "站立" and _tick > 8:
+			recovered = true
+			break
+	assert(recovered)
+	assert(is_equal_approx(naruto.position.y, 0.0))
+	assert(naruto.current_source_frame() < 1027)
+	naruto.enter_frame({"right": true})
+	assert(naruto.action == "走")
 
 	# Source checkDead(false): hp <= 0 sets sw, KOplay, and gotoAndStop("击飞").
 	# 击落地 frame `if(sw == true) stop()` then standup() refuses 起身.
@@ -710,12 +1415,93 @@ func _run() -> void:
 	assert(ichigo.action == "击落地")
 	assert(is_equal_approx(ichigo.position.x, dead_x))
 
+	# Source checkDead: hp <= 0 and modo == 4 does not set sw.
 	ichigo.sw = false
+	ichigo.health = 8.0
+	ichigo.modo = 4
+	ichigo.start_action("站立")
+	ichigo.receive_attack(
+		{
+			"damage": 15,
+			"horizontal_impulse": 2,
+			"vertical_impulse": 0,
+			"hitstun_ms": 300,
+			"reaction_label": "被打",
+			"instance_name": "k1atm",
+		},
+		1
+	)
+	assert(ichigo.health == 0.0)
+	assert(not ichigo.sw)
+	assert(ichigo.action != "击飞")
+	assert(ichigo.beida == 1)
+	# Source zdbx: only when modo==4 and beida==0, hp=maxhp and ql=300.
+	var zdbx_session := GameSession.new()
+	zdbx_session.modo = 4
+	zdbx_session.maxhp = 1000.0
+	zdbx_session.apply_zdbx([ichigo], true)
+	assert(ichigo.health == 0.0)
+	assert(ichigo.energy != 300.0)
+	ichigo.start_action("站立")
+	assert(ichigo.beida == 0)
+	ichigo.health = 100.0
+	ichigo.energy = 10.0
+	zdbx_session.apply_zdbx([ichigo], true)
+	assert(ichigo.health == 1000.0)
+	assert(ichigo.energy == 300.0)
+	zdbx_session.modo = 3
+	ichigo.health = 100.0
+	ichigo.energy = 10.0
+	zdbx_session.apply_zdbx([ichigo], true)
+	assert(ichigo.health == 100.0)
+	assert(ichigo.energy == 10.0)
+	ichigo.modo = 1
 	ichigo.health = 1000.0
+	ichigo.energy = 0.0
 	ichigo.start_action("站立")
 
 	naruto.opponent = ichigo
 	ichigo.opponent = naruto
+	naruto.position = Vector2(200.0, 0.0)
+	ichigo.position = Vector2(400.0, 0.0)
+
+	# Source DefineSprite_764/frame_683/DoAction.as: fensheng._x/_y copy the
+	# opponent container. New PlaceObject at 683; offset persists to sbsatm.
+	naruto.energy = 100.0
+	naruto.position = Vector2(150.0, 0.0)
+	ichigo.position = Vector2(400.0, 0.0)
+	naruto.set_facing(1)
+	naruto.start_action("上必杀")
+	while naruto.current_source_frame() < 683:
+		naruto.advance_timeline()
+	assert(naruto.current_source_frame() == 683)
+	naruto.enter_frame({})
+	naruto.run_frame_actions()
+	var clone_origin := naruto.named_instance_origin("fensheng")
+	assert(clone_origin != Vector2.INF)
+	var clone_local := clone_origin + naruto.instance_local_offset("fensheng")
+	assert(is_equal_approx(clone_local.x, ichigo.position.x - naruto.position.x))
+	assert(is_equal_approx(clone_local.y, ichigo.position.y - naruto.position.y))
+	var clone_world_x := (
+		naruto.position.x
+		+ float(naruto.facing) * (naruto.wrapper_translation().x + clone_local.x)
+	)
+	assert(absf(clone_world_x - ichigo.position.x) < absf(clone_world_x - 150.0))
+	assert(
+		is_equal_approx(
+			clone_world_x,
+			ichigo.position.x + float(naruto.facing) * naruto.wrapper_translation().x
+		)
+	)
+	while naruto.current_source_frame() < 693:
+		naruto.advance_timeline()
+		naruto.enter_frame({})
+		naruto.run_frame_actions()
+	assert(naruto.current_source_frame() == 693)
+	clone_origin = naruto.named_instance_origin("fensheng")
+	clone_local = clone_origin + naruto.instance_local_offset("fensheng")
+	assert(is_equal_approx(clone_local.x, ichigo.position.x - naruto.position.x))
+	naruto.start_action("站立")
 	naruto.position = Vector2(200.0, 0.0)
 	ichigo.position = Vector2(400.0, 0.0)
 	gaara.activate(
@@ -813,13 +1599,29 @@ func _run() -> void:
 
 	var hit_effect_script = load("res://hit_effect_runtime.gd")
 	var hit_effect: HitEffectRuntime = hit_effect_script.new()
+	hit_effect.auto_advance = false
 	hit_effect.configure("XG_qdjx", Vector2(200.0, -25.0), 1)
 	root.add_child(hit_effect)
 	await process_frame
-	assert(hit_effect.get_child_count() == 1)
+	# Preview plus the frame-1 StartSound player (soundId 219).
+	assert(hit_effect.get_child_count() == 2)
 	var effect_preview := hit_effect.get_child(0) as TimelinePreview
 	assert(effect_preview.current_source_frame() in [1, 2])
 	assert(effect_preview.get_child_count() > 0)
+	assert(hit_effect.last_sound_ids == [219])
+	assert((hit_effect.get_child(1) as AudioStreamPlayer).playing)
+	assert(hit_effect.effect_frame == 1)
+	assert(not hit_effect.game_paused)
+	hit_effect.advance_effect()
+	assert(hit_effect.effect_frame == 2)
+	assert(hit_effect.game_paused)
+	assert("pause_game" in hit_effect.last_ops)
+	assert("shine" in hit_effect.last_ops)
+	while hit_effect.effect_frame < 15:
+		hit_effect.advance_effect()
+	assert(not hit_effect.game_paused)
+	assert("resume_game" in hit_effect.last_ops)
+	hit_effect.auto_advance = true
 	for _tick in range(20):
 		await physics_frame
 	assert(not is_instance_valid(hit_effect))
@@ -833,6 +1635,40 @@ func _run() -> void:
 	for _tick in range(18):
 		await physics_frame
 	assert(not is_instance_valid(finisher_effect))
+
+	# Source XG_fykan: frame 1 StartSound 215 with no envelope, frame 11
+	# this.unloadMovie(). Blocked 斩 must be seen and heard.
+	var guard_effect: HitEffectRuntime = hit_effect_script.new()
+	guard_effect.auto_advance = false
+	guard_effect.configure("XG_fykan", Vector2(200.0, -25.0), 1)
+	root.add_child(guard_effect)
+	await process_frame
+	var guard_preview := guard_effect.get_child(0) as TimelinePreview
+	assert(guard_preview.get_child_count() > 0)
+	assert(guard_effect.last_sound_ids == [215])
+	var guard_player := guard_effect.get_child(1) as AudioStreamPlayer
+	assert(guard_player.playing)
+	assert(is_equal_approx(guard_player.volume_db, 0.0))
+	while guard_effect.effect_frame < 11:
+		guard_effect.advance_effect()
+	assert("unload" in guard_effect.last_ops)
+	await process_frame
+	assert(not is_instance_valid(guard_effect))
+
+	# Source XG_fyq shares soundId 197 with XG_mffy and carries a SOUNDINFO
+	# envelope (18008/18893 of 32768), so it plays quieter than XG_fykan.
+	var ring_effect: HitEffectRuntime = hit_effect_script.new()
+	ring_effect.auto_advance = false
+	ring_effect.configure("XG_fyq", Vector2(200.0, -25.0), 1)
+	root.add_child(ring_effect)
+	await process_frame
+	assert(ring_effect.last_sound_ids == [197])
+	var ring_player := ring_effect.get_child(1) as AudioStreamPlayer
+	assert(ring_player.playing)
+	assert(ring_player.volume_db < 0.0)
+	assert(is_equal_approx(ring_player.volume_db, linear_to_db(18450.5 / 32768.0)))
+	ring_effect.queue_free()
+	await process_frame
 
 	print("COMBAT_SMOKE_OK")
 	quit()

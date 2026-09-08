@@ -27,7 +27,7 @@
 
 `forms[].source_root_frame` 映射 `WKframe`，`action_set_id` 引用编译后的动作集。初步示例尚未确认全部形态，故不标 `ready`。当某角色共用同一个 SWF，必须用形态映射，不能复制改版分拆文件。
 
-战斗中间数据 `command_catalog` 用原版时间轴帧标签（`砍1`、`万解`）作为招式 ID，并保留 `doAllAction` 的谓词槽位（`nornalhit`、`bisha`）。尚未接线的标签和取消窗口列入 `gaps`，不得从目录里删掉。新角色只编译自己的 catalog，不另造英文招式名。`action_exits` 收录无条件 `gotoAndStop`：连段/受击/必杀回 `站立`，以及离地招式切到 `落`/`落2`（鸣人 `招3` 第 491 帧）。走路等循环标签上的回站立不自动接线，以免打断当前切片手感。相邻标签若中间没有 `stop`/`goto`，编入 `timeline_fallthroughs`：鸣人 `砍技1` 播完必须进入 `砍技12` 炸开，接触 `gotoAndPlay` 只是提前引爆。
+战斗中间数据 `command_catalog` 用原版时间轴帧标签（`砍1`、`万解`）作为招式 ID，并保留 `doAllAction` 的谓词槽位（`nornalhit`、`bisha`）。尚未接线的标签和取消窗口列入 `gaps`，不得从目录里删掉。新角色只编译自己的 catalog，不另造英文招式名。站立/空中/防御匹配按源函数里 `if(pred) gotoAndPlay` 的先后：`dispatch_orders[context]` 是该函数中的 0-based 下标。`doAllAction` 的 helper（`DefineSprite_16`）放在站立/走；第一个把播放头带离这些帧的 `gotoAndPlay` 会摘掉 caller，因此站立上+招进 `招3`、上+I 进 `上必杀`，后面的 `magichit1`/`bisha` 不得再覆盖。`onDefence` 第一句是 `gotoAndPlay("防御2")` 钉住同一剪辑，后续 if 继续跑，防御中后写获胜。不得把整份 `doAllAction` 都做成后写覆盖，否则站立 `招3`/`上必杀`/`超必杀` 会变成死代码。`cancel_windows` 来自各动作 PlaceObject `enterFrame` 的同类条件 goto；运行时 `match_cancel` 按该 clip 内后写获胜。已由专用路径消费的窗口标 `handled_elsewhere`（防御2 的 skill1/招2/超必杀走 `guard` catalog，防住→防御2，防御2 自钉），不得再走通用取消。`action_exits` 收录全部无条件 `gotoAndStop`/`gotoAndPlay`，目标可以是 `站立`/`落`/`落2`/`击飞` 等，以及带 `land_cancel` 的自跳回环（鸣人 `螺旋手里剑1@902` 钉住直到 `touchFloor` → `超必杀2`）；循环钉住的 `(走,站立)`、`(防御2,站立)`、`(站立,站立)`、`(落,落)`、`(落2,落2)` 不接线。同一帧脚本里写在 goto 前的 `yup`/`htx`/`jhp`/`zl` 一并编进该 exit（鸣人 `超必杀2@942` 自跳 `击飞`）；运行时按 `beidax(true)` 落地进 `击落地`，不得在 GDScript 里按角色猜冲量。`hurt.launch_stop_frame` 是击飞标签上的无条件 `stop()`（鸣人 1035、一护 759），播放头停住后仍由 `beidax` 落地，不能把标签 `end_frame` 当成停帧。相邻标签若中间没有 `stop`/`goto`，编入 `timeline_fallthroughs`：鸣人 `砍技1` 播完必须进入 `砍技12` 炸开，接触 `gotoAndPlay` 只是提前引爆。一护 `砍技1` 没有 fallthrough，第 278 帧无条件回站立。`motion_windows` 除 `speed` 倍数外还编译 `moveLeft`/`moveRight`（`steer_speed_factor`）、`_x += speed * N * scale_X`、以及像素 `_x`/`_y`（`forward_pixels`/`vertical_pixels`）。嵌套剪辑里 `_name="*atm"` 的判定窗口带 `placed_name`（鸣人 `上必杀` 的 `fensheng`/`sbsatm`）。`clip_placements` 收录帧脚本把具名剪辑 `_x`（及同源 `_y`）写成对手容器坐标的赋值：`if(_parent._xscale > 0) clip._x = opponent._x - parent._x`，否则取反；运行时覆盖 PlaceObject 平移，不得按角色猜传送像素。`body_warps` 收录玩家容器闪现，不是具名剪辑 `place_at_opponent`，也不是走路。无条件 `_parent._x/_y = _root.game["p"+pn]._x/_y`（可带常量像素和同行 `jump = 1`）编成顶层 `x_pixels`/`y_pixels`/`set_jump`。两分支都写 `_parent._xscale` 再抄对手 X 的，编 `xscale_gt_0`/`xscale_lt_0`（`set_facing`、`x_pixels` 或 `x_bdmn_width`）；Y 上的 `bdmn._height[*N]` 编 `y_bdmn_height`。不得在 GDScript 里按角色猜闪现距离，也不得把其他形态 Sprite 的脚本编进当前切片。鸣人 `超必杀@832` 只抄 X，所以随后 `cbs1atm` 只在同一水平面能碰到 `bdmn`；跳到另一高度不抄 Y，不得放大框去够。`@884` 才抄 `_y - 40` 并 `jump = 1`。当前一护切片 `DefineSprite_638` 没有这类赋值；`DefineSprite_1672` 的 `招3@442` / `上必杀@555` 是另一形态。
 
 战斗中间时间轴在抽取内层 `DefineSprite` 时保留根时间轴放置该符号的 `wrapper`
 （通常名为 `mc`）矩阵。玩家逻辑坐标是外层容器的 `_x/_y`；渲染和 `bdmn` 必须
@@ -36,7 +36,11 @@
 连续抛物线。`enterFrame` 从 `PlaceObject` 的下一根帧开始；新放置的剪辑不继承
 `js`。
 
-`hit_priority.instances` 必须由原版 `hitks` 与 1–5 后缀展开得到。一个 tick 同时存在多个 `*atm` 时按该表选中第一个命中，不能依赖 JSON、Godot 子节点或哈希表的遍历顺序。`impact_strength` 按原版 `bdxg()` 映射共享的 `XG_kan`、`XG_qdj`、`XG_qdjx`、`XG_mfdj`、`XG_mfdjx`、`XG_kanx` 命中特效；`zl > 10` 是破防标记，`beida()`/`fangyu()` 在进入普通受击链前只减一次 10，再用归一后的 1–6 选择效果。该展示属于通用受击链，不属于某一角色招式的硬编码。
+`hit_priority.instances` 必须由原版 `hitks` 与 1–5 后缀展开得到。一个 tick 同时存在多个 `*atm` 时按该表选中第一个命中，不能依赖 JSON、Godot 子节点或哈希表的遍历顺序。`impact_strength` 按原版 `bdxg()` 映射共享的 `XG_kan`、`XG_qdj`、`XG_qdjx`、`XG_mfdj`、`XG_mfdjx`、`XG_kanx` 命中特效；`zl > 10` 是破防标记，`beida()`/`fangyu()` 在进入普通受击链前只减一次 10，再用归一后的 1–6 选择效果。该展示属于通用受击链，不属于某一角色招式的硬编码。形态表 `attacks_by_form`、`hits_reset_frames`、`hit_fx`（含 `bdxg`/`bdfyxg`/`bdfyxg2` 与各 `XG_*` 的 `presentation_events`）、`combo_hud`（`p1hits.pn=2` / `p2hits.pn=1`，`连击` 从 DefineSprite_1833 第 10 帧起播，第 11 帧 `changeNum`，第 50 帧回 1）由源编译，运行时只解释这些字段。必杀 `bsd`/`cbsd`/`showFace`/`bsw`/`cbsw` 编入 `super_events` 与 `face_labels`；`ts_face`（sprite 1678）与 `blackMu`（sprite 1510）按 id 导入到 `godot/generated/main/`，运行时只 `goto` 编译帧。`blackMu` 帧 2 的黑底是源 `DefineShape` 535 的 `fillStyleType=0` 纯黑，不得另画全屏矩形冒充。落地顺序见 [HIT_RECEIVE_SOP.md](HIT_RECEIVE_SOP.md)。
+
+`XG_*` 剪辑目录（`godot/generated/effects/<元件名>/`）按 `main.swf` ExportAssets 的 sprite id 抽取，目录名即 `bdxg`/`bdfyxg`/`bdfyxg2` 表里的元件名，导入后必须能用 `timeline.json` 的 `sprite_id` 反查同一个元件。必杀火花 `XG_bs`（459）/`XG_cbs`（441）同样落在该目录。`bvn26-timeline-geometry-v1` 的 `frames[].events` 除 `action_bytecode` 外还收录 `start_sound`：`sound_id` 取该帧 `StartSoundTag`，`SOUNDINFO` 的 `envelope`（`left_level`/`right_level`，满值 32768）、`loop_count`、`in_point`、`out_point`、`sync_stop` 原样保留，被 `StartSound` 用到的 `DefineSound` 以 `type: "DefineSoundTag"` 进 `definitions`，`materialize_timeline_assets.py` 再把它的 mp3 落到同一目录并记入 `assets.json`。运行时只解释这些字段：播哪条声音、什么时候播、音量按 envelope 折算；不得按元件名手挑音效、手写时长或手调音量。`in_point`/`out_point` 的单位是 44.1 kHz 采样（与 `SOUNDENVELOPE` 的 `pos44` 同一套），不随 mp3 自身采样率变化：`XG_bs` 的 444.mp3 是 11025 Hz、1.202 s，`5100/51340` 即 0.116–1.164 s；按 mp3 采样率换算会溢出到 4.66 s。角色与援助时间轴上的 `start_sound` 走同一套抽取。`DefineShape` 的 `fillStyleType=0` 纯色填进 `solid_fills`（`blackMu` 帧 2 的 shape 535）；时间轴预览按 `shape_bounds_twips` 画该矩形。线性渐变（`fillStyleType=16`，横幅 shape 1516）尚未抽取。
+
+BGM 不在 SWF 里。`bvn26-stage-music-v1`（`godot/generated/music/music.json`）把 `loadSound()` 的选曲判定编成有序 `selection.steps`：带 `random_below` 的步骤消耗一次 `Math.random()`，命中即停；带 `otherwise` 的末步不抽随机。`p2selt` 的目录项没有 `music` 时第一步整个不存在，因此那种组合只抽一次随机。`getFighterData` 是纯查表，`addFighterClone` 在注册时已把父项键拍平，`manifest.json` 的 `fighter_catalog` 也是拍平结果，不得在运行时按 `clone_of` 回溯继承曲目。`playback` 来自 `startGame()` 的 `start(0,999)` 与 `setVolume(80)`：`volume_percent` 按 Flash 的 0–100 振幅百分比折算成 dB，999 次重复按循环处理（一局打不到第 999 次）。`files[]` 记录源 `game/music/<曲名>` 与 sha256，只复制该 `p2selt`/`curStage` 组合可达的曲目，不整包搬 `game/music/`。
 
 ### Action 与事件
 
@@ -83,3 +87,11 @@ Schema 校验结构与操作名；数据编译器还必须校验操作参数、�
 每份文件携带 `schema_version=1`。新增字段必须更新 schema、格式示例与实现消费者；改变单位、tick 起点、命中优先级或暂停语义需要升级 ExecutionProfile。原始输入文件不因接口升级被覆盖。
 
 Schema 只是接口起点。M1/M2 若发现原版需要额外事件或状态，可扩展契约并补例；不得为了维持现有示例格式而丢掉真实行为。测试格式使用 `python3 tools/validate_contracts.py`，需要 `requirements-dev.txt` 中的开发依赖。
+
+## 援助开发切片字段
+
+`helper-model` 的 `presentation_events` 编译根帧 effect/shine/bsd/bsw 调用，
+`helper` 保留 bsd/bsw 的 fz 实参，省略值不得改为 true。`clip_load_events` 记录
+load 帧、原 character_id/depth 与 aim_opponent_x；魂无该事件。`hide_frames`
+不再从 fzccXg 推断，根末帧后按源回到帧 1。角色 `summon_events.set_bs` 来自
+doZhaoHuan 的 bs 赋值；不是运行时按角色补的默认值。以上仍为带源路径的中间数据。
