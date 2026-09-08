@@ -23,8 +23,11 @@ def rect(xmin: int, xmax: int, ymin: int, ymax: int) -> bytes:
     return int(bits, 2).to_bytes(len(bits) // 8, "big")
 
 
-def enter_frame_clip(depth: int) -> tuple[bytes, bytes]:
-    sprite = struct.pack("<HH", 1, 1) + tag(1) + tag(0)
+def enter_frame_clip(depth: int, with_script: bool = False) -> tuple[bytes, bytes]:
+    sprite = struct.pack("<HH", 1, 1)
+    if with_script:
+        sprite += tag(12, b"\x00")
+    sprite += tag(1) + tag(0)
     define_sprite = tag(39, sprite)
 
     # CLIPEVENTFLAGS is a bit field written most-significant bit first within
@@ -49,7 +52,8 @@ def enter_frame_clip(depth: int) -> tuple[bytes, bytes]:
 
 
 def build(
-    frame_count: int, with_enter_frame_clip: bool = False, frame_rate: int = 30
+    frame_count: int, with_enter_frame_clip: bool = False, frame_rate: int = 30,
+    with_sprite_script: bool = False,
 ) -> bytes:
     # A non-zero stage survives JPEXS script replacement without being normalized
     # to the invalid zero-bit RECT encoding produced for an empty stage.
@@ -57,7 +61,7 @@ def build(
     tags = bytearray()
     clip_count = int(with_enter_frame_clip)
     if clip_count:
-        definition, placement = enter_frame_clip(1)
+        definition, placement = enter_frame_clip(1, with_sprite_script)
         tags.extend(definition)
         tags.extend(placement)
         for depth in range(2, clip_count + 1):

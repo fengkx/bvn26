@@ -676,15 +676,20 @@
       "evidence": [
         "docs/AI_SPEC.md",
         "evidence/ai/source-audit.json",
-        "evidence/ai/README.md"
+        "evidence/ai/README.md",
+        "evidence/ai/compiler-progress.md",
+        "evidence/ai/predicate-translation.json",
+        "evidence/ai/parent-goto.log"
       ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "已有全库静态审计；原 AI 运行时、共享随机消费与同 tape 对照未实现。",
+      "progress_note": "已有全库静态审计和 27 个判定函数的原生编译器，52,650 组标量翻译对照通过；父跳转移除回调的最小原版探针已记录。战斗接线、感知几何、函数调用调度、共享随机消费与同 tape 实战对照仍未完成。",
       "current_artifacts": [
         "docs/AI_SPEC.md",
         "evidence/ai/source-audit.json",
-        "tools/analyze_ai.py"
+        "tools/analyze_ai.py",
+        "tools/importer/compile_ai_predicates.py",
+        "tools/probes/check_ai_predicates.py"
       ]
     },
     {

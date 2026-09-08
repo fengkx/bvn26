@@ -34,7 +34,7 @@ def main() -> None:
         temporary = Path(directory)
         for name, needs_clip in PROBES.items():
             base = temporary / f"{name}-base.swf"
-            base.write_bytes(build(3, needs_clip))
+            base.write_bytes(build(3, needs_clip, with_sprite_script=name == "ai_parent_function"))
             output = args.output / f"{name}.swf"
             subprocess.run(
                 [

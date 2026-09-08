@@ -18,9 +18,19 @@ class StageCatalogTests(unittest.TestCase):
             with self.subTest(stage=stage["id"]):
                 folder = directory / stage["directory"]
                 timeline = json.loads((folder / "timeline.json").read_text())
+                self.assertNotIn("wrapper", timeline)
+                background = json.loads((directory / stage["background_directory"] / "timeline.json").read_text())
+                self.assertEqual(background["sprite_id"], 1501)
+                self.assertIn(source[stage["id"]]["frame"], background["frames"][0]["labels"])
+                for definition in timeline["definitions"]:
+                    if definition["character_id"] == 1690:
+                        self.assertFalse(definition["initial_visible"])
                 (frame,) = timeline["frames"]
                 self.assertIn(source[stage["id"]]["frame"], frame["labels"])
                 names = {item.get("name") for item in frame["display_list"]}
+                for item in frame["display_list"]:
+                    if item.get("name") in {"p1", "p2", "p1fz", "p2fz"}:
+                        self.assertTrue(item["replaced_by_external_movie"])
                 self.assertTrue({"p1", "p2"} <= names)
                 assets = json.loads((folder / "assets.json").read_text())["assets"]
                 for asset in assets:

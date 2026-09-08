@@ -59,3 +59,29 @@ parity and the three-browser matrix remain pending. Approximate effort for this
 selector pass: 0.08 person-days, including reference capture and integration.
 
 Web verification: the in-app browser loaded the release, displayed all ten maps and changed the highlighted map. Automated very short key pulses were not reliably sampled by the polling loop; the user verified with a real keyboard that selection and entering combat work. This is one browser smoke check, not the full browser matrix.
+
+### Map rendering correction after Web feedback
+
+The user reported black scenery despite successful selection. Root frame 56 places
+`bg` (Sprite1501) at depth 1 with an identity matrix and `game` (Sprite1738) at
+depth 13. Sprite1991 frame 1 explicitly sends both to `curStage`; importing only
+`game` omitted the entire distant background. The catalog now imports both label
+slices. `bg` is outside the camera container, below the battle layers, and is
+removed/recreated on map changes and hidden when leaving battle.
+
+The source camera enterFrame owns `game` position/scale, so its authored root
+placement must not also be baked into the stage's local geometry. The importer
+removes that wrapper (fighter wrappers are unaffected). Sprite1690 frame 1 sets
+`_visible = false`; this now compiles to `initial_visible: false` while preserving
+platform geometry. Sprite1900 frame 1 uses MovieClipLoader.loadClip into p1/p2 and
+p1fz/p2fz, replacing their white marker art; these placements now compile an
+external-movie replacement flag and are rendered by the existing fighters/helpers.
+The background root timeline stops at frame 1 then receives gotoAndStop(curStage),
+with no selector-driven fallthrough. No invented map offsets were added.
+
+Validation: source/catalog assertions cover all ten background labels, omission
+of the duplicate wrapper, invisible platforms and replaced marker art. The Godot
+selection smoke covers all ten rendered background nodes and their scene exit
+visibility. A native Godot battle screenshot is stored as `map-render-fixed.png`.
+This is a correction of missing source presentation, not completion of animated
+map parity or the original-player per-map golden comparison (still pending).

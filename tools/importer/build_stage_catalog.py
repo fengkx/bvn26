@@ -27,6 +27,14 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> d
         raise ValueError("Export workspace does not match the source SWF")
     timeline = extract_frames(workspace / "main.xml", 1738)
     root = ET.parse(workspace / "main.xml").getroot()
+    backgrounds = extract_frames(workspace / "main.xml", 1501)
+    scripts = json.loads(Path("scripts/main.json").read_text(encoding="utf-8"))["scripts"]
+    hidden_ids = {
+        int(match[1])
+        for item in scripts
+        if (match := re.fullmatch(r"DefineSprite_(\d+)/frame_1/DoAction.as", item["path"]))
+        and item["source"].strip() == "_visible = false;"
+    }
     stages = []
     music_output = output / "music"
     music_output.mkdir(parents=True, exist_ok=True)
@@ -41,8 +49,19 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> d
         directory = output / f"frame_{frame['frame']}"
         directory.mkdir(parents=True, exist_ok=True)
         sliced = copy.deepcopy(timeline)
+        # GameWorld owns the root game transform (source camera enterFrame).
+        # Keeping its authored placement here applies that container twice.
+        sliced.pop("wrapper", None)
         sliced["frames"] = [frame]
         sliced["definitions"] = referenced_definitions(root, [frame])
+        for definition in sliced["definitions"]:
+            if definition["character_id"] in hidden_ids:
+                definition["initial_visible"] = False
+        # Sprite1900 loads fighter/helper movies into these marker clips.
+        # Their geometry remains available for spawning; the runtime owns art.
+        for placement in sliced["frames"][0]["display_list"]:
+            if placement.get("name") in {"p1", "p2", "p1fz", "p2fz"}:
+                placement["replaced_by_external_movie"] = True
         sliced["source_swf"] = {
             "path": source.as_posix(),
             "sha256": file_sha256(source),
@@ -53,6 +72,13 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> d
             json.dumps(sliced, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
         assets = materialize(workspace, timeline_path, directory)
+        background_frame = next(f for f in backgrounds["frames"] if entry["frame"] in f["labels"])
+        background = copy.deepcopy(backgrounds)
+        background["frames"] = [background_frame]
+        background["definitions"] = referenced_definitions(root, [background_frame])
+        background_path = output / f"background_{frame['frame']}.timeline.json"
+        background_path.write_text(json.dumps(background, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        materialize(workspace, background_path, output / f"background_{frame['frame']}")
         with tempfile.TemporaryDirectory(prefix="bvn-map-music-") as temporary:
             music = materialize_music(
                 manifest_path, source.parent / "music", "一护", key, Path(temporary)
@@ -71,6 +97,8 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> d
                 "frame": frame["frame"],
                 "directory": directory.name,
                 "music": entry["music"],
+                "background_directory": f"background_{frame['frame']}",
+                "background_frame": background_frame["frame"],
                 "asset_count": len(assets["assets"]),
                 "runtime_verified": False,
             }

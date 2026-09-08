@@ -50,3 +50,9 @@ as a question to verify, not silently repaired.
 The pre-change retained-input verification also passed. Manifest updates for this
 work are limited to the explicitly edited documentation/task entries and the new
 AI artifacts; unrelated working-tree changes were preserved.
+
+## Subsequent compiler work
+
+See [compiler-progress.md](compiler-progress.md) for the native predicate compiler,
+scalar translation checks and parent-goto probe. This later work does not change
+the full-battle acceptance status above.

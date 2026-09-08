@@ -19,6 +19,7 @@ extends Control
 var pause_menu: BattlePauseMenu
 var health_hud: HealthHud
 var map_selection: MapSelection
+var stage_background: TimelinePreview
 var stage_sound: StageSound
 var selected_stage: String = "现世"
 
@@ -210,6 +211,15 @@ func _load_selected_stage(stage_id: String) -> void:
 	for stage: Dictionary in catalog["stages"]:
 		if str(stage["id"]) != stage_id:
 			continue
+		if stage_background != null:
+			remove_child(stage_background)
+			stage_background.queue_free()
+		stage_background = TimelinePreview.new()
+		stage_background.fighter_directory = "res://generated/stages/catalog/" + str(stage["background_directory"])
+		stage_background.initial_frame = int(stage["background_frame"])
+		stage_background.autoplay = false
+		add_child(stage_background)
+		move_child(stage_background, 1)
 		var replacement := TimelinePreview.new()
 		replacement.name = "CurrentWorld"
 		replacement.fighter_directory = "res://generated/stages/catalog/" + str(stage["directory"])
@@ -264,6 +274,8 @@ func _goto_menu() -> void:
 	key_settings.visible = false
 	fight_hud.visible = false
 	health_hud.visible = false
+	if stage_background != null:
+		stage_background.visible = false
 	game_world.visible = false
 	if black_mu != null:
 		black_mu.visible = false
@@ -284,6 +296,8 @@ func _goto_key_settings() -> void:
 	key_settings.visible = true
 	fight_hud.visible = false
 	health_hud.visible = false
+	if stage_background != null:
+		stage_background.visible = false
 	game_world.visible = false
 	if black_mu != null:
 		black_mu.visible = false
@@ -305,6 +319,8 @@ func _enter_current_fight(modo: int) -> void:
 	key_settings.visible = false
 	fight_hud.visible = false
 	health_hud.visible = true
+	if stage_background != null:
+		stage_background.visible = true
 	game_world.visible = true
 	if black_mu != null:
 		black_mu.visible = true

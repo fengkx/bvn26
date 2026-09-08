@@ -371,10 +371,14 @@ func _render_placement(
 	parent_rgb_mul: Color = Color(1, 1, 1, 1),
 	parent_rgb_add: Color = Color(0, 0, 0, 0)
 ) -> void:
+	if bool(placement.get("replaced_by_external_movie", false)):
+		return
 	var character_id := int(placement.get("character_id", -1))
 	if not _definitions.has(character_id):
 		return
 	var definition: Dictionary = _definitions[character_id]
+	if not bool(definition.get("initial_visible", true)):
+		return
 	var placement_transform := parent_transform * _placement_transform(placement)
 	var color_transform: Dictionary = placement.get("color_transform", {})
 	var placement_mul := _cxform_mul(color_transform)
