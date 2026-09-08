@@ -6,8 +6,14 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any
+
+_IMPORTER_DIR = Path(__file__).resolve().parent
+if str(_IMPORTER_DIR) not in sys.path:
+    sys.path.insert(0, str(_IMPORTER_DIR))
+from command_catalog import build_command_catalog  # noqa: E402
 
 
 SCRIPT_PATH = re.compile(
@@ -15,11 +21,245 @@ SCRIPT_PATH = re.compile(
 )
 PLACEMENT_PATH = re.compile(r"^PlaceObject[23]_(?P<character>\d+)_(?P<depth>\d+)/")
 GOTO = re.compile(r'gotoAnd(?:Play|Stop)\("(?P<label>[^\"]+)"\)')
+UNCONDITIONAL_GOTO_STOP = re.compile(r'gotoAndStop\("(?P<label>[^\"]+)"\)')
 ENERGY_COST = re.compile(r"ql\s*-=\s*(?P<cost>\d+)")
+ENERGY_DELTA = re.compile(r"ql\s*(?P<operator>\+=|-=)\s*(?P<value>\d+(?:\.\d+)?)")
+SCREEN_FLASH = re.compile(r"_root\.shine\(\s*(?P<color>\d*)\s*\)")
+SPEED_EXPR = re.compile(
+    r"(?:Math\.round\()?(?P<neg>-\s*)?_parent\.speed"
+    r"(?:\s*(?P<op>[*/])\s*(?P<num>\d+(?:\.\d+)?))?(?:\))?"
+)
+XSCALE_MOVE = re.compile(
+    r"if\s*\(\s*_parent\._parent\._xscale\s*(?P<cmp><|>)\s*0\s*\)\s*\{"
+    r"\s*_parent\._parent\._x\s*(?P<op>\+=|-=)\s*(?P<expr>[^;]+);",
+    re.S,
+)
+PARENT_X = re.compile(r"_parent\._parent\._x\s*(?P<op>\+=|-=)\s*(?P<expr>[^;]+);")
+PARENT_Y = re.compile(r"_parent\._parent\._y\s*(?P<op>\+=|-=)\s*(?P<expr>[^;]+);")
+XSCALE_TEST = re.compile(r"_parent\._parent\._xscale\s*(?P<cmp><|>)\s*0")
+MOVE_X = re.compile(r"moveX\((?P<value>-?\d+(?:\.\d+)?)\)")
+CONTACT_GOTO = re.compile(
+    r"hitTest\([^)]+\)[\s\S]{0,240}?gotoAndPlay\(\"(?P<label>[^\"]+)\"\)"
+)
+CONTACT_INSTANCE = re.compile(
+    r"(?:_parent\.)?(?P<name>[A-Za-z0-9_]+atm)\.hitTest"
+)
+LAND_GOTO = re.compile(
+    r"if\s*\(\s*_parent\.(?:touchFloor|touch)(?:\s*==\s*true)?\s*\)[\s\S]{0,80}?"
+    r"gotoAndPlay\(\"(?P<label>[^\"]+)\"\)"
+)
+PROJECTILE_SPEED = re.compile(
+    r"movspeed\s*=\s*_parent\.speed\s*\*\s*(?P<factor>\d+(?:\.\d+)?)"
+)
+PROJECTILE_X = re.compile(r"_X\s*=\s*_X\s*(?P<op>\+|-)\s*movspeed")
+PROJECTILE_Y = re.compile(r"_Y\s*=\s*_Y\s*(?P<op>\+|-)\s*movspeed")
+PROJECTILE_HIT_GOTO = re.compile(r"gotoAndPlay\((?P<frame>\d+)\)")
+NESTED_FRAME_SCRIPT = re.compile(
+    r"^DefineSprite_(?P<sprite>\d+)/frame_(?P<frame>\d+)/DoAction"
+)
+CLIP_RENAME = re.compile(r"(?:this\.)?_name\s*=\s*\"(?P<name>[^\"]+)\"")
+CHECK_DEAD = re.compile(
+    r"function checkDead\(fly\)\s*\{(?P<body>.*?)\nfunction ",
+    re.S,
+)
+CHECK_DEAD_LAUNCH = re.compile(r'gotoAndStop\("(?P<label>[^\"]+)"\)')
+SW_STOP = re.compile(r"if\s*\(\s*sw\s*==\s*true\s*\)\s*\{\s*stop\(\);\s*\}", re.S)
+HIT_KEYS = re.compile(r'var hitks\s*=\s*\[(?P<keys>[^\]]+)\]')
+QUOTED_VALUE = re.compile(r'"(?P<value>[^"]+)"')
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def text_sha256(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def parse_speed_factor(expr: str) -> tuple[float, bool] | None:
+    match = SPEED_EXPR.fullmatch(expr.strip())
+    if match is None:
+        return None
+    factor = 1.0
+    if match["op"] == "/":
+        factor = 1.0 / float(match["num"])
+    elif match["op"] == "*":
+        factor = float(match["num"])
+    if match["neg"]:
+        factor = -factor
+    return factor, expr.strip().startswith("Math.round(")
+
+
+def parse_horizontal_motion(source: str) -> tuple[float, bool] | None:
+    xscale = XSCALE_MOVE.search(source)
+    cmp_op = None
+    assign_op = None
+    expr = None
+    if xscale is not None:
+        cmp_op = xscale["cmp"]
+        assign_op = xscale["op"]
+        expr = xscale["expr"]
+    else:
+        scale_test = XSCALE_TEST.search(source)
+        parent_x = PARENT_X.search(source)
+        if scale_test is not None and parent_x is not None:
+            cmp_op = scale_test["cmp"]
+            assign_op = parent_x["op"]
+            expr = parent_x["expr"]
+    if expr is None:
+        return None
+    parsed = parse_speed_factor(expr)
+    if parsed is None:
+        return None
+    factor, rounded = parsed
+    facing_forward = (cmp_op == ">" and assign_op == "+=") or (
+        cmp_op == "<" and assign_op == "-="
+    )
+    return (factor if facing_forward else -factor), rounded
+
+
+def parse_fighter_motion(source: str) -> dict[str, Any] | None:
+    if "moveLeft()" in source or "moveRight()" in source:
+        return None
+    if "_parent._parent.scale_X" in source:
+        return None
+    motion: dict[str, Any] = {}
+    horizontal = parse_horizontal_motion(source)
+    if horizontal is not None:
+        motion["forward_speed_factor"] = horizontal[0]
+        motion["round_forward"] = horizontal[1]
+    move = MOVE_X.search(source)
+    if move is not None:
+        motion["forward_pixels"] = float(move["value"])
+    y_move = PARENT_Y.search(source)
+    if y_move is not None:
+        parsed = parse_speed_factor(y_move["expr"])
+        if parsed is None:
+            return None
+        factor, rounded = parsed
+        motion["vertical_speed_factor"] = (
+            factor if y_move["op"] == "+=" else -factor
+        )
+        motion["round_vertical"] = rounded
+    contact = CONTACT_GOTO.search(source)
+    if contact is not None and "_X =" not in source:
+        motion["contact_cancel_to"] = contact["label"]
+        instance = CONTACT_INSTANCE.search(source)
+        if instance is not None:
+            motion["contact_instance"] = instance["name"]
+    land = LAND_GOTO.search(source)
+    if land is not None:
+        motion["land_cancel_to"] = land["label"]
+    if not any(
+        key in motion
+        for key in (
+            "forward_speed_factor",
+            "forward_pixels",
+            "vertical_speed_factor",
+        )
+    ):
+        return None
+    return motion
+
+
+def parse_unconditional_exit(source: str) -> str | None:
+    """Frame scripts that always leave the current clip, e.g. gotoAndStop(\"落\").
+
+    Conditional branches and clip enterFrame cancels stay out of action_exits.
+    """
+    if "if(" in source.replace(" ", ""):
+        return None
+    matches = list(UNCONDITIONAL_GOTO_STOP.finditer(source))
+    if len(matches) != 1:
+        return None
+    return matches[0]["label"]
+
+
+def parse_projectile_motion(source: str) -> dict[str, Any] | None:
+    if "_X = _X" not in source and "_Y = _Y" not in source:
+        return None
+    motion: dict[str, Any] = {}
+    x_move = PROJECTILE_X.search(source)
+    if x_move is not None:
+        motion["local_x_factor"] = 1.0 if x_move["op"] == "+" else -1.0
+    y_move = PROJECTILE_Y.search(source)
+    if y_move is not None:
+        motion["local_y_factor"] = 1.0 if y_move["op"] == "+" else -1.0
+    if "movspeed = 0" in source:
+        hit_goto = PROJECTILE_HIT_GOTO.search(source)
+        if hit_goto is not None:
+            motion["on_hit_goto_frame"] = int(hit_goto["frame"])
+    return motion or None
+
+
+def helper_from_catalog(fighter_id: str) -> dict[str, Any]:
+    manifest = json.loads((REPO_ROOT / "manifest.json").read_text(encoding="utf-8"))
+    fighter = manifest["fighter_catalog"].get(fighter_id, {})
+    helper_id = fighter.get("fz")
+    if not helper_id:
+        return {}
+    helper = manifest["fighter_catalog"].get(helper_id, {})
+    return {
+        "helper_id": helper_id,
+        "helper_swf": helper.get("fzurl") or helper.get("url", ""),
+        "behind_pixels": 20,
+        "start_frame": 2,
+    }
+
+
+def placement_name(
+    frames_by_number: dict[int, dict[str, Any]], frame: int, depth: int
+) -> str:
+    current = frames_by_number.get(frame)
+    if current is None:
+        return ""
+    for placement in current["display_list"]:
+        if int(placement["depth"]) == depth:
+            return str(placement.get("name", ""))
+    return ""
+
+
+def placement_character_id(
+    frames_by_number: dict[int, dict[str, Any]], frame: int, depth: int
+) -> int | None:
+    current = frames_by_number.get(frame)
+    if current is None:
+        return None
+    for placement in current["display_list"]:
+        if int(placement["depth"]) == depth:
+            return int(placement.get("character_id", 0)) or None
+    return None
+
+
+def parse_clip_timeline(
+    script_bundle: dict[str, Any], character_id: int
+) -> dict[str, Any]:
+    stop_frames: list[dict[str, Any]] = []
+    rename_frames: list[dict[str, Any]] = []
+    for script in script_bundle["scripts"]:
+        match = NESTED_FRAME_SCRIPT.match(script["path"])
+        if match is None or int(match["sprite"]) != character_id:
+            continue
+        if "CLIPACTIONRECORD" in script["path"]:
+            continue
+        frame = int(match["frame"])
+        source = script["source"].strip()
+        record = {
+            "frame": frame,
+            "source_path": script["path"],
+            "source_sha256": text_sha256(script["source"]),
+        }
+        if source == "stop();":
+            stop_frames.append(record)
+        rename = CLIP_RENAME.search(script["source"])
+        if rename is not None:
+            rename_frames.append({**record, "instance_name": rename["name"]})
+    stop_frames.sort(key=lambda item: item["frame"])
+    rename_frames.sort(key=lambda item: item["frame"])
+    timeline: dict[str, Any] = {"character_id": character_id}
+    if stop_frames:
+        timeline["stop_frames"] = [item["frame"] for item in stop_frames]
+        timeline["stop_sources"] = stop_frames
+    if rename_frames:
+        timeline["rename_frames"] = rename_frames
+    return timeline
 
 
 def contiguous_windows(frames: list[int]) -> list[dict[str, int]]:
@@ -44,6 +284,61 @@ def target_ranges(fighter: dict[str, Any]) -> dict[str, dict[str, int]]:
     return result
 
 
+def extract_death(
+    script_bundle: dict[str, Any],
+    sprite_id: int,
+    scripts: list[dict[str, Any]],
+    ranges: dict[str, dict[str, int]],
+) -> dict[str, Any] | None:
+    check_script = next(
+        (
+            script
+            for script in script_bundle["scripts"]
+            if (match := SCRIPT_PATH.match(script["path"])) is not None
+            and int(match["sprite"]) == sprite_id
+            and match["frame"] == "1"
+            and "function checkDead" in script["source"]
+        ),
+        None,
+    )
+    if check_script is None:
+        return None
+    body_match = CHECK_DEAD.search(check_script["source"].replace("\r\n", "\n"))
+    if body_match is None:
+        raise ValueError(f"Cannot parse checkDead in {check_script['path']}")
+    launch_match = CHECK_DEAD_LAUNCH.search(body_match["body"])
+    if launch_match is None:
+        raise ValueError(f"checkDead has no launch label in {check_script['path']}")
+    launch_label = launch_match["label"]
+    if launch_label not in ranges:
+        raise ValueError(f"checkDead launch label missing from timeline: {launch_label}")
+    if "击落地" not in ranges:
+        raise ValueError("checkDead requires sourced 击落地 label")
+    stop_scripts = [
+        script
+        for script in scripts
+        if script["action"] == "击落地"
+        and script["kind"] == "frame_action"
+        and SW_STOP.search(script["source"].replace("\r\n", "\n"))
+    ]
+    if len(stop_scripts) != 1:
+        raise ValueError(
+            f"Expected one 击落地 sw-stop frame, got {len(stop_scripts)}"
+        )
+    stop = stop_scripts[0]
+    return {
+        "flag": "sw",
+        "launch_label": launch_label,
+        "down_label": "击落地",
+        "knockdown_stop_frame": stop["frame"],
+        "practice_mode_skips": 4,
+        "source_path": check_script["path"],
+        "source_sha256": text_sha256(check_script["source"]),
+        "stop_source_path": stop["path"],
+        "stop_source_sha256": stop["source_sha256"],
+    }
+
+
 def action_for_frame(
     frame: int, ranges: dict[str, dict[str, int]]
 ) -> str | None:
@@ -51,6 +346,29 @@ def action_for_frame(
         if span["start_frame"] <= frame <= span["end_frame"]:
             return label
     return None
+
+
+def extract_hit_priority(script_bundle: dict[str, Any]) -> dict[str, Any]:
+    candidates = []
+    for script in script_bundle["scripts"]:
+        match = HIT_KEYS.search(script["source"])
+        if match is None or "function getHitObj" not in script["source"]:
+            continue
+        keys = [item["value"] for item in QUOTED_VALUE.finditer(match["keys"])]
+        if keys:
+            candidates.append((script, keys))
+    if not candidates:
+        raise ValueError("Cannot locate source hitks priority table")
+    script, keys = candidates[0]
+    instances = []
+    for key in keys:
+        instances.append(f"{key}atm")
+        instances.extend(f"{key}{suffix}atm" for suffix in range(1, 6))
+    return {
+        "instances": instances,
+        "source_path": script["path"],
+        "source_sha256": text_sha256(script["source"]),
+    }
 
 
 def clip_lifetime(
@@ -172,23 +490,31 @@ def build_model(
             }
         )
 
+    stand_exit_actions = {
+        *combo_labels,
+        *fighter["actions"]["hurt"],
+        *fighter["actions"]["special"],
+    }
     exits = {}
-    for label in (*combo_labels, *fighter["actions"]["hurt"], *fighter["actions"]["special"]):
-        exit_scripts = [
-            script
-            for script in scripts
-            if script["action"] == label
-            and script["kind"] == "frame_action"
-            and 'gotoAndStop("站立")' in script["source"]
-        ]
-        if exit_scripts:
-            first = min(exit_scripts, key=lambda item: item["frame"])
-            exits[label] = {
-                "frame": first["frame"],
-                "target": "站立",
-                "source_path": first["path"],
-                "source_sha256": first["source_sha256"],
-            }
+    for script in scripts:
+        if script["kind"] != "frame_action":
+            continue
+        target = parse_unconditional_exit(script["source"])
+        if target is None or target == script["action"]:
+            continue
+        if target == "站立" and script["action"] not in stand_exit_actions:
+            continue
+        if target != "站立" and target not in ("落", "落2"):
+            continue
+        current = exits.get(script["action"])
+        if current is not None and current["frame"] <= script["frame"]:
+            continue
+        exits[script["action"]] = {
+            "frame": script["frame"],
+            "target": target,
+            "source_path": script["path"],
+            "source_sha256": script["source_sha256"],
+        }
 
     hurt_label = next(iter(fighter["actions"]["hurt"]))
     stop_scripts = [
@@ -252,6 +578,123 @@ def build_model(
         raise ValueError(f"Expected one energy cost for {first_special}, got {len(cost_matches)}")
     cost_script, cost_match = cost_matches[0]
 
+    energy_events = []
+    presentation_events = []
+    for script in scripts:
+        if script["kind"] != "frame_action" or script["frame"] == 1:
+            continue
+        for match in ENERGY_DELTA.finditer(script["source"]):
+            value = float(match["value"])
+            energy_events.append(
+                {
+                    "action": script["action"],
+                    "frame": script["frame"],
+                    "delta": value if match["operator"] == "+=" else -value,
+                    "source_path": script["path"],
+                    "source_sha256": script["source_sha256"],
+                }
+            )
+        for match in SCREEN_FLASH.finditer(script["source"]):
+            color = int(match["color"]) if match["color"] else 0xFFFFFF
+            presentation_events.append(
+                {
+                    "action": script["action"],
+                    "frame": script["frame"],
+                    "op": "screen_flash",
+                    "color_rgb24": color,
+                    "source_path": script["path"],
+                    "source_sha256": script["source_sha256"],
+                }
+            )
+
+    helper = helper_from_catalog(fighter["fighter_id"])
+    summon_events = []
+    for script in scripts:
+        if script["kind"] != "frame_action":
+            continue
+        if "function doZhaoHuan" in script["source"]:
+            continue
+        if "doZhaoHuan()" not in script["source"]:
+            continue
+        summon_events.append(
+            {
+                "action": script["action"],
+                "frame": script["frame"],
+                "energy_delta": -100,
+                **helper,
+                "source_path": script["path"],
+                "source_sha256": script["source_sha256"],
+            }
+        )
+
+    motion_windows = []
+    projectiles = []
+    projectile_speeds: dict[tuple[int, int], float] = {}
+    clip_scripts = []
+    for script in scripts:
+        if script["kind"] != "clip_action":
+            continue
+        path_tail = SCRIPT_PATH.match(script["path"])["kind"]
+        placement_match = PLACEMENT_PATH.match(path_tail)
+        if placement_match is None:
+            continue
+        depth = int(placement_match["depth"])
+        clip_scripts.append((script, depth))
+        speed_match = PROJECTILE_SPEED.search(script["source"])
+        if speed_match is not None:
+            projectile_speeds[(script["frame"], depth)] = float(speed_match["factor"])
+    for script, depth in clip_scripts:
+        projectile = parse_projectile_motion(script["source"])
+        if projectile is not None:
+            end_frame, bytecode_hash = clip_lifetime(
+                frames_by_number, script["frame"], depth
+            )
+            instance_name = placement_name(
+                frames_by_number, script["frame"], depth
+            )
+            character_id = placement_character_id(
+                frames_by_number, script["frame"], depth
+            )
+            clip_timeline = (
+                parse_clip_timeline(script_bundle, character_id)
+                if character_id is not None
+                else {}
+            )
+            projectiles.append(
+                {
+                    "action": script["action"],
+                    "instance_name": instance_name,
+                    "start_frame": script["frame"],
+                    "end_frame": end_frame,
+                    "speed_factor": projectile_speeds.get(
+                        (script["frame"], depth), 1.0
+                    ),
+                    **projectile,
+                    **clip_timeline,
+                    "source_path": script["path"],
+                    "source_sha256": script["source_sha256"],
+                    "action_bytes_sha256": bytecode_hash,
+                }
+            )
+            continue
+        motion = parse_fighter_motion(script["source"])
+        if motion is None:
+            continue
+        end_frame, bytecode_hash = clip_lifetime(
+            frames_by_number, script["frame"], depth
+        )
+        motion_windows.append(
+            {
+                "action": script["action"],
+                "start_frame": script["frame"],
+                "end_frame": end_frame,
+                **motion,
+                "source_path": script["path"],
+                "source_sha256": script["source_sha256"],
+                "action_bytes_sha256": bytecode_hash,
+            }
+        )
+
     return {
         "format": "bvn26-combat-model-v1",
         "status": "reverse_engineering_intermediate",
@@ -290,7 +733,29 @@ def build_model(
             "source_path": stop_scripts[0]["path"],
             "source_sha256": stop_scripts[0]["source_sha256"],
         },
+        "death": extract_death(script_bundle, sprite_id, scripts, ranges),
         "attacks": fighter["hit_parameters"]["attacks"],
+        "hit_priority": extract_hit_priority(script_bundle),
+        "energy_events": sorted(
+            energy_events, key=lambda item: (item["frame"], item["action"])
+        ),
+        "presentation_events": sorted(
+            presentation_events, key=lambda item: (item["frame"], item["action"])
+        ),
+        "motion_windows": sorted(
+            motion_windows,
+            key=lambda item: (item["start_frame"], item["action"]),
+        ),
+        "projectiles": sorted(
+            projectiles,
+            key=lambda item: (item["start_frame"], item["instance_name"]),
+        ),
+        "summon_events": sorted(
+            summon_events, key=lambda item: (item["frame"], item["action"])
+        ),
+        "command_catalog": build_command_catalog(
+            fighter, script_bundle, scripts, motion_windows
+        ),
         "indexed_source_events": [
             {key: value for key, value in script.items() if key != "source"}
             for script in scripts

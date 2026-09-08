@@ -21,7 +21,76 @@
   U 和 I。防御长按固定在原版 `防御2` 起始帧，受击硬直结束后恢复，普通受击按源
   `beidax()` 在前 14 tick 连续应用击退。
 - 嵌套 Sprite 已按放置时刻推进；位图填充按 Shape 边界裁剪，修复了走路只平移以及 U
-  素材整图泄漏造成的重复角色。鸣人/一护若干已确认的招式位移窗口已接入源 30 Hz tick。
+  素材整图泄漏造成的重复角色。投射物内部未命名剪辑仍用独立 `clip_age`；根时间轴
+  未命名剪辑（鸣人 `走` 的 DefineSprite_31 跑循环）在 `clip_age == 0` 时改回按
+  `placed_frame` 推进，左右按源 `doAllAction` 改 `_xscale`。鸣人 `下+J` 按
+  `onDefence()/skill1()` 从 `防御`/`防御2` 进入 `砍技1`，不再被防御提前 return
+  吃掉。  招式位移已改为由 clip `enterFrame` 编译出的
+  `motion_windows` 驱动，不再按角色硬编码。鸣人上+U（`招3`）源第 491 帧
+  `gotoAndStop("落")` 已编入 `action_exits`：不再把 485 帧 clip 的 1.7 速
+  位移播到标签末帧 503；`zh32atm`（60 伤/`击飞`）仍在 486–487 帧。
+  鸣人的 JPEG3 素材已全部改用 JPEXS 合成 alpha 的 PNG，不再把缺失透明通道的
+  JPEG 黑底带入 Web。`bdxg()` 的 1–6 级共享命中特效已从 `main.swf` 导入；
+  上+U 已以 30 伤 `zh3atm` → 60 伤/击飞 `zh32atm` 的连续实战路径通过无头回归，
+  第二段显示 `XG_qdjx` 重击效果。命中候选按原版 `hitks` 顺序编译为
+  `hit_priority`，不再依赖节点遍历顺序。鸣人下+J 的 `kj10atm` 仅作为冲刺接触框；
+  接触后按源跳到 291 帧 `砍技12`，由 291–294 帧的 `kj1atm` 结算 100 伤害和击飞。
+  冲刺的 `speed*2` 位移现对 `kj10atm` 做水平 swept AABB，左右朝向都在第一处交叉
+  接触停止并转收尾，避免 30 Hz 离散步进穿过较窄的 `bdmn`。第 292 帧源
+  `shine(1403539)` 已编译进通用 `presentation_events`；Web 使用 main.swf 的
+  blendMode 13（Overlay）和 DefineSprite 1745 帧 2–9 的 alpha 序列
+  `114,100,85,71,57,43,28,14 / 256` 还原深蓝全屏冲击闪光。
+  `zl=15` 已按 `fangyu()/beida()` 归一为破防强度 5，防御中仍进入击飞并播放
+  `XG_mfdjx` 蓝白收尾爆点，不再被当作未知效果或普通防住。时间轴 atlas 裁切分支
+  漏挂 Sprite 的公共渲染错误也已修复，裁切后的命中特效会按原矩阵和透明度显示。
+  鸣人 `zh1atm` 等投射物按源 `movspeed`
+  累积剪辑本地坐标并参与命中。投射物嵌套剪辑按自身 `DoAction` 推进：鸣人
+  `zh1atm`（DefineSprite_260）在第 3 帧 `stop()` 保持三层手里剑列，命中后
+  `gotoAndPlay(5)` 才播爆点，不再跟着父时间轴误进命中帧。Python 已断言
+  `stop_frames == [3, 11]`；Godot smoke 已写入 `combat_smoke.gd` 的 1→2→3→3→命中5
+  路径，并由 Godot 4.7.2 无头运行通过。
+  `招换` 在 `doZhaoHuan()` 帧扣气并按 `yfgj` 生成援助放置（鸣人→我爱罗、一护→魂）。
+  先前 O 只扣气并播 `招换`：援助节点挂在 `GameWorld` 下，但预览被
+  `FileAccess.file_exists` 挡住，frame 1 display list 为空，画面上没有我爱罗。
+  `HelperRuntime` 现与角色一样直接作为 `TimelinePreview` 加载
+  `woailuo` 时间轴/位图；`yfgj` 后 `activate` 放到 `caster.x - 20*facing`、
+  `gotoAndPlay(2)`。`start_action` 不再清掉未消费的 `helper_spawn`。
+  推进到 `hide_frames` 后停回 frame 1 的 `(_X,_Y)=(-200,-200)`。
+  `fzccXg` 源实现是 `addChildXG(..., "XG_fzcc")` 出场/收场特效，不是隐藏，
+  `XG_fzcc` 仍未导入。魂在 72/75/78/81/85/89 帧对对手 `ql -= 20`。
+  攻击接触只在存在 `timeline.json` 时采样 display list，不编造判定框。
+  已用 JPEXS 26.2.1 导入我爱罗根时间轴（85 帧）与 37 张 JPEG3 PNG：frame 1
+  display list 为空，`yfgj` 的 `gotoAndPlay(2)` 后才有画面；`gjl.atm1` 出现在
+  44–85 帧，load 时按对手 `_x` 改写剪辑 `_X`。魂 SWF 时间轴/位图仍未导入。
+  `combat_smoke.gd` 已断言 956 扣 100、`helper_id=我爱罗`、激活后可见且有
+  Sprite 子节点，并由 Godot 4.7.2 无头运行通过。
+- 气量按源脚本接入：普通对战初值 0，招式帧 `ql +=/-=`、命中/受击/防住公式和低血量回气
+  均有断言；左右下角气条按 `qitiao` 的 round/floor 分段显示，尚未导入原 `qt/bss` 元件。
+- 现世 `ban2/ban3` 按源 `isHitBan()` 读入：站立平面是剪辑注册点 `ban._x/_y` 与
+  `_width`，不是 shape AABB 顶边或带镜头的 global bounds；`floorY = -25` 来自
+  `p1` 放置与 `frame_7`。受击浮空后按 `zhongli = 10` 落地。平台上 `S+K`（含已进入
+  `防御2`）按源 `jumpDown/doDropDown`：`_y += zhongli` 后播 `落2`，离开
+  `ban._y - 10` 窗口落到下一层。`combat_smoke.gd` 已加地面/ban 站立 Y 与穿层断言，
+  并由 Godot 4.7.2 无头运行通过；Web 已重新导出验证道路地面站位。
+- 对战镜头按 `DefineSprite_1991` 的 `onEnterFrame` 实现：焦点 `all` 时
+  `scale = 2 * (1000 - max(|dx|,|dy|)) / 1000`（下限 0.8），再以 0.5 缓动
+  `_root.game` 的位置/缩放；墙为 `[20, mapSizeX-30]`，间距 ≥ 700 锁定两端。
+  现世站位改用地图 `p1/p2`  twip 原点，尚未与原版逐帧截图对照。
+- 双方 `bdmn` 身体碰撞已接入每 tick 的双方运动结算：按源脚本把横向增量限制到
+  `[-30, 30]`，用朝向、对方 `vecx / 2` 和 `heavy` 差分摊挤压；等重量静止重叠时
+  每 tick 注入 10 像素压力（双方各 5）直到身体框分离。无头回归覆盖同点出生、
+  首 tick 精确分到 `195/205` 以及最终 `bdmn` 不相交；普通瞬步期间按源跳过挤压。
+- 死亡/KO 判定已按源 `checkDead(fly)` 接入：`hp <= 0` 且非练习（`modo != 4`）时
+  置 `sw`、非击飞则 `gotoAndStop("击飞")`，落地进 `击落地` 后在源
+  `if(sw == true) stop()` 帧停住，`standup()` 不再进 `起身`/`站立`。
+  `KOplay(pn)` 的焦点切到被 KO 一方已接 `GameWorld.focus`；`_root.KO` /
+  `blackStg("KO")` / `KOstart` 暂停与 `nextfight` 回合重置尚未导入，无 KO 字幕元件。
+- 战斗中间数据已编译 `command_catalog`：招式 ID 即源帧标签，鸣人/一护时间轴上
+  全部标签与 `doAllAction`/`onJumping` 目标均入目录。站立/防御输入已改走目录
+  `match_context`（源谓词 `buttons_all`/`buttons_none` + `dispatch_priority`），
+  不再按角色写 if 链；`万解`（`wankai`：斩+跳 且 `ql >= 300`）已接线。
+  `nornalhit` 排除跳/上/下，因此 J+K 气不足时不会误出 `砍1`。
+  未接线项（砍4、空中必杀缺标签、瞬步/落地中段取消等）仍在 `gaps`。
 - Adobe Flash Player Debugger 32.0.0.465 已能加载锁定的完整原版并显示主菜单；另以
   可重复构建的最小 AVM1 探针确认了 goto、enterFrame、对象移除、stop/play 和 interval
   的部分调度顺序，结论与哈希已写入 `evidence/probes/` 和 provisional ExecutionProfile。
@@ -30,11 +99,12 @@
 
 Godot 单线程 Web 导出已建立，4.7.2-stable 的无头、应用内浏览器和 Google Chrome
 启动通过；Firefox/Safari 尚未完成，因此 `M0-01` 仍为进行中。当前开发切片可操作，但
-尚未完成两名角色的全部动作语义：已确认位移只覆盖一部分动作，移动投射物的独立坐标、
-击飞/倒地/起身、召唤实体、声音、滤镜和若干取消分支仍缺失。Flash 调度已有第一批原生
-播放器实测，但兄弟回调顺序、暂停/焦点时钟域、24 FPS 援助推进和同时命中仍未确认；
-现世只完成视觉层，尚未完成平台碰撞、回合闭环、原版 golden 轨迹/截图、全角色验证和部署。
-现有 Chrome 截图和状态日志只证明开发路径可运行，不能替代与原版逐帧对照。
+尚未完成两名角色的全部动作语义：已编译的位移/投射物/援助生成覆盖源时间轴，
+我爱罗援助已有根时间轴与位图，魂援助 SWF 本体、XG_fzcc 特效、声音、滤镜、原版 HUD 元件、KO 字幕/`blackMu` 和若干取消分支仍缺失。击飞/倒地/起身和现世主地面/
+平台已有开发切片实现，尚未与原版逐帧对照。Flash 调度已有第一批原生播放器实测，但
+兄弟回调顺序、暂停/焦点时钟域、24 FPS 援助推进和同时命中仍未确认；KO 演出/下一回合、原版
+golden 轨迹/截图、全角色验证和部署尚未完成。现有 Chrome 截图和状态日志只证明开发路径
+可运行，不能替代与原版逐帧对照。
 
 ## 风险登记
 
@@ -51,6 +121,6 @@ Godot 单线程 Web 导出已建立，4.7.2-stable 的无头、应用内浏览�
 
 ## 下一项工作
 
-先把鸣人/一护所有可达动作的位移、投射物坐标和受击分支编译为可追溯数据，并建立固定
-输入的原版逐帧对照；随后补齐击飞/倒地/起身和现世平台碰撞。并行完成 `M0-01` 的
+导入魂根时间轴与位图，并把我爱罗 `atm1` 命中与 `XG_fzcc` 特效对照原版。
+把走路循环、`砍技1`、`万解`、位移、投射物、三连、受击、必杀与原版固定输入逐帧对照。并行完成 `M0-01` 的
 Firefox/Safari 实测及 `M0-03` 未解决调度探针；在对照通过前保持 M2/M3 任务未完成。

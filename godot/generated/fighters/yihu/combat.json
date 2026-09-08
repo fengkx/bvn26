@@ -162,6 +162,18 @@
     ]
   },
   "action_exits": {
+    "跳砍": {
+      "frame": 138,
+      "target": "落2",
+      "source_path": "DefineSprite_638/frame_138/DoAction.as",
+      "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+    },
+    "跳招": {
+      "frame": 165,
+      "target": "落2",
+      "source_path": "DefineSprite_638/frame_165/DoAction.as",
+      "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+    },
     "砍1": {
       "frame": 185,
       "target": "站立",
@@ -180,17 +192,17 @@
       "source_path": "DefineSprite_638/frame_230/DoAction.as",
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
     },
-    "被打": {
-      "frame": 748,
-      "target": "站立",
-      "source_path": "DefineSprite_638/frame_748/DoAction.as",
-      "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
-    },
     "必杀": {
       "frame": 521,
       "target": "站立",
       "source_path": "DefineSprite_638/frame_521/DoAction.as",
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "被打": {
+      "frame": 748,
+      "target": "站立",
+      "source_path": "DefineSprite_638/frame_748/DoAction.as",
+      "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
     }
   },
   "hurt": {
@@ -199,6 +211,17 @@
     "hitstun_ticks_formula": "hitstun_ms / 1000 * 30",
     "source_path": "DefineSprite_638/frame_744/DoAction.as",
     "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+  },
+  "death": {
+    "flag": "sw",
+    "launch_label": "击飞",
+    "down_label": "击落地",
+    "knockdown_stop_frame": 777,
+    "practice_mode_skips": 4,
+    "source_path": "DefineSprite_638/frame_1/DoAction.as",
+    "source_sha256": "67ef57fda43786d357ad6f039a63e3ef029de4d6c2eb36e4ce4b147010ed71cf",
+    "stop_source_path": "DefineSprite_638/frame_777/DoAction.as",
+    "stop_source_sha256": "e6ca4a79578cbb546594bd65ac4d2d2aad15c20ec5c951c3dc9a7c4b8fd5371c"
   },
   "attacks": {
     "bs": {
@@ -313,6 +336,1921 @@
       "hitstun_ms": 300,
       "reaction_label": "击飞"
     }
+  },
+  "hit_priority": {
+    "instances": [
+      "tkatm",
+      "tk1atm",
+      "tk2atm",
+      "tk3atm",
+      "tk4atm",
+      "tk5atm",
+      "tzatm",
+      "tz1atm",
+      "tz2atm",
+      "tz3atm",
+      "tz4atm",
+      "tz5atm",
+      "k1atm",
+      "k11atm",
+      "k12atm",
+      "k13atm",
+      "k14atm",
+      "k15atm",
+      "k2atm",
+      "k21atm",
+      "k22atm",
+      "k23atm",
+      "k24atm",
+      "k25atm",
+      "k3atm",
+      "k31atm",
+      "k32atm",
+      "k33atm",
+      "k34atm",
+      "k35atm",
+      "k4atm",
+      "k41atm",
+      "k42atm",
+      "k43atm",
+      "k44atm",
+      "k45atm",
+      "k5atm",
+      "k51atm",
+      "k52atm",
+      "k53atm",
+      "k54atm",
+      "k55atm",
+      "kj1atm",
+      "kj11atm",
+      "kj12atm",
+      "kj13atm",
+      "kj14atm",
+      "kj15atm",
+      "kj2atm",
+      "kj21atm",
+      "kj22atm",
+      "kj23atm",
+      "kj24atm",
+      "kj25atm",
+      "zh1atm",
+      "zh11atm",
+      "zh12atm",
+      "zh13atm",
+      "zh14atm",
+      "zh15atm",
+      "zh2atm",
+      "zh21atm",
+      "zh22atm",
+      "zh23atm",
+      "zh24atm",
+      "zh25atm",
+      "zh3atm",
+      "zh31atm",
+      "zh32atm",
+      "zh33atm",
+      "zh34atm",
+      "zh35atm",
+      "bsatm",
+      "bs1atm",
+      "bs2atm",
+      "bs3atm",
+      "bs4atm",
+      "bs5atm",
+      "sbsatm",
+      "sbs1atm",
+      "sbs2atm",
+      "sbs3atm",
+      "sbs4atm",
+      "sbs5atm",
+      "cbsatm",
+      "cbs1atm",
+      "cbs2atm",
+      "cbs3atm",
+      "cbs4atm",
+      "cbs5atm",
+      "kbsatm",
+      "kbs1atm",
+      "kbs2atm",
+      "kbs3atm",
+      "kbs4atm",
+      "kbs5atm"
+    ],
+    "source_path": "DefineSprite_2/frame_1/DoAction.as",
+    "source_sha256": "944904cc8cc1b735e6c1ad749b1a16f792b83b503ff25418b536245bf57e3524"
+  },
+  "energy_events": [
+    {
+      "action": "跳招",
+      "frame": 144,
+      "delta": 5.0,
+      "source_path": "DefineSprite_638/frame_144/DoAction.as",
+      "source_sha256": "18f6a5fb5ded6f1e33c0d1692f764b48da97d03cc8fddc22a1780fad044e4b59"
+    },
+    {
+      "action": "砍技1",
+      "frame": 233,
+      "delta": 10.0,
+      "source_path": "DefineSprite_638/frame_233/DoAction.as",
+      "source_sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3"
+    },
+    {
+      "action": "砍技2",
+      "frame": 285,
+      "delta": 10.0,
+      "source_path": "DefineSprite_638/frame_285/DoAction.as",
+      "source_sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3"
+    },
+    {
+      "action": "招1",
+      "frame": 321,
+      "delta": 5.0,
+      "source_path": "DefineSprite_638/frame_321/DoAction.as",
+      "source_sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+    },
+    {
+      "action": "招2",
+      "frame": 358,
+      "delta": 10.0,
+      "source_path": "DefineSprite_638/frame_358/DoAction.as",
+      "source_sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3"
+    },
+    {
+      "action": "招3",
+      "frame": 415,
+      "delta": 5.0,
+      "source_path": "DefineSprite_638/frame_415/DoAction.as",
+      "source_sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+    },
+    {
+      "action": "必杀",
+      "frame": 447,
+      "delta": -100.0,
+      "source_path": "DefineSprite_638/frame_447/DoAction.as",
+      "source_sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e"
+    },
+    {
+      "action": "上必杀",
+      "frame": 529,
+      "delta": -100.0,
+      "source_path": "DefineSprite_638/frame_529/DoAction.as",
+      "source_sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e"
+    },
+    {
+      "action": "超必杀",
+      "frame": 583,
+      "delta": -300.0,
+      "source_path": "DefineSprite_638/frame_583/DoAction.as",
+      "source_sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1"
+    },
+    {
+      "action": "万解",
+      "frame": 963,
+      "delta": -300.0,
+      "source_path": "DefineSprite_638/frame_963/DoAction.as",
+      "source_sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1"
+    }
+  ],
+  "presentation_events": [
+    {
+      "action": "跳招",
+      "frame": 150,
+      "op": "screen_flash",
+      "color_rgb24": 9697014,
+      "source_path": "DefineSprite_638/frame_150/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "砍技2",
+      "frame": 296,
+      "op": "screen_flash",
+      "color_rgb24": 9697014,
+      "source_path": "DefineSprite_638/frame_296/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "招1",
+      "frame": 326,
+      "op": "screen_flash",
+      "color_rgb24": 9697014,
+      "source_path": "DefineSprite_638/frame_326/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "招3",
+      "frame": 419,
+      "op": "screen_flash",
+      "color_rgb24": 9697014,
+      "source_path": "DefineSprite_638/frame_419/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "必杀",
+      "frame": 467,
+      "op": "screen_flash",
+      "color_rgb24": 9697014,
+      "source_path": "DefineSprite_638/frame_467/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "上必杀",
+      "frame": 548,
+      "op": "screen_flash",
+      "color_rgb24": 9697014,
+      "source_path": "DefineSprite_638/frame_548/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    },
+    {
+      "action": "超必杀",
+      "frame": 606,
+      "op": "screen_flash",
+      "color_rgb24": 9697014,
+      "source_path": "DefineSprite_638/frame_606/DoAction.as",
+      "source_sha256": "dfa8e47f5d1d95a3089caba2d90d1a8f8f67f37ffe14241b3d5852e17f00f7b9"
+    },
+    {
+      "action": "超必杀",
+      "frame": 606,
+      "op": "screen_flash",
+      "color_rgb24": 16777215,
+      "source_path": "DefineSprite_638/frame_606/DoAction.as",
+      "source_sha256": "dfa8e47f5d1d95a3089caba2d90d1a8f8f67f37ffe14241b3d5852e17f00f7b9"
+    },
+    {
+      "action": "万解",
+      "frame": 1032,
+      "op": "screen_flash",
+      "color_rgb24": 9697014,
+      "source_path": "DefineSprite_638/frame_1032/DoAction.as",
+      "source_sha256": "9f87b91b64ea178ec25702ac3a9054c9924272339126c7708d3c667e75e4135a"
+    }
+  ],
+  "motion_windows": [
+    {
+      "action": "砍1",
+      "start_frame": 175,
+      "end_frame": 180,
+      "forward_speed_factor": 0.25,
+      "round_forward": true,
+      "source_path": "DefineSprite_638/frame_175/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "84c7df01901ae6ecf8044a4ad61f008822d724586f9700fa5d682c70917b27a6",
+      "action_bytes_sha256": "344dc43644bf7c6da877e559e54a3b40306e01c29c3f6709731e27e3c747358a"
+    },
+    {
+      "action": "砍2",
+      "start_frame": 192,
+      "end_frame": 197,
+      "forward_speed_factor": 0.3333333333333333,
+      "round_forward": true,
+      "source_path": "DefineSprite_638/frame_192/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "636b08621c56d907a277d86f94d4928f3131671dbd6180f3d6d9c08a50792ad5",
+      "action_bytes_sha256": "52ddbe17d6937e467a94fb54ed08de44ce61f018785eecc7e4a3618accee0a48"
+    },
+    {
+      "action": "砍3",
+      "start_frame": 212,
+      "end_frame": 218,
+      "forward_speed_factor": 0.25,
+      "round_forward": true,
+      "source_path": "DefineSprite_638/frame_212/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "84c7df01901ae6ecf8044a4ad61f008822d724586f9700fa5d682c70917b27a6",
+      "action_bytes_sha256": "344dc43644bf7c6da877e559e54a3b40306e01c29c3f6709731e27e3c747358a"
+    },
+    {
+      "action": "招2",
+      "start_frame": 359,
+      "end_frame": 370,
+      "forward_speed_factor": 3.0,
+      "round_forward": false,
+      "contact_cancel_to": "招21",
+      "contact_instance": "zh20atm",
+      "source_path": "DefineSprite_638/frame_359/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e115e420c6066335abe85cd8e1eb69cf56aa185005bbf935de18b2582fca9651",
+      "action_bytes_sha256": "fc08b7ae0d82560418bbff47e1a974e93170da4ed62943f1da897eb08ebee586"
+    },
+    {
+      "action": "起身",
+      "start_frame": 804,
+      "end_frame": 811,
+      "forward_speed_factor": -0.8,
+      "round_forward": false,
+      "source_path": "DefineSprite_638/frame_804/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c99afb396036e5858bad62112ad9b4830014d6a99d4991aef37fba22a137bbab",
+      "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b"
+    }
+  ],
+  "projectiles": [
+    {
+      "action": "跳招",
+      "instance_name": "zh1atm",
+      "start_frame": 150,
+      "end_frame": 158,
+      "speed_factor": 1.0,
+      "local_x_factor": 1.0,
+      "local_y_factor": 1.0,
+      "on_hit_goto_frame": 5,
+      "character_id": 99,
+      "stop_frames": [
+        10
+      ],
+      "stop_sources": [
+        {
+          "frame": 10,
+          "source_path": "DefineSprite_99/frame_10/DoAction.as",
+          "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+        }
+      ],
+      "rename_frames": [
+        {
+          "frame": 5,
+          "source_path": "DefineSprite_99/frame_5/DoAction.as",
+          "source_sha256": "ef0811375548f85b22033a9f24d7419e133817bd4578dcd0f6c2f8aaf51f48e3",
+          "instance_name": "abcd"
+        }
+      ],
+      "source_path": "DefineSprite_638/frame_150/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "99181aed71bf633e58f5d8af1d2d83e6d13f0ad59c56ed2381fbe847420aca40",
+      "action_bytes_sha256": "5e61a9431626b22043fec157e6215896185296aa53556954fa4dea4877fb2121"
+    },
+    {
+      "action": "招1",
+      "instance_name": "zh1atm",
+      "start_frame": 327,
+      "end_frame": 341,
+      "speed_factor": 1.0,
+      "local_x_factor": 1.0,
+      "on_hit_goto_frame": 5,
+      "character_id": 99,
+      "stop_frames": [
+        10
+      ],
+      "stop_sources": [
+        {
+          "frame": 10,
+          "source_path": "DefineSprite_99/frame_10/DoAction.as",
+          "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+        }
+      ],
+      "rename_frames": [
+        {
+          "frame": 5,
+          "source_path": "DefineSprite_99/frame_5/DoAction.as",
+          "source_sha256": "ef0811375548f85b22033a9f24d7419e133817bd4578dcd0f6c2f8aaf51f48e3",
+          "instance_name": "abcd"
+        }
+      ],
+      "source_path": "DefineSprite_638/frame_327/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "87f6dfba986569ef8c1d3d2da2b5ca249e6f8727da6f3300e4f61e74ee01b62e",
+      "action_bytes_sha256": "fc647bf20d5d26035ebdbbc16e2a1e6892d7bd27e9fd28ef99a2d4de52b54e61"
+    },
+    {
+      "action": "招3",
+      "instance_name": "zh1atm",
+      "start_frame": 421,
+      "end_frame": 428,
+      "speed_factor": 1.0,
+      "local_x_factor": 1.0,
+      "local_y_factor": -1.0,
+      "on_hit_goto_frame": 5,
+      "character_id": 99,
+      "stop_frames": [
+        10
+      ],
+      "stop_sources": [
+        {
+          "frame": 10,
+          "source_path": "DefineSprite_99/frame_10/DoAction.as",
+          "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+        }
+      ],
+      "rename_frames": [
+        {
+          "frame": 5,
+          "source_path": "DefineSprite_99/frame_5/DoAction.as",
+          "source_sha256": "ef0811375548f85b22033a9f24d7419e133817bd4578dcd0f6c2f8aaf51f48e3",
+          "instance_name": "abcd"
+        }
+      ],
+      "source_path": "DefineSprite_638/frame_421/PlaceObject2_99_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "fef48b0790914e5f2602974c580a8dec56cc130663bc583b7b4448f63aea98d6",
+      "action_bytes_sha256": "b3750188da1ee9262a66e45a539e83129119fe28679eb0a3439e8e9070082119"
+    }
+  ],
+  "summon_events": [
+    {
+      "action": "招换",
+      "frame": 657,
+      "energy_delta": -100,
+      "helper_id": "魂",
+      "helper_swf": "kon.swf",
+      "behind_pixels": 20,
+      "start_frame": 2,
+      "source_path": "DefineSprite_638/frame_657/DoAction.as",
+      "source_sha256": "9a4e1df3b75d75b39859f0968d785f77d37ac0a8433d1017068d334da3f65753"
+    }
+  ],
+  "command_catalog": {
+    "format": "bvn26-command-catalog-v1",
+    "status": "reverse_engineering_intermediate",
+    "id_convention": "source_frame_label",
+    "control_path": "DefineSprite_16/frame_1/DoAction.as",
+    "control_sha256": "2b0bebac6f726da5bc15c525c07c88fdb558cf49c0722121ef7da0a915732f63",
+    "predicates": {
+      "nornalhit": {
+        "name": "nornalhit",
+        "buttons_all": [
+          "attack"
+        ],
+        "buttons_none": [
+          "jump",
+          "up",
+          "down"
+        ],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)"
+      },
+      "skill1": {
+        "name": "skill1",
+        "buttons_all": [
+          "down",
+          "attack"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.斩)"
+      },
+      "skill2": {
+        "name": "skill2",
+        "buttons_all": [
+          "up",
+          "attack"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.上) && _parent.kis(_parent.斩)"
+      },
+      "magichit1": {
+        "name": "magichit1",
+        "buttons_all": [
+          "ranged"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.招)"
+      },
+      "magichit2": {
+        "name": "magichit2",
+        "buttons_all": [
+          "down",
+          "ranged"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.招)"
+      },
+      "magichit3": {
+        "name": "magichit3",
+        "buttons_all": [
+          "up",
+          "ranged"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.上) && _parent.kis(_parent.招)"
+      },
+      "bisha": {
+        "name": "bisha",
+        "buttons_all": [
+          "special"
+        ],
+        "buttons_none": [],
+        "energy_min": 100,
+        "player_expr": "_parent.kis(_parent.必杀)"
+      },
+      "bishaUP": {
+        "name": "bishaUP",
+        "buttons_all": [
+          "up",
+          "special"
+        ],
+        "buttons_none": [],
+        "energy_min": 100,
+        "player_expr": "_parent.kis(_parent.上) && _parent.kis(_parent.必杀)"
+      },
+      "bishaSuper": {
+        "name": "bishaSuper",
+        "buttons_all": [
+          "down",
+          "special"
+        ],
+        "buttons_none": [],
+        "energy_min": 300,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.必杀)"
+      },
+      "bishaAir": {
+        "name": "bishaAir",
+        "buttons_all": [
+          "special"
+        ],
+        "buttons_none": [],
+        "energy_min": 100,
+        "player_expr": "_parent.kis(_parent.必杀)"
+      },
+      "airhit": {
+        "name": "airhit",
+        "buttons_all": [
+          "attack"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.斩)"
+      },
+      "airMagichit": {
+        "name": "airMagichit",
+        "buttons_all": [
+          "ranged"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.招)"
+      },
+      "zhaoHuan": {
+        "name": "zhaoHuan",
+        "buttons_all": [
+          "summon"
+        ],
+        "buttons_none": [],
+        "energy_min": 100,
+        "player_expr": "_parent.kis(_parent.换)"
+      },
+      "wankai": {
+        "name": "wankai",
+        "buttons_all": [
+          "attack",
+          "jump"
+        ],
+        "buttons_none": [],
+        "energy_min": 300,
+        "player_expr": "_parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳)"
+      },
+      "rush": {
+        "name": "rush",
+        "buttons_all": [
+          "dash"
+        ],
+        "buttons_none": [
+          "up",
+          "down"
+        ],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)"
+      },
+      "hide": {
+        "name": "hide",
+        "buttons_all": [
+          "down",
+          "dash"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.冲)"
+      },
+      "jump": {
+        "name": "jump",
+        "buttons_all": [
+          "jump"
+        ],
+        "buttons_none": [
+          "attack"
+        ],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.跳) && !_parent.kis(_parent.斩)"
+      },
+      "jumpDown": {
+        "name": "jumpDown",
+        "buttons_all": [
+          "down",
+          "jump"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.跳)"
+      },
+      "defence": {
+        "name": "defence",
+        "buttons_all": [
+          "down"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下)"
+      },
+      "standup": {
+        "name": "standup",
+        "buttons_all": [
+          "dash"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.冲)"
+      },
+      "moveLeft": {
+        "name": "moveLeft",
+        "buttons_all": [
+          "left"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.左)"
+      },
+      "moveRight": {
+        "name": "moveRight",
+        "buttons_all": [
+          "right"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.右)"
+      }
+    },
+    "entries": [
+      {
+        "label": "万解",
+        "group": "extended_actions",
+        "start_frame": 962,
+        "end_frame": 1073,
+        "has_timeline": true,
+        "slot": "wankai",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 55,
+        "energy_min": 300,
+        "source_dispatch": [
+          "doAllAction"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "上必杀",
+        "group": "extended_actions",
+        "start_frame": 528,
+        "end_frame": 581,
+        "has_timeline": true,
+        "slot": "bishaUP",
+        "contexts": [
+          "dash",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 10,
+        "energy_min": 100,
+        "source_dispatch": [
+          "doAllAction",
+          "onDashing"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "击落地",
+        "group": "extended_actions",
+        "start_frame": 763,
+        "end_frame": 801,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "hurt"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "击飞",
+        "group": "extended_actions",
+        "start_frame": 751,
+        "end_frame": 762,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "hurt"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "失败",
+        "group": "extended_actions",
+        "start_frame": 932,
+        "end_frame": 961,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "cinematic"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "开场",
+        "group": "extended_actions",
+        "start_frame": 822,
+        "end_frame": 901,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "cinematic"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "必杀",
+        "group": "special",
+        "start_frame": 446,
+        "end_frame": 527,
+        "has_timeline": true,
+        "slot": "bisha",
+        "contexts": [
+          "dash",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 12,
+        "energy_min": 100,
+        "source_dispatch": [
+          "doAllAction",
+          "onDashing"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "招1",
+        "group": "extended_actions",
+        "start_frame": 320,
+        "end_frame": 356,
+        "has_timeline": true,
+        "slot": "magichit1",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 32,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "招2",
+        "group": "extended_actions",
+        "start_frame": 357,
+        "end_frame": 370,
+        "has_timeline": true,
+        "slot": "magichit2",
+        "contexts": [
+          "guard",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 30,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand",
+          "onDefence"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "招21",
+        "group": "extended_actions",
+        "start_frame": 371,
+        "end_frame": 413,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "招3",
+        "group": "extended_actions",
+        "start_frame": 414,
+        "end_frame": 445,
+        "has_timeline": true,
+        "slot": "magichit3",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 30,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "招换",
+        "group": "extended_actions",
+        "start_frame": 652,
+        "end_frame": 713,
+        "has_timeline": true,
+        "slot": "zhaoHuan",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 20,
+        "energy_min": 100,
+        "source_dispatch": [
+          "doAllAction"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "瞬步",
+        "group": "movement",
+        "start_frame": 20,
+        "end_frame": 39,
+        "has_timeline": true,
+        "slot": "rush",
+        "contexts": [
+          "air",
+          "stand"
+        ],
+        "handler": "start_dash",
+        "dispatch_priority": 50,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "onJumping"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍1",
+        "group": "ground_combo",
+        "start_frame": 173,
+        "end_frame": 189,
+        "has_timeline": true,
+        "slot": "nornalhit",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 42,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍2",
+        "group": "ground_combo",
+        "start_frame": 190,
+        "end_frame": 209,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍3",
+        "group": "ground_combo",
+        "start_frame": 210,
+        "end_frame": 231,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍技1",
+        "group": "extended_actions",
+        "start_frame": 232,
+        "end_frame": 283,
+        "has_timeline": true,
+        "slot": "skill1",
+        "contexts": [
+          "guard",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 20,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand",
+          "onDefence"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍技2",
+        "group": "extended_actions",
+        "start_frame": 284,
+        "end_frame": 319,
+        "has_timeline": true,
+        "slot": "skill2",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 40,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "空中必杀",
+        "group": "shared_control",
+        "start_frame": null,
+        "end_frame": null,
+        "has_timeline": false,
+        "slot": "bishaAir",
+        "contexts": [
+          "air",
+          "dash"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 10,
+        "energy_min": 100,
+        "source_dispatch": [
+          "onJumping",
+          "onDashing"
+        ],
+        "implementation": "missing_timeline"
+      },
+      {
+        "label": "站立",
+        "group": "movement",
+        "start_frame": 1,
+        "end_frame": 9,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "locomotion"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "胜利",
+        "group": "extended_actions",
+        "start_frame": 902,
+        "end_frame": 931,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "cinematic"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "落",
+        "group": "movement",
+        "start_frame": 56,
+        "end_frame": 71,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "locomotion"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "落2",
+        "group": "movement",
+        "start_frame": 89,
+        "end_frame": 114,
+        "has_timeline": true,
+        "slot": "jumpDown",
+        "contexts": [
+          "drop"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doDropDown"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "落地",
+        "group": "movement",
+        "start_frame": 115,
+        "end_frame": 126,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "locomotion"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "被打",
+        "group": "hurt",
+        "start_frame": 738,
+        "end_frame": 750,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "hurt"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "走",
+        "group": "movement",
+        "start_frame": 10,
+        "end_frame": 19,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "locomotion"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "起身",
+        "group": "extended_actions",
+        "start_frame": 802,
+        "end_frame": 821,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "hurt"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "超必杀",
+        "group": "extended_actions",
+        "start_frame": 582,
+        "end_frame": 651,
+        "has_timeline": true,
+        "slot": "bishaSuper",
+        "contexts": [
+          "dash",
+          "guard",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 10,
+        "energy_min": 300,
+        "source_dispatch": [
+          "doAllAction",
+          "onDefence",
+          "onDashing"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "跳",
+        "group": "movement",
+        "start_frame": 40,
+        "end_frame": 55,
+        "has_timeline": true,
+        "slot": "jump",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_jump",
+        "dispatch_priority": 60,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "跳2",
+        "group": "movement",
+        "start_frame": 72,
+        "end_frame": 88,
+        "has_timeline": true,
+        "slot": "jump",
+        "contexts": [
+          "air"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [
+          "onJumping"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "跳招",
+        "group": "extended_actions",
+        "start_frame": 143,
+        "end_frame": 172,
+        "has_timeline": true,
+        "slot": "airMagichit",
+        "contexts": [
+          "air"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 20,
+        "energy_min": 0,
+        "source_dispatch": [
+          "onJumping"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "跳砍",
+        "group": "extended_actions",
+        "start_frame": 127,
+        "end_frame": 142,
+        "has_timeline": true,
+        "slot": "airhit",
+        "contexts": [
+          "air"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 30,
+        "energy_min": 0,
+        "source_dispatch": [
+          "onJumping"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "防住",
+        "group": "extended_actions",
+        "start_frame": 726,
+        "end_frame": 737,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "guard"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "防御",
+        "group": "extended_actions",
+        "start_frame": 714,
+        "end_frame": 714,
+        "has_timeline": true,
+        "slot": "defence",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 70,
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "防御2",
+        "group": "extended_actions",
+        "start_frame": 715,
+        "end_frame": 725,
+        "has_timeline": true,
+        "slot": "defence",
+        "contexts": [
+          "guard"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "energy_min": 0,
+        "source_dispatch": [
+          "onDefence"
+        ],
+        "implementation": "wired"
+      }
+    ],
+    "cancel_windows": [
+      {
+        "from": "瞬步",
+        "to": "上必杀",
+        "predicate": "bishaUP",
+        "combo": false,
+        "start_frame": 21,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_21/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "0d74d2c03a6bbe32b481aebfaa1bdf300c72317a0bc1d0e11e6da9b406f4fbb1"
+      },
+      {
+        "from": "瞬步",
+        "to": "必杀",
+        "predicate": "bisha",
+        "combo": false,
+        "start_frame": 21,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_21/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "0d74d2c03a6bbe32b481aebfaa1bdf300c72317a0bc1d0e11e6da9b406f4fbb1"
+      },
+      {
+        "from": "瞬步",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "combo": false,
+        "start_frame": 21,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_21/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "0d74d2c03a6bbe32b481aebfaa1bdf300c72317a0bc1d0e11e6da9b406f4fbb1"
+      },
+      {
+        "from": "落地",
+        "to": "砍1",
+        "predicate": "nornalhit",
+        "combo": false,
+        "start_frame": 116,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_116/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "f3bddb1fde31648861b8017538a5812ec7e720bb8209a8fbf9f939f3cb117bcc"
+      },
+      {
+        "from": "跳砍",
+        "to": "跳招",
+        "predicate": "airMagichit",
+        "combo": false,
+        "start_frame": 134,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_134/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "4b237c7b0825d2de3bc034664c6a0d1ce1284a3fd5c8d45aec502b26449b415d"
+      },
+      {
+        "from": "砍1",
+        "to": "万解",
+        "predicate": "wankai",
+        "combo": false,
+        "start_frame": 173,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_173/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "e8e2865713ed71aa7e668afe28f21131fcc62c10ecae524d8205055900677f40"
+      },
+      {
+        "from": "砍1",
+        "to": "必杀",
+        "predicate": "bisha",
+        "combo": false,
+        "start_frame": 181,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_181/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "0c97cf24b40ba333f9d0efad98ca03adfdbb3c88aab52cb4cd8bdfdfc9e680cb"
+      },
+      {
+        "from": "砍1",
+        "to": "招1",
+        "predicate": "magichit1",
+        "combo": false,
+        "start_frame": 181,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_181/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "0c97cf24b40ba333f9d0efad98ca03adfdbb3c88aab52cb4cd8bdfdfc9e680cb"
+      },
+      {
+        "from": "砍1",
+        "to": "砍2",
+        "predicate": "nornalhit",
+        "combo": true,
+        "start_frame": 181,
+        "kind": "input",
+        "implementation": "wired",
+        "source_path": "DefineSprite_638/frame_181/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "0c97cf24b40ba333f9d0efad98ca03adfdbb3c88aab52cb4cd8bdfdfc9e680cb"
+      },
+      {
+        "from": "砍2",
+        "to": "招2",
+        "predicate": "magichit2",
+        "combo": false,
+        "start_frame": 198,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_198/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "32cfa7d4a6226c395767eb2f7854cfa75260bd3cd9b4865528dc65064ede9ad8"
+      },
+      {
+        "from": "砍2",
+        "to": "砍3",
+        "predicate": "nornalhit",
+        "combo": true,
+        "start_frame": 198,
+        "kind": "input",
+        "implementation": "wired",
+        "source_path": "DefineSprite_638/frame_198/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "32cfa7d4a6226c395767eb2f7854cfa75260bd3cd9b4865528dc65064ede9ad8"
+      },
+      {
+        "from": "砍2",
+        "to": "砍技2",
+        "predicate": "skill2",
+        "combo": false,
+        "start_frame": 198,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_198/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "32cfa7d4a6226c395767eb2f7854cfa75260bd3cd9b4865528dc65064ede9ad8"
+      },
+      {
+        "from": "砍2",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "combo": false,
+        "start_frame": 198,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_198/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "32cfa7d4a6226c395767eb2f7854cfa75260bd3cd9b4865528dc65064ede9ad8"
+      },
+      {
+        "from": "砍3",
+        "to": "招2",
+        "predicate": "magichit2",
+        "combo": false,
+        "start_frame": 219,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "068a8fb3efbe9c35f2e099391fa6ac954d5d46e79515f865d2af281ab575f58e"
+      },
+      {
+        "from": "砍3",
+        "to": "招3",
+        "predicate": "magichit3",
+        "combo": false,
+        "start_frame": 219,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "068a8fb3efbe9c35f2e099391fa6ac954d5d46e79515f865d2af281ab575f58e"
+      },
+      {
+        "from": "砍3",
+        "to": "瞬步",
+        "predicate": "rush",
+        "combo": false,
+        "start_frame": 219,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "068a8fb3efbe9c35f2e099391fa6ac954d5d46e79515f865d2af281ab575f58e"
+      },
+      {
+        "from": "砍3",
+        "to": "砍技1",
+        "predicate": "skill1",
+        "combo": false,
+        "start_frame": 219,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "068a8fb3efbe9c35f2e099391fa6ac954d5d46e79515f865d2af281ab575f58e"
+      },
+      {
+        "from": "砍技2",
+        "to": "上必杀",
+        "predicate": "bishaUP",
+        "combo": false,
+        "start_frame": 305,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_305/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "b7661979f53133714aff47acad919a7d7545d70c30c645cb68223970a0f502f6"
+      },
+      {
+        "from": "砍技2",
+        "to": "跳",
+        "predicate": "jump",
+        "combo": false,
+        "start_frame": 305,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_305/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "b7661979f53133714aff47acad919a7d7545d70c30c645cb68223970a0f502f6"
+      },
+      {
+        "from": "招2",
+        "to": "招21",
+        "predicate": "contact",
+        "combo": false,
+        "start_frame": 359,
+        "end_frame": 370,
+        "kind": "contact",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_359/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "e115e420c6066335abe85cd8e1eb69cf56aa185005bbf935de18b2582fca9651"
+      },
+      {
+        "from": "招21",
+        "to": "必杀",
+        "predicate": "bisha",
+        "combo": false,
+        "start_frame": 379,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "53e6a603fb79392b9f75d94bcb888af8dc7dbc6dcac381bb07bd75c066ae34bd"
+      },
+      {
+        "from": "招21",
+        "to": "招1",
+        "predicate": "magichit1",
+        "combo": false,
+        "start_frame": 379,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "53e6a603fb79392b9f75d94bcb888af8dc7dbc6dcac381bb07bd75c066ae34bd"
+      },
+      {
+        "from": "招21",
+        "to": "招3",
+        "predicate": "magichit3",
+        "combo": false,
+        "start_frame": 379,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "53e6a603fb79392b9f75d94bcb888af8dc7dbc6dcac381bb07bd75c066ae34bd"
+      },
+      {
+        "from": "招21",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "combo": false,
+        "start_frame": 379,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "53e6a603fb79392b9f75d94bcb888af8dc7dbc6dcac381bb07bd75c066ae34bd"
+      },
+      {
+        "from": "招3",
+        "to": "瞬步",
+        "predicate": "rush",
+        "combo": false,
+        "start_frame": 429,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_429/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "86bb4471470953433892c1711bccc62c615f72807ffd69e729a1f6de56df659d"
+      },
+      {
+        "from": "招3",
+        "to": "跳",
+        "predicate": "jump",
+        "combo": false,
+        "start_frame": 429,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_429/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "86bb4471470953433892c1711bccc62c615f72807ffd69e729a1f6de56df659d"
+      },
+      {
+        "from": "防御2",
+        "to": "招2",
+        "predicate": "magichit2",
+        "combo": false,
+        "start_frame": 715,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750"
+      },
+      {
+        "from": "防御2",
+        "to": "砍技1",
+        "predicate": "skill1",
+        "combo": false,
+        "start_frame": 715,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750"
+      },
+      {
+        "from": "防御2",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "combo": false,
+        "start_frame": 715,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750"
+      },
+      {
+        "from": "防御2",
+        "to": "防御2",
+        "predicate": "defence",
+        "combo": false,
+        "start_frame": 715,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750"
+      },
+      {
+        "from": "防住",
+        "to": "防御2",
+        "predicate": "defence",
+        "combo": false,
+        "start_frame": 731,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_731/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "f8c45bc590e3677cdd9c881a4d2e0f08a7474a26feb01f17db38df2769a701f6"
+      },
+      {
+        "from": "击落地",
+        "to": "起身",
+        "predicate": "standup",
+        "combo": false,
+        "start_frame": 763,
+        "kind": "input",
+        "implementation": "catalog_only",
+        "source_path": "DefineSprite_638/frame_763/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "81288a38fc1ff90270ebad5d537f0b6ca79760db2b93b64846ae3bfaa46c1eff"
+      }
+    ],
+    "gaps": [
+      {
+        "kind": "command",
+        "label": "失败",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "开场",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "招21",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "空中必杀",
+        "slot": "bishaAir",
+        "reason": "missing_timeline",
+        "has_timeline": false,
+        "contexts": [
+          "air",
+          "dash"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "胜利",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "cancel",
+        "from": "瞬步",
+        "to": "上必杀",
+        "predicate": "bishaUP",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_21/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "瞬步",
+        "to": "必杀",
+        "predicate": "bisha",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_21/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "瞬步",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_21/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "落地",
+        "to": "砍1",
+        "predicate": "nornalhit",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_116/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "跳砍",
+        "to": "跳招",
+        "predicate": "airMagichit",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_134/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍1",
+        "to": "万解",
+        "predicate": "wankai",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_173/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍1",
+        "to": "必杀",
+        "predicate": "bisha",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_181/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍1",
+        "to": "招1",
+        "predicate": "magichit1",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_181/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍2",
+        "to": "招2",
+        "predicate": "magichit2",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_198/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍2",
+        "to": "砍技2",
+        "predicate": "skill2",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_198/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍2",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_198/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍3",
+        "to": "招2",
+        "predicate": "magichit2",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍3",
+        "to": "招3",
+        "predicate": "magichit3",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍3",
+        "to": "瞬步",
+        "predicate": "rush",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍3",
+        "to": "砍技1",
+        "predicate": "skill1",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_219/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍技2",
+        "to": "上必杀",
+        "predicate": "bishaUP",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_305/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "砍技2",
+        "to": "跳",
+        "predicate": "jump",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_305/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "招2",
+        "to": "招21",
+        "predicate": "contact",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_359/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "招21",
+        "to": "必杀",
+        "predicate": "bisha",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "招21",
+        "to": "招1",
+        "predicate": "magichit1",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "招21",
+        "to": "招3",
+        "predicate": "magichit3",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "招21",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_379/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "招3",
+        "to": "瞬步",
+        "predicate": "rush",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_429/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "招3",
+        "to": "跳",
+        "predicate": "jump",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_429/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "防御2",
+        "to": "招2",
+        "predicate": "magichit2",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "防御2",
+        "to": "砍技1",
+        "predicate": "skill1",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "防御2",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "防御2",
+        "to": "防御2",
+        "predicate": "defence",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_715/PlaceObject2_16_58/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "防住",
+        "to": "防御2",
+        "predicate": "defence",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_731/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "cancel",
+        "from": "击落地",
+        "to": "起身",
+        "predicate": "standup",
+        "reason": "cancel_not_wired",
+        "source_path": "DefineSprite_638/frame_763/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "kind": "predicate",
+        "slot": "hide",
+        "reason": "no_dispatch_label"
+      }
+    ]
   },
   "indexed_source_events": [
     {

@@ -202,34 +202,14 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
     return definitions
 
 
-def extract_frames(xml_path: Path, sprite_id: int) -> dict[str, Any]:
-    root = ET.parse(xml_path).getroot()
-    xml_version = (
-        int(root.attrib["_xmlExportMajor"]),
-        int(root.attrib["_xmlExportMinor"]),
-    )
-    if xml_version not in SUPPORTED_XML_EXPORTS:
-        raise ValueError(f"Unsupported JPEXS XML export version: {xml_version}")
-
-    sprite = next(
-        (
-            item
-            for item in root.findall("./tags/item")
-            if item.attrib.get("type") == "DefineSpriteTag"
-            and int(item.attrib["spriteId"]) == sprite_id
-        ),
-        None,
-    )
-    if sprite is None:
-        raise ValueError(f"Sprite {sprite_id} not found in {xml_path}")
-
+def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
     display_list: dict[int, dict[str, Any]] = {}
     pending_changes: list[dict[str, Any]] = []
     pending_events: list[dict[str, Any]] = []
     pending_labels: list[str] = []
-    frames = []
-    for tag in sprite.findall("./subTags/item"):
-        tag_type = tag.attrib["type"]
+    frames: list[dict[str, Any]] = []
+    for tag in tags:
+        tag_type = tag.attrib.get("type", "")
         if tag_type in ("PlaceObject2Tag", "PlaceObject3Tag"):
             delta = placement_delta(tag)
             depth = delta["depth"]
@@ -277,18 +257,50 @@ def extract_frames(xml_path: Path, sprite_id: int) -> dict[str, Any]:
             pending_labels = []
             pending_changes = []
             pending_events = []
+    return frames
 
-    declared_frames = int(sprite.attrib["frameCount"])
+
+def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, Any]:
+    root = ET.parse(xml_path).getroot()
+    xml_version = (
+        int(root.attrib["_xmlExportMajor"]),
+        int(root.attrib["_xmlExportMinor"]),
+    )
+    if xml_version not in SUPPORTED_XML_EXPORTS:
+        raise ValueError(f"Unsupported JPEXS XML export version: {xml_version}")
+
+    if sprite_id is None:
+        frames = build_frames(root.findall("./tags/item"))
+        declared_frames = int(root.attrib.get("frameCount", 0)) or len(frames)
+        result_sprite_id = 0
+    else:
+        sprite = next(
+            (
+                item
+                for item in root.findall("./tags/item")
+                if item.attrib.get("type") == "DefineSpriteTag"
+                and int(item.attrib["spriteId"]) == sprite_id
+            ),
+            None,
+        )
+        if sprite is None:
+            raise ValueError(f"Sprite {sprite_id} not found in {xml_path}")
+        frames = build_frames(sprite.findall("./subTags/item"))
+        declared_frames = int(sprite.attrib["frameCount"])
+        result_sprite_id = sprite_id
+
     if len(frames) != declared_frames:
         raise ValueError(f"Expected {declared_frames} frames, extracted {len(frames)}")
     result = {
         "format": "bvn26-timeline-geometry-v1",
         "source_xml": {"name": xml_path.name, "sha256": file_sha256(xml_path)},
         "xml_export": {"major": xml_version[0], "minor": xml_version[1]},
-        "sprite_id": sprite_id,
+        "sprite_id": result_sprite_id,
         "frame_count": declared_frames,
         "frames": frames,
     }
+    if sprite_id is None:
+        result["timeline"] = "root"
     result["definitions"] = referenced_definitions(root, frames)
     return result
 
@@ -296,13 +308,16 @@ def extract_frames(xml_path: Path, sprite_id: int) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("xml", type=Path)
-    parser.add_argument("--sprite-id", type=int, required=True)
+    parser.add_argument("--sprite-id", type=int)
+    parser.add_argument("--root", action="store_true")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--frame", type=int, action="append", dest="frames")
     parser.add_argument("--ranges-from", type=Path)
     parser.add_argument("--source-swf", type=Path)
     args = parser.parse_args()
-    result = extract_frames(args.xml, args.sprite_id)
+    if args.root == (args.sprite_id is not None):
+        parser.error("exactly one of --root or --sprite-id is required")
+    result = extract_frames(args.xml, None if args.root else args.sprite_id)
     wanted = set(args.frames or [])
     if args.ranges_from:
         ranges = json.loads(args.ranges_from.read_text(encoding="utf-8"))["actions"]

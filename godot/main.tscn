@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://main.gd" id="1_main"]
 [ext_resource type="Script" path="res://timeline_preview.gd" id="2_timeline"]
 [ext_resource type="Script" path="res://fighter_runtime.gd" id="3_fighter"]
+[ext_resource type="Script" path="res://energy_bar.gd" id="4_energy"]
+[ext_resource type="Script" path="res://game_world.gd" id="5_game"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -22,32 +24,29 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.035, 0.043, 0.063, 1)
 
-[node name="Floor" type="ColorRect" parent="."]
-layout_mode = 0
-offset_top = 310.0
-offset_right = 600.0
-offset_bottom = 400.0
-color = Color(0.09, 0.12, 0.17, 1)
+[node name="Game" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_game")
 
-[node name="CurrentWorld" type="Node2D" parent="."]
-position = Vector2(-205, 318.8)
+[node name="CurrentWorld" type="Node2D" parent="Game"]
+unique_name_in_owner = true
 script = ExtResource("2_timeline")
 fighter_directory = "res://generated/stages/current_world"
 initial_frame = 2
 autoplay = false
 show_collision_shapes = false
 
-[node name="Naruto" type="Node2D" parent="."]
+[node name="Naruto" type="Node2D" parent="Game"]
 unique_name_in_owner = true
-position = Vector2(160, 300)
+position = Vector2(374.1, -25)
 script = ExtResource("3_fighter")
 fighter_directory = "res://generated/fighters/minren"
 display_depth = 1
 facing = 1
 
-[node name="Ichigo" type="Node2D" parent="."]
+[node name="Ichigo" type="Node2D" parent="Game"]
 unique_name_in_owner = true
-position = Vector2(440, 300)
+position = Vector2(637.1, -25)
 scale = Vector2(-1, 1)
 script = ExtResource("3_fighter")
 fighter_directory = "res://generated/fighters/yihu"
@@ -112,3 +111,29 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.59, 0.66, 1)
 text = "Use physical keys; switch the browser input method to English"
 horizontal_alignment = 1
+
+[node name="NarutoEnergy" type="Control" parent="."]
+unique_name_in_owner = true
+z_index = 110
+layout_mode = 0
+offset_left = 0.0
+offset_top = 360.0
+offset_right = 145.0
+offset_bottom = 398.0
+mouse_filter = 2
+script = ExtResource("4_energy")
+
+[node name="IchigoEnergy" type="Control" parent="."]
+unique_name_in_owner = true
+z_index = 110
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -145.0
+offset_top = 360.0
+offset_bottom = 398.0
+grow_horizontal = 0
+mouse_filter = 2
+script = ExtResource("4_energy")
+mirrored = true

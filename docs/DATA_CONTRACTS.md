@@ -27,9 +27,19 @@
 
 `forms[].source_root_frame` 映射 `WKframe`，`action_set_id` 引用编译后的动作集。初步示例尚未确认全部形态，故不标 `ready`。当某角色共用同一个 SWF，必须用形态映射，不能复制改版分拆文件。
 
+战斗中间数据 `command_catalog` 用原版时间轴帧标签（`砍1`、`万解`）作为招式 ID，并保留 `doAllAction` 的谓词槽位（`nornalhit`、`bisha`）。尚未接线的标签和取消窗口列入 `gaps`，不得从目录里删掉。新角色只编译自己的 catalog，不另造英文招式名。`action_exits` 收录无条件 `gotoAndStop`：连段/受击/必杀回 `站立`，以及离地招式切到 `落`/`落2`（鸣人 `招3` 第 491 帧）。走路等循环标签上的回站立不自动接线，以免打断当前切片手感。
+
+`hit_priority.instances` 必须由原版 `hitks` 与 1–5 后缀展开得到。一个 tick 同时存在多个 `*atm` 时按该表选中第一个命中，不能依赖 JSON、Godot 子节点或哈希表的遍历顺序。`impact_strength` 按原版 `bdxg()` 映射共享的 `XG_kan`、`XG_qdj`、`XG_qdjx`、`XG_mfdj`、`XG_mfdjx`、`XG_kanx` 命中特效；`zl > 10` 是破防标记，`beida()`/`fangyu()` 在进入普通受击链前只减一次 10，再用归一后的 1–6 选择效果。该展示属于通用受击链，不属于某一角色招式的硬编码。
+
 ### Action 与事件
 
 `damage`、`hurt_time_ms`、`push_x`、`lift_y`、`impact_level`、`hit_reaction` 是从原攻击参数映射来的数据，仍须和命中选择/受击逻辑一起使用。不能只把伤害表写入 Godot 就视为技能完成。
+
+双方实体碰撞使用当前帧各自可见的 `bdmn`，不能用固定角色宽度替代。原版 `on_enterframe` 将本 tick 横向位移限制在 `[-30, 30]`，乘朝向得到前进压力，再叠加对手 `vecx / 2`；`heavy` 差决定双方分摊，静止重叠时注入 10 像素压力逐 tick 顶开。普通瞬步由 `doDashX` 独占移动期间跳过这套身体挤压。
+
+带 `contact_cancel_to` 的招式位移以其 `contact_instance` 对对手当前 `bdmn` 检查。源脚本仍按“先检测、未命中才移动”的顺序执行；Web 端还对单 tick 位移做 swept AABB，防止 30 Hz 下转换后的矩形从一侧跨到另一侧。命中时停在首次交叉位置并切到源目标标签，启动接触框本身不得结算伤害。
+
+`presentation_events` 保存源帧上的全局展示调用。目前 `screen_flash` 包含 `action`、`frame`、`color_rgb24` 和源路径/哈希；透明度、混合模式等全局播放器常量必须来自 `main.swf`，不能按招式臆造。鸣人 `砍技12` 第 292 帧的 `shine(1403539)` 使用主程序 `shinemc` 的 Overlay 混合和帧 2–9 alpha 序列。
 
 `events` 中每项包含 `tick`、`order`、`op`、`args`。同 tick 按 `order` 排序；重名序号非法。事件操作采用白名单：
 
