@@ -84,7 +84,7 @@ func instance_local_bounds(instance_name: String) -> Rect2:
 		return Rect2()
 	for placement: Dictionary in _frames[_current_frame]["display_list"]:
 		if str(placement.get("name", "")) == instance_name:
-			return _placement_bounds(placement)
+			return _rooted_placement_bounds(placement)
 	return Rect2()
 
 
@@ -109,7 +109,7 @@ func named_instances_local_bounds(prefix: String) -> Array[Rect2]:
 	for placement: Dictionary in _frames[_current_frame]["display_list"]:
 		if not str(placement.get("name", "")).begins_with(prefix):
 			continue
-		var local_bounds := _placement_bounds(placement)
+		var local_bounds := _rooted_placement_bounds(placement)
 		if local_bounds.has_area():
 			result.append(local_bounds)
 	return result
@@ -139,6 +139,17 @@ func named_instance_ledges(prefix: String) -> Array[Rect2]:
 			)
 		)
 	return result
+
+
+func wrapper_translation() -> Vector2:
+	var wrapper = _timeline.get("wrapper", {})
+	if typeof(wrapper) != TYPE_DICTIONARY or wrapper.is_empty():
+		return Vector2.ZERO
+	var matrix: Dictionary = wrapper.get("matrix", {})
+	return Vector2(
+		float(matrix.get("translateX", 0.0)) / 20.0,
+		float(matrix.get("translateY", 0.0)) / 20.0
+	)
 
 
 func named_instance_origin(instance_name: String) -> Vector2:
@@ -268,8 +279,9 @@ func _render_frame() -> void:
 	if not _frames.has(_current_frame):
 		return
 	var frame: Dictionary = _frames[_current_frame]
+	var wrapper := _wrapper_transform()
 	for placement: Dictionary in frame["display_list"]:
-		_render_placement(placement, Transform2D.IDENTITY, 1.0, 0, _current_frame, 0)
+		_render_placement(placement, wrapper, 1.0, 0, _current_frame, 0)
 	queue_redraw()
 
 
@@ -388,6 +400,22 @@ func _matrix_transform(matrix: Dictionary, basis_scale: float) -> Transform2D:
 	)
 
 
+func _wrapper_transform() -> Transform2D:
+	# Fighter SWF root places the inner timeline as `mc`. Player `_x/_y`
+	# stays on the wrapper; this matrix is the missing visual/hitbox offset.
+	var wrapper = _timeline.get("wrapper", {})
+	if typeof(wrapper) != TYPE_DICTIONARY or wrapper.is_empty():
+		return Transform2D.IDENTITY
+	return _matrix_transform(wrapper.get("matrix", {}), 1.0)
+
+
+func _rooted_placement_bounds(placement: Dictionary, timeline_frame: int = _current_frame) -> Rect2:
+	var local_bounds := _placement_bounds(placement, timeline_frame)
+	if not local_bounds.has_area():
+		return local_bounds
+	return _transform_rect(_wrapper_transform(), local_bounds)
+
+
 func _placement_bounds(placement: Dictionary, timeline_frame: int = _current_frame) -> Rect2:
 	var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
 	if definition.is_empty():
@@ -491,7 +519,7 @@ func _draw_collision_shape(placement: Dictionary, is_attack: bool) -> void:
 			float(bounds["Ymax"] - bounds["Ymin"])
 		) / 20.0
 	)
-	var transform_2d := _placement_transform(placement)
+	var transform_2d := _wrapper_transform() * _placement_transform(placement)
 	var color := Color(1.0, 0.2, 0.16, 0.28) if is_attack else Color(0.2, 0.65, 1.0, 0.18)
 	draw_set_transform_matrix(transform_2d)
 	draw_rect(rectangle, color, true)

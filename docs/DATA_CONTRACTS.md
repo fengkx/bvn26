@@ -8,7 +8,7 @@
 - 原 SWF 帧号从 1 开始；动作 `tick` 和重放 `tick` 从 0 开始。单位必须体现在字段名中。
 - `status` 为 `extracted_partial`、`synthetic_example` 或 `ready`。生产数据只允许 `ready`；schema 合法不等于可发布。
 - `source_ref` 指向包内脚本 bundle + 原脚本路径；另存原 SWF SHA-256。原点/形状/矩阵的来源可只定位符号和帧，但不能以编造的脚本路径充当证据。
-- 不知道的持续帧、判定区域和偏移填写 `null` 或保留空集合并标 `extracted_partial`。不得用 0、1、默认矩形或估计动画填满以通过发布校验。
+- 不知道的持续帧、判定区域和偏移填写 `null` 或保留空集合并标 `extracted_partial`。不得用 0、1、默认矩形或估计动画填满以通过发布校验。机制如何从源编进这些字段见 [SOURCE_FIRST.md](SOURCE_FIRST.md)。
 - 模拟数值和 JSON 采用有限实数；未定义状态需独立标志。NaN 不得伪装成 0。
 
 ## 五类契约
@@ -27,7 +27,14 @@
 
 `forms[].source_root_frame` 映射 `WKframe`，`action_set_id` 引用编译后的动作集。初步示例尚未确认全部形态，故不标 `ready`。当某角色共用同一个 SWF，必须用形态映射，不能复制改版分拆文件。
 
-战斗中间数据 `command_catalog` 用原版时间轴帧标签（`砍1`、`万解`）作为招式 ID，并保留 `doAllAction` 的谓词槽位（`nornalhit`、`bisha`）。尚未接线的标签和取消窗口列入 `gaps`，不得从目录里删掉。新角色只编译自己的 catalog，不另造英文招式名。`action_exits` 收录无条件 `gotoAndStop`：连段/受击/必杀回 `站立`，以及离地招式切到 `落`/`落2`（鸣人 `招3` 第 491 帧）。走路等循环标签上的回站立不自动接线，以免打断当前切片手感。
+战斗中间数据 `command_catalog` 用原版时间轴帧标签（`砍1`、`万解`）作为招式 ID，并保留 `doAllAction` 的谓词槽位（`nornalhit`、`bisha`）。尚未接线的标签和取消窗口列入 `gaps`，不得从目录里删掉。新角色只编译自己的 catalog，不另造英文招式名。`action_exits` 收录无条件 `gotoAndStop`：连段/受击/必杀回 `站立`，以及离地招式切到 `落`/`落2`（鸣人 `招3` 第 491 帧）。走路等循环标签上的回站立不自动接线，以免打断当前切片手感。相邻标签若中间没有 `stop`/`goto`，编入 `timeline_fallthroughs`：鸣人 `砍技1` 播完必须进入 `砍技12` 炸开，接触 `gotoAndPlay` 只是提前引爆。
+
+战斗中间时间轴在抽取内层 `DefineSprite` 时保留根时间轴放置该符号的 `wrapper`
+（通常名为 `mc`）矩阵。玩家逻辑坐标是外层容器的 `_x/_y`；渲染和 `bdmn` 必须
+再乘这层矩阵，不能把注册点当作脚底。`jump_windows` 来自 `onJumping(step)`
+剪辑寿命：step 1/4 递减 `js`，2/5 匀速上升，3/6 只在 `touch` 时落地，不得改写成
+连续抛物线。`enterFrame` 从 `PlaceObject` 的下一根帧开始；新放置的剪辑不继承
+`js`。
 
 `hit_priority.instances` 必须由原版 `hitks` 与 1–5 后缀展开得到。一个 tick 同时存在多个 `*atm` 时按该表选中第一个命中，不能依赖 JSON、Godot 子节点或哈希表的遍历顺序。`impact_strength` 按原版 `bdxg()` 映射共享的 `XG_kan`、`XG_qdj`、`XG_qdjx`、`XG_mfdj`、`XG_mfdjx`、`XG_kanx` 命中特效；`zl > 10` 是破防标记，`beida()`/`fangyu()` 在进入普通受击链前只减一次 10，再用归一后的 1–6 选择效果。该展示属于通用受击链，不属于某一角色招式的硬编码。
 

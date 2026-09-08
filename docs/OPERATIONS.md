@@ -66,7 +66,7 @@ Sprite 保留首帧 display list。遇到不支持的时间轴状态会直接失
 
 ## 文档导航
 
-先读根 [README](../README.md)、[SPEC](../SPEC.md)、[实施计划](../IMPLEMENTATION_PLAN.md) 与 [STATUS](STATUS.md)。接口见 [DATA_CONTRACTS](DATA_CONTRACTS.md)，正确性见 [VALIDATION](VALIDATION.md)，来源见 [SOURCES](SOURCES.md)。
+先读根 [README](../README.md)、[SPEC](../SPEC.md)、[实施计划](../IMPLEMENTATION_PLAN.md) 与 [STATUS](STATUS.md)。实现机制前读 [SOURCE_FIRST](SOURCE_FIRST.md)。接口见 [DATA_CONTRACTS](DATA_CONTRACTS.md)，正确性见 [VALIDATION](VALIDATION.md)，来源见 [SOURCES](SOURCES.md)。
 
 ## Godot 工程构建
 

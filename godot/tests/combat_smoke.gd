@@ -59,8 +59,17 @@ func _run() -> void:
 	assert(naruto.action == "跳")
 	assert(naruto.airborne)
 	var ground_y := naruto.position.y
+	# 跳 starts at 40; clip is placed at 42; enterFrame starts at 43.
 	naruto.enter_frame({})
-	assert(naruto.position.y == ground_y - 15.0)
+	assert(is_equal_approx(naruto.position.y, ground_y))
+	naruto.advance_timeline()
+	naruto.enter_frame({})
+	naruto.advance_timeline()
+	naruto.enter_frame({})
+	assert(is_equal_approx(naruto.position.y, ground_y))
+	naruto.advance_timeline()
+	naruto.enter_frame({})
+	assert(is_equal_approx(naruto.position.y, ground_y - 14.0))
 	naruto.position.y = ground_y
 	naruto.airborne = false
 
@@ -392,6 +401,32 @@ func _run() -> void:
 	naruto.run_frame_actions()
 	naruto.run_frame_actions()
 	assert(flash_colors == [1403539])
+
+	# 砍技1 has no gotoAndStop. The playhead continues into 砍技12 even
+	# when kj10atm never touches bdmn; contact is only an early explode.
+	naruto.position = Vector2(40.0, 0.0)
+	ichigo.position = Vector2(400.0, 0.0)
+	naruto.set_facing(1)
+	ichigo.start_action("站立")
+	naruto.start_action("砍技1")
+	while naruto.action == "砍技1":
+		naruto.enter_frame({})
+		if naruto.action != "砍技1":
+			break
+		naruto.advance_timeline()
+	assert(naruto.action == "砍技12")
+	assert(naruto.current_source_frame() == 291)
+	var whiff_flash: Array[int] = []
+	naruto.screen_flash_requested.connect(
+		func(color_rgb24: int) -> void: whiff_flash.append(color_rgb24)
+	)
+	while naruto.action == "砍技12" and naruto.current_source_frame() < 313:
+		naruto.advance_timeline()
+		naruto.enter_frame({})
+		naruto.run_frame_actions()
+	assert(whiff_flash == [1403539])
+	assert(naruto.action == "站立")
+
 	ichigo._launched = false
 	ichigo._hurt_falling = false
 	ichigo._hurt_horizontal_step = 0.0
@@ -477,6 +512,28 @@ func _run() -> void:
 			break
 	assert(naruto.position.y == -30.0)
 	assert(not naruto.airborne)
+
+	# enterFrame skips the PlaceObject frame; step 2 is a new clip so js=0.
+	# 14+13+12+11+10+9+8 = 77. Wrapper `_y` is the player clip, not mc.
+	naruto.position = Vector2(80.0, 0.0)
+	naruto.configure_stage(0.0, [])
+	naruto.start_action("站立")
+	assert(is_equal_approx(naruto.wrapper_translation().y, -478.0 / 20.0))
+	naruto.enter_frame({"jump": true})
+	var apex := naruto.position.y
+	for _tick in range(20):
+		naruto.advance_timeline()
+		naruto.enter_frame({})
+		naruto.run_frame_actions()
+		apex = minf(apex, naruto.position.y)
+		if naruto.action == "落":
+			break
+	assert(is_equal_approx(apex, -77.0))
+	assert(naruto.action == "落")
+
+	naruto.position = Vector2(100.0, -30.0)
+	naruto.configure_stage(0.0, [Rect2(50.0, -30.0, 100.0, 5.0)])
+	naruto.airborne = false
 	naruto.start_action("站立")
 	naruto.enter_frame({"down": true, "jump": true})
 	assert(naruto.action == "落2")
@@ -506,6 +563,18 @@ func _run() -> void:
 	naruto.configure_stage(xianshi_floor, [Rect2(ban2_x, ban2_y, ban2_w, 10.0)])
 	naruto.start_action("站立")
 	naruto.enter_frame({})
+	assert(is_equal_approx(naruto.position.y, xianshi_floor))
+	assert(not naruto.airborne)
+	naruto.enter_frame({"jump": true})
+	var jump_apex := naruto.position.y
+	for _tick in range(40):
+		naruto.advance_timeline()
+		naruto.enter_frame({})
+		naruto.run_frame_actions()
+		jump_apex = minf(jump_apex, naruto.position.y)
+		if not naruto.airborne:
+			break
+	assert(jump_apex > ban2_y)
 	assert(is_equal_approx(naruto.position.y, xianshi_floor))
 	assert(not naruto.airborne)
 

@@ -46,6 +46,8 @@ var _wall_max: float = 970.0
 var _hurt_falling: bool = false
 var _launched: bool = false
 var _zhongli_fall: bool = false
+var _js: float = 0.0
+var _jumpinggg: bool = false
 var _energy_event_applied: bool = false
 var _summon_applied: bool = false
 var _presentation_events_applied: Dictionary = {}
@@ -480,7 +482,9 @@ func _start_jump(second_jump: bool) -> void:
 		airborne = true
 		_double_jump_used = false
 	_zhongli_fall = false
-	_vertical_velocity = float(_fighter["movement_constants"]["jump_power"])
+	_jumpinggg = false
+	_js = 0.0
+	_vertical_velocity = 0.0
 	start_action("跳2" if second_jump else "跳")
 
 
@@ -501,21 +505,16 @@ func _start_drop_through() -> bool:
 func _update_air_motion(input_state: Dictionary) -> bool:
 	if not airborne:
 		return false
-	var direction := int(input_state.get("right", false)) - int(input_state.get("left", false))
-	if direction != 0:
-		_move_world_x(direction * float(_combat["movement"]["speed_per_tick"]))
-		set_facing(direction)
+	var step := _on_jumping_step()
+	if step != 0:
+		var direction := int(input_state.get("right", false)) - int(input_state.get("left", false))
+		if direction != 0:
+			_move_world_x(direction * float(_combat["movement"]["speed_per_tick"]))
+			set_facing(direction)
 	if (
-		not _zhongli_fall
-		and bool(input_state.get("down", false))
-		and bool(input_state.get("jump", false))
-	):
-		_vertical_velocity = minf(_vertical_velocity, -_zhongli())
-	elif (
 		_jump_pressed
 		and not _double_jump_used
-		and action == "跳"
-		and current_source_frame() >= 50
+		and step in [2, 3]
 	):
 		_start_jump(true)
 		return true
@@ -528,22 +527,41 @@ func _update_air_motion(input_state: Dictionary) -> bool:
 		elif bool(input_state.get("attack", false)):
 			_try_start_action("跳砍")
 	var previous_y := position.y
-	if _zhongli_fall:
-		position.y += _zhongli()
-	else:
-		position.y -= _vertical_velocity
-		_vertical_velocity -= 1.0
+	var window := _current_jump_window()
+	if not window.is_empty() and current_source_frame() == int(window["start_frame"]):
+		# New PlaceObject instance. clip_lifecycle probe: enterFrame starts
+		# on the next root frame, and `js` does not carry to the new clip.
+		_js = 0.0
+		_jumpinggg = false
+	if step == 1 or step == 4:
+		if not _jumpinggg:
+			_jumpinggg = true
+			_js = float(_fighter["movement_constants"]["jump_power"])
+		_js -= 1.0
+		position.y -= _js
+	elif step == 2 or step == 5:
+		_jumpinggg = false
+		position.y -= _js
+	elif not _jump_flag_locked():
+		# on_enterframe: floor equality and isHitBan() return before zhongli.
+		# jump=1 (steps 1/2/4/5) already skipped above. doDropDown has left
+		# the ban window and sets `_zhongli_fall`.
+		var ban_y := _hit_ban_y(Vector2(position.x, previous_y))
+		if not is_nan(ban_y) and not _zhongli_fall:
+			position.y = ban_y
+		elif not is_equal_approx(previous_y, _ground_y):
+			position.y += _zhongli()
 	var landing_y := _landing_surface_y(previous_y, position.y)
-	var falling := _zhongli_fall or _vertical_velocity <= 0.0
+	var falling := position.y > previous_y
 	if not is_nan(landing_y) and falling:
 		position.y = landing_y
 		_vertical_velocity = 0.0
+		_js = 0.0
+		_jumpinggg = false
 		airborne = false
 		_zhongli_fall = false
 		start_action("落地")
 		return true
-	if not _zhongli_fall and _vertical_velocity <= 0.0 and action in ["跳", "跳2"]:
-		start_action("落2" if _double_jump_used else "落")
 	return true
 
 
@@ -587,10 +605,23 @@ func _finish_action() -> void:
 	if action == "击落地":
 		start_action("起身")
 		return
+	var fallthrough := _timeline_fallthrough_target()
+	if fallthrough != "":
+		# Adjacent labels with no stop/goto keep playing. 砍技1 has no
+		# terminal script, so a whiff still reaches 砍技12 and explodes.
+		start_action(fallthrough)
+		return
 	if airborne or _hurt_falling:
 		start_action("落2" if _double_jump_used else "落")
 	else:
 		start_action("站立")
+
+
+func _timeline_fallthrough_target() -> String:
+	for item: Dictionary in _combat.get("timeline_fallthroughs", []):
+		if str(item.get("from", "")) == action:
+			return str(item.get("to", ""))
+	return ""
 
 
 func _run_source_motion() -> void:
@@ -1010,9 +1041,40 @@ func _is_hurt_action(label: String) -> bool:
 	return label in ["被打", "击飞", "击落地"]
 
 
+func _current_jump_window() -> Dictionary:
+	var frame := current_source_frame()
+	for window: Dictionary in _combat.get("jump_windows", []):
+		if str(window.get("action", "")) != action:
+			continue
+		if frame < int(window["start_frame"]) or frame > int(window["end_frame"]):
+			continue
+		return window
+	return {}
+
+
+func _on_jumping_step() -> int:
+	var window := _current_jump_window()
+	if window.is_empty():
+		return 0
+	# evidence/probes/schedule/clip_lifecycle.log: child enterFrame starts
+	# on the root frame after PlaceObject, not the placement frame.
+	if current_source_frame() == int(window["start_frame"]):
+		return 0
+	return int(window["step"])
+
+
+func _jump_flag_locked() -> bool:
+	# Frame DoAction sets jump=1 for onJumping 1/2/4/5, including the
+	# placement frame where enterFrame has not started yet.
+	var window := _current_jump_window()
+	if window.is_empty():
+		return false
+	return int(window["step"]) in [1, 2, 4, 5]
+
+
 func _is_one_shot_action(label: String) -> bool:
 	return label not in [
-		"站立", "走", "跳", "跳2", "落", "落2", "防御", "防御2", "被打", "击飞"
+		"站立", "走", "落", "落2", "防御", "防御2", "被打", "击飞"
 	]
 
 

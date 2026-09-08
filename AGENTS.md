@@ -1,6 +1,6 @@
 # 开发接手约定
 
-适用于本目录的开发工作。先读 README.md、SPEC.md、IMPLEMENTATION_PLAN.md、docs/STATUS.md 和 plan/tasks.json。
+适用于本目录的开发工作。先读 README.md、SPEC.md、IMPLEMENTATION_PLAN.md、docs/STATUS.md、docs/SOURCE_FIRST.md 和 plan/tasks.json。
 
 - 目标是普通 BVN 2.6 原生 Godot Web 移植。生产运行不得依赖 Flash、AVM、AS2 解释器或 Ruffle。
 - game/ 和 scripts/ 是锁定分析输入。保留原文件、大小写和哈希；插桩、转换和试验写入单独工作目录。不要把社长改同名文件覆盖进来。
@@ -13,3 +13,6 @@
 - 修改工具或资料后运行 tools/verify.py、tools/check_handoff.py；契约变更运行 tools/validate_contracts.py。verify 的哈希覆盖原交付文件，合法变更应经差异核对后更新 manifest.file_sha256，不能跳过输入完整性检查。
 - 新增 Godot 实现后按 docs/VALIDATION.md 执行与变更风险相称的检查。没有实际运行证据时保持待验证状态。
 - 下载的工具、缓存、临时导出、运行日志和打包副本不加入正式源码目录。部署仅使用后续 dist/web/。
+- 目标是一比一还原原版 Flash 体验。实现或修改任何机制前必须按 docs/SOURCE_FIRST.md 答完五问（每帧脚本、PlaceObject/MOVE、离开标签方式、原版不变量、原版同输入对照）。答不全不得改运行时，也不得把任务标完成。
+- 标签 end_frame 不是回站立。无 goto/stop 的标签要编 timeline_fallthroughs，播放头继续走。新 PlaceObject 不继承实例变量；enterFrame 从放置的下一根帧开始。
+- 新行为优先加编译规则，禁止按角色在 GDScript 里猜补位移、高度或演出。测试只锁源里能指出的不变量，不得把实现假设写进回归再去凑。

@@ -9,7 +9,7 @@
 1. [SPEC.md](SPEC.md)：范围、12 项功能要求、8 项技术要求和一比一验收边界。
 2. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)：M0–M7 实施顺序、阶段门槛与估算方法。
 3. [当前状态](docs/STATUS.md)：已完成事项、风险和下一步。
-4. [架构](docs/ARCHITECTURE.md) → [逆向手册](docs/REVERSE_ENGINEERING.md) → [数据契约](docs/DATA_CONTRACTS.md)。
+4. [架构](docs/ARCHITECTURE.md) → [逆向手册](docs/REVERSE_ENGINEERING.md) → [源优先闸门](docs/SOURCE_FIRST.md) → [数据契约](docs/DATA_CONTRACTS.md)。
 5. [验收计划](docs/VALIDATION.md)与[操作手册](docs/OPERATIONS.md)：如何取得对照证据、使用工具和准备后续 Web 导出。
 
 ## 包内内容
@@ -27,7 +27,7 @@
 | `tools/` | 资源校验、SWF 结构检查、脚本查阅、契约与交接包检查工具 |
 | [来源说明](docs/SOURCES.md) | 来源链接、版本依据和证据限制 |
 | [本次校验记录](docs/PACKAGE_CHECKS.md) | 已执行的资料验证与明确未验证的运行内容 |
-| [AGENTS.md](AGENTS.md) | 后续开发者或编码助手的接手约束 |
+| [AGENTS.md](AGENTS.md) | 后续开发者或编码助手的接手约束；实现机制前必读 [源优先闸门](docs/SOURCE_FIRST.md) |
 
 人物配置数包含形态和援助，不等于可选角色数。原始 SWF 和脚本仅用于开发分析，未来发布物必须不包含 Flash/AS2/AVM/Ruffle 运行依赖。
 

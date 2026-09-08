@@ -260,6 +260,37 @@ def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
     return frames
 
 
+def extract_wrapper_placement(
+    root: ET.Element, sprite_id: int
+) -> dict[str, Any] | None:
+    """Root PlaceObject that mounts the extracted sprite, usually named `mc`.
+
+    Fighter `_x/_y` is the player wrapper. Visuals and `bdmn` live inside `mc`,
+    whose matrix is not part of the inner DefineSprite timeline.
+    """
+    frame = 1
+    for tag in root.findall("./tags/item"):
+        tag_type = tag.attrib.get("type", "")
+        if tag_type == "ShowFrameTag":
+            frame += 1
+            continue
+        if tag_type not in ("PlaceObject2Tag", "PlaceObject3Tag"):
+            continue
+        if int(tag.attrib.get("characterId", -1)) != sprite_id:
+            continue
+        delta = placement_delta(tag)
+        wrapper: dict[str, Any] = {
+            "name": str(delta.get("name", "")),
+            "character_id": sprite_id,
+            "root_frame": frame,
+            "depth": int(delta["depth"]),
+        }
+        if "matrix" in delta:
+            wrapper["matrix"] = delta["matrix"]
+        return wrapper
+    return None
+
+
 def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, Any]:
     root = ET.parse(xml_path).getroot()
     xml_version = (
@@ -301,6 +332,10 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
     }
     if sprite_id is None:
         result["timeline"] = "root"
+    else:
+        wrapper = extract_wrapper_placement(root, sprite_id)
+        if wrapper is not None:
+            result["wrapper"] = wrapper
     result["definitions"] = referenced_definitions(root, frames)
     return result
 

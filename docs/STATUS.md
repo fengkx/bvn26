@@ -33,8 +33,9 @@
   JPEG 黑底带入 Web。`bdxg()` 的 1–6 级共享命中特效已从 `main.swf` 导入；
   上+U 已以 30 伤 `zh3atm` → 60 伤/击飞 `zh32atm` 的连续实战路径通过无头回归，
   第二段显示 `XG_qdjx` 重击效果。命中候选按原版 `hitks` 顺序编译为
-  `hit_priority`，不再依赖节点遍历顺序。鸣人下+J 的 `kj10atm` 仅作为冲刺接触框；
-  接触后按源跳到 291 帧 `砍技12`，由 291–294 帧的 `kj1atm` 结算 100 伤害和击飞。
+  `hit_priority`，不再依赖节点遍历顺序。  鸣人下+J 的 `kj10atm` 仅作为冲刺接触框；
+  接触后按源跳到 291 帧 `砍技12`。`砍技1` 本身没有 `gotoAndStop`，没碰到也会
+  播进 `砍技12` 炸开，第 313 帧再回站立。`kj1atm` 在 291–294 帧结算 100 伤害和击飞。
   冲刺的 `speed*2` 位移现对 `kj10atm` 做水平 swept AABB，左右朝向都在第一处交叉
   接触停止并转收尾，避免 30 Hz 离散步进穿过较窄的 `bdmn`。第 292 帧源
   `shine(1403539)` 已编译进通用 `presentation_events`；Web 使用 main.swf 的
@@ -66,12 +67,19 @@
   Sprite 子节点，并由 Godot 4.7.2 无头运行通过。
 - 气量按源脚本接入：普通对战初值 0，招式帧 `ql +=/-=`、命中/受击/防住公式和低血量回气
   均有断言；左右下角气条按 `qitiao` 的 round/floor 分段显示，尚未导入原 `qt/bss` 元件。
-- 现世 `ban2/ban3` 按源 `isHitBan()` 读入：站立平面是剪辑注册点 `ban._x/_y` 与
+-   现世 `ban2/ban3` 按源 `isHitBan()` 读入：站立平面是剪辑注册点 `ban._x/_y` 与
   `_width`，不是 shape AABB 顶边或带镜头的 global bounds；`floorY = -25` 来自
-  `p1` 放置与 `frame_7`。受击浮空后按 `zhongli = 10` 落地。平台上 `S+K`（含已进入
-  `防御2`）按源 `jumpDown/doDropDown`：`_y += zhongli` 后播 `落2`，离开
-  `ban._y - 10` 窗口落到下一层。`combat_smoke.gd` 已加地面/ban 站立 Y 与穿层断言，
-  并由 Godot 4.7.2 无头运行通过；Web 已重新导出验证道路地面站位。
+  `p1` 放置与 `frame_7`。角色 SWF 根时间轴把内层时间轴放在 `mc` 上（鸣人
+  `translateY=-478` twips，一护 `-479`）；`_parent._x/_y` 仍是玩家容器，画面和
+  `bdmn` 走这层矩阵，不再把脚画进墙顶下面。  跳跃按 `onJumping(step)` 分段：step 1/4 先 `js-=1` 再 `_y-=js`，step 2/5
+  保持 `js`，step 3/6 只检测落地，`jump!=1` 时 `on_enterframe` 用 `zhongli=10`。
+  `onClipEvent(enterFrame)` 从放置的下一根帧开始（`clip_lifecycle` 探针）；
+  第 50 帧是新 `PlaceObject`，`js` 不继承。鸣人一跳上升 77 像素，低于
+  `ban2` 的 78.65，单跳落不上去。受击浮空后按 `zhongli = 10` 落地。平台上
+  `S+K`（含已进入 `防御2`）按源 `jumpDown/doDropDown`：`_y += zhongli` 后播
+  `落2`，离开 `ban._y - 10` 窗口落到下一层。`combat_smoke.gd` 已加地面/ban
+  站立 Y、穿层、`onJumping` 顶点 77 与单跳落不回 `ban2` 断言，并由 Godot 4.7.2
+  无头运行通过。
 - 对战镜头按 `DefineSprite_1991` 的 `onEnterFrame` 实现：焦点 `all` 时
   `scale = 2 * (1000 - max(|dx|,|dy|)) / 1000`（下限 0.8），再以 0.5 缓动
   `_root.game` 的位置/缩放；墙为 `[20, mapSizeX-30]`，间距 ≥ 700 锁定两端。
@@ -119,8 +127,10 @@ golden 轨迹/截图、全角色验证和部署尚未完成。现有 Chrome 截�
 | R-07 Web 性能/音频/键盘兼容 | 能在编辑器玩但网页体验失败 | M0-01、M4-01～03 | 三类浏览器实际对战通过 |
 | R-08 角色数量被误读或范围漏项 | 两角色原型被当作完整版 | M0-04、M6-01 | 配置与实际可达内容逐条有去向 |
 
+实现闸门已写入 [SOURCE_FIRST.md](SOURCE_FIRST.md)，并由 `AGENTS.md` 强制：改运行时前必须能指出每帧脚本、剪辑寿命和离开标签方式。跳跃高度与下+J 空挥不炸属于违反该闸门的已修案例，后续不得用标签结束帧或手感公式补全。
+
 ## 下一项工作
 
 导入魂根时间轴与位图，并把我爱罗 `atm1` 命中与 `XG_fzcc` 特效对照原版。
-把走路循环、`砍技1`、`万解`、位移、投射物、三连、受击、必杀与原版固定输入逐帧对照。并行完成 `M0-01` 的
+把走路循环、墙顶站位、`砍技1`、`万解`、位移、投射物、三连、受击、必杀与原版固定输入逐帧对照。并行完成 `M0-01` 的
 Firefox/Safari 实测及 `M0-03` 未解决调度探针；在对照通过前保持 M2/M3 任务未完成。

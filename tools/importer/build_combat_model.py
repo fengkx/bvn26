@@ -48,6 +48,7 @@ LAND_GOTO = re.compile(
     r"if\s*\(\s*_parent\.(?:touchFloor|touch)(?:\s*==\s*true)?\s*\)[\s\S]{0,80}?"
     r"gotoAndPlay\(\"(?P<label>[^\"]+)\"\)"
 )
+ON_JUMPING = re.compile(r"onJumping\s*\(\s*(?P<step>\d+)\s*\)")
 PROJECTILE_SPEED = re.compile(
     r"movspeed\s*=\s*_parent\.speed\s*\*\s*(?P<factor>\d+(?:\.\d+)?)"
 )
@@ -115,6 +116,13 @@ def parse_horizontal_motion(source: str) -> tuple[float, bool] | None:
     return (factor if facing_forward else -factor), rounded
 
 
+def parse_jumping_step(source: str) -> int | None:
+    match = ON_JUMPING.search(source)
+    if match is None:
+        return None
+    return int(match["step"])
+
+
 def parse_fighter_motion(source: str) -> dict[str, Any] | None:
     if "moveLeft()" in source or "moveRight()" in source:
         return None
@@ -157,6 +165,63 @@ def parse_fighter_motion(source: str) -> dict[str, Any] | None:
     ):
         return None
     return motion
+
+
+LOCOMOTION_OR_GUARD = {
+    "站立",
+    "走",
+    "瞬步",
+    "跳",
+    "跳2",
+    "落",
+    "落2",
+    "落地",
+    "防御",
+    "防御2",
+    "防住",
+}
+
+
+def span_has_unconditional_terminal(scripts: list[dict[str, Any]], label: str) -> bool:
+    for script in scripts:
+        if script["action"] != label or script["kind"] != "frame_action":
+            continue
+        if parse_unconditional_exit(script["source"]) is not None:
+            return True
+        if script["source"].strip() == "stop();":
+            return True
+    return False
+
+
+def compile_timeline_fallthroughs(
+    ranges: dict[str, dict[str, Any]], scripts: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Adjacent labels with no stop/goto keep playing into the next label.
+
+    鸣人 砍技1 has no terminal script, so the playhead reaches 砍技12 even
+    on a whiff. Contact gotoAndPlay is only an early explode.
+    """
+    ordered = sorted(
+        ranges.items(),
+        key=lambda item: (int(item[1]["start_frame"]), item[0]),
+    )
+    result: list[dict[str, Any]] = []
+    for (label, span), (next_label, next_span) in zip(ordered, ordered[1:]):
+        if label in LOCOMOTION_OR_GUARD:
+            continue
+        if int(next_span["start_frame"]) != int(span["end_frame"]) + 1:
+            continue
+        if span_has_unconditional_terminal(scripts, label):
+            continue
+        result.append(
+            {
+                "from": label,
+                "to": next_label,
+                "frame": int(next_span["start_frame"]),
+                "condition": "timeline_fallthrough",
+            }
+        )
+    return result
 
 
 def parse_unconditional_exit(source: str) -> str | None:
@@ -490,10 +555,12 @@ def build_model(
             }
         )
 
+    timeline_fallthroughs = compile_timeline_fallthroughs(ranges, scripts)
     stand_exit_actions = {
         *combo_labels,
         *fighter["actions"]["hurt"],
         *fighter["actions"]["special"],
+        *(item["to"] for item in timeline_fallthroughs),
     }
     exits = {}
     for script in scripts:
@@ -628,6 +695,7 @@ def build_model(
         )
 
     motion_windows = []
+    jump_windows = []
     projectiles = []
     projectile_speeds: dict[tuple[int, int], float] = {}
     clip_scripts = []
@@ -671,6 +739,23 @@ def build_model(
                     ),
                     **projectile,
                     **clip_timeline,
+                    "source_path": script["path"],
+                    "source_sha256": script["source_sha256"],
+                    "action_bytes_sha256": bytecode_hash,
+                }
+            )
+            continue
+        jumping_step = parse_jumping_step(script["source"])
+        if jumping_step is not None:
+            end_frame, bytecode_hash = clip_lifetime(
+                frames_by_number, script["frame"], depth
+            )
+            jump_windows.append(
+                {
+                    "action": script["action"],
+                    "start_frame": script["frame"],
+                    "end_frame": end_frame,
+                    "step": jumping_step,
                     "source_path": script["path"],
                     "source_sha256": script["source_sha256"],
                     "action_bytes_sha256": bytecode_hash,
@@ -726,6 +811,7 @@ def build_model(
         },
         "hitbox_windows": hitbox_windows,
         "action_exits": exits,
+        "timeline_fallthroughs": timeline_fallthroughs,
         "hurt": {
             "label": hurt_label,
             "stop_frame": stop_scripts[0]["frame"],
@@ -745,6 +831,10 @@ def build_model(
         "motion_windows": sorted(
             motion_windows,
             key=lambda item: (item["start_frame"], item["action"]),
+        ),
+        "jump_windows": sorted(
+            jump_windows,
+            key=lambda item: (item["start_frame"], item["step"]),
         ),
         "projectiles": sorted(
             projectiles,

@@ -265,6 +265,49 @@ class TimelineGeometryTests(unittest.TestCase):
         self.assertEqual(result["frames"][0]["display_list"][0]["name"], "atm1")
         self.assertEqual(result["frames"][1]["display_list"][0]["matrix"]["translateX"], 80)
 
+    def test_sprite_extract_keeps_root_mc_wrapper_matrix(self):
+        root = ET.fromstring(
+            """<swf _xmlExportMajor="3" _xmlExportMinor="2" frameCount="1">
+            <tags>
+            <item type="DefineShape3Tag" shapeId="9">
+              <shapeBounds Xmin="0" Ymin="-20" Xmax="40" Ymax="60"/>
+            </item>
+            <item type="DefineSpriteTag" spriteId="7" frameCount="1">
+              <subTags>
+                <item type="PlaceObject2Tag" depth="1" characterId="9" placeFlagMove="false">
+                  <matrix translateX="20" translateY="-40"/>
+                </item>
+                <item type="ShowFrameTag"/>
+              </subTags>
+            </item>
+            <item type="PlaceObject2Tag" depth="1" characterId="7" name="mc" placeFlagMove="false">
+              <matrix hasScale="true" scaleX="1.0" scaleY="1.0007019" translateX="-13" translateY="-478"/>
+            </item>
+            <item type="ShowFrameTag"/>
+            </tags></swf>"""
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "fighter.xml"
+            ET.ElementTree(root).write(path, encoding="unicode")
+            result = timeline_geometry.extract_frames(path, 7)
+
+        self.assertEqual(
+            result["wrapper"],
+            {
+                "name": "mc",
+                "character_id": 7,
+                "root_frame": 1,
+                "depth": 1,
+                "matrix": {
+                    "hasScale": "true",
+                    "scaleX": 1.0,
+                    "scaleY": 1.0007019,
+                    "translateX": -13,
+                    "translateY": -478,
+                },
+            },
+        )
+
 
 class CombatModelTests(unittest.TestCase):
     def load_model(self, fighter: str):
@@ -272,6 +315,34 @@ class CombatModelTests(unittest.TestCase):
             ROOT / f"data/slices/{fighter}-base.json",
             ROOT / f"data/slices/{fighter}-base.timeline.json",
             ROOT / f"scripts/fighter/{fighter}.json",
+        )
+
+    def test_on_jumping_windows_follow_clip_lifetime(self):
+        naruto = self.load_model("minren")
+        ichigo = self.load_model("yihu")
+        self.assertEqual(
+            [(item["action"], item["start_frame"], item["end_frame"], item["step"])
+             for item in naruto["jump_windows"]],
+            [
+                ("跳", 42, 49, 1),
+                ("跳", 50, 55, 2),
+                ("落", 56, 71, 3),
+                ("跳2", 72, 82, 4),
+                ("跳2", 83, 88, 5),
+                ("落2", 89, 114, 6),
+            ],
+        )
+        self.assertEqual(
+            [(item["action"], item["start_frame"], item["end_frame"], item["step"])
+             for item in ichigo["jump_windows"]],
+            [
+                ("跳", 42, 49, 1),
+                ("跳", 50, 55, 2),
+                ("落", 56, 71, 3),
+                ("跳2", 72, 82, 4),
+                ("跳2", 83, 88, 5),
+                ("落2", 89, 114, 6),
+            ],
         )
 
     def test_combo_windows_follow_persistent_clip_actions(self):
@@ -409,6 +480,17 @@ class CombatModelTests(unittest.TestCase):
         self.assertEqual(skill1["forward_speed_factor"], 2.0)
         self.assertEqual(skill1["contact_cancel_to"], "砍技12")
         self.assertEqual(skill1["contact_instance"], "kj10atm")
+        self.assertIn(
+            {
+                "from": "砍技1",
+                "to": "砍技12",
+                "frame": 291,
+                "condition": "timeline_fallthrough",
+            },
+            naruto["timeline_fallthroughs"],
+        )
+        self.assertEqual(naruto["action_exits"]["砍技12"]["frame"], 313)
+        self.assertEqual(naruto["action_exits"]["砍技12"]["target"], "站立")
         self.assertEqual(
             [
                 (event["action"], event["frame"], event["op"], event["color_rgb24"])
