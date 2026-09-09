@@ -47,8 +47,19 @@ def build(workspace: Path, clip: str, output: Path) -> None:
                        "source_sha256": hashlib.sha256(script["source"].encode()).hexdigest()})
     if len(events) != 1:
         raise ValueError("Expected one explicit unload event")
-    if any(d["type"] == "DefineSpriteTag" for d in timeline["definitions"]):
-        raise ValueError("Nested effect timelines need a separate script audit")
+    nested_ids = {d["character_id"] for d in timeline["definitions"] if d["type"] == "DefineSpriteTag"}
+    nested_scripts = []
+    for script in bundle["scripts"]:
+        match = re.match(r"DefineSprite_(\d+)(?:_[^/]+)?/", script["path"])
+        if not match or int(match[1]) not in nested_ids:
+            continue
+        terminal = re.fullmatch(r"DefineSprite_\d+(?:_[^/]+)?/frame_(\d+)/DoAction.as", script["path"])
+        # The containing effect is removed before this child could play past
+        # its stop frame. Earlier stops or other actions need a real scheduler.
+        if not terminal or script["source"].strip() != "stop();" or int(terminal[1]) < events[0]["frame"]:
+            raise ValueError("Unsupported nested effect script: " + script["path"])
+        nested_scripts.append(script)
+
     with tempfile.TemporaryDirectory(prefix="bvn-ai-effect-") as directory:
         path = Path(directory) / "timeline.json"
         path.write_text(json.dumps(timeline, ensure_ascii=False, indent=2) + "\n")
@@ -59,6 +70,7 @@ def build(workspace: Path, clip: str, output: Path) -> None:
     (output / "assets.json").write_text(json.dumps(assets, indent=2) + "\n")
     (output / "effect.json").write_text(json.dumps({"format": "bvn26-simple-effect-v1",
         "clip": clip, "sprite_id": symbol, "presentation_events": events,
+        "nested_terminal_scripts": nested_scripts,
         "source_swf": timeline["source_swf"]}, ensure_ascii=False, indent=2) + "\n")
 
 

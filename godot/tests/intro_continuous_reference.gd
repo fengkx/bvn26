@@ -291,7 +291,7 @@ func _run() -> void:
 			game._advance_fight(scheduled.get(current_tick, []), func() -> bool:
 				var present: bool = game.session.root_label == "游戏场景"
 				if not present:
-					assert(game.cpu_driver == null and game.player_body_driver == null and not game.game_world.visible)
+					assert(game.opponent_driver == null and game.player_body_driver == null and not game.game_world.visible)
 				compare_frames(fighters, observation_tick, original_frames, present)
 				return observation_tick == last_tick)
 		else:

@@ -431,3 +431,13 @@ lifecycle, browser and all-character parity remain pending.
 ## Config options and timeout — 2026-09-09
 
 Config now exposes source-derived CPU difficulty, quality state, time, life, key configuration and save/return. Difficulty and life apply at fight entry; the source timer and timeout winner/draw timeline are compiled and connected. Normal is hidden and Vs Com is selected initially. Native Flash comparison passes 161 Config and 451 timeout snapshots; native settings/menu/KO checks and three existing combat replays pass. Quality antialiasing and timeout badge blink remain unimplemented visual differences; full browser and mode parity are pending. M6-02 stays pending. See [Config evidence](../evidence/config/README.md).
+
+
+### Direction dash and Up+I follow-up (2026-09-09)
+
+Four native Flash player direction-dash fixtures match 324 root snapshots; two additional Up+I/CPU dash fixtures match 482 combat snapshots. Source rejects direction dash during action -1 and with 99 MP; up/down + L in allowed states consumes 100 MP. The source-compiled Vs Com logic was already connected; missing XG_xdash assets are now imported and visible. No hitbox, immunity or tracking rule changed. Blue afterimages, older PvP/training control paths and full combat/browser parity remain pending. See [source and regression evidence](../evidence/combat/ghost-validation/README.md).
+
+
+### Shared source combat in all local modes (2026-09-09)
+
+The production legacy PvP/training combat branch is removed. All three modes now use the same compiled actor callbacks, receiver chain, collision services and deferred queue; player/AI input is selected within the original predicates. Training recovery now uses the source 1000 ms wall-clock interval instead of 30 simulation ticks. PvP and training each match 602 complete actor observations, including exact coordinates; existing r13/r14/r15 replays still match. Mode lifecycle and PvP KO checks cover input ownership, no training KO, timer disposal and returning to the same mode. These close the documented mode-path gap, not every remaining move/character/browser acceptance item. See [shared-mode evidence](../evidence/combat/shared-mode-validation/README.md).

@@ -67,7 +67,7 @@ func _run() -> void:
 			"p1_y": game.naruto.position.y, "p2_y": game.ichigo.position.y,
 			"p1_helper_action": game.naruto_helper.source_action,
 			"p2_helper_action": game.ichigo_helper.source_action,
-			"pending_timeouts": game.cpu_driver.timeouts.pending_count(),
+			"pending_timeouts": game.opponent_driver.timeouts.pending_count(),
 			"random_samples": game.ichigo.ai_random_clock.sample_count})
 	var trace_path := OS.get_environment("BVN_AI_SMOKE_TRACE")
 	if not trace_path.is_empty():
@@ -81,10 +81,13 @@ func _run() -> void:
 	print("VS_COM_RESULT ", JSON.stringify({"player_hp": game.naruto.health,
 		"cpu": game.ichigo.snapshot(), "unimplemented_visual_services": game.cpu_unresolved_services.keys()}))
 	game._goto_menu()
-	check(game.cpu_driver == null and not game.ichigo.ai_timeline_controlled, "CPU driver survived return to menu")
+	check(game.opponent_driver == null and not game.ichigo.ai_timeline_controlled, "CPU driver survived return to menu")
 	check(game.ichigo.ai_random_clock.registered_ms == -1, "CPU random interval survived return to menu")
 	game._enter_current_fight(3)
-	check(game.cpu_driver == null and not game.session.p2cpu, "Versus mode inherited the CPU driver")
+	check(game.opponent_driver != null and not game.session.p2cpu, "Versus mode must use the shared source driver")
+	check(not game.opponent_driver.controller.context.use_ai and not game.opponent_driver.body_context.use_ai,
+		"Versus mode inherited CPU predicates")
+	check(game.ichigo.ai_random_clock.registered_ms == -1, "Versus mode started an AI random interval")
 	game._goto_menu()
 	for node in game.find_children("*", "AudioStreamPlayer", true, false):
 		node.stop()

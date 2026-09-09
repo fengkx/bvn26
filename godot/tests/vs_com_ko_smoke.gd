@@ -1,11 +1,15 @@
 extends SceneTree
 
+var mode := 2
+
 
 func _initialize() -> void:
 	_run.call_deferred()
 
 
 func _run() -> void:
+	var args := OS.get_cmdline_user_args()
+	if not args.is_empty(): mode = int(args[0])
 	for winning_side in [1, 2]:
 		await _run_match(winning_side)
 	print("VS_COM_KO_SMOKE_OK")
@@ -16,7 +20,7 @@ func _run_match(winning_side: int) -> void:
 	var game = load("res://main.tscn").instantiate()
 	root.add_child(game)
 	game.set_physics_process(false)
-	game._enter_current_fight(2)
+	game._enter_current_fight(mode)
 	game.ichigo.ai_random_clock.cancel()
 	for tick in 600:
 		game._advance_fight()
@@ -63,10 +67,10 @@ func _run_match(winning_side: int) -> void:
 			for tick in 10:
 				game._advance_fight()
 		else:
-			assert(game.session.root_label == "地图" and game.cpu_driver == null)
+			assert(game.session.root_label == "地图" and game.opponent_driver == null and game.session.modo == mode)
 	await process_frame
 	assert(game.session.root_label == "地图")
-	assert(game.cpu_driver == null and game.ko_timeline == null)
+	assert(game.opponent_driver == null and game.ko_timeline == null)
 	assert(game.ko_nextfight_timer == null)
 	game.queue_free()
 	await process_frame

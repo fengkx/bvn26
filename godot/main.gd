@@ -32,7 +32,8 @@ var stage_sound: StageSound
 var source_random := SourceRandom.new()
 var source_clock = preload("res://source_clock.gd").new()
 var selected_stage: String = "现世"
-var cpu_driver: AiCpuDriver
+var opponent_driver: AiCpuDriver
+var opponent_input_context: AiBodyContext
 var cpu_services: AiCombatServices
 var cpu_stage_registry := StageHitRegistry.new()
 var cpu_profile: Dictionary
@@ -67,8 +68,8 @@ var source_health_registration: int
 var source_frame_sequence: int = 0
 var source_child_frames: Array[Dictionary] = []
 var player_body_services: AiCombatServices
-# Source DefineSprite_1991: setInterval(zdbx, 1000) when modo==4. 30 Hz → 30 ticks.
-var zdbx_ticks: int = 0
+var training_timer: Timer
+var recorded_training_timers := false
 
 # main.swf DefineSprite 1745 frames 2-9 after shinemc.cmc.gotoAndPlay(2).
 const SHINE_ALPHA_TERMS: PackedInt32Array = [114, 100, 85, 71, 57, 43, 28, 14]
@@ -313,7 +314,7 @@ func _return_to_title() -> void:
 
 func _goto_menu() -> void:
 	_stop_ko()
-	_stop_cpu()
+	_stop_combat_drivers()
 	if battle_intro != null:
 		battle_intro.cancel()
 	stage_sound.stop()
@@ -381,7 +382,7 @@ func _goto_key_settings() -> void:
 
 func _enter_current_fight(modo: int) -> void:
 	_stop_ko()
-	_stop_cpu()
+	_stop_combat_drivers()
 	# Fighters/assists remain locked; the map comes from the original map selector.
 	# Source 597/600/603: only modo=2 enables p2cpu. Selection is fixed here.
 	session.modo = modo
@@ -405,11 +406,9 @@ func _enter_current_fight(modo: int) -> void:
 	ichigo_energy.visible = true
 	_initialize_fight()
 	health_hud.set_wins(1, 1)
-	if session.p2cpu:
-		_start_cpu()
-	else:
-		_start_ko()
+	_start_combat_drivers()
 	_start_countdown()
+	_start_training_recovery()
 	battle_intro.begin([naruto, ichigo])
 	health_hud.spec["placement"] = battle_intro.spec["hud_frames"]["1"]
 	game_world.focus = battle_intro.focus
@@ -442,7 +441,6 @@ func _initialize_fight() -> void:
 	ichigo.sync_body_collision_position()
 	game_world.focus = "all"
 	game_world.snap(naruto, ichigo)
-	zdbx_ticks = 0
 	_reset_super()
 
 
@@ -459,12 +457,7 @@ func _chushi() -> void:
 
 
 func _advance_fight(recorded_events: Array = [], root_observer: Callable = Callable()) -> void:
-	# Snapshot before frame scripts attach new XG instances. Their frame 1
-	# is queued behind the caller; frame 2 belongs to the next display tick.
-	var existing_hit_effects: Array[HitEffectRuntime] = []
-	for child in game_world.get_children():
-		if child is HitEffectRuntime and not child.is_queued_for_deletion():
-			existing_hit_effects.append(child)
+	# Both keyboard and AI actors use the same registered source callbacks.
 	battle_intro.tick(1.0 / Engine.physics_ticks_per_second, session.is_slot_down("j") or session.is_slot_down("N1"), true)
 	if timeout_timeline != null:
 		timeout_timeline.display_tick = physics_tick + 1
@@ -483,12 +476,7 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		super_presentation.tick()
 	physics_tick += 1
 	tick_label.text = "Fixed simulation tick: %d" % physics_tick
-	if hit_fx_pause_count > 0 and cpu_driver == null:
-		# Source pauseGame() stopMc on p1/p2/helpers. XG clip keeps playing.
-		battle_intro.run_frame_actions()
-		_advance_hit_effects(existing_hit_effects)
-		_refresh_fight_labels()
-		return
+	assert(opponent_driver != null and player_body_driver != null and source_callbacks != null)
 	var fighters: Array[FighterRuntime] = [ichigo, naruto]
 	var helpers: Array = []
 	if naruto_helper != null:
@@ -499,15 +487,14 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	ichigo.super_helpers = helpers
 	if player_body_driver != null:
 		player_body_driver.begin_tick(physics_tick, _input_for(naruto))
-	if cpu_driver != null:
-		cpu_driver.prepare_display_tick(physics_tick)
+	if opponent_input_context != null:
+		opponent_input_context.inputs = _input_for(ichigo)
+	opponent_driver.prepare_display_tick(physics_tick)
 	for fighter in fighters:
-		if fighter == ichigo and cpu_driver != null:
-			cpu_driver.advance_timeline()
-		elif fighter == naruto and player_body_driver != null:
-			player_body_driver.advance_timeline()
+		if fighter == ichigo:
+			opponent_driver.advance_timeline()
 		else:
-			fighter.advance_timeline()
+			player_body_driver.advance_timeline()
 	if cpu_services != null:
 		cpu_services.advance_stage_timelines()
 	if player_body_services != null:
@@ -518,6 +505,10 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		if event["phase"] == "before_root_observer":
 			continue
 		assert(event["phase"] == "after_actor_advance", "Unsupported intro callback phase")
+		if event.get("kind", "intro_poll") == "training_recovery":
+			assert(recorded_training_timers and training_timer != null)
+			training_timer.timeout.emit()
+			continue
 		if event.get("kind", "intro_poll") == "ai_random":
 			var sampled := ichigo.ai_random_clock.fire_recorded(int(event["time_ms"]))
 			assert(sampled, "Rejected recorded AI random refresh")
@@ -534,34 +525,18 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	var initial_frame_counts := {}
 	for fighter in fighters:
 		initial_frame_counts[fighter] = fighter._ai_pending_frames.size()
-	if cpu_driver != null:
-		cpu_driver.begin_display_tick(physics_tick)
-		cpu_driver.controller.context.helper_action = naruto_helper.source_action if naruto_helper != null else null
-		cpu_driver.initial_frame_count = int(initial_frame_counts[ichigo])
-		if player_body_driver != null:
-			player_body_driver.prepare_frame_actions(int(initial_frame_counts[naruto]))
-		source_callbacks.dispatch(physics_tick)
-		if ko_terminal_pending:
-			_ko_return_to_fixed_selection()
-			if root_observer.is_valid():
-				root_observer.call()
-			return
-	else:
-		for fighter in fighters:
-			fighter.enter_frame(_input_for(fighter))
+	opponent_driver.begin_display_tick(physics_tick)
+	opponent_driver.controller.context.helper_action = naruto_helper.source_action if naruto_helper != null else null
+	opponent_driver.initial_frame_count = int(initial_frame_counts[ichigo])
+	player_body_driver.prepare_frame_actions(int(initial_frame_counts[naruto]))
+	source_callbacks.dispatch(physics_tick)
+	if ko_terminal_pending:
+		_ko_return_to_fixed_selection()
+		if root_observer.is_valid():
+			root_observer.call()
+		return
 	for helper in helpers:
 		helper.enter_frame()
-	if cpu_driver != null:
-		if player_body_driver == null and not naruto.root_zhanting:
-			naruto.resolve_body_collision(ichigo)
-			CombatResolver.resolve_incoming(naruto, ichigo, ichigo_helper, cpu_stage_registry, cpu_services.stage_lookup_order)
-	else:
-		CombatResolver.resolve_body_pair(naruto, ichigo)
-		CombatResolver.resolve_pair(naruto, ichigo)
-		CombatResolver.resolve_helpers(helpers, fighters)
-	for fighter in fighters:
-		if cpu_driver == null or (fighter == naruto and player_body_driver == null):
-			fighter.run_frame_actions(false, int(initial_frame_counts[fighter]) if cpu_driver != null else -1)
 	if timeout_timeline != null:
 		timeout_timeline.run_frame_actions()
 		timeout_clip.refresh_from_scheduler()
@@ -586,15 +561,6 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		return
 	# Goto targets wait behind the other actors' already queued frame scripts.
 	while true:
-		if cpu_driver == null:
-			var pending := false
-			for fighter in fighters:
-				if not fighter._ai_pending_frames.is_empty():
-					pending = true
-					fighter.flush_queued_frame_scripts()
-			if not pending:
-				break
-			continue
 		var next_fighter: FighterRuntime
 		for fighter in fighters:
 			if not fighter._ai_pending_frames.is_empty():
@@ -612,37 +578,46 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		if next_fighter == null:
 			break
 		next_fighter.flush_queued_frame_scripts(1)
-	if cpu_driver != null:
-		cpu_driver.controller.synchronize(physics_tick)
+	if opponent_driver != null:
+		opponent_driver.controller.synchronize(physics_tick)
 	if cpu_services != null:
 		cpu_services.run_stage_frames()
 	if player_body_services != null:
 		player_body_services.run_stage_frames()
-	if cpu_driver == null:
-		_advance_hit_effects(existing_hit_effects)
 	for child in game_world.get_children():
 		if child is HitEffectRuntime and not child.is_queued_for_deletion():
 			child.run_initial_frame()
 	_activate_helper(naruto, naruto_helper)
 	_activate_helper(ichigo, ichigo_helper)
 	_apply_focus()
-	_update_facing()
 	game_world.enter_frame(naruto, ichigo, helpers)
 	if super_presentation != null:
 		_sync_super_stage()
-	_tick_zdbx()
 	_refresh_fight_labels()
 
 
-func _tick_zdbx() -> void:
-	# First fire is after 1000 ms, not on the placement tick.
-	if session.modo != 4:
+func _start_training_recovery() -> void:
+	if session.modo != int(session.training_spec.mode):
 		return
-	zdbx_ticks += 1
-	if zdbx_ticks < 30:
-		return
-	zdbx_ticks = 0
+	training_timer = Timer.new()
+	training_timer.process_mode = Node.PROCESS_MODE_ALWAYS
+	training_timer.ignore_time_scale = true
+	training_timer.wait_time = float(session.training_spec.interval_ms) / 1000.0
+	training_timer.timeout.connect(_recover_training)
+	add_child(training_timer)
+	if not recorded_training_timers:
+		training_timer.start()
+
+
+func _recover_training() -> void:
 	session.apply_zdbx([naruto, ichigo], true)
+
+
+func _stop_training_recovery() -> void:
+	if training_timer != null:
+		training_timer.stop()
+		training_timer.queue_free()
+		training_timer = null
 
 
 func _input_for(fighter: FighterRuntime) -> Dictionary:
@@ -823,17 +798,19 @@ func _ko_clear_interval(interval_name: String) -> void:
 				ko_nextfight_timer.stop()
 				ko_nextfight_timer.queue_free()
 				ko_nextfight_timer = null
+		"zdbxint":
+			_stop_training_recovery()
 		"timeset":
 			if countdown != null: countdown.stop()
 		"airanset":
-			if cpu_driver != null:
+			if opponent_driver != null:
 				ichigo.ai_random_clock.cancel()
 		"kcint":
 			if battle_intro != null:
 				battle_intro.polling = false
 		_:
 			# These source intervals have no native registrations in this slice.
-			assert(interval_name in ["timeset", "xtset", "scrnset", "feiint", "feiint2", "zdbxint"])
+			assert(interval_name in ["timeset", "xtset", "scrnset", "feiint", "feiint2"])
 
 
 func _ko_nextfight() -> void:
@@ -850,12 +827,13 @@ func _ko_fight_started() -> void:
 
 
 func _ko_return_to_fixed_selection() -> void:
+	var mode := session.modo
 	_goto_menu()
-	_goto_map_selection(2)
+	_goto_map_selection(mode)
 
 
-func _start_cpu() -> void:
-	_stop_cpu()
+func _start_combat_drivers() -> void:
+	_stop_combat_drivers()
 	assert(cpu_profile["measured_rules"]["callback_registry"]["order"] == "reverse_instance_registration")
 	source_callbacks = SourceCallbackRegistry.new()
 	# The source HUD exists before asynchronously loaded fighter bodies.
@@ -909,13 +887,22 @@ func _start_cpu() -> void:
 	add_child(player_body_driver)
 	player_body_driver.configure(naruto, "res://generated/fighters/minren/player_controller", platforms,
 		naruto._ground_y, game_world.map_size_x, player_body_services.invoke, source_callbacks)
-	cpu_driver = AiCpuDriver.new()
-	add_child(cpu_driver)
-	cpu_driver.configure(ichigo, "res://generated/fighters/yihu/ai_controller", platforms,
-		ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false, source_callbacks)
-	cpu_driver.body.updateDirect()
-	cpu_driver.begin_display_tick(physics_tick)
-	cpu_driver.start_random(source_random, session.ai_level)
+	opponent_driver = AiCpuDriver.new()
+	add_child(opponent_driver)
+	opponent_input_context = null
+	if not session.p2cpu:
+		opponent_input_context = preload("res://player_body_driver.gd").Context.new(ichigo)
+		opponent_input_context.use_ai = false
+	opponent_driver.configure(ichigo, "res://generated/fighters/yihu/player_controller", platforms,
+		ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false, source_callbacks, opponent_input_context)
+	opponent_driver.controller.context.use_ai = session.p2cpu
+	if opponent_input_context != null:
+		opponent_driver.controller.key_reader = opponent_input_context.source_key
+	opponent_driver.body.updateDirect()
+	opponent_driver.begin_display_tick(physics_tick)
+	if session.p2cpu:
+		opponent_driver.start_random(source_random, session.ai_level)
+
 
 
 func _next_source_frame_sequence() -> int:
@@ -927,7 +914,8 @@ func _queue_source_child_frame(operation: Callable) -> void:
 	source_child_frames.append({"order": _next_source_frame_sequence(), "operation": operation})
 
 
-func _stop_cpu() -> void:
+func _stop_combat_drivers() -> void:
+	_stop_training_recovery()
 	source_child_frames.clear()
 	for fighter: FighterRuntime in [naruto, ichigo]:
 		if is_instance_valid(fighter):
@@ -941,10 +929,11 @@ func _stop_cpu() -> void:
 	if player_body_services != null:
 		player_body_services.clear()
 		player_body_services = null
-	if cpu_driver != null:
-		cpu_driver.stop()
-		cpu_driver.queue_free()
-		cpu_driver = null
+	if opponent_driver != null:
+		opponent_driver.stop()
+		opponent_driver.queue_free()
+		opponent_driver = null
+	opponent_input_context = null
 	if cpu_services != null:
 		cpu_services.clear()
 		cpu_services = null
@@ -1004,13 +993,6 @@ func _refresh_bind_label() -> void:
 	config_label.text = "P1 %s  ·  P2 %s" % [" ".join(p1), " ".join(p2)]
 
 
-func _update_facing() -> void:
-	if naruto.action == "站立" and player_body_driver == null:
-		naruto.set_facing(1 if naruto.position.x <= ichigo.position.x else -1)
-	if ichigo.action == "站立" and cpu_driver == null:
-		ichigo.set_facing(1 if ichigo.position.x <= naruto.position.x else -1)
-
-
 func _place_fighters_from_map() -> void:
 	var p1_origin := current_world.named_instance_origin("p1")
 	var p2_origin := current_world.named_instance_origin("p2")
@@ -1054,45 +1036,27 @@ func _play_combo_hud(board_pn: int, hit_count: int) -> void:
 
 
 func _on_hit_fx_pause() -> void:
-	if super_runtime.game_paused:
+	if super_runtime.game_paused or source_callbacks == null:
 		return
-	if cpu_driver != null:
-		# pauseGame stops eligible timelines, not enterFrame dispatch. In
-		# particular beidax applies colors before its root-pause return.
-		hit_fx_pause_count = 1
-		super_runtime.zhanting = true
-		naruto.root_zhanting = true
-		ichigo.root_zhanting = true
-		for actor in [naruto, ichigo, naruto_helper, ichigo_helper]:
-			super_runtime.stop_mc(actor)
-		return
-	hit_fx_pause_count += 1
-	naruto.zhanting = true
-	ichigo.zhanting = true
+	# pauseGame stops timelines, while registered enterFrame callbacks remain.
+	hit_fx_pause_count = 1
+	super_runtime.zhanting = true
+	naruto.root_zhanting = true
+	ichigo.root_zhanting = true
+	for actor in [naruto, ichigo, naruto_helper, ichigo_helper]:
+		super_runtime.stop_mc(actor)
 
 
 func _on_hit_fx_resume() -> void:
-	if cpu_driver != null:
-		if super_runtime.game_paused or ko_paused:
-			return
-		hit_fx_pause_count = 0
-		super_runtime.zhanting = false
-		naruto.root_zhanting = false
-		ichigo.root_zhanting = false
-		for actor in [naruto, ichigo, naruto_helper, ichigo_helper]:
-			super_runtime.play_mc(actor)
-		super_presentation.resume_black_stg()
+	if source_callbacks == null or super_runtime.game_paused or ko_paused:
 		return
-	hit_fx_pause_count = maxi(0, hit_fx_pause_count - 1)
-	if hit_fx_pause_count == 0 and not super_runtime.game_paused:
-		naruto.zhanting = false
-		ichigo.zhanting = false
-
-
-func _advance_hit_effects(effects: Array[HitEffectRuntime]) -> void:
-	for effect in effects:
-		if is_instance_valid(effect) and not effect.is_queued_for_deletion():
-			effect.advance_effect()
+	hit_fx_pause_count = 0
+	super_runtime.zhanting = false
+	naruto.root_zhanting = false
+	ichigo.root_zhanting = false
+	for actor in [naruto, ichigo, naruto_helper, ichigo_helper]:
+		super_runtime.play_mc(actor)
+	super_presentation.resume_black_stg()
 
 
 func _spawn_hit_effect(effect_name: String, source_position: Vector2, source_facing: int, offset_y: float = -25.0) -> void:
@@ -1109,7 +1073,7 @@ func _spawn_hit_effect(effect_name: String, source_position: Vector2, source_fac
 	effect.shine_requested.connect(_start_screen_flash)
 	effect.configure(effect_name, source_position, source_facing, offset_y)
 	game_world.add_child(effect)
-	if cpu_driver != null:
+	if opponent_driver != null:
 		effect.register_source_frames(source_callbacks, physics_tick)
 
 

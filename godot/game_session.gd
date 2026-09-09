@@ -159,6 +159,7 @@ const SHOW_KEY_NAME := {
 	109: "Num-",
 }
 
+var training_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/training.json"))
 var store_path: String = STORE_PATH
 
 var codes: Dictionary = DEFAULT_CODES.duplicate()
@@ -238,13 +239,13 @@ func bind_slot(slot: String, flash_code: int) -> void:
 
 func apply_zdbx(fighters: Array, p2loaded: bool = true) -> void:
 	# Source DefineSprite_1991 zdbx + setInterval(zdbx, 1000) when modo==4.
-	if modo != 4 or not p2loaded:
+	if modo != int(training_spec.mode) or not p2loaded:
 		return
 	for fighter in fighters:
-		if int(fighter.beida) != 0:
+		if int(fighter.beida) != int(training_spec.receiver_state):
 			continue
 		fighter.health = maxhp
-		fighter.energy = 300.0
+		fighter.energy = float(training_spec.energy)
 
 
 func fighter_input(player: String) -> Dictionary:

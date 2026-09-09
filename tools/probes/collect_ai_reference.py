@@ -115,6 +115,8 @@ def main() -> None:
             for e in trailing:stream.write(json.dumps(e,ensure_ascii=False,separators=(',',':'))+'\n')
     counts=Counter(e['kind'] for e in events)
     samples=[e for e in events if e['kind']=='sample']
+    if not samples and build.get('configuration', {}).get('p2cpu', True):
+        raise ValueError('CPU capture has no AI random samples')
     ready=next(e for e in events if e['kind']=='ready')
     init=[e for e in events if e['kind']=='initCtrl']
     rng=[]
@@ -142,7 +144,7 @@ def main() -> None:
             'input_delivery': input_delivery,
             'events':len(events),'post_done_events':len(trailing),'counts':dict(counts),'frames_after_ready':events[-1]['fight_tick'],
             'termination_policy':'first_done_with_retained_async_tail' if args.retain_post_done_frames else 'unique_done_same_frame_tail',
-            'ready':ready,'init_events':init,'first_sample':samples[0],
+            'ready':ready,'init_events':init,'first_sample':samples[0] if samples else None,
             'samples_before_ready':sum(e['sequence']<ready['sequence'] for e in samples),
             'sample_intervals_ms':dict(Counter(str(b['time_ms']-a['time_ms']) for a,b in zip(samples,samples[1:]))),
             'last_states':[e for e in events if e['kind']=='state'][-2:],

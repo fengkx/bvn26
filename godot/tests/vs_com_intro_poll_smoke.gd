@@ -17,8 +17,8 @@ func _run() -> void:
 		intro.begin(fighters, true)
 		intro.step = 2
 		intro.states = [2, 0]
-		game.cpu_driver.controller.goto_label("站立", true)
-		game.cpu_driver.run_target_frames()
+		game.opponent_driver.controller.goto_label("站立", true)
+		game.opponent_driver.run_target_frames()
 		for tick in entry_frame - 2:
 			game._advance_fight()
 		assert(game.ichigo.current_source_frame() == entry_frame - 1)

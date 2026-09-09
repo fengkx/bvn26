@@ -22,6 +22,13 @@ func _run() -> void:
 	current_scene = scene
 	scene.set_physics_process(false)
 	scene._enter_current_fight(3)
+	# PvP shares the original intro gate: Enter cannot open a disabled menu.
+	key(scene, KEY_ENTER)
+	assert(not scene.pause_menu.visible)
+	for tick in 700:
+		scene._advance_fight()
+		if not scene.battle_intro.active: break
+	assert(not scene.battle_intro.active)
 	key(scene, KEY_ENTER)
 	key(scene, KEY_UP)
 	key(scene, KEY_ENTER)

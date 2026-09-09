@@ -114,3 +114,9 @@ Godot `combat_smoke.gd` 与 `tools/tests` 的断言对象是源行为，不是�
 只测坐标或父帧会再次漏掉「人物平移但不跑」。旧的连续 advance_timeline 测试
 不能替代真实菜单与源控制器路径。原因和证据见
 [跑步显示回归记录](../evidence/combat/run-visual-regression/README.md)。
+
+
+方向瞬身修改还需运行 `tools/test_ghost_reference.py --godot /path/to/godot`，覆盖招式中上/下＋L、两次输入、99 气拒绝和受击状态拒绝，并与上＋I 的普通/耗气瞬身案例一起对照。截图或网络技巧名不能替代当前版本的 `dash` / `hurtSkill` 分支；不得把方向瞬身和 O 受击脱离合并。详见 [原版输入证据](../evidence/combat/ghost-validation/README.md)。
+
+
+生产战斗不得再按 AI/双人/练习选择不同的结算器或调度器。`useAI` 只选择原版输入分支；模式特例必须能指到源 `modo` 条件。共享战斗更改须运行 `tools/test_shared_modes.py`，并保留 Vs Com 原版回放；墙钟 `setInterval` 必须记录回调时序，不能换成固定帧数再宣称等价。

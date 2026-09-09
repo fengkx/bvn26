@@ -19,7 +19,7 @@ func _run() -> void:
 	var cpu: FighterRuntime = game.ichigo
 	cpu.play_source_frame(740)
 	cpu.timeline_playing = false
-	game.cpu_driver.begin_display_tick(game.physics_tick)
+	game.opponent_driver.begin_display_tick(game.physics_tick)
 	cpu.ai_color_state.receive(cpu.ai_color_operations["7"])
 	cpu.ai_source_state.values["htx"] = 10
 	cpu.ai_source_state.values["time"] = 2

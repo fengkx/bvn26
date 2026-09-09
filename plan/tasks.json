@@ -419,11 +419,13 @@
         "evidence/health-hud.md",
         "evidence/combat/current-moves-sop.md",
         "evidence/combat/current-moves-audit.json",
-        "evidence/combat/super-guard-fix/README.md"
+        "evidence/combat/super-guard-fix/README.md",
+        "evidence/combat/ghost-validation/README.md",
+        "evidence/combat/shared-mode-validation/README.md"
       ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "受击、HUD、必杀和冻结已有局部实现及复核；SOP 步骤 E 缺失，保持 pending。 Guarded-super fixes: removed the legacy contact-cache override from source-controlled transitions; independently scheduled renamed attack clips now stop on their source empty frame. Six original fixtures match all 1800 observed snapshots; r13/r14/r15 and focused regressions pass. Full parity remains pending.",
+      "progress_note": "受击、HUD、必杀和冻结已有局部实现及复核；SOP 步骤 E 缺失，保持 pending。 Guarded-super fixes: removed the legacy contact-cache override from source-controlled transitions; independently scheduled renamed attack clips now stop on their source empty frame. Six original fixtures match all 1800 observed snapshots; r13/r14/r15 and focused regressions pass. Full parity remains pending. Four direction-dash and two Up+I native Flash fixtures match 806 observed snapshots. Missing XG_xdash effect imported; source combat rules unchanged. Full combat/visual and other control-path parity remain pending. Removed the legacy PvP/training production combat branch; all local modes share source callbacks and settlement. PvP/training match 1204 complete actor states, including coordinates. Source wall-clock training recovery replaces the frame-count approximation. Full milestone acceptance remains pending.",
       "current_artifacts": [
         "evidence/combat/review-2026-09-08.md",
         "evidence/combat/combo-presentation.md",
@@ -476,11 +478,12 @@
       "acceptance": "两者可达基础形态招式逐项盘点、导入与对照；覆盖近攻/三连、跳跃与空中分支、冲刺、远攻、必杀、召唤、防御与防御受击、所有带位移招式，以及受击/击退/击飞/倒地/恢复；不能以单个普攻或只有贴图的动作代替完整动作集。",
       "evidence": [
         "evidence/combat/current-moves-sop.md",
-        "evidence/combat/current-moves-audit.json"
+        "evidence/combat/current-moves-audit.json",
+        "evidence/combat/shared-mode-validation/README.md"
       ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "两基础形态动作已有开发切片；完整动作及原版对照仍未通过。",
+      "progress_note": "两基础形态动作已有开发切片；完整动作及原版对照仍未通过。 Removed the legacy PvP/training production combat branch; all local modes share source callbacks and settlement. PvP/training match 1204 complete actor states, including coordinates. Source wall-clock training recovery replaces the frame-count approximation. Full milestone acceptance remains pending.",
       "current_artifacts": [
         "godot/generated/fighters/minren/combat.json",
         "godot/generated/fighters/yihu/combat.json",

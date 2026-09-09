@@ -71,7 +71,7 @@ def instrument(source: str, origin: str, fighter: bool) -> str:
     return re.sub(r"Math\.random\(\)", random_patch, source)
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     output.mkdir(parents=True)
@@ -111,6 +111,62 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         bootstrap = bootstrap.replace('   aiHeld = {};', fixture + '\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 15) { ' + held + ' }')
         bootstrap = bootstrap.replace('"right=" + d', '"up=" + w + ",right=" + d')
         bootstrap = bootstrap.replace('"right=" + aiHeld[d]', '"up=" + aiHeld[w] + ",right=" + aiHeld[d]')
+    if move_case:
+        if mode_probe or helper_probe or dash_probe or ghost_probe or timeout_probe or match_flow:
+            raise ValueError("Move case must run in isolation")
+        mode_probe = 3
+    if mode_probe:
+        if helper_probe or dash_probe or ghost_probe or timeout_probe or match_flow:
+            raise ValueError("Mode fixture must run in isolation")
+        bootstrap = re.sub(r'   if\(aiFight >= \d+ && aiFight < \d+\) aiHeld\[\w\] = true;\n', '', bootstrap)
+        bootstrap = bootstrap.replace('modo = 2;', f'modo = {mode_probe};').replace('p2cpu = true;', 'p2cpu = false;')
+        if move_case:
+            from move_cases import source_fixture
+            fixture = source_fixture(json.loads(move_case.read_text()))
+            if dynamic_move_case:
+                fixture = (Path(__file__).parent / "as2/ai_reference/move_case.as").read_text()
+        else:
+            fixture = (Path(__file__).parent / "as2/ai_reference/modes.as").read_text()
+        bootstrap = bootstrap.replace('   aiHeld = {};', fixture)
+        keys = ['w', 'a', 'l', '上箭', '下箭', '左箭', '右箭', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
+        for marker, prefix in [('"right=" + d', ''), ('"right=" + aiHeld[d]', 'aiHeld[')]:
+            fields = []
+            for key in keys:
+                value = prefix + key + (']' if prefix else '')
+                fields.append('"' + key + '=" + ' + value)
+            bootstrap = bootstrap.replace(marker, ' + "," + '.join(fields) + ' + "," + ' + marker)
+    if dynamic_move_case:
+        if not move_case:
+            raise ValueError("Dynamic move fixture requires an initial case")
+        from move_cases import encode_case
+        (output / "case.txt").write_text(encode_case(json.loads(move_case.read_text()), run_id))
+        bootstrap = bootstrap.replace('gotoAndStop("游戏场景");', """
+stop();
+_root.aiFixtureLoader = new LoadVars();
+_root.aiFixtureLoader.onLoad = function(ok)
+{
+   if(!ok) { trace("MOVE_FIXTURE_LOAD_FAILED"); fscommand("quit"); return; }
+   _root.aiFixture = this;
+   _root.aiRun = this.run_id;
+   _root.aiSeq = 0;
+   _root.aiEvent("boot", "move_case," + this.case_id);
+   _root.aiEvent("input_bindings", __BINDINGS__);
+   _root.gotoAndStop("游戏场景");
+};
+_root.aiFixtureLoader.load(__CASE_URI__);
+""".replace('__CASE_URI__', quoted((output / "case.txt").as_uri())))
+        binding = re.search(r'aiEvent\("input_bindings", (.+)\);', bootstrap)[1]
+        bootstrap = bootstrap.replace('__BINDINGS__', binding)
+        bootstrap = bootstrap.replace('   aiDisplay++;', '   if(_root.aiFixture == undefined) return;\n   aiDisplay++;')
+    if ghost_probe:
+        if helper_probe or dash_probe or timeout_probe or match_flow:
+            raise ValueError("Ghost fixture must run in isolation")
+        bootstrap = re.sub(r'   if\(aiFight >= \d+ && aiFight < \d+\) aiHeld\[\w\] = true;\n', '', bootstrap)
+        fixture = (Path(__file__).parent / "as2/ai_reference/ghost.as").read_text()
+        fixture = fixture.replace('__CASE__', ghost_probe)
+        bootstrap = bootstrap.replace('   aiHeld = {};', fixture)
+        bootstrap = bootstrap.replace('"right=" + d', '"up=" + w + ",dash=" + l + ",right=" + d')
+        bootstrap = bootstrap.replace('"right=" + aiHeld[d]', '"up=" + aiHeld[w] + ",dash=" + aiHeld[l] + ",right=" + aiHeld[d]')
     if timeout_probe:
         if helper_probe or dash_probe or match_flow or frame_order_probe or recovery_order_probe:
             raise ValueError("Timeout fixture must run in isolation")
@@ -186,6 +242,11 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         for script in bundle["scripts"]:
             original = script["source"]
             updated = instrument(original, name + "#" + script["path"], name != "main")
+            if mode_probe and name == "main" and script["path"] == "DefineSprite_1991/frame_1/DoAction.as":
+                updated, count = re.subn(r'(function zdbx\(\)\s*\{)',
+                    lambda m: m[1] + '\n   _root.aiEvent("training_recovery", "enter");', updated)
+                if count != 1:
+                    raise ValueError("Missing unique training recovery callback")
             if match_flow and name == "main":
                 if script["path"] == "DefineSprite_1813/frame_1/DoAction.as":
                     updated = '_root.aiMatch("timer_load");\n' + updated
@@ -267,7 +328,9 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
                     updated = updated[:end] + '_root.aiRecoveryOrder("recovery-exit");\n' + updated[end:]
             if name == "main" and script["path"] == "frame_1/DoAction.as":
                 updated = re.sub(r"function goLink\([^)]*\)\s*\{.*?^\}", "function goLink(url)\n{\n}", updated, flags=re.M | re.S)
-                updated = hooks + updated + '\ngotoAndPlay(6);\n'
+                updated = 'Stage.displayState = "normal";\nStage.scaleMode = "showAll";\n' + hooks + updated + '\ngotoAndPlay(6);\n'
+            if name == "main" and script["path"] == "frame_2/DoAction.as":
+                updated = updated.replace('Stage.displayState = "fullScreen";', 'Stage.displayState = "normal";')
             if name == "main" and script["path"] == "frame_10/DoAction.as":
                 updated = battle
             if updated == original:
@@ -285,7 +348,7 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
     (output / "instrumentation.diff").write_text("".join(changes))
     report = {
         "run_id": run_id, "status": "built_not_run", "frames_after_ready": frames,
-        "configuration": {"modo": 2, "p1": "鸣人", "p2": "一护", "p2cpu": True,
+        "configuration": {"modo": mode_probe or 2, "p1": "鸣人", "p2": "一护", "p2cpu": mode_probe is None,
                           "AI": 5, "stage": "现世", "p1sf": "魂" if helper_probe == "kon" else "我爱罗", "p2sf": "魂"},
         "sources_sha256": sources, "ffdec_sha256": sha(ffdec),
         "outputs_sha256": {p.relative_to(output).as_posix(): sha(p) for p in game.rglob("*.swf")},
@@ -300,6 +363,11 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         "dash_trigger_frame": dash_trigger_frame,
         "dash_duration": dash_duration,
         "timeout_probe": timeout_probe,
+        "ghost_probe": ghost_probe,
+        "mode_probe": mode_probe,
+        "move_case": json.loads(move_case.read_text()) if move_case else None,
+        "dynamic_move_case": dynamic_move_case,
+        "player_display": "windowed_showAll",
         "input_injection": "body_kis_alias_with_per_read_trace",
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
@@ -323,11 +391,15 @@ def main() -> None:
     parser.add_argument("--dash-probe", choices=["helper-rush", "super-rush", "helper-dashx", "super-dashx"])
     parser.add_argument("--dash-trigger-frame", type=int)
     parser.add_argument("--dash-duration", type=int, default=36)
+    parser.add_argument("--dynamic-move-case", action="store_true")
+    parser.add_argument("--move-case", type=Path)
+    parser.add_argument("--mode-probe", type=int, choices=[3, 4])
+    parser.add_argument("--ghost-probe", choices=["down", "up", "low", "hurt"])
     parser.add_argument("--timeout-probe", choices=["p1", "draw"])
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case), ensure_ascii=False))
 
 
 if __name__ == "__main__":

@@ -11,6 +11,14 @@ def read(path):
 
 
 class IntroSourceTests(unittest.TestCase):
+    def test_training_recovery_is_a_wall_clock_callback(self):
+        spec = read('godot/generated/main/training.json')
+        source = {s['path']: s['source'] for s in read('scripts/main.json')['scripts']}[spec['source_path']]
+        self.assertIn('setInterval(zdbx,1000)', source)
+        self.assertEqual((spec['mode'], spec['interval_ms'], spec['receiver_state'], spec['energy']), (4, 1000, 0, 300))
+        self.assertIn(spec['source_text'], source)
+        self.assertNotIn('zhanting', spec['source_text'])
+
     def test_character_completion_is_before_label_end(self):
         spec = read('godot/generated/main/intro/intro.json')
         for name, sprite, start, finish in [('minren', 764, 1099, 1160), ('yihu', 638, 822, 883)]:

@@ -40,6 +40,19 @@ def file_sha256(path: Path) -> str:
 
 
 class ElementAndSuperClipTests(unittest.TestCase):
+    def test_ghost_effect_keeps_source_lifetime(self):
+        directory = ROOT / 'godot/generated/effects/XG_xdash'
+        model = json.loads((directory / 'effect.json').read_text())
+        self.assertEqual(model['sprite_id'], main_swf_exports()['XG_xdash'])
+        source = {s['path']: s['source'] for s in json.loads((ROOT / 'scripts/main.json').read_text())['scripts']}
+        self.assertEqual(model['presentation_events'][0]['frame'], 25)
+        self.assertEqual(source[model['presentation_events'][0]['source_path']].strip(), 'this.unloadMovie();')
+        for script in model['nested_terminal_scripts']:
+            self.assertEqual(script['source'], source[script['path']])
+        assets = json.loads((directory / 'assets.json').read_text())
+        for asset in assets['assets']:
+            self.assertEqual(file_sha256(directory / asset['path']), asset['sha256'])
+
     def test_hit_spark_random_offsets_keep_source_call_order(self):
         events = shared_hit_fx()['clips']['XG_qdj']['presentation_events']
         first = [event for event in events if event['frame'] == 1]

@@ -16,7 +16,7 @@ func _run() -> void:
 		game.naruto_helper.free()
 		game.naruto_helper = game._make_helper("res://generated/helpers/kon")
 	game._enter_current_fight(mode)
-	if game.cpu_driver != null:
+	if game.opponent_driver != null:
 		game.ichigo.ai_random_clock.cancel()
 	for tick in 700:
 		game._advance_fight()
