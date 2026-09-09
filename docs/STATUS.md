@@ -426,3 +426,8 @@ match 723 snapshots, with the helper activation observer phase reported
 separately. Repeated player dash presses and run visuals remain covered. See
 [dash evidence](../evidence/combat/dash-validation/README.md). Full geometry,
 lifecycle, browser and all-character parity remain pending.
+
+
+## Config options and timeout — 2026-09-09
+
+Config now exposes source-derived CPU difficulty, quality state, time, life, key configuration and save/return. Difficulty and life apply at fight entry; the source timer and timeout winner/draw timeline are compiled and connected. Normal is hidden and Vs Com is selected initially. Native Flash comparison passes 161 Config and 451 timeout snapshots; native settings/menu/KO checks and three existing combat replays pass. Quality antialiasing and timeout badge blink remain unimplemented visual differences; full browser and mode parity are pending. M6-02 stays pending. See [Config evidence](../evidence/config/README.md).

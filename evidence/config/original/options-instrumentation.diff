@@ -1,0 +1,321 @@
+--- frame_7/DoAction.as
++++ frame_7/DoAction.as
+@@ -140,3 +140,35 @@
+ var narutoElseStages = ["小李","鼬"];
+ _root.totalstage = 7;
+ trace("_root.totalstage" + _root.totalstage);
++
++_root.cfgClips = {};
++_root.cfgHeld = {};
++_root.cfgTick = -1;
++_root.cfgSeq = 0;
++_root.cfgKey = function(code) { return _root.cfgHeld[code] == true; };
++_root.cfgEvent = function(kind, value) {
++   _root.cfgSeq++;
++   trace("AIREF|config-r01|" + _root.cfgSeq + "|" + getTimer() + "|" + _root.cfgTick + "|" + _root.cfgTick + "|" + kind + "|" + value);
++};
++_root.AI = 5;
++_root.maxhp = 1000;
++_root.maxtime = 60;
++_root._quality = "HIGH";
++_root.onEnterFrame = function() {
++   if(_root.cfgClips[33] == undefined) return;
++   _root.cfgTick++;
++   var panel = _root.cfgClips[33]._parent;
++   _root.cfgEvent("state", panel.cselect + "," + panel.cmlv.cl + "," + panel.qulity.cl + "," + panel.gtime.cl + "," + panel.plife.cl + "," + _root.AI + "," + _root._quality + "," + _root.maxtime + "," + _root.maxhp);
++   _root.cfgHeld = {};
++   var row = Math.floor(_root.cfgTick / 40);
++   var phase = _root.cfgTick % 40;
++   if(row < 4) {
++      panel.cselect = [2,3,4,5][row];
++      if(phase < 14 && phase % 2 == 0) _root.cfgHeld[_root.d] = true;
++      if(phase >= 16 && phase < 32 && phase % 2 == 0) _root.cfgHeld[_root.a] = true;
++      if(phase == 34) { _root.cfgHeld[_root.a] = true; _root.cfgHeld[_root.d] = true; }
++      for(var i in _root.cfgClips) _root.cfgClips[i].cfgDown();
++   }
++   if(_root.cfgTick == 160) { _root.cfgEvent("done", "config"); fscommand("quit"); }
++};
++_root.gotoAndStop("游戏设置");
+--- DefineSprite_836/frame_1/PlaceObject2_691_1/CLIPACTIONRECORD onClipEvent(load).as
++++ DefineSprite_836/frame_1/PlaceObject2_691_1/CLIPACTIONRECORD onClipEvent(load).as
+@@ -19,4 +19,29 @@
+    {
+       cl = 5;
+    }
+-}
++
++_root.cfgClips[1] = this;
++this.cfgDown = function() {
++
++   if(_parent.cselect == 2)
++   {
++      if(_root.cfgKey(_root.a))
++      {
++         _root.keysound1.start();
++         if(cl >= 1)
++         {
++            cl -= 1;
++         }
++      }
++      if(_root.cfgKey(_root.d))
++      {
++         _root.keysound1.start();
++         if(cl <= 5)
++         {
++            cl += 1;
++         }
++      }
++   }
++
++};
++}
+--- DefineSprite_836/frame_1/PlaceObject2_698_6/CLIPACTIONRECORD onClipEvent(load).as
++++ DefineSprite_836/frame_1/PlaceObject2_698_6/CLIPACTIONRECORD onClipEvent(load).as
+@@ -11,4 +11,29 @@
+    {
+       cl = 3;
+    }
+-}
++
++_root.cfgClips[6] = this;
++this.cfgDown = function() {
++
++   if(_parent.cselect == 3)
++   {
++      if(_root.cfgKey(_root.a))
++      {
++         if(cl >= 1)
++         {
++            _root.keysound1.start();
++            cl -= 1;
++         }
++      }
++      if(_root.cfgKey(_root.d))
++      {
++         if(cl <= 3)
++         {
++            _root.keysound1.start();
++            cl += 1;
++         }
++      }
++   }
++
++};
++}
+--- DefineSprite_836/frame_1/PlaceObject2_709_11/CLIPACTIONRECORD onClipEvent(load).as
++++ DefineSprite_836/frame_1/PlaceObject2_709_11/CLIPACTIONRECORD onClipEvent(load).as
+@@ -1,3 +1,28 @@
+ onClipEvent(load){
+    cl = _root.maxhp / 1000;
+-}
++
++_root.cfgClips[11] = this;
++this.cfgDown = function() {
++
++   if(_parent.cselect == 5)
++   {
++      if(_root.cfgKey(_root.a))
++      {
++         _root.keysound1.start();
++         if(cl >= 1)
++         {
++            cl -= 1;
++         }
++      }
++      if(_root.cfgKey(_root.d))
++      {
++         _root.keysound1.start();
++         if(cl <= 5)
++         {
++            cl += 1;
++         }
++      }
++   }
++
++};
++}
+--- DefineSprite_836/frame_1/PlaceObject2_735_28/CLIPACTIONRECORD onClipEvent(load).as
++++ DefineSprite_836/frame_1/PlaceObject2_735_28/CLIPACTIONRECORD onClipEvent(load).as
+@@ -15,4 +15,29 @@
+    {
+       cl = 4;
+    }
+-}
++
++_root.cfgClips[28] = this;
++this.cfgDown = function() {
++
++   if(_parent.cselect == 4)
++   {
++      if(_root.cfgKey(_root.a))
++      {
++         _root.keysound1.start();
++         if(cl >= 1)
++         {
++            cl -= 1;
++         }
++      }
++      if(_root.cfgKey(_root.d))
++      {
++         _root.keysound1.start();
++         if(cl <= 4)
++         {
++            cl += 1;
++         }
++      }
++   }
++
++};
++}
+--- DefineSprite_836/frame_1/PlaceObject2_739_33/CLIPACTIONRECORD onClipEvent(load).as
++++ DefineSprite_836/frame_1/PlaceObject2_739_33/CLIPACTIONRECORD onClipEvent(load).as
+@@ -1,3 +1,148 @@
+ onClipEvent(load){
+    _parent.cselect = 1;
+-}
++
++_root.cfgClips[33] = this;
++this.cfgDown = function() {
++
++   if(_root.cfgKey(_root.w))
++   {
++      _root.keysound1.start();
++      if(_parent.cselect == 1)
++      {
++         _parent.cselect = 6;
++      }
++      else
++      {
++         _parent.cselect -= 1;
++      }
++   }
++   if(_root.cfgKey(_root.s))
++   {
++      _root.keysound1.start();
++      if(_parent.cselect == 6)
++      {
++         _parent.cselect = 1;
++      }
++      else
++      {
++         _parent.cselect += 1;
++      }
++   }
++   if(_root.cfgKey(_root.j))
++   {
++      if(_parent.cselect == 1)
++      {
++         _root.keysound2.start();
++         _parent.gotoAndStop("键位设置");
++      }
++      if(_parent.cselect == 6)
++      {
++         checkSO();
++         mySO = SharedObject.getLocal("bvn_5d");
++         mySo.data.name = "bleachvsnaruto";
++         success = mySO.flush(100000);
++         if(success == "pending")
++         {
++            mySO.onStatus = function(result)
++            {
++               if(result.code == "SharedObject.Flush.Success")
++               {
++                  trace("Sucess writing to disk");
++                  writeSuccess = true;
++               }
++               else
++               {
++                  trace("Failure writing to disk");
++                  writeSuccess = false;
++               }
++            };
++         }
++         else
++         {
++            writeSuccess = success;
++         }
++         mySO = SharedObject.getLocal("bvn_5d");
++         mySO.data.w = _root.w;
++         mySO.data.s = _root.s;
++         mySO.data.a = _root.a;
++         mySO.data.d = _root.d;
++         mySO.data.j = _root.j;
++         mySO.data.k = _root.k;
++         mySO.data.l = _root.l;
++         mySO.data.u = _root.u;
++         mySO.data.i = _root.i;
++         mySO.data.o = _root.o;
++         mySO.data.上箭 = _root.上箭;
++         mySO.data.下箭 = _root.下箭;
++         mySO.data.左箭 = _root.左箭;
++         mySO.data.右箭 = _root.右箭;
++         mySO.data.N1 = _root.N1;
++         mySO.data.N2 = _root.N2;
++         mySO.data.N3 = _root.N3;
++         mySO.data.N4 = _root.N4;
++         mySO.data.N5 = _root.N5;
++         mySO.data.N6 = _root.N6;
++         mySO.data.maxhp = _root.maxhp;
++         mySO.data.AI = _root.AI;
++         mySO.data.maxtime = _root.maxtime;
++         mySO.data.qualiy = _root._quality;
++         _root.keysound2.start();
++         _root.gotoAndStop("MENU");
++      }
++   }
++   if(_root.cfgKey(_root.k))
++   {
++      checkSO();
++      mySO = SharedObject.getLocal("bvn_5d");
++      mySo.data.name = "bleachvsnaruto";
++      success = mySO.flush(100000);
++      if(success == "pending")
++      {
++         mySO.onStatus = function(result)
++         {
++            if(result.code == "SharedObject.Flush.Success")
++            {
++               trace("Sucess writing to disk");
++               writeSuccess = true;
++            }
++            else
++            {
++               trace("Failure writing to disk");
++               writeSuccess = false;
++            }
++         };
++      }
++      else
++      {
++         writeSuccess = success;
++      }
++      mySO = SharedObject.getLocal("bvn_5d");
++      mySO.data.w = _root.w;
++      mySO.data.s = _root.s;
++      mySO.data.a = _root.a;
++      mySO.data.d = _root.d;
++      mySO.data.j = _root.j;
++      mySO.data.k = _root.k;
++      mySO.data.l = _root.l;
++      mySO.data.u = _root.u;
++      mySO.data.i = _root.i;
++      mySO.data.o = _root.o;
++      mySO.data.上箭 = _root.上箭;
++      mySO.data.下箭 = _root.下箭;
++      mySO.data.左箭 = _root.左箭;
++      mySO.data.右箭 = _root.右箭;
++      mySO.data.N1 = _root.N1;
++      mySO.data.N2 = _root.N2;
++      mySO.data.N3 = _root.N3;
++      mySO.data.N4 = _root.N4;
++      mySO.data.N5 = _root.N5;
++      mySO.data.N6 = _root.N6;
++      mySO.data.maxhp = _root.maxhp;
++      mySO.data.AI = _root.AI;
++      mySO.data.maxtime = _root.maxtime;
++      mySO.data.qualiy = _root._quality;
++      _root.gotoAndStop("MENU");
++   }
++
++};
++}

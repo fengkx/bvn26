@@ -899,16 +899,21 @@
         "evidence/combat/current-moves-sop.md",
         "evidence/combat/current-moves-audit.json",
         "evidence/content/map-selection/README.md",
-        "evidence/menu/vs-com-entry/README.md"
+        "evidence/menu/vs-com-entry/README.md",
+        "evidence/config/README.md"
       ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "标题、键位、选图、暂停与返回已有切片；选人援助、AI 模式、关卡和完整流程未完成。 Original Vs Com entry now uses the source eight-item wheel, Sprite 620 compiled controller and Sprite 597 frame-15 route. Original native timing probe and four native checks pass; assets and Chinese fallback subset export to Web. Fixed-character selection bypass remains. Other destinations and complete menu/visual parity remain pending.",
+      "progress_note": "标题、键位、选图、暂停与返回已有切片；选人援助、AI 模式、关卡和完整流程未完成。 Original Vs Com entry now uses the source eight-item wheel, Sprite 620 compiled controller and Sprite 597 frame-15 route. Original native timing probe and four native checks pass; assets and Chinese fallback subset export to Web. Fixed-character selection bypass remains. Other destinations and complete menu/visual parity remain pending. Config difficulty/time/life/storage and compiled timeout flow now pass 161 option and 451 timeout original snapshots. Normal is hidden; Vs Com is the initial item. Native menu/settings checks and r13/r14/r15 replays pass. Quality rendering and timeout badge blink remain pending; see evidence/config/README.md.",
       "current_artifacts": [
         "evidence/pause-menu.md",
         "godot/map_selection.gd",
         "godot/key_settings.gd",
-        "godot/tests/menu_smoke.gd"
+        "godot/tests/menu_smoke.gd",
+        "godot/config_menu.gd",
+        "godot/match_countdown.gd",
+        "godot/tests/config_flow_smoke.gd",
+        "godot/tests/timeout_reference.gd"
       ]
     },
     {

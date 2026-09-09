@@ -6,15 +6,15 @@ extends Control
 # - DefineButton2_754–807 set _parent.key then kck.gotoAndStop("enterkey")
 # - DefineSprite_835 frame 5: txt="输入任意键继续"; keyDown writes
 #   `_root[_parent._parent.key] = Key.getCode()` then gotoAndStop(1)
-# - K or cselect==6 + J saves SharedObject and gotoAndStop("MENU")
+# - DefineButton2_740 release returns to Config frame 1; Config owns saving.
 
-signal back_to_menu
+signal back_to_config
 
 # Source strings are Chinese (`输入任意键继续`, `回主菜单`, `键位设置`).
 # This slice shows the English wheel wording so the default font can render.
 const TITLE := "KEY SETTING"
 const CAPTURE_HINT := "Press any key"
-const BACK_HINT := "Back to MENU"
+const BACK_HINT := "Back to CONFIG"
 
 var session: GameSession
 var row: int = 1
@@ -47,7 +47,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not capturing or waiting_release:
+	if not visible or not capturing or waiting_release:
 		return
 	if not (event is InputEventKey) or not event.pressed or event.echo:
 		return
@@ -144,9 +144,10 @@ func _begin_capture(slot: String) -> void:
 
 
 func _request_back() -> void:
-	if session:
-		session.save_store()
-	back_to_menu.emit()
+	capturing = false
+	waiting_release = false
+	capture_slot = ""
+	back_to_config.emit()
 
 
 func _reset_hint(text: String) -> void:
@@ -207,6 +208,11 @@ func _build() -> void:
 	_back.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_back.add_theme_font_size_override("font_size", 13)
 	_back.text = BACK_HINT + "  (K)"
+	_back.mouse_filter = Control.MOUSE_FILTER_STOP
+	_back.gui_input.connect(func(event: InputEvent) -> void:
+		if event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			_request_back()
+	)
 	add_child(_back)
 	_hint = Label.new()
 	_hint.position = Vector2(16, 372)

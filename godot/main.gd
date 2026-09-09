@@ -18,6 +18,11 @@ signal before_recorded_intro_poll(event: Dictionary)
 @onready var black_mu: TimelinePreview = %BlackMu
 @onready var ts_face: TimelinePreview = %TsFace
 
+var countdown: MatchCountdown
+var timeout_timeline: KoTimeline
+var timeout_clip: KoClip
+var nextfight_from_timeout := false
+var config_menu: ConfigMenu
 var pause_menu: BattlePauseMenu
 var health_hud: HealthHud
 var map_selection: MapSelection
@@ -114,10 +119,16 @@ func _ready() -> void:
 	naruto.ko_requested.connect(_on_ko_requested)
 	ichigo.ko_requested.connect(_on_ko_requested)
 	session.load_store()
+	config_menu = ConfigMenu.new()
+	config_menu.session = session
+	add_child(config_menu)
+	config_menu.visible = false
+	config_menu.key_settings_requested.connect(_goto_key_settings)
+	config_menu.menu_requested.connect(_goto_menu)
 	key_settings.session = session
 	key_settings.refresh_view()
 	title_menu.confirmed.connect(_on_menu_confirmed)
-	key_settings.back_to_menu.connect(_goto_menu)
+	key_settings.back_to_config.connect(_goto_config)
 	_setup_screen_flash()
 	super_presentation.load_spec("res://generated/main/hit_receive.json")
 	super_runtime.presentation = super_presentation
@@ -175,6 +186,10 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if session.root_label == "游戏设置" and event is InputEventKey and event.pressed:
+		config_menu.key_down(session.menu_held())
+		get_viewport().set_input_as_handled()
+		return
 	if session.root_label != "游戏场景" or battle_intro.active or naruto.sw or ichigo.sw or not ko_menu_enabled:
 		return
 	if event is InputEventKey:
@@ -207,6 +222,8 @@ func _physics_process(_delta: float) -> void:
 	match session.root_label:
 		"MENU":
 			title_menu.apply_held(session.menu_held())
+		"游戏设置":
+			config_menu.tick()
 		"键位设置":
 			key_settings.apply_held(session.menu_held())
 		"地图":
@@ -221,7 +238,7 @@ func _on_menu_confirmed(item_id: String) -> void:
 		if str(item["id"]) != item_id:
 			continue
 		if item_id == "key_settings":
-			_goto_key_settings()
+			_goto_config()
 			return
 		if int(item["modo"]) in [2, 3, 4]:
 			_goto_map_selection(int(item["modo"]))
@@ -234,6 +251,7 @@ func _goto_map_selection(modo: int) -> void:
 	session.root_label = "地图"
 	title_menu.visible = false
 	key_settings.visible = false
+	config_menu.visible = false
 	map_selection.visible = true
 	map_selection.reset()
 
@@ -316,6 +334,7 @@ func _goto_menu() -> void:
 	session.root_label = "MENU"
 	title_menu.visible = true
 	key_settings.visible = false
+	config_menu.visible = false
 	fight_hud.visible = false
 	health_hud.visible = false
 	if stage_background != null:
@@ -333,7 +352,16 @@ func _goto_menu() -> void:
 	title_menu.reset()
 
 
+func _goto_config() -> void:
+	session.root_label = "游戏设置"
+	title_menu.visible = false
+	key_settings.visible = false
+	config_menu.visible = true
+	config_menu.reset()
+
+
 func _goto_key_settings() -> void:
+	config_menu.visible = false
 	# Source: cselect==1 + J → gotoAndStop("键位设置")
 	session.root_label = "键位设置"
 	title_menu.visible = false
@@ -362,6 +390,7 @@ func _enter_current_fight(modo: int) -> void:
 	session.root_label = "游戏场景"
 	title_menu.visible = false
 	key_settings.visible = false
+	config_menu.visible = false
 	fight_hud.visible = false
 	health_hud.visible = true
 	if stage_background != null:
@@ -378,6 +407,9 @@ func _enter_current_fight(modo: int) -> void:
 	health_hud.set_wins(1, 1)
 	if session.p2cpu:
 		_start_cpu()
+	else:
+		_start_ko()
+	_start_countdown()
 	battle_intro.begin([naruto, ichigo])
 	health_hud.spec["placement"] = battle_intro.spec["hud_frames"]["1"]
 	game_world.focus = battle_intro.focus
@@ -434,6 +466,10 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		if child is HitEffectRuntime and not child.is_queued_for_deletion():
 			existing_hit_effects.append(child)
 	battle_intro.tick(1.0 / Engine.physics_ticks_per_second, session.is_slot_down("j") or session.is_slot_down("N1"), true)
+	if timeout_timeline != null:
+		timeout_timeline.display_tick = physics_tick + 1
+		timeout_timeline.advance_timelines()
+		timeout_clip.refresh_from_scheduler()
 	if ko_timeline != null:
 		ko_timeline.display_tick = physics_tick + 1
 		ko_timeline.advance_timelines()
@@ -526,6 +562,9 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	for fighter in fighters:
 		if cpu_driver == null or (fighter == naruto and player_body_driver == null):
 			fighter.run_frame_actions(false, int(initial_frame_counts[fighter]) if cpu_driver != null else -1)
+	if timeout_timeline != null:
+		timeout_timeline.run_frame_actions()
+		timeout_clip.refresh_from_scheduler()
 	if ko_timeline != null:
 		ko_timeline.run_frame_actions()
 		ko_clip.refresh_from_scheduler()
@@ -616,6 +655,8 @@ func _start_ko() -> void:
 	ko_metadata = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/ko/controller.json"))
 	ko_state = ko_metadata.root_initializers.duplicate()
 	ko_state.merge(ko_metadata.time_defaults, true)
+	ko_state["_root.maxtime"] = session.maxtime
+	ko_state["_root.to"] = false
 	ko_state["_root.焦点"] = "all"
 	ko_timeline = KoTimeline.new()
 	ko_timeline.configure(JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/ko/timeline.json")),
@@ -626,6 +667,17 @@ func _start_ko() -> void:
 
 
 func _stop_ko() -> void:
+	if countdown != null:
+		countdown.stop()
+		countdown.queue_free()
+		countdown = null
+	if timeout_timeline != null:
+		timeout_timeline.unbind_registry()
+		timeout_timeline = null
+	if timeout_clip != null:
+		timeout_clip.queue_free()
+		timeout_clip = null
+	nextfight_from_timeout = false
 	_ko_clear_interval("nxtfht")
 	if ko_clip != null:
 		ko_clip.queue_free()
@@ -640,6 +692,7 @@ func _stop_ko() -> void:
 
 
 func _on_ko_requested(opponent_number: int) -> void:
+	nextfight_from_timeout = false
 	if ko_timeline == null:
 		return
 	ko_timeline.play()
@@ -664,6 +717,9 @@ func _ko_service(operation: String, args: Array) -> Variant:
 	match operation:
 		"read":
 			var key := str(args[0])
+			if key == "_root.maxtime": return session.maxtime
+			if key == "_root.zhanting": return naruto.root_zhanting
+			if key == "_root.timeover.played": return timeout_timeline.root_clip.variables.get("played", 0)
 			if key == "_root.maxhp":
 				return session.maxhp
 			if key == "_root.modo":
@@ -698,6 +754,8 @@ func _ko_service(operation: String, args: Array) -> Variant:
 				else:
 					actor.start_action(str(args[1]))
 					actor.timeline_playing = bool(args[2])
+			elif args[0] in ["_root.p1win", "_root.p2win"]:
+				health_hud.set_wins(int(ko_state["_root.p1ws"]), int(ko_state["_root.p2ws"]))
 			elif args[0] == "_root.qjxg":
 				battle_intro.clips.qjxg.visible = true
 				battle_intro._goto("qjxg", int(battle_intro.spec.clips.qjxg.labels[args[1]]), bool(args[2]))
@@ -707,6 +765,12 @@ func _ko_service(operation: String, args: Array) -> Variant:
 			else:
 				assert(false, "Unbound KO goto target")
 		"playing":
+			if args[0] == "_root.timeover":
+				timeout_timeline.play()
+				nextfight_from_timeout = true
+				return null
+			if args[0] in ["_root.p1win.bzxg", "_root.p2win.bzxg"]:
+				return null
 			assert(args[0] == "_root.ready")
 			battle_intro.clips.ready.visible = true
 			battle_intro.playing.ready = bool(args[1])
@@ -759,6 +823,8 @@ func _ko_clear_interval(interval_name: String) -> void:
 				ko_nextfight_timer.stop()
 				ko_nextfight_timer.queue_free()
 				ko_nextfight_timer = null
+		"timeset":
+			if countdown != null: countdown.stop()
 		"airanset":
 			if cpu_driver != null:
 				ichigo.ai_random_clock.cancel()
@@ -771,7 +837,9 @@ func _ko_clear_interval(interval_name: String) -> void:
 
 
 func _ko_nextfight() -> void:
-	if ko_timeline != null:
+	if nextfight_from_timeout and timeout_timeline != null:
+		timeout_timeline.controller.nextfight()
+	elif ko_timeline != null:
 		ko_timeline.controller.nextfight()
 
 
@@ -847,7 +915,7 @@ func _start_cpu() -> void:
 		ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false, source_callbacks)
 	cpu_driver.body.updateDirect()
 	cpu_driver.begin_display_tick(physics_tick)
-	cpu_driver.start_random(source_random, 5)
+	cpu_driver.start_random(source_random, session.ai_level)
 
 
 func _next_source_frame_sequence() -> int:
@@ -886,6 +954,8 @@ func _stop_cpu() -> void:
 			if child is HitEffectRuntime:
 				child.unregister_source_frames()
 	if source_callbacks != null:
+		if timeout_timeline != null:
+			timeout_timeline.unbind_registry()
 		if ko_timeline != null:
 			ko_timeline.unbind_registry()
 		if source_health_rules != null:
@@ -1158,3 +1228,19 @@ func _status_name(fighter: FighterRuntime) -> String:
 func _action_name(label: String) -> String:
 	# Source timeline labels are the move IDs; do not invent a second name set.
 	return label if label != "" else "站立"
+
+
+func _start_countdown() -> void:
+	timeout_timeline = KoTimeline.new()
+	timeout_timeline.configure(JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/timeout/timeline.json")),
+		JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/timeout/controller.json")),
+		load("res://generated/main/timeout/controller.gd"), _ko_service)
+	if source_callbacks != null:
+		timeout_timeline.bind_registry(source_callbacks, physics_tick)
+	timeout_clip = KoClip.new()
+	timeout_clip.fighter_directory = "res://generated/main/timeout"
+	timeout_clip.scheduler = timeout_timeline
+	add_child(timeout_clip)
+	countdown = MatchCountdown.new()
+	add_child(countdown)
+	countdown.configure(_ko_service, ko_recorded_timers)

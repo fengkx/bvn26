@@ -159,9 +159,15 @@ const SHOW_KEY_NAME := {
 	109: "Num-",
 }
 
+var store_path: String = STORE_PATH
+
 var codes: Dictionary = DEFAULT_CODES.duplicate()
 var modo: int = 1
 var maxhp: float = 1000.0
+var ai_level: int = 5
+var maxtime: int = 60
+var render_quality: String = "HIGH"
+var source_quality: String = ""
 var p1cpu: bool = false
 var p2cpu: bool = false
 var root_label: String = "MENU"
@@ -170,13 +176,16 @@ var write_success: bool = true
 
 func load_store() -> void:
 	var store := ConfigFile.new()
-	if store.load(STORE_PATH) != OK:
+	if store.load(store_path) != OK:
 		return
 	if store.get_value(STORE_SECTION, "w", null) == null:
 		return
 	for slot in DEFAULT_CODES.keys():
 		codes[slot] = int(store.get_value(STORE_SECTION, slot, DEFAULT_CODES[slot]))
 	maxhp = float(store.get_value(STORE_SECTION, "maxhp", maxhp))
+	ai_level = int(store.get_value(STORE_SECTION, "AI", ai_level))
+	maxtime = int(store.get_value(STORE_SECTION, "maxtime", maxtime))
+	render_quality = str(store.get_value(STORE_SECTION, "qualiy", render_quality))
 
 
 func save_store() -> bool:
@@ -186,7 +195,10 @@ func save_store() -> bool:
 	for slot in DEFAULT_CODES.keys():
 		store.set_value(STORE_SECTION, slot, int(codes[slot]))
 	store.set_value(STORE_SECTION, "maxhp", maxhp)
-	write_success = store.save(STORE_PATH) == OK
+	store.set_value(STORE_SECTION, "AI", ai_level)
+	store.set_value(STORE_SECTION, "maxtime", maxtime)
+	store.set_value(STORE_SECTION, "qualiy", render_quality)
+	write_success = store.save(store_path) == OK
 	return write_success
 
 
@@ -261,3 +273,13 @@ func menu_held() -> Dictionary:
 		"left": is_slot_down("a"),
 		"right": is_slot_down("d"),
 	}
+
+
+func write_option(field: String, value: Variant) -> void:
+	match field:
+		"AI": ai_level = int(value)
+		"maxhp": maxhp = float(value)
+		"maxtime": maxtime = int(value)
+		"_quality": render_quality = str(value)
+		"quality": source_quality = str(value)
+		_: assert(false, "Unknown compiled Config write: " + field)

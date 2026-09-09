@@ -1,0 +1,8 @@
+{
+  "source": "DefineSprite_1813/frame_1/DoAction.as",
+  "sha256": "75db20d90bb50b9589a5f05ff181b99f267d8b251f7788f07ab773c5d7158cec",
+  "source_text": "stop();\r\n_root.gametime = _root.maxtime;\r\ntime = function()\r\n{\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game.p1.mc.sw == false and _root.game.p2.mc.sw == false)\r\n      {\r\n         if(_root.modo != 4)\r\n         {\r\n            _root.gametime -= 1;\r\n         }\r\n      }\r\n   }\r\n   tm = _root.gametime;\r\n   if(tm <= 0)\r\n   {\r\n      if(_root.timeover.played == 0)\r\n      {\r\n         _root.to = true;\r\n         _root.timeover.play();\r\n         played = 1;\r\n      }\r\n      tm = 0;\r\n   }\r\n   else\r\n   {\r\n      _root.to = false;\r\n   }\r\n   if(tm >= 10)\r\n   {\r\n      shi = Math.floor(tm / 10);\r\n      gs = tm - shi * 10;\r\n   }\r\n   if(tm < 10)\r\n   {\r\n      shi = 0;\r\n      gs = tm;\r\n   }\r\n   \u5341.gotoAndStop(shi + 1);\r\n   \u4e2a.gotoAndStop(gs + 1);\r\n};\r\nif(_root.maxtime == 100 or _root.modo == 4)\r\n{\r\n   gotoAndStop(\"\u65e0\u9650\u65f6\");\r\n}\r\nelse\r\n{\r\n   _root.timeset = setInterval(time,1000);\r\n}\r\n",
+  "interval_ms": 1000,
+  "unlimited_value": 100,
+  "training_mode": 4
+}

@@ -18,20 +18,26 @@ def expression(source: str) -> str:
         fields[key] = match[0]
         return key
 
-    source = re.sub(r"_root\.[\w.]+|_currentframe", field, source)
+    source = re.sub(r"_root\.[\w.]+|_currentframe|\b(?:played|tm|shi|gs)\b", field, source)
     source = source.replace("true", "True").replace("false", "False")
 
     def emit(node):
         if isinstance(node, ast.Constant):
             return json.dumps(node.value, ensure_ascii=False)
+        if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.USub):
+            return "-" + emit(node.operand)
         if isinstance(node, ast.Name) and node.id in fields:
             return "adapter.read(" + json.dumps(fields[node.id], ensure_ascii=False) + ")"
         if isinstance(node, ast.Compare) and len(node.ops) == 1:
-            op = {ast.Eq: "==", ast.Gt: ">", ast.Lt: "<"}.get(type(node.ops[0]))
+            op = {ast.Eq: "==", ast.Gt: ">", ast.Lt: "<", ast.LtE: "<=", ast.GtE: ">=", ast.NotEq: "!="}.get(type(node.ops[0]))
             if op:
                 return "(" + emit(node.left) + " " + op + " " + emit(node.comparators[0]) + ")"
-        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
-            return "(" + emit(node.left) + " + " + emit(node.right) + ")"
+        if isinstance(node, ast.BinOp):
+            operator = {ast.Add: "+", ast.Sub: "-", ast.Mult: "*", ast.Div: "/"}.get(type(node.op))
+            if operator:
+                return "(" + emit(node.left) + " " + operator + " " + emit(node.right) + ")"
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name) and node.func.value.id == "Math" and node.func.attr == "floor" and len(node.args) == 1:
+            return "floor(" + emit(node.args[0]) + ")"
         if isinstance(node, ast.BoolOp) and isinstance(node.op, (ast.Or, ast.And)):
             return "(" + (" or " if isinstance(node.op, ast.Or) else " and ").join(emit(v) for v in node.values) + ")"
         raise ValueError("Unsupported KO expression: " + ast.dump(node))
@@ -60,18 +66,18 @@ def compile_body(name: str, source: str) -> str:
             code = "elif " + expression(line[8:-1]) + ":"
         elif line == "else":
             code = "else:"
-        elif match := re.fullmatch(r'(?:(.*?)\.)?gotoAnd(Play|Stop)\(("[^"]*"|\d+)\);', line):
+        elif match := re.fullmatch(r'(?:(.*?)\.)?gotoAnd(Play|Stop)\((.+)\);', line):
             target, mode, label = match.groups()
             code = f"adapter.goto_clip({json.dumps(target or 'this')}, {expression(label)}, {str(mode == 'Play').lower()})"
         elif match := re.fullmatch(r"(?:(.*?)\.)?(play|stop)\(\);", line):
             code = f"adapter.set_playing({json.dumps(match[1] or 'this')}, {str(match[2] == 'play').lower()})"
         elif match := re.fullmatch(r"(_root\.[\w.]+) = setInterval\(nextfight,(\d+)\);", line):
             code = f'adapter.write({json.dumps(match[1])}, adapter.register_interval("nextfight", {int(match[2])}))'
-        elif match := re.fullmatch(r"(_root\.[\w.]+|winmc\._x) (\+=|=) (.+);", line):
+        elif match := re.fullmatch(r"(_root\.[\w.]+|winmc\._x|played|tm|shi|gs|_X) (\+=|-=|=) (.+);", line):
             target, operator, value = match.groups()
             value = expression(value)
-            if operator == "+=":
-                value = f"adapter.read({json.dumps(target, ensure_ascii=False)}) + {value}"
+            if operator in ("+=", "-="):
+                value = f"adapter.read({json.dumps(target, ensure_ascii=False)}) {operator[0]} {value}"
             code = f"adapter.write({json.dumps(target, ensure_ascii=False)}, {value})"
         elif match := re.fullmatch(r"_root\.(\w+)\(\);", line):
             code = f"adapter.call_root({json.dumps(match[1])})"
@@ -83,8 +89,8 @@ def compile_body(name: str, source: str) -> str:
     return "\n".join(output) + "\n"
 
 
-def build() -> None:
-    audit = json.loads((ROOT / "evidence/ai/ko-display-source.json").read_text())
+def build(audit_path: Path = ROOT / "evidence/ai/ko-display-source.json", output: Path = ROOT / "godot/generated/main/ko") -> None:
+    audit = json.loads(audit_path.read_text())
     bundle = json.loads((ROOT / "scripts/main.json").read_text())
     sources = {s["path"]: s["source"] for s in bundle["scripts"]}
     initialization_path = "DefineSprite_1991/frame_1/DoAction.as"
@@ -105,8 +111,8 @@ def build() -> None:
         if callback:
             code.append(compile_body("nextfight", callback[1]))
             source = source[:callback.start()] + source[callback.end():]
-        if source.startswith("onClipEvent(enterFrame){"):
-            source = source[len("onClipEvent(enterFrame){"):].rstrip()
+        if source.startswith(("onClipEvent(enterFrame){", "onClipEvent(load){")):
+            source = source.split("{", 1)[1].rstrip()
             assert source.endswith("}")
             source = source[:-1]
         name = f"event_{index}"
@@ -116,9 +122,8 @@ def build() -> None:
                  "sprite_id": int(location[1]), "frame": int(location[2]), "kind": "frame"}
         placement = re.search(r"/PlaceObject2_(\d+)_(\d+)/", record["path"])
         if placement:
-            entry.update(kind="enter_frame", child_id=int(placement[1]), depth=int(placement[2]))
+            entry.update(kind="load" if "onClipEvent(load)" in record["path"] else "enter_frame", child_id=int(placement[1]), depth=int(placement[2]))
         entries.append(entry)
-    output = ROOT / "godot/generated/main/ko"
     (output / "controller.gd").write_text("\n".join(code))
     (output / "controller.json").write_text(json.dumps({"format": "bvn26-ko-controller-v1", "events": entries,
         "status": "source_compiled_partial", "callback": "nextfight",

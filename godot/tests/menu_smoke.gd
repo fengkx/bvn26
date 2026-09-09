@@ -29,9 +29,8 @@ func _run() -> void:
 	var menu := TitleMenu.new()
 	var chosen := []
 	menu.confirmed.connect(func(item_id: String) -> void: chosen.append(item_id))
-	assert(menu.select == 1 and menu.current_item().id == "single")
+	assert(menu.select == 2 and menu.current_item().id == "vs_com")
 	for tick in 62: menu.apply_held({})
-	menu.apply_held({"down": true})
 	for tick in 10: menu.apply_held({})
 	assert(menu.select == 2 and menu.current_item().id == "vs_com")
 	menu.apply_held({"confirm": true})

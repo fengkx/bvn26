@@ -71,7 +71,7 @@ def instrument(source: str, origin: str, fighter: bool) -> str:
     return re.sub(r"Math\.random\(\)", random_patch, source)
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     output.mkdir(parents=True)
@@ -111,6 +111,13 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         bootstrap = bootstrap.replace('   aiHeld = {};', fixture + '\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 15) { ' + held + ' }')
         bootstrap = bootstrap.replace('"right=" + d', '"up=" + w + ",right=" + d')
         bootstrap = bootstrap.replace('"right=" + aiHeld[d]', '"up=" + aiHeld[w] + ",right=" + aiHeld[d]')
+    if timeout_probe:
+        if helper_probe or dash_probe or match_flow or frame_order_probe or recovery_order_probe:
+            raise ValueError("Timeout fixture must run in isolation")
+        bootstrap = re.sub(r'   if\(aiFight >= \d+ && aiFight < \d+\) aiHeld\[\w\] = true;\n', '', bootstrap)
+        fixture = (Path(__file__).parent / "as2/config_reference/timeout.as").read_text()
+        fixture = fixture.replace("__HP__", "800" if timeout_probe == "draw" else "600")
+        bootstrap = bootstrap.replace('   aiHeld = {};', fixture + '\n   aiHeld = {};')
     if match_flow:
         bootstrap = (Path(__file__).parent / "as2/ai_reference/match_flow.as").read_text() + bootstrap
         bootstrap = bootstrap.replace('   aiHeld = {};', '   _root.aiMatch("root");\n   aiHeld = {};', 1)
@@ -292,6 +299,7 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         "dash_probe": dash_probe,
         "dash_trigger_frame": dash_trigger_frame,
         "dash_duration": dash_duration,
+        "timeout_probe": timeout_probe,
         "input_injection": "body_kis_alias_with_per_read_trace",
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
@@ -315,10 +323,11 @@ def main() -> None:
     parser.add_argument("--dash-probe", choices=["helper-rush", "super-rush", "helper-dashx", "super-dashx"])
     parser.add_argument("--dash-trigger-frame", type=int)
     parser.add_argument("--dash-duration", type=int, default=36)
+    parser.add_argument("--timeout-probe", choices=["p1", "draw"])
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe), ensure_ascii=False))
 
 
 if __name__ == "__main__":

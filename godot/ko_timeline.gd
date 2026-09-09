@@ -5,6 +5,7 @@ var root_clip: Dictionary
 var clips: Dictionary = {}
 var methods: Dictionary = {}
 var callbacks: Array = []
+var load_callbacks: Array = []
 var root_service: Callable
 var controller: RefCounted
 var tick: int = 0
@@ -65,10 +66,16 @@ class Adapter extends RefCounted:
 	var host: WeakRef
 	func read(key: String) -> Variant:
 		var owner: KoTimeline = host.get_ref()
-		return owner._executing.frame if key == "_currentframe" else owner.root_service.call("read", [key])
+		if key == "_currentframe": return owner._executing.frame
+		if key == "played": return owner._executing.variables.get(key, 0)
+		return owner.root_service.call("read", [key])
 	func write(key: String, value: Variant) -> void:
 		var owner: KoTimeline = host.get_ref()
-		if key == "winmc._x":
+		if key == "played":
+			owner._executing.variables[key] = value
+		elif key == "_X":
+			owner._executing.x_override = value
+		elif key == "winmc._x":
 			for child: Dictionary in owner._executing.children.values():
 				if child.name == "winmc":
 					child.x_override = value
@@ -106,6 +113,8 @@ func configure(timeline: Dictionary, metadata: Dictionary, script: Script, servi
 	for event: Dictionary in metadata.events:
 		if event.kind == "frame":
 			methods["%d:%d" % [int(event.sprite_id), int(event.frame)]] = event.method
+		elif event.kind == "load":
+			load_callbacks.append(event)
 		else:
 			callbacks.append(event)
 	controller = script.new()
@@ -120,7 +129,7 @@ func _new_clip(symbol: int, placement: Dictionary, instance_name: String) -> Dic
 	_generation += 1
 	var clip := {"symbol": symbol, "frame": 1, "playing": true, "generation": _generation,
 		"placed_tick": tick, "children": {}, "placement": placement, "name": instance_name,
-		"x_override": null, "alive": true, "parent_symbol": -1}
+		"variables": {}, "x_override": null, "alive": true, "parent_symbol": -1}
 	if registry != null:
 		_register_clip(clip)
 	_synchronize(clip)
@@ -148,6 +157,12 @@ func _synchronize(clip: Dictionary) -> void:
 		if not clip.children.has(key):
 			clip.children[key] = _new_clip(symbol, placement, str(placement.get("name", "")))
 			clip.children[key].parent_symbol = clip.symbol
+			for event: Dictionary in load_callbacks:
+				if int(event.sprite_id) == int(clip.symbol) and int(event.frame) == int(placement.placed_frame) and int(event.depth) == int(placement.depth):
+					var previous := _executing
+					_executing = clip.children[key]
+					controller.call(event.method)
+					_executing = previous
 		else:
 			clip.children[key].placement = placement
 	for key: String in clip.children.keys():

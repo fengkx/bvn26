@@ -6,7 +6,8 @@ var scheduler: KoTimeline
 
 func _ready() -> void:
 	assert(scheduler != null, "KO rendering requires a source timeline scheduler")
-	fighter_directory = "res://generated/main/ko"
+	if fighter_directory.is_empty():
+		fighter_directory = "res://generated/main/ko"
 	autoplay = false
 	super._ready()
 	var metadata := _read_json(fighter_directory.path_join("ko.json"))

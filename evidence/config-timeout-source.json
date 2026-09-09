@@ -1,0 +1,173 @@
+{
+  "format": "bvn26-ko-assets-v1",
+  "status": "assets_only_not_behavior_compiled",
+  "placement": {
+    "depth": 113,
+    "move": false,
+    "character_id": 1848,
+    "name": "timeover",
+    "ratio": 55,
+    "matrix": {
+      "hasRotate": "false",
+      "hasScale": "true",
+      "nRotateBits": 0,
+      "nScaleBits": 18,
+      "nTranslateBits": 13,
+      "scaleX": 1.3425903,
+      "scaleY": 1.3425903,
+      "translateX": 375,
+      "translateY": 2450,
+      "type": "MATRIX"
+    }
+  },
+  "sprite_ids": [
+    1843,
+    1844,
+    1848
+  ],
+  "labels": {
+    "winner": 62,
+    "drawgame": 212,
+    "next": 340
+  },
+  "source_swf": {
+    "path": "game/main.swf",
+    "sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d"
+  },
+  "source_xml": {
+    "name": "main.xml",
+    "sha256": "ff6a6f03cb6e7ce9510e4acb4ba29ae357301d1f7e3f68ca9bb6dc25c2ccc505"
+  },
+  "scripts": [
+    {
+      "path": "DefineSprite_1843/frame_1/DoAction.as",
+      "source": "stop();\r\n",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "path": "DefineSprite_1843/frame_15/DoAction.as",
+      "source": "stop();\r\n",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "path": "DefineSprite_1844/frame_20/PlaceObject2_1843_1/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(_currentframe == 1)\r\n   {\r\n      if(_root.game.p1.mc.hp > _root.game.p2.mc.hp)\r\n      {\r\n         if(_root.game.p1.mc.hp == _root.maxhp)\r\n         {\r\n            play();\r\n         }\r\n      }\r\n      else if(_root.game.p2.mc.hp == _root.maxhp)\r\n      {\r\n         play();\r\n      }\r\n   }\r\n}\r\n",
+      "sha256": "e6cfed156391533e9ab14c9102b2e0b8c6e814b72aa21b6cc98385eab7a8a6a5"
+    },
+    {
+      "path": "DefineSprite_1844/frame_40/DoAction.as",
+      "source": "_root.zhanting = true;\r\n",
+      "sha256": "d923dd6b87688ac3e73572f5132f89b920fec0c699769c6aa8d3bab1703d18dc"
+    },
+    {
+      "path": "DefineSprite_1844/frame_49/DoAction.as",
+      "source": "if(_root.game.p1.mc.hp > _root.game.p2.mc.hp)\r\n{\r\n   _root.game.p1.mc.gotoAndPlay(\"胜利\");\r\n}\r\nelse\r\n{\r\n   _root.game.p2.mc.gotoAndPlay(\"胜利\");\r\n}\r\n",
+      "sha256": "3447205097a9646dc5ba5c88661fa5091b03de474653084906616a08240bfeda"
+    },
+    {
+      "path": "DefineSprite_1844/frame_50/DoAction.as",
+      "source": "if(_root.game.p1.mc.hp > _root.game.p2.mc.hp)\r\n{\r\n   _root.game.p1.mc.gotoAndPlay(\"胜利\");\r\n}\r\nelse\r\n{\r\n   _root.game.p2.mc.gotoAndPlay(\"胜利\");\r\n}\r\nstop();\r\n",
+      "sha256": "08c5efa89575ea3aa920488279d721c7b6f45ee309404610b71abe443b6439e4"
+    },
+    {
+      "path": "DefineSprite_1848/frame_1/DoAction.as",
+      "source": "stop();\r\nplayed = 0;\r\n",
+      "sha256": "5ddfc605078c7b065ed92f07acf3693d788ce517bb209c5c28248f9004c9dc03"
+    },
+    {
+      "path": "DefineSprite_1848/frame_199/DoAction.as",
+      "source": "gotoAndStop(\"next\");\r\nplay();\r\n",
+      "sha256": "bea2b3ab2b050075d6231626bc7c3c65179d13afba50e06a4498426212ebed46"
+    },
+    {
+      "path": "DefineSprite_1848/frame_2/DoAction.as",
+      "source": "_root.game.p1.mc.sw = true;\r\n_root.game.p2.mc.sw = true;\r\n",
+      "sha256": "c81bc82c61c4534cb77e1872ac61fd559ad59638d038de4ff1a7b915ab6f25df"
+    },
+    {
+      "path": "DefineSprite_1848/frame_240/DoAction.as",
+      "source": "_root.zhanting = true;\r\n",
+      "sha256": "d923dd6b87688ac3e73572f5132f89b920fec0c699769c6aa8d3bab1703d18dc"
+    },
+    {
+      "path": "DefineSprite_1848/frame_344/DoAction.as",
+      "source": "_root.qjxg.gotoAndPlay(\"关\");\r\n",
+      "sha256": "dc806e39d836303167188b6f34df89a21ad7012ce8ce838b76e8768c9408dd77"
+    },
+    {
+      "path": "DefineSprite_1848/frame_350/DoAction.as",
+      "source": "nextfight = function()\r\n{\r\n   _root.rounds += 1;\r\n   _root.焦点 = \"all\";\r\n   _root.game.p1.mc.gotoAndPlay(\"站立\");\r\n   _root.game.p2.mc.gotoAndPlay(\"站立\");\r\n   _root.chushi();\r\n   _root.game.p1.mc.fall = false;\r\n   _root.game.p1.mc.touch = true;\r\n   _root.game.p2.mc.fall = false;\r\n   _root.game.p2.mc.touch = true;\r\n   _root.game.p1.mc.sw = false;\r\n   _root.game.p2.mc.sw = false;\r\n   _root.game.p1.mc.gotoAndPlay(\"站立\");\r\n   _root.game.p2.mc.gotoAndPlay(\"站立\");\r\n   _root.qjxg.gotoAndPlay(\"开\");\r\n   _root.ready.play();\r\n};\r\n_root.gametime = _root.maxtime;\r\nif(_root.p1ws == 3)\r\n{\r\n   if(_root.modo == 1)\r\n   {\r\n      _root.clearint();\r\n      _root.gotoAndStop(\"YOUWIN\");\r\n   }\r\n   if(_root.modo == 2 or _root.modo == 3)\r\n   {\r\n      _root.clearint();\r\n      _root.gotoAndStop(\"选人画面\");\r\n   }\r\n}\r\nelse if(_root.p2ws == 3)\r\n{\r\n   if(_root.modo == 1)\r\n   {\r\n      _root.clearint();\r\n      _root.gotoAndStop(\"继续\");\r\n   }\r\n   if(_root.modo == 2 or _root.modo == 3)\r\n   {\r\n      _root.clearint();\r\n      _root.gotoAndStop(\"选人画面\");\r\n   }\r\n}\r\nelse\r\n{\r\n   _root.nxtfht = setInterval(nextfight,1000);\r\n}\r\n",
+      "sha256": "836005552c04db91681d50e38459b5ea020e677d55c85b6891439f6446a2d749"
+    },
+    {
+      "path": "DefineSprite_1848/frame_40/DoAction.as",
+      "source": "if(_root.game.p1.mc.hp > _root.game.p2.mc.hp)\r\n{\r\n   _root.game.p2.mc.gotoAndPlay(\"失败\");\r\n}\r\nelse\r\n{\r\n   _root.game.p1.mc.gotoAndPlay(\"失败\");\r\n}\r\n",
+      "sha256": "b45688735405b3b945a9d4b8743f27de51e5e6fa1e9ddbbd8de733ead574fdd9"
+    },
+    {
+      "path": "DefineSprite_1848/frame_54/DoAction.as",
+      "source": "if(_root.game.p1.mc.hp == _root.game.p2.mc.hp)\r\n{\r\n   gotoAndStop(\"drawgame\");\r\n   play();\r\n}\r\nelse\r\n{\r\n   gotoAndStop(\"winner\");\r\n   play();\r\n}\r\n",
+      "sha256": "99ed787200e522a8af03e58553293663c341e5f380125fa02001a143dfacde89"
+    },
+    {
+      "path": "DefineSprite_1848/frame_62/PlaceObject2_1844_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "source": "onClipEvent(load){\r\n   if(_root.game.p1.mc.hp > _root.game.p2.mc.hp)\r\n   {\r\n      _X = -0.3;\r\n   }\r\n   else\r\n   {\r\n      _X = 203.8;\r\n   }\r\n}\r\n",
+      "sha256": "cef47195221e3b2a8dd21fa8461078265d2809979456f099476c00c4c3b73c2d"
+    },
+    {
+      "path": "DefineSprite_1848/frame_67/DoAction.as",
+      "source": "if(_root.game.p1.mc.hp > _root.game.p2.mc.hp)\r\n{\r\n   _root.p1ws += 1;\r\n   _root.p1win.gotoAndStop(_root.p1ws);\r\n   _root.p1win.bzxg.play();\r\n   _root.焦点 = \"p1\";\r\n}\r\nelse\r\n{\r\n   _root.p2ws += 1;\r\n   _root.p2win.gotoAndStop(_root.p2ws);\r\n   _root.p2win.bzxg.play();\r\n   _root.焦点 = \"p2\";\r\n}\r\n",
+      "sha256": "2203ee264d398fa9a18d5673b65b9c87d083a8deaed23b99108111a702b8dfcf"
+    }
+  ],
+  "assets": [
+    {
+      "character_id": 1834,
+      "source_external_file": "main_assets/images/1834.jpg",
+      "materialized_source": "images-png/1834.png",
+      "path": "1834.png",
+      "bytes": 33492,
+      "sha256": "9ce6785605c6c0f5816e2ea880ba3079bea0769b824d5f8f7230c6250f196108"
+    },
+    {
+      "character_id": 1836,
+      "source_external_file": "main_assets/sounds/1836.mp3",
+      "materialized_source": "main_assets/sounds/1836.mp3",
+      "path": "1836.mp3",
+      "bytes": 7384,
+      "sha256": "b086e99e2542cd64cc3d0e30f11cffb18ac35f57bfdc24fcee59d4a9a62e3c20"
+    },
+    {
+      "character_id": 1837,
+      "source_external_file": "main_assets/images/1837.png",
+      "materialized_source": "images-png/1837.png",
+      "path": "1837.png",
+      "bytes": 8114,
+      "sha256": "a4bf003a2ed22cd57d723d4f98f2dcc76c22692fd0ff6ad6fa65f133d2bdc81b"
+    },
+    {
+      "character_id": 1840,
+      "source_external_file": "main_assets/images/1840.jpg",
+      "materialized_source": "images-png/1840.png",
+      "path": "1840.png",
+      "bytes": 12260,
+      "sha256": "faae07b727d127551c8223e0d3cc75f183ebd6f32beb67341b0c039eca74ac51"
+    },
+    {
+      "character_id": 1845,
+      "source_external_file": "main_assets/images/1845.jpg",
+      "materialized_source": "images-png/1845.png",
+      "path": "1845.png",
+      "bytes": 40080,
+      "sha256": "2adf500bf5b4196cda8a02cc57e292ca714856a7261d5d65100e2ee01b61cfab"
+    },
+    {
+      "character_id": 1847,
+      "source_external_file": "main_assets/sounds/1847.mp3",
+      "materialized_source": "main_assets/sounds/1847.mp3",
+      "path": "1847.mp3",
+      "bytes": 5096,
+      "sha256": "6928e7e971b7a5253c0c0815c13c7e06f70c11895f7b53eac8edad1fa99b7f75"
+    }
+  ]
+}

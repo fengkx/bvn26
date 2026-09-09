@@ -6,6 +6,9 @@ func _initialize() -> void:
 func _run() -> void:
 	root.size = Vector2i(600, 400)
 	var menu := TitleMenu.new()
+	# Keep the locked original oracle separate from the requested hidden-mode policy.
+	menu.hide_single = false
+	menu.reset()
 	root.add_child(menu)
 	var chosen: Array = []
 	menu.confirmed.connect(func(item: String) -> void: chosen.append(item))

@@ -18,11 +18,6 @@ func _run() -> void:
 	game.session.bind_slot("s", 81)
 	game.session.bind_slot("j", 69)
 	for tick in 72: game._physics_process(1.0/30.0)
-	assert(game.title_menu.current_item().id == "single")
-	key(KEY_Q, true)
-	game._physics_process(1.0/30.0)
-	key(KEY_Q, false)
-	for tick in 10: game._physics_process(1.0/30.0)
 	assert(game.title_menu.current_item().id == "vs_com")
 	key(KEY_E, true)
 	for tick in 14:

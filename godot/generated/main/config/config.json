@@ -1,0 +1,160 @@
+{
+  "source_sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+  "rows": [
+    {
+      "id": "difficulty",
+      "row": 2,
+      "depth": 1,
+      "writes": [
+        {
+          "frame": 1,
+          "field": "AI",
+          "value": 5
+        },
+        {
+          "frame": 2,
+          "field": "AI",
+          "value": 4
+        },
+        {
+          "frame": 3,
+          "field": "AI",
+          "value": 3
+        },
+        {
+          "frame": 4,
+          "field": "AI",
+          "value": 2
+        },
+        {
+          "frame": 5,
+          "field": "AI",
+          "value": 1
+        }
+      ],
+      "left_guard": 1,
+      "right_guard": 5,
+      "sources": {
+        "load": "onClipEvent(load){\r\n   if(_root.AI == 5)\r\n   {\r\n      cl = 1;\r\n   }\r\n   if(_root.AI == 4)\r\n   {\r\n      cl = 2;\r\n   }\r\n   if(_root.AI == 3)\r\n   {\r\n      cl = 3;\r\n   }\r\n   if(_root.AI == 2)\r\n   {\r\n      cl = 4;\r\n   }\r\n   if(_root.AI == 1)\r\n   {\r\n      cl = 5;\r\n   }\r\n}\r\n",
+        "keyDown": "onClipEvent(keyDown){\r\n   if(_parent.cselect == 2)\r\n   {\r\n      if(Key.isDown(_root.a))\r\n      {\r\n         _root.keysound1.start();\r\n         if(cl >= 1)\r\n         {\r\n            cl -= 1;\r\n         }\r\n      }\r\n      if(Key.isDown(_root.d))\r\n      {\r\n         _root.keysound1.start();\r\n         if(cl <= 5)\r\n         {\r\n            cl += 1;\r\n         }\r\n      }\r\n   }\r\n}\r\n",
+        "enterFrame": "onClipEvent(enterFrame){\r\n   if(_parent.cselect == 2)\r\n   {\r\n      left._visible = true;\r\n      right._visible = true;\r\n   }\r\n   else\r\n   {\r\n      left._visible = false;\r\n      right._visible = false;\r\n   }\r\n   this.gotoAndStop(cl);\r\n   if(cl == 1)\r\n   {\r\n      _root.AI = 5;\r\n   }\r\n   if(cl == 2)\r\n   {\r\n      _root.AI = 4;\r\n   }\r\n   if(cl == 3)\r\n   {\r\n      _root.AI = 3;\r\n   }\r\n   if(cl == 4)\r\n   {\r\n      _root.AI = 2;\r\n   }\r\n   if(cl == 5)\r\n   {\r\n      _root.AI = 1;\r\n   }\r\n}\r\n"
+      }
+    },
+    {
+      "id": "quality",
+      "row": 3,
+      "depth": 6,
+      "writes": [
+        {
+          "frame": 1,
+          "field": "_quality",
+          "value": "HIGH"
+        },
+        {
+          "frame": 2,
+          "field": "_quality",
+          "value": "MEDIUM"
+        },
+        {
+          "frame": 3,
+          "field": "quality",
+          "value": "LOW"
+        }
+      ],
+      "left_guard": 1,
+      "right_guard": 3,
+      "sources": {
+        "load": "onClipEvent(load){\r\n   if(_root._quality == \"HIGH\")\r\n   {\r\n      cl = 1;\r\n   }\r\n   if(_root._quality == \"MEDIUM\")\r\n   {\r\n      cl = 2;\r\n   }\r\n   if(_root._quality == \"LOW\")\r\n   {\r\n      cl = 3;\r\n   }\r\n}\r\n",
+        "keyDown": "onClipEvent(keyDown){\r\n   if(_parent.cselect == 3)\r\n   {\r\n      if(Key.isDown(_root.a))\r\n      {\r\n         if(cl >= 1)\r\n         {\r\n            _root.keysound1.start();\r\n            cl -= 1;\r\n         }\r\n      }\r\n      if(Key.isDown(_root.d))\r\n      {\r\n         if(cl <= 3)\r\n         {\r\n            _root.keysound1.start();\r\n            cl += 1;\r\n         }\r\n      }\r\n   }\r\n}\r\n",
+        "enterFrame": "onClipEvent(enterFrame){\r\n   if(_parent.cselect == 3)\r\n   {\r\n      left._visible = true;\r\n      right._visible = true;\r\n   }\r\n   else\r\n   {\r\n      left._visible = false;\r\n      right._visible = false;\r\n   }\r\n   this.gotoAndStop(cl);\r\n   if(cl == 1)\r\n   {\r\n      _root._quality = \"HIGH\";\r\n   }\r\n   if(cl == 2)\r\n   {\r\n      _root._quality = \"MEDIUM\";\r\n   }\r\n   if(cl == 3)\r\n   {\r\n      _root.quality = \"LOW\";\r\n   }\r\n}\r\n"
+      }
+    },
+    {
+      "id": "time",
+      "row": 4,
+      "depth": 28,
+      "writes": [
+        {
+          "frame": 1,
+          "field": "maxtime",
+          "value": 30
+        },
+        {
+          "frame": 2,
+          "field": "maxtime",
+          "value": 60
+        },
+        {
+          "frame": 3,
+          "field": "maxtime",
+          "value": 90
+        },
+        {
+          "frame": 4,
+          "field": "maxtime",
+          "value": 100
+        }
+      ],
+      "left_guard": 1,
+      "right_guard": 4,
+      "sources": {
+        "load": "onClipEvent(load){\r\n   if(_root.maxtime == 30)\r\n   {\r\n      cl = 1;\r\n   }\r\n   if(_root.maxtime == 60)\r\n   {\r\n      cl = 2;\r\n   }\r\n   if(_root.maxtime == 90)\r\n   {\r\n      cl = 3;\r\n   }\r\n   if(_root.maxtime == 100)\r\n   {\r\n      cl = 4;\r\n   }\r\n}\r\n",
+        "keyDown": "onClipEvent(keyDown){\r\n   if(_parent.cselect == 4)\r\n   {\r\n      if(Key.isDown(_root.a))\r\n      {\r\n         _root.keysound1.start();\r\n         if(cl >= 1)\r\n         {\r\n            cl -= 1;\r\n         }\r\n      }\r\n      if(Key.isDown(_root.d))\r\n      {\r\n         _root.keysound1.start();\r\n         if(cl <= 4)\r\n         {\r\n            cl += 1;\r\n         }\r\n      }\r\n   }\r\n}\r\n",
+        "enterFrame": "onClipEvent(enterFrame){\r\n   if(_parent.cselect == 4)\r\n   {\r\n      left._visible = true;\r\n      right._visible = true;\r\n   }\r\n   else\r\n   {\r\n      left._visible = false;\r\n      right._visible = false;\r\n   }\r\n   this.gotoAndStop(cl);\r\n   if(cl == 1)\r\n   {\r\n      _root.maxtime = 30;\r\n   }\r\n   if(cl == 2)\r\n   {\r\n      _root.maxtime = 60;\r\n   }\r\n   if(cl == 3)\r\n   {\r\n      _root.maxtime = 90;\r\n   }\r\n   if(cl == 4)\r\n   {\r\n      _root.maxtime = 100;\r\n   }\r\n}\r\n"
+      }
+    },
+    {
+      "id": "health",
+      "row": 5,
+      "depth": 11,
+      "writes": [
+        {
+          "frame": 1,
+          "field": "maxhp",
+          "value": 1000
+        },
+        {
+          "frame": 2,
+          "field": "maxhp",
+          "value": 2000
+        },
+        {
+          "frame": 3,
+          "field": "maxhp",
+          "value": 3000
+        },
+        {
+          "frame": 4,
+          "field": "maxhp",
+          "value": 4000
+        },
+        {
+          "frame": 5,
+          "field": "maxhp",
+          "value": 5000
+        }
+      ],
+      "left_guard": 1,
+      "right_guard": 5,
+      "sources": {
+        "load": "onClipEvent(load){\r\n   cl = _root.maxhp / 1000;\r\n}\r\n",
+        "keyDown": "onClipEvent(keyDown){\r\n   if(_parent.cselect == 5)\r\n   {\r\n      if(Key.isDown(_root.a))\r\n      {\r\n         _root.keysound1.start();\r\n         if(cl >= 1)\r\n         {\r\n            cl -= 1;\r\n         }\r\n      }\r\n      if(Key.isDown(_root.d))\r\n      {\r\n         _root.keysound1.start();\r\n         if(cl <= 5)\r\n         {\r\n            cl += 1;\r\n         }\r\n      }\r\n   }\r\n}\r\n",
+        "enterFrame": "onClipEvent(enterFrame){\r\n   if(_parent.cselect == 5)\r\n   {\r\n      left._visible = true;\r\n      right._visible = true;\r\n   }\r\n   else\r\n   {\r\n      left._visible = false;\r\n      right._visible = false;\r\n   }\r\n   this.gotoAndStop(cl);\r\n   if(cl == 1)\r\n   {\r\n      _root.maxhp = 1000;\r\n   }\r\n   if(cl == 2)\r\n   {\r\n      _root.maxhp = 2000;\r\n   }\r\n   if(cl == 3)\r\n   {\r\n      _root.maxhp = 3000;\r\n   }\r\n   if(cl == 4)\r\n   {\r\n      _root.maxhp = 4000;\r\n   }\r\n   if(cl == 5)\r\n   {\r\n      _root.maxhp = 5000;\r\n   }\r\n}\r\n"
+      }
+    }
+  ],
+  "defaults": {
+    "AI": 5,
+    "maxhp": 1000,
+    "maxtime": 60
+  },
+  "selector_sources": {
+    "DefineSprite_836/frame_1/PlaceObject2_739_33/CLIPACTIONRECORD onClipEvent(enterFrame).as": "onClipEvent(enterFrame){\r\n   _Y = _parent[\"cbtm\" + _parent.cselect]._y;\r\n}\r\n",
+    "DefineSprite_836/frame_1/PlaceObject2_739_33/CLIPACTIONRECORD onClipEvent(keyDown).as": "onClipEvent(keyDown){\r\n   if(Key.isDown(_root.w))\r\n   {\r\n      _root.keysound1.start();\r\n      if(_parent.cselect == 1)\r\n      {\r\n         _parent.cselect = 6;\r\n      }\r\n      else\r\n      {\r\n         _parent.cselect -= 1;\r\n      }\r\n   }\r\n   if(Key.isDown(_root.s))\r\n   {\r\n      _root.keysound1.start();\r\n      if(_parent.cselect == 6)\r\n      {\r\n         _parent.cselect = 1;\r\n      }\r\n      else\r\n      {\r\n         _parent.cselect += 1;\r\n      }\r\n   }\r\n   if(Key.isDown(_root.j))\r\n   {\r\n      if(_parent.cselect == 1)\r\n      {\r\n         _root.keysound2.start();\r\n         _parent.gotoAndStop(\"键位设置\");\r\n      }\r\n      if(_parent.cselect == 6)\r\n      {\r\n         checkSO();\r\n         mySO = SharedObject.getLocal(\"bvn_5d\");\r\n         mySo.data.name = \"bleachvsnaruto\";\r\n         success = mySO.flush(100000);\r\n         if(success == \"pending\")\r\n         {\r\n            mySO.onStatus = function(result)\r\n            {\r\n               if(result.code == \"SharedObject.Flush.Success\")\r\n               {\r\n                  trace(\"Sucess writing to disk\");\r\n                  writeSuccess = true;\r\n               }\r\n               else\r\n               {\r\n                  trace(\"Failure writing to disk\");\r\n                  writeSuccess = false;\r\n               }\r\n            };\r\n         }\r\n         else\r\n         {\r\n            writeSuccess = success;\r\n         }\r\n         mySO = SharedObject.getLocal(\"bvn_5d\");\r\n         mySO.data.w = _root.w;\r\n         mySO.data.s = _root.s;\r\n         mySO.data.a = _root.a;\r\n         mySO.data.d = _root.d;\r\n         mySO.data.j = _root.j;\r\n         mySO.data.k = _root.k;\r\n         mySO.data.l = _root.l;\r\n         mySO.data.u = _root.u;\r\n         mySO.data.i = _root.i;\r\n         mySO.data.o = _root.o;\r\n         mySO.data.上箭 = _root.上箭;\r\n         mySO.data.下箭 = _root.下箭;\r\n         mySO.data.左箭 = _root.左箭;\r\n         mySO.data.右箭 = _root.右箭;\r\n         mySO.data.N1 = _root.N1;\r\n         mySO.data.N2 = _root.N2;\r\n         mySO.data.N3 = _root.N3;\r\n         mySO.data.N4 = _root.N4;\r\n         mySO.data.N5 = _root.N5;\r\n         mySO.data.N6 = _root.N6;\r\n         mySO.data.maxhp = _root.maxhp;\r\n         mySO.data.AI = _root.AI;\r\n         mySO.data.maxtime = _root.maxtime;\r\n         mySO.data.qualiy = _root._quality;\r\n         _root.keysound2.start();\r\n         _root.gotoAndStop(\"MENU\");\r\n      }\r\n   }\r\n   if(Key.isDown(_root.k))\r\n   {\r\n      checkSO();\r\n      mySO = SharedObject.getLocal(\"bvn_5d\");\r\n      mySo.data.name = \"bleachvsnaruto\";\r\n      success = mySO.flush(100000);\r\n      if(success == \"pending\")\r\n      {\r\n         mySO.onStatus = function(result)\r\n         {\r\n            if(result.code == \"SharedObject.Flush.Success\")\r\n            {\r\n               trace(\"Sucess writing to disk\");\r\n               writeSuccess = true;\r\n            }\r\n            else\r\n            {\r\n               trace(\"Failure writing to disk\");\r\n               writeSuccess = false;\r\n            }\r\n         };\r\n      }\r\n      else\r\n      {\r\n         writeSuccess = success;\r\n      }\r\n      mySO = SharedObject.getLocal(\"bvn_5d\");\r\n      mySO.data.w = _root.w;\r\n      mySO.data.s = _root.s;\r\n      mySO.data.a = _root.a;\r\n      mySO.data.d = _root.d;\r\n      mySO.data.j = _root.j;\r\n      mySO.data.k = _root.k;\r\n      mySO.data.l = _root.l;\r\n      mySO.data.u = _root.u;\r\n      mySO.data.i = _root.i;\r\n      mySO.data.o = _root.o;\r\n      mySO.data.上箭 = _root.上箭;\r\n      mySO.data.下箭 = _root.下箭;\r\n      mySO.data.左箭 = _root.左箭;\r\n      mySO.data.右箭 = _root.右箭;\r\n      mySO.data.N1 = _root.N1;\r\n      mySO.data.N2 = _root.N2;\r\n      mySO.data.N3 = _root.N3;\r\n      mySO.data.N4 = _root.N4;\r\n      mySO.data.N5 = _root.N5;\r\n      mySO.data.N6 = _root.N6;\r\n      mySO.data.maxhp = _root.maxhp;\r\n      mySO.data.AI = _root.AI;\r\n      mySO.data.maxtime = _root.maxtime;\r\n      mySO.data.qualiy = _root._quality;\r\n      _root.gotoAndStop(\"MENU\");\r\n   }\r\n}\r\n",
+    "DefineSprite_836/frame_1/PlaceObject2_739_33/CLIPACTIONRECORD onClipEvent(keyUp).as": "onClipEvent(keyUp){\r\n   if(_parent.cselect == 1)\r\n   {\r\n      _root.txtst = 0;\r\n      _root.txt = \"键位设置\";\r\n   }\r\n   if(_parent.cselect == 2)\r\n   {\r\n      _root.txtst = 0;\r\n      if(_parent.cmlv.cl == 1)\r\n      {\r\n         _root.txt = \"电脑等级 : 非常简单\";\r\n      }\r\n      if(_parent.cmlv.cl == 2)\r\n      {\r\n         _root.txt = \"电脑等级 : 简单\";\r\n      }\r\n      if(_parent.cmlv.cl == 3)\r\n      {\r\n         _root.txt = \"电脑等级 : 中等\";\r\n      }\r\n      if(_parent.cmlv.cl == 4)\r\n      {\r\n         _root.txt = \"电脑等级 : 困难\";\r\n      }\r\n      if(_parent.cmlv.cl == 5)\r\n      {\r\n         _root.txt = \"电脑等级 : 非常困难\";\r\n      }\r\n   }\r\n   if(_parent.cselect == 3)\r\n   {\r\n      _root.txtst = 0;\r\n      if(_parent.qulity.cl == 1)\r\n      {\r\n         _root.txt = \"画质设置 : 高质量\";\r\n      }\r\n      if(_parent.qulity.cl == 2)\r\n      {\r\n         _root.txt = \"画质设置 : 中等质量\";\r\n      }\r\n      if(_parent.qulity.cl == 3)\r\n      {\r\n         _root.txt = \"画质设置 : 低质量\";\r\n      }\r\n   }\r\n   if(_parent.cselect == 4)\r\n   {\r\n      _root.txtst = 0;\r\n      if(_parent.gtime.cl == 1)\r\n      {\r\n         _root.txt = \"时间设置 : 30秒\";\r\n      }\r\n      if(_parent.gtime.cl == 2)\r\n      {\r\n         _root.txt = \"时间设置 : 60秒\";\r\n      }\r\n      if(_parent.gtime.cl == 3)\r\n      {\r\n         _root.txt = \"时间设置 : 90秒\";\r\n      }\r\n      if(_parent.gtime.cl == 4)\r\n      {\r\n         _root.txt = \"时间设置 : 无限时\";\r\n      }\r\n   }\r\n   if(_parent.cselect == 5)\r\n   {\r\n      _root.txtst = 0;\r\n      _root.txt = \"生命设置 : \" + _parent.plife.cl * 100 + \"%\";\r\n   }\r\n   if(_parent.cselect == 6)\r\n   {\r\n      _root.txtst = 0;\r\n      _root.txt = \"回主菜单\";\r\n   }\r\n}\r\n",
+    "DefineSprite_836/frame_1/PlaceObject2_739_33/CLIPACTIONRECORD onClipEvent(load).as": "onClipEvent(load){\r\n   _parent.cselect = 1;\r\n}\r\n"
+  },
+  "panel_sources": {
+    "DefineSprite_836/frame_1/DoAction.as": "stop();\r\n"
+  }
+}

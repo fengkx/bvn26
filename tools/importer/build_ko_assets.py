@@ -19,7 +19,7 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build(workspace: Path, output: Path, evidence: Path) -> None:
+def build(workspace: Path, output: Path, evidence: Path, instance_name: str = "KO") -> None:
     report = json.loads((workspace / "export-report.json").read_text())
     records = {f["path"]: f["sha256"] for f in report["files"]}
     xml = workspace / "main.xml"
@@ -27,7 +27,7 @@ def build(workspace: Path, output: Path, evidence: Path) -> None:
     swf_hash = sha(ROOT / "game/main.swf")
     assert report["source"]["sha256"] == bundle["swf_sha256"] == swf_hash
     assert sha(xml) == records["main.xml"]
-    placements = [tag for tag in ET.parse(xml).getroot().findall("./tags/item") if tag.get("name") == "KO"]
+    placements = [tag for tag in ET.parse(xml).getroot().findall("./tags/item") if tag.get("name") == instance_name]
     assert len(placements) == 1
     placement = placement_delta(placements[0])
     symbol = placement["character_id"]
