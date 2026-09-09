@@ -1,4 +1,5 @@
 """Compile the retained shared hurtVoice branch and verify missing linkages."""
+import argparse
 import json
 from pathlib import Path
 import re
@@ -10,7 +11,7 @@ from analyze_ai import functions, sha
 from inspect_swf import inspect
 
 
-def build() -> None:
+def build(fighters: list[str] | None = None) -> None:
     names = ["voice_hurt1", "voice_hurt2", "voice_die"]
     inputs = {}
     for path in sorted((ROOT / "game").rglob("*.swf")):
@@ -23,7 +24,8 @@ def build() -> None:
     selector = functions(main_source)["getRandInArray"]
     selector_offset = main_source.index(selector) + selector.index("Math.random()")
     selector_index = main_source[:selector_offset].count("Math.random()") + 1
-    for name, sprite in (("minren", 764), ("yihu", 638)):
+    for name in fighters or ["minren", "yihu"]:
+        sprite = json.loads((ROOT / f"data/slices/{name}-base.timeline.json").read_text())["sprite_id"]
         bundle = json.loads((ROOT / f"scripts/fighter/{name}.json").read_text())
         path = f"DefineSprite_{sprite}/frame_1/DoAction.as"
         source = next(s["source"] for s in bundle["scripts"] if s["path"] == path)
@@ -58,4 +60,6 @@ def build() -> None:
 
 
 if __name__ == "__main__":
-    build()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("fighters", nargs="*")
+    build(parser.parse_args().fighters)

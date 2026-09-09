@@ -21,6 +21,22 @@ def compile_win_markers(workspace, shapes, output):
     return {'win_frames': frames, 'win_layers': layers, 'win_source_sprite': 1785}
 
 
+def compile_timer(workspace, shapes, output):
+    timer = extract_frames(workspace / 'main.xml', 1813)
+    digits = extract_frames(workspace / 'main.xml', 1810)
+    definitions = {d['character_id']: d for d in timer['definitions']}
+    layers = {}
+    for frame in digits['frames']:
+        for placement in frame['display_list']:
+            symbol = placement['character_id']
+            shutil.copyfile(shapes / f'{symbol}.png', output / f'{symbol}.png')
+            layers[str(symbol)] = definitions[symbol]['shape_bounds_twips']
+    unlimited = next(f for f in timer['frames'] if '无限时' in f['labels'])
+    return {'timer': {'initial_parts': timer['frames'][0]['display_list'],
+                     'unlimited_parts': unlimited['display_list'],
+                     'digit_frames': {str(f['frame']): f['display_list'] for f in digits['frames']}}, 'layers': layers}
+
+
 def build(workspace, shapes, output):
     xml = workspace / 'main.xml'
     root = ET.parse(xml).getroot()
@@ -62,6 +78,9 @@ def build(workspace, shapes, output):
     wins = compile_win_markers(workspace, shapes, output)
     spec['layers'].update(wins.pop('win_layers'))
     spec.update(wins)
+    timer = compile_timer(workspace, shapes, output)
+    spec['layers'].update(timer.pop('layers'))
+    spec.update(timer)
     (output / 'presentation.json').write_text(json.dumps(spec, indent=2) + '\n')
 
 
@@ -73,7 +92,7 @@ if __name__ == '__main__':
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     subprocess.run(['java', '-Djava.awt.headless=true', '-jar', str(a.ffdec_jar), '-selectid',
-                    '591,1784,1787,1788,1792,1796,1812', '-format', 'shape:png', '-export',
+                    '591,1784,1787,1788,1792,1796,1800,1801,1802,1803,1804,1805,1806,1807,1808,1809,1812', '-format', 'shape:png', '-export',
                     'shape', str(a.raster_workspace), 'game/main.swf'], check=True)
     subprocess.run(['java', '-Djava.awt.headless=true', '-jar', str(a.ffdec_jar), '-selectid',
                     '1788', '-export', 'sprite', str(a.raster_workspace), 'game/main.swf'], check=True)

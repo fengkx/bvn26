@@ -3,9 +3,11 @@ extends Control
 
 const DIRECTORY := "res://generated/main/health"
 const PORTRAITS := "res://generated/main/helper_portraits"
+var countdown: MatchCountdown
 var spec: Dictionary
 var portraits: Dictionary
 var textures: Dictionary = {}
+var portrait_labels: Array = ["鸣人", "一护"]
 var portrait_textures: Array[Texture2D] = []
 var warning_textures: Array[Texture2D] = []
 var fighters: Array[FighterRuntime] = []
@@ -18,12 +20,20 @@ var win_frames := PackedInt32Array([1, 1])
 func _ready() -> void:
 	spec = JSON.parse_string(FileAccess.get_file_as_string(DIRECTORY + "/presentation.json"))
 	portraits = JSON.parse_string(FileAccess.get_file_as_string(PORTRAITS + "/presentation.json"))
-	for label in ["鸣人", "一护"]:
+	for label in portrait_labels:
 		portrait_textures.append(load("%s/%s" % [PORTRAITS, portraits["portraits"][label]["texture"]]))
 	for frame in range(1, 21):
 		warning_textures.append(load("%s/low-%d.png" % [DIRECTORY, frame]))
 	for id: String in spec["layers"]:
 		textures[id] = load("%s/%s.png" % [DIRECTORY, id])
+
+
+func set_fighter_portraits(labels: Array) -> void:
+	portrait_labels = labels.duplicate()
+	portrait_textures.clear()
+	for label in portrait_labels:
+		portrait_textures.append(load("%s/%s" % [PORTRAITS, portraits["portraits"][label]["texture"]]))
+	queue_redraw()
 
 
 func reset() -> void:
@@ -99,7 +109,7 @@ func _draw() -> void:
 						_layer(1792 if bar_name == "bar" else 591, transform_matrix * local, 1.0 if bar_name == "bar" else 205.0 / 256)
 		elif name_string.ends_with("head"):
 			_layer(1796, transform_matrix)
-			var portrait: Dictionary = portraits["portraits"]["鸣人" if index == 0 else "一护"]
+			var portrait: Dictionary = portraits["portraits"][portrait_labels[index]]
 			var texture: Texture2D = portrait_textures[index]
 			var bitmap := _matrix(portrait["matrix"])
 			bitmap.x /= 20.0
@@ -114,6 +124,15 @@ func _draw() -> void:
 				uv.append((inverse * vertex) / texture.get_size())
 			draw_set_transform_matrix(transform_matrix)
 			draw_polygon(points, PackedColorArray([Color.WHITE]), uv, texture)
-		else:
-			_layer(1812, transform_matrix)
+		elif int(part.character_id) == 1813 and countdown != null:
+			var timer_spec: Dictionary = spec["timer"]
+			var parts: Array = timer_spec.unlimited_parts if countdown.unlimited else timer_spec.initial_parts
+			for timer_part: Dictionary in parts:
+				var local := transform_matrix * _matrix(timer_part)
+				if countdown.unlimited:
+					_layer(int(timer_part.character_id), local)
+				else:
+					var frame := str(countdown.digit_frames[timer_part.name])
+					for glyph: Dictionary in timer_spec.digit_frames[frame]:
+						_layer(int(glyph.character_id), local * _matrix(glyph))
 	draw_set_transform_matrix(Transform2D.IDENTITY)

@@ -1,0 +1,31 @@
+extends SceneTree
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+func _run() -> void:
+	var scene = load("res://main.tscn").instantiate()
+	root.add_child(scene)
+	scene._goto_character_selection(3)
+	assert(scene.session.root_label == "选人画面")
+	scene._on_characters_confirmed(["一护", "鸣人"], ["魂", "我爱罗"])
+	assert(scene.naruto.fighter_name == "一护")
+	assert(scene.ichigo.fighter_name == "鸣人")
+	assert(scene.naruto_helper.helper_id == "魂")
+	assert(scene.ichigo_helper.helper_id == "我爱罗")
+	scene._on_map_confirmed("现世")
+	assert(scene.player_body_driver.fighter == scene.naruto)
+	assert(scene.opponent_driver.fighter == scene.ichigo)
+	scene._goto_menu()
+	scene._goto_character_selection(3)
+	assert(scene.character_selection.available.fighters.has("日番谷"))
+	scene._on_characters_confirmed(["日番谷", "一护"], ["我爱罗", "魂"])
+	assert(scene.naruto.fighter_name == "日番谷")
+	assert(scene.naruto.fighter_directory == "res://generated/fighters/rifagu")
+	scene._on_map_confirmed("现世")
+	assert(scene.player_body_driver.fighter == scene.naruto)
+	assert(scene.opponent_driver.fighter == scene.ichigo)
+	scene._goto_menu()
+	scene.queue_free()
+	print("SELECTED_FIGHTERS_SMOKE_OK")
+	quit()

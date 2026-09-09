@@ -6,6 +6,14 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
 
 ## 已完成的资料与已实现的开发切片
 
+- 2026-09-09 选人开发切片：Vs Com、Vs Human、Training 已经共用角色/援助选择逻辑，
+  名单显示鸣人、一护、日番谷，援助显示我爱罗、魂。背景使用原版四帧素材，头像、
+  大立绘与选中后创建战斗角色已接线。`character_selection_smoke.gd`、
+  `selected_fighters_smoke.gd` 与原生窗口截图检查通过。日番谷目前仅基础形态可运行；
+  卍解切换、完整招式及原版同输入逐帧对照仍未验收，不能视为一比一角色完成。
+  日番谷原版对战采集日志存在事件序号缺失，严格收集器拒绝该记录；未修改比较阈值。
+  Normal 流程及完整选人画面对照仍待接线/验收。
+
 - 用户入口结构检查：普通 V 2.6，600×400，30 FPS。
 - 74 个直接外部依赖已补齐，75 个游戏输入文件有校验值。
 - 62 个 SWF 已检查，8,853 份反编译脚本按 SWF 合并，原路径与内容保留。
@@ -451,3 +459,8 @@ The two-base-form matrix now runs 356 native scenarios without script assertions
 ### Resumed original sampling and transformation start (2026-09-09)
 
 The user subsequently authorized Flash popup windows; the remaining original batch has resumed. Ichigo frame 967's dropped `wankai_start()` call is now compiled in source order, including the second 300 energy deduction and cbsd pause. Its retained original prefix matches 202 actor states; full form replacement remains different starting at observation 101. The earlier transformation-difference summary included this pre-replacement defect and must not be read as proving the entire start sequence was already correct. See [resumed evidence](../evidence/combat/move-boundary-validation/resumed/README.md). Full acceptance remains pending while sampling continues.
+
+
+### Timer digit presentation (2026-09-09)
+
+The HUD no longer draws the unlimited symbol during finite countdowns. Source digit sprites, their frame selections and nested placements are imported and driven by the compiled timer callback; the extra font Label is removed. Native tests cover paused time, 10→09, 01→00, unlimited and training. Rendered 10/09/infinite screenshots are retained in [timer presentation evidence](../evidence/config/timer-presentation/README.md). This corrects the earlier overlay-only diagnosis.

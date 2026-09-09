@@ -22,6 +22,9 @@ func _run() -> void:
 			var tick := int(event.fight_tick) + 1
 			if not recovery_events.has(tick): recovery_events[tick] = []
 			recovery_events[tick].append({"kind": "training_recovery", "phase": "after_actor_advance"})
+	if args.size() > 3:
+		game.character_selection.available.fighters["日番谷"] = "rifagu"
+		game._replace_selected_actors([args[3], "一护"], ["我爱罗", "魂"])
 	game._enter_current_fight(mode)
 	for tick in 700:
 		game._advance_fight([], func() -> bool:

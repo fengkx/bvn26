@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 import re
 
+from compile_ai_predicates import controller_script
+
 ROOT=Path(__file__).resolve().parents[2]
 FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitBan',
         'dashQL','dashing','dashX','dashY','dashF','hurtSkling','hstm','wdFrame','wdFrameX',
@@ -80,13 +82,18 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         raise ValueError('Source and timeline hash mismatch')
     sprite=timeline['sprite_id']
     scripts={s['path']:s['source'] for s in bundle['scripts']}
-    load_path=f'frame_1/PlaceObject2_{sprite}_1/CLIPACTIONRECORD onClipEvent(load).as'
+    load_paths = [path for path in scripts if re.fullmatch(
+        rf'frame_\d+/PlaceObject2_{sprite}_1/CLIPACTIONRECORD onClipEvent\(load\).as', path)]
+    if len(load_paths) != 1:
+        raise ValueError('Expected one form load: ' + str(load_paths))
+    load_path = load_paths[0]
+    form_frame = int(re.match(r'frame_(\d+)', load_path)[1])
     load_source=scripts[load_path]
     if re.search(r'\b(if|else|while|for)\b',load_source):
         raise ValueError('Conditional body load requires explicit compilation')
     load_writes=writes(load_source,load_path,function=True)
     powers={m[1]:int(m[2]) for m in re.finditer(
-        r'^gjl1\.(\w+zl) = (\d+);',scripts['frame_1/DoAction.as'],re.M)}
+        rf'^gjl{form_frame}\.(\w+zl) = (\d+);',scripts['frame_1/DoAction.as'],re.M)}
     if not powers:
         raise ValueError('Missing base form attack powers')
     first_path=f'DefineSprite_{sprite}/frame_1/DoAction.as'
@@ -188,7 +195,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         d=definitions[cid];closure[cid]=d
         for child in d.get('referenced_character_ids',[]):visit(child)
     for p in sensors:visit(p['character_id'])
-    referenced=sorted(set(re.findall(r'_parent\.AImain\.(\w+)\.hitTest',scripts['DefineSprite_16/frame_1/DoAction.as'])))
+    referenced=sorted(set(re.findall(r'_parent\.AImain\.(\w+)\.hitTest',controller_script(bundle, sprite)['source'])))
     return {'format':'bvn26-ai-context-v1','status':'source_compiled_partial',
             'source_swf':timeline['source_swf'],'sprite_id':sprite,
             'load_writes':load_writes,'base_power_fields':powers,
@@ -208,7 +215,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--fighter',choices=('minren','yihu'),required=True)
+    parser.add_argument('--fighter',required=True)
     parser.add_argument('--output',required=True,type=Path)
     args=parser.parse_args()
     bundle=json.loads((ROOT/f'scripts/fighter/{args.fighter}.json').read_text())

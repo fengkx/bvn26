@@ -48,6 +48,7 @@ func run():
 	root.add_child(game)
 	game.set_physics_process(false)
 	game._on_menu_confirmed("vs_com")
+	game._on_characters_confirmed(["鸣人", "一护"], ["我爱罗", "魂"])
 	game._on_map_confirmed("现世")
 	game.ichigo.ai_random_clock.cancel()
 	for n in 600:

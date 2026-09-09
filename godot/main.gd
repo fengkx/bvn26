@@ -25,6 +25,7 @@ var nextfight_from_timeout := false
 var config_menu: ConfigMenu
 var pause_menu: BattlePauseMenu
 var health_hud: HealthHud
+var character_selection: CharacterSelection
 var map_selection: MapSelection
 var stage_background: TimelinePreview
 var battle_intro: BattleIntro
@@ -96,6 +97,12 @@ func _ready() -> void:
 	stage_sound = StageSound.new()
 	stage_sound.random_source = source_random
 	add_child(stage_sound)
+	character_selection = CharacterSelection.new()
+	character_selection.z_index = 200
+	character_selection.visible = false
+	add_child(character_selection)
+	character_selection.confirmed.connect(_on_characters_confirmed)
+	character_selection.cancelled.connect(_goto_menu)
 	map_selection = MapSelection.new()
 	map_selection.z_index = 200
 	map_selection.visible = false
@@ -227,6 +234,11 @@ func _physics_process(_delta: float) -> void:
 			config_menu.tick()
 		"键位设置":
 			key_settings.apply_held(session.menu_held())
+		"选人画面":
+			var p2 := session.fighter_input("p2")
+			p2["confirm"] = p2.attack
+			p2["back"] = p2.jump
+			character_selection.tick(session.menu_held(), p2)
 		"地图":
 			map_selection.tick(session.menu_held())
 		"游戏场景":
@@ -242,12 +254,75 @@ func _on_menu_confirmed(item_id: String) -> void:
 			_goto_config()
 			return
 		if int(item["modo"]) in [2, 3, 4]:
-			_goto_map_selection(int(item["modo"]))
+			_goto_character_selection(int(item["modo"]))
 		return
 
 
+func _goto_character_selection(modo: int) -> void:
+	session.modo = modo
+	session.root_label = "选人画面"
+	title_menu.visible = false
+	key_settings.visible = false
+	config_menu.visible = false
+	map_selection.leave()
+	character_selection.reset(modo)
+
+
+func _on_characters_confirmed(fighters: Array, helpers: Array) -> void:
+	_replace_selected_actors(fighters, helpers)
+	character_selection.leave()
+	_goto_map_selection(session.modo)
+
+
+func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
+	_stop_combat_drivers()
+	var replacements: Array[FighterRuntime] = []
+	var helper_replacements: Array[HelperRuntime] = []
+	for i in 2:
+		var old: FighterRuntime = naruto if i == 0 else ichigo
+		var fighter := FighterRuntime.new()
+		fighter.fighter_directory = "res://generated/fighters/" + str(character_selection.available.fighters[fighters[i]])
+		fighter.name = old.name
+		fighter.player_slot = "p%d" % (i + 1)
+		fighter.position = old.position
+		fighter.facing = old.facing
+		fighter.z_index = old.z_index
+		fighter.display_depth = old.display_depth
+		game_world.remove_child(old)
+		old.queue_free()
+		game_world.add_child(fighter)
+		fighter.owner = self
+		fighter.unique_name_in_owner = true
+		fighter.super_runtime = super_runtime
+		fighter.ko_requested.connect(_on_ko_requested)
+		fighter.hit_effect_requested.connect(_spawn_hit_effect)
+		fighter.screen_flash_requested.connect(_start_screen_flash)
+		fighter.combo_hud_requested.connect(_play_combo_hud)
+		fighter.super_event_applied.connect(_on_selected_super_event.bind(fighter))
+		replacements.append(fighter)
+		var old_helper: HelperRuntime = naruto_helper if i == 0 else ichigo_helper
+		var helper := _make_helper("res://generated/helpers/" + str(character_selection.available.helpers[helpers[i]]))
+		helper.z_index = old_helper.z_index
+		game_world.remove_child(old_helper)
+		old_helper.queue_free()
+		helper_replacements.append(helper)
+	naruto = replacements[0]
+	ichigo = replacements[1]
+	naruto.opponent = ichigo
+	ichigo.opponent = naruto
+	naruto_helper = helper_replacements[0]
+	ichigo_helper = helper_replacements[1]
+	health_hud.fighters = [naruto, ichigo]
+	health_hud.set_fighter_portraits(fighters)
+	naruto_energy.set_helper(naruto_helper.helper_id)
+	ichigo_energy.set_helper(ichigo_helper.helper_id)
+
+
+func _on_selected_super_event(event: Dictionary, fighter: FighterRuntime) -> void:
+	_on_super_event(event, fighter)
+
+
 func _goto_map_selection(modo: int) -> void:
-	# The requested slice skips fighter/assist selection, entering xure@地图.
 	session.modo = modo
 	session.root_label = "地图"
 	title_menu.visible = false
@@ -319,6 +394,7 @@ func _goto_menu() -> void:
 		battle_intro.cancel()
 	stage_sound.stop()
 	map_selection.leave()
+	character_selection.leave()
 	# Source frame_10: stop(); _root.stage = 0; downtxts.clean(); vertxt.
 	pause_menu.visible = false
 	super_runtime.game_paused = false
@@ -643,6 +719,7 @@ func _start_ko() -> void:
 
 func _stop_ko() -> void:
 	if countdown != null:
+		health_hud.countdown = null
 		countdown.stop()
 		countdown.queue_free()
 		countdown = null
@@ -829,7 +906,7 @@ func _ko_fight_started() -> void:
 func _ko_return_to_fixed_selection() -> void:
 	var mode := session.modo
 	_goto_menu()
-	_goto_map_selection(mode)
+	_goto_character_selection(mode)
 
 
 func _start_combat_drivers() -> void:
@@ -885,7 +962,7 @@ func _start_combat_drivers() -> void:
 	player_body_services.remaining_services = _player_visual_service
 	player_body_driver = preload("res://player_body_driver.gd").new()
 	add_child(player_body_driver)
-	player_body_driver.configure(naruto, "res://generated/fighters/minren/player_controller", platforms,
+	player_body_driver.configure(naruto, naruto.fighter_directory + "/player_controller", platforms,
 		naruto._ground_y, game_world.map_size_x, player_body_services.invoke, source_callbacks)
 	opponent_driver = AiCpuDriver.new()
 	add_child(opponent_driver)
@@ -893,7 +970,7 @@ func _start_combat_drivers() -> void:
 	if not session.p2cpu:
 		opponent_input_context = preload("res://player_body_driver.gd").Context.new(ichigo)
 		opponent_input_context.use_ai = false
-	opponent_driver.configure(ichigo, "res://generated/fighters/yihu/player_controller", platforms,
+	opponent_driver.configure(ichigo, ichigo.fighter_directory + "/player_controller", platforms,
 		ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false, source_callbacks, opponent_input_context)
 	opponent_driver.controller.context.use_ai = session.p2cpu
 	if opponent_input_context != null:
@@ -1207,4 +1284,7 @@ func _start_countdown() -> void:
 	add_child(timeout_clip)
 	countdown = MatchCountdown.new()
 	add_child(countdown)
+	health_hud.countdown = countdown
+	countdown.presentation_changed.connect(health_hud.queue_redraw)
 	countdown.configure(_ko_service, ko_recorded_timers)
+	health_hud.queue_redraw()

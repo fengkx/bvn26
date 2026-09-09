@@ -135,6 +135,9 @@ def compile_function(name: str, params: str, body: str, extra_calls: frozenset[s
             translated = 'adapter.swap_depths()'
         elif m := re.fullmatch(r'_root.addChildXG\(_parent,("\w+"),([^,]+),([^,]+)\);', line):
             translated = 'adapter.child_effect(' + ', '.join(expr(v) for v in m.groups()) + ')'
+        elif m := re.fullmatch(r'_root.addChildXG\(_parent,("\w+")\);', line):
+            # Source addChildXG defaults offsetY to -25 and offsetX to 0.
+            translated = 'adapter.child_effect(' + expr(m[1]) + ', -25, 0)'
         elif m := re.fullmatch(r'_root.addStgHit\(pn,("\w+"),(.+)\);', line):
             translated = 'adapter.stage_hit(' + expr(m[1]) + ', ' + expr(m[2]) + ')'
         elif m := re.fullmatch(r'(\w+)\((.*)\);', line):
@@ -190,12 +193,13 @@ def compile_body(bundle: dict, sprite: int, *, player: bool = False) -> tuple[st
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--fighter', choices=('minren', 'yihu'), default='yihu')
+    parser.add_argument('--fighter', default='yihu')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--player', action='store_true')
     args = parser.parse_args()
     bundle = json.loads((ROOT / f'scripts/fighter/{args.fighter}.json').read_text())
-    code, metadata = compile_body(bundle, {'minren': 764, 'yihu': 638}[args.fighter], player=args.player)
+    timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())
+    code, metadata = compile_body(bundle, timeline['sprite_id'], player=args.player)
     if args.player:
         metadata['input_mode'] = 'source_player_branches_preserved'
         timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())
@@ -211,12 +215,12 @@ def main() -> None:
             if '_parent.beidax(' not in script['source'] and not motion:
                 continue
             match = re.fullmatch(r'onClipEvent\(enterFrame\)\{\s*_parent.beidax\((true)?\);\s*\}\s*', script['source'])
-            placement = re.fullmatch(r'DefineSprite_\d+/frame_(\d+)/PlaceObject2_16_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
+            placement = re.fullmatch(r'DefineSprite_\d+/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
             if (not match and not motion) or not placement:
                 raise ValueError('Unsupported player hurt callback: ' + script['path'])
-            frame, depth = map(int, placement.groups())
+            frame, controller_id, depth = map(int, placement.groups())
             members = [item['frame'] for item in timeline['frames'] if any(
-                p.get('character_id') == 16 and p['depth'] == depth and p['placed_frame'] == frame
+                p.get('character_id') == controller_id and p['depth'] == depth and p['placed_frame'] == frame
                 for p in item['display_list'])]
             if not members:
                 raise ValueError('Missing player hurt placement: ' + script['path'])

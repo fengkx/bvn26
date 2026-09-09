@@ -59,8 +59,9 @@ func _run() -> void:
 	await process_frame
 	scene.set_physics_process(false)
 	scene._on_menu_confirmed("training")
-	assert(scene.session.root_label == "地图")
+	assert(scene.session.root_label == "选人画面")
 	assert(scene.session.modo == 4)
+	scene._on_characters_confirmed(["鸣人", "一护"], ["我爱罗", "魂"])
 	var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/stages/catalog/catalog.json"))
 	for stage: Dictionary in catalog["stages"]:
 		scene.stage_sound.random_tape.assign([0.99, 0.99])
@@ -78,7 +79,8 @@ func _run() -> void:
 		scene._goto_menu()
 		assert(not scene.stage_background.visible)
 		scene._on_menu_confirmed("versus")
-		assert(scene.session.root_label == "地图")
+		assert(scene.session.root_label == "选人画面")
+		scene._on_characters_confirmed(["鸣人", "一护"], ["我爱罗", "魂"])
 		assert(scene.map_selection.selected_stage() == "现世")
 		await process_frame
 	scene.queue_free()

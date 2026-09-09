@@ -22,6 +22,7 @@ sys.path.insert(0, str(TOOLS_DIR))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from inspect_swf import inspect  # noqa: E402
+from compile_ai_predicates import controller_script
 from compile_hit_receive import extract_attacks_by_form  # noqa: E402
 
 
@@ -64,9 +65,9 @@ def parse_literal(value: str) -> Any:
     raise ValueError(f"Unsupported AS2 literal in fighter table: {value}")
 
 
-def extract_hit_parameters(source: str) -> dict[str, dict[str, Any]]:
+def extract_hit_parameters(source: str, form_frame: int = 1) -> dict[str, dict[str, Any]]:
     attacks: dict[str, dict[str, Any]] = {}
-    for match in ASSIGNMENT_RE.finditer(source):
+    for match in re.finditer(rf"gjl{form_frame}\.([A-Za-z0-9_]+)\s*=\s*([^;]+);", source):
         property_name, literal = match.groups()
         suffix = next(
             (candidate for candidate in FIELD_NAMES if property_name.endswith(candidate)),
@@ -153,10 +154,10 @@ def script_record(script: dict[str, str]) -> dict[str, Any]:
     }
 
 
-def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
+def extract_slice(root: Path, fighter_key: str, *, allow_forms: bool = False) -> dict[str, Any]:
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     fighter = manifest["fighter_catalog"][fighter_key]
-    if "WKframe" in fighter:
+    if "WKframe" in fighter and not allow_forms:
         raise ValueError(f"{fighter_key} is not a base form")
 
     swf_path = root / "game/fighter" / fighter["url"]
@@ -164,7 +165,8 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
     script_bundle = json.loads(script_path.read_text(encoding="utf-8"))
     scripts = script_bundle["scripts"]
 
-    base_placements = [item for item in root_placements(swf_path) if item["frame"] == 1]
+    form_frame = int(fighter.get("WKframe", 1))
+    base_placements = [item for item in root_placements(swf_path) if item["frame"] == form_frame]
     if len(base_placements) != 1:
         raise ValueError(f"Expected one base-form placement in {swf_path}, got {base_placements}")
     timeline_id = base_placements[0]["character_id"]
@@ -178,7 +180,7 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
     selected_ranges = []
     action_groups = {
         **COMMON_ACTION_GROUPS,
-        "special": FIGHTER_SPECIAL_LABELS[fighter_key],
+        "special": FIGHTER_SPECIAL_LABELS.get(fighter_key, ["必杀"]),
     }
     for group, labels in action_groups.items():
         selected_spans[group] = {}
@@ -211,7 +213,7 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
 
     root_init = next(script for script in scripts if script["path"] == "frame_1/DoAction.as")
     load_pattern = re.compile(
-        rf"^frame_1/PlaceObject[23]_{timeline_id}_1/CLIPACTIONRECORD onClipEvent\(load\)\.as$"
+        rf"^frame_{form_frame}/PlaceObject[23]_{timeline_id}_1/CLIPACTIONRECORD onClipEvent\(load\)\.as$"
     )
     load_script = next(script for script in scripts if load_pattern.match(script["path"]))
     speed_match = re.search(r"\bvar spd\s*=\s*(-?\d+(?:\.\d+)?);", load_script["source"])
@@ -221,14 +223,15 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
     if speed_match is None or jump_match is None:
         raise ValueError(f"Missing movement constants in {load_script['path']}")
 
-    all_hit_parameters = extract_hit_parameters(root_init["source"])
+    all_hit_parameters = extract_hit_parameters(root_init["source"], form_frame)
     # Every move reads its damage and hit reaction from the fighter's root
     # attack table. Limiting this to the first combo and special made the
     # extended timelines visible but unable to hit anything.
     hit_parameters = dict(sorted(all_hit_parameters.items()))
     attacks_by_form = extract_attacks_by_form(root_init["source"])
 
-    shared_paths = ["DefineSprite_16/frame_1/DoAction.as", "DefineSprite_2/frame_1/DoAction.as"]
+    shared_paths = [controller_script(script_bundle, timeline_id)["path"],
+                    "DefineSprite_2/frame_1/DoAction.as"]
     shared_scripts = [
         script_record(next(script for script in scripts if script["path"] == path))
         for path in shared_paths
@@ -239,7 +242,7 @@ def extract_slice(root: Path, fighter_key: str) -> dict[str, Any]:
         "status": "reverse_engineering_intermediate",
         "fighter_id": fighter_key,
         "display_name": fighter["name"],
-        "form_frame": 1,
+        "form_frame": form_frame,
         "source": {
             "swf_path": swf_path.relative_to(root).as_posix(),
             "swf_sha256": swf["sha256"],
@@ -271,12 +274,14 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("fighters", nargs="*", default=["鸣人", "一护"])
     parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "data/slices")
+    parser.add_argument("--include-forms", action="store_true")
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     summaries = []
     for fighter_key in args.fighters:
-        result = extract_slice(REPO_ROOT, fighter_key)
-        output = args.output_dir / f"{Path(result['source']['swf_path']).stem}-base.json"
+        result = extract_slice(REPO_ROOT, fighter_key, allow_forms=args.include_forms)
+        suffix = "base" if result["form_frame"] == 1 else f"form-{result['form_frame']}"
+        output = args.output_dir / f"{Path(result['source']['swf_path']).stem}-{suffix}.json"
         output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         summaries.append(
             {

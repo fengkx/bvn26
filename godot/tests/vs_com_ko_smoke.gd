@@ -67,9 +67,9 @@ func _run_match(winning_side: int) -> void:
 			for tick in 10:
 				game._advance_fight()
 		else:
-			assert(game.session.root_label == "地图" and game.opponent_driver == null and game.session.modo == mode)
+			assert(game.session.root_label == "选人画面" and game.opponent_driver == null and game.session.modo == mode)
 	await process_frame
-	assert(game.session.root_label == "地图")
+	assert(game.session.root_label == "选人画面")
 	assert(game.opponent_driver == null and game.ko_timeline == null)
 	assert(game.ko_nextfight_timer == null)
 	game.queue_free()

@@ -1,5 +1,9 @@
 class_name MatchCountdown
-extends Label
+extends Node
+
+signal presentation_changed
+
+var digit_frames := {"十": 1, "个": 1}
 
 var root_service: Callable
 var timer: Timer
@@ -18,8 +22,10 @@ class Adapter extends RefCounted:
 		else: host.root_service.call("write", [key, value])
 	func set_playing(target: String, value: bool) -> void:
 		owner.get_ref().root_service.call("playing", [target, value])
-	func goto_clip(_target: String, _frame: Variant, _playing: bool) -> void:
-		pass # The two compiled digit frames are presented by refresh().
+	func goto_clip(target: String, frame: Variant, playing: bool) -> void:
+		var host: MatchCountdown = owner.get_ref()
+		assert(host.digit_frames.has(target) and int(frame) >= 1 and int(frame) <= 10 and not playing)
+		host.digit_frames[target] = int(frame)
 
 func configure(service: Callable, recorded: bool) -> void:
 	root_service = service
@@ -31,12 +37,6 @@ func configure(service: Callable, recorded: bool) -> void:
 	var limit := int(service.call("read", ["_root.maxtime"]))
 	service.call("write", ["_root.gametime", limit])
 	unlimited = limit == int(spec.unlimited_value) or int(service.call("read", ["_root.modo"])) == int(spec.training_mode)
-	text = "∞" if unlimited else str(limit).pad_zeros(2)
-	position = Vector2(267, 12)
-	size = Vector2(66, 34)
-	horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_theme_font_size_override("font_size", 28)
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if not unlimited:
 		timer = Timer.new()
 		timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -49,7 +49,7 @@ func configure(service: Callable, recorded: bool) -> void:
 func fire() -> void:
 	if unlimited: return
 	controller.time()
-	text = str(int(locals.tm)).pad_zeros(2)
+	presentation_changed.emit()
 
 func stop() -> void:
 	if timer != null: timer.stop()

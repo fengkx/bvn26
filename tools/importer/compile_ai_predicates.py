@@ -245,6 +245,26 @@ def compile_source(source: str, *, player: bool = False) -> str:
     return header + PRELUDE + keys + ''.join(compile_function(name, *funcs[name], player=player) for name in NAMES)
 
 
+def controller_script(bundle: dict, sprite: int | None = None) -> dict:
+    if sprite is None:
+        loads = [re.match(r'frame_1/PlaceObject[23]_(\d+)_1/', s['path'])
+                 for s in bundle['scripts']]
+        ids = {int(m[1]) for m in loads if m}
+        if len(ids) != 1:
+            raise ValueError(f'Expected one root base-form placement, got {ids}')
+        sprite = ids.pop()
+    placed = {int(m[1]) for s in bundle['scripts']
+              if (m := re.match(rf'DefineSprite_{sprite}/frame_\d+/PlaceObject[23]_(\d+)_', s['path']))}
+    candidates = [s for s in bundle['scripts']
+                  if (m := re.fullmatch(r'DefineSprite_(\d+)/frame_1/DoAction.as', s['path']))
+                  and int(m[1]) in placed
+                  and 'function gameRunning()' in s['source']
+                  and 'function moveLeft()' in s['source']]
+    if len(candidates) != 1:
+        raise ValueError(f'Expected one placed input controller, got {len(candidates)}')
+    return candidates[0]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--bundle', type=Path, default=ROOT / 'scripts/fighter/yihu.json')
@@ -253,7 +273,7 @@ def main() -> None:
     bundle = json.loads(args.bundle.read_text())
     if hashlib.sha256((ROOT / bundle['game_file']).read_bytes()).hexdigest() != bundle['swf_sha256']:
         raise ValueError('Retained source SWF hash mismatch')
-    source = next(s['source'] for s in bundle['scripts'] if s['path'] == 'DefineSprite_16/frame_1/DoAction.as')
+    source = controller_script(bundle)['source']
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(compile_source(source))
     print(json.dumps({'functions': len(NAMES), 'output': str(args.output)}))

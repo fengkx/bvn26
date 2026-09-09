@@ -967,7 +967,7 @@ def build_model(
             for script in scripts
             if script["action"] == label
             and script["kind"] == "clip_action"
-            and "nornalhit(true)" in script["source"]
+            and re.search(r"\bnornalhit\((?:true)?\)", script["source"])
             and any(match["label"] == next_label for match in GOTO.finditer(script["source"]))
         ]
         if len(candidates) != 1:

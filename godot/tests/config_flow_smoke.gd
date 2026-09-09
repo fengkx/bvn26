@@ -56,24 +56,34 @@ func _run() -> void:
 	game._enter_current_fight(2)
 	assert(game.naruto.health == 2000 and game.ichigo.health == 2000)
 	assert(game.ichigo.ai_random_clock.difficulty == 4)
-	assert(game.countdown.text == "30")
+	assert(game.countdown.digit_frames == {"十": 1, "个": 1})
+	assert(game.health_hud.countdown == game.countdown)
 	game.naruto.root_zhanting = false
 	game.ichigo.root_zhanting = false
 	game.countdown.fire()
 	assert(game.ko_state["_root.gametime"] == 29)
+	assert(game.countdown.digit_frames == {"十": 3, "个": 10})
 	game.naruto.root_zhanting = true
 	game.countdown.fire()
 	assert(game.ko_state["_root.gametime"] == 29)
+	assert(game.countdown.digit_frames == {"十": 3, "个": 10})
+	game.naruto.root_zhanting = false
+	for remaining in range(28, -1, -1):
+		game.countdown.fire()
+		assert(game.countdown.digit_frames == {"十": remaining / 10 + 1, "个": remaining % 10 + 1})
+	assert(game.ko_state["_root.to"])
 	game._goto_menu()
 	game.session.maxtime = 100
 	game._enter_current_fight(2)
 	assert(game.countdown.unlimited and game.countdown.timer == null)
+	assert(not game.countdown is CanvasItem)
 	game.countdown.fire()
 	assert(game.ko_state["_root.gametime"] == 100)
 	game._goto_menu()
 	game.session.maxtime = 30
 	game._enter_current_fight(4)
 	assert(game.countdown.unlimited and game.countdown.timer == null)
+	assert(not game.countdown is CanvasItem)
 	game._goto_menu()
 	game.queue_free()
 	await process_frame

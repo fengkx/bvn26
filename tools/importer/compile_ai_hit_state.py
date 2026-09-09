@@ -67,7 +67,7 @@ def compile_transfer(bundle: dict) -> tuple[str, dict]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--fighter', choices=('minren', 'yihu'), required=True)
+    parser.add_argument('--fighter', required=True)
     args = parser.parse_args()
     bundle = json.loads((ROOT / f'scripts/fighter/{args.fighter}.json').read_text())
     native, metadata = compile_transfer(bundle)

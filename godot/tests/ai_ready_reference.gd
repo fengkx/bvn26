@@ -17,6 +17,7 @@ func _run() -> void:
 	root.add_child(game)
 	game.set_physics_process(false)
 	game._on_menu_confirmed("vs_com")
+	game._on_characters_confirmed(["鸣人", "一护"], ["我爱罗", "魂"])
 	game._on_map_confirmed("现世")
 	# This probes the Ready boundary, not full random/timer replay. The retained
 	# original has no predicate calls before Ready. Do not synthesize a tape.
