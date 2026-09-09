@@ -101,7 +101,7 @@ func compare_frames(fighters: Array[FighterRuntime], tick: int, original: Dictio
 		return
 	for i in 2:
 		var fighter := fighters[i]
-		var geometry := {"x": float(fighter.position.x), "y": float(fighter.position.y),
+		var geometry := {"x": fighter.source_x, "y": fighter.source_y,
 			"xscale": float(fighter.scale.x * 100)}
 		var geometry_delta := {}
 		for field: String in geometry:

@@ -1,0 +1,159 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "moves-minren-72-jump-neutral",
+  "input_delivery": {
+    "status": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "w": "87",
+      "a": "65",
+      "l": "76",
+      "上箭": "38",
+      "下箭": "40",
+      "左箭": "37",
+      "右箭": "39",
+      "N1": "97",
+      "N2": "98",
+      "N3": "99",
+      "N4": "100",
+      "N5": "101",
+      "N6": "102",
+      "right": "68",
+      "attack": "74",
+      "down": "83",
+      "ranged": "85",
+      "jump": "75",
+      "special": "73",
+      "summon": "79"
+    },
+    "reads": 9570,
+    "pressed_reads": {
+      "_level0.game.p1.mc:75": 2
+    }
+  },
+  "events": 12183,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "input_next_display": 767,
+    "initCtrl": 6,
+    "frame_state_enter": 102,
+    "intro_body_enter": 203,
+    "intro_body_exit": 203,
+    "frame_state_exit": 102,
+    "random": 1,
+    "intro_poll": 22,
+    "intro_poll_state": 22,
+    "state": 1172,
+    "intro_step": 5,
+    "intro_goto_before": 2,
+    "intro_goto_return": 2,
+    "ready": 1,
+    "key_read": 9570,
+    "done": 1
+  },
+  "frames_after_ready": 300,
+  "termination_policy": "first_done_with_retained_async_tail",
+  "ready": {
+    "run_id": "moves-minren-72-jump-neutral",
+    "sequence": 1453,
+    "time_ms": 26820,
+    "display_tick": 467,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "moves-minren-72-jump-neutral",
+      "sequence": 4,
+      "time_ms": 11208,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "moves-minren-72-jump-neutral",
+      "sequence": 8,
+      "time_ms": 11243,
+      "display_tick": 2,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "moves-minren-72-jump-neutral",
+      "sequence": 18,
+      "time_ms": 11419,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "moves-minren-72-jump-neutral",
+      "sequence": 19,
+      "time_ms": 11419,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "moves-minren-72-jump-neutral",
+      "sequence": 20,
+      "time_ms": 11419,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "moves-minren-72-jump-neutral",
+      "sequence": 21,
+      "time_ms": 11419,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": null,
+  "samples_before_ready": 0,
+  "sample_intervals_ms": {},
+  "last_states": [
+    {
+      "run_id": "moves-minren-72-jump-neutral",
+      "sequence": 12181,
+      "time_ms": 37089,
+      "display_tick": 767,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p1,2,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "moves-minren-72-jump-neutral",
+      "sequence": 12182,
+      "time_ms": 37089,
+      "display_tick": 767,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p2,7,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "4f404ddf11116049e9e4d4fc6f5aba396a2a60ca25bb44e6642e3b95e034d899",
+  "retained_sha256": {
+    "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "instrumentation.diff": "790ab96835254a0d5190f0a053732ec994a8bcbdbbd664a25fa17f97e13be4c1",
+    "events.jsonl": "9cef03e649d1f91458ecf34527220d9218a35781fcdcfd7b2c74f77c3f3638f9",
+    "random-tape.json": "9cf7d5757e313d712f2f810738a5a8df7ee6b806a56644fce8944c4a3502dbdb",
+    "build.json": "cd3fc061a33832d4be97641d82135ecb6965554993bb2a10a376b71f09fff3fa"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

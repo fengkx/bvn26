@@ -1,0 +1,44 @@
+{
+  "id": "minren-72-jump-neutral",
+  "fighter": "minren",
+  "slot": "p1",
+  "label": "跳2",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 20,
+      "end": 23
+    }
+  ],
+  "target_frames": [
+    72,
+    88
+  ],
+  "source_dispatch": [
+    "onJumping"
+  ],
+  "status": "not_run"
+}

@@ -26,7 +26,11 @@ def main():
     parser.add_argument('--capture-runner',type=Path,required=True)
     parser.add_argument('--scenario',action='append')
     parser.add_argument('--limit',type=int)
+    parser.add_argument('--allow-window-activation', action='store_true',
+                        help='Explicitly allow native Flash to raise windows')
     args=parser.parse_args()
+    if not args.allow_window_activation:
+        parser.error('Flash sampling is disabled: the player can raise windows despite background launch')
     template=json.loads((args.probe/'build.json').read_text())
     if not template.get('dynamic_move_case'): raise ValueError('Dynamic fixture probe required')
     args.output.mkdir(parents=True,exist_ok=True)
@@ -38,7 +42,8 @@ def main():
         folder=args.output/case['id']
         if folder.exists(): raise ValueError(f'Reference must not be overwritten: {folder}')
         scratch=args.output/('build-'+case['id']);scratch.mkdir()
-        run_id='moves-'+case['id']
+        run_tag = hashlib.sha256(str(args.output.resolve()).encode()).hexdigest()[:10]
+        run_id='moves-'+case['id']+'-'+run_tag
         fixture=encode_case(case,run_id)
         (args.probe/'case.txt').write_text(fixture)
         (scratch/'case.txt').write_text(fixture)
@@ -48,7 +53,7 @@ def main():
         (scratch/'build.json').write_text(json.dumps(build,ensure_ascii=False,indent=2)+'\n')
         capture=scratch/'original.log'
         commands=[
-            [sys.executable,str(args.capture_runner),str(scratch),str(capture)],
+            [sys.executable,str(args.capture_runner),str(scratch),str(capture),'--allow-window-activation'],
             [sys.executable,str(ROOT/'tools/probes/collect_ai_reference.py'),'--build',str(scratch),'--capture',str(capture),'--output',str(folder),'--retain-post-done-frames'],
         ]
         failure=None
@@ -71,7 +76,7 @@ def main():
             result['target_seen']=any(r['slot']==case['slot'] and frames[0] is not None and frames[0]<=r['frame']<=frames[1] for r in rows)
             expected=source_rows(folder/'events.jsonl')
             result['source_target_seen']=any(r['slot']==case['slot'] and frames[0] is not None and frames[0]<=r['frame']<=frames[1] for r in expected)
-            if result['status']=='matched' and not result['source_target_seen'] and case['scenario']!='energy_below':
+            if result['status']=='matched' and not result['source_target_seen'] and case['scenario']!='energy_below' and frames[0] is not None:
                 result['status']='unexercised'
             result['id']=case['id']
             (folder/'comparison.json').write_text(json.dumps(result,indent=2)+'\n')

@@ -129,9 +129,9 @@ class Adapter extends RefCounted:
 		var host: AiControllerHost = host_ref.get_ref()
 		if axis == "moveX":
 			# Wrapper moveX only adds; BODY and GameWorld own wall clamping.
-			host.fighter.position.x += float(value) * host.fighter.facing
+			host.fighter.source_x += float(value) * host.fighter.facing
 		elif axis == "moveY":
-			host.fighter.position.y += float(value)
+			host.fighter.source_y += float(value)
 		else:
 			assert(false, "Unknown source movement: " + axis)
 
@@ -180,7 +180,10 @@ func paths_by_descending_depth() -> Array:
 
 
 func goto_label(label: String, play: bool) -> void:
-	assert(not fighter.action_range(label).is_empty(), "Missing source label: " + label)
+	# Shared controls can reference labels absent from a particular source form.
+	# Native Flash leaves the playhead unchanged for those authored requests.
+	if fighter.action_range(label).is_empty():
+		return
 	fighter.goto_ai_label(label, play)
 	# Display-list changes precede the generated caller's survival check.
 	# FighterRuntime queues target state writes for its frame-action phase.

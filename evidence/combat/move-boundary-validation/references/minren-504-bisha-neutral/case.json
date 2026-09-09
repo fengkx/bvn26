@@ -1,0 +1,37 @@
+{
+  "id": "minren-504-bisha-neutral",
+  "fighter": "minren",
+  "slot": "p1",
+  "label": "必杀",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "special"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    504,
+    542
+  ],
+  "source_dispatch": [
+    "doAllAction",
+    "onDashing"
+  ],
+  "status": "not_run"
+}

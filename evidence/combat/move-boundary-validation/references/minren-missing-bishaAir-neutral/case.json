@@ -1,0 +1,45 @@
+{
+  "id": "minren-missing-bishaAir-neutral",
+  "fighter": "minren",
+  "slot": "p1",
+  "label": "空中必杀",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "special"
+      ],
+      "start": 20,
+      "end": 23
+    }
+  ],
+  "target_frames": [
+    null,
+    null
+  ],
+  "source_dispatch": [
+    "onJumping",
+    "onDashing"
+  ],
+  "status": "not_run"
+}

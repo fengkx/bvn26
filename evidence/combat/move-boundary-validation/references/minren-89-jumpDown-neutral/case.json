@@ -1,0 +1,45 @@
+{
+  "id": "minren-89-jumpDown-neutral",
+  "fighter": "minren",
+  "slot": "p1",
+  "label": "落2",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "jump"
+      ],
+      "start": 20,
+      "end": 23
+    }
+  ],
+  "target_frames": [
+    89,
+    114
+  ],
+  "source_dispatch": [
+    "doDropDown"
+  ],
+  "status": "not_run"
+}

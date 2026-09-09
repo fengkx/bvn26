@@ -1,0 +1,39 @@
+{
+  "id": "yihu-582-bishaSuper-neutral",
+  "fighter": "yihu",
+  "slot": "p2",
+  "label": "超必杀",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p2",
+      "keys": [
+        "down",
+        "special"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    582,
+    651
+  ],
+  "source_dispatch": [
+    "doAllAction",
+    "onDefence",
+    "onDashing"
+  ],
+  "status": "not_run"
+}

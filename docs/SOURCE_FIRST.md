@@ -120,3 +120,23 @@ Godot `combat_smoke.gd` 与 `tools/tests` 的断言对象是源行为，不是�
 
 
 生产战斗不得再按 AI/双人/练习选择不同的结算器或调度器。`useAI` 只选择原版输入分支；模式特例必须能指到源 `modo` 条件。共享战斗更改须运行 `tools/test_shared_modes.py`，并保留 Vs Com 原版回放；墙钟 `setInterval` 必须记录回调时序，不能换成固定帧数再宣称等价。
+
+### Full move/boundary regression lessons (2026-09-09)
+
+- A command entry and matching final HP do not prove its continuation. Compile
+  complete conditional frame blocks and reject unrecognized conditional gotos;
+  Naruto frame 538 previously disappeared from source execution.
+- Separate source scalar coordinates from float32 render vectors. Native Flash
+  truncates each coordinate assignment to twips; recovering an authored twip from
+  its render projection is a different operation. Re-run platform landing and
+  long AI tapes after such a shared change, not only the originally failing move.
+- An absent source label can be referenced by a common controller. Preserve the
+  original no-op, rather than inventing a move or throwing a runtime assertion.
+- Record case execution, actual target/trigger coverage, and original parity
+  separately. A process exit code or an `_OK` line cannot override SCRIPT ERROR.
+  Preserve red traces; never round comparator output to hide a coordinate defect.
+- Native Flash repeatedly foregrounded its window despite windowed mode and
+  `open -g`. Do not claim that flag guarantees background operation. The user
+  requires probes not to cover their work. Visible capture is disabled by default
+  until a nonactivating backend is validated; use retained original traces and
+  headless Godot checks meanwhile.

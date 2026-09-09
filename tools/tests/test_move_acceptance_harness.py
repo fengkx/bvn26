@@ -40,6 +40,26 @@ class MoveCasesTest(unittest.TestCase):
                     self.assertIn(f'aiHeld[{name}] = true',static)
                     self.assertIn(f'{item["start"]}:{item["end"]}:{name}',dynamic['windows'][0])
 
+    def test_conditional_jump_cannot_be_silently_dropped(self):
+        compiler_path = PROBES.parent / 'importer/compile_ai_context.py'
+        spec = importlib.util.spec_from_file_location('context_for_acceptance_test', compiler_path)
+        compiler = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(compiler)
+        root = PROBES.parents[1]
+        bundle = json.loads((root / 'scripts/fighter/minren.json').read_text())
+        timeline = json.loads((root / 'data/slices/minren-base.timeline.json').read_text())
+        compiled = compiler.compile_context(bundle, timeline)
+        event = compiled['frame_calls']['538'][0]
+        self.assertEqual(event['conditions'], [
+            {'field':'opponent_hp','operator':'gt','value':0},
+            {'field':'opponent_action','operator':'eq','value':-1}])
+        self.assertEqual(event['calls'], [
+            {'op':'timeline_goto','label':'必杀1','play':False}, {'op':'timeline_play'}])
+        script = next(s for s in bundle['scripts'] if s['path']=='DefineSprite_764/frame_538/DoAction.as')
+        script['source'] = script['source'].replace(' && ', ' || ')
+        with self.assertRaisesRegex(ValueError, 'Uncompiled conditional frame jump'):
+            compiler.compile_context(bundle, timeline)
+
     def test_empty_reference_is_not_pass(self):
         with tempfile.TemporaryDirectory() as directory:
             events=Path(directory)/'events';native=Path(directory)/'native'

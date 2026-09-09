@@ -185,6 +185,18 @@ func _external(name: String, args: Array) -> Variant:
 
 func _frame_service(event: Dictionary) -> void:
 	match event["op"]:
+		"conditional_frame":
+			for condition in event["conditions"]:
+				var value: Variant = fighter.ai_predicate_context.read_field(condition["field"])
+				match condition["operator"]:
+					"gt":
+						if value == null or not value > condition["value"]: return
+					"eq":
+						if value != condition["value"]: return
+					_: assert(false, "Uncompiled frame condition")
+			for call in event["calls"]:
+				_frame_service(call)
+			return
 		"color_reset":
 			fighter.reset_ai_colors()
 			return

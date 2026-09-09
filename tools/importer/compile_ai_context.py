@@ -35,6 +35,22 @@ def writes(source: str, path: str, *, function: bool=False) -> list[dict]:
     return result
 
 
+
+def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
+    # Admit the complete source block, not a guessed label/frame exception.
+    match = re.fullmatch(
+        r'if\(_root\.game\["p" \+ pn\]\.mc\.hp > (-?\d+) && '
+        r'_root\.game\["p" \+ pn\]\.mc\.动作 == (-?\d+)\)\s*'
+        r'\{\s*gotoAnd(Play|Stop)\("([^"\n]+)"\);\s*play\(\);\s*\}\s*', text)
+    if not match:
+        return []
+    return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+             'conditions': [{'field': 'opponent_hp', 'operator': 'gt', 'value': int(match[1])},
+                            {'field': 'opponent_action', 'operator': 'eq', 'value': int(match[2])}],
+             'calls': [{'op': 'timeline_goto', 'label': match[4], 'play': match[3] == 'Play'},
+                       {'op': 'timeline_play'}]}]
+
+
 def compile_context(bundle: dict,timeline: dict) -> dict:
     if hashlib.sha256((ROOT/bundle['game_file']).read_bytes()).hexdigest()!=bundle['swf_sha256']:
         raise ValueError('Retained source hash mismatch')
@@ -100,7 +116,9 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         if frame['frame'] == 1 and any(event['field'] in ('inited', '_lastX') for event in events):
             raise ValueError('First-init projection conflicts with unconditional frame state writes')
         if events:frame_writes[str(frame['frame'])]=events
-        calls=[]
+        calls=conditional_frame_calls(text, path, frame["frame"])
+        if frame['frame'] != 1 and re.search(r'\bif\(', text) and 'gotoAnd' in text and not calls:
+            raise ValueError('Uncompiled conditional frame jump: ' + path)
         for number,line in enumerate(text.replace('\r\n','\n').splitlines(),1):
             match=re.fullmatch(r'_root\.(bsd|cbsd|bsw|cbsw)\(pn\);',line)
             face=re.fullmatch(r'_root\.showFace\(pn,"([^"]+)"\);',line)

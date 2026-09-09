@@ -11,19 +11,26 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
-	fixture = JSON.parse_string(FileAccess.get_file_as_string(args[0]))
+	if args[0] == "--batch":
+		var paths: Array = JSON.parse_string(FileAccess.get_file_as_string(args[1]))
+		for path in paths:
+			var spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+			await _run_case(path, args[2].path_join(str(spec.id) + ".json"))
+		print("MOVE_CASE_BATCH_OK ", paths.size())
+	else:
+		await _run_case(args[0], args[1])
+	quit()
+
+
+func _run_case(fixture_path: String, output_path: String) -> void:
+	rows = []
+	recovery_events = {}
+	fixture = JSON.parse_string(FileAccess.get_file_as_string(fixture_path))
 	mode = 3
 	game = load("res://main.tscn").instantiate()
 	root.add_child(game)
 	game.set_physics_process(false)
 	game.recorded_training_timers = true
-	if args.size() > 2:
-		for line in FileAccess.get_file_as_string(args[2]).split("\n", false):
-			var event: Dictionary = JSON.parse_string(line)
-			if event.kind != "training_recovery" or int(event.fight_tick) < 0: continue
-			var tick := int(event.fight_tick) + 1
-			if not recovery_events.has(tick): recovery_events[tick] = []
-			recovery_events[tick].append({"kind": "training_recovery", "phase": "after_actor_advance"})
 	game._enter_current_fight(mode)
 	for tick in 700:
 		game._advance_fight([], func() -> bool:
@@ -35,12 +42,11 @@ func _run() -> void:
 		game._advance_fight(recovery_events.get(tick, []), func() -> bool:
 			_observe(tick)
 			return false)
-	FileAccess.open(args[1], FileAccess.WRITE).store_string(JSON.stringify(rows))
+	FileAccess.open(output_path, FileAccess.WRITE).store_string(JSON.stringify(rows))
 	game._goto_menu()
 	game.queue_free()
 	await process_frame
-	print("MOVE_CASE_REFERENCE_OK")
-	quit()
+	print("MOVE_CASE_REFERENCE_OK ", fixture.id)
 
 func _observe(tick: int) -> void:
 	if tick == 0:
@@ -51,7 +57,7 @@ func _observe(tick: int) -> void:
 			actor.energy = setup.energy
 	for actor in [game.naruto, game.ichigo]:
 		rows.append({"tick": tick, "slot": actor.player_slot, "frame": actor.current_source_frame(),
-			"x": actor.position.x, "y": actor.position.y, "xscale": actor.scale.x * 100,
+			"x": actor.source_x, "y": actor.source_y, "xscale": actor.scale.x * 100,
 			"action": actor.ai_source_state.read_field("动作"), "hp": actor.health,
 			"ql": actor.energy, "sw": actor.sw, "touch": actor.ai_source_state.read_field("touch"),
 			"touchFloor": actor.ai_source_state.read_field("touchFloor"), "hits": actor.hits,

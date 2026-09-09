@@ -1,5 +1,6 @@
 """Compare both source fighters at every root observation, without tolerances."""
 import argparse
+import gzip
 import json
 from pathlib import Path
 
@@ -9,9 +10,16 @@ FIELDS = ['frame', 'x', 'y', 'xscale', 'action', 'hp', 'ql', 'sw', 'touch',
           'touchFloor', 'hits', 'paused', 'hstm', 'hurtSkling']
 
 
+def read_text(path: Path) -> str:
+    if path.suffix == '.gz':
+        with gzip.open(path, 'rt', encoding='utf-8') as stream:
+            return stream.read()
+    return path.read_text()
+
+
 def source_rows(events: Path) -> list[dict]:
     expected = []
-    for line in events.read_text().splitlines():
+    for line in read_text(events).splitlines():
         event = json.loads(line)
         if event['kind'] != 'state' or event['fight_tick'] < 0:
             continue
@@ -28,7 +36,7 @@ def source_rows(events: Path) -> list[dict]:
 
 def compare(events: Path, native: Path) -> dict:
     expected = source_rows(events)
-    actual = json.loads(native.read_text())
+    actual = json.loads(read_text(native))
     differences = []
     for original, port in zip(expected, actual):
         if set(port) != set(original):

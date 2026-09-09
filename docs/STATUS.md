@@ -441,3 +441,8 @@ Four native Flash player direction-dash fixtures match 324 root snapshots; two a
 ### Shared source combat in all local modes (2026-09-09)
 
 The production legacy PvP/training combat branch is removed. All three modes now use the same compiled actor callbacks, receiver chain, collision services and deferred queue; player/AI input is selected within the original predicates. Training recovery now uses the source 1000 ms wall-clock interval instead of 30 simulation ticks. PvP and training each match 602 complete actor observations, including exact coordinates; existing r13/r14/r15 replays still match. Mode lifecycle and PvP KO checks cover input ownership, no training KO, timer disposal and returning to the same mode. These close the documented mode-path gap, not every remaining move/character/browser acceptance item. See [shared-mode evidence](../evidence/combat/shared-mode-validation/README.md).
+
+
+### Move matrix and non-interfering capture requirement (2026-09-09)
+
+The two-base-form matrix now runs 356 native scenarios without script assertions. Of 43 complete retained original comparisons, 38 match and five still differ at form replacement; one additional capture is invalid. Source coordinate storage, Naruto normal-I conditional continuation, and absent aerial-special labels were repaired from source and recordings. The 280 cancel-window edge obligations and other geometry/lifecycle/browser boundaries remain unaccepted. Flash sampling is stopped because windowed/background launch still raises windows; capture is disabled by default. See [move acceptance evidence](../evidence/combat/move-boundary-validation/README.md).

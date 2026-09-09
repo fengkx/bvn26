@@ -1,6 +1,8 @@
 class_name AiBodyContext
 extends AiPredicateContext
 
+const CoordinateStore = preload("res://source_coordinate.gd")
+
 var controller_ref: WeakRef
 var external_call: Callable
 var source_platforms: Dictionary = {}
@@ -52,7 +54,7 @@ func write_field(key: String, value: Variant) -> void:
 		"hp": fighter.health = float(value)
 		"ql": fighter.energy = float(value)
 		"vecx": fighter.body_forward_velocity = float(value)
-		"opponent_x": fighter.opponent.position.x = float(value)
+		"opponent_x": fighter.opponent.source_x = float(value)
 		_:
 			if key in _scalar_fields:
 				fighter.ai_source_state.values[key] = value
@@ -74,9 +76,9 @@ func move_body(other: bool, axis: String, value: Variant) -> void:
 	var target := fighter.opponent if other else fighter
 	assert(target != null)
 	if axis == "moveX":
-		target.position.x += float(value) * target.facing
+		target.source_x += float(value) * target.facing
 	elif axis == "moveY":
-		target.position.y += float(value)
+		target.source_y += float(value)
 	else:
 		assert(false, "Unknown BODY movement: " + axis)
 
@@ -89,8 +91,8 @@ func platform_field(index: Variant, key: String) -> Variant:
 	assert(source_platforms.has(int(index)))
 	var bounds: Rect2 = source_platforms[int(index)]
 	match key:
-		"x": return bounds.position.x
-		"y": return bounds.position.y
+		"x": return CoordinateStore.from_projection(bounds.position.x)
+		"y": return CoordinateStore.from_projection(bounds.position.y)
 		"width": return bounds.size.x
 	assert(false, "Unknown platform field: " + key)
 	return null

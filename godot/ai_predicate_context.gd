@@ -14,15 +14,16 @@ func _init(owner_fighter: FighterRuntime) -> void:
 func read_field(key: String) -> Variant:
 	match key:
 		"useAI": return use_ai
-		"x": return fighter.position.x
-		"y": return fighter.position.y
+		"x": return fighter.source_x
+		"y": return fighter.source_y
 		"scale_X": return fighter.facing
 		"xscale": return fighter.scale.x * 100.0
 		"ql": return fighter.energy
 		"root_paused": return fighter.root_zhanting
 		"gravity": return gravity
-		"opponent_x": return fighter.opponent.position.x if fighter.opponent != null else null
-		"opponent_y": return fighter.opponent.position.y if fighter.opponent != null else null
+		"opponent_x": return fighter.opponent.source_x if fighter.opponent != null else null
+		"opponent_y": return fighter.opponent.source_y if fighter.opponent != null else null
+		"opponent_hp": return fighter.opponent.health if fighter.opponent != null else null
 		"opponent_action":
 			return fighter.opponent.ai_source_state.read_field("动作") if fighter.opponent != null else null
 		"opponent_sw":
@@ -36,8 +37,8 @@ func read_field(key: String) -> Variant:
 
 func write_field(key: String, value: Variant) -> void:
 	match key:
-		"x": fighter.position.x = float(value)
-		"y": fighter.position.y = float(value)
+		"x": fighter.source_x = float(value)
+		"y": fighter.source_y = float(value)
 		"scale_X": fighter.facing = int(value)
 		"xscale": fighter.scale.x = float(value) / 100.0
 		"jumped", "fall", "khit", "touch": fighter.ai_source_state.values[key] = value

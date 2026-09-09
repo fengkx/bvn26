@@ -1058,6 +1058,36 @@
         "frame": 530
       }
     ],
+    "538": [
+      {
+        "op": "conditional_frame",
+        "path": "DefineSprite_764/frame_538/DoAction.as",
+        "line": 1,
+        "frame": 538,
+        "conditions": [
+          {
+            "field": "opponent_hp",
+            "operator": "gt",
+            "value": 0
+          },
+          {
+            "field": "opponent_action",
+            "operator": "eq",
+            "value": -1
+          }
+        ],
+        "calls": [
+          {
+            "op": "timeline_goto",
+            "label": "必杀1",
+            "play": false
+          },
+          {
+            "op": "timeline_play"
+          }
+        ]
+      }
+    ],
     "542": [
       {
         "op": "timeline_goto",

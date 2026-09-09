@@ -50,7 +50,7 @@ func _observe(tick: int) -> void:
 		game.ichigo.energy = 300
 	for actor in [game.naruto, game.ichigo]:
 		rows.append({"tick": tick, "slot": actor.player_slot, "frame": actor.current_source_frame(),
-			"x": actor.position.x, "y": actor.position.y, "xscale": actor.scale.x * 100,
+			"x": actor.source_x, "y": actor.source_y, "xscale": actor.scale.x * 100,
 			"action": actor.ai_source_state.read_field("动作"), "hp": actor.health,
 			"ql": actor.energy, "sw": actor.sw, "touch": actor.ai_source_state.read_field("touch"),
 			"touchFloor": actor.ai_source_state.read_field("touchFloor"), "hits": actor.hits,

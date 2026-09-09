@@ -1,7 +1,42 @@
 class_name FighterRuntime
 extends TimelinePreview
 
+const SourceCoordinateStore = preload("res://source_coordinate.gd")
+
 var ai_timeline_controlled: bool = false
+
+# Keep source arithmetic out of Node2D's float32 render projection.
+var _source_x: float = 0.0
+var _source_y: float = 0.0
+var _source_projection := Vector2.INF
+var source_x: float:
+	get:
+		_sync_source_position()
+		return _source_x
+	set(value):
+		_sync_source_position()
+		_source_x = SourceCoordinateStore.store(value)
+		position.x = _source_x
+		_source_projection = position
+var source_y: float:
+	get:
+		_sync_source_position()
+		return _source_y
+	set(value):
+		_sync_source_position()
+		_source_y = SourceCoordinateStore.store(value)
+		position.y = _source_y
+		_source_projection = position
+
+
+func _sync_source_position() -> void:
+	# Scene setup and retained legacy callers can still set Node2D.position.
+	if position.x != _source_projection.x:
+		_source_x = SourceCoordinateStore.from_projection(float(position.x))
+	if position.y != _source_projection.y:
+		_source_y = SourceCoordinateStore.from_projection(float(position.y))
+	_source_projection = position
+
 var ai_color_state := AiColorState.new()
 var ai_color_operations: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/hit_receive.json"))["hit_fx"]["color_effects"]
 signal ai_frame_service_requested(event: Dictionary)
@@ -1426,14 +1461,14 @@ func _apply_body_warps() -> void:
 		var body := opponent.instance_global_bounds("bdmn")
 		var body_size := body.size if body.has_area() else Vector2.ZERO
 		if bool(event.get("place_x", true)):
-			position.x = (
-				opponent.position.x
+			source_x = (
+				opponent.source_x
 				+ float(branch.get("x_pixels", 0.0))
 				+ body_size.x * float(branch.get("x_bdmn_width", 0.0))
 			)
 		if bool(event.get("place_y", false)):
-			position.y = (
-				opponent.position.y
+			source_y = (
+				opponent.source_y
 				+ float(event.get("y_pixels", 0.0))
 				+ body_size.y * float(event.get("y_bdmn_height", 0.0))
 			)

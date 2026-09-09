@@ -25,6 +25,8 @@ def audit(cases, native_results, references):
                     status = 'matched_negative_case'
                 else:
                     status = 'unexercised'
+        if local and not local['executed']:
+            status = 'native_failed'
         rows.append({'id': case['id'], 'fighter': case['fighter'], 'label': case['label'],
                      'scenario': case['scenario'], 'status': status,
                      'native': local, 'original': original})
