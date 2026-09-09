@@ -115,7 +115,7 @@ func attack_contact(defender: FighterRuntime) -> Dictionary:
 		return {}
 	for instance_name in _combat.get("attacks", {}).keys():
 		var attack_bounds := instance_global_bounds(instance_name)
-		if attack_bounds.has_area() and body.intersects(attack_bounds):
+		if attack_bounds.has_area() and SourceHitTest.intersects(body, attack_bounds):
 			var attack: Dictionary = _combat["attacks"][instance_name].duplicate(true)
 			attack["instance_name"] = instance_name
 			return attack

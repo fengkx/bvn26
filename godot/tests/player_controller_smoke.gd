@@ -75,6 +75,20 @@ func _run() -> void:
 	driver.prepare_callbacks()
 	registry.dispatch(51)
 	assert(player.instance_local_offset("zh1atm") == Vector2(16, 0))
+	# Source rush controller is retained through frame 31; a second L during
+	# that interval cannot restart it. A new press after frame 35 can.
+	player.ai_source_state.values["speed"] = 8
+	player.position = Vector2(200, -25)
+	player.set_facing(1)
+	player.goto_ai_label("站立", true)
+	for tick in range(60, 92):
+		_step(driver, registry, tick, {"dash": tick in [60, 63, 76, 79]})
+		var phase := (tick - 60) % 16
+		assert(player.current_source_frame() == (20 + phase if phase < 15 else 1),
+			"Repeated dash input must respect the source controller lifetime")
+		assert(player.instance_global_bounds("bdmn").has_area() == (phase >= 10),
+			"Naruto receiver must return at source frame 30 on both dashes")
+	assert(player.position.x == 600, "Two source rushes each move speed * 2.5 ten times")
 	driver.stop()
 	assert(registry.size() == 0 and not player.ai_timeline_controlled)
 	driver.queue_free()

@@ -36,7 +36,7 @@ func attack_contact(defender: FighterRuntime) -> Dictionary:
 		return {}
 	var attack_bounds := instance_global_bounds(_spec["hit_instance"])
 	var body_bounds := defender.instance_global_bounds("bdmn")
-	if not attack_bounds.has_area() or not body_bounds.has_area() or not attack_bounds.intersects(body_bounds):
+	if not attack_bounds.has_area() or not body_bounds.has_area() or not SourceHitTest.intersects(attack_bounds, body_bounds):
 		return {}
 	# getStgHitObj returns the stored packet on every eligible lookup. There is
 	# no per-instance consumed flag here; receiver clip lifetime controls calls.

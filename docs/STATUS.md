@@ -415,3 +415,14 @@ all six guarded-super fixtures match 1800 retained snapshots. Eight native
 checks, 29 Python checks, and the r13/r14/r15 observed-field match replays pass.
 See [fix evidence](../evidence/combat/super-guard-fix/README.md). Full match
 geometry, visual/audio and Web parity remain pending.
+
+### Dash contact boundaries (2026-09-09)
+
+Native Flash proves edge/corner contact is a MovieClip hit, while a one-twip
+gap is not. The shared port operation now uses inclusive bounds across fighters,
+helpers, stage hits and AI. A late Naruto Up+I rush case previously missed its
+second 40 HP; all 241 observed snapshots now match. Three calibrated scenarios
+match 723 snapshots, with the helper activation observer phase reported
+separately. Repeated player dash presses and run visuals remain covered. See
+[dash evidence](../evidence/combat/dash-validation/README.md). Full geometry,
+lifecycle, browser and all-character parity remain pending.

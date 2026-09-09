@@ -538,7 +538,7 @@ func resolve_body_collision(other: FighterRuntime) -> void:
 		forward_pressure >= 0.0
 		and body.has_area()
 		and other_body.has_area()
-		and body.intersects(other_body)
+		and SourceHitTest.intersects(body, other_body)
 	):
 		# The original injects ten pixels of pressure when two idle bodies are
 		# already touching, so accidental overlap resolves instead of persisting.
@@ -575,7 +575,7 @@ func attack_contact(defender: FighterRuntime, source_receiver: bool = false) -> 
 		if attack.is_empty():
 			continue
 		var attack_bounds := source_projectile_target_bounds(instance_name) if source_receiver else instance_global_bounds(instance_name)
-		if attack_bounds.has_area() and body.intersects(attack_bounds):
+		if attack_bounds.has_area() and SourceHitTest.intersects(body, attack_bounds):
 			return attack
 	return {}
 
@@ -1117,7 +1117,7 @@ func _motion_contact_hit(window: Dictionary) -> bool:
 			return false
 		if instance_name != "":
 			var attack_bounds := instance_global_bounds(instance_name)
-			return attack_bounds.has_area() and body.intersects(attack_bounds)
+			return attack_bounds.has_area() and SourceHitTest.intersects(body, attack_bounds)
 		return not attack_contact(opponent).is_empty()
 	return instance_name != "" and _hit_instances.has(instance_name)
 
@@ -1257,7 +1257,7 @@ func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> 
 		for query: Dictionary in projectile["collision_queries"]:
 			var bounds := instance_global_bounds(instance_name) if query["receiver"] == "self" else child_instance_global_bounds(instance_name, query["receiver"])
 			var target := opponent.source_projectile_target_bounds(query["target"])
-			if bounds.has_area() and target.has_area() and bounds.intersects(target):
+			if bounds.has_area() and target.has_area() and SourceHitTest.intersects(bounds, target):
 				return true
 		return false
 	if _hit_instances.has(instance_name):
@@ -1266,7 +1266,7 @@ func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> 
 		return false
 	var body := opponent.instance_global_bounds("bdmn")
 	var attack_bounds := instance_global_bounds(instance_name)
-	return body.has_area() and attack_bounds.has_area() and body.intersects(attack_bounds)
+	return body.has_area() and attack_bounds.has_area() and SourceHitTest.intersects(body, attack_bounds)
 
 
 func source_projectile_target_bounds(source_name: String) -> Rect2:

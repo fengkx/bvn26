@@ -25,6 +25,12 @@ func _run() -> void:
 		defender.position += helper.instance_global_bounds("atm1").get_center() - defender.instance_global_bounds("bdmn").get_center()
 		var first := helper.attack_contact(defender)
 		assert(not first.is_empty())
+		var centered := defender.position
+		defender.position.x += helper.instance_global_bounds("atm1").end.x - defender.instance_global_bounds("bdmn").position.x
+		assert(not helper.attack_contact(defender).is_empty(), "Flash helper hitTest includes touching edges")
+		defender.position.x += 0.05
+		assert(helper.attack_contact(defender).is_empty(), "A one-twip gap must not be padded into a helper hit")
+		defender.position = centered
 		helper.apply_attack_contact(first, defender)
 		# The receiver is absent at 738-740; its retained sand must not be consumed.
 		assert(helper.attack_contact(defender).is_empty())
@@ -62,6 +68,12 @@ func _run() -> void:
 		defender.position += helper.instance_global_bounds("atm1").get_center() - defender.instance_global_bounds("bdmn").get_center()
 		var first := helper.attack_contact(defender)
 		assert(not first.is_empty() and first["damage"] == 10)
+		var centered := defender.position
+		defender.position.x += helper.instance_global_bounds("atm1").end.x - defender.instance_global_bounds("bdmn").position.x
+		assert(not helper.attack_contact(defender).is_empty(), "Flash helper hitTest includes touching edges")
+		defender.position.x += 0.05
+		assert(helper.attack_contact(defender).is_empty(), "A one-twip gap must not be padded into a helper hit")
+		defender.position = centered
 		helper.apply_attack_contact(first, defender)
 		defender.play_source_frame(742)
 		helper.play_source_frame(41)

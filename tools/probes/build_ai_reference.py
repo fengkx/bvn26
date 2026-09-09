@@ -71,7 +71,7 @@ def instrument(source: str, origin: str, fighter: bool) -> str:
     return re.sub(r"Math\.random\(\)", random_patch, source)
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     output.mkdir(parents=True)
@@ -95,6 +95,22 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         fixture = fixture.replace("__TARGET_X__", "340" if helper_probe == "kon" else "420")
         fixture = fixture.replace("__TARGET_ENERGY__", "200" if helper_probe == "kon" else "0")
         bootstrap = bootstrap.replace('   aiHeld = {};', fixture + '\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 15) aiHeld[o] = true;')
+    if dash_probe:
+        if helper_probe or frame_order_probe or recovery_order_probe or match_flow:
+            raise ValueError("Dash fixture must run in isolation")
+        bootstrap = re.sub(r'   if\(aiFight >= \d+ && aiFight < \d+\) aiHeld\[\w\] = true;\n', '', bootstrap)
+        fixture = (Path(__file__).parent / "as2/ai_reference/dash.as").read_text()
+        trigger = ('h._currentframe == 8' if dash_probe.endswith('rush') else 'h._currentframe == 50') if dash_probe.startswith('helper') else 'a._currentframe == 610'
+        if dash_trigger_frame is not None:
+            trigger = ("h" if dash_probe.startswith("helper") else "a") + "._currentframe == " + str(dash_trigger_frame)
+        control = ('if(elapsed == 0 || elapsed == 12) b.gotoAndPlay("砍1");\n'
+                   '         b.goran = elapsed < 24 ? 130 : 400;' if dash_probe.endswith('dashx') else
+                   f'b.goran = elapsed < {dash_duration} ? 150 : 400;')
+        fixture = fixture.replace('__CASE__', dash_probe).replace('__TRIGGER__', trigger).replace('__DASH_CONTROL__', control)
+        held = ('aiHeld[o] = true;' if dash_probe.startswith('helper') else 'aiHeld[w] = true; aiHeld[i] = true;')
+        bootstrap = bootstrap.replace('   aiHeld = {};', fixture + '\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 15) { ' + held + ' }')
+        bootstrap = bootstrap.replace('"right=" + d', '"up=" + w + ",right=" + d')
+        bootstrap = bootstrap.replace('"right=" + aiHeld[d]', '"up=" + aiHeld[w] + ",right=" + aiHeld[d]')
     if match_flow:
         bootstrap = (Path(__file__).parent / "as2/ai_reference/match_flow.as").read_text() + bootstrap
         bootstrap = bootstrap.replace('   aiHeld = {};', '   _root.aiMatch("root");\n   aiHeld = {};', 1)
@@ -179,6 +195,14 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
                     updated = '_root.aiMatch(' + site + ');\n' + updated
                     updated = re.sub(r'(nextfight = function\(\)\s*\{)',
                         lambda m: m[1] + '\n_root.aiMatch("nextfight_enter");', updated)
+            if dash_probe and name == "fighter/yihu" and script["path"] == "DefineSprite_2/frame_1/DoAction.as":
+                needle = "         if(this.hitTest(_loc4_))"
+                hook = ('         var rb = this.getBounds(_root.game);\n'
+                        '         var ab = _loc4_.getBounds(_root.game);\n'
+                        '         _root.aiEvent("dash_hit_test", _loc4_._name + "," + _loc4_._currentframe + "," + rb.xMin + "," + rb.xMax + "," + rb.yMin + "," + rb.yMax + "," + ab.xMin + "," + ab.xMax + "," + ab.yMin + "," + ab.yMax + "," + this.hitTest(_loc4_));\n')
+                if updated.count(needle) != 1:
+                    raise ValueError("Missing unique receiver hit test")
+                updated = updated.replace(needle, hook + needle)
             if name in ("fighter/minren", "fighter/yihu") and "onClipEvent(load)" in original:
                 # Key.isDown itself is read-only in FP32. Bind the source's
                 # per-body alias to the recorded input function instead.
@@ -265,6 +289,9 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         "recovery_walk_first": recovery_walk_first,
         "match_flow": match_flow,
         "helper_probe": helper_probe,
+        "dash_probe": dash_probe,
+        "dash_trigger_frame": dash_trigger_frame,
+        "dash_duration": dash_duration,
         "input_injection": "body_kis_alias_with_per_read_trace",
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
@@ -285,10 +312,13 @@ def main() -> None:
     parser.add_argument("--recovery-walk-first", action="store_true")
     parser.add_argument("--match-flow", action="store_true")
     parser.add_argument("--helper-probe", choices=["woailuo", "kon"])
+    parser.add_argument("--dash-probe", choices=["helper-rush", "super-rush", "helper-dashx", "super-dashx"])
+    parser.add_argument("--dash-trigger-frame", type=int)
+    parser.add_argument("--dash-duration", type=int, default=36)
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration), ensure_ascii=False))
 
 
 if __name__ == "__main__":

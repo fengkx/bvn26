@@ -57,7 +57,7 @@ func body_hit(key: String) -> Variant:
 	var target := fighter.opponent.instance_global_bounds("bdmn")
 	if not own.has_area() or not target.has_area():
 		return null
-	return own.intersects(target)
+	return SourceHitTest.intersects(own, target)
 
 
 func power_field(key: String) -> Variant:

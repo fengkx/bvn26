@@ -41,4 +41,4 @@ func hit(name: String, opponent: TimelinePreview) -> Variant:
 	var target := opponent.instance_global_bounds("bdmn")
 	if not target.has_area():
 		return null
-	return global_bounds(name).intersects(target)
+	return SourceHitTest.intersects(global_bounds(name), target)
