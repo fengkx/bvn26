@@ -137,6 +137,15 @@ Godot `combat_smoke.gd` 与 `tools/tests` 的断言对象是源行为，不是�
   Preserve red traces; never round comparator output to hide a coordinate defect.
 - Native Flash repeatedly foregrounded its window despite windowed mode and
   `open -g`. Do not claim that flag guarantees background operation. The user
-  requires probes not to cover their work. Visible capture is disabled by default
-  until a nonactivating backend is validated; use retained original traces and
-  headless Godot checks meanwhile.
+  initially required probes not to cover their work, then explicitly allowed
+  popup windows on 2026-09-09 and requested continued sampling. Keep windowed
+  launches and use the explicit activation flag under that authorization; do not
+  claim that the player stays behind other windows.
+
+- Frame-function expansion must retain the caller's position in the frame's
+  statement order. Keep nested function line numbers inside a call event; do not
+  sort them together with caller lines. Do not confuse service operands with
+  direct frame-state writes merely because both have a field name.
+- Exact numeric comparison requires full-precision trace serialization. Godot's
+  default JSON formatting can shorten 303.3333333333333 to 303.333333333333; use
+  full precision in move recordings rather than rounding the comparator.

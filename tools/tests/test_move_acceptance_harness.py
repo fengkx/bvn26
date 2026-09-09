@@ -60,6 +60,22 @@ class MoveCasesTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Uncompiled conditional frame jump'):
             compiler.compile_context(bundle, timeline)
 
+    def test_transform_start_keeps_second_cost_and_pause_order(self):
+        compiler_path = PROBES.parent / 'importer/compile_ai_context.py'
+        spec = importlib.util.spec_from_file_location('context_transform_test', compiler_path)
+        compiler = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(compiler)
+        bundle = json.loads((PROBES.parents[1] / 'scripts/fighter/yihu.json').read_text())
+        timeline = json.loads((PROBES.parents[1] / 'data/slices/yihu-base.timeline.json').read_text())
+        frame = compiler.compile_context(bundle, timeline)['frame_calls']['967']
+        calls = frame[0]['calls']
+        self.assertEqual([(c['field_name'], c['operator'], c['value']) for c in calls[:4]],
+                         [('动作', '=', 3), ('bs', '=', 1), ('ql', '-=', 300), ('jump', '=', 1)])
+        self.assertEqual(calls[4]['kind'], 'cbsd')
+        self.assertEqual(frame[1]['op'], 'show_face')
+        with self.assertRaisesRegex(ValueError, 'Uncompiled frame function statement'):
+            compiler.inline_frame_function('function test() { ql *= 2; }', 'synthetic', 1)
+
     def test_empty_reference_is_not_pass(self):
         with tempfile.TemporaryDirectory() as directory:
             events=Path(directory)/'events';native=Path(directory)/'native'

@@ -19,6 +19,13 @@ def matching_players(movie):
             if len(line.strip().split(None, 1)) == 2 and line.strip().split(None, 1)[1] == command}
 
 
+def preflight():
+    if not BINARY.is_file():
+        raise FileNotFoundError(f'Native Flash player is unavailable: {BINARY}')
+    # Fail once before a batch, rather than recording the same host error per case.
+    matching_players(Path('/tmp/bvn-preflight-no-movie.swf'))
+
+
 def capture(build, destination, timeout):
     metadata = json.loads((build / 'build.json').read_text())
     prefix = ('AIREF|' + metadata['run_id'] + '|').encode()

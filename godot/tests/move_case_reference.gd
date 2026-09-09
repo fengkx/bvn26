@@ -42,7 +42,7 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		game._advance_fight(recovery_events.get(tick, []), func() -> bool:
 			_observe(tick)
 			return false)
-	FileAccess.open(output_path, FileAccess.WRITE).store_string(JSON.stringify(rows))
+	FileAccess.open(output_path, FileAccess.WRITE).store_string(JSON.stringify(rows, "", true, true))
 	game._goto_menu()
 	game.queue_free()
 	await process_frame

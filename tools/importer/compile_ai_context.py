@@ -51,6 +51,28 @@ def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
                        {'op': 'timeline_play'}]}]
 
 
+def inline_frame_function(source: str, path: str, frame: int) -> list[dict]:
+    """Compile a complete straight-line function, preserving statement order."""
+    body = source[source.index('{') + 1:source.rindex('}')]
+    result = []
+    for number, raw in enumerate(body.splitlines(), 1):
+        line = raw.strip()
+        if not line:
+            continue
+        origin = {'path': path, 'line': number, 'frame': frame}
+        assignment = re.fullmatch(r'(\w+) (=|-=) (-?\d+|true|false);', line)
+        service = re.fullmatch(r'_root\.(bsd|cbsd|bsw|cbsw)\(pn\);', line)
+        if assignment and assignment[1] in FIELDS | {'ql'}:
+            result.append({'op': 'frame_field', 'field_name': assignment[1],
+                           'operator': assignment[2], 'value': json.loads(assignment[3]), **origin})
+        elif service:
+            result.append({'op': 'super_start' if service[1].endswith('sd') else 'super_end',
+                           'kind': service[1], **origin})
+        else:
+            raise ValueError(f'Uncompiled frame function statement: {path}: {line}')
+    return result
+
+
 def compile_context(bundle: dict,timeline: dict) -> dict:
     if hashlib.sha256((ROOT/bundle['game_file']).read_bytes()).hexdigest()!=bundle['swf_sha256']:
         raise ValueError('Retained source hash mismatch')
@@ -124,7 +146,11 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             face=re.fullmatch(r'_root\.showFace\(pn,"([^"]+)"\);',line)
             jump=re.fullmatch(r'gotoAnd(Play|Stop)\("([^"]+)"\);',line)
             energy=re.fullmatch(r'ql ([+-])= (\d+(?:\.\d+)?);',line)
-            if energy:
+            if line == 'wankai_start();':
+                calls.append({'op': 'inline_frame', 'path': path, 'line': number,
+                              'frame': frame['frame'], 'calls': inline_frame_function(
+                                  functions['wankai_start'], first_path + '#wankai_start', frame['frame'])})
+            elif energy:
                 calls.append({'op':'energy_delta','delta':float(energy[2]) * (1 if energy[1]=='+' else -1),
                               'path':path,'line':number,'frame':frame['frame']})
             elif match:

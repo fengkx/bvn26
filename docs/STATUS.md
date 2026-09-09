@@ -446,3 +446,8 @@ The production legacy PvP/training combat branch is removed. All three modes now
 ### Move matrix and non-interfering capture requirement (2026-09-09)
 
 The two-base-form matrix now runs 356 native scenarios without script assertions. Of 43 complete retained original comparisons, 38 match and five still differ at form replacement; one additional capture is invalid. Source coordinate storage, Naruto normal-I conditional continuation, and absent aerial-special labels were repaired from source and recordings. The 280 cancel-window edge obligations and other geometry/lifecycle/browser boundaries remain unaccepted. Flash sampling is stopped because windowed/background launch still raises windows; capture is disabled by default. See [move acceptance evidence](../evidence/combat/move-boundary-validation/README.md).
+
+
+### Resumed original sampling and transformation start (2026-09-09)
+
+The user subsequently authorized Flash popup windows; the remaining original batch has resumed. Ichigo frame 967's dropped `wankai_start()` call is now compiled in source order, including the second 300 energy deduction and cbsd pause. Its retained original prefix matches 202 actor states; full form replacement remains different starting at observation 101. The earlier transformation-difference summary included this pre-replacement defect and must not be read as proving the entire start sequence was already correct. See [resumed evidence](../evidence/combat/move-boundary-validation/resumed/README.md). Full acceptance remains pending while sampling continues.

@@ -185,6 +185,25 @@ func _external(name: String, args: Array) -> Variant:
 
 func _frame_service(event: Dictionary) -> void:
 	match event["op"]:
+		"inline_frame":
+			for call in event["calls"]:
+				_frame_service(call)
+			return
+		"frame_field":
+			var key: String = event["field_name"]
+			var value: Variant = event["value"]
+			if event["operator"] == "-=":
+				var current: Variant = fighter.energy if key == "ql" else fighter.ai_source_state.read_field(key)
+				value = current - value
+			else:
+				assert(event["operator"] == "=")
+			if key == "ql":
+				fighter.energy = float(value)
+			else:
+				fighter.ai_source_state.values[key] = value
+				if key in ["hited", "beida", "bs", "sw"]:
+					fighter.set(key, value)
+			return
 		"conditional_frame":
 			for condition in event["conditions"]:
 				var value: Variant = fighter.ai_predicate_context.read_field(condition["field"])

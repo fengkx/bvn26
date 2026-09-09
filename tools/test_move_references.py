@@ -31,6 +31,8 @@ def main():
     args=parser.parse_args()
     if not args.allow_window_activation:
         parser.error('Flash sampling is disabled: the player can raise windows despite background launch')
+    from capture_native_player import preflight
+    preflight()
     template=json.loads((args.probe/'build.json').read_text())
     if not template.get('dynamic_move_case'): raise ValueError('Dynamic fixture probe required')
     args.output.mkdir(parents=True,exist_ok=True)

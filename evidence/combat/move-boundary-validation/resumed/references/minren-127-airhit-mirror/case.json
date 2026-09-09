@@ -1,0 +1,44 @@
+{
+  "id": "minren-127-airhit-mirror",
+  "fighter": "minren",
+  "slot": "p1",
+  "label": "跳砍",
+  "scenario": "mirror",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 350,
+      "energy": 300
+    },
+    "p2": {
+      "x": 300,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 20,
+      "end": 23
+    }
+  ],
+  "target_frames": [
+    127,
+    142
+  ],
+  "source_dispatch": [
+    "onJumping"
+  ],
+  "status": "not_run"
+}
