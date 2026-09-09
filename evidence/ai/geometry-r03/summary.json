@@ -1,0 +1,148 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "ai-geometry-r03",
+  "events": 1224,
+  "counts": {
+    "boot": 1,
+    "initCtrl": 6,
+    "input_next_display": 454,
+    "random": 141,
+    "sample": 28,
+    "geometry_frame": 1,
+    "geometry_matrix": 3,
+    "sensor_bounds": 12,
+    "sensor_local": 12,
+    "state": 546,
+    "ready": 1,
+    "predicate": 18,
+    "done": 1
+  },
+  "frames_after_ready": 1,
+  "ready": {
+    "run_id": "ai-geometry-r03",
+    "sequence": 1199,
+    "time_ms": 24738,
+    "display_tick": 453,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "ai-geometry-r03",
+      "sequence": 2,
+      "time_ms": 9741,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "ai-geometry-r03",
+      "sequence": 4,
+      "time_ms": 9771,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "ai-geometry-r03",
+      "sequence": 12,
+      "time_ms": 9898,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "ai-geometry-r03",
+      "sequence": 13,
+      "time_ms": 9898,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "ai-geometry-r03",
+      "sequence": 14,
+      "time_ms": 9899,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "ai-geometry-r03",
+      "sequence": 15,
+      "time_ms": 9899,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": {
+    "run_id": "ai-geometry-r03",
+    "sequence": 36,
+    "time_ms": 10403,
+    "display_tick": 22,
+    "fight_tick": -1,
+    "kind": "sample",
+    "value": "undefined,79.629055922851,7.1134059689939,303.918643156067,136.452860897407,368.483241880313"
+  },
+  "samples_before_ready": 28,
+  "sample_intervals_ms": {
+    "502": 2,
+    "534": 2,
+    "533": 3,
+    "531": 1,
+    "500": 2,
+    "503": 1,
+    "535": 3,
+    "532": 2,
+    "530": 2,
+    "529": 1,
+    "538": 1,
+    "528": 1,
+    "537": 2,
+    "504": 1,
+    "525": 1,
+    "508": 1,
+    "497": 1
+  },
+  "last_states": [
+    {
+      "run_id": "ai-geometry-r03",
+      "sequence": 1222,
+      "time_ms": 24780,
+      "display_tick": 454,
+      "fight_tick": 1,
+      "kind": "state",
+      "value": "p1,4,374.1,-25,100,0,1000,0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "ai-geometry-r03",
+      "sequence": 1223,
+      "time_ms": 24780,
+      "display_tick": 454,
+      "fight_tick": 1,
+      "kind": "state",
+      "value": "p2,3,637.1,-25,-100,0,1000,0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "15f1e56a25a2ff0d07bbee55e63e1c8fccb261cd4dbbb727f14961d7e250599a",
+  "retained_sha256": {
+    "instrumentation.diff": "3633eebbe23146c13f646d66170d0d8d68a7ebcaf27c6d8bb3a0c3804aa2c3b7",
+    "events.jsonl": "b1991bb99bb29be9428df69922d6ef989d0d4d58d39ebda1736053a08d2f2924",
+    "random-tape.json": "a96f22aef4efc87c4fedce8ba511e8b2def39a83031ebbf53887326b0bfe2467",
+    "build.json": "4abdf7d5eefbe953b954f77ef67f9d4bc1d73f551debffa8b77d483ca4102c26"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Sensor matrices, each predicate read and target DoAction are not yet logged.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

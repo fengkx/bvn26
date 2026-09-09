@@ -1,0 +1,151 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "ai-fixed-easy-r01",
+  "events": 7157,
+  "counts": {
+    "boot": 1,
+    "initCtrl": 6,
+    "input_next_display": 1068,
+    "random": 350,
+    "sample": 67,
+    "state": 1774,
+    "ready": 1,
+    "predicate": 3889,
+    "done": 1
+  },
+  "frames_after_ready": 600,
+  "ready": {
+    "run_id": "ai-fixed-easy-r01",
+    "sequence": 1222,
+    "time_ms": 26658,
+    "display_tick": 468,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "ai-fixed-easy-r01",
+      "sequence": 2,
+      "time_ms": 11122,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "ai-fixed-easy-r01",
+      "sequence": 4,
+      "time_ms": 11157,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "ai-fixed-easy-r01",
+      "sequence": 12,
+      "time_ms": 11329,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "ai-fixed-easy-r01",
+      "sequence": 13,
+      "time_ms": 11329,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "ai-fixed-easy-r01",
+      "sequence": 14,
+      "time_ms": 11329,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "ai-fixed-easy-r01",
+      "sequence": 15,
+      "time_ms": 11329,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": {
+    "run_id": "ai-fixed-easy-r01",
+    "sequence": 37,
+    "time_ms": 11863,
+    "display_tick": 23,
+    "fight_tick": -1,
+    "kind": "sample",
+    "value": "undefined,246.818636078387,9.74487699568272,349.751520901918,353.88596332632,46.0886787623167"
+  },
+  "samples_before_ready": 29,
+  "sample_intervals_ms": {
+    "532": 3,
+    "501": 3,
+    "537": 2,
+    "534": 2,
+    "529": 4,
+    "500": 8,
+    "531": 7,
+    "533": 1,
+    "504": 4,
+    "507": 2,
+    "522": 1,
+    "502": 2,
+    "510": 1,
+    "498": 1,
+    "528": 3,
+    "503": 4,
+    "530": 3,
+    "535": 7,
+    "506": 1,
+    "527": 2,
+    "536": 2,
+    "541": 1,
+    "524": 1,
+    "538": 1
+  },
+  "last_states": [
+    {
+      "run_id": "ai-fixed-easy-r01",
+      "sequence": 7155,
+      "time_ms": 46665,
+      "display_tick": 1068,
+      "fight_tick": 600,
+      "kind": "state",
+      "value": "p1,2,327.1,-25,-100,0,510,0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "ai-fixed-easy-r01",
+      "sequence": 7156,
+      "time_ms": 46665,
+      "display_tick": 1068,
+      "fight_tick": 600,
+      "kind": "state",
+      "value": "p2,10,287.1,-25,100,0,1000,28,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "6e16c8cf07f7970d7efb6dbf414a74177ba8d3466688d66dc6783c20ed7e8510",
+  "retained_sha256": {
+    "instrumentation.diff": "a460c60b078a6f53249e9fbe5cb3aa6413a9bac95015e3d755c77da95588b4ca",
+    "events.jsonl": "6f786980daecb521c5762d9c0860ca137b421807b4fe7ce4d9207ac9f5390538",
+    "random-tape.json": "0e16273ea44cb3add11ee9c9e6f130129a12e1820354a1ec2d32babb93a6a8d4",
+    "build.json": "b4952290024bda53cef91dd1ddb5bbe741e8412567c741153e6ee5dd10fb694e"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Sensor matrices, each predicate read and target DoAction are not yet logged.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

@@ -112,7 +112,6 @@ JUMP_ASSIGN = re.compile(r"\bjump\s*=\s*1\s*;")
 UNWIRED_EXIT_PAIRS = {
     ("走", "站立"),
     ("防御2", "站立"),
-    ("站立", "站立"),
     ("落", "落"),
     ("落2", "落2"),
 }
@@ -627,6 +626,17 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
         hit_goto = PROJECTILE_HIT_GOTO.search(source)
         if hit_goto is not None:
             motion["on_hit_goto_frame"] = int(hit_goto["frame"])
+    queries = re.findall(
+        r'(?:(\w+)\.)?hitTest\(_root\.game\["p" \+ _parent\.pn\]\.mc\.(\w+)\)',
+        source,
+    )
+    if queries:
+        if len(queries) != source.count('hitTest('):
+            raise ValueError("Partially recognized projectile collision query")
+        motion["collision_queries"] = [
+            {"receiver": receiver or "self", "target": target}
+            for receiver, target in queries
+        ]
     return motion or None
 
 
@@ -701,6 +711,7 @@ def parse_clip_timeline(
 ) -> dict[str, Any]:
     stop_frames: list[dict[str, Any]] = []
     rename_frames: list[dict[str, Any]] = []
+    initial_motion: dict[str, Any] = {}
     for script in script_bundle["scripts"]:
         match = NESTED_FRAME_SCRIPT.match(script["path"])
         if match is None or int(match["sprite"]) != character_id:
@@ -714,14 +725,22 @@ def parse_clip_timeline(
             "source_path": script["path"],
             "source_sha256": text_sha256(script["source"]),
         }
-        if source == "stop();":
+        motion_init = re.fullmatch(
+            r"stop\(\);\s*var movspeed = (-?\d+(?:\.\d+)?);\s*var played = 0;", source
+        )
+        if source == "stop();" or motion_init is not None:
             stop_frames.append(record)
+        if motion_init is not None:
+            if frame != 1:
+                raise ValueError("Projectile initialization outside frame 1: " + script["path"])
+            initial_motion = {"initial_speed": float(motion_init[1]), "initial_played": 0,
+                              "initial_motion_source": record}
         rename = CLIP_RENAME.search(script["source"])
         if rename is not None:
             rename_frames.append({**record, "instance_name": rename["name"]})
     stop_frames.sort(key=lambda item: item["frame"])
     rename_frames.sort(key=lambda item: item["frame"])
-    timeline: dict[str, Any] = {"character_id": character_id}
+    timeline: dict[str, Any] = {"character_id": character_id, **initial_motion}
     if stop_frames:
         timeline["stop_frames"] = [item["frame"] for item in stop_frames]
         timeline["stop_sources"] = stop_frames
@@ -778,6 +797,10 @@ def extract_death(
     if launch_match is None:
         raise ValueError(f"checkDead has no launch label in {check_script['path']}")
     launch_label = launch_match["label"]
+    ko_prefix = re.search(r"bdzl = (-?\d+);\s*sw = (true|false);\s*_root\.KOplay\(pn\);", body_match["body"])
+    pn_assignment = re.search(r'pn = _parent\._name != "(\w+)" \? (\d+) : (\d+);', check_script["source"])
+    if ko_prefix is None or pn_assignment is None:
+        raise ValueError("Unsupported checkDead KO state/receiver binding")
     if launch_label not in ranges:
         raise ValueError(f"checkDead launch label missing from timeline: {launch_label}")
     if "击落地" not in ranges:
@@ -800,6 +823,8 @@ def extract_death(
         "down_label": "击落地",
         "knockdown_stop_frame": stop["frame"],
         "practice_mode_skips": 4,
+        "ko_writes": [{"field": "bdzl", "value": int(ko_prefix[1])}, {"field": "sw", "value": ko_prefix[2] == "true"}],
+        "ko_number_binding": {"name": pn_assignment[1], "equal": int(pn_assignment[3]), "different": int(pn_assignment[2])},
         "source_path": check_script["path"],
         "source_sha256": text_sha256(check_script["source"]),
         "stop_source_path": stop["path"],
@@ -1003,6 +1028,11 @@ def build_model(
     ]
     if len(stop_scripts) != 1:
         raise ValueError(f"Expected one hurt stop frame, got {len(stop_scripts)}")
+    hurt_callbacks = [script for script in scripts
+                      if script["action"] == hurt_label and script["kind"] == "clip_action"
+                      and re.fullmatch(r"onClipEvent\(enterFrame\)\{\s*_parent\.beidax\(\);\s*\}", script["source"].strip())]
+    if len(hurt_callbacks) != 1:
+        raise ValueError(f"Expected one hurt timer callback, got {len(hurt_callbacks)}")
 
     special_labels = list(fighter["actions"]["special"])
     special_transitions = []
@@ -1265,6 +1295,9 @@ def build_model(
         "hurt": {
             "label": hurt_label,
             "stop_frame": stop_scripts[0]["frame"],
+            "callback_start_frame": hurt_callbacks[0]["frame"] + 1,
+            "callback_source_path": hurt_callbacks[0]["path"],
+            "callback_source_sha256": hurt_callbacks[0]["source_sha256"],
             "hitstun_ticks_formula": "hitstun_ms / 1000 * 30",
             "source_path": stop_scripts[0]["path"],
             "source_sha256": stop_scripts[0]["source_sha256"],

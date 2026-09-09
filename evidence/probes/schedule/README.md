@@ -30,8 +30,13 @@ The U-06 pair is built separately with `build_framerate_probe.py`:
 
 Observed conclusions:
 
-- `gotoAndPlay(3)` changes the destination but the caller's remaining statements run
-  before frame 3's `DoAction`.
+- A root-level `gotoAndPlay(3)` changes the destination but the caller's remaining
+  statements run before frame 3's `DoAction`. This requires the caller to survive.
+- The AI parent-goto probes additionally show that removing the executing clip
+  unwinds its function and callback. A preceding goto that retains it continues;
+  both queued destination frame scripts then run in call order. The original
+  source, probe hash and logs are documented in
+  [AI compiler progress](../../ai/compiler-progress.md).
 - On an ordinary advancing tick, `_currentframe` already names the destination frame
   when `onEnterFrame` runs; the destination frame's `DoAction` runs afterward.
 - A placed child's `onClipEvent(enterFrame)` runs before the root destination frame
@@ -58,3 +63,19 @@ the flag and selectively calls `playMc`. This source path, combined with the mea
 
 OS focus behavior and the game-specific result of simultaneous two-player hits remain
 pending, so `M0-03` remains pending and the profile is explicitly provisional.
+
+## Cross-subtree lifetime and input hooks
+
+The [callback registry comparison](callback-registry/comparison.json) separates retention, recreation and depth swapping. New instances run before older instances across subtrees; retained goto and swapDepths preserve their callback registration. The original same-placement sibling-depth observation must not be generalized to dynamic instance lifetime. Build with `tools/probes/build_callback_registry_probe.py`; check with `tools/probes/check_callback_registry.py`.
+
+The [key-hook probe](key-hook/native.log) shows that assigning `Key.isDown` does not replace the native function, whereas assigning the per-body `kis` alias works. Original captures that used the global override did not verify delivery of their recorded input intents. See [AI follow-up](../../ai/callback-registry-and-input.md).
+
+- [Player source controller, binary64 trace probe and r13 failure](../../ai/player-controller-and-binary-trace.md): source-derived integration and focused tests; complete parity remains pending.
+
+- [Attached effect first-frame probe](effect-attach/comparison.json): caller assignments precede frame 1; uppercase XY writes affect parent coordinates. Full world ordering is not covered.
+
+- [Effect frame/callback interleaving](effect-order/comparison.json): later callbacks observe the pre-resume flag, older callbacks the post-resume flag in the same tick.
+
+- [Projectile rename and removal](projectile-rename-removal/comparison.json): goto returns before the name changes; removing an instance cancels its queued target script.
+
+- [timer-scope](timer-scope/comparison.json)：FP32 函数形式 setInterval 回调的 this 为 undefined，裸 played/tm 写入定义函数的剪辑；根及 timeover 同名字段保持不变。

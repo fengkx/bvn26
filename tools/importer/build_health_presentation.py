@@ -8,6 +8,19 @@ from pathlib import Path
 from extract_timeline_geometry import extract_frames, placement_delta, file_sha256
 
 
+def compile_win_markers(workspace, shapes, output):
+    timeline = extract_frames(workspace / 'main.xml', 1785)
+    frames = {str(frame['frame']): frame['display_list'] for frame in timeline['frames']}
+    definitions = {d['character_id']: d for d in timeline['definitions']}
+    symbols = {p['character_id'] for placements in frames.values() for p in placements}
+    layers = {}
+    for symbol in symbols:
+        assert definitions[symbol]['type'] == 'DefineShapeTag'
+        shutil.copyfile(shapes / f'{symbol}.png', output / f'{symbol}.png')
+        layers[str(symbol)] = definitions[symbol]['shape_bounds_twips']
+    return {'win_frames': frames, 'win_layers': layers, 'win_source_sprite': 1785}
+
+
 def build(workspace, shapes, output):
     xml = workspace / 'main.xml'
     root = ET.parse(xml).getroot()
@@ -46,6 +59,9 @@ def build(workspace, shapes, output):
             'bar_parts': definitions[1794]['first_frame_display_list'],
             'head_parts': definitions[1798]['first_frame_display_list'],
             'layers': layers, 'mask': points}
+    wins = compile_win_markers(workspace, shapes, output)
+    spec['layers'].update(wins.pop('win_layers'))
+    spec.update(wins)
     (output / 'presentation.json').write_text(json.dumps(spec, indent=2) + '\n')
 
 
@@ -57,7 +73,7 @@ if __name__ == '__main__':
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     subprocess.run(['java', '-Djava.awt.headless=true', '-jar', str(a.ffdec_jar), '-selectid',
-                    '591,1787,1788,1792,1796,1812', '-format', 'shape:png', '-export',
+                    '591,1784,1787,1788,1792,1796,1812', '-format', 'shape:png', '-export',
                     'shape', str(a.raster_workspace), 'game/main.swf'], check=True)
     subprocess.run(['java', '-Djava.awt.headless=true', '-jar', str(a.ffdec_jar), '-selectid',
                     '1788', '-export', 'sprite', str(a.raster_workspace), 'game/main.swf'], check=True)

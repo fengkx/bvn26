@@ -1,0 +1,49 @@
+{
+  "status": "source_observation_order_only",
+  "events_sha256": "43329b94fc093d34cb54560bbe5fb6fede15b86e306eace5b824b0f871ea246a",
+  "transition_count": 1,
+  "transitions": [
+    {
+      "caller_exit": {
+        "run_id": "frame-order-r06",
+        "sequence": 1633,
+        "time_ms": 24485,
+        "display_tick": 459,
+        "fight_tick": 1,
+        "kind": "frame_state_exit",
+        "value": "390,1,1,0,false"
+      },
+      "root_observations_before_target": [
+        {
+          "run_id": "frame-order-r06",
+          "sequence": 1636,
+          "time_ms": 24488,
+          "display_tick": 460,
+          "fight_tick": 2,
+          "kind": "state",
+          "value": "p2,1,637.1,-25,-100,1,1000,0,false,true,true,0,true,0,false"
+        }
+      ],
+      "target_entry": {
+        "run_id": "frame-order-r06",
+        "sequence": 1637,
+        "time_ms": 24489,
+        "display_tick": 460,
+        "fight_tick": 2,
+        "kind": "frame_state_enter",
+        "value": "1,1,1,0,false"
+      },
+      "target_exit": {
+        "run_id": "frame-order-r06",
+        "sequence": 1640,
+        "time_ms": 24491,
+        "display_tick": 460,
+        "fight_tick": 2,
+        "kind": "frame_state_exit",
+        "value": "1,1,0,0,false"
+      }
+    }
+  ],
+  "native_parity_verified": false,
+  "limit": "Root enterFrame snapshots are not necessarily after queued target DoActions; do not delay runtime writes to match an earlier observation."
+}

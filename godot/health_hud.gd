@@ -12,6 +12,7 @@ var fighters: Array[FighterRuntime] = []
 var trail: Array[float] = [100.0, 100.0]
 var low_frame: Array[int] = [0, 0]
 var low_health: Array[bool] = [false, false]
+var win_frames := PackedInt32Array([1, 1])
 
 
 func _ready() -> void:
@@ -52,6 +53,18 @@ func _matrix(placement: Dictionary) -> Transform2D:
 		Vector2(float(m.get("translateX", 0)), float(m.get("translateY", 0))) / 20.0)
 
 
+func set_wins(p1_frame: int, p2_frame: int) -> void:
+	for frame in [p1_frame, p2_frame]:
+		assert(spec["win_frames"].has(str(frame)), "Win counter is an authored HUD frame")
+	win_frames = PackedInt32Array([p1_frame, p2_frame])
+	queue_redraw()
+
+
+func win_placements(side: int) -> Array:
+	assert(side in [0, 1])
+	return spec["win_frames"][str(win_frames[side])]
+
+
 func _layer(id: int, transform_matrix: Transform2D, alpha: float = 1.0, texture_override: Texture2D = null) -> void:
 	var bounds: Dictionary = spec["layers"][str(id)]
 	var rect := Rect2(float(bounds["Xmin"]) / 20, float(bounds["Ymin"]) / 20,
@@ -72,7 +85,10 @@ func _draw() -> void:
 			for bar: Dictionary in spec["bar_parts"]:
 				var bar_name := str(bar.get("name", ""))
 				var local := _matrix(bar)
-				if bar_name == "kk":
+				if bar_name == "win":
+					for marker: Dictionary in win_placements(index):
+						_layer(int(marker.character_id), transform_matrix * local * _matrix(marker))
+				elif bar_name == "kk":
 					var warning: Texture2D = warning_textures[low_frame[index]] if low_health[index] else null
 					_layer(1787, transform_matrix * local, 1.0, warning)
 				elif bar_name == "bar" or bar_name == "bar2":

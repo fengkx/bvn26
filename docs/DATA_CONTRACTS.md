@@ -95,3 +95,317 @@ Schema 只是接口起点。M1/M2 若发现原版需要额外事件或状态，�
 load 帧、原 character_id/depth 与 aim_opponent_x；魂无该事件。`hide_frames`
 不再从 fzccXg 推断，根末帧后按源回到帧 1。角色 `summon_events.set_bs` 来自
 doZhaoHuan 的 bs 赋值；不是运行时按角色补的默认值。以上仍为带源路径的中间数据。
+
+
+`action_events` 保留援助根 DoAction 中无条件的 `动作` 整数赋值，包含
+`frame`、`value`、`source_path`、`source_sha256`。新实例未赋值时保持 undefined；
+`removeFZ` 清零，再召唤不重置。CPU 读取对手援助的该字段，不能用
+`attacking` 或可见性替代。跨对象帧脚本调度仍待原版对照。
+
+### AI source context (base slice)
+
+`godot/generated/fighters/*/ai.json` 使用 `bvn26-ai-context-v1`，由
+`tools/importer/compile_ai_context.py` 编译。`frame_writes` 保留顶层常量赋值的
+源帧、字段、值及原路径/行号；`function_writes.onBeHit0` 保留该无条件函数的
+写入顺序。`undefined_declarations` 只在新实例创建时初始化缺失值，重新进入
+帧 1 不得把已有 `sw` 等字段清空；带初值的声明仍按每次帧脚本执行。
+
+`AiSourceState` 当前接收这些写入及运行时受击入口；它还不是全部 BODY 字段的
+完整镜像。条件性写入、定时器和物理回调仍需接入。跳转产生的目标帧写入要按
+顺序排队，不能只保留最终动作；帧脚本执行完后还需处理它安排的新目标。
+
+`sensing` 保留 AImain 的放置、固定激活帧 2、子感知框矩阵、所需定义和缺失引用。
+`AiSenses` 用同一角色时间轴的矩阵/边界工具计算这些框，目标为当前 `bdmn`。
+缺失 `absmian` 返回缺失值，不能创建默认框。原版实际局部框边界与当前浮点计算
+有未解决的精度差异，见 `evidence/ai/geometry-comparison.json`；当前模型保持
+`source_compiled_partial`，不能据此宣布几何或 AI 一比一验收通过。
+
+`load_writes` 与 `frame_writes` 是不同调度事件。写入项包含字面 `value`，或
+`read_field`（当前用于 `speed = spd`），不能提前折叠为常数。
+`base_power_fields` 只表示当前基础形态的 `gjl1.*zl`，不能用于其他形态。
+
+生成的 `ai_controller/controller.json` 保留原始 hook 路径、放置帧、深度和
+`member_frames`。Godot 读取 JSON 后须把帧号转换为整数；数组的 Variant 类型比较
+不能直接用于浮点 JSON 帧号与整数播放头的身份匹配。回调宿主负责提供执行顺序，
+每次 goto 后立即同步显示列表身份，目标帧状态写入仍由帧脚本阶段消费。
+
+`ai_controller/body.gd` 是离线编译的原生函数，`body.json` 记录其源哈希、函数和
+两个具名 timeout 回调。外部颜色、特效、舞台攻击和定时调度由宿主接入；不能把
+这些调用空实现后宣称完整行为一致。当前 BODY 比较使用明确的外部调用替身，
+验证返回值、状态写入、调用顺序及 timeout 回调内容，不证明实际到期相位。
+
+`ai_hit_state.gd` 从 Sprite 2 的 `beida/fangyu` 编译，接收已判定命中的原始
+`pw/zl/yup/hitx/hdtime/htype` 包，写入 BODY 状态并返回目标标签意图。
+它不执行碰撞、伤害、特效或目标帧脚本。`hdtime` 换算后的 `tdtime` 保留小数，
+普通防御保留既有 `time`；这些不能用现有运行时的整帧硬直计数反填。
+
+### AI receiver placement metadata
+
+`ai_controller/controller.json.receiver_hooks` records the base body's Sprite 2
+`beida` / `fangyu` enterFrame placements, separately from generated Sprite 16
+methods. Each entry retains `path`, `receiver`, `depth`, `placement_frame` and
+`member_frames`; the host merges both lists before depth ordering and applies
+the same placement-tick and removal identity rules. The callback determines
+normal versus guard reception. This does not establish whole-battle callback
+order or replace the pending target-frame damage timing validation.
+
+### Projectile initial motion
+
+A projectile record may carry `initial_speed`, `initial_played` and
+`initial_motion_source` when its nested frame-1 script explicitly initializes
+movspeed/played and stops the clip. `initial_speed` is local pixels per callback,
+independent of fighter movement speed. `stop_frames` includes that frame even
+when initialization shares the same script. These fields do not establish the
+first callback phase or complete projectile collision query semantics.
+
+`projectiles[].collision_queries` is an ordered list of `{receiver, target}`
+extracted from source hitTest calls. `self` means the projectile clip; an explicit
+receiver such as `hitmc` must not be replaced by the whole projectile. Target
+lookup observes compiled rename_frames. Missing child bounds remain empty;
+unqualified Flash scope resolution is a separate outstanding validation.
+
+`ai_controller/controller.json.projectile_hooks` includes source path, depth,
+placement frame, member frames and the compiled projectile record. These hooks
+share lifetime tracking with controller/receiver hooks. Their playheads advance
+in a separate pre-callback phase; repeated synchronization is not another
+playhead advance. A new placement resets offset and frame-1 initialization.
+
+`ai.json.frame_calls` retains top-level super/presentation calls with source
+`path`, `line` and `frame`. The AI host merges calls and `frame_writes` by line
+number, preserving assignment/call interleaving. Separate bsd and showFace
+records must remain separate; the existing combined player super_event is not
+used to reconstruct this order. Other source statements remain uncompiled.
+
+`frame_calls` also admits `timeline_goto` (literal label and play flag),
+`timeline_play` and `timeline_stop`. Goto applies display-list lifetime changes
+immediately and appends its target to the current frame-action queue. Draining
+the queue must preserve source writes and commands appended during execution.
+Conditional commands and uncompiled BODY calls remain outside this extraction.
+
+### AI effect wrapper linkage
+
+`generated/main/ai_visual_services.json` retains source wrapper names, clip
+linkage names, X/Y offsets, wrapper hashes and inspected SWF hashes. An empty
+`exported_by` means no retained SWF exports the requested clip. The adapter
+creates no replacement for that missing linkage. Nonempty linkage entries
+require an implemented native effect adapter; they must not silently vanish.
+
+`effects/<clip>/effect.json` may supply `bvn26-simple-effect-v1` root
+`presentation_events`, with source path/hash and exact frame. The bounded
+importer currently accepts only one explicit unloadMovie event and no nested
+sprite timeline. The runtime uses that event on its source frame; a clip name
+mismatch is invalid. This does not certify global effect scheduling.
+
+`hit_fx.color_effects` 按 bdxg 的强度 case 编译：`set_colors` 保存有序
+Color.setTransform 对象数组；`set_color_matrix` 保存 20 个 ColorMatrixFilter
+系数。未提供的通道仍是未提供，不能在数据层补猜测默认值。源路径随操作
+保留。CPU 已接入交替与复位；滤镜按子绘制对象应用，整容器合成及像素一致性尚未验收。
+
+### KO native controller ABI
+
+`main/ko/controller.gd` contains source-compiled frame methods and nextfight.
+`controller.json.events` maps original script path/hash to method. Its adapter
+must resolve read/write targets against the currently executing clip and root
+state, apply goto/play/stop with original instance lifetime, dispatch root
+services in order, and return interval IDs. `compiled_not_connected` explicitly
+excludes runtime/round-completion acceptance. Unknown compiler syntax fails.
+
+KO event records additionally carry `sprite_id`, `frame`, `kind`; enterFrame
+records carry `child_id` and `depth` and belong to the indicated parent
+placement. The scheduler retains stopped children and distinguishes fresh
+placement from retained membership. Its root service boundary is still
+separate from the production match adapter.
+
+KO `root_initializers` are match-entry values compiled from Sprite 1991
+frame 1: win counters and rounds start at 1. A counter of 3 means two actual
+wins. Do not reset these counters at nextfight. Intro HUD data now contains
+all ten `hud_frames`, `hud_labels`, `hud_stop_frames`, and `hud_frame_count`;
+frame 10 naturally wraps to frame 1, which executes stop.
+
+Health HUD `win_frames` preserves Sprite 1785 frame display lists, and
+`win_source_sprite` identifies that source timeline. Marker shape bounds are
+in `layers`; their matrices compose beneath each bar's win placement. The
+selected frame equals the one-based source win counter, not actual wins.
+Health-only reset must preserve it across rounds.
+
+Combat `death.ko_writes` stores ordered state assignments before KOplay.
+`ko_number_binding` stores the source player-name comparison and both numeric
+results; pn identifies the opponent. Publish these writes before ko_requested
+and before the optional death goto, so AI reads and KO services see the source
+state. This event alone does not implement the KO round lifecycle.
+
+The fixed Vs Com main adapter now binds KO controller services. `time_defaults`
+and `clear_intervals` are extracted from main scripts; defaults do not imply
+a complete countdown implementation. Intro event `clear_intervals` emits
+named clearing requests, including nextfight on Ready frame 2. KO remains
+`source_compiled_partial`, with full timing/scene parity unverified.
+
+### AI frame color operations
+
+`ai.json.frame_calls` also includes `color_reset` for a top-level `resColor()`
+and `color_write` with `field_name` (`_cgap` or `_csn`) and integer `value`.
+Both carry frame/path/line and share the ordered frame-event stream. The CPU
+host applies reset through the existing source color adapter, then maps the
+explicit writes to its gap/index. In BODY frame 1 this leaves both at zero;
+resColor alone still preserves index and sets gap to one. These operations
+are not limited to a new actor and must execute on repeated frame-1 gotos.
+
+### AI first-load scalar state
+
+`ai.json.initialization_state` projects the scalar prefix of BODY's
+`if(!inited)` block: guard name, source frame/path/line and ordered writes
+`inited=true`, `_lastX=0`. AiSourceState applies it on first frame-state
+initialization, preserves it across frame-1 revisits, and clears it only on
+configure for a new instance. The compiler rejects unconditional writes to
+these same fields in frame 1, so projecting this prefix after independent
+frame writes cannot overwrite a conflicting source assignment. This is a
+state projection, not an execution trace of the entire initialization block;
+pn binding, doWanKai, updateDirect, timer creation and their scheduling are
+still separate host responsibilities and are not validated by this field.
+
+### Recorded intro interval delivery
+
+`BattleIntro.begin(players, true)` enables explicit recorded polling. Its
+visual tick still advances clips but does not accumulate elapsed polling
+time. `deliver_recorded_poll(sequence, time_ms)` invokes the existing source
+kaichang branch once; sequence must increase and timestamps must not decrease.
+Malformed order latches `poll_replay_error` until a new begin. Inactive or
+cleared polling rejects delivery without changing state. The caller owns
+placement of these events relative to frame advance and DoAction dispatch;
+this API does not infer that phase or inject expected fighter state. Default
+begin remains the provisional delta-driven polling mode.
+
+Main `_advance_fight(recorded_intro_polls=[])` accepts explicitly phased
+intro callbacks. Each record carries `phase="after_actor_advance"`, sequence
+and time_ms. Delivery occurs after fighter/stage timeline advancement, before
+intro state observation and actor callbacks/target frame scripts. No event
+is fabricated from timestamps. BattleIntro must already be in recorded mode.
+This is one supported replay phase, not a claim that every original interval
+callback uses it. Default calls with no records retain existing behavior.
+
+BattleIntro.begin accepts a third `loaded` boolean (default true for the
+materialized native scene). While fighters_loaded is false, kaichang returns
+before reading kcplayed/frame conditions, matching the original load gate.
+Recorded delivery still consumes the callback's sequence/time when gated.
+
+### Intro frame action phase
+
+BattleIntro.tick's optional third argument defers clip frame scripts. Gotos
+still change the display frame, but their frame events are retained in an
+ordered queue until run_frame_actions. Main uses this mode and drains the
+queue after actor callbacks/collision processing, before fighter target frame
+scripts; HUD placement is refreshed after draining. Thus Ready frame 127
+does not clear root pause before BODY callbacks on that same tick. Standalone
+intro clients retain immediate mode by default. Whole-root scheduling outside
+this validated intro segment remains provisional.
+
+Main's optional recorded event array also accepts kind=ai_random at the
+after_actor_advance phase. It invokes the configured recorded AiRandomClock;
+SourceRandom verifies the next site/value sequence. Intro polls and random
+events share the caller's ordered array and are not separately reordered by
+the runtime. Recorded random registration is required. The continuous probe's
+optional combat mode builds this order from event sequence numbers, preserves
+global draw indices in its report, seeds the last pre-checkpoint sample once,
+and refuses reference segments with held input it does not yet replay.
+
+`ai.json.main_floor_contact` compiles BODY's exact `_y == floorY` branch: two
+ordered field writes and source function hash/path. The player body-pressure
+adapter applies these writes at its end only at exact main-floor Y, after
+the existing dash return and subject to root pause. This is not a replacement
+for the full player BODY: platform, jump and near-floor branches still need
+source-state integration and must not be inferred from this field.
+
+### Hurt voice source metadata
+
+`godot/generated/fighters/*/hurt_voice.json` is produced by `tools/importer/compile_hurt_voice.py`. It retains the accepted shared function hash, random consumer sites, cooldowns, damage probability thresholds, sound linkage names, and the hashes of all scanned SWFs proving those linkages absent. A newly present linkage fails compilation until its sound is materialized. `AiSourceState` now compiles `_lastvoice` and `_dievoicen` from literal frame writes, including frame-1 revisits. The native adapter checks probability before cooldown and never consumes randomness in the death branch. `FighterRuntime.source_clock` supplies each explicit source clock read; live reads use Godot monotonic uptime. Recorded hurtVoice reads now use their captured sites and millisecond values. Other timer APIs and complete world replay remain unverified.
+
+### Player BODY compilation
+
+`compile_ai_body.py --player` preserves `if(!_parent.useAI)` and compiles `kis(换/冲/上/下)` to the adapter's `source_key(key)` call. Keys retain source action names; the host must resolve them through the configured original key binding. The emitted metadata adds `input_mode: source_player_branches_preserved`. The default CPU specialization and generated code remain unchanged. Player output is not runtime-integrated until its adapter, callbacks, and placement lifetimes are connected.
+
+Player BODY metadata additionally carries `hurt_hooks`: source ClipAction path/hash, depth, placement frame, exact display-list member frames, and the source flying argument. These hooks only accept a single `_parent.beidax()` or `_parent.beidax(true)` statement. `source_body_callbacks.gd` requires the host to observe each display-list change (including goto), then dispatch once in the clip enterFrame phase. Source frames alone cannot identify a same-tick remove/re-place; the host must deliver both observations. Main integration remains pending.
+
+Player integration uses `FighterRuntime.source_frame_changed(frame)` from source frame queue operations. `PlayerBodyDriver.begin_tick` runs before actor timeline advancement. The shared source controller host dispatches the player predicates, action controllers, receiver hooks and BODY callbacks, with `useAI=false` and exact source key names mapped to configured session input fields. The production player uses generated `minren/player_controller`; `minren/player_body` remains an earlier standalone compilation artifact. Driver shutdown disconnects signals, clears callbacks/timeouts and removes the actor BODY binding. The CPU uses the same BODY binding so source-frame hit settlement can call `updateDirect(true)`; guard settlement retains its argumentless call.
+
+`source_frame_script_boundary(frame, entering)` reports the source script identity separately from the current playhead: a goto may already have changed the latter when the caller's exit event is emitted. Listeners used for diagnostics must not mutate simulation state. The signal encloses compiled scalar/call events and hit settlement, before the next queued target executes; it is not a whole-world end-of-tick event.
+
+### Ordered frame batches and boundary diagnostics
+
+`run_frame_actions(false)` executes the actor's already queued frame scripts without draining newly queued goto targets. Main processes every actor's initial batch, then Ready frame actions, then target batches until empty. Standalone callers retain immediate draining by default. Player source BODY mode now consumes the same ordered scalar/frame-call stream as CPU mode, including timeline and color operations. Top-level constant `ql +=/-= value` becomes an `energy_delta` frame call with source line/path; its direct scalar update happens within the observed source frame boundary and suppresses the old post-frame energy event.
+
+The analysis-only builder's `--body-boundaries` records all retained base DoAction boundaries for both fighters. Replay mode `combat-boundaries` checks global boundary order and values, retaining root snapshot differences as diagnostics. It does not certify whole-world sampling phases, timer alignment, geometry, or complete battle parity. Missing/extra boundary events fail; native frame filtering uses the full retained DoAction inventory, not only reference-observed frames.
+
+### Explicit getTimer reads
+
+The probe wraps only `hurtVoice` getTimer calls and preserves the original return value in `clock` events. Each event carries a monotonically increasing capture index, a `bundle#path#hurtVoice:getTimer:N` consumer site, and integer milliseconds. `clock-tape.json` retains original event sequence/time as provenance. A replay checkpoint may omit an earlier prefix but retains original indices in consumed records. SourceClock rejects malformed, fractional, negative, backwards, missing and out-of-order reads; failures latch rather than advancing past mismatches. The supported captured interval excludes getTimer wraparound.
+
+HurtVoice's four lexical sites map to death_check, death_write, hurt_check and hurt_write. The adapter reads only the sites reached by the original branch and reads again when writing a timestamp; it does not reuse a frame timestamp. The shared main clock supplies both actors. Fast deterministic replay uses only recorded values; live mode uses one monotonic host-clock read per source call. Existing captures without clock records cannot validate a reached clock branch and now fail explicitly instead of falling back to wall time.
+
+### Shared source callback scheduling
+
+`SourceCallbackRegistry` supplies monotonic registration identities across the fixed slice. Controller membership retention preserves registration; removal invalidates it; recreation registers a new instance for a later display dispatch. `AiCpuDriver.prepare_display_tick` must precede source timeline advancement so creation receives the correct tick. The source initial frame batch is captured before enterFrame callbacks; callback-generated targets drain afterward. The execution profile now records the nested registration probe, with dynamic helper/player coverage still pending. Source literal `hits` writes reset the native hit counter during source-frame execution. Reference captures now identify `body_kis_alias_with_per_read_trace`; collectors validate each read against event-ordered input state. See [evidence](../evidence/ai/callback-registry-and-input.md).
+
+### Player controller and binary source trace extensions
+
+Controller metadata identifies `input_mode` as `player` or `cpu`. Player generation retains the original `!useAI` input branch rather than stripping it. Projectile `initial_speed_field` and `initial_speed_factor` describe an exact source placement-load assignment; the host evaluates it once per new instance and stores `initial_speed` in that instance's copied model. `initial_motion_source` retains the load script path/hash.
+
+Actor pending-frame entries carry `{frame, order}`. Main supplies a shared monotonic order counter for the fixed Vs Com actors. Existing initial batches retain their phase; newly queued targets drain one at a time by the smallest head order. Standalone actors and the legacy non-CPU path retain their prior draining behavior.
+
+Analysis trace numbers may use `f:sign:exponent:high:low`: value = sign × (high × 2^26 + low) × 2^(exponent−52). Finite nonzero values have 2^26 ≤ high < 2^27 and 0 ≤ low < 2^26; zero has exponent/high/low all zero. Exponent is in [−1074,1023]. Legacy decimals remain accepted as captured, without inferred missing bits. The encoder covers random values, AI samples, HP/QL boundaries and state geometry, not every diagnostic field. See [source and validation evidence](../evidence/ai/player-controller-and-binary-trace.md).
+
+### Source hit-effect random offsets
+
+`presentation_events` may contain `random_offset` with `axis`, `positive_factor`, `negative_factor`, two ordered `random_sites`, and `source_path`. The runtime subtracts the two separately sampled terms and updates parent coordinates; it must not merge, reorder, or synthesize draws. Event identity is the compiled list index, not `(frame, op)`, because a source frame may contain multiple operations of the same kind.
+
+Main defers attached effects' initial frame work until after the caller. Existing effect timelines join SourceCallbackRegistry at attachment and interleave with fighter callbacks by registration order; the former universal early-effect phase is superseded. Full world ordering remains under validation. Source receiver calls use `attack_contact(defender, true)` to bypass legacy consumed-hit and stashed-contact caches while retaining current source hit gates and lookup order. Other resolver paths keep their existing behavior. See [validation limits](../evidence/ai/effect-random-and-repeat-contact.md).
+
+### Root-observer comparison phase
+
+The optional `_advance_fight(recorded_events, root_observer)` callback runs after initial frame batches but before deferred target scripts. Production callers omit it. The replay observer reads frame/state/geometry and returns true only at its selected capture cutoff. Combat mode verifies that this cutoff equals the unique original `done` root event, which immediately calls `fscommand(quit)` in the analysis source. The comparator retains all expected events and additionally fails unconsumed boundary/random/clock tapes and mismatched root frame/state fields. See [interleaving and observer evidence](../evidence/ai/effect-registry-and-root-observer.md).
+
+### Deferred projectile names
+
+Source projectile instances retain a live name separately from the authored rendering identity. Compiled `rename_frames` enqueue `source_child_frame_requested(operation)` when reached; Main assigns the same global sequence as actor target frames and drains both queues in order. Names change when the queued script executes, not on goto. Current source-name lookup is shared by attack-contact and projectile-collision queries. Removed/generation-mismatched operations cannot mutate replacements; driver teardown disconnects and clears the queue/name bindings. A missing queue connection fails explicitly on a reached rename. See [source and validation](../evidence/ai/projectile-deferred-rename.md).
+
+### 分析采集的异步退出尾部
+
+`collect_ai_reference.py` 默认仍要求唯一 done 及同帧尾部。显式
+`--retain-post-done-frames` 允许在首个 done 后保留异步退出事件，输出至
+`post-done-events.jsonl`，不纳入 `events.jsonl` 的比较窗口。摘要记录
+`termination_policy`；序号和时间连续性、Ready 唯一性、首个 done 请求帧、
+尾部显示/战斗帧一致性及同帧重复 done 仍受检查。此为分析产物约定，
+不改变生产 Trace Schema；案例见 [r15](../evidence/ai/match-flow-r15.md)。
+
+### 全局 HUD gameplay 规则
+
+`godot/generated/main/health/rules.json` 由 `tools/importer/build_health_rules.py`
+严格匹配 main 的 Sprite 1814 帧 1 gameplay 前缀生成，保留源路径、哈希、原文、
+百分比比例、任一死亡时返回条件，以及按玩家槽位排序的阈值/气量增量。
+`SourceHealthRules` 解释这些字段；`HealthHud` 继续只处理显示。此模型仅覆盖
+该前缀，不能据此声称整个 HUD 控制器或视觉已经编译完成。
+
+
+### KO instance scheduling and round continuity
+
+The shared scheduler now interleaves each KO root/child instance with actor BODY and initial frame scripts. Round reset preserves source energy/hits/pause, repeated same-frame goto does not repeat its script, and source hit-energy additions are not prematurely capped. r13/r14/r15 match all currently compared fighter fields; r15 consumes 4158 boundaries, 1202 random calls and 19 clock reads across both rounds and battle teardown. Twelve native checks pass. Countdown/timeover, exact geometry, boot, additional characters and presentation/Web parity remain pending. See [evidence](../evidence/ai/ko-instance-scheduling.md).
+
+### 援助与受击回调时序补充（2026-09-09）
+
+`bvn26-helper-model-v1.nested_stops` 保存 `sprite_id`、终端 `frame` 与源路径/哈希；
+当前消费范围是从第 1 帧顺序播放至单个无条件 `stop()` 的援助子剪辑，不代表通用
+AS2 执行器。没有 stop 的剪辑保留原循环行为。
+
+战斗模型 `hurt.callback_start_frame` 是非击飞 `beidax()` 放置后的第一根回调帧，
+同时保存 `callback_source_path` / `callback_source_sha256`。旧轮询受击计时从此帧
+开始，不从 `stop_frame` 开始；源控制器仍按原回调注册表运行。
+
+### Independently advancing renamed attack clips
+
+Controller `projectile_hooks` may also describe an attack clip with no movement
+callback. These use `frame_only: true`, the source `frame_count`, `rename_frames`,
+`stop_frames` and optional compiled `frame_events` (currently `screen_flash`).
+They share the existing placement-generation lifetime and child playback registry.
+Natural frame events run at the child's registration; callback-generated goto
+scripts remain deferred. Receiver queries use the current source instance name
+and current child frame bounds, including an empty terminal frame. Unknown frame
+scripts fail compilation instead of being silently treated as a linear clip.

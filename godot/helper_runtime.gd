@@ -14,9 +14,9 @@ var timeline_playing: bool = true
 var bs: int = 0
 var hited: int = 0
 var sw: bool = false
+var source_action: Variant = null
 
 var _combat: Dictionary
-var _hit_instances: Dictionary = {}
 var _events_applied: Dictionary = {}
 
 
@@ -40,7 +40,6 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 	attacking = true
 	timeline_playing = true
 	visible = true
-	_hit_instances.clear()
 	_events_applied.clear()
 	_reset_preview_offsets()
 	position = Vector2(float(spawn.get("x", -200.0)), float(spawn.get("y", -200.0)))
@@ -55,11 +54,12 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 func deactivate() -> void:
 	# Source frame_1 parks the clip at (-200, -200) and stop().
 	attacking = false
+	# main frame_8 removeFZ explicitly clears mc.动作.
+	source_action = 0
 	bs = 0
 	timeline_playing = true
 	visible = false
 	position = Vector2(-200.0, -200.0)
-	_hit_instances.clear()
 	play_source_frame(1)
 	last_event = "helper_hide_%s" % helper_id
 
@@ -72,7 +72,6 @@ func advance_timeline() -> void:
 		deactivate()
 		return
 	play_source_frame(current_source_frame() + 1)
-	_expire_absent_hit_instances()
 
 
 func enter_frame() -> void:
@@ -103,37 +102,33 @@ func instance_placed_origin(instance_name: String) -> Vector2:
 
 func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
 	defender.receive_attack(attack, facing)
-	_hit_instances[str(attack["instance_name"])] = true
 	last_event = "helper_hit_%s" % attack.get("instance_name", "unknown")
-
-
-func _expire_absent_hit_instances() -> void:
-	# Same PlaceObject rule as FighterRuntime: a later clip with the same
-	# name is a new instance once the previous one leaves the display list.
-	var live: Dictionary = {}
-	for instance_name in current_named_instances():
-		live[str(instance_name)] = true
-	for instance_name in _hit_instances.keys().duplicate():
-		if not live.has(instance_name):
-			_hit_instances.erase(instance_name)
 
 
 func attack_contact(defender: FighterRuntime) -> Dictionary:
 	if not attacking or not has_visual_timeline():
 		return {}
-	_expire_absent_hit_instances()
+	if not defender.allows_source_hit():
+		return {}
 	var body := defender.instance_global_bounds("bdmn")
 	if not body.has_area():
 		return {}
 	for instance_name in _combat.get("attacks", {}).keys():
-		if _hit_instances.has(instance_name):
-			continue
 		var attack_bounds := instance_global_bounds(instance_name)
 		if attack_bounds.has_area() and body.intersects(attack_bounds):
 			var attack: Dictionary = _combat["attacks"][instance_name].duplicate(true)
 			attack["instance_name"] = instance_name
 			return attack
 	return {}
+
+
+func _nested_frame(placement: Dictionary, timeline_frame: int, frame_count: int, clip_age: int = 0) -> int:
+	# A terminal stop belongs to the child timeline, even while its parent plays.
+	for event: Dictionary in _combat.get("nested_stops", []):
+		if int(event["sprite_id"]) == int(placement["character_id"]):
+			var age := maxi(0, timeline_frame - int(placement.get("placed_frame", timeline_frame)))
+			return mini(age + 1, int(event["frame"]))
+	return super._nested_frame(placement, timeline_frame, frame_count, clip_age)
 
 
 func set_facing(value: int) -> void:
@@ -172,6 +167,9 @@ func _apply_frame_events() -> void:
 	if _events_applied.has(frame):
 		return
 	_events_applied[frame] = true
+	for event: Dictionary in _combat.get("action_events", []):
+		if int(event["frame"]) == frame:
+			source_action = event["value"]
 	for event: Dictionary in _combat.get("clip_load_events", []):
 		if int(event["frame"]) == frame:
 			_aim_placed_clip(event)

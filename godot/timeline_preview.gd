@@ -18,6 +18,8 @@ var _action_end: int
 var _current_frame: int
 var _instance_local_offsets: Dictionary = {}
 var _instance_local_frames: Dictionary = {}
+var _retained_visual_clips: Dictionary = {}
+var independent_visual_clock := false
 var hidden_instance_names: PackedStringArray = []
 # Source StartSound on the current timeline frame. Hit sparks use the
 # same SOUNDENVELOPE scale in hit_effect_runtime.gd.
@@ -25,6 +27,26 @@ const SOUND_ENVELOPE_MAX := 32768.0
 var last_sound_ids: Array[int] = []
 var _sound_played_frame: int = -1
 var _cxform_shader: Shader
+var _source_color_mul := Color(1, 1, 1, 1)
+var _source_color_add := Color(0, 0, 0, 0)
+var _source_color_matrix: Array = []
+var _source_filter_shader: Shader
+
+const SOURCE_FILTER_SHADER := """
+shader_type canvas_item;
+uniform vec4 cx_mul = vec4(1.0);
+uniform vec4 cx_add = vec4(0.0);
+uniform vec4 row_r;
+uniform vec4 row_g;
+uniform vec4 row_b;
+uniform vec4 row_a;
+uniform vec4 offsets;
+void fragment() {
+	vec4 tex = texture(TEXTURE, UV);
+	vec4 c = vec4(tex.rgb * cx_mul.rgb + cx_add.rgb * tex.a, tex.a * cx_mul.a);
+	COLOR = clamp(vec4(dot(row_r, c), dot(row_g, c), dot(row_b, c), dot(row_a, c)) + offsets, 0.0, 1.0);
+}
+"""
 
 # Flash CXFORMWITHALPHA: src * (mult/256) + add. Add is 0-255 in the XML.
 const CXFORM_SHADER := """
@@ -112,6 +134,26 @@ func instance_global_bounds(instance_name: String) -> Rect2:
 	var local_bounds := instance_local_bounds(instance_name)
 	if local_bounds.has_area():
 		return _transform_rect(global_transform, local_bounds)
+	return Rect2()
+
+
+func child_instance_global_bounds(parent_name: String, child_name: String) -> Rect2:
+	if not _frames.has(_current_frame):
+		return Rect2()
+	for placement: Dictionary in _frames[_current_frame]["display_list"]:
+		if str(placement.get("name", "")) != parent_name:
+			continue
+		var definition: Dictionary = _definitions.get(int(placement["character_id"]), {})
+		var frames: Array = definition.get("display_list_frames", [])
+		if frames.is_empty():
+			return Rect2()
+		var frame := _nested_frame(placement, _current_frame, frames.size())
+		for child: Dictionary in frames[frame - 1]:
+			if str(child.get("name", "")) == child_name:
+				var bounds := _placement_bounds(child, frame)
+				if bounds.has_area():
+					return _transform_rect(global_transform * _wrapper_transform() *
+						_placement_transform(placement), bounds)
 	return Rect2()
 
 
@@ -298,9 +340,36 @@ func _read_json(path: String) -> Dictionary:
 	return value
 
 
+func advance_retained_visual_clips() -> void:
+	independent_visual_clock = true
+	_sync_retained_visual_clips()
+	for clip: Dictionary in _retained_visual_clips.values():
+		clip["age"] += 1
+
+
+func _sync_retained_visual_clips() -> void:
+	if not independent_visual_clock or not _frames.has(_current_frame):
+		return
+	var retained := {}
+	for placement: Dictionary in _frames[_current_frame]["display_list"]:
+		if str(placement.get("name", "")) != "":
+			continue
+		var depth := int(placement["depth"])
+		var identity := [placement["character_id"], placement.get("placed_frame", _current_frame)]
+		var previous: Dictionary = _retained_visual_clips.get(depth, {})
+		# A goto inside the same placement span retains the child playhead.
+		# Removing/replacing the placement starts a new child at frame one.
+		retained[depth] = {
+			"identity": identity, "placement": placement,
+			"age": previous.get("age", 0) if previous.get("identity") == identity else 0,
+		}
+	_retained_visual_clips = retained
+
+
 func _render_frame() -> void:
+	_sync_retained_visual_clips()
 	for child in get_children():
-		if child.name == "SoundLayer":
+		if child.name in ["SoundLayer", "RuntimeServices"]:
 			continue
 		child.queue_free()
 	if not _frames.has(_current_frame):
@@ -308,9 +377,31 @@ func _render_frame() -> void:
 	var frame: Dictionary = _frames[_current_frame]
 	var wrapper := _wrapper_transform()
 	for placement: Dictionary in frame["display_list"]:
-		_render_placement(placement, wrapper, 1.0, int(placement["depth"]) if preserve_root_depths else 0, _current_frame, 0)
+		_render_placement(placement, wrapper, 1.0, int(placement["depth"]) if preserve_root_depths else 0, _current_frame, 0, _source_color_mul, _source_color_add)
 	_play_start_sounds()
 	queue_redraw()
+
+
+func set_source_color(transform: Dictionary, matrix: Array) -> void:
+	# Current source palettes affect RGB only. Preserve unsupported alpha
+	# transforms as an explicit gap instead of silently dropping them.
+	assert(float(transform.get("aa", 100)) == 100 and float(transform.get("ab", 0)) == 0)
+	_source_color_mul = Color(float(transform.get("ra", 100)) / 100.0, float(transform.get("ga", 100)) / 100.0, float(transform.get("ba", 100)) / 100.0, 1)
+	_source_color_add = Color(float(transform.get("rb", 0)) / 255.0, float(transform.get("gb", 0)) / 255.0, float(transform.get("bb", 0)) / 255.0, 0)
+	assert(matrix.is_empty() or matrix.size() == 20)
+	_source_color_matrix = matrix.duplicate()
+	_render_frame()
+
+
+func runtime_services() -> Node:
+	# Render replacement is not timeline-instance destruction. Timers and
+	# controllers must survive drawing the next source frame.
+	var layer := get_node_or_null("RuntimeServices")
+	if layer == null:
+		layer = Node.new()
+		layer.name = "RuntimeServices"
+		add_child(layer)
+	return layer
 
 
 func _sound_layer() -> Node:
@@ -553,7 +644,7 @@ func _cxform_is_identity(rgb_mul: Color, rgb_add: Color) -> bool:
 
 func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: float) -> void:
 	sprite.modulate.a = alpha
-	if _cxform_is_identity(rgb_mul, rgb_add):
+	if _cxform_is_identity(rgb_mul, rgb_add) and _source_color_matrix.is_empty():
 		return
 	if _cxform_shader == null:
 		_cxform_shader = Shader.new()
@@ -562,6 +653,17 @@ func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: fl
 	material.shader = _cxform_shader
 	material.set_shader_parameter("cx_mul", Vector4(rgb_mul.r, rgb_mul.g, rgb_mul.b, 1.0))
 	material.set_shader_parameter("cx_add", Vector4(rgb_add.r, rgb_add.g, rgb_add.b, 0.0))
+	if not _source_color_matrix.is_empty():
+		if _source_filter_shader == null:
+			_source_filter_shader = Shader.new()
+			_source_filter_shader.code = SOURCE_FILTER_SHADER
+		material.shader = _source_filter_shader
+		material.set_shader_parameter("cx_mul", Vector4(rgb_mul.r, rgb_mul.g, rgb_mul.b, 1.0))
+		material.set_shader_parameter("cx_add", Vector4(rgb_add.r, rgb_add.g, rgb_add.b, 0.0))
+		for row in 4:
+			var i := row * 5
+			material.set_shader_parameter(["row_r", "row_g", "row_b", "row_a"][row], Vector4(_source_color_matrix[i], _source_color_matrix[i + 1], _source_color_matrix[i + 2], _source_color_matrix[i + 3]))
+		material.set_shader_parameter("offsets", Vector4(_source_color_matrix[4], _source_color_matrix[9], _source_color_matrix[14], _source_color_matrix[19]) / 255.0)
 	sprite.material = material
 
 
@@ -687,6 +789,10 @@ func _nested_frame(
 		return maxi(1, int(_instance_local_frames[instance_name]["local_start"]))
 	if frame_count <= 1:
 		return 1
+	if independent_visual_clock and instance_name == "":
+		var retained: Dictionary = _retained_visual_clips.get(int(placement["depth"]), {})
+		if is_same(retained.get("placement"), placement):
+			return posmod(int(retained["age"]), frame_count) + 1
 	# Unnamed clips inside a projectile playhead keep that clip's age so they
 	# do not follow the fighter timeline. Root unnamed clips (walk body, etc.)
 	# have clip_age 0 and must sync from placed_frame, otherwise they stay

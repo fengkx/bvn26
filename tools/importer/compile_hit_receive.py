@@ -44,6 +44,10 @@ SHAKE_RE = re.compile(
     r"_root\._(?P<axis>[xy])\s*(?P<op>=|\+=|-=)\s*(?:_root\._[xy]\s*=\s*)?(?P<num>-?\d+(?:\.\d+)?)"
 )
 UNLOAD_RE = re.compile(r"unloadMovie\s*\(")
+RANDOM_OFFSET_RE = re.compile(
+    r"_(?P<axis>[XY])\s*=\s*_(?P=axis)\s*\+\s*\(Math\.random\(\)\s*\*\s*"
+    r"(?P<positive>\d+)\s*-\s*Math\.random\(\)\s*\*\s*(?P<negative>\d+)\);"
+)
 FORM_ASSIGN_RE = re.compile(r"gjl(\d+)\.([A-Za-z0-9_]+)\s*=\s*([^;]+);")
 
 FIELD_NAMES = {
@@ -291,11 +295,23 @@ def _clip_events_for_prefix(script_bundle: dict[str, Any], prefix: str) -> list[
                     "source_path": script["path"],
                 }
             )
+        offsets = list(RANDOM_OFFSET_RE.finditer(source))
+        if source.count("Math.random()") != len(offsets) * 2:
+            raise ValueError("Unsupported hit-effect random expression: " + script["path"])
+        for offset in offsets:
+            first = source[:offset.start()].count("Math.random()") + 1
+            events.append({
+                "frame": frame, "op": "random_offset", "axis": offset["axis"].lower(),
+                "positive_factor": int(offset["positive"]),
+                "negative_factor": int(offset["negative"]),
+                "random_sites": [f'main#{script["path"]}:{first + i}' for i in range(2)],
+                "source_path": script["path"],
+            })
         if RESUME_RE.search(source):
             events.append({"frame": frame, "op": "resume_game", "source_path": script["path"]})
         if UNLOAD_RE.search(source):
             events.append({"frame": frame, "op": "unload", "source_path": script["path"]})
-    events.sort(key=lambda item: (item["frame"], item["op"]))
+    events.sort(key=lambda item: item["frame"])
     return events
 
 
@@ -319,6 +335,24 @@ def compile_hit_fx(main_bundle: dict[str, Any]) -> dict[str, Any]:
         if body is None:
             raise ValueError(f"{name}() missing from frame_8")
         tables[name] = _switch_clip_table(body)
+    body = extract_function(frame8["source"], "bdxg")
+    color_effects = {}
+    for case in re.finditer(r"case\s+(\d+)\s*:(.*?)(?=case\s+\d+\s*:|default\s*:|$)", body, re.S):
+        strength, source = case.groups()
+        palette = re.search(r"selfmc\._parent\.setColor\((\[.*?\])\);", source, re.S)
+        matrix = re.findall(r"_loc2_ = _loc2_\.concat\((\[[^]]+\])\);", source)
+        if palette:
+            # AS2 object keys are unquoted identifiers; preserve every numeric
+            # value and array order rather than choosing colors by element.
+            value = re.sub(r"([A-Za-z_]\w*)\s*:", r'"\1":', palette[1])
+            color_effects[int(strength)] = {"op": "set_colors", "colors": json.loads(value)}
+        elif matrix:
+            values = [value for row in matrix for value in json.loads(row)]
+            if len(values) != 20 or "selfmc.filters = [_loc3_];" not in source:
+                raise ValueError("Unsupported bdxg color matrix")
+            color_effects[int(strength)] = {"op": "set_color_matrix", "matrix": values}
+        if int(strength) in color_effects:
+            color_effects[int(strength)]["source_path"] = "frame_8/DoAction.as#bdxg"
     prefixes: dict[str, str] = {}
     for script in main_bundle.get("scripts", []):
         match = XG_PREFIX_RE.match(script["path"])
@@ -344,6 +378,7 @@ def compile_hit_fx(main_bundle: dict[str, Any]) -> dict[str, Any]:
     return {
         "source_path": "frame_8/DoAction.as",
         "bdxg": tables["bdxg"],
+        "color_effects": color_effects,
         "bdfyxg": tables["bdfyxg"],
         "bdfyxg2": tables["bdfyxg2"],
         "clips": clips,

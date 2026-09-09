@@ -1,0 +1,158 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "intro-phase-r02",
+  "events": 1935,
+  "counts": {
+    "boot": 1,
+    "initCtrl": 6,
+    "input_next_display": 484,
+    "intro_body_enter": 118,
+    "intro_body_exit": 118,
+    "random": 151,
+    "intro_poll": 21,
+    "sample": 30,
+    "geometry_frame": 1,
+    "geometry_matrix": 3,
+    "sensor_bounds": 12,
+    "sensor_local": 12,
+    "state": 606,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "predicate": 364,
+    "done": 1
+  },
+  "frames_after_ready": 30,
+  "ready": {
+    "run_id": "intro-phase-r02",
+    "sequence": 1457,
+    "time_ms": 23852,
+    "display_tick": 454,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "intro-phase-r02",
+      "sequence": 2,
+      "time_ms": 8756,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "intro-phase-r02",
+      "sequence": 5,
+      "time_ms": 8785,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "intro-phase-r02",
+      "sequence": 14,
+      "time_ms": 8987,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "intro-phase-r02",
+      "sequence": 15,
+      "time_ms": 8987,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "intro-phase-r02",
+      "sequence": 16,
+      "time_ms": 8988,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "intro-phase-r02",
+      "sequence": 17,
+      "time_ms": 8988,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": {
+    "run_id": "intro-phase-r02",
+    "sequence": 52,
+    "time_ms": 9520,
+    "display_tick": 23,
+    "fight_tick": -1,
+    "kind": "sample",
+    "value": "undefined,21.0383841767907,498.749455437064,50.6142543163151,282.049985369667,231.310513336211"
+  },
+  "samples_before_ready": 28,
+  "sample_intervals_ms": {
+    "539": 1,
+    "502": 2,
+    "528": 1,
+    "500": 2,
+    "498": 1,
+    "537": 1,
+    "503": 4,
+    "531": 1,
+    "529": 1,
+    "501": 2,
+    "499": 1,
+    "504": 2,
+    "536": 1,
+    "524": 1,
+    "544": 1,
+    "522": 1,
+    "532": 1,
+    "527": 2,
+    "508": 1,
+    "525": 1,
+    "507": 1
+  },
+  "last_states": [
+    {
+      "run_id": "intro-phase-r02",
+      "sequence": 1933,
+      "time_ms": 24856,
+      "display_tick": 484,
+      "fight_tick": 30,
+      "kind": "state",
+      "value": "p1,5,374.1,-25,100,0,1000,0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "intro-phase-r02",
+      "sequence": 1934,
+      "time_ms": 24856,
+      "display_tick": 484,
+      "fight_tick": 30,
+      "kind": "state",
+      "value": "p2,32,487.1,-25,-100,0,1000,0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "3810c8bf9e01d6a63ddf6d365d9bff2209a7cd2b73d289239fb27c5a56da04e2",
+  "retained_sha256": {
+    "instrumentation.diff": "db871a6540151e34e0e2ef045609f20cd6cc8141aea78342721e538b92b04868",
+    "events.jsonl": "d4aa0371d7e2112505051e42aaaa372477bf8abe1da877ed397d568917ad4651",
+    "random-tape.json": "8403efdde383a7465bf7d1f9a47e4f190191afdbb4526946bd57dafdaa9c7631",
+    "build.json": "624f0845c186a313507d55ab55f05cf5c3668732d474bd618e90aae7ee51527d"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Sensor matrices, each predicate read and target DoAction are not yet logged.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

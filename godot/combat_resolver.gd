@@ -1,6 +1,30 @@
 class_name CombatResolver
 extends RefCounted
 
+
+static func resolve_incoming(defender: FighterRuntime, attacker: FighterRuntime,
+		helper: HelperRuntime, stages: StageHitRegistry, stage_order: Array) -> bool:
+	# Sprite 2 checkHit: fighter, then that fighter's helper, then stage hit.
+	# The caller determines which defender callback runs first.
+	if not defender.allows_source_hit():
+		return false
+	var packet := attacker.attack_contact(defender, true)
+	if not packet.is_empty():
+		attacker.apply_attack_contact(packet, defender)
+		return true
+	if helper != null and helper.attacking:
+		assert(helper.owner_fighter == attacker)
+		packet = helper.attack_contact(defender)
+		if not packet.is_empty():
+			helper.apply_attack_contact(packet, defender)
+			return true
+	if stages != null:
+		var contact := stages.first_contact(defender, stage_order)
+		if not contact.is_empty():
+			contact["effect"].apply_attack_contact(contact["packet"], defender)
+			return true
+	return false
+
 # Source checkHit()/getHitObj() lives on the defender's body clip and looks up
 # currently placed opponent clips named {key}atm. Sampling both sides first keeps
 # simultaneous hits independent of player iteration order.
@@ -38,6 +62,8 @@ static func resolve_helpers(helpers: Array, fighters: Array) -> void:
 			# lookup when gameRunning() is false. A stopped helper can retain an
 			# active display-list hitbox, but it must not deal damage while paused.
 			if not fighter._game_running():
+				continue
+			if not fighter.has_active_hit_receiver():
 				continue
 			var contact: Dictionary = helper.attack_contact(fighter)
 			if not contact.is_empty():

@@ -18,6 +18,7 @@ const FLASH_VOLUME_MAX := 100.0
 # Replay order for Math.random(). Draws fall back to rng once it runs out.
 var random_tape: Array[float] = []
 var rng := RandomNumberGenerator.new()
+var random_source: SourceRandom
 # Every draw in source order, so a run can be compared against a tape.
 var draws: Array[float] = []
 var selected_file: String = ""
@@ -54,7 +55,9 @@ func select() -> String:
 			selected_file = str(step.get("file", ""))
 			selected_source = str(step.get("source", ""))
 			break
-		var draw := _next_random()
+		var draw := _next_random(str(step["random_site"]))
+		if is_nan(draw):
+			return ""
 		draws.append(draw)
 		if draw < float(step["random_below"]):
 			selected_file = str(step.get("file", ""))
@@ -105,7 +108,9 @@ func volume_db() -> float:
 	return linear_to_db(percent / FLASH_VOLUME_MAX)
 
 
-func _next_random() -> float:
+func _next_random(site: String) -> float:
+	if random_tape.is_empty() and random_source != null:
+		return random_source.next_value(site)
 	if random_tape.is_empty():
 		return rng.randf()
 	return random_tape.pop_front()

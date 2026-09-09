@@ -10,7 +10,10 @@
   "measured_rules": {
     "goto_and_play": {
       "caller_continues_before_target_frame_script": true,
-      "target_frame_script_runs_in_same_display_tick": true
+      "target_frame_script_runs_in_same_display_tick": true,
+      "caller_survival_requires_clip_retained": true,
+      "removal_unwinds_controller_function_and_callback": true,
+      "retained_then_removed_targets_run_frame_scripts_in_call_order": true
     },
     "advancing_timeline": {
       "current_frame_changes_before_enter_frame": true,
@@ -18,7 +21,8 @@
       "sibling_clip_enter_frame_order": "descending_display_depth",
       "enter_frame_runs_before_destination_frame_script": true,
       "removal_applies_before_removed_child_enter_frame": true,
-      "removal_applies_before_destination_frame_script": true
+      "removal_applies_before_destination_frame_script": true,
+      "sibling_clip_enter_frame_order_scope": "initial same-frame placements only; use callback_registry for dynamic lifetimes"
     },
     "stopped_timeline": {
       "timeline_advances": false,
@@ -35,6 +39,21 @@
       "retains_source_header_fps": false,
       "measured_source_fps": 24,
       "measured_host_fps": 30
+    },
+    "callback_registry": {
+      "order": "reverse_instance_registration",
+      "scope": "nested ClipAction instances across parent subtrees",
+      "retained_goto_preserves_registration": true,
+      "swap_depths_preserves_registration": true,
+      "remove_recreate_gets_new_registration": true,
+      "evidence": "evidence/probes/schedule/callback-registry/comparison.json"
+    },
+    "effect_frame_callback_order": {
+      "status": "measured_minimal_probe",
+      "order": "reverse_instance_registration",
+      "frame_scripts_interleave_with_enter_frame": true,
+      "evidence": "evidence/probes/schedule/effect-order/comparison.json",
+      "scope": "Attached effect timeline versus earlier/later dynamically registered callbacks; full world order remains under validation."
     }
   },
   "source_derived_rules": {

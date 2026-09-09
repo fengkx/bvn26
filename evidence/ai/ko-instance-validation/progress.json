@@ -1,0 +1,263 @@
+[
+  {
+    "experiment": "ko-reg",
+    "status": "first_difference",
+    "boundary_consumed": 2854,
+    "boundary_failure": {},
+    "first_frame_difference": {
+      "display_tick": 2592,
+      "expected": [
+        1,
+        1
+      ],
+      "actual": [
+        1053,
+        924
+      ],
+      "matches": false
+    },
+    "first_state_difference": {
+      "display_tick": 2592,
+      "slot": "p1",
+      "differences": {
+        "hp": {
+          "expected": 1000.0,
+          "actual": 0.0
+        },
+        "sw": {
+          "expected": false,
+          "actual": true
+        }
+      }
+    },
+    "script_error": false
+  },
+  {
+    "experiment": "ko-timer",
+    "status": "first_difference",
+    "boundary_consumed": 2855,
+    "boundary_failure": {
+      "expected": {
+        "slot": "p1",
+        "source_frame": 1,
+        "entering": true,
+        "frame": 1,
+        "sequence": 50449.0,
+        "display_tick": 2592.0,
+        "action": -1.0,
+        "hp": 1000.0,
+        "ql": 187.26666666666625,
+        "sw": false,
+        "touch": true,
+        "touchFloor": true,
+        "hits": 1.0,
+        "paused": true,
+        "hstm": 16.0,
+        "hurtSkling": false
+      },
+      "actual": {
+        "slot": "p2",
+        "source_frame": 1,
+        "entering": true,
+        "frame": 1,
+        "action": 0.0,
+        "hp": 1000.0,
+        "ql": 0.0,
+        "sw": false,
+        "touch": true,
+        "touchFloor": true,
+        "hits": 0,
+        "paused": false,
+        "hstm": 0.0,
+        "hurtSkling": false
+      },
+      "differences": {
+        "slot": {
+          "expected": "p1",
+          "actual": "p2"
+        },
+        "action": {
+          "expected": -1.0,
+          "actual": 0.0
+        },
+        "ql": {
+          "expected": 187.26666666666625,
+          "actual": 0.0
+        },
+        "hits": {
+          "expected": 1.0,
+          "actual": 0
+        },
+        "paused": {
+          "expected": true,
+          "actual": false
+        },
+        "hstm": {
+          "expected": 16.0,
+          "actual": 0.0
+        }
+      }
+    },
+    "first_frame_difference": null,
+    "first_state_difference": {
+      "display_tick": 2592,
+      "slot": "p1",
+      "differences": {
+        "ql": {
+          "expected": 187.26666666666625,
+          "actual": 0.0
+        },
+        "hits": {
+          "expected": 1.0,
+          "actual": 0
+        },
+        "paused": {
+          "expected": true,
+          "actual": false
+        }
+      }
+    },
+    "script_error": false
+  },
+  {
+    "experiment": "ko-reset",
+    "status": "first_difference",
+    "boundary_consumed": 2859,
+    "boundary_failure": {
+      "expected": {
+        "slot": "p2",
+        "source_frame": 2,
+        "entering": true,
+        "frame": 2,
+        "sequence": 50457.0,
+        "display_tick": 2592.0,
+        "action": 0.0,
+        "hp": 1000.0,
+        "ql": 5.0,
+        "sw": false,
+        "touch": true,
+        "touchFloor": true,
+        "hits": 0.0,
+        "paused": true,
+        "hstm": 0.0,
+        "hurtSkling": false
+      },
+      "actual": {
+        "slot": "p1",
+        "source_frame": 1,
+        "entering": true,
+        "frame": 1,
+        "action": 0.0,
+        "hp": 1000.0,
+        "ql": 187.26666666666625,
+        "sw": false,
+        "touch": true,
+        "touchFloor": true,
+        "hits": 0,
+        "paused": true,
+        "hstm": 0.0,
+        "hurtSkling": false
+      },
+      "differences": {
+        "slot": {
+          "expected": "p2",
+          "actual": "p1"
+        },
+        "source_frame": {
+          "expected": 2,
+          "actual": 1
+        },
+        "frame": {
+          "expected": 2,
+          "actual": 1
+        },
+        "ql": {
+          "expected": 5.0,
+          "actual": 187.26666666666625
+        }
+      }
+    },
+    "first_frame_difference": null,
+    "first_state_difference": null,
+    "script_error": false
+  },
+  {
+    "experiment": "ko-same",
+    "status": "first_difference",
+    "boundary_consumed": 3996,
+    "boundary_failure": {
+      "expected": {
+        "slot": "p1",
+        "source_frame": 1015,
+        "entering": false,
+        "frame": 1015,
+        "sequence": 68883.0,
+        "display_tick": 3456.0,
+        "action": -1.0,
+        "hp": 50.0,
+        "ql": 305.46666666666493,
+        "sw": false,
+        "touch": true,
+        "touchFloor": false,
+        "hits": 1.0,
+        "paused": false,
+        "hstm": 0.0,
+        "hurtSkling": false
+      },
+      "actual": {
+        "slot": "p1",
+        "source_frame": 1015,
+        "entering": false,
+        "frame": 1015,
+        "action": -1.0,
+        "hp": 50.0,
+        "ql": 300.0,
+        "sw": false,
+        "touch": true,
+        "touchFloor": false,
+        "hits": 1,
+        "paused": false,
+        "hstm": 0.0,
+        "hurtSkling": false
+      },
+      "differences": {
+        "ql": {
+          "expected": 305.46666666666493,
+          "actual": 300.0
+        }
+      }
+    },
+    "first_frame_difference": null,
+    "first_state_difference": {
+      "display_tick": 3457,
+      "slot": "p1",
+      "differences": {
+        "ql": {
+          "expected": 305.6666666666649,
+          "actual": 300.2
+        }
+      }
+    },
+    "script_error": false
+  },
+  {
+    "experiment": "ko-energy",
+    "status": "first_difference",
+    "boundary_consumed": 4158,
+    "boundary_failure": {},
+    "first_frame_difference": {
+      "display_tick": 3745,
+      "expected": [
+        0,
+        0
+      ],
+      "actual": [
+        1053,
+        924
+      ],
+      "matches": false
+    },
+    "first_state_difference": null,
+    "script_error": true
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "status": "original_order_pair_verified_not_native_parity",
+  "runs": [
+    {
+      "run_id": "recovery-order-r09",
+      "events_sha256": "581c9181143812d36b9ac1deedcdbc1f28c572f1c90a1c8ef91a025a27ee7066",
+      "first_callbacks": [
+        {
+          "run_id": "recovery-order-r09",
+          "sequence": 2440,
+          "time_ms": 26967,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "recovery_order",
+          "value": "moveLeft,1065,11,330,351,-16375,-16377"
+        },
+        {
+          "run_id": "recovery-order-r09",
+          "sequence": 2446,
+          "time_ms": 26968,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "recovery_order",
+          "value": "recovery-enter,1065,10,330,345,-16375,-16377"
+        },
+        {
+          "run_id": "recovery-order-r09",
+          "sequence": 2447,
+          "time_ms": 26968,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "recovery_order",
+          "value": "recovery-exit,1065,10,334,345,-16375,-16377"
+        }
+      ],
+      "p2_x_at_recovery_exit": 345.0
+    },
+    {
+      "run_id": "recovery-order-r10",
+      "events_sha256": "6867a47ded07b67a9243de578fedc7d820c5066483b210591e5e1c831339984f",
+      "first_callbacks": [
+        {
+          "run_id": "recovery-order-r10",
+          "sequence": 2303,
+          "time_ms": 26019,
+          "display_tick": 454,
+          "fight_tick": 1,
+          "kind": "recovery_order",
+          "value": "recovery-enter,1065,11,330,351,-16375,-16377"
+        },
+        {
+          "run_id": "recovery-order-r10",
+          "sequence": 2304,
+          "time_ms": 26019,
+          "display_tick": 454,
+          "fight_tick": 1,
+          "kind": "recovery_order",
+          "value": "recovery-exit,1065,11,334,351,-16375,-16377"
+        },
+        {
+          "run_id": "recovery-order-r10",
+          "sequence": 2317,
+          "time_ms": 26020,
+          "display_tick": 454,
+          "fight_tick": 1,
+          "kind": "recovery_order",
+          "value": "moveLeft,1065,11,334,351,-16375,-16377"
+        }
+      ],
+      "p2_x_at_recovery_exit": 351.0
+    }
+  ],
+  "conclusion": "Cross-actor callback order changes with goto order at unchanged display depths.",
+  "limits": [
+    "Does not establish the full event registry or retained-instance reordering rules."
+  ]
+}

@@ -22,8 +22,13 @@ NAMES = (
     "defence", "standup", "zhaoHuan", "bisha", "bishaUP", "bishaAir",
     "bishaSuper", "isPoFangAct",
 )
+DISPATCH_NAMES = (
+    "doAllAction", "doStand", "onJumping", "onDefence", "onDashing",
+    "doDropDown", "moveX", "moveY",
+)
 OPPONENT = '_root.game["p" + _parent.pn]'
 FIELDS = {
+    '_parent._parent.useAI': 'useAI',
     OPPONENT + '.mc.动作': 'opponent_action',
     '_root.game["p" + _parent.pn + "fz"].动作': 'opponent_helper_action',
     OPPONENT + '.mc.sw': 'opponent_sw',
@@ -32,8 +37,10 @@ FIELDS = {
     '_parent._parent.scale_X': 'scale_X', '_parent._parent._xscale': 'xscale',
     '_root.zhanting': 'root_paused',
     **{'_parent.' + key: key for key in (
-        'attran', 'defran', 'goran', 'jumpran', 'bisharan', 'touchFloor', 'ql', 'canhit', 'sw'
+        'attran', 'defran', 'goran', 'jumpran', 'bisharan', 'touchFloor', 'ql', 'canhit', 'sw',
+        'speed', 'jumpPower', 'jumped', 'fall', 'khit', 'touch',
     )},
+    '_root.zhongli': 'gravity',
 }
 
 # Scalar conversion is limited to the values used by these predicates. Missing
@@ -51,6 +58,12 @@ func value(key: String) -> Variant:
 
 func sensor(key: String) -> Variant:
 \treturn state["sensors"].get(key)
+
+func body_hit(key: String) -> Variant:
+\treturn state["body_hits"].get(key)
+
+func write_value(key: String, v: Variant) -> void:
+\tstate[key] = v
 
 func power(key: String) -> Variant:
 \treturn state["power"].get(key)
@@ -80,16 +93,23 @@ func equal(a: Variant, b: Variant) -> bool:
 
 func strict(a: Variant, b: Variant) -> bool:
 \treturn typeof(a) == typeof(b) and equal(a, b)
+
+func source_round(v: Variant) -> float:
+\treturn floor(number(v) + 0.5)
 '''
 
 
 def normalize(expr: str) -> str:
+    expr = re.sub(r'_parent\.kis\(_parent\.(左|右|上|下|斩|跳|冲|招|必杀|换)\)',
+                  lambda match: 'source_key(' + json.dumps(match[1], ensure_ascii=False) + ')', expr)
     expr = re.sub(r'_parent\.AImain\.(\w+)\.hitTest\(' + re.escape(OPPONENT + '.mc.bdmn') + r'\)',
                   lambda m: f'sensor("{m[1]}")', expr)
+    expr = re.sub(r'_parent\.(\w+)\.hitTest\(' + re.escape(OPPONENT + '.mc.bdmn') + r'\)',
+                  lambda m: f'body_hit("{m[1]}")', expr)
     expr = expr.replace('_parent._parent._curGJL[name + "zl"]', 'power(name + "zl")')
     for source, target in sorted(FIELDS.items(), key=lambda item: -len(item[0])):
         expr = expr.replace(source, f'value("{target}")')
-    expr = expr.replace('Math.abs', 'abs').replace('isNaN', 'is_nan')
+    expr = expr.replace('Math.abs', 'abs').replace('Math.round', 'source_round').replace('isNaN', 'is_nan')
     # The only strict comparison in these functions is combo === true.
     expr = expr.replace('combo === true', 'strict(combo, True)')
     expr = re.sub(r'\btrue\b', 'True', expr)
@@ -105,7 +125,7 @@ def normalize(expr: str) -> str:
     return expr.strip()
 
 
-def emit(node: ast.AST, locals_: set[str]) -> str:
+def emit(node: ast.AST, locals_: set[str], extra_calls: frozenset[str] = frozenset()) -> str:
     if isinstance(node, ast.Constant):
         if node.value is None:
             return 'null'
@@ -114,28 +134,33 @@ def emit(node: ast.AST, locals_: set[str]) -> str:
         return json.dumps(node.value, ensure_ascii=False)
     if isinstance(node, ast.Name) and node.id in locals_:
         return node.id
+    if isinstance(node, ast.Dict) and 'literal_object' in extra_calls:
+        if any(not isinstance(key, ast.Constant) or not isinstance(key.value, str) for key in node.keys):
+            raise ValueError('Only explicit source object keys are supported')
+        return '{' + ', '.join(emit(key, locals_, extra_calls) + ': ' + emit(value, locals_, extra_calls)
+                              for key, value in zip(node.keys, node.values)) + '}'
     if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
         name = node.func.id
-        if name not in {*NAMES, 'value', 'sensor', 'power', 'strict', 'abs', 'is_nan'} or node.keywords:
+        if name not in {*NAMES, *DISPATCH_NAMES, *extra_calls, 'source_key', 'value', 'sensor', 'body_hit', 'power', 'strict', 'abs', 'is_nan', 'source_round'} or node.keywords:
             raise ValueError(f'Unsupported call: {ast.dump(node)}')
-        args = [emit(arg, locals_) for arg in node.args]
+        args = [emit(arg, locals_, extra_calls) for arg in node.args]
         if name in {'abs', 'is_nan'}:
             args = ['number(' + arg + ')' for arg in args]
         return name + '(' + ', '.join(args) + ')'
     if isinstance(node, ast.UnaryOp):
-        val = emit(node.operand, locals_)
+        val = emit(node.operand, locals_, extra_calls)
         if isinstance(node.op, ast.Not):
             return '(not truth(' + val + '))'
         if isinstance(node.op, ast.USub):
             return '(-number(' + val + '))'
     if isinstance(node, ast.BoolOp):
         op = ' and ' if isinstance(node.op, ast.And) else ' or '
-        return '(' + op.join('truth(' + emit(v, locals_) + ')' for v in node.values) + ')'
+        return '(' + op.join('truth(' + emit(v, locals_, extra_calls) + ')' for v in node.values) + ')'
     if isinstance(node, ast.Compare):
         # AS2 chained comparisons are left-associative, unlike Python chains.
-        left = emit(node.left, locals_)
+        left = emit(node.left, locals_, extra_calls)
         for op, right_node in zip(node.ops, node.comparators):
-            right = emit(right_node, locals_)
+            right = emit(right_node, locals_, extra_calls)
             if isinstance(op, (ast.Eq, ast.NotEq)):
                 left = ('not ' if isinstance(op, ast.NotEq) else '') + f'equal({left}, {right})'
             else:
@@ -145,14 +170,14 @@ def emit(node: ast.AST, locals_: set[str]) -> str:
                 left = f'(number({left}) {symbol} number({right}))'
         return '(' + left + ')'
     if isinstance(node, ast.BinOp):
-        a, b = emit(node.left, locals_), emit(node.right, locals_)
+        a, b = emit(node.left, locals_, extra_calls), emit(node.right, locals_, extra_calls)
         if isinstance(node.op, ast.Add) and isinstance(node.right, ast.Constant) and isinstance(node.right.value, str):
             return f'({a} + {b})'
-        op = {ast.Add: '+', ast.Sub: '-', ast.Mult: '*'}.get(type(node.op))
+        op = {ast.Add: '+', ast.Sub: '-', ast.Mult: '*', ast.Div: '/'}.get(type(node.op))
         if op:
             return f'(number({a}) {op} number({b}))'
     if isinstance(node, ast.IfExp):
-        return f'({emit(node.body, locals_)} if truth({emit(node.test, locals_)}) else {emit(node.orelse, locals_)})'
+        return f'({emit(node.body, locals_, extra_calls)} if truth({emit(node.test, locals_, extra_calls)}) else {emit(node.orelse, locals_, extra_calls)})'
     raise ValueError(f'Unsupported AI expression: {ast.dump(node)}')
 
 
@@ -160,10 +185,11 @@ def expression(source: str, locals_: set[str]) -> str:
     return emit(ast.parse(normalize(source), mode='eval').body, locals_)
 
 
-def compile_function(name: str, params: str, body: str) -> str:
+def compile_function(name: str, params: str, body: str, *, player: bool = False) -> str:
     # Specialize only the explicit player-input branch. Other guards stay in
     # source order, including ql and touchFloor checks before this branch.
-    body = re.sub(r'(?m)^( +)if\(!_parent\._parent\.useAI\)\n\1\{\n.*?^\1\}\n', '', body, flags=re.S)
+    if not player:
+        body = re.sub(r'(?m)^( +)if\(!_parent\._parent\.useAI\)\n\1\{\n.*?^\1\}\n', '', body, flags=re.S)
     params_list = [p.strip() for p in params.split(',') if p.strip()]
     locals_ = set(params_list)
     output = ['', f'func {name}(' + ', '.join(p + ': Variant = null' for p in params_list) + ') -> Variant:']
@@ -199,7 +225,7 @@ def compile_function(name: str, params: str, body: str) -> str:
             if target in locals_:
                 translated = target + ' = ' + expression(value, locals_)
             elif target in FIELDS:
-                translated = f'state["{FIELDS[target]}"] = ' + expression(value, locals_)
+                translated = f'write_value("{FIELDS[target]}", ' + expression(value, locals_) + ')'
             else:
                 raise ValueError(f'Unsupported AI assignment: {line}')
         output.append(indent + translated)
@@ -208,14 +234,15 @@ def compile_function(name: str, params: str, body: str) -> str:
     return '\n'.join(output) + '\n'
 
 
-def compile_source(source: str) -> str:
+def compile_source(source: str, *, player: bool = False) -> str:
     funcs = {m[1]: (m[2], m[3]) for m in FUNCTION.finditer(source.replace('\r\n', '\n'))}
     missing = set(NAMES) - funcs.keys()
     if missing:
         raise ValueError(f'Missing source functions: {sorted(missing)}')
     header = '# Generated by tools/importer/compile_ai_predicates.py; do not edit.\n'
     header += '# Source SHA-256: ' + hashlib.sha256(source.encode()).hexdigest() + '\n'
-    return header + PRELUDE + ''.join(compile_function(name, *funcs[name]) for name in NAMES)
+    keys = '\nfunc source_key(key: String) -> Variant:\n\treturn value("key:" + key)\n' if player else ''
+    return header + PRELUDE + keys + ''.join(compile_function(name, *funcs[name], player=player) for name in NAMES)
 
 
 def main() -> None:

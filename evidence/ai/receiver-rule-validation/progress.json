@@ -1,0 +1,529 @@
+{
+  "status": "diagnostic_progress_not_full_parity",
+  "steps": [
+    {
+      "stage": "guard-facing-r15",
+      "report_sha256": "68ddf026391d3701c99f5db3430d0caf862636c9c757812484895d109c0ca6e0",
+      "status": "first_difference",
+      "boundary_consumed": 813,
+      "boundary_failure": {
+        "expected": {
+          "slot": "p1",
+          "source_frame": 408,
+          "entering": true,
+          "frame": 1014,
+          "sequence": 8244.0,
+          "display_tick": 825.0,
+          "action": 0.0,
+          "hp": 910.0,
+          "ql": 75.66666666666667,
+          "sw": false,
+          "touch": true,
+          "touchFloor": true,
+          "hits": 0.0,
+          "paused": false,
+          "hstm": 0.0,
+          "hurtSkling": false
+        },
+        "actual": {
+          "slot": "p1",
+          "source_frame": 1014,
+          "entering": true,
+          "frame": 1014,
+          "action": 0.0,
+          "hp": 910.0,
+          "ql": 75.66666666666667,
+          "sw": false,
+          "touch": true,
+          "touchFloor": true,
+          "hits": 0,
+          "paused": false,
+          "hstm": 0.0,
+          "hurtSkling": false
+        },
+        "differences": {
+          "source_frame": {
+            "expected": 408,
+            "actual": 1014
+          }
+        }
+      },
+      "geometry_summary": {
+        "p1": {
+          "initial_actual": {
+            "x": 374.1000061035156,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "initial_expected": {
+            "x": 374.1,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 0.0,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 3.0517578125e-05,
+            "y": 0.0
+          },
+          "snapshots": 628
+        },
+        "p2": {
+          "initial_actual": {
+            "x": 637.0999755859375,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "initial_expected": {
+            "x": 637.1,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 0.0,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "snapshots": 628
+        }
+      },
+      "last_frame": {
+        "display_tick": 824,
+        "expected": [
+          406,
+          361
+        ],
+        "actual": [
+          1014,
+          361
+        ],
+        "matches": false
+      },
+      "last_states": [
+        {
+          "display_tick": 824,
+          "slot": "p1",
+          "differences": {}
+        },
+        {
+          "display_tick": 824,
+          "slot": "p2",
+          "differences": {}
+        }
+      ]
+    },
+    {
+      "stage": "source-name-r15",
+      "report_sha256": "6d2d817d5810409e07779677f7186499fd074e7ade60c9df6064f92ca3704be9",
+      "status": "first_difference",
+      "boundary_consumed": 2758,
+      "boundary_failure": {},
+      "geometry_summary": {
+        "p1": {
+          "initial_actual": {
+            "x": 374.1000061035156,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "initial_expected": {
+            "x": 374.1,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 6.103515630684342e-06,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 3.0517578125e-05,
+            "y": 6.103515630684342e-06
+          },
+          "snapshots": 2101
+        },
+        "p2": {
+          "initial_actual": {
+            "x": 637.0999755859375,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "initial_expected": {
+            "x": 637.1,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 1.5258789076710855e-06,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 0.0,
+            "y": 1.5258789076710855e-06
+          },
+          "snapshots": 2101
+        }
+      },
+      "last_frame": {
+        "display_tick": 2297,
+        "expected": [
+          1015,
+          178
+        ],
+        "actual": [
+          1015,
+          178
+        ],
+        "matches": true
+      },
+      "last_states": [
+        {
+          "display_tick": 2297,
+          "slot": "p1",
+          "differences": {
+            "ql": {
+              "expected": 149.86666666666667,
+              "actual": 149.66666666666669
+            }
+          }
+        },
+        {
+          "display_tick": 2297,
+          "slot": "p2",
+          "differences": {}
+        }
+      ]
+    },
+    {
+      "stage": "source-health-phase-r15",
+      "report_sha256": "8eb047fb74a96451cbe70fa790ffa6f627e6030a374b3202b3694cd2bb8ec414",
+      "status": "first_difference",
+      "boundary_consumed": 2796,
+      "boundary_failure": {
+        "expected": {
+          "slot": "p1",
+          "source_frame": 1028,
+          "entering": false,
+          "frame": 1028,
+          "sequence": 49090.0,
+          "display_tick": 2334.0,
+          "action": -1.0,
+          "hp": -130.0,
+          "ql": 187.26666666666625,
+          "sw": true,
+          "touch": true,
+          "touchFloor": true,
+          "hits": 1.0,
+          "paused": false,
+          "hstm": 0.0,
+          "hurtSkling": false
+        },
+        "actual": {
+          "slot": "p1",
+          "source_frame": 1028,
+          "entering": false,
+          "frame": 1028,
+          "action": -1.0,
+          "hp": 0.0,
+          "ql": 187.26666666666625,
+          "sw": true,
+          "touch": true,
+          "touchFloor": true,
+          "hits": 1,
+          "paused": false,
+          "hstm": 0.0,
+          "hurtSkling": false
+        },
+        "differences": {
+          "hp": {
+            "expected": -130.0,
+            "actual": 0.0
+          }
+        }
+      },
+      "geometry_summary": {
+        "p1": {
+          "initial_actual": {
+            "x": 374.1000061035156,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "initial_expected": {
+            "x": 374.1,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 6.103515630684342e-06,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 3.0517578125e-05,
+            "y": 6.103515630684342e-06
+          },
+          "snapshots": 2139
+        },
+        "p2": {
+          "initial_actual": {
+            "x": 637.0999755859375,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "initial_expected": {
+            "x": 637.1,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 1.5258789076710855e-06,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 0.0,
+            "y": 1.5258789076710855e-06
+          },
+          "snapshots": 2139
+        }
+      },
+      "last_frame": {
+        "display_tick": 2335,
+        "expected": [
+          1028,
+          469
+        ],
+        "actual": [
+          1028,
+          469
+        ],
+        "matches": true
+      },
+      "last_states": [
+        {
+          "display_tick": 2335,
+          "slot": "p1",
+          "differences": {
+            "hp": {
+              "expected": -130.0,
+              "actual": 0.0
+            }
+          }
+        },
+        {
+          "display_tick": 2335,
+          "slot": "p2",
+          "differences": {}
+        }
+      ]
+    },
+    {
+      "stage": "lethal-health-r15",
+      "report_sha256": "49ce90527847f03d4bfaf25f2118452dabdbfcfa7c87f682a3d2bb937b13039a",
+      "status": "first_difference",
+      "boundary_consumed": 2798,
+      "boundary_failure": {},
+      "geometry_summary": {
+        "p1": {
+          "initial_actual": {
+            "x": 374.1000061035156,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "initial_expected": {
+            "x": 374.1,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "max_absolute_delta": {
+            "x": 20.000024414062523,
+            "y": 6.103515630684342e-06,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 20.000030517578125,
+            "y": 6.103515630684342e-06
+          },
+          "snapshots": 2168
+        },
+        "p2": {
+          "initial_actual": {
+            "x": 637.0999755859375,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "initial_expected": {
+            "x": 637.1,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 1.5258789076710855e-06,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 0.0,
+            "y": 1.5258789076710855e-06
+          },
+          "snapshots": 2168
+        }
+      },
+      "last_frame": {
+        "display_tick": 2364,
+        "expected": [
+          1035,
+          470
+        ],
+        "actual": [
+          1035,
+          471
+        ],
+        "matches": false
+      },
+      "last_states": [
+        {
+          "display_tick": 2364,
+          "slot": "p1",
+          "differences": {
+            "hstm": {
+              "expected": 0.0,
+              "actual": 1.0
+            }
+          }
+        },
+        {
+          "display_tick": 2364,
+          "slot": "p2",
+          "differences": {}
+        }
+      ]
+    },
+    {
+      "stage": "ko-phase-r15",
+      "report_sha256": "9aa1fdc9a5297f3646dd938678149d3ae7cb88cbbc1820aa23e7b40b92526962",
+      "status": "first_difference",
+      "boundary_consumed": 2841,
+      "boundary_failure": {
+        "expected": {
+          "slot": "p2",
+          "source_frame": 8,
+          "entering": true,
+          "frame": 8,
+          "sequence": 49810.0,
+          "display_tick": 2456.0,
+          "action": 0.0,
+          "hp": 757.0,
+          "ql": 5.0,
+          "sw": false,
+          "touch": true,
+          "touchFloor": true,
+          "hits": 0.0,
+          "paused": true,
+          "hstm": 0.0,
+          "hurtSkling": false
+        },
+        "actual": {
+          "slot": "p2",
+          "source_frame": 8,
+          "entering": true,
+          "frame": 8,
+          "action": 0.0,
+          "hp": 757.0,
+          "ql": 5.0,
+          "sw": false,
+          "touch": true,
+          "touchFloor": true,
+          "hits": 0,
+          "paused": false,
+          "hstm": 0.0,
+          "hurtSkling": false
+        },
+        "differences": {
+          "paused": {
+            "expected": true,
+            "actual": false
+          }
+        }
+      },
+      "geometry_summary": {
+        "p1": {
+          "initial_actual": {
+            "x": 374.1000061035156,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "initial_expected": {
+            "x": 374.1,
+            "y": -25.0,
+            "xscale": 100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 6.103515630684342e-06,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 3.0517578125e-05,
+            "y": 6.103515630684342e-06
+          },
+          "snapshots": 2261
+        },
+        "p2": {
+          "initial_actual": {
+            "x": 637.0999755859375,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "initial_expected": {
+            "x": 637.1,
+            "y": -25.0,
+            "xscale": -100.0
+          },
+          "max_absolute_delta": {
+            "x": 2.4414062522737368e-05,
+            "y": 1.5258789076710855e-06,
+            "xscale": 0.0
+          },
+          "max_displacement_delta": {
+            "x": 0.0,
+            "y": 1.5258789076710855e-06
+          },
+          "snapshots": 2261
+        }
+      },
+      "last_frame": {
+        "display_tick": 2457,
+        "expected": [
+          1053,
+          1
+        ],
+        "actual": [
+          1053,
+          1
+        ],
+        "matches": true
+      },
+      "last_states": [
+        {
+          "display_tick": 2457,
+          "slot": "p1",
+          "differences": {}
+        },
+        {
+          "display_tick": 2457,
+          "slot": "p2",
+          "differences": {}
+        }
+      ]
+    }
+  ],
+  "ko_phase_runtime_change_retained": false
+}

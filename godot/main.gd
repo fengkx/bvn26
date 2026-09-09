@@ -1,5 +1,7 @@
 extends Control
 
+signal before_recorded_intro_poll(event: Dictionary)
+
 @onready var tick_label: Label = %TickLabel
 @onready var state_label: Label = %StateLabel
 @onready var config_label: Label = %Config
@@ -20,8 +22,28 @@ var pause_menu: BattlePauseMenu
 var health_hud: HealthHud
 var map_selection: MapSelection
 var stage_background: TimelinePreview
+var battle_intro: BattleIntro
 var stage_sound: StageSound
+var source_random := SourceRandom.new()
+var source_clock = preload("res://source_clock.gd").new()
 var selected_stage: String = "现世"
+var cpu_driver: AiCpuDriver
+var cpu_services: AiCombatServices
+var cpu_stage_registry := StageHitRegistry.new()
+var cpu_profile: Dictionary
+var cpu_visual_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/ai_visual_services.json"))
+var cpu_unresolved_services: Dictionary = {}
+var ko_recorded_timers: bool = false
+var ko_timeline: KoTimeline
+var ko_clip: KoClip
+var ko_state: Dictionary = {}
+var ko_metadata: Dictionary
+var ko_active: bool = false
+var ko_paused: bool = false
+var ko_menu_enabled: bool = true
+var ko_terminal_pending: bool = false
+var ko_nextfight_timer: Timer
+var ko_interval_sequence: int = 0
 
 var session := GameSession.new()
 var super_runtime := SuperRuntime.new()
@@ -33,6 +55,13 @@ var screen_flash: ColorRect
 var screen_flash_age: int = -1
 # Source pauseGame()/resumeGame() from XG_*x clips. Stops fighter/helper mcs.
 var hit_fx_pause_count: int = 0
+var player_body_driver: Node
+var source_callbacks: SourceCallbackRegistry
+var source_health_rules: RefCounted
+var source_health_registration: int
+var source_frame_sequence: int = 0
+var source_child_frames: Array[Dictionary] = []
+var player_body_services: AiCombatServices
 # Source DefineSprite_1991: setInterval(zdbx, 1000) when modo==4. 30 Hz → 30 ticks.
 var zdbx_ticks: int = 0
 
@@ -55,7 +84,11 @@ void fragment() {
 
 
 func _ready() -> void:
+	cpu_profile = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/execution_profile.json"))
+	cpu_stage_registry.configure(JSON.parse_string(FileAccess.get_file_as_string("res://generated/effects/XG_baoqi/stage_hit.json")))
+	source_random.use_live_random()
 	stage_sound = StageSound.new()
+	stage_sound.random_source = source_random
 	add_child(stage_sound)
 	map_selection = MapSelection.new()
 	map_selection.z_index = 200
@@ -74,6 +107,12 @@ func _ready() -> void:
 	health_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(health_hud)
 	health_hud.fighters = [naruto, ichigo]
+	battle_intro = BattleIntro.new()
+	add_child(battle_intro)
+	battle_intro.interval_cleared.connect(_ko_clear_interval)
+	battle_intro.fight_started.connect(_ko_fight_started)
+	naruto.ko_requested.connect(_on_ko_requested)
+	ichigo.ko_requested.connect(_on_ko_requested)
 	session.load_store()
 	key_settings.session = session
 	key_settings.refresh_view()
@@ -136,7 +175,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if session.root_label != "游戏场景" or naruto.sw or ichigo.sw:
+	if session.root_label != "游戏场景" or battle_intro.active or naruto.sw or ichigo.sw or not ko_menu_enabled:
 		return
 	if event is InputEventKey:
 		pause_menu.handle_key(event)
@@ -184,7 +223,8 @@ func _on_menu_confirmed(item_id: String) -> void:
 		if item_id == "key_settings":
 			_goto_key_settings()
 			return
-		_goto_map_selection(int(item["modo"]))
+		if int(item["modo"]) in [2, 3, 4]:
+			_goto_map_selection(int(item["modo"]))
 		return
 
 
@@ -254,6 +294,10 @@ func _return_to_title() -> void:
 
 
 func _goto_menu() -> void:
+	_stop_ko()
+	_stop_cpu()
+	if battle_intro != null:
+		battle_intro.cancel()
 	stage_sound.stop()
 	map_selection.leave()
 	# Source frame_10: stop(); _root.stage = 0; downtxts.clean(); vertxt.
@@ -308,12 +352,13 @@ func _goto_key_settings() -> void:
 
 
 func _enter_current_fight(modo: int) -> void:
+	_stop_ko()
+	_stop_cpu()
 	# Fighters/assists remain locked; the map comes from the original map selector.
-	# Source DefineSprite_600 (modo=3) / DefineSprite_603 (modo=4):
-	# p1cpu=false, p2cpu=false, then 选人画面. This slice jumps to 游戏场景.
+	# Source 597/600/603: only modo=2 enables p2cpu. Selection is fixed here.
 	session.modo = modo
 	session.p1cpu = false
-	session.p2cpu = false
+	session.p2cpu = modo == 2
 	session.root_label = "游戏场景"
 	title_menu.visible = false
 	key_settings.visible = false
@@ -329,13 +374,19 @@ func _enter_current_fight(modo: int) -> void:
 	combo_hud.visible = true
 	naruto_energy.visible = true
 	ichigo_energy.visible = true
-	_chushi()
+	_initialize_fight()
+	health_hud.set_wins(1, 1)
+	if session.p2cpu:
+		_start_cpu()
+	battle_intro.begin([naruto, ichigo])
+	health_hud.spec["placement"] = battle_intro.spec["hud_frames"]["1"]
+	game_world.focus = battle_intro.focus
 	_refresh_bind_label()
 
 
-func _chushi() -> void:
+func _initialize_fight() -> void:
 	health_hud.reset()
-	# Source frame_8 `chushi`: assign keys, hp=maxhp, place p1/p2, face.
+	# Fresh match allocation also resets presentation and runtime state.
 	naruto.modo = session.modo
 	ichigo.modo = session.modo
 	naruto.sw = false
@@ -363,15 +414,43 @@ func _chushi() -> void:
 	_reset_super()
 
 
-func _advance_fight() -> void:
+func _chushi() -> void:
+	# main frame_8 only restores keys, spawn transforms, HP and roster metadata.
+	# BODY frame scripts own action state; nextfight retains energy and pause.
+	for fighter: FighterRuntime in [naruto, ichigo]:
+		fighter.health = session.maxhp
+	_place_fighters_from_map()
+	naruto.set_facing(1)
+	ichigo.set_facing(-1)
+	naruto.sync_body_collision_position()
+	ichigo.sync_body_collision_position()
+
+
+func _advance_fight(recorded_events: Array = [], root_observer: Callable = Callable()) -> void:
+	# Snapshot before frame scripts attach new XG instances. Their frame 1
+	# is queued behind the caller; frame 2 belongs to the next display tick.
+	var existing_hit_effects: Array[HitEffectRuntime] = []
+	for child in game_world.get_children():
+		if child is HitEffectRuntime and not child.is_queued_for_deletion():
+			existing_hit_effects.append(child)
+	battle_intro.tick(1.0 / Engine.physics_ticks_per_second, session.is_slot_down("j") or session.is_slot_down("N1"), true)
+	if ko_timeline != null:
+		ko_timeline.display_tick = physics_tick + 1
+		ko_timeline.advance_timelines()
+		ko_clip.refresh_from_scheduler()
+		if ko_terminal_pending:
+			return
 	_advance_screen_flash()
+	health_hud.spec["placement"] = battle_intro.spec["hud_frames"][str(battle_intro.hud_frame)]
 	combo_hud.tick()
 	if super_presentation != null:
 		super_presentation.tick()
 	physics_tick += 1
 	tick_label.text = "Fixed simulation tick: %d" % physics_tick
-	if hit_fx_pause_count > 0:
+	if hit_fx_pause_count > 0 and cpu_driver == null:
 		# Source pauseGame() stopMc on p1/p2/helpers. XG clip keeps playing.
+		battle_intro.run_frame_actions()
+		_advance_hit_effects(existing_hit_effects)
 		_refresh_fight_labels()
 		return
 	var fighters: Array[FighterRuntime] = [ichigo, naruto]
@@ -382,19 +461,129 @@ func _advance_fight() -> void:
 		helpers.append(ichigo_helper)
 	naruto.super_helpers = helpers
 	ichigo.super_helpers = helpers
+	if player_body_driver != null:
+		player_body_driver.begin_tick(physics_tick, _input_for(naruto))
+	if cpu_driver != null:
+		cpu_driver.prepare_display_tick(physics_tick)
 	for fighter in fighters:
-		fighter.advance_timeline()
+		if fighter == ichigo and cpu_driver != null:
+			cpu_driver.advance_timeline()
+		elif fighter == naruto and player_body_driver != null:
+			player_body_driver.advance_timeline()
+		else:
+			fighter.advance_timeline()
+	if cpu_services != null:
+		cpu_services.advance_stage_timelines()
+	if player_body_services != null:
+		player_body_services.advance_stage_timelines()
+	# Recorded callbacks carry their phase explicitly; do not infer it from
+	# milliseconds or move an already queued frame script past the callback.
+	for event: Dictionary in recorded_events:
+		if event["phase"] == "before_root_observer":
+			continue
+		assert(event["phase"] == "after_actor_advance", "Unsupported intro callback phase")
+		if event.get("kind", "intro_poll") == "ai_random":
+			var sampled := ichigo.ai_random_clock.fire_recorded(int(event["time_ms"]))
+			assert(sampled, "Rejected recorded AI random refresh")
+			continue
+		assert(event.get("kind", "intro_poll") == "intro_poll", "Unknown recorded event kind")
+		before_recorded_intro_poll.emit(event)
+		var delivered := battle_intro.deliver_recorded_poll(int(event["sequence"]), int(event["time_ms"]))
+		assert(delivered, "Rejected recorded intro callback: " + battle_intro.poll_replay_error)
+	battle_intro.observe_fighter_frames()
 	for helper in helpers:
 		helper.advance_timeline()
+	if player_body_driver != null:
+		player_body_driver.prepare_callbacks()
+	var initial_frame_counts := {}
 	for fighter in fighters:
-		fighter.enter_frame(_input_for(fighter))
+		initial_frame_counts[fighter] = fighter._ai_pending_frames.size()
+	if cpu_driver != null:
+		cpu_driver.begin_display_tick(physics_tick)
+		cpu_driver.controller.context.helper_action = naruto_helper.source_action if naruto_helper != null else null
+		cpu_driver.initial_frame_count = int(initial_frame_counts[ichigo])
+		if player_body_driver != null:
+			player_body_driver.prepare_frame_actions(int(initial_frame_counts[naruto]))
+		source_callbacks.dispatch(physics_tick)
+		if ko_terminal_pending:
+			_ko_return_to_fixed_selection()
+			if root_observer.is_valid():
+				root_observer.call()
+			return
+	else:
+		for fighter in fighters:
+			fighter.enter_frame(_input_for(fighter))
 	for helper in helpers:
 		helper.enter_frame()
-	CombatResolver.resolve_body_pair(naruto, ichigo)
-	CombatResolver.resolve_pair(naruto, ichigo)
-	CombatResolver.resolve_helpers(helpers, fighters)
+	if cpu_driver != null:
+		if player_body_driver == null and not naruto.root_zhanting:
+			naruto.resolve_body_collision(ichigo)
+			CombatResolver.resolve_incoming(naruto, ichigo, ichigo_helper, cpu_stage_registry, cpu_services.stage_lookup_order)
+	else:
+		CombatResolver.resolve_body_pair(naruto, ichigo)
+		CombatResolver.resolve_pair(naruto, ichigo)
+		CombatResolver.resolve_helpers(helpers, fighters)
 	for fighter in fighters:
-		fighter.run_frame_actions()
+		if cpu_driver == null or (fighter == naruto and player_body_driver == null):
+			fighter.run_frame_actions(false, int(initial_frame_counts[fighter]) if cpu_driver != null else -1)
+	if ko_timeline != null:
+		ko_timeline.run_frame_actions()
+		ko_clip.refresh_from_scheduler()
+	battle_intro.run_frame_actions()
+	# The older HUD callback observes newer fighter frame-script settlement
+	# before the root snapshot (r15 source sequences 48536–48541).
+	if source_health_rules != null:
+		source_health_rules.run_pending_frame()
+	health_hud.spec["placement"] = battle_intro.spec["hud_frames"][str(battle_intro.hud_frame)]
+	for event: Dictionary in recorded_events:
+		if event["phase"] == "before_root_observer":
+			assert(event["kind"] == "nextfight" and ko_recorded_timers)
+			assert(ko_nextfight_timer != null, "Recorded nextfight has no live source interval")
+			ko_nextfight_timer.timeout.emit()
+	# The analysis root observer precedes callback-generated target scripts.
+	# Its terminal capture issues fscommand(quit) at this point. Live play has
+	# no observer and always completes the remaining frame work.
+	if root_observer.is_valid() and root_observer.call():
+		return
+	# Goto targets wait behind the other actors' already queued frame scripts.
+	while true:
+		if cpu_driver == null:
+			var pending := false
+			for fighter in fighters:
+				if not fighter._ai_pending_frames.is_empty():
+					pending = true
+					fighter.flush_queued_frame_scripts()
+			if not pending:
+				break
+			continue
+		var next_fighter: FighterRuntime
+		for fighter in fighters:
+			if not fighter._ai_pending_frames.is_empty():
+				if next_fighter == null or int(fighter._ai_pending_frames[0]["order"]) < int(next_fighter._ai_pending_frames[0]["order"]):
+					next_fighter = fighter
+		if not source_child_frames.is_empty() and (
+			next_fighter == null
+			or int(source_child_frames[0]["order"]) < int(next_fighter._ai_pending_frames[0]["order"])
+		):
+			var child_frame: Dictionary = source_child_frames.pop_front()
+			var operation: Callable = child_frame["operation"]
+			if operation.is_valid():
+				operation.call()
+			continue
+		if next_fighter == null:
+			break
+		next_fighter.flush_queued_frame_scripts(1)
+	if cpu_driver != null:
+		cpu_driver.controller.synchronize(physics_tick)
+	if cpu_services != null:
+		cpu_services.run_stage_frames()
+	if player_body_services != null:
+		player_body_services.run_stage_frames()
+	if cpu_driver == null:
+		_advance_hit_effects(existing_hit_effects)
+	for child in game_world.get_children():
+		if child is HitEffectRuntime and not child.is_queued_for_deletion():
+			child.run_initial_frame()
 	_activate_helper(naruto, naruto_helper)
 	_activate_helper(ichigo, ichigo_helper)
 	_apply_focus()
@@ -418,7 +607,321 @@ func _tick_zdbx() -> void:
 
 
 func _input_for(fighter: FighterRuntime) -> Dictionary:
+	if fighter == ichigo and session.p2cpu:
+		return {}
 	return session.fighter_input(fighter.player_slot)
+
+
+func _start_ko() -> void:
+	ko_metadata = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/ko/controller.json"))
+	ko_state = ko_metadata.root_initializers.duplicate()
+	ko_state.merge(ko_metadata.time_defaults, true)
+	ko_state["_root.焦点"] = "all"
+	ko_timeline = KoTimeline.new()
+	ko_timeline.configure(JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/ko/timeline.json")),
+		ko_metadata, load("res://generated/main/ko/controller.gd"), _ko_service)
+	ko_clip = KoClip.new()
+	ko_clip.scheduler = ko_timeline
+	add_child(ko_clip)
+
+
+func _stop_ko() -> void:
+	_ko_clear_interval("nxtfht")
+	if ko_clip != null:
+		ko_clip.queue_free()
+	ko_clip = null
+	if ko_timeline != null:
+		ko_timeline.unbind_registry()
+	ko_timeline = null
+	ko_active = false
+	ko_paused = false
+	ko_menu_enabled = true
+	ko_terminal_pending = false
+
+
+func _on_ko_requested(opponent_number: int) -> void:
+	if ko_timeline == null:
+		return
+	ko_timeline.play()
+	ko_active = true
+	ko_state["_root.焦点"] = "p1" if opponent_number != 1 else "p2"
+	for frame: Dictionary in black_mu._timeline.frames:
+		if "KO" in frame.labels:
+			super_presentation.black_stg(int(frame.frame))
+			break
+	_sync_super_stage()
+
+
+func _ko_actor(target: String) -> FighterRuntime:
+	if target == "_root.game.p1.mc":
+		return naruto
+	if target == "_root.game.p2.mc":
+		return ichigo
+	return null
+
+
+func _ko_service(operation: String, args: Array) -> Variant:
+	match operation:
+		"read":
+			var key := str(args[0])
+			if key == "_root.maxhp":
+				return session.maxhp
+			if key == "_root.modo":
+				return session.modo
+			var actor := _ko_actor(key.get_slice(".mc.", 0) + ".mc")
+			if actor != null:
+				var field := key.get_slice(".mc.", 1)
+				return actor.health if field == "hp" else actor.ai_source_state.read_field(field)
+			assert(ko_state.has(key), "Unbound KO root field: " + key)
+			return ko_state[key]
+		"write":
+			var key := str(args[0])
+			var actor := _ko_actor(key.get_slice(".mc.", 0) + ".mc")
+			if actor != null:
+				var field := key.get_slice(".mc.", 1)
+				actor.ai_source_state.values[field] = args[1]
+				if field == "sw":
+					actor.sw = bool(args[1])
+			else:
+				ko_state[key] = args[1]
+				if key == "_root.zhanting":
+					naruto.root_zhanting = bool(args[1])
+					ichigo.root_zhanting = bool(args[1])
+					super_runtime.zhanting = bool(args[1])
+				if key == "_root.rounds":
+					battle_intro.clips.ready.round_number = int(args[1])
+		"goto":
+			var actor := _ko_actor(str(args[0]))
+			if actor != null:
+				if actor.ai_timeline_controlled:
+					actor.goto_ai_label(str(args[1]), bool(args[2]))
+				else:
+					actor.start_action(str(args[1]))
+					actor.timeline_playing = bool(args[2])
+			elif args[0] == "_root.qjxg":
+				battle_intro.clips.qjxg.visible = true
+				battle_intro._goto("qjxg", int(battle_intro.spec.clips.qjxg.labels[args[1]]), bool(args[2]))
+			elif args[0] == "_root" and args[1] == "选人画面":
+				# This user-requested slice fixes fighters and already skips selection.
+				ko_terminal_pending = true
+			else:
+				assert(false, "Unbound KO goto target")
+		"playing":
+			assert(args[0] == "_root.ready")
+			battle_intro.clips.ready.visible = true
+			battle_intro.playing.ready = bool(args[1])
+			battle_intro.active = true
+			battle_intro.polling = false
+			battle_intro.focus = "all"
+		"interval":
+			assert(args[0] == "nextfight")
+			assert(ko_nextfight_timer == null, "Repeated nextfight registration needs another interval instance")
+			ko_interval_sequence += 1
+			ko_nextfight_timer = Timer.new()
+			ko_nextfight_timer.process_mode = Node.PROCESS_MODE_ALWAYS
+			ko_nextfight_timer.ignore_time_scale = true
+			add_child(ko_nextfight_timer)
+			ko_nextfight_timer.timeout.connect(_ko_nextfight)
+			ko_nextfight_timer.wait_time = float(args[1]) / 1000.0
+			if not ko_recorded_timers:
+				ko_nextfight_timer.start()
+			return ko_interval_sequence
+		"call":
+			match str(args[0]):
+				"KOstart":
+					ko_paused = true
+					ko_menu_enabled = false
+					pause_menu.visible = false
+					_on_hit_fx_pause()
+				"KOend":
+					super_presentation.resume_black_stg()
+					ko_paused = false
+					super_runtime.game_paused = false
+					_on_hit_fx_resume()
+				"fadoutXuetiao":
+					battle_intro.goto_hud("out")
+				"updateWins":
+					health_hud.set_wins(int(ko_state["_root.p1ws"]), int(ko_state["_root.p2ws"]))
+				"chushi":
+					_chushi()
+				"clearint":
+					for interval_name: String in ko_metadata.clear_intervals:
+						_ko_clear_interval(interval_name)
+				_:
+					assert(false, "Unbound KO service: " + str(args[0]))
+	return null
+
+
+func _ko_clear_interval(interval_name: String) -> void:
+	match interval_name:
+		"nxtfht":
+			if ko_nextfight_timer != null:
+				ko_nextfight_timer.stop()
+				ko_nextfight_timer.queue_free()
+				ko_nextfight_timer = null
+		"airanset":
+			if cpu_driver != null:
+				ichigo.ai_random_clock.cancel()
+		"kcint":
+			if battle_intro != null:
+				battle_intro.polling = false
+		_:
+			# These source intervals have no native registrations in this slice.
+			assert(interval_name in ["timeset", "xtset", "scrnset", "feiint", "feiint2", "zdbxint"])
+
+
+func _ko_nextfight() -> void:
+	if ko_timeline != null:
+		ko_timeline.controller.nextfight()
+
+
+func _ko_fight_started() -> void:
+	ko_active = false
+	ko_paused = false
+	ko_menu_enabled = true
+
+
+func _ko_return_to_fixed_selection() -> void:
+	_goto_menu()
+	_goto_map_selection(2)
+
+
+func _start_cpu() -> void:
+	_stop_cpu()
+	assert(cpu_profile["measured_rules"]["callback_registry"]["order"] == "reverse_instance_registration")
+	source_callbacks = SourceCallbackRegistry.new()
+	# The source HUD exists before asynchronously loaded fighter bodies.
+	source_health_rules = preload("res://source_health_rules.gd").new()
+	var health_fighters: Array[FighterRuntime] = [naruto, ichigo]
+	source_health_rules.configure(health_fighters, func() -> float: return session.maxhp)
+	source_health_registration = source_callbacks.register(source_health_rules, "queue_frame", physics_tick)
+	_start_ko()
+	ko_timeline.bind_registry(source_callbacks, physics_tick)
+	source_frame_sequence = 0
+	source_child_frames.clear()
+	for fighter: FighterRuntime in [naruto, ichigo]:
+		fighter.frame_script_sequence = _next_source_frame_sequence
+		fighter.source_child_frame_requested.connect(_queue_source_child_frame)
+	cpu_unresolved_services.clear()
+	ichigo.ai_color_state = AiColorState.new()
+	ichigo.set_source_color({}, [])
+	cpu_services = AiCombatServices.new()
+	cpu_services.fighter = ichigo
+	cpu_services.super_runtime = super_runtime
+	cpu_services.effect_parent = game_world
+	cpu_services.stage_registry = cpu_stage_registry
+	var spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/effects/XG_baoqi/stage_hit.json"))
+	# Enumeration order is explicit and still awaits whole-match comparison.
+	cpu_services.stage_lookup_order = spec["registry"]["lookup_prefixes"]
+	for helper in [naruto_helper, ichigo_helper]:
+		if helper != null:
+			cpu_services.helpers.append(helper)
+	cpu_services.remaining_services = _cpu_visual_service
+	var platforms := {}
+	for placement: Dictionary in current_world._frames[current_world.current_source_frame()]["display_list"]:
+		var instance_name := str(placement.get("name", ""))
+		if instance_name.begins_with("ban") and instance_name.trim_prefix("ban").is_valid_int():
+			var origin := current_world.named_instance_origin(instance_name)
+			platforms[int(instance_name.trim_prefix("ban"))] = Rect2(origin, Vector2(current_world._placement_bounds(placement).size.x, 0))
+	for fighter: FighterRuntime in [naruto, ichigo]:
+		fighter.source_random = source_random
+		fighter.source_clock = source_clock
+		fighter.ai_source_state.configure(fighter.ai_source_state.spec)
+		fighter.ai_source_state.apply_load()
+		fighter.ai_source_state.apply_frame(1)
+	player_body_services = AiCombatServices.new()
+	player_body_services.fighter = naruto
+	player_body_services.super_runtime = super_runtime
+	player_body_services.helpers = cpu_services.helpers.duplicate()
+	player_body_services.stage_registry = cpu_stage_registry
+	player_body_services.stage_lookup_order = cpu_services.stage_lookup_order.duplicate()
+	player_body_services.effect_parent = game_world
+	player_body_services.remaining_services = _player_visual_service
+	player_body_driver = preload("res://player_body_driver.gd").new()
+	add_child(player_body_driver)
+	player_body_driver.configure(naruto, "res://generated/fighters/minren/player_controller", platforms,
+		naruto._ground_y, game_world.map_size_x, player_body_services.invoke, source_callbacks)
+	cpu_driver = AiCpuDriver.new()
+	add_child(cpu_driver)
+	cpu_driver.configure(ichigo, "res://generated/fighters/yihu/ai_controller", platforms,
+		ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false, source_callbacks)
+	cpu_driver.body.updateDirect()
+	cpu_driver.begin_display_tick(physics_tick)
+	cpu_driver.start_random(source_random, 5)
+
+
+func _next_source_frame_sequence() -> int:
+	source_frame_sequence += 1
+	return source_frame_sequence
+
+
+func _queue_source_child_frame(operation: Callable) -> void:
+	source_child_frames.append({"order": _next_source_frame_sequence(), "operation": operation})
+
+
+func _stop_cpu() -> void:
+	source_child_frames.clear()
+	for fighter: FighterRuntime in [naruto, ichigo]:
+		if is_instance_valid(fighter):
+			fighter.frame_script_sequence = Callable()
+			if fighter.source_child_frame_requested.is_connected(_queue_source_child_frame):
+				fighter.source_child_frame_requested.disconnect(_queue_source_child_frame)
+	if player_body_driver != null:
+		player_body_driver.stop()
+		player_body_driver.queue_free()
+		player_body_driver = null
+	if player_body_services != null:
+		player_body_services.clear()
+		player_body_services = null
+	if cpu_driver != null:
+		cpu_driver.stop()
+		cpu_driver.queue_free()
+		cpu_driver = null
+	if cpu_services != null:
+		cpu_services.clear()
+		cpu_services = null
+	cpu_stage_registry.clear_effects()
+	if is_instance_valid(game_world):
+		for child in game_world.get_children():
+			if child is HitEffectRuntime:
+				child.unregister_source_frames()
+	if source_callbacks != null:
+		if ko_timeline != null:
+			ko_timeline.unbind_registry()
+		if source_health_rules != null:
+			source_callbacks.unregister(source_health_registration)
+			source_health_rules = null
+		assert(source_callbacks.size() == 0, "Source callbacks survived match teardown")
+		source_callbacks = null
+
+
+func _cpu_visual_service(service: String, args: Array) -> Variant:
+	return _fighter_visual_service(ichigo, service, args)
+
+
+func _player_visual_service(service: String, args: Array) -> Variant:
+	return _fighter_visual_service(naruto, service, args)
+
+
+func _fighter_visual_service(actor: FighterRuntime, service: String, _args: Array) -> Variant:
+	if service == "resColor":
+		actor.reset_ai_colors()
+		return null
+	if service == "applyColors":
+		actor.apply_ai_colors()
+		return null
+	var wrappers: Dictionary = cpu_visual_spec["wrappers"]
+	if wrappers.has(service):
+		# The retained game calls attachMovie with these missing linkage names.
+		# A missing export creates no clip; do not invent a replacement effect.
+		assert(wrappers[service]["exported_by"].is_empty(), "Exported AI effect needs a native adapter")
+		return null
+	assert(service in ["resColor", "applyColors", "jumpxg", "luodixg", "showdow", "addChildXG"],
+		"Unconnected CPU gameplay service: " + service)
+	if not cpu_unresolved_services.has(service):
+		cpu_unresolved_services[service] = true
+		push_warning("CPU visual service remains unimplemented: " + service)
+	return null
 
 
 func _refresh_bind_label() -> void:
@@ -432,9 +935,9 @@ func _refresh_bind_label() -> void:
 
 
 func _update_facing() -> void:
-	if naruto.action == "站立":
+	if naruto.action == "站立" and player_body_driver == null:
 		naruto.set_facing(1 if naruto.position.x <= ichigo.position.x else -1)
-	if ichigo.action == "站立":
+	if ichigo.action == "站立" and cpu_driver == null:
 		ichigo.set_facing(1 if ichigo.position.x <= naruto.position.x else -1)
 
 
@@ -483,16 +986,43 @@ func _play_combo_hud(board_pn: int, hit_count: int) -> void:
 func _on_hit_fx_pause() -> void:
 	if super_runtime.game_paused:
 		return
+	if cpu_driver != null:
+		# pauseGame stops eligible timelines, not enterFrame dispatch. In
+		# particular beidax applies colors before its root-pause return.
+		hit_fx_pause_count = 1
+		super_runtime.zhanting = true
+		naruto.root_zhanting = true
+		ichigo.root_zhanting = true
+		for actor in [naruto, ichigo, naruto_helper, ichigo_helper]:
+			super_runtime.stop_mc(actor)
+		return
 	hit_fx_pause_count += 1
 	naruto.zhanting = true
 	ichigo.zhanting = true
 
 
 func _on_hit_fx_resume() -> void:
+	if cpu_driver != null:
+		if super_runtime.game_paused or ko_paused:
+			return
+		hit_fx_pause_count = 0
+		super_runtime.zhanting = false
+		naruto.root_zhanting = false
+		ichigo.root_zhanting = false
+		for actor in [naruto, ichigo, naruto_helper, ichigo_helper]:
+			super_runtime.play_mc(actor)
+		super_presentation.resume_black_stg()
+		return
 	hit_fx_pause_count = maxi(0, hit_fx_pause_count - 1)
 	if hit_fx_pause_count == 0 and not super_runtime.game_paused:
 		naruto.zhanting = false
 		ichigo.zhanting = false
+
+
+func _advance_hit_effects(effects: Array[HitEffectRuntime]) -> void:
+	for effect in effects:
+		if is_instance_valid(effect) and not effect.is_queued_for_deletion():
+			effect.advance_effect()
 
 
 func _spawn_hit_effect(effect_name: String, source_position: Vector2, source_facing: int, offset_y: float = -25.0) -> void:
@@ -501,11 +1031,16 @@ func _spawn_hit_effect(effect_name: String, source_position: Vector2, source_fac
 		# (XG_fire/ice/leidian/stone).
 		return
 	var effect := HitEffectRuntime.new()
+	effect.auto_advance = false
+	effect.defer_initial_frame = true
+	effect.source_random = source_random
 	effect.pause_requested.connect(_on_hit_fx_pause)
 	effect.resume_requested.connect(_on_hit_fx_resume)
 	effect.shine_requested.connect(_start_screen_flash)
 	effect.configure(effect_name, source_position, source_facing, offset_y)
 	game_world.add_child(effect)
+	if cpu_driver != null:
+		effect.register_source_frames(source_callbacks, physics_tick)
 
 
 func _setup_screen_flash() -> void:
@@ -600,8 +1135,13 @@ func _sync_ts_face() -> void:
 
 
 func _apply_focus() -> void:
-	# Source KOplay(pn) wins over cbsd's 焦点. KO clip / blackStg("KO")
-	# assets are not imported yet.
+	if ko_active:
+		game_world.focus = str(ko_state.get("_root.焦点", "all"))
+		return
+	if battle_intro.active:
+		game_world.focus = battle_intro.focus
+		return
+	# Legacy non-CPU death focus; CPU mode uses the KO timeline writes above.
 	if naruto.sw:
 		game_world.focus = naruto.player_slot
 	elif ichigo.sw:

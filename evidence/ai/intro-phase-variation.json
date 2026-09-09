@@ -1,0 +1,191 @@
+{
+  "status": "original_boundary_varies_across_runs",
+  "runs": [
+    {
+      "run": "fixed-easy-r01",
+      "events_sha256": "6f786980daecb521c5762d9c0860ca137b421807b4fe7ce4d9207ac9f5390538",
+      "steps": [],
+      "goto_events": [],
+      "ready_states": [
+        {
+          "run_id": "ai-fixed-easy-r01",
+          "sequence": 1224,
+          "time_ms": 26659,
+          "display_tick": 468,
+          "fight_tick": 0,
+          "kind": "state",
+          "value": "p1,3,374.1,-25,100,0,1000,0,false,true,undefined,0,false,0,false"
+        },
+        {
+          "run_id": "ai-fixed-easy-r01",
+          "sequence": 1225,
+          "time_ms": 26659,
+          "display_tick": 468,
+          "fight_tick": 0,
+          "kind": "state",
+          "value": "p2,3,637.1,-25,-100,0,1000,0,false,true,undefined,0,false,0,false"
+        }
+      ]
+    },
+    {
+      "run": "intro-phase-r01",
+      "events_sha256": "b621517e785a4e34ed968bc708215be15c4be0ab2866c4928558e8eafd716bd0",
+      "steps": [
+        {
+          "run_id": "intro-phase-r01",
+          "sequence": 302,
+          "time_ms": 16728,
+          "display_tick": 183,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "1"
+        },
+        {
+          "run_id": "intro-phase-r01",
+          "sequence": 355,
+          "time_ms": 17229,
+          "display_tick": 198,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "2"
+        },
+        {
+          "run_id": "intro-phase-r01",
+          "sequence": 570,
+          "time_ms": 19294,
+          "display_tick": 260,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "3"
+        },
+        {
+          "run_id": "intro-phase-r01",
+          "sequence": 623,
+          "time_ms": 19794,
+          "display_tick": 275,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "3"
+        },
+        {
+          "run_id": "intro-phase-r01",
+          "sequence": 841,
+          "time_ms": 21897,
+          "display_tick": 338,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "4"
+        }
+      ],
+      "goto_events": [],
+      "ready_states": [
+        {
+          "run_id": "intro-phase-r01",
+          "sequence": 1270,
+          "time_ms": 26095,
+          "display_tick": 465,
+          "fight_tick": 0,
+          "kind": "state",
+          "value": "p1,3,374.1,-25,100,0,1000,0,false,true,undefined,0,false,0,false"
+        },
+        {
+          "run_id": "intro-phase-r01",
+          "sequence": 1271,
+          "time_ms": 26096,
+          "display_tick": 465,
+          "fight_tick": 0,
+          "kind": "state",
+          "value": "p2,3,637.1,-25,-100,0,1000,0,false,true,undefined,0,false,0,false"
+        }
+      ]
+    },
+    {
+      "run": "intro-phase-r02",
+      "events_sha256": "d4aa0371d7e2112505051e42aaaa372477bf8abe1da877ed397d568917ad4651",
+      "steps": [
+        {
+          "run_id": "intro-phase-r02",
+          "sequence": 417,
+          "time_ms": 14959,
+          "display_tick": 186,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "1"
+        },
+        {
+          "run_id": "intro-phase-r02",
+          "sequence": 478,
+          "time_ms": 15459,
+          "display_tick": 201,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "2"
+        },
+        {
+          "run_id": "intro-phase-r02",
+          "sequence": 735,
+          "time_ms": 17587,
+          "display_tick": 265,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "3"
+        },
+        {
+          "run_id": "intro-phase-r02",
+          "sequence": 958,
+          "time_ms": 19654,
+          "display_tick": 327,
+          "fight_tick": -1,
+          "kind": "intro_step",
+          "value": "4"
+        }
+      ],
+      "goto_events": [
+        {
+          "run_id": "intro-phase-r02",
+          "sequence": 736,
+          "time_ms": 17588,
+          "display_tick": 265,
+          "fight_tick": -1,
+          "kind": "intro_goto_before",
+          "value": "6"
+        },
+        {
+          "run_id": "intro-phase-r02",
+          "sequence": 737,
+          "time_ms": 17589,
+          "display_tick": 265,
+          "fight_tick": -1,
+          "kind": "intro_goto_return",
+          "value": "822"
+        }
+      ],
+      "ready_states": [
+        {
+          "run_id": "intro-phase-r02",
+          "sequence": 1459,
+          "time_ms": 23853,
+          "display_tick": 454,
+          "fight_tick": 0,
+          "kind": "state",
+          "value": "p1,3,374.1,-25,100,0,1000,0,false,true,undefined,0,false,0,false"
+        },
+        {
+          "run_id": "intro-phase-r02",
+          "sequence": 1460,
+          "time_ms": 23853,
+          "display_tick": 454,
+          "fight_tick": 0,
+          "kind": "state",
+          "value": "p2,2,637.1,-25,-100,0,1000,0,false,true,undefined,0,false,0,false"
+        }
+      ]
+    }
+  ],
+  "conclusion": "Ready frame 3 for both actors is not an invariant. Exact boundary comparison requires replayed timer/input/random scheduling.",
+  "limits": [
+    "Instrumentation differs between captures and adds overhead.",
+    "These captures do not prove the cause of the r01 retry; r02 did not reproduce it.",
+    "Frame 822 has no retained DoAction and thus no entry marker; the goto-return and root-state records establish its playhead."
+  ]
+}

@@ -65,17 +65,27 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str,
     indexed = []
     presentation_events = []
     clip_load_events = []
+    action_events = []
+    nested_stops = []
     for script in bundle["scripts"]:
         record = {
             "path": script["path"],
             "source_sha256": text_sha256(script["source"]),
         }
         indexed.append(record)
+        nested = re.fullmatch(r"DefineSprite_(\d+)/frame_(\d+)/DoAction.as", script["path"])
+        if nested and script["source"].strip() == "stop();":
+            nested_stops.append({"sprite_id": int(nested[1]), "frame": int(nested[2]),
+                                 "source_path": script["path"], "source_sha256": record["source_sha256"]})
         root_match = ROOT_FRAME.match(script["path"])
         if root_match is None:
             continue
         frame = int(root_match["frame"])
         record["frame"] = frame
+        if script["path"] == f"frame_{frame}/DoAction.as":
+            for assignment in re.finditer(r'^动作 = (-?\d+);\r?$', script["source"], re.M):
+                action_events.append({"frame": frame, "value": int(assignment[1]),
+                                      "source_path": script["path"], "source_sha256": record["source_sha256"]})
         if script["path"].endswith("frame_1/DoAction.as"):
             attacks.update(extract_attacks(script["source"]))
         source = script["source"]
@@ -122,6 +132,8 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str,
         "start_frame": 2,
         "end_frame": swf["root_frames"],
         "hide_frames": sorted(set(hide_frames)),
+        "nested_stops": nested_stops,
+        "action_events": sorted(action_events, key=lambda event: event["frame"]),
         "attacks": attacks,
         "presentation_events": sorted(presentation_events, key=lambda event: event["frame"]),
         "clip_load_events": clip_load_events,

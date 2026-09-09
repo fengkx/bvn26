@@ -1,0 +1,137 @@
+{
+  "status": "static_source_index_not_runtime_acceptance",
+  "fighters": {
+    "minren": {
+      "bundle": "scripts/fighter/minren.json",
+      "bundle_sha256": "fffb87f0cab1d15c1a39a68a62bb6c51f307c910e0a08a619c89a60a1c82333a",
+      "sprite_id": 764,
+      "functions": {
+        "beida": {
+          "source_path": "DefineSprite_2/frame_1/DoAction.as",
+          "source_sha256": "090e1ff278d2a32277b9a95deb9cd776be994d0ca1c72e3357b2ea613a9b24ce",
+          "source": "function beida()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.time = 0;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n   }\r\n   _parent.gotoAndPlay(_loc2_.htype);\r\n}"
+        },
+        "fangyu": {
+          "source_path": "DefineSprite_2/frame_1/DoAction.as",
+          "source_sha256": "b97bfa7eb3dcc315406947fe009ccb601a47df20d90558592907feb52bc73172",
+          "source": "function fangyu()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n      _parent.gotoAndPlay(_loc2_.htype);\r\n   }\r\n   else\r\n   {\r\n      _parent.yup = 0;\r\n      _parent.gotoAndPlay(\"防住\");\r\n   }\r\n}"
+        },
+        "onBeHit0": {
+          "source_path": "DefineSprite_764/frame_1/DoAction.as",
+          "source_sha256": "6caf828016d0a0002d1abaebab967b24bbe600b1a68d637f11381d3581d47106",
+          "source": "function onBeHit0()\r\n{\r\n   动作 = -1;\r\n   beida = 1;\r\n   jumped = 0;\r\n   jump = 1;\r\n   hited = 1;\r\n   time = 0;\r\n   play();\r\n}"
+        },
+        "onBeHit": {
+          "source_path": "DefineSprite_764/frame_1/DoAction.as",
+          "source_sha256": "19d48ccd81803c0f01f5b4015242da8c7e11cf8dc708981ff41bb213d8156b43",
+          "source": "function onBeHit(flying)\r\n{\r\n   onBeHit0();\r\n   _root.bdxg(_this);\r\n   hits++;\r\n   if(hits > 1)\r\n   {\r\n      _root[\"p\" + pn + \"hits\"].gotoAndPlay(\"连击\");\r\n   }\r\n   hitlosehp();\r\n   updateDirect(true);\r\n   checkDead(flying);\r\n   var _loc3_ = _root.game[\"p\" + pn];\r\n   var _loc4_ = 0.8;\r\n   if(!flying)\r\n   {\r\n      _loc4_ = jhp <= 60 ? 0.1 : 0.5;\r\n   }\r\n   hurtVoice(_loc4_);\r\n   var _loc5_;\r\n   if(_parent.hitWall)\r\n   {\r\n      _loc5_ = Math.abs(_parent._x - _loc3_._x);\r\n      hitNear = _loc5_ < 100;\r\n      if(hitNear)\r\n      {\r\n         hitNear = _parent.scale_X != 1 ? _parent._x > 500 : _parent._x < 500;\r\n      }\r\n   }\r\n   if(_parent.getDepth() > _loc3_.getDepth())\r\n   {\r\n      _parent.swapDepths(_loc3_);\r\n   }\r\n}"
+        },
+        "hitlosehp": {
+          "source_path": "DefineSprite_764/frame_1/DoAction.as",
+          "source_sha256": "0bdc8d45dab2634d04cf644b8cdafddc624582ccfe66b5b5c967ee918031b5fd",
+          "source": "function hitlosehp()\r\n{\r\n   var _loc2_ = _root.game[\"p\" + pn];\r\n   if(_root.to == false)\r\n   {\r\n      loseHp(jhp);\r\n      ql += jhp / 10;\r\n      if(_loc2_.mc.动作 != 3)\r\n      {\r\n         _loc2_.mc.ql += jhp / 5;\r\n      }\r\n   }\r\n}"
+        },
+        "onDefence": {
+          "source_path": "DefineSprite_764/frame_1/DoAction.as",
+          "source_sha256": "3b77e535d81c4c9dda10f427dc6ce6e034097480bbca64f87d9652db3c9a70bf",
+          "source": "function onDefence(xgtype)\r\n{\r\n   if(isNaN(xgtype))\r\n   {\r\n      xgtype = 1;\r\n   }\r\n   if(xgtype == 1)\r\n   {\r\n      _root.bdfyxg(_this);\r\n   }\r\n   else\r\n   {\r\n      _root.bdfyxg2(_this);\r\n   }\r\n   updateDirect(true);\r\n   var _loc3_ = _root.game[\"p\" + pn];\r\n   if(_root.to == false)\r\n   {\r\n      loseHp(jhp / 10);\r\n      ql += jhp / 15;\r\n      if(_loc3_.mc.动作 != 3)\r\n      {\r\n         _loc3_.mc.ql += jhp / 10;\r\n      }\r\n   }\r\n   if(_parent.getDepth() > _loc3_.getDepth())\r\n   {\r\n      _parent.swapDepths(_loc3_);\r\n   }\r\n   checkDead(false);\r\n}"
+        }
+      },
+      "settlement_calls": [
+        {
+          "sprite_id": 764,
+          "frame": 1003,
+          "xgtype": 2,
+          "source_path": "DefineSprite_764/frame_1003/DoAction.as",
+          "source": "onDefence(2);\r\n",
+          "preceding_frame_source": "play();\r\n",
+          "preceding_frame_path": "DefineSprite_764/frame_1002/DoAction.as"
+        },
+        {
+          "sprite_id": 764,
+          "frame": 1015,
+          "flying": false,
+          "source_path": "DefineSprite_764/frame_1015/DoAction.as",
+          "source": "onBeHit();\r\n",
+          "preceding_frame_source": "play();\r\n",
+          "preceding_frame_path": "DefineSprite_764/frame_1014/DoAction.as"
+        },
+        {
+          "sprite_id": 764,
+          "frame": 1028,
+          "flying": true,
+          "source_path": "DefineSprite_764/frame_1028/DoAction.as",
+          "source": "onBeHit(true);\r\n",
+          "preceding_frame_source": "hited = 0;\r\nplay();\r\n",
+          "preceding_frame_path": "DefineSprite_764/frame_1027/DoAction.as"
+        }
+      ]
+    },
+    "yihu": {
+      "bundle": "scripts/fighter/yihu.json",
+      "bundle_sha256": "5c4996b3767c2e31810595604c5b869c511c9c4f1cd8c123e059212294fc5d5b",
+      "sprite_id": 638,
+      "functions": {
+        "beida": {
+          "source_path": "DefineSprite_2/frame_1/DoAction.as",
+          "source_sha256": "090e1ff278d2a32277b9a95deb9cd776be994d0ca1c72e3357b2ea613a9b24ce",
+          "source": "function beida()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.time = 0;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n   }\r\n   _parent.gotoAndPlay(_loc2_.htype);\r\n}"
+        },
+        "fangyu": {
+          "source_path": "DefineSprite_2/frame_1/DoAction.as",
+          "source_sha256": "b97bfa7eb3dcc315406947fe009ccb601a47df20d90558592907feb52bc73172",
+          "source": "function fangyu()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n      _parent.gotoAndPlay(_loc2_.htype);\r\n   }\r\n   else\r\n   {\r\n      _parent.yup = 0;\r\n      _parent.gotoAndPlay(\"防住\");\r\n   }\r\n}"
+        },
+        "onBeHit0": {
+          "source_path": "DefineSprite_638/frame_1/DoAction.as",
+          "source_sha256": "6caf828016d0a0002d1abaebab967b24bbe600b1a68d637f11381d3581d47106",
+          "source": "function onBeHit0()\r\n{\r\n   动作 = -1;\r\n   beida = 1;\r\n   jumped = 0;\r\n   jump = 1;\r\n   hited = 1;\r\n   time = 0;\r\n   play();\r\n}"
+        },
+        "onBeHit": {
+          "source_path": "DefineSprite_638/frame_1/DoAction.as",
+          "source_sha256": "19d48ccd81803c0f01f5b4015242da8c7e11cf8dc708981ff41bb213d8156b43",
+          "source": "function onBeHit(flying)\r\n{\r\n   onBeHit0();\r\n   _root.bdxg(_this);\r\n   hits++;\r\n   if(hits > 1)\r\n   {\r\n      _root[\"p\" + pn + \"hits\"].gotoAndPlay(\"连击\");\r\n   }\r\n   hitlosehp();\r\n   updateDirect(true);\r\n   checkDead(flying);\r\n   var _loc3_ = _root.game[\"p\" + pn];\r\n   var _loc4_ = 0.8;\r\n   if(!flying)\r\n   {\r\n      _loc4_ = jhp <= 60 ? 0.1 : 0.5;\r\n   }\r\n   hurtVoice(_loc4_);\r\n   var _loc5_;\r\n   if(_parent.hitWall)\r\n   {\r\n      _loc5_ = Math.abs(_parent._x - _loc3_._x);\r\n      hitNear = _loc5_ < 100;\r\n      if(hitNear)\r\n      {\r\n         hitNear = _parent.scale_X != 1 ? _parent._x > 500 : _parent._x < 500;\r\n      }\r\n   }\r\n   if(_parent.getDepth() > _loc3_.getDepth())\r\n   {\r\n      _parent.swapDepths(_loc3_);\r\n   }\r\n}"
+        },
+        "hitlosehp": {
+          "source_path": "DefineSprite_638/frame_1/DoAction.as",
+          "source_sha256": "0bdc8d45dab2634d04cf644b8cdafddc624582ccfe66b5b5c967ee918031b5fd",
+          "source": "function hitlosehp()\r\n{\r\n   var _loc2_ = _root.game[\"p\" + pn];\r\n   if(_root.to == false)\r\n   {\r\n      loseHp(jhp);\r\n      ql += jhp / 10;\r\n      if(_loc2_.mc.动作 != 3)\r\n      {\r\n         _loc2_.mc.ql += jhp / 5;\r\n      }\r\n   }\r\n}"
+        },
+        "onDefence": {
+          "source_path": "DefineSprite_638/frame_1/DoAction.as",
+          "source_sha256": "3b77e535d81c4c9dda10f427dc6ce6e034097480bbca64f87d9652db3c9a70bf",
+          "source": "function onDefence(xgtype)\r\n{\r\n   if(isNaN(xgtype))\r\n   {\r\n      xgtype = 1;\r\n   }\r\n   if(xgtype == 1)\r\n   {\r\n      _root.bdfyxg(_this);\r\n   }\r\n   else\r\n   {\r\n      _root.bdfyxg2(_this);\r\n   }\r\n   updateDirect(true);\r\n   var _loc3_ = _root.game[\"p\" + pn];\r\n   if(_root.to == false)\r\n   {\r\n      loseHp(jhp / 10);\r\n      ql += jhp / 15;\r\n      if(_loc3_.mc.动作 != 3)\r\n      {\r\n         _loc3_.mc.ql += jhp / 10;\r\n      }\r\n   }\r\n   if(_parent.getDepth() > _loc3_.getDepth())\r\n   {\r\n      _parent.swapDepths(_loc3_);\r\n   }\r\n   checkDead(false);\r\n}"
+        }
+      },
+      "settlement_calls": [
+        {
+          "sprite_id": 638,
+          "frame": 727,
+          "xgtype": 1,
+          "source_path": "DefineSprite_638/frame_727/DoAction.as",
+          "source": "onDefence();\r\n",
+          "preceding_frame_source": "play();\r\n",
+          "preceding_frame_path": "DefineSprite_638/frame_726/DoAction.as"
+        },
+        {
+          "sprite_id": 638,
+          "frame": 739,
+          "flying": false,
+          "source_path": "DefineSprite_638/frame_739/DoAction.as",
+          "source": "onBeHit();\r\n",
+          "preceding_frame_source": "play();\r\n",
+          "preceding_frame_path": "DefineSprite_638/frame_738/DoAction.as"
+        },
+        {
+          "sprite_id": 638,
+          "frame": 752,
+          "flying": true,
+          "source_path": "DefineSprite_638/frame_752/DoAction.as",
+          "source": "onBeHit(true);\r\n",
+          "preceding_frame_source": "hited = 0;\r\nplay();\r\n",
+          "preceding_frame_path": "DefineSprite_638/frame_751/DoAction.as"
+        }
+      ]
+    }
+  }
+}

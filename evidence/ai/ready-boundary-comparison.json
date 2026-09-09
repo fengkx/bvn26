@@ -1,0 +1,213 @@
+{
+  "status": "boundary_difference_detected",
+  "original_parity_verified": false,
+  "reference_run": "ai-fixed-easy-r01",
+  "reference_sha256": "6f786980daecb521c5762d9c0860ca137b421807b4fe7ce4d9207ac9f5390538",
+  "original_ready": {
+    "run_id": "ai-fixed-easy-r01",
+    "sequence": 1222,
+    "time_ms": 26658,
+    "display_tick": 468,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "original_states": [
+    {
+      "slot": "p1",
+      "frame": 3,
+      "x": 374.1,
+      "y": -25.0,
+      "hp": 1000.0,
+      "ql": 0.0,
+      "source_action": 0,
+      "paused": false
+    },
+    {
+      "slot": "p2",
+      "frame": 3,
+      "x": 637.1,
+      "y": -25.0,
+      "hp": 1000.0,
+      "ql": 0.0,
+      "source_action": 0,
+      "paused": false
+    }
+  ],
+  "native": {
+    "after_tick": [
+      {
+        "frame": 9,
+        "hp": 1000.0,
+        "paused": false,
+        "ql": 0.0,
+        "slot": "p1",
+        "source_action": 0.0,
+        "x": 374.100006103516,
+        "y": -25.0
+      },
+      {
+        "frame": 1,
+        "hp": 1000.0,
+        "paused": false,
+        "ql": 0.0,
+        "slot": "p2",
+        "source_action": 0.0,
+        "x": 637.099975585938,
+        "y": -25.0
+      }
+    ],
+    "before_tick": [
+      {
+        "frame": 8,
+        "hp": 1000.0,
+        "paused": true,
+        "ql": 0.0,
+        "slot": "p1",
+        "source_action": 0.0,
+        "x": 374.100006103516,
+        "y": -25.0
+      },
+      {
+        "frame": 7,
+        "hp": 1000.0,
+        "paused": true,
+        "ql": 0.0,
+        "slot": "p2",
+        "source_action": 0.0,
+        "x": 637.099975585938,
+        "y": -25.0
+      }
+    ],
+    "native_tick": 304,
+    "signal": [
+      {
+        "frame": 8,
+        "hp": 1000.0,
+        "paused": false,
+        "ql": 0.0,
+        "slot": "p1",
+        "source_action": 0.0,
+        "x": 374.100006103516,
+        "y": -25.0
+      },
+      {
+        "frame": 7,
+        "hp": 1000.0,
+        "paused": false,
+        "ql": 0.0,
+        "slot": "p2",
+        "source_action": 0.0,
+        "x": 637.099975585938,
+        "y": -25.0
+      }
+    ]
+  },
+  "differences": [
+    {
+      "phase": "before_tick",
+      "slot": "p1",
+      "field": "frame",
+      "original": 3,
+      "native": 8
+    },
+    {
+      "phase": "before_tick",
+      "slot": "p1",
+      "field": "x",
+      "original": 374.1,
+      "native": 374.100006103516
+    },
+    {
+      "phase": "before_tick",
+      "slot": "p1",
+      "field": "paused",
+      "original": false,
+      "native": true
+    },
+    {
+      "phase": "before_tick",
+      "slot": "p2",
+      "field": "frame",
+      "original": 3,
+      "native": 7
+    },
+    {
+      "phase": "before_tick",
+      "slot": "p2",
+      "field": "x",
+      "original": 637.1,
+      "native": 637.099975585938
+    },
+    {
+      "phase": "before_tick",
+      "slot": "p2",
+      "field": "paused",
+      "original": false,
+      "native": true
+    },
+    {
+      "phase": "signal",
+      "slot": "p1",
+      "field": "frame",
+      "original": 3,
+      "native": 8
+    },
+    {
+      "phase": "signal",
+      "slot": "p1",
+      "field": "x",
+      "original": 374.1,
+      "native": 374.100006103516
+    },
+    {
+      "phase": "signal",
+      "slot": "p2",
+      "field": "frame",
+      "original": 3,
+      "native": 7
+    },
+    {
+      "phase": "signal",
+      "slot": "p2",
+      "field": "x",
+      "original": 637.1,
+      "native": 637.099975585938
+    },
+    {
+      "phase": "after_tick",
+      "slot": "p1",
+      "field": "frame",
+      "original": 3,
+      "native": 9
+    },
+    {
+      "phase": "after_tick",
+      "slot": "p1",
+      "field": "x",
+      "original": 374.1,
+      "native": 374.100006103516
+    },
+    {
+      "phase": "after_tick",
+      "slot": "p2",
+      "field": "frame",
+      "original": 3,
+      "native": 1
+    },
+    {
+      "phase": "after_tick",
+      "slot": "p2",
+      "field": "x",
+      "original": 637.1,
+      "native": 637.099975585938
+    }
+  ],
+  "limits": [
+    "This is not a full input/random/timer replay; native AI random clock is cancelled.",
+    "No pre-Ready predicates were recorded in this reference, but other timer effects remain unchecked.",
+    "Original snapshot runs in the root enterFrame; native signal/tick phases are reported separately.",
+    "No frame shift or numeric tolerance is applied; x differences include float representation.",
+    "A phase discrepancy requires source scheduling analysis, not forced playhead alignment."
+  ]
+}

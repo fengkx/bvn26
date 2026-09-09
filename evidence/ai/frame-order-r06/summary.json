@@ -1,0 +1,159 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "frame-order-r06",
+  "events": 1653,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "initCtrl": 6,
+    "input_next_display": 464,
+    "frame_state_enter": 60,
+    "intro_body_enter": 117,
+    "intro_body_exit": 117,
+    "frame_state_exit": 60,
+    "random": 146,
+    "intro_poll": 21,
+    "intro_poll_state": 21,
+    "sample": 29,
+    "geometry_frame": 1,
+    "geometry_matrix": 3,
+    "sensor_bounds": 12,
+    "sensor_local": 12,
+    "state": 566,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "predicate": 8,
+    "fixture": 1,
+    "done": 1
+  },
+  "frames_after_ready": 6,
+  "ready": {
+    "run_id": "frame-order-r06",
+    "sequence": 1616,
+    "time_ms": 24420,
+    "display_tick": 458,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "frame-order-r06",
+      "sequence": 2,
+      "time_ms": 9198,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "frame-order-r06",
+      "sequence": 6,
+      "time_ms": 9226,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "frame-order-r06",
+      "sequence": 16,
+      "time_ms": 9423,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "frame-order-r06",
+      "sequence": 17,
+      "time_ms": 9423,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "frame-order-r06",
+      "sequence": 18,
+      "time_ms": 9423,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "frame-order-r06",
+      "sequence": 19,
+      "time_ms": 9423,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": {
+    "run_id": "frame-order-r06",
+    "sequence": 61,
+    "time_ms": 9951,
+    "display_tick": 23,
+    "fight_tick": -1,
+    "kind": "sample",
+    "value": "undefined,51.9839962944388,346.876750001684,133.230051258579,474.222455406561,285.687983734533"
+  },
+  "samples_before_ready": 29,
+  "sample_intervals_ms": {
+    "502": 3,
+    "504": 2,
+    "530": 1,
+    "501": 4,
+    "534": 3,
+    "509": 1,
+    "525": 2,
+    "540": 1,
+    "523": 1,
+    "506": 1,
+    "500": 1,
+    "499": 1,
+    "522": 1,
+    "503": 3,
+    "533": 1,
+    "532": 1,
+    "527": 1
+  },
+  "last_states": [
+    {
+      "run_id": "frame-order-r06",
+      "sequence": 1651,
+      "time_ms": 24623,
+      "display_tick": 464,
+      "fight_tick": 6,
+      "kind": "state",
+      "value": "p1,1,374.1,-25,100,0,1000,0,false,true,true,0,true,0,false"
+    },
+    {
+      "run_id": "frame-order-r06",
+      "sequence": 1652,
+      "time_ms": 24623,
+      "display_tick": 464,
+      "fight_tick": 6,
+      "kind": "state",
+      "value": "p2,5,637.1,-25,-100,0,1000,0,false,true,true,0,true,0,false"
+    }
+  ],
+  "raw_capture_sha256": "40d56c21d7027dda10960f12c5116957af90df4677a3da6b9540e6976895b590",
+  "retained_sha256": {
+    "instrumentation.diff": "932e8f2bb12560522386107ae37a1c7bc876648e0d21d755768a79e1f24803cf",
+    "events.jsonl": "43329b94fc093d34cb54560bbe5fb6fede15b86e306eace5b824b0f871ea246a",
+    "random-tape.json": "e3d3e9120a6e02130ab4bac3fdee5ac62ab280c4b8dff444b5ad112ecc4fa19d",
+    "build.json": "c0e23fc8085ad9d87da22436137b4b5a7caaf26ebbf49db733a1b8df4830c5b8"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Sensor matrices, each predicate read and target DoAction are not yet logged.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

@@ -1,0 +1,72 @@
+--- frame_1/DoAction.as
++++ /tmp/bvn-menu-probe/patch/frame_1/DoAction.as
+@@ -29,3 +29,5 @@
+    var _4399_function_ad_id = "944c23f5e64a80647f8d0f3435f5c7a8";
+    allowGoLink = false;
+ }
++
++gotoAndPlay(6);
+--- frame_10/DoAction.as
++++ /tmp/bvn-menu-probe/patch/frame_10/DoAction.as
+@@ -3,3 +3,10 @@
+ isload = true;
+ downtxts.clean();
+ vertxt.text = _root.ver;
++
++_root.menuTicks = 0;
++_root.menuKey = function(k) {
++ if(k == _root.s) return _root.menuTicks == 1;
++ if(k == _root.j) return _root.menuTicks >= 12;
++ return false;
++};
+--- DefineSprite_620/frame_1/PlaceObject2_619_28/CLIPACTIONRECORD onClipEvent(enterFrame).as
++++ /tmp/bvn-menu-probe/patch/DefineSprite_620/frame_1/PlaceObject2_619_28/CLIPACTIONRECORD onClipEvent(enterFrame).as
+@@ -1,9 +1,10 @@
+-onClipEvent(enterFrame){
++onClipEvent(enterFrame){
++_root.menuTicks++;
+    if(an == 0)
+    {
+       if(_parent.anj == 0)
+       {
+-         if(Key.isDown(_root.w))
++         if(_root.menuKey(_root.w))
+          {
+             _root.keysound1.start();
+             if(select == 1)
+@@ -16,7 +17,7 @@
+             }
+             an = 1;
+          }
+-         if(Key.isDown(_root.s))
++         if(_root.menuKey(_root.s))
+          {
+             _root.keysound1.start();
+             if(select == 8)
+@@ -29,7 +30,7 @@
+             }
+             an = 1;
+          }
+-         if(Key.isDown(_root.j))
++         if(_root.menuKey(_root.j))
+          {
+             _root.keysound2.start();
+             _parent["btm" + select].play();
+@@ -127,4 +128,6 @@
+          _root.txt = "退出游戏";
+       }
+    }
+-}
++
++trace("MENU_PROBE|"+_root.menuTicks+"|"+select+"|"+an+"|"+_parent.anj+"|"+_parent.btm2._currentframe+"|"+_parent.btm2._y);
++}
+--- DefineSprite_597/frame_15/DoAction.as
++++ /tmp/bvn-menu-probe/patch/DefineSprite_597/frame_15/DoAction.as
+@@ -2,4 +2,6 @@
+ _root.modo = 2;
+ _root.p1cpu = false;
+ _root.p2cpu = true;
+-_root.gotoAndStop("选人画面");
++trace("MENU_EXIT|"+_root.menuTicks+"|"+_root.modo+"|"+_root.p1cpu+"|"+_root.p2cpu);
++stop();
++fscommand("quit");

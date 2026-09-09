@@ -397,6 +397,12 @@
       "source_path": "DefineSprite_764/frame_735/DoAction.as",
       "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
     },
+    "站立": {
+      "frame": 8,
+      "target": "站立",
+      "source_path": "DefineSprite_764/frame_8/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
     "螺旋手里剑1": {
       "frame": 902,
       "target": "螺旋手里剑1",
@@ -449,6 +455,9 @@
   "hurt": {
     "label": "被打",
     "stop_frame": 1020,
+    "callback_start_frame": 1017,
+    "callback_source_path": "DefineSprite_764/frame_1016/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+    "callback_source_sha256": "820f6d41d52a2df712ecc60a0f87a933ebe00f55e376951756a9d91d3940bb36",
     "hitstun_ticks_formula": "hitstun_ms / 1000 * 30",
     "source_path": "DefineSprite_764/frame_1020/DoAction.as",
     "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
@@ -462,6 +471,21 @@
     "down_label": "击落地",
     "knockdown_stop_frame": 1053,
     "practice_mode_skips": 4,
+    "ko_writes": [
+      {
+        "field": "bdzl",
+        "value": 0
+      },
+      {
+        "field": "sw",
+        "value": true
+      }
+    ],
+    "ko_number_binding": {
+      "name": "p1",
+      "equal": 2,
+      "different": 1
+    },
     "source_path": "DefineSprite_764/frame_1/DoAction.as",
     "source_sha256": "67ef57fda43786d357ad6f039a63e3ef029de4d6c2eb36e4ce4b147010ed71cf",
     "stop_source_path": "DefineSprite_764/frame_1053/DoAction.as",
@@ -1244,6 +1268,82 @@
       "9": "XG_leidian",
       "10": "XG_stone"
     },
+    "color_effects": {
+      "7": {
+        "op": "set_colors",
+        "colors": [
+          {
+            "rb": 255,
+            "gb": 25,
+            "bb": -255
+          },
+          {
+            "rb": 255,
+            "gb": 86,
+            "bb": -255
+          }
+        ],
+        "source_path": "frame_8/DoAction.as#bdxg"
+      },
+      "8": {
+        "op": "set_colors",
+        "colors": [
+          {
+            "rb": 0,
+            "gb": 153,
+            "bb": 255
+          },
+          {
+            "rb": 0,
+            "gb": 198,
+            "bb": 255
+          }
+        ],
+        "source_path": "frame_8/DoAction.as#bdxg"
+      },
+      "9": {
+        "op": "set_colors",
+        "colors": [
+          {
+            "rb": 71,
+            "gb": 91,
+            "bb": 255
+          },
+          {
+            "rb": 178,
+            "gb": 142,
+            "bb": 255
+          }
+        ],
+        "source_path": "frame_8/DoAction.as#bdxg"
+      },
+      "10": {
+        "op": "set_color_matrix",
+        "matrix": [
+          0.3086,
+          0.6094,
+          0.082,
+          0,
+          0,
+          0.3086,
+          0.6094,
+          0.082,
+          0,
+          0,
+          0.3086,
+          0.6094,
+          0.082,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "source_path": "frame_8/DoAction.as#bdxg"
+      }
+    },
     "bdfyxg": {
       "1": "XG_fykan",
       "6": "XG_fykanx",
@@ -1298,6 +1398,30 @@
             "source_path": "DefineSprite_256_XG_qdj/frame_1/DoAction.as"
           },
           {
+            "frame": 1,
+            "op": "random_offset",
+            "axis": "x",
+            "positive_factor": 10,
+            "negative_factor": 10,
+            "random_sites": [
+              "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:1",
+              "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:2"
+            ],
+            "source_path": "DefineSprite_256_XG_qdj/frame_1/DoAction.as"
+          },
+          {
+            "frame": 1,
+            "op": "random_offset",
+            "axis": "y",
+            "positive_factor": 20,
+            "negative_factor": 30,
+            "random_sites": [
+              "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:3",
+              "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:4"
+            ],
+            "source_path": "DefineSprite_256_XG_qdj/frame_1/DoAction.as"
+          },
+          {
             "frame": 2,
             "op": "shake_root",
             "axis": "x",
@@ -1323,16 +1447,16 @@
           },
           {
             "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_236_XG_qdjx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
             "op": "shake_root",
             "axis": "x",
             "pixels": 3.0,
             "source_path": "DefineSprite_236_XG_qdjx/frame_2/DoAction_2.as"
-          },
-          {
-            "frame": 2,
-            "op": "shine",
-            "color_rgb24": 16777215,
-            "source_path": "DefineSprite_236_XG_qdjx/frame_2/DoAction.as"
           },
           {
             "frame": 3,
@@ -1510,16 +1634,16 @@
           },
           {
             "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
             "op": "shake_root",
             "axis": "x",
             "pixels": 3.0,
             "source_path": "DefineSprite_298_XG_mfdjx/frame_2/DoAction_2.as"
-          },
-          {
-            "frame": 2,
-            "op": "shine",
-            "color_rgb24": 16777215,
-            "source_path": "DefineSprite_298_XG_mfdjx/frame_2/DoAction.as"
           },
           {
             "frame": 3,
@@ -1657,16 +1781,16 @@
           },
           {
             "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_125_XG_kanx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
             "op": "shake_root",
             "axis": "x",
             "pixels": 3.0,
             "source_path": "DefineSprite_125_XG_kanx/frame_2/DoAction_2.as"
-          },
-          {
-            "frame": 2,
-            "op": "shine",
-            "color_rgb24": 16777215,
-            "source_path": "DefineSprite_125_XG_kanx/frame_2/DoAction.as"
           },
           {
             "frame": 3,
@@ -1804,16 +1928,16 @@
           },
           {
             "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_423_XG_fire/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
             "op": "shake_root",
             "axis": "x",
             "pixels": 3.0,
             "source_path": "DefineSprite_423_XG_fire/frame_2/DoAction_2.as"
-          },
-          {
-            "frame": 2,
-            "op": "shine",
-            "color_rgb24": 16777215,
-            "source_path": "DefineSprite_423_XG_fire/frame_2/DoAction.as"
           },
           {
             "frame": 3,
@@ -1951,16 +2075,16 @@
           },
           {
             "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_358_XG_ice/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
             "op": "shake_root",
             "axis": "x",
             "pixels": 3.0,
             "source_path": "DefineSprite_358_XG_ice/frame_2/DoAction_2.as"
-          },
-          {
-            "frame": 2,
-            "op": "shine",
-            "color_rgb24": 16777215,
-            "source_path": "DefineSprite_358_XG_ice/frame_2/DoAction.as"
           },
           {
             "frame": 3,
@@ -2098,16 +2222,16 @@
           },
           {
             "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_334_XG_leidian/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
             "op": "shake_root",
             "axis": "x",
             "pixels": 3.0,
             "source_path": "DefineSprite_334_XG_leidian/frame_2/DoAction_2.as"
-          },
-          {
-            "frame": 2,
-            "op": "shine",
-            "color_rgb24": 16777215,
-            "source_path": "DefineSprite_334_XG_leidian/frame_2/DoAction.as"
           },
           {
             "frame": 3,
@@ -3244,6 +3368,28 @@
       "speed_factor": 2.0,
       "local_x_factor": 1.0,
       "on_hit_goto_frame": 5,
+      "collision_queries": [
+        {
+          "receiver": "self",
+          "target": "bdmn"
+        },
+        {
+          "receiver": "self",
+          "target": "zh1atm"
+        },
+        {
+          "receiver": "self",
+          "target": "zh2atm"
+        },
+        {
+          "receiver": "self",
+          "target": "zh3atm"
+        },
+        {
+          "receiver": "self",
+          "target": "abcd"
+        }
+      ],
       "character_id": 260,
       "stop_frames": [
         3,

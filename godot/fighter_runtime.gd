@@ -1,10 +1,22 @@
 class_name FighterRuntime
 extends TimelinePreview
 
+var ai_timeline_controlled: bool = false
+var ai_color_state := AiColorState.new()
+var ai_color_operations: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/hit_receive.json"))["hit_fx"]["color_effects"]
+signal ai_frame_service_requested(event: Dictionary)
+
 signal hit_effect_requested(effect_name: String, source_position: Vector2, source_facing: int)
 signal screen_flash_requested(color_rgb24: int)
 signal combo_hud_requested(board_pn: int, hit_count: int)
 signal super_event_applied(event: Dictionary)
+signal ko_requested(opponent_number: int)
+signal source_frame_changed(frame: int)
+signal source_frame_script_boundary(frame: int, entering: bool)
+signal source_child_frame_requested(operation: Callable)
+
+var source_body: RefCounted
+var source_projectiles: Dictionary = {}
 
 @export var display_depth: int = 1
 @export var facing: int = 1
@@ -21,6 +33,10 @@ var last_combo_board: int = 0
 var zhanting: bool = false
 # Source _root.zhanting. gameRunning() is false for both fighters while set.
 var root_zhanting: bool = false
+var root_to: bool = false
+var source_random: SourceRandom
+var source_clock = preload("res://source_clock.gd").new()
+var hurt_voice = preload("res://hurt_voice.gd").new()
 # Source mc.bs. Caster sets 1 in bsd(); stopMc skips clips with bs != 0.
 var bs: int = 0
 # Source mc.hited. stopMc/playMc skip when hited != 0.
@@ -43,6 +59,14 @@ var player_slot: String = ""
 var modo: int = 1
 # Source mc.beida: onBeHit0 sets 1; 站立 is frame 1 and re-runs `var beida = 0`.
 var beida: int = 0
+var ai_source_state := AiSourceState.new()
+var ai_senses := AiSenses.new()
+var ai_random_clock: AiRandomClock
+var ai_predicate_context: AiPredicateContext
+var _ai_hit_transfer: RefCounted
+var _ai_state_frame_applied: int = -1
+var _ai_pending_frames: Array[Dictionary] = []
+var frame_script_sequence: Callable
 
 var _combat: Dictionary
 var _commands: CommandCatalog = CommandCatalog.new()
@@ -89,6 +113,14 @@ func _ready() -> void:
 	autoplay = false
 	super._ready()
 	_combat = _read_json("%s/combat.json" % fighter_directory)
+	hurt_voice.spec = _read_json("%s/hurt_voice.json" % fighter_directory)
+	var ai_model := _read_json("%s/ai.json" % fighter_directory)
+	ai_source_state.configure(ai_model)
+	_ai_hit_transfer = load("%s/ai_hit_state.gd" % fighter_directory).new(ai_source_state.values)
+	ai_senses.configure(self, ai_model)
+	ai_predicate_context = AiPredicateContext.new(self)
+	ai_random_clock = AiRandomClock.new()
+	runtime_services().add_child(ai_random_clock)
 	_commands.load_combat(_combat)
 	fighter_name = str(_combat.get("fighter_id", "fighter"))
 	displayed_health = health
@@ -96,6 +128,9 @@ func _ready() -> void:
 	_ground_y = position.y
 	set_facing(facing)
 	start_action("站立")
+	# configure() already ran the new timeline's initial declarations.
+	_ai_pending_frames.clear()
+	_ai_state_frame_applied = 1
 
 
 func _physics_process(_delta: float) -> void:
@@ -122,7 +157,53 @@ func advance_timeline() -> void:
 			_finish_action()
 			return
 	advance_source_frame(true)
+	_queue_source_frame(current_source_frame())
 	_expire_absent_hit_instances()
+
+
+func advance_ai_timeline() -> void:
+	if not timeline_playing:
+		return
+	var frame := current_source_frame() + 1
+	if frame > int(_timeline["frame_count"]):
+		frame = 1
+	assert(_frames.has(frame), "CPU timeline requires the complete source frame")
+	for label: String in _frames[frame]["labels"]:
+		_set_ai_action_label(label)
+	# Crossing a label is sequential playback: do not clear retained child
+	# state or run start_action's synthesized stand/guard/hurt transitions.
+	play_source_frame(frame)
+	_queue_source_frame(frame)
+	_expire_absent_hit_instances()
+
+
+func goto_ai_label(label: String, play: bool) -> void:
+	var target := action_range(label)
+	assert(not target.is_empty(), "Uncompiled source label: " + label)
+	if current_source_frame() == int(target["start_frame"]):
+		timeline_playing = play
+		return
+	_set_ai_action_label(label)
+	timeline_playing = play
+	play_source_frame(_action_start)
+	_queue_source_frame(_action_start)
+	_expire_absent_hit_instances()
+	last_event = "action_%s" % label
+
+
+func _set_ai_action_label(label: String) -> void:
+	var frames := action_range(label)
+	assert(not frames.is_empty(), "Uncompiled CPU frame label: " + label)
+	action = label
+	_action_start = int(frames["start_frame"])
+	_action_end = int(frames["end_frame"])
+	# Native event bookkeeping resets without pre-executing source writes.
+	_energy_event_applied = false
+	_summon_applied = false
+	_hurt_stop_applied = false
+	_presentation_events_applied.clear()
+	_super_events_applied.clear()
+	_body_warps_applied.clear()
 
 
 func enter_frame(input_state: Dictionary) -> void:
@@ -137,8 +218,8 @@ func enter_frame(input_state: Dictionary) -> void:
 	guarding = action in ["防御", "防御2", "防住"] and _guard_held
 	# Source frame DoAction (gotoAndStop) runs when the playhead enters the
 	# frame, before that frame's clip enterFrame motion / cancel.
-	_apply_action_exit()
-	_apply_hits_reset()
+	if source_body == null:
+		_apply_action_exit()
 	_apply_super_events()
 	_apply_clip_placements()
 	_apply_body_warps()
@@ -163,6 +244,8 @@ func enter_frame(input_state: Dictionary) -> void:
 		# must freeze the callback without freezing their playhead.
 		if root_zhanting:
 			return
+		if action == "被打" and current_source_frame() < int(_combat["hurt"]["callback_start_frame"]):
+			return
 		_update_hurt_motion()
 		# on_enterframe() is a clip action on the wrapper's PlaceObject of the
 		# body mc, so it keeps resolving the floor during 被打/击飞. Its
@@ -170,7 +253,7 @@ func enter_frame(input_state: Dictionary) -> void:
 		# downward yup is pulled back by `if(_y > floorY - 10) _y = floorY`.
 		if position.y >= _ground_y:
 			position.y = _ground_y
-		if action == "被打" and not timeline_playing:
+		if action == "被打":
 			hitstun_ticks = maxi(0, hitstun_ticks - 1)
 			if hitstun_ticks == 0:
 				timeline_playing = true
@@ -180,7 +263,7 @@ func enter_frame(input_state: Dictionary) -> void:
 		return
 	if not _uses_scripted_flight() and _update_air_motion(input_state):
 		return
-	if _update_hurt_fall():
+	if source_body == null and _update_hurt_fall():
 		return
 	# DefineSprite_16 enterFrame keeps calling doDropDown() while that clip
 	# stays on the display list, including 防御2. jumpDown() is only blocked
@@ -237,7 +320,20 @@ func enter_frame(input_state: Dictionary) -> void:
 		start_action("走")
 
 
-func run_frame_actions() -> void:
+func run_frame_actions(drain_nested: bool = true, initial_limit: int = -1) -> void:
+	_apply_ai_source_frame(drain_nested, initial_limit)
+	_run_frame_actions()
+	# A goto made by a frame script queues another target script in this
+	# display tick. Retained-then-removed targets must not lose their writes.
+	if drain_nested:
+		_apply_ai_source_frame()
+
+
+func flush_queued_frame_scripts(limit: int = -1) -> void:
+	_apply_ai_source_frame(false, limit)
+
+
+func _run_frame_actions() -> void:
 	_apply_source_energy_event()
 	_apply_summon_event()
 	_apply_presentation_events()
@@ -255,7 +351,9 @@ func run_frame_actions() -> void:
 		return
 	if _apply_action_exit():
 		return
-	if action == "必杀":
+	# Source-controlled timelines already evaluated the authored branch. A
+	# blocked contact must not override that decision through the legacy cache.
+	if action == "必杀" and not ai_timeline_controlled and source_body == null:
 		for transition: Dictionary in _combat["special"]["transitions"]:
 			if transition["from"] != action:
 				continue
@@ -277,47 +375,79 @@ func receive_attack(attack: Dictionary, attacker_facing: int) -> void:
 	var impact_strength := int(attack.get("impact_strength", 0))
 	# Source fangyu() treats zl > 10 as a guard break, then removes the
 	# encoding offset before choosing the normal hit presentation.
-	var guard_broken := guarding and impact_strength > 10
-	if guarding and not guard_broken:
-		health = maxf(0.0, health - damage / 10.0)
-		change_energy(damage / 15.0)
-		_guard_horizontal_step = attacker_facing * float(attack["horizontal_impulse"])
-		last_hit_effect = _guard_effect_for_strength(impact_strength, _defence_xgtype())
-		if last_hit_effect != "":
-			hit_effect_requested.emit(last_hit_effect, position, facing)
-		start_action("防住")
-		last_event = "guard_%s" % attack.get("instance_name", "unknown")
-		# Source onDefence() ends with checkDead(false). No hits++.
-		_check_dead(false)
-		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
-		return
-	last_hit_effect = _hit_effect_for_strength(impact_strength)
-	if last_hit_effect != "":
-		hit_effect_requested.emit(last_hit_effect, position, facing)
-	# Source onBeHit0(): 动作=-1; beida=1; then goto the hit label.
-	beida = 1
-	hited = 1
-	# Source onBeHit(): hits++; HUD only when hits > 1.
-	hits += 1
-	last_combo_board = 0
-	if hits > 1:
-		last_combo_board = opponent_pn()
-		combo_hud_requested.emit(last_combo_board, hits)
-	health = maxf(0.0, health - damage)
-	change_energy(damage / 10.0)
+	# Sprite 2 writes the received packet before entering its chosen reaction.
+	# Keep hdtime fractional here; BODY compares its integer time against tdtime.
+	var target: Dictionary = _ai_hit_transfer.transfer({
+		"pw": damage,
+		"zl": impact_strength,
+		"yup": attack.get("vertical_impulse", 0.0),
+		"hitx": attack["horizontal_impulse"],
+		"hdtime": attack.get("hitstun_ms"),
+		"htype": attack.get("reaction_label", "被打"),
+	}, guarding)
 	_hurt_motion_ticks = 0
 	_hurt_horizontal_step = attacker_facing * float(attack["horizontal_impulse"])
 	_hurt_vertical_step = -float(attack.get("vertical_impulse", 0.0))
-	var reaction := str(attack.get("reaction_label", "被打"))
-	var flying := reaction == _death_launch_label()
-	_launched = flying
+	_guard_horizontal_step = _hurt_horizontal_step
+	var reaction := str(target["label"])
+	_launched = reaction == _death_launch_label()
 	_hurt_falling = _launched or _hurt_vertical_step != 0.0 or position.y < _ground_y
-	hitstun_ticks = ceili(float(attack["hitstun_ms"]) / 1000.0 * 30.0)
-	if not _try_start_action(reaction):
-		start_action("被打")
-	last_event = "hit_%s" % attack.get("instance_name", "unknown")
-	# Source onBeHit() calls checkDead(flying) after hitlosehp().
+	hitstun_ticks = ceili(float(ai_source_state.read_field("tdtime")))
+	if ai_timeline_controlled:
+		goto_ai_label(reaction, bool(target["play"]))
+	else:
+		start_action(reaction)
+
+
+func _apply_hit_settlement_frame(frame: int) -> void:
+	var sprite := int(_combat.get("source", {}).get("timeline_symbol_id", 0))
+	for event: Dictionary in _combat.get("on_be_hit_frames", []):
+		if int(event["sprite_id"]) == sprite and int(event["frame"]) == frame:
+			_settle_source_hit(false, bool(event["flying"]), 1)
+	for event: Dictionary in _combat.get("on_defence_frames", []):
+		if int(event["sprite_id"]) == sprite and int(event["frame"]) == frame:
+			_settle_source_hit(true, false, int(event["xgtype"]))
+
+
+func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
+	# Read mutable receiver fields when the source DoAction executes.
+	var damage := float(ai_source_state.read_field("jhp"))
+	var strength := int(ai_source_state.read_field("bdzl"))
+	if not defended:
+		ai_source_state.apply_function("onBeHit0")
+		beida = 1
+		hited = 1
+		timeline_playing = true
+	last_hit_effect = _guard_effect_for_strength(strength, xgtype) if defended else _hit_effect_for_strength(strength)
+	if not defended and ai_timeline_controlled:
+		var color_operation: Dictionary = ai_color_operations.get(str(strength), {})
+		ai_color_state.receive(color_operation)
+		if color_operation.get("op") == "set_color_matrix":
+			set_source_color(ai_color_state.transform, ai_color_state.matrix)
+	if last_hit_effect != "":
+		hit_effect_requested.emit(last_hit_effect, position, facing)
+	if not defended:
+		hits += 1
+		ai_source_state.values["hits"] = hits
+		last_combo_board = 0
+		if hits > 1:
+			last_combo_board = opponent_pn()
+			combo_hud_requested.emit(last_combo_board, hits)
+	if defended and source_body != null:
+		source_body.updateDirect(true)
+	if not root_to:
+		health -= damage / (10.0 if defended else 1.0)
+		energy += damage / (15.0 if defended else 10.0)
+		if is_instance_valid(opponent) and opponent.ai_source_state.read_field("动作") != 3:
+			opponent.energy += damage / (10.0 if defended else 5.0)
+	if not defended and source_body != null:
+		source_body.updateDirect(true)
 	_check_dead(flying)
+	if not defended and source_random != null:
+		var voice_spec: Dictionary = hurt_voice.spec
+		var probability := float(voice_spec["flying_probability"] if flying else voice_spec["low_damage_probability"] if damage <= float(voice_spec["damage_threshold"]) else voice_spec["high_damage_probability"])
+		hurt_voice.execute(ai_source_state, source_random, probability, source_clock, sw)
+	last_event = "guard_settlement" if defended else "hit_settlement"
 	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
@@ -340,6 +470,16 @@ func _clip_for_strength(table_name: String, strength: int) -> String:
 
 func _hit_effect_for_strength(strength: int) -> String:
 	return _clip_for_strength("bdxg", strength)
+
+
+func apply_ai_colors() -> void:
+	if ai_color_state.apply_colors():
+		set_source_color(ai_color_state.transform, ai_color_state.matrix)
+
+
+func reset_ai_colors() -> void:
+	ai_color_state.reset_color()
+	set_source_color(ai_color_state.transform, ai_color_state.matrix)
 
 
 func _guard_effect_for_strength(strength: int, xgtype: int) -> String:
@@ -410,25 +550,52 @@ func resolve_body_collision(other: FighterRuntime) -> void:
 		other.position.x += other_push * float(facing)
 		position.x -= self_push * float(facing)
 	_body_last_x = position.x
+	# BODY's exact main-floor branch follows body pressure and is skipped by
+	# the earlier root-pause/dashing returns. Other floor branches stay separate.
+	if not root_zhanting and position.y == _ground_y:
+		for event: Dictionary in ai_source_state.spec["main_floor_contact"]["writes"]:
+			ai_source_state.apply_write(event)
 
 
-func attack_contact(defender: FighterRuntime) -> Dictionary:
-	if not _stashed_attack.is_empty() and defender == opponent:
+func attack_contact(defender: FighterRuntime, source_receiver: bool = false) -> Dictionary:
+	if not defender.allows_source_hit():
+		return {}
+	if not source_receiver and not _stashed_attack.is_empty() and defender == opponent:
 		return _stashed_attack.duplicate()
 	_expire_absent_hit_instances()
 	var body := defender.instance_global_bounds("bdmn")
 	if not body.has_area():
 		return {}
 	for instance_name in _ordered_attack_instances():
-		if not instance_name.ends_with("atm") or _hit_instances.has(instance_name):
+		# Source getHitObj has no per-attack hit cache. Receiver clip lifetime
+		# and canhit determine when it can query the same retained attack again.
+		if not instance_name.ends_with("atm") or (not source_receiver and _hit_instances.has(instance_name)):
 			continue
 		var attack := _attack_from_instance(instance_name)
 		if attack.is_empty():
 			continue
-		var attack_bounds := instance_global_bounds(instance_name)
+		var attack_bounds := source_projectile_target_bounds(instance_name) if source_receiver else instance_global_bounds(instance_name)
 		if attack_bounds.has_area() and body.intersects(attack_bounds):
 			return attack
 	return {}
+
+
+func allows_source_hit() -> bool:
+	return _ai_hit_transfer.truth(_ai_hit_transfer.allows_hit(_game_running()))
+
+
+func has_active_hit_receiver() -> bool:
+	# Legacy polling must honor the receiver's PlaceObject callback lifetime.
+	# The source-controlled path invokes resolve_incoming from that callback itself.
+	for placement: Dictionary in _frames[current_source_frame()]["display_list"]:
+		if placement.get("name", "") != "bdmn":
+			continue
+		if current_source_frame() <= int(placement["placed_frame"]):
+			return false
+		for callback: Dictionary in placement.get("clip_actions", []):
+			if "EnterFrame" in callback.get("events", []):
+				return true
+	return false
 
 
 func _ordered_attack_instances() -> PackedStringArray:
@@ -438,6 +605,12 @@ func _ordered_attack_instances() -> PackedStringArray:
 			visible[str(instance_name)] = true
 	for instance_name in _aliased_hitbox_names():
 		visible[instance_name] = true
+	for reference: WeakRef in source_projectiles.values():
+		var clip: RefCounted = reference.get_ref()
+		if clip != null:
+			var current_name: Variant = clip.current_source_name()
+			if current_name != null and str(current_name).ends_with("atm"):
+				visible[str(current_name)] = true
 	var ordered := PackedStringArray()
 	for instance_name in _combat.get("hit_priority", {}).get("instances", []):
 		var name := str(instance_name)
@@ -452,14 +625,8 @@ func _ordered_attack_instances() -> PackedStringArray:
 
 func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
 	_stashed_attack = {}
-	var action_was_special := _is_special_action(action)
-	var was_guarded := (
-		defender.guarding and int(attack.get("impact_strength", 0)) <= 10
-	)
 	defender.receive_attack(attack, facing)
 	mark_attack_hit(str(attack["instance_name"]))
-	if not action_was_special:
-		change_energy(float(attack["damage"]) / (10.0 if was_guarded else 5.0))
 
 
 func active_attack() -> Dictionary:
@@ -477,6 +644,8 @@ func _aliased_hitbox_names() -> PackedStringArray:
 	var result := PackedStringArray()
 	var frame := current_source_frame()
 	for window: Dictionary in _combat.get("hitbox_windows", {}).get(action, []):
+		if source_projectiles.has(str(window.get("placed_name", ""))):
+			continue
 		var name := str(window.get("instance_name", ""))
 		if not name.ends_with("atm"):
 			continue
@@ -500,11 +669,6 @@ func _placed_name_for_hitbox(instance_name: String) -> String:
 
 func _attack_from_instance(instance_name: String) -> Dictionary:
 	var attack_key := instance_name.trim_suffix("atm")
-	# AS2 authors sometimes suffixed duplicate instance names with zero
-	# (for example zh20atm), while the attack table keeps the semantic key
-	# (zh2). Resolve that source naming convention without weakening misses.
-	if not _combat["attacks"].has(attack_key) and attack_key.ends_with("0"):
-		attack_key = attack_key.trim_suffix("0")
 	if not _combat["attacks"].has(attack_key):
 		return {}
 	var result: Dictionary = _combat["attacks"][attack_key].duplicate(true)
@@ -592,8 +756,61 @@ func start_action(label: String) -> void:
 	timeline_playing = true
 	_hit_instances.clear()
 	play_action(label)
+	_queue_source_frame(current_source_frame())
 	last_event = "action_%s" % label
 	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
+
+
+func _queue_source_frame(frame: int) -> void:
+	_ai_pending_frames.append({"frame": frame,
+		"order": frame_script_sequence.call() if frame_script_sequence.is_valid() else 0})
+	source_frame_changed.emit(frame)
+
+
+func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) -> void:
+	var frame := current_source_frame()
+	if _ai_pending_frames.is_empty() and frame != _ai_state_frame_applied:
+		_queue_source_frame(frame)
+	var initial_count := _ai_pending_frames.size()
+	if initial_limit >= 0:
+		initial_count = mini(initial_count, initial_limit)
+	var applied := 0
+	while not _ai_pending_frames.is_empty() and (drain_nested or applied < initial_count):
+		applied += 1
+		var pending: int = _ai_pending_frames.pop_front()["frame"]
+		source_frame_script_boundary.emit(pending, true)
+		if ai_timeline_controlled or source_body != null:
+			var events: Array = ai_source_state.spec["frame_writes"].get(str(pending), []).duplicate()
+			events.append_array(ai_source_state.spec["frame_calls"].get(str(pending), []))
+			events.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
+				return int(left["line"]) < int(right["line"]))
+			for event: Dictionary in events:
+				if event.has("field"):
+					ai_source_state.apply_write(event)
+					var field := str(event["field"])
+					if field in ["hited", "beida", "bs", "sw"]:
+						set(field, ai_source_state.read_field(field))
+					elif field == "hits":
+						hits = int(ai_source_state.read_field(field))
+						if hits == 0:
+							last_combo_board = 0
+				elif event.get("op") == "energy_delta":
+					energy += float(event["delta"])
+					_energy_event_applied = true
+				else:
+					assert(not ai_frame_service_requested.get_connections().is_empty(), "Unconnected CPU frame service")
+					ai_frame_service_requested.emit(event)
+		else:
+			ai_source_state.apply_frame(pending)
+			_apply_hits_reset(pending)
+			for write: Dictionary in ai_source_state.spec["frame_writes"].get(str(pending), []):
+				if write["field"] == "hits":
+					hits = int(ai_source_state.read_field("hits"))
+					if hits == 0:
+						last_combo_board = 0
+		_apply_hit_settlement_frame(pending)
+		_ai_state_frame_applied = pending
+		source_frame_script_boundary.emit(pending, false)
 
 
 func _try_start_action(label: String) -> bool:
@@ -808,7 +1025,7 @@ func _finish_action() -> void:
 		# terminal script, so a whiff still reaches 砍技12 and explodes.
 		start_action(fallthrough)
 		return
-	if airborne or _hurt_falling:
+	if airborne or (source_body == null and _hurt_falling):
 		start_action("落2" if _double_jump_used else "落")
 	else:
 		start_action("站立")
@@ -947,7 +1164,6 @@ func _horizontal_sweep_fraction(moving: Rect2, target: Rect2, delta_x: float) ->
 
 func _update_projectiles() -> void:
 	var frame := current_source_frame()
-	var speed := float(_combat["movement"]["speed_per_tick"])
 	var live: Dictionary = {}
 	var moved := false
 	for projectile: Dictionary in _combat.get("projectiles", []):
@@ -961,23 +1177,8 @@ func _update_projectiles() -> void:
 		if not existed:
 			_start_clip_playhead(instance_name, projectile)
 			moved = true
-		var jumped_hit := false
-		if _projectile_blocked(instance_name):
-			if projectile.has("on_hit_goto_frame") and not _clip_past_hit(
-				instance_name, projectile
-			):
-				set_instance_clip_frame(
-					instance_name, int(projectile["on_hit_goto_frame"]), true
-				)
-				jumped_hit = true
-				moved = true
-		else:
-			var offset := instance_local_offset(instance_name)
-			var step := speed * float(projectile.get("speed_factor", 1.0))
-			offset.x += step * float(projectile.get("local_x_factor", 0.0))
-			offset.y += step * float(projectile.get("local_y_factor", 0.0))
-			set_instance_local_offset(instance_name, offset)
-			moved = true
+		var jumped_hit := run_projectile_callback(projectile)
+		moved = true
 		if existed and not jumped_hit:
 			_advance_clip_playhead(instance_name, projectile)
 	for instance_name in _instance_local_offsets.keys():
@@ -988,6 +1189,31 @@ func _update_projectiles() -> void:
 		moved = true
 	if moved:
 		refresh_display()
+
+
+func run_projectile_callback(projectile: Dictionary) -> bool:
+	var instance_name := str(projectile["instance_name"])
+	var speed := float(_combat["movement"]["speed_per_tick"])
+	var jumped_hit := false
+	if _projectile_blocked(instance_name, projectile):
+		if projectile.has("on_hit_goto_frame") and not _clip_past_hit(
+			instance_name, projectile
+		):
+			set_instance_clip_frame(
+				instance_name, int(projectile["on_hit_goto_frame"]), true
+			)
+			jumped_hit = true
+	else:
+		var offset := instance_local_offset(instance_name)
+		var step := float(projectile.get("initial_speed",
+			speed * float(projectile.get("speed_factor", 1.0))))
+		# The source sets movspeed=0 on impact; losing contact cannot restart it.
+		if projectile.has("initial_speed") and _clip_past_hit(instance_name, projectile):
+			step = 0.0
+		offset.x += step * float(projectile.get("local_x_factor", 0.0))
+		offset.y += step * float(projectile.get("local_y_factor", 0.0))
+		set_instance_local_offset(instance_name, offset)
+	return jumped_hit
 
 
 func _start_clip_playhead(instance_name: String, projectile: Dictionary) -> void:
@@ -1004,6 +1230,8 @@ func _advance_clip_playhead(instance_name: String, projectile: Dictionary) -> vo
 		set_instance_clip_frame(instance_name, current, false, age)
 		return
 	var next_frame := current + 1
+	if projectile.has("frame_count"):
+		next_frame = posmod(current, int(projectile["frame_count"])) + 1
 	set_instance_clip_frame(
 		instance_name, next_frame, not _is_stop_frame(projectile, next_frame), age
 	)
@@ -1022,7 +1250,16 @@ func _clip_past_hit(instance_name: String, projectile: Dictionary) -> bool:
 	return instance_clip_frame(instance_name) >= int(projectile["on_hit_goto_frame"])
 
 
-func _projectile_blocked(instance_name: String) -> bool:
+func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> bool:
+	if projectile.has("collision_queries"):
+		if opponent == null or not is_instance_valid(opponent):
+			return false
+		for query: Dictionary in projectile["collision_queries"]:
+			var bounds := instance_global_bounds(instance_name) if query["receiver"] == "self" else child_instance_global_bounds(instance_name, query["receiver"])
+			var target := opponent.source_projectile_target_bounds(query["target"])
+			if bounds.has_area() and target.has_area() and bounds.intersects(target):
+				return true
+		return false
 	if _hit_instances.has(instance_name):
 		return true
 	if opponent == null or not is_instance_valid(opponent):
@@ -1030,6 +1267,39 @@ func _projectile_blocked(instance_name: String) -> bool:
 	var body := opponent.instance_global_bounds("bdmn")
 	var attack_bounds := instance_global_bounds(instance_name)
 	return body.has_area() and attack_bounds.has_area() and body.intersects(attack_bounds)
+
+
+func source_projectile_target_bounds(source_name: String) -> Rect2:
+	# A source rename replaces the property used by the other fighter's query.
+	for authored: String in source_projectiles:
+		var projectile: RefCounted = source_projectiles[authored].get_ref()
+		if projectile == null:
+			continue
+		var current_name: Variant = projectile.current_source_name()
+		if current_name == null:
+			continue
+		if current_name == source_name:
+			return super.instance_global_bounds(authored)
+		if authored == source_name:
+			return Rect2()
+	var hidden_authored_name := false
+	for projectile: Dictionary in _combat.get("projectiles", []):
+		var authored := str(projectile["instance_name"])
+		if source_projectiles.has(authored):
+			continue
+		if not _instance_local_frames.has(authored):
+			continue
+		if current_source_frame() < int(projectile["start_frame"]) or current_source_frame() > int(projectile["end_frame"]):
+			continue
+		var current_name := authored
+		for rename: Dictionary in projectile.get("rename_frames", []):
+			if instance_clip_frame(authored) >= int(rename["frame"]):
+				current_name = rename["instance_name"]
+		if current_name == source_name:
+			return super.instance_global_bounds(authored)
+		if authored == source_name:
+			hidden_authored_name = true
+	return Rect2() if hidden_authored_name else instance_global_bounds(source_name)
 
 
 func _update_hurt_motion() -> void:
@@ -1234,12 +1504,12 @@ func opponent_pn() -> int:
 	return 1 if player_slot == "p2" else 2
 
 
-func _apply_hits_reset() -> void:
+func _apply_hits_reset(source_frame: int) -> void:
 	var sprite := int(_combat.get("source", {}).get("timeline_symbol_id", 0))
 	for item: Dictionary in _combat.get("hits_reset_frames", []):
 		if int(item.get("sprite_id", 0)) != sprite:
 			continue
-		if int(item.get("frame", -1)) != current_source_frame():
+		if int(item.get("frame", -1)) != source_frame:
 			continue
 		hits = 0
 		last_combo_board = 0
@@ -1421,12 +1691,22 @@ func _check_dead(flying: bool) -> bool:
 		return false
 	if _death_data().is_empty() and action_range("击飞").is_empty():
 		return false
-	sw = true
+	var death := _death_data()
+	for write: Dictionary in death.get("ko_writes", []):
+		ai_source_state.values[write.field] = write.value
+	sw = bool(ai_source_state.read_field("sw")) if death.has("ko_writes") else true
 	last_event = "ko"
+	if death.has("ko_number_binding"):
+		var binding: Dictionary = death.ko_number_binding
+		ko_requested.emit(int(binding.equal if player_slot == binding.name else binding.different))
 	if not flying:
-		_launched = true
-		_hurt_falling = true
-		start_action(_death_launch_label())
+		if ai_timeline_controlled:
+			goto_ai_label(_death_launch_label(), false)
+			timeline_playing = true
+		else:
+			_launched = true
+			_hurt_falling = true
+			start_action(_death_launch_label())
 	return true
 
 

@@ -63,6 +63,7 @@ def selection_steps(manifest: dict, p2selt: str, cur_stage: str) -> tuple[list[d
         steps.append(
             {
                 "random_below": 0.8,
+                "random_site": "main#DefineSprite_1900/frame_1/DoAction.as:1",
                 "file": fighter_data["music"],
                 "source": f"fighter_catalog.{p2selt}.music",
             }
@@ -70,6 +71,7 @@ def selection_steps(manifest: dict, p2selt: str, cur_stage: str) -> tuple[list[d
     steps.append(
         {
             "random_below": 0.5,
+            "random_site": "main#DefineSprite_1900/frame_1/DoAction.as:2",
             "file": NARUTO_MUSIC if is_naruto else BLEACH_MUSIC,
             "source": "narutoMusic" if is_naruto else "bleachMusic",
         }

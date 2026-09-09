@@ -1,0 +1,12 @@
+stop();
+var originalKey = Key.isDown;
+Key.isDown = function(code) { return true; };
+trace("KEYHOOK|global_same|" + (Key.isDown === originalKey));
+trace("KEYHOOK|global_read|" + Key.isDown(68));
+var m = createEmptyMovieClip("m",1);
+m.kis = Key.isDown;
+trace("KEYHOOK|body_alias_read|" + m.kis(68));
+m.kis = function(code) { return true; };
+trace("KEYHOOK|direct_alias_read|" + m.kis(68));
+trace("KEYHOOK|done");
+fscommand("quit");

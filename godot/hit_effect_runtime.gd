@@ -7,6 +7,8 @@ signal shine_requested(color_rgb24: int)
 signal shake_requested(axis: String, pixels: float)
 
 var auto_advance: bool = true
+var defer_initial_frame: bool = false
+var source_random: SourceRandom
 var effect_frame: int = 1
 var game_paused: bool = false
 var last_shine_color: int = -1
@@ -23,6 +25,26 @@ var _applied: Dictionary = {}
 var _directory: String
 var _sound_events: Dictionary = {}
 var _sound_assets: Dictionary = {}
+var _initial_frame_pending: bool = false
+var _callback_registry: SourceCallbackRegistry
+var _registration: int = 0
+
+
+func register_source_frames(registry: SourceCallbackRegistry, placed_tick: int) -> void:
+	assert(_callback_registry == null)
+	auto_advance = false
+	_callback_registry = registry
+	_registration = registry.register(self, "advance_effect", placed_tick)
+
+
+func _exit_tree() -> void:
+	unregister_source_frames()
+
+
+func unregister_source_frames() -> void:
+	if _callback_registry != null:
+		_callback_registry.unregister(_registration)
+		_callback_registry = null
 
 
 func configure(effect_name: String, source_position: Vector2, source_facing: int, offset_y: float = -25.0) -> void:
@@ -44,6 +66,15 @@ func configure(effect_name: String, source_position: Vector2, source_facing: int
 	_preview.show_collision_shapes = false
 	add_child(_preview)
 	effect_frame = 1
+	_initial_frame_pending = true
+	if not defer_initial_frame:
+		run_initial_frame()
+
+
+func run_initial_frame() -> void:
+	if not _initial_frame_pending:
+		return
+	_initial_frame_pending = false
 	_apply_frame_events()
 
 
@@ -54,8 +85,9 @@ func _physics_process(_delta: float) -> void:
 
 
 func advance_effect() -> void:
-	if _preview == null:
+	if _preview == null or is_queued_for_deletion():
 		return
+	run_initial_frame()
 	effect_frame += 1
 	if effect_frame > _frame_count:
 		queue_free()
@@ -68,16 +100,29 @@ func _apply_frame_events() -> void:
 	last_ops.clear()
 	last_sound_ids.clear()
 	_start_frame_sounds()
-	for event: Dictionary in _events:
+	for event_index in _events.size():
+		var event: Dictionary = _events[event_index]
 		if int(event.get("frame", -1)) != effect_frame:
 			continue
-		var event_key := "%d:%s" % [effect_frame, event.get("op", "")]
+		var event_key := event_index
 		if _applied.has(event_key):
 			continue
 		_applied[event_key] = true
 		var op := str(event.get("op", ""))
 		last_ops.append(op)
 		match op:
+			"random_offset":
+				assert(source_random != null, "Hit effect requires the shared source random stream")
+				var positive := source_random.next_value(event["random_sites"][0])
+				var negative := source_random.next_value(event["random_sites"][1])
+				if source_random.failure != "":
+					return
+				var offset := positive * float(event["positive_factor"]) - negative * float(event["negative_factor"])
+				if event["axis"] == "x":
+					position.x += offset
+				else:
+					assert(event["axis"] == "y")
+					position.y += offset
 			"pause_game":
 				game_paused = true
 				pause_requested.emit()
@@ -155,6 +200,11 @@ func _collect_sound_assets() -> Dictionary:
 
 
 func _clip_events(effect_name: String) -> Array:
+	var effect_path := "%s/effect.json" % _directory
+	if FileAccess.file_exists(effect_path):
+		var effect := _read_json(effect_path)
+		assert(effect.get("clip") == effect_name)
+		return effect["presentation_events"]
 	var parsed := _read_json("res://generated/main/hit_receive.json")
 	if parsed.is_empty():
 		return []

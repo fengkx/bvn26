@@ -1,6 +1,6 @@
 extends SceneTree
 
-# Source invariants for the three-entry MENU slice.
+# Source menu timing and existing key/training invariants.
 # Paths: scripts/main.json frame_7/DoAction.as, frame_8 showKeyName,
 # DefineSprite_620 enterFrame, DefineSprite_600/603 frame_15,
 # DefineSprite_835 enterkey, checkDead modo != 4,
@@ -29,34 +29,16 @@ func _run() -> void:
 	var menu := TitleMenu.new()
 	var chosen := []
 	menu.confirmed.connect(func(item_id: String) -> void: chosen.append(item_id))
-	assert(menu.select == 1)
-	assert(str(menu.current_item()["title"]) == "VS MODE")
-	assert(int(menu.current_item()["modo"]) == 3)
+	assert(menu.select == 1 and menu.current_item().id == "single")
+	for tick in 62: menu.apply_held({})
 	menu.apply_held({"down": true})
-	assert(menu.select == 2)
-	assert(str(menu.current_item()["hint"]) == "TRAINING")
-	assert(int(menu.current_item()["modo"]) == 4)
-	menu.apply_held({})
-	menu.apply_held({"down": true})
-	assert(menu.select == 3)
-	assert(str(menu.current_item()["goto"]) == "键位设置")
-	menu.apply_held({})
-	menu.apply_held({"down": true})
-	assert(menu.select == 1)
-	menu.apply_held({})
-	menu.apply_held({"up": true})
-	assert(menu.select == 3)
-	menu.apply_held({})
+	for tick in 10: menu.apply_held({})
+	assert(menu.select == 2 and menu.current_item().id == "vs_com")
 	menu.apply_held({"confirm": true})
+	for tick in 13: menu.apply_held({"confirm": true})
 	assert(chosen.is_empty())
-	menu.apply_held({})
-	assert(chosen == ["key_settings"])
-
-	menu.reset()
-	assert(menu.select == 1)
 	menu.apply_held({"confirm": true})
-	menu.apply_held({})
-	assert(chosen == ["key_settings", "versus"])
+	assert(chosen == ["vs_com"])
 
 	var keys := KeySettings.new()
 	keys.session = session
@@ -90,7 +72,12 @@ func _run() -> void:
 		},
 		1
 	)
-	assert(dummy.health == 0.0)
+	# Source settlement occurs on the following hurt frame; loseHp has no zero clamp.
+	assert(dummy.health == 8.0)
+	dummy.run_frame_actions()
+	dummy.advance_timeline()
+	dummy.run_frame_actions()
+	assert(dummy.health == -7.0)
 	assert(not dummy.sw)
 	assert(dummy.beida == 1)
 	assert(dummy.action != "击飞")

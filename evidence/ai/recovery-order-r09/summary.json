@@ -1,0 +1,163 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "recovery-order-r09",
+  "events": 2630,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "body_boundary": 736,
+    "initCtrl": 6,
+    "input_next_display": 482,
+    "frame_state_enter": 61,
+    "intro_body_enter": 121,
+    "intro_body_exit": 121,
+    "frame_state_exit": 61,
+    "random": 152,
+    "intro_poll": 22,
+    "intro_poll_state": 22,
+    "sample": 30,
+    "geometry_frame": 1,
+    "geometry_matrix": 3,
+    "sensor_bounds": 12,
+    "sensor_local": 12,
+    "state": 602,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "predicate": 162,
+    "fixture": 1,
+    "recovery_order": 14,
+    "done": 1
+  },
+  "frames_after_ready": 10,
+  "ready": {
+    "run_id": "recovery-order-r09",
+    "sequence": 2403,
+    "time_ms": 26907,
+    "display_tick": 472,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "recovery-order-r09",
+      "sequence": 3,
+      "time_ms": 11233,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "recovery-order-r09",
+      "sequence": 9,
+      "time_ms": 11267,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "recovery-order-r09",
+      "sequence": 27,
+      "time_ms": 11434,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "recovery-order-r09",
+      "sequence": 28,
+      "time_ms": 11434,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "recovery-order-r09",
+      "sequence": 29,
+      "time_ms": 11434,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "recovery-order-r09",
+      "sequence": 30,
+      "time_ms": 11434,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": {
+    "run_id": "recovery-order-r09",
+    "sequence": 104,
+    "time_ms": 11964,
+    "display_tick": 23,
+    "fight_tick": -1,
+    "kind": "sample",
+    "value": "undefined,370.2367185615,195.202955277637,77.8420399874449,399.909917265177,318.195859901607"
+  },
+  "samples_before_ready": 30,
+  "sample_intervals_ms": {
+    "505": 2,
+    "501": 3,
+    "504": 1,
+    "524": 1,
+    "502": 3,
+    "500": 1,
+    "526": 1,
+    "499": 1,
+    "536": 1,
+    "532": 1,
+    "503": 3,
+    "528": 1,
+    "533": 1,
+    "527": 2,
+    "508": 1,
+    "534": 4,
+    "525": 1,
+    "510": 1
+  },
+  "last_states": [
+    {
+      "run_id": "recovery-order-r09",
+      "sequence": 2628,
+      "time_ms": 27236,
+      "display_tick": 482,
+      "fight_tick": 10,
+      "kind": "state",
+      "value": "p1,5,326,-25,100,0,1000,0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "recovery-order-r09",
+      "sequence": 2629,
+      "time_ms": 27236,
+      "display_tick": 482,
+      "fight_tick": 10,
+      "kind": "state",
+      "value": "p2,10,349,-25,-100,0,1000,0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "f27534fe942871eeedee32a6c580baf965781efeb35d4c47c3e83a934d6f9462",
+  "retained_sha256": {
+    "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "instrumentation.diff": "af2c2d6ab7508a61067e8847013d05f24ce584f278cee7f7fbf35d8acd907aa9",
+    "events.jsonl": "581c9181143812d36b9ac1deedcdbc1f28c572f1c90a1c8ef91a025a27ee7066",
+    "random-tape.json": "45b1531c8bcc8b2f209f6dda62519d6649a1c0eb7c1d7a9d9754a52eef6ea9bf",
+    "build.json": "d405c2a5a1f8425f33c2730c4ac8cc1cc4dec8d23bf14e53447f9b4414c6a4f3"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

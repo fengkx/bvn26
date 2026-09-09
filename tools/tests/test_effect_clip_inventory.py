@@ -40,6 +40,35 @@ def file_sha256(path: Path) -> str:
 
 
 class ElementAndSuperClipTests(unittest.TestCase):
+    def test_hit_spark_random_offsets_keep_source_call_order(self):
+        events = shared_hit_fx()['clips']['XG_qdj']['presentation_events']
+        first = [event for event in events if event['frame'] == 1]
+        self.assertEqual([event['op'] for event in first], ['shake_root', 'random_offset', 'random_offset'])
+        self.assertEqual([(event['axis'], event['positive_factor'], event['negative_factor'])
+                          for event in first[1:]], [('x', 10, 10), ('y', 20, 30)])
+        prefix = 'main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:'
+        self.assertEqual([site for event in first[1:] for site in event['random_sites']],
+                         [prefix + str(i) for i in range(1, 5)])
+
+    def test_unknown_effect_random_expression_fails_compilation(self):
+        bundle = hit_receive.load_bundle(ROOT / 'scripts/main.json')
+        source = next(script for script in bundle['scripts']
+                      if script['path'] == 'DefineSprite_256_XG_qdj/frame_1/DoAction.as')
+        source['source'] += '\n_rotation = Math.random() * 180;\n'
+        with self.assertRaisesRegex(ValueError, 'Unsupported hit-effect random expression'):
+            hit_receive.compile_hit_fx(bundle)
+
+    def test_source_element_color_operations(self):
+        effects = shared_hit_fx()["color_effects"]
+        self.assertEqual(set(effects), {7, 8, 9, 10})
+        self.assertEqual(effects[7]["colors"], [{"rb": 255, "gb": 25, "bb": -255}, {"rb": 255, "gb": 86, "bb": -255}])
+        self.assertEqual(effects[8]["colors"], [{"rb": 0, "gb": 153, "bb": 255}, {"rb": 0, "gb": 198, "bb": 255}])
+        self.assertEqual(effects[9]["colors"], [{"rb": 71, "gb": 91, "bb": 255}, {"rb": 178, "gb": 142, "bb": 255}])
+        self.assertEqual(effects[10]["matrix"], [0.3086, 0.6094, 0.082, 0, 0] * 3 + [0, 0, 0, 1, 0])
+        for relative in ("data/actions/hit_receive.json", "godot/generated/main/hit_receive.json"):
+            compiled = json.loads((ROOT / relative).read_text())["hit_fx"]["color_effects"]
+            self.assertEqual(compiled, {str(k): v for k, v in effects.items()})
+
     # bdxg cases 7-9 are the element tiers; bsd()/cbsd() attach the super
     # clips. Sound ids are the frame 1 StartSoundTag in each sprite.
     CLIPS = {
@@ -158,10 +187,12 @@ class StageMusicTests(unittest.TestCase):
             [
                 {
                     "random_below": 0.8,
+                    "random_site": "main#DefineSprite_1900/frame_1/DoAction.as:1",
                     "file": "ichigo.mp3",
                     "source": "fighter_catalog.一护.music",
                 },
-                {"random_below": 0.5, "file": "bleach.mp3", "source": "bleachMusic"},
+                {"random_below": 0.5, "random_site": "main#DefineSprite_1900/frame_1/DoAction.as:2",
+                 "file": "bleach.mp3", "source": "bleachMusic"},
                 {"otherwise": True, "file": "city.mp3", "source": "map_catalog.现世.music"},
             ],
         )
@@ -182,7 +213,8 @@ class StageMusicTests(unittest.TestCase):
         self.assertEqual(
             steps,
             [
-                {"random_below": 0.5, "file": "naruto.mp3", "source": "narutoMusic"},
+                {"random_below": 0.5, "random_site": "main#DefineSprite_1900/frame_1/DoAction.as:2",
+                 "file": "naruto.mp3", "source": "narutoMusic"},
                 {
                     "otherwise": True,
                     "file": "pubu.mp3",

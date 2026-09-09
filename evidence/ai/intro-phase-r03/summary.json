@@ -1,0 +1,153 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "intro-phase-r03",
+  "events": 1812,
+  "counts": {
+    "boot": 1,
+    "initCtrl": 6,
+    "input_next_display": 483,
+    "intro_body_enter": 117,
+    "intro_body_exit": 117,
+    "random": 152,
+    "intro_poll": 21,
+    "intro_poll_state": 21,
+    "sample": 30,
+    "geometry_frame": 1,
+    "geometry_matrix": 3,
+    "sensor_bounds": 12,
+    "sensor_local": 12,
+    "state": 604,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "predicate": 224,
+    "done": 1
+  },
+  "frames_after_ready": 30,
+  "ready": {
+    "run_id": "intro-phase-r03",
+    "sequence": 1476,
+    "time_ms": 25476,
+    "display_tick": 453,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "intro-phase-r03",
+      "sequence": 2,
+      "time_ms": 10448,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "intro-phase-r03",
+      "sequence": 5,
+      "time_ms": 10477,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "intro-phase-r03",
+      "sequence": 15,
+      "time_ms": 10641,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "intro-phase-r03",
+      "sequence": 16,
+      "time_ms": 10641,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "intro-phase-r03",
+      "sequence": 17,
+      "time_ms": 10641,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "intro-phase-r03",
+      "sequence": 18,
+      "time_ms": 10641,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": {
+    "run_id": "intro-phase-r03",
+    "sequence": 54,
+    "time_ms": 11174,
+    "display_tick": 23,
+    "fight_tick": -1,
+    "kind": "sample",
+    "value": "undefined,388.126810779795,162.270508008078,247.870323248208,253.294203430414,63.4880717843771"
+  },
+  "samples_before_ready": 28,
+  "sample_intervals_ms": {
+    "529": 2,
+    "505": 2,
+    "528": 2,
+    "538": 1,
+    "500": 3,
+    "504": 2,
+    "502": 1,
+    "531": 2,
+    "532": 5,
+    "536": 2,
+    "533": 3,
+    "499": 1,
+    "501": 1,
+    "503": 1,
+    "530": 1
+  },
+  "last_states": [
+    {
+      "run_id": "intro-phase-r03",
+      "sequence": 1810,
+      "time_ms": 26471,
+      "display_tick": 483,
+      "fight_tick": 30,
+      "kind": "state",
+      "value": "p1,3,374.1,-25,100,0,1000,0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "intro-phase-r03",
+      "sequence": 1811,
+      "time_ms": 26471,
+      "display_tick": 483,
+      "fight_tick": 30,
+      "kind": "state",
+      "value": "p2,26,412.1,-25,-100,0,1000,0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "d69019c50893da01aab78c668fe4f40bd65878192c91bb4423789fe8db9e4e1b",
+  "retained_sha256": {
+    "instrumentation.diff": "3c352154b075df1453bd2cd9f761291cf44bdd115de27be495cbe64b4163f834",
+    "events.jsonl": "a3a5fa458c0089bc032edefa2ac79d45a5d55d533a83465ae9c3482468378531",
+    "random-tape.json": "88c4949566dd8aa7dae065c4ae111b31dc4b260b5db9db59ba97e14839221ace",
+    "build.json": "c01e73fac1267e13cf6cd0be9f654f55d52b901a10edcaa9a19d8a8fb5b32be3"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Sensor matrices, each predicate read and target DoAction are not yet logged.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "frame-state-r05",
+  "events": 11451,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "initCtrl": 6,
+    "input_next_display": 1071,
+    "frame_state_enter": 108,
+    "intro_body_enter": 203,
+    "intro_body_exit": 203,
+    "frame_state_exit": 108,
+    "random": 345,
+    "intro_poll": 22,
+    "intro_poll_state": 22,
+    "sample": 68,
+    "geometry_frame": 1,
+    "geometry_matrix": 3,
+    "sensor_bounds": 12,
+    "sensor_local": 12,
+    "state": 1780,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "predicate": 7478,
+    "done": 1
+  },
+  "frames_after_ready": 600,
+  "ready": {
+    "run_id": "frame-state-r05",
+    "sequence": 1663,
+    "time_ms": 25165,
+    "display_tick": 471,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "frame-state-r05",
+      "sequence": 2,
+      "time_ms": 9562,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "frame-state-r05",
+      "sequence": 6,
+      "time_ms": 9590,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "frame-state-r05",
+      "sequence": 16,
+      "time_ms": 9732,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "frame-state-r05",
+      "sequence": 17,
+      "time_ms": 9732,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "frame-state-r05",
+      "sequence": 18,
+      "time_ms": 9732,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "frame-state-r05",
+      "sequence": 19,
+      "time_ms": 9732,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": {
+    "run_id": "frame-state-r05",
+    "sequence": 61,
+    "time_ms": 10274,
+    "display_tick": 23,
+    "fight_tick": -1,
+    "kind": "sample",
+    "value": "undefined,164.059994742274,38.0027033388615,178.046366432682,137.170960893854,254.441835219041"
+  },
+  "samples_before_ready": 29,
+  "sample_intervals_ms": {
+    "530": 5,
+    "533": 4,
+    "531": 2,
+    "499": 3,
+    "502": 3,
+    "500": 5,
+    "535": 4,
+    "537": 2,
+    "528": 6,
+    "507": 2,
+    "503": 4,
+    "525": 2,
+    "541": 1,
+    "534": 5,
+    "524": 1,
+    "505": 3,
+    "504": 1,
+    "501": 3,
+    "532": 1,
+    "529": 2,
+    "539": 1,
+    "506": 1,
+    "513": 2,
+    "522": 1,
+    "527": 1,
+    "521": 1,
+    "538": 1
+  },
+  "last_states": [
+    {
+      "run_id": "frame-state-r05",
+      "sequence": 11449,
+      "time_ms": 45170,
+      "display_tick": 1071,
+      "fight_tick": 600,
+      "kind": "state",
+      "value": "p1,1,691.1,-25,-100,0,880,12,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "frame-state-r05",
+      "sequence": 11450,
+      "time_ms": 45171,
+      "display_tick": 1071,
+      "fight_tick": 600,
+      "kind": "state",
+      "value": "p2,22,629.1,-25,100,0,1000,24,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "e384f804a1e62f21dc2038ed1b702f8eed5089d1fccd9c56170022f2235ae028",
+  "retained_sha256": {
+    "instrumentation.diff": "01b6b6a8f07942390d63cde6003b21616c10e98a30c8c9f4d5f5929561a8557f",
+    "events.jsonl": "8e615fb11e366be8068833c5aecec1434356ed3b09fcdbbd963048f04f1b56a5",
+    "random-tape.json": "f06abc064871bc0780a00ebcf86b7eea6bba3062ef18de17b1937f2eaff86485",
+    "build.json": "b897663d018632a54fdbe54c5d8f8c7e4b6a4743cefd41466c96b5fec4b95c7c"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Sensor matrices, each predicate read and target DoAction are not yet logged.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

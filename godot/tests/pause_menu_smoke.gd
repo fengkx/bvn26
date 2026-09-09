@@ -9,6 +9,13 @@ func key(scene: Node, code: Key, pressed: bool = false) -> void:
 	event.pressed = pressed
 	scene._input(event)
 
+func finish_opening(scene: Node) -> void:
+	for tick in 600:
+		scene._advance_fight()
+		if not scene.battle_intro.active:
+			break
+	assert(not scene.battle_intro.active)
+
 func _run() -> void:
 	var scene = load("res://main.tscn").instantiate()
 	root.add_child(scene)
@@ -17,6 +24,8 @@ func _run() -> void:
 	key(scene, KEY_ENTER)
 	assert(not scene.pause_menu.visible)
 	scene._enter_current_fight(3)
+	# The imported opening now locks pause input until startFight.
+	finish_opening(scene)
 	key(scene, KEY_ENTER, true)
 	assert(not scene.pause_menu.visible)
 	key(scene, KEY_ENTER)
@@ -57,6 +66,8 @@ func _run() -> void:
 	scene.set_physics_process(false)
 	scene._enter_current_fight(3)
 	assert(scene.naruto.health == scene.session.maxhp)
+	assert(scene.battle_intro.active and scene.naruto.root_zhanting)
+	finish_opening(scene)
 	assert(not scene.naruto.root_zhanting)
 	scene.naruto.sw = true
 	key(scene, KEY_ENTER)

@@ -1,0 +1,165 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "combat-input-r04",
+  "events": 7878,
+  "post_done_events": 2,
+  "counts": {
+    "boot": 1,
+    "initCtrl": 6,
+    "input_next_display": 1053,
+    "intro_body_enter": 160,
+    "intro_body_exit": 160,
+    "random": 353,
+    "intro_poll": 21,
+    "intro_poll_state": 21,
+    "sample": 67,
+    "geometry_frame": 1,
+    "geometry_matrix": 3,
+    "sensor_bounds": 12,
+    "sensor_local": 12,
+    "state": 1744,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "predicate": 4256,
+    "done": 1
+  },
+  "frames_after_ready": 600,
+  "ready": {
+    "run_id": "combat-input-r04",
+    "sequence": 1475,
+    "time_ms": 24593,
+    "display_tick": 453,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "combat-input-r04",
+      "sequence": 2,
+      "time_ms": 9558,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "combat-input-r04",
+      "sequence": 5,
+      "time_ms": 9588,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "combat-input-r04",
+      "sequence": 14,
+      "time_ms": 9753,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "combat-input-r04",
+      "sequence": 15,
+      "time_ms": 9753,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "combat-input-r04",
+      "sequence": 16,
+      "time_ms": 9753,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "combat-input-r04",
+      "sequence": 17,
+      "time_ms": 9753,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": {
+    "run_id": "combat-input-r04",
+    "sequence": 48,
+    "time_ms": 10263,
+    "display_tick": 22,
+    "fight_tick": -1,
+    "kind": "sample",
+    "value": "undefined,127.601558808237,263.150472892448,455.266104778275,151.428177952766,223.132273880765"
+  },
+  "samples_before_ready": 28,
+  "sample_intervals_ms": {
+    "531": 2,
+    "533": 3,
+    "500": 4,
+    "535": 4,
+    "530": 3,
+    "537": 3,
+    "534": 3,
+    "525": 3,
+    "502": 6,
+    "505": 5,
+    "532": 4,
+    "503": 3,
+    "528": 4,
+    "539": 2,
+    "527": 3,
+    "499": 2,
+    "507": 1,
+    "501": 4,
+    "509": 1,
+    "526": 1,
+    "504": 1,
+    "520": 1,
+    "542": 1,
+    "508": 1,
+    "524": 1
+  },
+  "last_states": [
+    {
+      "run_id": "combat-input-r04",
+      "sequence": 7876,
+      "time_ms": 44598,
+      "display_tick": 1053,
+      "fight_tick": 600,
+      "kind": "state",
+      "value": "p1,5,316.35,-25,100,0,140,108.6,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "combat-input-r04",
+      "sequence": 7877,
+      "time_ms": 44599,
+      "display_tick": 1053,
+      "fight_tick": 600,
+      "kind": "state",
+      "value": "p2,1,347.75,-25,-100,0,1000,62,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "b38e14f30e02b9bad9e55d35a82c0be58a35c456fb4f9bfa8410ecd6f2a4a5d1",
+  "retained_sha256": {
+    "post-done-events.jsonl": "a8cfb096025e662ed6d4f0cb61d05115dadb18406c85bb05868b2047ceabe987",
+    "instrumentation.diff": "ba0d7937843323b2bc4b4025e5ae77bd19d395bc4efb331a25855c322985732d",
+    "events.jsonl": "0bc4b88c41b1a7aa512f4a133028f3964fb15619a687d3365a0325fa198a18bd",
+    "random-tape.json": "3f138a416d8e78b3455c6cdd7031ddbe0b9316fd85bb47d9535852d1a028588c",
+    "build.json": "0167af0310bbaf53311abd164a36489b001c2f43bc7543fcb324ba645fcbcc1e"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Sensor matrices, each predicate read and target DoAction are not yet logged.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

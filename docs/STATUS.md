@@ -101,7 +101,7 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
   置 `sw`、非击飞则 `gotoAndStop("击飞")`，落地进 `击落地` 后在源
   `if(sw == true) stop()` 帧停住，`standup()` 不再进 `起身`/`站立`。
   `KOplay(pn)` 的焦点切到被 KO 一方已接 `GameWorld.focus`；`_root.KO` /
-  `blackStg("KO")` / `KOstart` 暂停与 `nextfight` 回合重置尚未导入，无 KO 字幕元件。
+  `blackStg("KO")` / `KOstart` 暂停与 `nextfight` 回合重置已接固定 Vs Com 开发入口，双方两胜结束回归通过；原版调度与画面对照未验收。
 - 战斗中间数据已编译 `command_catalog`：招式 ID 即源帧标签，鸣人/一护时间轴上
   全部标签与 `doAllAction`/`onJumping` 目标均入目录。站立/防御输入已改走目录
   `match_context`（源谓词 `buttons_all`/`buttons_none` + `dispatch_orders`：站立取第一个离站 goto，防御后写获胜），
@@ -123,7 +123,10 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
   `空中必杀`：`onJumping`/`onDashing` 会 `gotoAndPlay` 该标签，但鸣人/一护时间轴都没有
   这个标签，catalog 标 `missing_timeline`，不编造帧。一护 `招换` 的魂援助已有
   `godot/generated/helpers/kon/combat.json`，魂 SWF 时间轴/位图现已导入并接线画面。
-  未接线项仍在 `gaps`（失败/开场等演出、`空中必杀` 缺标签）。
+  旧目录的 `gaps` 仍记录失败/开场等演出及 `空中必杀` 缺标签；其中开场现已通过独立入口接线：
+  `BattleIntro` 按源依次播放鸣人/一护登场、切镜头、ROUND/READY/FIGHT，支持 J/Num1 跳过、
+  输入锁定和血条入场。46 项 Python 测试及 intro/menu/combat smoke 通过；原版播放器访问超时，
+  同输入时序比对仍待完成，详见 [开场证据](../evidence/intro.md)。
   共用受击链已按 [HIT_RECEIVE_SOP.md](HIT_RECEIVE_SOP.md) 编进战斗中间数据并接入切片运行时：
   35 角色 `beida`/`fangyu`/`onBeHit` 哈希锁定；`hits` 仅在 `onBeHit` 加一、第一下不播连击板；
   `站立` 源清零帧把 `hits` 置 0 后 `bar2` 才按 `maxhp/500` 追；`zl>10` 破防走 `bdxg`，
@@ -179,7 +182,7 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
   `checkDead` 已按源在 `modo==4` 时不置 `sw`。`TRAINING` 已接源
   `DefineSprite_1991` `zdbx`：`setInterval(zdbx, 1000)`，`beida==0` 时
   `hp=_root.maxhp`、`ql=300`；`onBeHit0` 置 `beida=1`，回到 `站立`（帧 1）清零。
-  未导入原标题轮播/按钮剪辑、HOWTOPLAY、选人、AI 模式；对战暂停菜单已可返回 `MENU`。
+  未导入原标题轮播/按钮剪辑、HOWTOPLAY、选人；Vs Com 开发入口已接入，尚未完成原版对照；对战暂停菜单已可返回 `MENU`。
   `menu_smoke.gd` 与 `combat_smoke.gd` 已由 Godot 4.7.2 无头通过。
   `M6-02` 仍未完成。
 - Adobe Flash Player Debugger 32.0.0.465 已能加载锁定的完整原版并显示主菜单；另以
@@ -206,13 +209,15 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
 
 ## 电脑 AI 复刻规格（2026-09-08）
 
+开场对照新增证据：从原版加载后的单个站立检查点连续推进，267 个显示帧的双方源帧、10 次轮询输入及 Ready 时点全部吻合。见 [连续片段报告](../evidence/ai/intro-continuous-r03.json)。此结果不覆盖完整加载、随机全序、视听或后续战斗，不能作为整场一比一验收。
+
 已完成 [AI 静态分析规格](AI_SPEC.md)：扫描 35 个主角色、26 个援助和主程序，
 记录五档难度、500 ms 随机刷新、全部标准决策分支、69 份控制器的 9 组原文变体，
 以及鸣人/一护基础形态的感知矩阵和续招窗口。
 [源审计](../evidence/ai/source-audit.json) 可由 `tools/analyze_ai.py` 重建；
 [验证记录](../evidence/ai/README.md) 区分静态检查与待执行的原版对照。
 尚缺完整随机/timer tape、首次回调与重复初始化寿命、缺失引用语义和全形态可达绑定。
-本次未改 Godot 运行时；U-05 与 M5-03 保持未完成。
+现已接入原生 Vs Com 开发入口：P1 鸣人、电脑一护、简单难度。菜单、选图、开场、P1 输入、电脑攻击和退出清理的主场景测试通过；残影/颜色等效果服务、部分帧函数和整场原版对照仍缺。U-05 与 M5-03 保持未完成。详见 [AI 实现进度](../evidence/ai/compiler-progress.md)。
 
 ## 尚未完成
 
@@ -265,7 +270,7 @@ Firefox/Safari 实测及 `M0-03` 未解决调度探针；在对照通过前保�
 
 十张地图已导入，`main.gd` 已接入 `MapSelection`、按目录换图及平台配置；不能再记为“仅素材、未接运行时”。选图导航日志存在，但缺完整捕获来源与固定输入说明，不能替代全地图原版对照。地图动态背景、逐图对战与浏览器验收仍缺，覆盖布尔值保持 false。见 [地图记录](../evidence/content/stages.md)。
 
-[AI_SPEC.md](AI_SPEC.md)、`tools/analyze_ai.py` 与全库审计已存在；没有原 AI 运行时、共享随机 tape 与同输入对照，M5-03 保持 pending。受击冻结的两项 P1 已有修复及复测记录，见 [受击复核](../evidence/combat/review-2026-09-08.md)，不再列为未修问题。
+[AI_SPEC.md](AI_SPEC.md)、`tools/analyze_ai.py` 与全库审计已存在；已实现源代码编译的控制器、共享随机输入与 Vs Com 主场景开发入口；固定随机样本的原生 smoke 通过，完整原版同输入对照未通过，M5-03 保持 pending。受击冻结的两项 P1 已有修复及复测记录，见 [受击复核](../evidence/combat/review-2026-09-08.md)，不再列为未修问题。
 
 本次复跑 41 项 Python 测试及十图选图 smoke 通过；Godot 启动日志有环境错误，未重做浏览器或一比一验收，详见同步记录。
 
@@ -278,3 +283,135 @@ Firefox/Safari 实测及 `M0-03` 未解决调度探针；在对照通过前保�
 ## 选地图开发切片（2026-09-08）
 
 模式菜单现跳过选人/援助，进入原版两列五行选图；10 张地图均可进入，重建出生点/平台并接入原版音乐选曲。原版探针与 Godot 已对照默认位置、循环导航、5 帧长按重复和 500 毫秒确认（原播放器实测 503 毫秒）。取消/重进与 10 图切换已通过回归。完整地图行为及跨渲染器像素一致性仍待验收，M6 不标完成。详见[选图证据](../evidence/content/map-selection/README.md)。
+
+## 固定 Vs Com 的 KO 换局接线（2026-09-09）
+
+致死请求已驱动源 KO 时间轴及字幕，接入 KO 暂停保护、死者/胜者焦点、
+HUD 退场、胜场更新、nextfight 与 Ready 清理间隔。源计数从 1 开始，达到 3
+即两次实际获胜。固定角色切片继续跳过选人，结束比赛返回选图。
+`VS_COM_KO_SMOKE_OK` 覆盖 P1/P2 各连续获胜两局：真实 receive_attack 致死，
+首胜后重置血量、保留胜场、播放 Ready 并清理 nextfight；第二胜清理 CPU/KO。
+测试显式触发已注册的 Timer 回调，不证明真实时钟或原版调度。
+仍有退出资源残留、未实现的计时器消费者、P1 旧运行路径、像素/完整轨迹对照等缺口；
+M5-03 与完整游戏验收保持未完成。以上接线进度更新了本页早期 KO 未导入的记录。
+
+开场连续对照的扩展状态检查发现首个差异：Ready（原版 display tick 453）时，一护 `touchFloor` 原版仍为 undefined，原生已经为 true；前 266 帧双方新增的 10 个状态字段一致。见 [首差报告](../evidence/ai/intro-state-first-difference-r03.json)。源帧对齐不代表回调状态时序已通过。
+
+上述 Ready 首差已通过分离开场时间轴推进与帧脚本执行修复：相同记录下，267 帧的双方源帧与每人 10 个状态字段、10 次轮询和 Ready 边界全部一致。见 [扩展状态对齐报告](../evidence/ai/intro-state-aligned-r03.json)。普通对战与双方获胜的 KO 回归通过；完整目标仍待后续战斗和随机全序验收。
+
+连续重放已延伸到 Ready 后 30 帧：补齐玩家主地面精确相等分支的源状态写入后，297 帧的源帧与每人 10 个状态字段、轮询均匹配，95 次检查点后的随机调用完整消费。见 [首 30 战斗帧字段报告](../evidence/ai/combat-first30-fields-r03.json)。此段没有玩家按键，且尚未比较坐标/几何、完整状态及视听，不能作为完整战斗验收。
+
+600 帧原版记录的重放现停在首次受击结算差异：display 469 两端均进入鸣人源帧 1014，但原生提前扣血；原版在 1015 的 `onBeHit()` 才结算。见 [长记录首差](../evidence/ai/combat-input-first-difference-r04.json)。按键投递单独验证通过，连续重放尚未到玩家首次按键区间。
+
+- 受击结算时机修复：接收攻击与 onBeHit/onDefence 源帧调用已拆开，首次命中数值对照推进至 display 470；display 471 火花暂停和受击位移仍有差异。双角色结算帧测试、双方两轮 KO 测试通过，未完成一比一。见 [源码诊断与实测](../evidence/ai/hit-settlement.md)。
+
+- 命中火花纳入 Main 固定逻辑调度：禁用各实例自主物理步，按 tick 开始时的实例快照推进，保留新实例创建时的第 1 帧。源 XG_qdjx 第 2 帧暂停、第 15 帧恢复的集成测试通过。连续对照见 `evidence/ai/combat-hit-clock-r04.json`：此前 display 471 暂停差异已消失，帧及观察字段匹配至 474；随后随机消费者缺失（预期鸣人 frame_1 的 site 1，实际进入一护 randAI），回放显式停止并保存 random_failure。该次日志包含拒绝随机刷新断言，不是完整通过；受击位移及受击语音随机调用仍待核实。
+
+- 受击语音随机链：从共享 hurtVoice 编译随机调用点、1000/2000 ms 冷却及 onBeHit 的概率，保留先抽签再检查冷却、死亡分支不抽签。扫描所有锁定 game SWF 的 ExportAssets，voice_hurt1/2/voice_die 均不存在；不伪造语音，但保留 Sound 对象选择的随机和计时效果。新增边界测试通过。连续对照 `evidence/ai/combat-hurt-voice-r04.json` 的随机失败为空、无 SCRIPT ERROR，下一状态首差 display 485 为 P1 touch/touchFloor/hstm；受击位移仍不一致。真实 getTimer 起点及语音冷却跨启动/重放校准尚未完成，本次首次抽签 0.6356 > 0.5 不进入冷却或选音，不能据此声称全链原版时序验收。
+
+- 玩家 BODY 编译准备：现有 CPU 编译器在源 useAI 守卫处删除玩家分支，不能直接复用于 P1。新增 `compile_ai_body.py --player`，产物 `godot/generated/fighters/minren/player_body/` 保留 11 个 BODY 函数及两个超时回调中的玩家按键路径，状态仍为 compiled_not_integrated。原生测试验证 hurtSkill 读取换键（不按 goran 判定）、敌方必杀阻止脱身、上+冲得到源 dashY=-14、beidax 按源移动并递增 hstm/time、暂停仍先 applyColors 而不移动。现有一护 CPU body.gd 重建后逐字节一致。此为 P1 受击替换的编译前置，尚未连接源实例生命周期，display 485 首差仍待修复。
+
+- 玩家受击实例调度组件：`compile_ai_body.py --player` 从源 ClipAction 和逐帧显示列表编译 hurt_hooks，鸣人普通受击 Sprite 16 / depth 30 的成员帧为 1016–1023，击飞 depth 29 为 1029–1038。`source_body_callbacks.gd` 复用既有实例 generation/placed_tick 调度器调用已编译 beidax，原生测试验证放置当帧不调用、下一 tick 执行、停止播放仍回调、移除重放置重新等待、清理后不回调。尚未接入 Main；下一步须建立玩家 BODY context 和源键映射、避免原有物理/碰撞重复执行后替换旧受击路径。直接用 CPU 全控制器编译鸣人遇到未支持 projectile 初始化（frame 382），没有跳过或伪造该投射物；受击 hooks 独立编译，不声称覆盖投射物。
+
+- 玩家 BODY 已接入固定 VsCom：Main 在推进播放头前设置 driver tick；FighterRuntime 的实际排队帧变化通知实例观察器。受击 enterFrame 使用源 beidax hooks，BODY on_enterframe 负责位置/平台/状态，不再重复执行旧受击移动和旧 body collision。其余玩家动作控制仍保留旧路径，未声明全玩家控制器完成。接收结算中的玩家 updateDirect 已接源函数。玩家键映射使用 session 的 up/down/dash/summon 对应源上/下/冲/换；isNaruto=true 来源 MAIN6 鸣人配置及 MAIN8 loadFighters 的字段复制。
+  连续对照 `evidence/ai/combat-player-body-r04.json` 消除 display 485 差异，首差推进到 display 500：P2 源帧一致为 1，但源动作=1、原生=0。314 个几何快照双方最大相对位移差均为 0，原始 X 仍保留浮点表示差。双方两轮 KO 测试通过；三次进入/退出对战的弱引用检查证明 driver/body/context 被释放且信号解除。初次回放和 KO 日志有 ObjectDB 退出告警，随后 verbose 回放与生命周期测试未复现；不宣称全部资源泄漏已排除。完整输入及战斗对照仍待完成。
+
+- display 500 首差重新定位为观察阶段未对齐，不能直接判定 CPU 动作错误。原版最小调度夹具 r06 记录 frame390 退出 → 根状态观察（动作1）→ frame1 进入 → frame1 退出（动作0）；r05 自然600帧未经过390，未当作证据。见 [观察阶段分析](../evidence/ai/frame-observation.md)。未改运行时赋值时机；连续对照仍 first_difference，需先对齐源脚本边界与根观察点。
+
+- 回站立同边界原生对照通过：新增只读 source_frame_script_boundary 信号，r06 原生夹具在调用者退出/目标进入/目标退出三处的五字段与原版一致，报告 `evidence/ai/frame-order-r06/native-boundaries.json`。没有改运行时赋值时机，也没有把根观察器与整步末尾的 first_difference 标为通过；世界级采样阶段仍待校准。
+
+- r07 全帧脚本边界对照：原版独立副本完成600对战帧，记录1372条两个基础形态的 DoAction 进入/退出事件。新增 `combat-boundaries` 诊断模式按原始全局顺序比较 source_frame、当前帧和状态；用完整源 DoAction 清单过滤非脚本帧，不用实际出现过的参考帧掩盖原生额外脚本。根快照仍记录差异，模式不将根/整步观察未对齐视为通过。
+  已据首差修复：P1 enterFrame 不再提前执行 action_exit，改由编译的 frame_calls 执行；Main 先运行两角色已排队帧，再分批执行 goto 目标；Ready 帧操作移至角色初始帧脚本之后；顶层 ql +=/-= 常量按原行序编为 energy_delta，在源帧退出前执行而不是事后结算，并防止旧 energy_events 重复执行。源直接加减不预先夹到300。
+  证据按阶段保存在 boundary-first/player-goto/cross-actor/ready/energy-r07.json。最终426个帧脚本边界状态匹配后因随机消费者不符停止：原版接着执行 main getRandInArray，原生快速回放时的 getTimer 尚未满足 hurtVoice 冷却。须记录并重放原版逐调用时钟，不能跳过随机 tape。当前日志有预期的拒绝随机刷新断言，不是完整通过。两轮 KO、三次驱动清理、r06 同帧边界对照均重跑通过，无 SCRIPT ERROR；部分运行仍有退出资源告警，完整资源清理未验收。
+
+- hurtVoice 逐调用时钟：原版分析副本现在记录该函数四个 getTimer 调用点的实际返回值。收集器保存 clock-tape.json 并校验索引连续、毫秒值单调非负；SourceClock 独立校验调用点顺序，错误锁存、不跳读，回放不再使用本机时间决定该函数的冷却。冷却检查和时间戳写入分别读时钟，概率拒绝不读时钟，死亡分支不读随机数。编译的 hurt_voice.json 保留四处源路径标识。
+  r08 完成原版600对战帧采样；原生消费完两个时钟记录，clock_failure/random_failure 均为空，前460个帧脚本边界匹配，第461个事件出现 P1 frame1069 与预期 P2 frame13 的执行顺序差异（source display559，已注入第一个 right 输入）。见 evidence/ai/boundary-clock-r08.json。这不是完整回放通过；倒地起身/玩家控制及世界级观察阶段仍待继续。语音冷却边界/不同检查写入时间/错误锁存测试、两轮 KO、收集器3项边界测试均通过；原生本轮无 SCRIPT ERROR。
+
+### Recovery callback and ordering evidence
+
+Source frame 1064 recovery movement is compiled with placement lifetime; its native regression passes. The unchanged r08 replay now has zero P1 relative displacement error through 375 snapshots, with a remaining 6-pixel P2 error and boundary difference 461. Controlled r09/r10 probes show that cross-actor callback order changes with goto order at unchanged display depths. The shared callback scheduler still needs correction; M5-03 remains pending. See [recovery-order evidence](../evidence/ai/recovery-order.md).
+
+### Shared callbacks and reference input correction
+
+Shared BODY/controller registration and initial-versus-deferred frame batches are implemented for the fixed slice. Source standing hit-count reset and duplicate legacy hurt-fall handling are corrected. Important: the old global Key.isDown override was ineffective; those captures do not prove delivery of their input intents. New `input-alias-r12` completed 600 source fight frames and verified all 3,132 key reads. Native boundaries 1–498 match; boundary 499 and P1 facing still differ in the legacy player walking path. Full source player controllers, all event phases, match replay and Web acceptance remain pending. See [current evidence](../evidence/ai/callback-registry-and-input.md).
+
+## 固定 Vs Com：玩家源控制器与精确数字对照（2026-09-09）
+
+鸣人玩家现使用原版完整基础控制器分支，双方共享回调注册表与跨角色目标帧队列。已修正受击 `updateDirect(true)` 的参数和电脑 BODY 接线；r13 中一护 54 px 相对位移及朝向差异消除。新增原版 binary64 trace 编码，避免将默认十进制输出损失当成气量计算错误。
+
+七项原生定向测试及七项采集器测试通过，生成产物可重复构建。原版 r13 采集了 600 战斗帧，原生对照仍因 `XG_qdj` 首帧四次随机调用缺失而失败（620 个已匹配源帧边界）。P1 小幅坐标精度差异、完整随机/特效调度和整场验收仍待解决；M5-03 保持 pending，没有新增 Web 矩阵验收。见 [证据与下一处源码缺口](../evidence/ai/player-controller-and-binary-trace.md)。
+
+## 特效随机调用与重复防御判定进度（2026-09-09）
+
+`XG_qdj` 首帧两条随机偏移表达式已编译，四次随机调用接入双方共享的原版随机流。最小 FP32 代码探针确认 attach 调用者先返回、再执行新特效首帧；大写 `_X/_Y` 写入实际父坐标。源受击查询已绕过旧的「攻击实例已命中」缓存，恢复同一攻击在防御接收剪辑重新出现后再次命中的行为。
+
+同一 r13 tape 的 1,166 个预期边界及 298 次检查点后随机调用、时钟读取均已匹配，但对照仍是失败：原生末端多出一个 P1 帧边界，根观察点仍有 35 组帧号和 24 条状态差异，P1 最大相对 X 差异约 4 像素。不得据边界顺序匹配称整场一比一。五项原生定向检查和十四项 Python 检查通过；完整调度、视觉、整场及 Web 验收仍待完成。详见 [源码与证据](../evidence/ai/effect-random-and-repeat-contact.md)。
+
+## 特效注册顺序与根观察点（2026-09-09）
+
+最小 FP32 代码探针证明特效帧脚本会按实例注册顺序与角色回调交错。特效现接入共享注册表，替换临时统一早执行阶段；恢复暂停时多跑一次受击回调的问题消除。对照采样移到原版根观察点，并在原版 `done`/`fscommand(quit)` 所在阶段截止，不删除预期事件。比较器同时收紧为检查全部边界、帧号、状态及随机/时钟 tape 消费完整性。
+
+r13 的 600 战斗帧片段离散字段对齐：1,166 个边界、298 次检查点后随机调用、897 组帧号和 1,794 条角色状态全部一致。坐标仍有单精度低位误差，视觉/声音未验收。新采集的独立 r14 在第 723 个边界失败，当前线索是鸣人弹体首碰后改名 `abcd` 与旧攻击名称查询。r13 通过不能替代 r14 或整场验收；M5-03 继续 pending。见 [源代码、探针和两份对照](../evidence/ai/effect-registry-and-root-observer.md)。
+
+## 弹体延迟改名与两份独立片段（2026-09-09）
+
+弹体现保留独立的源实例名：`gotoAndPlay(5)` 先改变播放头，排队执行第 5 帧后才将 `zh1atm` 改成 `abcd`。最小原版探针验证了这两个阶段及移除前已排队脚本的取消。攻击与弹体碰撞查询都读取当前源名字；同名重建不继承旧实例的改名，子帧操作与角色目标帧共用 FIFO 顺序。
+
+修正后 r13、r14 两份各 600 战斗帧片段的离散字段均对齐：分别 1,166/1,084 个边界、298/287 次检查点后随机调用，帧号、状态和时钟 tape 无差异。六项原生定向检查通过。仍有坐标低位误差，且完整 KO/换局对照、其他动作路径、视觉音效和 Web 矩阵未验收；M5-03 继续 pending。详见 [弹体源语义与验证范围](../evidence/ai/projectile-deferred-rename.md)。
+
+### 2026-09-09：完整比赛超时源审计
+
+新增 [倒计时与超时审计](../evidence/ai/match-timeout.md)：静态保留 5 个剪辑、
+18 份脚本和完整逐帧变化。当前原生流程缺 timeset 计时器和 timeover 结算；
+根/HUD 实例寿命、回调接收者及完整比赛对照仍待补齐，尚未修改运行时。
+
+### 2026-09-09：长对战采集与下一项首差异
+
+[r15](../evidence/ai/match-flow-r15.md) 保留 6000 帧窗口及异步退出尾部，
+覆盖原版两局 KO 和返回选人；123 次倒计时回调、一次 timer_load、一次 nextfight。
+原生重放在一护 735/726 脚本排队次序处失败。重放器允许第 8 帧正常前驱后，
+r13/r14 均继续通过；收集器 10 项测试通过。生产运行时未改，超时和整场一致性仍待完成。
+
+### 2026-09-09：四项共用行为修复
+
+[源审计与验证](../evidence/ai/receiver-rule-fixes.md)：已修复防御 updateDirect 参数、
+错误的零后缀攻击映射、HUD 低血量回气缺失及致死血量截断。均使用共用规则，
+未新增角色名分支；35 个主角色的对应函数已完成分组审计。7 项原生测试通过，
+r13/r14 保持通过；r15 在 2798 个边界后停于 KO 第 30 帧恢复顺序，整场仍未对齐。
+
+
+### KO instance scheduling and round continuity
+
+The shared scheduler now interleaves each KO root/child instance with actor BODY and initial frame scripts. Round reset preserves source energy/hits/pause, repeated same-frame goto does not repeat its script, and source hit-energy additions are not prematurely capped. r13/r14/r15 match all currently compared fighter fields; r15 consumes 4158 boundaries, 1202 random calls and 19 clock reads across both rounds and battle teardown. Twelve native checks pass. Countdown/timeover, exact geometry, boot, additional characters and presentation/Web parity remain pending. See [evidence](../evidence/ai/ko-instance-scheduling.md).
+
+
+### Original Vs Com menu entry
+
+Vs Com is restored as the second source menu entry, with compiled held-key scrolling and frame-15 confirmation, original raster assets/key sounds, and the existing fixed-character map-selection route. Native Flash probe, four native checks and Web export evidence are recorded in [menu entry validation](../evidence/menu/vs-com-entry/README.md). Other character migration is deferred. Other menu destinations and full visual/gameplay parity remain pending.
+
+### 2026-09-09 援助连续命中与时长
+
+我爱罗/魂共用的一次性命中缓存已移除，我爱罗子剪辑终端 stop 已编译；旧双人路径
+的受击倒计时改从原 beidax 回调开始。原生 Flash 固定 O 案例分别核对 8 次/5 次
+命中和时序，并以高气量案例核对魂六次扣气；详见 [援助证据](../evidence/combat/helper-timing.md)。旧双人路径回站立
+清 hits 的根观察阶段仍差一帧，完整视听/Web 验收未完成。相关里程碑保持 pending。
+
+### 2026-09-09 跑步子动画回退
+
+修复源控制器按住方向反复 goto 第 10 帧导致跑步子帧固定在 1 的回退。
+源驱动路径按保留放置实例独立计时；旧路径的 placed_frame 算法不再作为两条路径
+都已验证的依据。控制器、真实菜单键盘、朝向/子帧、松键/反向、生命周期、暂停、
+KO 共七项原生检查通过，Web 包已重建。旧 combat_smoke:177 投射物断言在去掉
+本次修改的临时副本中同样失败；不称全套通过。原版逐姿势截图对照仍待验收。
+详见 [回退原因与防复发记录](../evidence/combat/run-visual-regression/README.md)。
+
+### Super guard regression fixes (2026-09-09)
+
+The current Vs Com source-controlled path no longer overrides an authored super
+branch using the legacy contact cache. Renamed attack-only child timelines now
+retain independent playheads, natural rename events, and source stop frames.
+Naruto's blocked normal/up supers match the original 1/30 HP chip outcomes;
+all six guarded-super fixtures match 1800 retained snapshots. Eight native
+checks, 29 Python checks, and the r13/r14/r15 observed-field match replays pass.
+See [fix evidence](../evidence/combat/super-guard-fix/README.md). Full match
+geometry, visual/audio and Web parity remain pending.

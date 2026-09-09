@@ -10,6 +10,11 @@ func _run() -> void:
 	root.add_child(scene)
 	scene.set_physics_process(false)
 	scene._enter_current_fight(3)
+	for tick in 700:
+		scene._advance_fight()
+		if not scene.battle_intro.active:
+			break
+	assert(not scene.battle_intro.active)
 	var kon: HelperRuntime = scene.ichigo_helper
 	assert(kon.has_visual_timeline())
 	assert(not kon.visible)
