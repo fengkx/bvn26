@@ -28,6 +28,8 @@ def build() -> dict:
     defaults = source['frame_7/DoAction.as']
     result={'source_sha256':bundle['swf_sha256'],'rows':sorted(rows,key=lambda row:row['row']),
             'defaults':{key:int(re.search(r'var '+key+r' = (\d+);',defaults)[1]) for key in ['AI','maxhp','maxtime']},
+            'rendering': {'reference': 'https://airsdk.dev/reference/actionscript/3.0/flash/display/StageQuality.html',
+                          'sample_grid': {'HIGH': 4, 'MEDIUM': 2, 'LOW': 1}},
             'selector_sources':{p:s for p,s in source.items() if p.startswith(prefix+'PlaceObject2_739_33/')},
             'panel_sources':{p:s for p,s in source.items() if p.startswith('DefineSprite_836/') and 'PlaceObject' not in p}}
     assert hashlib.sha256((ROOT/'game/main.swf').read_bytes()).hexdigest()==result['source_sha256']

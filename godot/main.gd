@@ -812,7 +812,9 @@ func _ko_service(operation: String, args: Array) -> Variant:
 					actor.start_action(str(args[1]))
 					actor.timeline_playing = bool(args[2])
 			elif args[0] in ["_root.p1win", "_root.p2win"]:
-				health_hud.set_wins(int(ko_state["_root.p1ws"]), int(ko_state["_root.p2ws"]))
+				# Sprite 1848 frame 67 addresses missing root aliases. The real
+				# HUD clips live under xuetiao; only updateWins reaches them.
+				return null
 			elif args[0] == "_root.qjxg":
 				battle_intro.clips.qjxg.visible = true
 				battle_intro._goto("qjxg", int(battle_intro.spec.clips.qjxg.labels[args[1]]), bool(args[2]))

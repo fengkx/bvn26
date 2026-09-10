@@ -511,3 +511,21 @@ dash, shared-mode and r13/r14/r15 observed-field regressions remain matched.
 Full original pixel identity, remaining characters and Firefox/Safari are outside
 this acceptance; transformations remain deferred and online is unchanged.
 See [shadow evidence](../evidence/visual-audio/shadow/README.md).
+
+
+### Quality rendering and timeout HUD correction (2026-09-10)
+
+The existing native Config page now drives actual HIGH/MEDIUM sample density
+through a shared supersampled rendering surface. The original LOW assignment
+bug is retained. The surface preserves logical game coordinates and forwards
+keyboard/mouse input; physical allocation excludes letterboxing and redundant
+Window viewport stretch, with a WebGL hardware-size limit.
+
+The earlier "missing timeout badge blink" diagnosis was wrong. A new native
+original run records 231 ticks: the referenced p1win/p2win/bzxg targets are
+undefined and the actual xuetiao win clips remain stopped at frame 1 while the
+winner counter increases. The port now preserves that no-op; normal KO still
+uses updateWins. Source option and timeout traces, targeted native checks and
+100 Python tests pass. See [rendering evidence](../evidence/config/rendering/README.md)
+for final Web results and limits. Full Flash raster equivalence, high-DPI
+performance budgets and cross-browser coverage remain unaccepted; no deployment.

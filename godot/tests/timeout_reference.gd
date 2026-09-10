@@ -15,6 +15,9 @@ func observe(tick: int) -> bool:
 		game.ko_state["_root.gametime"] = 1
 		game.countdown.fire()
 	rows.append([game.timeout_timeline.root_clip.frame,game.ko_state["_root.gametime"],game.ko_state["_root.to"],game.ko_state["_root.p1ws"],game.ko_state["_root.p2ws"],game.naruto.sw,game.ichigo.sw,game.naruto.root_zhanting,game.ko_state["_root.rounds"]])
+	# Native timeout-badges-r02: counters change, unresolved aliases leave both
+	# actual xuetiao win clips stopped at frame 1 throughout this timeout.
+	assert(game.health_hud.win_frames == PackedInt32Array([1, 1]))
 	return false
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -55,6 +58,8 @@ func _run() -> void:
 	assert(game.ko_state["_root.rounds"] == 2 and not game.naruto.sw and not game.ichigo.sw)
 	assert(game.naruto.health == game.session.maxhp and game.ichigo.health == game.session.maxhp)
 	assert(game.ko_state["_root.gametime"] == 30)
+	game._ko_service("call", ["updateWins"])
+	assert(game.health_hud.win_frames == PackedInt32Array([1 if draw else 2, 1]))
 	FileAccess.open(args[1],FileAccess.WRITE).store_string(JSON.stringify({"compared_snapshots": compared, "rows": rows}))
 	game._goto_menu()
 	game.queue_free()

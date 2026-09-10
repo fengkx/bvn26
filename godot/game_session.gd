@@ -1,6 +1,8 @@
 class_name GameSession
 extends RefCounted
 
+signal render_quality_changed(value: String)
+
 # Source: scripts/main.json frame_7/DoAction.as defaults and SharedObject("bvn_5d").
 # showKeyName: scripts/main.json frame_8/DoAction.as `_root.showKeyName`.
 
@@ -167,7 +169,12 @@ var modo: int = 1
 var maxhp: float = 1000.0
 var ai_level: int = 5
 var maxtime: int = 60
-var render_quality: String = "HIGH"
+var render_quality: String = "HIGH":
+	set(value):
+		if render_quality == value:
+			return
+		render_quality = value
+		render_quality_changed.emit(value)
 var source_quality: String = ""
 var p1cpu: bool = false
 var p2cpu: bool = false
