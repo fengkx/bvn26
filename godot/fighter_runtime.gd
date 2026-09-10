@@ -1,6 +1,9 @@
 class_name FighterRuntime
 extends TimelinePreview
 
+# Development availability policy; isolated source probes keep the full timeline.
+var disabled_actions: PackedStringArray = []
+
 const SourceCoordinateStore = preload("res://source_coordinate.gd")
 
 var ai_timeline_controlled: bool = false
@@ -122,6 +125,7 @@ var _jump_was_held: bool = false
 var _jump_pressed: bool = false
 var _stage_platforms: Array[Rect2] = []
 var _wall_min: float = 20.0
+var source_hit_wall: bool = false
 var _wall_max: float = 970.0
 var _hurt_falling: bool = false
 var _launched: bool = false
@@ -213,6 +217,8 @@ func advance_ai_timeline() -> void:
 
 
 func goto_ai_label(label: String, play: bool) -> void:
+	if label in disabled_actions:
+		return
 	var target := action_range(label)
 	assert(not target.is_empty(), "Uncompiled source label: " + label)
 	if current_source_frame() == int(target["start_frame"]):
@@ -482,6 +488,12 @@ func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
 		var voice_spec: Dictionary = hurt_voice.spec
 		var probability := float(voice_spec["flying_probability"] if flying else voice_spec["low_damage_probability"] if damage <= float(voice_spec["damage_threshold"]) else voice_spec["high_damage_probability"])
 		hurt_voice.execute(ai_source_state, source_random, probability, source_clock, sw)
+	if not defended and source_hit_wall:
+		var wall_rule: Dictionary = _combat["wall_hit_near"]
+		var near := absf(source_x - opponent.source_x) < float(wall_rule["distance"])
+		if near:
+			near = source_x > float(wall_rule["side_split_x"]) if facing != 1 else source_x < float(wall_rule["side_split_x"])
+		ai_source_state.values["hitNear"] = near
 	last_event = "guard_settlement" if defended else "hit_settlement"
 	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
@@ -761,6 +773,8 @@ func _begin_self_launch(exit: Dictionary) -> void:
 
 
 func start_action(label: String) -> void:
+	if label in disabled_actions:
+		return
 	if sw and not _is_death_sequence_action(label):
 		return
 	var frames := action_range(label)
@@ -849,6 +863,8 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 
 
 func _try_start_action(label: String) -> bool:
+	if label in disabled_actions:
+		return false
 	if _combat_input_locked() and not _is_death_sequence_action(label):
 		return false
 	if action_range(label).is_empty():

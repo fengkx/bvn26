@@ -9,10 +9,40 @@ import unittest
 PROBES=Path(__file__).resolve().parents[1]/'probes'
 sys.path.insert(0,str(PROBES))
 from move_cases import generate, source_fixture, encode_case, KEYS
-from compare_mode_reference import compare, FIELDS
+from compare_mode_reference import compare, FIELDS, cancellation_observation
+from cancel_cases import same_window_route
 
 
 class MoveCasesTest(unittest.TestCase):
+    def test_cancel_edge_cannot_use_an_unrelated_action_entry(self):
+        window = {'start_frame': 234, 'end_frame': 247}
+        self.assertFalse(same_window_route([{'frame': 4}, {'frame': 248}], 1, window))
+        self.assertTrue(same_window_route([{'frame': 247}, {'frame': 248}], 1, window))
+
+    def test_cancel_probe_requires_observed_calibration_frame(self):
+        case = {'slot': 'p1', 'window_boundary': {
+            'input_tick': 19, 'source_frame': 194, 'destination_frames': [206, 225]}}
+        rows = [{'slot': 'p1', 'tick': 19, 'frame': 194},
+                {'slot': 'p1', 'tick': 20, 'frame': 206}]
+        result = cancellation_observation(rows, case)
+        self.assertEqual(result['status'], 'calibrated')
+        self.assertEqual(result['destination_first_observed_tick'], 20)
+        rows[0]['frame'] = 193
+        self.assertEqual(cancellation_observation(rows, case)['status'], 'invalid_calibration')
+
+    def test_base_fighter_suite_explicitly_defers_transformation(self):
+        cases = generate([('rifagu', 'p1')], ['wankai'])
+        self.assertTrue(cases)
+        self.assertTrue(all(c['fighters'] == {'p1': 'rifagu', 'p2': 'yihu'} for c in cases))
+        self.assertFalse(any(c['label'] == '万解' for c in cases))
+        self.assertTrue(any(c['label'] == '超必杀' and c['scenario'] == 'energy_exact' for c in cases))
+        from tools.audit_move_acceptance import audit
+        report = audit(cases, [], [], deferred_labels=['万解'])
+        bankai = next(row for row in report['labels'] if row['label'] == '万解')
+        self.assertEqual(bankai['status'], 'deferred_by_scope')
+        self.assertEqual(report['status'], 'not_accepted')
+        self.assertFalse(any('Form-switch' in item for item in report['additional_required_boundaries']))
+
     def test_every_catalog_dispatch_has_cases(self):
         cases=generate()
         self.assertEqual(len({c['id'] for c in cases}),len(cases))

@@ -1,4 +1,4 @@
-"""Materialize source effects whose only script operation is unloadMovie."""
+"""Materialize source effects with root position writes and explicit unload."""
 from __future__ import annotations
 
 import argparse
@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 
 from extract_timeline_geometry import extract_frames
 from materialize_timeline_assets import materialize
+from compile_hit_receive import SHAKE_RE, _clip_events_for_prefix
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -40,12 +41,13 @@ def build(workspace: Path, clip: str, output: Path) -> None:
     for script in bundle["scripts"]:
         if not script["path"].startswith(prefix):
             continue
-        match = re.fullmatch(re.escape(prefix) + r"frame_(\d+)/DoAction.as", script["path"])
-        if not match or script["source"].strip() != "this.unloadMovie();":
+        match = re.fullmatch(re.escape(prefix) + r"frame_(\d+)/DoAction(?:_\d+)?\.as", script["path"])
+        remaining = SHAKE_RE.sub('', script['source']).strip()
+        if not match or remaining not in ['', 'this.unloadMovie();']:
             raise ValueError("Unsupported effect script: " + script["path"])
-        events.append({"frame": int(match[1]), "op": "unload", "source_path": script["path"],
-                       "source_sha256": hashlib.sha256(script["source"].encode()).hexdigest()})
-    if len(events) != 1:
+    events = _clip_events_for_prefix(bundle, prefix.rstrip('/'))
+    unloads = [event for event in events if event['op'] == 'unload']
+    if len(unloads) != 1:
         raise ValueError("Expected one explicit unload event")
     nested_ids = {d["character_id"] for d in timeline["definitions"] if d["type"] == "DefineSpriteTag"}
     nested_scripts = []
@@ -56,7 +58,7 @@ def build(workspace: Path, clip: str, output: Path) -> None:
         terminal = re.fullmatch(r"DefineSprite_\d+(?:_[^/]+)?/frame_(\d+)/DoAction.as", script["path"])
         # The containing effect is removed before this child could play past
         # its stop frame. Earlier stops or other actions need a real scheduler.
-        if not terminal or script["source"].strip() != "stop();" or int(terminal[1]) < events[0]["frame"]:
+        if not terminal or script["source"].strip() != "stop();" or int(terminal[1]) < unloads[0]["frame"]:
             raise ValueError("Unsupported nested effect script: " + script["path"])
         nested_scripts.append(script)
 

@@ -15,7 +15,7 @@ signal before_recorded_intro_poll(event: Dictionary)
 @onready var title_menu: TitleMenu = %TitleMenu
 @onready var key_settings: KeySettings = %KeySettings
 @onready var combo_hud: ComboHud = %ComboHud
-@onready var black_mu: TimelinePreview = %BlackMu
+@onready var black_mu: ScriptedTimelinePreview = %BlackMu
 @onready var ts_face: TimelinePreview = %TsFace
 
 var countdown: MatchCountdown
@@ -91,6 +91,9 @@ void fragment() {
 
 
 func _ready() -> void:
+	# Form replacement is incomplete; keep transformation out of playable matches.
+	naruto.disabled_actions = ["万解"]
+	ichigo.disabled_actions = ["万解"]
 	cpu_profile = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/execution_profile.json"))
 	cpu_stage_registry.configure(JSON.parse_string(FileAccess.get_file_as_string("res://generated/effects/XG_baoqi/stage_hit.json")))
 	source_random.use_live_random()
@@ -281,6 +284,7 @@ func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
 	for i in 2:
 		var old: FighterRuntime = naruto if i == 0 else ichigo
 		var fighter := FighterRuntime.new()
+		fighter.disabled_actions = ["万解"]
 		fighter.fighter_directory = "res://generated/fighters/" + str(character_selection.available.fighters[fighters[i]])
 		fighter.name = old.name
 		fighter.player_slot = "p%d" % (i + 1)
@@ -533,6 +537,7 @@ func _chushi() -> void:
 
 
 func _advance_fight(recorded_events: Array = [], root_observer: Callable = Callable()) -> void:
+	black_mu.advance_display_timeline()
 	# Both keyboard and AI actors use the same registered source callbacks.
 	battle_intro.tick(1.0 / Engine.physics_ticks_per_second, session.is_slot_down("j") or session.is_slot_down("N1"), true)
 	if timeout_timeline != null:
@@ -611,8 +616,6 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		if root_observer.is_valid():
 			root_observer.call()
 		return
-	for helper in helpers:
-		helper.enter_frame()
 	if timeout_timeline != null:
 		timeout_timeline.run_frame_actions()
 		timeout_clip.refresh_from_scheduler()
@@ -625,6 +628,10 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if source_health_rules != null:
 		source_health_rules.run_pending_frame()
 	health_hud.spec["placement"] = battle_intro.spec["hud_frames"][str(battle_intro.hud_frame)]
+	# DefineSprite_1991's older enterFrame clamps the world after actor
+	# callbacks, before the root observer and deferred goto frame scripts.
+	_apply_focus()
+	game_world.enter_frame(naruto, ichigo, helpers)
 	for event: Dictionary in recorded_events:
 		if event["phase"] == "before_root_observer":
 			assert(event["kind"] == "nextfight" and ko_recorded_timers)
@@ -665,8 +672,6 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 			child.run_initial_frame()
 	_activate_helper(naruto, naruto_helper)
 	_activate_helper(ichigo, ichigo_helper)
-	_apply_focus()
-	game_world.enter_frame(naruto, ichigo, helpers)
 	if super_presentation != null:
 		_sync_super_stage()
 	_refresh_fight_labels()
@@ -977,6 +982,10 @@ func _start_combat_drivers() -> void:
 		opponent_driver.controller.key_reader = opponent_input_context.source_key
 	opponent_driver.body.updateDirect()
 	opponent_driver.begin_display_tick(physics_tick)
+	# Loaded helper timelines retain their place between the fighter bodies
+	# and newer action clips in Flash's global instance traversal.
+	for helper in [naruto_helper, ichigo_helper]:
+		helper.bind_source_frames(source_callbacks, physics_tick)
 	if session.p2cpu:
 		opponent_driver.start_random(source_random, session.ai_level)
 
@@ -993,6 +1002,9 @@ func _queue_source_child_frame(operation: Callable) -> void:
 
 func _stop_combat_drivers() -> void:
 	_stop_training_recovery()
+	for helper in [naruto_helper, ichigo_helper]:
+		if is_instance_valid(helper):
+			helper.unbind_source_frames()
 	source_child_frames.clear()
 	for fighter: FighterRuntime in [naruto, ichigo]:
 		if is_instance_valid(fighter):
@@ -1040,6 +1052,14 @@ func _player_visual_service(service: String, args: Array) -> Variant:
 
 
 func _fighter_visual_service(actor: FighterRuntime, service: String, _args: Array) -> Variant:
+	if service == "frame_child_effect":
+		var effect: Dictionary = _args[0]
+		_spawn_hit_effect(effect["clip"], actor.position + Vector2(float(effect["offset_x"]), 0), actor.facing, float(effect["offset_y"]))
+		return null
+	if service == "root_position":
+		var write: Dictionary = _args[0]
+		_apply_root_position(write["axis"], write["operator"], float(write["pixels"]))
+		return null
 	if service == "resColor":
 		actor.reset_ai_colors()
 		return null
@@ -1148,10 +1168,21 @@ func _spawn_hit_effect(effect_name: String, source_position: Vector2, source_fac
 	effect.pause_requested.connect(_on_hit_fx_pause)
 	effect.resume_requested.connect(_on_hit_fx_resume)
 	effect.shine_requested.connect(_start_screen_flash)
+	effect.root_position_requested.connect(_apply_root_position)
 	effect.configure(effect_name, source_position, source_facing, offset_y)
 	game_world.add_child(effect)
 	if opponent_driver != null:
 		effect.register_source_frames(source_callbacks, physics_tick)
+
+
+func _apply_root_position(axis: String, operator: String, pixels: float) -> void:
+	assert(axis in ["x", "y"])
+	var index := 0 if axis == "x" else 1
+	match operator:
+		"=": position[index] = pixels
+		"+=": position[index] += pixels
+		"-=": position[index] -= pixels
+		_: assert(false, "Uncompiled root position assignment")
 
 
 func _setup_screen_flash() -> void:

@@ -18,6 +18,25 @@ var source_action: Variant = null
 
 var _combat: Dictionary
 var _events_applied: Dictionary = {}
+var _callback_registry: SourceCallbackRegistry
+var _frame_registration: int = 0
+
+
+func bind_source_frames(registry: SourceCallbackRegistry, placed_tick: int) -> void:
+	unbind_source_frames()
+	_callback_registry = registry
+	_frame_registration = registry.register(self, "enter_frame", placed_tick)
+
+
+func unbind_source_frames() -> void:
+	if _callback_registry != null:
+		_callback_registry.unregister(_frame_registration)
+	_callback_registry = null
+	_frame_registration = 0
+
+
+func _exit_tree() -> void:
+	unbind_source_frames()
 
 
 func _ready() -> void:

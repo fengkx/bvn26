@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def audit(cases, native_results, references):
+def audit(cases, native_results, references, deferred_labels=()):
     native = {row['id']: row for row in native_results}
     originals = {row['id']: row for row in references}
     rows = []
@@ -32,14 +32,16 @@ def audit(cases, native_results, references):
                      'native': local, 'original': original})
     windows = []
     labels = []
-    for fighter in ['minren', 'yihu']:
+    fighters = sorted({case['fighter'] for case in cases})
+    for fighter in fighters:
         catalog = json.loads((ROOT / f'godot/generated/fighters/{fighter}/combat.json').read_text())['command_catalog']
         for entry in catalog['entries']:
             associated = [row for row in rows if row['fighter'] == fighter and row['label'] == entry['label']]
             labels.append({'fighter': fighter, 'label': entry['label'],
                            'source_frames': [entry['start_frame'], entry['end_frame']],
                            'cases': [row['id'] for row in associated],
-                           'status': 'cases_listed_not_full_acceptance' if associated else 'chain_or_lifecycle_case_required'})
+                           'status': 'deferred_by_scope' if entry['label'] in deferred_labels else
+                           'cases_listed_not_full_acceptance' if associated else 'chain_or_lifecycle_case_required'})
         for index, window in enumerate(catalog['cancel_windows']):
             for edge, frame in [('before_start', window['start_frame']-1),
                                 ('at_start', window['start_frame']),
@@ -50,10 +52,20 @@ def audit(cases, native_results, references):
                                 'predicate': window['predicate'], 'kind': window['kind'],
                                 'source_frame': frame, 'source_path': window['source_path'],
                                 'source_sha256': window['source_sha256'], 'status': 'not_run'})
+    by_id = {row['id']: row for row in rows}
+    for boundary in windows:
+        row = by_id.get(boundary['id'])
+        if row is None:
+            continue
+        boundary['status'] = 'root_input_phase_matched' if row['status'] == 'matched' else row['status']
+        boundary['input_phase'] = 'root observation before next-display key publication'
+        if row['original']:
+            boundary['observation'] = row['original'].get('cancellation')
     counts = {}
     for row in rows:
         counts[row['status']] = counts.get(row['status'], 0) + 1
-    return {'status': 'not_accepted', 'scope': 'minren_yihu_base_forms_and_form_exit',
+    return {'status': 'not_accepted', 'scope': '_'.join(fighters) + '_base_forms',
+            'deferred_labels': list(deferred_labels),
             'case_counts': counts, 'cases': rows, 'labels': labels,
             'source_window_boundaries': windows,
             'additional_required_boundaries': [
@@ -66,7 +78,8 @@ def audit(cases, native_results, references):
                 'Jump floor/platform transitions and both stage walls',
                 'Ghost/ordinary dash cancellation and repeated-input boundaries',
                 'Input release, same-tick conflict, focus loss and browser recovery',
-                'Form-switch retained state and replacement callback registration'],
+                *([] if '万解' in deferred_labels else
+                  ['Form-switch retained state and replacement callback registration'])],
             'acceptance_rule': 'No empty, native-only, unexercised or unrecorded row implies original parity.'}
 
 
@@ -76,9 +89,10 @@ def main():
     parser.add_argument('--native-results', type=Path, required=True)
     parser.add_argument('--reference-results', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--defer-label', action='append', default=[])
     args = parser.parse_args()
     result = audit([json.loads(p.read_text()) for p in sorted(args.cases.glob('*.json'))],
-                   json.loads(args.native_results.read_text()), json.loads(args.reference_results.read_text()))
+                   json.loads(args.native_results.read_text()), json.loads(args.reference_results.read_text()), args.defer_label)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': result['status'], 'case_counts': result['case_counts'],
                       'source_window_boundaries': len(result['source_window_boundaries'])}))

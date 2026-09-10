@@ -1,0 +1,61 @@
+{
+  "status": "rejected_and_reverted",
+  "reason": "Global helper frame reordering fixes one case but regresses guard and repeated summon input.",
+  "compared": 155,
+  "differences": [
+    {
+      "id": "rifagu-813-zhaoHuan-dash_twice",
+      "status": "different",
+      "source": "/tmp/bvn-rifagu-base-variants-r5/rifagu-813-zhaoHuan-dash_twice",
+      "first_difference": [
+        {
+          "tick": 52,
+          "slot": "p1",
+          "fields": {
+            "xscale": {
+              "original": 100.0,
+              "native": -100.0
+            }
+          }
+        }
+      ],
+      "root_differences": []
+    },
+    {
+      "id": "rifagu-813-zhaoHuan-guard",
+      "status": "different",
+      "source": "/tmp/bvn-rifagu-base-variants-r5/rifagu-813-zhaoHuan-guard",
+      "first_difference": [
+        {
+          "tick": 30,
+          "slot": "p2",
+          "fields": {
+            "frame": {
+              "original": 715.0,
+              "native": 716
+            }
+          }
+        }
+      ],
+      "root_differences": []
+    },
+    {
+      "id": "rifagu-813-zhaoHuan-held",
+      "status": "different",
+      "source": "/tmp/bvn-rifagu-base-variants-r5/rifagu-813-zhaoHuan-held",
+      "first_difference": [
+        {
+          "tick": 52,
+          "slot": "p1",
+          "fields": {
+            "frame": {
+              "original": 5.0,
+              "native": 813
+            }
+          }
+        }
+      ],
+      "root_differences": []
+    }
+  ]
+}

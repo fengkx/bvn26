@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>BVN Web input verification</title>
+<style>body{margin:0;background:#222;color:white;font:14px sans-serif}button{margin:4px;padding:8px}iframe{width:100vw;height:calc(100vh - 60px);border:0}</style>
+<div><button id="training-route">Training route: Hitsugaya / Naruto</button><span id="route-state"></span> Test input: 150 ms key holds through browser keyboard events.
+<button data-keys="s">Menu Down S</button><button data-keys="a">Left A</button><button data-keys="d">Right D</button><button data-keys="j">Confirm / Attack J</button><button data-keys="k">Jump K</button><button data-keys="u">Ranged U</button><button data-keys="i">Special I</button><button data-keys="o">Helper O</button></div>
+<iframe src="index.html" title="BVN game"></iframe>
+<script>
+function pressKeys(keys){
+ const win=document.querySelector('iframe').contentWindow;
+ const canvas=win.document.querySelector('canvas'); win.focus();canvas.focus();
+
+ function send(type){for(const key of keys)canvas.dispatchEvent(new win.KeyboardEvent(type,{key,code:'Key'+key.toUpperCase(),keyCode:key.toUpperCase().charCodeAt(0),which:key.toUpperCase().charCodeAt(0),bubbles:true,cancelable:true}));}
+ send('keydown');setTimeout(()=>send('keyup'),150);
+}
+for(const button of document.querySelectorAll('[data-keys]')) button.onclick=()=>pressKeys(button.dataset.keys.split(','));
+document.querySelector('#training-route').onclick=async()=>{
+ const state=document.querySelector('#route-state');state.textContent='Running route';
+ for(const key of ['s','s','j','a','j','j','j','j','j']){pressKeys([key]);await new Promise(resolve=>setTimeout(resolve,900));}
+ state.textContent='Route input completed';
+};
+</script>

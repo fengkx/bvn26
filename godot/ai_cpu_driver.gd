@@ -185,6 +185,9 @@ func _external(name: String, args: Array) -> Variant:
 
 func _frame_service(event: Dictionary) -> void:
 	match event["op"]:
+		"root_position", "frame_child_effect":
+			_external(event["op"], [event])
+			return
 		"inline_frame":
 			for call in event["calls"]:
 				_frame_service(call)

@@ -7,7 +7,7 @@ import shutil
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent / 'probes'))
-from compare_mode_reference import compare, read_text, source_rows
+from compare_mode_reference import compare, read_text, source_rows, compare_root_position, cancellation_observation
 from audit_move_acceptance import audit
 
 
@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--native', type=Path, required=True)
     parser.add_argument('--references', type=Path, action='append', required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--defer-label', action='append', default=[])
     args = parser.parse_args()
     cases = [json.loads(p.read_text()) for p in sorted(args.cases.glob('*.json'))]
     by_id = {case['id']: case for case in cases}
@@ -64,7 +65,23 @@ def main():
             events = folder / 'events.jsonl.gz'
         native = args.native / (name + '.json')
         result = compare(events, native)
+        build_path = folder / 'build.json'
+        if not build_path.exists(): build_path = folder / 'build.json.gz'
+        build = json.loads(read_text(build_path))
+        if build.get('presentation_probe'):
+            presentation = Path(str(native) + '.presentation.json')
+            root_result = compare_root_position(events, presentation)
+            with gzip.open(destination / 'root-position-current.json.gz', 'wt') as stream:
+                json.dump(root_result, stream)
+            with gzip.open(destination / 'native-presentation-current.json.gz', 'wb') as stream:
+                stream.write(presentation.read_bytes())
+            result['root_position'] = root_result['status']
+            if root_result['status'] != 'matched': result['status'] = 'different'
         case = by_id[name]
+        if 'window_boundary' in case:
+            result['cancellation'] = cancellation_observation(source_rows(events), case)
+            if result['cancellation']['status'] != 'calibrated':
+                result['status'] = 'invalid_calibration'
         low, high = case['target_frames']
         def reached(rows):
             return any(row['slot'] == case['slot'] and low is not None
@@ -80,7 +97,7 @@ def main():
         references.append({key: value for key, value in result.items() if key != 'differences'}
                           | {'id': name, 'different_states': len(result['differences'])})
     write_json(args.output / 'reference-results.json', references)
-    coverage = audit(cases, native_results, references)
+    coverage = audit(cases, native_results, references, args.defer_label)
     write_json(args.output / 'coverage.json', coverage)
     print(json.dumps({'status': coverage['status'], 'case_counts': coverage['case_counts']}))
 

@@ -10,6 +10,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
+from bitmap_shape_polygon import bitmap_shape_polygon
+
 
 SUPPORTED_XML_EXPORTS = {(2, 2), (3, 2)}
 
@@ -257,6 +259,9 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             solid_fills.append(solid)
         if bitmap_fills:
             definition["bitmap_fills"] = bitmap_fills
+            polygon = bitmap_shape_polygon(tag)
+            if polygon is not None:
+                definition["bitmap_clip_polygon"] = polygon
         if solid_fills:
             definition["solid_fills"] = solid_fills
         dependencies = definition_dependencies(tag)

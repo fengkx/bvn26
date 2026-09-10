@@ -12,7 +12,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent / 'probes'))
 from move_cases import encode_case
-from compare_mode_reference import compare, source_rows
+from compare_mode_reference import compare, source_rows, compare_root_position, cancellation_observation
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -41,6 +41,12 @@ def main():
     if args.limit: cases=cases[:args.limit]
     results=[]
     for index,case in enumerate(cases):
+        if 'fighters' in case:
+            catalog = json.loads((ROOT / 'manifest.json').read_text())['fighter_catalog']
+            for slot, fighter in case['fighters'].items():
+                selected = template['configuration'][slot]
+                if Path(catalog[selected]['url']).stem != fighter:
+                    raise ValueError(f'Fixture/probe fighter mismatch: {slot} {fighter} != {selected}')
         folder=args.output/case['id']
         if folder.exists(): raise ValueError(f'Reference must not be overwritten: {folder}')
         scratch=args.output/('build-'+case['id']);scratch.mkdir()
@@ -60,7 +66,10 @@ def main():
         ]
         failure=None
         for command in commands:
-            run=subprocess.run(command,capture_output=True,text=True,timeout=150)
+            # Lock waiting is not player execution time. The capture runner starts
+            # its own deadline only after acquiring the account-wide log lock.
+            timeout = None if command == commands[0] else 150
+            run=subprocess.run(command,capture_output=True,text=True,timeout=timeout)
             (scratch/('capture.log' if command==commands[0] else 'collect.log')).write_text(run.stdout+run.stderr)
             if run.returncode:
                 failure=run.stdout+run.stderr
@@ -73,10 +82,22 @@ def main():
             native=args.native/(case['id']+'.json')
             (folder/'native.json').write_bytes(native.read_bytes())
             result=compare(folder/'events.jsonl',folder/'native.json')
+            if template.get('presentation_probe'):
+                presentation = folder / 'native.presentation.json'
+                presentation.write_bytes(Path(str(native) + '.presentation.json').read_bytes())
+                root_result = compare_root_position(folder/'events.jsonl', presentation)
+                (folder/'root-position-comparison.json').write_text(json.dumps(root_result, indent=2)+'\n')
+                result['root_position'] = root_result['status']
+                if root_result['status'] != 'matched':
+                    result['status'] = 'different'
             frames=case['target_frames']
             rows=json.loads(native.read_text())
             result['target_seen']=any(r['slot']==case['slot'] and frames[0] is not None and frames[0]<=r['frame']<=frames[1] for r in rows)
             expected=source_rows(folder/'events.jsonl')
+            if 'window_boundary' in case:
+                result['cancellation'] = cancellation_observation(expected, case)
+                if result['cancellation']['status'] != 'calibrated':
+                    result['status'] = 'invalid_calibration'
             result['source_target_seen']=any(r['slot']==case['slot'] and frames[0] is not None and frames[0]<=r['frame']<=frames[1] for r in expected)
             if result['status']=='matched' and not result['source_target_seen'] and case['scenario']!='energy_below' and frames[0] is not None:
                 result['status']='unexercised'

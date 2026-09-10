@@ -7,6 +7,7 @@ extends Node2D
 @export var autoplay: bool = true
 @export var show_collision_shapes: bool = false
 @export var preserve_root_depths: bool = false
+@export var play_timeline_sounds: bool = true
 
 var _timeline: Dictionary
 var _fighter: Dictionary
@@ -26,6 +27,7 @@ var hidden_instance_names: PackedStringArray = []
 const SOUND_ENVELOPE_MAX := 32768.0
 var last_sound_ids: Array[int] = []
 var _sound_played_frame: int = -1
+var _sound_segments: Dictionary = {}
 var _cxform_shader: Shader
 var _source_color_mul := Color(1, 1, 1, 1)
 var _source_color_add := Color(0, 0, 0, 0)
@@ -315,6 +317,12 @@ func _load_data() -> void:
 	_timeline = _read_json(timeline_path)
 	if _timeline.is_empty() or not _timeline.has("frames"):
 		return
+	var segments_path := fighter_directory.path_join("sound_segments.json")
+	if FileAccess.file_exists(segments_path):
+		var segments := _read_json(segments_path)
+		assert(segments["source_swf"] == _timeline["source_swf"])
+		assert(segments["envelope_baked"])
+		_sound_segments = segments["frames"]
 	var fighter_path := "%s/fighter.json" % fighter_directory
 	if FileAccess.file_exists(fighter_path):
 		_fighter = _read_json(fighter_path)
@@ -414,24 +422,33 @@ func _sound_layer() -> Node:
 
 
 func _play_start_sounds() -> void:
+	if not play_timeline_sounds:
+		return
 	if _sound_played_frame == _current_frame:
 		return
 	_sound_played_frame = _current_frame
 	last_sound_ids.clear()
 	if not _frames.has(_current_frame):
 		return
+	var segments: Array = _sound_segments.get(str(_current_frame), [])
+	var sound_index := 0
 	for event: Dictionary in _frames[_current_frame].get("events", []):
 		if str(event.get("type", "")) != "start_sound":
 			continue
 		var sound_id := int(event.get("sound_id", -1))
 		if not _assets.has(sound_id):
 			continue
-		var stream: AudioStream = load("%s/%s" % [fighter_directory, _assets[sound_id]])
+		var sound_file: String = _assets[sound_id]
+		if not segments.is_empty():
+			assert(sound_index < segments.size() and segments[sound_index]["source_event"] == event)
+			sound_file = segments[sound_index]["stream"]
+		sound_index += 1
+		var stream: AudioStream = load("%s/%s" % [fighter_directory, sound_file])
 		if stream == null:
 			continue
 		var player := AudioStreamPlayer.new()
 		player.stream = stream
-		player.volume_db = _sound_volume_db(event)
+		player.volume_db = 0.0 if not segments.is_empty() else _sound_volume_db(event)
 		player.finished.connect(player.queue_free)
 		_sound_layer().add_child(player)
 		player.play()
@@ -521,12 +538,30 @@ func _render_placement(
 	for fill_index in usable_fills.size():
 		var fill: Dictionary = usable_fills[fill_index]
 		var bitmap_id := int(fill["bitmap_id"])
+		var source_texture: Texture2D = load("%s/%s" % [fighter_directory, _assets[bitmap_id]])
+		var bitmap_transform := _matrix_transform(fill.get("matrix", {}), 0.05)
+		if definition.has("bitmap_clip_polygon"):
+			var polygon := Polygon2D.new()
+			var vertices := PackedVector2Array()
+			var uvs := PackedVector2Array()
+			var inverse_bitmap := bitmap_transform.affine_inverse()
+			for point: Array in definition["bitmap_clip_polygon"]:
+				var vertex := Vector2(float(point[0]), float(point[1]))
+				vertices.append(vertex)
+				uvs.append(inverse_bitmap * vertex)
+			polygon.polygon = vertices
+			polygon.uv = uvs
+			polygon.texture = source_texture
+			polygon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			polygon.transform = placement_transform
+			polygon.z_index = depth
+			_apply_cxform(polygon, rgb_mul, rgb_add, alpha)
+			add_child(polygon)
+			continue
 		var sprite := Sprite2D.new()
 		sprite.centered = false
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		var source_texture: Texture2D = load("%s/%s" % [fighter_directory, _assets[bitmap_id]])
 		sprite.z_index = depth
-		var bitmap_transform := _matrix_transform(fill.get("matrix", {}), 0.05)
 		var draw_transform := bitmap_transform
 		var texture_region := _shape_texture_region(definition, bitmap_transform, source_texture)
 		if texture_region.has_area():

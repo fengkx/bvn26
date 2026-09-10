@@ -1,5 +1,6 @@
 """Capture native Flash probes; LaunchServices background launch is best-effort."""
 import argparse
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -10,6 +11,7 @@ import time
 APP = Path('/Volumes/Flash Player/Flash Player.app')
 BINARY = APP / 'Contents/MacOS/Flash Player Debugger'
 LOG = Path.home() / 'Library/Preferences/Macromedia/Flash Player/Logs/flashlog.txt'
+LOCK_PATH = Path('/tmp/bvn-native-flash-capture.lock')
 
 
 def matching_players(movie):
@@ -27,6 +29,14 @@ def preflight():
 
 
 def capture(build, destination, timeout):
+    # Native Flash always writes one account-wide log, including with -n.
+    # Serialize independent harnesses before launching or reading that log.
+    with LOCK_PATH.open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return _capture_locked(build, destination, timeout)
+
+
+def _capture_locked(build, destination, timeout):
     metadata = json.loads((build / 'build.json').read_text())
     prefix = ('AIREF|' + metadata['run_id'] + '|').encode()
     if LOG.exists() and prefix in LOG.read_bytes():

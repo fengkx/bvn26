@@ -1,0 +1,47 @@
+{
+  "python_tests": 89,
+  "python_status": "passed",
+  "shared_mode_states": {
+    "pvp": 602,
+    "training": 602
+  },
+  "native_cases": 167,
+  "native_cases_are_original_parity": false,
+  "known_baseline_failure": {
+    "test": "combat_smoke.gd",
+    "line": 177,
+    "reproduced_without_root_position_changes": true,
+    "baseline_commit": "ed99d0a"
+  },
+  "wall_fix_replay": {
+    "actor_states": 602,
+    "root_positions": 301,
+    "status": "matched"
+  },
+  "original_matrix": {
+    "status": "not_accepted",
+    "case_counts": {
+      "matched": 150,
+      "matched_negative_case": 4,
+      "different": 2,
+      "matched_source_missing_label": 11
+    },
+    "actor_states_compared": 100534,
+    "root_cases_compared": 148,
+    "source_and_native_cases": 167,
+    "all_originals_retained": true
+  },
+  "cancellation": {
+    "cases": 69,
+    "matched": 69,
+    "phase": "root-input only; exact callback edge acceptance pending"
+  },
+  "rejected_experiment": "helper-frame-order/rejected-candidate-summary.json",
+  "final_checks": {
+    "verify": "passed",
+    "handoff": "passed",
+    "contracts": "passed",
+    "runtime_hashes_unchanged": 151,
+    "web_export_matches_previously_tested_hashes": true
+  }
+}

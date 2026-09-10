@@ -24,3 +24,13 @@ python3 tools/probes/build_framerate_probe.py \
 ```
 
 Open `host.swf` from that output directory so its relative `assist.swf` load resolves.
+
+
+Native Flash captures share an account-wide log. All launchers must use
+`capture_native_player.py` and `/tmp/bvn-native-flash-capture.lock`; unique run
+IDs do not isolate file truncation. Lock scope includes launch, log collection,
+local snapshot and termination of the owned player. Wait for the lock outside
+the playback deadline. A batch collector must not impose a shorter timeout on
+that wait. Previously started Python batch processes retain their loaded timeout
+policy until restarted. Do not clear the global log to recover a failed case;
+retain incomplete captures and rerun with a fresh run ID.

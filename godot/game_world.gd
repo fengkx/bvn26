@@ -120,6 +120,8 @@ func _clamp_walls(bodies: Array) -> void:
 			body.position.x = left
 		if body.position.x > right:
 			body.position.x = right
+		if body is FighterRuntime:
+			body.source_hit_wall = not (body.position.x > left and body.position.x < right)
 
 
 func _update_distance_lock(p1: Node2D, p2: Node2D) -> void:

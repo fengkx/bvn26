@@ -4,7 +4,7 @@ extends Node2D
 signal pause_requested
 signal resume_requested
 signal shine_requested(color_rgb24: int)
-signal shake_requested(axis: String, pixels: float)
+signal root_position_requested(axis: String, operator: String, pixels: float)
 
 var auto_advance: bool = true
 var defer_initial_frame: bool = false
@@ -25,6 +25,7 @@ var _applied: Dictionary = {}
 var _directory: String
 var _sound_events: Dictionary = {}
 var _sound_assets: Dictionary = {}
+var _sound_segments: Dictionary = {}
 var _initial_frame_pending: bool = false
 var _callback_registry: SourceCallbackRegistry
 var _registration: int = 0
@@ -58,11 +59,18 @@ func configure(effect_name: String, source_position: Vector2, source_facing: int
 	_frame_count = maxi(1, int(timeline.get("frame_count", 1)))
 	_sound_events = _collect_sound_events(timeline)
 	_sound_assets = _collect_sound_assets()
+	var segments_path := _directory.path_join("sound_segments.json")
+	if FileAccess.file_exists(segments_path):
+		var segments := _read_json(segments_path)
+		assert(segments["source_swf"] == timeline["source_swf"] and segments["envelope_baked"])
+		_sound_segments = segments["frames"]
 	_events = _clip_events(effect_name)
 	_preview = TimelinePreview.new()
 	_preview.fighter_directory = _directory
 	_preview.initial_frame = 1
 	_preview.autoplay = false
+	# The effect's source-frame scheduler owns sound playback, including frame 1.
+	_preview.play_timeline_sounds = false
 	_preview.show_collision_shapes = false
 	add_child(_preview)
 	effect_frame = 1
@@ -133,7 +141,7 @@ func _apply_frame_events() -> void:
 				last_shine_color = int(event.get("color_rgb24", 0xFFFFFF))
 				shine_requested.emit(last_shine_color)
 			"shake_root":
-				shake_requested.emit(str(event.get("axis", "x")), float(event.get("pixels", 0.0)))
+				root_position_requested.emit(event["axis"], event["operator"], float(event["pixels"]))
 			"unload":
 				queue_free()
 
@@ -141,20 +149,28 @@ func _apply_frame_events() -> void:
 func _start_frame_sounds() -> void:
 	# Source StartSound on the XG clip's own frame. The player is a child of
 	# this node, so unloadMovie/queue_free stops it like the Flash clip does.
+	var segments: Array = _sound_segments.get(str(effect_frame), [])
+	var sound_index := 0
 	for event: Dictionary in _sound_events.get(effect_frame, []):
 		var sound_id := int(event.get("sound_id", -1))
 		if not _sound_assets.has(sound_id):
 			push_warning("Hit effect sound not materialized: %s/%d" % [_directory, sound_id])
 			continue
-		for key: String in ["loop_count", "in_point", "out_point", "sync_stop"]:
-			if event.has(key):
-				push_warning("Unhandled SOUNDINFO %s on %s" % [key, _directory])
-		var stream: AudioStream = load("%s/%s" % [_directory, _sound_assets[sound_id]])
+		var sound_file: String = _sound_assets[sound_id]
+		if not segments.is_empty():
+			assert(sound_index < segments.size() and segments[sound_index]["source_event"] == event)
+			sound_file = segments[sound_index]["stream"]
+		else:
+			for key: String in ["loop_count", "in_point", "out_point", "sync_stop"]:
+				if event.has(key):
+					push_warning("Unhandled SOUNDINFO %s on %s" % [key, _directory])
+		sound_index += 1
+		var stream: AudioStream = load("%s/%s" % [_directory, sound_file])
 		if stream == null:
 			continue
 		var player := AudioStreamPlayer.new()
 		player.stream = stream
-		player.volume_db = _sound_volume_db(event)
+		player.volume_db = 0.0 if not segments.is_empty() else _sound_volume_db(event)
 		player.autoplay = true
 		last_sound_ids.append(sound_id)
 		add_child(player)

@@ -5,8 +5,11 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from compile_ai_predicates import controller_script
+from compile_hit_receive import root_position_writes
 
 ROOT=Path(__file__).resolve().parents[2]
 FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitBan',
@@ -73,6 +76,19 @@ def inline_frame_function(source: str, path: str, frame: int) -> list[dict]:
         else:
             raise ValueError(f'Uncompiled frame function statement: {path}: {line}')
     return result
+
+
+def root_child_effect(name: str) -> dict:
+    main = json.loads((ROOT / 'scripts/main.json').read_text())
+    script = next(s for s in main['scripts'] if s['path'] == 'frame_8/DoAction.as')
+    functions = {m[1]: m[0] for m in FUNCTION.finditer(script['source'])}
+    source = functions[name]
+    match = re.fullmatch(r'function \w+\((\w+)\)\s*\{\s*addChildXG\(\1,"(\w+)",(-?\d+),(-?\d+)\);\s*\}', source)
+    if not match:
+        raise ValueError('Uncompiled root child-effect wrapper: ' + name)
+    return {'op': 'frame_child_effect', 'clip': match[2], 'offset_y': int(match[3]),
+            'offset_x': int(match[4]), 'wrapper_path': 'scripts/main.json#' + script['path'] + '#' + name,
+            'wrapper_sha256': hashlib.sha256(source.encode()).hexdigest()}
 
 
 def compile_context(bundle: dict,timeline: dict) -> dict:
@@ -148,6 +164,8 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         calls=conditional_frame_calls(text, path, frame["frame"])
         if frame['frame'] != 1 and re.search(r'\bif\(', text) and 'gotoAnd' in text and not calls:
             raise ValueError('Uncompiled conditional frame jump: ' + path)
+        calls.extend({'op': 'root_position', 'path': path, 'frame': frame['frame'], **write}
+                     for write in root_position_writes(text))
         for number,line in enumerate(text.replace('\r\n','\n').splitlines(),1):
             match=re.fullmatch(r'_root\.(bsd|cbsd|bsw|cbsw)\(pn\);',line)
             face=re.fullmatch(r'_root\.showFace\(pn,"([^"]+)"\);',line)
@@ -157,6 +175,9 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                 calls.append({'op': 'inline_frame', 'path': path, 'line': number,
                               'frame': frame['frame'], 'calls': inline_frame_function(
                                   functions['wankai_start'], first_path + '#wankai_start', frame['frame'])})
+            elif line == '_root.touchFloorEffect(_parent);':
+                calls.append({**root_child_effect('touchFloorEffect'), 'path': path,
+                              'line': number, 'frame': frame['frame']})
             elif energy:
                 calls.append({'op':'energy_delta','delta':float(energy[2]) * (1 if energy[1]=='+' else -1),
                               'path':path,'line':number,'frame':frame['frame']})

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://main.gd" id="1_main"]
 [ext_resource type="Script" path="res://timeline_preview.gd" id="2_timeline"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://title_menu.gd" id="6_menu"]
 [ext_resource type="Script" path="res://key_settings.gd" id="7_keys"]
 [ext_resource type="Script" path="res://combo_hud.gd" id="8_combo"]
+
+[ext_resource type="Script" path="res://scripted_timeline_preview.gd" id="9_scripted_timeline"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -30,7 +32,7 @@ color = Color(0.035, 0.043, 0.063, 1)
 [node name="BlackMu" type="Node2D" parent="."]
 unique_name_in_owner = true
 visible = false
-script = ExtResource("2_timeline")
+script = ExtResource("9_scripted_timeline")
 fighter_directory = "res://generated/main/blackMu"
 initial_frame = 1
 autoplay = false

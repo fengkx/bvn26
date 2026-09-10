@@ -1,0 +1,44 @@
+{
+  "id": "rifagu-248-skill1-neutral",
+  "fighter": "rifagu",
+  "slot": "p1",
+  "label": "砍技1",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    248,
+    281
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand",
+    "onDefence"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "rifagu",
+    "p2": "yihu"
+  }
+}

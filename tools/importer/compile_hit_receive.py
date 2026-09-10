@@ -32,16 +32,13 @@ SUPER_END_RE = re.compile(r"_root\.(?P<op>bsw|cbsw)\s*\(")
 FRAME_PATH_RE = re.compile(
     r"^DefineSprite_(?P<sprite>\d+)(?:_[A-Za-z0-9]+)*/frame_(?P<frame>\d+)/"
 )
-BDXG_CASE_RE = re.compile(
-    r"case\s+(?P<zl>\d+)\s*:\s*[\s\S]*?addChildXG\([^,]+,\s*\"(?P<clip>XG_[^\"]+)\"",
-)
 P1HITS_PN_RE = re.compile(r"p1hits\.pn\s*=\s*(?P<pn>\d+)")
 P2HITS_PN_RE = re.compile(r"p2hits\.pn\s*=\s*(?P<pn>\d+)")
 PAUSE_RE = re.compile(r"pauseGame\s*\(")
 RESUME_RE = re.compile(r"resumeGame\s*\(")
 SHINE_RE = re.compile(r"shine\s*\(\s*(?P<color>\d*)\s*\)")
 SHAKE_RE = re.compile(
-    r"_root\._(?P<axis>[xy])\s*(?P<op>=|\+=|-=)\s*(?:_root\._[xy]\s*=\s*)?(?P<num>-?\d+(?:\.\d+)?)"
+    r"^_root\._(?P<axis>[xy])\s*(?P<op>=|\+=|-=)\s*(?:_root\._(?P<inner_axis>[xy])\s*=\s*)?(?P<num>-?\d+(?:\.\d+)?);", re.M
 )
 UNLOAD_RE = re.compile(r"unloadMovie\s*\(")
 RANDOM_OFFSET_RE = re.compile(
@@ -188,6 +185,23 @@ def compile_on_be_hit_frames(script_bundle: dict[str, Any]) -> list[dict[str, An
     return frames
 
 
+def compile_wall_hit_near(script_bundle: dict[str, Any], sprite_id: int) -> dict[str, Any]:
+    path = f"DefineSprite_{sprite_id}/frame_1/DoAction.as"
+    source = next(s["source"] for s in script_bundle["scripts"] if s["path"] == path)
+    function = re.search(r"function onBeHit\(flying\).*?(?=\nfunction )", source, re.S)
+    if function is None:
+        raise ValueError("Missing onBeHit: " + path)
+    match = re.search(
+        r"if\(_parent\.hitWall\)\s*\{\s*(_loc\d+_) = Math\.abs\(_parent\._x - (_loc\d+_)\._x\);\s*"
+        r"hitNear = \1 < (\d+);\s*if\(hitNear\)\s*\{\s*"
+        r"hitNear = _parent\.scale_X != 1 \? _parent\._x > (\d+) : _parent\._x < \4;\s*\}\s*\}",
+        function[0],
+    )
+    if match is None or f'var {match[2]} = _root.game["p" + pn];' not in function[0]:
+        raise ValueError("Uncompiled wall hitNear branch: " + path)
+    return {"source_path": path, "distance": int(match[3]), "side_split_x": int(match[4])}
+
+
 def compile_on_defence_frames(script_bundle: dict[str, Any]) -> list[dict[str, Any]]:
     frames = []
     for script in script_bundle.get("scripts", []):
@@ -259,6 +273,19 @@ def compile_show_face_labels(script_bundle: dict[str, Any]) -> list[str]:
     return labels
 
 
+def root_position_writes(source: str) -> list[dict[str, Any]]:
+    result = []
+    source = source.replace('\r\n', '\n')
+    for match in SHAKE_RE.finditer(source):
+        writes = [(match['axis'], match['op'])]
+        if match['inner_axis']:
+            writes.insert(0, (match['inner_axis'], '='))
+        for axis, operator in writes:
+            result.append({'axis': axis, 'operator': operator, 'pixels': float(match['num']),
+                           'line': source[:match.start()].count('\n') + 1})
+    return result
+
+
 def _clip_events_for_prefix(script_bundle: dict[str, Any], prefix: str) -> list[dict[str, Any]]:
     events = []
     for script in script_bundle.get("scripts", []):
@@ -282,19 +309,9 @@ def _clip_events_for_prefix(script_bundle: dict[str, Any], prefix: str) -> list[
                     "source_path": script["path"],
                 }
             )
-        for shake in SHAKE_RE.finditer(source):
-            amount = float(shake.group("num"))
-            if shake.group("op") == "-=":
-                amount = -amount
-            events.append(
-                {
-                    "frame": frame,
-                    "op": "shake_root",
-                    "axis": shake.group("axis"),
-                    "pixels": amount,
-                    "source_path": script["path"],
-                }
-            )
+        for write in root_position_writes(source):
+            events.append({'frame': frame, 'op': 'shake_root',
+                           'source_path': script['path'], **write})
         offsets = list(RANDOM_OFFSET_RE.finditer(source))
         if source.count("Math.random()") != len(offsets) * 2:
             raise ValueError("Unsupported hit-effect random expression: " + script["path"])
@@ -317,8 +334,20 @@ def _clip_events_for_prefix(script_bundle: dict[str, Any], prefix: str) -> list[
 
 def _switch_clip_table(func_source: str) -> dict[int, str]:
     table: dict[int, str] = {}
-    for match in BDXG_CASE_RE.finditer(func_source):
-        table[int(match.group("zl"))] = match.group("clip")
+    pending = []
+    for case in re.finditer(r'case\s+(\d+)\s*:(.*?)(?=case\s+\d+\s*:|default\s*:|$)', func_source, re.S):
+        pending.append(int(case[1]))
+        body = case[2].strip()
+        if not body:
+            continue
+        clips = re.findall(r'addChildXG\([^,]+,\s*"(XG_[^"]+)"', body)
+        if len(clips) != 1:
+            raise ValueError('Uncompiled hit-effect switch branch: ' + body)
+        for strength in pending:
+            table[strength] = clips[0]
+        pending.clear()
+    if pending:
+        raise ValueError('Unresolved hit-effect switch labels')
     return table
 
 
@@ -623,6 +652,7 @@ def compile_fighter_hit_receive(
         "attacks_by_form": forms,
         "hits_reset_frames": compile_hits_reset_frames(script_bundle),
         "on_be_hit_frames": compile_on_be_hit_frames(script_bundle),
+        "wall_hit_near": compile_wall_hit_near(script_bundle, timeline_symbol_id),
         "on_defence_frames": compile_on_defence_frames(script_bundle),
         "super_events": compile_super_events(scripts),
         "face_labels": compile_show_face_labels(script_bundle),

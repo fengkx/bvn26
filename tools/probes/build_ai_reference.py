@@ -71,7 +71,19 @@ def instrument(source: str, origin: str, fighter: bool) -> str:
     return re.sub(r"Math\.random\(\)", random_patch, source)
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护") -> dict:
+def instrument_schedule(source: str, origin: str) -> str:
+    """Observe authored callback boundaries without introducing new clips."""
+    def event(phase: str) -> str:
+        return ('\n_root.aiEvent("schedule", ' + quoted(origin + "," + phase + ",") +
+                ' + String(this) + "," + _currentframe + "," + _root.zhanting + "," + '
+                '_root.game.p2.mc._currentframe + "," + _root.aiNumber(_root.game.p2._y));\n')
+    if 'onClipEvent(' in source:
+        start, end = source.index('{') + 1, source.rfind('}')
+        return source[:start] + event('enter') + source[start:end] + event('exit') + source[end:]
+    return event('enter') + source + event('exit')
+
+
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     output.mkdir(parents=True)
@@ -151,6 +163,8 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
                 value = prefix + key + (']' if prefix else '')
                 fields.append('"' + key + '=" + ' + value)
             bootstrap = bootstrap.replace(marker, ' + "," + '.join(fields) + ' + "," + ' + marker)
+    if presentation_probe:
+        bootstrap = bootstrap.replace('      aiState("p2");', '      aiState("p2");\n      aiEvent("root_position", _root.aiNumber(_root._x) + "," + _root.aiNumber(_root._y));')
     if dynamic_move_case:
         if not move_case:
             raise ValueError("Dynamic move fixture requires an initial case")
@@ -287,6 +301,19 @@ _root.aiFixtureLoader.load(__CASE_URI__);
                 if updated.count(needle) != 1:
                     raise ValueError("Missing unique receiver hit test")
                 updated = updated.replace(needle, hook + needle)
+            if presentation_probe:
+                site = quoted(name + "#" + script["path"] + ",")
+                root_write_trace = ('\n_root.aiEvent("root_write", ' + site +
+                                    ' + String(this) + "," + _root.aiNumber(_root._x) + "," + _root.aiNumber(_root._y));')
+                updated = re.sub(r'^_root\._[xy]\s*(?:=|\+=|-=)[^\r\n]+;',
+                                 lambda match: match[0] + root_write_trace, updated, flags=re.M)
+            if body_call_scope_probe and name in fighter_sources and "onClipEvent(enterFrame)" in script["path"]:
+                call = re.search(r'(?<![\w.])(fangyux|beidax)\(([^;]*)\);', updated)
+                if call:
+                    method = call[1]
+                    value = quoted(script["path"] + ",") + ' + typeof(' + method + ') + "," + typeof(_parent.' + method + ')'
+                    hook = '_root.aiEvent("body_call_scope", ' + value + ');\n'
+                    updated = updated[:call.start()] + hook + updated[call.start():]
             if name in fighter_sources and "onClipEvent(load)" in original:
                 # Key.isDown itself is read-only in FP32. Bind the source's
                 # per-body alias to the recorded input function instead.
@@ -328,6 +355,13 @@ _root.aiFixtureLoader.load(__CASE_URI__);
                            '\n_root.aiEvent("frame_state_exit",' + value + ');\n')
             if body_boundaries and name in fighter_sources:
                 sprite, slot = fighter_sources[name]
+                outer_callback = re.fullmatch(rf'frame_1/PlaceObject2_{sprite}_1/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script["path"])
+                if outer_callback:
+                    call = '   on_enterframe();'
+                    if updated.count(call) != 1:
+                        raise ValueError("Missing unique outer BODY callback")
+                    value = quoted(slot + ",") + ' + _root.aiNumber(_parent._x) + "," + _root.aiNumber(_parent._y)'
+                    updated = updated.replace(call, '_root.aiEvent("body_callback_enter", ' + value + ');\n' + call + '\n_root.aiEvent("body_callback_exit", ' + value + ');')
                 boundary_frame = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/DoAction.as', script["path"])
                 if boundary_frame:
                     prefix = '_root.aiBodyBoundary(this,"' + slot + '",' + boundary_frame[1] + ','
@@ -349,6 +383,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
                 updated = updated.replace('Stage.displayState = "fullScreen";', 'Stage.displayState = "normal";')
             if name == "main" and script["path"] == "frame_10/DoAction.as":
                 updated = battle
+            if schedule_probe and name != "main" and (script["path"].endswith("DoAction.as") or "onClipEvent(" in script["path"]):
+                updated = instrument_schedule(updated, name + "#" + script["path"])
             if updated == original:
                 continue
             target = patch / script["path"]
@@ -371,6 +407,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "instrumentation_sha256": sha(output / "instrumentation.diff"),
         "frame_order_probe": frame_order_probe,
         "body_boundaries": body_boundaries,
+        "body_callback_observer": body_boundaries,
         "recovery_order_probe": recovery_order_probe,
         "recovery_walk_first": recovery_walk_first,
         "match_flow": match_flow,
@@ -384,6 +421,10 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "move_case": json.loads(move_case.read_text()) if move_case else None,
         "dynamic_move_case": dynamic_move_case,
         "player_display": "windowed_showAll",
+        "presentation_probe": presentation_probe,
+        "root_write_observer": presentation_probe,
+        "body_call_scope_probe": body_call_scope_probe,
+        "schedule_probe": schedule_probe,
         "input_injection": "body_kis_alias_with_per_read_trace",
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
@@ -412,12 +453,15 @@ def main() -> None:
     parser.add_argument("--mode-probe", type=int, choices=[3, 4])
     parser.add_argument("--ghost-probe", choices=["down", "up", "low", "hurt"])
     parser.add_argument("--timeout-probe", choices=["p1", "draw"])
+    parser.add_argument("--presentation-probe", action="store_true")
+    parser.add_argument("--body-call-scope-probe", action="store_true")
+    parser.add_argument("--schedule-probe", action="store_true")
     parser.add_argument("--p1-character", default="鸣人")
     parser.add_argument("--p2-character", default="一护")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe), ensure_ascii=False))
 
 
 if __name__ == "__main__":

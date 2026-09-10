@@ -25,14 +25,14 @@ def window(slot, keys, start, end):
     return {'slot':slot, 'keys':keys, 'start':start, 'end':end}
 
 
-def generate():
+def generate(fighters=None, exclude_commands=()):
     cases = []
-    for fighter, slot in [('minren','p1'),('yihu','p2')]:
+    for fighter, slot in fighters or [('minren','p1'),('yihu','p2')]:
         other = 'p2' if slot == 'p1' else 'p1'
         catalog = json.loads((ROOT / f'godot/generated/fighters/{fighter}/combat.json').read_text())['command_catalog']
         for entry in catalog['entries']:
             command = entry.get('slot')
-            if command not in COMMANDS:
+            if command not in COMMANDS or command in exclude_commands:
                 continue
             air = command in ['airhit','airMagichit','bishaAir','jumpDown'] or entry['label'] == '跳2'
             scenarios = ['neutral','held','guard','mirror','wall','air_target','trade','dash_twice']
@@ -54,12 +54,15 @@ def generate():
                 if scenario == 'trade': inputs.append(window(other,['attack'],start,start+3))
                 if scenario == 'dash_twice':
                     inputs.extend([window(other,['dash'],start,start+3),window(other,['dash'],start+12,start+15)])
-                cases.append({'id':f'{fighter}-{entry["start_frame"] or "missing"}-{command}-{scenario}',
+                case = {'id':f'{fighter}-{entry["start_frame"] or "missing"}-{command}-{scenario}',
                     'fighter':fighter,'slot':slot,'label':entry['label'],'scenario':scenario,
                     'frames':300,'setup':setup,'inputs':inputs,
                     'target_frames':[entry['start_frame'],entry['end_frame']],
                     'has_source_timeline':entry['has_timeline'],
-                    'source_dispatch':entry.get('source_dispatch'), 'status':'not_run'})
+                    'source_dispatch':entry.get('source_dispatch'), 'status':'not_run'}
+                if fighter not in ['minren', 'yihu']:
+                    case['fighters'] = {slot: fighter, other: 'yihu' if slot == 'p1' else 'minren'}
+                cases.append(case)
     return cases
 
 
@@ -91,9 +94,11 @@ def source_fixture(case):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--fighter', help='Generate one fighter in the P1 slot')
+    parser.add_argument('--exclude-command', action='append', default=[])
     args=parser.parse_args()
     args.output.mkdir(parents=True,exist_ok=True)
-    cases=generate()
+    cases=generate([(args.fighter, 'p1')] if args.fighter else None, args.exclude_command)
     for case in cases: (args.output/(case['id']+'.json')).write_text(json.dumps(case,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'cases':len(cases),'status':'generated_not_validated'}))
 

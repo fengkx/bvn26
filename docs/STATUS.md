@@ -464,3 +464,21 @@ The user subsequently authorized Flash popup windows; the remaining original bat
 ### Timer digit presentation (2026-09-09)
 
 The HUD no longer draws the unlimited symbol during finite countdowns. Source digit sprites, their frame selections and nested placements are imported and driven by the compiled timer callback; the extra font Label is removed. Native tests cover paused time, 10→09, 01→00, unlimited and training. Rendered 10/09/infinite screenshots are retained in [timer presentation evidence](../evidence/config/timer-presentation/README.md). This corrects the earlier overlay-only diagnosis.
+
+### Transformation availability (2026-09-09)
+
+Playable matches now disable the `万解` action for both slots, including actors replaced through character selection. Transformation entry exists, but form replacement remains incomplete (see the move-boundary validation above); the user requested disabling it until implemented. This is a development availability restriction, not a change to original transformation semantics. Isolated source probes retain access to the timeline. `transformation_gate_smoke.gd` passes for Naruto, Ichigo and Hitsugaya: command/source goto/direct entry is rejected without consuming energy, while normal attack remains available. Full transformation acceptance stays pending.
+
+### KO background child playback (2026-09-09)
+
+Fixed the persistent red square by scheduling the authored blackMu child independently of its stopped parent, including its compiled frame-30 stop. The isolated original-player probe and Godot match all 36 playhead samples; KO, two-round flow and player visual/controller checks pass. Full-match visual and Web parity remain pending. See [evidence](../evidence/visual-audio/ko-background/README.md).
+
+
+### Hitsugaya base-form acceptance: not passed (2026-09-09)
+
+Bankai is deferred at the user's request. The 167-case base-form matrix has retained same-input original comparisons. Two summon cases remain different: airborne-target freeze/landing at tick 30 and held-summon frame timing at tick 115. A global helper reorder regressed other cases and was reverted. Source-backed fixes restore root shake assignment semantics, the authored landing effect, grouped ice-guard effects, controller-scope guard calls, scene wall-clamp ordering and wall hitNear settlement, sound sample ranges/channel envelopes and single effect-sound playback. Retained red/green ice-guard evidence matches 602 actor and 301 root-position observations. The live acceptance boundary includes 88 explicit cancel-window edges plus visual/audio/browser checks; these are not implied by ordinary move matches. See [base-form evidence](../evidence/combat/rifagu-base/README.md). Full base-form acceptance remains pending.
+
+
+### Hitsugaya aerial-U bitmap boundary (2026-09-10)
+
+The recovery-frame rectangular ice fragment was reproduced without a map. Shape 107's curved bitmap fill was incorrectly reduced to its AABB. The extractor and shared renderer now preserve its boundary; the complete frame-154 ice remains intact. Native red/green pixel regression and 91 Python tests pass. This fixes a rendering defect and does not close base-form behavior or original-player pixel parity acceptance. See [evidence](../evidence/visual-audio/bitmap-shape-clip/README.md).

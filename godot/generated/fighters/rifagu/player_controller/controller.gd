@@ -511,9 +511,7 @@ func frame_876_depth_30() -> Variant:
 	return null
 
 func frame_887_depth_30() -> Variant:
-	adapter.body_call("fangyux", [])
-	if not adapter.controller_alive():
-		return null
+	pass # The original unqualified function is undefined in this scope.
 	return null
 
 func frame_89_depth_36() -> Variant:

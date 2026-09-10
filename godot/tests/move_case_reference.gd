@@ -4,6 +4,7 @@ var game
 var fixture: Dictionary
 var mode: int
 var rows: Array = []
+var presentation_rows: Array = []
 var recovery_events: Dictionary = {}
 
 func _initialize() -> void:
@@ -24,6 +25,7 @@ func _run() -> void:
 
 func _run_case(fixture_path: String, output_path: String) -> void:
 	rows = []
+	presentation_rows = []
 	recovery_events = {}
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(fixture_path))
 	mode = 3
@@ -31,6 +33,17 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 	root.add_child(game)
 	game.set_physics_process(false)
 	game.recorded_training_timers = true
+	if fixture.has("fighters"):
+		var names: Array = []
+		for slot in ["p1", "p2"]:
+			var found := ""
+			for label in game.character_selection.available.fighters:
+				if game.character_selection.available.fighters[label] == fixture.fighters[slot]:
+					found = label
+			assert(not found.is_empty())
+			names.append(found)
+		game._replace_selected_actors(names, ["我爱罗", "魂"])
+		game._load_selected_stage("现世")
 	game._enter_current_fight(mode)
 	for tick in 700:
 		game._advance_fight([], func() -> bool:
@@ -43,12 +56,14 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 			_observe(tick)
 			return false)
 	FileAccess.open(output_path, FileAccess.WRITE).store_string(JSON.stringify(rows, "", true, true))
+	FileAccess.open(output_path + ".presentation.json", FileAccess.WRITE).store_string(JSON.stringify(presentation_rows, "", true, true))
 	game._goto_menu()
 	game.queue_free()
 	await process_frame
 	print("MOVE_CASE_REFERENCE_OK ", fixture.id)
 
 func _observe(tick: int) -> void:
+	presentation_rows.append({"tick": tick, "x": game.position.x, "y": game.position.y})
 	if tick == 0:
 		for actor in [game.naruto, game.ichigo]:
 			var setup: Dictionary = fixture.setup[actor.player_slot]

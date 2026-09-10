@@ -56,7 +56,7 @@ CALLS = {
 }
 
 
-def compile_body(name: str, params: str, body: str) -> str:
+def compile_body(name: str, params: str, body: str, *, unbound_calls=()) -> str:
     params_list = [x.strip() for x in params.split(',') if x.strip()]
     locals_ = LOCALS | set(params_list)
     output = ['', 'func ' + name + '(' + ', '.join(p + ': Variant = null' for p in params_list) + ') -> Variant:']
@@ -106,10 +106,14 @@ def compile_body(name: str, params: str, body: str) -> str:
             translated = [CALLS[line[:-1]]]
         elif match := re.fullmatch(r'_parent\._parent\.(moveX|moveY)\((.+)\);', line):
             translated = [f'adapter.move_axis("{match[1]}", ' + expression(match[2],locals_) + ')']
-        elif match := re.fullmatch(r'(?:_parent\.)?(fangyux|beidax)\((.*)\);', line):
+        elif match := re.fullmatch(r'_parent\.(fangyux|beidax)\((.*)\);', line):
             args = expression(match[2],locals_) if match[2] else ''
             translated = [f'adapter.body_call("{match[1]}", [{args}])',
                           'if not adapter.controller_alive():', '\treturn null']
+        elif match := re.fullmatch(r'(fangyux|beidax)\((.*)\);', line):
+            if match[1] not in unbound_calls or match[2]:
+                raise ValueError('Unresolved controller-scope body call: ' + line)
+            translated = ['pass # The original unqualified function is undefined in this scope.']
         elif match := re.fullmatch(r'(\w+)\((.*)\);',line):
             if match[1] not in {*NAMES,*DISPATCH_NAMES}:
                 raise ValueError(f'Unsupported call in {name}: {line}')
@@ -179,6 +183,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
     for name in DISPATCH_NAMES:
         text += compile_body(name,*funcs[name])
     hooks = []
+    unbound_call_sites = []
     for script in bundle['scripts']:
         match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/PlaceObject2_{controller_id}_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
         if not match:
@@ -188,7 +193,17 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         if not body.startswith('onClipEvent(enterFrame){\n') or not body.endswith('}\n'):
             raise ValueError(f'Unexpected callback format: {script["path"]}')
         method = f'frame_{frame}_depth_{depth}'
-        text += compile_body(method,'',body.split('\n',1)[1].rsplit('}',1)[0])
+        unbound = set(re.findall(r'(?<![\w.])(fangyux|beidax)\(', body))
+        if unbound:
+            main_path = ROOT / 'scripts/main.json'
+            main = json.loads(main_path.read_text())
+            for target in unbound:
+                if target in funcs or any(re.search(r'\b' + target + r'\b', s['source']) for s in main['scripts']):
+                    raise ValueError('Controller-scope body function requires explicit compilation: ' + target)
+                unbound_call_sites.append({'path': script['path'], 'name': target,
+                                           'resolution': 'undefined_controller_and_root_scope',
+                                           'root_scope_bundle_sha256': hashlib.sha256(main_path.read_bytes()).hexdigest()})
+        text += compile_body(method,'',body.split('\n',1)[1].rsplit('}',1)[0], unbound_calls=unbound)
         membership = []
         for f,display in enumerate(timeline['frames'],1):
             for placement in display['display_list']:
@@ -243,6 +258,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
                                  'projectile': {'instance_name': placements[0][1]['name'], **clip, **motion}})
     projectile_hooks.extend(renamed_timeline_hooks(bundle, sprite, timeline, projectile_hooks))
     return text,{'status':'compiled_not_integrated','sprite_id':sprite,'hooks':hooks,
+                 **({'unbound_call_sites': unbound_call_sites} if unbound_call_sites else {}),
                  'receiver_hooks':receiver_hooks,
                  'projectile_hooks':projectile_hooks,
                  'source_swf':{'path':bundle['game_file'],'sha256':bundle['swf_sha256']},

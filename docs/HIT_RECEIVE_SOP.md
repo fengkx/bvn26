@@ -238,6 +238,7 @@ y' = rotateSkew0 * x + scaleY * y + translateY / 20
 | `hit_priority.instances` | 已有：`hitks` + 1–5 | 已编译则保持 |
 | `hits_reset_frames` | 源整段 `hits = 0;` 的帧号与 Sprite | 不写死 frame 2 |
 | `on_be_hit_frames` | `onBeHit()` / `onBeHit(true)` | `true` 才是击飞路径的 `flying` |
+| `wall_hit_near` | `onBeHit` 的 `_parent.hitWall` 分支、距离 100 与朝向/500 分界；场景 `DefineSprite_1991` 在角色回调后更新墙限与 `hitWall` | 不得把场景墙限放到根观察点之后，也不得在离墙后擅自清空 `hitNear`；见[原版墙边对照](../evidence/combat/rifagu-base/wall-source-first.md) |
 | `on_defence_frames` + `xgtype` | `onDefence()` / `onDefence(2)` | `2` → `bdfyxg2` |
 | `hit_fx`（`bdxg` / `bdfyxg` / `bdfyxg2` 表） | `scripts/main.json` → `frame_8/DoAction.as` | 表变更则全角色一起变 |
 | `hit_fx_clips[].presentation_events` | 各 `XG_*` 的 `pauseGame`/`shine`/`_root._x`/`resumeGame`/`unloadMovie` | 不得按招式臆造时长 |
