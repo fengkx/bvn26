@@ -40,6 +40,22 @@ def file_sha256(path: Path) -> str:
 
 
 class ElementAndSuperClipTests(unittest.TestCase):
+    def test_substitution_effects_keep_source_flash_and_unload(self):
+        source = {s['path']: s['source'] for s in json.loads((ROOT / 'scripts/main.json').read_text())['scripts']}
+        for clip, end in [('XG_tishen', 35), ('XG_tishen2', 20)]:
+            directory = ROOT / 'godot/generated/effects' / clip
+            model = json.loads((directory / 'effect.json').read_text())
+            self.assertEqual(model['sprite_id'], main_swf_exports()[clip])
+            events = model['presentation_events']
+            self.assertEqual(events[-1]['op'], 'unload')
+            self.assertEqual(events[-1]['frame'], end)
+            self.assertEqual(source[events[-1]['source_path']].strip(), 'this.unloadMovie();')
+            if clip == 'XG_tishen':
+                self.assertEqual((events[0]['op'], events[0]['frame']), ('shine', 3))
+                self.assertEqual(source[events[0]['source_path']].strip(), '_root.shine();')
+            for asset in json.loads((directory / 'assets.json').read_text())['assets']:
+                self.assertEqual(file_sha256(directory / asset['path']), asset['sha256'])
+
     def test_ghost_effect_keeps_source_lifetime(self):
         directory = ROOT / 'godot/generated/effects/XG_xdash'
         model = json.loads((directory / 'effect.json').read_text())

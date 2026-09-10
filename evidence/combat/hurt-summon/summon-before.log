@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+COMBAT_EVENT {"action":"站立","airborne":false,"beida":0,"bs":0,"displayed_health":1000.0,"energy":0.0,"event":"action_站立","facing":1,"fighter":"一护","frame":1,"guarding":false,"health":1000.0,"helper_spawn":{},"hited":0,"hits":0,"hitstun_ticks":0,"sw":false,"timeline_playing":true,"x":0.0,"zhanting":false}
+COMBAT_EVENT {"action":"站立","airborne":false,"beida":0,"bs":0,"displayed_health":1000.0,"energy":0.0,"event":"action_站立","facing":1,"fighter":"鸣人","frame":1,"guarding":false,"health":1000.0,"helper_spawn":{},"hited":0,"hits":0,"hitstun_ticks":0,"sw":false,"timeline_playing":true,"x":0.0,"zhanting":false}
+COMBAT_EVENT {"action":"招换","airborne":false,"beida":0,"bs":1,"displayed_health":1000.0,"energy":200.0,"event":"summon_魂","facing":1,"fighter":"一护","frame":657,"guarding":false,"health":1000.0,"helper_spawn":{"facing":-1,"helper_id":"魂","helper_swf":"kon.swf","start_frame":2,"x":-20.0,"y":0.0},"hited":0,"hits":0,"hitstun_ticks":0,"sw":false,"timeline_playing":true,"x":0.0,"zhanting":false}
+COMBAT_EVENT {"action":"招换","airborne":false,"beida":0,"bs":1,"displayed_health":1000.0,"energy":100.0,"event":"summon_魂","facing":1,"fighter":"一护","frame":657,"guarding":false,"health":1000.0,"helper_spawn":{"facing":-1,"helper_id":"魂","helper_swf":"kon.swf","start_frame":2,"x":680.0,"y":-125.0},"hited":0,"hits":0,"hitstun_ticks":0,"sw":false,"timeline_playing":true,"x":700.0,"zhanting":false}
+HURT_SUMMON_DIFFERENCE cycle=0 frame=657 energy=100.0 bs=1 helper={ "helper_id": "魂", "helper_swf": "kon.swf", "x": 680.0, "y": -125.0, "facing": -1, "start_frame": 2 }
+ERROR: Source doZhaoHuan returns during hurtSkling: no helper, energy cost, or bs write
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _run (res://tests/hurt_summon_smoke.gd:74)

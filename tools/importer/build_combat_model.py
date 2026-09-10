@@ -682,6 +682,20 @@ def helper_from_catalog(fighter_id: str) -> dict[str, Any]:
     }
 
 
+def compile_summon_function(source: str) -> dict[str, Any]:
+    match = re.fullmatch(
+        r"function doZhaoHuan\(\)\s*\{\s*"
+        r"if\((?P<guard>\w+)\)\s*\{\s*return undefined;\s*\}\s*"
+        r"_root\.yfgj\(_parent\._name\);\s*"
+        r"bs\s*=\s*(?P<bs>\d+);\s*ql\s*-=\s*(?P<cost>\d+);\s*\}",
+        source,
+    )
+    if match is None:
+        raise ValueError("Unsupported doZhaoHuan body; retain its guards and statement order")
+    return {"skip_if_truthy": match["guard"], "set_bs": int(match["bs"]),
+            "energy_delta": -int(match["cost"])}
+
+
 def placement_name(
     frames_by_number: dict[int, dict[str, Any]], frame: int, depth: int
 ) -> str:
@@ -1145,9 +1159,12 @@ def build_model(
         )
 
     helper = helper_from_catalog(fighter["fighter_id"])
+    catalog = json.loads((REPO_ROOT / "manifest.json").read_text())["fighter_catalog"]
+    is_naruto = bool(catalog[fighter["fighter_id"]].get("isNaruto", False))
     summon_events = []
-    summon_source = next((extract_function(s["source"], "doZhaoHuan") for s in scripts if "function doZhaoHuan" in s["source"]), None)
-    summon_bs = re.search(r"\bbs\s*=\s*(\d+)", summon_source or "")
+    summon_script = next((s for s in scripts if "function doZhaoHuan" in s["source"]), None)
+    summon_function = (compile_summon_function(extract_function(summon_script["source"], "doZhaoHuan"))
+                       if summon_script else None)
     for script in scripts:
         if script["kind"] != "frame_action":
             continue
@@ -1155,14 +1172,15 @@ def build_model(
             continue
         if "doZhaoHuan()" not in script["source"]:
             continue
-        if summon_bs is None:
-            raise ValueError("doZhaoHuan is missing its source bs assignment")
+        if summon_function is None:
+            raise ValueError("doZhaoHuan is missing its source function")
         summon_events.append(
             {
                 "action": script["action"],
                 "frame": script["frame"],
-                "energy_delta": -100,
-                "set_bs": int(summon_bs[1]),
+                **summon_function,
+                "function_source_path": summon_script["path"],
+                "function_source_sha256": summon_script["source_sha256"],
                 **helper,
                 "source_path": script["path"],
                 "source_sha256": script["source_sha256"],
@@ -1264,6 +1282,7 @@ def build_model(
         "format": "bvn26-combat-model-v1",
         "status": "reverse_engineering_intermediate",
         "fighter_id": fighter["fighter_id"],
+        "is_naruto": is_naruto,
         "simulation_hz": 30,
         "source": {
             "fighter_slice": fighter_path.as_posix(),

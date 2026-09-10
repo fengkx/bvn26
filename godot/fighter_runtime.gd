@@ -1433,11 +1433,13 @@ func _apply_summon_event() -> void:
 	for event: Dictionary in _combat.get("summon_events", []):
 		if event["action"] != action or int(event["frame"]) != current_source_frame():
 			continue
+		_summon_applied = true
+		if _ai_hit_transfer.truth(ai_source_state.read_field(str(event["skip_if_truthy"]))):
+			return
 		change_energy(float(event.get("energy_delta", -100)))
 		helper_spawn = _yfgj_spawn(event)
 		if event.get("set_bs") != null:
 			bs = int(event["set_bs"])
-		_summon_applied = true
 		last_event = "summon_%s" % event.get("helper_id", "helper")
 		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 		return

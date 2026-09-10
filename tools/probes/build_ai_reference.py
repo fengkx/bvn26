@@ -83,7 +83,7 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     output.mkdir(parents=True)
@@ -163,6 +163,13 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
                 value = prefix + key + (']' if prefix else '')
                 fields.append('"' + key + '=" + ' + value)
             bootstrap = bootstrap.replace(marker, ' + "," + '.join(fields) + ' + "," + ' + marker)
+    if hurt_summon_probe:
+        if mode_probe or helper_probe or dash_probe or ghost_probe or timeout_probe or match_flow:
+            raise ValueError("Hurt summon fixture must run in isolation")
+        bootstrap = re.sub(r'   if\(aiFight >= \d+ && aiFight < \d+\) aiHeld\[\w\] = true;\n', '', bootstrap)
+        bootstrap = bootstrap.replace('p2sf = "魂";', 'p2sf = "我爱罗";')
+        fixture = (Path(__file__).parent / "as2/ai_reference/hurt_summon.as").read_text()
+        bootstrap = bootstrap.replace('   aiHeld = {};', fixture)
     if presentation_probe:
         bootstrap = bootstrap.replace('      aiState("p2");', '      aiState("p2");\n      aiEvent("root_position", _root.aiNumber(_root._x) + "," + _root.aiNumber(_root._y));')
     if dynamic_move_case:
@@ -383,6 +390,15 @@ _root.aiFixtureLoader.load(__CASE_URI__);
                 updated = updated.replace('Stage.displayState = "fullScreen";', 'Stage.displayState = "normal";')
             if name == "main" and script["path"] == "frame_10/DoAction.as":
                 updated = battle
+            if hurt_summon_probe and name in fighter_sources and 'function doZhaoHuan()' in updated:
+                updated = updated.replace('function doZhaoHuan()\n{',
+                    'function doZhaoHuan()\n{\n_root.aiEvent("summon_attempt", String(this) + "," + hurtSkling + "," + ql + "," + bs);')
+                # Bundles preserve CRLF before read_text normalization at import.
+                updated = updated.replace('function doZhaoHuan()\r\n{',
+                    'function doZhaoHuan()\r\n{\n_root.aiEvent("summon_attempt", String(this) + "," + hurtSkling + "," + ql + "," + bs);')
+            if hurt_summon_probe and name == "main" and 'function yfgj(' in updated:
+                updated = re.sub(r'(function yfgj\([^)]*\)\s*\{)',
+                    lambda m: m[1] + '\n_root.aiEvent("summon_spawn", arguments[0]);', updated)
             if schedule_probe and name != "main" and (script["path"].endswith("DoAction.as") or "onClipEvent(" in script["path"]):
                 updated = instrument_schedule(updated, name + "#" + script["path"])
             if updated == original:
@@ -401,7 +417,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
     report = {
         "run_id": run_id, "status": "built_not_run", "frames_after_ready": frames,
         "configuration": {"modo": mode_probe or 2, "p1": p1_character, "p2": p2_character, "p2cpu": mode_probe is None,
-                          "AI": 5, "stage": "现世", "p1sf": "魂" if helper_probe == "kon" else "我爱罗", "p2sf": "魂"},
+                          "AI": 5, "stage": "现世", "p1sf": "魂" if helper_probe == "kon" else "我爱罗", "p2sf": "我爱罗" if hurt_summon_probe else "魂"},
         "sources_sha256": sources, "ffdec_sha256": sha(ffdec),
         "outputs_sha256": {p.relative_to(output).as_posix(): sha(p) for p in game.rglob("*.swf")},
         "instrumentation_sha256": sha(output / "instrumentation.diff"),
@@ -425,6 +441,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "root_write_observer": presentation_probe,
         "body_call_scope_probe": body_call_scope_probe,
         "schedule_probe": schedule_probe,
+        "hurt_summon_probe": hurt_summon_probe,
         "input_injection": "body_kis_alias_with_per_read_trace",
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
@@ -456,12 +473,13 @@ def main() -> None:
     parser.add_argument("--presentation-probe", action="store_true")
     parser.add_argument("--body-call-scope-probe", action="store_true")
     parser.add_argument("--schedule-probe", action="store_true")
+    parser.add_argument("--hurt-summon-probe", action="store_true")
     parser.add_argument("--p1-character", default="鸣人")
     parser.add_argument("--p2-character", default="一护")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe), ensure_ascii=False))
 
 
 if __name__ == "__main__":

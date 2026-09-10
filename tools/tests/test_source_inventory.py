@@ -349,6 +349,22 @@ class TimelineGeometryTests(unittest.TestCase):
 
 
 class CombatModelTests(unittest.TestCase):
+    def test_summon_guard_is_retained_for_all_source_fighters(self):
+        bundles = list((ROOT / "scripts/fighter").glob("*.json"))
+        self.assertEqual(len(bundles), 35)
+        for path in bundles:
+            found = False
+            for script in json.loads(path.read_text())["scripts"]:
+                function = combat_model.extract_function(script["source"], "doZhaoHuan")
+                if function is None:
+                    continue
+                found = True
+                self.assertEqual(combat_model.compile_summon_function(function),
+                                 {"skip_if_truthy": "hurtSkling", "set_bs": 1, "energy_delta": -100})
+                with self.assertRaises(ValueError):
+                    combat_model.compile_summon_function(function.replace("return undefined;", "ql -= 1;"))
+            self.assertTrue(found, path)
+
     def load_model(self, fighter: str):
         return combat_model.build_model(
             ROOT / f"data/slices/{fighter}-base.json",
@@ -862,6 +878,9 @@ class CombatModelTests(unittest.TestCase):
             [("招换", 657, "魂")],
         )
         self.assertEqual(ichigo["summon_events"][0]["set_bs"], 1)
+        self.assertEqual(ichigo["summon_events"][0]["skip_if_truthy"], "hurtSkling")
+        self.assertTrue(naruto["is_naruto"])
+        self.assertFalse(ichigo["is_naruto"])
         rush = next(
             window for window in ichigo["motion_windows"] if window["action"] == "招2"
         )

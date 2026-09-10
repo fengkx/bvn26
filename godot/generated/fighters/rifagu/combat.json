@@ -2,6 +2,7 @@
   "format": "bvn26-combat-model-v1",
   "status": "reverse_engineering_intermediate",
   "fighter_id": "日番谷",
+  "is_naruto": false,
   "simulation_hz": 30,
   "source": {
     "fighter_slice": "data/slices/rifagu-base.json",
@@ -3488,8 +3489,11 @@
     {
       "action": "招换",
       "frame": 818,
-      "energy_delta": -100,
+      "skip_if_truthy": "hurtSkling",
       "set_bs": 1,
+      "energy_delta": -100,
+      "function_source_path": "DefineSprite_638/frame_1/DoAction.as",
+      "function_source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
       "helper_id": "夜一",
       "helper_swf": "yeyi.swf",
       "behind_pixels": 20,

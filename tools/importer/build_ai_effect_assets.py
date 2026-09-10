@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ET
 
 from extract_timeline_geometry import extract_frames
 from materialize_timeline_assets import materialize
-from compile_hit_receive import SHAKE_RE, _clip_events_for_prefix
+from compile_hit_receive import SHAKE_RE, SHINE_RE, _clip_events_for_prefix
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -42,7 +42,8 @@ def build(workspace: Path, clip: str, output: Path) -> None:
         if not script["path"].startswith(prefix):
             continue
         match = re.fullmatch(re.escape(prefix) + r"frame_(\d+)/DoAction(?:_\d+)?\.as", script["path"])
-        remaining = SHAKE_RE.sub('', script['source']).strip()
+        remaining = re.sub(r"_root\." + SHINE_RE.pattern + r"\s*;", '',
+                           SHAKE_RE.sub('', script['source'])).strip()
         if not match or remaining not in ['', 'this.unloadMovie();']:
             raise ValueError("Unsupported effect script: " + script["path"])
     events = _clip_events_for_prefix(bundle, prefix.rstrip('/'))

@@ -22,6 +22,8 @@ func configure(host: AiControllerHost, metadata: Dictionary, platforms: Dictiona
 
 func configure_source(metadata: Dictionary, platforms: Dictionary) -> void:
 	assert(metadata["swf_sha256"] == fighter.ai_source_state.spec["source_swf"]["sha256"])
+	# chushi copies this flag from the selected fighter, for both slots.
+	is_naruto = fighter._combat["is_naruto"]
 	_scalar_fields = PackedStringArray(metadata["scalar_fields"])
 	# Keys are authored ban indices, not positions in a compacted array.
 	source_platforms = platforms.duplicate(true)

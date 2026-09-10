@@ -25,7 +25,6 @@ func configure(actor: FighterRuntime, directory: String, platforms: Dictionary,
 	fighter = actor
 	context = Context.new(actor)
 	context.use_ai = false
-	context.is_naruto = true
 	_driver = AiCpuDriver.new()
 	add_child(_driver)
 	_driver.configure(actor, directory, platforms, floor_y, map_width,

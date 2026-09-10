@@ -2,6 +2,7 @@
   "format": "bvn26-combat-model-v1",
   "status": "reverse_engineering_intermediate",
   "fighter_id": "一护",
+  "is_naruto": false,
   "simulation_hz": 30,
   "source": {
     "fighter_slice": "data/slices/yihu-base.json",
@@ -3719,8 +3720,11 @@
     {
       "action": "招换",
       "frame": 657,
-      "energy_delta": -100,
+      "skip_if_truthy": "hurtSkling",
       "set_bs": 1,
+      "energy_delta": -100,
+      "function_source_path": "DefineSprite_638/frame_1/DoAction.as",
+      "function_source_sha256": "67ef57fda43786d357ad6f039a63e3ef029de4d6c2eb36e4ce4b147010ed71cf",
       "helper_id": "魂",
       "helper_swf": "kon.swf",
       "behind_pixels": 20,

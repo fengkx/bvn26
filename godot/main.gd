@@ -1052,6 +1052,10 @@ func _player_visual_service(service: String, args: Array) -> Variant:
 
 
 func _fighter_visual_service(actor: FighterRuntime, service: String, _args: Array) -> Variant:
+	if service == "addChildXG":
+		# Source arguments are offsetY then offsetX, in world coordinates.
+		_spawn_hit_effect(str(_args[0]), actor.position + Vector2(float(_args[2]), 0), actor.facing, float(_args[1]))
+		return null
 	if service == "frame_child_effect":
 		var effect: Dictionary = _args[0]
 		_spawn_hit_effect(effect["clip"], actor.position + Vector2(float(effect["offset_x"]), 0), actor.facing, float(effect["offset_y"]))
