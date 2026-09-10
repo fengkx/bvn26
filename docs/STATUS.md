@@ -498,3 +498,16 @@ Original callback instrumentation locates retained helper root frame settlement 
 ### Repeated Hitsugaya down+I placement (2026-09-10)
 
 Reset source placement-event bookkeeping on action entry. Previously the first cast positioned cbs1atm correctly, while the second reused the deduplication key and left the new ice instance at its authored default position. Three casts on retained actors now target fresh opponent coordinates across both facings; retained subsequent frames do not chase the opponent. All 11 existing down+I source comparisons and 93 Python tests pass. These short original fixtures had not covered a second fully funded cast. See [repeated-cast evidence](../evidence/combat/rifagu-base/repeated-ice-placement/README.md). Full base-form acceptance remains pending.
+
+
+### Shared direction-dash snapshots (2026-09-10)
+
+The previously missing showdow service now snapshots the current fighter display
+into the source background-effect layer, with original RGB offsets, wrapper-lived
+call cadence and quantized alpha decay. Both slots and all three playable base
+forms share the adapter. Three original two-dash references match all 297 ordered
+spawn/fade events; native and Chromium WebGL texture-freeze checks pass. Existing
+dash, shared-mode and r13/r14/r15 observed-field regressions remain matched.
+Full original pixel identity, remaining characters and Firefox/Safari are outside
+this acceptance; transformations remain deferred and online is unchanged.
+See [shadow evidence](../evidence/visual-audio/shadow/README.md).

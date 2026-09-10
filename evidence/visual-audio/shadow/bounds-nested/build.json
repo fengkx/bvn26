@@ -1,0 +1,6 @@
+{
+  "run_id": "shadow-bounds-r02",
+  "source": "Stage.displayState=\"normal\";\nvar seq=0;\nfunction emit(kind,value) { trace(\"AIREF|shadow-bounds-r02|\"+(seq++)+\"|\"+getTimer()+\"|0|0|\"+kind+\"|\"+value); }\ncreateEmptyMovieClip(\"actor\",1);\nactor.createEmptyMovieClip(\"inner\",1);\nvar p=actor.inner;\np.beginFill(0x336699,100);p.moveTo(-12.35,-7.15);p.lineTo(12.35,-7.15);p.lineTo(12.35,7.15);p.lineTo(-12.35,7.15);p.endFill();\nvar scales=[100.07019,99.9,33.33333,150.1,-100.07019];\nfor(var i=0;i<scales.length;i++) {\n p._xscale=scales[i];p._yscale=scales[i];\n var b=actor.getBounds(actor);\n emit(\"bounds\",p._xscale+\",\"+p._yscale+\",\"+b.xMin+\",\"+b.yMin+\",\"+b.xMax+\",\"+b.yMax+\",\"+actor._width+\",\"+actor._height);\n}\np.clear();p._xscale=100;p._yscale=100.07019;p._y=-23.9;\np.createEmptyMovieClip(\"nested\",1);\np.nested._y=-45.15;\np.nested.beginFill(0x336699,100);p.nested.moveTo(0,19.5);p.nested.lineTo(45,19.5);p.nested.lineTo(45,92.5);p.nested.lineTo(0,92.5);p.nested.endFill();\nvar b=actor.getBounds(actor);emit(\"nested_bounds\",b.xMin+\",\"+b.yMin+\",\"+b.xMax+\",\"+b.yMax);\nemit(\"done\",true);stop();fscommand(\"quit\");\n",
+  "swf_sha256": "4fa488a6552c644892a8228d18192bb1bb903219beb3adf61abdb54a043c5c41",
+  "scope": "synthetic FP32 numeric probe; original game input is unchanged"
+}

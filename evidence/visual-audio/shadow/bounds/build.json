@@ -1,0 +1,6 @@
+{
+  "run_id": "shadow-bounds-r01",
+  "source": "Stage.displayState=\"normal\";\nvar seq=0;\nfunction emit(kind,value) { trace(\"AIREF|shadow-bounds-r01|\"+(seq++)+\"|\"+getTimer()+\"|0|0|\"+kind+\"|\"+value); }\ncreateEmptyMovieClip(\"actor\",1);\nactor.createEmptyMovieClip(\"inner\",1);\nvar p=actor.inner;\np.beginFill(0x336699,100);p.moveTo(-12.35,-7.15);p.lineTo(12.35,-7.15);p.lineTo(12.35,7.15);p.lineTo(-12.35,7.15);p.endFill();\nvar scales=[100.07019,99.9,33.33333,150.1,-100.07019];\nfor(var i=0;i<scales.length;i++) {\n p._xscale=scales[i];p._yscale=scales[i];\n var b=actor.getBounds(actor);\n emit(\"bounds\",p._xscale+\",\"+p._yscale+\",\"+b.xMin+\",\"+b.yMin+\",\"+b.xMax+\",\"+b.yMax+\",\"+actor._width+\",\"+actor._height);\n}\nemit(\"done\",true);stop();fscommand(\"quit\");\n",
+  "swf_sha256": "1e78afcd41b6ad6e66c9c5cc6f101a025cc154f6e18593ceb9f0b14b164fb9fc",
+  "scope": "synthetic FP32 numeric probe; original game input is unchanged"
+}

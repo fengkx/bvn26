@@ -1029,7 +1029,9 @@ func _stop_combat_drivers() -> void:
 	cpu_stage_registry.clear_effects()
 	if is_instance_valid(game_world):
 		for child in game_world.get_children():
-			if child is HitEffectRuntime:
+			if child is ShadowSnapshot:
+				child.dispose()
+			elif child is HitEffectRuntime:
 				child.unregister_source_frames()
 	if source_callbacks != null:
 		if timeout_timeline != null:
@@ -1052,6 +1054,12 @@ func _player_visual_service(service: String, args: Array) -> Variant:
 
 
 func _fighter_visual_service(actor: FighterRuntime, service: String, _args: Array) -> Variant:
+	if service == "showdow":
+		if ShadowSnapshot.should_capture(actor):
+			var shadow := ShadowSnapshot.new()
+			game_world.add_child(shadow)
+			shadow.capture(actor, _args[0], source_callbacks, physics_tick)
+		return null
 	if service == "addChildXG":
 		# Source arguments are offsetY then offsetX, in world coordinates.
 		_spawn_hit_effect(str(_args[0]), actor.position + Vector2(float(_args[2]), 0), actor.facing, float(_args[1]))

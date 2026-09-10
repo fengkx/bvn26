@@ -1,0 +1,313 @@
+{
+  "format": "bvn26-shadow-v1",
+  "sources": [
+    {
+      "bundle": "scripts/main.json",
+      "path": "frame_8/DoAction.as",
+      "swf_sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+      "function": "function shadowEffect(mc, param)\r\n{\r\n   if(param == null)\r\n   {\r\n      param = {};\r\n   }\r\n   if(isNaN(param.alphaStart))\r\n   {\r\n      param.alphaStart = 100;\r\n   }\r\n   if(isNaN(param.alphaLose))\r\n   {\r\n      param.alphaLose = 10;\r\n   }\r\n   var _loc7_ = _root.game.lyr_plr_bkeft;\r\n   var _loc6_ = _loc7_.getNextHighestDepth();\r\n   var _loc8_ = new flash.display.BitmapData(mc._width,mc._height,true,0);\r\n   var _loc5_ = mc.getBounds(mc);\r\n   var _loc9_ = new flash.geom.Matrix(1,0,0,1,- _loc5_.xMin,- _loc5_.yMin);\r\n   _loc8_.draw(mc,_loc9_,param.colorTransform);\r\n   _loc7_.createEmptyMovieClip(\"mc\" + _loc6_,_loc6_);\r\n   var _loc4_ = _loc7_[\"mc\" + _loc6_];\r\n   _loc4_._xscale = mc._xscale;\r\n   _loc4_.attachBitmap(_loc8_,_loc6_);\r\n   _loc4_._x = mc._x + _loc5_.xMin * (mc._xscale <= 0 ? -1 : 1);\r\n   _loc4_._y = mc._y + _loc5_.yMin;\r\n   _loc4_._alpha = param.alphaStart;\r\n   _loc4_.onEnterFrame = function()\r\n   {\r\n      this._alpha -= param.alphaLose;\r\n      if(this._alpha <= 0)\r\n      {\r\n         this.removeMovieClip();\r\n      }\r\n   };\r\n}",
+      "sha256": "f8321075f4edd54881d3ec251719b65f933d8f147b1c5a6b4614f0d1ba5ec8e7"
+    },
+    {
+      "bundle": "scripts/fighter/Byakuya.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "c590f9ca2aea152d26aea8d6a10c4ee31a2019d9798c637820f145feef13b52f",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/Kakashi.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "48587becee990fccfd7450a1b605a24b2d654dbd15569857659f67346bddb2fc",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/Kenshin.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "648d781f59734e1b120b30c340685a74e223e5be49c186c31b796467db4f2e7f",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/Renji.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "7505e9591f46ba1d05bb03fff9450d52583804022a08ba3bb7a0ecfb21cb116a",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/Sakura.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "7d5d060ea9949f54535f801abd3ebdb23de5e7fc7cd5644186f7d805a47ba544",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/Sasuke.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "c413d7c4d840d99deedc22778ee9a6383263b8ecd2e77a6c0712ca2a166c73f6",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/chad.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "2a15610b6e28d2a0b1c88d616b0af0406c9ee78410007068c3e43a6a1967a4be",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/daitu.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "8fb8a5d31142d8a3217964b65cf19e4131bdcea498303504425890daa8a96be8",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/didala.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "0f9a58902d84759892692fe71b1b9f54d076edfbd3480a51a1449d66e4e5b621",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/gaara.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "441340a3e05589646d82ed570c79e32f3d97d639bc153c7da385d06a522d3bd3",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/ichigo.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "21bf68e942d417b0b39e8702ae388b8146a9c275510d83125d51a4f08dd9723f",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/itachi.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "35f626a8fc95352f61d25c93b4f139745cc9d50c39ba169b74e327ed61f25c3c",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/jianba.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "d1e4851ce8274fffe8dfdc6e8bc8b9407a7ffff690512693fc5866bfe49cc609",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/jiraiya.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "fba0b65d3e14c78e9ed999fc96479eba01fbd589a85f7ebdcfec3c98fd51be12",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/juggo.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "b33421881ac7ac9fe38f2d6d759bc78e80ef5caf8693ef02d655635c0b86f339",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/karin.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "995ea7a1b6aceef2572f0854020d9ddf9462e902a10257344d338c0b6fc0b5c8",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/konan.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "42e1f5b86ec7f08f29d5027af99c5f049bf1f7a9db9bd2a3e4fa1d771d2471b6",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/lanran.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "ae96976f5d912319862cfd5260bac2f06466368d32643aa373af7caa38cc89c7",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/lee.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "2443dc112dbf2be696abb9d924831814ae01990536df8298fa2c1432f35c93d1",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/mayuri.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "b13277fdf268be9a0a6863d73d5cd17347cc2d0863365fa6757c62c34a891f81",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/minren.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "3640d0ea2355cc07b648b75c4f6022cb1c4477748ea0b719307d8072a32f4c2d",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/minrenx.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "3ab1aa4fa7bf8301cc4ec480517ab8f23e29dc82867ee8bcc1741fee20637bde",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/neji.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "1fdb9692202266a9122b881aefa734176f5e4f65a214d5e414f10cbbfd12519c",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/orochimaru.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "cde82387dc86458addeda5ec63232018122514bd795d0bd802613db36b47b8ad",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/pain.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "bb66f940d2e83ec0d141d3a8d8150ec197ae0a3f83d3f77651555f676029e4cd",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/qilabi.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "e78344d921556e1b57ddb4b95f117e5b9ed6da945822b2fe2ea6d93ecb1afd70",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/rifagu.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "d440f6f6863b1067a70d458df83a27eade554dffc94c42b4b9ccd10bd1454f96",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/rukia.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "c48d47a817dbf1b4fff9b333bb35d89debb64d0635e8d88b4a7d1228208194eb",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/sasukexz.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "fd634abbcefbcf50bac507e85e116038be0f63316b8d483a131597e2757bf20f",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/shouju.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "71749a25bd0cab546e89a09c2aa37ca455a725e4c1fd4e388f63b6babe03eb5d",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/weqal.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "ea72662bcb9c2a4c7ee9e9a81bb92c1beb1323f3982de86aa8e24a23286dc171",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/yihu.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/yijiao.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "9734a584c1e7c1b88665db0347595fd95083cba6a4c1410c5ee0381c22eb479d",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/yin.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "3f67d6828bf5d865819d049e30a59c4c607ccddbc7859eba62642676c07f75d2",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    },
+    {
+      "bundle": "scripts/fighter/yulong.json",
+      "path": "frame_1/DoAction.as",
+      "swf_sha256": "fcf2246b602b4e498caf2b3c9ac6625ae492e45b6249effb22e9b7d669713199",
+      "function": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}",
+      "sha256": "f83b22530633c6dca56031fab277bc2062c6b050d0771d6b111cd6b2a769c13f"
+    }
+  ],
+  "controller_sources": [
+    {
+      "fighter": "minren",
+      "path": "DefineSprite_1293/frame_1/DoAction.as",
+      "function": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}"
+    },
+    {
+      "fighter": "minren",
+      "path": "DefineSprite_1821/frame_1/DoAction.as",
+      "function": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}"
+    },
+    {
+      "fighter": "minren",
+      "path": "DefineSprite_764/frame_1/DoAction.as",
+      "function": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}"
+    },
+    {
+      "fighter": "yihu",
+      "path": "DefineSprite_1180/frame_1/DoAction.as",
+      "function": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}"
+    },
+    {
+      "fighter": "yihu",
+      "path": "DefineSprite_1672/frame_1/DoAction.as",
+      "function": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}"
+    },
+    {
+      "fighter": "yihu",
+      "path": "DefineSprite_638/frame_1/DoAction.as",
+      "function": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}"
+    },
+    {
+      "fighter": "rifagu",
+      "path": "DefineSprite_638/frame_1/DoAction.as",
+      "function": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}"
+    },
+    {
+      "fighter": "rifagu",
+      "path": "DefineSprite_951/frame_1/DoAction.as",
+      "function": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}"
+    }
+  ],
+  "controller": {
+    "instance": "AImain",
+    "cpu_frame": 2,
+    "player_unloaded": true
+  },
+  "counter_initial": 0,
+  "counter_skip_above": 1,
+  "alpha_start": 100,
+  "alpha_lose": 10,
+  "layer": "lyr_plr_bkeft",
+  "layer_depth": 5,
+  "snapshot": "bitmap_draw_local_bounds",
+  "fade_during_gameplay_pause": true,
+  "counter_lifetime": "fighter_wrapper"
+}
