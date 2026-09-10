@@ -132,6 +132,23 @@ PROJECTILE_SPEED = re.compile(
 PROJECTILE_X = re.compile(r"_X\s*=\s*_X\s*(?P<op>\+|-)\s*movspeed")
 PROJECTILE_Y = re.compile(r"_Y\s*=\s*_Y\s*(?P<op>\+|-)\s*movspeed")
 PROJECTILE_HIT_GOTO = re.compile(r"gotoAndPlay\((?P<frame>\d+)\)")
+PROJECTILE_LOAD = re.compile(
+    r"onClipEvent\(load\)\{\s*"
+    r"(?:(?P<played>played\s*=\s*0;)\s*)?"
+    r"movspeed\s*=\s*_parent\.speed(?:\s*\*\s*(?P<factor>\d+(?:\.\d+)?))?;\s*\}\s*"
+)
+PROJECTILE_PARENT_WRITE = re.compile(
+    r"_parent\.(?P<field>[A-Za-z_]\w*)\s*=\s*"
+    r"(?P<value>true|false|-?\d+(?:\.\d+)?)\s*;"
+)
+PROJECTILE_HIT_IF = re.compile(
+    r"if\s*\(\s*(?:(?P<receiver>[A-Za-z_]\w*)\s*\.\s*)?hitTest\s*\([^{}]*\)\s*\)\s*\{"
+)
+PROJECTILE_OPPONENT_GOTO = re.compile(
+    r"if\(_root\.game\[\"p\" \+ _parent\.pn\]\.mc\.动作\s*==\s*(?P<action>-?\d+)\)\s*"
+    r"\{\s*_root\.game\[\"p\" \+ _parent\.pn\]\.mc\.gotoAnd(?P<mode>Play|Stop)"
+    r"\(\"(?P<label>[^\"]+)\"\);\s*\}\s*"
+)
 NESTED_FRAME_SCRIPT = re.compile(
     r"^DefineSprite_(?P<sprite>\d+)/frame_(?P<frame>\d+)/DoAction"
 )
@@ -433,6 +450,7 @@ def _merge_nested_atm_windows(
     ranges: dict[str, dict[str, int]],
     frames_by_number: dict[int, dict[str, Any]],
     script_bundle: dict[str, Any],
+    frame_counts: dict[int, int] | None = None,
 ) -> None:
     """Root PlaceObject names plus nested `_name = "*atm"` DoAction.
 
@@ -441,6 +459,16 @@ def _merge_nested_atm_windows(
     Local frame 1 is the PlaceObject root frame.
     """
     seen: set[tuple[str, str, int, int]] = set()
+    # A PlaceObject can carry a clip action while referencing a static
+    # DefineShape.  Only a DefineSprite has a nested frame timeline whose
+    # frame_count is required by parse_clip_timeline; asking the source
+    # inventory for a frame count on a shape turns valid legacy fighters into
+    # false failures (for example Naruto's character 33).
+    scripted_sprite_ids = {
+        int(match["sprite"])
+        for script in script_bundle["scripts"]
+        if (match := NESTED_FRAME_SCRIPT.match(script["path"])) is not None
+    }
     for label, span in ranges.items():
         for frame_number in range(span["start_frame"], span["end_frame"] + 1):
             frame = frames_by_number.get(frame_number)
@@ -452,7 +480,9 @@ def _merge_nested_atm_windows(
                     continue
                 placed_name = str(placement.get("name", "") or "")
                 placed_frame = int(placement.get("placed_frame", frame_number))
-                clip = parse_clip_timeline(script_bundle, character_id)
+                if character_id not in scripted_sprite_ids:
+                    continue
+                clip = parse_clip_timeline(script_bundle, character_id, frame_counts)
                 for rename in clip.get("rename_frames", []):
                     instance_name = str(rename["instance_name"])
                     if not instance_name.endswith("atm"):
@@ -612,8 +642,32 @@ def extract_launch_stop(
     }
 
 
+def _matching_brace(source: str, opening: int) -> int:
+    depth = 0
+    for index in range(opening, len(source)):
+        char = source[index]
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return index
+    raise ValueError("Unclosed projectile hit branch")
+
+
+def _brace_depth(source: str, start: int, end: int) -> int:
+    depth = 0
+    for char in source[start:end]:
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+    return depth
+
+
 def parse_projectile_motion(source: str) -> dict[str, Any] | None:
-    if "_X = _X" not in source and "_Y = _Y" not in source:
+    if ("_X = _X" not in source and "_Y = _Y" not in source
+            and PROJECTILE_PARENT_WRITE.search(source) is None):
         return None
     motion: dict[str, Any] = {}
     x_move = PROJECTILE_X.search(source)
@@ -634,10 +688,56 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
         if len(queries) != source.count('hitTest('):
             raise ValueError("Partially recognized projectile collision query")
         motion["collision_queries"] = [
-            {"receiver": receiver or "self", "target": target}
+            {"receiver": "self" if receiver in (None, "this") else receiver, "target": target}
             for receiver, target in queries
         ]
+    hit_branch = PROJECTILE_HIT_IF.search(source)
+    parent_writes = list(PROJECTILE_PARENT_WRITE.finditer(source))
+    if parent_writes and hit_branch is None:
+        raise ValueError("Projectile parent write is not guarded by hitTest")
+    hit_end = _matching_brace(source, hit_branch.end() - 1) if hit_branch else -1
+    hit_start = hit_branch.end() if hit_branch else -1
+    if any(not hit_start <= match.start() < hit_end for match in parent_writes):
+        raise ValueError("Projectile parent write occurs outside hitTest branch")
+    hit_events: list[tuple[int, dict[str, Any]]] = []
+    for match in parent_writes:
+        if _brace_depth(source, hit_start, match.start()) != 0:
+            raise ValueError("Nested projectile parent write has unsupported condition")
+        literal = match["value"]
+        value: Any = (literal == "true" if literal in ("true", "false")
+                      else float(literal) if "." in literal else int(literal))
+        event = {"op": "write", "field": match["field"], "operator": "=", "value": value}
+        hit_events.append((match.start(), event))
+    opponent_gotos = list(PROJECTILE_OPPONENT_GOTO.finditer(source))
+    if any(hit_branch is None or not hit_start <= match.start() < hit_end
+           for match in opponent_gotos):
+        raise ValueError("Projectile opponent goto occurs outside hitTest branch")
+    for opponent_goto in opponent_gotos:
+        goto = {
+            "target": "opponent",
+            "action": int(opponent_goto["action"]),
+            "label": opponent_goto["label"],
+            "play": opponent_goto["mode"] == "Play",
+        }
+        hit_events.append((opponent_goto.start(), {"op": "goto", **goto}))
+    if hit_events:
+        hit_events.sort(key=lambda item: item[0])
+        motion["on_hit_events"] = [event for _, event in hit_events]
     return motion or None
+
+
+def parse_projectile_initialization(source: str) -> dict[str, Any] | None:
+    """Parse a child clip's load callback without discarding decimal factors."""
+    match = PROJECTILE_LOAD.fullmatch(source.replace("\r\n", "\n"))
+    if match is None:
+        return None
+    result: dict[str, Any] = {
+        "initial_speed_field": "speed",
+        "initial_speed_factor": float(match["factor"] or 1),
+    }
+    if match["played"]:
+        result["initial_played"] = 0
+    return result
 
 
 def enrich_cancel_lifetimes(
@@ -721,8 +821,11 @@ def placement_character_id(
 
 
 def parse_clip_timeline(
-    script_bundle: dict[str, Any], character_id: int
+    script_bundle: dict[str, Any], character_id: int,
+    frame_counts: dict[int, int] | None = None,
 ) -> dict[str, Any]:
+    if frame_counts is not None and character_id not in frame_counts:
+        raise ValueError(f"Missing source frame_count for character {character_id}")
     stop_frames: list[dict[str, Any]] = []
     rename_frames: list[dict[str, Any]] = []
     initial_motion: dict[str, Any] = {}
@@ -755,12 +858,32 @@ def parse_clip_timeline(
     stop_frames.sort(key=lambda item: item["frame"])
     rename_frames.sort(key=lambda item: item["frame"])
     timeline: dict[str, Any] = {"character_id": character_id, **initial_motion}
+    if frame_counts is not None and character_id in frame_counts:
+        timeline["frame_count"] = int(frame_counts[character_id])
     if stop_frames:
         timeline["stop_frames"] = [item["frame"] for item in stop_frames]
         timeline["stop_sources"] = stop_frames
     if rename_frames:
         timeline["rename_frames"] = rename_frames
     return timeline
+
+
+def source_frame_counts(timeline: dict[str, Any]) -> dict[int, int]:
+    """Return source sprite frame counts and reject incomplete geometry metadata."""
+    counts: dict[int, int] = {}
+    for definition in timeline.get("definitions", []):
+        if "character_id" not in definition:
+            continue
+        character_id = int(definition["character_id"])
+        if "frame_count" not in definition:
+            continue
+        count = int(definition["frame_count"])
+        if count < 1:
+            raise ValueError(
+                f"Invalid source frame_count for character {character_id}: {count}"
+            )
+        counts[character_id] = count
+    return counts
 
 
 def contiguous_windows(frames: list[int]) -> list[dict[str, int]]:
@@ -930,6 +1053,7 @@ def build_model(
     sprite_id = int(fighter["source"]["timeline_symbol_id"])
     ranges = target_ranges(fighter)
     frames_by_number = {int(frame["frame"]): frame for frame in timeline["frames"]}
+    frame_counts = source_frame_counts(timeline)
 
     scripts = []
     for script in script_bundle["scripts"]:
@@ -969,7 +1093,7 @@ def build_model(
                 for window in contiguous_windows(named_frames[name])
             ]
     _merge_nested_atm_windows(
-        hitbox_windows, ranges, frames_by_number, script_bundle
+        hitbox_windows, ranges, frames_by_number, script_bundle, frame_counts
     )
 
     combo_labels = list(fighter["actions"]["ground_combo"])
@@ -1117,6 +1241,7 @@ def build_model(
             )
         for match in SCREEN_FLASH.finditer(script["source"]):
             color = int(match["color"]) if match["color"] else 0xFFFFFF
+            source_line = script["source"][:match.start()].count("\n") + 1
             presentation_events.append(
                 {
                     "action": script["action"],
@@ -1124,6 +1249,7 @@ def build_model(
                     "op": "screen_flash",
                     "color_rgb24": color,
                     "source_path": script["path"],
+                    "source_line": source_line,
                     "source_sha256": script["source_sha256"],
                 }
             )
@@ -1192,6 +1318,11 @@ def build_model(
     projectiles = []
     projectile_speeds: dict[tuple[int, int], float] = {}
     clip_scripts = []
+    scripted_sprite_ids = {
+        int(match["sprite"])
+        for script in script_bundle["scripts"]
+        if (match := NESTED_FRAME_SCRIPT.match(script["path"])) is not None
+    }
     for script in scripts:
         if script["kind"] != "clip_action":
             continue
@@ -1217,8 +1348,8 @@ def build_model(
                 frames_by_number, script["frame"], depth
             )
             clip_timeline = (
-                parse_clip_timeline(script_bundle, character_id)
-                if character_id is not None
+                parse_clip_timeline(script_bundle, character_id, frame_counts)
+                if character_id is not None and character_id in scripted_sprite_ids
                 else {}
             )
             projectiles.append(

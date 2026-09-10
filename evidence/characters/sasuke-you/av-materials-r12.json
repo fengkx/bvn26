@@ -1,0 +1,59 @@
+{
+  "scope": "Sasuke base WKframe=1 with You helper; current frozen runtime r12",
+  "source_capture": "evidence/characters/sasuke-you/native-probe-you-r03.events.jsonl.gz",
+  "source_event_counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "input_next_display": 710,
+    "initCtrl": 6,
+    "helper_load": 2,
+    "frame_state_enter": 72,
+    "intro_body_enter": 142,
+    "intro_body_exit": 142,
+    "frame_state_exit": 72,
+    "random": 6,
+    "intro_poll": 22,
+    "intro_poll_state": 22,
+    "state": 1058,
+    "helper_state": 1058,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "key_read": 3857,
+    "helper_spawn": 1,
+    "clock": 3,
+    "done": 1
+  },
+  "source_helper_events": [
+    {
+      "sequence": 6,
+      "display_tick": 2,
+      "fight_tick": -1,
+      "kind": "helper_load",
+      "value": "p1,鼬,you.swf"
+    },
+    {
+      "sequence": 13,
+      "display_tick": 3,
+      "fight_tick": -1,
+      "kind": "helper_load",
+      "value": "p2,魂,kon.swf"
+    },
+    {
+      "sequence": 2596,
+      "display_tick": 485,
+      "fight_tick": 15,
+      "kind": "helper_spawn",
+      "value": "p1,鼬,1,false"
+    }
+  ],
+  "production_materials": {
+    "sasuke-you-production-r12.json": 482,
+    "sasuke-you-production-r12.helpers.json": 482,
+    "sasuke-you-production-r12.presentation.json": 241
+  },
+  "comparison": "evidence/characters/sasuke-you/sasuke-you-compare-r12.json",
+  "audio_limit": "The r03 instrumentation records helper load/spawn but no direct audio event; use sound segment/source schedule evidence separately.",
+  "visual_limit": "Presentation rows are native snapshots; no Flash pixel capture was performed."
+}

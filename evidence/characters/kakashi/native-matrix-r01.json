@@ -1,0 +1,418 @@
+{
+  "format": "kakashi-native-matrix-evidence-v1",
+  "status": "native_only_not_parity",
+  "source_fighter": "卡卡西",
+  "source_id": "Sprite710",
+  "source_swf": "game/fighter/Kakashi.swf",
+  "source_swf_sha256": "48587becee990fccfd7450a1b605a24b2d654dbd15569857659f67346bddb2fc",
+  "godot": "/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+  "input_fixture_directory": "/tmp/kakashi-case-inputs-final",
+  "fixture_manifest": "/tmp/kakashi-cases-matrix-r01/paths.txt",
+  "native_results": "/tmp/kakashi-native-matrix-final/results.json",
+  "case_count": 21,
+  "executed_count": 21,
+  "target_seen_count": 15,
+  "target_not_seen_classification": {
+    "energy_negative": [
+      "kakashi-1030-zhaoHuan-energy_below",
+      "kakashi-689-bisha-energy_below",
+      "kakashi-757-bishaUP-energy_below",
+      "kakashi-863-bishaSuper-energy_below"
+    ],
+    "source_noop_no_timeline": [
+      "kakashi-missing-bishaAir-air_target"
+    ],
+    "user_deferred_form_no_timeline": [
+      "kakashi-missing-wankai-energy_below"
+    ]
+  },
+  "cases": [
+    {
+      "id": "kakashi-1030-zhaoHuan-energy_below",
+      "fixture": "kakashi-1030-zhaoHuan-energy_below.json",
+      "label": "招换",
+      "scenario": "energy_below",
+      "frames": 300,
+      "target_frames": [
+        1030,
+        1091
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": false,
+      "expectation": "source_negative_energy_gate",
+      "classification": "Source command is present, but setup energy is below the authored resource threshold; target action is correctly not entered."
+    },
+    {
+      "id": "kakashi-129-airhit-air_target",
+      "fixture": "kakashi-129-airhit-air_target.json",
+      "label": "跳砍",
+      "scenario": "air_target",
+      "frames": 300,
+      "target_frames": [
+        129,
+        155
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-156-airMagichit-air_target",
+      "fixture": "kakashi-156-airMagichit-air_target.json",
+      "label": "跳招",
+      "scenario": "air_target",
+      "frames": 300,
+      "target_frames": [
+        156,
+        192
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-193-nornalhit-dash_twice",
+      "fixture": "kakashi-193-nornalhit-dash_twice.json",
+      "label": "砍1",
+      "scenario": "dash_twice",
+      "frames": 300,
+      "target_frames": [
+        193,
+        218
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-193-nornalhit-mirror",
+      "fixture": "kakashi-193-nornalhit-mirror.json",
+      "label": "砍1",
+      "scenario": "mirror",
+      "frames": 300,
+      "target_frames": [
+        193,
+        218
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-193-nornalhit-neutral",
+      "fixture": "kakashi-193-nornalhit-neutral.json",
+      "label": "砍1",
+      "scenario": "neutral",
+      "frames": 300,
+      "target_frames": [
+        193,
+        218
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-22-rush-dash_twice",
+      "fixture": "kakashi-22-rush-dash_twice.json",
+      "label": "瞬步",
+      "scenario": "dash_twice",
+      "frames": 300,
+      "target_frames": [
+        22,
+        41
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-22-rush-neutral",
+      "fixture": "kakashi-22-rush-neutral.json",
+      "label": "瞬步",
+      "scenario": "neutral",
+      "frames": 300,
+      "target_frames": [
+        22,
+        41
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-301-skill1-guard",
+      "fixture": "kakashi-301-skill1-guard.json",
+      "label": "砍技1",
+      "scenario": "guard",
+      "frames": 300,
+      "target_frames": [
+        301,
+        354
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-42-jump-neutral",
+      "fixture": "kakashi-42-jump-neutral.json",
+      "label": "跳",
+      "scenario": "neutral",
+      "frames": 300,
+      "target_frames": [
+        42,
+        57
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-689-bisha-energy_below",
+      "fixture": "kakashi-689-bisha-energy_below.json",
+      "label": "必杀",
+      "scenario": "energy_below",
+      "frames": 300,
+      "target_frames": [
+        689,
+        756
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": false,
+      "expectation": "source_negative_energy_gate",
+      "classification": "Source command is present, but setup energy is below the authored resource threshold; target action is correctly not entered."
+    },
+    {
+      "id": "kakashi-689-bisha-energy_exact",
+      "fixture": "kakashi-689-bisha-energy_exact.json",
+      "label": "必杀",
+      "scenario": "energy_exact",
+      "frames": 300,
+      "target_frames": [
+        689,
+        756
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-689-bisha-neutral",
+      "fixture": "kakashi-689-bisha-neutral.json",
+      "label": "必杀",
+      "scenario": "neutral",
+      "frames": 300,
+      "target_frames": [
+        689,
+        756
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-74-jump-neutral",
+      "fixture": "kakashi-74-jump-neutral.json",
+      "label": "跳2",
+      "scenario": "neutral",
+      "frames": 300,
+      "target_frames": [
+        74,
+        90
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-757-bishaUP-energy_below",
+      "fixture": "kakashi-757-bishaUP-energy_below.json",
+      "label": "上必杀",
+      "scenario": "energy_below",
+      "frames": 300,
+      "target_frames": [
+        757,
+        862
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": false,
+      "expectation": "source_negative_energy_gate",
+      "classification": "Source command is present, but setup energy is below the authored resource threshold; target action is correctly not entered."
+    },
+    {
+      "id": "kakashi-757-bishaUP-energy_exact",
+      "fixture": "kakashi-757-bishaUP-energy_exact.json",
+      "label": "上必杀",
+      "scenario": "energy_exact",
+      "frames": 300,
+      "target_frames": [
+        757,
+        862
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-863-bishaSuper-dash_twice",
+      "fixture": "kakashi-863-bishaSuper-dash_twice.json",
+      "label": "超必杀",
+      "scenario": "dash_twice",
+      "frames": 300,
+      "target_frames": [
+        863,
+        920
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-863-bishaSuper-energy_below",
+      "fixture": "kakashi-863-bishaSuper-energy_below.json",
+      "label": "超必杀",
+      "scenario": "energy_below",
+      "frames": 300,
+      "target_frames": [
+        863,
+        920
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": false,
+      "expectation": "source_negative_energy_gate",
+      "classification": "Source command is present, but setup energy is below the authored resource threshold; target action is correctly not entered."
+    },
+    {
+      "id": "kakashi-863-bishaSuper-energy_exact",
+      "fixture": "kakashi-863-bishaSuper-energy_exact.json",
+      "label": "超必杀",
+      "scenario": "energy_exact",
+      "frames": 300,
+      "target_frames": [
+        863,
+        920
+      ],
+      "has_source_timeline": true,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": true,
+      "expectation": "source_target_window",
+      "classification": "Source timeline and target window are present; native trace entered the expected source window."
+    },
+    {
+      "id": "kakashi-missing-bishaAir-air_target",
+      "fixture": "kakashi-missing-bishaAir-air_target.json",
+      "label": "空中必杀",
+      "scenario": "air_target",
+      "frames": 300,
+      "target_frames": [
+        null,
+        null
+      ],
+      "has_source_timeline": false,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": false,
+      "expectation": "source_noop_no_timeline",
+      "classification": "The source controller may dispatch the predicate, but the base-form source has no bishaAir timeline label; this is a source no-op with a null target window."
+    },
+    {
+      "id": "kakashi-missing-wankai-energy_below",
+      "fixture": "kakashi-missing-wankai-energy_below.json",
+      "label": "万解",
+      "scenario": "energy_below",
+      "frames": 300,
+      "target_frames": [
+        null,
+        null
+      ],
+      "has_source_timeline": false,
+      "native_states": 602,
+      "executed": true,
+      "target_seen": false,
+      "expectation": "user_deferred_form_no_timeline",
+      "classification": "The source has no wankai timeline in this base-form slice; the transformed-form entry is deferred by task scope and has a null target window."
+    }
+  ],
+  "original_capture_manifest": "/tmp/kakashi-original-cases-r01/paths.txt",
+  "original_capture_case_count": 20,
+  "original_capture_case_groups": {
+    "native_target_positive": [
+      "kakashi-129-airhit-air_target",
+      "kakashi-156-airMagichit-air_target",
+      "kakashi-193-nornalhit-dash_twice",
+      "kakashi-193-nornalhit-mirror",
+      "kakashi-193-nornalhit-neutral",
+      "kakashi-22-rush-dash_twice",
+      "kakashi-22-rush-neutral",
+      "kakashi-301-skill1-guard",
+      "kakashi-42-jump-neutral",
+      "kakashi-689-bisha-energy_exact",
+      "kakashi-689-bisha-neutral",
+      "kakashi-74-jump-neutral",
+      "kakashi-757-bishaUP-energy_exact",
+      "kakashi-863-bishaSuper-dash_twice",
+      "kakashi-863-bishaSuper-energy_exact"
+    ],
+    "native_energy_negative": [
+      "kakashi-1030-zhaoHuan-energy_below",
+      "kakashi-689-bisha-energy_below",
+      "kakashi-757-bishaUP-energy_below",
+      "kakashi-863-bishaSuper-energy_below"
+    ],
+    "super_nohit": [
+      "kakashi-863-super-down-special-nohit"
+    ]
+  }
+}

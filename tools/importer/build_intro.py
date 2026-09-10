@@ -87,7 +87,11 @@ def build(workspace, output, jar):
                                 '-format', 'shape:png', '-export', 'shape', str(tmp / name), 'game/main.swf'], check=True, stdout=subprocess.DEVNULL)
             for d in shapes:
                 shutil.copyfile(tmp / name / (str(d['character_id']) + '.png'), output / name / ('shape-%s.png' % d['character_id']))
-        for name in ['minren', 'yihu', 'rifagu']:
+        # The selector now exposes the three source-backed base forms added to
+        # this slice. Compile each opening from its own root timeline and
+        # kcplayed callbacks; the runtime must never borrow another fighter's
+        # state-frame map.
+        for name in ['minren', 'yihu', 'rifagu', 'sasuke', 'kakashi', 'renji']:
             folder = Path('godot/generated/fighters') / name
             fighter = json.loads((folder / 'fighter.json').read_text())
             timeline = json.loads((folder / 'timeline.json').read_text())

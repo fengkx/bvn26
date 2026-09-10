@@ -1,6 +1,8 @@
 class_name HelperRuntime
 extends TimelinePreview
 
+const HelperClipCallbackScript = preload("res://helper_clip_callback.gd")
+
 signal effect_requested(clip_name: String, source_position: Vector2, source_facing: int, offset_y: float)
 
 @export var helper_directory: String
@@ -18,6 +20,7 @@ var source_action: Variant = null
 
 var _combat: Dictionary
 var _events_applied: Dictionary = {}
+var _nested_callbacks: Dictionary = {}
 var _callback_registry: SourceCallbackRegistry
 var _frame_registration: int = 0
 
@@ -26,12 +29,16 @@ func bind_source_frames(registry: SourceCallbackRegistry, placed_tick: int) -> v
 	unbind_source_frames()
 	_callback_registry = registry
 	_frame_registration = registry.register(self, "enter_frame", placed_tick)
+	_sync_nested_callbacks()
 
 
 func unbind_source_frames() -> void:
 	if _callback_registry != null:
 		_callback_registry.unregister(_frame_registration)
-	_callback_registry = null
+		for record: Dictionary in _nested_callbacks.values():
+			_callback_registry.unregister(int(record["registration"]))
+		_nested_callbacks.clear()
+		_callback_registry = null
 	_frame_registration = 0
 
 
@@ -60,6 +67,7 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 	timeline_playing = true
 	visible = true
 	_events_applied.clear()
+	_clear_nested_callbacks()
 	_reset_preview_offsets()
 	position = Vector2(float(spawn.get("x", -200.0)), float(spawn.get("y", -200.0)))
 	set_facing(int(spawn.get("facing", 1)))
@@ -73,6 +81,7 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 func deactivate() -> void:
 	# Source frame_1 parks the clip at (-200, -200) and stop().
 	attacking = false
+	_clear_nested_callbacks()
 	# main frame_8 removeFZ explicitly clears mc.动作.
 	source_action = 0
 	bs = 0
@@ -91,9 +100,13 @@ func advance_timeline() -> void:
 		deactivate()
 		return
 	play_source_frame(current_source_frame() + 1)
+	_sync_nested_callbacks()
 
 
 func enter_frame() -> void:
+	# The source callback registry advances on every display tick, including
+	# parked helpers. A child placed on this tick therefore registers for the
+	# next tick rather than firing during the placement dispatch.
 	if not attacking:
 		return
 	_apply_frame_events()
@@ -192,6 +205,10 @@ func _apply_frame_events() -> void:
 	for event: Dictionary in _combat.get("clip_load_events", []):
 		if int(event["frame"]) == frame:
 			_aim_placed_clip(event)
+	for event: Dictionary in _combat.get("position_events", []):
+		if int(event.get("frame", -1)) == frame and event.get("op") == "aim_opponent_x":
+			if is_instance_valid(owner_fighter) and is_instance_valid(owner_fighter.opponent):
+				position.x = owner_fighter.opponent.position.x
 	for event: Dictionary in _combat.get("drain_events", []):
 		if int(event["frame"]) != current_source_frame():
 			continue
@@ -213,6 +230,84 @@ func _apply_frame_events() -> void:
 			_:
 				if runtime != null:
 					runtime.apply(event, owner_fighter, owner_fighter.opponent, owner_fighter.super_helpers)
+
+
+func run_nested_clip_callback(event: Dictionary) -> void:
+	if owner_fighter == null or not is_instance_valid(owner_fighter.opponent):
+		return
+	var body := owner_fighter.opponent.instance_global_bounds("bdmn")
+	if not body.has_area():
+		return
+	var clip := _contact_clip_bounds(event)
+	if not clip.has_area() or not SourceHitTest.intersects(body, clip):
+		return
+	play_source_frame(int(event["target_frame"]))
+	timeline_playing = bool(event.get("play", true))
+	_apply_frame_events()
+	_sync_nested_callbacks()
+	last_event = "helper_goto_%s" % str(event.get("target_label", event["target_frame"]))
+
+
+func _sync_nested_callbacks() -> void:
+	if _callback_registry == null:
+		return
+	if not attacking or not _frames.has(current_source_frame()):
+		_clear_nested_callbacks()
+		return
+	var wanted: Dictionary = {}
+	for placement: Dictionary in _frames[current_source_frame()]["display_list"]:
+		if placement.get("clip_actions", []).is_empty():
+			continue
+		for event: Dictionary in _combat.get("contact_gotos", []):
+			if int(event.get("character_id", -1)) != int(placement.get("character_id", -2)):
+				continue
+			if int(event.get("depth", -1)) != int(placement.get("depth", -2)):
+				continue
+			if int(event.get("placed_frame", event.get("frame", -1))) != int(placement.get("placed_frame", -2)):
+				continue
+			var key := "%d:%d:%d:%s:%s" % [int(placement.get("depth", -1)),
+				int(placement.get("character_id", -1)), int(placement.get("placed_frame", -1)),
+				str(event.get("source_path", "")), str(event.get("source_sha256", ""))]
+			wanted[key] = event
+	for key in _nested_callbacks.keys():
+		if wanted.has(key):
+			continue
+		_callback_registry.unregister(int(_nested_callbacks[key]["registration"]))
+		_nested_callbacks.erase(key)
+	for key: String in wanted:
+		if _nested_callbacks.has(key):
+			continue
+		var callback = HelperClipCallbackScript.new()
+		callback.owner = self
+		callback.event = wanted[key]
+		_nested_callbacks[key] = {
+			"callback": callback,
+			# A newly placed clip receives enterFrame starting on the next display tick.
+			"registration": _callback_registry.register(callback, "enter_frame", _callback_registry.registration_tick()),
+		}
+
+
+func _clear_nested_callbacks() -> void:
+	if _callback_registry == null:
+		_nested_callbacks.clear()
+		return
+	for record: Dictionary in _nested_callbacks.values():
+		_callback_registry.unregister(int(record["registration"]))
+	_nested_callbacks.clear()
+
+
+func _contact_clip_bounds(event: Dictionary) -> Rect2:
+	if not _frames.has(current_source_frame()):
+		return Rect2()
+	for placement: Dictionary in _frames[current_source_frame()]["display_list"]:
+		if int(placement.get("character_id", -1)) != int(event.get("character_id", -2)):
+			continue
+		if int(placement.get("depth", -1)) != int(event.get("depth", -2)):
+			continue
+		if int(placement.get("placed_frame", -1)) != int(event.get("placed_frame", event.get("frame", -2))):
+			continue
+		return _transform_rect(global_transform, _rooted_placement_bounds(placement))
+	return Rect2()
 
 
 func _aim_placed_clip(event: Dictionary) -> void:

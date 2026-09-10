@@ -1,0 +1,42 @@
+Web export and browser smoke (2026-09-10, r02)
+
+Export command:
+  /tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --export-release Web /private/tmp/bvn-renji-web/index.html
+
+Result:
+  exit 0
+  /private/tmp/bvn-renji-web/index.html
+  /private/tmp/bvn-renji-web/index.js
+  /private/tmp/bvn-renji-web/index.wasm
+  /private/tmp/bvn-renji-web/index.pck
+  The only ERROR lines were the existing macOS editor-settings save warning; no
+  SCRIPT ERROR, generated-resource parse error, or export failure was emitted.
+
+Native expanded-selection strict gate:
+  /tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot -s res://tests/expanded_selection_smoke.gd
+  exit 0; EXPANDED_SELECTION_SMOKE_OK; strict scan found no SCRIPT ERROR,
+  Parse JSON failed, Cannot parse generated, or Assertion failed.
+  This covers Vs Human Sasuke/Renji with Itachi/Kon and Vs Com Kakashi/Renji
+  with Gaara/Itachi, including map entry and both driver paths.
+
+Browser check:
+  A temporary HTTP server served http://127.0.0.1:8060/ from the r02 export
+  directory. The Codex in-app browser loaded the package and reported Godot
+  4.7.2, WebGL 2.0, single-threaded Emscripten, and M0_BOOT_OK
+  {"display_server":"web","physics_hz":30}; no browser console errors or
+  warnings were observed. Physical canvas codes KeyJ/KeyD/KeyA were required
+  (plain text key names are not equivalent).
+
+  Real selection observations after reload:
+    * KeyJ entered fighter selection. KeyD reached 佐助 and showed his large
+      portrait and footer 宇智波·佐助.
+    * KeyA navigation reached 恋次 and showed his large portrait and footer
+      阿散井·恋次; the same check passed for 鸣人.
+    * KeyJ entered helper selection. KeyD navigation reached 鼬 and showed
+      his portrait and footer 宇智波·鼬.
+    * KeyJ progressed to map selection; no SCRIPT ERROR or resource parse
+      error was observed in the browser run.
+
+  Browser full combat movement/action, pause/return, and reselect remain
+  outside this evidence entry; native expanded-selection and production
+  move-case evidence cover those paths separately.

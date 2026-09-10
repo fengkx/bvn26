@@ -231,7 +231,6 @@ func goto_ai_label(label: String, play: bool) -> void:
 	_expire_absent_hit_instances()
 	last_event = "action_%s" % label
 
-
 func _set_ai_action_label(label: String) -> void:
 	var frames := action_range(label)
 	assert(not frames.is_empty(), "Uncompiled CPU frame label: " + label)
@@ -372,7 +371,6 @@ func run_frame_actions(drain_nested: bool = true, initial_limit: int = -1) -> vo
 	if drain_nested:
 		_apply_ai_source_frame()
 
-
 func flush_queued_frame_scripts(limit: int = -1) -> void:
 	_apply_ai_source_frame(false, limit)
 
@@ -382,7 +380,8 @@ func _run_frame_actions() -> void:
 	_apply_summon_event()
 	_apply_presentation_events()
 	_apply_clip_placements()
-	_apply_body_warps()
+	if not ai_timeline_controlled and source_body == null:
+		_apply_body_warps()
 	_chase_displayed_health()
 	if not _hurt_stop_applied and current_source_frame() == _action_stop_frame():
 		timeline_playing = false
@@ -849,6 +848,10 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 				elif event.get("op") == "energy_delta":
 					energy += float(event["delta"])
 					_energy_event_applied = true
+				elif event.get("op") == "body_warp":
+					_apply_body_warp_event(event)
+				elif event.get("op") == "screen_flash":
+					screen_flash_requested.emit(int(event.get("color_rgb24", 0xFFFFFF)))
 				else:
 					assert(not ai_frame_service_requested.get_connections().is_empty(), "Unconnected CPU frame service")
 					ai_frame_service_requested.emit(event)
@@ -1249,7 +1252,20 @@ func run_projectile_callback(projectile: Dictionary) -> bool:
 	var instance_name := str(projectile["instance_name"])
 	var speed := float(_combat["movement"]["speed_per_tick"])
 	var jumped_hit := false
-	if _projectile_blocked(instance_name, projectile):
+	var blocked := _projectile_blocked(instance_name, projectile)
+	if blocked:
+		# Child ClipActions run in source order after their collision query. Their
+		# writes target the owning fighter timeline, while an authored opponent
+		# goto is conditional on the opponent's source action field.
+		for event: Dictionary in projectile.get("on_hit_events", []):
+			match str(event.get("op", "")):
+				"write":
+					ai_source_state.apply_write(event)
+				"goto":
+					if opponent != null and is_instance_valid(opponent):
+						if opponent.ai_source_state.read_field("动作") == int(event["action"]):
+							opponent.goto_ai_label(str(event["label"]), bool(event["play"]))
+				_: assert(false, "Uncompiled projectile hit event")
 		if projectile.has("on_hit_goto_frame") and not _clip_past_hit(
 			instance_name, projectile
 		):
@@ -1257,6 +1273,9 @@ func run_projectile_callback(projectile: Dictionary) -> bool:
 				instance_name, int(projectile["on_hit_goto_frame"]), true
 			)
 			jumped_hit = true
+		# A hit write or opponent goto does not block this child clip's natural
+		# advance. Only a source-authored child goto is a child timeline jump.
+		return jumped_hit
 	else:
 		var offset := instance_local_offset(instance_name)
 		var step := float(projectile.get("initial_speed",
@@ -1450,6 +1469,22 @@ func _apply_presentation_events() -> void:
 		var event: Dictionary = _combat["presentation_events"][index]
 		if event["action"] != action or int(event["frame"]) != current_source_frame():
 			continue
+		# AI/source-body timelines execute root DoAction calls from frame_calls.
+		# The combat presentation index contains the same authored root shine for
+		# visual lookup, so consume it only once while retaining child-clip shines
+		# whose source path is not present in the root frame call list.
+		if event.get("op") == "screen_flash" and (ai_timeline_controlled or source_body != null):
+			var duplicate_root_flash := false
+			for call: Dictionary in ai_source_state.spec.get("frame_calls", {}).get(str(current_source_frame()), []):
+				if call.get("op") != "screen_flash":
+					continue
+				if (str(call.get("path", "")) == str(event.get("source_path", ""))
+					and int(call.get("line", -1)) == int(event.get("source_line", -2))
+					and int(call.get("color_rgb24", 0xFFFFFF)) == int(event.get("color_rgb24", 0xFFFFFF))):
+					duplicate_root_flash = true
+					break
+			if duplicate_root_flash:
+				continue
 		var event_key := "%s:%d:%d" % [action, current_source_frame(), index]
 		if _presentation_events_applied.has(event_key):
 			continue
@@ -1471,32 +1506,47 @@ func _apply_body_warps() -> void:
 			continue
 		if str(event.get("op", "")) != "warp_to_opponent":
 			continue
-		var event_key := "%s:%d" % [action, current_source_frame()]
-		if _body_warps_applied.has(event_key):
-			continue
-		var branch: Dictionary = event
-		if event.has("xscale_gt_0"):
-			branch = event["xscale_gt_0"] if facing > 0 else event["xscale_lt_0"]
-			if branch.has("set_facing"):
-				set_facing(int(branch["set_facing"]))
-		var body := opponent.instance_global_bounds("bdmn")
-		var body_size := body.size if body.has_area() else Vector2.ZERO
-		if bool(event.get("place_x", true)):
-			source_x = (
-				opponent.source_x
-				+ float(branch.get("x_pixels", 0.0))
-				+ body_size.x * float(branch.get("x_bdmn_width", 0.0))
-			)
-		if bool(event.get("place_y", false)):
-			source_y = (
-				opponent.source_y
-				+ float(event.get("y_pixels", 0.0))
-				+ body_size.y * float(event.get("y_bdmn_height", 0.0))
-			)
-		if bool(event.get("set_jump", false)):
-			_scripted_jump = true
-			airborne = true
-		_body_warps_applied[event_key] = true
+		_apply_body_warp_event(event)
+
+
+func _apply_body_warp_event(event: Dictionary) -> void:
+	if opponent == null or not is_instance_valid(opponent):
+		return
+	var warp: Dictionary = event.get("warp", event)
+	if str(warp.get("op", "")) != "warp_to_opponent":
+		return
+	var event_key := str(event.get("path", "%s:%d" % [action, current_source_frame()]))
+	if event.has("frame"):
+		event_key += ":%d" % int(event["frame"])
+	if _body_warps_applied.has(event_key):
+		return
+	var branch: Dictionary = warp
+	if warp.has("xscale_gt_0"):
+		branch = warp["xscale_gt_0"] if facing > 0 else warp["xscale_lt_0"]
+	if branch.has("set_facing"):
+		set_facing(int(branch["set_facing"]))
+	# Source `_x = opponent._x - opponent.mc.bdmn._width * 1.7`
+	# reads the clip's local width. Global bounds include the scene scale and
+	# would shrink the source-authored container warp before applying it to
+	# source_x coordinates.
+	var body := opponent.instance_local_bounds("bdmn")
+	var body_size := body.size if body.has_area() else Vector2.ZERO
+	if bool(warp.get("place_x", true)):
+		source_x = (
+			opponent.source_x
+			+ float(branch.get("x_pixels", 0.0))
+			+ body_size.x * float(branch.get("x_bdmn_width", 0.0))
+		)
+	if bool(warp.get("place_y", false)):
+		source_y = (
+			opponent.source_y
+			+ float(warp.get("y_pixels", 0.0))
+			+ body_size.y * float(warp.get("y_bdmn_height", 0.0))
+		)
+	if bool(warp.get("set_jump", false)):
+		_scripted_jump = true
+		airborne = true
+	_body_warps_applied[event_key] = true
 
 
 func _apply_clip_placements() -> void:

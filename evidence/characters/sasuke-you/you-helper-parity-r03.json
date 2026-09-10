@@ -1,0 +1,104 @@
+{
+  "status": "matched",
+  "scope": "Sasuke base WKframe=1 with p1 helper you (display name 鼬); p2 helper kon",
+  "source_capture": "evidence/characters/sasuke-you/native-probe-you-r03.events.jsonl.gz",
+  "production_replay": "evidence/characters/sasuke-you/sasuke-you-production-r03.json",
+  "comparison": "evidence/characters/sasuke-you/sasuke-you-compare-r03.json",
+  "source_states": 482,
+  "native_states": 482,
+  "fields_compared": [
+    "frame",
+    "x",
+    "y",
+    "xscale",
+    "action",
+    "hp",
+    "ql",
+    "sw",
+    "touch",
+    "touchFloor",
+    "hits",
+    "paused",
+    "hstm",
+    "hurtSkling"
+  ],
+  "differences": [],
+  "source_hashes": {
+    "game/fighter/fz/you.swf": "a00ed19723373b43b347f802a13c822eae21662d2a85b38336fdba9eb641f604",
+    "scripts/fighter/fz/you.json": "6f2b9c27fa900866d91fb1dced55c7d8efb73c7b250e60413032ecf98d92f9ca"
+  },
+  "helper_observations": [
+    {
+      "fight_tick": 62,
+      "source_frame": 48,
+      "native_frame": 48,
+      "source_x": 280.0,
+      "native_x": 280.0
+    },
+    {
+      "fight_tick": 63,
+      "source_frame": 92,
+      "native_frame": 92,
+      "source_x": 350.0,
+      "native_x": 350.0
+    },
+    {
+      "fight_tick": 94,
+      "source_frame": 123,
+      "native_frame": 123,
+      "source_x": 350.0,
+      "native_x": 350.0
+    },
+    {
+      "fight_tick": 95,
+      "source_frame": 124,
+      "native_frame": 124,
+      "source_x": 350.0,
+      "native_x": 350.0
+    },
+    {
+      "fight_tick": 96,
+      "source_frame": 125,
+      "native_frame": 125,
+      "source_x": 350.0,
+      "native_x": 350.0
+    }
+  ],
+  "fighter_pause_observations": [
+    {
+      "fight_tick": 94,
+      "source_frame": 5,
+      "native_frame": 5,
+      "source_paused": true,
+      "native_paused": true
+    },
+    {
+      "fight_tick": 95,
+      "source_frame": 6,
+      "native_frame": 6,
+      "source_paused": true,
+      "native_paused": true
+    },
+    {
+      "fight_tick": 96,
+      "source_frame": 7,
+      "native_frame": 7,
+      "source_paused": false,
+      "native_paused": false
+    },
+    {
+      "fight_tick": 125,
+      "source_frame": 1,
+      "native_frame": 1,
+      "source_paused": false,
+      "native_paused": false
+    }
+  ],
+  "limits": [
+    "The source capture is the immutable r03 Flash trace; r11 is the production replay compared against it.",
+    "This verifies fighter/helper state fields and callback boundary observations; direct Flash audio and full presentation pixel parity remain separate checks."
+  ],
+  "current_replay": "evidence/characters/sasuke-you/sasuke-you-production-r12.json",
+  "current_comparison": "evidence/characters/sasuke-you/sasuke-you-compare-r12.json",
+  "current_replay_result": "matched 482/482"
+}

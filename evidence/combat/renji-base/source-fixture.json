@@ -1,0 +1,59 @@
+{
+  "fighter_id": "恋次",
+  "display_name": "阿散井·恋次",
+  "form_frame": 1,
+  "timeline_symbol_id": 717,
+  "timeline_frame_count": 1192,
+  "source_swf": {
+    "path": "game/fighter/Renji.swf",
+    "sha256": "7505e9591f46ba1d05bb03fff9450d52583804022a08ba3bb7a0ecfb21cb116a"
+  },
+  "actions": {
+    "站立": [1, 9],
+    "走": [10, 19],
+    "瞬步": [20, 39],
+    "跳": [40, 55],
+    "落": [56, 71],
+    "跳2": [72, 88],
+    "落2": [89, 114],
+    "落地": [115, 126],
+    "跳砍": [127, 142],
+    "跳招": [143, 172],
+    "砍1": [173, 191],
+    "砍2": [192, 214],
+    "砍3": [215, 244],
+    "砍技1": [245, 309],
+    "砍技2": [310, 345],
+    "招1": [346, 382],
+    "招2": [383, 452],
+    "招3": [453, 501],
+    "必杀": [502, 585],
+    "上必杀": [586, 676],
+    "超必杀": [677, 882],
+    "招换": [883, 944],
+    "防御": [945, 945],
+    "防御2": [946, 956],
+    "防住": [957, 968],
+    "被打": [969, 981],
+    "击飞": [982, 993],
+    "击落地": [994, 1032],
+    "起身": [1033, 1052],
+    "开场": [1053, 1132],
+    "胜利": [1133, 1162],
+    "失败": [1163, 1192]
+  },
+  "super_events": [
+    {"action": "必杀", "frame": 506, "op": "super_start", "kind": "bsd", "face_label": "恋次1"},
+    {"action": "必杀", "frame": 539, "op": "super_end", "kind": "bsw"},
+    {"action": "上必杀", "frame": 592, "op": "super_start", "kind": "bsd", "face_label": "恋次2"},
+    {"action": "上必杀", "frame": 624, "op": "super_end", "kind": "bsw"},
+    {"action": "超必杀", "frame": 680, "op": "super_start", "kind": "cbsd", "face_label": "恋次3"},
+    {"action": "超必杀", "frame": 834, "op": "super_end", "kind": "cbsw"}
+  ],
+  "hit_lifecycle": {
+    "hits_reset_frame": 2,
+    "on_be_hit": [[970, false], [983, true]],
+    "hurt_stop_frame": 975,
+    "knockdown_stop_frame": 1008
+  }
+}

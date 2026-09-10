@@ -2,6 +2,14 @@
 
 Input WAVs must be exported from the retained SWF by the pinned JPEXS tool.
 The original timeline and MP3 assets remain unchanged.
+
+``pos44`` is an index in a 44,100 Hz sample domain, independent of the
+DefineSound sample rate.  ``build`` therefore resamples before calling
+``segment``.  Between envelope records Flash's envelope signal linearly
+interpolates each channel; before the first record and after the last record
+it holds the nearest authored level.  The latter two cases also match the
+player-side envelope state used by Ruffle when its endpoint is outside the
+authored range.
 """
 import argparse
 from array import array
@@ -17,19 +25,42 @@ import wave
 def segment(samples, channels, event):
     if event.get('sync_stop') or event.get('loop_count'):
         raise ValueError('Stop/loop sound events require separate lifecycle handling')
-    envelope = event.get('envelope', [])
-    if len(envelope) > 1 or (envelope and envelope[0]['pos44'] != 0):
-        raise ValueError('Dynamic envelopes require source interpolation support')
-    levels = envelope[0] if envelope else {'left_level': 32768, 'right_level': 32768}
+    # The SWF SOUNDENVELOPE positions are always expressed in 44.1 kHz
+    # samples. ``build`` normalizes decoded PCM to this rate before here.
+    envelope = sorted(event.get('envelope', []), key=lambda item: int(item['pos44']))
+    positions = [int(item['pos44']) for item in envelope]
+    if len(positions) != len(set(positions)):
+        raise ValueError('SOUNDINFO envelope positions must be unique')
+    if any(position < 0 for position in positions):
+        raise ValueError('SOUNDINFO envelope positions must be non-negative')
     start = int(event.get('in_point', 0))
     end = min(int(event.get('out_point', len(samples) // channels)), len(samples) // channels)
     if not 0 <= start < end:
         raise ValueError('Invalid source sound range')
     result = array('h')
     for index in range(start, end):
+        if not envelope:
+            left_level = right_level = 32768
+        elif index <= positions[0]:
+            left_level = envelope[0]['left_level']
+            right_level = envelope[0]['right_level']
+        elif index >= positions[-1]:
+            left_level = envelope[-1]['left_level']
+            right_level = envelope[-1]['right_level']
+        else:
+            right = next(cursor for cursor, position in enumerate(positions[1:], 1)
+                         if index <= position)
+            left = right - 1
+            span = positions[right] - positions[left]
+            fraction = (index - positions[left]) / span
+            left_level = envelope[left]['left_level'] + fraction * (
+                envelope[right]['left_level'] - envelope[left]['left_level'])
+            right_level = envelope[left]['right_level'] + fraction * (
+                envelope[right]['right_level'] - envelope[left]['right_level'])
         for channel, key in enumerate(['left_level', 'right_level']):
             sample = samples[index * channels + (channel if channels == 2 else 0)]
-            result.append(round(sample * levels[key] / 32768))
+            level = left_level if key == 'left_level' else right_level
+            result.append(round(sample * level / 32768))
     return result, start, end
 
 

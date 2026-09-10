@@ -66,7 +66,10 @@ def build(workspace, temporary, output, jar, names):
     template = next(t for t in tags if t.get('characterID') == '670')
     catalog = json.loads((ROOT / 'manifest.json').read_text())['fighter_catalog']
     footer = {}
-    footer_names = list(dict.fromkeys(names + ['魂', '我爱罗']))
+    # Keep footer text source-built for every helper exposed by the shared
+    # selector. The third helper is an in-scope base roster entry; omitting it
+    # leaves a valid card with a blank selected-name label.
+    footer_names = list(dict.fromkeys(names + ['魂', '我爱罗', '鼬']))
     ids = []
     for index, name in enumerate(footer_names):
         sid, tid = 8000 + index * 2, 8001 + index * 2

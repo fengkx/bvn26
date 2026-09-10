@@ -1,0 +1,37 @@
+{
+  "fighter": "卡卡西",
+  "form": "base",
+  "source_sprite": 710,
+  "capture_fixture": "/tmp/kakashi-cases-r01/kakashi-863-super-down-special.json",
+  "capture_build": "/tmp/bvn-kakashi-super-probe-r02",
+  "required_source_frames": [864, 887, 900],
+  "source_expectations": {
+    "864": {
+      "frame_write": {"field": "Cbshit", "value": false},
+      "energy_delta": -300.0
+    },
+    "887": {
+      "projectile": "cbs1atm",
+      "on_hit_writes": [{"field": "Cbshit", "operator": "=", "value": true}],
+      "on_hit_goto": {"target": "opponent", "action": 2, "label": "被打", "play": true}
+    },
+    "900": {
+      "condition": {"field": "Cbshit", "operator": "eq", "value": true},
+      "goto": {"label": "超必杀2", "play": false},
+      "then_play": true
+    }
+  },
+  "native_fields_to_extract": [
+    "p1.frame",
+    "p1.action",
+    "p1.energy",
+    "p2.frame",
+    "p2.action",
+    "p2.hp"
+  ],
+  "runtime_control_pairs": [
+    {"case": "hit", "opponent_source_action": 2, "expect": {"Cbshit": true, "opponent_action": "被打"}},
+    {"case": "no_matching_hit_state", "opponent_source_action": 0, "expect": {"Cbshit": true, "opponent_action": "站立"}}
+  ],
+  "acceptance": "Original capture reaches 864/887 and the 900 conditional branch via 899->921; do not claim parity until production replay reports a first_difference or matched result."
+}

@@ -529,3 +529,14 @@ uses updateWins. Source option and timeout traces, targeted native checks and
 100 Python tests pass. See [rendering evidence](../evidence/config/rendering/README.md)
 for final Web results and limits. Full Flash raster equivalence, high-DPI
 performance budgets and cross-browser coverage remain unaccepted; no deployment.
+
+### Renji base-form expansion (2026-09-10)
+
+阿散井·恋次基础形态已按 `game/fighter/Renji.swf` 的 Sprite 717 源时间轴导入，万解/转换入口按用户要求继续禁用。54 个源驱动 360 帧案例均有原版固定输入 capture；最终统一冻结 hash 的 native 复跑为 54/54、每案 722/722 状态匹配。另有 124 个 300 帧 native-only 扩展案，仅用于边界执行，不并入原版 parity。Web 真实输入已验证恋次选人、移动、普通攻击、暂停恢复、必杀黑底演出、返回标题及再次选人；原版同位置截图、逐像素和音频事件计数仍未验收，故不关闭全角色或 M6 条目。详见 [Renji parity audit](../evidence/combat/renji-base/original-parity-audit-r03.json) 与 [Renji Web evidence](../evidence/combat/renji-base/web-audiovisual-r03.md)。
+
+
+### Expanded base roster integration status (2026-09-10)
+
+The source-driven selection registry now exposes six base-form fighters (`鸣人`, `一护`, `日番谷`, `佐助`, `卡卡西`, `恋次`) and three helpers (`鼬`, `魂`, `我爱罗`); transformation and second-form entries remain unavailable. Sasuke's normal 722-state production comparison and You helper's 482-state comparison are matched. Kakashi has 21 native cases executed: 15 source targets observed, four energy-negative cases, and two source-scope/null-label boundaries; this is not 21 move targets accepted. Renji's final frozen 54-case, 360-frame native rerun is in progress; the separate 124-case native-only expansion used 300-frame fixtures and is excluded from original-player parity. See [Sasuke/You evidence](../evidence/characters/sasuke-you/), [Kakashi evidence](../evidence/characters/kakashi/), and [Renji audit](../evidence/combat/renji-base/original-parity-audit-r03.json).
+
+The Web selector and combat path have been exercised for the newly registered roster, including portrait/name rendering, entry, movement, attack, pause/resume and return/reselect flows. Original-player same-position screenshots, exact pixel comparison and per-event audio counts remain open, and the locked Flash window prevents the remaining audiovisual captures. M6 remains pending until those boundaries and the per-character acceptance records are complete.

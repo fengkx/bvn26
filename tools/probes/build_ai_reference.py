@@ -88,7 +88,7 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     output.mkdir(parents=True)
@@ -120,8 +120,29 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
     bootstrap = bootstrap.replace("__GAME_URI__", game.as_uri())
     bootstrap = bootstrap.replace('p1selt = "鸣人";', 'p1selt = ' + quoted(p1_character) + ';')
     bootstrap = bootstrap.replace('p2selt = "一护";', 'p2selt = ' + quoted(p2_character) + ';')
+    helper_display_names = {"woailuo": "我爱罗", "kon": "魂", "you": "鼬"}
+    if p1_helper is not None:
+        if p1_helper not in helper_display_names:
+            raise ValueError("Unknown p1 helper: " + p1_helper)
+        bootstrap = re.sub(r'p1sf = "[^"]*";', 'p1sf = ' + quoted(helper_display_names[p1_helper]) + ';', bootstrap)
+    if p2_helper is not None:
+        if p2_helper not in helper_display_names:
+            raise ValueError("Unknown p2 helper: " + p2_helper)
+        bootstrap = re.sub(r'p2sf = "[^"]*";', 'p2sf = ' + quoted(helper_display_names[p2_helper]) + ';', bootstrap)
+    if p1_helper is not None or p2_helper is not None:
+        bootstrap = '''_root.aiHelperState = function(player)
+{
+   var f = _root.game[player + "fz"];
+   var m = f;
+   _root.aiEvent("helper_state", player + "," + m._currentframe + "," + _root.aiNumber(f._x) + "," + _root.aiNumber(f._y) + "," + _root.aiNumber(f._xscale) + "," + m.attacking + "," + m.动作 + "," + m.hits + "," + f.atm1._currentframe + "," + f.atm2._currentframe + "," + f.atm3._currentframe);
+};
+''' + bootstrap
+        bootstrap = bootstrap.replace('      aiState("p1");', '      aiState("p1");\n      aiHelperState("p1");')
+        bootstrap = bootstrap.replace('      aiState("p2");', '      aiState("p2");\n      aiHelperState("p2");')
     if helper_probe:
-        helper_name = {"woailuo": "我爱罗", "kon": "魂"}[helper_probe]
+        if p1_helper is not None or p2_helper is not None:
+            raise ValueError("helper_probe cannot be combined with explicit helper selection")
+        helper_name = helper_display_names[helper_probe]
         bootstrap = bootstrap.replace('p1sf = "我爱罗";', 'p1sf = ' + quoted(helper_name) + ';')
         bootstrap = re.sub(r'   if\(aiFight >= \d+ && aiFight < \d+\) aiHeld\[\w\] = true;\n', '', bootstrap)
         fixture = (Path(__file__).parent / "as2/ai_reference/helper.as").read_text()
@@ -272,7 +293,11 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         bootstrap = bootstrap.replace('fixed samples; cancel AI interval', 'fixed samples; cancel AI interval; walking instance created first')
     hooks, battle = bootstrap.split("_root.aiHeld = {};", 1)
     battle = "_root.aiHeld = {};" + battle
-    for name in ("main", *fighter_sources, "fighter/fz/kon", "fighter/fz/woailuo"):
+    helper_sources = {"fighter/fz/kon", "fighter/fz/woailuo"}
+    for helper in (p1_helper, p2_helper):
+        if helper is not None:
+            helper_sources.add("fighter/fz/" + helper)
+    for name in ("main", *fighter_sources, *sorted(helper_sources)):
         bundle_path = ROOT / f"scripts/{name}.json"
         bundle = json.loads(bundle_path.read_text())
         input_swf = ROOT / bundle["game_file"]
@@ -284,6 +309,30 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         for script in bundle["scripts"]:
             original = script["source"]
             updated = instrument(original, name + "#" + script["path"], name != "main")
+            if (p1_helper is not None or p2_helper is not None) and name == "main":
+                if script["path"] == "DefineSprite_1900/frame_1/DoAction.as":
+                    updated, count = re.subn(
+                        r'(function loadfz\([^)]*\)\s*\{)',
+                        lambda m: m[1] + '\n_root.aiEvent("helper_load", pr + "," + _root[pr + "sf"] + "," + _root.getFighterData(_root[pr + "sf"]).fzurl);',
+                        updated,
+                    )
+                    if count != 1:
+                        raise ValueError("Missing helper loadfz hook")
+                if script["path"] == "frame_8/DoAction.as":
+                    updated, count = re.subn(
+                        r'(function yfgj\([^)]*\)\s*\{)',
+                        lambda m: m[1] + '\n_root.aiEvent("helper_spawn", nam + "," + _root[nam + "sf"] + "," + _root.game[nam + "fz"]._currentframe + "," + _root.game[nam + "fz"].attacking);',
+                        updated,
+                    )
+                    if count != 1:
+                        raise ValueError("Missing helper yfgj hook")
+                    updated, count = re.subn(
+                        r'(function removeFZ\([^)]*\)\s*\{)',
+                        lambda m: m[1] + '\n_root.aiEvent("helper_remove", String(mc) + "," + mc._currentframe + "," + mc.attacking + "," + mc.hits);',
+                        updated,
+                    )
+                    if count != 1:
+                        raise ValueError("Missing helper removeFZ hook")
             if mode_probe and name == "main" and script["path"] == "DefineSprite_1991/frame_1/DoAction.as":
                 updated, count = re.subn(r'(function zdbx\(\)\s*\{)',
                     lambda m: m[1] + '\n   _root.aiEvent("training_recovery", "enter");', updated)
@@ -424,7 +473,9 @@ _root.aiFixtureLoader.load(__CASE_URI__);
     report = {
         "run_id": run_id, "status": "built_not_run", "frames_after_ready": frames,
         "configuration": {"modo": mode_probe or 2, "p1": p1_character, "p2": p2_character, "p2cpu": mode_probe is None,
-                          "AI": 5, "stage": "现世", "p1sf": "魂" if helper_probe == "kon" else "我爱罗", "p2sf": "我爱罗" if hurt_summon_probe else "魂"},
+                          "AI": 5, "stage": "现世",
+                          "p1sf": helper_display_names[p1_helper] if p1_helper else ("魂" if helper_probe == "kon" else "我爱罗"),
+                          "p2sf": helper_display_names[p2_helper] if p2_helper else ("我爱罗" if hurt_summon_probe else "魂")},
         "sources_sha256": sources, "ffdec_sha256": sha(ffdec),
         "outputs_sha256": {p.relative_to(output).as_posix(): sha(p) for p in game.rglob("*.swf")},
         "instrumentation_sha256": sha(output / "instrumentation.diff"),
@@ -450,6 +501,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "schedule_probe": schedule_probe,
         "hurt_summon_probe": hurt_summon_probe,
         "shadow_probe": shadow_probe,
+        "p1_helper": p1_helper,
+        "p2_helper": p2_helper,
         "input_injection": "body_kis_alias_with_per_read_trace",
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
@@ -485,10 +538,12 @@ def main() -> None:
     parser.add_argument("--shadow-probe", action="store_true")
     parser.add_argument("--p1-character", default="鸣人")
     parser.add_argument("--p2-character", default="一护")
+    parser.add_argument("--p1-helper", choices=["woailuo", "kon", "you"])
+    parser.add_argument("--p2-helper", choices=["woailuo", "kon", "you"])
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper), ensure_ascii=False))
 
 
 if __name__ == "__main__":

@@ -245,7 +245,7 @@ def compile_source(source: str, *, player: bool = False) -> str:
     return header + PRELUDE + keys + ''.join(compile_function(name, *funcs[name], player=player) for name in NAMES)
 
 
-def controller_script(bundle: dict, sprite: int | None = None) -> dict:
+def controller_aliases(bundle: dict, sprite: int | None = None) -> list[dict]:
     if sprite is None:
         loads = [re.match(r'frame_1/PlaceObject[23]_(\d+)_1/', s['path'])
                  for s in bundle['scripts']]
@@ -260,9 +260,18 @@ def controller_script(bundle: dict, sprite: int | None = None) -> dict:
                   and int(m[1]) in placed
                   and 'function gameRunning()' in s['source']
                   and 'function moveLeft()' in s['source']]
-    if len(candidates) != 1:
-        raise ValueError(f'Expected one placed input controller, got {len(candidates)}')
-    return candidates[0]
+    if not candidates:
+        raise ValueError(f'Expected at least one placed input controller, got {len(candidates)}')
+    source_hashes = {hashlib.sha256(candidate['source'].encode()).hexdigest()
+                     for candidate in candidates}
+    if len(source_hashes) != 1:
+        raise ValueError('Placed input controllers do not share one exact source hash')
+    return sorted(candidates, key=lambda candidate: candidate['path'])
+
+
+def controller_script(bundle: dict, sprite: int | None = None) -> dict:
+    """Return the canonical first source-identical controller alias."""
+    return controller_aliases(bundle, sprite)[0]
 
 
 def main() -> None:

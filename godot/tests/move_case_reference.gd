@@ -4,6 +4,7 @@ var game
 var fixture: Dictionary
 var mode: int
 var rows: Array = []
+var helper_rows: Array = []
 var presentation_rows: Array = []
 var recovery_events: Dictionary = {}
 
@@ -25,6 +26,7 @@ func _run() -> void:
 
 func _run_case(fixture_path: String, output_path: String) -> void:
 	rows = []
+	helper_rows = []
 	presentation_rows = []
 	recovery_events = {}
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(fixture_path))
@@ -42,7 +44,20 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 					found = label
 			assert(not found.is_empty())
 			names.append(found)
-		game._replace_selected_actors(names, ["我爱罗", "魂"])
+		var helpers := ["我爱罗", "魂"]
+		for index in 2:
+			var key := "p%d_helper" % (index + 1)
+			if not fixture.has(key):
+				continue
+			var requested := str(fixture[key])
+			var helper_name := ""
+			for display_name in game.character_selection.available.helpers:
+				if display_name == requested or str(game.character_selection.available.helpers[display_name]) == requested:
+					helper_name = display_name
+					break
+			assert(not helper_name.is_empty(), "Unknown helper: " + requested)
+			helpers[index] = helper_name
+		game._replace_selected_actors(names, helpers)
 		game._load_selected_stage("现世")
 	game._enter_current_fight(mode)
 	for tick in 700:
@@ -56,6 +71,7 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 			_observe(tick)
 			return false)
 	FileAccess.open(output_path, FileAccess.WRITE).store_string(JSON.stringify(rows, "", true, true))
+	FileAccess.open(output_path + ".helpers.json", FileAccess.WRITE).store_string(JSON.stringify(helper_rows, "", true, true))
 	FileAccess.open(output_path + ".presentation.json", FileAccess.WRITE).store_string(JSON.stringify(presentation_rows, "", true, true))
 	game._goto_menu()
 	game.queue_free()
@@ -78,6 +94,11 @@ func _observe(tick: int) -> void:
 			"touchFloor": actor.ai_source_state.read_field("touchFloor"), "hits": actor.hits,
 			"paused": actor.root_zhanting, "hstm": actor.ai_source_state.read_field("hstm"),
 			"hurtSkling": actor.ai_source_state.read_field("hurtSkling")})
+	for helper in [game.naruto_helper, game.ichigo_helper]:
+		helper_rows.append({"tick": tick, "slot": "p1" if helper == game.naruto_helper else "p2",
+			"frame": helper.current_source_frame(), "x": helper.position.x, "y": helper.position.y,
+			"facing": helper.facing, "attacking": helper.attacking,
+			"action": helper.source_action})
 	var bindings := {
 		"p1": {"up": KEY_W, "down": KEY_S, "left": KEY_A, "right": KEY_D,
 			"attack": KEY_J, "jump": KEY_K, "dash": KEY_L, "ranged": KEY_U, "special": KEY_I, "summon": KEY_O},

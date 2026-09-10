@@ -10,12 +10,14 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from compile_ai_predicates import controller_script
 from compile_hit_receive import root_position_writes
+from build_combat_model import parse_body_warp
 
 ROOT=Path(__file__).resolve().parents[2]
 FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitBan',
         'dashQL','dashing','dashX','dashY','dashF','hurtSkling','hstm','wdFrame','wdFrameX',
         'wudi','beida','hited','hits','time','bs','airBody','speed','spd','jumpPower','fall',
-        'htx','yup','tdtime','hitNear','_lastX','_initwudi','jhp','bdzl','inited','_lastvoice','_dievoicen'}
+        'htx','yup','tdtime','hitNear','_lastX','_initwudi','jhp','bdzl','inited','_lastvoice','_dievoicen',
+        'Cbshit'}
 FUNCTION=re.compile(r'^function (\w+)\([^\n]*\)\r?\n\{.*?^\}',re.M|re.S)
 ASSIGN=re.compile(r'^(?:var )?(\w+) = (-?\d+(?:\.\d+)?|true|false);$')
 DECLARE=re.compile(r'^var (\w+);$')
@@ -47,13 +49,28 @@ def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
         r'if\(_root\.game\["p" \+ pn\]\.mc\.hp > (-?\d+) && '
         r'_root\.game\["p" \+ pn\]\.mc\.动作 == (-?\d+)\)\s*'
         r'\{\s*gotoAnd(Play|Stop)\("([^"\n]+)"\);\s*play\(\);\s*\}\s*', text)
-    if not match:
-        return []
+    if match:
+        conditions = [{'field': 'opponent_hp', 'operator': 'gt', 'value': int(match[1])},
+                      {'field': 'opponent_action', 'operator': 'eq', 'value': int(match[2])}]
+        calls = [{'op': 'timeline_goto', 'label': match[4], 'play': match[3] == 'Play'},
+                 {'op': 'timeline_play'}]
+    else:
+        state = re.fullmatch(
+            r'if\((\w+)\s*==\s*(true|false|-?\d+(?:\.\d+)?)\)\s*'
+            r'\{\s*gotoAnd(Play|Stop)\("([^"]+)"\);\s*play\(\);\s*\}\s*', text)
+        if not state or state[1] not in FIELDS:
+            return []
+        literal = state[2]
+        value = (literal == 'true' if literal in ('true', 'false')
+                 else float(literal) if '.' in literal else int(literal))
+        # Conditions consume the same named source-state field API as ordinary
+        # predicates; the host resolves it from AiSourceState rather than
+        # inventing a separate role-specific branch.
+        conditions = [{'field': state[1], 'operator': 'eq', 'value': value}]
+        calls = [{'op': 'timeline_goto', 'label': state[4], 'play': state[3] == 'Play'},
+                 {'op': 'timeline_play'}]
     return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
-             'conditions': [{'field': 'opponent_hp', 'operator': 'gt', 'value': int(match[1])},
-                            {'field': 'opponent_action', 'operator': 'eq', 'value': int(match[2])}],
-             'calls': [{'op': 'timeline_goto', 'label': match[4], 'play': match[3] == 'Play'},
-                       {'op': 'timeline_play'}]}]
+             'conditions': conditions, 'calls': calls}]
 
 
 def inline_frame_function(source: str, path: str, frame: int) -> list[dict]:
@@ -166,6 +183,21 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             raise ValueError('Uncompiled conditional frame jump: ' + path)
         calls.extend({'op': 'root_position', 'path': path, 'frame': frame['frame'], **write}
                      for write in root_position_writes(text))
+        # Keep root container warps on the source frame-script FIFO.  A child
+        # callback may jump to another label before this root DoAction is
+        # drained; consuming the event by its queued source frame preserves
+        # the authored order without tying scheduling to a combat field.
+        if frame['frame'] != 1:
+            warp = parse_body_warp(text)
+            if warp is not None:
+                warp_line = next(
+                    (number for number, line in enumerate(
+                        text.replace('\r\n', '\n').splitlines(), 1)
+                     if '_parent._xscale' in line or '_parent._x =' in line or '_parent._y =' in line),
+                    1,
+                )
+                calls.append({'op': 'body_warp', 'warp': warp, 'path': path,
+                              'line': warp_line, 'frame': frame['frame']})
         for number,line in enumerate(text.replace('\r\n','\n').splitlines(),1):
             match=re.fullmatch(r'_root\.(bsd|cbsd|bsw|cbsw)\(pn\);',line)
             face=re.fullmatch(r'_root\.showFace\(pn,"([^"]+)"\);',line)
@@ -178,6 +210,9 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif line == '_root.touchFloorEffect(_parent);':
                 calls.append({**root_child_effect('touchFloorEffect'), 'path': path,
                               'line': number, 'frame': frame['frame']})
+            elif re.fullmatch(r'_root\.shine\(\);', line):
+                calls.append({'op': 'screen_flash', 'color_rgb24': 0xFFFFFF,
+                              'path': path, 'line': number, 'frame': frame['frame']})
             elif energy:
                 calls.append({'op':'energy_delta','delta':float(energy[2]) * (1 if energy[1]=='+' else -1),
                               'path':path,'line':number,'frame':frame['frame']})

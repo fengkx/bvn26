@@ -27,6 +27,11 @@ GJL_ASSIGN = re.compile(
     r"gjl\.(?P<name>[A-Za-z0-9_]+?)(?P<suffix>pw|zl|up|x|tm|dz)\s*=\s*(?P<value>[^;]+);"
 )
 ROOT_FRAME = re.compile(r"^frame_(?P<frame>\d+)/")
+CONTACT_GOTO = re.compile(
+    r"onClipEvent\(enterFrame\)\{\s*"
+    r"if\(this\.hitTest\(_root\.game\[\"p\" \+ _parent\.pn\]\.mc\.bdmn\)\)\s*"
+    r"\{\s*_parent\.gotoAnd(?P<mode>Play|Stop)\(\"(?P<label>[^\"]+)\"\);\s*\}\s*\}\s*"
+)
 ENERGY_DRAIN = re.compile(
     r'_root\.game\["p" \+ pn\]\.mc\.ql\s*-=\s*(?P<value>\d+(?:\.\d+)?)'
 )
@@ -56,7 +61,25 @@ def extract_attacks(source: str) -> dict[str, dict[str, Any]]:
     return attacks
 
 
-def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str, Any]:
+def _source_label_frames(timeline_path: Path, swf_path: Path) -> dict[str, int]:
+    """Resolve labels only from an explicitly supplied, hash-bound timeline."""
+    if not timeline_path.is_file():
+        return {}
+    timeline = json.loads(timeline_path.read_text(encoding="utf-8"))
+    source_swf = timeline.get("source_swf", {})
+    if source_swf.get("path") != swf_path.as_posix():
+        raise ValueError(f"Timeline source does not match helper SWF: {timeline_path}")
+    if source_swf.get("sha256") != hashlib.sha256(swf_path.read_bytes()).hexdigest():
+        raise ValueError(f"Timeline source hash does not match helper SWF: {timeline_path}")
+    return {
+        label: int(frame["frame"])
+        for frame in timeline.get("frames", [])
+        for label in frame.get("labels", [])
+    }
+
+
+def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
+                timeline_path: Path | None = None) -> dict[str, Any]:
     bundle = json.loads(scripts_path.read_text(encoding="utf-8"))
     swf = inspect(swf_path)
     attacks: dict[str, dict[str, Any]] = {}
@@ -66,7 +89,10 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str,
     presentation_events = []
     clip_load_events = []
     action_events = []
+    position_events = []
+    contact_gotos = []
     nested_stops = []
+    label_frames = _source_label_frames(timeline_path, swf_path) if timeline_path else {}
     for script in bundle["scripts"]:
         record = {
             "path": script["path"],
@@ -86,6 +112,36 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str,
             for assignment in re.finditer(r'^动作 = (-?\d+);\r?$', script["source"], re.M):
                 action_events.append({"frame": frame, "value": int(assignment[1]),
                                       "source_path": script["path"], "source_sha256": record["source_sha256"]})
+            if script["source"].strip() == '_X = _parent["p" + pn]._x;':
+                position_events.append({
+                    "frame": frame,
+                    "op": "aim_opponent_x",
+                    "source_path": script["path"],
+                    "source_sha256": record["source_sha256"],
+                })
+        placement = re.fullmatch(
+            r"frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD "
+            r"onClipEvent\(enterFrame\)\.as", script["path"]
+        )
+        if placement:
+            contact = CONTACT_GOTO.fullmatch(script["source"].strip())
+            if contact:
+                label = contact["label"]
+                if label not in label_frames:
+                    raise ValueError(
+                        f"Helper contact goto requires an explicit timeline label {label!r}: {script['path']}"
+                    )
+                contact_gotos.append({
+                    "frame": frame,
+                    "placed_frame": frame,
+                    "character_id": int(placement[2]),
+                    "depth": int(placement[3]),
+                    "target_frame": label_frames[label],
+                    "target_label": label,
+                    "play": contact["mode"] == "Play",
+                    "source_path": script["path"],
+                    "source_sha256": record["source_sha256"],
+                })
         if script["path"].endswith("frame_1/DoAction.as"):
             attacks.update(extract_attacks(script["source"]))
         source = script["source"]
@@ -134,6 +190,8 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str) -> dict[str,
         "hide_frames": sorted(set(hide_frames)),
         "nested_stops": nested_stops,
         "action_events": sorted(action_events, key=lambda event: event["frame"]),
+        "position_events": sorted(position_events, key=lambda event: event["frame"]),
+        "contact_gotos": sorted(contact_gotos, key=lambda event: event["frame"]),
         "attacks": attacks,
         "presentation_events": sorted(presentation_events, key=lambda event: event["frame"]),
         "clip_load_events": clip_load_events,
@@ -147,9 +205,11 @@ def main() -> None:
     parser.add_argument("--scripts", type=Path, required=True)
     parser.add_argument("--swf", type=Path, required=True)
     parser.add_argument("--helper-id", required=True)
+    parser.add_argument("--timeline", type=Path,
+                        help="Explicit hash-bound root timeline export for resolving labels")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    model = build_model(args.scripts, args.swf, args.helper_id)
+    model = build_model(args.scripts, args.swf, args.helper_id, args.timeline)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

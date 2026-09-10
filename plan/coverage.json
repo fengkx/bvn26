@@ -1,6 +1,6 @@
 {
   "format": "bvn26-coverage-v1",
-  "note": "配置包含形态和援助，不等于可选角色数。布尔值表示逐项验收通过，不表示代码或素材存在；两角色、两援助、十图及菜单已有局部产物，见 docs/STATUS.md，完整运行对照尚未通过。",
+  "note": "配置包含形态和援助，不等于可选角色数。布尔值表示逐项验收通过，不表示代码或素材存在；佐助、卡卡西、恋次基础形态与鼬援助已接入源驱动选人/开场，均保留 partial 边界。恋次54案最终冻结runtime复跑与视听/浏览器验收仍待完成；万解/转换按用户要求暂缓。",
   "fighters": [
     {
       "id": "日番谷",
@@ -38,14 +38,26 @@
       "assist_source": null,
       "clone_of": null,
       "WKframe": null,
-      "status": "not_started",
+      "status": "partial",
       "source_available": true,
       "animation": false,
       "combat": false,
       "transform": false,
       "ai": false,
       "replay": false,
-      "web": false
+      "web": false,
+      "evidence": {
+        "source_audit": "evidence/combat/renji-base/README.md",
+        "original_parity": "evidence/combat/renji-base/original-parity-audit-r03.json",
+    "candidate_matrix": "54/54 source/native state comparisons matched at 722/722 under the final frozen runtime hash; 124 native-only 300-frame expansion cases are excluded",
+        "web_smoke": "evidence/combat/renji-base/web-audiovisual-r03.md",
+        "unaccepted": [
+          "pixel-level original-player comparison",
+          "browser audio event count",
+          "full audiovisual parity",
+          "Bankai/transformation (deferred)"
+        ]
+      }
     },
     {
       "id": "露其雅",
@@ -218,14 +230,21 @@
       "assist_source": null,
       "clone_of": null,
       "WKframe": null,
-      "status": "not_started",
+      "status": "partial",
       "source_available": true,
       "animation": false,
       "combat": false,
       "transform": false,
       "ai": false,
       "replay": false,
-      "web": false
+      "web": false,
+      "evidence": {
+        "source_audit": "evidence/characters/sasuke-you/source-audit.md",
+        "original_parity": "evidence/characters/sasuke-you/sasuke-you-compare-r03.json",
+        "production_normal": "722/722 matched",
+        "web_smoke": "source-driven selection and combat entry exercised",
+        "unaccepted": ["full move matrix", "original-player audiovisual comparison", "transformation (deferred)"]
+      }
     },
     {
       "id": "佐助咒怨",
@@ -263,14 +282,21 @@
       "assist_source": null,
       "clone_of": null,
       "WKframe": null,
-      "status": "not_started",
+      "status": "partial",
       "source_available": true,
       "animation": false,
       "combat": false,
       "transform": false,
       "ai": false,
       "replay": false,
-      "web": false
+      "web": false,
+      "evidence": {
+        "source_audit": "evidence/characters/kakashi/native-matrix-r01.json",
+        "original_parity": "evidence/characters/kakashi/original-matrix-r01.md",
+        "native_matrix": "21 executed: 15 source targets, 4 energy-negative cases, 2 source-scope/null-label boundaries",
+        "production_normal": "722/722 matched",
+        "unaccepted": ["remaining original-player matrix", "full audiovisual comparison", "transformation (deferred)"]
+      }
     },
     {
       "id": "剑心",
@@ -443,14 +469,20 @@
       "assist_source": "you.swf",
       "clone_of": null,
       "WKframe": null,
-      "status": "not_started",
+      "status": "partial",
       "source_available": true,
       "animation": false,
       "combat": false,
       "transform": false,
       "ai": false,
       "replay": false,
-      "web": false
+      "web": false,
+      "evidence": {
+        "source_audit": "evidence/characters/sasuke-you/source-audit.md",
+        "original_parity": "evidence/characters/sasuke-you/you-helper-parity-r03.json",
+        "production_normal": "482/482 matched",
+        "unaccepted": ["full helper lifecycle matrix", "original-player audiovisual comparison"]
+      }
     },
     {
       "id": "大蛇丸",

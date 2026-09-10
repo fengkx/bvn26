@@ -31,6 +31,12 @@ func read_field(key: String) -> Variant:
 		"opponent_helper_action": return helper_action
 		"attran", "defran", "goran", "jumpran", "bisharan", "touchFloor", "canhit", "sw", "speed", "jumpPower", "jumped", "fall", "khit", "touch":
 			return fighter.ai_source_state.read_field(key)
+	# Source conditions may refer to a field declared by this timeline (for
+	# example Cbshit). Keep the lookup generic so new source fields do not need
+	# role-specific branches in the runtime.
+		_:
+			if fighter.ai_source_state.values.has(key):
+				return fighter.ai_source_state.read_field(key)
 	assert(false, "Unmapped AI field: " + key)
 	return null
 

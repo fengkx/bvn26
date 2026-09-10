@@ -12,6 +12,59 @@ from extract_timeline_geometry import extract_frames, file_sha256
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def _runtime_slug(entry: dict, *, helper: bool) -> str | None:
+    source = entry.get("fzurl" if helper else "url")
+    return Path(source).stem.lower() if source else None
+
+
+def _artifact_ready(directory: Path, required: tuple[str, ...]) -> bool:
+    return all((directory / path).is_file() for path in required)
+
+
+def build_available(root: Path = ROOT) -> dict[str, dict[str, str]]:
+    """Publish only source catalog entries with complete native artifacts.
+
+    Selection cards remain source-defined in ``selection.json``. This separate
+    registry is derived from the same manifest and the generated artifact
+    contract, so hand-added cards cannot silently become selectable before
+    their runtime/controller files exist. The current main scene uses the
+    player controller for both P2-human and P2-CPU dispatch; AI controller
+    artifacts remain optional for this selector contract and are checked by
+    the dedicated CPU tests where present.
+    """
+    catalog = json.loads((root / "manifest.json").read_text(encoding="utf-8"))["fighter_catalog"]
+    fighter_required = (
+        "fighter.json", "timeline.json", "combat.json", "assets.json", "ai.json",
+        "hurt_voice.json", "ai_hit_state.gd",
+        "player_controller/body.gd", "player_controller/body.json",
+        "player_controller/controller.gd", "player_controller/predicates.gd",
+    )
+    helper_required = ("timeline.json", "combat.json", "assets.json")
+    available = {"fighters": {}, "helpers": {}}
+    for kind, helper in (("fighters", False), ("helpers", True)):
+        base = root / "godot/generated/helpers" if helper else root / "godot/generated/fighters"
+        for name, entry in catalog.items():
+            if not helper and "WKframe" in entry:
+                continue
+            slug = _runtime_slug(entry, helper=helper)
+            if slug is None:
+                continue
+            directory = base / slug
+            required = helper_required if helper else fighter_required
+            if not _artifact_ready(directory, required):
+                continue
+            if helper:
+                model = json.loads((directory / "combat.json").read_text(encoding="utf-8"))
+                if model.get("helper_id") != name:
+                    continue
+            else:
+                model = json.loads((directory / "fighter.json").read_text(encoding="utf-8"))
+                if model.get("fighter_id") != name or int(model.get("form_frame", 0)) != 1:
+                    continue
+            available[kind][name] = slug
+    return available
+
+
 def build(workspace: Path, output: Path) -> dict:
     xml = workspace / "main.xml"
     report = json.loads((workspace / "export-report.json").read_text())
@@ -68,6 +121,9 @@ def build(workspace: Path, output: Path) -> dict:
     runtime_output = ROOT / "godot/generated/main/character_selection/selection.json"
     runtime_output.parent.mkdir(parents=True, exist_ok=True)
     runtime_output.write_text(json.dumps(runtime, ensure_ascii=False, indent=2) + "\n")
+    (runtime_output.parent / "available.json").write_text(
+        json.dumps(build_available(), ensure_ascii=False, indent=2) + "\n"
+    )
     return result
 
 

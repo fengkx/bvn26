@@ -73,7 +73,7 @@ class Projectile extends RefCounted:
 	func enter_frame() -> void:
 		var host: AiControllerHost = host_ref.get_ref()
 		if not model.get("frame_only", false) and not host.fighter.root_zhanting:
-			if host.fighter.run_projectile_callback(model):
+			if host.fighter.run_projectile_callback(model) and model.has("on_hit_goto_frame"):
 				queue_frame_script(int(model["on_hit_goto_frame"]))
 			host.fighter.refresh_display()
 		# Natural child frames execute at the child's registration, before older

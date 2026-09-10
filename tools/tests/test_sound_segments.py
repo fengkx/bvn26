@@ -19,9 +19,75 @@ class SoundSegmentTests(unittest.TestCase):
         self.assertEqual((start, end), (1, 4))
         self.assertEqual(list(result), [200, 100, 300, 150, 400, 200])
 
-    def test_unsupported_envelopes_are_not_silently_flattened(self):
-        with self.assertRaisesRegex(ValueError, 'Dynamic envelopes'):
-            segment(array('h', [100]), 1, {'envelope': [{'pos44': 1}]})
+    def test_dynamic_envelope_interpolates_each_channel(self):
+        pcm = array('h', [100] * 5)
+        result, start, end = segment(pcm, 1, {
+            'envelope': [
+                {'pos44': 0, 'left_level': 0, 'right_level': 32768},
+                {'pos44': 4, 'left_level': 32768, 'right_level': 0},
+            ],
+            'in_point': 0,
+            'out_point': 5,
+        })
+        self.assertEqual((start, end), (0, 5))
+        self.assertEqual(list(result), [0, 100, 25, 75, 50, 50, 75, 25, 100, 0])
+
+    def test_dynamic_envelope_holds_first_and_last_levels_outside_points(self):
+        pcm = array('h', [100] * 5)
+        result, _, _ = segment(pcm, 1, {
+            'envelope': [
+                {'pos44': 2, 'left_level': 16384, 'right_level': 8192},
+                {'pos44': 4, 'left_level': 32768, 'right_level': 16384},
+            ],
+            'in_point': 0,
+            'out_point': 5,
+        })
+        self.assertEqual(list(result), [50, 25, 50, 25, 50, 25, 75, 38, 100, 50])
+
+    def test_duplicate_envelope_positions_are_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'positions must be unique'):
+            segment(array('h', [100]), 1, {'envelope': [
+                {'pos44': 0, 'left_level': 1, 'right_level': 1},
+                {'pos44': 0, 'left_level': 2, 'right_level': 2},
+            ]})
+
+    def test_original_renji_frame_21_sound_38_dynamic_envelope(self):
+        timeline = json.loads(
+            (ROOT / 'godot/generated/fighters/renji/timeline.json').read_text())
+        event = next(event for frame in timeline['frames'] if frame['frame'] == 21
+                     for event in frame.get('events', [])
+                     if event.get('type') == 'start_sound' and event['sound_id'] == 38)
+        self.assertEqual(event['envelope'], [
+            {'pos44': 0, 'left_level': 16532, 'right_level': 15646},
+            {'pos44': 33366, 'left_level': 0, 'right_level': 0},
+        ])
+        result, start, end = segment(array('h', [1000]) * 33367, 1, event)
+        self.assertEqual((start, end), (0, 33367))
+        self.assertEqual(list(result[:2]), [505, 477])
+        self.assertEqual(list(result[-2:]), [0, 0])
+
+    def test_dynamic_envelope_and_nonzero_in_point_use_same_source_index(self):
+        timeline = json.loads(
+            (ROOT / 'godot/generated/fighters/renji/timeline.json').read_text())
+        source_event = next(event for frame in timeline['frames'] if frame['frame'] == 21
+                            for event in frame.get('events', [])
+                            if event.get('type') == 'start_sound' and event['sound_id'] == 38)
+        event = dict(source_event, in_point=10, out_point=33367)
+        result, start, end = segment(array('h', [1000]) * 33367, 1, event)
+        self.assertEqual((start, end), (10, 33367))
+        self.assertEqual(len(result), (33367 - 10) * 2)
+        self.assertEqual(list(result[:2]), [504, 477])
+
+    def test_original_nonzero_in_point_is_applied_before_envelope(self):
+        timeline = json.loads(
+            (ROOT / 'godot/generated/fighters/rifagu/timeline.json').read_text())
+        event = next(event for frame in timeline['frames'] if frame['frame'] == 253
+                     for event in frame.get('events', [])
+                     if event.get('type') == 'start_sound' and event['sound_id'] == 150)
+        result, start, end = segment(array('h', [1000]) * 36864, 1, event)
+        self.assertEqual((start, end), (4400, 36864))
+        self.assertEqual(len(result), (36864 - 4400) * 2)
+        self.assertEqual(list(result[:2]), [488, 498])
 
     def test_original_rifagu_sound_150_has_exact_authored_length(self):
         directory = ROOT / 'godot/generated/fighters/rifagu'
