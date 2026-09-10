@@ -5,10 +5,11 @@ retained ordinary BVN 2.6 `rifagu` base Sprite 638 against Ichigo, with original
 player key reads verified and Godot using the same fixture. Production remains
 native Godot; the Flash player is an analysis oracle only.
 
-**Verdict: not accepted.** Two summon timing cases remain different; Bankai
-is deferred. The completed 167-case matrix has 150 exercised matching cases,
-4 matching energy-negative cases, 11 matching source-missing-label no-ops and
-2 differences. All 167 originals are retained; no native-only result is counted.
+**Verdict: full acceptance still pending.** The current 167-case matrix has
+152 exercised matching cases, 4 matching energy-negative cases and 11 matching
+source-missing-label no-ops, with no state differences. All 167 originals are
+retained; no native-only result is counted. Bankai remains deferred. Full
+visual/audio and additional geometry/browser boundaries below are still open.
 
 ## Observed behavior
 
@@ -19,7 +20,8 @@ threshold variants. Each completed case compares 602 actor observations over
 invulnerability, contact, hit counts, pause and hurt state. Presentation-enabled
 variants additionally compare 301 root X/Y observations exactly.
 
-[matrix/coverage.json](matrix/coverage.json) is the final fixed-input matrix.
+[helper-registry/matrix/coverage.json](helper-registry/matrix/coverage.json) is the current fixed-input matrix.
+The older `matrix/` retains the pre-repair failures.
 The earlier matrix-snapshot directory remains a historical progress snapshot.
 Originals and old failing native results remain alongside current comparisons.
 Native-only rows do not pass.
@@ -58,22 +60,18 @@ no character-specific movement or hit rule is added.
 
 ## Remaining acceptance boundary
 
-Two summon scenarios fail against the final runtime:
-
-- `rifagu-813-zhaoHuan-air_target`: at tick 30, P2 reaches Y=-25 and marks
-  landing while the original remains paused at Y=-32 without ground contact.
-- `rifagu-813-zhaoHuan-held`: at tick 115, P2 is at source frame 1 while
-  the original is at frame 2.
-
-A global helper-frame reorder fixed the airborne case but regressed guard,
-repeated dash and held summon, so it was reverted. The exact helper/controller
-instance order needs an original callback trace; see the
-[failed source gate and rejected experiment](helper-frame-source-first.md).
-No failing input tape or comparison threshold was modified.
+The two former summon failures are repaired using the original global instance
+order. Helper frame scripts settle after newer action clips and before older
+fighter BODY callbacks. Registering the retained helper roots with the shared
+registry fixes air-target pause/landing and held-summon frame timing without
+reordering all callbacks. The fresh original trace, red history, 167-case
+recomparison, cross-mode checks and matching Web replay hashes are retained in
+[helper-registry/README.md](helper-registry/README.md). The earlier global reorder
+remains rejected; no input tape or comparison threshold was changed.
 
 
 The 22 source cancel windows have 88 explicit before/start/end/after obligations;
-[69 calibrated root-input cases](cancel-input/coverage.json) now match 41,538
+[69 calibrated root-input cases](helper-registry/cancel-input/coverage.json) now match 41,538
 actor and 20,769 root-position observations exactly. These are root-input phase
 results; ordinary held-input coverage does not establish all callback edges. Full visual
 pixel comparison, audio waveform comparison, browser lifecycle and all geometry

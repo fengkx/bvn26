@@ -482,3 +482,8 @@ Bankai is deferred at the user's request. The 167-case base-form matrix has reta
 ### Hitsugaya aerial-U bitmap boundary (2026-09-10)
 
 The recovery-frame rectangular ice fragment was reproduced without a map. Shape 107's curved bitmap fill was incorrectly reduced to its AABB. The extractor and shared renderer now preserve its boundary; the complete frame-154 ice remains intact. Native red/green pixel regression and 91 Python tests pass. This fixes a rendering defect and does not close base-form behavior or original-player pixel parity acceptance. See [evidence](../evidence/visual-audio/bitmap-shape-clip/README.md).
+
+
+### Hitsugaya helper scheduling alignment (2026-09-10)
+
+Original callback instrumentation locates retained helper root frame settlement between newer action clips and older fighter BODY callbacks. Helpers now participate in the existing global registry, fixing both remaining summon timing differences. The 167-case matrix has 152 exercised matches, 4 energy-negative matches and 11 source-missing-label matches, with no state differences; all 69 calibrated cancel-input cases still match. PvP/training comparisons, teardown/reentry and 93 Python tests pass. Both summon scenarios also produce byte-identical 602-row state outputs in Chromium WebGL and native Godot. The production Web package is rebuilt. Full visual/audio, additional geometry/callback boundaries and browser focus recovery remain unaccepted; Bankai remains deferred. See [evidence](../evidence/combat/rifagu-base/helper-registry/README.md).

@@ -24,4 +24,11 @@ is introduced. Standalone helper tests may still call enter_frame directly.
 ## Verification
 
 - Air-target and held-summon each match all 602 actor snapshots after this change.
-- Full matrix, cross-mode and lifecycle results are added below after completion.
+- All 167 retained matrix cases match: 152 exercised, 4 energy-negative, 11 source-missing-label. See `matrix/coverage.json`. The old `../matrix` retains both failing summon cases.
+
+- All 69 retained root-input cancel cases still match 41,538 actor and 20,769 root-position observations; see `cancel-input/coverage.json`.
+- PvP and training each retain all 602 source actor matches. Match teardown/reentry passes `SHARED_MODE_LIFECYCLE_SMOKE_OK`.
+- 93 Python tests pass, including the recorded source callback ordering invariant.
+- Chromium WebGL replays both summon fixtures through an isolated main-scene adapter of the existing move-case runner. Each full 602-row JSON output has the same SHA-256 as the matching native output (`web-log.json`, `web-comparison.json`, `web-replay.gd`). This verifies the tested state fields in Web; it does not certify browser focus recovery or visual/audio parity.
+
+- Final source integrity, handoff and contract checks pass. `runtime-hashes.json` identifies the checked source; the production Web export completed successfully.

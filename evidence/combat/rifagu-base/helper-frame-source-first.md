@@ -1,6 +1,6 @@
 # Helper ordering: acceptance failure and rejected experiment
 
-Status: **unaccepted**. All experimental helper scheduling changes were reverted.
+Historical status: **rejected experiment**. The later source-traced repair is recorded in [helper-registry/README.md](helper-registry/README.md). All experimental helper scheduling changes were reverted.
 The final runtime matches checks/gameplay-runtime-hashes.json.
 
 The original summon-air-target case pauses P2 at tick 30/frame 63/Y=-32;
