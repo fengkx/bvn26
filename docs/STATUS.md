@@ -487,3 +487,8 @@ The recovery-frame rectangular ice fragment was reproduced without a map. Shape 
 ### Hitsugaya helper scheduling alignment (2026-09-10)
 
 Original callback instrumentation locates retained helper root frame settlement between newer action clips and older fighter BODY callbacks. Helpers now participate in the existing global registry, fixing both remaining summon timing differences. The 167-case matrix has 152 exercised matches, 4 energy-negative matches and 11 source-missing-label matches, with no state differences; all 69 calibrated cancel-input cases still match. PvP/training comparisons, teardown/reentry and 93 Python tests pass. Both summon scenarios also produce byte-identical 602-row state outputs in Chromium WebGL and native Godot. The production Web package is rebuilt. Full visual/audio, additional geometry/callback boundaries and browser focus recovery remain unaccepted; Bankai remains deferred. See [evidence](../evidence/combat/rifagu-base/helper-registry/README.md).
+
+
+### Repeated Hitsugaya down+I placement (2026-09-10)
+
+Reset source placement-event bookkeeping on action entry. Previously the first cast positioned cbs1atm correctly, while the second reused the deduplication key and left the new ice instance at its authored default position. Three casts on retained actors now target fresh opponent coordinates across both facings; retained subsequent frames do not chase the opponent. All 11 existing down+I source comparisons and 93 Python tests pass. These short original fixtures had not covered a second fully funded cast. See [repeated-cast evidence](../evidence/combat/rifagu-base/repeated-ice-placement/README.md). Full base-form acceptance remains pending.

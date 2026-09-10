@@ -244,6 +244,9 @@ func _set_ai_action_label(label: String) -> void:
 	_hurt_stop_applied = false
 	_presentation_events_applied.clear()
 	_super_events_applied.clear()
+	# Re-entered source frame scripts execute again on the next cast. Keep
+	# live clip offsets until their PlaceObject lifetime actually ends.
+	_clip_placements_applied.clear()
 	_body_warps_applied.clear()
 
 
