@@ -10,7 +10,7 @@
 2. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)：M0–M7 实施顺序、阶段门槛与估算方法。
 3. [当前状态](docs/STATUS.md)：已完成事项、风险和下一步。
 4. [架构](docs/ARCHITECTURE.md) → [逆向手册](docs/REVERSE_ENGINEERING.md) → [源优先闸门](docs/SOURCE_FIRST.md) → [受击链落地 SOP](docs/HIT_RECEIVE_SOP.md) → [数据契约](docs/DATA_CONTRACTS.md)。
-5. [验收计划](docs/VALIDATION.md)与[操作手册](docs/OPERATIONS.md)：如何取得对照证据、使用工具和准备后续 Web 导出。
+5. [角色还原与缺陷验收 SOP](docs/CHARACTER_PARITY_SOP.md) → [验收计划](docs/VALIDATION.md)与[操作手册](docs/OPERATIONS.md)：如何取得对照证据、使用工具和准备后续 Web 导出。
 
 ## 包内内容
 
