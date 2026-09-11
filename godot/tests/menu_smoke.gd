@@ -41,9 +41,9 @@ func _run() -> void:
 
 	var keys := KeySettings.new()
 	keys.session = session
-	assert(keys.row == 1)
+	assert(keys.row == 0)
 	keys.apply_held({"down": true})
-	assert(keys.row == 2)
+	assert(keys.row == 1)
 	keys.apply_held({})
 	keys.apply_held({"right": true})
 	assert(keys.side == 2)

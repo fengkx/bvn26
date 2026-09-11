@@ -15,9 +15,11 @@ signal back_to_config
 const TITLE := "KEY SETTING"
 const CAPTURE_HINT := "Press any key"
 const BACK_HINT := "Back to CONFIG"
+const NAVIGATION_HINT := "Arrow keys: Select    Enter: Change    Esc: Back    Click a key to edit"
+const ARROW_NAMES := {37: "Left", 38: "Up", 39: "Right", 40: "Down"}
 
 var session: GameSession
-var row: int = 1
+var row: int = 0
 var side: int = 1
 var capturing: bool = false
 var capture_slot: String = ""
@@ -64,7 +66,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func reset() -> void:
-	row = 1
+	row = 0
 	side = 1
 	capturing = false
 	capture_slot = ""
@@ -85,6 +87,26 @@ func refresh_view() -> void:
 	_refresh()
 
 
+func navigation_held() -> Dictionary:
+	var held := session.menu_held()
+	# Editing bindings must not remove access to the editor itself.
+	var arrows := {"up": KEY_UP, "down": KEY_DOWN, "left": KEY_LEFT, "right": KEY_RIGHT}
+	var fixed_direction := false
+	for code in arrows.values():
+		fixed_direction = fixed_direction or Input.is_physical_key_pressed(code)
+	if fixed_direction:
+		for direction in arrows:
+			held[direction] = Input.is_physical_key_pressed(arrows[direction])
+		held["confirm"] = false
+		held["back"] = false
+	if Input.is_physical_key_pressed(KEY_ENTER) or Input.is_physical_key_pressed(KEY_ESCAPE):
+		for direction in arrows:
+			held[direction] = false
+		held["confirm"] = Input.is_physical_key_pressed(KEY_ENTER)
+		held["back"] = Input.is_physical_key_pressed(KEY_ESCAPE)
+	return held
+
+
 func apply_held(held: Dictionary) -> String:
 	var edge := _edges(held)
 	if waiting_release:
@@ -103,6 +125,12 @@ func apply_held(held: Dictionary) -> String:
 	if bool(edge["back"]):
 		_request_back()
 		return "MENU"
+	if row == 0:
+		if bool(edge["up"]) or bool(edge["down"]) or bool(edge["left"]) or bool(edge["right"]):
+			row = 1
+			side = 2 if bool(edge["right"]) else 1
+		_refresh()
+		return ""
 	if bool(edge["up"]):
 		row = 10 if row == 1 else row - 1
 		_reset_hint(TITLE)
@@ -132,6 +160,8 @@ func _edges(held: Dictionary) -> Dictionary:
 
 
 func _current_slot() -> String:
+	if row == 0:
+		return ""
 	var slots := GameSession.P1_SLOTS if side == 1 else GameSession.P2_SLOTS
 	return slots[row - 1]
 
@@ -207,7 +237,7 @@ func _build() -> void:
 	_back.size = Vector2(520, 20)
 	_back.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_back.add_theme_font_size_override("font_size", 13)
-	_back.text = BACK_HINT + "  (K)"
+	_back.text = BACK_HINT + "  (Esc)"
 	_back.mouse_filter = Control.MOUSE_FILTER_STOP
 	_back.gui_input.connect(func(event: InputEvent) -> void:
 		if event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -238,7 +268,7 @@ func _refresh() -> void:
 	_fill_column(_p1_rows, GameSession.P1_SLOTS, 1)
 	_fill_column(_p2_rows, GameSession.P2_SLOTS, 2)
 	if _hint:
-		_hint.text = hint_shown
+		_hint.text = CAPTURE_HINT if capturing or waiting_release else NAVIGATION_HINT
 	if _back:
 		_back.add_theme_color_override("font_color", Color(0.72, 0.76, 0.84))
 
@@ -248,7 +278,7 @@ func _fill_column(rows: Array[Label], slots: PackedStringArray, column: int) -> 
 		var slot := slots[index]
 		var selected := column == side and index + 1 == row
 		var flash_code := int(session.codes[slot])
-		var name := session.show_key_name(flash_code)
+		var name: String = ARROW_NAMES.get(flash_code, session.show_key_name(flash_code))
 		if name == "":
 			name = str(flash_code)
 		var capturing_here := capturing and capture_slot == slot

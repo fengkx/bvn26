@@ -39,6 +39,14 @@ has already moved the playhead to frame 861, with the same position and
 `hstm=20`; frame 862 executes on tick 94, changing HP 930 to 870 and hits 3 to
 4. The root becomes paused on tick 95 at frame 863.
 
+The generated receiver hook is
+`godot/generated/fighters/sasuke/player_controller/controller.json` at
+`DefineSprite_603/frame_864/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as`,
+active for source frames 864..873. Its `receive` path enters
+`godot/ai_combat_services.gd` and `godot/combat_resolver.gd`; the helper is
+checked only after the opponent fighter packet, so the parked You helper is
+not an alternate source of this fourth-hit decision.
+
 ## Native first divergence
 
 Native and source agree through p1 tick 92 (`frame=868`, `hstm=20`,

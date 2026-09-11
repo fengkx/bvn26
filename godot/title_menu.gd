@@ -14,7 +14,7 @@ var hint_shown: String = ""
 var pending_item: Dictionary = {}
 var source_frame: int = 1
 var button_frame: int = 1
-var hide_single: bool = true
+const HIDDEN_ITEMS := ["single", "about", "more", "exit"]
 var _navigation_direction: int = 1
 var _wheel_born: bool = false
 var _selected_button: int = 0
@@ -29,7 +29,7 @@ var _hint_timer: Timer
 func _init() -> void:
 	controller.positions = {13: NAN, 14: NAN}
 	controller.reset()
-	_skip_single(true)
+	_skip_unavailable(true)
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -96,7 +96,7 @@ func apply_held(held: Dictionary) -> Dictionary:
 		if not _wheel_born:
 			_wheel_born = true
 			controller.reset()
-			_skip_single(true)
+			_skip_unavailable(true)
 		else:
 			if not pending_item.is_empty():
 				button_frame += 1
@@ -110,8 +110,8 @@ func apply_held(held: Dictionary) -> Dictionary:
 			if held.get("up", false): _navigation_direction = -1
 			if held.get("down", false): _navigation_direction = 1
 			controller.tick(held)
-			_skip_single()
-			if hide_single and controller.confirmed_index in [1, 11]:
+			_skip_unavailable()
+			if controller.confirmed_index != 0 and str(ITEMS[_item_index(controller.confirmed_index) - 1].id) in HIDDEN_ITEMS:
 				controller.confirmed_index = controller.select
 			for number: int in controller.sounds:
 				if _sounds.has(number):
@@ -132,7 +132,7 @@ func _advance_hint() -> void:
 
 func reset() -> void:
 	controller.reset()
-	_skip_single(true)
+	_skip_unavailable(true)
 	controller.confirmed_index = 0
 	controller.hint = ""
 	controller.sounds.clear()
@@ -166,7 +166,7 @@ func _refresh() -> void:
 	_wheel.size = Vector2((float(bounds.Xmax) - float(bounds.Xmin)) * float(mask.scaleX), (float(bounds.Ymax) - float(bounds.Ymin)) * float(mask.scaleY)) / 20.0
 	for index: int in _buttons:
 		var sprite: Sprite2D = _buttons[index]
-		sprite.visible = not (hide_single and _item_index(index) == 1)
+		sprite.visible = str(ITEMS[_item_index(index) - 1].id) not in HIDDEN_ITEMS
 		var alpha := float(placement.get("color_transform", {}).get("alphaMultTerm", 256)) / 256.0
 		sprite.material.set_shader_parameter("cx_mul", Color(1, 1, 1, alpha))
 		var p: Dictionary = spec.wheel_placements["btm%d" % index]
@@ -176,14 +176,13 @@ func _refresh() -> void:
 		sprite.position = Vector2(float(p.matrix.translateX)/20.0, float(controller.positions[index])) - mask_position - Vector2(5, 5)
 
 
-func _skip_single(initial: bool = false) -> void:
-	if not hide_single:
-		return
-	if initial or (controller.select == 12 and controller.an == 0):
+func _skip_unavailable(initial: bool = false) -> void:
+	# Only expose destinations implemented by the Web port.
+	if initial:
 		controller.reset()
 		controller.select = 2
 		for index in controller.positions:
 			controller.positions[index] -= 56.0
-	elif controller.select in [1, 11]:
-		controller.select = (9 if controller.select == 1 else 8) if _navigation_direction < 0 else (2 if controller.select == 1 else 12)
+	elif str(current_item().id) in HIDDEN_ITEMS:
+		controller.select = 5 if _navigation_direction < 0 else 2
 		controller.an = 1

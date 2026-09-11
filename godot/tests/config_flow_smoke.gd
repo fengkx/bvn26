@@ -21,8 +21,9 @@ func _run() -> void:
 	for direction in ["down", "up"]:
 		for tick in 700:
 			game.title_menu.apply_held({direction: true})
-			assert(game.title_menu.current_item().id != "single")
-	assert(not game.title_menu._buttons[1].visible and not game.title_menu._buttons[11].visible)
+			assert(game.title_menu.current_item().id in ["vs_com", "versus", "training", "key_settings"])
+	for index in [1, 6, 7, 8, 9, 10, 11]:
+		assert(not game.title_menu._buttons[index].visible)
 	game._on_menu_confirmed("key_settings")
 	assert(game.session.root_label == "游戏设置" and game.config_menu.visible)
 	press(KEY_S, true)

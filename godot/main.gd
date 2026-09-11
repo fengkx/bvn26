@@ -236,7 +236,7 @@ func _physics_process(_delta: float) -> void:
 		"游戏设置":
 			config_menu.tick()
 		"键位设置":
-			key_settings.apply_held(session.menu_held())
+			key_settings.apply_held(key_settings.navigation_held())
 		"选人画面":
 			var p2 := session.fighter_input("p2")
 			p2["confirm"] = p2.attack
