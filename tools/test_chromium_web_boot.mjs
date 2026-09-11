@@ -69,6 +69,60 @@ while (!consoleMessages.some((message) => message.startsWith(expectedConsolePref
   await new Promise((resolve) => setTimeout(resolve, 100));
 }
 
+if (scenario === "shell") {
+  const checked = await call("Runtime.evaluate", {
+    expression: `(async () => {
+      const assert = (condition, message) => { if (!condition) throw new Error(message); };
+      const canvas = document.querySelector("canvas");
+      const button = document.querySelector("#fullscreen");
+      assert(!document.fullscreenElement, "Must start windowed");
+      const bounds = canvas.getBoundingClientRect();
+      assert(bounds.top > 50 && bounds.width < innerWidth, "Toolbar and page margins must remain accessible");
+      const context = new MouseEvent("contextmenu", { bubbles: true, cancelable: true });
+      assert(document.querySelector("#toolbar").dispatchEvent(context), "Toolbar must allow browser context menu");
+      button.click();
+      await new Promise(resolve => setTimeout(resolve, 300));
+      assert(document.fullscreenElement?.id === "player", "Fullscreen entry failed");
+      const fullBounds = canvas.getBoundingClientRect();
+      assert(Math.abs(fullBounds.width / fullBounds.height - 1.5) < .01, "Fullscreen must preserve aspect ratio");
+      assert(Math.abs(fullBounds.width - innerWidth) < 2 || Math.abs(fullBounds.height - innerHeight) < 2, "Game must fill a screen dimension");
+      assert(getComputedStyle(document.querySelector("#toolbar")).position === "absolute", "Toolbar must not consume fullscreen space");
+      assert(document.querySelector("#feedback").textContent.includes("退出全屏"), "Exit instructions missing");
+      await new Promise(resolve => setTimeout(resolve, 4900));
+      assert(getComputedStyle(document.querySelector("#toolbar")).opacity === "0", "Fullscreen tools must fade out");
+      document.querySelector("#player").dispatchEvent(new PointerEvent("pointermove", { clientY: 10 }));
+      await new Promise(resolve => setTimeout(resolve, 300));
+      assert(getComputedStyle(document.querySelector("#toolbar")).opacity === "1", "Top-edge movement must reveal tools");
+      button.click();
+      await new Promise(resolve => setTimeout(resolve, 300));
+      assert(!document.fullscreenElement, "Fullscreen exit failed");
+      // Read the exact Blob passed to the download, without changing its contents.
+      const original = URL.createObjectURL;
+      let report;
+      URL.createObjectURL = blob => { report = blob; return original(blob); };
+      console.error("SHELL_TEST_ERROR");
+      document.querySelector("#download").click();
+      let data = JSON.parse(await report.text());
+      assert(data.entries.some(e => e.message.includes("M0_BOOT_OK")), "Engine output missing");
+      assert(data.entries.some(e => e.message.includes("SHELL_TEST_ERROR")), "Errors missing");
+      assert(data.userAgent && data.startedAt && data.canvas.width, "Environment missing");
+      assert(!data.page.includes("?"), "Query parameters must be omitted");
+      for (let i = 0; i < 2100; i++) window.bvnLog("test", i);
+      document.querySelector("#download").click();
+      data = JSON.parse(await report.text());
+      assert(data.entries.length === 2000 && data.droppedEntries > 0, "Log must be bounded");
+      URL.createObjectURL = original;
+      assert(document.activeElement === canvas, "Game focus must be restored");
+      return { passed: true, retainedEntries: data.entries.length };
+    })()`,
+    awaitPromise: true,
+    userGesture: true,
+    returnByValue: true,
+  });
+  if (checked.exceptionDetails) throw new Error(JSON.stringify(checked.exceptionDetails));
+  console.log(JSON.stringify({ shell: checked.result.value }));
+}
+
 if (scenario === "combat") {
   await call("Page.bringToFront");
   const canvasBounds = await call("Runtime.evaluate", {

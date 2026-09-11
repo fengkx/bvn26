@@ -566,3 +566,7 @@ delay, or registry-sort rule was added. Focused pause and shared overlap checks
 also pass. Full character matrix, visual/audio/Web parity, and HIT_RECEIVE_SOP
 step E remain pending. See
 [evidence/characters/sasuke-you/renji-overlap-upI-upU-fix-r01/README.md](../evidence/characters/sasuke-you/renji-overlap-upI-upU-fix-r01/README.md).
+
+## 2026-09-11 网页工具栏
+
+默认窗口游玩，采用黑红游戏风格；全屏画面按 3:2 最大化占屏，悬浮按钮及退出提示自动淡出，鼠标移到顶部唤回。提供本次运行日志 JSON 下载，不新增游戏快捷键。实际 Godot Web 导出与 Chromium 专项回归通过，Firefox/Safari 仍待验证。实现与检查范围见 [网页外壳证据](../evidence/web-shell/README.md)。

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<title>$GODOT_PROJECT_NAME</title>
+		<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+
+#status {
+	background-color: $GODOT_SPLASH_COLOR;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+#status-splash.show-image--false {
+	display: none;
+}
+
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
+
+#status-progress, #status-notice {
+	display: none;
+}
+
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
+
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+
+/* Keep the engine's logical canvas while scaling its presentation proportionally. */
+body {
+    overflow: auto; touch-action: auto; font: 14px system-ui, sans-serif;
+    background: #100d0e; color: #f5efea;
+    background-image: linear-gradient(125deg, #9e15152b, transparent 45%),
+        repeating-linear-gradient(135deg, transparent 0 80px, #ffffff03 80px 81px);
+}
+#player { min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
+#toolbar {
+    box-sizing: border-box; width: min(1200px, 94vw); padding: 26px 0 18px;
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    border-bottom: 1px solid #6b3434;
+}
+#toolbar strong { margin-right: auto; font-size: clamp(20px, 3vw, 30px); font-style: italic; letter-spacing: -1px; }
+#toolbar strong span { color: #ed4339; font-size: .75em; margin: 0 5px; }
+#toolbar strong small { display: block; margin-top: 5px; font: 10px system-ui, sans-serif; letter-spacing: 4px; color: #a99a94; }
+button {
+    padding: 11px 22px; border: 1px solid #71504b; border-radius: 2px;
+    color: #f5efea; background: #211a1a; cursor: pointer; font: 600 13px system-ui, sans-serif;
+    transform: skew(-8deg); transition: background .15s, border-color .15s;
+}
+#fullscreen { background: #ad241f; border-color: #e84a3f; }
+button:hover { background: #49302c; border-color: #f5b095; }
+#fullscreen:hover { background: #cf3028; }
+button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+button:disabled { opacity: .5; cursor: default; }
+#help { margin: 15px 20px; color: #b8a9a2; font-size: 12px; text-align: center; letter-spacing: 1px; }
+#viewport {
+    position: relative; width: min(1200px, 94vw, calc((100dvh - 190px) * 1.5));
+    aspect-ratio: 3 / 2; background: black; flex: none;
+    box-shadow: 0 0 0 1px #76534a, 0 16px 60px #0009;
+}
+#canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+#feedback { min-height: 1.5em; margin: 14px 20px; color: #d0b6a5; font-size: 12px; text-align: center; }
+#player:fullscreen {
+    background: black; overflow: hidden; width: 100%; height: 100%;
+    min-height: 0; justify-content: center;
+}
+#player:fullscreen #viewport {
+    width: min(100vw, 150dvh); height: min(100dvh, calc(100vw / 1.5));
+    box-shadow: none;
+}
+#player:fullscreen #help, #player:fullscreen #toolbar strong { display: none; }
+#player:fullscreen #toolbar {
+    position: absolute; top: 0; right: 0; z-index: 5; width: auto;
+    padding: 14px 20px 24px; border: 0; background: linear-gradient(#000b, transparent);
+    opacity: 0;
+}
+#player:fullscreen #toolbar:hover,
+#player:fullscreen #toolbar:focus-within,
+#player:fullscreen.tools-visible #toolbar { opacity: 1; }
+#player:fullscreen #feedback {
+    position: absolute; bottom: 28px; z-index: 5; margin: 0 20px; min-height: 0;
+    padding: 12px 20px; background: #100d0ee8; border-left: 3px solid #df392e;
+    color: #fff; pointer-events: none; opacity: 0;
+}
+#player:fullscreen.tools-visible #feedback { opacity: 1; }
+@media (max-width: 600px) {
+    #toolbar { padding-top: 14px; }
+    button { padding: 9px 12px; }
+    #toolbar strong small { letter-spacing: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    button, #player:fullscreen #toolbar, #player:fullscreen #feedback { transition: none; }
+}
+        </style>
+		$GODOT_HEAD_INCLUDE
+	</head>
+	<body>
+        <main id="player">
+        <nav id="toolbar" aria-label="游戏工具">
+            <strong>死神 <span>VS</span> 火影 <span>2.6</span><small>BLEACH VS NARUTO</small></strong>
+            <button id="fullscreen" type="button">进入全屏</button>
+            <button id="download" type="button">导出日志</button>
+        </nav>
+        <p id="help">点击画面，开始对战 · 全屏沉浸游玩 · 遇到问题可导出日志反馈</p>
+        <div id="viewport">
+        <canvas id="canvas" tabindex="0">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<img id="status-splash" class="$GODOT_SPLASH_CLASSES" src="$GODOT_SPLASH" alt="">
+			<progress id="status-progress"></progress>
+			<div id="status-notice"></div>
+		</div>
+
+        </div>
+        <p id="feedback" role="status" aria-live="polite"></p>
+        </main>
+        <script>
+(() => {
+    const player = document.getElementById('player');
+    const canvas = document.getElementById('canvas');
+    const fullscreen = document.getElementById('fullscreen');
+    const feedback = document.getElementById('feedback');
+    let toolsTimer;
+    function revealTools() {
+        player.classList.add('tools-visible');
+        clearTimeout(toolsTimer);
+        toolsTimer = setTimeout(() => player.classList.remove('tools-visible'), 4500);
+    }
+    player.addEventListener('pointermove', event => {
+        if (document.fullscreenElement === player && event.clientY < 70) revealTools();
+    });
+    const entries = [];
+    const startedAt = new Date().toISOString();
+    let dropped = 0;
+    function format(value) {
+        if (value instanceof Error) return value.stack || value.message;
+        if (typeof value === 'string') return value;
+        try { return JSON.stringify(value) ?? String(value); } catch { return String(value); }
+    }
+    function record(level, ...args) {
+        // Bound both entry count and message length during long sessions.
+        entries.push({ time: new Date().toISOString(), level, message: args.map(format).join(' ').slice(0, 8192) });
+        if (entries.length > 2000) { entries.shift(); dropped++; }
+    }
+    window.bvnLog = record;
+    for (const level of ['log', 'info', 'warn', 'error']) {
+        const original = console[level].bind(console);
+        console[level] = (...args) => { record(level, ...args); original(...args); };
+    }
+    window.addEventListener('error', event => record('error', event.error || event.message || 'Resource failed: ' + event.target?.src), true);
+    window.addEventListener('unhandledrejection', event => record('error', event.reason));
+    document.addEventListener('visibilitychange', () => record('lifecycle', document.visibilityState));
+    canvas.addEventListener('webglcontextlost', () => record('error', 'WebGL context lost'));
+    record('session', 'Web player started');
+    const available = document.fullscreenEnabled && player.requestFullscreen;
+    fullscreen.disabled = !available;
+    if (!available) fullscreen.textContent = '浏览器不支持全屏';
+    fullscreen.addEventListener('click', async () => {
+        try {
+            if (document.fullscreenElement) await document.exitFullscreen();
+            else await player.requestFullscreen();
+            canvas.focus();
+        } catch (error) {
+            record('error', error);
+            feedback.textContent = '全屏切换失败，可继续窗口游玩。' + error.message;
+        }
+    });
+    document.addEventListener('fullscreenchange', () => {
+        const active = document.fullscreenElement === player;
+        fullscreen.textContent = active ? '退出全屏' : '进入全屏';
+        feedback.textContent = active
+            ? '已进入全屏 · 鼠标移到顶部，点击“退出全屏”返回网页'
+            : '已返回窗口模式，点击游戏画面继续操作。';
+        revealTools();
+        record('fullscreen', active);
+    });
+    document.getElementById('download').addEventListener('click', () => {
+        record('session', 'Log exported');
+        const report = {
+            schemaVersion: 1, startedAt, exportedAt: new Date().toISOString(),
+            page: location.origin + location.pathname,
+            userAgent: navigator.userAgent, language: navigator.language,
+            viewport: { width: innerWidth, height: innerHeight, devicePixelRatio },
+            canvas: { width: canvas.width, height: canvas.height },
+            fullscreen: Boolean(document.fullscreenElement),
+            droppedEntries: dropped, messageLimit: 8192, entries,
+        };
+        const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'bvn26-log-' + new Date().toISOString().replace(/[:.]/g, '-') + '.json';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        feedback.textContent = '日志已导出，请在反馈问题时附上文件和复现步骤。日志仅保存在本地，刷新后重新记录。';
+        revealTools();
+        canvas.focus();
+    });
+})();
+        </script>
+        <script src="$GODOT_URL"></script>
+		<script>
+const GODOT_CONFIG = $GODOT_CONFIG;
+const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
+const engine = new Engine({
+    ...GODOT_CONFIG,
+    onPrint: (...args) => console.log(...args),
+    onPrintError: (...args) => console.error(...args),
+});
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+		</script>
+	</body>
+</html>
