@@ -35,6 +35,59 @@ CONTACT_GOTO = re.compile(
 ENERGY_DRAIN = re.compile(
     r'_root\.game\["p" \+ pn\]\.mc\.ql\s*-=\s*(?P<value>\d+(?:\.\d+)?)'
 )
+ROOT_STOP_ONE = re.compile(r"gotoAndStop\s*\(\s*1\s*\)\s*;")
+
+
+def find_unconditional_root_stop_line(source: str) -> int | None:
+    """Return the source line of a top-level gotoAndStop(1), if present."""
+    depth = 0
+    statement_start = 0
+    quote = ""
+    escaped = False
+    index = 0
+    while index < len(source):
+        char = source[index]
+        if quote:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == quote:
+                quote = ""
+            index += 1
+            continue
+        if char in ('"', "'"):
+            quote = char
+            index += 1
+            continue
+        if char == "/" and index + 1 < len(source) and source[index + 1] == "/":
+            newline = source.find("\n", index + 2)
+            index = len(source) if newline < 0 else newline + 1
+            continue
+        if char == "/" and index + 1 < len(source) and source[index + 1] == "*":
+            end = source.find("*/", index + 2)
+            index = len(source) if end < 0 else end + 2
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth = max(0, depth - 1)
+            if depth == 0:
+                statement_start = index + 1
+        elif char == ";" and depth == 0:
+            statement = re.sub(
+                r"//[^\r\n]*|/\*.*?\*/", "", source[statement_start:index + 1], flags=re.S
+            ).strip()
+            if ROOT_STOP_ONE.fullmatch(statement):
+                return source.count("\n", 0, index) + 1
+            statement_start = index + 1
+        index += 1
+    return None
+
+
+def has_unconditional_root_stop(source: str) -> bool:
+    """Return whether a root DoAction contains a top-level gotoAndStop(1)."""
+    return find_unconditional_root_stop_line(source) is not None
 
 
 def text_sha256(value: str) -> str:
@@ -84,6 +137,7 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
     swf = inspect(swf_path)
     attacks: dict[str, dict[str, Any]] = {}
     hide_frames: list[int] = []
+    hide_frame_events: list[dict[str, Any]] = []
     drain_events: list[dict[str, Any]] = []
     indexed = []
     presentation_events = []
@@ -109,6 +163,17 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
         frame = int(root_match["frame"])
         record["frame"] = frame
         if script["path"] == f"frame_{frame}/DoAction.as":
+            root_stop_line = find_unconditional_root_stop_line(script["source"])
+            if root_stop_line is not None:
+                hide_frames.append(frame)
+                hide_frame_events.append({
+                    "frame": frame,
+                    "op": "root_goto_and_stop",
+                    "target_frame": 1,
+                    "source_path": script["path"],
+                    "source_line": root_stop_line,
+                    "source_sha256": record["source_sha256"],
+                })
             for assignment in re.finditer(r'^动作 = (-?\d+);\r?$', script["source"], re.M):
                 action_events.append({"frame": frame, "value": int(assignment[1]),
                                       "source_path": script["path"], "source_sha256": record["source_sha256"]})
@@ -188,6 +253,7 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
         "start_frame": 2,
         "end_frame": swf["root_frames"],
         "hide_frames": sorted(set(hide_frames)),
+        "hide_frame_events": sorted(hide_frame_events, key=lambda event: event["frame"]),
         "nested_stops": nested_stops,
         "action_events": sorted(action_events, key=lambda event: event["frame"]),
         "position_events": sorted(position_events, key=lambda event: event["frame"]),

@@ -49,6 +49,7 @@ signal screen_flash_requested(color_rgb24: int)
 signal combo_hud_requested(board_pn: int, hit_count: int)
 signal super_event_applied(event: Dictionary)
 signal ko_requested(opponent_number: int)
+signal helper_spawn_requested
 signal source_frame_changed(frame: int)
 signal source_frame_script_boundary(frame: int, entering: bool)
 signal source_child_frame_requested(operation: Callable)
@@ -105,6 +106,10 @@ var _ai_hit_transfer: RefCounted
 var _ai_state_frame_applied: int = -1
 var _ai_pending_frames: Array[Dictionary] = []
 var frame_script_sequence: Callable
+# Root timeline names are source identities, while TimelinePreview keeps the
+# authored display-list name for rendering.  Keys include depth and the
+# PlaceObject generation so a reused depth cannot inherit an old alias.
+var _source_name_bindings: Dictionary = {}
 
 var _combat: Dictionary
 var _commands: CommandCatalog = CommandCatalog.new()
@@ -547,6 +552,8 @@ func _defence_xgtype() -> int:
 
 
 func instance_global_bounds(instance_name: String) -> Rect2:
+	if not _source_name_is_live(instance_name):
+		return Rect2()
 	var bounds := super.instance_global_bounds(instance_name)
 	if bounds.has_area():
 		return bounds
@@ -701,6 +708,8 @@ func _aliased_hitbox_names() -> PackedStringArray:
 		if frame < int(window.get("start_frame", 0)) or frame > int(window.get("end_frame", 0)):
 			continue
 		if str(window.get("placed_name", "")) != "":
+			if window.has("depth") and not _source_alias_matches(window):
+				continue
 			result.append(name)
 	return result
 
@@ -712,8 +721,100 @@ func _placed_name_for_hitbox(instance_name: String) -> String:
 			continue
 		if frame < int(window.get("start_frame", 0)) or frame > int(window.get("end_frame", 0)):
 			continue
+		if window.has("depth") and not _source_alias_matches(window):
+			continue
 		return str(window.get("placed_name", ""))
 	return ""
+
+
+func _source_instance_key(depth: int, character_id: int, placed_frame: int) -> String:
+	return "%d:%d:%d" % [depth, character_id, placed_frame]
+
+
+func _source_event_key(event: Dictionary) -> String:
+	return _source_instance_key(
+		int(event.get("depth", -1)),
+		int(event.get("character_id", 0)),
+		int(event.get("placed_frame", -1))
+	)
+
+
+func _reconcile_source_name_bindings() -> void:
+	if _source_name_bindings.is_empty() or not _frames.has(_current_frame):
+		return
+	var live: Dictionary = {}
+	for placement: Dictionary in _frames[_current_frame].get("display_list", []):
+		var authored := str(placement.get("name", ""))
+		if authored == "":
+			continue
+		live[_source_instance_key(
+			int(placement.get("depth", -1)),
+			int(placement.get("character_id", 0)),
+			int(placement.get("placed_frame", _current_frame))
+		)] = true
+	for key in _source_name_bindings.keys().duplicate():
+		if not live.has(key):
+			_source_name_bindings.erase(key)
+
+
+func _source_display_instance_matches(event: Dictionary, source_name: String) -> bool:
+	var source_frame := int(event.get("frame", _current_frame))
+	if not _frames.has(source_frame):
+		return false
+	var key := _source_event_key(event)
+	for placement: Dictionary in _frames[source_frame].get("display_list", []):
+		var placement_key := _source_instance_key(
+			int(placement.get("depth", -1)),
+			int(placement.get("character_id", 0)),
+			int(placement.get("placed_frame", _current_frame))
+		)
+		if placement_key == key and str(placement.get("name", "")) == source_name:
+			return true
+	return false
+
+
+func _apply_root_clip_rename(event: Dictionary) -> void:
+	var source_name := str(event.get("source_name", ""))
+	var instance_name := str(event.get("instance_name", ""))
+	var key := _source_event_key(event)
+	if source_name == "" or instance_name == "" or key.begins_with("-1:"):
+		return
+	var binding: Dictionary = _source_name_bindings.get(key, {})
+	if binding.is_empty():
+		if not _source_display_instance_matches(event, source_name):
+			return
+		binding = {
+			"visual_name": source_name,
+			"current_name": source_name,
+			"depth": int(event.get("depth", -1)),
+			"character_id": int(event.get("character_id", 0)),
+			"placed_frame": int(event.get("placed_frame", -1)),
+		}
+	if str(binding.get("current_name", "")) != source_name:
+		# AS2 lookup of an old name returns undefined after _name replacement.
+		return
+	binding["current_name"] = instance_name
+	_source_name_bindings[key] = binding
+
+
+func _source_alias_matches(window: Dictionary) -> bool:
+	var key := _source_event_key(window)
+	var binding: Dictionary = _source_name_bindings.get(key, {})
+	return (
+		not binding.is_empty()
+		and str(binding.get("current_name", "")) == str(window.get("instance_name", ""))
+		and str(binding.get("visual_name", "")) == str(window.get("placed_name", ""))
+	)
+
+
+func _source_name_is_live(instance_name: String) -> bool:
+	var stale := false
+	for binding: Dictionary in _source_name_bindings.values():
+		if str(binding.get("visual_name", "")) == instance_name:
+			if str(binding.get("current_name", "")) == instance_name:
+				return true
+			stale = true
+	return not stale
 
 
 func _attack_from_instance(instance_name: String) -> Dictionary:
@@ -813,6 +914,7 @@ func start_action(label: String) -> void:
 
 
 func _queue_source_frame(frame: int) -> void:
+	_reconcile_source_name_bindings()
 	_ai_pending_frames.append({"frame": frame,
 		"order": frame_script_sequence.call() if frame_script_sequence.is_valid() else 0})
 	source_frame_changed.emit(frame)
@@ -850,6 +952,8 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 					_energy_event_applied = true
 				elif event.get("op") == "body_warp":
 					_apply_body_warp_event(event)
+				elif event.get("op") == "root_clip_rename":
+					_apply_root_clip_rename(event)
 				elif event.get("op") == "screen_flash":
 					screen_flash_requested.emit(int(event.get("color_rgb24", 0xFFFFFF)))
 				else:
@@ -1457,6 +1561,7 @@ func _apply_summon_event() -> void:
 			return
 		change_energy(float(event.get("energy_delta", -100)))
 		helper_spawn = _yfgj_spawn(event)
+		helper_spawn_requested.emit()
 		if event.get("set_bs") != null:
 			bs = int(event["set_bs"])
 		last_event = "summon_%s" % event.get("helper_id", "helper")
@@ -1562,6 +1667,11 @@ func _apply_clip_placements() -> void:
 			continue
 		var instance_name := str(event.get("instance_name", ""))
 		if instance_name == "":
+			continue
+		# A root _name replacement makes the old AS2 variable undefined.  Keep
+		# the authored display object for rendering, but do not replay a later
+		# source write through its stale name.
+		if not _source_name_is_live(instance_name):
 			continue
 		var event_key := "%s:%d:%s" % [action, current_source_frame(), instance_name]
 		if _clip_placements_applied.has(event_key):

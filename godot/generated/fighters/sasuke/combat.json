@@ -7,7 +7,7 @@
   "source": {
     "fighter_slice": "data/slices/sasuke-base.json",
     "timeline": "data/slices/sasuke-base.timeline.json",
-    "script_bundle": "scripts/fighter/sasuke.json",
+    "script_bundle": "scripts/fighter/Sasuke.json",
     "timeline_symbol_id": 603
   },
   "movement": {
@@ -3404,7 +3404,37 @@
     }
   ],
   "clip_placements": [],
-  "body_warps": [],
+  "body_warps": [
+    {
+      "action": "招1",
+      "frame": 408,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "xscale_gt_0": {
+        "x_pixels": -20.0
+      },
+      "xscale_lt_0": {
+        "x_pixels": 20.0
+      },
+      "source_path": "DefineSprite_603/frame_408/DoAction.as",
+      "source_sha256": "2342827b62459eaae4c265e239d25896288c64175ed953e878df52756490292d"
+    },
+    {
+      "action": "超必杀1",
+      "frame": 676,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "xscale_gt_0": {
+        "x_pixels": -10.0
+      },
+      "xscale_lt_0": {
+        "x_pixels": 10.0
+      },
+      "place_y": true,
+      "source_path": "DefineSprite_603/frame_676/DoAction.as",
+      "source_sha256": "bb2bed8b45195fe826aa09eb350481c8af2834b5305387b83d93ba2aeaeadb2a"
+    }
+  ],
   "motion_windows": [
     {
       "action": "瞬步",

@@ -932,6 +932,7 @@ func _start_combat_drivers() -> void:
 	for fighter: FighterRuntime in [naruto, ichigo]:
 		fighter.frame_script_sequence = _next_source_frame_sequence
 		fighter.source_child_frame_requested.connect(_queue_source_child_frame)
+		fighter.helper_spawn_requested.connect(_on_helper_spawn_requested.bind(fighter))
 	cpu_unresolved_services.clear()
 	ichigo.ai_color_state = AiColorState.new()
 	ichigo.set_source_color({}, [])
@@ -988,6 +989,7 @@ func _start_combat_drivers() -> void:
 	# and newer action clips in Flash's global instance traversal.
 	for helper in [naruto_helper, ichigo_helper]:
 		helper.bind_source_frames(source_callbacks, physics_tick)
+		helper.source_child_frame_requested.connect(_queue_source_child_frame)
 	if session.p2cpu:
 		opponent_driver.start_random(source_random, session.ai_level)
 
@@ -1002,10 +1004,29 @@ func _queue_source_child_frame(operation: Callable) -> void:
 	source_child_frames.append({"order": _next_source_frame_sequence(), "operation": operation})
 
 
+func _on_helper_spawn_requested(fighter: FighterRuntime) -> void:
+	var helper: HelperRuntime
+	if fighter == naruto:
+		helper = naruto_helper
+	elif fighter == ichigo:
+		helper = ichigo_helper
+	else:
+		return
+	if helper == null or fighter.helper_spawn.is_empty():
+		return
+	# yfgj() places the helper during the fighter's source callback. Consume the
+	# request immediately; the end-of-tick fallback remains for older callers.
+	var spawn := fighter.helper_spawn.duplicate(true)
+	fighter.helper_spawn.clear()
+	helper.activate(spawn, fighter)
+
+
 func _stop_combat_drivers() -> void:
 	_stop_training_recovery()
 	for helper in [naruto_helper, ichigo_helper]:
 		if is_instance_valid(helper):
+			if helper.source_child_frame_requested.is_connected(_queue_source_child_frame):
+				helper.source_child_frame_requested.disconnect(_queue_source_child_frame)
 			helper.unbind_source_frames()
 	source_child_frames.clear()
 	for fighter: FighterRuntime in [naruto, ichigo]:
@@ -1013,6 +1034,10 @@ func _stop_combat_drivers() -> void:
 			fighter.frame_script_sequence = Callable()
 			if fighter.source_child_frame_requested.is_connected(_queue_source_child_frame):
 				fighter.source_child_frame_requested.disconnect(_queue_source_child_frame)
+			for connection in fighter.helper_spawn_requested.get_connections():
+				var callable: Callable = connection["callable"]
+				if callable.get_object() == self:
+					fighter.helper_spawn_requested.disconnect(callable)
 	if player_body_driver != null:
 		player_body_driver.stop()
 		player_body_driver.queue_free()

@@ -4,6 +4,7 @@ extends TimelinePreview
 const HelperClipCallbackScript = preload("res://helper_clip_callback.gd")
 
 signal effect_requested(clip_name: String, source_position: Vector2, source_facing: int, offset_y: float)
+signal source_child_frame_requested(operation: Callable)
 
 @export var helper_directory: String
 
@@ -23,6 +24,10 @@ var _events_applied: Dictionary = {}
 var _nested_callbacks: Dictionary = {}
 var _callback_registry: SourceCallbackRegistry
 var _frame_registration: int = 0
+var _activation_generation: int = 0
+var _deferred_frame_generation: int = -1
+var _deferred_frame: int = -1
+var _root_stop_generation: int = -1
 
 
 func bind_source_frames(registry: SourceCallbackRegistry, placed_tick: int) -> void:
@@ -59,6 +64,10 @@ func _ready() -> void:
 
 
 func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
+	_activation_generation += 1
+	_deferred_frame_generation = -1
+	_deferred_frame = -1
+	_root_stop_generation = -1
 	# Source yfgj(): place behind the caster, face the opponent, gotoAndPlay(2).
 	# Frame 1 display list is empty; start_frame 2 is the first visible frame.
 	_ensure_timeline_loaded()
@@ -79,6 +88,10 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 
 
 func deactivate() -> void:
+	_activation_generation += 1
+	_deferred_frame_generation = -1
+	_deferred_frame = -1
+	_root_stop_generation = -1
 	# Source frame_1 parks the clip at (-200, -200) and stop().
 	attacking = false
 	_clear_nested_callbacks()
@@ -109,11 +122,46 @@ func enter_frame() -> void:
 	# next tick rather than firing during the placement dispatch.
 	if not attacking:
 		return
+	# A nested enterFrame goto changes the playhead immediately, while the
+	# target frame's DoAction waits behind the root observer in source FIFO.
+	if _deferred_frame_generation == _activation_generation and _deferred_frame == current_source_frame():
+		return
 	_apply_frame_events()
-	for hide_frame in _combat.get("hide_frames", []):
-		if int(hide_frame) == current_source_frame():
-			deactivate()
-			return
+	var root_stop_events: Array = _combat.get("hide_frame_events", [])
+	if not root_stop_events.is_empty():
+		for event: Dictionary in root_stop_events:
+			if int(event.get("frame", -1)) == current_source_frame():
+				_queue_root_stop()
+				return
+	else:
+		for hide_frame in _combat.get("hide_frames", []):
+			if int(hide_frame) == current_source_frame():
+				_queue_root_stop()
+				return
+
+
+func _queue_root_stop() -> void:
+	# A root gotoAndStop(1) changes the playhead during this display dispatch.
+	# The frame-1 DoAction runs through the same source FIFO as nested goto
+	# targets, after the root observer has captured this tick's state.
+	_deferred_frame_generation = -1
+	_deferred_frame = -1
+	_clear_nested_callbacks()
+	timeline_playing = false
+	play_source_frame(1)
+	_root_stop_generation = _activation_generation
+	if source_child_frame_requested.get_connections().is_empty():
+		_apply_root_stop(_root_stop_generation)
+	else:
+		source_child_frame_requested.emit(_apply_root_stop.bind(_root_stop_generation))
+
+
+func _apply_root_stop(generation: int) -> void:
+	if generation != _activation_generation or not attacking:
+		return
+	# Reuse the normal removal path so this FIFO callback becomes the new
+	# generation only after all earlier same-generation callbacks have run.
+	deactivate()
 
 
 func has_visual_timeline() -> bool:
@@ -195,7 +243,15 @@ func _reset_preview_offsets() -> void:
 
 
 func _apply_frame_events() -> void:
-	var frame := current_source_frame()
+	_apply_frame_events_at(current_source_frame())
+
+
+func _apply_frame_events_at(frame: int, from_deferred_queue: bool = false) -> void:
+	if from_deferred_queue and _deferred_frame_generation == _activation_generation and _deferred_frame == frame:
+		_deferred_frame_generation = -1
+		_deferred_frame = -1
+	elif _deferred_frame_generation == _activation_generation and _deferred_frame == frame:
+		return
 	if _events_applied.has(frame):
 		return
 	_events_applied[frame] = true
@@ -204,13 +260,13 @@ func _apply_frame_events() -> void:
 			source_action = event["value"]
 	for event: Dictionary in _combat.get("clip_load_events", []):
 		if int(event["frame"]) == frame:
-			_aim_placed_clip(event)
+			_aim_placed_clip(event, frame)
 	for event: Dictionary in _combat.get("position_events", []):
 		if int(event.get("frame", -1)) == frame and event.get("op") == "aim_opponent_x":
 			if is_instance_valid(owner_fighter) and is_instance_valid(owner_fighter.opponent):
 				position.x = owner_fighter.opponent.position.x
 	for event: Dictionary in _combat.get("drain_events", []):
-		if int(event["frame"]) != current_source_frame():
+		if int(event["frame"]) != frame:
 			continue
 		if owner_fighter != null and is_instance_valid(owner_fighter.opponent):
 			owner_fighter.opponent.change_energy(float(event["delta"]))
@@ -241,11 +297,31 @@ func run_nested_clip_callback(event: Dictionary) -> void:
 	var clip := _contact_clip_bounds(event)
 	if not clip.has_area() or not SourceHitTest.intersects(body, clip):
 		return
-	play_source_frame(int(event["target_frame"]))
+	var target_frame := int(event["target_frame"])
+	play_source_frame(target_frame)
 	timeline_playing = bool(event.get("play", true))
-	_apply_frame_events()
-	_sync_nested_callbacks()
+	# The source callback changes the playhead during dispatch. Its target
+	# frame script runs through main's existing FIFO after root observation.
+	_deferred_frame_generation = _activation_generation
+	_deferred_frame = target_frame
+	if source_child_frame_requested.get_connections().is_empty():
+		# Standalone helper probes have no root FIFO; retain their direct callback
+		# behavior while the production path always connects the signal in main.
+		_apply_frame_events_at(target_frame, true)
+		_sync_nested_callbacks()
+	else:
+		source_child_frame_requested.emit(_run_deferred_frame.bind(target_frame, _activation_generation))
 	last_event = "helper_goto_%s" % str(event.get("target_label", event["target_frame"]))
+
+
+func _run_deferred_frame(target_frame: int, generation: int) -> void:
+	# The source goto has already changed the playhead. A later goto in the same
+	# dispatch does not cancel this earlier target script; only a new helper
+	# generation or actual removal does.
+	if generation != _activation_generation or not attacking:
+		return
+	_apply_frame_events_at(target_frame, true)
+	_sync_nested_callbacks()
 
 
 func _sync_nested_callbacks() -> void:
@@ -297,9 +373,13 @@ func _clear_nested_callbacks() -> void:
 
 
 func _contact_clip_bounds(event: Dictionary) -> Rect2:
-	if not _frames.has(current_source_frame()):
+	# The callback event identifies the source placement frame. Another nested
+	# callback may already have changed the parent playhead during this dispatch;
+	# that must not make the remaining callbacks lose their original bounds.
+	var source_frame := int(event.get("placed_frame", event.get("frame", current_source_frame())))
+	if not _frames.has(source_frame):
 		return Rect2()
-	for placement: Dictionary in _frames[current_source_frame()]["display_list"]:
+	for placement: Dictionary in _frames[source_frame]["display_list"]:
 		if int(placement.get("character_id", -1)) != int(event.get("character_id", -2)):
 			continue
 		if int(placement.get("depth", -1)) != int(event.get("depth", -2)):
@@ -310,12 +390,15 @@ func _contact_clip_bounds(event: Dictionary) -> Rect2:
 	return Rect2()
 
 
-func _aim_placed_clip(event: Dictionary) -> void:
+func _aim_placed_clip(event: Dictionary, frame: int = -1) -> void:
 	if event.get("op") != "aim_opponent_x" or not is_instance_valid(owner_fighter):
 		return
 	if not is_instance_valid(owner_fighter.opponent):
 		return
-	for placement: Dictionary in _frames[current_source_frame()]["display_list"]:
+	var source_frame := current_source_frame() if frame < 0 else frame
+	if not _frames.has(source_frame):
+		return
+	for placement: Dictionary in _frames[source_frame]["display_list"]:
 		if int(placement["depth"]) != int(event["depth"]):
 			continue
 		if int(placement["character_id"]) != int(event["character_id"]):

@@ -88,7 +88,20 @@ portraits/footers plus helper 鼬; full browser combat/pause/return/reselect is
 still outside this evidence. The original-player audit now has 54/54 candidate matches (ten high-risk
 cases plus 44 remaining held/mirror/neutral cases); eight old differences were
 resolved by reusing their captures after the shared runtime stabilized. The
-abandoned mixed-hash native rerun is excluded. The final 54-case run under the
-parent-announced frozen runtime hash is recorded in
-`original-parity-audit-r03.json`; browser combat and audiovisual parity are
-also pending.
+abandoned mixed-hash native rerun is excluded. The final 54-case run with explicit per-fixture helper configuration is
+recorded in `native-freeze-explicit-helper-r05.json`; all 54 cases matched
+722/722, and its five runtime hashes agree before and after the run. The prior
+r04 record is retained as historical diagnostic evidence. Browser combat and
+audiovisual parity are also pending.
+
+The dedicated audiovisual probe records source `StartSound` events and runtime
+playback for six representative frames: movement frame 21 sound 38, combo
+frame 177 sound 60, `必杀` frame 516 sound 69, `上必杀` frame 606 sound 386,
+and `超必杀` frames 689/832 sounds 446/504. Each fires once and resolves to
+the generated segment's authored sample range and hash. The native trace is
+`/tmp/renji-audiovisual-r01/runtime-audio-trace.json`; the formal audit is
+`audiovisual-audit-r01.json`. The temporary Web probe at `127.0.0.1:8061`
+was observed through CUA at all six frames (visual observations are recorded
+in the audit, but the CUA tool provides no persistent screenshot path).
+Headless Godot has no viewport texture, and original-player same-stage
+captures remain pending, so no pixel identity is claimed.

@@ -506,11 +506,17 @@ class CombatModelTests(unittest.TestCase):
                 "set_jump": True,
             },
         )
-        self.assertIsNone(
+        self.assertEqual(
             combat_model.parse_body_warp(
                 'if(_parent._xscale > 0)\n{\n   _parent._x = _root.game["p" + pn]._x - 100;\n}\n'
                 "else\n{\n   _parent._x = _root.game[\"p\" + pn]._x + 100;\n}\n"
-            )
+            ),
+            {
+                "op": "warp_to_opponent",
+                "place_x": True,
+                "xscale_gt_0": {"x_pixels": -100.0},
+                "xscale_lt_0": {"x_pixels": 100.0},
+            },
         )
         self.assertEqual(
             combat_model.parse_body_warp(

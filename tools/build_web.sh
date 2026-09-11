@@ -4,10 +4,26 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GODOT_VERSION="4.7.2"
 
-# A local editor override uses its already-installed matching export templates.
+# Prefer an already-installed local editor. Vercel and Linux CI fall back to the
+# temporary download below, so the same script works in both environments.
+if [[ -n "${GODOT_BIN:-}" && "$GODOT_BIN" != */* ]]; then
+  GODOT_BIN="$(command -v "$GODOT_BIN" || true)"
+fi
+
+if [[ -z "${GODOT_BIN:-}" ]]; then
+  if command -v godot4 >/dev/null 2>&1; then
+    GODOT_BIN="$(command -v godot4)"
+  elif command -v godot >/dev/null 2>&1; then
+    GODOT_BIN="$(command -v godot)"
+  elif [[ -x "/Applications/Godot.app/Contents/MacOS/Godot" ]]; then
+    GODOT_BIN="/Applications/Godot.app/Contents/MacOS/Godot"
+  fi
+fi
+
 if [[ -z "${GODOT_BIN:-}" ]]; then
   if [[ "$(uname -s)" != "Linux" || "$(uname -m)" != "x86_64" ]]; then
-    echo "Automatic setup requires Linux x86_64; set GODOT_BIN for a local editor." >&2
+    echo "Godot $GODOT_VERSION was not found locally; install it or set GODOT_BIN." >&2
+    echo "Automatic setup is available only on Linux x86_64 (including Vercel)." >&2
     exit 1
   fi
 

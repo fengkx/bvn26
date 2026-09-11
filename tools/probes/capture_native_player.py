@@ -12,6 +12,7 @@ APP = Path('/Volumes/Flash Player/Flash Player.app')
 BINARY = APP / 'Contents/MacOS/Flash Player Debugger'
 LOG = Path.home() / 'Library/Preferences/Macromedia/Flash Player/Logs/flashlog.txt'
 LOCK_PATH = Path('/tmp/bvn-native-flash-capture.lock')
+LOCK_WAIT_SECONDS = 10.0
 
 
 def matching_players(movie):
@@ -32,7 +33,18 @@ def capture(build, destination, timeout):
     # Native Flash always writes one account-wide log, including with -n.
     # Serialize independent harnesses before launching or reading that log.
     with LOCK_PATH.open('a') as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
+        deadline = time.monotonic() + LOCK_WAIT_SECONDS
+        while True:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise TimeoutError(
+                        f'Native Flash capture lock is busy after {LOCK_WAIT_SECONDS:g}s: {LOCK_PATH}'
+                    )
+                time.sleep(min(0.1, remaining))
         return _capture_locked(build, destination, timeout)
 
 
@@ -50,6 +62,8 @@ def _capture_locked(build, destination, timeout):
     seen = {}
     deadline = time.monotonic() + timeout
     done = None
+    capture_error = None
+    capture_traceback = None
     try:
         while time.monotonic() < deadline:
             if LOG.exists():
@@ -64,17 +78,61 @@ def _capture_locked(build, destination, timeout):
             if done is not None and (process.poll() is not None or time.monotonic() - done > 2):
                 break
             time.sleep(0.1)
-    finally:
+    except BaseException as error:
+        # Cleanup must run even when log parsing, polling or sleeping fails.
+        capture_error = error
+        capture_traceback = error.__traceback__
+
+    cleanup_errors = []
+    try:
         destination.write_bytes(b'\n'.join(seen[key] for key in sorted(seen)) + b'\n')
-        # Never terminate the user's original player or another probe instance.
-        for pid in matching_players(movie) - before:
-            try:
-                os.kill(pid, signal.SIGTERM)
-            except ProcessLookupError:
-                pass
-        if process.poll() is None:
+    except BaseException as error:
+        cleanup_errors.append(error)
+
+    # Never terminate the user's original player or another probe instance.
+    try:
+        owned_players = matching_players(movie) - before
+    except BaseException as error:
+        owned_players = ()
+        cleanup_errors.append(error)
+    for pid in owned_players:
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+        except BaseException as error:
+            cleanup_errors.append(error)
+
+    try:
+        running = process.poll() is None
+    except BaseException as error:
+        running = True
+        cleanup_errors.append(error)
+    if running:
+        try:
             process.terminate()
+        except BaseException as error:
+            cleanup_errors.append(error)
+    try:
         process.wait(timeout=5)
+    except subprocess.TimeoutExpired as wait_error:
+        try:
+            process.kill()
+        except BaseException as error:
+            cleanup_errors.append(error)
+        try:
+            process.wait(timeout=5)
+        except BaseException as error:
+            cleanup_errors.extend((wait_error, error))
+    except BaseException as error:
+        cleanup_errors.append(error)
+
+    if capture_error is not None:
+        for error in cleanup_errors:
+            capture_error.add_note(f'Capture cleanup also failed: {error!r}')
+        raise capture_error.with_traceback(capture_traceback)
+    if cleanup_errors:
+        raise cleanup_errors[0]
     result = {'events': len(seen), 'done': done is not None, 'capture': str(destination),
               'launch': 'LaunchServices background window', 'command': command}
     (destination.parent / 'capture-environment.json').write_text(json.dumps(result, indent=2) + '\n')

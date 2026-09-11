@@ -6,7 +6,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/importer"))
-from compile_ai_context import compile_context
+from compile_ai_context import compile_context, _root_clip_rename_event
 from compile_ai_controller import compile_controller
 from build_combat_model import parse_clip_timeline, source_frame_counts
 from build_combat_model import parse_projectile_motion
@@ -100,6 +100,46 @@ if(this.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))
             {"op": "timeline_play"},
         ])
 
+    def test_root_rename_is_fifo_event_with_display_list_generation(self):
+        compiled = compile_context(self.bundle, self.timeline)
+        event = next(
+            item for item in compiled["frame_calls"]["821"]
+            if item["op"] == "root_clip_rename"
+        )
+        self.assertEqual(
+            {key: event[key] for key in (
+                "source_name", "instance_name", "depth", "character_id", "placed_frame",
+                "frame", "line",
+            )},
+            {
+                "source_name": "dogs", "instance_name": "sbsatm", "depth": 28,
+                "character_id": 488, "placed_frame": 814, "frame": 821, "line": 1,
+            },
+        )
 
+    def test_root_rename_old_name_is_undefined_but_current_name_can_rename_again(self):
+        placement = {"depth": 28, "character_id": 488, "placed_frame": 10, "name": "dogs"}
+        frames = {frame: {"display_list": [placement]} for frame in range(10, 14)}
+        history = []
+        self.assertEqual(
+            _root_clip_rename_event(
+                'dogs._name = "sbsatm";', "frame_11.as", 11, frames, history
+            )[0]["instance_name"],
+            "sbsatm",
+        )
+        # The static display list still says dogs, but the old source variable
+        # is undefined after the first assignment.
+        self.assertEqual(
+            _root_clip_rename_event(
+                'dogs._name = "other";', "frame_12.as", 12, frames, history
+            ),
+            [],
+        )
+        self.assertEqual(
+            _root_clip_rename_event(
+                'sbsatm._name = "other";', "frame_12.as", 12, frames, history
+            )[0]["instance_name"],
+            "other",
+        )
 if __name__ == "__main__":
     unittest.main()

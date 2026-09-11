@@ -37,7 +37,7 @@ func _run() -> void:
 	effects.clear()
 	helper.activate({"x": 300.0, "y": -25.0, "facing": 1, "start_frame": 2}, owner)
 	var rows: Array = []
-	for _tick in range(2, 200):
+	for _tick in range(2, 100):
 		var frame := helper.current_source_frame()
 		helper.enter_frame()
 		rows.append({
@@ -52,25 +52,23 @@ func _run() -> void:
 		})
 		if frame < 199:
 			helper.advance_timeline()
-	assert(helper.attacking and helper.current_source_frame() == 199)
-	helper.enter_frame()
-	helper.advance_timeline()
+		if not helper.attacking:
+			break
+	# Source You frame 76 calls gotoAndStop(1) after the miss path's effect.
 	assert(not helper.attacking and not helper.visible and helper.current_source_frame() == 1)
+	helper.advance_timeline()
+	assert(helper.current_source_frame() == 1, "parked miss helper advanced after root stop")
+	helper.activate({"x": 300.0, "y": -25.0, "facing": 1, "start_frame": 2}, owner)
+	assert(helper.attacking and helper.current_source_frame() == 2, "reactivation did not restart at source frame 2")
 
 	var by_frame := {}
 	for row: Dictionary in rows:
 		by_frame[int(row.frame)] = row
 	assert(by_frame[18].action == 1)
-	assert(by_frame[61].action == 0 and by_frame[181].action == 0)
-	assert(by_frame[92].sounds == [54])
-	assert(by_frame[127].sounds == [63] and by_frame[143].sounds == [63])
-	assert(by_frame[159].sounds == [63] and by_frame[175].sounds == [63])
+	assert(by_frame[61].action == 0)
 	assert("atm1" in by_frame[48].instances and "atm1" in by_frame[59].instances and "atm1" not in by_frame[60].instances)
-	assert("atm2" in by_frame[128].instances and "atm2" in by_frame[129].instances)
-	assert("atm2" in by_frame[144].instances and "atm2" in by_frame[145].instances)
-	assert("atm2" in by_frame[160].instances and "atm2" in by_frame[161].instances)
-	assert("atm3" in by_frame[176].instances and "atm3" in by_frame[177].instances)
-	assert(effects == [{"frame": 2, "clip": "XG_fzcc"}, {"frame": 76, "clip": "XG_fzcc"}])
+	assert(not by_frame[76].attacking and by_frame[76].frame == 76)
+	assert(effects == [{"frame": 2, "clip": "XG_fzcc"}, {"frame": 76, "clip": "XG_fzcc"}, {"frame": 2, "clip": "XG_fzcc"}])
 	var output := OS.get_cmdline_user_args()[0] if not OS.get_cmdline_user_args().is_empty() else ""
 	if output != "":
 		FileAccess.open(output, FileAccess.WRITE).store_string(JSON.stringify({"rows": rows, "effects": effects}, "", true, true))

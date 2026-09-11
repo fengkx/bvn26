@@ -4,18 +4,52 @@ import unittest
 import tempfile
 from pathlib import Path
 
-from tools.importer.build_helper_model import build_model
+from tools.importer.build_helper_model import (
+    build_model,
+    find_unconditional_root_stop_line,
+    has_unconditional_root_stop,
+)
 from tools.probes.check_helper_timing import compare
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 class HelperTimingTests(unittest.TestCase):
+    def test_root_stop_is_source_level_and_not_nested_control_flow(self):
+        self.assertTrue(has_unconditional_root_stop('_root.fzccXg(this);\n' 'gotoAndStop(1);'))
+        self.assertTrue(has_unconditional_root_stop('if (miss) {\n}\n' 'gotoAndStop ( 1 );'))
+        self.assertFalse(has_unconditional_root_stop('if (hit) { gotoAndStop(1); }'))
+        self.assertFalse(has_unconditional_root_stop('function park() { gotoAndStop(1); }'))
+        self.assertFalse(has_unconditional_root_stop('// gotoAndStop(1);'))
+        self.assertEqual(find_unconditional_root_stop_line('/* park */\n' 'gotoAndStop(1); // source stop'), 2)
+
+    def test_you_miss_root_stop_is_compiled_with_source_provenance(self):
+        model = build_model(
+            ROOT / 'scripts/fighter/fz/you.json',
+            Path('game/fighter/fz/you.swf'),
+            '鼬',
+            ROOT / 'data/slices/you-helper.timeline.json',
+        )
+        self.assertEqual(model['hide_frames'], [76])
+        self.assertEqual(model['hide_frame_events'], [{
+            'frame': 76,
+            'op': 'root_goto_and_stop',
+            'target_frame': 1,
+            'source_path': 'frame_76/DoAction.as',
+            'source_line': 2,
+            'source_sha256': model['hide_frame_events'][0]['source_sha256'],
+        }])
+        self.assertEqual(model['hide_frame_events'][0]['source_sha256'],
+                         next(item['source_sha256'] for item in model['indexed_source_events']
+                              if item['path'] == 'frame_76/DoAction.as'))
+
     def test_gaara_terminal_stop_and_root_lifetime(self):
         model = build_model(ROOT / 'scripts/fighter/fz/woailuo.json',
                             ROOT / 'game/fighter/fz/woailuo.swf', '我爱罗')
         self.assertEqual((model['start_frame'], model['end_frame']), (2, 85))
         self.assertEqual([(x['sprite_id'], x['frame']) for x in model['nested_stops']], [(48, 33)])
+        self.assertEqual(model['hide_frames'], [])
+        self.assertEqual(model['hide_frame_events'], [])
         timeline = json.loads((ROOT / 'godot/generated/helpers/woailuo/timeline.json').read_text())
         sand = next(x for x in timeline['definitions'] if x['character_id'] == 48)
         self.assertEqual(sand['display_list_frames'][32], [])
@@ -40,6 +74,8 @@ class HelperTimingTests(unittest.TestCase):
         model = build_model(ROOT / 'scripts/fighter/fz/kon.json',
                             ROOT / 'game/fighter/fz/kon.swf', '魂')
         self.assertEqual(model['end_frame'], 102)
+        self.assertEqual(model['hide_frames'], [])
+        self.assertEqual(model['hide_frame_events'], [])
         self.assertEqual(model['nested_stops'], [])
         self.assertEqual(model['clip_load_events'], [])
         self.assertEqual([(x['frame'], x['delta']) for x in model['drain_events']],

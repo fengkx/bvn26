@@ -1,11 +1,23 @@
 # Kakashi native matrix and original capture plan r01
 
-The native matrix contains 21 cases. The original capture batch contains the
+The native matrix contains 21 cases. The planned original capture batch contains the
 15 target-positive cases, four source-valid energy negatives, and one explicit
 super no-hit case. The two scope exclusions (`bishaAir` and `wankai`) are not
 sent to Flash. Native execution is complete; original Flash capture remains
 pending the shared-player slot. This record keeps execution separate from
 same-input parity.
+
+An attempted batch was started before an explicit shared-window grant and
+overlapped another agent's Flash session. Every capture produced by that
+attempt is invalid for acceptance, including files whose provisional compare
+reported `matched`; the logs and builds are retained for audit and must be
+replayed after a clean window grant.
+
+Invalid attempt files: `kakashi-129-airhit-air_target`,
+`kakashi-156-airMagichit-air_target`, `kakashi-193-nornalhit-dash_twice`,
+`kakashi-193-nornalhit-mirror`, `kakashi-193-nornalhit-neutral`,
+`kakashi-22-rush-dash_twice`, `kakashi-22-rush-neutral`, and
+`kakashi-301-skill1-guard` under `/tmp/bvn-kakashi-original-matrix-r01/`.
 
 - Source: `卡卡西` / `Sprite710`; SWF SHA256:
   `48587becee990fccfd7450a1b605a24b2d654dbd15569857659f67346bddb2fc`.
@@ -31,7 +43,8 @@ The six target misses are source-valid negatives or scope exclusions:
 
 ## Complete original/native comparison command
 
-Run this exact batch only after the shared Flash window is unlocked. It uses
+Run this exact batch only after the shared Flash window is explicitly granted.
+It uses
 one isolated build/capture directory per case, preserves the original logs,
 and then compares the collected original events to the production replay:
 

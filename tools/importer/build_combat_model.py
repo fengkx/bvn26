@@ -106,6 +106,16 @@ FACING_BODY_WARP = re.compile(
     r"\}",
     re.S,
 )
+# Some source timelines branch on facing only to choose the signed offset;
+# they intentionally leave the container's existing _xscale unchanged.
+FACING_BODY_WARP_NO_SCALE = re.compile(
+    r"if\s*\(\s*_parent\._xscale\s*(?P<cmp>[<>])\s*0\s*\)\s*\{\s*"
+    r"(?P<then_x>_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x[^;]*;)\s*"
+    r"\}\s*else\s*\{\s*"
+    r"(?P<else_x>_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x[^;]*;)\s*"
+    r"\}",
+    re.S,
+)
 JUMP_ASSIGN = re.compile(r"\bjump\s*=\s*1\s*;")
 # Locomotion/guard loops that DATA_CONTRACTS keep unwired so walk and
 # held-guard pin stay intact. 落地/瞬步/防住 early gotos are compiled.
@@ -153,6 +163,17 @@ NESTED_FRAME_SCRIPT = re.compile(
     r"^DefineSprite_(?P<sprite>\d+)/frame_(?P<frame>\d+)/DoAction"
 )
 CLIP_RENAME = re.compile(r"(?:this\.)?_name\s*=\s*\"(?P<name>[^\"]+)\"")
+# Root timeline actions can rename a placed instance (for example
+# `dogs._name = "sbsatm"`) without giving the instance its final authored
+# name in the display list.  Keep this separate from CLIP_RENAME: nested clip
+# timelines use `this._name`, while root assignments need a depth/lifetime
+# lookup against the root display list.
+ROOT_CLIP_RENAME = re.compile(
+    r"(?P<object>[A-Za-z_]\w*)\._name\s*=\s*\"(?P<name>[^\"]+)\""
+)
+ROOT_CLIP_RENAME_ASSIGN = re.compile(
+    r"(?P<object>[A-Za-z_]\w*)\._name\s*=\s*\"(?P<name>[^\"]+)\"\s*;"
+)
 # Frame DoAction that overwrites a named clip's local _x so the clip
 # registration sits on the opponent container. Facing flip is the
 # `_parent._xscale > 0` branch; optional _y uses the same clip name.
@@ -309,6 +330,26 @@ def parse_body_warp(source: str) -> dict[str, Any] | None:
         else:
             result["xscale_lt_0"] = then_branch
             result["xscale_gt_0"] = else_branch
+        _apply_warp_y(result, source)
+        if JUMP_ASSIGN.search(source):
+            result["set_jump"] = True
+        return result
+    facing_without_scale = FACING_BODY_WARP_NO_SCALE.search(source)
+    if facing_without_scale is not None:
+        then_x = _warp_x_fields(facing_without_scale["then_x"])
+        else_x = _warp_x_fields(facing_without_scale["else_x"])
+        if then_x is None or else_x is None:
+            return None
+        result = {
+            "op": "warp_to_opponent",
+            "place_x": True,
+        }
+        if facing_without_scale["cmp"] == ">":
+            result["xscale_gt_0"] = then_x
+            result["xscale_lt_0"] = else_x
+        else:
+            result["xscale_lt_0"] = then_x
+            result["xscale_gt_0"] = else_x
         _apply_warp_y(result, source)
         if JUMP_ASSIGN.search(source):
             result["set_jump"] = True
@@ -520,6 +561,188 @@ def _merge_nested_atm_windows(
             hitbox_windows[label].sort(
                 key=lambda item: (item["start_frame"], item["instance_name"])
             )
+
+
+def _merge_root_atm_windows(
+    hitbox_windows: dict[str, list[dict[str, Any]]],
+    ranges: dict[str, dict[str, int]],
+    frames_by_number: dict[int, dict[str, Any]],
+    scripts: list[dict[str, Any]],
+) -> None:
+    """Compile root DoAction instance renames into sourced hitbox windows.
+
+    A root timeline can place a clip under a visual name and later rename the
+    same display-list instance to ``*atm``.  The window begins at the frame
+    containing the assignment and ends immediately before that depth is
+    removed, replaced, or reused.  Matching the authored ``placed_frame`` and
+    character id keeps a later replacement from inheriting the old attack
+    identity.
+    """
+    events: list[dict[str, Any]] = []
+    for script in scripts:
+        if script["kind"] != "frame_action":
+            continue
+        depth = 0
+        lines = script["source"].replace("\r\n", "\n").splitlines()
+        for line_number, raw_line in enumerate(lines, 1):
+            line = raw_line.strip()
+            match = ROOT_CLIP_RENAME_ASSIGN.fullmatch(line)
+            candidate = ROOT_CLIP_RENAME.search(line)
+            if match is not None:
+                if depth != 0 and match["name"].endswith("atm"):
+                    raise ValueError(
+                        f"Unsupported controlled root rename: {script['path']}:{line_number}"
+                    )
+                events.append(
+                    {
+                        "action": script["action"],
+                        "frame": int(script["frame"]),
+                        "object": match["object"],
+                        "name": match["name"],
+                        "script": script,
+                    }
+                )
+            elif candidate is not None and candidate["name"].endswith("atm"):
+                raise ValueError(
+                    f"Unsupported root rename statement: {script['path']}:{line_number}"
+                )
+            depth += line.count("{") - line.count("}")
+            if depth < 0:
+                raise ValueError(f"Unbalanced root rename source: {script['path']}")
+        if depth != 0:
+            raise ValueError(f"Unbalanced root rename source: {script['path']}")
+
+    # Resolve assignments against the live source identity.  Once an instance
+    # is renamed, a later write through the old variable is undefined; only a
+    # write through the new name can change that generation again.
+    resolved: list[dict] = []
+    active: dict[str, list[dict]] = {}
+    for event in sorted(events, key=lambda item: (item["action"], int(item["frame"]), item["script"]["path"])):
+        label = event["action"]
+        frame_number = int(event["frame"])
+        frame = frames_by_number.get(frame_number)
+        if frame is None:
+            raise ValueError(f"Root rename has no source frame: {event['script']['path']}")
+        object_name = str(event["object"])
+        static = [
+            item for item in frame["display_list"]
+            if str(item.get("name", "") or "") == object_name
+        ]
+        candidates: list[dict] = []
+        for record in active.get(label, []):
+            if record["current_name"] != object_name:
+                continue
+            placement = next(
+                (
+                    item for item in frame["display_list"]
+                    if int(item.get("depth", -1)) == record["depth"]
+                    and int(item.get("character_id", 0) or 0) == record["character_id"]
+                    and int(item.get("placed_frame", frame_number)) == record["placed_frame"]
+                ),
+                None,
+            )
+            if placement is not None:
+                candidates.append(record)
+        if not candidates and static:
+            # A static authored name is unavailable when this generation has
+            # already been renamed away from it.
+            for placement in static:
+                same_generation = [
+                    record for record in active.get(label, [])
+                    if record["depth"] == int(placement["depth"])
+                    and record["character_id"] == int(placement.get("character_id", 0) or 0)
+                    and record["placed_frame"] == int(placement.get("placed_frame", frame_number))
+                ]
+                if any(record["current_name"] != object_name for record in same_generation):
+                    continue
+                candidates.append({
+                    "depth": int(placement["depth"]),
+                    "character_id": int(placement.get("character_id", 0) or 0),
+                    "placed_frame": int(placement.get("placed_frame", frame_number)),
+                    "authored_name": object_name,
+                    "current_name": object_name,
+                })
+        if len(candidates) != 1:
+            # Source writes through an old name are no-ops; other ambiguous or
+            # missing identities fail closed so no guessed hitbox is emitted.
+            if not candidates and static:
+                continue
+            raise ValueError(
+                f"Root rename target is not uniquely placed: {event['script']['path']}"
+            )
+        record = candidates[0]
+        record["current_name"] = str(event["name"])
+        if record not in active.setdefault(label, []):
+            active[label].append(record)
+        resolved.append({**event, **record})
+
+    seen: set[tuple[str, str, int, int, int, int]] = set()
+    for index, event in enumerate(resolved):
+        instance_name = str(event["name"])
+        if not instance_name.endswith("atm") or event["object"] == "this":
+            continue
+        label = event["action"]
+        span = ranges[label]
+        start = int(event["frame"])
+        if start < int(span["start_frame"]) or start > int(span["end_frame"]):
+            continue
+        script = event["script"]
+        depth = int(event["depth"])
+        character_id = int(event["character_id"])
+        placed_frame = int(event["placed_frame"])
+        next_rename = min(
+            (
+                int(other["frame"])
+                for other in resolved[index + 1 :]
+                if other["action"] == label
+                and other["depth"] == depth
+                and other["character_id"] == character_id
+                and other["placed_frame"] == placed_frame
+                and int(other["frame"]) > start
+            ),
+            default=int(span["end_frame"]) + 1,
+        )
+        end = min(int(span["end_frame"]), next_rename - 1)
+        for frame_number in range(start, end + 1):
+            current = frames_by_number.get(frame_number)
+            current_placement = next(
+                (
+                    item
+                    for item in current["display_list"]
+                    if int(item.get("depth", -1)) == depth
+                ),
+                None,
+            ) if current is not None else None
+            if (
+                current_placement is None
+                or int(current_placement.get("character_id", 0) or 0) != character_id
+                or int(current_placement.get("placed_frame", frame_number)) != placed_frame
+            ):
+                end = frame_number - 1
+                break
+        if end < start:
+            continue
+        key = (label, instance_name, start, end, depth, placed_frame)
+        if key in seen:
+            continue
+        seen.add(key)
+        hitbox_windows.setdefault(label, []).append(
+            {
+                "instance_name": instance_name,
+                "start_frame": start,
+                "end_frame": end,
+                "placed_name": str(event["object"]),
+                "character_id": character_id,
+                "depth": depth,
+                "placed_frame": placed_frame,
+                "source_path": script["path"],
+                "source_sha256": script["source_sha256"],
+            }
+        )
+    for label in hitbox_windows:
+        hitbox_windows[label].sort(
+            key=lambda item: (item["start_frame"], item["instance_name"])
+        )
 
 
 def _nested_rename_end(
@@ -1095,6 +1318,7 @@ def build_model(
     _merge_nested_atm_windows(
         hitbox_windows, ranges, frames_by_number, script_bundle, frame_counts
     )
+    _merge_root_atm_windows(hitbox_windows, ranges, frames_by_number, scripts)
 
     combo_labels = list(fighter["actions"]["ground_combo"])
     combo_transitions = []

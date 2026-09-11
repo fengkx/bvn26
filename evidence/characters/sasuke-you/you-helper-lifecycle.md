@@ -12,4 +12,9 @@ Command:
 
 Result: `YOU_HELPER_LIFECYCLE_OK rows=198 effects=2`. Retained trace: `you-helper-lifecycle.json`.
 
-The original-player summon fixture is prepared at `you-helper-probe-fixture.json`; its capture remains pending the parent-controlled Flash sampling window. Build command and fixture are recorded in the handoff message.
+The original-player summon fixture is recorded at `you-helper-probe-fixture.json`,
+and its fixed-input source capture is retained by `native-probe-you-r03`. The
+fresh r16 replay matches 482 rows on the six common helper fields; source-only
+`hits`/`atm1`/`atm2`/`atm3`, full lifecycle coverage, and visual/audio parity
+remain unaccepted. Build command and fixture are recorded in the handoff
+message.

@@ -42,10 +42,11 @@ selectable fighter and is not the helper source.
 4. **Assertions.** Regression assertions must use source labels, exact frame
    spans, attack values, source display-list bounds and helper events. This
    slice does not add guessed offsets or per-character hitbox enlargement.
-5. **Original-player replay.** No fixed-input original-player trace has been
-   captured for this slice yet. Native/Web smoke can prove compiled source
-   invariants and runtime lifecycle only; original same-input parity remains
-   pending.
+5. **Original-player replay.** The fixed-input helper source capture is retained
+   in `native-probe-you-r03`; `sasuke-you-helper-compare-r16.json` matches its
+   native replay on the six common helper fields for 482 rows. The source-only
+   `hits`/`atm1`/`atm2`/`atm3` fields, full helper lifecycle matrix, and visual or
+   audio parity remain outside that comparison and are still pending.
 
 ## Source-derived helper attacks
 
@@ -60,4 +61,3 @@ events at frames 42, 128, 144, 160 and 176.
 The shared character/menu catalog must register only the base `佐助` output and
 helper `鼬` output for this task. The deferred forms remain out of the menu and
 must not be silently mapped to the base timeline.
-

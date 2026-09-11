@@ -1,0 +1,977 @@
+{
+  "schema": "bvn2.6.sasuke.base.original-comparison.v1",
+  "status": "original_capture_completed_not_port_parity",
+  "fixture": "/tmp/sasuke-base-neutral-batch-r01.json",
+  "source_build_root": "/tmp/bvn-sasuke-base-source-r01",
+  "production_root": "/tmp/sasuke-base-neutral-prod-r02",
+  "compare_root": "/tmp/sasuke-base-compare-r02",
+  "command": "python3 /private/tmp/compare_sasuke_base_r02.py",
+  "runtime_hash": "5f7a9172d05ad2015842177665caebd133838721b83c76fd8a977bf593dc4066",
+  "cases_total": 18,
+  "cases_done": 18,
+  "comparison_matched": 0,
+  "comparison_different": 18,
+  "overlap_invalid_cases": {
+    "sasuke-203-nornalhit-neutral": "fresh original-r02 ended 19:11:25, overlapping Kakashi capture interval",
+    "sasuke-311-skill1-neutral": "r02 original ended 19:12:41, overlapping Kakashi capture interval",
+    "sasuke-348-skill2-neutral": "r02 original ended 19:13:57, overlapping Kakashi capture interval",
+    "sasuke-40-jump-neutral": "r02 original ended 19:15:12, overlapping Kakashi capture interval",
+    "sasuke-402-magichit1-neutral": "r02 original ended 19:16:28; conservatively pending clean recapture after Kakashi window"
+  },
+  "cases": [
+    {
+      "id": "sasuke-127-airhit-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 6,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 40.0,
+            "native": 7
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13377,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:75": 1,
+        "_level0.game.p1.mc:74": 1
+      },
+      "raw_capture_sha256": "d4cda375bba2705ebc61b8498d857c80ebfaf3cc45ec4fde59315cc7b385c884",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "d48e3cc55ec4e3b7ba913dae5378572b3f54bc3572b3063ae331fcba02c0e7a4",
+        "events.jsonl": "9b9036fa4dc40e14de8f00c516776eedcdb6319c269a76e1c917735e481406a1",
+        "random-tape.json": "fa72f4fd8b5951a31c29317403d4fa99f97bc9bb1c73a620ed7cd878a168208d",
+        "build.json": "8be875ee945e479c6e1f6030e0d06ef139b3f99bb38e9c2c3e7f0709aaa37b51"
+      }
+    },
+    {
+      "id": "sasuke-154-airMagichit-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 6,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 40.0,
+            "native": 7
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13285,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:75": 1,
+        "_level0.game.p1.mc:85": 1
+      },
+      "raw_capture_sha256": "aaeb007c9ef002446828a5497d325fd7c56622c85fcb0ecb6de47736a8550851",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "fdda4a2144b79584b5bb858995240e4d8d7c25fc935f6d504db23f54121ad521",
+        "events.jsonl": "0254483896fad0f500ea9692563654f723a03e394951d7383597756d2e7534a1",
+        "random-tape.json": "43aebe182b9fd32d0c6821faf63308eab630b1515e8d4656c89d95b1153489db",
+        "build.json": "6dc8a2f94c1ee80828753c47597d0e6e4a5833d027be04a99c3677cd1bcb1984"
+      }
+    },
+    {
+      "id": "sasuke-20-rush-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 20.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13720,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:76": 4
+      },
+      "raw_capture_sha256": "5de28090d18d17d9d36b5e7f97878e7b382db74c6fa5d47b6de8151971bf755d",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "2c2217ae90a6573215e9925e3c5fef0eb6e6397319f18b09b8a915e6bf87c762",
+        "events.jsonl": "69206dc4d45b95af1e0d896f1b3e0b9096bde6806d4b71ea97140eae4137cf89",
+        "random-tape.json": "a52d3151e5c34704958dc657cbda16260a8a031d55003aee7dee810576184319",
+        "build.json": "3adf7651293774ea041d31f2e636b67823f2ca1e4495ae08a3241638c2d1492d"
+      }
+    },
+    {
+      "id": "sasuke-203-nornalhit-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 203.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": false,
+      "invalid_reason": "fresh original-r02 ended 19:11:25, overlapping Kakashi capture interval",
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13473,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:74": 1
+      },
+      "raw_capture_sha256": "f6ae72aa3f50cebddeceeb5b42afc0799b47313b73d8a9db24c8a1837c3aae98",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "f6a5314f4baae6d4cd05739035cbd173112e319f50ef82a4e4da25a4368b0082",
+        "events.jsonl": "52c4ce16d62da29958d78ed2e06edf382d81925857710cc7bef948c5a1e30d72",
+        "random-tape.json": "e9e864ff93ac50e2745a9065e71e0f9761089faf56145c6ef150b08581517ed1",
+        "build.json": "5e56994d83d264f67a166cb705bf1e383d0820772e28dbae7b2a8d7dcc9d6e2e"
+      }
+    },
+    {
+      "id": "sasuke-311-skill1-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 837.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": false,
+      "invalid_reason": "r02 original ended 19:12:41, overlapping Kakashi capture interval",
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 12309,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:83": 3,
+        "_level0.game.p1.mc:74": 1
+      },
+      "raw_capture_sha256": "dcdbdbeeb9d81c230acd11468695ec8504dfca9114188292c7a96dc1d5260837",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "13967dac6a25b3ea61871eec1cad9db4dfe0592670b3eda14b2f2c8c7a2775eb",
+        "events.jsonl": "3dcf07975dc4f6be0aa8ddea981cd39cbf2413a983cefd6a1ea6c0e26e621333",
+        "random-tape.json": "835d1af2dffee227ad5fc8ce48adb53369e88f7293ac13709a0a9fa764312db7",
+        "build.json": "7df9de7b9743ba406040f6b01bc181bc42bc617d5d4768e717b3e8b9ddd5726e"
+      }
+    },
+    {
+      "id": "sasuke-348-skill2-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 348.0,
+            "native": 5
+          },
+          "x": {
+            "original": 295.0,
+            "native": 300.0
+          }
+        }
+      },
+      "valid_for_acceptance": false,
+      "invalid_reason": "r02 original ended 19:13:57, overlapping Kakashi capture interval",
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 11477,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:74": 3,
+        "_level0.game.p1.mc:87": 2
+      },
+      "raw_capture_sha256": "af2a1432284d3a511808f6e66ba108f14a0290d49ec08ec6f4f6bd0c0ae31d8d",
+      "retained_sha256": {
+        "clock-tape.json": "33e09f9dfcdf8413ed0428f2f3910c365973ed76f4e5cd73c656a05da92c25e8",
+        "instrumentation.diff": "cae92b7804ec0d2242f6a513b080173c4f1d8db6cad4d8c5cd3c2ec4cfbbe493",
+        "events.jsonl": "f1bbf17c99f4d037803fdcef7e8090c4c98d5ef7d4678ad2830f5b6478b1dfaa",
+        "random-tape.json": "6e26dcd5854a282b0b5c7da1e0fd6ac8853863b30aad12a252ff524f6e3f2687",
+        "build.json": "0de00b94a1b78a5028bea483158d3e6c0638985fdee95c235b26a2b48d9b3579"
+      }
+    },
+    {
+      "id": "sasuke-40-jump-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 40.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": false,
+      "invalid_reason": "r02 original ended 19:15:12, overlapping Kakashi capture interval",
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13583,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:75": 1
+      },
+      "raw_capture_sha256": "dabf7de6fa987b6227a84674196132e153e5eb92b475f557ef749287f0df4d15",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "157077513b57a1158d72b2931697196e84dce1991a4c2180b05c7388ce24af4a",
+        "events.jsonl": "d4e6ef305689482649222ca4e7d506ff89eafa43a8794e0bde8c6a890a64c96c",
+        "random-tape.json": "99a8d9c768b611afffa6a373ebffdb666dc60bc54f4ce75e4b568eac5a4c2b72",
+        "build.json": "e5672f4dfef75f7effc61bf068a49eee2188cabe1453df349e172c345f727b9f"
+      }
+    },
+    {
+      "id": "sasuke-402-magichit1-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 402.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": false,
+      "invalid_reason": "r02 original overlaps/shared-window uncertainty; conservatively pending clean recapture",
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 11811,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:85": 1
+      },
+      "raw_capture_sha256": "0703e33f1db80791179caf18c677a0abfe1c81c4ed2b728600646f09315702de",
+      "retained_sha256": {
+        "clock-tape.json": "eb01e96737287bc80c8298cb38c8b6edbec857e84eb9ef8c6b17a6fe2977d7a2",
+        "instrumentation.diff": "19511df980255978a214704e0fcf3c6060ff3b5930042a62142b02cf45e1035c",
+        "events.jsonl": "89435c2dbfe7529c08a48019251e1de9115b44bf325b5188ac37cb5a499c1b93",
+        "random-tape.json": "a853ce3f54898ca8046eb14ed99b154a4e9ffe95e1568f7d6fd76fad2ade0f34",
+        "build.json": "f0e6d3ca47de5776f6adc4fea7155a7ab188087de53370cda70758c79a818c41"
+      }
+    },
+    {
+      "id": "sasuke-458-magichit2-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 837.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 12524,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:83": 4,
+        "_level0.game.p1.mc:85": 1
+      },
+      "raw_capture_sha256": "6be0b9ed510d26f818be8750e89d90bf1ebd7a82a91209d68d9092a31dc3288e",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "26b22994f481f49cfeeda293c157a3ee524f510abfc5091c6352793ebbe7766b",
+        "events.jsonl": "8a91e4ad6f57fec32dbb1e84ff00a3017b34bdc0dac792b8a0cc0d722d10f918",
+        "random-tape.json": "c9871984a53a94a6a04702a1ccacd963f4fe9d60e6a24aa86abb21dbfc6f5e51",
+        "build.json": "860269fad31e4d5079948d6961dde39fdfdaba2c5668554e737f6d79afa17459"
+      }
+    },
+    {
+      "id": "sasuke-496-magichit3-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 496.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 12412,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:87": 2,
+        "_level0.game.p1.mc:85": 1
+      },
+      "raw_capture_sha256": "03313355e3daddb87574ec0f66256095454b2597aa958e525108b8e6f667249e",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "810f7c02a0adebde5562992b3eaa894dccddac8a79c4d589a1059bd542a6968d",
+        "events.jsonl": "62994a590dc8560b49fef17f1b68503aeb35c215a01c7910236b46946029efcd",
+        "random-tape.json": "d2ce39639465bdd964b6478502c42c55177ce6ebe14f4d59e78407e791c84c5e",
+        "build.json": "ab5a834daa80070d05abc24c00affa8345d56ee99515a8b20b8d2f5fd717dcb4"
+      }
+    },
+    {
+      "id": "sasuke-530-bisha-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 530.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 11072,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:73": 1
+      },
+      "raw_capture_sha256": "d067d0cd30cef384ab279d1d89027dbc43dc0cdcd6cbfbbcb7ee250f35d14c4e",
+      "retained_sha256": {
+        "clock-tape.json": "19c09f850ecdbf6b580c81af89e1ba7686763c35900ee2e91d9af5722be50ba0",
+        "instrumentation.diff": "1c3ac7fe94a7f6493a2c1f5f2c1d52f8733747961155f42faf554d8d28966391",
+        "events.jsonl": "42749b495a00e8bccc5e55b28873a5905aa51f1c10e4f6c5b2af5f0d260269e6",
+        "random-tape.json": "d60e85f17bd198b012189f32d329fcdc3345a0b372d8eb80346a527c555786a1",
+        "build.json": "ec179d39936f7d2940a3a8dcfe1e7e379484d5788cdff9c1efb8b0643e25417f"
+      }
+    },
+    {
+      "id": "sasuke-598-bishaUP-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 598.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 11062,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:87": 3,
+        "_level0.game.p1.mc:73": 1
+      },
+      "raw_capture_sha256": "2b92efb0708211b8b32731039dd93bd7fc47acaae22dfe7e161087c5ce5668fe",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "dea04451fe659476b96f5631bb1850702a328a6ade140c875a5f457ac74f2be8",
+        "events.jsonl": "ff3e6191d71d79d359e6b2ff90b8b8871600c97e34d23cd9e5bd0a0a65f9a937",
+        "random-tape.json": "0ea762cdc5aed9b08a40c78af795d6c9fac4d988861069cb0dab1b33fe7a2ea6",
+        "build.json": "0688fb35ab2a18251fea155ea0d00f546f0db6bf781786f0d352b9f4c3fc4abd"
+      }
+    },
+    {
+      "id": "sasuke-72-jump-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 6,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 40.0,
+            "native": 7
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13333,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:75": 2
+      },
+      "raw_capture_sha256": "55eb72b2a428c8a067a8d398e463a182986eb1677505124f7420ac75599bd5ca",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "a65d221a3c7eef1cf04596e918000203576a6231dc1c29eb3f06c3c4f0f6286c",
+        "events.jsonl": "2b4b4414ac12d105855a71fd386c4abb7e82a05ba33318573a21c2c44f77fa57",
+        "random-tape.json": "f39e8aa5fbdc223a84be9c9bb60d870bbfbe7a251e6c9aee6f439cb2dc67035c",
+        "build.json": "1cfa3b6f44cddd41729b914fbdc600d6e3be7a0784c172adaf59ec389e442967"
+      }
+    },
+    {
+      "id": "sasuke-775-zhaoHuan-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 775.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 9358,
+      "post_done_events": 4,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:79": 1
+      },
+      "raw_capture_sha256": "85341fe11cb4554a028bb2bb2202fa52a02bec97ae1e9f92864e293ae23e856d",
+      "retained_sha256": {
+        "clock-tape.json": "155b0dc241df02e2904a4ef582781a00b04c21ba66d3608965332bc62e63ee17",
+        "post-done-events.jsonl": "8345f7676d67f7c529585c7c73aa324d14a2f20a7a7b4a2a8677522b7d717cc3",
+        "instrumentation.diff": "cd81b2b2e31ad85151200adb15b6cda9379552f84627fe9394cf003d38388ae7",
+        "events.jsonl": "ef97a448f3eaa01cb24eb89d4085d5b17dca7fc07b642003677ce155136bc668",
+        "random-tape.json": "a726191dfed30e1ccde04f70ade6e80eabda8ffe51eba717a70b12bf77061444",
+        "build.json": "ebd27a3bb703e768577a0fb5ef77588c72a0f5e11d4a600c03dc77f8d0320bcd"
+      }
+    },
+    {
+      "id": "sasuke-837-defence-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 837.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13888,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:83": 5
+      },
+      "raw_capture_sha256": "31d8ec471000327f02e84aaa978de582b87fc939de1f475169ab51faa8aec919",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "e523a8422514d6a13b711eaf060ef96c30e0d333fe9eced9c52f739aa0bb82f9",
+        "events.jsonl": "cac07dd575d634b80a0e0b884f95d937e3fbc5077fd2a80502df43346193beb1",
+        "random-tape.json": "1b8bb2e0567f9f7176c32f6285ff403ade813318ca2df4a2c71213c8163b47a1",
+        "build.json": "59452ebfb62738bb79db10d79371122529248dd9fbc7679b7324f8928b0b9eb7"
+      }
+    },
+    {
+      "id": "sasuke-838-defence-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 11,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 837.0,
+            "native": 5
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13856,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:83": 5
+      },
+      "raw_capture_sha256": "23472d5d2f5a572a8fecdf638771eadb36ddbfa769457cb82aca9cbbd20b0572",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "defde86686835a628e9da9a14b952066a3fe1c88288c8dbc7a11bf62371c4402",
+        "events.jsonl": "87a75a97793638964143365d02505398537b5dd658180ce581f49282f99aee59",
+        "random-tape.json": "bdebfadeb93dddf5d449b0d272dd3b4485b304850256c543e68395988258e162",
+        "build.json": "a795ebc31de2ab3822bb53f7a1a2c2d0ca5c2d3e7731902b94b8b544b90ed81c"
+      }
+    },
+    {
+      "id": "sasuke-89-jumpDown-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 6,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 40.0,
+            "native": 7
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13270,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:75": 2
+      },
+      "raw_capture_sha256": "628861ef09d2fef17007969dae30bd5ac6d69d9a0379131c34d5b7ba27ed4a03",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "960dd7719f2cb0d0cb4d9645b2567e94865e689469bdc07805b0b1d7f63a3fb0",
+        "events.jsonl": "33684490b6677282b2b77eb85eaa520ae7eda73ef759818dd5d1f85d88722c34",
+        "random-tape.json": "7b31b823f293a1c6618a517077d187314bffe21430cc3a5e3fedb79dfbcedac7",
+        "build.json": "156aa2909e183d6539a9a4ff7ff606340767d45cd3db8c024cd9fe81ba027c7b"
+      }
+    },
+    {
+      "id": "sasuke-missing-bishaAir-neutral",
+      "source_capture": "collected-r02.json/events.jsonl",
+      "source_states": 602,
+      "native_states": 602,
+      "comparison_status": "different",
+      "first_difference": {
+        "tick": 6,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 40.0,
+            "native": 7
+          }
+        }
+      },
+      "valid_for_acceptance": true,
+      "invalid_reason": null,
+      "capture_status": "original_capture_completed_not_port_parity",
+      "events": 13567,
+      "post_done_events": 0,
+      "frames_after_ready": 300,
+      "ready": true,
+      "done": true,
+      "input_delivery": "source_key_reads_match_recorded_intent",
+      "pressed_reads": {
+        "_level0.game.p1.mc:75": 1,
+        "_level0.game.p1.mc:73": 2
+      },
+      "raw_capture_sha256": "23219139a8e2b9bf815b6b2672baeafe587c2f0f3f9a9edfe486bde8db7f7e0a",
+      "retained_sha256": {
+        "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "instrumentation.diff": "5031c6006b514cf1a5e992c409405c37cf59b4578d6e2480c26d954075560850",
+        "events.jsonl": "79c097cce9e2bba0bd201855389ac3953868318913b8a37da828ad0a06aabb03",
+        "random-tape.json": "85d5216293a968b3b322d5300b3be68a11a7f3b016e2027e2168b7bad811a484",
+        "build.json": "c95d1402d9cda9cc3f9e3555d894303595570b089d44888888239231cc1205d1"
+      }
+    }
+  ],
+  "notes": [
+    "Every collected source capture has ready=1 and done=1.",
+    "Comparison is a diagnostic same-input trace comparison; original_parity_verified remains false.",
+    "Known Flash window overlap invalidates four r02 captures pending clean recapture under the serialization lock.",
+    "Input delivery is recorded as source_key_reads_match_recorded_intent for every case; each requested interval retains 300 frames after ready."
+  ],
+  "diagnostic_replay": {
+    "case": "sasuke-127-airhit-neutral",
+    "fixture": "/tmp/sasuke-cases-r01/sasuke-127-airhit-neutral.json",
+    "source": "/tmp/bvn-sasuke-base-source-r01/sasuke-127-airhit-neutral/collected-r02.json/events.jsonl",
+    "old_native": "/tmp/sasuke-base-neutral-prod-r02/sasuke-127-airhit-neutral.json",
+    "fresh_native": "/tmp/sasuke-127-native-r03/native.json",
+    "fresh_compare": "/tmp/sasuke-127-native-r03/compare.json",
+    "fresh_runtime_hash": "5f7a9172d05ad2015842177665caebd133838721b83c76fd8a977bf593dc4066",
+    "fresh_result": "matched",
+    "fresh_states": 602,
+    "old_native_mtime_local": "2026-09-10 18:08",
+    "fresh_native_mtime_local": "2026-09-10 19:33",
+    "controller_commit_before_fresh": "e338cd7",
+    "old_native_row_differences": [
+      {
+        "tick": 6,
+        "slot": "p1",
+        "old_frame": 7,
+        "fresh_frame": 40
+      },
+      {
+        "tick": 21,
+        "slot": "p1",
+        "old_frame": 55,
+        "fresh_frame": 127
+      },
+      {
+        "tick": 43,
+        "slot": "p1",
+        "old_frame": 65,
+        "fresh_frame": 115
+      }
+    ],
+    "source_input_evidence": {
+      "fight_tick": 5,
+      "key": "jump",
+      "source_key_read": "_level0.game.p1.mc,75,true",
+      "source_paths": [
+        "scripts/fighter/Sasuke.json: DefineSprite_603/frame_42/DoAction.as (jump=1)",
+        "scripts/fighter/Sasuke.json: DefineSprite_603/frame_42/PlaceObject2_16_32/CLIPACTIONRECORD onClipEvent(enterFrame).as (onJumping(1))"
+      ]
+    },
+    "godot_call_chain": [
+      "godot/player_body_driver.gd:14-19 Context.source_key maps 跳 to inputs.jump",
+      "godot/generated/fighters/sasuke/player_controller/predicates.gd:235-241 jump() reads source_key(跳) and excludes 斩",
+      "godot/generated/fighters/sasuke/player_controller/controller.gd:44-114 frame_1_depth_31/doAllAction dispatches goto_label(跳)",
+      "godot/ai_controller_host.gd:219-232 goto_label delegates to FighterRuntime.goto_ai_label",
+      "godot/fighter_runtime.gd:219-232 sets target frame and queues source frame"
+    ],
+    "batch_r03_clean": {
+      "fixtures_manifest": "/tmp/sasuke-base-neutral-prod-r03-clean/case-paths.json",
+      "fixture_count": 18,
+      "fixture_unique": true,
+      "native_root": "/tmp/sasuke-base-neutral-prod-r03-clean",
+      "compare_root": "/tmp/sasuke-base-compare-r03-clean",
+      "compare_summary": "/tmp/sasuke-base-compare-r03-clean/summary.json",
+      "godot_command": "/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path /Users/fengkx/me/code/bvn2_6/godot -s res://tests/move_case_reference.gd --quit-after 2400 -- --batch /tmp/sasuke-base-neutral-prod-r03-clean/case-paths.json /tmp/sasuke-base-neutral-prod-r03-clean",
+      "result": {
+        "native_completed": 18,
+        "matched": 16,
+        "different": 2,
+        "different_cases": [
+          "sasuke-402-magichit1-neutral",
+          "sasuke-775-zhaoHuan-neutral"
+        ]
+      },
+      "runtime_hash": "5f7a9172d05ad2015842177665caebd133838721b83c76fd8a977bf593dc4066",
+      "controller_hashes_before": "/tmp/sasuke-base-neutral-prod-r03-clean/controller-hashes-before.json",
+      "controller_hashes_after": "/tmp/sasuke-base-neutral-prod-r03-clean/controller-hashes-after.json",
+      "hashes_unchanged": true,
+      "interpretation": "The prior r02 differences were stale native outputs generated before controller commit e338cd7; clean r03 resolves 16/18. Case 402 remains in the five-case clean-original recapture set. Case 775 default native fixture used 我爱罗 while source build configuration uses p1sf 鼬; rerun with explicit p1_helper=鼬 matched.",
+      "775_you_rerun": {
+        "fixture": "/tmp/sasuke-775-you-case-r01/sasuke-775-zhaoHuan-neutral.json",
+        "native": "/tmp/sasuke-775-you-native-r01/native.json",
+        "compare": "/tmp/sasuke-775-you-native-r01/compare.json",
+        "p1_helper": "鼬",
+        "result": "matched",
+        "states": 602
+      }
+    }
+  },
+  "compiler_fix_r04": {
+    "status": "source_compiled",
+    "source_first": {
+      "timeline": "DefineSprite_603/frame_408/DoAction.as in 招1 span 402-457",
+      "source_sha256": "2342827b62459eaae4c265e239d25896288c64175ed953e878df52756490292d",
+      "source_semantics": "if _parent._xscale > 0, write parent X = opponent X - 20; else write parent X = opponent X + 20; no _xscale assignment and no Y write",
+      "display_list": "no PlaceObject/MOVE at frame408; root DoAction remains in frame-script FIFO",
+      "exit": "frame426 writes 动作=0; frame431 gotoAndStop(\"落\") then play()"
+    },
+    "rule": "FACING_BODY_WARP_NO_SCALE emits xscale_gt_0/lt_0 x_pixels branches without set_facing; parse_body_warp is reused by combat and AI frame_calls",
+    "tests": [
+      "python3 -m unittest tools.tests.test_sasuke_compilers tools.tests.test_source_inventory -q"
+    ],
+    "generated_outputs": {
+      "combat_model": "data/actions/sasuke-base.json",
+      "combat_model_sha256": "b1c1239e181a14998f54564870e395633853d4c543b5454e01a9dbe4ca13fc83",
+      "godot_combat": "godot/generated/fighters/sasuke/combat.json",
+      "godot_combat_sha256": "b1c1239e181a14998f54564870e395633853d4c543b5454e01a9dbe4ca13fc83",
+      "godot_ai": "godot/generated/fighters/sasuke/ai.json",
+      "godot_ai_sha256": "7dd68989f12433d697d3db8c19b81d9991d2695ad91b7340fe82d58543d14ddc",
+      "frame408_body_warp": {
+        "action": "招1",
+        "frame": 408,
+        "op": "warp_to_opponent",
+        "place_x": true,
+        "xscale_gt_0": {
+          "x_pixels": -20.0
+        },
+        "xscale_lt_0": {
+          "x_pixels": 20.0
+        },
+        "source_path": "DefineSprite_603/frame_408/DoAction.as",
+        "source_sha256": "2342827b62459eaae4c265e239d25896288c64175ed953e878df52756490292d"
+      },
+      "frame408_ai_call": {
+        "op": "body_warp",
+        "warp": {
+          "op": "warp_to_opponent",
+          "place_x": true,
+          "xscale_gt_0": {
+            "x_pixels": -20.0
+          },
+          "xscale_lt_0": {
+            "x_pixels": 20.0
+          }
+        },
+        "path": "DefineSprite_603/frame_408/DoAction.as",
+        "line": 1,
+        "frame": 408
+      }
+    }
+  },
+  "recapture_r03": {
+    "status": "clean_original_capture_and_fresh_native_compare",
+    "runtime_hash": "5f7a9172d05ad2015842177665caebd133838721b83c76fd8a977bf593dc4066",
+    "fixture_manifest": "/tmp/sasuke-base-neutral-batch-r01.json",
+    "fresh_native_root": "/tmp/sasuke-base-neutral-prod-r05",
+    "fresh_native_batch_result": "18/18 executed, exit 0, MOVE_CASE_BATCH_OK 18",
+    "fresh_source_compare_root": "/tmp/sasuke-base-compare-r04-final",
+    "fresh_source_sets": {
+      "r03_clean_capture": [
+        "sasuke-203-nornalhit-neutral",
+        "sasuke-311-skill1-neutral",
+        "sasuke-348-skill2-neutral",
+        "sasuke-40-jump-neutral",
+        "sasuke-402-magichit1-neutral"
+      ],
+      "immutable_r02": "remaining 13 cases"
+    },
+    "fresh_18_compare": {
+      "raw_r05_default_fixture": {
+        "matched": 17,
+        "different": 1,
+        "summary": "/tmp/sasuke-base-compare-r04-final/summary.json",
+        "invalid_for_source_parity_case": "sasuke-775-zhaoHuan-neutral",
+        "reason": "r05 fixture omitted p1_helper/p2_helper while source build uses p1_helper=you,p2_helper=kon"
+      },
+      "aligned_helper_replay": {
+        "case": "sasuke-775-zhaoHuan-neutral",
+        "fixture": "/tmp/sasuke-775-explicit-you-r04.json",
+        "fixture_helpers": {
+          "p1_helper": "鼬",
+          "p2_helper": "魂"
+        },
+        "source_build_helpers": {
+          "p1_helper": "you",
+          "p2_helper": "kon"
+        },
+        "native": "/tmp/sasuke-775-explicit-you-prod-r04/native.json",
+        "compare": "/tmp/sasuke-775-explicit-you-prod-r04/compare.json",
+        "status": "matched",
+        "source_states": 602,
+        "native_states": 602
+      },
+      "accepted_clean_count": 18,
+      "accepted_different_count": 0,
+      "accepted_scope": "5 clean r03 source captures plus 13 immutable r02 captures; 775 uses explicit helper-aligned native replay"
+    },
+    "captures": [
+      {
+        "id": "sasuke-203-nornalhit-neutral",
+        "build_dir": "/tmp/sasuke-base-recapture-r03/sasuke-203-nornalhit-neutral",
+        "run_id": "sasuke-base-recapture-r03-sasuke-203-nornalhit-neutral",
+        "original_log": "/tmp/sasuke-base-recapture-r03/sasuke-203-nornalhit-neutral/original.log",
+        "collected_events": "/tmp/sasuke-base-recapture-r03/sasuke-203-nornalhit-neutral/collected/events.jsonl",
+        "original_log_sha256": "3ce8c00c413398ec2e93582edae04af867347b88ddc5ef18f6d07b862b6ec66e",
+        "collected_events_sha256": "eb272cd437614d8ad46d89823c2ea3e7cd7b61df4a8f500d6acc676c6bc51ba3",
+        "compare": {
+          "status": "matched",
+          "source_states": 602,
+          "native_states": 602,
+          "first_difference": null
+        }
+      },
+      {
+        "id": "sasuke-311-skill1-neutral",
+        "build_dir": "/tmp/sasuke-base-recapture-r03/sasuke-311-skill1-neutral",
+        "run_id": "sasuke-base-recapture-r03-sasuke-311-skill1-neutral",
+        "original_log": "/tmp/sasuke-base-recapture-r03/sasuke-311-skill1-neutral/original.log",
+        "collected_events": "/tmp/sasuke-base-recapture-r03/sasuke-311-skill1-neutral/collected/events.jsonl",
+        "original_log_sha256": "c1aa9aa91f99b175afb6d939f239412ed78e8d68f8f4c34892ecd9f23d24e054",
+        "collected_events_sha256": "65c7560a77e7f2708442febd2bd3344f7cb76cb347ec2ce5aeca3de8797d6cae",
+        "compare": {
+          "status": "matched",
+          "source_states": 602,
+          "native_states": 602,
+          "first_difference": null
+        }
+      },
+      {
+        "id": "sasuke-348-skill2-neutral",
+        "build_dir": "/tmp/sasuke-base-recapture-r03/sasuke-348-skill2-neutral",
+        "run_id": "sasuke-base-recapture-r03-sasuke-348-skill2-neutral",
+        "original_log": "/tmp/sasuke-base-recapture-r03/sasuke-348-skill2-neutral/original.log",
+        "collected_events": "/tmp/sasuke-base-recapture-r03/sasuke-348-skill2-neutral/collected/events.jsonl",
+        "original_log_sha256": "32a1e57096f8cf03c472c92a3ee0e32b4c5d3766fa2d1a8a8185addfadac7f87",
+        "collected_events_sha256": "77a0193609c30a200c2eea2ae927ee6f2aa8dadc46990fe35c4ca742b980bd83",
+        "compare": {
+          "status": "matched",
+          "source_states": 602,
+          "native_states": 602,
+          "first_difference": null
+        }
+      },
+      {
+        "id": "sasuke-40-jump-neutral",
+        "build_dir": "/tmp/sasuke-base-recapture-r03/sasuke-40-jump-neutral",
+        "run_id": "sasuke-base-recapture-r03-sasuke-40-jump-neutral",
+        "original_log": "/tmp/sasuke-base-recapture-r03/sasuke-40-jump-neutral/original.log",
+        "collected_events": "/tmp/sasuke-base-recapture-r03/sasuke-40-jump-neutral/collected/events.jsonl",
+        "original_log_sha256": "8d5c9f126e34f99c72a31447c83d70591e83e1bff6d95e2bfbc6f1993914b3e0",
+        "collected_events_sha256": "a4685b3bcfa67712847b8e00276aee4d8c014f5a2bb4120bc71e878d8efbd609",
+        "compare": {
+          "status": "matched",
+          "source_states": 602,
+          "native_states": 602,
+          "first_difference": null
+        }
+      },
+      {
+        "id": "sasuke-402-magichit1-neutral",
+        "build_dir": "/tmp/sasuke-base-recapture-r03/sasuke-402-magichit1-neutral",
+        "run_id": "sasuke-base-recapture-r03-sasuke-402-magichit1-neutral",
+        "original_log": "/tmp/sasuke-base-recapture-r03/sasuke-402-magichit1-neutral/original.log",
+        "collected_events": "/tmp/sasuke-base-recapture-r03/sasuke-402-magichit1-neutral/collected/events.jsonl",
+        "original_log_sha256": "39974db164118a31ef1affba88b0749282292501074cf753d393eb289931acb0",
+        "collected_events_sha256": "ec3614e58b3609124b94fb646b5b842a781a53d16cbd452489eb217cafb9e77f",
+        "compare": {
+          "status": "matched",
+          "source_states": 602,
+          "native_states": 602,
+          "first_difference": null
+        }
+      }
+    ],
+    "402_source_first_diff_resolved": {
+      "case": "sasuke-402-magichit1-neutral",
+      "old_first_diff": "tick17 p1.x original330/native300",
+      "fresh_result": "matched",
+      "fresh_compare": "/tmp/sasuke-402-prod-r04/compare.json"
+    },
+    "configuration_correction": {
+      "raw_batch": "/tmp/sasuke-base-neutral-prod-r05",
+      "raw_batch_status": "17 matched, 775 invalid configuration only",
+      "source_helper_contract": "build.json p1_helper=you,p2_helper=kon; display mapping 鼬/魂",
+      "corrected_result": "775 explicit helper replay matched 602/602; no remaining base comparison difference"
+    }
+  }
+}

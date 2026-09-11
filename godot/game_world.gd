@@ -114,8 +114,6 @@ func _clamp_walls(bodies: Array) -> void:
 	for body in bodies:
 		if body == null or not is_instance_valid(body):
 			continue
-		if body is HelperRuntime and not body.attacking:
-			continue
 		if body.position.x < left:
 			body.position.x = left
 		if body.position.x > right:

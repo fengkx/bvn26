@@ -21,6 +21,114 @@ FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitB
 FUNCTION=re.compile(r'^function (\w+)\([^\n]*\)\r?\n\{.*?^\}',re.M|re.S)
 ASSIGN=re.compile(r'^(?:var )?(\w+) = (-?\d+(?:\.\d+)?|true|false);$')
 DECLARE=re.compile(r'^var (\w+);$')
+ROOT_CLIP_RENAME = re.compile(
+    r'(?P<object>[A-Za-z_]\w*)\._name\s*=\s*"(?P<name>[^"]+)"\s*;'
+)
+
+
+def _root_clip_rename_event(
+    text: str,
+    path: str,
+    frame: int,
+    frames_by_number: dict[int, dict],
+    prior: list[dict],
+) -> list[dict]:
+    """Compile only unconditional root display-list identity assignments.
+
+    The display list keeps the authored name for rendering.  The event carries
+    the source identity (depth and placed-frame generation) so runtime lookup
+    can invalidate the old name without guessing from the current frame.
+    """
+    lines = text.replace('\r\n', '\n').splitlines()
+    result: list[dict] = []
+    depth = 0
+    for line_number, raw_line in enumerate(lines, 1):
+        line = raw_line.strip()
+        match = ROOT_CLIP_RENAME.fullmatch(line)
+        if match is not None:
+            if depth != 0:
+                raise ValueError(
+                    f"Unsupported controlled root rename: {path}:{line_number}"
+                )
+            object_name = match["object"]
+            source_frame = frames_by_number.get(frame, {})
+            records = [
+                old for old in prior if old.get("current_name") == object_name
+                and next(
+                    (
+                        item for item in source_frame.get("display_list", [])
+                        if int(item.get("depth", -1)) == int(old["depth"])
+                        and int(item.get("character_id", 0) or 0) == int(old["character_id"])
+                        and int(item.get("placed_frame", frame)) == int(old["placed_frame"])
+                    ),
+                    None,
+                ) is not None
+            ]
+            if not records:
+                placements = [
+                    item for item in source_frame.get("display_list", [])
+                    if str(item.get("name", "") or "") == object_name
+                    and not any(
+                        old.get("depth") == int(item.get("depth", -1))
+                        and old.get("character_id") == int(item.get("character_id", 0) or 0)
+                        and old.get("placed_frame") == int(item.get("placed_frame", frame))
+                        and old.get("current_name") != object_name
+                        for old in prior
+                    )
+                ]
+                if len(placements) == 1:
+                    placement = placements[0]
+                    record = {
+                        "depth": int(placement["depth"]),
+                        "character_id": int(placement.get("character_id", 0) or 0),
+                        "placed_frame": int(placement.get("placed_frame", frame)),
+                        "visual_name": object_name,
+                        "current_name": object_name,
+                    }
+                    prior.append(record)
+                else:
+                    # An old source variable is undefined after _name changes.
+                    # Ignore that no-op; reject other ambiguous/missing cases.
+                    if not placements:
+                        continue
+                    raise ValueError(
+                        f"Root rename target is not uniquely placed: {path}:{line_number}"
+                    )
+            elif len(records) == 1:
+                record = records[0]
+            else:
+                raise ValueError(
+                    f"Root rename target is not uniquely placed: {path}:{line_number}"
+                )
+            record = {
+                "op": "root_clip_rename",
+                "source_name": object_name,
+                "instance_name": match["name"],
+                "depth": int(record["depth"]),
+                "character_id": int(record["character_id"]),
+                "placed_frame": int(record["placed_frame"]),
+                "path": path,
+                "line": line_number,
+                "frame": frame,
+            }
+            result.append(record)
+            prior_record = next(old for old in prior if old is not record and (
+                old.get("depth") == record["depth"]
+                and old.get("character_id") == record["character_id"]
+                and old.get("placed_frame") == record["placed_frame"]
+            )) if any(
+                old is not record and old.get("depth") == record["depth"]
+                and old.get("character_id") == record["character_id"]
+                and old.get("placed_frame") == record["placed_frame"]
+                for old in prior
+            ) else record
+            prior_record["current_name"] = match["name"]
+        depth += line.count("{") - line.count("}")
+        if depth < 0:
+            raise ValueError(f"Unbalanced root rename source: {path}")
+    if depth != 0:
+        raise ValueError(f"Unbalanced root rename source: {path}")
+    return result
 
 
 def writes(source: str, path: str, *, function: bool=False) -> list[dict]:
@@ -171,6 +279,8 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
     declarations=[m[1] for line in root.splitlines() if (m:=DECLARE.fullmatch(line)) and m[1] in FIELDS]
     frame_writes={}
     frame_calls={}
+    frames_by_number = {int(item['frame']): item for item in timeline['frames']}
+    root_rename_history: list[dict] = []
     for frame in timeline['frames']:
         path=f'DefineSprite_{sprite}/frame_{frame["frame"]}/DoAction.as'
         text=root if frame['frame']==1 else scripts.get(path,'')
@@ -181,6 +291,13 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         calls=conditional_frame_calls(text, path, frame["frame"])
         if frame['frame'] != 1 and re.search(r'\bif\(', text) and 'gotoAnd' in text and not calls:
             raise ValueError('Uncompiled conditional frame jump: ' + path)
+        # Root display-list identity changes are source events.  They must be
+        # consumed in the same FIFO as other frame calls, rather than inferred
+        # from the current frame when collision is queried.
+        source_text = scripts.get(path, '')
+        calls.extend(_root_clip_rename_event(
+            source_text, path, frame['frame'], frames_by_number, root_rename_history
+        ))
         calls.extend({'op': 'root_position', 'path': path, 'frame': frame['frame'], **write}
                      for write in root_position_writes(text))
         # Keep root container warps on the source frame-script FIFO.  A child

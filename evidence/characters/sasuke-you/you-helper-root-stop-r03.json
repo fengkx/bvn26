@@ -1,0 +1,83 @@
+{
+  "format": "bvn26-you-root-stop-r03",
+  "source": {
+    "script_bundle": "scripts/fighter/fz/you.json",
+    "swf": "game/fighter/fz/you.swf",
+    "frame_76": {
+      "source_path": "frame_76/DoAction.as",
+      "source_line": 2,
+      "source_sha256": "798054ba4ca5a45e58aabace0d24a775d4ea9e721de27a0a89b2fbdcbdd20a7a",
+      "source": "_root.fzccXg(this);\\ngotoAndStop(1);"
+    },
+    "frame_1_source_sha256": "2de10a5ff8415c9fdc9fa76f5833bd7c53b66088453c01407d742330adf05aee",
+    "invariant": "miss frame48 contact callback does not fire; frame76 root gotoAndStop(1) reaches frame1; frame1 initialization is observed on the next source display tick"
+  },
+  "original": {
+    "events": "evidence/characters/sasuke-you/native-probe-you-miss-far-r02.events.jsonl.gz",
+    "canonical_helper_rows": "362 (p1,p2 x 181; fight_tick 0..180)",
+    "sequence": "p1 helper tick62 frame48, ticks63..89 frames49..75, tick90 frame1 with old state, tick91 frame1 parked/attacking=false",
+    "before_native": "evidence/characters/sasuke-you/you-helper-miss-native-before-r01.json",
+    "before_native_classification": "intermediate immediate-hide after compiler extraction, before FIFO root-stop fix; not the original air-slash failure",
+    "pre_fix_air_slash_native": "evidence/characters/sasuke-you/you-helper-miss-native-pre-fix-air-slash-r01.json"
+  },
+  "comparisons": {
+    "miss_before_native_vs_source": "different; first diff tick90 helper x/y/attacking because old runtime deactivated immediately",
+    "miss_after_fighter": "evidence/characters/sasuke-you/you-helper-miss-fighter-compare-r05.json",
+    "miss_after_helper": "evidence/characters/sasuke-you/you-helper-miss-helper-compare-r05.json",
+    "hit_fighter": "evidence/characters/sasuke-you/you-helper-production-fighter-compare-r19.json",
+    "hit_helper": "evidence/characters/sasuke-you/you-helper-production-helper-compare-r19.json",
+    "pre_fix_air_slash_fighter": "evidence/characters/sasuke-you/you-helper-miss-fighter-compare-pre-fix-r01.json",
+    "pre_fix_air_slash_helper": "evidence/characters/sasuke-you/you-helper-miss-helper-compare-pre-fix-r01.json"
+  },
+  "runtime_hash_before": "702c88fffbd1e8ec488062ff33981756e9683da7ee1763673404cd8623f57873",
+  "sha256": {
+    "data/actions/you-helper.json": "4db767abd6c563eb630960c5e5bbef8841ddaa4426ccab58345172ee9fba4c49",
+    "evidence/characters/sasuke-you/you-helper-miss-fighter-compare-pre-fix-r01.json": "089ed84077545e8c94ae9010ca76c7f33c8dec581a62f1637b5892f8f5f0ea17",
+    "evidence/characters/sasuke-you/you-helper-miss-fighter-compare-r03.json": "59353487eae85930d990baf6402cafa365b55da45641b43a8776d19feef20f94",
+    "evidence/characters/sasuke-you/you-helper-miss-fighter-compare-r05.json": "59353487eae85930d990baf6402cafa365b55da45641b43a8776d19feef20f94",
+    "evidence/characters/sasuke-you/you-helper-miss-helper-compare-pre-fix-r01.json": "39e776c7503d64f526689a4c0671fc0857184cd526303e6ac7040747b1d9e41d",
+    "evidence/characters/sasuke-you/you-helper-miss-helper-compare-r03.json": "948d587d3983d00ea29908986be4b4317d3f3f16a996850890629e2b3a87f2e9",
+    "evidence/characters/sasuke-you/you-helper-miss-helper-compare-r05.json": "948d587d3983d00ea29908986be4b4317d3f3f16a996850890629e2b3a87f2e9",
+    "evidence/characters/sasuke-you/you-helper-miss-native-after-r03.helpers.json": "c227f6537b318f23b8966a933e6d4c67dc9024f3b7ddd82449910cfd15103bfd",
+    "evidence/characters/sasuke-you/you-helper-miss-native-after-r03.json": "462128594bc7aad75c398aeb491b9657e8045d3e37f9513e38f5aa96041ed58f",
+    "evidence/characters/sasuke-you/you-helper-miss-native-after-r05.helpers.json": "c227f6537b318f23b8966a933e6d4c67dc9024f3b7ddd82449910cfd15103bfd",
+    "evidence/characters/sasuke-you/you-helper-miss-native-after-r05.json": "462128594bc7aad75c398aeb491b9657e8045d3e37f9513e38f5aa96041ed58f",
+    "evidence/characters/sasuke-you/you-helper-miss-native-before-r01.helpers.json": "8822e66eec81af06d706110a354ba8af194bee9d5cae3f04332a48d15a62b564",
+    "evidence/characters/sasuke-you/you-helper-miss-native-before-r01.json": "462128594bc7aad75c398aeb491b9657e8045d3e37f9513e38f5aa96041ed58f",
+    "evidence/characters/sasuke-you/you-helper-miss-native-pre-fix-air-slash-r01.helpers.json": "24189450978a8afd9d3ed76555c11d5643105e8f3772ed061459d015e50ed395",
+    "evidence/characters/sasuke-you/you-helper-miss-native-pre-fix-air-slash-r01.json": "6e2b99088f781f1442f9538275988902eae51d84c71004e251f2612373206c6e",
+    "evidence/characters/sasuke-you/you-helper-parity-r03.json": "82408a832565e5eb9c4e026e5b1f84961b47810718bd2291027033c467b43dd8",
+    "evidence/characters/sasuke-you/you-helper-probe-r02-build.json": "f1cfbf44ba10772d34d767ed95db6d2f48c46e9e62549dbde18d7ca934b9c05e",
+    "evidence/characters/sasuke-you/you-helper-probe-r02-cli-output.json": "7c2909d45038acc500a215d4937dfa78fa55709ba2a324096431acfc913e16ee",
+    "evidence/characters/sasuke-you/you-helper-probe-r03-build.json": "58fe06e2692bb134f073188e0af8dfa5ea3c5b535bebd268e4a4b8e00fa2886d",
+    "evidence/characters/sasuke-you/you-helper-probe-r03-capture-environment.json": "00cbd13dbaf97bf9c754977679affb23f1a6517e7aec1d2900efd35bd833c945",
+    "evidence/characters/sasuke-you/you-helper-production-fighter-compare-r18.json": "6b1b801a17a2a34d81737ebe99491314ec0688c444e45bd405f86cf056f79e3c",
+    "evidence/characters/sasuke-you/you-helper-production-fixture-r03.json": "ea14d58cadf1d1bbf6a79410100612940992e3c6602632c4ae10d87ee185ddc6",
+    "evidence/characters/sasuke-you/you-helper-production-helper-compare-r18.json": "9f1bde5addc97fbc4e0bd1c1e507510fe94ccdbc60c00615c41903d9ac418ece",
+    "evidence/characters/sasuke-you/you-helper-production-r18.helpers.json": "63efebb14a352f1c1ef60ef2a7a21f19939b20566175d0e6a0b9a52fc94d50fc",
+    "evidence/characters/sasuke-you/you-helper-production-r18.json": "16b68b2bca4b28a5caaa363e09ed1fddb6e4ac554b0355a27371a450c827b951",
+    "game/fighter/fz/you.swf": "a00ed19723373b43b347f802a13c822eae21662d2a85b38336fdba9eb641f604",
+    "godot/generated/helpers/you/assets.json": "cba3e27629cd637a963e066d22a41fe12073990c56ad2ba1620fa76051b5a8ee",
+    "godot/generated/helpers/you/combat.json": "4db767abd6c563eb630960c5e5bbef8841ddaa4426ccab58345172ee9fba4c49",
+    "godot/helper_runtime.gd": "53ca88306f272673b5f22555f87772cbcc346da9f07bc5f23473c1b32f1304fe",
+    "godot/tests/you_helper_callback_order.gd": "6df04ff434643edf049b4bb86080dc153b3ca970027d051317b20d56d8024c11",
+    "godot/tests/you_helper_lifecycle.gd": "caf182a3b4970ae816ffd410a1351473c714e76ad9424d5d704212ac5c9da116",
+    "scripts/fighter/fz/you.json": "6f2b9c27fa900866d91fb1dced55c7d8efb73c7b250e60413032ecf98d92f9ca",
+    "tools/importer/build_helper_model.py": "a63a7b4216b2e715fb7c7e168ff3db2c7fc13895170fc24ff07ef267e20d7553",
+    "tools/tests/test_helper_timing.py": "95da26b1ce0f5a9625223d9eb6dcf599130cb75f24944f06ebbac7a07f2daf60"
+  },
+  "commands": [
+    "/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot -s res://tests/move_case_reference.gd -- /tmp/sasuke-you-miss-far-r01.json /tmp/sasuke-you-miss-far-r03.json.native",
+    "python3 tools/probes/compare_mode_reference.py evidence/characters/sasuke-you/native-probe-you-miss-far-r02.events.jsonl.gz /tmp/sasuke-you-miss-far-r03.json.native --output /tmp/sasuke-you-miss-far-r03.fighter-compare.json",
+    "python3 tools/probes/compare_helper_reference.py evidence/characters/sasuke-you/native-probe-you-miss-far-r02.events.jsonl.gz /tmp/sasuke-you-miss-far-r03.json.native.helpers.json --output /tmp/sasuke-you-miss-far-r03.helper-compare.json"
+  ],
+  "current_final_miss_compare": {
+    "fighter": "evidence/characters/sasuke-you/you-helper-miss-fighter-compare-r05.json",
+    "helper": "evidence/characters/sasuke-you/you-helper-miss-helper-compare-r05.json"
+  },
+  "runtime_hash_after": "53ca88306f272673b5f22555f87772cbcc346da9f07bc5f23473c1b32f1304fe",
+  "current_final_hit_compare": {
+    "fighter": "evidence/characters/sasuke-you/you-helper-production-fighter-compare-r19.json",
+    "helper": "evidence/characters/sasuke-you/you-helper-production-helper-compare-r19.json"
+  }
+}
