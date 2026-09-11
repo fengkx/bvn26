@@ -16,7 +16,8 @@ var last_event: String = "ready"
 var timeline_playing: bool = true
 var bs: int = 0
 var hited: int = 0
-var sw: bool = false
+# Helper roots never initialize sw; main stopMc/playMc test sw === false.
+var sw: Variant = null
 var source_action: Variant = null
 
 var _combat: Dictionary

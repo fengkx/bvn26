@@ -1,0 +1,112 @@
+{
+  "run_id": "overlap0911",
+  "status": "built_not_run",
+  "frames_after_ready": 300,
+  "configuration": {
+    "modo": 3,
+    "p1": "日番谷",
+    "p2": "恋次",
+    "p2cpu": false,
+    "AI": 5,
+    "stage": "现世",
+    "p1sf": "鼬",
+    "p2sf": "我爱罗"
+  },
+  "sources_sha256": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "game/fighter/rifagu.swf": "d440f6f6863b1067a70d458df83a27eade554dffc94c42b4b9ccd10bd1454f96",
+    "scripts/fighter/rifagu.json": "87f2a893dc3420a7749a70faf495dc1534a301f01680d0b79422e318414d16c5",
+    "game/fighter/Renji.swf": "7505e9591f46ba1d05bb03fff9450d52583804022a08ba3bb7a0ecfb21cb116a",
+    "scripts/fighter/Renji.json": "4bf693e5bac1316c2a7124bc2844eaf5b438bf9b557c50ad69fa9ab4489cbf35",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+    "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46",
+    "game/fighter/fz/you.swf": "a00ed19723373b43b347f802a13c822eae21662d2a85b38336fdba9eb641f604",
+    "scripts/fighter/fz/you.json": "6f2b9c27fa900866d91fb1dced55c7d8efb73c7b250e60413032ecf98d92f9ca"
+  },
+  "ffdec_sha256": "090ab695053ad94cba6408574c7d7eea20ec60b6ae789ee6056a23f45106762f",
+  "outputs_sha256": {
+    "game/main.swf": "f70b5f0841c6735e58d01b0899ab2b0f1722e9a3d2fe076e076a1c90757d9f2b",
+    "game/fighter/rifagu.swf": "6078138a5ea4493715d1906004a69c7d6b2fc89260633f46ed28cf86df16267d",
+    "game/fighter/Renji.swf": "0f9583517e7d732e7c53a7ab503baf80a82b4761916478687fb6968dd0894c12",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "game/fighter/fz/you.swf": "a00ed19723373b43b347f802a13c822eae21662d2a85b38336fdba9eb641f604",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+  },
+  "instrumentation_sha256": "55f4571c94463808ba3df86f411af6d6e5318800808bf0944278bd34b2687129",
+  "frame_order_probe": false,
+  "body_boundaries": true,
+  "body_callback_observer": true,
+  "recovery_order_probe": false,
+  "recovery_walk_first": false,
+  "match_flow": false,
+  "helper_probe": null,
+  "dash_probe": null,
+  "dash_trigger_frame": null,
+  "dash_duration": 36,
+  "timeout_probe": null,
+  "ghost_probe": null,
+  "mode_probe": 3,
+  "move_case": {
+    "id": "overlap-00",
+    "fighter": "rifagu",
+    "slot": "p1",
+    "label": "上必杀",
+    "scenario": "overlap",
+    "frames": 300,
+    "fighters": {
+      "p1": "rifagu",
+      "p2": "renji"
+    },
+    "p1_helper": "you",
+    "p2_helper": "woailuo",
+    "setup": {
+      "p1": {
+        "x": 300,
+        "energy": 300
+      },
+      "p2": {
+        "x": 350,
+        "energy": 300
+      }
+    },
+    "inputs": [
+      {
+        "slot": "p1",
+        "keys": [
+          "up",
+          "special"
+        ],
+        "start": 20,
+        "end": 23
+      },
+      {
+        "slot": "p2",
+        "keys": [
+          "summon"
+        ],
+        "start": 15,
+        "end": 18
+      }
+    ],
+    "target_frames": [
+      1,
+      2000
+    ]
+  },
+  "dynamic_move_case": true,
+  "player_display": "windowed_showAll",
+  "presentation_probe": false,
+  "root_write_observer": false,
+  "body_call_scope_probe": false,
+  "schedule_probe": false,
+  "hurt_summon_probe": false,
+  "shadow_probe": false,
+  "p1_helper": "you",
+  "p2_helper": "woailuo",
+  "input_injection": "body_kis_alias_with_per_read_trace",
+  "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
+  "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped"
+}

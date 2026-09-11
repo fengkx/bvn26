@@ -60,7 +60,7 @@ func stop_mc(mc: Object) -> void:
 		return
 	if int(mc.get("bs")) != 0:
 		return
-	if bool(mc.get("sw")):
+	if typeof(mc.get("sw")) != TYPE_BOOL or mc.get("sw") != false:
 		return
 	mc.set("timeline_playing", false)
 
@@ -76,7 +76,7 @@ func play_mc(mc: Object) -> void:
 		return
 	if int(mc.get("hited")) != 0:
 		return
-	if bool(mc.get("sw")):
+	if typeof(mc.get("sw")) != TYPE_BOOL or mc.get("sw") != false:
 		return
 	mc.set("timeline_playing", true)
 

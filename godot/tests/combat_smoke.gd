@@ -1282,7 +1282,7 @@ func _run() -> void:
 	ichigo.start_action("站立")
 
 	# Defender checkHit() shares gameRunning() across fighter/helper/stage
-	# candidates. A stopped helper's visible atm must not deal damage.
+	# candidates. A helper still playing during zhanting must not deal damage.
 	gaara.activate(
 		{"x": 200.0, "y": 0.0, "facing": 1, "start_frame": 2},
 		naruto
@@ -1292,7 +1292,7 @@ func _run() -> void:
 	var defender_bounds := ichigo.instance_global_bounds("bdmn")
 	ichigo.position += helper_bounds.get_center() - defender_bounds.get_center()
 	director.apply({"op": "super_start", "kind": "cbsd"}, naruto, ichigo, [gaara])
-	assert(not gaara.timeline_playing)
+	assert(gaara.timeline_playing) # Source sw is undefined, not strictly false.
 	var helper_freeze_health := ichigo.health
 	CombatResolverScript.resolve_helpers([gaara], [naruto, ichigo])
 	assert(ichigo.health == helper_freeze_health)

@@ -571,6 +571,8 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if opponent_input_context != null:
 		opponent_input_context.inputs = _input_for(ichigo)
 	opponent_driver.prepare_display_tick(physics_tick)
+	for helper in helpers:
+		helper.advance_timeline()
 	for fighter in fighters:
 		if fighter == ichigo:
 			opponent_driver.advance_timeline()
@@ -599,8 +601,6 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		var delivered := battle_intro.deliver_recorded_poll(int(event["sequence"]), int(event["time_ms"]))
 		assert(delivered, "Rejected recorded intro callback: " + battle_intro.poll_replay_error)
 	battle_intro.observe_fighter_frames()
-	for helper in helpers:
-		helper.advance_timeline()
 	if player_body_driver != null:
 		player_body_driver.prepare_callbacks()
 	var initial_frame_counts := {}

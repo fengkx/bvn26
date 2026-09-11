@@ -1,0 +1,62 @@
+[
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "DefineSprite_48/frame_33/DoAction.as",
+    "source": "stop();\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "frame_1/DoAction.as",
+    "source": "function showdow(rgb)\r\n{\r\n   if(++_si > 1)\r\n   {\r\n      _si = 0;\r\n      return undefined;\r\n   }\r\n   var _loc3_;\r\n   if(rgb != null)\r\n   {\r\n      _loc3_ = new flash.geom.ColorTransform();\r\n      if(!isNaN(rgb.R))\r\n      {\r\n         _loc3_.redOffset = rgb.R;\r\n      }\r\n      if(!isNaN(rgb.G))\r\n      {\r\n         _loc3_.greenOffset = rgb.G;\r\n      }\r\n      if(!isNaN(rgb.B))\r\n      {\r\n         _loc3_.blueOffset = rgb.B;\r\n      }\r\n   }\r\n   _root.shadowEffect(_this,{alphaStart:100,alphaLose:10,colorTransform:_loc3_});\r\n}\r\nvar inited;\r\nvar _this = this;\r\nvar bs = 0;\r\nvar hited = 0;\r\nvar attacking = false;\r\n_X = _Y = -200;\r\nif(!inited)\r\n{\r\n   trace(\"fz inited\");\r\n   inited = true;\r\n   _this.sn = _this._name != \"p1fz\" ? 2 : 1;\r\n   _this.pn = _this.sn != 1 ? 1 : 2;\r\n}\r\nvar _si = 0;\r\nstop();\r\nvar gjl = [];\r\ngjl.atm1pw = 30;\r\ngjl.atm1zl = 2;\r\ngjl.atm1up = 0;\r\ngjl.atm1x = 0;\r\ngjl.atm1tm = 500;\r\ngjl.atm1dz = \"被打\";\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "frame_13/DoAction.as",
+    "source": "动作 = 1;\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "frame_16/DoAction.as",
+    "source": "_root.bsd(pn,\"XG_fzbs\",true);\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "frame_2/DoAction.as",
+    "source": "play();\r\n_root.fzccXg(this);\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "frame_38/DoAction.as",
+    "source": "_root.bsw(pn);\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "frame_44/DoAction.as",
+    "source": "_root.shine(9461816);\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "frame_44/PlaceObject2_48_2/CLIPACTIONRECORD onClipEvent(load).as",
+    "source": "onClipEvent(load){\r\n   if(_parent._xscale < 0)\r\n   {\r\n      _X = - (_root.game[\"p\" + _parent.pn]._x - _parent._x);\r\n   }\r\n   else\r\n   {\r\n      _X = _root.game[\"p\" + _parent.pn]._x - _parent._x;\r\n   }\r\n}\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/fz/woailuo.json",
+    "path": "frame_85/DoAction.as",
+    "source": "_root.fzccXg(this);\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/rifagu.json",
+    "path": "DefineSprite_638/frame_562/DoAction.as",
+    "source": "动作 = 3;\r\nbs = 1;\r\nql -= 100;\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/rifagu.json",
+    "path": "DefineSprite_638/frame_563/DoAction.as",
+    "source": "_root.bsd(pn);\r\n_root.showFace(pn,\"日番谷1\");\r\n"
+  },
+  {
+    "bundle": "scripts/fighter/rifagu.json",
+    "path": "DefineSprite_638/frame_570/DoAction.as",
+    "source": "_root.bsw(pn);\r\n"
+  }
+]

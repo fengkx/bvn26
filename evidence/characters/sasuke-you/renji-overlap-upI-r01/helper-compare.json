@@ -1,0 +1,3575 @@
+{
+  "status": "different",
+  "source_rows": 602,
+  "native_rows": 602,
+  "complete": true,
+  "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+  "fields_compared": [
+    {
+      "name": "frame",
+      "source": "frame",
+      "native": "frame",
+      "transform": "identity"
+    },
+    {
+      "name": "x",
+      "source": "x",
+      "native": "x",
+      "transform": "identity"
+    },
+    {
+      "name": "y",
+      "source": "y",
+      "native": "y",
+      "transform": "identity"
+    },
+    {
+      "name": "orientation",
+      "source": "xscale",
+      "native": "facing",
+      "transform": "source xscale percent / 100 = native facing sign"
+    },
+    {
+      "name": "action",
+      "source": "action",
+      "native": "action",
+      "transform": "identity"
+    },
+    {
+      "name": "attacking",
+      "source": "attacking",
+      "native": "attacking",
+      "transform": "identity"
+    }
+  ],
+  "source_only_fields": [
+    "hits",
+    "atm1",
+    "atm2",
+    "atm3"
+  ],
+  "native_only_fields": [],
+  "active_row_counts": {
+    "source": {
+      "p1": 158,
+      "p2": 0
+    },
+    "native": {
+      "p1": 200,
+      "p2": 0
+    }
+  },
+  "active_boundaries": {
+    "p1": {
+      "source_first_active": {
+        "tick": 16,
+        "slot": "p1",
+        "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+        "frame": 2.0,
+        "x": 280.0,
+        "y": -25.0,
+        "xscale": 100.0,
+        "attacking": true,
+        "action": null,
+        "hits": null,
+        "atm1": null,
+        "atm2": null,
+        "atm3": null
+      },
+      "native_at_source_first_active_tick": {
+        "action": null,
+        "attacking": true,
+        "facing": 1,
+        "frame": 2,
+        "slot": "p1",
+        "tick": 16,
+        "x": 280.0,
+        "y": -25.0
+      },
+      "native_first_active": {
+        "action": null,
+        "attacking": true,
+        "facing": 1,
+        "frame": 2,
+        "slot": "p1",
+        "tick": 16,
+        "x": 280.0,
+        "y": -25.0
+      }
+    },
+    "p2": {
+      "source_first_active": null,
+      "native_at_source_first_active_tick": null,
+      "native_first_active": null
+    }
+  },
+  "compared_rows": 602,
+  "difference_count": 429,
+  "differences": [
+    {
+      "tick": 29,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 15.0,
+      "native_value": 14,
+      "source_normalized": 15.0
+    },
+    {
+      "tick": 30,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 16.0,
+      "native_value": 14,
+      "source_normalized": 16.0
+    },
+    {
+      "tick": 31,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 17.0,
+      "native_value": 14,
+      "source_normalized": 17.0
+    },
+    {
+      "tick": 32,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 18.0,
+      "native_value": 14,
+      "source_normalized": 18.0
+    },
+    {
+      "tick": 32,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 33,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 19.0,
+      "native_value": 14,
+      "source_normalized": 19.0
+    },
+    {
+      "tick": 33,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 34,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 20.0,
+      "native_value": 14,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 34,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 35,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 21.0,
+      "native_value": 14,
+      "source_normalized": 21.0
+    },
+    {
+      "tick": 35,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 36,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 22.0,
+      "native_value": 14,
+      "source_normalized": 22.0
+    },
+    {
+      "tick": 36,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 37,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 23.0,
+      "native_value": 14,
+      "source_normalized": 23.0
+    },
+    {
+      "tick": 37,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 38,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 24.0,
+      "native_value": 14,
+      "source_normalized": 24.0
+    },
+    {
+      "tick": 38,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 39,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 25.0,
+      "native_value": 14,
+      "source_normalized": 25.0
+    },
+    {
+      "tick": 39,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 40,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 26.0,
+      "native_value": 14,
+      "source_normalized": 26.0
+    },
+    {
+      "tick": 40,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 41,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 27.0,
+      "native_value": 14,
+      "source_normalized": 27.0
+    },
+    {
+      "tick": 41,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 42,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 28.0,
+      "native_value": 14,
+      "source_normalized": 28.0
+    },
+    {
+      "tick": 42,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 43,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 29.0,
+      "native_value": 14,
+      "source_normalized": 29.0
+    },
+    {
+      "tick": 43,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 44,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 30.0,
+      "native_value": 14,
+      "source_normalized": 30.0
+    },
+    {
+      "tick": 44,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 45,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 31.0,
+      "native_value": 14,
+      "source_normalized": 31.0
+    },
+    {
+      "tick": 45,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 46,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 32.0,
+      "native_value": 14,
+      "source_normalized": 32.0
+    },
+    {
+      "tick": 46,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 47,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 33.0,
+      "native_value": 14,
+      "source_normalized": 33.0
+    },
+    {
+      "tick": 47,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 48,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 34.0,
+      "native_value": 14,
+      "source_normalized": 34.0
+    },
+    {
+      "tick": 48,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 49,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 35.0,
+      "native_value": 14,
+      "source_normalized": 35.0
+    },
+    {
+      "tick": 49,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 50,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 36.0,
+      "native_value": 14,
+      "source_normalized": 36.0
+    },
+    {
+      "tick": 50,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 51,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 37.0,
+      "native_value": 14,
+      "source_normalized": 37.0
+    },
+    {
+      "tick": 51,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 52,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 38.0,
+      "native_value": 14,
+      "source_normalized": 38.0
+    },
+    {
+      "tick": 52,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 53,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 39.0,
+      "native_value": 14,
+      "source_normalized": 39.0
+    },
+    {
+      "tick": 53,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 54,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 40.0,
+      "native_value": 14,
+      "source_normalized": 40.0
+    },
+    {
+      "tick": 54,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 55,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 41.0,
+      "native_value": 14,
+      "source_normalized": 41.0
+    },
+    {
+      "tick": 55,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 56,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 42.0,
+      "native_value": 14,
+      "source_normalized": 42.0
+    },
+    {
+      "tick": 56,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 57,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 43.0,
+      "native_value": 14,
+      "source_normalized": 43.0
+    },
+    {
+      "tick": 57,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 58,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 44.0,
+      "native_value": 14,
+      "source_normalized": 44.0
+    },
+    {
+      "tick": 58,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 59,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 45.0,
+      "native_value": 14,
+      "source_normalized": 45.0
+    },
+    {
+      "tick": 59,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 60,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 46.0,
+      "native_value": 14,
+      "source_normalized": 46.0
+    },
+    {
+      "tick": 60,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 61,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 47.0,
+      "native_value": 15,
+      "source_normalized": 47.0
+    },
+    {
+      "tick": 61,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 62,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 48.0,
+      "native_value": 16,
+      "source_normalized": 48.0
+    },
+    {
+      "tick": 62,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 63,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 49.0,
+      "native_value": 17,
+      "source_normalized": 49.0
+    },
+    {
+      "tick": 63,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 1.0,
+      "native_value": null,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 64,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 50.0,
+      "native_value": 18,
+      "source_normalized": 50.0
+    },
+    {
+      "tick": 65,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 51.0,
+      "native_value": 19,
+      "source_normalized": 51.0
+    },
+    {
+      "tick": 66,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 92.0,
+      "native_value": 20,
+      "source_normalized": 92.0
+    },
+    {
+      "tick": 67,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 93.0,
+      "native_value": 20,
+      "source_normalized": 93.0
+    },
+    {
+      "tick": 67,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 68,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 94.0,
+      "native_value": 20,
+      "source_normalized": 94.0
+    },
+    {
+      "tick": 68,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 69,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 95.0,
+      "native_value": 20,
+      "source_normalized": 95.0
+    },
+    {
+      "tick": 69,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 70,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 96.0,
+      "native_value": 20,
+      "source_normalized": 96.0
+    },
+    {
+      "tick": 70,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 71,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 97.0,
+      "native_value": 20,
+      "source_normalized": 97.0
+    },
+    {
+      "tick": 71,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 72,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 98.0,
+      "native_value": 20,
+      "source_normalized": 98.0
+    },
+    {
+      "tick": 72,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 73,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 99.0,
+      "native_value": 20,
+      "source_normalized": 99.0
+    },
+    {
+      "tick": 73,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 74,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 100.0,
+      "native_value": 20,
+      "source_normalized": 100.0
+    },
+    {
+      "tick": 74,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 75,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 101.0,
+      "native_value": 20,
+      "source_normalized": 101.0
+    },
+    {
+      "tick": 75,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 76,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 102.0,
+      "native_value": 20,
+      "source_normalized": 102.0
+    },
+    {
+      "tick": 76,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 77,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 103.0,
+      "native_value": 20,
+      "source_normalized": 103.0
+    },
+    {
+      "tick": 77,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 78,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 104.0,
+      "native_value": 20,
+      "source_normalized": 104.0
+    },
+    {
+      "tick": 78,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 79,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 105.0,
+      "native_value": 20,
+      "source_normalized": 105.0
+    },
+    {
+      "tick": 79,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 80,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 106.0,
+      "native_value": 21,
+      "source_normalized": 106.0
+    },
+    {
+      "tick": 80,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 81,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 107.0,
+      "native_value": 22,
+      "source_normalized": 107.0
+    },
+    {
+      "tick": 81,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 82,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 108.0,
+      "native_value": 23,
+      "source_normalized": 108.0
+    },
+    {
+      "tick": 82,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 83,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 109.0,
+      "native_value": 24,
+      "source_normalized": 109.0
+    },
+    {
+      "tick": 83,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 84,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 110.0,
+      "native_value": 25,
+      "source_normalized": 110.0
+    },
+    {
+      "tick": 84,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 85,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 111.0,
+      "native_value": 26,
+      "source_normalized": 111.0
+    },
+    {
+      "tick": 85,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 86,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 112.0,
+      "native_value": 27,
+      "source_normalized": 112.0
+    },
+    {
+      "tick": 86,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 87,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 113.0,
+      "native_value": 28,
+      "source_normalized": 113.0
+    },
+    {
+      "tick": 87,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 88,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 114.0,
+      "native_value": 29,
+      "source_normalized": 114.0
+    },
+    {
+      "tick": 88,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 89,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 115.0,
+      "native_value": 30,
+      "source_normalized": 115.0
+    },
+    {
+      "tick": 89,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 90,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 116.0,
+      "native_value": 31,
+      "source_normalized": 116.0
+    },
+    {
+      "tick": 90,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 91,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 117.0,
+      "native_value": 32,
+      "source_normalized": 117.0
+    },
+    {
+      "tick": 91,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 92,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 118.0,
+      "native_value": 33,
+      "source_normalized": 118.0
+    },
+    {
+      "tick": 92,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 93,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 119.0,
+      "native_value": 34,
+      "source_normalized": 119.0
+    },
+    {
+      "tick": 93,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 94,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 120.0,
+      "native_value": 35,
+      "source_normalized": 120.0
+    },
+    {
+      "tick": 94,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 95,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 121.0,
+      "native_value": 36,
+      "source_normalized": 121.0
+    },
+    {
+      "tick": 95,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 96,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 122.0,
+      "native_value": 37,
+      "source_normalized": 122.0
+    },
+    {
+      "tick": 96,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 97,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 123.0,
+      "native_value": 38,
+      "source_normalized": 123.0
+    },
+    {
+      "tick": 97,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 98,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 124.0,
+      "native_value": 39,
+      "source_normalized": 124.0
+    },
+    {
+      "tick": 98,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 99,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 125.0,
+      "native_value": 40,
+      "source_normalized": 125.0
+    },
+    {
+      "tick": 99,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 100,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 126.0,
+      "native_value": 41,
+      "source_normalized": 126.0
+    },
+    {
+      "tick": 100,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 101,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 127.0,
+      "native_value": 42,
+      "source_normalized": 127.0
+    },
+    {
+      "tick": 101,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 102,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 128.0,
+      "native_value": 43,
+      "source_normalized": 128.0
+    },
+    {
+      "tick": 102,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 103,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 129.0,
+      "native_value": 44,
+      "source_normalized": 129.0
+    },
+    {
+      "tick": 103,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 104,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 130.0,
+      "native_value": 45,
+      "source_normalized": 130.0
+    },
+    {
+      "tick": 104,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 105,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 131.0,
+      "native_value": 46,
+      "source_normalized": 131.0
+    },
+    {
+      "tick": 105,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 106,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 132.0,
+      "native_value": 47,
+      "source_normalized": 132.0
+    },
+    {
+      "tick": 106,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 107,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 133.0,
+      "native_value": 48,
+      "source_normalized": 133.0
+    },
+    {
+      "tick": 107,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 108,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 134.0,
+      "native_value": 92,
+      "source_normalized": 134.0
+    },
+    {
+      "tick": 108,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 350.0,
+      "native_value": 280.0,
+      "source_normalized": 350.0
+    },
+    {
+      "tick": 109,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 135.0,
+      "native_value": 93,
+      "source_normalized": 135.0
+    },
+    {
+      "tick": 110,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 136.0,
+      "native_value": 94,
+      "source_normalized": 136.0
+    },
+    {
+      "tick": 111,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 137.0,
+      "native_value": 95,
+      "source_normalized": 137.0
+    },
+    {
+      "tick": 112,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 138.0,
+      "native_value": 96,
+      "source_normalized": 138.0
+    },
+    {
+      "tick": 113,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 139.0,
+      "native_value": 97,
+      "source_normalized": 139.0
+    },
+    {
+      "tick": 114,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 140.0,
+      "native_value": 98,
+      "source_normalized": 140.0
+    },
+    {
+      "tick": 115,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 141.0,
+      "native_value": 99,
+      "source_normalized": 141.0
+    },
+    {
+      "tick": 116,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 142.0,
+      "native_value": 100,
+      "source_normalized": 142.0
+    },
+    {
+      "tick": 117,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 143.0,
+      "native_value": 101,
+      "source_normalized": 143.0
+    },
+    {
+      "tick": 118,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 144.0,
+      "native_value": 102,
+      "source_normalized": 144.0
+    },
+    {
+      "tick": 119,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 145.0,
+      "native_value": 103,
+      "source_normalized": 145.0
+    },
+    {
+      "tick": 120,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 146.0,
+      "native_value": 104,
+      "source_normalized": 146.0
+    },
+    {
+      "tick": 121,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 147.0,
+      "native_value": 105,
+      "source_normalized": 147.0
+    },
+    {
+      "tick": 122,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 148.0,
+      "native_value": 106,
+      "source_normalized": 148.0
+    },
+    {
+      "tick": 123,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 149.0,
+      "native_value": 107,
+      "source_normalized": 149.0
+    },
+    {
+      "tick": 124,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 150.0,
+      "native_value": 108,
+      "source_normalized": 150.0
+    },
+    {
+      "tick": 125,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 151.0,
+      "native_value": 109,
+      "source_normalized": 151.0
+    },
+    {
+      "tick": 126,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 152.0,
+      "native_value": 110,
+      "source_normalized": 152.0
+    },
+    {
+      "tick": 127,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 153.0,
+      "native_value": 111,
+      "source_normalized": 153.0
+    },
+    {
+      "tick": 128,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 154.0,
+      "native_value": 112,
+      "source_normalized": 154.0
+    },
+    {
+      "tick": 129,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 155.0,
+      "native_value": 113,
+      "source_normalized": 155.0
+    },
+    {
+      "tick": 130,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 156.0,
+      "native_value": 114,
+      "source_normalized": 156.0
+    },
+    {
+      "tick": 131,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 157.0,
+      "native_value": 115,
+      "source_normalized": 157.0
+    },
+    {
+      "tick": 132,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 158.0,
+      "native_value": 116,
+      "source_normalized": 158.0
+    },
+    {
+      "tick": 133,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 159.0,
+      "native_value": 117,
+      "source_normalized": 159.0
+    },
+    {
+      "tick": 134,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 160.0,
+      "native_value": 118,
+      "source_normalized": 160.0
+    },
+    {
+      "tick": 135,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 161.0,
+      "native_value": 119,
+      "source_normalized": 161.0
+    },
+    {
+      "tick": 136,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 162.0,
+      "native_value": 120,
+      "source_normalized": 162.0
+    },
+    {
+      "tick": 137,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 163.0,
+      "native_value": 121,
+      "source_normalized": 163.0
+    },
+    {
+      "tick": 138,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 164.0,
+      "native_value": 122,
+      "source_normalized": 164.0
+    },
+    {
+      "tick": 139,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 165.0,
+      "native_value": 123,
+      "source_normalized": 165.0
+    },
+    {
+      "tick": 140,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 166.0,
+      "native_value": 124,
+      "source_normalized": 166.0
+    },
+    {
+      "tick": 141,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 167.0,
+      "native_value": 125,
+      "source_normalized": 167.0
+    },
+    {
+      "tick": 142,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 168.0,
+      "native_value": 126,
+      "source_normalized": 168.0
+    },
+    {
+      "tick": 143,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 169.0,
+      "native_value": 127,
+      "source_normalized": 169.0
+    },
+    {
+      "tick": 144,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 170.0,
+      "native_value": 128,
+      "source_normalized": 170.0
+    },
+    {
+      "tick": 145,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 171.0,
+      "native_value": 129,
+      "source_normalized": 171.0
+    },
+    {
+      "tick": 146,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 172.0,
+      "native_value": 130,
+      "source_normalized": 172.0
+    },
+    {
+      "tick": 147,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 173.0,
+      "native_value": 131,
+      "source_normalized": 173.0
+    },
+    {
+      "tick": 148,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 174.0,
+      "native_value": 132,
+      "source_normalized": 174.0
+    },
+    {
+      "tick": 149,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 175.0,
+      "native_value": 133,
+      "source_normalized": 175.0
+    },
+    {
+      "tick": 150,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 176.0,
+      "native_value": 134,
+      "source_normalized": 176.0
+    },
+    {
+      "tick": 151,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 177.0,
+      "native_value": 135,
+      "source_normalized": 177.0
+    },
+    {
+      "tick": 152,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 178.0,
+      "native_value": 136,
+      "source_normalized": 178.0
+    },
+    {
+      "tick": 153,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 179.0,
+      "native_value": 137,
+      "source_normalized": 179.0
+    },
+    {
+      "tick": 154,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 180.0,
+      "native_value": 138,
+      "source_normalized": 180.0
+    },
+    {
+      "tick": 155,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 181.0,
+      "native_value": 139,
+      "source_normalized": 181.0
+    },
+    {
+      "tick": 155,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 156,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 182.0,
+      "native_value": 140,
+      "source_normalized": 182.0
+    },
+    {
+      "tick": 156,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 157,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 183.0,
+      "native_value": 141,
+      "source_normalized": 183.0
+    },
+    {
+      "tick": 157,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 158,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 184.0,
+      "native_value": 142,
+      "source_normalized": 184.0
+    },
+    {
+      "tick": 158,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 159,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 185.0,
+      "native_value": 143,
+      "source_normalized": 185.0
+    },
+    {
+      "tick": 159,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 160,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 186.0,
+      "native_value": 144,
+      "source_normalized": 186.0
+    },
+    {
+      "tick": 160,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 161,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 187.0,
+      "native_value": 145,
+      "source_normalized": 187.0
+    },
+    {
+      "tick": 161,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 162,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 188.0,
+      "native_value": 146,
+      "source_normalized": 188.0
+    },
+    {
+      "tick": 162,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 163,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 189.0,
+      "native_value": 147,
+      "source_normalized": 189.0
+    },
+    {
+      "tick": 163,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 164,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 190.0,
+      "native_value": 148,
+      "source_normalized": 190.0
+    },
+    {
+      "tick": 164,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 165,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 191.0,
+      "native_value": 149,
+      "source_normalized": 191.0
+    },
+    {
+      "tick": 165,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 166,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 192.0,
+      "native_value": 150,
+      "source_normalized": 192.0
+    },
+    {
+      "tick": 166,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 167,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 193.0,
+      "native_value": 151,
+      "source_normalized": 193.0
+    },
+    {
+      "tick": 167,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 168,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 194.0,
+      "native_value": 152,
+      "source_normalized": 194.0
+    },
+    {
+      "tick": 168,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 169,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 195.0,
+      "native_value": 153,
+      "source_normalized": 195.0
+    },
+    {
+      "tick": 169,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 170,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 196.0,
+      "native_value": 154,
+      "source_normalized": 196.0
+    },
+    {
+      "tick": 170,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 171,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 197.0,
+      "native_value": 155,
+      "source_normalized": 197.0
+    },
+    {
+      "tick": 171,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 172,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 198.0,
+      "native_value": 156,
+      "source_normalized": 198.0
+    },
+    {
+      "tick": 172,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 173,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 199.0,
+      "native_value": 157,
+      "source_normalized": 199.0
+    },
+    {
+      "tick": 173,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 174,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 158,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 174,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 174,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 174,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 174,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 175,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 159,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 175,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 175,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 175,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 175,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 176,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 160,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 176,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 176,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 176,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 176,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 177,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 161,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 177,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 177,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 177,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 177,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 178,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 162,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 178,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 178,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 178,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 178,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 179,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 163,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 179,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 179,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 179,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 179,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 180,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 164,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 180,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 180,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 180,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 180,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 181,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 165,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 181,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 181,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 181,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 181,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 182,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 166,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 182,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 182,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 182,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 182,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 183,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 167,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 183,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 183,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 183,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 183,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 184,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 168,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 184,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 184,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 184,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 184,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 185,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 169,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 185,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 185,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 185,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 185,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 186,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 170,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 186,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 186,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 186,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 186,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 187,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 171,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 187,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 187,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 187,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 187,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 188,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 172,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 188,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 188,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 188,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 188,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 189,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 173,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 189,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 189,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 189,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 189,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 190,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 174,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 190,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 190,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 190,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 190,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 191,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 175,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 191,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 191,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 191,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 191,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 192,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 176,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 192,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 192,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 192,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 192,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 193,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 177,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 193,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 193,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 193,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 193,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 194,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 178,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 194,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 194,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 194,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 194,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 195,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 179,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 195,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 195,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 195,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 195,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 196,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 180,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 196,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 196,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 196,
+      "slot": "p1",
+      "field": "action",
+      "source_value": 0.0,
+      "native_value": 1.0,
+      "source_normalized": 0.0
+    },
+    {
+      "tick": 196,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 197,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 181,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 197,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 197,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 197,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 198,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 182,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 198,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 198,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 198,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 199,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 183,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 199,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 199,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 199,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 200,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 184,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 200,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 200,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 200,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 201,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 185,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 201,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 201,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 201,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 202,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 186,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 202,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 202,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 202,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 203,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 187,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 203,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 203,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 203,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 204,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 188,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 204,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 204,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 204,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 205,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 189,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 205,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 205,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 205,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 206,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 190,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 206,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 206,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 206,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 207,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 191,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 207,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 207,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 207,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 208,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 192,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 208,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 208,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 208,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 209,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 193,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 209,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 209,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 209,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 210,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 194,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 210,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 210,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 210,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 211,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 195,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 211,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 211,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 211,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 212,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 196,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 212,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 212,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 212,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 213,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 197,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 213,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 213,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 213,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 214,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 198,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 214,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 214,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 214,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    },
+    {
+      "tick": 215,
+      "slot": "p1",
+      "field": "frame",
+      "source_value": 1.0,
+      "native_value": 199,
+      "source_normalized": 1.0
+    },
+    {
+      "tick": 215,
+      "slot": "p1",
+      "field": "x",
+      "source_value": 20.0,
+      "native_value": 350.0,
+      "source_normalized": 20.0
+    },
+    {
+      "tick": 215,
+      "slot": "p1",
+      "field": "y",
+      "source_value": -200.0,
+      "native_value": -25.0,
+      "source_normalized": -200.0
+    },
+    {
+      "tick": 215,
+      "slot": "p1",
+      "field": "attacking",
+      "source_value": false,
+      "native_value": true,
+      "source_normalized": false
+    }
+  ],
+  "first_difference": {
+    "tick": 29,
+    "slot": "p1",
+    "field": "frame",
+    "source_value": 15.0,
+    "native_value": 14,
+    "source_normalized": 15.0,
+    "source_raw_row": {
+      "tick": 29,
+      "slot": "p1",
+      "source_raw_value": "p1,15,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+      "frame": 15.0,
+      "x": 280.0,
+      "y": -25.0,
+      "xscale": 100.0,
+      "attacking": true,
+      "action": null,
+      "hits": null,
+      "atm1": null,
+      "atm2": null,
+      "atm3": null
+    },
+    "native_raw_row": {
+      "action": null,
+      "attacking": true,
+      "facing": 1,
+      "frame": 14,
+      "slot": "p1",
+      "tick": 29,
+      "x": 280.0,
+      "y": -25.0
+    }
+  }
+}

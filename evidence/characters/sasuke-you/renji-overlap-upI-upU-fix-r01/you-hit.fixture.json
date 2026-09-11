@@ -1,0 +1,43 @@
+{
+  "id": "sasuke-you-hit-replay",
+  "fighter": "sasuke",
+  "slot": "p1",
+  "label": "招换-hit",
+  "scenario": "neutral",
+  "frames": 240,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "summon"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    775,
+    836
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sasuke",
+    "p2": "yihu"
+  },
+  "p1_helper": "you",
+  "p2_helper": "kon"
+}

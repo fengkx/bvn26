@@ -65,6 +65,7 @@
 python3 tools/verify.py
 python3 tools/check_handoff.py
 python3 -m unittest discover -s tools/tests
+python3 tools/test_helper_super_overlap.py --godot /path/to/godot
 godot --headless --path godot -s res://tests/player_controller_smoke.gd
 godot --headless --path godot -s res://tests/player_visual_smoke.gd
 godot --headless --path godot -s res://tests/combat_smoke.gd

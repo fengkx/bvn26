@@ -544,3 +544,25 @@ The Web selector and combat path have been exercised for the newly registered ro
 - 2026-09-11：键位面板加入独立方向键 / Enter / Esc 导航，修复 P1 Up/Right 同绑 D 时 P2 不可达；方向键名改用 ASCII，避免缺字方框。`KEY_SETTINGS_SMOKE_OK` 与 `CONFIG_FLOW_SMOKE_OK` 通过；浏览器视觉与原版同输入对照未验证，M6-02 保持未完成。见 [修复记录](../evidence/config/key-settings/README.md)。
 
 - 2026-09-11：按用户要求，主菜单隐藏未接入的 Information、More Games、Exit，连同已有隐藏的 Normal 一起从导航和确认路径排除；保留 Vs Com、Vs Mode、Training、Setting。此为 Web 入口裁剪，不修改原版导入数据。
+
+
+### 2026-09-11 — helper/super overlap freeze
+
+Helper roots now preserve undefined `sw`, and shared stopMc/playMc require
+strict boolean false as in the source. The reported Hitsugaya Up+I / P2 Gaara
+overlap reproduces before the repair; afterward all 602 fighter states match
+a fresh original-player run. Three continuous controlled Vs Com overlaps,
+shared PvP/training replays and r13 pass. Helper post-exit action, the existing
+combat_smoke projectile assertion, and Web/deployment verification remain
+separate open boundaries. See [source and evidence](../evidence/combat/helper-super-overlap/README.md).
+
+### 2026-09-11 — Sasuke/You and Renji overlap timing
+
+The focused Sasuke + You versus Renji Up+I and Up+U source replays now match
+602/602 fighter states and 602/602 helper rows with zero differences. The
+public scheduler advances helper roots before fighter timelines so same-tick
+registrations retain source callback behavior; no character-specific hitbox,
+delay, or registry-sort rule was added. Focused pause and shared overlap checks
+also pass. Full character matrix, visual/audio/Web parity, and HIT_RECEIVE_SOP
+step E remain pending. See
+[evidence/characters/sasuke-you/renji-overlap-upI-upU-fix-r01/README.md](../evidence/characters/sasuke-you/renji-overlap-upI-upU-fix-r01/README.md).
