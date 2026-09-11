@@ -1,0 +1,129 @@
+{
+  "status": "matched_source_and_native; owner_hit_does_not_interrupt_helper",
+  "case_id": "sasuke-you-kakashi-owner-hit-r02",
+  "fixture": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/sasuke-you-kakashi-owner-hit-fixture-r02.json",
+  "fixture_sha256": "0d4029df5d2454e9f92c3ea155c16e13f76511abe4be668817ec52987b38d310",
+  "native_fighter": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/sasuke-you-kakashi-owner-hit-native-r02.json",
+  "native_fighter_sha256": "ab733697012e62de10ba5b01935cd8997d652528c663a6d7e9a96aa6421e30d1",
+  "native_helper": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/sasuke-you-kakashi-owner-hit-native-r02.helpers.json",
+  "native_helper_sha256": "f719c4efbe58fab8a7c462ee61bf0ec7c4668fd6f873aa5f035a9db25d587143",
+  "setup": {
+    "p1": "sasuke",
+    "p2": "kakashi",
+    "p1_helper": "you/鼬",
+    "p2_helper": "kon/魂",
+    "p1_x": 300,
+    "p2_x": 350,
+    "p1_summon_ticks": "10..13",
+    "p2_attack_ticks": "20..23",
+    "frames": 360
+  },
+  "observed": {
+    "owner_first_hit": {
+      "action": -1.0,
+      "frame": 862,
+      "hits": 1,
+      "hp": 970.0,
+      "hstm": 0.0,
+      "hurtSkling": false,
+      "paused": false,
+      "ql": 203.0,
+      "slot": "p1",
+      "sw": false,
+      "tick": 25,
+      "touch": true,
+      "touchFloor": true,
+      "x": 300.0,
+      "xscale": 100.0,
+      "y": -25.0
+    },
+    "owner_final_hp": 970.0,
+    "owner_hit_rows": 336,
+    "helper_active_rows": 155,
+    "helper_active_through_tick": 170,
+    "target_first_helper_damage": {
+      "action": -1.0,
+      "frame": 1117,
+      "hits": 1,
+      "hp": 960.0,
+      "hstm": 0.0,
+      "hurtSkling": false,
+      "paused": false,
+      "ql": 304.0,
+      "slot": "p2",
+      "sw": false,
+      "tick": 100,
+      "touch": true,
+      "touchFloor": true,
+      "x": 322.0,
+      "xscale": -100.0,
+      "y": -25.0
+    },
+    "target_final_hp": 780.0,
+    "target_hits": 4,
+    "source_confirmation": {
+      "helper_spawn_fight_tick": 15,
+      "owner_hit_fight_tick": 25,
+      "owner_hp_after": 970,
+      "owner_hurt_reset_frame": "source hurt reaches frame 862 -> frame 1 by tick39",
+      "helper_frame_48_tick": 62,
+      "helper_frame_92_tick": 63,
+      "target_final_hp": 780,
+      "target_hits": 4
+    }
+  },
+  "interpretation": "Owner receives a normal hit at tick25 while helper is active; helper remains active and later deals atm2/atm3 damage. The user-reported interruption is not reproduced in this production native path. Await same-input original-player capture.",
+  "runtime_sha256": {
+    "godot/helper_runtime.gd": "53ca88306f272673b5f22555f87772cbcc346da9f07bc5f23473c1b32f1304fe",
+    "godot/combat_resolver.gd": "1629558d0e1c0fd2350620784aac8fb328ce82b592ace3af9f498b432acb1332",
+    "godot/fighter_runtime.gd": "cbb079e264c2777610a2dfb33728906c75e72c20ad6751f2da2669677e78c07d",
+    "godot/generated/helpers/you/combat.json": "4db767abd6c563eb630960c5e5bbef8841ddaa4426ccab58345172ee9fba4c49",
+    "godot/generated/fighters/kakashi/ai_hit_state.gd": "4210e54514b7e55c0c95a3e305b8fa4a7da3e086a999d0fea6a65feafb25094b"
+  },
+  "command": "/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --log-file /private/tmp/sasuke-you-kakashi-owner-hit-native-r02/engine.log -s res://tests/move_case_reference.gd --quit-after 1800 -- /private/tmp/sasuke-you-kakashi-owner-hit-r02.json /private/tmp/sasuke-you-kakashi-owner-hit-native-r02/native.json",
+  "source_audit": {
+    "owner_receive_script": {
+      "path": "scripts/fighter/Sasuke.json",
+      "sha256": "b0075fdab80fc600cd344d4df5c0ac3727c484f4c6bc4ff6bf198509709cb097",
+      "paths": [
+        "DefineSprite_603/frame_862/DoAction.as (onBeHit)",
+        "DefineSprite_603/frame_863/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame) (beidax)"
+      ]
+    },
+    "helper_attack_script": {
+      "path": "scripts/fighter/fz/you.json",
+      "sha256": "6f2b9c27fa900866d91fb1dced55c7d8efb73c7b250e60413032ecf98d92f9ca",
+      "paths": [
+        "frame_48/PlaceObject2_24_3/CLIPACTIONRECORD onClipEvent(enterFrame) (atm1 hitTest -> 攻击2)",
+        "frame_76/DoAction.as (root reset)",
+        "frame_92/DoAction.as (owner X copy)"
+      ]
+    },
+    "source_rule": "Owner onBeHit/beidax updates owner hit state and damage; helper attack lifecycle is independent. No source rule says owner hit cancels helper."
+  },
+  "source_original_capture": {
+    "events": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-owner-hit-native-r03.events.jsonl.gz",
+    "events_sha256": "bb576b9359ec901af14acdbafd68d9fcc50fc7a3af267868bd18045d2f3a6ff2",
+    "build": "evidence/characters/sasuke-you/you-helper-owner-hit-native-r03.build.json",
+    "summary": "evidence/characters/sasuke-you/you-helper-owner-hit-native-r03.summary.json"
+  },
+  "comparisons": {
+    "fighter": {
+      "report": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-owner-hit-fighter-compare-r03.json",
+      "report_sha256": "db7927c3bda56d358f33d9c2936f6b9c1c45874b4629596afe9c97a58da7160b",
+      "status": "matched",
+      "source_states": 722,
+      "native_states": 722,
+      "difference_count": 0
+    },
+    "helper": {
+      "report": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-owner-hit-helper-compare-r03.json",
+      "report_sha256": "7be326d17050d188c35d18633d180af467ebabe4ce38d1f289b1f021e0b845e7",
+      "status": "matched",
+      "source_rows": 722,
+      "native_rows": 722,
+      "difference_count": 0
+    }
+  },
+  "acceptance_boundary": "Same-input source/native matched on all compared fighter/helper rows. This focused owner-hit path does not reproduce the reported helper damage interruption; no runtime change is justified."
+}

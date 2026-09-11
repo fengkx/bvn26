@@ -1,0 +1,81 @@
+{
+  "status": "native_only_distance_probe",
+  "case_id": "sasuke-you-kakashi-guard-far-r01",
+  "fixture": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/sasuke-you-kakashi-guard-far-fixture-r01.json",
+  "fixture_sha256": "f4698649ebc7f469e2898512dfc036e01f7e7affc406b938456b78935c264c8b",
+  "native_fighter": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-native-r01.replay.json",
+  "native_fighter_sha256": "913bbf72d18d1e28eaf73f2f7720c69ce7b18edeea461e93fa2ccf6cd90fdf71",
+  "native_helper": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-native-r01.replay.helpers.json",
+  "native_helper_sha256": "d95cdc5f22f472df0765bf2bc6bb8abbd65864944b7fe7102ef9bb7625e05ac0",
+  "runtime_sha256": {
+    "godot/helper_runtime.gd": "53ca88306f272673b5f22555f87772cbcc346da9f07bc5f23473c1b32f1304fe",
+    "godot/combat_resolver.gd": "1629558d0e1c0fd2350620784aac8fb328ce82b592ace3af9f498b432acb1332",
+    "godot/fighter_runtime.gd": "cbb079e264c2777610a2dfb33728906c75e72c20ad6751f2da2669677e78c07d",
+    "godot/generated/helpers/you/combat.json": "4db767abd6c563eb630960c5e5bbef8841ddaa4426ccab58345172ee9fba4c49",
+    "godot/generated/fighters/kakashi/ai_hit_state.gd": "4210e54514b7e55c0c95a3e305b8fa4a7da3e086a999d0fea6a65feafb25094b"
+  },
+  "execution": {
+    "frames": 240,
+    "fighter_rows": 482,
+    "helper_rows": 482,
+    "exit_code": 0,
+    "stdout": "/private/tmp/sasuke-you-kakashi-guard-far-native-r01/stdout.log",
+    "engine_log": "/private/tmp/sasuke-you-kakashi-guard-far-native-r01/engine.log"
+  },
+  "setup": {
+    "p1": "sasuke",
+    "p2": "kakashi",
+    "p1_helper": "you/鼬",
+    "p2_helper": "kon/魂",
+    "p1_x": 300,
+    "p2_x": 800,
+    "p2_down_ticks": "1..240",
+    "p1_summon_ticks": "10..13"
+  },
+  "observed": {
+    "p2_hp_start": 1000.0,
+    "p2_hp_end": 1000.0,
+    "p2_hits_max": 0,
+    "p1_helper_active_rows": 75,
+    "p1_helper_active_first": {
+      "action": null,
+      "attacking": true,
+      "facing": 1,
+      "frame": 2,
+      "slot": "p1",
+      "tick": 16,
+      "x": 280.0,
+      "y": -25.0
+    },
+    "p1_helper_active_last": {
+      "action": 0.0,
+      "attacking": true,
+      "facing": 1,
+      "frame": 1,
+      "slot": "p1",
+      "tick": 90,
+      "x": 280.0,
+      "y": -25.0
+    },
+    "p1_helper_frame_sequence": "48 at tick62; 75 at tick89; frame1 at tick90; offstage/inactive from tick91",
+    "p2_frame_sequence": "1093 throughout guard; no receive event"
+  },
+  "interpretation": "At x=800 the helper atm1 does not contact Kakashi. It follows the source no-hit branch through root frame76 reset; no atm2/guard-break event occurs. This is native-only and requires same-input Flash capture before parity acceptance.",
+  "command": "/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --log-file /private/tmp/sasuke-you-kakashi-guard-far-native-r01/engine.log -s res://tests/move_case_reference.gd --quit-after 1200 -- /private/tmp/sasuke-you-kakashi-guard-far-r01.json /private/tmp/sasuke-you-kakashi-guard-far-native-r01/native.json",
+  "comparisons": {
+    "fighter": {
+      "report": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-fighter-compare-r01.json",
+      "status": "matched",
+      "source_rows": 482,
+      "native_rows": 482,
+      "difference_count": 0
+    },
+    "helper": {
+      "report": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-helper-compare-r01.json",
+      "status": "matched",
+      "source_rows": 482,
+      "native_rows": 482,
+      "difference_count": 0
+    }
+  }
+}

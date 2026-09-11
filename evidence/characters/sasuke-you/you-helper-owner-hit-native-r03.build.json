@@ -1,0 +1,107 @@
+{
+  "run_id": "sasuke-you-kakashi-owner-hit-r03",
+  "status": "built_not_run",
+  "frames_after_ready": 360,
+  "configuration": {
+    "modo": 3,
+    "p1": "佐助",
+    "p2": "卡卡西",
+    "p2cpu": false,
+    "AI": 5,
+    "stage": "现世",
+    "p1sf": "鼬",
+    "p2sf": "魂"
+  },
+  "sources_sha256": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "game/fighter/Sasuke.swf": "c413d7c4d840d99deedc22778ee9a6383263b8ecd2e77a6c0712ca2a166c73f6",
+    "scripts/fighter/Sasuke.json": "b0075fdab80fc600cd344d4df5c0ac3727c484f4c6bc4ff6bf198509709cb097",
+    "game/fighter/Kakashi.swf": "48587becee990fccfd7450a1b605a24b2d654dbd15569857659f67346bddb2fc",
+    "scripts/fighter/Kakashi.json": "1c2bae550b25757c10aa18c404f325618a17fe4c649d3db5cebee6584af637d7",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+    "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46",
+    "game/fighter/fz/you.swf": "a00ed19723373b43b347f802a13c822eae21662d2a85b38336fdba9eb641f604",
+    "scripts/fighter/fz/you.json": "6f2b9c27fa900866d91fb1dced55c7d8efb73c7b250e60413032ecf98d92f9ca"
+  },
+  "ffdec_sha256": "23c1e70ff2b08388e35de10afd97a2875386cbfdc2ef99c8176d40b4f8a3ada9",
+  "outputs_sha256": {
+    "game/main.swf": "8a8acc7979c50448a01c27942e4f4ef25bd7c8d0ee50a07336c95dd68dba65a5",
+    "game/fighter/Sasuke.swf": "6218a0a5fb1a1658b3dfea7f0ff5cdd909a8cbc9150396662fb762b10ef05350",
+    "game/fighter/Kakashi.swf": "6a07e9f76b95db3c2f4e10b6e444a38c4b62cc3876bedef63765f99bb5b6a0c2",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "game/fighter/fz/you.swf": "a00ed19723373b43b347f802a13c822eae21662d2a85b38336fdba9eb641f604",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+  },
+  "instrumentation_sha256": "3e14177d56bfbc915de46166c8f32b9b6127610368995fc18999de259a9638a4",
+  "frame_order_probe": false,
+  "body_boundaries": false,
+  "body_callback_observer": false,
+  "recovery_order_probe": false,
+  "recovery_walk_first": false,
+  "match_flow": false,
+  "helper_probe": null,
+  "dash_probe": null,
+  "dash_trigger_frame": null,
+  "dash_duration": 36,
+  "timeout_probe": null,
+  "ghost_probe": null,
+  "mode_probe": 3,
+  "move_case": {
+    "id": "sasuke-you-kakashi-owner-hit-r02",
+    "fighter": "sasuke",
+    "slot": "p1",
+    "label": "召唤后本体受击",
+    "scenario": "owner_hit",
+    "frames": 360,
+    "setup": {
+      "p1": {
+        "x": 300,
+        "energy": 300
+      },
+      "p2": {
+        "x": 350,
+        "energy": 300
+      }
+    },
+    "inputs": [
+      {
+        "slot": "p1",
+        "keys": [
+          "summon"
+        ],
+        "start": 10,
+        "end": 13
+      },
+      {
+        "slot": "p2",
+        "keys": [
+          "attack"
+        ],
+        "start": 20,
+        "end": 23
+      }
+    ],
+    "fighters": {
+      "p1": "sasuke",
+      "p2": "kakashi"
+    },
+    "p1_helper": "鼬",
+    "p2_helper": "魂"
+  },
+  "dynamic_move_case": true,
+  "player_display": "windowed_showAll",
+  "presentation_probe": false,
+  "root_write_observer": false,
+  "body_call_scope_probe": false,
+  "schedule_probe": false,
+  "hurt_summon_probe": false,
+  "shadow_probe": false,
+  "p1_helper": "you",
+  "p2_helper": "kon",
+  "input_injection": "body_kis_alias_with_per_read_trace",
+  "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
+  "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped"
+}

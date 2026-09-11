@@ -1,0 +1,110 @@
+{
+  "status": "matched",
+  "source_rows": 722,
+  "native_rows": 722,
+  "complete": true,
+  "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+  "fields_compared": [
+    {
+      "name": "frame",
+      "source": "frame",
+      "native": "frame",
+      "transform": "identity"
+    },
+    {
+      "name": "x",
+      "source": "x",
+      "native": "x",
+      "transform": "identity"
+    },
+    {
+      "name": "y",
+      "source": "y",
+      "native": "y",
+      "transform": "identity"
+    },
+    {
+      "name": "orientation",
+      "source": "xscale",
+      "native": "facing",
+      "transform": "source xscale percent / 100 = native facing sign"
+    },
+    {
+      "name": "action",
+      "source": "action",
+      "native": "action",
+      "transform": "identity"
+    },
+    {
+      "name": "attacking",
+      "source": "attacking",
+      "native": "attacking",
+      "transform": "identity"
+    }
+  ],
+  "source_only_fields": [
+    "hits",
+    "atm1",
+    "atm2",
+    "atm3"
+  ],
+  "native_only_fields": [],
+  "active_row_counts": {
+    "source": {
+      "p1": 155,
+      "p2": 0
+    },
+    "native": {
+      "p1": 155,
+      "p2": 0
+    }
+  },
+  "active_boundaries": {
+    "p1": {
+      "source_first_active": {
+        "tick": 16,
+        "slot": "p1",
+        "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+        "frame": 2.0,
+        "x": 280.0,
+        "y": -25.0,
+        "xscale": 100.0,
+        "attacking": true,
+        "action": null,
+        "hits": null,
+        "atm1": null,
+        "atm2": null,
+        "atm3": null
+      },
+      "native_at_source_first_active_tick": {
+        "action": null,
+        "attacking": true,
+        "facing": 1,
+        "frame": 2,
+        "slot": "p1",
+        "tick": 16,
+        "x": 280.0,
+        "y": -25.0
+      },
+      "native_first_active": {
+        "action": null,
+        "attacking": true,
+        "facing": 1,
+        "frame": 2,
+        "slot": "p1",
+        "tick": 16,
+        "x": 280.0,
+        "y": -25.0
+      }
+    },
+    "p2": {
+      "source_first_active": null,
+      "native_at_source_first_active_tick": null,
+      "native_first_active": null
+    }
+  },
+  "compared_rows": 722,
+  "difference_count": 0,
+  "differences": [],
+  "first_difference": null
+}

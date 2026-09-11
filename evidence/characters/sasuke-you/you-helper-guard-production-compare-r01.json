@@ -1,0 +1,94 @@
+{
+  "status": "matched",
+  "case_id": "sasuke-you-kakashi-guard-r01",
+  "scope": "production Godot replay vs same-input original-player source capture; guard held throughout",
+  "fixture": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/sasuke-you-kakashi-guard-fixture-r01.json",
+  "fixture_sha256": "5de8a3e15fdc07cbacc7e82202100dcf2572b03ac11f33d03fa01287afbc9bcd",
+  "source_events": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-native-r03.events.jsonl.gz",
+  "source_events_sha256": "c343981e890f0a9dd39d52f5b14f5cfe75f6a38e03c72c533c2e856b9064c245",
+  "native_fighter": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-native-r01.json",
+  "native_fighter_sha256": "4b4fb227bf9a565536ca7d49c1b57fc60976bab0b89158a9ecd11a31e1fb4f86",
+  "native_helper": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-native-r01.helpers.json",
+  "native_helper_sha256": "63efebb14a352f1c1ef60ef2a7a21f19939b20566175d0e6a0b9a52fc94d50fc",
+  "comparisons": {
+    "fighter": {
+      "report": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-fighter-compare-r01.json",
+      "report_sha256": "6b1b801a17a2a34d81737ebe99491314ec0688c444e45bd405f86cf056f79e3c",
+      "source_rows": 482,
+      "native_rows": 482,
+      "difference_count": 0,
+      "status": "matched"
+    },
+    "helper": {
+      "report": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-helper-compare-r01.json",
+      "report_sha256": "9f1bde5addc97fbc4e0bd1c1e507510fe94ccdbc60c00615c41903d9ac418ece",
+      "source_rows": 482,
+      "native_rows": 482,
+      "difference_count": 0,
+      "status": "matched"
+    }
+  },
+  "guard_observation": {
+    "first_visible_attack": "atm2",
+    "source_zl": 11,
+    "fight_tick": 100,
+    "defender_frame": 1117,
+    "hits": 1,
+    "health_before": 1000,
+    "health_after": 960,
+    "guard_input_held": true,
+    "reaction": "被打"
+  },
+  "runtime_sha256": {
+    "godot/helper_runtime.gd": "53ca88306f272673b5f22555f87772cbcc346da9f07bc5f23473c1b32f1304fe",
+    "godot/combat_resolver.gd": "1629558d0e1c0fd2350620784aac8fb328ce82b592ace3af9f498b432acb1332",
+    "godot/fighter_runtime.gd": "cbb079e264c2777610a2dfb33728906c75e72c20ad6751f2da2669677e78c07d",
+    "godot/generated/helpers/you/combat.json": "4db767abd6c563eb630960c5e5bbef8841ddaa4426ccab58345172ee9fba4c49",
+    "godot/generated/fighters/kakashi/ai_hit_state.gd": "4210e54514b7e55c0c95a3e305b8fa4a7da3e086a999d0fea6a65feafb25094b"
+  },
+  "commands": [
+    "/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --log-file /private/tmp/sasuke-you-kakashi-guard-native-r01/engine.log -s res://tests/move_case_reference.gd --quit-after 1200 -- /private/tmp/sasuke-you-kakashi-guard-r01.json /private/tmp/sasuke-you-kakashi-guard-native-r01/native.json",
+    "python3 tools/probes/compare_mode_reference.py evidence/characters/sasuke-you/you-helper-guard-native-r03.events.jsonl.gz evidence/characters/sasuke-you/you-helper-guard-native-r01.json --output evidence/characters/sasuke-you/you-helper-guard-fighter-compare-r01.json",
+    "python3 tools/probes/compare_helper_reference.py evidence/characters/sasuke-you/you-helper-guard-native-r03.events.jsonl.gz evidence/characters/sasuke-you/you-helper-guard-native-r01.helpers.json --output evidence/characters/sasuke-you/you-helper-guard-helper-compare-r01.json"
+  ],
+  "acceptance_boundary": "Near guard and far guard source/native fixtures both matched on all compared fighter/helper rows. Near case proves source atm2 zl=11 breaks guard; far case proves no contact/no attack. Source-only hits/atm fields remain outside helper comparator.",
+  "far_guard": {
+    "fixture": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/sasuke-you-kakashi-guard-far-fixture-r01.json",
+    "fixture_sha256": "f4698649ebc7f469e2898512dfc036e01f7e7affc406b938456b78935c264c8b",
+    "source_events": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-native-r02.events.jsonl.gz",
+    "source_events_sha256": "5e9dec594dc21d1abda5805fd2b6cc5a4c63eae0c7b8a41e091a0a3ed825944b",
+    "native_fighter": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-native-r01.replay.json",
+    "native_fighter_sha256": "913bbf72d18d1e28eaf73f2f7720c69ce7b18edeea461e93fa2ccf6cd90fdf71",
+    "native_helper": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-native-r01.replay.helpers.json",
+    "native_helper_sha256": "d95cdc5f22f472df0765bf2bc6bb8abbd65864944b7fe7102ef9bb7625e05ac0",
+    "fighter_comparison": {
+      "report": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-fighter-compare-r01.json",
+      "report_sha256": "6b1b801a17a2a34d81737ebe99491314ec0688c444e45bd405f86cf056f79e3c",
+      "status": "matched",
+      "source_states": 482,
+      "native_states": 482,
+      "difference_count": 0
+    },
+    "helper_comparison": {
+      "report": "/Users/fengkx/me/code/bvn2_6/evidence/characters/sasuke-you/you-helper-guard-far-helper-compare-r01.json",
+      "report_sha256": "f5fd2bc4e463fecd3a2c5830279ecb2cb1231882f4fb4aeac43416e98922770e",
+      "status": "matched",
+      "source_rows": 482,
+      "native_rows": 482,
+      "difference_count": 0
+    },
+    "observation": {
+      "p2_x": 800,
+      "p2_down_ticks": "1..240",
+      "p2_hp_before": 1000,
+      "p2_hp_after": 1000,
+      "p2_hits": 0,
+      "you_tick62_frame": 48,
+      "you_tick89_frame": 75,
+      "you_tick90_frame": 1,
+      "you_inactive_from_tick": 91,
+      "no_atm2_or_atm3": true
+    },
+    "status": "source/native matched; no contact and no guard break"
+  }
+}
