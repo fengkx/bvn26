@@ -171,6 +171,47 @@ y' = rotateSkew0 * x + scaleY * y + translateY / 20
   最后在原生 Flash 比较表现及轨迹；保存原始记录与首次差异，不调期望来凑绿。
   单测通过、静态推导和 Flash 验证分别记录，未验证部分不得称一比一。
 
+### 1.5.1 援助与角色同帧重叠：先锁真实 dispatch 时刻
+
+鼬（You）与恋次的上+I/上+U 重叠曾因两个边界被误判：helper 源字段 `sw` 为
+`undefined` 时被移植的 `false` 默认值或布尔 coercion 提前停掉，而 `stopMc` 源条件
+还要求 `sw===false`；同一 tick 的新 clip 在 fighter/helper 注册顺序下被错误地假定
+为“receiver 先完成”，导致 You 先 `goto` 移除 `atm1`，而 receiver 尚未完成受击。
+修复的调度部分调整了共用 helper root 在 fighter 前的推进相位，同时修正了 `sw`
+语义并保留 reverse registry dispatch；不得借此增加角色分支、延迟、放大框或全局
+registry 排序。
+
+排查和回归必须按以下顺序执行：
+
+1. **保留源语义。** helper 源字段缺失时记录为 `undefined`，只在源代码明确比较
+   或算术时按该语义求值；禁止先转成 `false`、`0` 或空对象再决定是否停播。
+2. **记录真实时刻。** observer、fighter wrapper（BODY）、`bdmn` receiver 和
+   helper child callback 分开记 `sequence`、physical tick、registry `current_tick`、
+   `display_tick`、`fight_tick`、`source_frame`、`placed_tick`、实例代次/ID、register
+   与 dispatch 序列；physical tick、registry `current_tick` 与 `placed_tick` 是不同
+   时钟，不能直接当成同一 tick 比较。必须同时记录 callback 内查询到的 target（包括
+   `_currentframe`、`String`、`typeof`、bounds 和 `hitTest`）；不能用 observer 的后续
+   帧替代 callback 内时刻。
+3. **只写已证明的因果。** 本次证据证明 receiver frame 626 的 callback 先于 You
+   callback，且 You 查询时 P2 root 已到 969、`bdmn` target 为 `undefined`、
+   `hitTest=false`；它没有证明跨树 `onLoad` 创建顺序，也不能推广为全局 depth
+   优先级。最终 HP、旧日志或“看起来先生成”都不能单独推出根因。
+4. **锁住输入和比较对象。** 保存 fixture、原始 input/tape、source/runtime
+   hash 与首次差异；发现输入记录错误时先纠正并重新捕获，例如曾把上+U 误记为下+U，
+   因而必须逐项核对上+U/下+U 的实际按键与消费帧。暂停期间未真实 dispatch 的输入
+   只能标作未覆盖，不能当作覆盖或“被后续输入覆盖”。曾出现 HP 950/995 与
+   local/root frame 混淆，复核时必须逐项引用原始字段和路径。
+5. **最小复跑门槛。** 至少重放上+I、上+U 的原始重叠 fixture，以及 You hit 与
+   far-miss；逐项比较每个 fixture 的完整预期 fighter/helper 行数和第一个分歧。
+   本证据中 overlap fixture 各为 602/602，You hit 各为 482/482，far-miss 各为
+   362/362；这些数量只属于对应 fixture，不是通用门槛。共用调度改动还要跑
+   `tools/test_shared_modes.py` 的 `pvp` 与 `training-timer`。只有在当前 runtime
+   hash 已绑定、原始 sequence 链可复核且各 fixture 完整预期行逐 tick 匹配时，才能
+   报告本切片该用例通过；不能据此宣称完整角色矩阵或步骤 E 完成。
+
+本次限定证据：[upI source callback order r05](../evidence/characters/sasuke-you/renji-overlap-upI-order-r05/README.md)、
+[upI/upU overlap fix r01](../evidence/characters/sasuke-you/renji-overlap-upI-upU-fix-r01/README.md)。
+
 ## 2. 禁止事项
 
 | 禁止 | 应做 |
