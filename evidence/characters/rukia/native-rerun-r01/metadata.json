@@ -1,0 +1,73 @@
+{
+  "format": "bvn26-move-case-rerun-v1",
+  "status": "different",
+  "purpose": "Re-run the existing Rukia neutral 砍1 fixture against current Godot implementation; preserve the original Flash input and source capture.",
+  "command": [
+    "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot",
+    "--headless",
+    "--path",
+    "godot",
+    "-s",
+    "res://tests/move_case_reference.gd",
+    "--",
+    "/Users/fengkx/me/code/bvn2_6/evidence/characters/rukia/move-cases/rukia-218-nornalhit-neutral.json",
+    "/private/tmp/rukia-native-rerun-r03/native.json"
+  ],
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "fixture_id": "rukia-218-nornalhit-neutral",
+  "fixture_input": {
+    "p1_x": 300,
+    "p2_x": 350,
+    "p1_energy": 300,
+    "p2_energy": 300,
+    "attack_window": [
+      10,
+      13
+    ]
+  },
+  "reference_run_id": "rukia-first-r02",
+  "comparison": {
+    "source_states": 602,
+    "native_states": 602,
+    "difference_count": 286,
+    "first_difference": {
+      "tick": 15,
+      "slot": "p2",
+      "fields": {
+        "frame": {
+          "original": 738.0,
+          "native": 2
+        }
+      }
+    }
+  },
+  "sha256": {
+    "evidence/characters/rukia/move-cases/rukia-218-nornalhit-neutral.json": "1a6cfdd50d2b98fac6bb524090abfa14b1dc5306508751b3b863ddcce7857410",
+    "evidence/characters/rukia/original-neutral.json/build.json": "8b244aa64410d47dafa58bf9a28bc1b050642d09903a3f70025954f9e360528d",
+    "evidence/characters/rukia/original-neutral.json/events.jsonl": "910b92dda4a27fbaad2dbee5ac86d7f1b112ac3bc67a62f58b8f200f48f3b3b1",
+    "evidence/characters/rukia/native-rerun-r01/native.json": "c396537e871d793294a88cbe177624ab307c6d426fdfd7f802a856a9bbaf4a2f",
+    "evidence/characters/rukia/native-rerun-r01/native.helpers.json": "5dc8a55cecda226dbaa3a62fcc19c6d5abda97f79ce321e826b51015287ff4e1",
+    "evidence/characters/rukia/native-rerun-r01/native.presentation.json": "6ce3597b14ef6c27de79f59f6de9352a492b3ec010363e4af4e2029b642f3cbc",
+    "evidence/characters/rukia/native-rerun-r01/comparison.json": "f2a30a7404aae3a7278a2a72401f80afee14b6b32ea903ca88a47356ce873b48",
+    "godot/generated/fighters/rukia/ai.json": "25d1bca046211acac75c8202b951180876622ef1ef2b645339250b8586588069",
+    "godot/generated/fighters/rukia/ai_hit_state.gd": "4210e54514b7e55c0c95a3e305b8fa4a7da3e086a999d0fea6a65feafb25094b",
+    "godot/generated/fighters/rukia/ai_hit_state.json": "2e6653edb0fd33f8e5c2081b2665f62fc1c5920f12215754c180e19569d41b85",
+    "godot/generated/fighters/rukia/assets.json": "c12d0f02d7ceea6a4d6d331034af8cb306bb98af24be53719e4efe45e8962b28",
+    "godot/generated/fighters/rukia/combat.json": "61e55fef52b6e7f5457df1ae33133070c0c0cdce5bbd19040e91d63f1312d56e",
+    "godot/generated/fighters/rukia/fighter.json": "4944b9e75d6650f9311fb360ccaec973b68de50b89733a458e5707a4b2e15542",
+    "godot/generated/fighters/rukia/hurt_voice.json": "d6a0f38f4d247b70cbb5b15b1bed9e20ce8247493e4a47f249cf61aa00ff20f7",
+    "godot/generated/fighters/rukia/intro.json": "b9a7085d5031f462c0be0aaeddc0df59d096f6b8915ddaeea65d648a1ae376b7",
+    "godot/generated/fighters/rukia/timeline.json": "938891b8d02871972d0367cfb0df71f86dcb35cdb2e609e190b6358257731e4c",
+    "godot/fighter_runtime.gd": "6a7dffa8cc35317a281c5ab95476c87755219a0c90d3b8ab5b050fce0926b61a",
+    "godot/ai_source_state.gd": "f11f47d9c1cc5c8676119a0c9f7a1b77a235b4c41ccf1a24eedc0da0ae7cb544",
+    "godot/ai_controller_host.gd": "460094da72d324e1936f459db4a7b81ca92cb815ac0f2a5feb72679f006cb788",
+    "godot/player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea",
+    "godot/main.gd": "829a3204758d7431f4da16f3eaef3d98f216cee4c1f889c6065d4b159a36027f",
+    "godot/tests/move_case_reference.gd": "fabab2d576bc4688bef07ad4e3be3b98638d08a1dafb46638c302c267ae53131"
+  },
+  "notes": [
+    "No input, random tape, source expectation, or tolerance was changed.",
+    "First divergence remains P2 frame at fight tick 15; P2 has no hit at tick 16, so later damage/reaction fields diverge.",
+    "Godot emitted sandbox user://logs and macOS CA store errors, but completed MOVE_CASE_REFERENCE_OK and wrote all three native trajectories."
+  ]
+}

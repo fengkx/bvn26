@@ -1,0 +1,80 @@
+{
+  "status": "invalid_comparison_configuration",
+  "source_rows": 722,
+  "native_rows": 722,
+  "complete": true,
+  "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+  "fields_compared": [
+    {
+      "name": "frame",
+      "source": "frame",
+      "native": "frame",
+      "transform": "identity"
+    },
+    {
+      "name": "x",
+      "source": "x",
+      "native": "x",
+      "transform": "identity"
+    },
+    {
+      "name": "y",
+      "source": "y",
+      "native": "y",
+      "transform": "identity"
+    },
+    {
+      "name": "orientation",
+      "source": "xscale",
+      "native": "facing",
+      "transform": "source xscale percent / 100 = native facing sign"
+    },
+    {
+      "name": "action",
+      "source": "action",
+      "native": "action",
+      "transform": "identity"
+    },
+    {
+      "name": "attacking",
+      "source": "attacking",
+      "native": "attacking",
+      "transform": "identity"
+    }
+  ],
+  "source_only_fields": [
+    "hits",
+    "atm1",
+    "atm2",
+    "atm3"
+  ],
+  "native_only_fields": [],
+  "active_row_counts": {
+    "source": {
+      "p1": 0,
+      "p2": 0
+    },
+    "native": {
+      "p1": 0,
+      "p2": 0
+    }
+  },
+  "active_boundaries": {
+    "p1": {
+      "source_first_active": null,
+      "native_at_source_first_active_tick": null,
+      "native_first_active": null
+    },
+    "p2": {
+      "source_first_active": null,
+      "native_at_source_first_active_tick": null,
+      "native_first_active": null
+    }
+  },
+  "compared_rows": 722,
+  "difference_count": 0,
+  "differences": [],
+  "first_difference": null,
+  "observed_status_before_configuration_audit": "matched",
+  "configuration_note": "Original Flash builds selected p1_helper=jinye (松本·井野) and p2sf=魂 (kon); the r03 GameWorld fixtures omitted helper selections and therefore used default p1 我爱罗/p2 魂. Preserve raw traces and comparator differences; do not interpret them as runtime parity failures."
+}

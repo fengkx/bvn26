@@ -1,5 +1,6 @@
 """Compile the source match opening and materialize its authored UI shapes."""
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -91,7 +92,11 @@ def build(workspace, output, jar):
         # this slice. Compile each opening from its own root timeline and
         # kcplayed callbacks; the runtime must never borrow another fighter's
         # state-frame map.
-        for name in ['minren', 'yihu', 'rifagu', 'sasuke', 'kakashi', 'renji']:
+        # Candidate base forms are compiled into the production intro registry
+        # before they are exposed by the selection registry. This keeps the
+        # runtime opening chain ready without making a candidate selectable.
+        for name in ['minren', 'yihu', 'rifagu', 'sasuke', 'kakashi', 'renji',
+                     'sakura', 'rukia', 'yulong']:
             folder = Path('godot/generated/fighters') / name
             fighter = json.loads((folder / 'fighter.json').read_text())
             timeline = json.loads((folder / 'timeline.json').read_text())
@@ -100,7 +105,11 @@ def build(workspace, output, jar):
             sid = timeline['sprite_id']
             state_frames = {}
             evidence = []
-            for path, text in scripts(Path('scripts/fighter') / (name + '.json')).items():
+            script_bundle = Path(fighter['source']['script_bundle_path'])
+            script_bytes = script_bundle.read_bytes()
+            if hashlib.sha256(script_bytes).hexdigest() != fighter['source']['script_bundle_sha256']:
+                raise ValueError(f'Fighter script bundle hash mismatch: {script_bundle}')
+            for path, text in scripts(script_bundle).items():
                 match = re.match(rf'DefineSprite_{sid}/frame_(\d+)/DoAction.as$', path)
                 if not match or not action['start_frame'] <= int(match[1]) <= action['end_frame']:
                     continue

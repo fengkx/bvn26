@@ -1,0 +1,88 @@
+{
+  "format": "bvn26-runtime-regression-summary-v1",
+  "purpose": "Regression evidence after source-state increment, instance-local projectile state, and timeline instance-lifetime changes. Temporary full reports are retained outside the repository.",
+  "engine": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "binary": "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot",
+    "sha256": "c7cccbf8fb143e34e02fd6521e09be2c2b974f0d5db080b19071c9c570718ccf"
+  },
+  "r13_r14": [
+    {
+      "case": "r13",
+      "native_input": "evidence/ai/input-binary-r13/events.jsonl",
+      "native_input_sha256": "ac14a0878757cf02b5ae88060db40f72382dcdc7be5cb10e2ba9536aa8d29d92",
+      "temporary_report": "/private/tmp/uryu-runtime-regressions/r13/report.json",
+      "report_sha256": "084400f3263ca1eeea1f6dd65440ec96c016e5b8d86f2b54c866a2f48e9eb1b5",
+      "command": "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot --headless --path godot --quit-after 12000 --script res://tests/intro_continuous_reference.gd -- /Users/fengkx/me/code/bvn2_6/evidence/ai/input-binary-r13/events.jsonl /private/tmp/uryu-runtime-regressions/r13/report.json combat",
+      "status": "segment_observed_fields_match",
+      "frame_comparisons": 897,
+      "state_comparisons": 1794,
+      "matched_state_fields": [
+        "hp",
+        "ql",
+        "action",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "facing_xscale": "compared separately per display tick; matched",
+      "random_tape_complete": true,
+      "clock_tape_complete": true,
+      "observation_phase": "after_initial_frames_before_deferred_targets",
+      "termination": "original_done_root_observer"
+    },
+    {
+      "case": "r14",
+      "native_input": "evidence/ai/input-binary-r14/events.jsonl",
+      "native_input_sha256": "9a3dac0908ac25ca65ace8568bb6093a06aaf1bd06968a5e2903b70f119092e2",
+      "temporary_report": "/private/tmp/uryu-runtime-regressions/r14/report.json",
+      "report_sha256": "5f78cb4999528d1bede0df48422f3c24d961a9c43dde9743a0bcf37c3b75a835",
+      "command": "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot --headless --path godot --quit-after 12000 --script res://tests/intro_continuous_reference.gd -- /Users/fengkx/me/code/bvn2_6/evidence/ai/input-binary-r14/events.jsonl /private/tmp/uryu-runtime-regressions/r14/report.json combat",
+      "status": "segment_observed_fields_match",
+      "frame_comparisons": 867,
+      "state_comparisons": 1734,
+      "matched_state_fields": [
+        "hp",
+        "ql",
+        "action",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "facing_xscale": "compared separately per display tick; matched",
+      "random_tape_complete": true,
+      "clock_tape_complete": true,
+      "observation_phase": "after_initial_frames_before_deferred_targets",
+      "termination": "original_done_root_observer"
+    }
+  ],
+  "additional_smokes": [
+    {
+      "test": "player_visual_smoke",
+      "script": "godot/tests/player_visual_smoke.gd",
+      "script_sha256": "e7aaa09d22d42f3cf1038bd539f1f8d6ba0908b3aeb717295fe03187e0c138ab",
+      "command": "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot --headless --path godot --quit-after 2000 --script res://tests/player_visual_smoke.gd",
+      "status": "PLAYER_VISUAL_SMOKE_OK"
+    },
+    {
+      "test": "shared_mode_lifecycle_smoke",
+      "script": "godot/tests/shared_mode_lifecycle_smoke.gd",
+      "script_sha256": "7ad3ef14d264ed7f3461e07ca8b61876b692bd0e1a5700bd904efb39f110266a",
+      "command": "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot --headless --path godot --quit-after 5000 --script res://tests/shared_mode_lifecycle_smoke.gd",
+      "status": "SHARED_MODE_LIFECYCLE_SMOKE_OK"
+    }
+  ],
+  "notes": [
+    "State comparison covers the ten listed original state fields; source position x/y are diagnostic geometry and do not gate status in this harness.",
+    "Full raw Godot reports and console logs remain in /private/tmp/uryu-runtime-regressions/.",
+    "These are retained original captures replayed through current runtime; no input, clock, or random tape was regenerated."
+  ]
+}

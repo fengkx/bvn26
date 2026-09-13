@@ -1,0 +1,54 @@
+{
+  "fighter": "yulong",
+  "slot": "p1",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 500,
+      "energy": 300
+    }
+  },
+  "fighters": {
+    "p1": "yulong",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "id": "yulong-ranged-up",
+  "label": "招3",
+  "scenario": "ranged_up",
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "ranged"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    277,
+    312
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "native_selection_explicit_capture_pending",
+  "catalog_purpose": "Verify source dispatch and full 招3 placement/lifetime.",
+  "source_contract": {
+    "command_slot": "magichit3",
+    "contexts": [
+      "stand"
+    ],
+    "energy_min": 0,
+    "implementation": "wired"
+  }
+}

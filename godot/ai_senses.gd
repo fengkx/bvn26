@@ -27,10 +27,9 @@ func local_bounds(name: String) -> Rect2:
 
 
 func global_bounds(name: String) -> Rect2:
-	var bounds := local_bounds(name)
-	if not bounds.has_area():
-		return bounds
-	return fighter._transform_rect(fighter.global_transform, bounds)
+	if not sensors.has(name):
+		return Rect2()
+	return fighter.source_placement_global_bounds(sensors[name], 2, [placement])
 
 
 func hit(name: String, opponent: TimelinePreview) -> Variant:

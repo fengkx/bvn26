@@ -21,8 +21,37 @@ def same_window_route(rows, index, source):
     return neighbor is not None and start <= neighbor <= end
 
 
+def apply_source_target(case, source_window, source_action):
+    """Bind the fixture target to the window's actual source action."""
+    start = source_action.get('start_frame')
+    end = source_action.get('end_frame')
+    if not isinstance(start, int) or not isinstance(end, int) or start > end:
+        raise ValueError(f"Cancel source action has no valid timeline: {source_window['from']}")
+    window_start = source_window.get('start_frame')
+    window_end = source_window.get('end_frame')
+    if not isinstance(window_start, int) or not isinstance(window_end, int):
+        raise ValueError('Cancel window has invalid source frames')
+    if window_start < start or window_end > end + 1:
+        raise ValueError(
+            f"Cancel window {source_window['from']} {window_start}-{window_end} "
+            f"does not belong to source action frames {start}-{end}"
+        )
+
+    case['label'] = source_action['label']
+    case['target_frames'] = [start, end]
+    case['has_source_timeline'] = source_action.get('has_timeline', False)
+    case['source_dispatch'] = source_action.get('source_dispatch', [])
+    case['source_target'] = {
+        key: source_action.get(key)
+        for key in ('label', 'start_frame', 'end_frame', 'implementation',
+                    'has_timeline', 'source_dispatch', 'contexts', 'energy_min')
+    }
+    return [start, end]
+
+
 def generate(fighter, references):
     model = json.loads((ROOT / f'godot/generated/fighters/{fighter}/combat.json').read_text())
+    entries = {entry['label']: entry for entry in model['command_catalog']['entries']}
     calibrations = []
     folders = [folder for root in references for folder in root.iterdir()]
     for folder in sorted(folders):
@@ -54,6 +83,10 @@ def generate(fighter, references):
                 continue
             fixture, events, observation = calibration
             case = copy.deepcopy(fixture)
+            source_action = entries.get(source['from'])
+            if source_action is None or not source_action.get('has_timeline'):
+                unavailable.append({'id': identifier, 'reason': 'cancel source action has no timeline'})
+                continue
             tick = observation['tick']
             # The observer records state before publishing keys for the next callbacks.
             case['id'] = identifier
@@ -64,6 +97,9 @@ def generate(fighter, references):
             case['inputs'].append(window(case['slot'], CANCEL_COMMANDS[source['predicate']], tick, tick + 1))
             case['window_boundary'] = {'id': identifier, 'window_index': index, 'edge': edge,
                                        'source_frame': frame, 'input_tick': tick, 'window': source}
+            case['window_boundary']['source_action_frames'] = apply_source_target(
+                case, source, source_action)
+            case['window_boundary']['source_action'] = source_action['label']
             destination = next(entry for entry in model['command_catalog']['entries']
                                if entry['label'] == source['to'])
             case['window_boundary']['destination_frames'] = [destination['start_frame'], destination['end_frame']]

@@ -1,0 +1,164 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "rukia-base-super-r01",
+  "input_delivery": {
+    "status": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "w": "87",
+      "a": "65",
+      "l": "76",
+      "上箭": "38",
+      "下箭": "40",
+      "左箭": "37",
+      "右箭": "39",
+      "N1": "97",
+      "N2": "98",
+      "N3": "99",
+      "N4": "100",
+      "N5": "101",
+      "N6": "102",
+      "right": "68",
+      "attack": "74",
+      "down": "83",
+      "ranged": "85",
+      "jump": "75",
+      "special": "73",
+      "summon": "79"
+    },
+    "reads": 4770,
+    "pressed_reads": {
+      "_level0.game.p1.mc:83": 5,
+      "_level0.game.p1.mc:73": 1
+    }
+  },
+  "events": 9723,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "input_next_display": 780,
+    "initCtrl": 6,
+    "helper_load": 2,
+    "frame_state_enter": 84,
+    "intro_body_enter": 166,
+    "intro_body_exit": 166,
+    "frame_state_exit": 84,
+    "random": 10,
+    "intro_poll": 23,
+    "intro_poll_state": 23,
+    "state": 1198,
+    "helper_state": 1198,
+    "helper_clip_state": 1198,
+    "intro_step": 5,
+    "intro_goto_before": 2,
+    "intro_goto_return": 2,
+    "ready": 1,
+    "key_read": 4770,
+    "clock": 2,
+    "done": 1
+  },
+  "frames_after_ready": 300,
+  "termination_policy": "unique_done_same_frame_tail",
+  "ready": {
+    "run_id": "rukia-base-super-r01",
+    "sequence": 2701,
+    "time_ms": 27419,
+    "display_tick": 480,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "rukia-base-super-r01",
+      "sequence": 4,
+      "time_ms": 11408,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "rukia-base-super-r01",
+      "sequence": 9,
+      "time_ms": 11468,
+      "display_tick": 2,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "rukia-base-super-r01",
+      "sequence": 21,
+      "time_ms": 11617,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "rukia-base-super-r01",
+      "sequence": 22,
+      "time_ms": 11617,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "rukia-base-super-r01",
+      "sequence": 23,
+      "time_ms": 11618,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "rukia-base-super-r01",
+      "sequence": 24,
+      "time_ms": 11618,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": null,
+  "samples_before_ready": 0,
+  "sample_intervals_ms": {},
+  "last_states": [
+    {
+      "run_id": "rukia-base-super-r01",
+      "sequence": 9717,
+      "time_ms": 37431,
+      "display_tick": 780,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p1,3,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "rukia-base-super-r01",
+      "sequence": 9720,
+      "time_ms": 37432,
+      "display_tick": 780,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p2,5,f:1:8:123207680:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:8:112721920:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "368ef9faa41e6f502a0586c4a93f4291b3ecad2cf587060133fad6f38d0176f6",
+  "retained_sha256": {
+    "clock-tape.json": "eb5e943663573bf39ef580f09ddcabc88858987b45ac441cd2982d03a5546d7b",
+    "instrumentation.diff": "74080bc4b1a53088f7311de3bcee1287c8bc4ca4373c80dc4c548a42a7a59700",
+    "events.jsonl": "b4fee887a25d8d6e2b4e90a8122977bd6e00a9167e8be22481830d0a28019366",
+    "random-tape.json": "82a4a3a87ed4ee17ab1a31dd6dd576b09826d4965bfae2dabd8af3f399bcc8e9",
+    "build.json": "caf0918ae67670797fa8696465386894ebf18597e401c23a30b121aa4ea6cb1e"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

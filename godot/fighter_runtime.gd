@@ -143,6 +143,7 @@ var _presentation_events_applied: Dictionary = {}
 var _super_events_applied: Dictionary = {}
 var _clip_placements_applied: Dictionary = {}
 var _body_warps_applied: Dictionary = {}
+var _source_frame_execution_serial: int = 0
 var _scripted_jump: bool = false
 var _placement_owned: Dictionary = {}
 var helper_spawn: Dictionary = {}
@@ -795,6 +796,10 @@ func _apply_root_clip_rename(event: Dictionary) -> void:
 		return
 	binding["current_name"] = instance_name
 	_source_name_bindings[key] = binding
+	for reference: WeakRef in source_projectiles.values():
+		var projectile: RefCounted = reference.get_ref()
+		if projectile != null:
+			projectile.rename_from_root(source_name, instance_name)
 
 
 func _source_alias_matches(window: Dictionary) -> bool:
@@ -915,8 +920,10 @@ func start_action(label: String) -> void:
 
 func _queue_source_frame(frame: int) -> void:
 	_reconcile_source_name_bindings()
+	_source_frame_execution_serial += 1
 	_ai_pending_frames.append({"frame": frame,
-		"order": frame_script_sequence.call() if frame_script_sequence.is_valid() else 0})
+		"order": frame_script_sequence.call() if frame_script_sequence.is_valid() else 0,
+		"serial": _source_frame_execution_serial})
 	source_frame_changed.emit(frame)
 
 
@@ -930,11 +937,22 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 	var applied := 0
 	while not _ai_pending_frames.is_empty() and (drain_nested or applied < initial_count):
 		applied += 1
-		var pending: int = _ai_pending_frames.pop_front()["frame"]
+		var pending_entry: Dictionary = _ai_pending_frames.pop_front()
+		var pending: int = int(pending_entry["frame"])
+		var pending_serial: int = int(pending_entry.get("serial", 0))
+		_apply_body_warps(pending, pending_serial)
 		source_frame_script_boundary.emit(pending, true)
 		if ai_timeline_controlled or source_body != null:
 			var events: Array = ai_source_state.spec["frame_writes"].get(str(pending), []).duplicate()
 			events.append_array(ai_source_state.spec["frame_calls"].get(str(pending), []))
+			for placement: Dictionary in _combat.get("clip_placements", []):
+				if str(placement.get("action", "")) != action:
+					continue
+				if int(placement.get("frame", -1)) != pending:
+					continue
+				var placement_event := placement.duplicate(true)
+				placement_event["op"] = "clip_placement"
+				events.append(placement_event)
 			events.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
 				return int(left["line"]) < int(right["line"]))
 			for event: Dictionary in events:
@@ -951,9 +969,11 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 					energy += float(event["delta"])
 					_energy_event_applied = true
 				elif event.get("op") == "body_warp":
-					_apply_body_warp_event(event)
+					_apply_body_warp_event(event, pending_serial)
 				elif event.get("op") == "root_clip_rename":
 					_apply_root_clip_rename(event)
+				elif event.get("op") == "clip_placement":
+					_apply_clip_placement(event)
 				elif event.get("op") == "screen_flash":
 					screen_flash_requested.emit(int(event.get("color_rgb24", 0xFFFFFF)))
 				else:
@@ -1358,6 +1378,8 @@ func run_projectile_callback(projectile: Dictionary) -> bool:
 	var jumped_hit := false
 	var blocked := _projectile_blocked(instance_name, projectile)
 	if blocked:
+		var hit_variables := instance_source_variables(instance_name)
+		var goto_conditions: Array = projectile.get("on_hit_goto_conditions", [])
 		# Child ClipActions run in source order after their collision query. Their
 		# writes target the owning fighter timeline, while an authored opponent
 		# goto is conditional on the opponent's source action field.
@@ -1365,12 +1387,15 @@ func run_projectile_callback(projectile: Dictionary) -> bool:
 			match str(event.get("op", "")):
 				"write":
 					ai_source_state.apply_write(event)
+				"local_write_group":
+					jumped_hit = _apply_projectile_local_write(instance_name, event) or jumped_hit
 				"goto":
 					if opponent != null and is_instance_valid(opponent):
 						if opponent.ai_source_state.read_field("动作") == int(event["action"]):
 							opponent.goto_ai_label(str(event["label"]), bool(event["play"]))
 				_: assert(false, "Uncompiled projectile hit event")
-		if projectile.has("on_hit_goto_frame") and not _clip_past_hit(
+		var goto_allowed := _projectile_conditions_match(hit_variables, goto_conditions)
+		if not projectile.get("on_hit_goto_grouped", false) and goto_allowed and projectile.has("on_hit_goto_frame") and not _clip_past_hit(
 			instance_name, projectile
 		):
 			set_instance_clip_frame(
@@ -1382,19 +1407,74 @@ func run_projectile_callback(projectile: Dictionary) -> bool:
 		return jumped_hit
 	else:
 		var offset := instance_local_offset(instance_name)
-		var step := float(projectile.get("initial_speed",
-			speed * float(projectile.get("speed_factor", 1.0))))
+		var source_variables := instance_source_variables(instance_name)
+		var motion_conditions: Array = projectile.get("local_motion_conditions", [])
+		if not _projectile_conditions_match(source_variables, motion_conditions):
+			return false
+		var step := float(source_variables.get("movspeed", projectile.get("initial_speed",
+			speed * float(projectile.get("speed_factor", 1.0)))))
 		# The source sets movspeed=0 on impact; losing contact cannot restart it.
 		if projectile.has("initial_speed") and _clip_past_hit(instance_name, projectile):
 			step = 0.0
-		offset.x += step * float(projectile.get("local_x_factor", 0.0))
-		offset.y += step * float(projectile.get("local_y_factor", 0.0))
+		if projectile.has("local_x_delta"):
+			offset.x += float(projectile["local_x_delta"])
+		else:
+			offset.x += step * float(projectile.get("local_x_factor", 0.0))
+		if projectile.has("local_y_delta"):
+			offset.y += float(projectile["local_y_delta"])
+		else:
+			offset.y += step * float(projectile.get("local_y_factor", 0.0))
 		set_instance_local_offset(instance_name, offset)
 	return jumped_hit
 
 
 func _start_clip_playhead(instance_name: String, projectile: Dictionary) -> void:
 	set_instance_clip_frame(instance_name, 1, not _is_stop_frame(projectile, 1), 0)
+	var record: Dictionary = _instance_local_frames[instance_name]
+	var variables: Dictionary = projectile.get("initial_variables", {}).duplicate(true)
+	if projectile.has("initial_speed_field"):
+		variables["movspeed"] = float(ai_source_state.read_field(str(projectile["initial_speed_field"]))) * float(projectile.get("initial_speed_factor", 1.0))
+	record["source_variables"] = variables
+	_instance_local_frames[instance_name] = record
+
+
+func _apply_projectile_local_write(instance_name: String, event: Dictionary) -> bool:
+	var variables := instance_source_variables(instance_name)
+	var conditions: Array = event.get("conditions", [])
+	if not _projectile_conditions_match(variables, conditions):
+		return false
+	for write: Dictionary in event.get("writes", []):
+		assert(variables.has(write["field"]), "Projectile writes an undeclared local")
+		variables[str(write["field"])] = write["value"]
+	var record: Dictionary = _instance_local_frames.get(instance_name, {})
+	record["source_variables"] = variables
+	_instance_local_frames[instance_name] = record
+	if event.has("goto_frame") and not _clip_past_hit(instance_name, {"on_hit_goto_frame": event["goto_frame"]}):
+		set_instance_clip_frame(instance_name, int(event["goto_frame"]), true)
+		return true
+	return false
+
+
+func _projectile_conditions_match(variables: Dictionary, conditions: Array) -> bool:
+	for condition: Dictionary in conditions:
+		assert(variables.has(condition["field"]), "Projectile guard reads an undeclared local")
+		var actual: Variant = variables[condition["field"]]
+		var expected: Variant = condition["value"]
+		match str(condition["operator"]):
+			"==":
+				if actual != expected:
+					return false
+			"!=":
+				if actual == expected:
+					return false
+			_:
+				assert(false, "Unsupported projectile local guard")
+	return true
+
+
+func instance_source_variables(instance_name: String) -> Dictionary:
+	var record: Dictionary = _instance_local_frames.get(instance_name, {})
+	return record.get("source_variables", {}).duplicate(true)
 
 
 func _advance_clip_playhead(instance_name: String, projectile: Dictionary) -> void:
@@ -1557,9 +1637,12 @@ func _apply_summon_event() -> void:
 		if event["action"] != action or int(event["frame"]) != current_source_frame():
 			continue
 		_summon_applied = true
-		if _ai_hit_transfer.truth(ai_source_state.read_field(str(event["skip_if_truthy"]))):
+		if event.has("skip_if_truthy") and _ai_hit_transfer.truth(
+			ai_source_state.read_field(str(event["skip_if_truthy"]))
+		):
 			return
-		change_energy(float(event.get("energy_delta", -100)))
+		if event.has("energy_delta"):
+			change_energy(float(event["energy_delta"]))
 		helper_spawn = _yfgj_spawn(event)
 		helper_spawn_requested.emit()
 		if event.get("set_bs") != null:
@@ -1598,32 +1681,56 @@ func _apply_presentation_events() -> void:
 			screen_flash_requested.emit(int(event.get("color_rgb24", 0xFFFFFF)))
 
 
-func _apply_body_warps() -> void:
+func _apply_body_warps(frame: int = -1, invocation_serial: int = -1) -> void:
 	# Source `_parent._x/_y = _root.game["p"+pn]._x/_y` writes the player
 	# container, not a named clip. 832 copies X only, so a jump-height
 	# defender stays outside later *atm AABBs.
-	if opponent == null or not is_instance_valid(opponent):
-		return
+	var invocation_serials: Array[int] = []
+	var source_frame := current_source_frame() if frame < 0 else frame
+	if invocation_serial >= 0:
+		invocation_serials.append(invocation_serial)
+	else:
+		for pending: Dictionary in _ai_pending_frames:
+			if int(pending.get("frame", -1)) == source_frame:
+				invocation_serials.append(int(pending.get("serial", 0)))
+	if invocation_serials.is_empty():
+		invocation_serials.append(_source_frame_execution_serial)
 	for event: Dictionary in _combat.get("body_warps", []):
 		if str(event.get("action", "")) != action:
 			continue
-		if int(event.get("frame", -1)) != current_source_frame():
+		if int(event.get("frame", -1)) != source_frame:
 			continue
-		if str(event.get("op", "")) != "warp_to_opponent":
+		if str(event.get("op", "")) not in ["warp_to_opponent", "offset_parent_x_by_xscale"]:
 			continue
-		_apply_body_warp_event(event)
+		for serial_item: int in invocation_serials:
+			_apply_body_warp_event(event, serial_item)
 
 
-func _apply_body_warp_event(event: Dictionary) -> void:
-	if opponent == null or not is_instance_valid(opponent):
-		return
+func _body_warp_event_key(event: Dictionary, invocation_serial: int) -> String:
+	var source_path := str(event.get("path", event.get("source_path", "")))
+	if source_path.is_empty():
+		source_path = str(event.get("action", action))
+	var source_frame := int(event.get("frame", current_source_frame()))
 	var warp: Dictionary = event.get("warp", event)
-	if str(warp.get("op", "")) != "warp_to_opponent":
+	var operation := str(warp.get("op", event.get("op", "")))
+	var serial := invocation_serial if invocation_serial >= 0 else _source_frame_execution_serial
+	return "%s:%d:%s:%d" % [source_path, source_frame, operation, serial]
+
+
+func _apply_body_warp_event(event: Dictionary, invocation_serial: int = -1) -> void:
+	var warp: Dictionary = event.get("warp", event)
+	var operation := str(warp.get("op", ""))
+	if operation not in ["offset_parent_x_by_xscale", "warp_to_opponent"]:
 		return
-	var event_key := str(event.get("path", "%s:%d" % [action, current_source_frame()]))
-	if event.has("frame"):
-		event_key += ":%d" % int(event["frame"])
+	if operation == "warp_to_opponent" and (opponent == null or not is_instance_valid(opponent)):
+		return
+	var event_key := _body_warp_event_key(event, invocation_serial)
 	if _body_warps_applied.has(event_key):
+		return
+	if operation == "offset_parent_x_by_xscale":
+		# Flash _xscale is expressed in percent; scale.x retains that local sign and magnitude.
+		source_x += scale.x * 100.0 * float(warp.get("xscale_factor", 0.0))
+		_body_warps_applied[event_key] = true
 		return
 	var branch: Dictionary = warp
 	if warp.has("xscale_gt_0"):
@@ -1663,38 +1770,45 @@ func _apply_clip_placements() -> void:
 			continue
 		if int(event.get("frame", -1)) != current_source_frame():
 			continue
-		if str(event.get("op", "")) != "place_at_opponent":
-			continue
-		var instance_name := str(event.get("instance_name", ""))
-		if instance_name == "":
-			continue
-		# A root _name replacement makes the old AS2 variable undefined.  Keep
-		# the authored display object for rendering, but do not replay a later
-		# source write through its stale name.
-		if not _source_name_is_live(instance_name):
-			continue
-		var event_key := "%s:%d:%s" % [action, current_source_frame(), instance_name]
-		if _clip_placements_applied.has(event_key):
-			continue
-		var origin := named_instance_origin(instance_name)
-		if origin == Vector2.INF:
-			continue
-		# Source overwrites clip._x/_y. PlaceObject translate is replaced,
-		# so the Godot offset subtracts the remaining matrix origin.
-		# xscale > 0: _x = opponent._x - parent._x
-		# else:       _x = parent._x - opponent._x
-		var offset := instance_local_offset(instance_name)
-		if bool(event.get("place_x", true)):
-			var local_x := (opponent.position.x - position.x) * float(facing)
-			offset.x = local_x - origin.x
-		if bool(event.get("place_y", false)):
-			var local_y := opponent.position.y - position.y
-			local_y += float(event.get("y_pixels", 0.0))
-			offset.y = local_y - origin.y
-		set_instance_local_offset(instance_name, offset)
-		_placement_owned[instance_name] = true
-		_clip_placements_applied[event_key] = true
-		refresh_display()
+		_apply_clip_placement(event)
+
+
+func _apply_clip_placement(event: Dictionary) -> void:
+	if str(event.get("op", "")) not in ["place_at_opponent", "clip_placement"]:
+		return
+	if opponent == null or not is_instance_valid(opponent):
+		return
+	var instance_name := str(event.get("instance_name", ""))
+	if instance_name == "":
+		return
+	# A root _name replacement makes the old AS2 variable undefined.  Keep
+	# the authored display object for rendering, but do not replay a later
+	# source write through its stale name.
+	if not _source_name_is_live(instance_name):
+		return
+	var placement_frame := int(event.get("frame", current_source_frame()))
+	var event_key := "%s:%d:%s" % [str(event.get("action", action)), placement_frame, instance_name]
+	if _clip_placements_applied.has(event_key):
+		return
+	var origin := named_instance_origin(instance_name)
+	if origin == Vector2.INF:
+		return
+	# Source overwrites clip._x/_y. PlaceObject translate is replaced,
+	# so the Godot offset subtracts the remaining matrix origin.
+	# xscale > 0: _x = opponent._x - parent._x
+	# else:       _x = parent._x - opponent._x
+	var offset := instance_local_offset(instance_name)
+	if bool(event.get("place_x", true)):
+		var local_x := (opponent.position.x - position.x) * float(facing)
+		offset.x = local_x - origin.x
+	if bool(event.get("place_y", false)):
+		var local_y := opponent.position.y - position.y
+		local_y += float(event.get("y_pixels", 0.0))
+		offset.y = local_y - origin.y
+	set_instance_local_offset(instance_name, offset)
+	_placement_owned[instance_name] = true
+	_clip_placements_applied[event_key] = true
+	refresh_display()
 
 
 func _expire_clip_placements() -> void:

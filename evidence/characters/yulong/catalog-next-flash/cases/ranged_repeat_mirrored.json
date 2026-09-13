@@ -1,0 +1,61 @@
+{
+  "id": "yulong-ranged_repeat_mirrored",
+  "fighter": "yulong",
+  "slot": "p1",
+  "label": "招1",
+  "scenario": "ranged_repeat_mirrored",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 350,
+      "energy": 300
+    },
+    "p2": {
+      "x": 300,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "ranged"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "ranged"
+      ],
+      "start": 70,
+      "end": 73
+    }
+  ],
+  "target_frames": [
+    313,
+    349
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "native_selection_explicit_capture_pending",
+  "fighters": {
+    "p1": "yulong",
+    "p2": "yihu"
+  },
+  "catalog_purpose": "Repeat ranged casts with reversed initial ordering to observe source facing and projectile direction.",
+  "source_contract": {
+    "command_slot": "magichit1",
+    "contexts": [
+      "stand"
+    ],
+    "energy_min": 0,
+    "implementation": "wired"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂"
+}

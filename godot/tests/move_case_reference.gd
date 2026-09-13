@@ -7,6 +7,8 @@ var rows: Array = []
 var helper_rows: Array = []
 var presentation_rows: Array = []
 var recovery_events: Dictionary = {}
+var intervention_rows: Array = []
+var applied_interventions: Dictionary = {}
 
 func _initialize() -> void:
 	_run.call_deferred()
@@ -29,7 +31,10 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 	helper_rows = []
 	presentation_rows = []
 	recovery_events = {}
+	intervention_rows = []
+	applied_interventions = {}
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(fixture_path))
+	_validate_resource_interventions()
 	mode = 3
 	game = load("res://main.tscn").instantiate()
 	root.add_child(game)
@@ -38,12 +43,7 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 	if fixture.has("fighters"):
 		var names: Array = []
 		for slot in ["p1", "p2"]:
-			var found := ""
-			for label in game.character_selection.available.fighters:
-				if game.character_selection.available.fighters[label] == fixture.fighters[slot]:
-					found = label
-			assert(not found.is_empty())
-			names.append(found)
+			names.append(_fixture_display_id("fighters", str(fixture.fighters[slot])))
 		var helpers := ["我爱罗", "魂"]
 		for index in 2:
 			var key := "p%d_helper" % (index + 1)
@@ -55,7 +55,8 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 				if display_name == requested or str(game.character_selection.available.helpers[display_name]) == requested:
 					helper_name = display_name
 					break
-			assert(not helper_name.is_empty(), "Unknown helper: " + requested)
+			if helper_name.is_empty():
+				helper_name = _fixture_display_id("helpers", requested)
 			helpers[index] = helper_name
 		game._replace_selected_actors(names, helpers)
 		game._load_selected_stage("现世")
@@ -70,15 +71,67 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		game._advance_fight(recovery_events.get(tick, []), func() -> bool:
 			_observe(tick)
 			return false)
+	assert(applied_interventions.size() == fixture.get("resource_interventions", []).size(),
+		"one or more resource interventions did not execute")
 	FileAccess.open(output_path, FileAccess.WRITE).store_string(JSON.stringify(rows, "", true, true))
 	FileAccess.open(output_path + ".helpers.json", FileAccess.WRITE).store_string(JSON.stringify(helper_rows, "", true, true))
 	FileAccess.open(output_path + ".presentation.json", FileAccess.WRITE).store_string(JSON.stringify(presentation_rows, "", true, true))
+	FileAccess.open(output_path + ".interventions.json", FileAccess.WRITE).store_string(JSON.stringify(intervention_rows, "", true, true))
 	game._goto_menu()
 	game.queue_free()
 	await process_frame
 	print("MOVE_CASE_REFERENCE_OK ", fixture.id)
 
+
+func _fixture_display_id(kind: String, fixture_id: String) -> String:
+	var available: Dictionary = game.character_selection.available[kind]
+	for display_id in available:
+		if str(available[display_id]) == fixture_id:
+			return str(display_id)
+	var directory := "res://generated/%s/%s" % [kind, fixture_id]
+	var metadata_path := directory.path_join("fighter.json" if kind == "fighters" else "combat.json")
+	var timeline_path := directory.path_join("timeline.json")
+	var assets_path := directory.path_join("assets.json")
+	assert(FileAccess.file_exists(metadata_path), "Missing fixture metadata: " + metadata_path)
+	assert(FileAccess.file_exists(timeline_path), "Missing fixture timeline: " + timeline_path)
+	assert(FileAccess.file_exists(assets_path), "Missing fixture assets: " + assets_path)
+	var metadata: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(metadata_path))
+	var timeline: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(timeline_path))
+	var assets: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(assets_path))
+	var display_id := str(metadata.get("fighter_id" if kind == "fighters" else "helper_id", ""))
+	assert(not display_id.is_empty(), "Missing source display id: " + metadata_path)
+	var source_swf: Dictionary = timeline.get("source_swf", {})
+	var source_path := str(source_swf.get("path", ""))
+	assert(source_path.get_file().get_basename().to_lower() == fixture_id.to_lower(),
+		"Fixture id/source SWF mismatch: %s != %s" % [fixture_id, source_path])
+	var source_file := "res://../" + source_path
+	assert(FileAccess.file_exists(source_file), "Missing frozen fixture source: " + source_file)
+	var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../manifest.json"))
+	var expected_sha := str(manifest.get("file_sha256", {}).get(source_path, ""))
+	assert(not expected_sha.is_empty() and expected_sha == str(source_swf.get("sha256", "")),
+		"Fixture source hash/manifest mismatch: " + source_path)
+	assert(FileAccess.get_sha256(source_file) == expected_sha,
+		"Fixture source hash differs from the frozen input: " + source_path)
+	if kind == "fighters" and not game.battle_intro.spec["fighters"].has(fixture_id):
+		var intro_path := directory.path_join("intro.json")
+		assert(FileAccess.file_exists(intro_path), "Missing fixture opening metadata: " + intro_path)
+		var intro: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(intro_path))
+		assert(str(intro.get("fighter_id", "")) == fixture_id,
+			"Fixture id/opening metadata mismatch: " + fixture_id)
+		assert(int(intro.get("source_sprite_id", -1)) == int(timeline.get("sprite_id", -2)),
+			"Fixture timeline/opening sprite mismatch: " + fixture_id)
+		game.battle_intro.spec["fighters"][fixture_id] = {"state_frames": intro.get("state_frames", {})}
+	assert(not assets.get("assets", []).is_empty(), "No materialized source assets: " + assets_path)
+	for asset in assets.assets:
+		var asset_path := directory.path_join(str(asset.get("path", "")))
+		assert(FileAccess.file_exists(asset_path), "Missing materialized asset: " + asset_path)
+	assert(not available.has(display_id) or str(available[display_id]) == fixture_id,
+		"Fixture display id conflicts with the existing roster: " + display_id)
+	available[display_id] = fixture_id
+	return display_id
+
 func _observe(tick: int) -> void:
+	_apply_resource_interventions(tick)
 	presentation_rows.append({"tick": tick, "x": game.position.x, "y": game.position.y})
 	if tick == 0:
 		for actor in [game.naruto, game.ichigo]:
@@ -116,3 +169,36 @@ func _observe(tick: int) -> void:
 			event.pressed = held.has(key)
 			Input.parse_input_event(event)
 	Input.flush_buffered_events()
+
+
+func _validate_resource_interventions() -> void:
+	var interventions: Variant = fixture.get("resource_interventions", [])
+	assert(interventions is Array, "resource_interventions must be an array")
+	var ids: Dictionary = {}
+	for intervention: Variant in interventions:
+		assert(intervention is Dictionary, "resource intervention must be an object")
+		var intervention_id := str(intervention.get("id", ""))
+		var tick := int(intervention.get("tick", 0))
+		var slot := str(intervention.get("slot", ""))
+		var resource := str(intervention.get("resource", ""))
+		var value: Variant = intervention.get("value")
+		assert(not intervention_id.is_empty() and not ids.has(intervention_id), "resource intervention id must be unique")
+		assert(tick >= 1 and tick <= int(fixture.get("frames", 0)), "resource intervention tick is out of range")
+		assert(slot in ["p1", "p2"] and resource == "energy", "unsupported resource intervention")
+		assert(value is int or value is float, "resource intervention value must be numeric")
+		ids[intervention_id] = true
+
+
+func _apply_resource_interventions(tick: int) -> void:
+	for intervention: Dictionary in fixture.get("resource_interventions", []):
+		if int(intervention.tick) != tick:
+			continue
+		var intervention_id := str(intervention.id)
+		assert(not applied_interventions.has(intervention_id), "resource intervention executed twice: " + intervention_id)
+		var actor: FighterRuntime = game.naruto if str(intervention.slot) == "p1" else game.ichigo
+		var previous := actor.energy
+		actor.energy = float(intervention.value)
+		applied_interventions[intervention_id] = true
+		intervention_rows.append({"id": intervention_id, "tick": tick, "slot": intervention.slot,
+			"resource": intervention.resource, "previous": previous, "value": actor.energy,
+			"phase": "after_actor_advance_before_root_observation_and_next_tick_input"})

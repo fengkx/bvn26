@@ -1,0 +1,207 @@
+{
+  "format": "bvn-four-role-soundinfo-audit-r01",
+  "runtime_observation": "godot/timeline_preview.gd::_play_start_sounds loads sound_segments frames when present. With no segment file it starts the original asset and only applies the first envelope point as constant AudioStreamPlayer volume; it does not consume in_point, out_point, or loop_count. tools/importer/build_sound_segments.py::segment applies sample range and full envelope but currently rejects sync_stop or loop_count.",
+  "roles": [
+    {
+      "name": "Sakura-base",
+      "source_timeline": "data/slices/Sakura-base.timeline.json",
+      "source_timeline_sha256": "b95ac22d4368e2317abfbe6c1576509049c130f2eb6e97a5cc273ea62d25bdab",
+      "timeline_event_count": 37,
+      "flag_presence_counts": {
+        "sync_stop": 0,
+        "sync_no_multiple": 0,
+        "in_point": 4,
+        "out_point": 6,
+        "loop_count": 1,
+        "envelope": 15
+      },
+      "flag_truthy_counts": {
+        "sync_stop": 0,
+        "sync_no_multiple": 0,
+        "in_point": 4,
+        "out_point": 6,
+        "loop_count": 1,
+        "envelope": 15
+      },
+      "generated_directory": "godot/generated/fighters/sakura",
+      "sound_segments_present": false,
+      "loop_events": [
+        {
+          "frame": 727,
+          "sound_id": 49,
+          "in_point": 1100,
+          "out_point": 5400,
+          "loop_count": 20
+        }
+      ]
+    },
+    {
+      "name": "rukia-base",
+      "source_timeline": "data/slices/rukia-base.timeline.json",
+      "source_timeline_sha256": "938891b8d02871972d0367cfb0df71f86dcb35cdb2e609e190b6358257731e4c",
+      "timeline_event_count": 34,
+      "flag_presence_counts": {
+        "sync_stop": 0,
+        "sync_no_multiple": 0,
+        "in_point": 5,
+        "out_point": 9,
+        "loop_count": 0,
+        "envelope": 8
+      },
+      "flag_truthy_counts": {
+        "sync_stop": 0,
+        "sync_no_multiple": 0,
+        "in_point": 5,
+        "out_point": 9,
+        "loop_count": 0,
+        "envelope": 8
+      },
+      "generated_directory": "godot/generated/fighters/rukia",
+      "sound_segments_present": false,
+      "loop_events": []
+    },
+    {
+      "name": "yulong-base",
+      "source_timeline": "data/slices/yulong-base.timeline.json",
+      "source_timeline_sha256": "858492290971cb736d9e5ad7bf06456e40177aa19c5224e5231bae17184b704a",
+      "timeline_event_count": 41,
+      "flag_presence_counts": {
+        "sync_stop": 0,
+        "sync_no_multiple": 0,
+        "in_point": 1,
+        "out_point": 2,
+        "loop_count": 0,
+        "envelope": 6
+      },
+      "flag_truthy_counts": {
+        "sync_stop": 0,
+        "sync_no_multiple": 0,
+        "in_point": 1,
+        "out_point": 2,
+        "loop_count": 0,
+        "envelope": 6
+      },
+      "generated_directory": "godot/generated/fighters/yulong",
+      "sound_segments_present": false,
+      "loop_events": []
+    },
+    {
+      "name": "jinye-helper",
+      "source_timeline": "data/slices/jinye-helper.timeline.json",
+      "source_timeline_sha256": "0af7c77a6f43f146378fa47951bf7bb6a0b65c3af5b3bc3102bf14758d8ab125",
+      "timeline_event_count": 2,
+      "flag_presence_counts": {
+        "sync_stop": 0,
+        "sync_no_multiple": 0,
+        "in_point": 0,
+        "out_point": 0,
+        "loop_count": 0,
+        "envelope": 0
+      },
+      "flag_truthy_counts": {
+        "sync_stop": 0,
+        "sync_no_multiple": 0,
+        "in_point": 0,
+        "out_point": 0,
+        "loop_count": 0,
+        "envelope": 0
+      },
+      "generated_directory": "godot/generated/helpers/jinye",
+      "sound_segments_present": false,
+      "loop_events": []
+    }
+  ],
+  "representative_gap": {
+    "role": "Sakura-base",
+    "frame": 727,
+    "sound_id": 49,
+    "source_event": {
+      "frame": 727,
+      "type": "start_sound",
+      "sound_id": 49,
+      "in_point": 1100,
+      "out_point": 5400,
+      "loop_count": 20
+    },
+    "required_followup": "Capture natural frame-727 tag execution and verify finite-repeat count and in/out loop boundary before extending the shared segment baker. Do not infer loop envelope restart semantics from field names.",
+    "source_path": {
+      "swf": "game/fighter/Sakura.swf",
+      "selected_root_sprite": 630,
+      "frame": 727,
+      "sound_id": 49,
+      "selected_action": "超必杀",
+      "action_range": [
+        700,
+        803
+      ],
+      "next_frame": 728,
+      "next_frame_place_character_id": 464
+    }
+  },
+  "nested_sound_scope": "The recursive inventory covers sprites reachable by static PlaceObject2/3 from each selected root, plus the Jinye top-level timeline. Runtime-created/loadClip-only sprite paths require separate source-call inventory.",
+  "nested_sound_inventory": {
+    "method": "Pinned JPEXS XML export; from selected root sprite, traverse direct PlaceObject2/3 sprite placements and count each reachable sprite own StartSound tags.",
+    "roles": [
+      {
+        "role": "Sakura-base",
+        "selected_root_sprite": 630,
+        "reachable_sprite_count": 14,
+        "reachable_start_sound_tags": 37,
+        "sound_bearing_sprites": {
+          "630": 37
+        }
+      },
+      {
+        "role": "Rukia-base",
+        "selected_root_sprite": 533,
+        "reachable_sprite_count": 11,
+        "reachable_start_sound_tags": 34,
+        "sound_bearing_sprites": {
+          "533": 34
+        },
+        "note": "Sprite 976 has 37 tags but is not reachable from the base root sprite 533."
+      },
+      {
+        "role": "Yulong-base",
+        "selected_root_sprite": 345,
+        "reachable_sprite_count": 17,
+        "reachable_start_sound_tags": 42,
+        "sound_bearing_sprites": {
+          "345": 41,
+          "185": 1
+        },
+        "nested_path": [
+          {
+            "parent_sprite": 345,
+            "frame": 466,
+            "depth": 28,
+            "instance_name": "shijie",
+            "placed_sprite": 185
+          },
+          {
+            "sprite": 185,
+            "frame": 8,
+            "sound_id": 164,
+            "soundinfo_flags": {
+              "syncStop": false,
+              "syncNoMultiple": false,
+              "hasInPoint": false,
+              "hasOutPoint": false,
+              "hasLoops": false,
+              "hasEnvelope": false
+            }
+          }
+        ]
+      },
+      {
+        "role": "Jinye-helper",
+        "selected_root_timeline": "top-level SWF",
+        "top_level_start_sound_tags": 2,
+        "reachable_nested_sprite_start_sound_tags": 0,
+        "note": "The selected helper slice has sprite_id 0 and its two frame-38 sounds are top-level events."
+      }
+    ],
+    "runtime_coverage": "Root timeline StartSound events can start via FighterTimeline._play_start_sounds. The nested Yulong sprite185/frame8 event is absent from root frame events and there is no nested StartSound dispatch in the current Godot timeline player.",
+    "candidate_validation": "The parent frame466 is the existing ranged_down path, but a dedicated source marker capture for sprite185/frame8 is still required before calling it naturally observed."
+  }
+}

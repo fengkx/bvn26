@@ -38,6 +38,14 @@ func _run() -> void:
 			helper.play_source_frame(67)
 			helper.enter_frame()
 			assert(helper.source_action == 0)
+		else:
+			# Woailuo frame 85 only emits fzccXg, then its timeline returns to
+			# frame 1. The source does not call removeFZ or clear 动作 there.
+			helper.play_source_frame(85)
+			helper.advance_timeline()
+			assert(not helper.attacking and helper.source_action == 1)
+			helper.activate({"x": 300, "y": 0, "facing": 1}, caster)
+			assert(helper.source_action == 1, "natural completion changed the retained source action")
 		helper.deactivate()
 		assert(helper.source_action == 0)
 		helper.activate({"x": 300, "y": 0, "facing": 1}, caster)

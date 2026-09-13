@@ -1,0 +1,109 @@
+{
+  "case_id": "rukia-combo-砍1-2-3-taps-r01",
+  "source_frame_sequence": {
+    "11": "218",
+    "19": "226",
+    "20": "247",
+    "26": "253",
+    "27": "273"
+  },
+  "native_selected_rows": {
+    "11": {
+      "frame": 218,
+      "action": 0.0,
+      "x": 300.0
+    },
+    "19": {
+      "frame": 226,
+      "action": 1.0,
+      "x": 325.0
+    },
+    "20": {
+      "frame": 247,
+      "action": 1.0,
+      "x": 325.0
+    },
+    "26": {
+      "frame": 253,
+      "action": 1.0,
+      "x": 342.5
+    },
+    "27": {
+      "frame": 273,
+      "action": 1.0,
+      "x": 342.5
+    }
+  },
+  "input_intervals": [
+    {
+      "keys": [
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "keys": [
+        "attack"
+      ],
+      "start": 18,
+      "end": 20
+    },
+    {
+      "keys": [
+        "attack"
+      ],
+      "start": 25,
+      "end": 27
+    }
+  ],
+  "source_observed_frame_values": {
+    "11": "218",
+    "19": "226",
+    "20": "247",
+    "26": "253",
+    "27": "273"
+  },
+  "source_paths": [
+    "scripts/fighter/rukia.json → DefineSprite_533/frame_226/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as (nornalhit() → gotoAndPlay(\"砍2\"))",
+    "scripts/fighter/rukia.json → DefineSprite_533/frame_253/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as (nornalhit() → gotoAndPlay(\"砍3\"))"
+  ],
+  "label_spans": {
+    "砍1": [
+      218,
+      246
+    ],
+    "砍2": [
+      247,
+      272
+    ],
+    "砍3": [
+      273,
+      319
+    ]
+  },
+  "comparison": {
+    "status": "matched",
+    "source_states": 602,
+    "native_states": 602,
+    "complete": true,
+    "fields": [
+      "frame",
+      "x",
+      "y",
+      "xscale",
+      "action",
+      "hp",
+      "ql",
+      "sw",
+      "touch",
+      "touchFloor",
+      "hits",
+      "paused",
+      "hstm",
+      "hurtSkling"
+    ],
+    "differences": []
+  },
+  "claim_limit": "One unchanged fixed three-tap input passes source/native state comparison. Separate timing or cancellation variants remain uncovered."
+}

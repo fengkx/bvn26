@@ -8,6 +8,30 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def resolve_cli_paths(godot, cases, output):
+    return tuple(path.expanduser().resolve() for path in (godot, cases, output))
+
+
+def target_frame_ranges(case):
+    values = case.get('target_frames', [])
+    if not isinstance(values, list) or len(values) % 2:
+        raise ValueError('target_frames must contain start/end pairs')
+    ranges = []
+    for start, end in zip(values[::2], values[1::2]):
+        if start is None and end is None:
+            continue
+        if not isinstance(start, int) or not isinstance(end, int) or start > end:
+            raise ValueError('target_frames contains an invalid range')
+        ranges.append((start, end))
+    return ranges
+
+
+def target_seen(case, rows):
+    ranges = target_frame_ranges(case)
+    return any(row['slot'] == case['slot'] and start <= row['frame'] <= end
+               for row in rows for start, end in ranges)
+
+
 def execute(godot, case_path, output):
     case=json.loads(case_path.read_text())
     target=output/(case_path.stem+'.json')
@@ -23,8 +47,7 @@ def execute(godot, case_path, output):
     rows=json.loads(target.read_text()) if target.exists() else []
     complete=len(rows)==2*(case['frames']+1)
     executed=run.returncode==0 and 'SCRIPT ERROR' not in log and 'MOVE_CASE_REFERENCE_OK' in log and complete
-    lo,hi=case['target_frames']
-    seen=any(r['slot']==case['slot'] and lo is not None and lo<=r['frame']<=hi for r in rows)
+    seen = target_seen(case, rows)
     return {'id':case['id'],'executed':executed,'states':len(rows),'target_seen':seen,
             'status':'native_only_not_parity' if executed else 'failed'}
 
@@ -50,8 +73,7 @@ def execute_batch(godot, paths, output):
         target = output / (case['id'] + '.json')
         rows = json.loads(target.read_text()) if target.exists() else []
         complete = len(rows) == 2 * (case['frames'] + 1)
-        lo, hi = case['target_frames']
-        seen = any(r['slot'] == case['slot'] and lo is not None and lo <= r['frame'] <= hi for r in rows)
+        seen = target_seen(case, rows)
         executed = clean and complete and ('MOVE_CASE_REFERENCE_OK ' + case['id']) in log
         results.append({'id': case['id'], 'executed': executed, 'states': len(rows),
                         'target_seen': seen, 'status': 'native_only_not_parity' if executed else 'failed'})
@@ -65,6 +87,10 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--jobs',type=int,default=1)
     args=parser.parse_args()
+    # Godot resolves command-line file arguments relative to the project, and
+    # --log-file may be treated as user://. Anchor every external path at the
+    # caller's working directory before handing it to the engine.
+    args.godot, args.cases, args.output = resolve_cli_paths(args.godot, args.cases, args.output)
     if args.output.exists(): raise ValueError('Use a fresh output directory')
     args.output.mkdir(parents=True)
     paths = sorted(args.cases.glob('*.json'))

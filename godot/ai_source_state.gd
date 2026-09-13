@@ -39,9 +39,21 @@ func apply_load() -> void:
 
 func _apply(events: Array) -> void:
 	for event: Dictionary in events:
-		values[event["field"]] = (
-			values.get(event["read_field"]) if event.has("read_field") else event["value"]
-		)
+		var operation := str(event.get("op", "write"))
+		var field := str(event.get("field", ""))
+		assert(not field.is_empty(), "Source-state event is missing its field")
+		match operation:
+			"write":
+				assert(event.has("value") or event.has("read_field"), "Source-state write has no value")
+				values[field] = values.get(event["read_field"]) if event.has("read_field") else event["value"]
+			"increment":
+				assert(values.has(field) and (values[field] is int or values[field] is float),
+					"Source-state increment requires an initialized numeric field: " + field)
+				assert(event.get("delta") is int or event.get("delta") is float,
+					"Source-state increment has a non-numeric delta")
+				values[field] += event["delta"]
+			_:
+				assert(false, "Unsupported source-state operation: " + operation)
 
 
 func read_field(name: String) -> Variant:

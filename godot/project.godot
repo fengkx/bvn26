@@ -8,6 +8,10 @@ config_version=5
 config/name="BVN 2.6 Godot Port"
 run/main_scene="res://render_surface.tscn"
 
+[autoload]
+
+WebAudioSettings="*res://web_audio_settings.gd"
+
 [display]
 
 window/size/viewport_width=600
@@ -26,4 +30,3 @@ common/physics_ticks_per_second=30
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/default_filters/use_nearest_mipmap_filter=false
-

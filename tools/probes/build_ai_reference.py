@@ -35,6 +35,73 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def resolve_helper_selection(catalog: dict, selection: str) -> dict:
+    """Resolve a helper key or SWF stem through the retained main catalog."""
+    if selection in catalog:
+        character_id = selection
+        record = catalog[character_id]
+        url = record.get("fzurl")
+        if not url:
+            raise ValueError("Selected character has no helper SWF: " + selection)
+        return {"character_id": character_id, "asset": Path(url).stem, "url": url}
+    matches = [
+        (character_id, record)
+        for character_id, record in catalog.items()
+        if record.get("fzurl") and Path(record["fzurl"]).stem == selection
+    ]
+    if len(matches) != 1:
+        raise ValueError(f"Unknown or ambiguous helper source mapping: {selection}")
+    character_id, record = matches[0]
+    return {"character_id": character_id, "asset": Path(record["fzurl"]).stem,
+            "url": record["fzurl"]}
+
+
+def helper_selection_choices(catalog: dict) -> list[str]:
+    """Expose retained helper ids and source SWF stems to the CLI."""
+    return sorted({
+        value
+        for record in catalog.values()
+        if record.get("fzurl")
+        for value in (record.get("fzurl", "").rsplit("/", 1)[-1].rsplit(".", 1)[0],)
+    } | {
+        character_id for character_id, record in catalog.items() if record.get("fzurl")
+    })
+
+
+def helper_attack_clip_names(selection: dict | None) -> list[str]:
+    if selection is None:
+        return []
+    model_path = ROOT / "godot/generated/helpers" / selection["asset"] / "combat.json"
+    if not model_path.exists():
+        return []
+    model = json.loads(model_path.read_text())
+    return sorted(str(name) for name in model.get("attacks", {}))
+
+
+def helper_observer_source(clip_names: list[str]) -> str:
+    """Observe source helper instances safely, retaining the legacy columns."""
+    dynamic = []
+    for name in clip_names:
+        dynamic.append(
+            ' + "," + ' + quoted(name) + ' + "=" + '
+            '_root.aiHelperClipFrame(f,' + quoted(name) + ')'
+        )
+    dynamic_value = "".join(dynamic) if dynamic else ' + ""'
+    return '''_root.aiHelperClipFrame = function(helper, instanceName)
+{
+   var clip = helper[instanceName];
+   return clip == undefined ? undefined : clip._currentframe;
+};
+_root.aiHelperState = function(player)
+{
+   var f = _root.game[player + "fz"];
+   var m = f;
+   _root.aiEvent("helper_state", player + "," + m._currentframe + "," + _root.aiNumber(f._x) + "," + _root.aiNumber(f._y) + "," + _root.aiNumber(f._xscale) + "," + m.attacking + "," + m.动作 + "," + m.hits + "," + _root.aiHelperClipFrame(f,"atm1") + "," + _root.aiHelperClipFrame(f,"atm2") + "," + _root.aiHelperClipFrame(f,"atm3"));
+   _root.aiEvent("helper_clip_state", player + "," + m._currentframe''' + dynamic_value + ''');
+};
+'''
+
+
 def quoted(value: str) -> str:
     return json.dumps(value, ensure_ascii=False)
 
@@ -99,6 +166,16 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
     # Only selected assets are materialized; music stays read-only input.
     (game / "music").symlink_to(ROOT / "game/music", target_is_directory=True)
     catalog = json.loads((ROOT / "manifest.json").read_text())["fighter_catalog"]
+    helper_selections = {
+        "p1": resolve_helper_selection(catalog, p1_helper) if p1_helper else None,
+        "p2": resolve_helper_selection(catalog, p2_helper) if p2_helper else None,
+    }
+    default_p1_helper = resolve_helper_selection(catalog, helper_probe)["character_id"] if helper_probe else "我爱罗"
+    default_p2_helper = "我爱罗" if hurt_summon_probe else "魂"
+    selected_helper_ids = {
+        "p1": helper_selections["p1"]["character_id"] if helper_selections["p1"] else default_p1_helper,
+        "p2": helper_selections["p2"]["character_id"] if helper_selections["p2"] else default_p2_helper,
+    }
     fighter_sources = {}
     for slot, character in (("p1", p1_character), ("p2", p2_character)):
         record = catalog[character]
@@ -120,29 +197,23 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
     bootstrap = bootstrap.replace("__GAME_URI__", game.as_uri())
     bootstrap = bootstrap.replace('p1selt = "鸣人";', 'p1selt = ' + quoted(p1_character) + ';')
     bootstrap = bootstrap.replace('p2selt = "一护";', 'p2selt = ' + quoted(p2_character) + ';')
-    helper_display_names = {"woailuo": "我爱罗", "kon": "魂", "you": "鼬"}
-    if p1_helper is not None:
-        if p1_helper not in helper_display_names:
-            raise ValueError("Unknown p1 helper: " + p1_helper)
-        bootstrap = re.sub(r'p1sf = "[^"]*";', 'p1sf = ' + quoted(helper_display_names[p1_helper]) + ';', bootstrap)
-    if p2_helper is not None:
-        if p2_helper not in helper_display_names:
-            raise ValueError("Unknown p2 helper: " + p2_helper)
-        bootstrap = re.sub(r'p2sf = "[^"]*";', 'p2sf = ' + quoted(helper_display_names[p2_helper]) + ';', bootstrap)
+    if helper_selections["p1"] is not None:
+        bootstrap = re.sub(r'p1sf = "[^"]*";', 'p1sf = ' + quoted(helper_selections["p1"]["character_id"]) + ';', bootstrap)
+    if helper_selections["p2"] is not None:
+        bootstrap = re.sub(r'p2sf = "[^"]*";', 'p2sf = ' + quoted(helper_selections["p2"]["character_id"]) + ';', bootstrap)
     if p1_helper is not None or p2_helper is not None:
-        bootstrap = '''_root.aiHelperState = function(player)
-{
-   var f = _root.game[player + "fz"];
-   var m = f;
-   _root.aiEvent("helper_state", player + "," + m._currentframe + "," + _root.aiNumber(f._x) + "," + _root.aiNumber(f._y) + "," + _root.aiNumber(f._xscale) + "," + m.attacking + "," + m.动作 + "," + m.hits + "," + f.atm1._currentframe + "," + f.atm2._currentframe + "," + f.atm3._currentframe);
-};
-''' + bootstrap
+        clips = sorted(set(
+            name
+            for character_id in selected_helper_ids.values()
+            for name in helper_attack_clip_names(resolve_helper_selection(catalog, character_id))
+        ))
+        bootstrap = helper_observer_source(clips) + bootstrap
         bootstrap = bootstrap.replace('      aiState("p1");', '      aiState("p1");\n      aiHelperState("p1");')
         bootstrap = bootstrap.replace('      aiState("p2");', '      aiState("p2");\n      aiHelperState("p2");')
     if helper_probe:
         if p1_helper is not None or p2_helper is not None:
             raise ValueError("helper_probe cannot be combined with explicit helper selection")
-        helper_name = helper_display_names[helper_probe]
+        helper_name = resolve_helper_selection(catalog, helper_probe)["character_id"]
         bootstrap = bootstrap.replace('p1sf = "我爱罗";', 'p1sf = ' + quoted(helper_name) + ';')
         bootstrap = re.sub(r'   if\(aiFight >= \d+ && aiFight < \d+\) aiHeld\[\w\] = true;\n', '', bootstrap)
         fixture = (Path(__file__).parent / "as2/ai_reference/helper.as").read_text()
@@ -198,11 +269,14 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         bootstrap = bootstrap.replace('   aiHeld = {};', fixture)
     if presentation_probe:
         bootstrap = bootstrap.replace('      aiState("p2");', '      aiState("p2");\n      aiEvent("root_position", _root.aiNumber(_root._x) + "," + _root.aiNumber(_root._y));')
+    fixture_url = None
     if dynamic_move_case:
         if not move_case:
             raise ValueError("Dynamic move fixture requires an initial case")
         from move_cases import encode_case
-        (output / "case.txt").write_text(encode_case(json.loads(move_case.read_text()), run_id))
+        fixture_path = output / "case.txt"
+        fixture_path.write_text(encode_case(json.loads(move_case.read_text()), run_id))
+        fixture_url = fixture_path.as_uri()
         bootstrap = bootstrap.replace('gotoAndStop("游戏场景");', """
 stop();
 _root.aiFixtureLoader = new LoadVars();
@@ -217,7 +291,7 @@ _root.aiFixtureLoader.onLoad = function(ok)
    _root.gotoAndStop("游戏场景");
 };
 _root.aiFixtureLoader.load(__CASE_URI__);
-""".replace('__CASE_URI__', quoted((output / "case.txt").as_uri())))
+""".replace('__CASE_URI__', quoted(fixture_url)))
         binding = re.search(r'aiEvent\("input_bindings", (.+)\);', bootstrap)[1]
         bootstrap = bootstrap.replace('__BINDINGS__', binding)
         bootstrap = bootstrap.replace('   aiDisplay++;', '   if(_root.aiFixture == undefined) return;\n   aiDisplay++;')
@@ -294,9 +368,9 @@ _root.aiFixtureLoader.load(__CASE_URI__);
     hooks, battle = bootstrap.split("_root.aiHeld = {};", 1)
     battle = "_root.aiHeld = {};" + battle
     helper_sources = {"fighter/fz/kon", "fighter/fz/woailuo"}
-    for helper in (p1_helper, p2_helper):
-        if helper is not None:
-            helper_sources.add("fighter/fz/" + helper)
+    for selection in helper_selections.values():
+        if selection is not None:
+            helper_sources.add("fighter/fz/" + selection["asset"])
     for name in ("main", *fighter_sources, *sorted(helper_sources)):
         bundle_path = ROOT / f"scripts/{name}.json"
         bundle = json.loads(bundle_path.read_text())
@@ -474,8 +548,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "run_id": run_id, "status": "built_not_run", "frames_after_ready": frames,
         "configuration": {"modo": mode_probe or 2, "p1": p1_character, "p2": p2_character, "p2cpu": mode_probe is None,
                           "AI": 5, "stage": "现世",
-                          "p1sf": helper_display_names[p1_helper] if p1_helper else ("魂" if helper_probe == "kon" else "我爱罗"),
-                          "p2sf": helper_display_names[p2_helper] if p2_helper else ("我爱罗" if hurt_summon_probe else "魂")},
+                          "p1sf": selected_helper_ids["p1"],
+                          "p2sf": selected_helper_ids["p2"]},
         "sources_sha256": sources, "ffdec_sha256": sha(ffdec),
         "outputs_sha256": {p.relative_to(output).as_posix(): sha(p) for p in game.rglob("*.swf")},
         "instrumentation_sha256": sha(output / "instrumentation.diff"),
@@ -494,6 +568,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "mode_probe": mode_probe,
         "move_case": json.loads(move_case.read_text()) if move_case else None,
         "dynamic_move_case": dynamic_move_case,
+        "fixture_url": fixture_url,
         "player_display": "windowed_showAll",
         "presentation_probe": presentation_probe,
         "root_write_observer": presentation_probe,
@@ -501,8 +576,9 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "schedule_probe": schedule_probe,
         "hurt_summon_probe": hurt_summon_probe,
         "shadow_probe": shadow_probe,
-        "p1_helper": p1_helper,
-        "p2_helper": p2_helper,
+        "p1_helper": helper_selections["p1"]["character_id"] if helper_selections["p1"] else None,
+        "p2_helper": helper_selections["p2"]["character_id"] if helper_selections["p2"] else None,
+        "helper_sources": {slot: selection for slot, selection in helper_selections.items() if selection is not None},
         "input_injection": "body_kis_alias_with_per_read_trace",
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
@@ -513,6 +589,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    catalog = json.loads((ROOT / "manifest.json").read_text())["fighter_catalog"]
+    helper_choices = helper_selection_choices(catalog)
     parser.add_argument("--ffdec", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--run-id", required=True)
@@ -538,8 +616,8 @@ def main() -> None:
     parser.add_argument("--shadow-probe", action="store_true")
     parser.add_argument("--p1-character", default="鸣人")
     parser.add_argument("--p2-character", default="一护")
-    parser.add_argument("--p1-helper", choices=["woailuo", "kon", "you"])
-    parser.add_argument("--p2-helper", choices=["woailuo", "kon", "you"])
+    parser.add_argument("--p1-helper", choices=helper_choices)
+    parser.add_argument("--p2-helper", choices=helper_choices)
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")

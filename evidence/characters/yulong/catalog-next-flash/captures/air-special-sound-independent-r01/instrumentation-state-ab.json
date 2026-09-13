@@ -1,0 +1,41 @@
+{
+  "comparison": "ordered non-marker event payloads keyed by fight tick and kind; ignores display schedule, trace sequence, wall-clock and marker rows",
+  "baseline_fight_events": 9644,
+  "instrumented_fight_events": 9644,
+  "fight_tick_kind_groups": 2391,
+  "mismatch_groups": 2,
+  "mismatch_groups_by_kind": {
+    "clock": 1,
+    "random": 1
+  },
+  "samples": [
+    {
+      "key": [
+        49,
+        "clock"
+      ],
+      "baseline": [
+        "1,fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:3,27155",
+        "2,fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:4,27155"
+      ],
+      "instrumented": [
+        "1,fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:3,27526",
+        "2,fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:4,27526"
+      ]
+    },
+    {
+      "key": [
+        49,
+        "random"
+      ],
+      "baseline": [
+        "2,fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1,f:1:-6:77219510:0",
+        "3,main#frame_8/DoAction.as:1,f:1:-1:109035086:29360128"
+      ],
+      "instrumented": [
+        "3,fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1,f:1:-2:103900706:58720256",
+        "4,main#frame_8/DoAction.as:1,f:1:-5:73003813:0"
+      ]
+    }
+  ]
+}

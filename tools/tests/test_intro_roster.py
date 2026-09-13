@@ -1,4 +1,4 @@
-"""Source-backed opening state maps cover every selectable base fighter."""
+"""Source-backed opening state maps cover selectable and staged base forms."""
 
 from __future__ import annotations
 
@@ -20,6 +20,9 @@ class IntroRosterTests(unittest.TestCase):
             "sasuke": (946, 1025),
             "kakashi": (1201, 1280),
             "renji": (1053, 1132),
+            "sakura": (975, 1054),
+            "rukia": (1003, 1082),
+            "yulong": (1133, 1212),
         }
         self.assertEqual(set(spec["fighters"]), set(expected))
         for name, (start, end) in expected.items():
@@ -30,6 +33,16 @@ class IntroRosterTests(unittest.TestCase):
             )
             self.assertEqual(sorted(fighter["state_frames"].values()), [1, 2, 3])
             self.assertEqual(len(fighter["state_frames"]), 3)
+
+    def test_published_candidate_roster_has_source_openings(self):
+        available = json.loads(
+            (ROOT / "godot/generated/main/character_selection/available.json").read_text()
+        )
+        intro = json.loads((ROOT / "godot/generated/main/intro/intro.json").read_text())
+        for name in ("sakura", "rukia", "yulong"):
+            self.assertIn(name, intro["fighters"])
+            self.assertIn(name, available["fighters"].values())
+        self.assertIn("jinye", available["helpers"].values())
 
     def test_source_audit_and_runtime_intro_have_same_roster(self):
         audit = json.loads((ROOT / "evidence/intro-source.json").read_text())

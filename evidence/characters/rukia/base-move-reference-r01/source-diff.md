@@ -1,0 +1,11 @@
+# `砍技1` first divergence and repair
+
+Case: `rukia-320-skill1-neutral`, run `moves-rukia-320-skill1-neutral-84a0e6a441`. The first mismatch occurred at fight tick 23 / display tick 502. Fight tick 22 / display tick 501 was equal. At the mismatch P1 was on source root frame 330; Flash reported `x=400`, `xscale=-100`, while the first Godot replay reported `x=300`, `xscale=+100`. The before-fix red comparison and rows remain in `comparison-before-dedup.json` and `godot-before-dedup.json`.
+
+The source is `scripts/fighter/rukia.json`, path `DefineSprite_533/frame_330/DoAction.as`, source SHA-256 `a2911041e9675d3323587bcca274f3efbf75428a8315e27ede6bd9fea5670906`. If `_parent._xscale > 0`, the script sets parent xscale to -100 and x to opponent x + 50; otherwise it sets xscale to +100 and x to opponent x - 50.
+
+The frozen root timeline is `data/slices/rukia-base.timeline.json`: frame 320 is label `砍技1` and places character 168 at depth 27 with MOVE and matrix translation (-1398,-1323) twips. Frame 330 re-places character 173 at depth 27 without MOVE and the same matrix. Frame 331 changes depth 27 to character 175 and places `kj1atm` at depth 28 plus `bdmn` at depth 32. The script writes the outer player container, not the attack clip.
+
+Both compiled forms already contained this event: `data/actions/rukia-base.json` / `godot/generated/fighters/rukia/combat.json` use `source_path`, while `godot/generated/fighters/rukia/ai.json` frame_calls[330] uses `path`. Temporary instrumentation in `/private/tmp/rukia-warp-diag/diag4.log` showed both reached `_apply_body_warp_event` in the same source invocation: first through `_apply_body_warps` changed x300/+1 to x400/-1, then the AI `body_warp` frame call reset it to x300/+1. Different keys failed to deduplicate these two compiled entries.
+
+`godot/fighter_runtime.gd` now normalizes the source identity from either `path` or `source_path` and keys each event by source path, source frame, operation, and source invocation serial. Both warps use the serial. This suppresses the duplicate representation during one frame-script invocation while allowing the next actual re-entry to execute. The unchanged original input now matches 602/602 states across all 14 fields. `comparison-after-dedup.json` and `godot-after-dedup.json` contain the green result.

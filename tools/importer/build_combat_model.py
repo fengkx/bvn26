@@ -96,6 +96,9 @@ PARENT_WARP_Y = re.compile(
     r"(?:\s*\*\s*(?P<hfac>\d+(?:\.\d+)?))?"
     r"))?\s*;"
 )
+PARENT_XSCALE_DELTA = re.compile(
+    r"^\s*_parent\._x\s*(?P<operator>\+=|-=)\s*_parent\._xscale\s*;\s*$"
+)
 FACING_BODY_WARP = re.compile(
     r"if\s*\(\s*_parent\._xscale\s*(?P<cmp>[<>])\s*0\s*\)\s*\{\s*"
     r"_parent\._xscale\s*=\s*(?P<then_scale>-?\d+)\s*;\s*"
@@ -141,11 +144,26 @@ PROJECTILE_SPEED = re.compile(
 )
 PROJECTILE_X = re.compile(r"_X\s*=\s*_X\s*(?P<op>\+|-)\s*movspeed")
 PROJECTILE_Y = re.compile(r"_Y\s*=\s*_Y\s*(?P<op>\+|-)\s*movspeed")
+PROJECTILE_LITERAL_DELTA = re.compile(
+    r"_(?P<axis>X|Y)\s*=\s*_(?P=axis)\s*(?P<op>\+|-)\s*"
+    r"(?P<value>\d+(?:\.\d+)?)"
+)
 PROJECTILE_HIT_GOTO = re.compile(r"gotoAndPlay\((?P<frame>\d+)\)")
 PROJECTILE_LOAD = re.compile(
     r"onClipEvent\(load\)\{\s*"
     r"(?:(?P<played>played\s*=\s*0;)\s*)?"
     r"movspeed\s*=\s*_parent\.speed(?:\s*\*\s*(?P<factor>\d+(?:\.\d+)?))?;\s*\}\s*"
+)
+PROJECTILE_LITERAL_DECLARATION = re.compile(
+    r"var\s+(?P<name>[A-Za-z_]\w*)\s*=\s*"
+    r"(?P<value>true|false|-?\d+(?:\.\d+)?)\s*;"
+)
+PROJECTILE_LOCAL_WRITE = re.compile(
+    r"(?P<name>[A-Za-z_]\w*)\s*=\s*(?P<value>true|false|-?\d+(?:\.\d+)?)\s*;"
+)
+PROJECTILE_LOCAL_CONDITION = re.compile(
+    r"(?P<name>[A-Za-z_]\w*)\s*(?P<operator>==|!=)\s*"
+    r"(?P<value>true|false|-?\d+(?:\.\d+)?)"
 )
 PROJECTILE_PARENT_WRITE = re.compile(
     r"_parent\.(?P<field>[A-Za-z_]\w*)\s*=\s*"
@@ -159,6 +177,7 @@ PROJECTILE_OPPONENT_GOTO = re.compile(
     r"\{\s*_root\.game\[\"p\" \+ _parent\.pn\]\.mc\.gotoAnd(?P<mode>Play|Stop)"
     r"\(\"(?P<label>[^\"]+)\"\);\s*\}\s*"
 )
+DIRECT_YFGJ_CALL = re.compile(r"_root\.yfgj\(\s*_parent\._name\s*\)\s*;")
 NESTED_FRAME_SCRIPT = re.compile(
     r"^DefineSprite_(?P<sprite>\d+)/frame_(?P<frame>\d+)/DoAction"
 )
@@ -259,6 +278,7 @@ def parse_place_at_opponent(source: str) -> dict[str, Any] | None:
         "instance_name": name,
         "op": "place_at_opponent",
         "place_x": True,
+        "line": source.count("\n", 0, source.find(f"{name}._x", match.start())) + 1,
     }
     y_match = PLACE_AT_OPPONENT_Y.search(source)
     if y_match is not None and y_match["name"] == name:
@@ -312,6 +332,12 @@ def _apply_warp_y(result: dict[str, Any], source: str) -> None:
 
 
 def parse_body_warp(source: str) -> dict[str, Any] | None:
+    xscale_delta = PARENT_XSCALE_DELTA.fullmatch(source)
+    if xscale_delta is not None:
+        return {
+            "op": "offset_parent_x_by_xscale",
+            "xscale_factor": 1.0 if xscale_delta["operator"] == "+=" else -1.0,
+        }
     facing = FACING_BODY_WARP.search(source)
     if facing is not None:
         then_x = _warp_x_fields(facing["then_x"])
@@ -888,6 +914,36 @@ def _brace_depth(source: str, start: int, end: int) -> int:
     return depth
 
 
+def projectile_local_scope(
+    source: str, branch_start: int, statement_start: int
+) -> tuple[list[dict[str, Any]], tuple[int, ...]]:
+    """Return scalar guards and the exact enclosing source block identities."""
+    conditions: list[dict[str, Any]] = []
+    block_starts: list[int] = []
+    for branch in re.finditer(
+        r"if\s*\((?P<condition>[^{}]*)\)\s*\{",
+        source[branch_start:statement_start],
+    ):
+        opening = branch_start + branch.end() - 1
+        if _matching_brace(source, opening) < statement_start:
+            continue
+        condition = PROJECTILE_LOCAL_CONDITION.fullmatch(branch["condition"].strip())
+        if condition is None:
+            raise ValueError("Uncompiled projectile local guard")
+        raw = condition["value"]
+        value: Any = (
+            raw == "true" if raw in ("true", "false")
+            else float(raw) if "." in raw else int(raw)
+        )
+        conditions.append({
+            "field": condition["name"],
+            "operator": condition["operator"],
+            "value": value,
+        })
+        block_starts.append(opening)
+    return conditions, tuple(block_starts)
+
+
 def parse_projectile_motion(source: str) -> dict[str, Any] | None:
     if ("_X = _X" not in source and "_Y = _Y" not in source
             and PROJECTILE_PARENT_WRITE.search(source) is None):
@@ -899,10 +955,18 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
     y_move = PROJECTILE_Y.search(source)
     if y_move is not None:
         motion["local_y_factor"] = 1.0 if y_move["op"] == "+" else -1.0
-    if "movspeed = 0" in source:
-        hit_goto = PROJECTILE_HIT_GOTO.search(source)
-        if hit_goto is not None:
-            motion["on_hit_goto_frame"] = int(hit_goto["frame"])
+    literal_moves = list(PROJECTILE_LITERAL_DELTA.finditer(source))
+    axes = [match["axis"] for match in literal_moves]
+    if len(axes) != len(set(axes)):
+        raise ValueError("Projectile has multiple literal deltas for one axis")
+    for match in literal_moves:
+        if (match["axis"] == "X" and x_move is not None
+                or match["axis"] == "Y" and y_move is not None):
+            raise ValueError("Projectile mixes literal and movspeed deltas for one axis")
+        delta = float(match["value"])
+        if match["op"] == "-":
+            delta = -delta
+        motion[f"local_{match['axis'].lower()}_delta"] = delta
     queries = re.findall(
         r'(?:(\w+)\.)?hitTest\(_root\.game\["p" \+ _parent\.pn\]\.mc\.(\w+)\)',
         source,
@@ -920,6 +984,40 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
         raise ValueError("Projectile parent write is not guarded by hitTest")
     hit_end = _matching_brace(source, hit_branch.end() - 1) if hit_branch else -1
     hit_start = hit_branch.end() if hit_branch else -1
+    if (x_move is not None or y_move is not None or literal_moves) and hit_branch is not None:
+        else_branch = re.match(
+            r"\s*else\s+if\s*\((?P<condition>[^{}]*)\)\s*\{",
+            source[hit_end + 1:],
+        )
+        if else_branch is not None:
+            condition = PROJECTILE_LOCAL_CONDITION.fullmatch(
+                else_branch["condition"].strip()
+            )
+            if condition is None:
+                raise ValueError("Uncompiled projectile movement guard")
+            raw = condition["value"]
+            value: Any = (
+                raw == "true" if raw in ("true", "false")
+                else float(raw) if "." in raw else int(raw)
+            )
+            motion["local_motion_conditions"] = [{
+                "field": condition["name"],
+                "operator": condition["operator"],
+                "value": value,
+            }]
+    hit_gotos = list(PROJECTILE_HIT_GOTO.finditer(source))
+    if any(hit_branch is None or not hit_start <= match.start() < hit_end
+           for match in hit_gotos):
+        raise ValueError("Projectile child goto occurs outside hitTest branch")
+    if len(hit_gotos) > 1:
+        raise ValueError("Projectile has multiple child gotos in its hitTest branch")
+    if hit_gotos:
+        hit_goto = hit_gotos[0]
+        motion["on_hit_goto_frame"] = int(hit_goto["frame"])
+        conditions, scope = projectile_local_scope(source, hit_start, hit_goto.start())
+        if conditions:
+            motion["on_hit_goto_conditions"] = conditions
+            motion["on_hit_goto_scope"] = list(scope)
     if any(not hit_start <= match.start() < hit_end for match in parent_writes):
         raise ValueError("Projectile parent write occurs outside hitTest branch")
     hit_events: list[tuple[int, dict[str, Any]]] = []
@@ -943,9 +1041,71 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
             "play": opponent_goto["mode"] == "Play",
         }
         hit_events.append((opponent_goto.start(), {"op": "goto", **goto}))
+    local_writes = list(PROJECTILE_LOCAL_WRITE.finditer(source))
+    for write in local_writes:
+        if write["name"] not in {"played", "movspeed"}:
+            continue
+        if hit_branch is None or not hit_start <= write.start() < hit_end:
+            continue
+        if _brace_depth(source, hit_start, write.start()) == 0:
+            raise ValueError("Projectile local hit write has no one-shot guard")
+        literal = write["value"]
+        value: Any = (literal == "true" if literal in ("true", "false")
+                      else float(literal) if "." in literal else int(literal))
+        # Preserve scalar one-shot guards around writes. Collision and pause
+        # guards are represented by the callback/collision scheduler itself.
+        conditions, scope = projectile_local_scope(source, hit_start, write.start())
+        if not conditions:
+            raise ValueError("Projectile local hit write lacks a scalar source guard")
+        event = {
+            "field": write["name"], "value": value,
+            "conditions": conditions, "source_scope": list(scope),
+            "source_position": write.start(),
+        }
+        hit_events.append((write.start(), {"op": "local_write", **event}))
     if hit_events:
         hit_events.sort(key=lambda item: item[0])
-        motion["on_hit_events"] = [event for _, event in hit_events]
+        events: list[dict[str, Any]] = []
+        for position, event in hit_events:
+            if event["op"] == "local_write":
+                if (events and events[-1]["op"] == "local_write_group"
+                        and events[-1]["source_scope"] == event["source_scope"]):
+                    events[-1]["writes"].append({"field": event["field"], "value": event["value"]})
+                    events[-1]["source_position"] = position
+                else:
+                    events.append({
+                        "op": "local_write_group",
+                        "conditions": event["conditions"],
+                        "source_scope": event["source_scope"],
+                        "writes": [{"field": event["field"], "value": event["value"]}],
+                        "source_position": position,
+                    })
+            else:
+                events.append(event)
+        goto_scope = motion.get("on_hit_goto_scope")
+        if goto_scope is not None:
+            prior_groups = [
+                event for event in events
+                if event["op"] == "local_write_group"
+                and event["source_scope"] == goto_scope
+                and event["source_position"] < hit_gotos[0].start()
+            ]
+            matching_group = next((
+                event for event in reversed(prior_groups)
+                if any(write["field"] == "played" for write in event["writes"])
+            ), None)
+            if prior_groups and matching_group is None:
+                raise ValueError(
+                    "Projectile local-write/goto guard lacks the supported played pattern"
+                )
+            if matching_group is not None:
+                matching_group["goto_frame"] = motion["on_hit_goto_frame"]
+                motion["on_hit_goto_grouped"] = True
+                motion.pop("on_hit_goto_conditions", None)
+                motion.pop("on_hit_goto_scope", None)
+        for event in events:
+            event.pop("source_position", None)
+        motion["on_hit_events"] = events
     return motion or None
 
 
@@ -953,7 +1113,23 @@ def parse_projectile_initialization(source: str) -> dict[str, Any] | None:
     """Parse a child clip's load callback without discarding decimal factors."""
     match = PROJECTILE_LOAD.fullmatch(source.replace("\r\n", "\n"))
     if match is None:
-        return None
+        callback = re.fullmatch(r"onClipEvent\(load\)\{(?P<body>[\s\S]*?)\}\s*", source.replace("\r\n", "\n"))
+        if callback is None:
+            return None
+        body = callback["body"]
+        variables: dict[str, Any] = {}
+        declarations = list(PROJECTILE_LITERAL_DECLARATION.finditer(body))
+        stripped = PROJECTILE_LITERAL_DECLARATION.sub("", body)
+        if re.sub(r"\s+", "", stripped):
+            raise ValueError("Uncompiled projectile load statement")
+        for declaration in declarations:
+            name = declaration["name"]
+            if name in variables:
+                raise ValueError("Duplicate projectile local declaration: " + name)
+            raw = declaration["value"]
+            variables[name] = (raw == "true" if raw in ("true", "false")
+                               else float(raw) if "." in raw else int(raw))
+        return {"initial_variables": variables}
     result: dict[str, Any] = {
         "initial_speed_field": "speed",
         "initial_speed_factor": float(match["factor"] or 1),
@@ -1017,6 +1193,27 @@ def compile_summon_function(source: str) -> dict[str, Any]:
         raise ValueError("Unsupported doZhaoHuan body; retain its guards and statement order")
     return {"skip_if_truthy": match["guard"], "set_bs": int(match["bs"]),
             "energy_delta": -int(match["cost"])}
+
+
+def compile_yfgj_function(main_bundle: dict[str, Any]) -> dict[str, str]:
+    script = next(
+        (item for item in main_bundle["scripts"] if "function yfgj(" in item["source"]),
+        None,
+    )
+    if script is None:
+        raise ValueError("The source yfgj function is missing")
+    source = extract_function(script["source"], "yfgj")
+    required = (
+        r"_loc3_\._x\s*=\s*_loc2_\._x\s*-\s*20\s*\*\s*"
+        r"\(_loc2_\._xscale\s*<=\s*0\s*\?\s*-1\s*:\s*1\)\s*;",
+        r"_loc3_\._y\s*=\s*_loc2_\._y\s*;",
+        r"_loc3_\._xscale\s*=\s*_loc5_\s*\*\s*100\s*;",
+        r"_root\.game\[nam\s*\+\s*\"fz\"\]\.gotoAndPlay\(2\)\s*;",
+        r"_loc3_\.attacking\s*=\s*true\s*;",
+    )
+    if any(re.search(pattern, source) is None for pattern in required):
+        raise ValueError("Unsupported yfgj placement or lifecycle source")
+    return {"source_path": script["path"], "source_sha256": text_sha256(source)}
 
 
 def placement_name(
@@ -1512,6 +1709,7 @@ def build_model(
     catalog = json.loads((REPO_ROOT / "manifest.json").read_text())["fighter_catalog"]
     is_naruto = bool(catalog[fighter["fighter_id"]].get("isNaruto", False))
     summon_events = []
+    yfgj_source: dict[str, str] | None = None
     summon_script = next((s for s in scripts if "function doZhaoHuan" in s["source"]), None)
     summon_function = (compile_summon_function(extract_function(summon_script["source"], "doZhaoHuan"))
                        if summon_script else None)
@@ -1521,6 +1719,27 @@ def build_model(
         if "function doZhaoHuan" in script["source"]:
             continue
         if "doZhaoHuan()" not in script["source"]:
+            direct_call = DIRECT_YFGJ_CALL.search(script["source"])
+            if direct_call is None:
+                continue
+            if DIRECT_YFGJ_CALL.search(script["source"], direct_call.end()):
+                raise ValueError("Multiple direct yfgj calls in one frame are unsupported: " + script["path"])
+            if _brace_depth(script["source"], 0, direct_call.start()) != 0:
+                raise ValueError("Conditional direct yfgj call is unsupported: " + script["path"])
+            if not helper.get("helper_id"):
+                raise ValueError("Direct yfgj call has no source-mapped helper: " + script["path"])
+            if yfgj_source is None:
+                yfgj_source = compile_yfgj_function(main_bundle)
+            summon_events.append({
+                "action": script["action"],
+                "frame": script["frame"],
+                "call_kind": "direct_yfgj",
+                **helper,
+                "function_source_path": yfgj_source["source_path"],
+                "function_source_sha256": yfgj_source["source_sha256"],
+                "source_path": script["path"],
+                "source_sha256": script["source_sha256"],
+            })
             continue
         if summon_function is None:
             raise ValueError("doZhaoHuan is missing its source function")
@@ -1528,6 +1747,7 @@ def build_model(
             {
                 "action": script["action"],
                 "frame": script["frame"],
+                "call_kind": "doZhaoHuan",
                 **summon_function,
                 "function_source_path": summon_script["path"],
                 "function_source_sha256": summon_script["source_sha256"],
@@ -1576,6 +1796,31 @@ def build_model(
                 if character_id is not None and character_id in scripted_sprite_ids
                 else {}
             )
+            load_path = script["path"].replace(
+                "onClipEvent(enterFrame)", "onClipEvent(load)"
+            )
+            load_script = next(
+                (item for item in script_bundle["scripts"] if item["path"] == load_path),
+                None,
+            )
+            initialization = (
+                parse_projectile_initialization(load_script["source"])
+                if load_script is not None
+                else None
+            )
+            if load_script is not None and initialization is None:
+                raise ValueError("Uncompiled projectile initialization: " + load_path)
+            initialization_source = (
+                {
+                    "source_path": load_path,
+                    "source_sha256": text_sha256(load_script["source"]),
+                }
+                if load_script is not None
+                else None
+            )
+            if initialization and "initial_variables" in initialization:
+                if any(key in projectile for key in ("local_x_factor", "local_y_factor")) and "movspeed" not in initialization["initial_variables"]:
+                    raise ValueError("Projectile movement local is undeclared: " + load_path)
             projectiles.append(
                 {
                     "action": script["action"],
@@ -1586,6 +1831,12 @@ def build_model(
                         (script["frame"], depth), 1.0
                     ),
                     **projectile,
+                    **(initialization or {}),
+                    **(
+                        {"initial_motion_source": initialization_source}
+                        if initialization_source is not None
+                        else {}
+                    ),
                     **clip_timeline,
                     "source_path": script["path"],
                     "source_sha256": script["source_sha256"],

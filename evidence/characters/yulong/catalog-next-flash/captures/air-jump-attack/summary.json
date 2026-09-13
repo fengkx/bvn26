@@ -1,0 +1,163 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "yulong-air-jump-attack-r01",
+  "input_delivery": {
+    "status": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "w": "87",
+      "a": "65",
+      "l": "76",
+      "上箭": "38",
+      "下箭": "40",
+      "左箭": "37",
+      "右箭": "39",
+      "N1": "97",
+      "N2": "98",
+      "N3": "99",
+      "N4": "100",
+      "N5": "101",
+      "N6": "102",
+      "right": "68",
+      "attack": "74",
+      "down": "83",
+      "ranged": "85",
+      "jump": "75",
+      "special": "73",
+      "summon": "79"
+    },
+    "reads": 8615,
+    "pressed_reads": {
+      "_level0.game.p1.mc:75": 1,
+      "_level0.game.p1.mc:74": 1
+    }
+  },
+  "events": 13791,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "input_next_display": 752,
+    "body_boundary": 1158,
+    "initCtrl": 6,
+    "frame_state_enter": 95,
+    "intro_body_enter": 188,
+    "intro_body_exit": 188,
+    "frame_state_exit": 95,
+    "body_callback_enter": 749,
+    "body_callback_exit": 749,
+    "random": 2,
+    "intro_poll": 21,
+    "intro_poll_state": 21,
+    "state": 1142,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "key_read": 8615,
+    "done": 1
+  },
+  "frames_after_ready": 300,
+  "termination_policy": "unique_done_same_frame_tail",
+  "ready": {
+    "run_id": "yulong-air-jump-attack-r01",
+    "sequence": 2995,
+    "time_ms": 26153,
+    "display_tick": 452,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "yulong-air-jump-attack-r01",
+      "sequence": 5,
+      "time_ms": 10917,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "yulong-air-jump-attack-r01",
+      "sequence": 11,
+      "time_ms": 10956,
+      "display_tick": 2,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "yulong-air-jump-attack-r01",
+      "sequence": 40,
+      "time_ms": 11152,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "yulong-air-jump-attack-r01",
+      "sequence": 41,
+      "time_ms": 11152,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "yulong-air-jump-attack-r01",
+      "sequence": 42,
+      "time_ms": 11152,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "yulong-air-jump-attack-r01",
+      "sequence": 43,
+      "time_ms": 11152,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": null,
+  "samples_before_ready": 0,
+  "sample_intervals_ms": {},
+  "last_states": [
+    {
+      "run_id": "yulong-air-jump-attack-r01",
+      "sequence": 13789,
+      "time_ms": 36263,
+      "display_tick": 752,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p1,2,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "yulong-air-jump-attack-r01",
+      "sequence": 13790,
+      "time_ms": 36264,
+      "display_tick": 752,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p2,3,f:1:9:74711040:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:123207680:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "6d0e0755d8da8e2fd7e7185ac5d93fcc011fd0ea6f87a2374967fefb69c03a5f",
+  "retained_sha256": {
+    "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "instrumentation.diff": "1d93e9320263c087088915fc91e058926d456d17f36819e108ad18968fbccf5e",
+    "events.jsonl": "e6e6d38d5c8506d6251faaba8b1dd2b085b2c2777caaa474517d06dbabfecc65",
+    "random-tape.json": "f375a645cbe5bc2e57cac7596c6060c94582f25368d622be6c67ac00d1ae2c6c",
+    "build.json": "c287d5d55c66c070f28cb0f543f13ed358e142634195b365e41fc31cbfbd00c0"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "rukia-546-bisha-energy_below",
+  "fighter": "rukia",
+  "slot": "p1",
+  "label": "必杀",
+  "scenario": "energy_below",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 99
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "special"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    546,
+    637
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "onDashing"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "rukia",
+    "p2": "yihu"
+  }
+}

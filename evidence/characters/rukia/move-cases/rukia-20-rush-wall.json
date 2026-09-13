@@ -1,0 +1,42 @@
+{
+  "id": "rukia-20-rush-wall",
+  "fighter": "rukia",
+  "slot": "p1",
+  "label": "瞬步",
+  "scenario": "wall",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 20,
+      "energy": 300
+    },
+    "p2": {
+      "x": 70,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "dash"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    20,
+    39
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "onJumping"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "rukia",
+    "p2": "yihu"
+  }
+}

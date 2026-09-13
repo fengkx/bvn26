@@ -1,0 +1,117 @@
+{
+  "id": "sakura-window-13-after_end",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "砍技2",
+  "scenario": "cancel_after_end",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "special"
+      ],
+      "start": 48,
+      "end": 49
+    }
+  ],
+  "target_frames": [
+    366,
+    414
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "p1_helper": "jinye",
+  "p2_helper": "kon",
+  "source_helpers": {
+    "p1": {
+      "alias": "jinye",
+      "id": "松本",
+      "swf": "game/fighter/fz/jinye.swf",
+      "sha256": "03736bfd2ef7e9b79f958971fc7192ea641653039212e29793ed291c56bfa62a"
+    },
+    "p2": {
+      "alias": "kon",
+      "id": "魂",
+      "swf": "game/fighter/fz/kon.swf",
+      "sha256": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+    }
+  },
+  "source_target": {
+    "label": "砍技2",
+    "start_frame": 366,
+    "end_frame": 414,
+    "implementation": "wired",
+    "has_timeline": true,
+    "source_dispatch": [
+      "doAllAction",
+      "doStand"
+    ],
+    "contexts": [
+      "stand"
+    ],
+    "energy_min": 0
+  },
+  "controlled_intervention": false,
+  "window_boundary": {
+    "id": "sakura-window-13-after_end",
+    "window_index": 13,
+    "edge": "after_end",
+    "source_frame": 403,
+    "input_tick": 48,
+    "window": {
+      "from": "砍技2",
+      "to": "空中必杀",
+      "predicate": "bishaAir",
+      "combo": false,
+      "start_frame": 393,
+      "kind": "input",
+      "dispatch_order": 0,
+      "implementation": "wired",
+      "source_path": "DefineSprite_630/frame_393/PlaceObject2_11_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f3bd8ad69566105c31df172536e16ed91ada052a85f2e9176a283e7e0f88616e",
+      "end_frame": 402
+    },
+    "source_action_frames": [
+      366,
+      414
+    ],
+    "source_action": "砍技2",
+    "destination_frames": [
+      646,
+      668
+    ]
+  },
+  "calibration": {
+    "case_id": "sakura-366-skill2-neutral",
+    "events_sha256": "2a33724d0ee3d3c8d3922c463612d5778179c4c09de998e5101b9d44ad61a36a",
+    "observer_phase": "root state before input publication"
+  }
+}

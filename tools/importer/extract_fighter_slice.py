@@ -1,4 +1,4 @@
-"""Extract code-driven evidence for the two base-form vertical slices.
+"""Extract code-driven evidence for a fighter's selected base form.
 
 The output is intermediate reverse-engineering data, not production gameplay
 data. Every value retains its SWF and decompiled-script source path.
@@ -31,6 +31,7 @@ COMMON_ACTION_GROUPS = {
     "ground_combo": ["砍1", "砍2", "砍3"],
     "hurt": ["被打"],
 }
+OPTIONAL_ACTION_GROUPS = {"ground_combo"}
 
 FIGHTER_SPECIAL_LABELS = {
     "鸣人": ["必杀", "必杀1", "必杀0"],
@@ -186,6 +187,8 @@ def extract_slice(root: Path, fighter_key: str, *, allow_forms: bool = False) ->
         selected_spans[group] = {}
         for label in labels:
             if label not in all_spans:
+                if group in OPTIONAL_ACTION_GROUPS:
+                    continue
                 raise ValueError(f"Missing {fighter_key} action label: {label}")
             selected_spans[group][label] = all_spans[label]
             selected_ranges.append(all_spans[label])
@@ -287,7 +290,11 @@ def main() -> None:
             {
                 "fighter": fighter_key,
                 "timeline_symbol_id": result["source"]["timeline_symbol_id"],
-                "output": output.relative_to(REPO_ROOT).as_posix(),
+                "output": (
+                    output.resolve().relative_to(REPO_ROOT).as_posix()
+                    if output.resolve().is_relative_to(REPO_ROOT)
+                    else output.resolve().as_posix()
+                ),
                 "timeline_script_count": len(result["timeline_scripts"]),
             }
         )

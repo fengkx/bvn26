@@ -1,0 +1,44 @@
+{
+  "id": "rukia-320-skill1-held",
+  "fighter": "rukia",
+  "slot": "p1",
+  "label": "砍技1",
+  "scenario": "held",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "attack"
+      ],
+      "start": 10,
+      "end": 110
+    }
+  ],
+  "target_frames": [
+    320,
+    370
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand",
+    "onDefence"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "rukia",
+    "p2": "yihu"
+  }
+}

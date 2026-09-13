@@ -1,0 +1,46 @@
+--- built/frame_10/DoAction.as
++++ controlled/frame_10/DoAction.as
+@@ -12,14 +12,14 @@
+ curStage = "现世";
+ modo = 2;
+ p1cpu = false;
+-p2cpu = true;
++p2cpu = false;
+ AI = 5;
+ maxhp = 1000;
+ maxtime = 60;
+ fighterDir = "file:///private/tmp/kakashi-you-sasuke-vscom-controlled-r01/game/fighter/";
+ fzDir = "file:///private/tmp/kakashi-you-sasuke-vscom-controlled-r01/game/fighter/fz/";
+ musicDir = "file:///private/tmp/kakashi-you-sasuke-vscom-controlled-r01/game/music/";
+-_root.aiEvent("boot", "vs_com,minren,yihu,AI=5");
++_root.aiEvent("boot", "vs_com," + p1selt + "," + p2selt + ",AI=5");
+ _root.aiEvent("input_bindings", "right=" + d + ",attack=" + j + ",down=" + s + ",ranged=" + u + ",jump=" + k + ",special=" + i + ",summon=" + o);
+ gotoAndStop("游戏场景");
+ onEnterFrame = function()
+@@ -28,6 +28,10 @@
+    if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)
+    {
+       aiFight = 0;
++      _root.game.p1._x = 300;
++      _root.game.p2._x = 350;
++      _root.game.p1.mc.ql = 300;
++      aiEvent("fixture_setup", "p1x=" + _root.aiNumber(_root.game.p1._x) + ",p2x=" + _root.aiNumber(_root.game.p2._x) + ",p1ql=" + _root.aiNumber(_root.game.p1.mc.ql));
+       aiEvent("ready", "");
+    }
+    else if(aiFight >= 0)
+@@ -36,14 +40,7 @@
+    }
+    aiHeld = {};
+    // These inputs become visible to the next display callback, as logged.
+-   if(aiFight >= 90 && aiFight < 150) aiHeld[d] = true;
+-   if(aiFight >= 110 && aiFight < 200) aiHeld[j] = true;
+-   if(aiFight >= 210 && aiFight < 260) aiHeld[s] = true;
+-   if(aiFight >= 280 && aiFight < 320) aiHeld[u] = true;
+-   if(aiFight >= 340 && aiFight < 345) aiHeld[k] = true;
+-   if(aiFight >= 350 && aiFight < 390) aiHeld[j] = true;
+-   if(aiFight >= 430 && aiFight < 435) aiHeld[i] = true;
+-   if(aiFight >= 470 && aiFight < 475) aiHeld[o] = true;
++   if(aiFight >= 10 && aiFight < 13) aiHeld[o] = true;
+    aiEvent("input_next_display", "right=" + aiHeld[d] + ",attack=" + aiHeld[j] + ",down=" + aiHeld[s] + ",ranged=" + aiHeld[u] + ",jump=" + aiHeld[k] + ",special=" + aiHeld[i] + ",summon=" + aiHeld[o]);
+    if(p2loaded == true)
+    {

@@ -1,6 +1,8 @@
 class_name TimelinePreview
 extends Node2D
 
+signal nested_source_sound_started(event: Dictionary)
+
 @export var fighter_directory: String
 @export var initial_action: String = "砍1"
 @export var initial_frame: int = 1
@@ -26,13 +28,23 @@ var hidden_instance_names: PackedStringArray = []
 # same SOUNDENVELOPE scale in hit_effect_runtime.gd.
 const SOUND_ENVELOPE_MAX := 32768.0
 var last_sound_ids: Array[int] = []
+var last_nested_sound_ids: Array[int] = []
+var last_nested_sound_events: Array[Dictionary] = []
 var _sound_played_frame: int = -1
+var _nested_sound_observation_frame: int = -1
+var _nested_sound_instance_frames: Dictionary = {}
+var _nested_sound_container_states: Dictionary = {}
+var _nested_sound_placement_generations: Dictionary = {}
+var _source_entry_serial: int = 0
 var _sound_segments: Dictionary = {}
 var _cxform_shader: Shader
 var _source_color_mul := Color(1, 1, 1, 1)
 var _source_color_add := Color(0, 0, 0, 0)
 var _source_color_matrix: Array = []
 var _source_filter_shader: Shader
+
+const SourceBoundsMath = preload("res://source_matrix_bounds.gd")
+const TWIPS_PER_PIXEL := 20.0
 
 const SOURCE_FILTER_SHADER := """
 shader_type canvas_item;
@@ -49,6 +61,8 @@ void fragment() {
 	COLOR = clamp(vec4(dot(row_r, c), dot(row_g, c), dot(row_b, c), dot(row_a, c)) + offsets, 0.0, 1.0);
 }
 """
+
+const SourceCoordinateMath = preload("res://source_coordinate.gd")
 
 # Flash CXFORMWITHALPHA: src * (mult/256) + add. Add is 0-255 in the XML.
 const CXFORM_SHADER := """
@@ -71,6 +85,7 @@ func _ready() -> void:
 		play_action(initial_action)
 	else:
 		_current_frame = initial_frame
+		_source_entry_serial += 1
 		_render_frame()
 
 
@@ -81,6 +96,7 @@ func _physics_process(_delta: float) -> void:
 		_current_frame = _action_start
 	else:
 		_current_frame += 1
+	_source_entry_serial += 1
 	_render_frame()
 
 
@@ -92,6 +108,7 @@ func play_action(label: String) -> void:
 			_action_start = group[label]["start_frame"]
 			_action_end = group[label]["end_frame"]
 			_current_frame = _action_start
+			_source_entry_serial += 1
 			_render_frame()
 			return
 	push_error("Unknown extracted action label: %s" % label)
@@ -99,6 +116,7 @@ func play_action(label: String) -> void:
 
 func play_source_frame(frame: int) -> void:
 	_current_frame = frame
+	_source_entry_serial += 1
 	_render_frame()
 
 
@@ -120,6 +138,7 @@ func advance_source_frame(loop_action: bool = true) -> void:
 		_current_frame = _action_start
 	else:
 		_current_frame += 1
+	_source_entry_serial += 1
 	_render_frame()
 
 
@@ -133,9 +152,11 @@ func instance_local_bounds(instance_name: String) -> Rect2:
 
 
 func instance_global_bounds(instance_name: String) -> Rect2:
-	var local_bounds := instance_local_bounds(instance_name)
-	if local_bounds.has_area():
-		return _transform_rect(global_transform, local_bounds)
+	if not _frames.has(_current_frame):
+		return Rect2()
+	for placement: Dictionary in _frames[_current_frame]["display_list"]:
+		if str(placement.get("name", "")) == instance_name:
+			return _source_placement_bounds(placement, _current_frame, [], true, true)
 	return Rect2()
 
 
@@ -152,17 +173,20 @@ func child_instance_global_bounds(parent_name: String, child_name: String) -> Re
 		var frame := _nested_frame(placement, _current_frame, frames.size())
 		for child: Dictionary in frames[frame - 1]:
 			if str(child.get("name", "")) == child_name:
-				var bounds := _placement_bounds(child, frame)
-				if bounds.has_area():
-					return _transform_rect(global_transform * _wrapper_transform() *
-						_placement_transform(placement), bounds)
+				return _source_placement_bounds(child, frame, [placement], true, true)
 	return Rect2()
 
 
 func named_instances_global_bounds(prefix: String) -> Array[Rect2]:
 	var result: Array[Rect2] = []
-	for local_bounds in named_instances_local_bounds(prefix):
-		result.append(_transform_rect(global_transform, local_bounds))
+	if not _frames.has(_current_frame):
+		return result
+	for placement: Dictionary in _frames[_current_frame]["display_list"]:
+		if not str(placement.get("name", "")).begins_with(prefix):
+			continue
+		var bounds := _source_placement_bounds(placement, _current_frame, [], true, true)
+		if bounds.has_area():
+			result.append(bounds)
 	return result
 
 
@@ -250,7 +274,17 @@ func set_instance_clip_frame(
 		"local_start": local_frame,
 		"playing": playing,
 		"age": int(previous.get("age", 0)) if age < 0 else age,
+		"source_variables": previous.get("source_variables", {}).duplicate(true),
+		"source_timeline_event_driver": bool(previous.get("source_timeline_event_driver", false)),
 	}
+
+
+func mark_source_timeline_event_driver(instance_name: String) -> void:
+	var record: Dictionary = _instance_local_frames.get(instance_name, {})
+	if record.is_empty():
+		return
+	record["source_timeline_event_driver"] = true
+	_instance_local_frames[instance_name] = record
 
 
 func instance_clip_playing(instance_name: String) -> bool:
@@ -387,6 +421,7 @@ func _render_frame() -> void:
 	for placement: Dictionary in frame["display_list"]:
 		_render_placement(placement, wrapper, 1.0, int(placement["depth"]) if preserve_root_depths else 0, _current_frame, 0, _source_color_mul, _source_color_add)
 	_play_start_sounds()
+	_play_nested_start_sounds()
 	queue_redraw()
 
 
@@ -443,16 +478,201 @@ func _play_start_sounds() -> void:
 			assert(sound_index < segments.size() and segments[sound_index]["source_event"] == event)
 			sound_file = segments[sound_index]["stream"]
 		sound_index += 1
-		var stream: AudioStream = load("%s/%s" % [fighter_directory, sound_file])
-		if stream == null:
-			continue
-		var player := AudioStreamPlayer.new()
-		player.stream = stream
-		player.volume_db = 0.0 if not segments.is_empty() else _sound_volume_db(event)
-		player.finished.connect(player.queue_free)
-		_sound_layer().add_child(player)
-		player.play()
-		last_sound_ids.append(sound_id)
+		if _start_sound_player(event, sound_file, segments.is_empty()):
+			last_sound_ids.append(sound_id)
+
+
+func _start_sound_player(
+	event: Dictionary, sound_file: String, use_source_volume: bool = true
+) -> bool:
+	var stream: AudioStream = load("%s/%s" % [fighter_directory, sound_file])
+	if stream == null:
+		return false
+	var player := AudioStreamPlayer.new()
+	player.stream = stream
+	player.volume_db = _sound_volume_db(event) if use_source_volume else 0.0
+	player.finished.connect(player.queue_free)
+	_sound_layer().add_child(player)
+	player.play()
+	return true
+
+
+func _play_nested_start_sounds() -> void:
+	if not play_timeline_sounds or not _frames.has(_current_frame):
+		return
+	if _nested_sound_observation_frame != _current_frame:
+		_nested_sound_observation_frame = _current_frame
+		last_nested_sound_ids.clear()
+		last_nested_sound_events.clear()
+	var active_instances: Dictionary = {}
+	var active_placements: Dictionary = {}
+	for placement: Dictionary in _frames[_current_frame]["display_list"]:
+		_collect_nested_start_sounds(
+			placement,
+			_current_frame,
+			0,
+			"root",
+			active_instances,
+			active_placements,
+			_source_entry_serial
+		)
+	for instance_id in _nested_sound_instance_frames.keys():
+		if not active_instances.has(instance_id):
+			_nested_sound_instance_frames.erase(instance_id)
+			_nested_sound_container_states.erase(instance_id)
+	for placement_id in _nested_sound_placement_generations.keys():
+		if not active_placements.has(placement_id):
+			_nested_sound_placement_generations.erase(placement_id)
+
+
+func _collect_nested_start_sounds(
+	placement: Dictionary,
+	timeline_frame: int,
+	clip_age: int,
+	parent_instance_id: String,
+	active_instances: Dictionary,
+	active_placements: Dictionary,
+	parent_entry_serial: int
+) -> void:
+	var character_id := int(placement.get("character_id", -1))
+	if not _definitions.has(character_id):
+		return
+	var definition: Dictionary = _definitions[character_id]
+	if str(definition.get("type", "")) != "DefineSpriteTag":
+		return
+	var sprite_frames: Array = definition.get("display_list_frames", [])
+	if sprite_frames.is_empty():
+		return
+	var placement_id := "%s/%d:%d:%d" % [
+		parent_instance_id,
+		int(placement.get("depth", -1)),
+		character_id,
+		int(placement.get("placed_frame", timeline_frame)),
+	]
+	var generation: Dictionary = _nested_sound_placement_generations.get(
+		placement_id, {"entry_serial": -1, "generation": 0}
+	)
+	active_placements[placement_id] = true
+	if int(placement.get("placed_frame", timeline_frame)) == timeline_frame \
+			and int(generation["entry_serial"]) != parent_entry_serial:
+		generation["entry_serial"] = parent_entry_serial
+		generation["generation"] = int(generation["generation"]) + 1
+		_nested_sound_placement_generations[placement_id] = generation
+	var instance_id := "%s#%d" % [placement_id, int(generation["generation"])]
+	active_instances[instance_id] = true
+	var local_frame := _nested_frame(placement, timeline_frame, sprite_frames.size(), clip_age)
+	var container_state: Dictionary = _nested_sound_container_states.get(
+		instance_id, {"frame": -1, "entry_serial": 0}
+	)
+	if int(container_state["frame"]) != local_frame:
+		container_state["frame"] = local_frame
+		container_state["entry_serial"] = int(container_state["entry_serial"]) + 1
+	_nested_sound_container_states[instance_id] = container_state
+	var previous_frame := int(_nested_sound_instance_frames.get(instance_id, -1))
+	if previous_frame != local_frame:
+		var instance_name := str(placement.get("name", ""))
+		var child_playhead: Dictionary = _instance_local_frames.get(instance_name, {})
+		if not bool(child_playhead.get("source_timeline_event_driver", false)):
+			var frame_events: Array = definition.get("display_list_frame_events", [])
+			if local_frame > 0 and local_frame <= frame_events.size():
+				for event: Dictionary in frame_events[local_frame - 1]:
+					if str(event.get("type", "")) == "start_sound":
+						_play_nested_source_sound(event, instance_id, character_id, local_frame)
+		_nested_sound_instance_frames[instance_id] = local_frame
+	var child_age := clip_age
+	var instance_name := str(placement.get("name", ""))
+	if instance_name != "" and _instance_local_frames.has(instance_name):
+		child_age = int(_instance_local_frames[instance_name].get("age", 0))
+	for child: Dictionary in sprite_frames[local_frame - 1]:
+		_collect_nested_start_sounds(
+			child,
+			local_frame,
+			child_age,
+			instance_id,
+			active_instances,
+			active_placements,
+			int(container_state["entry_serial"])
+		)
+
+
+func play_source_timeline_sound(
+	event: Dictionary,
+	instance_id: String,
+	sprite_id: int,
+	frame: int,
+	source_name: String
+) -> bool:
+	return _play_nested_source_sound(
+		event,
+		instance_id,
+		sprite_id,
+		frame,
+		source_name
+	)
+
+
+func _play_nested_source_sound(
+	event: Dictionary,
+	instance_id: String,
+	sprite_id: int,
+	frame: int,
+	source_name: String = ""
+) -> bool:
+	var sound_id := int(event.get("sound_id", -1))
+	var sound_file := str(_assets.get(sound_id, ""))
+	var supported_sound_info := _nested_sound_info_supported(event)
+	if not supported_sound_info:
+		push_error(
+			"Unsupported nested StartSound SOUNDINFO: sprite %d frame %d sound %d fields=%s"
+			% [sprite_id, frame, sound_id, _nested_sound_info_flags(event)]
+		)
+	elif sound_file.is_empty():
+		push_error("Missing nested StartSound asset: sprite %d frame %d sound %d" % [sprite_id, frame, sound_id])
+	var started := (
+		supported_sound_info
+		and not sound_file.is_empty()
+		and _start_sound_player(event, sound_file)
+	)
+	last_nested_sound_events.append({
+		"instance_id": instance_id,
+		"sprite_id": sprite_id,
+		"frame": frame,
+		"sound_id": sound_id,
+		"started": started,
+	})
+	if started:
+		last_nested_sound_ids.append(sound_id)
+		nested_source_sound_started.emit({
+			"instance_id": instance_id,
+			"sprite_id": sprite_id,
+			"frame": frame,
+			"root_frame": _current_frame,
+			"sound_id": sound_id,
+			"source_name": source_name,
+			"source_event": event,
+		})
+	return started
+
+
+func _nested_sound_info_supported(event: Dictionary) -> bool:
+	for flag in ["sync_stop", "sync_no_multiple"]:
+		if bool(event.get(flag, false)):
+			return false
+	for field in ["in_point", "out_point", "loop_count", "envelope"]:
+		if event.has(field):
+			return false
+	return true
+
+
+func _nested_sound_info_flags(event: Dictionary) -> PackedStringArray:
+	var unsupported: PackedStringArray = []
+	for flag in ["sync_stop", "sync_no_multiple"]:
+		if bool(event.get(flag, false)):
+			unsupported.append(flag)
+	for field in ["in_point", "out_point", "loop_count", "envelope"]:
+		if event.has(field):
+			unsupported.append(field)
+	return unsupported
 
 
 func _sound_volume_db(event: Dictionary) -> float:
@@ -764,6 +984,22 @@ func _wrapper_transform() -> Transform2D:
 	return _matrix_transform(wrapper.get("matrix", {}), 1.0)
 
 
+func source_placement_global_bounds(
+	placement: Dictionary,
+	timeline_frame: int = _current_frame,
+	ancestor_placements: Array[Dictionary] = []
+) -> Rect2:
+	return _source_placement_bounds(placement, timeline_frame, ancestor_placements, true, true)
+
+
+func source_placement_local_bounds(
+	placement: Dictionary,
+	timeline_frame: int = _current_frame,
+	ancestor_placements: Array[Dictionary] = []
+) -> Rect2:
+	return _source_placement_bounds(placement, timeline_frame, ancestor_placements, true, false)
+
+
 func _rooted_placement_bounds(placement: Dictionary, timeline_frame: int = _current_frame) -> Rect2:
 	var local_bounds := _placement_bounds(placement, timeline_frame)
 	if not local_bounds.has_area():
@@ -779,6 +1015,158 @@ func _placement_bounds(placement: Dictionary, timeline_frame: int = _current_fra
 	if not local_bounds.has_area():
 		return Rect2()
 	return _transform_rect(_placement_transform(placement), local_bounds)
+
+
+func _source_placement_bounds(
+	placement: Dictionary,
+	timeline_frame: int,
+	ancestor_placements: Array[Dictionary],
+	include_wrapper: bool,
+	include_node_transforms: bool
+) -> Rect2:
+	var matrices: Array[Dictionary] = []
+	for ancestor: Dictionary in ancestor_placements:
+		matrices.append(_source_placement_matrix(ancestor))
+	var bounds_twips := _collect_source_bounds(
+		placement,
+		timeline_frame,
+		matrices,
+		0,
+		include_wrapper,
+		include_node_transforms
+	)
+	if bounds_twips.size.x <= 0 or bounds_twips.size.y <= 0:
+		return Rect2()
+	return Rect2(
+		Vector2(bounds_twips.position) / TWIPS_PER_PIXEL,
+		Vector2(bounds_twips.size) / TWIPS_PER_PIXEL
+	)
+
+
+func _collect_source_bounds(
+	placement: Dictionary,
+	timeline_frame: int,
+	ancestor_matrices: Array[Dictionary],
+	clip_age: int,
+	include_wrapper: bool,
+	include_node_transforms: bool
+) -> Rect2i:
+	var matrices := ancestor_matrices.duplicate()
+	matrices.append(_source_placement_matrix(placement))
+	var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
+	if definition.is_empty():
+		return Rect2i()
+	if definition.has("shape_bounds_twips"):
+		var source_bounds: Dictionary = definition["shape_bounds_twips"]
+		var shape_bounds := Rect2i(
+			int(source_bounds.get("Xmin", 0)),
+			int(source_bounds.get("Ymin", 0)),
+			int(source_bounds.get("Xmax", 0)) - int(source_bounds.get("Xmin", 0)),
+			int(source_bounds.get("Ymax", 0)) - int(source_bounds.get("Ymin", 0))
+		)
+		if shape_bounds.size.x <= 0 or shape_bounds.size.y <= 0:
+			return Rect2i()
+		var leaf_to_root: Array[Dictionary] = []
+		for index in range(matrices.size() - 1, -1, -1):
+			leaf_to_root.append(matrices[index])
+		if include_wrapper:
+			var wrapper: Dictionary = _timeline.get("wrapper", {})
+			if not wrapper.is_empty():
+				leaf_to_root.append(SourceBoundsMath.from_swf(wrapper.get("matrix", {})))
+		if include_node_transforms:
+			leaf_to_root.append_array(_source_node_matrices())
+		return SourceBoundsMath.bounds_for_chain(shape_bounds, leaf_to_root)
+	if str(definition.get("type", "")) != "DefineSpriteTag":
+		return Rect2i()
+	var sprite_frames: Array = definition.get("display_list_frames", [])
+	var local_frame := _nested_frame(placement, timeline_frame, sprite_frames.size(), clip_age)
+	var children: Array = (
+		sprite_frames[local_frame - 1]
+		if not sprite_frames.is_empty()
+		else definition.get("first_frame_display_list", [])
+	)
+	var child_clip_age := clip_age
+	var instance_name := str(placement.get("name", ""))
+	if instance_name != "" and _instance_local_frames.has(instance_name):
+		child_clip_age = int(_instance_local_frames[instance_name].get("age", clip_age))
+	var result := Rect2i()
+	var has_result := false
+	for child: Dictionary in children:
+		var child_bounds := _collect_source_bounds(
+			child,
+			local_frame,
+			matrices,
+			child_clip_age,
+			include_wrapper,
+			include_node_transforms
+		)
+		if child_bounds.size.x <= 0 or child_bounds.size.y <= 0:
+			continue
+		result = child_bounds if not has_result else result.merge(child_bounds)
+		has_result = true
+	return result
+
+
+func _source_placement_matrix(placement: Dictionary) -> Dictionary:
+	var instance_name := str(placement.get("name", ""))
+	return SourceBoundsMath.from_swf(
+		placement.get("matrix", {}), instance_local_offset(instance_name)
+	)
+
+
+func _source_node_matrices() -> Array[Dictionary]:
+	var matrices: Array[Dictionary] = []
+	var node: Node = self
+	while node is Node2D:
+		matrices.append(_source_node_matrix(node as Node2D))
+		node = node.get_parent()
+	return matrices
+
+
+func _source_node_matrix(node: Node2D) -> Dictionary:
+	var transform_2d := node.transform
+	var scale_x := float(transform_2d.x.x)
+	var skew_y := float(transform_2d.x.y)
+	var skew_x := float(transform_2d.y.x)
+	var scale_y := float(transform_2d.y.y)
+	if _has_property(node, "game_scale"):
+		var game_scale := float(node.get("game_scale"))
+		scale_x = game_scale
+		scale_y = game_scale
+	var translation_x := _node_translation_twips(node, "source_x", "game_x", node.position.x)
+	var translation_y := _node_translation_twips(node, "source_y", "game_y", node.position.y)
+	return SourceBoundsMath.from_components(
+		scale_x,
+		skew_y,
+		skew_x,
+		scale_y,
+		translation_x,
+		translation_y
+	)
+
+
+func _node_translation_twips(
+	node: Node2D, source_property: String, camera_property: String, fallback: float
+) -> int:
+	var value := fallback
+	if _has_property(node, source_property):
+		value = float(node.get(source_property))
+	elif _has_property(node, camera_property):
+		value = float(node.get(camera_property))
+	else:
+		value = SourceCoordinateMath.from_projection(value)
+	# Source-coordinate setters store integer twips. Keep this property assignment
+	# step separate from the ties-even rounding used when matrices are composed.
+	# Generic Node2D positions are float32 projections, so recover their twips
+	# with SourceCoordinate.from_projection before reading the source transform.
+	return int(value * TWIPS_PER_PIXEL)
+
+
+func _has_property(object: Object, property_name: String) -> bool:
+	for property: Dictionary in object.get_property_list():
+		if str(property.get("name", "")) == property_name:
+			return true
+	return false
 
 
 func _definition_bounds(

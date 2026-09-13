@@ -1,0 +1,57 @@
+{
+  "id": "yulong-super_below",
+  "fighter": "yulong",
+  "slot": "p1",
+  "label": "超必杀",
+  "scenario": "super_below",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 299
+    },
+    "p2": {
+      "x": 500,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "special"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    678,
+    962
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "onDefence",
+    "onDashing"
+  ],
+  "status": "native_selection_explicit_capture_pending",
+  "fighters": {
+    "p1": "yulong",
+    "p2": "yihu"
+  },
+  "catalog_purpose": "Paired energy-negative case; verify source no-op and energy preservation.",
+  "source_contract": {
+    "command_slot": "bishaSuper",
+    "contexts": [
+      "dash",
+      "guard",
+      "stand"
+    ],
+    "energy_min": 300,
+    "implementation": "wired"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂"
+}

@@ -1,0 +1,47 @@
+{
+  "fighter": "rukia",
+  "slot": "p1",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "rukia",
+    "p2": "yihu"
+  },
+  "id": "rukia-p2-normalhit-reaction-r01",
+  "label": "被打/击飞/击落地/起身",
+  "scenario": "trade",
+  "inputs": [
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    918,
+    930,
+    931,
+    942,
+    943,
+    977,
+    978,
+    1002
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "id": "sakura-jinye-owner-hit-natural-end-reactivate-r01",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "招换",
+  "scenario": "owner_hit_helper_natural_end_reactivate",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 330,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "summon"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 18,
+      "end": 22
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "summon"
+      ],
+      "start": 125,
+      "end": 128
+    }
+  ],
+  "target_frames": [
+    804,
+    865
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction"
+  ],
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "status": "ready_for_original_capture",
+  "p1_helper": "jinye",
+  "p2_helper": "kon",
+  "source_helpers": {
+    "p1": {
+      "alias": "jinye",
+      "id": "松本",
+      "swf": "game/fighter/fz/jinye.swf",
+      "sha256": "03736bfd2ef7e9b79f958971fc7192ea641653039212e29793ed291c56bfa62a"
+    },
+    "p2": {
+      "alias": "kon",
+      "id": "魂",
+      "swf": "game/fighter/fz/kon.swf",
+      "sha256": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+    }
+  },
+  "notes": "Native calibration shows p1 hit while Jinye is active, Jinye remains active through natural clip end, then p1 reactivates. Original capture required before acceptance.",
+  "source_target": {
+    "label": "招换",
+    "start_frame": 804,
+    "end_frame": 865,
+    "has_timeline": true,
+    "source_dispatch": [
+      "doAllAction"
+    ]
+  }
+}

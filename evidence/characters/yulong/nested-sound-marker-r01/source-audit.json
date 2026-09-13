@@ -1,0 +1,49 @@
+{
+  "format": "bvn26-yulong-nested-sound-source-audit-r01",
+  "source_identity": {
+    "swf": "game/fighter/yulong.swf",
+    "swf_sha256": "fcf2246b602b4e498caf2b3c9ac6625ae492e45b6249effb22e9b7d669713199",
+    "script_bundle": "scripts/fighter/yulong.json",
+    "script_bundle_sha256": "ea5dd3ba77a3c612516b4e8b0b1cd85f0affe1d46395d7798ef9f8173ca6869f",
+    "selected_root_sprite": 345,
+    "nested_sound_sprite": 185
+  },
+  "source_questions": {
+    "q1_frame_scripts": "DefineSprite_345/frame_466/DoAction.as assigns shijie x based on parent xscale then renames it zh2atm. Sprite185 has DoAction only at frame7 (_name=\"zh21atm\") and frame22 (stop()); frames 1-6, 8-21 have no DoAction. Frame8 has only StartSound soundId164 after a depth3 PlaceObject2 MOVE from character163. No clipAction/enterFrame action is attached to the shijie placement.",
+    "q2_placement": "At Sprite345 frame466, depth28 is removed and a new PlaceObject2 (move=false) places character185 named shijie at ratio465. This is a fresh instance; no inherited state is assumed.",
+    "q3_exit": "Sprite185 advances naturally from frame1 through frame22; frame22 DoAction calls stop(). No conditional goto or stop is authored before frame8. Frame8 sound is an event on the child timeline, independent of root frame event extraction.",
+    "q4_assertion": "For the observed placement and playhead, assert that entering child frame8 starts soundId164 exactly once, and a redraw at unchanged playhead does not restart it. Child replacement and MOVE identity are modeled separately. Removal/unloadMovie audio lifetime remains unknown and is not changed.",
+    "q5_original": "The fixed ranged_down case was rebuilt under fresh runid yulong-nested-sound-r01 with the same case JSON and input windows. Source frame466 observed at fight_tick42 and source frame472 at fight_tick48. The independent marker immediately after the source StartSound emitted exactly once at sequence5593/display_tick500/fight_tick48 with child sprite185/currentframe8 and instance name zh21atm. Capture completed with done=true and no error rows."
+  },
+  "source_paths": {
+    "parent_script": "scripts/fighter/yulong.json:DefineSprite_345/frame_466/DoAction.as",
+    "child_rename_script": "scripts/fighter/yulong.json:DefineSprite_185/frame_7/DoAction.as",
+    "child_stop_script": "scripts/fighter/yulong.json:DefineSprite_185/frame_22/DoAction.as",
+    "timeline": "data/slices/yulong-base.timeline.json:frame 466 depth 28",
+    "xml_export": "/private/tmp/uryu-soundinfo-audit/yulong/yulong.xml:DefineSpriteTag185 frame8 StartSoundTag soundId164"
+  },
+  "original_observation": {
+    "run_id": "yulong-nested-sound-r01",
+    "source_event_sequence": 5593,
+    "display_tick": 500,
+    "fight_tick": 48,
+    "marker_payload": "yulong-nested-sound-r01|sprite185|8|16|0|164|zh21atm|8",
+    "marker_count": 1,
+    "parent_frame466_event": {
+      "sequence": 5476,
+      "fight_tick": 42
+    },
+    "parent_frame472_event": {
+      "sequence": 5585,
+      "fight_tick": 48
+    },
+    "done": true,
+    "event_count": 15103,
+    "errors": 0
+  },
+  "limits": [
+    "The marker proves source StartSoundTag arrival, not audible output or exact playback duration.",
+    "RemoveObject and unloadMovie audio lifecycle is unresolved.",
+    "Nested SOUNDINFO envelope/loop segment semantics are not covered by this sound164 case."
+  ]
+}

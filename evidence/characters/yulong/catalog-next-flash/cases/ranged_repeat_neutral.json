@@ -1,0 +1,69 @@
+{
+  "id": "yulong-ranged_repeat_neutral",
+  "fighter": "yulong",
+  "slot": "p1",
+  "label": "招1",
+  "scenario": "ranged_repeat_neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 500,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "ranged"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "ranged"
+      ],
+      "start": 70,
+      "end": 73
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "ranged"
+      ],
+      "start": 130,
+      "end": 133
+    }
+  ],
+  "target_frames": [
+    313,
+    349
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "native_selection_explicit_capture_pending",
+  "fighters": {
+    "p1": "yulong",
+    "p2": "yihu"
+  },
+  "catalog_purpose": "Three separate placements in one match; inspect projectile instance reset and repeated casts.",
+  "source_contract": {
+    "command_slot": "magichit1",
+    "contexts": [
+      "stand"
+    ],
+    "energy_min": 0,
+    "implementation": "wired"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂"
+}

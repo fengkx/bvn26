@@ -36,6 +36,28 @@ class CharacterImportTests(unittest.TestCase):
                 self.assertIn('adapter.body_call("fangyux", [])', code)
                 self.assertFalse(metadata.get('unbound_call_sites'))
 
+    def test_sakura_receiver_is_classified_by_shared_source_not_symbol_id(self):
+        bundle = json.loads((ROOT / 'scripts/fighter/Sakura.json').read_text())
+        timeline = json.loads((ROOT / 'data/slices/Sakura-base.timeline.json').read_text())
+        _, metadata = compile_controller(bundle, timeline['sprite_id'], timeline, player=True)
+
+        receiver = next(h for h in metadata['receiver_hooks'] if h['placement_frame'] == 1)
+        self.assertEqual(receiver['receiver_symbol_id'], 5)
+        self.assertEqual(receiver['receiver_source_path'], 'DefineSprite_5/frame_1/DoAction.as')
+        self.assertEqual(receiver['depth'], 29)
+        self.assertEqual(receiver['receiver'], 'beida')
+        self.assertEqual(receiver['member_frames'], list(range(1, 20)))
+        body = next(p for p in timeline['frames'][0]['display_list'] if p['depth'] == 29)
+        self.assertEqual((body['character_id'], body['name']), (5, 'bdmn'))
+        definition = next(d for d in timeline['definitions'] if d['character_id'] == 5)
+        self.assertEqual(definition['referenced_character_ids'], [4])
+
+        mutated = json.loads(json.dumps(bundle))
+        source = next(s for s in mutated['scripts'] if s['path'] == 'DefineSprite_5/frame_1/DoAction.as')
+        source['source'] = source['source'].replace('if(!_loc2_)', 'if(true)', 1)
+        with self.assertRaisesRegex(ValueError, 'Uncompiled receiver source'):
+            compile_controller(mutated, timeline['sprite_id'], timeline, player=True)
+
     def test_shared_guard_switch_retains_every_grouped_case(self):
         source = json.loads((ROOT / 'scripts/main.json').read_text())
         fx = compile_hit_fx(source)
@@ -70,6 +92,29 @@ class CharacterImportTests(unittest.TestCase):
         self.assertEqual(result['source']['timeline_symbol_id'], 638)
         self.assertEqual(result['actions']['special']['必杀']['start_frame'], 497)
         self.assertEqual(set(result['hit_parameters']['attacks_by_form']), {'1', '2'})
+
+    def test_uryu_optional_ground_combo_uses_only_existing_source_labels(self):
+        result = extract_slice(ROOT, '石田')
+
+        self.assertEqual(result['source']['timeline_symbol_id'], 345)
+        self.assertEqual(
+            result['actions']['ground_combo'],
+            {
+                '砍1': {'start_frame': 183, 'end_frame': 208},
+                '砍2': {'start_frame': 209, 'end_frame': 246},
+            },
+        )
+        self.assertNotIn('砍3', result['actions']['ground_combo'])
+        self.assertEqual(
+            result['actions']['extended_actions']['砍技1'],
+            {'start_frame': 247, 'end_frame': 276},
+        )
+        self.assertEqual(
+            result['actions']['extended_actions']['招3'],
+            {'start_frame': 277, 'end_frame': 312},
+        )
+        self.assertEqual(len(result['actions']['movement']), 8)
+        self.assertEqual(result['movement_constants']['speed_per_tick'], 8)
 
     def test_rifagu_projectile_load_and_diagonal_motion(self):
         bundle = json.loads((ROOT / 'scripts/fighter/rifagu.json').read_text())

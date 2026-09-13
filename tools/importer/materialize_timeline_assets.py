@@ -10,12 +10,20 @@ from pathlib import Path
 
 
 def _timeline_start_sound_ids(timeline: dict) -> set[int]:
-    return {
+    sound_ids = {
         int(event["sound_id"])
         for frame in timeline.get("frames", [])
         for event in frame.get("events", [])
         if event.get("type") == "start_sound" and "sound_id" in event
     }
+    for definition in timeline.get("definitions", []):
+        for frame_events in definition.get("display_list_frame_events", []):
+            sound_ids.update(
+                int(event["sound_id"])
+                for event in frame_events
+                if event.get("type") == "start_sound" and "sound_id" in event
+            )
+    return sound_ids
 
 
 def _workspace_sound(workspace: Path, sound_id: int) -> Path | None:

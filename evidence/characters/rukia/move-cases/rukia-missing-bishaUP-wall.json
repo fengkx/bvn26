@@ -1,0 +1,43 @@
+{
+  "id": "rukia-missing-bishaUP-wall",
+  "fighter": "rukia",
+  "slot": "p1",
+  "label": "上必杀",
+  "scenario": "wall",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 20,
+      "energy": 300
+    },
+    "p2": {
+      "x": 70,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "special"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    null,
+    null
+  ],
+  "has_source_timeline": false,
+  "source_dispatch": [
+    "doAllAction",
+    "onDashing"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "rukia",
+    "p2": "yihu"
+  }
+}

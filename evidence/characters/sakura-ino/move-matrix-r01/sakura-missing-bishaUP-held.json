@@ -1,0 +1,45 @@
+{
+  "id": "sakura-missing-bishaUP-held",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "上必杀",
+  "scenario": "held",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "special"
+      ],
+      "start": 10,
+      "end": 110
+    }
+  ],
+  "target_frames": [
+    null,
+    null
+  ],
+  "has_source_timeline": false,
+  "source_dispatch": [
+    "doAllAction",
+    "onDashing"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "priority": "P3",
+  "priority_reason": "Source timeline/dispatch is not yet resolved; retain as negative/unreachable probe."
+}

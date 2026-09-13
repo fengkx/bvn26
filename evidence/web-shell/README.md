@@ -1,37 +1,20 @@
-# Web player shell — 2026-09-11
+# Web player shell — fullscreen tools and master volume
 
-User-requested browser UI, independent of Flash gameplay semantics. No fighter,
-input mapping, source timeline or combat runtime changes.
+The browser shell provides controls without changing fighter input mappings or combat/source data.
 
-- Default windowed layout preserves a 3:2 canvas and browser-accessible toolbar.
-- Fullscreen is requested only by the button. The game fills the screen at 3:2 (letterboxing only as needed).
-  Controls and exit instructions float above the game and fade after 4.5 seconds;
-  moving the pointer to the top edge reveals them. No page header consumes space.
-  No keyboard shortcuts or key interception are installed. Escape remains a
-  browser/game-owned key, so the UI recommends the exit button.
-- Export downloads JSON locally: engine stdout/stderr, console errors, uncaught
-  errors/rejections, lifecycle/fullscreen events and browser/canvas metadata.
-  Recent 2,000 entries are retained, each capped at 8,192 characters; dropped
-  entry count is included. Refresh starts a new session. No automatic upload,
-  storage/cookie export or URL query/hash collection.
-- The shell is a custom Godot export template, so regular builds include it.
+- Windowed mode keeps the full toolbar visible for convenient use.
+- Fullscreen state follows the browser's `fullscreenchange` event. The top-right toolbar starts tucked above the viewport like an auto-hiding dock, leaving a 64×18 px translucent dark handle inset 3 px from the top. Its warm-gray edge, shadow, downward chevron, and small dark-red accent make the hit area visible without text or animation. Root confirmed the handle is clearly visible in an actual fullscreen IAB screenshot. Moving to that edge, hovering or tapping the handle reveals the toolbar and it stays open while the pointer rests there. Pointer travel inside the tools or popover does not immediately hide them; leaving the whole dock starts a 700 ms delay, closes an open popover, and tucks the dock unless a slider drag or keyboard focus is active. Pointer input clears keyboard modality so mouse focus cannot pin it open. Touch can tap the handle to pin or tuck the controls. Reduced-motion preferences disable transitions.
+- The volume popover has a keyboard-operable range slider and mute toggle with BVN dark/red styling. Settings are validated and persisted in `localStorage` under `bvn26.audio.v1`; malformed data falls back to 72%. Muting preserves the last nonzero slider value, and moving the slider above zero clears mute. A zero slider level maps to silence; 100% maps to 0 dB and never amplifies.
+- `web_audio_settings.gd` is an autoload bridge. It receives the shell's startup settings before the main scene starts, applies linear level and mute to Godot's `Master` bus (so music and sound effects share the control), then reports the actual bus level/mute back to the popover. The JavaScript bridge uses direct `JavaScriptObject` property assignment and method calls; the former dynamic `.set()`/`.call()` form incorrectly targeted nonexistent `Window.set/call` methods in Web exports. The player-facing receipt says “音乐与音效” and is based on the returned bus state. The callback is unregistered when the autoload exits.
+- Toolbar key events are kept out of game input while a shell control has focus; pointer down in the toolbar/popover does not propagate to the canvas. The range slider retains normal keyboard and touch controls. When an Escape key event reaches the shell, it closes the popover; browsers may still reserve Escape to exit fullscreen. Reduced-motion preferences disable toolbar/hint transitions.
+- Log export remains a local JSON download with engine/console diagnostics. No automatic upload, cookie export, or URL query/hash collection is performed.
 
-Validation: Godot 4.7.2 release Web export succeeded. Chromium headless boot and
-the following focused scenario passed against the actual exported game:
+## Validation
 
-    node tools/test_chromium_web_boot.mjs http://127.0.0.1:9237 http://127.0.0.1:8067/ /tmp/bvn-shell.png 'M0_BOOT_OK ' shell
+- `godot/tests/web_audio_settings_smoke.gd` passed on Godot 4.7.2: 100% maps to 0 dB, 25% maps to the corresponding linear gain, mute is independent of the saved level, and 0% reaches silence.
+- Node syntax checks passed for both custom-shell inline scripts and `tools/test_chromium_web_boot.mjs`.
+- Root's actual fullscreen Chrome review passed the mouse path on the prior slim-hint build: the top-edge target at `(1170, 4)` kept the toolbar open for 25 seconds; clicking the playfield at `(650, 400)` tucked it with no buttons left onscreen. Root then confirmed the updated handle's visibility in an actual fullscreen IAB screenshot. Chrome verified the real audio receipt through 72% → 0% → 50%, mute/unmute, and refresh persistence at 50%. Touch input and dragging the slider outside the panel have not been manually verified.
+- The updated Chromium shell scenario additionally checks actual-bus acknowledgement, one-click restore from zero, persistence, top-edge stay-open behavior, delayed tuck/popover close after leaving the dock, keyboard-vs-pointer focus behavior, and Escape closing the popover when the browser delivers the key. The automated browser scenario itself was syntax-checked but was not run against root's interactive Chrome session.
+- The final Web release export used Godot 4.7.2 and the verified official no-threads release template (template SHA-256 `d3ee2f08cef0cf3cf6678a6355a92a8db48ccdd35cbd2e8bfd5f0e8a0b4032a0`). The same nine non-empty output files were copied to both local entry paths and checked byte-for-byte. The current PCK SHA-256 is `9e29c4d7b187eb1461a5ecfdf8d9b7091fadd8429bb0fa272e1632ebc6df7fda`; generated HTML SHA-256 is `f1ed10244a653470b4db472ff01cd89b16e83957b0289026aaf55ef6ed1a582e`. The 64×18 top handle and audio bridge are present; relative to the previous HTML, the export changed only the embedded PCK byte size. Export exited successfully; the environment still reports its CA-certificate and global editor-settings write diagnostics.
 
-The scenario checks default windowed bounds, toolbar context-menu availability,
-fullscreen entry/exit and exit instructions, the downloaded Blob's engine/error
-messages and metadata, ring-buffer eviction, and restored canvas focus. Screenshot
-inspection confirmed the toolbar, 3:2 title screen and feedback fit a 756×469
-viewport. Temporary build/test logs and screenshots remain outside source.
-
-tools/verify.py, tools/check_handoff.py and git diff --check passed.
-The sandbox denied writing Godot's global editor settings; export itself completed.
-Firefox/Safari, browser-controlled Escape behavior and full gameplay browser
-acceptance remain unverified. This is not a full AT-13 or gameplay parity claim.
-
-Follow-up: red/black game styling replaces the generic blue toolbar. Chromium
-checks verify maximal fullscreen bounds, preserved aspect ratio, floating toolbar,
-auto-hide and top-edge reveal. Windowed and fullscreen screenshots were inspected.
+Firefox/Safari, full browser gameplay, and original Flash visual/audio parity remain outside this check.

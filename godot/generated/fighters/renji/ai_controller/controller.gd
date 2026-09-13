@@ -26,6 +26,9 @@ func sensor(key: String) -> Variant:
 func body_hit(key: String) -> Variant:
 	return adapter.body_hit(key)
 
+func source_key(key: String) -> Variant:
+	return adapter.source_key(key)
+
 func power(key: String) -> Variant:
 	return adapter.power_field(key)
 

@@ -37,9 +37,14 @@ class Projectile extends RefCounted:
 		var host: AiControllerHost = host_ref.get_ref()
 		return instance_name if host != null and host.instances.alive(source_path, generation) else null
 
+	func rename_from_root(source_name: String, target_name: String) -> void:
+		if instance_name == source_name:
+			instance_name = target_name
+
 	func queue_frame_script(frame: int) -> void:
 		var events: Array = model.get("rename_frames", []).duplicate()
 		events.append_array(model.get("frame_events", []))
+		events.append_array(model.get("timeline_events", []))
 		for event: Dictionary in events:
 			if int(event["frame"]) == frame:
 				var host: AiControllerHost = host_ref.get_ref()
@@ -57,6 +62,33 @@ class Projectile extends RefCounted:
 			if int(event["frame"]) == frame:
 				assert(event["op"] == "screen_flash")
 				host_ref.get_ref().fighter.screen_flash_requested.emit(int(event["color_rgb24"]))
+		for event: Dictionary in model.get("timeline_events", []):
+			if int(event["frame"]) != frame:
+				continue
+			var host: AiControllerHost = host_ref.get_ref()
+			assert(not host.fighter.source_child_frame_requested.get_connections().is_empty(),
+				"Unconnected nested timeline event queue")
+			host.fighter.source_child_frame_requested.emit(
+				_play_nested_timeline_sound.bind(frame, event["event"])
+			)
+
+	func _play_nested_timeline_sound(frame: int, event: Dictionary) -> void:
+		var host: AiControllerHost = host_ref.get_ref()
+		if current_source_name() == null or host == null:
+			return
+		var instance_id := "root/%d:%d:%d#%d" % [
+			int(model.get("source_depth", -1)),
+			int(model.get("source_sprite_id", -1)),
+			int(model.get("source_placement_frame", -1)),
+			generation,
+		]
+		host.fighter.play_source_timeline_sound(
+			event,
+			instance_id,
+			int(model.get("source_sprite_id", -1)),
+			frame,
+			str(current_source_name())
+		)
 
 	func advance_timeline(tick: int) -> void:
 		if last_advance_tick == tick:
@@ -203,6 +235,8 @@ func _create_instance(hook: Dictionary, generation: int) -> RefCounted:
 			projectile.model["initial_speed"] = float(context.read_field(projectile.model["initial_speed_field"])) * float(projectile.model["initial_speed_factor"])
 		fighter.set_instance_local_offset(projectile.model["instance_name"], Vector2.ZERO)
 		fighter._start_clip_playhead(projectile.model["instance_name"], projectile.model)
+		if not projectile.model.get("timeline_events", []).is_empty():
+			fighter.mark_source_timeline_event_driver(projectile.model["instance_name"])
 		projectile.queue_frame_script(1)
 		return projectile
 	if hook.has("receiver"):

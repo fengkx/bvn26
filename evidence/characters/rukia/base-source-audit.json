@@ -1,0 +1,6540 @@
+{
+  "format": "bvn26-rukia-base-source-first-audit-v1",
+  "status": "source_audit_complete_with_original_capture; q3_static_control_flow_classified",
+  "scope": {
+    "fighter_id": "露其雅",
+    "form": "base",
+    "excluded_label": "万解 (transformation sequence)"
+  },
+  "source": {
+    "swf_path": "game/fighter/rukia.swf",
+    "swf_sha256": "c48d47a817dbf1b4fff9b333bb35d89debb64d0635e8d88b4a7d1228208194eb",
+    "script_bundle_path": "scripts/fighter/rukia.json",
+    "script_bundle_sha256": "5f491f85effa3c807a5f9d465cfef9f0d0b401ba427edbf717c9622df622a4b8",
+    "base_timeline_sprite_id": 533,
+    "base_root_placement": {
+      "frame": 1,
+      "tag": 26,
+      "depth": 1,
+      "character_id": 533
+    },
+    "second_form_root_placement": {
+      "frame": 2,
+      "tag": 26,
+      "depth": 1,
+      "character_id": 976
+    }
+  },
+  "source_questions": {
+    "q1_frame_scripts": "Each base-form label's complete frame span, DoAction frames and empty-frame ranges are listed below. Clip-event script paths are separately listed; audit includes hashes, while full source is retained in scripts/fighter/rukia.json.",
+    "q2_placeobject_vs_move": "Raw SWF tag classes and placement depths/character ids are enumerated below per frame. MOVE-only records intentionally carry no new character id; clip-event paths identify event scripts from the frozen script bundle.",
+    "q3_label_exit": "Each base label is classified from the frozen sprite frame DoAction, frame-local clip-event scripts, action_exits and timeline_fallthroughs. The classification distinguishes explicit gotoAndStop()+play(), self-loop/replay, conditional enterFrame transitions, timeline fallthrough, and stop states. It does not claim event ordering or externally resumed stop states without an original-player observation; those remain runtime conditions under Q5, not inferred from label end_frame.",
+    "q4_source_invariants": [
+      {
+        "fact": "Base-form root placement is frame 1, depth 1, character 533; frame 2 replaces root character with 976.",
+        "source": "game/fighter/rukia.swf root PlaceObject2 tags; hash-bound source record above."
+      },
+      {
+        "fact": "The base timeline calls stop() on frame 1; frame 2 resets hits = 0.",
+        "source": "scripts/fighter/rukia.json → DefineSprite_533/frame_1/DoAction.as and frame_2/DoAction.as."
+      },
+      {
+        "fact": "The root controller/clip state is instance-owned; a new PlaceObject is a fresh clip instance, while a MOVE updates an existing display-list entry. Exact state retention by depth is shown in frame change records; runtime callback ordering still requires player evidence.",
+        "source": "SWF PlaceObject2/RemoveObject tags and corresponding scripts/fighter/rukia.json clip-action paths."
+      },
+      {
+        "fact": "The base timeline itself includes a late `万解` label at frames 1144–1178; it is excluded from base-form implementation scope.",
+        "source": "game/fighter/rukia.swf → sprite_533 frame labels."
+      }
+    ],
+    "q5_original_same_input": "Original Flash case rukia-218-nornalhit-neutral (P1 x=300, P2 x=350, attack [10,13), 300 fight frames) and Godot now match 602/602 rows across all 14 fields after the shared source-matrix collision repair; see evidence/characters/rukia/collision-matrix-implementation-r01.json. The first five Rukia base action captures are retained in evidence/characters/rukia/base-move-reference-r01/: rush, jump, summon, and defence match; skill1 first exposed a duplicated body_warp frame event, now fixed by source-path/frame/operation/call-serial deduplication, and its unchanged original input now matches 602/602 rows and 14 fields. The first skill1 mismatch had been fight tick 23/display tick 502, source frame 330, P1 x=400/xscale=-100 in Flash versus x=300/xscale=+100 in the port. Raw before/after rows, the original event stream and source script evidence are retained in that packet. Mirrored and held skill1 cases are native-only smokes and are not claimed as original parity."
+  },
+  "actions": [
+    {
+      "label": "站立",
+      "start_frame": 1,
+      "end_frame": 9,
+      "frame_script_frames": [
+        1,
+        2,
+        8
+      ],
+      "frame_scripts": {
+        "1": [
+          {
+            "path": "DefineSprite_533/frame_1/DoAction.as",
+            "sha256": "67ef57fda43786d357ad6f039a63e3ef029de4d6c2eb36e4ce4b147010ed71cf"
+          }
+        ],
+        "2": [
+          {
+            "path": "DefineSprite_533/frame_2/DoAction.as",
+            "sha256": "5945dc9bd06c19062d43c753efb05816891856090f3e54f16b42c4353f79d871"
+          }
+        ],
+        "8": [
+          {
+            "path": "DefineSprite_533/frame_8/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "3-7",
+        "9"
+      ],
+      "clip_action_frames": [
+        1
+      ],
+      "clip_event_scripts": {
+        "1": [
+          {
+            "path": "DefineSprite_533/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "552614720eac86a13093bb10e6732d7e05222b348c079e5ac6cd6118ad947ec7"
+          },
+          {
+            "path": "DefineSprite_533/frame_1/PlaceObject2_2_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "1": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 1,
+            "move": false,
+            "has_character": true,
+            "character_id": 3
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 23,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 25,
+            "move": false,
+            "has_character": true,
+            "character_id": 5
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 14
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 31,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 129,
+          "source": "gotoAndStop(\"开场\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 130,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 180,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 189,
+          "source": "_root[\"p\" + pn + \"hits\"].gotoAndPlay(\"连击\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 295,
+          "source": "gotoAndStop(\"击落地\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 296,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 301,
+          "source": "gotoAndStop(\"击落地\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 302,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 309,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 314,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 366,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 367,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 381,
+          "source": "gotoAndStop(\"招换\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 382,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 400,
+          "source": "stop();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 416,
+          "source": "stop();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 434,
+          "source": "gotoAndStop(\"击飞\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 435,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 453,
+          "source": "AImain.gotoAndStop(2);"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 458,
+          "source": "AImain.gotoAndStop(1);"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 599,
+          "source": "gotoAndStop(\"落\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 600,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 605,
+          "source": "gotoAndStop(\"落2\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 606,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 782,
+          "source": "gotoAndStop(\"落\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 787,
+          "source": "gotoAndStop(\"走\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 798,
+          "source": "gotoAndStop(\"落2\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 799,
+          "source": "play();"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 804,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 1,
+          "path": "DefineSprite_533/frame_1/DoAction.as",
+          "line": 805,
+          "source": "play();"
+        },
+        {
+          "frame": 8,
+          "path": "DefineSprite_533/frame_8/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 8,
+          "path": "DefineSprite_533/frame_8/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "controller_dispatch_and_self_loop: frame 1 includes conditional controller goto calls; frame 8 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "走",
+      "start_frame": 10,
+      "end_frame": 19,
+      "frame_script_frames": [
+        13
+      ],
+      "frame_scripts": {
+        "13": [
+          {
+            "path": "DefineSprite_533/frame_13/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "10-12",
+        "14-19"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "10": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 31
+          }
+        ],
+        "13": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 31
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 13,
+          "path": "DefineSprite_533/frame_13/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 13,
+          "path": "DefineSprite_533/frame_13/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 13 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "瞬步",
+      "start_frame": 20,
+      "end_frame": 39,
+      "frame_script_frames": [
+        21,
+        35
+      ],
+      "frame_scripts": {
+        "21": [
+          {
+            "path": "DefineSprite_533/frame_21/DoAction.as",
+            "sha256": "959104852cd78b4021ce0f7f48631e3ed0cf0b71c94da436fa97f3d887390590"
+          }
+        ],
+        "35": [
+          {
+            "path": "DefineSprite_533/frame_35/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "20",
+        "22-34",
+        "36-39"
+      ],
+      "clip_action_frames": [
+        21,
+        30
+      ],
+      "clip_event_scripts": {
+        "21": [
+          {
+            "path": "DefineSprite_533/frame_21/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "696d47852ad66fd1d3cf800e1ec629ce50042bd17a5ac74936d9ccffe37e584d"
+          }
+        ],
+        "30": [
+          {
+            "path": "DefineSprite_533/frame_30/PlaceObject2_2_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "20": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 33
+          }
+        ],
+        "21": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 35
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "22": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "23": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "24": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 37
+          }
+        ],
+        "25": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "26": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "27": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "28": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "29": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 39
+          }
+        ],
+        "30": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 32,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "32": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 33
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 35,
+          "path": "DefineSprite_533/frame_35/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 35,
+          "path": "DefineSprite_533/frame_35/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 35 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "跳",
+      "start_frame": 40,
+      "end_frame": 55,
+      "frame_script_frames": [
+        42
+      ],
+      "frame_scripts": {
+        "42": [
+          {
+            "path": "DefineSprite_533/frame_42/DoAction.as",
+            "sha256": "b890a77fc0b2700bee5d0bb3f7b92b99349b6a62d2f20d8d115b30d037b3613a"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "40-41",
+        "43-55"
+      ],
+      "clip_action_frames": [
+        42,
+        50
+      ],
+      "clip_event_scripts": {
+        "42": [
+          {
+            "path": "DefineSprite_533/frame_42/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "15d993e9b1598e78ddb3e8ca35054bb2a562bea05b7c388fbcae371981dc8ff2"
+          }
+        ],
+        "50": [
+          {
+            "path": "DefineSprite_533/frame_50/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "0e74ab6cac90234a068c43bdd8851d4525e750d49fbd8dc7d579dc727df256c3"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "40": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 41
+          }
+        ],
+        "42": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 43
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "50": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ]
+      },
+      "playback_control_calls": [],
+      "label_exit_classification": "conditional_clip_transition: enterFrame calls onJumping(1) and onJumping(2); destination depends on controller/floor state."
+    },
+    {
+      "label": "落",
+      "start_frame": 56,
+      "end_frame": 71,
+      "frame_script_frames": [
+        56,
+        68
+      ],
+      "frame_scripts": {
+        "56": [
+          {
+            "path": "DefineSprite_533/frame_56/DoAction.as",
+            "sha256": "8e9c06fc81a61e04678abae1c01b81280c25d36522c0d5b5ab8721fb9c6ffb8a"
+          }
+        ],
+        "68": [
+          {
+            "path": "DefineSprite_533/frame_68/DoAction.as",
+            "sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "57-67",
+        "69-71"
+      ],
+      "clip_action_frames": [
+        56
+      ],
+      "clip_event_scripts": {
+        "56": [
+          {
+            "path": "DefineSprite_533/frame_56/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "1dd832a1ce74067bd825f06d162d2b22e4c1a2c467a47e0dba4c6b9b2e29ac9e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "56": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 46
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 68,
+          "path": "DefineSprite_533/frame_68/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"落\");"
+        },
+        {
+          "frame": 68,
+          "path": "DefineSprite_533/frame_68/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "self_loop_with_conditional_clip_transition: frame 68 gotoAndStop(\"落\") then play(); enterFrame calls onJumping(3)."
+    },
+    {
+      "label": "跳2",
+      "start_frame": 72,
+      "end_frame": 88,
+      "frame_script_frames": [
+        72
+      ],
+      "frame_scripts": {
+        "72": [
+          {
+            "path": "DefineSprite_533/frame_72/DoAction.as",
+            "sha256": "77d8ecec992ad9b2739d382fb920a33b321349fcb0a770339700673228ce12b4"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "73-88"
+      ],
+      "clip_action_frames": [
+        72,
+        83
+      ],
+      "clip_event_scripts": {
+        "72": [
+          {
+            "path": "DefineSprite_533/frame_72/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "a5e83704d5060297001dd8191822a1fdb310052896c4d0d1f9d69ca1f9a495f0"
+          }
+        ],
+        "83": [
+          {
+            "path": "DefineSprite_533/frame_83/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "092e6f38f29accd57b1b3367b69d2128273fbf865dda02bb9e6ba70780771c6e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "72": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 43
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "83": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ]
+      },
+      "playback_control_calls": [],
+      "label_exit_classification": "conditional_clip_transition: enterFrame calls onJumping(4) and onJumping(5); destination depends on controller/floor state."
+    },
+    {
+      "label": "落2",
+      "start_frame": 89,
+      "end_frame": 114,
+      "frame_script_frames": [
+        89,
+        101
+      ],
+      "frame_scripts": {
+        "89": [
+          {
+            "path": "DefineSprite_533/frame_89/DoAction.as",
+            "sha256": "8e9c06fc81a61e04678abae1c01b81280c25d36522c0d5b5ab8721fb9c6ffb8a"
+          }
+        ],
+        "101": [
+          {
+            "path": "DefineSprite_533/frame_101/DoAction.as",
+            "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "90-100",
+        "102-114"
+      ],
+      "clip_action_frames": [
+        89
+      ],
+      "clip_event_scripts": {
+        "89": [
+          {
+            "path": "DefineSprite_533/frame_89/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "767f0d510bc837c4f8ed84dd2c726b752ce3806104bd8670ea9debc210d94b6d"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "89": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 46
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 101,
+          "path": "DefineSprite_533/frame_101/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"落2\");"
+        },
+        {
+          "frame": 101,
+          "path": "DefineSprite_533/frame_101/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "self_loop_with_conditional_clip_transition: frame 101 gotoAndStop(\"落2\") then play(); enterFrame calls onJumping(6)."
+    },
+    {
+      "label": "落地",
+      "start_frame": 115,
+      "end_frame": 126,
+      "frame_script_frames": [
+        116,
+        119
+      ],
+      "frame_scripts": {
+        "116": [
+          {
+            "path": "DefineSprite_533/frame_116/DoAction.as",
+            "sha256": "254f13f0db54ab20a90ae1668ab15d48b30e8bca3b4be9634ac2f485d73d3e8f"
+          }
+        ],
+        "119": [
+          {
+            "path": "DefineSprite_533/frame_119/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "115",
+        "117-118",
+        "120-126"
+      ],
+      "clip_action_frames": [
+        116
+      ],
+      "clip_event_scripts": {
+        "116": [
+          {
+            "path": "DefineSprite_533/frame_116/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "f3bddb1fde31648861b8017538a5812ec7e720bb8209a8fbf9f939f3cb117bcc"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "115": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 48
+          }
+        ],
+        "116": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "117": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 51
+          }
+        ],
+        "119": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 53
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 119,
+          "path": "DefineSprite_533/frame_119/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 119,
+          "path": "DefineSprite_533/frame_119/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 119 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "跳砍",
+      "start_frame": 127,
+      "end_frame": 144,
+      "frame_script_frames": [
+        128,
+        141
+      ],
+      "frame_scripts": {
+        "128": [
+          {
+            "path": "DefineSprite_533/frame_128/DoAction.as",
+            "sha256": "9b79c9423446b2ba8f6b389e4d8c56548a32adc976bbd8513c19784bfaf4888b"
+          }
+        ],
+        "141": [
+          {
+            "path": "DefineSprite_533/frame_141/DoAction.as",
+            "sha256": "91d1a20025e4d23eef81b8197d535a805b923501b7e3c7c172fa28ffdb782ca0"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "127",
+        "129-140",
+        "142-144"
+      ],
+      "clip_action_frames": [
+        128
+      ],
+      "clip_event_scripts": {
+        "128": [
+          {
+            "path": "DefineSprite_533/frame_128/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "c4aee297612d827385f5e70a50d9879bdecda2337bef70620ddacd10d2c8c5e1"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "127": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 55
+          }
+        ],
+        "128": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 57
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 30,
+            "move": false,
+            "has_character": true,
+            "character_id": 74
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "142": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 30
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 141,
+          "path": "DefineSprite_533/frame_141/DoAction.as",
+          "line": 1,
+          "source": "gotoAndPlay(130);"
+        }
+      ],
+      "label_exit_classification": "explicit_replay_plus_timeline_fallthrough: frame 141 gotoAndPlay(130); timeline metadata also records frame 145 fallthrough to 跳砍2. Static source does not establish reachability of frame 145 while the frame-141 replay executes."
+    },
+    {
+      "label": "跳砍2",
+      "start_frame": 145,
+      "end_frame": 173,
+      "frame_script_frames": [
+        146,
+        159
+      ],
+      "frame_scripts": {
+        "146": [
+          {
+            "path": "DefineSprite_533/frame_146/DoAction.as",
+            "sha256": "77d8ecec992ad9b2739d382fb920a33b321349fcb0a770339700673228ce12b4"
+          }
+        ],
+        "159": [
+          {
+            "path": "DefineSprite_533/frame_159/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "145",
+        "147-158",
+        "160-173"
+      ],
+      "clip_action_frames": [
+        150
+      ],
+      "clip_event_scripts": {
+        "150": [
+          {
+            "path": "DefineSprite_533/frame_150/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "f3bddb1fde31648861b8017538a5812ec7e720bb8209a8fbf9f939f3cb117bcc"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "145": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 48
+          }
+        ],
+        "147": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 51
+          }
+        ],
+        "150": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "154": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 53
+          }
+        ],
+        "159": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 159,
+          "path": "DefineSprite_533/frame_159/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 159,
+          "path": "DefineSprite_533/frame_159/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 159 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "跳招",
+      "start_frame": 174,
+      "end_frame": 217,
+      "frame_script_frames": [
+        175,
+        183,
+        202
+      ],
+      "frame_scripts": {
+        "175": [
+          {
+            "path": "DefineSprite_533/frame_175/DoAction.as",
+            "sha256": "18f6a5fb5ded6f1e33c0d1692f764b48da97d03cc8fddc22a1780fad044e4b59"
+          }
+        ],
+        "183": [
+          {
+            "path": "DefineSprite_533/frame_183/DoAction.as",
+            "sha256": "d7c432a1d7743492be254038ff8bb260250e7aac81a0dafa16a4719e0623024b"
+          }
+        ],
+        "202": [
+          {
+            "path": "DefineSprite_533/frame_202/DoAction.as",
+            "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "174",
+        "176-182",
+        "184-201",
+        "203-217"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "174": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 78
+          }
+        ],
+        "176": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 80
+          }
+        ],
+        "178": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 84
+          }
+        ],
+        "180": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 86
+          }
+        ],
+        "182": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 88
+          }
+        ],
+        "183": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 90
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "184": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 92
+          }
+        ],
+        "185": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 94
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "186": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 96
+          }
+        ],
+        "187": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 98
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "188": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 100
+          }
+        ],
+        "189": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 102
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 103
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "190": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 28,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "191": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 28,
+            "move": true,
+            "has_character": false
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "192": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 104
+          }
+        ],
+        "193": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 106
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "194": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 108
+          }
+        ],
+        "195": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 110
+          }
+        ],
+        "196": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 112
+          }
+        ],
+        "197": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 114
+          }
+        ],
+        "198": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 116
+          }
+        ],
+        "200": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 118
+          }
+        ],
+        "202": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 120
+          }
+        ],
+        "204": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 122
+          }
+        ],
+        "206": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 124
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 202,
+          "path": "DefineSprite_533/frame_202/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"落2\");"
+        },
+        {
+          "frame": 202,
+          "path": "DefineSprite_533/frame_202/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 202 gotoAndStop(\"落2\") then play()."
+    },
+    {
+      "label": "砍1",
+      "start_frame": 218,
+      "end_frame": 246,
+      "frame_script_frames": [
+        219,
+        232,
+        238
+      ],
+      "frame_scripts": {
+        "219": [
+          {
+            "path": "DefineSprite_533/frame_219/DoAction.as",
+            "sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+          }
+        ],
+        "232": [
+          {
+            "path": "DefineSprite_533/frame_232/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "238": [
+          {
+            "path": "DefineSprite_533/frame_238/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "218",
+        "220-231",
+        "233-237",
+        "239-246"
+      ],
+      "clip_action_frames": [
+        220,
+        226
+      ],
+      "clip_event_scripts": {
+        "220": [
+          {
+            "path": "DefineSprite_533/frame_220/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "cb31039581cb0233b56e8496ec779fc1c23ca3fd29caf2f8489f3466d0c9e042"
+          }
+        ],
+        "226": [
+          {
+            "path": "DefineSprite_533/frame_226/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "c85d7337cd1e22621cb9c6eb1a6b733d87fe63558c825d66d426cd1a6fc07315"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "218": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 126
+          }
+        ],
+        "220": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 128
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "222": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 130
+          }
+        ],
+        "223": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          }
+        ],
+        "224": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 132
+          }
+        ],
+        "226": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 134
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "232": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 238,
+          "path": "DefineSprite_533/frame_238/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 238,
+          "path": "DefineSprite_533/frame_238/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 238 gotoAndStop(\"站立\") then play(); frame 226 clip event conditionally branches to 砍2 or 招1."
+    },
+    {
+      "label": "砍2",
+      "start_frame": 247,
+      "end_frame": 272,
+      "frame_script_frames": [
+        248,
+        263,
+        269
+      ],
+      "frame_scripts": {
+        "248": [
+          {
+            "path": "DefineSprite_533/frame_248/DoAction.as",
+            "sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+          }
+        ],
+        "263": [
+          {
+            "path": "DefineSprite_533/frame_263/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "269": [
+          {
+            "path": "DefineSprite_533/frame_269/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "247",
+        "249-262",
+        "264-268",
+        "270-272"
+      ],
+      "clip_action_frames": [
+        249,
+        253
+      ],
+      "clip_event_scripts": {
+        "249": [
+          {
+            "path": "DefineSprite_533/frame_249/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "64686e8ea8fcab249105f05407c489630e6ccf36c611c59d12b0f15524aee206"
+          }
+        ],
+        "253": [
+          {
+            "path": "DefineSprite_533/frame_253/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "4679ad021666d67e6749a78b352c1db2eb3133a23eeeb7be7fa9315d67c6e924"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "247": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 136
+          }
+        ],
+        "248": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 138
+          }
+        ],
+        "249": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 140
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "251": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 142
+          }
+        ],
+        "252": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          }
+        ],
+        "253": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 144
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "257": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 146
+          }
+        ],
+        "263": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 148
+          }
+        ],
+        "265": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 150
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 269,
+          "path": "DefineSprite_533/frame_269/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 269,
+          "path": "DefineSprite_533/frame_269/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 269 gotoAndStop(\"站立\") then play(); frame 253 clip event conditionally branches to 砍技2 or 砍3."
+    },
+    {
+      "label": "砍3",
+      "start_frame": 273,
+      "end_frame": 319,
+      "frame_script_frames": [
+        274,
+        305,
+        309
+      ],
+      "frame_scripts": {
+        "274": [
+          {
+            "path": "DefineSprite_533/frame_274/DoAction.as",
+            "sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+          }
+        ],
+        "305": [
+          {
+            "path": "DefineSprite_533/frame_305/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "309": [
+          {
+            "path": "DefineSprite_533/frame_309/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "273",
+        "275-304",
+        "306-308",
+        "310-319"
+      ],
+      "clip_action_frames": [
+        280,
+        285
+      ],
+      "clip_event_scripts": {
+        "280": [
+          {
+            "path": "DefineSprite_533/frame_280/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "50516bc2110b88b2028a2f0a830871644fdd853e48754a398d57044afeb962cc"
+          }
+        ],
+        "285": [
+          {
+            "path": "DefineSprite_533/frame_285/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "23f81a569b953990d8fc8c3661d5eaadcd7182ad2bfbbd643ef2b5baa7fa92c8"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "273": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 152
+          }
+        ],
+        "275": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 154
+          }
+        ],
+        "277": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 156
+          }
+        ],
+        "278": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 158
+          }
+        ],
+        "280": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 160
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 30,
+            "move": false,
+            "has_character": true,
+            "character_id": 65
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "281": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 30,
+            "move": true,
+            "has_character": true,
+            "character_id": 67
+          }
+        ],
+        "282": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 30,
+            "move": true,
+            "has_character": true,
+            "character_id": 69
+          }
+        ],
+        "283": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 30
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 71
+          }
+        ],
+        "284": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 73
+          }
+        ],
+        "285": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 164
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "301": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 166
+          }
+        ],
+        "305": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 309,
+          "path": "DefineSprite_533/frame_309/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 309,
+          "path": "DefineSprite_533/frame_309/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 309 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "砍技1",
+      "start_frame": 320,
+      "end_frame": 370,
+      "frame_script_frames": [
+        321,
+        326,
+        330,
+        331,
+        335,
+        350
+      ],
+      "frame_scripts": {
+        "321": [
+          {
+            "path": "DefineSprite_533/frame_321/DoAction.as",
+            "sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3"
+          }
+        ],
+        "326": [
+          {
+            "path": "DefineSprite_533/frame_326/DoAction.as",
+            "sha256": "959104852cd78b4021ce0f7f48631e3ed0cf0b71c94da436fa97f3d887390590"
+          }
+        ],
+        "330": [
+          {
+            "path": "DefineSprite_533/frame_330/DoAction.as",
+            "sha256": "a2911041e9675d3323587bcca274f3efbf75428a8315e27ede6bd9fea5670906"
+          }
+        ],
+        "331": [
+          {
+            "path": "DefineSprite_533/frame_331/DoAction.as",
+            "sha256": "d7c432a1d7743492be254038ff8bb260250e7aac81a0dafa16a4719e0623024b"
+          }
+        ],
+        "335": [
+          {
+            "path": "DefineSprite_533/frame_335/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "350": [
+          {
+            "path": "DefineSprite_533/frame_350/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "320",
+        "322-325",
+        "327-329",
+        "332-334",
+        "336-349",
+        "351-370"
+      ],
+      "clip_action_frames": [
+        331
+      ],
+      "clip_event_scripts": {
+        "331": [
+          {
+            "path": "DefineSprite_533/frame_331/PlaceObject2_2_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "320": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 168
+          }
+        ],
+        "322": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 170
+          }
+        ],
+        "326": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 32
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 173
+          }
+        ],
+        "327": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          }
+        ],
+        "330": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 173
+          }
+        ],
+        "331": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 175
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 32,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "332": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 177
+          }
+        ],
+        "334": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 179
+          }
+        ],
+        "335": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          }
+        ],
+        "336": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 181
+          }
+        ],
+        "338": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 183
+          }
+        ],
+        "340": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 185
+          }
+        ],
+        "342": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 187
+          }
+        ],
+        "344": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 189
+          }
+        ],
+        "346": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 191
+          }
+        ],
+        "348": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 193
+          }
+        ],
+        "350": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 195
+          }
+        ],
+        "352": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 197
+          }
+        ],
+        "354": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 199
+          }
+        ],
+        "356": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 201
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 350,
+          "path": "DefineSprite_533/frame_350/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 350,
+          "path": "DefineSprite_533/frame_350/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 350 gotoAndStop(\"站立\") then play(); source frame/clip scripts contain conditional body warp and hit paths."
+    },
+    {
+      "label": "砍技2",
+      "start_frame": 371,
+      "end_frame": 405,
+      "frame_script_frames": [
+        372,
+        398
+      ],
+      "frame_scripts": {
+        "372": [
+          {
+            "path": "DefineSprite_533/frame_372/DoAction.as",
+            "sha256": "60990b45e0280c238afb72fea87292298b295381172d3bc48e5fa3d2fc6e10db"
+          }
+        ],
+        "398": [
+          {
+            "path": "DefineSprite_533/frame_398/DoAction.as",
+            "sha256": "00e92ab0d9b42f4a5f4a47958d8e380c5ab48dcd5e3b03a0ea0f5ebae54773ca"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "371",
+        "373-397",
+        "399-405"
+      ],
+      "clip_action_frames": [
+        375,
+        386
+      ],
+      "clip_event_scripts": {
+        "375": [
+          {
+            "path": "DefineSprite_533/frame_375/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "44e4f7e7c875e767b7712087356850c71897ec50e32d984ba6beb6e1f7f2aa8f"
+          }
+        ],
+        "386": [
+          {
+            "path": "DefineSprite_533/frame_386/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "17b20b58700f2c24ce460bed78b9ec3a9cc69d49206a07a1f6ab23988dddb25f"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "371": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 203
+          }
+        ],
+        "373": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 205
+          }
+        ],
+        "375": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 207
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 30,
+            "move": false,
+            "has_character": true,
+            "character_id": 74
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "386": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 30
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 209
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "393": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 398,
+          "path": "DefineSprite_533/frame_398/DoAction.as",
+          "line": 2,
+          "source": "gotoAndStop(\"落2\");"
+        },
+        {
+          "frame": 398,
+          "path": "DefineSprite_533/frame_398/DoAction.as",
+          "line": 3,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 398 sets khit=1, then gotoAndStop(\"落2\") and play()."
+    },
+    {
+      "label": "招1",
+      "start_frame": 406,
+      "end_frame": 452,
+      "frame_script_frames": [
+        407,
+        414,
+        426,
+        431
+      ],
+      "frame_scripts": {
+        "407": [
+          {
+            "path": "DefineSprite_533/frame_407/DoAction.as",
+            "sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+          }
+        ],
+        "414": [
+          {
+            "path": "DefineSprite_533/frame_414/DoAction.as",
+            "sha256": "bdd4e3d05be6e8127ff7c322893211ec061713b90bed205ba01277e33e385d64"
+          }
+        ],
+        "426": [
+          {
+            "path": "DefineSprite_533/frame_426/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "431": [
+          {
+            "path": "DefineSprite_533/frame_431/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "406",
+        "408-413",
+        "415-425",
+        "427-430",
+        "432-452"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "406": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 211
+          }
+        ],
+        "408": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 213
+          }
+        ],
+        "410": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 215
+          }
+        ],
+        "412": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 217
+          }
+        ],
+        "414": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 219
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "415": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 221
+          }
+        ],
+        "416": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 223
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "417": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 225
+          }
+        ],
+        "418": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 227
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "419": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 229
+          }
+        ],
+        "420": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 230
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "421": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 231
+          }
+        ],
+        "422": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 232
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "423": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 233
+          }
+        ],
+        "424": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 234
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "426": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 236
+          }
+        ],
+        "447": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 238
+          }
+        ],
+        "449": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 240
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 431,
+          "path": "DefineSprite_533/frame_431/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 431,
+          "path": "DefineSprite_533/frame_431/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 431 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "招2",
+      "start_frame": 453,
+      "end_frame": 507,
+      "frame_script_frames": [
+        454,
+        471,
+        472,
+        476,
+        485
+      ],
+      "frame_scripts": {
+        "454": [
+          {
+            "path": "DefineSprite_533/frame_454/DoAction.as",
+            "sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3"
+          }
+        ],
+        "471": [
+          {
+            "path": "DefineSprite_533/frame_471/DoAction.as",
+            "sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5"
+          }
+        ],
+        "472": [
+          {
+            "path": "DefineSprite_533/frame_472/DoAction.as",
+            "sha256": "fb5db0d0d80d499953061aafaa64b1ccfffa8c82c54073595292247142160f07"
+          }
+        ],
+        "476": [
+          {
+            "path": "DefineSprite_533/frame_476/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "485": [
+          {
+            "path": "DefineSprite_533/frame_485/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "453",
+        "455-470",
+        "473-475",
+        "477-484",
+        "486-507"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "453": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 242
+          }
+        ],
+        "456": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 245
+          }
+        ],
+        "459": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 247
+          }
+        ],
+        "470": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 249
+          }
+        ],
+        "472": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 252
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "474": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 254
+          }
+        ],
+        "476": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 256
+          }
+        ],
+        "478": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 258
+          }
+        ],
+        "480": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 260
+          }
+        ],
+        "482": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 262
+          }
+        ],
+        "484": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 264
+          }
+        ],
+        "486": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 266
+          }
+        ],
+        "488": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 260
+          }
+        ],
+        "490": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 262
+          }
+        ],
+        "492": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 264
+          }
+        ],
+        "494": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 266
+          }
+        ],
+        "496": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 260
+          }
+        ],
+        "498": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 262
+          }
+        ],
+        "500": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 264
+          }
+        ],
+        "502": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 266
+          }
+        ],
+        "504": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 268
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 485,
+          "path": "DefineSprite_533/frame_485/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 485,
+          "path": "DefineSprite_533/frame_485/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 485 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "招3",
+      "start_frame": 508,
+      "end_frame": 545,
+      "frame_script_frames": [
+        509,
+        517,
+        542
+      ],
+      "frame_scripts": {
+        "509": [
+          {
+            "path": "DefineSprite_533/frame_509/DoAction.as",
+            "sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+          }
+        ],
+        "517": [
+          {
+            "path": "DefineSprite_533/frame_517/DoAction.as",
+            "sha256": "d7c432a1d7743492be254038ff8bb260250e7aac81a0dafa16a4719e0623024b"
+          }
+        ],
+        "542": [
+          {
+            "path": "DefineSprite_533/frame_542/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "508",
+        "510-516",
+        "518-541",
+        "543-545"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "508": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 270
+          }
+        ],
+        "510": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 272
+          }
+        ],
+        "512": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 274
+          }
+        ],
+        "514": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 276
+          }
+        ],
+        "516": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 278
+          }
+        ],
+        "517": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 280
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "518": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 282
+          }
+        ],
+        "519": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 284
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "520": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 286
+          }
+        ],
+        "521": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 288
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 289
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "522": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 28,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "523": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 28,
+            "move": true,
+            "has_character": false
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "524": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 28,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "525": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 290
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "526": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 28,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "527": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 292
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 293
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "528": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 295
+          }
+        ],
+        "529": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 297
+          }
+        ],
+        "530": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 299
+          }
+        ],
+        "531": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 301
+          }
+        ],
+        "532": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 303
+          }
+        ],
+        "533": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 305
+          }
+        ],
+        "535": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 307
+          }
+        ],
+        "537": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 309
+          }
+        ],
+        "539": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 311
+          }
+        ],
+        "541": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 313
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 542,
+          "path": "DefineSprite_533/frame_542/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 542,
+          "path": "DefineSprite_533/frame_542/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 542 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "必杀",
+      "start_frame": 546,
+      "end_frame": 637,
+      "frame_script_frames": [
+        547,
+        550,
+        595,
+        596,
+        602,
+        629
+      ],
+      "frame_scripts": {
+        "547": [
+          {
+            "path": "DefineSprite_533/frame_547/DoAction.as",
+            "sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e"
+          }
+        ],
+        "550": [
+          {
+            "path": "DefineSprite_533/frame_550/DoAction.as",
+            "sha256": "3b44ac7ca2502a79eb28f2f6b6b07b4e334135bd0c5382a03a8e23459b274718"
+          }
+        ],
+        "595": [
+          {
+            "path": "DefineSprite_533/frame_595/DoAction.as",
+            "sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25"
+          }
+        ],
+        "596": [
+          {
+            "path": "DefineSprite_533/frame_596/DoAction.as",
+            "sha256": "d7c432a1d7743492be254038ff8bb260250e7aac81a0dafa16a4719e0623024b"
+          }
+        ],
+        "602": [
+          {
+            "path": "DefineSprite_533/frame_602/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "629": [
+          {
+            "path": "DefineSprite_533/frame_629/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "546",
+        "548-549",
+        "551-594",
+        "597-601",
+        "603-628",
+        "630-637"
+      ],
+      "clip_action_frames": [
+        595
+      ],
+      "clip_event_scripts": {
+        "595": [
+          {
+            "path": "DefineSprite_533/frame_595/PlaceObject2_2_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "546": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 315
+          }
+        ],
+        "548": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 317
+          }
+        ],
+        "549": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 32
+          }
+        ],
+        "595": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 31,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "596": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 322
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "598": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 325
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "600": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 327
+          }
+        ],
+        "602": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 329
+          }
+        ],
+        "604": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 330
+          }
+        ],
+        "606": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 331
+          }
+        ],
+        "608": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 333
+          }
+        ],
+        "610": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 335
+          }
+        ],
+        "612": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 337
+          }
+        ],
+        "614": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 339
+          }
+        ],
+        "616": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 341
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 31,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "618": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 343
+          }
+        ],
+        "620": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 345
+          }
+        ],
+        "622": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 347
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 629,
+          "path": "DefineSprite_533/frame_629/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 629,
+          "path": "DefineSprite_533/frame_629/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 629 gotoAndStop(\"站立\") then play(); intermediate frame scripts/clip event contain conditional presentation and attack logic."
+    },
+    {
+      "label": "空中必杀",
+      "start_frame": 638,
+      "end_frame": 728,
+      "frame_script_frames": [
+        639,
+        640,
+        681,
+        688,
+        694,
+        703
+      ],
+      "frame_scripts": {
+        "639": [
+          {
+            "path": "DefineSprite_533/frame_639/DoAction.as",
+            "sha256": "89553624084fa3307c720d8f23e636eb2ac5da0b06cf946e5c80e72b3ea93cdb"
+          }
+        ],
+        "640": [
+          {
+            "path": "DefineSprite_533/frame_640/DoAction.as",
+            "sha256": "3b44ac7ca2502a79eb28f2f6b6b07b4e334135bd0c5382a03a8e23459b274718"
+          }
+        ],
+        "681": [
+          {
+            "path": "DefineSprite_533/frame_681/DoAction.as",
+            "sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25"
+          }
+        ],
+        "688": [
+          {
+            "path": "DefineSprite_533/frame_688/DoAction.as",
+            "sha256": "d7c432a1d7743492be254038ff8bb260250e7aac81a0dafa16a4719e0623024b"
+          }
+        ],
+        "694": [
+          {
+            "path": "DefineSprite_533/frame_694/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "703": [
+          {
+            "path": "DefineSprite_533/frame_703/DoAction.as",
+            "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "638",
+        "641-680",
+        "682-687",
+        "689-693",
+        "695-702",
+        "704-728"
+      ],
+      "clip_action_frames": [
+        681
+      ],
+      "clip_event_scripts": {
+        "681": [
+          {
+            "path": "DefineSprite_533/frame_681/PlaceObject2_16_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "62654ff6bc3a2451da3119766ee203cc7b16c3c6a30649fe6fcc3f4c388f1507"
+          },
+          {
+            "path": "DefineSprite_533/frame_681/PlaceObject2_2_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "638": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 31
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 349
+          }
+        ],
+        "678": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 351
+          }
+        ],
+        "681": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 31,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 33,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "683": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 352
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "685": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 354
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 29,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "687": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 33
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 355
+          }
+        ],
+        "689": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": true,
+            "has_character": true,
+            "character_id": 356
+          }
+        ],
+        "691": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 351
+          }
+        ],
+        "693": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 357
+          }
+        ],
+        "695": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 359
+          }
+        ],
+        "697": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 361
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 703,
+          "path": "DefineSprite_533/frame_703/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"落2\");"
+        },
+        {
+          "frame": 703,
+          "path": "DefineSprite_533/frame_703/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 703 gotoAndStop(\"落2\") then play(); intermediate clip events contain conditional air/landing behavior."
+    },
+    {
+      "label": "超必杀",
+      "start_frame": 729,
+      "end_frame": 831,
+      "frame_script_frames": [
+        730,
+        732,
+        770,
+        793,
+        794,
+        804,
+        809,
+        826
+      ],
+      "frame_scripts": {
+        "730": [
+          {
+            "path": "DefineSprite_533/frame_730/DoAction.as",
+            "sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1"
+          }
+        ],
+        "732": [
+          {
+            "path": "DefineSprite_533/frame_732/DoAction.as",
+            "sha256": "bc985b035a0bc7faf58b4f85b2545522c78e93424275450012750cdd6f3f7bbc"
+          }
+        ],
+        "770": [
+          {
+            "path": "DefineSprite_533/frame_770/DoAction.as",
+            "sha256": "ef5d0335d54a16e73e60ca8c281b8e2697660a15c5dc7f246d984922bdcdb993"
+          }
+        ],
+        "793": [
+          {
+            "path": "DefineSprite_533/frame_793/DoAction.as",
+            "sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5"
+          }
+        ],
+        "794": [
+          {
+            "path": "DefineSprite_533/frame_794/DoAction.as",
+            "sha256": "a6f24e89b7d0c2761b25953485064d6e4ba942fb57c142db6545f514b951732c"
+          }
+        ],
+        "804": [
+          {
+            "path": "DefineSprite_533/frame_804/DoAction.as",
+            "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+          }
+        ],
+        "809": [
+          {
+            "path": "DefineSprite_533/frame_809/DoAction.as",
+            "sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5"
+          }
+        ],
+        "826": [
+          {
+            "path": "DefineSprite_533/frame_826/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "729",
+        "731",
+        "733-769",
+        "771-792",
+        "795-803",
+        "805-808",
+        "810-825",
+        "827-831"
+      ],
+      "clip_action_frames": [
+        771
+      ],
+      "clip_event_scripts": {
+        "771": [
+          {
+            "path": "DefineSprite_533/frame_771/PlaceObject2_2_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "729": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 363
+          }
+        ],
+        "731": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 31
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 366
+          }
+        ],
+        "733": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 368
+          }
+        ],
+        "735": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 370
+          }
+        ],
+        "737": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 372
+          }
+        ],
+        "742": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 374
+          }
+        ],
+        "747": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 376
+          }
+        ],
+        "753": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 378
+          }
+        ],
+        "759": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 380
+          }
+        ],
+        "768": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 382
+          }
+        ],
+        "771": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 384
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 32,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "772": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "773": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 386
+          }
+        ],
+        "775": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 388
+          }
+        ],
+        "777": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 390
+          }
+        ],
+        "779": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 392
+          }
+        ],
+        "781": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 394
+          }
+        ],
+        "783": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 396
+          }
+        ],
+        "785": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 398
+          }
+        ],
+        "787": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 400
+          }
+        ],
+        "789": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 402
+          }
+        ],
+        "791": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 404
+          }
+        ],
+        "793": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 406
+          }
+        ],
+        "794": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 31,
+            "move": false,
+            "has_character": true,
+            "character_id": 408
+          }
+        ],
+        "796": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 28,
+            "move": true,
+            "has_character": false
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 31,
+            "move": true,
+            "has_character": true,
+            "character_id": 410
+          }
+        ],
+        "797": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 412
+          }
+        ],
+        "798": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 28,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "799": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 414
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 31,
+            "move": true,
+            "has_character": true,
+            "character_id": 416
+          }
+        ],
+        "800": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          }
+        ],
+        "801": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 418
+          }
+        ],
+        "802": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 31
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 420
+          }
+        ],
+        "803": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 422
+          }
+        ],
+        "805": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 424
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 426
+          }
+        ],
+        "807": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          }
+        ],
+        "819": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 428
+          }
+        ],
+        "821": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 430
+          }
+        ],
+        "823": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 432
+          }
+        ],
+        "825": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 434
+          }
+        ],
+        "827": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 436
+          }
+        ],
+        "829": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 438
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 826,
+          "path": "DefineSprite_533/frame_826/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 826,
+          "path": "DefineSprite_533/frame_826/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 826 gotoAndStop(\"站立\") then play(); intermediate frame/clip scripts contain conditional presentation and attack logic."
+    },
+    {
+      "label": "招换",
+      "start_frame": 832,
+      "end_frame": 893,
+      "frame_script_frames": [
+        837,
+        862
+      ],
+      "frame_scripts": {
+        "837": [
+          {
+            "path": "DefineSprite_533/frame_837/DoAction.as",
+            "sha256": "9a4e1df3b75d75b39859f0968d785f77d37ac0a8433d1017068d334da3f65753"
+          }
+        ],
+        "862": [
+          {
+            "path": "DefineSprite_533/frame_862/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "832-836",
+        "838-861",
+        "863-893"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "832": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 440
+          },
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 32,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "834": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 442
+          }
+        ],
+        "836": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 444
+          }
+        ],
+        "839": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 446
+          }
+        ],
+        "842": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 448
+          }
+        ],
+        "845": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 450
+          }
+        ],
+        "848": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 444
+          }
+        ],
+        "851": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 446
+          }
+        ],
+        "854": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 448
+          }
+        ],
+        "857": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 450
+          }
+        ],
+        "860": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 444
+          }
+        ],
+        "863": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 446
+          }
+        ],
+        "866": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 448
+          }
+        ],
+        "869": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 450
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 862,
+          "path": "DefineSprite_533/frame_862/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 862,
+          "path": "DefineSprite_533/frame_862/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 862 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "防御",
+      "start_frame": 894,
+      "end_frame": 894,
+      "frame_script_frames": [],
+      "frame_scripts": {},
+      "frames_without_DoAction": [
+        "894"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "894": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 452
+          }
+        ]
+      },
+      "playback_control_calls": [],
+      "label_exit_classification": "one-frame_timeline_continuation: frame 894 has the 防御 label and placement; playback proceeds into the 防御2 label at frame 895 unless redirected by runtime/controller logic."
+    },
+    {
+      "label": "防御2",
+      "start_frame": 895,
+      "end_frame": 905,
+      "frame_script_frames": [
+        895,
+        902
+      ],
+      "frame_scripts": {
+        "895": [
+          {
+            "path": "DefineSprite_533/frame_895/DoAction.as",
+            "sha256": "c79c57fe780892f8a30745b2003f21b14e03cdd4b32f99798fe31014ffd7b9ba"
+          }
+        ],
+        "902": [
+          {
+            "path": "DefineSprite_533/frame_902/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "896-901",
+        "903-905"
+      ],
+      "clip_action_frames": [
+        895
+      ],
+      "clip_event_scripts": {
+        "895": [
+          {
+            "path": "DefineSprite_533/frame_895/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750"
+          },
+          {
+            "path": "DefineSprite_533/frame_895/PlaceObject2_2_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "895": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 454
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 32
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 32,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 34,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "901": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 452
+          }
+        ],
+        "902": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 34
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 902,
+          "path": "DefineSprite_533/frame_902/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 902,
+          "path": "DefineSprite_533/frame_902/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "conditional_clip_reentry_and_explicit_exit: enterFrame can repeat 防御2 or branch to 砍技1/招2/超必杀/落2; frame 902 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "防住",
+      "start_frame": 906,
+      "end_frame": 917,
+      "frame_script_frames": [
+        906,
+        907,
+        915
+      ],
+      "frame_scripts": {
+        "906": [
+          {
+            "path": "DefineSprite_533/frame_906/DoAction.as",
+            "sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155"
+          }
+        ],
+        "907": [
+          {
+            "path": "DefineSprite_533/frame_907/DoAction.as",
+            "sha256": "c3e46f26ed26ad9231fd1d28ec5d960a463c27cba346b54dcf106430ec013acb"
+          }
+        ],
+        "915": [
+          {
+            "path": "DefineSprite_533/frame_915/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "908-914",
+        "916-917"
+      ],
+      "clip_action_frames": [
+        906,
+        909,
+        911
+      ],
+      "clip_event_scripts": {
+        "906": [
+          {
+            "path": "DefineSprite_533/frame_906/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "844f30521e56d21704d4ef4174997e178efdb35469b2b7d9e52c26a0f3104d3d"
+          }
+        ],
+        "909": [
+          {
+            "path": "DefineSprite_533/frame_909/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef"
+          }
+        ],
+        "911": [
+          {
+            "path": "DefineSprite_533/frame_911/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "f8c45bc590e3677cdd9c881a4d2e0f08a7474a26feb01f17db38df2769a701f6"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "906": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 32
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 454
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 30,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "907": [
+          {
+            "tag": 26,
+            "type": "move",
+            "depth": 27,
+            "move": true,
+            "has_character": false
+          }
+        ],
+        "909": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "911": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 30
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 30,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "916": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 906,
+          "path": "DefineSprite_533/frame_906/DoAction.as",
+          "line": 1,
+          "source": "play();"
+        },
+        {
+          "frame": 915,
+          "path": "DefineSprite_533/frame_915/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 915,
+          "path": "DefineSprite_533/frame_915/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 915 gotoAndStop(\"站立\") then play(); frame-local clip events contain defense/hit conditions."
+    },
+    {
+      "label": "被打",
+      "start_frame": 918,
+      "end_frame": 930,
+      "frame_script_frames": [
+        918,
+        919,
+        924,
+        928
+      ],
+      "frame_scripts": {
+        "918": [
+          {
+            "path": "DefineSprite_533/frame_918/DoAction.as",
+            "sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155"
+          }
+        ],
+        "919": [
+          {
+            "path": "DefineSprite_533/frame_919/DoAction.as",
+            "sha256": "a70f7b00382927dcb89b970656bc905839113d7af180dae43aa869dec2523aab"
+          }
+        ],
+        "924": [
+          {
+            "path": "DefineSprite_533/frame_924/DoAction.as",
+            "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+          }
+        ],
+        "928": [
+          {
+            "path": "DefineSprite_533/frame_928/DoAction.as",
+            "sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "920-923",
+        "925-927",
+        "929-930"
+      ],
+      "clip_action_frames": [
+        920,
+        921
+      ],
+      "clip_event_scripts": {
+        "920": [
+          {
+            "path": "DefineSprite_533/frame_920/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "820f6d41d52a2df712ecc60a0f87a933ebe00f55e376951756a9d91d3940bb36"
+          }
+        ],
+        "921": [
+          {
+            "path": "DefineSprite_533/frame_921/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "918": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 30
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 456
+          }
+        ],
+        "920": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 458
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 30,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "921": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 2
+          }
+        ],
+        "922": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 460
+          }
+        ],
+        "927": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 456
+          }
+        ],
+        "928": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 30
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 918,
+          "path": "DefineSprite_533/frame_918/DoAction.as",
+          "line": 1,
+          "source": "play();"
+        },
+        {
+          "frame": 924,
+          "path": "DefineSprite_533/frame_924/DoAction.as",
+          "line": 1,
+          "source": "stop();"
+        },
+        {
+          "frame": 928,
+          "path": "DefineSprite_533/frame_928/DoAction.as",
+          "line": 3,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 928,
+          "path": "DefineSprite_533/frame_928/DoAction.as",
+          "line": 4,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "stop_then_explicit_exit: frame 924 calls stop(); frame 928 calls gotoAndStop(\"站立\") then play(). Reaching frame 928 requires playback to resume; the resumption condition is external/runtime-dependent."
+    },
+    {
+      "label": "击飞",
+      "start_frame": 931,
+      "end_frame": 942,
+      "frame_script_frames": [
+        931,
+        932,
+        938
+      ],
+      "frame_scripts": {
+        "931": [
+          {
+            "path": "DefineSprite_533/frame_931/DoAction.as",
+            "sha256": "3d2e60b632e641408e73682b4e270113e69a7f17483f991da9ff5baa235e91ba"
+          }
+        ],
+        "932": [
+          {
+            "path": "DefineSprite_533/frame_932/DoAction.as",
+            "sha256": "199b3ff7630d12585e1d7c77d60d58609e063b7028f54d6a5dd6f0078493ea59"
+          }
+        ],
+        "938": [
+          {
+            "path": "DefineSprite_533/frame_938/DoAction.as",
+            "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "933-937",
+        "939-942"
+      ],
+      "clip_action_frames": [
+        933
+      ],
+      "clip_event_scripts": {
+        "933": [
+          {
+            "path": "DefineSprite_533/frame_933/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "9848c11dc3a3e4b1cf1933b347f15901bef201cb0b702c273e2bb5d21f44d90b"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "931": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 471
+          }
+        ],
+        "933": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 931,
+          "path": "DefineSprite_533/frame_931/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        },
+        {
+          "frame": 938,
+          "path": "DefineSprite_533/frame_938/DoAction.as",
+          "line": 1,
+          "source": "stop();"
+        }
+      ],
+      "label_exit_classification": "external_stop_state: frame 938 calls stop(); frame 931 begins hit handling and frame 933 calls beidax(true). The next transition is not specified by this stop call alone."
+    },
+    {
+      "label": "击落地",
+      "start_frame": 943,
+      "end_frame": 977,
+      "frame_script_frames": [
+        943,
+        957,
+        973
+      ],
+      "frame_scripts": {
+        "943": [
+          {
+            "path": "DefineSprite_533/frame_943/DoAction.as",
+            "sha256": "0857faf6455fb0d653d39f90f2ec476c4ac51ff49a817e9a701adf18d3f15835"
+          }
+        ],
+        "957": [
+          {
+            "path": "DefineSprite_533/frame_957/DoAction.as",
+            "sha256": "e6ca4a79578cbb546594bd65ac4d2d2aad15c20ec5c951c3dc9a7c4b8fd5371c"
+          }
+        ],
+        "973": [
+          {
+            "path": "DefineSprite_533/frame_973/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "944-956",
+        "958-972",
+        "974-977"
+      ],
+      "clip_action_frames": [
+        943
+      ],
+      "clip_event_scripts": {
+        "943": [
+          {
+            "path": "DefineSprite_533/frame_943/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "81288a38fc1ff90270ebad5d537f0b6ca79760db2b93b64846ae3bfaa46c1eff"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "943": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 474
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 29,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 31,
+            "move": false,
+            "has_character": true,
+            "character_id": 475
+          }
+        ],
+        "945": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 477
+          }
+        ],
+        "947": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 29
+          },
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 31
+          }
+        ],
+        "949": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 479
+          }
+        ],
+        "968": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 481
+          }
+        ],
+        "970": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 483
+          }
+        ],
+        "972": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 485
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 957,
+          "path": "DefineSprite_533/frame_957/DoAction.as",
+          "line": 3,
+          "source": "stop();"
+        },
+        {
+          "frame": 973,
+          "path": "DefineSprite_533/frame_973/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 973,
+          "path": "DefineSprite_533/frame_973/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "stop_then_explicit_exit: frame 957 calls stop(); frame 973 calls gotoAndStop(\"站立\") then play(). Resume condition is external/runtime-dependent."
+    },
+    {
+      "label": "起身",
+      "start_frame": 978,
+      "end_frame": 1002,
+      "frame_script_frames": [
+        978,
+        979,
+        989
+      ],
+      "frame_scripts": {
+        "978": [
+          {
+            "path": "DefineSprite_533/frame_978/DoAction.as",
+            "sha256": "804439b2808628500257a76fd4ee5251e916898a7f8cc8cf72896e942abd3652"
+          }
+        ],
+        "979": [
+          {
+            "path": "DefineSprite_533/frame_979/DoAction.as",
+            "sha256": "8d23d84b12e136d5b2b06a528b88fe1aedb91b39aa50aad17afd66ff0cb5be7f"
+          }
+        ],
+        "989": [
+          {
+            "path": "DefineSprite_533/frame_989/DoAction.as",
+            "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "980-988",
+        "990-1002"
+      ],
+      "clip_action_frames": [
+        980
+      ],
+      "clip_event_scripts": {
+        "980": [
+          {
+            "path": "DefineSprite_533/frame_980/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "sha256": "c99afb396036e5858bad62112ad9b4830014d6a99d4991aef37fba22a137bbab"
+          }
+        ]
+      },
+      "changes_by_frame": {
+        "978": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 487
+          }
+        ],
+        "980": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 489
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 28,
+            "move": false,
+            "has_character": true,
+            "character_id": 16
+          }
+        ],
+        "981": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 491
+          }
+        ],
+        "982": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 493
+          }
+        ],
+        "983": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 495
+          }
+        ],
+        "984": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 489
+          }
+        ],
+        "985": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 491
+          }
+        ],
+        "986": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 493
+          }
+        ],
+        "987": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 495
+          }
+        ],
+        "988": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 28
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 496
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 989,
+          "path": "DefineSprite_533/frame_989/DoAction.as",
+          "line": 1,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 989,
+          "path": "DefineSprite_533/frame_989/DoAction.as",
+          "line": 2,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frame 989 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "开场",
+      "start_frame": 1003,
+      "end_frame": 1082,
+      "frame_script_frames": [
+        1003,
+        1004,
+        1006,
+        1064
+      ],
+      "frame_scripts": {
+        "1003": [
+          {
+            "path": "DefineSprite_533/frame_1003/DoAction.as",
+            "sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155"
+          }
+        ],
+        "1004": [
+          {
+            "path": "DefineSprite_533/frame_1004/DoAction.as",
+            "sha256": "5589d7696cfcee8657b8978cdcbfa7225a34f19a157b01136cdb4c5ef85c1103"
+          }
+        ],
+        "1006": [
+          {
+            "path": "DefineSprite_533/frame_1006/DoAction.as",
+            "sha256": "33a4f0db67fbae495243fdb38278a68fbec9cda2667ab91011c6b16e55f08344"
+          }
+        ],
+        "1064": [
+          {
+            "path": "DefineSprite_533/frame_1064/DoAction.as",
+            "sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "1005",
+        "1007-1063",
+        "1065-1082"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "1003": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 7
+          }
+        ],
+        "1007": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 9
+          }
+        ],
+        "1011": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 11
+          }
+        ],
+        "1015": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 13
+          }
+        ],
+        "1017": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 498
+          }
+        ],
+        "1020": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 500
+          }
+        ],
+        "1023": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 502
+          }
+        ],
+        "1026": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 504
+          }
+        ],
+        "1029": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 506
+          }
+        ],
+        "1033": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 508
+          }
+        ],
+        "1037": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 510
+          }
+        ],
+        "1041": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 512
+          }
+        ],
+        "1045": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 514
+          }
+        ],
+        "1050": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 516
+          }
+        ],
+        "1053": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 518
+          }
+        ],
+        "1055": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 7
+          }
+        ],
+        "1059": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 9
+          }
+        ],
+        "1063": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 11
+          }
+        ],
+        "1067": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 13
+          }
+        ],
+        "1071": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 7
+          }
+        ],
+        "1075": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 9
+          }
+        ],
+        "1079": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 11
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 1003,
+          "path": "DefineSprite_533/frame_1003/DoAction.as",
+          "line": 1,
+          "source": "play();"
+        },
+        {
+          "frame": 1004,
+          "path": "DefineSprite_533/frame_1004/DoAction.as",
+          "line": 1,
+          "source": "play();"
+        },
+        {
+          "frame": 1064,
+          "path": "DefineSprite_533/frame_1064/DoAction.as",
+          "line": 2,
+          "source": "gotoAndStop(\"站立\");"
+        },
+        {
+          "frame": 1064,
+          "path": "DefineSprite_533/frame_1064/DoAction.as",
+          "line": 3,
+          "source": "play();"
+        }
+      ],
+      "label_exit_classification": "explicit_exit: frames 1003/1004 call play(); frame 1064 gotoAndStop(\"站立\") then play()."
+    },
+    {
+      "label": "胜利",
+      "start_frame": 1083,
+      "end_frame": 1112,
+      "frame_script_frames": [
+        1105
+      ],
+      "frame_scripts": {
+        "1105": [
+          {
+            "path": "DefineSprite_533/frame_1105/DoAction.as",
+            "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "1083-1104",
+        "1106-1112"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "1083": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 440
+          }
+        ],
+        "1085": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 442
+          }
+        ],
+        "1087": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 444
+          }
+        ],
+        "1090": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 446
+          }
+        ],
+        "1093": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 448
+          }
+        ],
+        "1096": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 450
+          }
+        ],
+        "1099": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 444
+          }
+        ],
+        "1102": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 446
+          }
+        ],
+        "1105": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 520
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 1105,
+          "path": "DefineSprite_533/frame_1105/DoAction.as",
+          "line": 1,
+          "source": "stop();"
+        }
+      ],
+      "label_exit_classification": "terminal_stop: frame 1105 calls stop(); round/system transition is outside this label script."
+    },
+    {
+      "label": "失败",
+      "start_frame": 1113,
+      "end_frame": 1143,
+      "frame_script_frames": [
+        1133
+      ],
+      "frame_scripts": {
+        "1133": [
+          {
+            "path": "DefineSprite_533/frame_1133/DoAction.as",
+            "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+          }
+        ]
+      },
+      "frames_without_DoAction": [
+        "1113-1132",
+        "1134-1143"
+      ],
+      "clip_action_frames": [],
+      "clip_event_scripts": {},
+      "changes_by_frame": {
+        "1113": [
+          {
+            "tag": 28,
+            "type": "remove",
+            "depth": 27
+          },
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": false,
+            "has_character": true,
+            "character_id": 522
+          }
+        ],
+        "1116": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 524
+          }
+        ],
+        "1119": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 526
+          }
+        ],
+        "1122": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 528
+          }
+        ],
+        "1125": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 530
+          }
+        ],
+        "1128": [
+          {
+            "tag": 26,
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "has_character": true,
+            "character_id": 532
+          }
+        ]
+      },
+      "playback_control_calls": [
+        {
+          "frame": 1133,
+          "path": "DefineSprite_533/frame_1133/DoAction.as",
+          "line": 1,
+          "source": "stop();"
+        }
+      ],
+      "label_exit_classification": "terminal_stop: frame 1133 calls stop(); round/system transition is outside this label script."
+    }
+  ],
+  "q5_original_same_input": "Base-form fixed-input captures now cover nine additional neutral labels in evidence/characters/rukia/base-move-reference-r02/ (`砍技2`, `招1/2/3`, `跳砍`, `跳招`, `必杀`, `空中必杀`, `超必杀`) plus source-timed chain/cancel/energy cases in base-move-reference-r03-combo/ and base-move-reference-r04-boundaries/. Each of those cases matches 602/602 source/native state rows over the 14 listed fields; the combo evidence shows frames 218→226→247→253→273, the cancel evidence shows 砍1→招1 at controller frame 226, and 299 energy rejects 超必杀 while the 300-energy original case enters it. The initial r01 rush/jump/summon/defence/砍技1 cases and R07 geometry case remain in their earlier packets. Mirrored/held 砍技1 cases are native-only. These captures establish source state parity only for the exact fixed inputs, not every input timing, audiovisual output, or Web presentation.",
+  "q3_control_flow_review": {
+    "status": "static_source_classification_complete",
+    "basis": [
+      "scripts/fighter/rukia.json frozen DoAction and clip-event sources",
+      "data/actions/rukia-base.json action_exits and timeline_fallthroughs",
+      "data/slices/rukia-base.timeline.json frame labels and frame events"
+    ],
+    "important_distinction": "action_exits are explicit script calls; timeline_fallthroughs are timeline adjacency. Neither by itself proves Flash event ordering or a stop-state resume condition.",
+    "unresolved_runtime_conditions": [
+      "enterFrame versus DoAction ordering for dynamic movement, defense, and hit transitions",
+      "how externally stopped hurt/knockback labels resume or transition in each collision timing",
+      "跳砍 frame 141 replay versus the timeline-recorded frame 145 fallthrough reachability"
+    ],
+    "fallthrough_records": [
+      {
+        "from": "跳砍",
+        "to": "跳砍2",
+        "frame": 145,
+        "condition": "timeline_fallthrough"
+      }
+    ],
+    "explicit_action_exits": {
+      "开场": {
+        "frame": 1064,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_1064/DoAction.as",
+        "source_sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642"
+      },
+      "落地": {
+        "frame": 119,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_119/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "跳砍2": {
+        "frame": 159,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_159/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "跳招": {
+        "frame": 202,
+        "target": "落2",
+        "source_path": "DefineSprite_533/frame_202/DoAction.as",
+        "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+      },
+      "砍1": {
+        "frame": 238,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_238/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "砍2": {
+        "frame": 269,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_269/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "砍3": {
+        "frame": 309,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_309/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "瞬步": {
+        "frame": 35,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_35/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "砍技1": {
+        "frame": 350,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_350/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "砍技2": {
+        "frame": 398,
+        "target": "落2",
+        "source_path": "DefineSprite_533/frame_398/DoAction.as",
+        "source_sha256": "00e92ab0d9b42f4a5f4a47958d8e380c5ab48dcd5e3b03a0ea0f5ebae54773ca"
+      },
+      "招1": {
+        "frame": 431,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_431/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "招2": {
+        "frame": 485,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_485/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "招3": {
+        "frame": 542,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_542/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "必杀": {
+        "frame": 629,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_629/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "空中必杀": {
+        "frame": 703,
+        "target": "落2",
+        "source_path": "DefineSprite_533/frame_703/DoAction.as",
+        "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+      },
+      "站立": {
+        "frame": 8,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_8/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "超必杀": {
+        "frame": 826,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_826/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "招换": {
+        "frame": 862,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_862/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "防住": {
+        "frame": 915,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_915/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "被打": {
+        "frame": 928,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_928/DoAction.as",
+        "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
+      },
+      "击落地": {
+        "frame": 973,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_973/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "起身": {
+        "frame": 989,
+        "target": "站立",
+        "source_path": "DefineSprite_533/frame_989/DoAction.as",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      }
+    }
+  }
+}

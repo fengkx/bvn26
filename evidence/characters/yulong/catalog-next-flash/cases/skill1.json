@@ -1,0 +1,56 @@
+{
+  "id": "yulong-skill1",
+  "fighter": "yulong",
+  "slot": "p1",
+  "label": "砍技1",
+  "scenario": "skill1",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 500,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    247,
+    276
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand",
+    "onDefence"
+  ],
+  "status": "native_selection_explicit_capture_pending",
+  "fighters": {
+    "p1": "yulong",
+    "p2": "yihu"
+  },
+  "catalog_purpose": "Cover down+attack command dispatch and source action timeline.",
+  "source_contract": {
+    "command_slot": "skill1",
+    "contexts": [
+      "guard",
+      "stand"
+    ],
+    "energy_min": 0,
+    "implementation": "wired"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂"
+}

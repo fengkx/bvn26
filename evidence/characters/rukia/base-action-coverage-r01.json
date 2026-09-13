@@ -1,0 +1,1426 @@
+{
+  "format": "bvn-rukia-base-action-coverage-r01",
+  "status": "partial_fixed_input_parity",
+  "scope": "Rukia base form; exclude transformation-only behavior.",
+  "source": {
+    "swf_path": "game/fighter/rukia.swf",
+    "swf_sha256": "c48d47a817dbf1b4fff9b333bb35d89debb64d0635e8d88b4a7d1228208194eb",
+    "slice_path": "data/slices/rukia-base.json",
+    "slice_sha256": "4944b9e75d6650f9311fb360ccaec973b68de50b89733a458e5707a4b2e15542",
+    "controller_script": "DefineSprite_16/frame_1/DoAction.as",
+    "controller_script_sha256": "2b0bebac6f726da5bc15c525c07c88fdb558cf49c0722121ef7da0a915732f63"
+  },
+  "source_groups": {
+    "normal_chain": {
+      "labels": [
+        "砍1",
+        "砍2",
+        "砍3"
+      ],
+      "source_flow": [
+        "砍1 controller frame 226 checks nornalhit() → 砍2",
+        "砍2 controller frame 253 checks nornalhit() → 砍3"
+      ],
+      "evidence": "base-move-reference-r03-combo/rukia-combo-砍1-2-3-taps-r01; original/native frames 218→226→247→253→273"
+    },
+    "directional_slash": [
+      "砍技1: down+attack",
+      "砍技2: up+attack"
+    ],
+    "directional_ranged": [
+      "招1: ranged",
+      "招2: down+ranged",
+      "招3: up+ranged"
+    ],
+    "specials": [
+      "必杀: special; source minimum energy 100",
+      "空中必杀: jump then special; source minimum energy 100",
+      "超必杀: down+special; source minimum energy 300"
+    ],
+    "aerial": [
+      "跳砍→跳砍2: jump then attack; 跳砍 falls through into 跳砍2",
+      "跳招: jump then ranged"
+    ],
+    "absent_or_excluded": [
+      "上必杀: absent from base source timeline despite helper/controller references",
+      "万解: transformation-only; excluded by user scope"
+    ]
+  },
+  "covered": [
+    {
+      "label": "瞬步",
+      "group": "movement",
+      "start_frame": 20,
+      "end_frame": 39,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-20-rush-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "跳",
+      "group": "movement",
+      "start_frame": 40,
+      "end_frame": 55,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-40-jump-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "砍1",
+      "group": "ground_combo",
+      "start_frame": 218,
+      "end_frame": 246,
+      "comparison_path": "evidence/characters/rukia/collision-matrix-implementation-r01/r07/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "砍2",
+      "group": "ground_combo",
+      "start_frame": 247,
+      "end_frame": 272,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r03-combo/rukia-combo-砍1-2-3-taps-r01/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "砍3",
+      "group": "ground_combo",
+      "start_frame": 273,
+      "end_frame": 319,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r03-combo/rukia-combo-砍1-2-3-taps-r01/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "必杀",
+      "group": "special",
+      "start_frame": 546,
+      "end_frame": 637,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-546-bisha-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "跳砍",
+      "group": "extended_actions",
+      "start_frame": 127,
+      "end_frame": 144,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-127-airhit-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "跳砍2",
+      "group": "extended_actions",
+      "start_frame": 145,
+      "end_frame": 173,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-127-airhit-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "跳招",
+      "group": "extended_actions",
+      "start_frame": 174,
+      "end_frame": 217,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-174-airMagichit-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "砍技1",
+      "group": "extended_actions",
+      "start_frame": 320,
+      "end_frame": 370,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-320-skill1-neutral/comparison-after-dedup.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "砍技2",
+      "group": "extended_actions",
+      "start_frame": 371,
+      "end_frame": 405,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-371-skill2-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "招1",
+      "group": "extended_actions",
+      "start_frame": 406,
+      "end_frame": 452,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-406-magichit1-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "招2",
+      "group": "extended_actions",
+      "start_frame": 453,
+      "end_frame": 507,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-453-magichit2-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "招3",
+      "group": "extended_actions",
+      "start_frame": 508,
+      "end_frame": 545,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-508-magichit3-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "空中必杀",
+      "group": "extended_actions",
+      "start_frame": 638,
+      "end_frame": 728,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-638-bishaAir-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "超必杀",
+      "group": "extended_actions",
+      "start_frame": 729,
+      "end_frame": 831,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-729-bishaSuper-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "招换",
+      "group": "extended_actions",
+      "start_frame": 832,
+      "end_frame": 893,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-832-zhaoHuan-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "防御",
+      "group": "extended_actions",
+      "start_frame": 894,
+      "end_frame": 894,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-894-defence-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "防御2",
+      "group": "extended_actions",
+      "start_frame": 895,
+      "end_frame": 905,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-895-defence-neutral/comparison.json",
+      "evidence_scope": "fixed input only"
+    },
+    {
+      "label": "站立",
+      "group": "movement",
+      "start_frame": 1,
+      "end_frame": 9,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r05-jump2/rukia-72-jump-neutral/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "落",
+      "group": "movement",
+      "start_frame": 56,
+      "end_frame": 71,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r06-jumpdown/rukia-89-jumpDown-neutral/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "跳2",
+      "group": "movement",
+      "start_frame": 72,
+      "end_frame": 88,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r05-jump2/rukia-72-jump-neutral/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "落2",
+      "group": "movement",
+      "start_frame": 89,
+      "end_frame": 114,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r06-jumpdown/rukia-89-jumpDown-neutral/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "落地",
+      "group": "movement",
+      "start_frame": 115,
+      "end_frame": 126,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r06-jumpdown/rukia-89-jumpDown-neutral/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "防住",
+      "group": "defence_response",
+      "start_frame": 906,
+      "end_frame": 917,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r07-defence2/rukia-895-defence-trade/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "走",
+      "group": "movement",
+      "start_frame": 10,
+      "end_frame": 19,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r08-walk/rukia-walk-right-r01/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "被打",
+      "group": "hit_reaction",
+      "start_frame": 918,
+      "end_frame": 930,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r09-hurt/rukia-p2-normalhit-reaction-r01/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "击飞",
+      "group": "hit_reaction",
+      "start_frame": 931,
+      "end_frame": 942,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r11-hit-recovery/rukia-yihu-bisha-getup-r01/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "击落地",
+      "group": "hit_reaction",
+      "start_frame": 943,
+      "end_frame": 977,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r11-hit-recovery/rukia-yihu-bisha-getup-r01/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    },
+    {
+      "label": "起身",
+      "group": "hit_reaction",
+      "start_frame": 978,
+      "end_frame": 1002,
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r11-hit-recovery/rukia-yihu-bisha-getup-r01/comparison.json",
+      "evidence_scope": "fixed input; source frame visited and all 602 rows/14 fields matched"
+    }
+  ],
+  "excluded": [
+    {
+      "label": "万解",
+      "span": {
+        "group": "extended_actions",
+        "start_frame": 1144,
+        "end_frame": 1178
+      },
+      "reason": "Transformation-only; excluded by task scope."
+    }
+  ],
+  "remaining": [
+    {
+      "label": "开场",
+      "group": "extended_actions",
+      "start_frame": 1003,
+      "end_frame": 1082,
+      "status": "not individually covered in original fixed-input parity packet"
+    },
+    {
+      "label": "胜利",
+      "group": "extended_actions",
+      "start_frame": 1083,
+      "end_frame": 1112,
+      "status": "not individually covered in original fixed-input parity packet"
+    },
+    {
+      "label": "失败",
+      "group": "extended_actions",
+      "start_frame": 1113,
+      "end_frame": 1143,
+      "status": "not individually covered in original fixed-input parity packet"
+    }
+  ],
+  "limits": [
+    "Each listed comparison is an exact fixed-input 602-row state comparison; it does not cover every timing variation.",
+    "Audio source tags are indexed separately in base-audiovisual-source-index-r01.json; audible playback and Web output are not established by this index."
+  ],
+  "observed_label_traversals": [
+    {
+      "case_id": "rukia-20-rush-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-20-rush-neutral/comparison.json",
+      "source_event_log_sha256": "98b2b10da87f8ffc5e2b02e51bb26d5edb737b36faf050f786e5fb2f7c74e20e",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "瞬步",
+          "source_frames": [
+            20,
+            34
+          ],
+          "native_frames": [
+            20,
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-320-skill1-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-320-skill1-neutral/comparison-after-dedup.json",
+      "source_event_log_sha256": "a7a9e8ff2deb830cc13c738b98e70e7ee870f25be650d8054586c441e52da9ce",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "砍技1",
+          "source_frames": [
+            320,
+            349
+          ],
+          "native_frames": [
+            320,
+            349
+          ]
+        },
+        {
+          "label": "防御",
+          "source_frames": [
+            894,
+            894
+          ],
+          "native_frames": [
+            894,
+            894
+          ]
+        },
+        {
+          "label": "防御2",
+          "source_frames": [
+            895,
+            895
+          ],
+          "native_frames": [
+            895,
+            895
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-40-jump-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-40-jump-neutral/comparison.json",
+      "source_event_log_sha256": "8f89b5c7afc1794363606e0ed90787bbe543157a7573ad52066e00399c77b295",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "跳",
+          "source_frames": [
+            40,
+            55
+          ],
+          "native_frames": [
+            40,
+            55
+          ]
+        },
+        {
+          "label": "落",
+          "source_frames": [
+            56,
+            63
+          ],
+          "native_frames": [
+            56,
+            63
+          ]
+        },
+        {
+          "label": "落地",
+          "source_frames": [
+            115,
+            118
+          ],
+          "native_frames": [
+            115,
+            118
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-832-zhaoHuan-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-832-zhaoHuan-neutral/comparison.json",
+      "source_event_log_sha256": "5080fb6c1b30b11889980cff2485f57d888848fb4de99f53cf2823120819263f",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "招换",
+          "source_frames": [
+            832,
+            861
+          ],
+          "native_frames": [
+            832,
+            861
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-894-defence-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r01/rukia-894-defence-neutral/comparison.json",
+      "source_event_log_sha256": "41884cd6f35064618bf56325b08f07e14a7085675d4d52a9a5efa335b273527f",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "防御",
+          "source_frames": [
+            894,
+            894
+          ],
+          "native_frames": [
+            894,
+            894
+          ]
+        },
+        {
+          "label": "防御2",
+          "source_frames": [
+            895,
+            901
+          ],
+          "native_frames": [
+            895,
+            901
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-127-airhit-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-127-airhit-neutral/comparison.json",
+      "source_event_log_sha256": "ac7599515a2f3d902e9b50c3c1f478c83c453d94e85c87328f20d0b8b304c8ae",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "跳",
+          "source_frames": [
+            40,
+            54
+          ],
+          "native_frames": [
+            40,
+            54
+          ]
+        },
+        {
+          "label": "跳砍",
+          "source_frames": [
+            127,
+            135
+          ],
+          "native_frames": [
+            127,
+            135
+          ]
+        },
+        {
+          "label": "跳砍2",
+          "source_frames": [
+            145,
+            158
+          ],
+          "native_frames": [
+            145,
+            158
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-174-airMagichit-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-174-airMagichit-neutral/comparison.json",
+      "source_event_log_sha256": "18831f7acd8e0400e37463f93eb33a66b264e2cfe3511f41a3dac02b3ccd42eb",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "跳",
+          "source_frames": [
+            40,
+            54
+          ],
+          "native_frames": [
+            40,
+            54
+          ]
+        },
+        {
+          "label": "落",
+          "source_frames": [
+            56,
+            63
+          ],
+          "native_frames": [
+            56,
+            63
+          ]
+        },
+        {
+          "label": "落2",
+          "source_frames": [
+            89,
+            89
+          ],
+          "native_frames": [
+            89,
+            89
+          ]
+        },
+        {
+          "label": "落地",
+          "source_frames": [
+            115,
+            118
+          ],
+          "native_frames": [
+            115,
+            118
+          ]
+        },
+        {
+          "label": "跳招",
+          "source_frames": [
+            174,
+            201
+          ],
+          "native_frames": [
+            174,
+            201
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-371-skill2-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-371-skill2-neutral/comparison.json",
+      "source_event_log_sha256": "e4682866782dda5876ce9c31c1bc70bdb2b2f18f532e82dfafaca2503f9b16d7",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "落",
+          "source_frames": [
+            56,
+            67
+          ],
+          "native_frames": [
+            56,
+            67
+          ]
+        },
+        {
+          "label": "落2",
+          "source_frames": [
+            89,
+            89
+          ],
+          "native_frames": [
+            89,
+            89
+          ]
+        },
+        {
+          "label": "落地",
+          "source_frames": [
+            115,
+            118
+          ],
+          "native_frames": [
+            115,
+            118
+          ]
+        },
+        {
+          "label": "砍技2",
+          "source_frames": [
+            371,
+            397
+          ],
+          "native_frames": [
+            371,
+            397
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-406-magichit1-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-406-magichit1-neutral/comparison.json",
+      "source_event_log_sha256": "ad225cbc1d69c206e763db73b4be838b58be55366e7def4cd78ef1bb20d6a79e",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "招1",
+          "source_frames": [
+            406,
+            430
+          ],
+          "native_frames": [
+            406,
+            430
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-453-magichit2-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-453-magichit2-neutral/comparison.json",
+      "source_event_log_sha256": "6820d61e69eec10e5c0587a654d7a2bee568e0d4238ee2361ca0b342a9759a4c",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "招2",
+          "source_frames": [
+            453,
+            484
+          ],
+          "native_frames": [
+            453,
+            484
+          ]
+        },
+        {
+          "label": "防御",
+          "source_frames": [
+            894,
+            894
+          ],
+          "native_frames": [
+            894,
+            894
+          ]
+        },
+        {
+          "label": "防御2",
+          "source_frames": [
+            895,
+            895
+          ],
+          "native_frames": [
+            895,
+            895
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-508-magichit3-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-508-magichit3-neutral/comparison.json",
+      "source_event_log_sha256": "f77f9fc982437d7d0a0bae9685e0a67292527eacbfe2b81e5fc5e42e0913a95b",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "招3",
+          "source_frames": [
+            508,
+            541
+          ],
+          "native_frames": [
+            508,
+            541
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-546-bisha-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-546-bisha-neutral/comparison.json",
+      "source_event_log_sha256": "146a11f1cc7fc42e92f316f755853f0b0bf79fd7c871e7bd05bfd47479f1e5c6",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "必杀",
+          "source_frames": [
+            546,
+            628
+          ],
+          "native_frames": [
+            546,
+            628
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-638-bishaAir-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-638-bishaAir-neutral/comparison.json",
+      "source_event_log_sha256": "7f8064929c80e7d3ffc2405e2db9b7b63e3940787a9dd1c7badc333fad58786c",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "跳",
+          "source_frames": [
+            40,
+            54
+          ],
+          "native_frames": [
+            40,
+            54
+          ]
+        },
+        {
+          "label": "落",
+          "source_frames": [
+            56,
+            59
+          ],
+          "native_frames": [
+            56,
+            59
+          ]
+        },
+        {
+          "label": "落2",
+          "source_frames": [
+            89,
+            89
+          ],
+          "native_frames": [
+            89,
+            89
+          ]
+        },
+        {
+          "label": "落地",
+          "source_frames": [
+            115,
+            118
+          ],
+          "native_frames": [
+            115,
+            118
+          ]
+        },
+        {
+          "label": "空中必杀",
+          "source_frames": [
+            638,
+            702
+          ],
+          "native_frames": [
+            638,
+            702
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-729-bishaSuper-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r02/rukia-729-bishaSuper-neutral/comparison.json",
+      "source_event_log_sha256": "80133e72e4cf3386aadf542e8b45f989b8f04b84aefe424ef80fa18a2b4b212e",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "超必杀",
+          "source_frames": [
+            729,
+            825
+          ],
+          "native_frames": [
+            729,
+            825
+          ]
+        },
+        {
+          "label": "防御",
+          "source_frames": [
+            894,
+            894
+          ],
+          "native_frames": [
+            894,
+            894
+          ]
+        },
+        {
+          "label": "防御2",
+          "source_frames": [
+            895,
+            895
+          ],
+          "native_frames": [
+            895,
+            895
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-combo-砍1-2-3-taps-r01",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r03-combo/rukia-combo-砍1-2-3-taps-r01/comparison.json",
+      "source_event_log_sha256": "bdf8d047d6449875c109affdc960f6e76415aca9cf313ad26a71b2c94dd82496",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "砍1",
+          "source_frames": [
+            218,
+            226
+          ],
+          "native_frames": [
+            218,
+            226
+          ]
+        },
+        {
+          "label": "砍2",
+          "source_frames": [
+            247,
+            253
+          ],
+          "native_frames": [
+            247,
+            253
+          ]
+        },
+        {
+          "label": "砍3",
+          "source_frames": [
+            273,
+            308
+          ],
+          "native_frames": [
+            273,
+            308
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-729-bishaSuper-energy_below",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r04-boundaries/rukia-729-bishaSuper-energy_below/comparison.json",
+      "source_event_log_sha256": "881c42880cddee5bfdb036335fe52d825ace1f10d482b36075e0c1be154a64c7",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "防御",
+          "source_frames": [
+            894,
+            894
+          ],
+          "native_frames": [
+            894,
+            894
+          ]
+        },
+        {
+          "label": "防御2",
+          "source_frames": [
+            895,
+            901
+          ],
+          "native_frames": [
+            895,
+            901
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-cancel-normal-to-magic1-r01",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r04-boundaries/rukia-cancel-normal-to-magic1-r01/comparison.json",
+      "source_event_log_sha256": "d647e664f4d62646640f820caec9ca4c8b834fad8a6b2b25dfc6460dcd9b112a",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "砍1",
+          "source_frames": [
+            218,
+            226
+          ],
+          "native_frames": [
+            218,
+            226
+          ]
+        },
+        {
+          "label": "招1",
+          "source_frames": [
+            406,
+            430
+          ],
+          "native_frames": [
+            406,
+            430
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-72-jump-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r05-jump2/rukia-72-jump-neutral/comparison.json",
+      "source_event_log_sha256": "4110c2d58cde45f4edb0c0557ebfdd599656a5d586c5ceac50022326e079f2ed",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "跳",
+          "source_frames": [
+            40,
+            54
+          ],
+          "native_frames": [
+            40,
+            54
+          ]
+        },
+        {
+          "label": "跳2",
+          "source_frames": [
+            72,
+            88
+          ],
+          "native_frames": [
+            72,
+            88
+          ]
+        },
+        {
+          "label": "落2",
+          "source_frames": [
+            89,
+            100
+          ],
+          "native_frames": [
+            89,
+            100
+          ]
+        },
+        {
+          "label": "落地",
+          "source_frames": [
+            115,
+            118
+          ],
+          "native_frames": [
+            115,
+            118
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-89-jumpDown-neutral",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r06-jumpdown/rukia-89-jumpDown-neutral/comparison.json",
+      "source_event_log_sha256": "7c6488e8a583bf47abdd0dc6544a38bc57eaad0676ba90d567fa786cd384a1d2",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "跳",
+          "source_frames": [
+            40,
+            54
+          ],
+          "native_frames": [
+            40,
+            54
+          ]
+        },
+        {
+          "label": "跳2",
+          "source_frames": [
+            72,
+            88
+          ],
+          "native_frames": [
+            72,
+            88
+          ]
+        },
+        {
+          "label": "落2",
+          "source_frames": [
+            89,
+            100
+          ],
+          "native_frames": [
+            89,
+            100
+          ]
+        },
+        {
+          "label": "落地",
+          "source_frames": [
+            115,
+            118
+          ],
+          "native_frames": [
+            115,
+            118
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-895-defence-trade",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r07-defence2/rukia-895-defence-trade/comparison.json",
+      "source_event_log_sha256": "aaa35ca8101e42ffd5794a48f7aaef88ab43b3de0f3aa692b545fba76460d60d",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "防御",
+          "source_frames": [
+            894,
+            894
+          ],
+          "native_frames": [
+            894,
+            894
+          ]
+        },
+        {
+          "label": "防御2",
+          "source_frames": [
+            895,
+            896
+          ],
+          "native_frames": [
+            895,
+            896
+          ]
+        },
+        {
+          "label": "防住",
+          "source_frames": [
+            906,
+            914
+          ],
+          "native_frames": [
+            906,
+            914
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-walk-right-r01",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r08-walk/rukia-walk-right-r01/comparison.json",
+      "source_event_log_sha256": "67084bb88658df82b27b8d92b495c420a481aeef0abed57d5bda08e73b9c8ffa",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "走",
+          "source_frames": [
+            10,
+            12
+          ],
+          "native_frames": [
+            10,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-p2-normalhit-reaction-r01",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r09-hurt/rukia-p2-normalhit-reaction-r01/comparison.json",
+      "source_event_log_sha256": "e11c8d233e5f4ca10cd8e9f0b9514b67212c205b3114d8f48598e23536093dc3",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "被打",
+          "source_frames": [
+            918,
+            927
+          ],
+          "native_frames": [
+            918,
+            927
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "rukia-yihu-bisha-getup-r01",
+      "comparison_path": "evidence/characters/rukia/base-move-reference-r11-hit-recovery/rukia-yihu-bisha-getup-r01/comparison.json",
+      "source_event_log_sha256": "07f839339d13872ab7c60e0ba14390292dadb547e4e92b538a60f47c21c5e00e",
+      "comparison": "matched_602_rows_14_fields",
+      "p1_labels": [
+        {
+          "label": "站立",
+          "source_frames": [
+            1,
+            7
+          ],
+          "native_frames": [
+            1,
+            7
+          ]
+        },
+        {
+          "label": "击飞",
+          "source_frames": [
+            931,
+            938
+          ],
+          "native_frames": [
+            931,
+            938
+          ]
+        },
+        {
+          "label": "击落地",
+          "source_frames": [
+            943,
+            945
+          ],
+          "native_frames": [
+            943,
+            945
+          ]
+        },
+        {
+          "label": "起身",
+          "source_frames": [
+            978,
+            988
+          ],
+          "native_frames": [
+            978,
+            988
+          ]
+        }
+      ]
+    }
+  ],
+  "coverage_method": "For each matched comparison, derive P1 source frames from the frozen original event log and native frames from native observation rows; map observed frame numbers to extracted base timeline spans. Every listed label visit comes from a strict 602-row, 14-field same-input comparison.",
+  "absent": [
+    {
+      "label": "上必杀",
+      "status": "absent_from_base_timeline",
+      "evidence": "Base sprite 533 label inventory and data/slices/rukia-base.timeline.json contain no 上必杀 span; controller helper references do not make it a base-form action."
+    }
+  ],
+  "scope_note": "Fixed-input source/native parity is proven only for recorded inputs and source labels actually visited in those traces. Transformation-only 万解 is excluded; 上必杀 is absent from the base timeline. Character-specific opening, victory/defeat, and any unlisted hurt variants remain outside this Rukia packet."
+}

@@ -1,0 +1,344 @@
+{
+  "format": "bvn26-source-collision-matrix-implementation-v1",
+  "status": "validated_for_recorded_rukia_tangency_and_r13_r14_regressions",
+  "purpose": "Apply source SWF matrix composition to global collision bounds while leaving local bounds and rendering unchanged.",
+  "algorithm": {
+    "traversal": "Start from the leaf placement and walk outward; at each step compose parent * accumulated_child.",
+    "linear_arithmetic": "Round each scalar multiply and add to f32.",
+    "translation": "Round the transformed child translation to integer twips using ties-to-even at each composition, then add the parent integer-twip translation.",
+    "leaf_bounds": "Transform all four source RECT corners with the accumulated matrix and ties-to-even twip rounding.",
+    "comparison": "Convert resulting twips to Rect2 and retain inclusive SourceHitTest; no epsilon."
+  },
+  "rukia_same_input": {
+    "fixture": "evidence/characters/rukia/move-cases/rukia-218-nornalhit-neutral.json",
+    "fixture_sha256": "1a6cfdd50d2b98fac6bb524090abfa14b1dc5306508751b3b863ddcce7857410",
+    "source_capture": "evidence/characters/rukia/original-neutral.json/events.jsonl",
+    "source_capture_sha256": "910b92dda4a27fbaad2dbee5ac86d7f1b112ac3bc67a62f58b8f200f48f3b3b1",
+    "native": "evidence/characters/rukia/collision-matrix-implementation-r01/native.json",
+    "native_sha256": "86a16e4e0e6ef624c6abb1ecf9b03c5b02ea616efb0c4b1d8c169e110713a806",
+    "comparison": "matched",
+    "source_states": 602,
+    "native_states": 602,
+    "compared_fields": 14,
+    "differences": 0,
+    "input_window": [
+      10,
+      13
+    ],
+    "first_hit": {
+      "fight_tick": 16,
+      "p2_frame": 739,
+      "p2_hp": 970,
+      "p2_energy": 303,
+      "p2_hits": 1
+    }
+  },
+  "shared_regressions": {
+    "r13": {
+      "status": "segment_observed_fields_match",
+      "frame_comparisons": 897,
+      "state_comparisons": 12,
+      "geometry_state_comparisons": 1794,
+      "random_tape_complete": true,
+      "clock_tape_complete": true,
+      "input": "evidence/ai/input-binary-r13/events.jsonl",
+      "input_sha256": "ac14a0878757cf02b5ae88060db40f72382dcdc7be5cb10e2ba9536aa8d29d92",
+      "report_sha256": "084400f3263ca1eeea1f6dd65440ec96c016e5b8d86f2b54c866a2f48e9eb1b5",
+      "report": "evidence/characters/rukia/collision-matrix-implementation-r01/shared-regressions/r13/report.json"
+    },
+    "r14": {
+      "status": "segment_observed_fields_match",
+      "frame_comparisons": 867,
+      "state_comparisons": 10,
+      "geometry_state_comparisons": 1734,
+      "random_tape_complete": true,
+      "clock_tape_complete": true,
+      "input": "evidence/ai/input-binary-r14/events.jsonl",
+      "input_sha256": "9a3dac0908ac25ca65ace8568bb6093a06aaf1bd06968a5e2903b70f119092e2",
+      "report_sha256": "5f78cb4999528d1bede0df48422f3c24d961a9c43dde9743a0bcf37c3b75a835",
+      "report": "evidence/characters/rukia/collision-matrix-implementation-r01/shared-regressions/r14/report.json"
+    }
+  },
+  "geometry_smokes": {
+    "source_matrix_bounds_smoke": "passed (including signed half-twip ties and nonzero skew0/skew1)",
+    "rukia_hit_geometry": "passed; frame-222 hit/contact is recorded at fight tick 15 in the direct runtime probe",
+    "source_hit_test_smoke": "passed; inclusive edge contact and one-twip gap cases",
+    "source_rotated_collision_smoke": "passed; Yihu base-source 上必杀 sbsatm frame 548 global bounds and attack_contact select the expected rotated attack"
+  },
+  "projectile_ab": {
+    "purpose": "Determine whether two projectile smoke assertions were introduced by the new bounds path.",
+    "method": "Temporary Godot project copied the current shared runtime and restored only pre-change timeline global bounds, AiSenses global bounds, and helper contact bounds; retained the current source_variables preservation and other shared changes.",
+    "current_geometry_results": {
+      "ai_projectile_source_smoke": "fails at godot/tests/ai_projectile_source_smoke.gd:51",
+      "combat_smoke": "fails at godot/tests/combat_smoke.gd:177"
+    },
+    "old_geometry_results": {
+      "ai_projectile_source_smoke": "same assertion failure at line 51",
+      "combat_smoke": "same assertion failure at line 177"
+    },
+    "conclusion": "Both failures reproduce with old and new geometry; not introduced by this geometry change. Existing projectile behavior remains separately unresolved."
+  },
+  "runtime_source_sha256": {
+    "godot/source_matrix_bounds.gd": "e15b3eeb4b093b749867e452b08475505c10384f2f14af6ff955830f8aad9051",
+    "godot/timeline_preview.gd": "b027e478c56b5cb234ec617744a24fc1b0f7bd69a2311c482211beb0ba890f7f",
+    "godot/ai_senses.gd": "a76d11efd1682e7df06925854128b890811d16a46f0a4938b0312566add4a00b",
+    "godot/helper_runtime.gd": "25563ef23758f9b1b0ba5a6042d8508feef75841e961aa40aea86b806a61c4b0",
+    "godot/tests/source_matrix_bounds_smoke.gd": "37d6f10fbe0ed898da09bb8d33f1bcfba7bfb9b3c3419af4958570937a75bf08",
+    "godot/tests/source_rotated_collision_smoke.gd": "1ff3e2cf8547378b077a6c2515d44b2970ebea3f4be1be40b95d3d82e7ddbeb1"
+  },
+  "environment": {
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "binary": "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot"
+  },
+  "scope_limit": "This evidence validates the recorded direct/mirrored tangent, 0.10 px gap, and 0.05 px overlap captures, plus one rotated source attack. It does not establish parity for all rotations, nested projectile bounds, or all camera scales; public getBounds(target) remains a separate path.",
+  "geometry_scenarios_r07_r10": {
+    "r07": {
+      "run_id": "rukia-geometry-r07",
+      "source_capture": "evidence/characters/rukia/collision-matrix-implementation-r01/r07/original.log.gz",
+      "source_capture_sha256": "d1cbb9f35c21f4afe9a149f39a92054ffd7acbca5422c619422fdd76f2173a3b",
+      "source_capture_gzip_sha256": "42d1713c6b1ae2cd67f7a247c091d4c8b8127b357a607a0508405a12544e99e4",
+      "build_metadata": "evidence/characters/rukia/collision-matrix-implementation-r01/r07/build.json",
+      "build_sha256": "576a1b9f259dd6755294d6f1ed5092ec8b23a5e312f4a3aca0a4a1d48f32bc5b",
+      "instrumentation_diff_sha256": "c5464632c317a6d516e6269b031c2c2e2f987cff3449629f8eca10cb7cccb144",
+      "configuration": {
+        "p1_x": 300,
+        "p2_x": 350,
+        "attack_window": [
+          10,
+          13
+        ]
+      },
+      "original_receiver_hit_tests": [
+        {
+          "fight_tick": 13,
+          "bdmn_frame": 8,
+          "k1atm_frame": 1,
+          "hit_test": false
+        },
+        {
+          "fight_tick": 14,
+          "bdmn_frame": 2,
+          "k1atm_frame": 1,
+          "hit_test": true
+        }
+      ],
+      "native_comparison": "matched",
+      "native_states": 602,
+      "compared_fields": 14,
+      "differences": 0,
+      "native": "evidence/characters/rukia/collision-matrix-implementation-r01/r07/native.json",
+      "native_sha256": "86a16e4e0e6ef624c6abb1ecf9b03c5b02ea616efb0c4b1d8c169e110713a806",
+      "native_comparison_file": "evidence/characters/rukia/collision-matrix-implementation-r01/r07/comparison.json",
+      "comparison_sha256": "04ecd4141e07f2e4dba08c9888cd472b3d86689d8709b5d6de5760da0a27d3dc",
+      "native_collision_ticks": [
+        {
+          "fight_tick": 14,
+          "p1_frame": 221,
+          "p2_frame": 1,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        },
+        {
+          "fight_tick": 15,
+          "p1_frame": 222,
+          "p2_frame": 738,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        },
+        {
+          "fight_tick": 16,
+          "p1_frame": 223,
+          "p2_frame": 739,
+          "p2_hp": 970.0,
+          "p2_hits": 1
+        }
+      ]
+    },
+    "r08": {
+      "run_id": "rukia-geometry-r08",
+      "source_capture": "evidence/characters/rukia/collision-matrix-implementation-r01/r08/original.log.gz",
+      "source_capture_sha256": "2671f41b080b4e0ece154ae79e0fd4561779ecbbcfb843d89125751cec9d6754",
+      "source_capture_gzip_sha256": "545db48d5951a25b98db765a6fc9bf7274688798254229ae3bfeda0185cd67f9",
+      "build_metadata": "evidence/characters/rukia/collision-matrix-implementation-r01/r08/build.json",
+      "build_sha256": "5d24e30ed15fa8a52dd9da7b28fa432ce12993ced1b25cdaaeedd7b9fbc80092",
+      "instrumentation_diff_sha256": "1bf751f09b4ea9fcfa9a15f4fac9d58df8066e3a6966e8fc25245a6a033a7761",
+      "configuration": {
+        "p1_x": 350.0,
+        "p2_x": 300.0,
+        "attack_window": [
+          10,
+          13
+        ]
+      },
+      "original_receiver_hit_tests": [
+        {
+          "fight_tick": 13,
+          "bdmn_frame": 8,
+          "k1atm_frame": 1,
+          "hit_test": false
+        },
+        {
+          "fight_tick": 14,
+          "bdmn_frame": 2,
+          "k1atm_frame": 1,
+          "hit_test": true
+        }
+      ],
+      "native_comparison": "matched",
+      "native_states": 602,
+      "compared_fields": 14,
+      "differences": 0,
+      "native": "evidence/characters/rukia/collision-matrix-implementation-r01/r08/native.json",
+      "native_sha256": "405510b5d04b0f5c70be19b2f8d7775923969ad96d0a767570676f0a85e76c60",
+      "native_comparison_file": "evidence/characters/rukia/collision-matrix-implementation-r01/r08/comparison.json",
+      "comparison_sha256": "04ecd4141e07f2e4dba08c9888cd472b3d86689d8709b5d6de5760da0a27d3dc",
+      "native_collision_ticks": [
+        {
+          "fight_tick": 14,
+          "p1_frame": 221,
+          "p2_frame": 1,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        },
+        {
+          "fight_tick": 15,
+          "p1_frame": 222,
+          "p2_frame": 738,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        },
+        {
+          "fight_tick": 16,
+          "p1_frame": 223,
+          "p2_frame": 739,
+          "p2_hp": 970.0,
+          "p2_hits": 1
+        }
+      ]
+    },
+    "r09": {
+      "run_id": "rukia-geometry-r09",
+      "source_capture": "evidence/characters/rukia/collision-matrix-implementation-r01/r09/original.log.gz",
+      "source_capture_sha256": "484aa455b7335f509ab5080f9c193aa3824b2bdd8fe55392427c0875fd6ee6a5",
+      "source_capture_gzip_sha256": "f263a5ac4b8475254903980fa5997f1e3d8072e63aff1a6cdd052785350f7085",
+      "build_metadata": "evidence/characters/rukia/collision-matrix-implementation-r01/r09/build.json",
+      "build_sha256": "9e69c81be794b331edca0874eddb0010395a0787ca630204bbcc0d9ea19281e5",
+      "instrumentation_diff_sha256": "ff194e69c11c48cc8548b0804ae12799cac00e4b06e2b216c6f6f0c7002525d5",
+      "configuration": {
+        "p1_x": 300.0,
+        "p2_x": 350.05,
+        "attack_window": [
+          10,
+          13
+        ]
+      },
+      "original_receiver_hit_tests": [
+        {
+          "fight_tick": 13,
+          "bdmn_frame": 8,
+          "k1atm_frame": 1,
+          "hit_test": false
+        },
+        {
+          "fight_tick": 14,
+          "bdmn_frame": 2,
+          "k1atm_frame": 1,
+          "hit_test": false
+        }
+      ],
+      "native_comparison": "matched",
+      "native_states": 602,
+      "compared_fields": 14,
+      "differences": 0,
+      "native": "evidence/characters/rukia/collision-matrix-implementation-r01/r09/native.json",
+      "native_sha256": "57c52fde8903bc3c09877924b5e3074005a98c8c60ab5fd813e509e80e855d9f",
+      "native_comparison_file": "evidence/characters/rukia/collision-matrix-implementation-r01/r09/comparison.json",
+      "comparison_sha256": "04ecd4141e07f2e4dba08c9888cd472b3d86689d8709b5d6de5760da0a27d3dc",
+      "native_collision_ticks": [
+        {
+          "fight_tick": 14,
+          "p1_frame": 221,
+          "p2_frame": 1,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        },
+        {
+          "fight_tick": 15,
+          "p1_frame": 222,
+          "p2_frame": 2,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        },
+        {
+          "fight_tick": 16,
+          "p1_frame": 223,
+          "p2_frame": 3,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        }
+      ]
+    },
+    "r10": {
+      "run_id": "rukia-geometry-r10",
+      "source_capture": "evidence/characters/rukia/collision-matrix-implementation-r01/r10/original.log.gz",
+      "source_capture_sha256": "89409eb5925daee16193130140b1554acaee734dddd16e38c80ecfbd7a1d81b7",
+      "source_capture_gzip_sha256": "33c8ea06ffdec159af1b0e0f9ab16b9e63a6be6e29e1e478114d01e3ac024e82",
+      "build_metadata": "evidence/characters/rukia/collision-matrix-implementation-r01/r10/build.json",
+      "build_sha256": "deb28bdbded27c8170471311200389e0d6da094d3b39efd2e9116442d2173d50",
+      "instrumentation_diff_sha256": "7f147026530f995cc9de8f65bd66b065aac1966ebc5e127096703facd69220a5",
+      "configuration": {
+        "p1_x": 300.0,
+        "p2_x": 349.95,
+        "attack_window": [
+          10,
+          13
+        ]
+      },
+      "original_receiver_hit_tests": [
+        {
+          "fight_tick": 13,
+          "bdmn_frame": 8,
+          "k1atm_frame": 1,
+          "hit_test": false
+        },
+        {
+          "fight_tick": 14,
+          "bdmn_frame": 2,
+          "k1atm_frame": 1,
+          "hit_test": true
+        }
+      ],
+      "native_comparison": "matched",
+      "native_states": 602,
+      "compared_fields": 14,
+      "differences": 0,
+      "native": "evidence/characters/rukia/collision-matrix-implementation-r01/r10/native.json",
+      "native_sha256": "3ca2893535c8310b6d0b3afbfefa75e991624f60c6bb4e86b5d1e6759bf3c8a5",
+      "native_comparison_file": "evidence/characters/rukia/collision-matrix-implementation-r01/r10/comparison.json",
+      "comparison_sha256": "04ecd4141e07f2e4dba08c9888cd472b3d86689d8709b5d6de5760da0a27d3dc",
+      "native_collision_ticks": [
+        {
+          "fight_tick": 14,
+          "p1_frame": 221,
+          "p2_frame": 1,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        },
+        {
+          "fight_tick": 15,
+          "p1_frame": 222,
+          "p2_frame": 738,
+          "p2_hp": 1000.0,
+          "p2_hits": 0
+        },
+        {
+          "fight_tick": 16,
+          "p1_frame": 223,
+          "p2_frame": 739,
+          "p2_hp": 970.0,
+          "p2_hits": 1
+        }
+      ]
+    }
+  }
+}

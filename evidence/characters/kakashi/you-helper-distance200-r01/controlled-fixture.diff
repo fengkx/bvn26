@@ -1,0 +1,75 @@
+--- scripts/main.json#frame_10/DoAction.as
++++ controlled/frame_10/DoAction.as
+@@ -1,5 +1,67 @@
+-stop();
+-_root.stage = 0;
+-isload = true;
+-downtxts.clean();
+-vertxt.text = _root.ver;
++_root.aiHeld = {};
++_root.aiKeyDown = function(code)
++{
++   var held = _root.aiHeld[code] == true;
++   _root.aiEvent("key_read", String(this) + "," + code + "," + held);
++   return held;
++};
++p1selt = "卡卡西";
++p2selt = "佐助";
++p1sf = "鼬";
++p2sf = "魂";
++curStage = "现世";
++modo = 2;
++p1cpu = false;
++p2cpu = false;
++AI = 5;
++maxhp = 1000;
++maxtime = 60;
++fighterDir = "file:///private/tmp/you-helper-distance200-native-r01/game/fighter/";
++fzDir = "file:///private/tmp/you-helper-distance200-native-r01/game/fighter/fz/";
++musicDir = "file:///private/tmp/you-helper-distance200-native-r01/game/music/";
++_root.aiEvent("boot", "vs_com,minren,yihu,AI=5");
++_root.aiEvent("input_bindings", "right=" + d + ",attack=" + j + ",down=" + s + ",ranged=" + u + ",jump=" + k + ",special=" + i + ",summon=" + o);
++gotoAndStop("游戏场景");
++onEnterFrame = function()
++{
++   aiDisplay++;
++   if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)
++   {
++      aiFight = 0;
++      _root.game.p1._x = 300;
++      _root.game.p2._x = 480;
++      _root.game.p1.mc.ql = 300;
++      aiEvent("fixture_setup", "p1x=" + _root.aiNumber(_root.game.p1._x) + ",p2x=" + _root.aiNumber(_root.game.p2._x) + ",p1ql=" + _root.aiNumber(_root.game.p1.mc.ql));
++      aiEvent("ready", "");
++   }
++   else if(aiFight >= 0)
++   {
++      aiFight++;
++   }
++   aiHeld = {};
++   // These inputs become visible to the next display callback, as logged.
++   if(aiFight >= 10 && aiFight < 13) aiHeld[o] = true;
++   aiEvent("input_next_display", "right=" + aiHeld[d] + ",attack=" + aiHeld[j] + ",down=" + aiHeld[s] + ",ranged=" + aiHeld[u] + ",jump=" + aiHeld[k] + ",special=" + aiHeld[i] + ",summon=" + aiHeld[o]);
++   if(p2loaded == true)
++   {
++      if(!_root.aiGeometryLogged && _root.game.p2.useAI == true && _root.game.p2.mc.AImain._currentframe == 2)
++      {
++         _root.aiGeometryLogged = true;
++         aiGeometry();
++      }
++      aiState("p1");
++      aiHelperState("p1");
++      aiState("p2");
++      aiHelperState("p2");
++   }
++   if(aiFight >= 300)
++   {
++      aiEvent("done", "");
++      fscommand("quit");
++   }
++   if(aiDisplay > 300 + 900)
++   {
++      aiEvent("timeout", "ready=" + _menuEnabled + ",loaded=" + p2loaded);
++      fscommand("quit");
++   }
++};

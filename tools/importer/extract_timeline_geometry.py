@@ -137,32 +137,14 @@ def definition_dependencies(tag: ET.Element) -> set[int]:
     return dependencies
 
 
+def sprite_timeline_frames(sprite: ET.Element) -> list[dict[str, Any]]:
+    """Return child display-list snapshots and events on each authored frame."""
+    return build_frames(sprite.findall("./subTags/item"))
+
+
 def sprite_display_frames(sprite: ET.Element) -> list[list[dict[str, Any]]]:
-    display_list: dict[int, dict[str, Any]] = {}
-    frames = []
-    for tag in sprite.findall("./subTags/item"):
-        tag_type = tag.attrib["type"]
-        if tag_type in ("PlaceObject2Tag", "PlaceObject3Tag"):
-            delta = placement_delta(tag)
-            depth = delta["depth"]
-            if delta["move"]:
-                if depth not in display_list:
-                    raise ValueError(f"Move at unoccupied depth {depth}")
-                updated = copy.deepcopy(display_list[depth])
-                updated.update({key: value for key, value in delta.items() if key != "move"})
-                display_list[depth] = updated
-            else:
-                if "character_id" not in delta:
-                    raise ValueError(f"Placement at depth {depth} has no character")
-                display_list[depth] = {
-                    key: value for key, value in delta.items() if key != "move"
-                }
-                display_list[depth]["placed_frame"] = len(frames) + 1
-        elif tag_type in ("RemoveObjectTag", "RemoveObject2Tag"):
-            display_list.pop(int(tag.attrib["depth"]), None)
-        elif tag_type == "ShowFrameTag":
-            frames.append(copy.deepcopy([display_list[key] for key in sorted(display_list)]))
-    return frames
+    """Keep the legacy display-list-only view for callers outside the importer."""
+    return [frame["display_list"] for frame in sprite_timeline_frames(sprite)]
 
 
 def first_frame_display_list(sprite: ET.Element) -> list[dict[str, Any]]:
@@ -170,13 +152,16 @@ def first_frame_display_list(sprite: ET.Element) -> list[dict[str, Any]]:
     return frames[0] if frames else []
 
 
-def sound_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """DefineSound tags reached by StartSound on the extracted frames."""
+def sound_definitions(
+    root: ET.Element, frame_groups: list[list[dict[str, Any]]]
+) -> list[dict[str, Any]]:
+    """DefineSound tags reached on the root or a statically reachable child timeline."""
     wanted = {
         int(event["sound_id"])
+        for frames in frame_groups
         for frame in frames
         for event in frame.get("events", [])
-        if event.get("type") == "start_sound"
+        if event.get("type") == "start_sound" and "sound_id" in event
     }
     definitions = []
     for tag in root.findall("./tags/item"):
@@ -216,6 +201,7 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             pending.append(dependency)
 
     definitions = []
+    sound_frame_groups = [frames]
     for item_id in sorted(wanted):
         tag = definitions_by_id.get(item_id)
         if tag is None:
@@ -269,13 +255,21 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             definition["referenced_character_ids"] = sorted(dependencies)
         if "frameCount" in tag.attrib:
             definition["frame_count"] = int(tag.attrib["frameCount"])
-            sprite_frames = sprite_display_frames(tag)
-            definition["first_frame_display_list"] = sprite_frames[0] if sprite_frames else []
-            definition["display_list_frames"] = sprite_frames
+            sprite_frames = sprite_timeline_frames(tag)
+            sound_frame_groups.append(sprite_frames)
+            definition["first_frame_display_list"] = (
+                sprite_frames[0]["display_list"] if sprite_frames else []
+            )
+            definition["display_list_frames"] = [
+                frame["display_list"] for frame in sprite_frames
+            ]
+            definition["display_list_frame_events"] = [
+                frame["events"] for frame in sprite_frames
+            ]
         if "_externalFile" in tag.attrib:
             definition["external_file"] = tag.attrib["_externalFile"]
         definitions.append(definition)
-    definitions.extend(sound_definitions(root, frames))
+    definitions.extend(sound_definitions(root, sound_frame_groups))
     definitions.sort(key=lambda item: item["character_id"])
     return definitions
 

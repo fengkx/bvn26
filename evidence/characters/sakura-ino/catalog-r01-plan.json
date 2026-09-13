@@ -1,0 +1,1064 @@
+{
+  "format": "bvn26-sakura-original-move-catalog-plan-v1",
+  "role": "sakura",
+  "source_role_id": "樱",
+  "status": "prepared_not_captured",
+  "case_count": 59,
+  "helper_selection": {
+    "p1": {
+      "alias": "jinye",
+      "id": "松本",
+      "swf": "game/fighter/fz/jinye.swf",
+      "sha256": "03736bfd2ef7e9b79f958971fc7192ea641653039212e29793ed291c56bfa62a"
+    },
+    "p2": {
+      "alias": "kon",
+      "id": "魂",
+      "swf": "game/fighter/fz/kon.swf",
+      "sha256": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+    }
+  },
+  "selection_policy": {
+    "positive": "neutral + mirror + air_target for every timeline-backed source-dispatch target, except 4 already-captured neutral baselines",
+    "energy_boundaries": "99/100/101 for 空中必杀; below/exact/above source minimum for no-timeline 万解 and 上必杀",
+    "controlled_interventions": false
+  },
+  "already_matched_neutral_targets": [
+    "砍1",
+    "必杀",
+    "招换",
+    "超必杀"
+  ],
+  "cases": [
+    {
+      "id": "sakura-missing-wankai-energy_below",
+      "label": "万解",
+      "scenario": "energy_below",
+      "target_frames": [
+        null,
+        null
+      ],
+      "has_source_timeline": false,
+      "source_dispatch": [
+        "doAllAction"
+      ],
+      "implementation": "missing_timeline",
+      "status": "not_run",
+      "source_status": "no_source_target",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-missing-wankai-energy_below"
+    },
+    {
+      "id": "sakura-missing-wankai-energy_exact",
+      "label": "万解",
+      "scenario": "energy_exact",
+      "target_frames": [
+        null,
+        null
+      ],
+      "has_source_timeline": false,
+      "source_dispatch": [
+        "doAllAction"
+      ],
+      "implementation": "missing_timeline",
+      "status": "not_run",
+      "source_status": "no_source_target",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-missing-wankai-energy_exact"
+    },
+    {
+      "id": "sakura-missing-wankai-energy_above",
+      "label": "万解",
+      "scenario": "energy_above",
+      "target_frames": [
+        null,
+        null
+      ],
+      "has_source_timeline": false,
+      "source_dispatch": [
+        "doAllAction"
+      ],
+      "implementation": "missing_timeline",
+      "status": "not_run",
+      "source_status": "no_source_target",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-missing-wankai-energy_above"
+    },
+    {
+      "id": "sakura-missing-bishaUP-energy_below",
+      "label": "上必杀",
+      "scenario": "energy_below",
+      "target_frames": [
+        null,
+        null
+      ],
+      "has_source_timeline": false,
+      "source_dispatch": [
+        "doAllAction",
+        "onDashing"
+      ],
+      "implementation": "missing_timeline",
+      "status": "not_run",
+      "source_status": "no_source_target",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-missing-bishaUP-energy_below"
+    },
+    {
+      "id": "sakura-missing-bishaUP-energy_exact",
+      "label": "上必杀",
+      "scenario": "energy_exact",
+      "target_frames": [
+        null,
+        null
+      ],
+      "has_source_timeline": false,
+      "source_dispatch": [
+        "doAllAction",
+        "onDashing"
+      ],
+      "implementation": "missing_timeline",
+      "status": "not_run",
+      "source_status": "no_source_target",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-missing-bishaUP-energy_exact"
+    },
+    {
+      "id": "sakura-missing-bishaUP-energy_above",
+      "label": "上必杀",
+      "scenario": "energy_above",
+      "target_frames": [
+        null,
+        null
+      ],
+      "has_source_timeline": false,
+      "source_dispatch": [
+        "doAllAction",
+        "onDashing"
+      ],
+      "implementation": "missing_timeline",
+      "status": "not_run",
+      "source_status": "no_source_target",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-missing-bishaUP-energy_above"
+    },
+    {
+      "id": "sakura-552-bisha-mirror",
+      "label": "必杀",
+      "scenario": "mirror",
+      "target_frames": [
+        552,
+        598
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "onDashing"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-552-bisha-air_target",
+      "label": "必杀",
+      "scenario": "air_target",
+      "target_frames": [
+        552,
+        598
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "onDashing"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-415-magichit1-neutral",
+      "label": "招1",
+      "scenario": "neutral",
+      "target_frames": [
+        415,
+        467
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-415-magichit1-neutral"
+    },
+    {
+      "id": "sakura-415-magichit1-mirror",
+      "label": "招1",
+      "scenario": "mirror",
+      "target_frames": [
+        415,
+        467
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-415-magichit1-air_target",
+      "label": "招1",
+      "scenario": "air_target",
+      "target_frames": [
+        415,
+        467
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-468-magichit2-neutral",
+      "label": "招2",
+      "scenario": "neutral",
+      "target_frames": [
+        468,
+        517
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand",
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-468-magichit2-neutral"
+    },
+    {
+      "id": "sakura-468-magichit2-mirror",
+      "label": "招2",
+      "scenario": "mirror",
+      "target_frames": [
+        468,
+        517
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand",
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-468-magichit2-air_target",
+      "label": "招2",
+      "scenario": "air_target",
+      "target_frames": [
+        468,
+        517
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand",
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-518-magichit3-neutral",
+      "label": "招3",
+      "scenario": "neutral",
+      "target_frames": [
+        518,
+        551
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch02/sakura-518-magichit3-neutral"
+    },
+    {
+      "id": "sakura-518-magichit3-mirror",
+      "label": "招3",
+      "scenario": "mirror",
+      "target_frames": [
+        518,
+        551
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-518-magichit3-air_target",
+      "label": "招3",
+      "scenario": "air_target",
+      "target_frames": [
+        518,
+        551
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-804-zhaoHuan-mirror",
+      "label": "招换",
+      "scenario": "mirror",
+      "target_frames": [
+        804,
+        865
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-804-zhaoHuan-air_target",
+      "label": "招换",
+      "scenario": "air_target",
+      "target_frames": [
+        804,
+        865
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-20-rush-neutral",
+      "label": "瞬步",
+      "scenario": "neutral",
+      "target_frames": [
+        20,
+        39
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-20-rush-neutral"
+    },
+    {
+      "id": "sakura-20-rush-mirror",
+      "label": "瞬步",
+      "scenario": "mirror",
+      "target_frames": [
+        20,
+        39
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-20-rush-air_target",
+      "label": "瞬步",
+      "scenario": "air_target",
+      "target_frames": [
+        20,
+        39
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-205-nornalhit-mirror",
+      "label": "砍1",
+      "scenario": "mirror",
+      "target_frames": [
+        205,
+        228
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-205-nornalhit-air_target",
+      "label": "砍1",
+      "scenario": "air_target",
+      "target_frames": [
+        205,
+        228
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-309-skill1-neutral",
+      "label": "砍技1",
+      "scenario": "neutral",
+      "target_frames": [
+        309,
+        365
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand",
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-309-skill1-neutral"
+    },
+    {
+      "id": "sakura-309-skill1-mirror",
+      "label": "砍技1",
+      "scenario": "mirror",
+      "target_frames": [
+        309,
+        365
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand",
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-309-skill1-air_target",
+      "label": "砍技1",
+      "scenario": "air_target",
+      "target_frames": [
+        309,
+        365
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand",
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-366-skill2-neutral",
+      "label": "砍技2",
+      "scenario": "neutral",
+      "target_frames": [
+        366,
+        414
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-366-skill2-neutral"
+    },
+    {
+      "id": "sakura-366-skill2-mirror",
+      "label": "砍技2",
+      "scenario": "mirror",
+      "target_frames": [
+        366,
+        414
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-366-skill2-air_target",
+      "label": "砍技2",
+      "scenario": "air_target",
+      "target_frames": [
+        366,
+        414
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-646-bishaAir-neutral",
+      "label": "空中必杀",
+      "scenario": "neutral",
+      "target_frames": [
+        646,
+        668
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping",
+        "onDashing"
+      ],
+      "implementation": "catalog_only",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch02/sakura-646-bishaAir-neutral"
+    },
+    {
+      "id": "sakura-646-bishaAir-mirror",
+      "label": "空中必杀",
+      "scenario": "mirror",
+      "target_frames": [
+        646,
+        668
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping",
+        "onDashing"
+      ],
+      "implementation": "catalog_only",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-646-bishaAir-air_target",
+      "label": "空中必杀",
+      "scenario": "air_target",
+      "target_frames": [
+        646,
+        668
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping",
+        "onDashing"
+      ],
+      "implementation": "catalog_only",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-646-bishaAir-energy_below",
+      "label": "空中必杀",
+      "scenario": "energy_below",
+      "target_frames": [
+        646,
+        668
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping",
+        "onDashing"
+      ],
+      "implementation": "catalog_only",
+      "status": "not_run",
+      "source_status": "no_source_target",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-646-bishaAir-energy_below"
+    },
+    {
+      "id": "sakura-646-bishaAir-energy_exact",
+      "label": "空中必杀",
+      "scenario": "energy_exact",
+      "target_frames": [
+        646,
+        668
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping",
+        "onDashing"
+      ],
+      "implementation": "catalog_only",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-646-bishaAir-energy_exact"
+    },
+    {
+      "id": "sakura-646-bishaAir-energy_above",
+      "label": "空中必杀",
+      "scenario": "energy_above",
+      "target_frames": [
+        646,
+        668
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping",
+        "onDashing"
+      ],
+      "implementation": "catalog_only",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-energy-r01-batch03/sakura-646-bishaAir-energy_above"
+    },
+    {
+      "id": "sakura-89-jumpDown-neutral",
+      "label": "落2",
+      "scenario": "neutral",
+      "target_frames": [
+        89,
+        114
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doDropDown"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-89-jumpDown-neutral"
+    },
+    {
+      "id": "sakura-89-jumpDown-mirror",
+      "label": "落2",
+      "scenario": "mirror",
+      "target_frames": [
+        89,
+        114
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doDropDown"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-89-jumpDown-air_target",
+      "label": "落2",
+      "scenario": "air_target",
+      "target_frames": [
+        89,
+        114
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doDropDown"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-700-bishaSuper-mirror",
+      "label": "超必杀",
+      "scenario": "mirror",
+      "target_frames": [
+        700,
+        803
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "onDefence",
+        "onDashing"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-700-bishaSuper-air_target",
+      "label": "超必杀",
+      "scenario": "air_target",
+      "target_frames": [
+        700,
+        803
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "onDefence",
+        "onDashing"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-40-jump-neutral",
+      "label": "跳",
+      "scenario": "neutral",
+      "target_frames": [
+        40,
+        55
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-40-jump-neutral"
+    },
+    {
+      "id": "sakura-40-jump-mirror",
+      "label": "跳",
+      "scenario": "mirror",
+      "target_frames": [
+        40,
+        55
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-40-jump-air_target",
+      "label": "跳",
+      "scenario": "air_target",
+      "target_frames": [
+        40,
+        55
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-72-jump-neutral",
+      "label": "跳2",
+      "scenario": "neutral",
+      "target_frames": [
+        72,
+        88
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-72-jump-neutral"
+    },
+    {
+      "id": "sakura-72-jump-mirror",
+      "label": "跳2",
+      "scenario": "mirror",
+      "target_frames": [
+        72,
+        88
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-72-jump-air_target",
+      "label": "跳2",
+      "scenario": "air_target",
+      "target_frames": [
+        72,
+        88
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-162-airMagichit-neutral",
+      "label": "跳招",
+      "scenario": "neutral",
+      "target_frames": [
+        162,
+        167
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch01-remaining/sakura-162-airMagichit-neutral"
+    },
+    {
+      "id": "sakura-162-airMagichit-mirror",
+      "label": "跳招",
+      "scenario": "mirror",
+      "target_frames": [
+        162,
+        167
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-162-airMagichit-air_target",
+      "label": "跳招",
+      "scenario": "air_target",
+      "target_frames": [
+        162,
+        167
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-127-airhit-neutral",
+      "label": "跳砍",
+      "scenario": "neutral",
+      "target_frames": [
+        127,
+        161
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-r01-batch01-360-vs-300-invalid-duration/sakura-127-airhit-neutral"
+    },
+    {
+      "id": "sakura-127-airhit-mirror",
+      "label": "跳砍",
+      "scenario": "mirror",
+      "target_frames": [
+        127,
+        161
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-127-airhit-air_target",
+      "label": "跳砍",
+      "scenario": "air_target",
+      "target_frames": [
+        127,
+        161
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onJumping"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-866-defence-neutral",
+      "label": "防御",
+      "scenario": "neutral",
+      "target_frames": [
+        866,
+        866
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch02/sakura-866-defence-neutral"
+    },
+    {
+      "id": "sakura-866-defence-mirror",
+      "label": "防御",
+      "scenario": "mirror",
+      "target_frames": [
+        866,
+        866
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-866-defence-air_target",
+      "label": "防御",
+      "scenario": "air_target",
+      "target_frames": [
+        866,
+        866
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "doAllAction",
+        "doStand"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-867-defence-neutral",
+      "label": "防御2",
+      "scenario": "neutral",
+      "target_frames": [
+        867,
+        877
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run",
+      "source_status": "target_reached",
+      "provisional_port_status": "matched",
+      "final_port_status": "pending_stable_runtime_replay",
+      "reference": "original/catalog-neutral-r01-batch02/sakura-867-defence-neutral"
+    },
+    {
+      "id": "sakura-867-defence-mirror",
+      "label": "防御2",
+      "scenario": "mirror",
+      "target_frames": [
+        867,
+        877
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    },
+    {
+      "id": "sakura-867-defence-air_target",
+      "label": "防御2",
+      "scenario": "air_target",
+      "target_frames": [
+        867,
+        877
+      ],
+      "has_source_timeline": true,
+      "source_dispatch": [
+        "onDefence"
+      ],
+      "implementation": "wired",
+      "status": "not_run"
+    }
+  ],
+  "capture_progress": {
+    "baseline_targets": 18,
+    "baseline_source_targets_reached": 18,
+    "additional_energy_cases": 9,
+    "energy_case_source_status": "captured",
+    "current_gameworld_results": "provisional; shared runtime may include temporary Rukia geometry candidate",
+    "runtime_hash": "not_frozen_at_capture_start",
+    "final_stable_replay": "pending"
+  }
+}

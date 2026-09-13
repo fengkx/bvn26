@@ -1,0 +1,59 @@
+{
+  "id": "sakura-127-airhit-trade",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "跳砍",
+  "scenario": "trade",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 20,
+      "end": 23
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 20,
+      "end": 23
+    }
+  ],
+  "target_frames": [
+    127,
+    161
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "onJumping"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "priority": "P2",
+  "priority_reason": "Spatial or opponent-interaction branch."
+}

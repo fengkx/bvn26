@@ -1,0 +1,181 @@
+{
+  "format": "yulong-gethitobj-packet-alignment-v1",
+  "run_id": "yulong-ranged-down-packet-r03",
+  "native_capture_sha256": "ca39aee73730dd56cc084fd55e3bd6186028187374d24411df93f51aaeccb2b8",
+  "native_capture_events": 14988,
+  "native_capture_done": true,
+  "source_fight_tick_to_godot_state_tick": "native fight_tick + 1; checked against identical attacker root frames 468/472/476",
+  "source_hit_selections": [
+    {
+      "sequence": 5417,
+      "display_tick": 486,
+      "fight_tick": 43,
+      "godot_state_tick": 44,
+      "base_name": "zh2",
+      "after_fix": "atm",
+      "object_name": "zh2atm",
+      "object_frame": 3,
+      "receiver_frame": 1,
+      "damage": 20.0,
+      "impact_strength": 11.0,
+      "vertical_impulse": 0.0,
+      "horizontal_impulse": 0.0,
+      "hitstun_ms": 1000.0,
+      "reaction": "被打",
+      "attacker_root_frame": 468,
+      "attacker_slot": "1",
+      "receiver_fighter": "yihu"
+    },
+    {
+      "sequence": 5466,
+      "display_tick": 490,
+      "fight_tick": 47,
+      "godot_state_tick": 48,
+      "base_name": "zh2",
+      "after_fix": "atm",
+      "object_name": "zh2atm",
+      "object_frame": 7,
+      "receiver_frame": 1,
+      "damage": 20.0,
+      "impact_strength": 11.0,
+      "vertical_impulse": 0.0,
+      "horizontal_impulse": 0.0,
+      "hitstun_ms": 1000.0,
+      "reaction": "被打",
+      "attacker_root_frame": 472,
+      "attacker_slot": "1",
+      "receiver_fighter": "yihu"
+    },
+    {
+      "sequence": 5515,
+      "display_tick": 494,
+      "fight_tick": 51,
+      "godot_state_tick": 52,
+      "base_name": "zh21",
+      "after_fix": "atm",
+      "object_name": "zh21atm",
+      "object_frame": 11,
+      "receiver_frame": 1,
+      "damage": 100.0,
+      "impact_strength": 5.0,
+      "vertical_impulse": 5.0,
+      "horizontal_impulse": 10.0,
+      "hitstun_ms": 0.0,
+      "reaction": "击飞",
+      "attacker_root_frame": 476,
+      "attacker_slot": "1",
+      "receiver_fighter": "yihu"
+    }
+  ],
+  "source_frame_markers": [
+    {
+      "sequence": 5467,
+      "display_tick": 490,
+      "fight_tick": 47,
+      "kind": "source_child_frame_entry",
+      "value": "yulong-ranged-down-packet-r03|sprite185|7|zh21atm|7"
+    },
+    {
+      "sequence": 5480,
+      "display_tick": 491,
+      "fight_tick": 48,
+      "kind": "source_sound_tag_frame",
+      "value": "yulong-ranged-down-packet-r03|sprite185|8|16|0|164|zh21atm|8"
+    }
+  ],
+  "godot_stable_apply_contacts": [
+    {
+      "tick": 44,
+      "root_frame": 468,
+      "attack": {
+        "damage": 20.0,
+        "hitstun_ms": 1000.0,
+        "horizontal_impulse": 0.0,
+        "impact_strength": 11.0,
+        "instance_name": "zh2atm",
+        "reaction_label": "被打",
+        "vertical_impulse": 0.0
+      },
+      "attacker": "Naruto",
+      "attacker_frame": 468,
+      "defender": "Ichigo",
+      "defender_frame": 3
+    },
+    {
+      "tick": 48,
+      "root_frame": 472,
+      "attack": {
+        "damage": 20.0,
+        "hitstun_ms": 1000.0,
+        "horizontal_impulse": 0.0,
+        "impact_strength": 11.0,
+        "instance_name": "zh2atm",
+        "reaction_label": "被打",
+        "vertical_impulse": 0.0
+      },
+      "attacker": "Naruto",
+      "attacker_frame": 472,
+      "defender": "Ichigo",
+      "defender_frame": 742
+    },
+    {
+      "tick": 52,
+      "root_frame": 476,
+      "attack": {
+        "damage": 100.0,
+        "hitstun_ms": 0.0,
+        "horizontal_impulse": 10.0,
+        "impact_strength": 5.0,
+        "instance_name": "zh21atm",
+        "reaction_label": "击飞",
+        "vertical_impulse": 5.0
+      },
+      "attacker": "Naruto",
+      "attacker_frame": 476,
+      "defender": "Ichigo",
+      "defender_frame": 742
+    }
+  ],
+  "godot_full_case_comparison": {
+    "status": "matched",
+    "source_states": 602,
+    "native_states": 602,
+    "differences": []
+  },
+  "godot_nested_sound_event": [
+    {
+      "fight_tick": 49,
+      "frame": 8,
+      "instance_id": "root/28:185:466#9",
+      "root_frame": 473,
+      "slot": "p1",
+      "sound_id": 164,
+      "source_event": {
+        "sound_id": 164.0,
+        "type": "start_sound"
+      },
+      "source_name": "zh21atm",
+      "sprite_id": 185
+    }
+  ],
+  "godot_focused_smokes": {
+    "reference": "exit 0; 602 states and one sound",
+    "instance": "exit 0; passed redraw idempotence, MOVE identity, and new same-depth PlaceObject generation"
+  },
+  "sound_phase_note": "The source frame8 StartSound marker is after the fight48/root472 state observer. The marker does not directly record parent _currentframe; within-tick source ordering plus the next state (fight49/root473) supports the same event phase as Godot fight_tick49/root473. This is not evidence of a one-tick delay.",
+  "probe_integrity": "Receiver hitTest is evaluated once into a local result and reused. The added logger runs only on the original first-hit return branch; array enumeration and returned fields are unchanged. Source game and source SWFs were not modified.",
+  "runtime_policy": "No advance-on-placement, defer, or phase change retained; source event compilation, child frame-entry queue playback, and duplicate-dispatch prevention only.",
+  "runtime_sha256": {
+    "godot/timeline_preview.gd": "0fb4049c5295534322727c58c66cf7fbba16689190f51d66f6b639e1ea950dec",
+    "godot/ai_controller_host.gd": "3d345dddf5b0ab0ea8ac81867b6a0891d1ce0fce9b073f2dfb2a35706479b1cf",
+    "godot/fighter_runtime.gd": "b5b3496d2402f94c9a8c8f28c7df61ef86939fbe2da55afe2e07057ff7657180",
+    "godot/generated/fighters/yulong/ai_controller/controller.json": "22bf5d86c7af1b4c10530ffd21355213f538762d065f11f55fb7b8856e21875c",
+    "godot/generated/fighters/yulong/combat.json": "94c270194bd275c7bed83dd7d21690563e2d87249ece14d9d7a2da60006c7a46",
+    "tools/importer/compile_ai_controller.py": "ac73c7ccdf611eb07d672faf8225dd92e97c83b6998bb91a1dabda8bdc5de99f",
+    "tools/importer/build_combat_model.py": "91a10215eaffedff3ca406ef3203e610f241aa8c1882d6d3763ed36ac294f6b9"
+  },
+  "loaded_swf_sha256": {
+    "yulong_with_frame7_8_markers": "74826c62bf00b71b59cadd6b779210ba6dd91e0b05ef666459f554b7dbd2ccd3",
+    "yihu_with_getHitObj_probe": "c0c7c455b63e5249a8b9a17a57fdea6622f27f897fb3b89ec7a5e8fb2e4bd455"
+  }
+}

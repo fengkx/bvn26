@@ -5,6 +5,7 @@ results; only native Flash traces can establish behavioral expectations.
 """
 import argparse
 import json
+import math
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -23,6 +24,43 @@ COMMANDS = {
 
 def window(slot, keys, start, end):
     return {'slot':slot, 'keys':keys, 'start':start, 'end':end}
+
+
+def resource_interventions(case):
+    """Validate explicit controlled resource changes at the root input boundary."""
+    result = case.get('resource_interventions', [])
+    if not isinstance(result, list):
+        raise ValueError('resource_interventions must be a list')
+    seen_ids = set()
+    for intervention in result:
+        if not isinstance(intervention, dict):
+            raise ValueError('resource intervention must be an object')
+        intervention_id = intervention.get('id')
+        tick = intervention.get('tick')
+        slot = intervention.get('slot')
+        resource = intervention.get('resource')
+        value = intervention.get('value')
+        if not isinstance(intervention_id, str) or not intervention_id or any(c in intervention_id for c in ':;'):
+            raise ValueError('resource intervention id must be a non-empty token')
+        if intervention_id in seen_ids:
+            raise ValueError(f'duplicate resource intervention id: {intervention_id}')
+        seen_ids.add(intervention_id)
+        if not isinstance(tick, int) or isinstance(tick, bool) or tick < 1:
+            raise ValueError('resource intervention tick must be an integer >= 1')
+        if slot not in ('p1', 'p2') or resource != 'energy':
+            raise ValueError('only p1/p2 energy interventions are supported')
+        if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
+            raise ValueError('resource intervention value must be finite numeric data')
+        if any(c in str(value) for c in ':;'):
+            raise ValueError('resource intervention value must be a plain number')
+    return result
+
+
+def encode_resource_interventions(case):
+    return ';'.join(
+        ':'.join((str(item['tick']), item['slot'], item['resource'], str(item['value']), item['id']))
+        for item in resource_interventions(case)
+    )
 
 
 def generate(fighters=None, exclude_commands=()):
@@ -74,6 +112,9 @@ def encode_case(case, run_id):
         values[slot+'energy'] = setup['energy']
     values['windows'] = ';'.join(f"{item['start']}:{item['end']}:{KEYS[item['slot']][key]}"
                                for item in case['inputs'] for key in item['keys'])
+    interventions = encode_resource_interventions(case)
+    if interventions:
+        values['resource_interventions'] = interventions
     return urlencode(values)
 
 
@@ -85,6 +126,13 @@ def source_fixture(case):
                   f'      _root.game.{slot}._x = {float(values["x"])};',
                   f'      _root.game.{slot}.mc.ql = {float(values["energy"])};']
     lines += ['   }', '   aiHeld = {};']
+    for item in resource_interventions(case):
+        field = 'ql'
+        lines.append(
+            f'   if(aiFight == {item["tick"]}) {{ _root.game.{item["slot"]}.mc.{field} = {item["value"]}; '
+            f'_root.aiEvent("resource_intervention", "{item["id"]},{item["tick"]},{item["slot"]},'
+            f'{item["resource"]},{item["value"]}"); }}'
+        )
     for item in case['inputs']:
         assignments = ' '.join(f'aiHeld[{KEYS[item["slot"]][key]}] = true;' for key in item['keys'])
         lines.append(f'   if(aiFight >= {int(item["start"])} && aiFight < {int(item["end"])}) {{ {assignments} }}')

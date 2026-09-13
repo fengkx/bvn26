@@ -1,0 +1,68 @@
+{
+  "format": "bvn26-native-case-catalog-v1",
+  "fighter": "yulong",
+  "status": "partial_catalog_capture_and_comparison_complete",
+  "source_model": "godot/generated/fighters/yulong/combat.json",
+  "cases": [
+    {
+      "fixture": "evidence/characters/yulong/coverage-batch-02/cases/ranged-up.json",
+      "case_id": "yulong-ranged-up",
+      "label": "招3",
+      "purpose": "Verify source dispatch and full 招3 placement/lifetime.",
+      "status": "original_capture_complete_comparison_matched"
+    },
+    {
+      "fixture": "evidence/characters/yulong/coverage-batch-02/cases/air-ranged.json",
+      "case_id": "yulong-air-ranged",
+      "label": "跳招",
+      "purpose": "Verify airborne ranged command and projectile placement/lifetime.",
+      "status": "original_capture_complete_comparison_matched"
+    },
+    {
+      "fixture": "evidence/characters/yulong/coverage-batch-02/cases/summon.json",
+      "case_id": "yulong-summon",
+      "label": "招换",
+      "purpose": "Verify source-gated summon, selected helper binding, and helper lifecycle.",
+      "status": "original_capture_complete_comparison_matched"
+    },
+    {
+      "fixture": "evidence/characters/yulong/coverage-batch-02/cases/ground-combo-taps.json",
+      "case_id": "yulong-ground-combo-taps",
+      "label": "砍1→砍2",
+      "purpose": "Probe tap/repress and cancellation boundaries across the source ground-combo fallthrough.",
+      "status": "original_capture_complete_comparison_matched"
+    },
+    {
+      "fixture": "evidence/characters/yulong/coverage-batch-02/cases/defence-guard.json",
+      "case_id": "yulong-defence-guard",
+      "label": "防御→防住",
+      "purpose": "Verify held-down guard entry and source transition to guard loop.",
+      "status": "original_capture_complete_comparison_matched"
+    },
+    {
+      "fixture": "evidence/characters/yulong/coverage-batch-02/cases/incoming-hit-recovery.json",
+      "case_id": "yulong-incoming-hit-recovery",
+      "label": "受击→击飞→起身",
+      "purpose": "Observe Yulong's received-hit, knockdown, and recovery transitions under an opposing controlled attack.",
+      "status": "original_capture_complete_comparison_matched"
+    },
+    {
+      "fixture": "evidence/characters/yulong/coverage-batch-02/cases/summon-repeat.json",
+      "case_id": "yulong-summon-repeat",
+      "label": "招换×2",
+      "purpose": "Observe source_action across natural hide and a second yfgj placement of the same helper instance.",
+      "status": "original_capture_complete_comparison_matched"
+    }
+  ],
+  "coverage_note": "Candidate source-mapped cases only. Execute native fixture preflight and obtain original Flash captures before parity claims.",
+  "configuration": {
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂"
+  },
+  "coverage_notes": [
+    "Seven source-mapped cases have original Flash captures; each reached its intended source target and produced 602 fighter/helper state rows.",
+    "All seven captured cases match current GameWorld fighter states, comparable helper fields, and available root-position observations exactly.",
+    "The seventh fixture invokes summon twice on one helper instance: source helper_spawn occurs at fight ticks 15 and 145; action=1 survives natural hide at tick 100 and remains through second activation at tick 146.",
+    "The catalog does not cover every reachable action, cancellation boundary, visual timeline, or audio event; captured cases are not whole-character completion."
+  ]
+}

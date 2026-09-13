@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/Users/fengkx/me/code/bvn2_6/tools/probes/capture_native_player.py", line 44, in capture
+    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+BlockingIOError: [Errno 35] Resource temporarily unavailable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/fengkx/me/code/bvn2_6/tools/probes/capture_native_player.py", line 167, in <module>
+    main()
+  File "/Users/fengkx/me/code/bvn2_6/tools/probes/capture_native_player.py", line 163, in main
+    raise SystemExit(0 if capture(args.build, args.capture, args.timeout, args.player_app) else 1)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/me/code/bvn2_6/tools/probes/capture_native_player.py", line 49, in capture
+    raise TimeoutError(
+TimeoutError: Native Flash capture lock is busy after 10s: /tmp/bvn-native-flash-capture.lock

@@ -1,0 +1,1845 @@
+{
+  "format": "bvn26-ai-context-v1",
+  "status": "source_compiled_partial",
+  "source_swf": {
+    "path": "game/fighter/Sakura.swf",
+    "sha256": "7d5d060ea9949f54535f801abd3ebdb23de5e7fc7cd5644186f7d805a47ba544"
+  },
+  "sprite_id": 630,
+  "load_writes": [
+    {
+      "field": "fall",
+      "value": false,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 4
+    },
+    {
+      "field": "touch",
+      "value": true,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 5
+    },
+    {
+      "field": "sw",
+      "value": false,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 6
+    },
+    {
+      "field": "jump",
+      "value": 0,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 7
+    },
+    {
+      "field": "khit",
+      "value": 0,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 8
+    },
+    {
+      "field": "jumped",
+      "value": 1,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 10
+    },
+    {
+      "field": "jhp",
+      "value": 0,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 13
+    },
+    {
+      "field": "speed",
+      "value": 0,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 15
+    },
+    {
+      "field": "spd",
+      "value": 6,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 17
+    },
+    {
+      "field": "jumpPower",
+      "value": 15,
+      "path": "frame_1/PlaceObject2_630_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "line": 18
+    }
+  ],
+  "base_power_fields": {
+    "tkzl": 2,
+    "tzzl": 3,
+    "k1zl": 2,
+    "k2zl": 2,
+    "k3zl": 3,
+    "kj1zl": 12,
+    "kj11zl": 3,
+    "kj21zl": 2,
+    "kj2zl": 1,
+    "zh1zl": 1,
+    "zh12zl": 6,
+    "zh2zl": 3,
+    "zh3zl": 1,
+    "bs1zl": 15,
+    "bszl": 14,
+    "sbs2zl": 2,
+    "sbszl": 3,
+    "cbs1zl": 12,
+    "cbszl": 3
+  },
+  "initialization_state": {
+    "guard": "inited",
+    "frame": 1,
+    "path": "DefineSprite_630/frame_1/DoAction.as",
+    "line": 904,
+    "writes": [
+      {
+        "field": "inited",
+        "value": true
+      },
+      {
+        "field": "_lastX",
+        "value": 0
+      }
+    ],
+    "limits": [
+      "This projects scalar state only; pn binding, doWanKai and updateDirect remain host-owned."
+    ]
+  },
+  "main_floor_contact": {
+    "comparison": "equal",
+    "path": "DefineSprite_630/frame_1/DoAction.as#on_enterframe",
+    "source_sha256": "a201ef4d767b77004d6f4d3459d8a49b24f7fef7c1f348a722dd399dad50bc5b",
+    "writes": [
+      {
+        "field": "touch",
+        "value": true
+      },
+      {
+        "field": "touchFloor",
+        "value": true
+      }
+    ]
+  },
+  "undefined_declarations": [
+    "sw",
+    "touch",
+    "touchFloor",
+    "wudi",
+    "wdFrame",
+    "wdFrameX",
+    "inited",
+    "_initwudi",
+    "_lastX",
+    "hitBan",
+    "dashing",
+    "dashX",
+    "dashY"
+  ],
+  "controller_scope_fields": [],
+  "frame_writes": {
+    "1": [
+      {
+        "field": "khit",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 860
+      },
+      {
+        "field": "jump",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 861
+      },
+      {
+        "field": "jumped",
+        "value": 1,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 863
+      },
+      {
+        "field": "yup",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 864
+      },
+      {
+        "field": "htx",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 865
+      },
+      {
+        "field": "tdtime",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 866
+      },
+      {
+        "field": "bdzl",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 867
+      },
+      {
+        "field": "hited",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 868
+      },
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 869
+      },
+      {
+        "field": "beida",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 870
+      },
+      {
+        "field": "bs",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 871
+      },
+      {
+        "field": "time",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 873
+      },
+      {
+        "field": "speed",
+        "read_field": "spd",
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 878
+      },
+      {
+        "field": "canhit",
+        "value": true,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 879
+      },
+      {
+        "field": "hits",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 882
+      },
+      {
+        "field": "airBody",
+        "value": false,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 883
+      },
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 885
+      },
+      {
+        "field": "hitNear",
+        "value": false,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 920
+      },
+      {
+        "field": "_lastvoice",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 921
+      },
+      {
+        "field": "_dievoicen",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 922
+      },
+      {
+        "field": "hstm",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 923
+      },
+      {
+        "field": "hurtSkling",
+        "value": false,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 924
+      },
+      {
+        "field": "dashQL",
+        "value": 100,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 927
+      },
+      {
+        "field": "dashF",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 931
+      }
+    ],
+    "2": [
+      {
+        "field": "hits",
+        "value": 0,
+        "path": "DefineSprite_630/frame_2/DoAction.as",
+        "line": 1
+      }
+    ],
+    "42": [
+      {
+        "field": "jump",
+        "value": 1,
+        "path": "DefineSprite_630/frame_42/DoAction.as",
+        "line": 1
+      }
+    ],
+    "56": [
+      {
+        "field": "jump",
+        "value": 0,
+        "path": "DefineSprite_630/frame_56/DoAction.as",
+        "line": 1
+      }
+    ],
+    "72": [
+      {
+        "field": "jump",
+        "value": 1,
+        "path": "DefineSprite_630/frame_72/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "jumped",
+        "value": 0,
+        "path": "DefineSprite_630/frame_72/DoAction.as",
+        "line": 2
+      }
+    ],
+    "89": [
+      {
+        "field": "jump",
+        "value": 0,
+        "path": "DefineSprite_630/frame_89/DoAction.as",
+        "line": 1
+      }
+    ],
+    "116": [
+      {
+        "field": "khit",
+        "value": 0,
+        "path": "DefineSprite_630/frame_116/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "jump",
+        "value": 0,
+        "path": "DefineSprite_630/frame_116/DoAction.as",
+        "line": 2
+      }
+    ],
+    "128": [
+      {
+        "field": "khit",
+        "value": 1,
+        "path": "DefineSprite_630/frame_128/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_128/DoAction.as",
+        "line": 2
+      }
+    ],
+    "163": [
+      {
+        "field": "khit",
+        "value": 1,
+        "path": "DefineSprite_630/frame_163/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_163/DoAction.as",
+        "line": 2
+      }
+    ],
+    "166": [
+      {
+        "field": "jump",
+        "value": 0,
+        "path": "DefineSprite_630/frame_166/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "jumped",
+        "value": 0,
+        "path": "DefineSprite_630/frame_166/DoAction.as",
+        "line": 2
+      }
+    ],
+    "206": [
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_206/DoAction.as",
+        "line": 1
+      }
+    ],
+    "217": [
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_217/DoAction.as",
+        "line": 1
+      }
+    ],
+    "230": [
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_230/DoAction.as",
+        "line": 1
+      }
+    ],
+    "241": [
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_241/DoAction.as",
+        "line": 1
+      }
+    ],
+    "258": [
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_258/DoAction.as",
+        "line": 1
+      }
+    ],
+    "283": [
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_283/DoAction.as",
+        "line": 1
+      }
+    ],
+    "310": [
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_310/DoAction.as",
+        "line": 1
+      }
+    ],
+    "344": [
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_344/DoAction.as",
+        "line": 1
+      }
+    ],
+    "367": [
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_367/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "jump",
+        "value": 0,
+        "path": "DefineSprite_630/frame_367/DoAction.as",
+        "line": 3
+      },
+      {
+        "field": "jumped",
+        "value": 0,
+        "path": "DefineSprite_630/frame_367/DoAction.as",
+        "line": 4
+      }
+    ],
+    "386": [
+      {
+        "field": "jump",
+        "value": 1,
+        "path": "DefineSprite_630/frame_386/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "jumped",
+        "value": 0,
+        "path": "DefineSprite_630/frame_386/DoAction.as",
+        "line": 2
+      }
+    ],
+    "416": [
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_416/DoAction.as",
+        "line": 1
+      }
+    ],
+    "440": [
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_440/DoAction.as",
+        "line": 1
+      }
+    ],
+    "469": [
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_469/DoAction.as",
+        "line": 1
+      }
+    ],
+    "519": [
+      {
+        "field": "动作",
+        "value": 1,
+        "path": "DefineSprite_630/frame_519/DoAction.as",
+        "line": 1
+      }
+    ],
+    "553": [
+      {
+        "field": "bs",
+        "value": 1,
+        "path": "DefineSprite_630/frame_553/DoAction.as",
+        "line": 1
+      }
+    ],
+    "583": [
+      {
+        "field": "动作",
+        "value": 3,
+        "path": "DefineSprite_630/frame_583/DoAction.as",
+        "line": 1
+      }
+    ],
+    "589": [
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_589/DoAction.as",
+        "line": 1
+      }
+    ],
+    "615": [
+      {
+        "field": "jhp",
+        "value": 0,
+        "path": "DefineSprite_630/frame_615/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "htx",
+        "value": 5,
+        "path": "DefineSprite_630/frame_615/DoAction.as",
+        "line": 2
+      }
+    ],
+    "647": [
+      {
+        "field": "动作",
+        "value": 3,
+        "path": "DefineSprite_630/frame_647/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "bs",
+        "value": 1,
+        "path": "DefineSprite_630/frame_647/DoAction.as",
+        "line": 2
+      },
+      {
+        "field": "jump",
+        "value": 1,
+        "path": "DefineSprite_630/frame_647/DoAction.as",
+        "line": 4
+      }
+    ],
+    "660": [
+      {
+        "field": "jump",
+        "value": 0,
+        "path": "DefineSprite_630/frame_660/DoAction.as",
+        "line": 2
+      },
+      {
+        "field": "jumped",
+        "value": 0,
+        "path": "DefineSprite_630/frame_660/DoAction.as",
+        "line": 3
+      }
+    ],
+    "677": [
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_677/DoAction.as",
+        "line": 1
+      }
+    ],
+    "701": [
+      {
+        "field": "动作",
+        "value": 3,
+        "path": "DefineSprite_630/frame_701/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "bs",
+        "value": 1,
+        "path": "DefineSprite_630/frame_701/DoAction.as",
+        "line": 2
+      }
+    ],
+    "776": [
+      {
+        "field": "动作",
+        "value": 0,
+        "path": "DefineSprite_630/frame_776/DoAction.as",
+        "line": 1
+      }
+    ],
+    "809": [
+      {
+        "field": "bs",
+        "value": 1,
+        "path": "DefineSprite_630/frame_809/DoAction.as",
+        "line": 2
+      }
+    ],
+    "867": [
+      {
+        "field": "动作",
+        "value": 2,
+        "path": "DefineSprite_630/frame_867/DoAction.as",
+        "line": 1
+      }
+    ],
+    "900": [
+      {
+        "field": "jump",
+        "value": 0,
+        "path": "DefineSprite_630/frame_900/DoAction.as",
+        "line": 1
+      },
+      {
+        "field": "jumped",
+        "value": 1,
+        "path": "DefineSprite_630/frame_900/DoAction.as",
+        "line": 2
+      }
+    ],
+    "903": [
+      {
+        "field": "hited",
+        "value": 0,
+        "path": "DefineSprite_630/frame_903/DoAction.as",
+        "line": 1
+      }
+    ]
+  },
+  "frame_calls": {
+    "1": [
+      {
+        "op": "color_reset",
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 899,
+        "frame": 1
+      },
+      {
+        "op": "color_write",
+        "field_name": "_cgap",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 917,
+        "frame": 1
+      },
+      {
+        "op": "color_write",
+        "field_name": "_csn",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as",
+        "line": 918,
+        "frame": 1
+      }
+    ],
+    "8": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_8/DoAction.as",
+        "line": 1,
+        "frame": 8
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_8/DoAction.as",
+        "line": 2,
+        "frame": 8
+      }
+    ],
+    "13": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_13/DoAction.as",
+        "line": 1,
+        "frame": 13
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_13/DoAction.as",
+        "line": 2,
+        "frame": 13
+      }
+    ],
+    "35": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_35/DoAction.as",
+        "line": 1,
+        "frame": 35
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_35/DoAction.as",
+        "line": 2,
+        "frame": 35
+      }
+    ],
+    "68": [
+      {
+        "op": "timeline_goto",
+        "label": "落",
+        "play": false,
+        "path": "DefineSprite_630/frame_68/DoAction.as",
+        "line": 1,
+        "frame": 68
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_68/DoAction.as",
+        "line": 2,
+        "frame": 68
+      }
+    ],
+    "101": [
+      {
+        "op": "timeline_goto",
+        "label": "落2",
+        "play": false,
+        "path": "DefineSprite_630/frame_101/DoAction.as",
+        "line": 1,
+        "frame": 101
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_101/DoAction.as",
+        "line": 2,
+        "frame": 101
+      }
+    ],
+    "119": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_119/DoAction.as",
+        "line": 1,
+        "frame": 119
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_119/DoAction.as",
+        "line": 2,
+        "frame": 119
+      }
+    ],
+    "139": [
+      {
+        "op": "timeline_goto",
+        "label": "落",
+        "play": false,
+        "path": "DefineSprite_630/frame_139/DoAction.as",
+        "line": 1,
+        "frame": 139
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_139/DoAction.as",
+        "line": 2,
+        "frame": 139
+      }
+    ],
+    "175": [
+      {
+        "op": "timeline_goto",
+        "label": "跳招2",
+        "play": false,
+        "path": "DefineSprite_630/frame_175/DoAction.as",
+        "line": 1,
+        "frame": 175
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_175/DoAction.as",
+        "line": 2,
+        "frame": 175
+      }
+    ],
+    "176": [
+      {
+        "op": "root_position",
+        "path": "DefineSprite_630/frame_176/DoAction.as",
+        "frame": 176,
+        "axis": "y",
+        "operator": "-=",
+        "pixels": 6.0,
+        "line": 1
+      }
+    ],
+    "177": [
+      {
+        "op": "root_position",
+        "path": "DefineSprite_630/frame_177/DoAction.as",
+        "frame": 177,
+        "axis": "y",
+        "operator": "+=",
+        "pixels": 6.0,
+        "line": 1
+      }
+    ],
+    "178": [
+      {
+        "op": "root_position",
+        "path": "DefineSprite_630/frame_178/DoAction.as",
+        "frame": 178,
+        "axis": "y",
+        "operator": "-=",
+        "pixels": 3.0,
+        "line": 1
+      }
+    ],
+    "179": [
+      {
+        "op": "root_position",
+        "path": "DefineSprite_630/frame_179/DoAction.as",
+        "frame": 179,
+        "axis": "y",
+        "operator": "+=",
+        "pixels": 3.0,
+        "line": 1
+      }
+    ],
+    "180": [
+      {
+        "op": "root_position",
+        "path": "DefineSprite_630/frame_180/DoAction.as",
+        "frame": 180,
+        "axis": "y",
+        "operator": "=",
+        "pixels": 0.0,
+        "line": 1
+      }
+    ],
+    "192": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_192/DoAction.as",
+        "line": 1,
+        "frame": 192
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_192/DoAction.as",
+        "line": 2,
+        "frame": 192
+      }
+    ],
+    "220": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_220/DoAction.as",
+        "line": 1,
+        "frame": 220
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_220/DoAction.as",
+        "line": 2,
+        "frame": 220
+      }
+    ],
+    "245": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_245/DoAction.as",
+        "line": 1,
+        "frame": 245
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_245/DoAction.as",
+        "line": 2,
+        "frame": 245
+      }
+    ],
+    "290": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_290/DoAction.as",
+        "line": 1,
+        "frame": 290
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_290/DoAction.as",
+        "line": 2,
+        "frame": 290
+      }
+    ],
+    "310": [
+      {
+        "op": "energy_delta",
+        "delta": 10.0,
+        "path": "DefineSprite_630/frame_310/DoAction.as",
+        "line": 2,
+        "frame": 310
+      }
+    ],
+    "360": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_360/DoAction.as",
+        "line": 1,
+        "frame": 360
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_360/DoAction.as",
+        "line": 2,
+        "frame": 360
+      }
+    ],
+    "367": [
+      {
+        "op": "energy_delta",
+        "delta": 10.0,
+        "path": "DefineSprite_630/frame_367/DoAction.as",
+        "line": 2,
+        "frame": 367
+      }
+    ],
+    "404": [
+      {
+        "op": "timeline_goto",
+        "label": "落",
+        "play": false,
+        "path": "DefineSprite_630/frame_404/DoAction.as",
+        "line": 1,
+        "frame": 404
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_404/DoAction.as",
+        "line": 2,
+        "frame": 404
+      }
+    ],
+    "416": [
+      {
+        "op": "energy_delta",
+        "delta": 5.0,
+        "path": "DefineSprite_630/frame_416/DoAction.as",
+        "line": 2,
+        "frame": 416
+      }
+    ],
+    "453": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_453/DoAction.as",
+        "line": 1,
+        "frame": 453
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_453/DoAction.as",
+        "line": 2,
+        "frame": 453
+      }
+    ],
+    "469": [
+      {
+        "op": "energy_delta",
+        "delta": 10.0,
+        "path": "DefineSprite_630/frame_469/DoAction.as",
+        "line": 2,
+        "frame": 469
+      }
+    ],
+    "489": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_489/DoAction.as",
+        "line": 1,
+        "frame": 489
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_489/DoAction.as",
+        "line": 2,
+        "frame": 489
+      }
+    ],
+    "519": [
+      {
+        "op": "energy_delta",
+        "delta": 5.0,
+        "path": "DefineSprite_630/frame_519/DoAction.as",
+        "line": 2,
+        "frame": 519
+      }
+    ],
+    "545": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_545/DoAction.as",
+        "line": 1,
+        "frame": 545
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_545/DoAction.as",
+        "line": 2,
+        "frame": 545
+      }
+    ],
+    "553": [
+      {
+        "op": "energy_delta",
+        "delta": -100.0,
+        "path": "DefineSprite_630/frame_553/DoAction.as",
+        "line": 2,
+        "frame": 553
+      }
+    ],
+    "556": [
+      {
+        "op": "super_start",
+        "kind": "bsd",
+        "path": "DefineSprite_630/frame_556/DoAction.as",
+        "line": 1,
+        "frame": 556
+      },
+      {
+        "op": "show_face",
+        "face_label": "樱1",
+        "path": "DefineSprite_630/frame_556/DoAction.as",
+        "line": 2,
+        "frame": 556
+      }
+    ],
+    "579": [
+      {
+        "op": "super_end",
+        "kind": "bsw",
+        "path": "DefineSprite_630/frame_579/DoAction.as",
+        "line": 1,
+        "frame": 579
+      }
+    ],
+    "599": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 16777215,
+        "path": "DefineSprite_630/frame_599/DoAction.as",
+        "line": 1,
+        "frame": 599
+      }
+    ],
+    "615": [
+      {
+        "op": "timeline_goto",
+        "label": "击飞",
+        "play": false,
+        "path": "DefineSprite_630/frame_615/DoAction.as",
+        "line": 3,
+        "frame": 615
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_615/DoAction.as",
+        "line": 4,
+        "frame": 615
+      }
+    ],
+    "647": [
+      {
+        "op": "energy_delta",
+        "delta": -100.0,
+        "path": "DefineSprite_630/frame_647/DoAction.as",
+        "line": 3,
+        "frame": 647
+      }
+    ],
+    "648": [
+      {
+        "op": "super_start",
+        "kind": "bsd",
+        "path": "DefineSprite_630/frame_648/DoAction.as",
+        "line": 1,
+        "frame": 648
+      },
+      {
+        "op": "show_face",
+        "face_label": "樱1",
+        "path": "DefineSprite_630/frame_648/DoAction.as",
+        "line": 2,
+        "frame": 648
+      }
+    ],
+    "660": [
+      {
+        "op": "super_end",
+        "kind": "bsw",
+        "path": "DefineSprite_630/frame_660/DoAction.as",
+        "line": 1,
+        "frame": 660
+      }
+    ],
+    "668": [
+      {
+        "op": "timeline_stop",
+        "path": "DefineSprite_630/frame_668/DoAction.as",
+        "line": 1,
+        "frame": 668
+      }
+    ],
+    "671": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 16777215,
+        "path": "DefineSprite_630/frame_671/DoAction.as",
+        "line": 1,
+        "frame": 671
+      }
+    ],
+    "686": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_686/DoAction.as",
+        "line": 1,
+        "frame": 686
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_686/DoAction.as",
+        "line": 2,
+        "frame": 686
+      }
+    ],
+    "701": [
+      {
+        "op": "energy_delta",
+        "delta": -300.0,
+        "path": "DefineSprite_630/frame_701/DoAction.as",
+        "line": 3,
+        "frame": 701
+      }
+    ],
+    "703": [
+      {
+        "op": "super_start",
+        "kind": "cbsd",
+        "path": "DefineSprite_630/frame_703/DoAction.as",
+        "line": 1,
+        "frame": 703
+      },
+      {
+        "op": "show_face",
+        "face_label": "樱2",
+        "path": "DefineSprite_630/frame_703/DoAction.as",
+        "line": 2,
+        "frame": 703
+      }
+    ],
+    "724": [
+      {
+        "op": "super_end",
+        "kind": "cbsw",
+        "path": "DefineSprite_630/frame_724/DoAction.as",
+        "line": 1,
+        "frame": 724
+      }
+    ],
+    "796": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_796/DoAction.as",
+        "line": 1,
+        "frame": 796
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_796/DoAction.as",
+        "line": 2,
+        "frame": 796
+      }
+    ],
+    "806": [
+      {
+        "op": "energy_delta",
+        "delta": -100.0,
+        "path": "DefineSprite_630/frame_806/DoAction.as",
+        "line": 1,
+        "frame": 806
+      }
+    ],
+    "834": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_834/DoAction.as",
+        "line": 1,
+        "frame": 834
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_834/DoAction.as",
+        "line": 2,
+        "frame": 834
+      }
+    ],
+    "874": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_874/DoAction.as",
+        "line": 1,
+        "frame": 874
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_874/DoAction.as",
+        "line": 2,
+        "frame": 874
+      }
+    ],
+    "878": [
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_878/DoAction.as",
+        "line": 1,
+        "frame": 878
+      }
+    ],
+    "887": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_887/DoAction.as",
+        "line": 1,
+        "frame": 887
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_887/DoAction.as",
+        "line": 2,
+        "frame": 887
+      }
+    ],
+    "890": [
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_890/DoAction.as",
+        "line": 1,
+        "frame": 890
+      }
+    ],
+    "896": [
+      {
+        "op": "timeline_stop",
+        "path": "DefineSprite_630/frame_896/DoAction.as",
+        "line": 1,
+        "frame": 896
+      }
+    ],
+    "900": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_900/DoAction.as",
+        "line": 3,
+        "frame": 900
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_900/DoAction.as",
+        "line": 4,
+        "frame": 900
+      }
+    ],
+    "903": [
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_903/DoAction.as",
+        "line": 2,
+        "frame": 903
+      }
+    ],
+    "913": [
+      {
+        "op": "timeline_stop",
+        "path": "DefineSprite_630/frame_913/DoAction.as",
+        "line": 1,
+        "frame": 913
+      }
+    ],
+    "915": [
+      {
+        "op": "frame_child_effect",
+        "clip": "XG_hitfloor",
+        "offset_y": 0,
+        "offset_x": 0,
+        "wrapper_path": "scripts/main.json#frame_8/DoAction.as#touchFloorEffect",
+        "wrapper_sha256": "fab34b2b292b6a431654433b0298008612115c6b65e92127096a38e5f9313eb1",
+        "path": "DefineSprite_630/frame_915/DoAction.as",
+        "line": 1,
+        "frame": 915
+      }
+    ],
+    "945": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_945/DoAction.as",
+        "line": 1,
+        "frame": 945
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_945/DoAction.as",
+        "line": 2,
+        "frame": 945
+      }
+    ],
+    "950": [
+      {
+        "op": "root_position",
+        "path": "DefineSprite_630/frame_950/DoAction.as",
+        "frame": 950,
+        "axis": "y",
+        "operator": "+=",
+        "pixels": 2.0,
+        "line": 1
+      }
+    ],
+    "951": [
+      {
+        "op": "root_position",
+        "path": "DefineSprite_630/frame_951/DoAction.as",
+        "frame": 951,
+        "axis": "y",
+        "operator": "=",
+        "pixels": 0.0,
+        "line": 1
+      }
+    ],
+    "961": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_961/DoAction.as",
+        "line": 1,
+        "frame": 961
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_961/DoAction.as",
+        "line": 2,
+        "frame": 961
+      }
+    ],
+    "975": [
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_975/DoAction.as",
+        "line": 1,
+        "frame": 975
+      }
+    ],
+    "976": [
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_976/DoAction.as",
+        "line": 1,
+        "frame": 976
+      }
+    ],
+    "1036": [
+      {
+        "op": "timeline_goto",
+        "label": "站立",
+        "play": false,
+        "path": "DefineSprite_630/frame_1036/DoAction.as",
+        "line": 2,
+        "frame": 1036
+      },
+      {
+        "op": "timeline_play",
+        "path": "DefineSprite_630/frame_1036/DoAction.as",
+        "line": 3,
+        "frame": 1036
+      }
+    ],
+    "1077": [
+      {
+        "op": "timeline_stop",
+        "path": "DefineSprite_630/frame_1077/DoAction.as",
+        "line": 1,
+        "frame": 1077
+      }
+    ],
+    "1105": [
+      {
+        "op": "timeline_stop",
+        "path": "DefineSprite_630/frame_1105/DoAction.as",
+        "line": 1,
+        "frame": 1105
+      }
+    ]
+  },
+  "function_writes": {
+    "onBeHit0": [
+      {
+        "field": "动作",
+        "value": -1,
+        "path": "DefineSprite_630/frame_1/DoAction.as#onBeHit0",
+        "line": 3
+      },
+      {
+        "field": "beida",
+        "value": 1,
+        "path": "DefineSprite_630/frame_1/DoAction.as#onBeHit0",
+        "line": 4
+      },
+      {
+        "field": "jumped",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as#onBeHit0",
+        "line": 5
+      },
+      {
+        "field": "jump",
+        "value": 1,
+        "path": "DefineSprite_630/frame_1/DoAction.as#onBeHit0",
+        "line": 6
+      },
+      {
+        "field": "hited",
+        "value": 1,
+        "path": "DefineSprite_630/frame_1/DoAction.as#onBeHit0",
+        "line": 7
+      },
+      {
+        "field": "time",
+        "value": 0,
+        "path": "DefineSprite_630/frame_1/DoAction.as#onBeHit0",
+        "line": 8
+      }
+    ]
+  },
+  "random_refresh": {
+    "interval_ms": 500,
+    "difficulty_multiplier": 100,
+    "assignments": [
+      {
+        "field": "attran",
+        "site": "fighter/Sakura#DefineSprite_630/frame_1/DoAction.as:2"
+      },
+      {
+        "field": "defran",
+        "site": "fighter/Sakura#DefineSprite_630/frame_1/DoAction.as:3"
+      },
+      {
+        "field": "goran",
+        "site": "fighter/Sakura#DefineSprite_630/frame_1/DoAction.as:4"
+      },
+      {
+        "field": "jumpran",
+        "site": "fighter/Sakura#DefineSprite_630/frame_1/DoAction.as:5"
+      },
+      {
+        "field": "bisharan",
+        "site": "fighter/Sakura#DefineSprite_630/frame_1/DoAction.as:6"
+      }
+    ],
+    "init_path": "DefineSprite_630/frame_1/DoAction.as#initCtrl",
+    "sample_path": "DefineSprite_630/frame_1/DoAction.as#randAI"
+  },
+  "sensing": {
+    "activation_frame": 2,
+    "placement": {
+      "depth": 1,
+      "character_id": 3,
+      "name": "AImain",
+      "matrix": {
+        "hasRotate": "false",
+        "hasScale": "false",
+        "nRotateBits": 0,
+        "nScaleBits": 0,
+        "nTranslateBits": 5,
+        "translateX": 10,
+        "translateY": 9,
+        "type": "MATRIX"
+      },
+      "placed_frame": 1
+    },
+    "sensors": [
+      {
+        "depth": 1,
+        "character_id": 2,
+        "name": "cbsmian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "true",
+          "hasScale": "true",
+          "nRotateBits": 4,
+          "nScaleBits": 19,
+          "nTranslateBits": 12,
+          "rotateSkew0": -9.1552734e-05,
+          "rotateSkew1": 3.0517578e-05,
+          "scaleX": 2.0567017,
+          "scaleY": 2.7279053,
+          "translateX": 20,
+          "translateY": -1728,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 3,
+        "character_id": 2,
+        "name": "absmian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "true",
+          "hasScale": "true",
+          "nRotateBits": 8,
+          "nScaleBits": 20,
+          "nTranslateBits": 10,
+          "rotateSkew0": -7.6293945e-05,
+          "rotateSkew1": 0.0010223389,
+          "scaleX": 0.48602295,
+          "scaleY": 6.5,
+          "translateX": -340,
+          "translateY": -511,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 5,
+        "character_id": 2,
+        "name": "bsmian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "true",
+          "hasScale": "true",
+          "nRotateBits": 5,
+          "nScaleBits": 17,
+          "nTranslateBits": 10,
+          "rotateSkew0": -9.1552734e-05,
+          "rotateSkew1": 0.0001373291,
+          "scaleX": 0.53585815,
+          "scaleY": 0.8700409,
+          "translateX": 180,
+          "translateY": -441,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 7,
+        "character_id": 2,
+        "name": "zh3mian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "true",
+          "hasScale": "true",
+          "nRotateBits": 2,
+          "nScaleBits": 18,
+          "nTranslateBits": 13,
+          "rotateSkew0": 1.5258789e-05,
+          "rotateSkew1": 0.0,
+          "scaleX": 1.2197876,
+          "scaleY": 1.6323853,
+          "translateX": 1154,
+          "translateY": -2107,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 9,
+        "character_id": 2,
+        "name": "zh2mian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "false",
+          "hasScale": "true",
+          "nRotateBits": 0,
+          "nScaleBits": 19,
+          "nTranslateBits": 12,
+          "scaleX": 2.796814,
+          "scaleY": 0.8125,
+          "translateX": -1198,
+          "translateY": -88,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 11,
+        "character_id": 2,
+        "name": "zh1mian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "false",
+          "hasScale": "true",
+          "nRotateBits": 0,
+          "nScaleBits": 19,
+          "nTranslateBits": 11,
+          "scaleX": 2.0314941,
+          "scaleY": 1.276123,
+          "translateX": 3,
+          "translateY": -525,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 13,
+        "character_id": 2,
+        "name": "kj2mian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "false",
+          "hasScale": "true",
+          "nRotateBits": 0,
+          "nScaleBits": 18,
+          "nTranslateBits": 11,
+          "scaleX": 0.8896332,
+          "scaleY": 1.4619751,
+          "translateX": 193,
+          "translateY": -641,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 15,
+        "character_id": 2,
+        "name": "kj1mian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "false",
+          "hasScale": "true",
+          "nRotateBits": 0,
+          "nScaleBits": 19,
+          "nTranslateBits": 10,
+          "scaleX": 2.1160278,
+          "scaleY": 1.1402435,
+          "translateX": 192,
+          "translateY": -454,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 17,
+        "character_id": 2,
+        "name": "kanmian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "false",
+          "hasScale": "true",
+          "nRotateBits": 0,
+          "nScaleBits": 17,
+          "nTranslateBits": 10,
+          "scaleX": 0.5023346,
+          "scaleY": 0.490448,
+          "translateX": 58,
+          "translateY": -277,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 19,
+        "character_id": 2,
+        "name": "tzmian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "true",
+          "hasScale": "true",
+          "nRotateBits": 8,
+          "nScaleBits": 20,
+          "nTranslateBits": 10,
+          "rotateSkew0": 0.00024414062,
+          "rotateSkew1": -0.0019378662,
+          "scaleX": 0.5376587,
+          "scaleY": 4.2846985,
+          "translateX": -381,
+          "translateY": 61,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      },
+      {
+        "depth": 21,
+        "character_id": 2,
+        "name": "tkanmian",
+        "ratio": 1,
+        "matrix": {
+          "hasRotate": "false",
+          "hasScale": "true",
+          "nRotateBits": 0,
+          "nScaleBits": 18,
+          "nTranslateBits": 10,
+          "scaleX": 0.5937042,
+          "scaleY": 1.3104248,
+          "translateX": -169,
+          "translateY": -462,
+          "type": "MATRIX"
+        },
+        "placed_frame": 2
+      }
+    ],
+    "definitions": [
+      {
+        "character_id": 2,
+        "type": "DefineSpriteTag",
+        "referenced_character_ids": [
+          1
+        ],
+        "frame_count": 1,
+        "first_frame_display_list": [
+          {
+            "depth": 1,
+            "character_id": 1,
+            "matrix": {
+              "hasRotate": "false",
+              "hasScale": "false",
+              "nRotateBits": 0,
+              "nScaleBits": 0,
+              "nTranslateBits": 0,
+              "translateX": 0,
+              "translateY": 0,
+              "type": "MATRIX"
+            },
+            "placed_frame": 1
+          }
+        ],
+        "display_list_frames": [
+          [
+            {
+              "depth": 1,
+              "character_id": 1,
+              "matrix": {
+                "hasRotate": "false",
+                "hasScale": "false",
+                "nRotateBits": 0,
+                "nScaleBits": 0,
+                "nTranslateBits": 0,
+                "translateX": 0,
+                "translateY": 0,
+                "type": "MATRIX"
+              },
+              "placed_frame": 1
+            }
+          ]
+        ]
+      },
+      {
+        "character_id": 1,
+        "type": "DefineShape3Tag",
+        "shape_bounds_twips": {
+          "Xmin": 0,
+          "Ymin": 0,
+          "Xmax": 1319,
+          "Ymax": 810
+        },
+        "solid_fills": [
+          {
+            "fill_style_type": 0,
+            "red": 1,
+            "green": 1,
+            "blue": 1,
+            "alpha": 0
+          }
+        ]
+      }
+    ],
+    "missing_references": [
+      "sbsmian"
+    ]
+  },
+  "limits": [
+    "Conditional body-state writers still require the body runtime adapter.",
+    "Controller-scope increment events require runtime source-state support before integration.",
+    "Undefined declarations initialize new instances only; revisiting frame 1 preserves existing values."
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "sakura-40-jump-held",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "跳",
+  "scenario": "held",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 10,
+      "end": 110
+    }
+  ],
+  "target_frames": [
+    40,
+    55
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "priority": "P1",
+  "priority_reason": "Held-input edge and repeat dispatch."
+}

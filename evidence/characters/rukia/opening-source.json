@@ -1,0 +1,46 @@
+{
+  "format": "bvn26-fighter-opening-v1",
+  "status": "source_compiled_not_runtime_integrated",
+  "fighter_id": "rukia",
+  "source_fighter_id": "露其雅",
+  "source_sprite_id": 533,
+  "action": {
+    "start_frame": 1003,
+    "end_frame": 1082
+  },
+  "state_frames": {
+    "1004": 1,
+    "1006": 3,
+    "1064": 2
+  },
+  "state_frame_sources": {
+    "1004": {
+      "path": "DefineSprite_533/frame_1004/DoAction.as",
+      "sha256": "5589d7696cfcee8657b8978cdcbfa7225a34f19a157b01136cdb4c5ef85c1103",
+      "source": "play();\r\nkcplayed = 1;\r\n"
+    },
+    "1006": {
+      "path": "DefineSprite_533/frame_1006/DoAction.as",
+      "sha256": "33a4f0db67fbae495243fdb38278a68fbec9cda2667ab91011c6b16e55f08344",
+      "source": "kcplayed = 3;\r\n"
+    },
+    "1064": {
+      "path": "DefineSprite_533/frame_1064/DoAction.as",
+      "sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642",
+      "source": "kcplayed = 2;\r\ngotoAndStop(\"站立\");\r\nplay();\r\n"
+    }
+  },
+  "shared_intro_assets": {
+    "ready": "res://generated/main/intro/ready",
+    "qjxg": "res://generated/main/intro/qjxg",
+    "source": "game/main.swf; these are shared match-opening clips"
+  },
+  "source": {
+    "swf_path": "game/fighter/rukia.swf",
+    "swf_sha256": "c48d47a817dbf1b4fff9b333bb35d89debb64d0635e8d88b4a7d1228208194eb",
+    "script_bundle_path": "scripts/fighter/rukia.json",
+    "script_bundle_sha256": "5f491f85effa3c807a5f9d465cfef9f0d0b401ba427edbf717c9622df622a4b8",
+    "timeline_path": "data/slices/rukia-base.timeline.json",
+    "timeline_sha256": "938891b8d02871972d0367cfb0df71f86dcb35cdb2e609e190b6358257731e4c"
+  }
+}

@@ -122,7 +122,7 @@ button:disabled { opacity: .5; cursor: default; }
     aspect-ratio: 3 / 2; background: black; flex: none;
     box-shadow: 0 0 0 1px #76534a, 0 16px 60px #0009;
 }
-#canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+#canvas { position: absolute; inset: 0; }
 #feedback { min-height: 1.5em; margin: 14px 20px; color: #d0b6a5; font-size: 12px; text-align: center; }
 #player:fullscreen {
     background: black; overflow: hidden; width: 100%; height: 100%;
@@ -134,13 +134,77 @@ button:disabled { opacity: .5; cursor: default; }
 }
 #player:fullscreen #help, #player:fullscreen #toolbar strong { display: none; }
 #player:fullscreen #toolbar {
-    position: absolute; top: 0; right: 0; z-index: 5; width: auto;
-    padding: 14px 20px 24px; border: 0; background: linear-gradient(#000b, transparent);
-    opacity: 0;
+    position: absolute; top: 12px; right: 14px; z-index: 6; width: auto;
+    box-sizing: border-box; padding: 8px; border: 0; border-bottom: 1px solid #6b3434;
+    border-radius: 0 0 3px 3px; background: #151112e8; flex-wrap: nowrap;
+    opacity: 0; transform: translateY(calc(-100% - 14px)); pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
 }
 #player:fullscreen #toolbar:hover,
-#player:fullscreen #toolbar:focus-within,
-#player:fullscreen.tools-visible #toolbar { opacity: 1; }
+#player:fullscreen #toolbar.keyboard-focus:focus-within,
+#player:fullscreen.tools-visible #toolbar {
+    opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+#edge-indicator { display: none; }
+#player:fullscreen #edge-indicator {
+    display: block; position: absolute; z-index: 7; top: 0; right: 14px;
+    box-sizing: border-box; width: 132px; height: 24px; padding: 0; border: 0; border-radius: 0 0 10px 10px;
+    background: transparent; opacity: .92; cursor: pointer;
+    transform: none; transition: opacity .18s ease, background .18s ease;
+}
+#player:fullscreen #edge-indicator:hover { background: transparent; }
+#player:fullscreen #edge-indicator:hover,
+#player:fullscreen.tools-visible #edge-indicator:hover { opacity: 1; }
+#player:fullscreen.tools-visible #edge-indicator { opacity: .22; }
+#edge-indicator span {
+    position: relative; display: block; box-sizing: border-box; width: 64px; height: 18px; margin: 3px auto 0;
+    border: 1px solid #c5aaa28c; border-top-color: #ad3d35b8; border-radius: 2px 2px 9px 9px;
+    background: #21191ae8; box-shadow: 0 2px 6px #000c, inset 0 1px #ffffff12;
+    backdrop-filter: blur(5px); transition: background .18s ease, border-color .18s ease;
+}
+#edge-indicator span::before {
+    content: ""; position: absolute; left: 28px; top: 3px; width: 7px; height: 7px;
+    border: solid #f0e4de; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+#edge-indicator span::after {
+    content: ""; position: absolute; left: 9px; top: 7px; width: 3px; height: 3px;
+    border-radius: 50%; background: #d14a3e; box-shadow: 0 0 3px #d14a3e88;
+}
+#edge-indicator:hover span { background: #302224f2; border-color: #e0c8bdc9; border-top-color: #ef5146; }
+#audio-control { position: relative; }
+#audio-toggle {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    min-width: 44px; padding: 10px 13px; background: #211a1a;
+    transform: none; transition: background .15s, border-color .15s;
+}
+#audio-toggle svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+#audio-toggle .speaker-waves { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+#audio-control[data-muted="true"] #audio-toggle { color: #d9aaa0; }
+.speaker-cross { display: none; fill: none !important; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+#audio-control[data-muted="true"] .speaker-waves,
+#audio-control[data-muted="true"] #mute-toggle .speaker-waves { display: none; }
+#audio-control[data-muted="true"] .speaker-cross { display: block; }
+#volume-panel {
+    position: absolute; top: calc(100% + 10px); right: 0; z-index: 8;
+    box-sizing: border-box; width: 256px; padding: 15px 16px 12px;
+    color: #f5efea; background: #181314f5; border: 1px solid #76534a;
+    border-top: 2px solid #ad241f; box-shadow: 0 12px 36px #000b;
+    transform: skew(0); backdrop-filter: blur(14px);
+}
+#volume-panel[hidden] { display: none; }
+.volume-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; }
+#mute-toggle {
+    display: grid; place-items: center; width: 34px; height: 32px; padding: 6px;
+    border-color: #71504b; transform: none;
+}
+#mute-toggle svg { width: 17px; height: 17px; fill: currentColor; }
+.volume-slider-row { display: flex; align-items: center; gap: 10px; margin-top: 13px; }
+.volume-slider-row svg { width: 16px; height: 16px; fill: #cdb9b1; flex: none; }
+#volume-slider { width: 100%; min-width: 0; accent-color: #e34238; cursor: pointer; touch-action: pan-y; }
+#volume-value { min-width: 34px; color: #f2c3b0; text-align: right; font-variant-numeric: tabular-nums; }
+#volume-status { min-height: 1.2em; margin-top: 9px; color: #aa9993; font-size: 10px; }
+#audio-control:focus-within #volume-panel { outline: none; }
+#toolbar button { flex: none; }
 #player:fullscreen #feedback {
     position: absolute; bottom: 28px; z-index: 5; margin: 0 20px; min-height: 0;
     padding: 12px 20px; background: #100d0ee8; border-left: 3px solid #df392e;
@@ -151,9 +215,11 @@ button:disabled { opacity: .5; cursor: default; }
     #toolbar { padding-top: 14px; }
     button { padding: 9px 12px; }
     #toolbar strong small { letter-spacing: 2px; }
+    #volume-panel { width: min(256px, calc(100vw - 24px)); }
 }
 @media (prefers-reduced-motion: reduce) {
-    button, #player:fullscreen #toolbar, #player:fullscreen #feedback { transition: none; }
+    button, #player:fullscreen #toolbar, #player:fullscreen #edge-indicator,
+    #player:fullscreen #feedback { transition: none; }
 }
         </style>
 		$GODOT_HEAD_INCLUDE
@@ -162,9 +228,29 @@ button:disabled { opacity: .5; cursor: default; }
         <main id="player">
         <nav id="toolbar" aria-label="游戏工具">
             <strong>死神 <span>VS</span> 火影 <span>2.6</span><small>BLEACH VS NARUTO</small></strong>
+            <div id="audio-control" data-muted="false">
+                <button id="audio-toggle" type="button" aria-label="音量设置" aria-expanded="false" aria-controls="volume-panel" title="音量设置">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z"></path><path class="speaker-waves" d="M15 9a4 4 0 0 1 0 6m2-9a7 7 0 0 1 0 12"></path><path class="speaker-cross" d="m16 10 5 5m0-5-5 5"></path></svg>
+                </button>
+                <section id="volume-panel" aria-label="音量控制" hidden>
+                    <div class="volume-heading">
+                        <span>主音量</span>
+                        <button id="mute-toggle" type="button" aria-label="静音" title="静音">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z"></path><path class="speaker-waves" d="M15 9a4 4 0 0 1 0 6m2-9a7 7 0 0 1 0 12"></path><path class="speaker-cross" d="m16 10 5 5m0-5-5 5"></path></svg>
+                        </button>
+                    </div>
+                    <div class="volume-slider-row">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z"></path></svg>
+                        <input id="volume-slider" type="range" min="0" max="100" step="1" value="72" aria-label="主音量">
+                        <output id="volume-value" for="volume-slider">72%</output>
+                    </div>
+                    <div id="volume-status" role="status" aria-live="polite">等待游戏音频初始化</div>
+                </section>
+            </div>
             <button id="fullscreen" type="button">进入全屏</button>
             <button id="download" type="button">导出日志</button>
         </nav>
+        <button id="edge-indicator" type="button" aria-label="显示游戏工具"><span></span></button>
         <p id="help">点击画面，开始对战 · 全屏沉浸游玩 · 遇到问题可导出日志反馈</p>
         <div id="viewport">
         <canvas id="canvas" tabindex="0">
@@ -190,15 +276,188 @@ button:disabled { opacity: .5; cursor: default; }
     const canvas = document.getElementById('canvas');
     const fullscreen = document.getElementById('fullscreen');
     const feedback = document.getElementById('feedback');
+    const edgeIndicator = document.getElementById('edge-indicator');
+    const toolbar = document.getElementById('toolbar');
+    const audioControl = document.getElementById('audio-control');
+    const audioToggle = document.getElementById('audio-toggle');
+    const muteToggle = document.getElementById('mute-toggle');
+    const volumePanel = document.getElementById('volume-panel');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeValue = document.getElementById('volume-value');
+    const volumeStatus = document.getElementById('volume-status');
     let toolsTimer;
-    function revealTools() {
-        player.classList.add('tools-visible');
+    let toolsHovered = false;
+    let edgeHovered = false;
+    let sliderDragging = false;
+    let touchPinned = false;
+    let edgePointerType = 'mouse';
+    const AUDIO_KEY = 'bvn26.audio.v1';
+    const DEFAULT_VOLUME = 72;
+    function clampVolume(value) {
+        return Number.isFinite(value) ? Math.max(0, Math.min(100, Math.round(value))) : DEFAULT_VOLUME;
+    }
+    function readAudioSettings() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(AUDIO_KEY) || 'null');
+            if (!saved || typeof saved !== 'object') return { volume: DEFAULT_VOLUME, lastNonzero: DEFAULT_VOLUME, muted: false };
+            const volume = clampVolume(saved.volume);
+            const lastNonzero = clampVolume(saved.lastNonzero);
+            return {
+                volume,
+                lastNonzero: lastNonzero > 0 ? lastNonzero : DEFAULT_VOLUME,
+                muted: typeof saved.muted === 'boolean' ? saved.muted : false,
+            };
+        } catch (_) {
+            return { volume: DEFAULT_VOLUME, lastNonzero: DEFAULT_VOLUME, muted: false };
+        }
+    }
+    const audioSettings = readAudioSettings();
+    let audioSettingsCallback = null;
+    function persistAudioSettings() {
+        try { localStorage.setItem(AUDIO_KEY, JSON.stringify(audioSettings)); }
+        catch (error) { record('warn', 'Audio settings could not be saved', error); }
+    }
+    function syncAudioControls() {
+        volumeSlider.value = String(audioSettings.volume);
+        volumeValue.value = `${audioSettings.volume}%`;
+        volumeValue.textContent = `${audioSettings.volume}%`;
+        const isSilent = audioSettings.muted || audioSettings.volume === 0;
+        audioControl.dataset.muted = String(isSilent);
+        muteToggle.setAttribute('aria-label', isSilent ? '取消静音' : '静音');
+        muteToggle.title = isSilent ? '取消静音' : '静音';
+    }
+    function publishAudioSettings() {
+        persistAudioSettings();
+        syncAudioControls();
+        if (audioSettingsCallback) audioSettingsCallback(audioSettings.volume / 100, audioSettings.muted);
+    }
+    window.bvnRegisterAudioSettings = callback => {
+        audioSettingsCallback = typeof callback === 'function' ? callback : null;
+        publishAudioSettings();
+    };
+    window.bvnUnregisterAudioSettings = callback => {
+        if (!callback || callback === audioSettingsCallback) audioSettingsCallback = null;
+    };
+    window.bvnAudioSettingsApplied = (volumeDb, muted) => {
+        if (!Number.isFinite(volumeDb) || typeof muted !== 'boolean') {
+            volumeStatus.textContent = '音量暂不可用';
+            return;
+        }
+        const actual = volumeDb <= -79 ? 0 : clampVolume(100 * Math.pow(10, volumeDb / 20));
+        volumeStatus.textContent = muted ? '音乐与音效已静音' : `音乐与音效 ${actual}%`;
+    };
+    volumeSlider.value = String(audioSettings.volume);
+    volumeValue.value = `${audioSettings.volume}%`;
+    volumeValue.textContent = `${audioSettings.volume}%`;
+    syncAudioControls();
+    function isFullscreen() { return document.fullscreenElement === player; }
+    function scheduleHideTools(delay = 700) {
         clearTimeout(toolsTimer);
-        toolsTimer = setTimeout(() => player.classList.remove('tools-visible'), 4500);
+        toolsTimer = setTimeout(() => {
+            const keyboardFocusActive = toolbar.classList.contains('keyboard-focus') && toolbar.matches(':focus-within');
+            if (isFullscreen() && !touchPinned && !toolsHovered && !edgeHovered && !sliderDragging && !keyboardFocusActive) {
+                if (!volumePanel.hidden) {
+                    volumePanel.hidden = true;
+                    audioToggle.setAttribute('aria-expanded', 'false');
+                }
+                player.classList.remove('tools-visible');
+            }
+        }, delay);
+    }
+    function revealTools() {
+        if (!isFullscreen()) return;
+        player.classList.add('tools-visible');
+        scheduleHideTools();
     }
     player.addEventListener('pointermove', event => {
-        if (document.fullscreenElement === player && event.clientY < 70) revealTools();
+        if (isFullscreen() && event.clientY <= 24 && event.clientX >= window.innerWidth - 160) revealTools();
     });
+    edgeIndicator.addEventListener('pointerdown', event => { edgePointerType = event.pointerType; });
+    edgeIndicator.addEventListener('pointerenter', () => { edgeHovered = true; revealTools(); });
+    edgeIndicator.addEventListener('pointerleave', () => { edgeHovered = false; scheduleHideTools(); });
+    edgeIndicator.addEventListener('focus', revealTools);
+    edgeIndicator.addEventListener('click', () => {
+        if (edgePointerType === 'touch') {
+            touchPinned = !touchPinned;
+            if (touchPinned) revealTools();
+            else {
+                player.classList.remove('tools-visible');
+                scheduleHideTools(0);
+            }
+            edgePointerType = 'mouse';
+            return;
+        }
+        revealTools();
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Tab') toolbar.classList.add('keyboard-focus');
+    }, true);
+    document.addEventListener('pointerdown', () => toolbar.classList.remove('keyboard-focus'), true);
+    toolbar.addEventListener('pointerenter', () => { toolsHovered = true; clearTimeout(toolsTimer); });
+    toolbar.addEventListener('pointerleave', () => { toolsHovered = false; scheduleHideTools(); });
+    toolbar.addEventListener('focusout', () => setTimeout(() => {
+        if (!toolbar.contains(document.activeElement)) {
+            toolbar.classList.remove('keyboard-focus');
+            scheduleHideTools();
+        }
+    }, 0));
+    function setPanelOpen(open) {
+        volumePanel.hidden = !open;
+        audioToggle.setAttribute('aria-expanded', String(open));
+        if (open) {
+            player.classList.add('tools-visible');
+            clearTimeout(toolsTimer);
+        } else if (isFullscreen()) scheduleHideTools(350);
+    }
+    audioToggle.addEventListener('click', () => setPanelOpen(volumePanel.hidden));
+    muteToggle.addEventListener('click', () => {
+        const isSilent = audioSettings.muted || audioSettings.volume === 0;
+        if (isSilent) {
+            audioSettings.muted = false;
+            if (audioSettings.volume === 0) audioSettings.volume = audioSettings.lastNonzero;
+        } else {
+            if (audioSettings.volume > 0) audioSettings.lastNonzero = audioSettings.volume;
+            audioSettings.muted = true;
+        }
+        publishAudioSettings();
+    });
+    volumeSlider.addEventListener('pointerdown', () => { sliderDragging = true; clearTimeout(toolsTimer); });
+    window.addEventListener('pointerup', () => {
+        if (!sliderDragging) return;
+        sliderDragging = false;
+        scheduleHideTools();
+    });
+    window.addEventListener('pointercancel', () => {
+        if (!sliderDragging) return;
+        sliderDragging = false;
+        scheduleHideTools();
+    });
+    volumeSlider.addEventListener('input', () => {
+        audioSettings.volume = clampVolume(Number(volumeSlider.value));
+        if (audioSettings.volume > 0) {
+            audioSettings.lastNonzero = audioSettings.volume;
+            audioSettings.muted = false;
+        }
+        publishAudioSettings();
+    });
+    volumePanel.addEventListener('pointerdown', event => event.stopPropagation());
+    audioControl.addEventListener('pointerdown', event => event.stopPropagation());
+    document.addEventListener('pointerdown', event => {
+        if (!audioControl.contains(event.target)) setPanelOpen(false);
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !volumePanel.hidden) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            setPanelOpen(false);
+            audioToggle.focus();
+            return;
+        }
+        if (toolbar.contains(event.target)) event.stopPropagation();
+    }, true);
+    document.addEventListener('keyup', event => {
+        if (toolbar.contains(event.target)) event.stopPropagation();
+    }, true);
     const entries = [];
     const startedAt = new Date().toISOString();
     let dropped = 0;
@@ -221,6 +480,28 @@ button:disabled { opacity: .5; cursor: default; }
     window.addEventListener('unhandledrejection', event => record('error', event.reason));
     document.addEventListener('visibilitychange', () => record('lifecycle', document.visibilityState));
     canvas.addEventListener('webglcontextlost', () => record('error', 'WebGL context lost'));
+    const viewport = document.getElementById('viewport');
+    function fitCanvasToViewport() {
+        const rect = viewport.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const width = Math.max(1, Math.round(rect.width * dpr));
+        const height = Math.max(1, Math.round(rect.height * dpr));
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+        if (canvas.width !== width) canvas.width = width;
+        if (canvas.height !== height) canvas.height = height;
+        window.bvnCanvasSize = {
+            viewport: { width: rect.width, height: rect.height },
+            canvas: { width: canvas.width, height: canvas.height },
+            devicePixelRatio: dpr,
+        };
+        record('canvasresize', window.bvnCanvasSize);
+    }
+    const viewportObserver = new ResizeObserver(fitCanvasToViewport);
+    viewportObserver.observe(viewport);
+    window.addEventListener('resize', fitCanvasToViewport);
+    document.addEventListener('fullscreenchange', fitCanvasToViewport);
+    fitCanvasToViewport();
     record('session', 'Web player started');
     const available = document.fullscreenEnabled && player.requestFullscreen;
     fullscreen.disabled = !available;
@@ -236,12 +517,13 @@ button:disabled { opacity: .5; cursor: default; }
         }
     });
     document.addEventListener('fullscreenchange', () => {
-        const active = document.fullscreenElement === player;
+        const active = isFullscreen();
         fullscreen.textContent = active ? '退出全屏' : '进入全屏';
-        feedback.textContent = active
-            ? '已进入全屏 · 鼠标移到顶部，点击“退出全屏”返回网页'
-            : '已返回窗口模式，点击游戏画面继续操作。';
-        revealTools();
+        setPanelOpen(false);
+        toolsHovered = false;
+        touchPinned = false;
+        player.classList.remove('tools-visible');
+        clearTimeout(toolsTimer);
         record('fullscreen', active);
     });
     document.getElementById('download').addEventListener('click', () => {

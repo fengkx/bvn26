@@ -1,0 +1,75 @@
+{
+  "id": "sakura-20-rush-neutral",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "瞬步",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "dash"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    20,
+    39
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "onJumping"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "p1_helper": "jinye",
+  "p2_helper": "kon",
+  "source_helpers": {
+    "p1": {
+      "alias": "jinye",
+      "id": "松本",
+      "swf": "game/fighter/fz/jinye.swf",
+      "sha256": "03736bfd2ef7e9b79f958971fc7192ea641653039212e29793ed291c56bfa62a"
+    },
+    "p2": {
+      "alias": "kon",
+      "id": "魂",
+      "swf": "game/fighter/fz/kon.swf",
+      "sha256": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+    }
+  },
+  "source_target": {
+    "label": "瞬步",
+    "start_frame": 20,
+    "end_frame": 39,
+    "implementation": "wired",
+    "has_timeline": true,
+    "source_dispatch": [
+      "doAllAction",
+      "onJumping"
+    ],
+    "contexts": [
+      "air",
+      "stand"
+    ],
+    "energy_min": 0
+  },
+  "controlled_intervention": false
+}

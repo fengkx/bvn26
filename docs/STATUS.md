@@ -1,6 +1,6 @@
 # 当前状态、风险与待验证项
 
-状态同步日期：2026-09-11。按当前工作树与已有证据核对；本次检查范围见 [同步记录](../evidence/status-sync-2026-09-08.md)。
+状态同步日期：2026-09-13。按当前工作树与已有证据核对；本次检查范围见 [同步记录](../evidence/status-sync-2026-09-08.md)。
 
 B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（包含已有局部产物但未验收），对应任务表已补产物与证据。下列开发切片实现不代表里程碑完成。
 
@@ -232,6 +232,18 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
 [验证记录](../evidence/ai/README.md) 区分静态检查与待执行的原版对照。
 尚缺完整随机/timer tape、首次回调与重复初始化寿命、缺失引用语义和全形态可达绑定。
 现已接入原生 Vs Com 开发入口：P1 鸣人、电脑一护、简单难度。菜单、选图、开场、P1 输入、电脑攻击和退出清理的主场景测试通过；残影/颜色等效果服务、部分帧函数和整场原版对照仍缺。U-05 与 M5-03 保持未完成。详见 [AI 实现进度](../evidence/ai/compiler-progress.md)。
+
+## 2026-09-13 角色切片与选人立绘进展
+
+春野樱基础形态与井野（源援助 ID `松本`）的本段早期记录曾只有 34 条固定基线及首批 10 条镜像/空中目标案例；后续已扩展并完成。59 个 catalog fixture 均能执行，52 个实际观察到目标动作，余下 7 个为源条件拒绝或当前基础形态没有相应源时间轴的尝试。扩展后的 36 条镜像/空中目标原版案例均与 native fighter、helper 可比较字段及根位置匹配；另 10 条选定取消窗口边界案例覆盖四种不同源机制，source/native 状态与 helper 对照均 10/10 匹配，按源轨迹区分成功转招与未转招边缘。相关证据见 [稳定运行时对照](../evidence/characters/sakura-ino/comparison-stable-runtime-r01.json)、[镜像与空中目标批次](../evidence/characters/sakura-ino/godot/catalog-alt-r01-batch06/comparisons.json)、[取消边界对照](../evidence/characters/sakura-ino/godot/cancel-boundaries-r01/comparisons.json)。这些案例覆盖所选 4 个源取消窗口，不代表全部 30 个源窗口逐一验收。井野 source-only 的 `hits`/`atm1`–`atm3` 不在六字段 helper 比较范围内；自然召唤与受控超杀重叠分别标记，受控用例不替代自然行为验收。更广泛视听和完整 M6 验收仍待完成；生产公开 roster 已按下方最终整合记录开放为 9 fighters / 4 helpers。
+
+卡卡西 + 鼬的 O 只扣气故障已由源事件缺失定位：生成 combat 原先没有 `summon_events`，而原版 frame 1035 明确调用 `_root.yfgj(_parent._name)`。仅重建卡卡西 combat 后，显式 Kakashi/You 原版案例 fighter 与 helper 各 602/602 行全字段匹配；帧 162 空中投射物与帧 425–443 地面投射物两个受影响原版案例也均为 602/602 fighter、602/602 helper 精确匹配，地面案例四次 30 伤及 P2 880 HP / 4 hits 与原版一致。后续修复了 You depth-3 clip 回调固定读取出生矩阵的问题：平地中距原版与 Godot 都四次命中、末 HP 780，首击仍差 1 tick，其余三击时点相同；证据见[召唤修复](../evidence/characters/kakashi/you-helper-summon-r01/README.md)、[投射物验证](../evidence/characters/kakashi/projectile-runtime-r01/README.md)和[中距接触验证](../evidence/characters/kakashi/you-helper-distance200-r01/README.md)。局部 projectile tests 通过；已存在的 `ai_projectile_source_smoke.gd:51` Yihu receiver-name 失败与本次改动无关，不在此修复。
+
+选人 PNG 转换已修复 JPEG3 alpha 丢失及低分辨率模糊。正式选择资源现有九位角色的 45 个透明高分辨率头像帧及十三个姓名条；root 在 IAB 刷新先前 QA 包后确认樱的大立绘与“春野·樱”姓名条清晰且比例正确，一护黑衣轮廓与背景正确分离，控制台无 error/warning。先前 QA 与普通包的 PCK 哈希只对应旧 registry，已在最终整合中重导。Safari 未验。
+
+`build_intro.py` 按各 fighter 元数据中的源脚本路径及 SHA-256 编译 Sakura、Rukia base、Yulong 的开场帧状态。生产 `available.json` 现公开九名基础 fighter 与四名 helper；`generated/main/intro/intro.json` 包含三份 source-backed opening map。生产 registry 下的 scene-flow smoke 通过标题、角色、援助、地图、自然开场完成（未按跳过键），并在战斗内以 J 进入各角色源攻击、以 O 激活所选松本·井野。O 前测试将能量设为源命令所需的 100；这是受控前提，不代表开场自动满能量。该原生流程检查不证明浏览器键盘自动化或完整 Flash 一比一体验。详见[生产选人流程 smoke](../evidence/characters/roster-2026-09-12/candidate-flow-smoke.md)。另有非 headless Godot 关键帧截图对照樱 sprite 630 和井野辅助源 display list；root 已检查樱 frame 1 与井野 frame 2 的源/移植轮廓，范围与限制见[有限渲染帧证据](../evidence/characters/sakura-ino/godot/visual-keyframes-r01/README.md)，不代表原版像素一致。三位角色的根时间轴 StartSound 事件现已生成切段清单；樱 frame 727 的 sound49 源片段 `[1100,5400)` 循环20次，Godot probe 验证事件 ID、资源路径与 stream 启动。SWF `OutPoint` 是否包含末样本尚无原版播放位置/结束时长证据；不得称 Flash 播放端点或完整音画一致。Rukia/Yulong 嵌套声音已有对应源/native证据，但声音端点、逐项视听和更广泛角色验收仍待完成；M6 仍 pending。详见[sound49有限证据](../evidence/characters/sakura-ino/original/sound-loop-r02/soundinfo-loop-evidence.md)。
+
+最终整合：公开 registry 为 9 fighters / 4 helpers，测试不再注入候选映射；生产 registry 的三人自然开场→攻击→井野召唤流程已通过。普通与 QA 两个本地 Web 目录现已包含当前 runtime，均有 9 个非空导出文件；PCK SHA-256 均为 `9e29c4d7b187eb1461a5ecfdf8d9b7091fadd8429bb0fa272e1632ebc6df7fda`，生成的 HTML SHA-256 均为 `f1ed10244a653470b4db472ff01cd89b16e83957b0289026aaf55ef6ed1a582e`。两目录逐文件哈希一致；root 的本轮刷新确认待完成。Godot 导出 exit 0，仍输出 CA 证书环境诊断和无法写入用户 `editor_settings-4.7.tres` 的告警，故不把这些诊断隐去。生产名单开放不代表 M6 完成，OutPoint 末样本端点及完整原版音画一致性仍未验收。最终验证：18 个 registry/intro/sound-segment 单测通过，生产流程 smoke 成功且 teardown 无对象/资源泄漏告警；`check_handoff.py` 与 `validate_contracts.py` 通过。`verify.py` 在更新合法哈希后通过。
 
 ## 尚未完成
 
@@ -567,6 +579,6 @@ also pass. Full character matrix, visual/audio/Web parity, and HIT_RECEIVE_SOP
 step E remain pending. See
 [evidence/characters/sasuke-you/renji-overlap-upI-upU-fix-r01/README.md](../evidence/characters/sasuke-you/renji-overlap-upI-upU-fix-r01/README.md).
 
-## 2026-09-11 网页工具栏
+## 网页播放器工具栏与主音量
 
-默认窗口游玩，采用黑红游戏风格；全屏画面按 3:2 最大化占屏，悬浮按钮及退出提示自动淡出，鼠标移到顶部唤回。提供本次运行日志 JSON 下载，不新增游戏快捷键。实际 Godot Web 导出与 Chromium 专项回归通过，Firefox/Safari 仍待验证。实现与检查范围见 [网页外壳证据](../evidence/web-shell/README.md)。
+默认窗口游玩时完整显示工具栏；全屏状态从浏览器 `fullscreenchange` 读取，右上角工具像自动隐藏 Dock 一样从顶边滑入，收起时显示一个64×18 px半透明深色拉手，含暖灰边线、向下指示和小暗红点缀。Chrome 已确认顶边热区停留25秒保持展开、点击画面后完全收起；root 的全屏 IAB 截图确认新拉手清晰可见。音量真实回执通过72%→0%→50%、静音/取消静音及刷新后仍保持50%验证。触屏和滑杆拖出面板仍未手测。音量滑杆与静音通过 `WebAudioSettings` autoload 桥接 Godot Master bus，真实影响音乐和音效，并把实际状态回传到 popover；JavaScriptObject 使用直接属性赋值/方法调用，修复了 Web 上误调不存在的 `Window.set/call`。设置校验后保存在浏览器 localStorage；音量为零时一次点击即可恢复最近非零音量。键盘焦点控件的键盘事件不传给游戏，浏览器可能保留 Escape 退出全屏，不能保证该键只关闭面板。Godot bus smoke 与 Node 语法检查通过；自动化 Chromium 场景已扩展但未对 root 的交互 Chrome 会话运行。两本地 Web 页 PCK SHA-256 均为 `e3788790ad6d6bd1251a1b86410123e591ae1e7208fac29a04f2e40062d99669`，shell HTML SHA-256 均为 `d4e73de008133ed06511b2868ed178ca4d98f6ec0b6a6be43d263ae5edf625e4`。Firefox/Safari 与原版音画一致性仍待验证。详见[网页外壳证据](../evidence/web-shell/README.md)。

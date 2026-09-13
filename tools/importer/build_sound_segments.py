@@ -23,8 +23,8 @@ import wave
 
 
 def segment(samples, channels, event):
-    if event.get('sync_stop') or event.get('loop_count'):
-        raise ValueError('Stop/loop sound events require separate lifecycle handling')
+    if event.get('sync_stop'):
+        raise ValueError('Stop sound events require separate lifecycle handling')
     # The SWF SOUNDENVELOPE positions are always expressed in 44.1 kHz
     # samples. ``build`` normalizes decoded PCM to this rate before here.
     envelope = sorted(event.get('envelope', []), key=lambda item: int(item['pos44']))
@@ -61,7 +61,21 @@ def segment(samples, channels, event):
             sample = samples[index * channels + (channel if channels == 2 else 0)]
             level = left_level if key == 'left_level' else right_level
             result.append(round(sample * level / 32768))
-    return result, start, end
+    play_count = sound_play_count(event)
+    if 'loop_count' in event and envelope:
+        raise ValueError('Looped sounds with envelopes require playback-wide envelope evidence')
+    # Adobe documents Repeat as the number of times the file plays. Bake that
+    # finite count only when no envelope needs a loop-boundary interpretation.
+    return result * play_count, start, end
+
+
+def sound_play_count(event):
+    if 'loop_count' not in event:
+        return 1
+    loop_count = int(event['loop_count'])
+    if loop_count <= 0:
+        raise ValueError('Explicit SOUNDINFO loop count must be positive')
+    return loop_count
 
 
 def build(directory, wavs, ffmpeg):
@@ -89,6 +103,7 @@ def build(directory, wavs, ffmpeg):
                 if sys.byteorder != 'little': samples.byteswap()
                 decoded[sound_id] = samples, channels
             samples, start, end = segment(*decoded[sound_id], event)
+            play_count = sound_play_count(event)
             key = hashlib.sha256(json.dumps(event, sort_keys=True).encode()).hexdigest()[:16]
             path = outputs / f'{sound_id}-{key}.wav'
             if sys.byteorder != 'little': samples.byteswap()
@@ -96,7 +111,9 @@ def build(directory, wavs, ffmpeg):
                 stream.setparams((2, 2, 44100, 0, 'NONE', 'not compressed'))
                 stream.writeframes(samples.tobytes())
             records.append({'sound_id': sound_id, 'stream': path.relative_to(directory).as_posix(),
-                            'start_sample': start, 'end_sample': end, 'sample_count': end-start,
+                            'start_sample': start, 'end_sample': end,
+                            'sample_count': (end-start) * play_count,
+                            'play_count': play_count,
                             'source_event': event, 'source_wav_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
                             'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
         if records: frames[str(frame['frame'])] = records
@@ -115,6 +132,12 @@ if __name__ == '__main__':
     parser.add_argument('--ffmpeg', type=Path, required=True)
     args = parser.parse_args()
     timeline = json.loads((args.directory / 'timeline.json').read_text())
+    for frame in timeline['frames']:
+        for event in frame.get('events', []):
+            if event.get('type') == 'start_sound':
+                sound_play_count(event)
+                if 'loop_count' in event and event.get('envelope'):
+                    raise ValueError('Looped sounds with envelopes require playback-wide envelope evidence')
     root = Path(__file__).resolve().parents[2]
     swf = root / timeline['source_swf']['path']
     if hashlib.sha256(swf.read_bytes()).hexdigest() != timeline['source_swf']['sha256']:

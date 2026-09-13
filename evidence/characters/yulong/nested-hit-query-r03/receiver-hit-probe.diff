@@ -1,0 +1,14 @@
+--- scripts/fighter/yihu.json:DefineSprite_2/frame_1/DoAction.as
++++ isolated receiver probe
+@@ -87,8 +87,10 @@
+       _loc4_ = player[_loc2_ + afterFix];
+       if(_loc4_)
+       {
+-         if(this.hitTest(_loc4_))
++         var __aiProbeSourceHit = this.hitTest(_loc4_);
++         if(__aiProbeSourceHit)
+          {
++            _root.aiEvent("source_hit_selected", String(_parent.pn) + "|" + String(_loc2_) + "|" + String(afterFix) + "|" + String(_loc4_._name) + "|" + String(_loc4_._currentframe) + "|" + String(this._currentframe) + "|" + String(ppw[_loc2_ + "pw"]) + "|" + String(ppw[_loc2_ + "zl"]) + "|" + String(ppw[_loc2_ + "up"]) + "|" + String(ppw[_loc2_ + "x"]) + "|" + String(ppw[_loc2_ + "tm"]) + "|" + String(ppw[_loc2_ + "dz"]) + "|" + String(_root.game["p" + _parent.pn].mc._currentframe));
+             return {pw:ppw[_loc2_ + "pw"],zl:ppw[_loc2_ + "zl"],yup:ppw[_loc2_ + "up"],hitx:ppw[_loc2_ + "x"],hdtime:ppw[_loc2_ + "tm"],htype:ppw[_loc2_ + "dz"]};
+          }
+       }

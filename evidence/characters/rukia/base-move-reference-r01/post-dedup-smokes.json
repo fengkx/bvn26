@@ -1,0 +1,80 @@
+{
+  "runtime_file": "godot/fighter_runtime.gd",
+  "runtime_sha256": "b5b3496d2402f94c9a8c8f28c7df61ef86939fbe2da55afe2e07057ff7657180",
+  "dedup_smoke": "godot/tests/body_warp_event_dedup_smoke.gd passed",
+  "body_warp_xscale_smoke": "godot/tests/body_warp_xscale_smoke.gd passed",
+  "cases": [
+    {
+      "fixture": "evidence/characters/rukia/move-cases/rukia-320-skill1-mirror.json",
+      "fixture_sha256": "2bde1076c5a4d7779a002d73e42bfe7c38a94443b8fc92f871c8646673919b1a",
+      "native_only": true,
+      "first_skill1_state": {
+        "fight_tick": 23,
+        "frame": 330,
+        "x": 250.0,
+        "xscale": 100.0
+      },
+      "opponent_first_hit": {
+        "fight_tick": 25,
+        "hp": 890.0,
+        "hits": 1
+      }
+    },
+    {
+      "fixture": "evidence/characters/rukia/move-cases/rukia-320-skill1-held.json",
+      "fixture_sha256": "bd954d7709921e202d09d90c641608e33a44a99c30bad01698570f4074a8d07a",
+      "native_only": true,
+      "frame330_entries": [
+        {
+          "fight_tick": 23,
+          "x": 400.0,
+          "xscale": -100.0
+        },
+        {
+          "fight_tick": 69,
+          "x": 140.0,
+          "xscale": 100.0
+        },
+        {
+          "fight_tick": 102,
+          "x": 240.0,
+          "xscale": -100.0
+        }
+      ],
+      "opponent_hit_count_transitions": [
+        {
+          "tick": 25,
+          "hp": 890.0,
+          "hits": 1
+        },
+        {
+          "tick": 58,
+          "hp": 780.0,
+          "hits": 1
+        }
+      ]
+    },
+    {
+      "replay": "r13",
+      "status": "segment_observed_fields_match",
+      "frame_comparisons": 897,
+      "state_comparisons": 1794,
+      "geometry_comparisons": 1794,
+      "random_tape_complete": true,
+      "random_consumed": 298,
+      "clock_tape_complete": true,
+      "clock_consumed": 4
+    },
+    {
+      "replay": "r14",
+      "status": "segment_observed_fields_match",
+      "frame_comparisons": 867,
+      "state_comparisons": 1734,
+      "geometry_comparisons": 1734,
+      "random_tape_complete": true,
+      "random_consumed": 287,
+      "clock_tape_complete": true,
+      "clock_consumed": 5
+    }
+  ]
+}

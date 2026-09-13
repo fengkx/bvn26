@@ -1,0 +1,119 @@
+{
+  "id": "sakura-162-airMagichit-mirror",
+  "run_id": "moves-sakura-162-airMagichit-mirror-384e56a487",
+  "runtime_fingerprint": "../../catalog-stable-runtime-r01-fingerprint.json",
+  "source_target_seen": true,
+  "fighter": {
+    "status": "matched",
+    "source_states": 602,
+    "native_states": 602,
+    "complete": true,
+    "fields": [
+      "frame",
+      "x",
+      "y",
+      "xscale",
+      "action",
+      "hp",
+      "ql",
+      "sw",
+      "touch",
+      "touchFloor",
+      "hits",
+      "paused",
+      "hstm",
+      "hurtSkling"
+    ],
+    "differences": []
+  },
+  "helper": {
+    "status": "matched",
+    "source_rows": 602,
+    "native_rows": 602,
+    "complete": true,
+    "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+    "fields_compared": [
+      {
+        "name": "frame",
+        "source": "frame",
+        "native": "frame",
+        "transform": "identity"
+      },
+      {
+        "name": "x",
+        "source": "x",
+        "native": "x",
+        "transform": "identity"
+      },
+      {
+        "name": "y",
+        "source": "y",
+        "native": "y",
+        "transform": "identity"
+      },
+      {
+        "name": "orientation",
+        "source": "xscale",
+        "native": "facing",
+        "transform": "source xscale percent / 100 = native facing sign"
+      },
+      {
+        "name": "action",
+        "source": "action",
+        "native": "action",
+        "transform": "identity"
+      },
+      {
+        "name": "attacking",
+        "source": "attacking",
+        "native": "attacking",
+        "transform": "identity"
+      }
+    ],
+    "source_only_fields": [
+      "hits",
+      "atm1",
+      "atm2",
+      "atm3"
+    ],
+    "native_only_fields": [],
+    "active_row_counts": {
+      "source": {
+        "p1": 0,
+        "p2": 0
+      },
+      "native": {
+        "p1": 0,
+        "p2": 0
+      }
+    },
+    "active_boundaries": {
+      "p1": {
+        "source_first_active": null,
+        "native_at_source_first_active_tick": null,
+        "native_first_active": null
+      },
+      "p2": {
+        "source_first_active": null,
+        "native_at_source_first_active_tick": null,
+        "native_first_active": null
+      }
+    },
+    "compared_rows": 602,
+    "difference_count": 0,
+    "differences": [],
+    "first_difference": null
+  },
+  "root_position": {
+    "status": "matched",
+    "source_rows": 301,
+    "native_rows": 301,
+    "differences": []
+  },
+  "source_only_helper_fields": [
+    "hits",
+    "atm1",
+    "atm2",
+    "atm3"
+  ]
+}

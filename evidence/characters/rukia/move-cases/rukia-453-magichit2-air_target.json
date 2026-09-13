@@ -1,0 +1,52 @@
+{
+  "id": "rukia-453-magichit2-air_target",
+  "fighter": "rukia",
+  "slot": "p1",
+  "label": "招2",
+  "scenario": "air_target",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "ranged"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    }
+  ],
+  "target_frames": [
+    453,
+    507
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand",
+    "onDefence"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "rukia",
+    "p2": "yihu"
+  }
+}

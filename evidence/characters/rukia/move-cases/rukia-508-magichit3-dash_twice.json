@@ -1,0 +1,59 @@
+{
+  "id": "rukia-508-magichit3-dash_twice",
+  "fighter": "rukia",
+  "slot": "p1",
+  "label": "招3",
+  "scenario": "dash_twice",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "ranged"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "dash"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "dash"
+      ],
+      "start": 22,
+      "end": 25
+    }
+  ],
+  "target_frames": [
+    508,
+    545
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "rukia",
+    "p2": "yihu"
+  }
+}

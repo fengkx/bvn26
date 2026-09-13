@@ -1,0 +1,68 @@
+{
+  "id": "sakura-89-jumpDown-dash_twice",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "落2",
+  "scenario": "dash_twice",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "jump"
+      ],
+      "start": 20,
+      "end": 23
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "dash"
+      ],
+      "start": 20,
+      "end": 23
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "dash"
+      ],
+      "start": 32,
+      "end": 35
+    }
+  ],
+  "target_frames": [
+    89,
+    114
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doDropDown"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "priority": "P2",
+  "priority_reason": "Spatial or opponent-interaction branch."
+}

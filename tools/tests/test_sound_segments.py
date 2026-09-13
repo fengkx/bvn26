@@ -89,6 +89,43 @@ class SoundSegmentTests(unittest.TestCase):
         self.assertEqual(len(result), (36864 - 4400) * 2)
         self.assertEqual(list(result[:2]), [488, 498])
 
+    def test_finite_loop_uses_the_authored_crop_for_each_play(self):
+        pcm = array('h', range(8064))
+        result, start, end = segment(pcm, 1, {
+            'in_point': 1100, 'out_point': 5400, 'loop_count': 20, 'envelope': [],
+        })
+        self.assertEqual((start, end), (1100, 5400))
+        self.assertEqual(len(result) // 2, 86000)
+        self.assertEqual(result[0:4], array('h', [1100, 1100, 1101, 1101]))
+        self.assertEqual(result[2 * 4300:2 * 4300 + 4],
+                         array('h', [1100, 1100, 1101, 1101]))
+        self.assertAlmostEqual((len(result) // 2) / 44100, 1.9501133787)
+
+    def test_missing_loop_count_means_one_play_but_explicit_nonpositive_fails(self):
+        result, _, _ = segment(array('h', [100] * 4), 1, {})
+        self.assertEqual(len(result), 8)
+        for loop_count in (0, -1):
+            with self.subTest(loop_count=loop_count):
+                with self.assertRaisesRegex(ValueError, 'must be positive'):
+                    segment(array('h', [100] * 4), 1, {'loop_count': loop_count})
+
+    def test_looped_sound_with_envelope_fails_closed(self):
+        with self.assertRaisesRegex(ValueError, 'playback-wide envelope evidence'):
+            segment(array('h', [100] * 8), 1, {
+                'loop_count': 2,
+                'envelope': [{'pos44': 0, 'left_level': 32768, 'right_level': 32768}],
+            })
+
+    def test_original_sakura_frame_727_loop_source_has_no_envelope(self):
+        timeline = json.loads(
+            (ROOT / 'godot/generated/fighters/sakura/timeline.json').read_text())
+        event = next(event for frame in timeline['frames'] if frame['frame'] == 727
+                     for event in frame.get('events', [])
+                     if event.get('type') == 'start_sound' and event['sound_id'] == 49)
+        self.assertEqual((event['in_point'], event['out_point'], event['loop_count']),
+                         (1100, 5400, 20))
+        self.assertNotIn('envelope', event)
+
     def test_original_rifagu_sound_150_has_exact_authored_length(self):
         directory = ROOT / 'godot/generated/fighters/rifagu'
         manifest = json.loads((directory / 'sound_segments.json').read_text())

@@ -29,6 +29,7 @@ var _activation_generation: int = 0
 var _deferred_frame_generation: int = -1
 var _deferred_frame: int = -1
 var _root_stop_generation: int = -1
+var _nested_dispatch_frame: int = -1
 
 
 func bind_source_frames(registry: SourceCallbackRegistry, placed_tick: int) -> void:
@@ -83,12 +84,13 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 	set_facing(int(spawn.get("facing", 1)))
 	var start_frame := int(spawn.get("start_frame", _combat.get("start_frame", 2)))
 	play_source_frame(start_frame)
+	_nested_dispatch_frame = current_source_frame()
 	_apply_frame_events()
 	last_event = "helper_activate_%s" % helper_id
 	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
-func deactivate() -> void:
+func deactivate(clear_source_action: bool = true) -> void:
 	_activation_generation += 1
 	_deferred_frame_generation = -1
 	_deferred_frame = -1
@@ -96,13 +98,16 @@ func deactivate() -> void:
 	# Source frame_1 parks the clip at (-200, -200) and stop().
 	attacking = false
 	_clear_nested_callbacks()
-	# main frame_8 removeFZ explicitly clears mc.动作.
-	source_action = 0
+	# Only the source removeFZ path clears mc.动作. Natural clip completion
+	# returns to frame 1 without that call, so it must preserve the instance value.
+	if clear_source_action:
+		source_action = 0
 	bs = 0
 	timeline_playing = true
 	visible = false
 	position = Vector2(-200.0, -200.0)
 	play_source_frame(1)
+	_nested_dispatch_frame = -1
 	last_event = "helper_hide_%s" % helper_id
 
 
@@ -111,9 +116,13 @@ func advance_timeline() -> void:
 		return
 	var end_frame := int(_combat.get("end_frame", current_source_frame()))
 	if current_source_frame() >= end_frame:
-		deactivate()
+		deactivate(false)
 		return
 	play_source_frame(current_source_frame() + 1)
+	# Nested enterFrame callbacks run after the parent display list advances.
+	# Keep one frame snapshot for all callbacks in this display dispatch, even
+	# if an earlier callback changes the root playhead with gotoAndPlay.
+	_nested_dispatch_frame = current_source_frame()
 	_sync_nested_callbacks()
 
 
@@ -162,7 +171,7 @@ func _apply_root_stop(generation: int) -> void:
 		return
 	# Reuse the normal removal path so this FIFO callback becomes the new
 	# generation only after all earlier same-generation callbacks have run.
-	deactivate()
+	deactivate(false)
 
 
 func has_visual_timeline() -> bool:
@@ -295,7 +304,8 @@ func run_nested_clip_callback(event: Dictionary) -> void:
 	var body := owner_fighter.opponent.instance_global_bounds("bdmn")
 	if not body.has_area():
 		return
-	var clip := _contact_clip_bounds(event)
+	var source_frame := _nested_dispatch_frame if _nested_dispatch_frame >= 0 else current_source_frame()
+	var clip := _contact_clip_bounds(event, source_frame)
 	if not clip.has_area() or not SourceHitTest.intersects(body, clip):
 		return
 	var target_frame := int(event["target_frame"])
@@ -326,6 +336,10 @@ func _run_deferred_frame(target_frame: int, generation: int) -> void:
 
 
 func _sync_nested_callbacks() -> void:
+	# Calls outside registry dispatch describe the next callback's parent
+	# display list. During dispatch keep the existing snapshot stable.
+	if _callback_registry != null and _callback_registry.registration_tick() != _callback_registry.current_tick:
+		_nested_dispatch_frame = current_source_frame()
 	if _callback_registry == null:
 		return
 	if not attacking or not _frames.has(current_source_frame()):
@@ -373,11 +387,11 @@ func _clear_nested_callbacks() -> void:
 	_nested_callbacks.clear()
 
 
-func _contact_clip_bounds(event: Dictionary) -> Rect2:
-	# The callback event identifies the source placement frame. Another nested
-	# callback may already have changed the parent playhead during this dispatch;
-	# that must not make the remaining callbacks lose their original bounds.
-	var source_frame := int(event.get("placed_frame", event.get("frame", current_source_frame())))
+func _contact_clip_bounds(event: Dictionary, source_frame: int = -1) -> Rect2:
+	# Placement identity is fixed at birth, but its matrix follows parent MOVE
+	# tags. Use this dispatch's parent display list to resolve the live instance.
+	if source_frame < 0:
+		source_frame = current_source_frame()
 	if not _frames.has(source_frame):
 		return Rect2()
 	for placement: Dictionary in _frames[source_frame]["display_list"]:
@@ -387,7 +401,7 @@ func _contact_clip_bounds(event: Dictionary) -> Rect2:
 			continue
 		if int(placement.get("placed_frame", -1)) != int(event.get("placed_frame", event.get("frame", -2))):
 			continue
-		return _transform_rect(global_transform, _rooted_placement_bounds(placement))
+		return source_placement_global_bounds(placement, source_frame)
 	return Rect2()
 
 

@@ -21,6 +21,8 @@ FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitB
 FUNCTION=re.compile(r'^function (\w+)\([^\n]*\)\r?\n\{.*?^\}',re.M|re.S)
 ASSIGN=re.compile(r'^(?:var )?(\w+) = (-?\d+(?:\.\d+)?|true|false);$')
 DECLARE=re.compile(r'^var (\w+);$')
+INITIALIZED_DECLARE=re.compile(r'^var (\w+) = (-?\d+(?:\.\d+)?|true|false);$')
+POST_INCREMENT=re.compile(r'^(\w+)\+\+;$')
 ROOT_CLIP_RENAME = re.compile(
     r'(?P<object>[A-Za-z_]\w*)\._name\s*=\s*"(?P<name>[^"]+)"\s*;'
 )
@@ -131,7 +133,14 @@ def _root_clip_rename_event(
     return result
 
 
-def writes(source: str, path: str, *, function: bool=False) -> list[dict]:
+def writes(
+    source: str,
+    path: str,
+    *,
+    function: bool=False,
+    controller_scope_fields: set[str] | None = None,
+) -> list[dict]:
+    state_fields = FIELDS | (controller_scope_fields or set())
     lines=source.replace('\r\n','\n').splitlines()
     result=[]
     for number,line in enumerate(lines,1):
@@ -139,15 +148,42 @@ def writes(source: str, path: str, *, function: bool=False) -> list[dict]:
         # admitted and has only unconditional writes, verified below.
         if function:line=line.strip()
         match=ASSIGN.fullmatch(line)
-        if match and match[1] in FIELDS:
+        declaration=INITIALIZED_DECLARE.fullmatch(line)
+        if match and match[1] in state_fields:
             result.append({'field':match[1],'value':json.loads(match[2]),'path':path,'line':number})
+        elif declaration and declaration[1] in state_fields:
+            result.append({'field':declaration[1],'value':json.loads(declaration[2]),'path':path,'line':number})
+        elif increment := POST_INCREMENT.fullmatch(line):
+            if increment[1] in (controller_scope_fields or set()):
+                result.append({'op':'increment','field':increment[1],'delta':1,'path':path,'line':number})
         elif line == 'var speed = spd;':
             result.append({'field':'speed','read_field':'spd','path':path,'line':number})
         elif re.match(r'^(?:var )?(\w+)\s*[+*/-]?=',line):
             target=re.match(r'^(?:var )?(\w+)',line)[1]
-            if target in FIELDS:
+            if target in state_fields:
                 raise ValueError(f'Unsupported source-state assignment: {path}:{number}: {line}')
     return result
+
+
+def controller_scope_fields(bundle: dict, sprite: int) -> set[str]:
+    """Find source-declared timeline fields read through a controller parent."""
+    path = f'DefineSprite_{sprite}/frame_1/DoAction.as'
+    source = next((item['source'] for item in bundle['scripts'] if item['path'] == path), None)
+    if source is None:
+        raise ValueError('Missing controller source timeline: ' + path)
+    root = FUNCTION.sub(lambda match: '\n' * match[0].count('\n'), source)
+    declared = {
+        match[1]
+        for line in root.replace('\r\n', '\n').splitlines()
+        if (match := DECLARE.fullmatch(line)) or (match := INITIALIZED_DECLARE.fullmatch(line))
+    }
+    referenced = {
+        match[1]
+        for item in bundle['scripts']
+        if item['path'].startswith(f'DefineSprite_{sprite}/')
+        for match in re.finditer(r'\b_parent\.(\w+)\b', item['source'])
+    }
+    return (declared & referenced) - FIELDS
 
 
 
@@ -224,7 +260,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
     sprite=timeline['sprite_id']
     scripts={s['path']:s['source'] for s in bundle['scripts']}
     load_paths = [path for path in scripts if re.fullmatch(
-        rf'frame_\d+/PlaceObject2_{sprite}_1/CLIPACTIONRECORD onClipEvent\(load\).as', path)]
+        rf'frame_\d+/PlaceObject[23]_{sprite}_1/CLIPACTIONRECORD onClipEvent\(load\).as', path)]
     if len(load_paths) != 1:
         raise ValueError('Expected one form load: ' + str(load_paths))
     load_path = load_paths[0]
@@ -276,7 +312,14 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                    {'field': '_lastX', 'value': int(initial[1])}],
         'limits': ['This projects scalar state only; pn binding, doWanKai and updateDirect remain host-owned.'],
     }
-    declarations=[m[1] for line in root.splitlines() if (m:=DECLARE.fullmatch(line)) and m[1] in FIELDS]
+    scoped_fields = controller_scope_fields(bundle, sprite)
+    state_fields = FIELDS | scoped_fields
+    declarations=[
+        m[1] for line in root.splitlines()
+        if ((m:=DECLARE.fullmatch(line)) or (m:=INITIALIZED_DECLARE.fullmatch(line)))
+        and m[1] in state_fields
+        and not INITIALIZED_DECLARE.fullmatch(line)
+    ]
     frame_writes={}
     frame_calls={}
     frames_by_number = {int(item['frame']): item for item in timeline['frames']}
@@ -284,7 +327,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
     for frame in timeline['frames']:
         path=f'DefineSprite_{sprite}/frame_{frame["frame"]}/DoAction.as'
         text=root if frame['frame']==1 else scripts.get(path,'')
-        events=writes(text,path)
+        events=writes(text,path,controller_scope_fields=scoped_fields)
         if frame['frame'] == 1 and any(event['field'] in ('inited', '_lastX') for event in events):
             raise ValueError('First-init projection conflicts with unconditional frame state writes')
         if events:frame_writes[str(frame['frame'])]=events
@@ -355,7 +398,8 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
     hit=functions['onBeHit0']
     if re.search(r'\b(if|else|while|for)\b',hit):
         raise ValueError('onBeHit0 is no longer unconditional')
-    hit_writes=writes(hit,first_path+'#onBeHit0',function=True)
+    hit_writes=writes(hit,first_path+'#onBeHit0',function=True,
+                      controller_scope_fields=scoped_fields)
     definitions={d['character_id']:d for d in timeline['definitions']}
     ai=next(p for p in timeline['frames'][0]['display_list'] if p.get('name')=='AImain')
     definition=definitions[ai['character_id']]
@@ -374,7 +418,8 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             'load_writes':load_writes,'base_power_fields':powers,
             'initialization_state':initialization_state,
             'main_floor_contact':floor_contact,
-            'undefined_declarations':declarations,'frame_writes':frame_writes,
+            'undefined_declarations':declarations,'controller_scope_fields':sorted(scoped_fields),
+            'frame_writes':frame_writes,
             'frame_calls':frame_calls,
             'function_writes':{'onBeHit0':hit_writes},
             'random_refresh':{'interval_ms':int(interval[1]),'difficulty_multiplier':int(multiplier[2]),
@@ -383,6 +428,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             'sensing':{'activation_frame':2,'placement':ai,'sensors':sensors,'definitions':list(closure.values()),
                        'missing_references':sorted(set(referenced)-{p['name'] for p in sensors})},
             'limits':['Conditional body-state writers still require the body runtime adapter.',
+                      'Controller-scope increment events require runtime source-state support before integration.',
                       'Undefined declarations initialize new instances only; revisiting frame 1 preserves existing values.']}
 
 

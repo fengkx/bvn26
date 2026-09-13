@@ -1,0 +1,46 @@
+{
+  "id": "sakura-309-skill1-wall",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "砍技1",
+  "scenario": "wall",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 20,
+      "energy": 300
+    },
+    "p2": {
+      "x": 70,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    309,
+    365
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand",
+    "onDefence"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "priority": "P2",
+  "priority_reason": "Spatial or opponent-interaction branch."
+}

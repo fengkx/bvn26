@@ -1,0 +1,101 @@
+{
+  "format": "bvn26-native-case-catalog-v1",
+  "fighter": "yulong",
+  "status": "capture_in_progress",
+  "source_model": "godot/generated/fighters/yulong/combat.json",
+  "source_catalog_format": "bvn26-command-catalog-v1",
+  "cases": [
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/air_jump_attack.json",
+      "case_id": "yulong-air_jump_attack",
+      "label": "跳砍",
+      "command_slot": "airhit",
+      "purpose": "Verify source airborne attack path and tkatm placement/lifetime.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/air_special_exact.json",
+      "case_id": "yulong-air_special_exact",
+      "label": "空中必杀",
+      "command_slot": "bishaAir",
+      "purpose": "Verify onJumping special dispatch at exact source energy minimum.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/air_special_below.json",
+      "case_id": "yulong-air_special_below",
+      "label": "空中必杀",
+      "command_slot": "bishaAir",
+      "purpose": "Paired energy-negative case; compare source no-op and energy preservation.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/ranged_repeat_neutral.json",
+      "case_id": "yulong-ranged_repeat_neutral",
+      "label": "招1",
+      "command_slot": "magichit1",
+      "purpose": "Three separate placements in one match; inspect projectile instance reset and repeated casts.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/ranged_repeat_mirrored.json",
+      "case_id": "yulong-ranged_repeat_mirrored",
+      "label": "招1",
+      "command_slot": "magichit1",
+      "purpose": "Repeat ranged casts with reversed initial ordering to observe source facing and projectile direction.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/ranged_down.json",
+      "case_id": "yulong-ranged_down",
+      "label": "招2",
+      "command_slot": "magichit2",
+      "purpose": "Exercise the second ranged command and any source branch unique to its placement.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/skill1.json",
+      "case_id": "yulong-skill1",
+      "label": "砍技1",
+      "command_slot": "skill1",
+      "purpose": "Cover down+attack command dispatch and source action timeline.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/skill2.json",
+      "case_id": "yulong-skill2",
+      "label": "砍技2",
+      "command_slot": "skill2",
+      "purpose": "Cover up+attack command dispatch and source action timeline.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/super_exact.json",
+      "case_id": "yulong-super_exact",
+      "label": "超必杀",
+      "command_slot": "bishaSuper",
+      "purpose": "Capture the 300-energy threshold case for source-gated super dispatch.",
+      "status": "native_selection_explicit_capture_pending"
+    },
+    {
+      "fixture": "evidence/characters/yulong/catalog-next-flash/cases/super_below.json",
+      "case_id": "yulong-super_below",
+      "label": "超必杀",
+      "command_slot": "bishaSuper",
+      "purpose": "Paired energy-negative case; verify source no-op and energy preservation.",
+      "status": "native_selection_explicit_capture_pending"
+    }
+  ],
+  "coverage_gaps": [
+    "No original parity capture yet for any case in this catalog.",
+    "Existing r04 covers the held attack chain 砍1→砍2 and k1atm lifecycle in one facing only.",
+    "No two-sided cross-role hit/no-hit matrix for Uryū actions yet.",
+    "No representative of every extended action, assist, guard branch, frame cancel boundary, or no-op command.",
+    "The negative energy cases are candidate source-gated paths and remain unverified in native replay until this batch is captured."
+  ],
+  "configuration": {
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂",
+    "r01_air_jump_attack": "build used source defaults with equivalent p1sf/p2sf but did not record explicit helper observer fields"
+  }
+}

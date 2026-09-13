@@ -16,6 +16,7 @@ from compile_ai_predicates import (
     ROOT, NAMES, DISPATCH_NAMES, FIELDS, FUNCTION, expression, compile_source, controller_script,
     controller_aliases,
 )
+from compile_ai_context import controller_scope_fields
 from build_combat_model import (
     parse_clip_timeline,
     parse_projectile_initialization,
@@ -24,6 +25,21 @@ from build_combat_model import (
 )
 
 LOCALS = {'js', 'jumpinggg', 'standed', 'allF', 'walkF', 'touchFloor'}
+# These receiver functions are shared source, but their symbol id is not stable
+# across fighters. Sakura wraps the receiver graphic in Sprite5; other forms
+# commonly use Sprite2. Admit only this exact retained implementation.
+RECEIVER_FUNCTIONS = ('gameRunning', 'beida', 'fangyu', 'checkHit', 'getHitObj', 'getStgHitObj')
+RECEIVER_FUNCTION_HASHES = (
+    'b7e98f01be5b46dd5d4aff0eee9ed8519e6dfcd69a3bd30b28945a8c6c6fcc59',
+    'cfac66cedf7ee48ff42cde96a7af5cd79b3c9e98a9e7ea77489eacdafb8f2d30',
+    '493c6a91d527ca22586f7df13f89e9aeebb7743d3df0fd7dc811b3f3a6296d48',
+    'f3acf68293b1c7db2de74d30f08e78dc088574d70e9239ab0a14167aa21f3c88',
+    '2721d4f385bc8c2d3fc9c50d9db681fa590fc74eadb3b5d41fa7492f7aea68c0',
+    '1666e47b5258d54ec6e2c57bb0dbdbb42fff5a77ac19b21082859523ed5d7f75',
+)
+RECEIVER_CALLBACK = re.compile(
+    r'onClipEvent\(enterFrame\)\{\s*(beida|fangyu)\(\);\s*\}\s*'
+)
 HEADER = '''extends "predicates.gd"
 
 # These initial values are the controller's original timeline declarations.
@@ -63,11 +79,27 @@ CALLS = {
     '_root.jumpxg(_parent._parent)': 'adapter.effect("jumpxg")',
     '_root.luodixg(_parent._parent)': 'adapter.effect("luodixg")',
 }
+def source_expression(source: str, locals_: set[str], scope_fields: set[str]) -> str:
+    for field in sorted(scope_fields, key=len, reverse=True):
+        source = re.sub(
+            rf'(?<![.\w])_parent\.{re.escape(field)}\b',
+            f'value({json.dumps(field)})',
+            source,
+        )
+    return expression(source, locals_)
 
 
-def compile_body(name: str, params: str, body: str, *, unbound_calls=()) -> str:
+def compile_body(
+    name: str,
+    params: str,
+    body: str,
+    *,
+    unbound_calls=(),
+    scope_fields: set[str] | None = None,
+) -> str:
     params_list = [x.strip() for x in params.split(',') if x.strip()]
     locals_ = LOCALS | set(params_list)
+    source_fields = scope_fields or set()
     output = ['', 'func ' + name + '(' + ', '.join(p + ': Variant = null' for p in params_list) + ') -> Variant:']
     depth = 1
     for raw in body.splitlines():
@@ -85,22 +117,22 @@ def compile_body(name: str, params: str, body: str, *, unbound_calls=()) -> str:
         indent = '\t' * depth
         translated = []
         if line.startswith('if(') and line.endswith(')'):
-            translated = ['if truth(' + expression(line[3:-1], locals_) + '):']
+            translated = ['if truth(' + source_expression(line[3:-1], locals_, source_fields) + '):']
         elif line.startswith('else if(') and line.endswith(')'):
-            translated = ['elif truth(' + expression(line[8:-1], locals_) + '):']
+            translated = ['elif truth(' + source_expression(line[8:-1], locals_, source_fields) + '):']
         elif line == 'else':
             translated = ['else:']
         elif line.startswith('return ') and line.endswith(';'):
-            translated = ['return ' + expression(line[7:-1], locals_)]
+            translated = ['return ' + source_expression(line[7:-1], locals_, source_fields)]
         elif match := re.fullmatch(r'var (\w+)(?: = (.+))?;', line):
             local, initial = match.groups()
             locals_.add(local)
-            translated = [f'var {local}: Variant = ' + (expression(initial,locals_) if initial else 'null')]
+            translated = [f'var {local}: Variant = ' + (source_expression(initial,locals_,source_fields) if initial else 'null')]
         elif match := re.fullmatch(r'(.+?) (\+=|-=|=) (.+);', line):
             target, op, rhs = match.groups()
-            value = expression(rhs,locals_)
+            value = source_expression(rhs,locals_,source_fields)
             if op != '=':
-                value = f'(number({expression(target,locals_)}) {op[0]} number({value}))'
+                value = f'(number({source_expression(target,locals_,source_fields)}) {op[0]} number({value}))'
             if target in locals_:
                 translated = [f'{target} = {value}']
             elif target in FIELDS:
@@ -109,14 +141,14 @@ def compile_body(name: str, params: str, body: str, *, unbound_calls=()) -> str:
                 raise ValueError(f'Unsupported assignment in {name}: {line}')
         elif match := re.fullmatch(r'_parent.gotoAnd(Play|Stop)\((.+)\);', line):
             mode, destination = match.groups()
-            translated = ['adapter.goto_label(' + expression(destination,locals_) + ', ' + str(mode=='Play').lower() + ')',
+            translated = ['adapter.goto_label(' + source_expression(destination,locals_,source_fields) + ', ' + str(mode=='Play').lower() + ')',
                           'if not adapter.controller_alive():', '\treturn null']
         elif line[:-1] in CALLS and line.endswith(';'):
             translated = [CALLS[line[:-1]]]
         elif match := re.fullmatch(r'_parent\._parent\.(moveX|moveY)\((.+)\);', line):
-            translated = [f'adapter.move_axis("{match[1]}", ' + expression(match[2],locals_) + ')']
+            translated = [f'adapter.move_axis("{match[1]}", ' + source_expression(match[2],locals_,source_fields) + ')']
         elif match := re.fullmatch(r'_parent\.(fangyux|beidax)\((.*)\);', line):
-            args = expression(match[2],locals_) if match[2] else ''
+            args = source_expression(match[2],locals_,source_fields) if match[2] else ''
             translated = [f'adapter.body_call("{match[1]}", [{args}])',
                           'if not adapter.controller_alive():', '\treturn null']
         elif match := re.fullmatch(r'(fangyux|beidax)\((.*)\);', line):
@@ -126,7 +158,7 @@ def compile_body(name: str, params: str, body: str, *, unbound_calls=()) -> str:
         elif match := re.fullmatch(r'(\w+)\((.*)\);',line):
             if match[1] not in {*NAMES,*DISPATCH_NAMES}:
                 raise ValueError(f'Unsupported call in {name}: {line}')
-            translated = [expression(line[:-1],locals_)]
+            translated = [source_expression(line[:-1],locals_,source_fields)]
             if match[1] in DISPATCH_NAMES:
                 translated += ['if not adapter.controller_alive():','\treturn null']
         else:
@@ -157,6 +189,15 @@ def renamed_timeline_hooks(bundle: dict, sprite: int, timeline: dict, existing: 
         if not any(r['instance_name'].endswith('atm') for r in clip.get('rename_frames', [])):
             continue
         clip['frame_count'] = definitions[character]['frame_count']
+        timeline_events = []
+        for child_frame, frame_events in enumerate(
+                definitions[character].get('display_list_frame_events', []), 1):
+            for event in frame_events:
+                if event.get('type') == 'start_sound':
+                    timeline_events.append({
+                        'frame': child_frame,
+                        'event': event,
+                    })
         events = []
         for script in bundle['scripts']:
             match = re.fullmatch(rf'DefineSprite_{character}/frame_(\d+)/DoAction.as', script['path'])
@@ -167,14 +208,42 @@ def renamed_timeline_hooks(bundle: dict, sprite: int, timeline: dict, existing: 
                 events.append({'frame': int(match[1]), 'op': 'screen_flash',
                                'color_rgb24': 0xFFFFFF, 'source_path': script['path'],
                                'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest()})
-            elif source != 'stop();' and not re.fullmatch(r'this\._name = "[^"]+";', source):
+            elif source != 'stop();' and not re.fullmatch(r'(?:this\.)?_name = "[^"]+";', source):
                 raise ValueError('Uncompiled renamed attack timeline: ' + script['path'])
         result.append({'path': f'DefineSprite_{sprite}/frame_{placed_frame}/PlaceObject2_{character}_{depth}',
                        'method': 'enter_frame', 'depth': depth, 'placement_frame': placed_frame,
                        'member_frames': [f for f, _ in members],
                        'projectile': {'instance_name': placement['name'], 'frame_only': True,
-                                      'frame_events': events, **clip}})
+                                      'source_sprite_id': character,
+                                      'source_depth': depth,
+                                      'source_placement_frame': placed_frame,
+                                      'frame_events': events,
+                                      'timeline_events': timeline_events, **clip}})
     return result
+
+
+def receiver_source(bundle: dict, symbol: int) -> dict | None:
+    """Return the exact supported shared receiver source, without symbol guesses."""
+    path = f'DefineSprite_{symbol}/frame_1/DoAction.as'
+    script = next((item for item in bundle['scripts'] if item['path'] == path), None)
+    if script is None:
+        return None
+    source = script['source'].replace('\r\n', '\n')
+    functions = {
+        match[1]: match[0]
+        for match in FUNCTION.finditer(source)
+    }
+    if any(name not in functions for name in RECEIVER_FUNCTIONS):
+        return None
+    hashes = tuple(hashlib.sha256(functions[name].encode()).hexdigest()
+                   for name in RECEIVER_FUNCTIONS)
+    if hashes != RECEIVER_FUNCTION_HASHES:
+        return None
+    return {
+        'symbol_id': symbol,
+        'script_path': path,
+        'script_sha256': hashlib.sha256(script['source'].encode()).hexdigest(),
+    }
 
 
 def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: bool = False) -> tuple[str,dict]:
@@ -184,13 +253,14 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
     if timeline['source_swf']['sha256'] != bundle['swf_sha256'] or timeline['sprite_id'] != sprite:
         raise ValueError('Controller and timeline do not share the retained source')
     controller = controller_script(bundle, sprite)
+    scope_fields = controller_scope_fields(bundle, sprite)
     controller_ids = {int(re.search(r'DefineSprite_(\d+)', alias['path'])[1])
                       for alias in controller_aliases(bundle, sprite)}
     source = controller['source']
     funcs = {m[1]:(m[2],m[3]) for m in FUNCTION.finditer(source.replace('\r\n','\n'))}
     text = '# Generated by tools/importer/compile_ai_controller.py; do not edit.\n' + HEADER
     for name in DISPATCH_NAMES:
-        text += compile_body(name,*funcs[name])
+        text += compile_body(name,*funcs[name], scope_fields=scope_fields)
     hooks = []
     unbound_call_sites = []
     for script in bundle['scripts']:
@@ -214,7 +284,10 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
                 unbound_call_sites.append({'path': script['path'], 'name': target,
                                            'resolution': 'undefined_controller_and_root_scope',
                                            'root_scope_bundle_sha256': hashlib.sha256(main_path.read_bytes()).hexdigest()})
-        text += compile_body(method,'',body.split('\n',1)[1].rsplit('}',1)[0], unbound_calls=unbound)
+        text += compile_body(
+            method, '', body.split('\n',1)[1].rsplit('}',1)[0],
+            unbound_calls=unbound, scope_fields=scope_fields,
+        )
         membership = []
         for f,display in enumerate(timeline['frames'],1):
             for placement in display['display_list']:
@@ -225,27 +298,35 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         hooks.append({'method':method,'path':script['path'],'controller_id':controller_id,
                       'placement_frame':frame,'depth':depth,'member_frames':membership})
     receiver_hooks = []
+    receiver_ids = set()
     for script in bundle['scripts']:
-        match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/PlaceObject2_2_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
+        match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
         if not match:
             continue
-        callback = re.fullmatch(r'onClipEvent\(enterFrame\)\{\s*(beida|fangyu)\(\);\s*\}\s*', script['source'])
-        if not callback:
-            raise ValueError('Uncompiled receiver callback: ' + script['path'])
-        frame, depth = map(int, match.groups())
+        callback = RECEIVER_CALLBACK.fullmatch(script['source'])
+        if callback is None:
+            continue
+        frame, symbol_id, depth = map(int, match.groups())
+        source_info = receiver_source(bundle, symbol_id)
+        if source_info is None:
+            raise ValueError('Uncompiled receiver source: ' + script['path'])
+        receiver_ids.add(symbol_id)
         members = [f['frame'] for f in timeline['frames'] if any(
-            p.get('character_id') == 2 and p['depth'] == depth and p['placed_frame'] == frame
+            p.get('character_id') == symbol_id and p['depth'] == depth and p['placed_frame'] == frame
             for p in f['display_list'])]
         if not members:
             raise ValueError('Receiver placement missing: ' + script['path'])
         receiver_hooks.append({'path': script['path'], 'method': 'receive',
                                'receiver': callback[1], 'placement_frame': frame,
+                               'receiver_symbol_id': symbol_id,
+                               'receiver_source_path': source_info['script_path'],
+                               'receiver_source_sha256': source_info['script_sha256'],
                                'depth': depth, 'member_frames': members})
     projectile_hooks = []
     frame_counts = source_frame_counts(timeline)
     for script in bundle['scripts']:
         match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
-        if not match or int(match[2]) in ({2} | controller_ids):
+        if not match or int(match[2]) in (receiver_ids | controller_ids):
             continue
         motion = parse_projectile_motion(script['source'])
         if motion is None:
@@ -256,14 +337,17 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
             load_path = script['path'].replace('onClipEvent(enterFrame)', 'onClipEvent(load)')
             load = next((s['source'] for s in bundle['scripts'] if s['path'] == load_path), '')
             initial = parse_projectile_initialization(load)
-            if initial is None:
-                # Hit-only clips have no load callback; movement clips must have
-                # an explicit source speed initializer rather than an inferred default.
-                if any(key in motion for key in ('local_x_factor', 'local_y_factor')):
-                    raise ValueError('Uncompiled projectile initialization: ' + script['path'])
-            else:
+            if initial is None and load:
+                raise ValueError('Uncompiled projectile initialization: ' + script['path'])
+            if initial is not None:
+                if 'initial_variables' in initial:
+                    variables = initial['initial_variables']
+                    if any(name in ('local_x_factor', 'local_y_factor') for name in motion) and 'movspeed' not in variables:
+                        raise ValueError('Projectile movement local is undeclared: ' + script['path'])
                 clip.update({**initial, 'initial_motion_source': {
-                                 'source_path': load_path, 'source_sha256': hashlib.sha256(load.encode()).hexdigest()}})
+                    'source_path': load_path,
+                    'source_sha256': hashlib.sha256(load.encode()).hexdigest(),
+                }})
         placements = [(f['frame'], p) for f in timeline['frames'] for p in f['display_list']
                       if p.get('character_id') == character and p['depth'] == depth and p['placed_frame'] == frame]
         if not placements:
@@ -275,6 +359,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
     projectile_hooks.extend(renamed_timeline_hooks(bundle, sprite, timeline, projectile_hooks))
     return text,{'status':'compiled_not_integrated','sprite_id':sprite,'hooks':hooks,
                  **({'unbound_call_sites': unbound_call_sites} if unbound_call_sites else {}),
+                 'controller_scope_fields': sorted(scope_fields),
                  'receiver_hooks':receiver_hooks,
                  'projectile_hooks':projectile_hooks,
                  'source_swf':{'path':bundle['game_file'],'sha256':bundle['swf_sha256']},

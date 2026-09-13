@@ -238,6 +238,7 @@ class TimelineGeometryTests(unittest.TestCase):
                             }
                         ]
                     ],
+                    "display_list_frame_events": [[]],
                 },
             ],
         )
@@ -493,6 +494,14 @@ class CombatModelTests(unittest.TestCase):
             {"op": "warp_to_opponent", "place_x": True},
         )
         self.assertEqual(
+            combat_model.parse_body_warp("_parent._x -= _parent._xscale;\r\n"),
+            {"op": "offset_parent_x_by_xscale", "xscale_factor": -1.0},
+        )
+        self.assertEqual(
+            combat_model.parse_body_warp("_parent._x += _parent._xscale;"),
+            {"op": "offset_parent_x_by_xscale", "xscale_factor": 1.0},
+        )
+        self.assertEqual(
             combat_model.parse_body_warp(
                 '_parent._x = _root.game["p" + pn]._x;\r\n'
                 '_parent._y = _root.game["p" + pn]._y - 40;\r\n'
@@ -588,6 +597,7 @@ class CombatModelTests(unittest.TestCase):
         self.assertTrue(warps[1]["place_y"])
         self.assertEqual(warps[1]["y_pixels"], -40.0)
         self.assertTrue(warps[1]["set_jump"])
+
         self.assertEqual(
             warps[1]["source_path"],
             "DefineSprite_764/frame_884/DoAction.as",
@@ -670,6 +680,18 @@ class CombatModelTests(unittest.TestCase):
                 'if(hp > 0)\r\n{\r\n   gotoAndStop("必杀1");\r\n   play();\r\n}\r\n'
             )
         )
+
+    def test_source_xscale_offset_is_retained_with_frame_provenance(self):
+        yulong = self.load_model("yulong")
+        offsets = [
+            item for item in yulong["body_warps"]
+            if item.get("op") == "offset_parent_x_by_xscale"
+        ]
+        self.assertEqual(len(offsets), 1)
+        self.assertEqual(offsets[0]["action"], "砍技1")
+        self.assertEqual(offsets[0]["frame"], 250)
+        self.assertEqual(offsets[0]["xscale_factor"], -1.0)
+        self.assertEqual(offsets[0]["source_path"], "DefineSprite_345/frame_250/DoAction.as")
 
     def test_special_chain_and_cost_are_source_driven(self):
         naruto = self.load_model("minren")

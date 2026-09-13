@@ -254,12 +254,15 @@ func _draw() -> void:
 				continue
 			var portrait: Dictionary = _portrait_spec[fighters[player]]
 			var texture := _texture(str(portrait.textures[int(_portrait_frames[player]) - 1]))
-			var position := Vector2(float(portrait.bounds_twips[0]), float(portrait.bounds_twips[1])) / 20.0 - Vector2(5, 5)
+			var raster_scale := float(portrait.get("raster_scale", 1.0))
+			var raster_border := float(portrait.get("raster_border", 5.0))
+			var position := Vector2(float(portrait.bounds_twips[0]), float(portrait.bounds_twips[1])) / 20.0 - Vector2.ONE * raster_border
+			var logical_size := Vector2(texture.get_width(), texture.get_height()) / raster_scale
 			for placement: Dictionary in spec.outer_display_list:
 				if placement.get("name") == "p%dbst" % (player + 1):
 					var matrix: Dictionary = placement.matrix
 					draw_set_transform(Vector2(float(matrix.translateX), float(matrix.translateY)) / 20.0, 0, Vector2(float(matrix.get("scaleX", 1)), float(matrix.get("scaleY", 1))))
-					draw_texture(texture, position)
+					draw_texture_rect(texture, Rect2(position, logical_size), false)
 			draw_set_transform(Vector2.ZERO)
 
 

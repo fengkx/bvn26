@@ -14,14 +14,21 @@ from build_character_selection import build_available  # noqa: E402
 
 
 class SelectionRegistryTests(unittest.TestCase):
-    def test_registry_is_deterministic_and_only_contains_base_forms(self):
+    def test_published_roster_matches_complete_base_artifacts(self):
         first = build_available(ROOT)
         second = build_available(ROOT)
         self.assertEqual(first, second)
         self.assertEqual(
-            set(first["fighters"]), {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次"}
+            set(first["fighters"]),
+            {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次", "樱", "露其雅", "石田"},
         )
-        self.assertEqual(set(first["helpers"]), {"我爱罗", "魂", "鼬"})
+        self.assertEqual(set(first["helpers"]), {"我爱罗", "魂", "鼬", "松本"})
+
+        published = json.loads(
+            (ROOT / "godot/generated/main/character_selection/available.json").read_text()
+        )
+        self.assertEqual(published, first)
+
         self.assertNotIn("佐助咒怨", first["fighters"])
         self.assertNotIn("佐助须佐", first["fighters"])
         self.assertNotIn("鸣人九尾", first["fighters"])
@@ -49,10 +56,15 @@ class SelectionRegistryTests(unittest.TestCase):
         portraits = json.loads((directory / "portraits.json").read_text())
         footer = json.loads((directory / "footer.json").read_text())
         self.assertEqual(
-            set(portraits), {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次"}
+            set(portraits),
+            {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次", "樱", "露其雅", "石田"},
         )
         self.assertEqual(
-            set(footer), {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次", "魂", "我爱罗", "鼬"}
+            set(footer),
+            {
+                "鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次",
+                "樱", "露其雅", "石田", "魂", "我爱罗", "鼬", "松本",
+            },
         )
         for entry in portraits.values():
             for texture in entry["textures"]:

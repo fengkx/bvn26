@@ -1,0 +1,56 @@
+{
+  "status": "invalid_probe_replaced_original_frame_actions",
+  "run_id": "yulong-audio-r01",
+  "reason": "The marker importer replaced existing DoAction scripts with marker-only scripts because the patch directory did not contain the source action bodies. This removed existing source logic (including frame 42 jump=1 and frame 588 special setup/energy/position writes); the different frame 503 route is caused by destructive instrumentation, not evidence of a static-fixture routing defect. All markers from this run are invalid as behavior evidence.",
+  "observations": {
+    "input_reads": {
+      "jump_tick": 5,
+      "special_ticks": [
+        20,
+        21,
+        22
+      ]
+    },
+    "p1_state_tick21": 503,
+    "expected_air_special_start_frame": 587,
+    "existing_dynamic_exact": {
+      "run_id": "yulong-air-special-exact-r02",
+      "p1_state_tick21": 587,
+      "body_boundary": "p1 frame 588 at fight tick 21"
+    },
+    "source_sound_tag_markers": [
+      {
+        "fight_tick": 7,
+        "sprite": 345,
+        "frame": 42,
+        "sound_id": 39
+      },
+      {
+        "fight_tick": 11,
+        "sprite": 345,
+        "frame": 116,
+        "sound_id": 46
+      },
+      {
+        "fight_tick": -1,
+        "sprite": 345,
+        "frame": 1136,
+        "sound_id": 343
+      }
+    ],
+    "scope": "Markers prove source frame tag dispatch only, not hardware playback.",
+    "source_sound_tag_markers_note": "These marker calls replaced source actions in this invalid run; do not interpret as valid tag dispatch."
+  },
+  "sha256": {
+    "events.jsonl": "eed3a68870cd0db215f889238e04b032dc7dfb3b9e3a2e15b2f2026db223de0f",
+    "build.json": "8226511e17266bcc961380d369f5d6af7384c01f43ad5309c28acc868083a21e",
+    "capture-environment.json": "8fcff4c4ec0234a9485b38f74e3b96149fa3a53e13edd7293299f906621209c5",
+    "start-sound-instrumentation.json": "e944d9dd224deafa9d4e3fb60a2ace2d11b29637956445124cb6742053c57abf"
+  },
+  "probe_defect": {
+    "confirmed_by": "Diff of existing dynamic exact SWF source scripts against the marker-instrumented test SWF: frame_588 DoAction lost 动作=3, bs=1, ql-=100, jump=1, and parent x/y assignments; frame_42 lost jump=1; frame_116 lost khit/jump writes.",
+    "raw_capture_retained": true,
+    "prior_sound_claims_withdrawn": true,
+    "corrected_probe": "The probe now exports current source scripts, chooses an action relative to the StartSound tag in SWF tag order, adds markers without replacing source actions, verifies exported source-plus-marker text, and marks frames with no DoAction as unsupported."
+  }
+}

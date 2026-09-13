@@ -9,6 +9,21 @@
       _root.game.p2.mc.ql = Number(aiFixture.p2energy);
       aiWindows = aiFixture.windows.split(";");
    }
+   if(aiFixture != undefined && aiFixture.resource_interventions != undefined && aiFixture.resource_interventions != "")
+   {
+      var aiInterventions = aiFixture.resource_interventions.split(";");
+      for(var aiInterventionIndex = 0; aiInterventionIndex < aiInterventions.length; aiInterventionIndex++)
+      {
+         var aiIntervention = aiInterventions[aiInterventionIndex].split(":");
+         if(aiFight == Number(aiIntervention[0]))
+         {
+            var aiTarget = aiIntervention[1] == "p1" ? _root.game.p1 : _root.game.p2;
+            var aiPrevious = aiTarget.mc.ql;
+            aiTarget.mc.ql = Number(aiIntervention[3]);
+            _root.aiEvent("resource_intervention", aiIntervention[4] + "," + aiFight + "," + aiIntervention[1] + "," + aiIntervention[2] + "," + _root.aiNumber(aiPrevious) + "," + _root.aiNumber(aiTarget.mc.ql));
+         }
+      }
+   }
    aiHeld = {};
    if(aiFight >= 0)
    {

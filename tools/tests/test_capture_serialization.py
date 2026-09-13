@@ -183,6 +183,35 @@ class CaptureSerializationTests(unittest.TestCase):
         process.kill.assert_called_once_with()
         self.assertEqual(process.wait.call_count, 2)
 
+    def test_explicit_player_app_flows_through_preflight_launch_and_cleanup(self):
+        process = MagicMock()
+        process.poll.return_value = None
+        with tempfile.TemporaryDirectory() as directory:
+            app = Path(directory) / 'Custom Flash Player.app'
+            binary = app / 'Contents/MacOS/Flash Player Debugger'
+            binary.parent.mkdir(parents=True)
+            binary.touch()
+            build = self._build(directory)
+            destination = Path(directory) / 'capture.log'
+
+            with patch.object(capture.subprocess, 'run', return_value=MagicMock(stdout='')) as ps, \
+                    patch.object(capture, 'matching_players', wraps=capture.matching_players) as preflight_matching:
+                capture.preflight(app)
+                self.assertEqual(preflight_matching.call_args.args[1], binary)
+
+            with patch.object(capture.subprocess, 'Popen', return_value=process) as popen, \
+                    patch.object(capture, 'LOG', Path(directory) / 'flashlog.txt'), \
+                    patch.object(capture, 'matching_players', return_value=set()) as matching:
+                self.assertFalse(capture._capture_locked(build, destination, 0, app))
+
+            self.assertEqual(ps.call_args.args[0], ['ps', '-axo', 'pid=,command='])
+            self.assertEqual(matching.call_count, 2)
+            self.assertTrue(all(call.args[1] == binary for call in matching.call_args_list))
+            self.assertEqual(popen.call_args.args[0], [
+                '/usr/bin/open', '-g', '-n', '-W', '-a', str(app), '--args',
+                str(build / 'game/main.swf'),
+            ])
+
 
 if __name__ == '__main__':
     unittest.main()

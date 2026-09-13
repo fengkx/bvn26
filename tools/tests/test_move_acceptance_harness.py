@@ -8,9 +8,9 @@ import unittest
 
 PROBES=Path(__file__).resolve().parents[1]/'probes'
 sys.path.insert(0,str(PROBES))
-from move_cases import generate, source_fixture, encode_case, KEYS
+from move_cases import generate, source_fixture, encode_case, encode_resource_interventions, KEYS
 from compare_mode_reference import compare, FIELDS, cancellation_observation
-from cancel_cases import same_window_route
+from cancel_cases import apply_source_target, same_window_route
 
 
 class MoveCasesTest(unittest.TestCase):
@@ -29,6 +29,21 @@ class MoveCasesTest(unittest.TestCase):
         self.assertEqual(result['destination_first_observed_tick'], 20)
         rows[0]['frame'] = 193
         self.assertEqual(cancellation_observation(rows, case)['status'], 'invalid_calibration')
+
+    def test_cancel_fixture_target_is_bound_to_window_source_action(self):
+        case = {'label': '砍技1', 'target_frames': [309, 365],
+                'source_target': {'label': '砍技1', 'start_frame': 309, 'end_frame': 365}}
+        window = {'from': '防御2', 'start_frame': 867, 'end_frame': 873}
+        source_action = {'label': '防御2', 'start_frame': 867, 'end_frame': 877,
+                         'has_timeline': True, 'source_dispatch': ['onDefence'],
+                         'contexts': ['guard'], 'energy_min': 0, 'implementation': 'wired'}
+        frames = apply_source_target(case, window, source_action)
+        self.assertEqual(frames, [867, 877])
+        self.assertEqual(case['label'], '防御2')
+        self.assertEqual(case['target_frames'], frames)
+        self.assertEqual(case['source_target']['label'], '防御2')
+        with self.assertRaisesRegex(ValueError, 'does not belong'):
+            apply_source_target(case, {'from': '防御2', 'start_frame': 866, 'end_frame': 878}, source_action)
 
     def test_base_fighter_suite_explicitly_defers_transformation(self):
         cases = generate([('rifagu', 'p1')], ['wankai'])
@@ -69,6 +84,37 @@ class MoveCasesTest(unittest.TestCase):
                     name=KEYS[item['slot']][key]
                     self.assertIn(f'aiHeld[{name}] = true',static)
                     self.assertIn(f'{item["start"]}:{item["end"]}:{name}',dynamic['windows'][0])
+
+    def test_controlled_resource_intervention_is_opt_in_and_same_tick(self):
+        base = generate([('sakura', 'p1')], ['wankai'])[0]
+        ordinary_encoding = encode_case(base, 'test')
+        ordinary_fixture = source_fixture(base)
+        case = dict(base)
+        case['resource_interventions'] = [{
+            'id': 'sakura-overlap-refill', 'tick': 55, 'slot': 'p1',
+            'resource': 'energy', 'value': 300,
+        }]
+        query = encode_case(case, 'test')
+        self.assertIn('resource_interventions=55%3Ap1%3Aenergy%3A300%3Asakura-overlap-refill', query)
+        self.assertEqual(query.replace('&resource_interventions=55%3Ap1%3Aenergy%3A300%3Asakura-overlap-refill', ''),
+                         ordinary_encoding)
+        self.assertIn('if(aiFight == 55)', source_fixture(case))
+        self.assertNotIn('resource_intervention', ordinary_fixture)
+        self.assertEqual(encode_resource_interventions(case), '55:p1:energy:300:sakura-overlap-refill')
+
+    def test_resource_interventions_reject_ambiguous_or_unsupported_fields(self):
+        case = generate([('sakura', 'p1')], ['wankai'])[0]
+        case['resource_interventions'] = [
+            {'id': 'same', 'tick': 55, 'slot': 'p1', 'resource': 'energy', 'value': 300},
+            {'id': 'same', 'tick': 60, 'slot': 'p1', 'resource': 'energy', 'value': 300},
+        ]
+        with self.assertRaisesRegex(ValueError, 'duplicate'):
+            encode_case(case, 'test')
+        case['resource_interventions'] = [
+            {'id': 'hp', 'tick': 55, 'slot': 'p1', 'resource': 'health', 'value': 300},
+        ]
+        with self.assertRaisesRegex(ValueError, 'only p1/p2 energy'):
+            encode_case(case, 'test')
 
     def test_conditional_jump_cannot_be_silently_dropped(self):
         compiler_path = PROBES.parent / 'importer/compile_ai_context.py'

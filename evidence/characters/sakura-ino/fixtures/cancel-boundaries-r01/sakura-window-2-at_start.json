@@ -1,0 +1,118 @@
+{
+  "id": "sakura-window-2-at_start",
+  "fighter": "sakura",
+  "slot": "p1",
+  "label": "跳招3",
+  "scenario": "cancel_at_start",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "ranged"
+      ],
+      "start": 20,
+      "end": 23
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 65,
+      "end": 66
+    }
+  ],
+  "target_frames": [
+    176,
+    204
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [],
+  "status": "not_run",
+  "fighters": {
+    "p1": "sakura",
+    "p2": "yihu"
+  },
+  "p1_helper": "jinye",
+  "p2_helper": "kon",
+  "source_helpers": {
+    "p1": {
+      "alias": "jinye",
+      "id": "松本",
+      "swf": "game/fighter/fz/jinye.swf",
+      "sha256": "03736bfd2ef7e9b79f958971fc7192ea641653039212e29793ed291c56bfa62a"
+    },
+    "p2": {
+      "alias": "kon",
+      "id": "魂",
+      "swf": "game/fighter/fz/kon.swf",
+      "sha256": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+    }
+  },
+  "source_target": {
+    "label": "跳招3",
+    "start_frame": 176,
+    "end_frame": 204,
+    "implementation": "wired",
+    "has_timeline": true,
+    "source_dispatch": [],
+    "contexts": [
+      "air"
+    ],
+    "energy_min": 0
+  },
+  "controlled_intervention": false,
+  "window_boundary": {
+    "id": "sakura-window-2-at_start",
+    "window_index": 2,
+    "edge": "at_start",
+    "source_frame": 184,
+    "input_tick": 65,
+    "window": {
+      "from": "跳招3",
+      "to": "砍1",
+      "predicate": "nornalhit",
+      "combo": false,
+      "start_frame": 184,
+      "kind": "input",
+      "dispatch_order": 0,
+      "implementation": "wired",
+      "source_path": "DefineSprite_630/frame_184/PlaceObject2_11_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f3bddb1fde31648861b8017538a5812ec7e720bb8209a8fbf9f939f3cb117bcc",
+      "end_frame": 191
+    },
+    "source_action_frames": [
+      176,
+      204
+    ],
+    "source_action": "跳招3",
+    "destination_frames": [
+      205,
+      228
+    ]
+  },
+  "calibration": {
+    "case_id": "sakura-162-airMagichit-neutral",
+    "events_sha256": "6a18479f1d207022d2baf660e3bc5612157fde3e405533f68c76ef9c1ea1b29a",
+    "observer_phase": "root state before input publication"
+  }
+}
