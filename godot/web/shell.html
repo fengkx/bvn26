@@ -460,25 +460,287 @@ button:disabled { opacity: .5; cursor: default; }
     }, true);
     const entries = [];
     const startedAt = new Date().toISOString();
+    const sessionId = typeof crypto.randomUUID === 'function'
+        ? crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    const sessionStartedMonoMs = performance.now();
+    const logWindowMs = 60_000;
+    const legacyEntryLimit = 2000;
+    const legacyMessageLimit = 8192;
+    const runtimeEventLimit = 50_000;
+    const runtimeByteLimit = 16 * 1024 * 1024;
+    const runtimeEventLimitBytes = 32 * 1024;
+    const criticalEventLimit = 64;
     let dropped = 0;
+    let rejectedRuntimeEvents = 0;
+    const runtimeDropped = { age: 0, count: 0, bytes: 0 };
+    const runtimeEvents = [];
+    let runtimeEventHead = 0;
+    let runtimeEventCount = 0;
+    const criticalEvents = [];
+    const criticalIncidents = [];
+    const incidentLimit = 8;
+    const incidentWindowBeforeMs = 3000;
+    const incidentWindowAfterMs = 5000;
+    const incidentEventLimit = 3000;
+    const incidentByteLimit = 2 * 1024 * 1024;
+    let criticalDropped = 0;
+    let incidentDropped = 0;
+    let shellEventSeq = 0;
+    let activeIncident = null;
+    let runtimeEventBytes = 0;
+    let latestRuntimeSnapshot = null;
+    let runtimeBuildId = null;
+    let diagnosticsRequestCallback = null;
+    const snapshotWaiters = new Map();
+    let buildSidecar = null;
+    let buildSidecarStatus = 'pending';
     function format(value) {
         if (value instanceof Error) return value.stack || value.message;
         if (typeof value === 'string') return value;
         try { return JSON.stringify(value) ?? String(value); } catch { return String(value); }
     }
     function record(level, ...args) {
-        // Bound both entry count and message length during long sessions.
-        entries.push({ time: new Date().toISOString(), level, message: args.map(format).join(' ').slice(0, 8192) });
-        if (entries.length > 2000) { entries.shift(); dropped++; }
+        const receivedMonoMs = performance.now();
+        const message = args.map(format).join(' ').slice(0, legacyMessageLimit);
+        entries.push({
+            value: { time: new Date().toISOString(), level, message },
+            receivedMonoMs,
+        });
+        while (entries.length && (entries[0].receivedMonoMs < receivedMonoMs - logWindowMs || entries.length > legacyEntryLimit)) {
+            entries.shift();
+            dropped++;
+        }
+        if (level === 'error') appendShellEvent('diagnostic_exception', { level, message });
     }
     window.bvnLog = record;
+
+    function validBuildSidecar(value) {
+        return value && value.schemaVersion === 1 && typeof value.buildID === 'string'
+            && /^[a-f0-9]{64}$/.test(value.buildID)
+            && /^[a-f0-9]{64}$/.test(value.pckSha256)
+            && value.pckHashKind === 'exported_artifact';
+    }
+    const buildSidecarPromise = (async () => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 1500);
+        try {
+            const response = await fetch(new URL('build-metadata.json', document.baseURI), {
+                cache: 'no-store', signal: controller.signal,
+            });
+            if (!response.ok) throw new Error(`Build metadata HTTP ${response.status}`);
+            const value = await response.json();
+            if (!validBuildSidecar(value)) throw new Error('Build metadata sidecar is malformed');
+            buildSidecar = value;
+            buildSidecarStatus = 'ready';
+            return value;
+        } catch (error) {
+            buildSidecarStatus = 'unknown';
+            record('warn', 'Build metadata unavailable', error);
+            return null;
+        } finally {
+            clearTimeout(timeout);
+        }
+    })();
+
+    function makeRunReportId(prefix) {
+        return `${prefix}-${sessionId}-${Math.random().toString(36).slice(2, 9)}`;
+    }
+    function trimRuntimeEvents(nowMonoMs = performance.now()) {
+        const cutoff = nowMonoMs - logWindowMs;
+        while (runtimeEventCount && runtimeEvents[runtimeEventHead].receivedMonoMs < cutoff) {
+            discardOldestRuntimeEvent('age');
+        }
+        while (runtimeEventCount > runtimeEventLimit) {
+            discardOldestRuntimeEvent('count');
+        }
+        while (runtimeEventBytes > runtimeByteLimit && runtimeEventCount) {
+            discardOldestRuntimeEvent('bytes');
+        }
+    }
+
+    function discardOldestRuntimeEvent(reason) {
+        const item = runtimeEvents[runtimeEventHead];
+        runtimeEvents[runtimeEventHead] = null;
+        runtimeEventHead++;
+        runtimeEventCount--;
+        runtimeEventBytes -= item.byteLength;
+        runtimeDropped[reason]++;
+        // Occasional compaction keeps the hot path O(1) without retaining old payloads.
+        if (runtimeEventHead >= 256 && runtimeEventHead * 2 >= runtimeEvents.length) {
+            runtimeEvents.splice(0, runtimeEventHead);
+            runtimeEventHead = 0;
+        }
+    }
+
+    function appendRuntimeEvent(event) {
+        if (!event || typeof event !== 'object' || Array.isArray(event) || typeof event.type !== 'string') {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+        const receivedMonoMs = performance.now();
+        const entry = {
+            ...event,
+            origin: event.origin || 'runtime',
+            runId: sessionId,
+            receivedAt: new Date().toISOString(),
+            receivedMonoMs,
+        };
+        const encoder = new TextEncoder();
+        const byteLength = encoder.encode(JSON.stringify(entry)).byteLength;
+        if (byteLength > runtimeEventLimitBytes) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+        if (typeof entry.buildID === 'string') runtimeBuildId = entry.buildID;
+        runtimeEvents.push({ event: entry, byteLength, receivedMonoMs });
+        runtimeEventCount++;
+        runtimeEventBytes += byteLength;
+        if (event.type === 'pause_state' || event.type === 'diagnostic_exception') {
+            criticalEvents.push(entry);
+            if (criticalEvents.length > criticalEventLimit) {
+                criticalEvents.shift();
+                criticalDropped++;
+            }
+            beginCriticalIncident(entry, receivedMonoMs);
+        } else if (activeIncident) {
+            if (receivedMonoMs <= activeIncident.endsMonoMs) {
+                appendIncidentEvent(activeIncident, { event: entry, byteLength });
+            } else {
+                activeIncident.status = 'window_complete';
+                activeIncident = null;
+            }
+        }
+        trimRuntimeEvents(receivedMonoMs);
+        return true;
+    }
+
+    function appendIncidentEvent(incident, item) {
+        incident.events.push(item.event);
+        incident.bytes += item.byteLength;
+        while (incident.events.length > incidentEventLimit || incident.bytes > incidentByteLimit) {
+            const removed = incident.events.shift();
+            incident.bytes -= new TextEncoder().encode(JSON.stringify(removed)).byteLength;
+            incident.droppedEvents++;
+        }
+    }
+
+    function beginCriticalIncident(trigger, triggerMonoMs) {
+        const incident = {
+            trigger,
+            startMonoMs: Math.max(0, triggerMonoMs - incidentWindowBeforeMs),
+            triggerMonoMs,
+            endsMonoMs: triggerMonoMs + incidentWindowAfterMs,
+            status: 'collecting',
+            events: [],
+            bytes: 0,
+            droppedEvents: 0,
+        };
+        const retained = runtimeEvents.slice(runtimeEventHead, runtimeEventHead + runtimeEventCount);
+        for (const item of retained) {
+            if (item.receivedMonoMs >= incident.startMonoMs && item.receivedMonoMs <= incident.endsMonoMs) {
+                appendIncidentEvent(incident, item);
+            }
+        }
+        if (criticalIncidents.length >= incidentLimit) {
+            criticalIncidents.shift();
+            incidentDropped++;
+        }
+        criticalIncidents.push(incident);
+        activeIncident = incident;
+    }
+
+    function appendShellEvent(type, payload) {
+        shellEventSeq++;
+        return appendRuntimeEvent({
+            type,
+            origin: 'shell',
+            shellSeq: shellEventSeq,
+            monoMs: performance.now(),
+            payload,
+        });
+    }
+    window.bvnDiagnosticsGetContext = () => JSON.stringify({
+        schemaVersion: 2,
+        runId: sessionId,
+        buildSidecar,
+        buildSidecarStatus,
+    });
+    window.bvnDiagnosticsPush = serialized => {
+        if (typeof serialized !== 'string' || serialized.length > runtimeEventLimitBytes) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+        try {
+            return appendRuntimeEvent(JSON.parse(serialized));
+        } catch (_) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+    };
+    window.bvnDiagnosticsSetSnapshot = serialized => {
+        if (typeof serialized !== 'string' || serialized.length > runtimeEventLimitBytes) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+        try {
+            const snapshot = JSON.parse(serialized);
+            if (!snapshot || typeof snapshot !== 'object' || Array.isArray(snapshot)) {
+                rejectedRuntimeEvents++;
+                return false;
+            }
+            latestRuntimeSnapshot = snapshot;
+            if (typeof snapshot.buildID === 'string') runtimeBuildId = snapshot.buildID;
+            const waiter = snapshotWaiters.get(snapshot.requestId);
+            if (waiter) {
+                clearTimeout(waiter.timeout);
+                snapshotWaiters.delete(snapshot.requestId);
+                waiter.resolve({ status: 'acknowledged', snapshot });
+            }
+            return true;
+        } catch (_) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+    };
+    window.bvnDiagnosticsRegister = callback => {
+        diagnosticsRequestCallback = typeof callback === 'function' ? callback : null;
+        if (diagnosticsRequestCallback) diagnosticsRequestCallback('visibility', document.visibilityState);
+    };
+    window.bvnDiagnosticsUnregister = callback => {
+        if (!callback || callback === diagnosticsRequestCallback) diagnosticsRequestCallback = null;
+    };
+
+    function requestRuntimeSnapshot() {
+        if (!diagnosticsRequestCallback) return Promise.resolve({ status: 'runtime_unavailable', snapshot: latestRuntimeSnapshot });
+        const requestId = makeRunReportId('snapshot');
+        return new Promise(resolve => {
+            const timeout = setTimeout(() => {
+                snapshotWaiters.delete(requestId);
+                resolve({ status: 'timeout', snapshot: latestRuntimeSnapshot });
+            }, 1000);
+            snapshotWaiters.set(requestId, { resolve, timeout });
+            try {
+                diagnosticsRequestCallback('snapshot', requestId);
+            } catch (error) {
+                clearTimeout(timeout);
+                snapshotWaiters.delete(requestId);
+                resolve({ status: 'request_error', error: format(error), snapshot: latestRuntimeSnapshot });
+            }
+        });
+    }
+
     for (const level of ['log', 'info', 'warn', 'error']) {
         const original = console[level].bind(console);
         console[level] = (...args) => { record(level, ...args); original(...args); };
     }
     window.addEventListener('error', event => record('error', event.error || event.message || 'Resource failed: ' + event.target?.src), true);
     window.addEventListener('unhandledrejection', event => record('error', event.reason));
-    document.addEventListener('visibilitychange', () => record('lifecycle', document.visibilityState));
+    document.addEventListener('visibilitychange', () => {
+        record('lifecycle', document.visibilityState);
+        appendShellEvent('page_visibility', { state: document.visibilityState });
+        if (diagnosticsRequestCallback) diagnosticsRequestCallback('visibility', document.visibilityState);
+    });
     canvas.addEventListener('webglcontextlost', () => record('error', 'WebGL context lost'));
     const viewport = document.getElementById('viewport');
     function fitCanvasToViewport() {
@@ -526,16 +788,77 @@ button:disabled { opacity: .5; cursor: default; }
         clearTimeout(toolsTimer);
         record('fullscreen', active);
     });
-    document.getElementById('download').addEventListener('click', () => {
+    document.getElementById('download').addEventListener('click', async () => {
         record('session', 'Log exported');
+        const snapshotResult = await requestRuntimeSnapshot();
+        await buildSidecarPromise;
+        const nowMonoMs = performance.now();
+        trimRuntimeEvents(nowMonoMs);
+        const retainedItems = runtimeEvents.slice(runtimeEventHead, runtimeEventHead + runtimeEventCount);
+        const retainedEvents = retainedItems.map(item => item.event);
+        const firstEvent = retainedItems[0] || null;
+        if (activeIncident && nowMonoMs > activeIncident.endsMonoMs) {
+            activeIncident.status = 'window_complete';
+            activeIncident = null;
+        }
+        const snapshot = snapshotResult.snapshot;
+        const snapshotBuildId = snapshot && typeof snapshot.buildID === 'string' ? snapshot.buildID : runtimeBuildId;
+        const sidecarBuildId = buildSidecar && buildSidecar.buildID;
+        const buildStatus = buildSidecarStatus !== 'ready' || !snapshotBuildId
+            ? 'unknown'
+            : snapshotBuildId === sidecarBuildId ? 'match' : 'mismatch';
         const report = {
-            schemaVersion: 1, startedAt, exportedAt: new Date().toISOString(),
+            schemaVersion: 2, startedAt, exportedAt: new Date().toISOString(), runId: sessionId,
             page: location.origin + location.pathname,
             userAgent: navigator.userAgent, language: navigator.language,
             viewport: { width: innerWidth, height: innerHeight, devicePixelRatio },
             canvas: { width: canvas.width, height: canvas.height },
             fullscreen: Boolean(document.fullscreenElement),
-            droppedEntries: dropped, messageLimit: 8192, entries,
+            droppedEntries: dropped, messageLimit: legacyMessageLimit, entries: entries.map(item => item.value),
+            build: {
+                status: buildStatus,
+                buildID: snapshotBuildId || null,
+                sidecarBuildID: sidecarBuildId || null,
+                gitCommit: buildSidecar?.gitCommit || null,
+                dirty: typeof buildSidecar?.dirty === 'boolean' ? buildSidecar.dirty : null,
+                dirtyPaths: buildSidecar?.dirtyPaths || [],
+                resourceVersion: buildSidecar?.resourceVersion || snapshot?.resourceVersion || null,
+                pckSha256: buildSidecar?.pckSha256 || null,
+                pckHashKind: buildSidecar?.pckHashKind || null,
+                builtAt: buildSidecar?.builtAt || null,
+                exportedAt: buildSidecar?.exportedAt || null,
+            },
+            runtime: {
+                snapshotStatus: snapshotResult.status,
+                snapshotError: snapshotResult.error || null,
+                snapshot: snapshot || null,
+                events: retainedEvents,
+                criticalEvents: criticalEvents.slice(),
+                criticalIncidents: criticalIncidents.map(incident => ({
+                    trigger: incident.trigger,
+                    status: incident.status,
+                    windowMs: { before: incidentWindowBeforeMs, after: incidentWindowAfterMs },
+                    events: incident.events,
+                    droppedEvents: incident.droppedEvents,
+                })),
+                inputTape: retainedEvents.filter(event => event.type === 'input_consumed'),
+                buffer: {
+                    windowMs: logWindowMs,
+                    coverageMs: firstEvent ? Math.max(0, Math.min(logWindowMs, nowMonoMs - firstEvent.receivedMonoMs)) : 0,
+                    startAt: firstEvent?.event.receivedAt || null,
+                    endAt: retainedItems.length ? retainedItems[retainedItems.length - 1].event.receivedAt : null,
+                    retainedEvents: retainedEvents.length,
+                    retainedBytes: runtimeEventBytes,
+                    byteLimit: runtimeByteLimit,
+                    eventLimit: runtimeEventLimit,
+                    criticalEventLimit,
+                    criticalDropped,
+                    incidentLimit,
+                    incidentDropped,
+                    rejectedEvents: rejectedRuntimeEvents,
+                    dropped: { ...runtimeDropped },
+                },
+            },
         };
         const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
         const link = document.createElement('a');
@@ -545,7 +868,9 @@ button:disabled { opacity: .5; cursor: default; }
         link.click();
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 10000);
-        feedback.textContent = '日志已导出，请在反馈问题时附上文件和复现步骤。日志仅保存在本地，刷新后重新记录。';
+        feedback.textContent = snapshotResult.status === 'acknowledged'
+            ? '日志已导出，请在反馈问题时附上文件和复现步骤。日志仅保存在本地，刷新后重新记录。'
+            : '日志已导出，但游戏状态回执未完成；文件中会标明这一点。';
         revealTools();
         canvas.focus();
     });

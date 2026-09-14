@@ -1,15 +1,23 @@
 extends RefCounted
 
+signal value_consumed(record: Dictionary)
+
+const LIVE_CONSUMED_LIMIT := 4096
+
 var failure: String = ""
 var consumed: Array = []
 var _records: Array = []
 var _cursor := 0
 var _recorded := false
+var absolute_index := 0
+var live_retained_dropped := 0
 
 
 func use_recorded_tape(records: Array) -> bool:
 	_records = records.duplicate(true)
 	_cursor = 0
+	absolute_index = 0
+	live_retained_dropped = 0
 	_recorded = true
 	failure = ""
 	consumed.clear()
@@ -34,7 +42,15 @@ func read(site: String) -> Variant:
 	if failure != "":
 		return null
 	if not _recorded:
-		return Time.get_ticks_msec()
+		var live_value := Time.get_ticks_msec()
+		absolute_index += 1
+		var live_record := {"index": absolute_index, "site": site, "value": live_value}
+		if consumed.size() < LIVE_CONSUMED_LIMIT:
+			consumed.append(live_record)
+		else:
+			live_retained_dropped += 1
+		value_consumed.emit(live_record)
+		return live_value
 	if _cursor >= _records.size():
 		failure = "Clock tape exhausted before " + site
 		return null
@@ -43,8 +59,20 @@ func read(site: String) -> Variant:
 		failure = "Clock consumer mismatch at %d: expected %s, got %s" % [_cursor + 1, record["site"], site]
 		return null
 	_cursor += 1
-	consumed.append(record.duplicate())
+	absolute_index += 1
+	var consumed_record := record.duplicate()
+	consumed_record["diagnosticIndex"] = absolute_index
+	consumed.append(consumed_record)
+	value_consumed.emit(consumed_record)
 	return int(record["value"])
+
+
+func diagnostic_state() -> Dictionary:
+	return {"mode": "recorded" if _recorded else "live",
+		"absoluteIndex": absolute_index, "replaying": _recorded,
+		"retainedDropped": live_retained_dropped,
+		"retainedPolicy": "first_4096" if not _recorded else "complete_replay_tape",
+		"failure": failure}
 
 
 func replay_complete() -> bool:

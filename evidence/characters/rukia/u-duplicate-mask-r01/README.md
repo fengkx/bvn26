@@ -23,3 +23,7 @@ The same source textures and transforms are shown before and after applying the 
 ## Validation scope
 
 The change compiles per-bitmap-fill polygons for supported closed contours and draws each fill through its compiled mask. Unsupported/open or ambiguous paths retain the previous renderer path; this evidence does not claim that every SWF fill topology is now supported. The acceptance claim is limited to fixing the leaked bitmap-fill content that repeats Rukia in this U attack, with regression coverage for the composite fill geometry and the existing overlapping-fill sample `shape107`.
+
+## Served Web follow-up
+
+The first post-fix user retest still showed repeated figures because `127.0.0.1:8765` was serving the older `/private/tmp/bvn-web-export` copy, not the newly exported `dist/web`. Before synchronization its PCK SHA-256 was `9e0370f9329251143cee9b048042bdf7ecbeec34c490d4bc078f18cedb87f39d`; after copying the current export, the server returned the same 87,937,268-byte PCK as `dist/web` with SHA-256 `a8b23a7be1a5e4ddf1fac2c0bd54d782ab931c89ffb8b9a158d5b3a08e801a0b`. The same controllable in-app browser tab was reloaded and reached the Godot title artwork. It did not reach combat, so the U rendering after this deployment remains visually unverified. See `validation-web-sync.log` and `validation-web-build.log`.

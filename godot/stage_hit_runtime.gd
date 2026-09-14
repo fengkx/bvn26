@@ -51,4 +51,19 @@ func attack_contact(defender: FighterRuntime) -> Dictionary:
 func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
 	# The packet has no direction field. onBeHit/updateDirect reads the current
 	# opponent wrapper, independently of the effect's copied visual transform.
-	defender.receive_attack(attack, caster.facing)
+	var hit_source := {"kind": "stage", "slot": caster.diagnostic_slot,
+		"resourcePath": fighter_directory, "action": caster.action,
+		"sourceFrame": caster.current_source_frame(),
+		"instanceName": str(attack.get("instance_name", "")),
+		"attack": attack.duplicate(true),
+		"attackBounds": _diagnostic_rect(instance_global_bounds(_spec["hit_instance"])),
+		"defenderBounds": _diagnostic_rect(defender.instance_global_bounds("bdmn")),
+		"attackerPosition": {"x": caster.source_x, "y": caster.source_y}}
+	if caster.diagnostic_runtime != null:
+		caster.diagnostic_runtime.call("push_event", "hit_contact", hit_source, caster.diagnostic_tick)
+	defender.receive_attack(attack, caster.facing, hit_source)
+
+
+func _diagnostic_rect(bounds: Rect2) -> Dictionary:
+	return {"x": bounds.position.x, "y": bounds.position.y,
+		"width": bounds.size.x, "height": bounds.size.y}

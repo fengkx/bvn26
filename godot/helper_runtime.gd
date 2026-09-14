@@ -19,6 +19,9 @@ var hited: int = 0
 # Helper roots never initialize sw; main stopMc/playMc test sw === false.
 var sw: Variant = null
 var source_action: Variant = null
+var diagnostic_runtime: Node
+var diagnostic_slot: String = ""
+var diagnostic_tick: int = -1
 
 var _combat: Dictionary
 var _events_applied: Dictionary = {}
@@ -191,8 +194,28 @@ func instance_placed_origin(instance_name: String) -> Vector2:
 
 
 func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
-	defender.receive_attack(attack, facing)
+	var attack_name := str(attack.get("instance_name", ""))
+	var hit_source := {"kind": "helper", "slot": diagnostic_slot,
+		"helper": helper_id, "resourcePath": helper_directory,
+		"action": source_action, "sourceFrame": current_source_frame(),
+		"instanceName": attack_name, "attack": attack.duplicate(true),
+		"attackBounds": _diagnostic_rect(instance_global_bounds(attack_name)),
+		"defenderBounds": _diagnostic_rect(defender.instance_global_bounds("bdmn")),
+		"attackerPosition": {"x": position.x, "y": position.y}}
+	_emit_diagnostic("hit_contact", hit_source)
+	defender.receive_attack(attack, facing, hit_source)
 	last_event = "helper_hit_%s" % attack.get("instance_name", "unknown")
+
+
+func _diagnostic_rect(bounds: Rect2) -> Dictionary:
+	return {"x": bounds.position.x, "y": bounds.position.y,
+		"width": bounds.size.x, "height": bounds.size.y}
+
+
+func _emit_diagnostic(event_type: String, payload: Dictionary) -> void:
+	if diagnostic_runtime == null or not is_instance_valid(diagnostic_runtime):
+		return
+	diagnostic_runtime.call("push_event", event_type, payload, diagnostic_tick)
 
 
 func attack_contact(defender: FighterRuntime) -> Dictionary:

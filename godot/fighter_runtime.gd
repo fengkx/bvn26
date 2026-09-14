@@ -149,6 +149,12 @@ var _placement_owned: Dictionary = {}
 var helper_spawn: Dictionary = {}
 var opponent: FighterRuntime
 var last_hit_effect: String = ""
+var diagnostic_runtime: Node
+var diagnostic_slot: String = ""
+var diagnostic_role: String = "unknown"
+var diagnostic_tick: int = -1
+var diagnostic_helper: HelperRuntime
+var pending_hit_diagnostic: Dictionary = {}
 # Same-tick cancel must not drop a sourced hit: start_action clears
 # _hit_instances and the display list before main.gd resolve_pair.
 var _stashed_attack: Dictionary = {}
@@ -230,16 +236,18 @@ func goto_ai_label(label: String, play: bool) -> void:
 	if current_source_frame() == int(target["start_frame"]):
 		timeline_playing = play
 		return
-	_set_ai_action_label(label)
+	_set_ai_action_label(label, "controller_goto")
 	timeline_playing = play
 	play_source_frame(_action_start)
 	_queue_source_frame(_action_start)
 	_expire_absent_hit_instances()
 	last_event = "action_%s" % label
 
-func _set_ai_action_label(label: String) -> void:
+func _set_ai_action_label(label: String, reason: String = "timeline_label") -> void:
 	var frames := action_range(label)
 	assert(not frames.is_empty(), "Uncompiled CPU frame label: " + label)
+	var before := _diagnostic_state()
+	var previous_action := action
 	action = label
 	_action_start = int(frames["start_frame"])
 	_action_end = int(frames["end_frame"])
@@ -253,6 +261,11 @@ func _set_ai_action_label(label: String) -> void:
 	# live clip offsets until their PlaceObject lifetime actually ends.
 	_clip_placements_applied.clear()
 	_body_warps_applied.clear()
+	if previous_action != action:
+		var event_type := "ai_action" if diagnostic_role == "cpu" and reason == "controller_goto" else "action_transition"
+		_emit_diagnostic(event_type, {"slot": diagnostic_slot,
+			"source": diagnostic_role, "reason": reason, "phase": "source_timeline",
+			"before": before, "after": _diagnostic_state()})
 
 
 func enter_frame(input_state: Dictionary) -> void:
@@ -419,7 +432,9 @@ func _run_frame_actions() -> void:
 				return
 
 
-func receive_attack(attack: Dictionary, attacker_facing: int) -> void:
+func receive_attack(attack: Dictionary, attacker_facing: int, source_context: Dictionary = {}) -> void:
+	var before := _diagnostic_state()
+	pending_hit_diagnostic = source_context.duplicate(true)
 	var damage := float(attack["damage"])
 	var impact_strength := int(attack.get("impact_strength", 0))
 	# Source fangyu() treats zl > 10 as a guard break, then removes the
@@ -446,7 +461,9 @@ func receive_attack(attack: Dictionary, attacker_facing: int) -> void:
 	if ai_timeline_controlled:
 		goto_ai_label(reaction, bool(target["play"]))
 	else:
-		start_action(reaction)
+		start_action(reaction, "received_hit")
+	_emit_diagnostic("hit_received", {"slot": diagnostic_slot,
+		"before": before, "after": _diagnostic_state(), "attack": source_context})
 
 
 func _clear_interrupted_super_preparation() -> void:
@@ -476,6 +493,7 @@ func _apply_hit_settlement_frame(frame: int) -> void:
 func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
 	# Read mutable receiver fields when the source DoAction executes.
 	var damage := float(ai_source_state.read_field("jhp"))
+	var previous_health := health
 	var strength := int(ai_source_state.read_field("bdzl"))
 	if not defended:
 		ai_source_state.apply_function("onBeHit0")
@@ -507,6 +525,19 @@ func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
 	if not defended and source_body != null:
 		source_body.updateDirect(true)
 	_check_dead(flying)
+	_emit_diagnostic("hit_settled", {
+		"slot": diagnostic_slot,
+		"source": pending_hit_diagnostic,
+		"defender": diagnostic_slot,
+		"damage": damage,
+		"defended": defended,
+		"healthBefore": previous_health,
+		"healthAfter": health,
+		"reaction": action,
+		"position": {"x": source_x, "y": source_y},
+		"bounds": pending_hit_diagnostic.get("defenderBounds", {}),
+	})
+	pending_hit_diagnostic.clear()
 	if not defended and source_random != null:
 		var voice_spec: Dictionary = hurt_voice.spec
 		var probability := float(voice_spec["flying_probability"] if flying else voice_spec["low_damage_probability"] if damage <= float(voice_spec["damage_threshold"]) else voice_spec["high_damage_probability"])
@@ -697,7 +728,19 @@ func _ordered_attack_instances() -> PackedStringArray:
 
 func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
 	_stashed_attack = {}
-	defender.receive_attack(attack, facing)
+	var attack_bounds := source_projectile_target_bounds(str(attack["instance_name"]))
+	if not attack_bounds.has_area():
+		attack_bounds = instance_global_bounds(str(attack["instance_name"]))
+	var defender_bounds := defender.instance_global_bounds("bdmn")
+	var hit_source := {"kind": "fighter", "slot": diagnostic_slot,
+		"fighter": fighter_name, "resourcePath": fighter_directory,
+		"action": action, "sourceFrame": current_source_frame(),
+		"instanceName": str(attack["instance_name"]),
+		"attack": attack.duplicate(true), "attackBounds": _diagnostic_rect(attack_bounds),
+		"defenderBounds": _diagnostic_rect(defender_bounds),
+		"attackerPosition": {"x": source_x, "y": source_y}}
+	_emit_diagnostic("hit_contact", hit_source)
+	defender.receive_attack(attack, facing, hit_source)
 	mark_attack_hit(str(attack["instance_name"]))
 
 
@@ -895,7 +938,7 @@ func _begin_self_launch(exit: Dictionary) -> void:
 	_hurt_falling = true
 
 
-func start_action(label: String) -> void:
+func start_action(label: String, reason: String = "runtime_transition") -> void:
 	if label in disabled_actions:
 		return
 	if sw and not _is_death_sequence_action(label):
@@ -904,6 +947,8 @@ func start_action(label: String) -> void:
 	if frames.is_empty():
 		push_error("Missing source action for %s: %s" % [fighter_name, label])
 		return
+	var before := _diagnostic_state()
+	var previous_action := action
 	action = label
 	if label == "站立":
 		beida = 0
@@ -930,6 +975,10 @@ func start_action(label: String) -> void:
 	play_action(label)
 	_queue_source_frame(current_source_frame())
 	last_event = "action_%s" % label
+	if previous_action != action:
+		_emit_diagnostic("action_transition", {"slot": diagnostic_slot,
+			"source": diagnostic_role, "reason": reason, "phase": "start_action",
+			"before": before, "after": _diagnostic_state()})
 	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
@@ -1014,7 +1063,7 @@ func _try_start_action(label: String) -> bool:
 		return false
 	if action_range(label).is_empty():
 		return false
-	start_action(label)
+	start_action(label, "command_input_or_cancel")
 	return true
 
 
@@ -2126,6 +2175,34 @@ func snapshot() -> Dictionary:
 		"event": last_event,
 		"helper_spawn": helper_spawn,
 	}
+
+
+func _diagnostic_state() -> Dictionary:
+	return {
+		"action": action,
+		"sourceFrame": current_source_frame(),
+		"x": source_x,
+		"y": source_y,
+		"facing": facing,
+		"hp": health,
+		"energy": energy,
+		"bs": bs,
+		"hited": hited,
+		"zhanting": zhanting,
+		"rootZhanting": root_zhanting,
+		"timelinePlaying": timeline_playing,
+	}
+
+
+func _diagnostic_rect(bounds: Rect2) -> Dictionary:
+	return {"x": bounds.position.x, "y": bounds.position.y,
+		"width": bounds.size.x, "height": bounds.size.y}
+
+
+func _emit_diagnostic(event_type: String, payload: Dictionary) -> void:
+	if diagnostic_runtime == null or not is_instance_valid(diagnostic_runtime):
+		return
+	diagnostic_runtime.call("push_event", event_type, payload, diagnostic_tick)
 
 
 func _frame_in(window: Dictionary) -> bool:

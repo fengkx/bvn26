@@ -53,6 +53,12 @@ var ko_nextfight_timer: Timer
 var ko_interval_sequence: int = 0
 
 var session := GameSession.new()
+var diagnostics := DiagnosticRuntime.new()
+var _diagnostic_initial_players: Dictionary = {}
+var _diagnostic_progress_signature := ""
+var _diagnostic_last_progress_ms := 0
+var _diagnostic_watchdog_elapsed_ms := 0
+var _diagnostic_stall_reported := false
 var super_runtime := SuperRuntime.new()
 var super_presentation := SuperPresentation.new()
 var physics_tick: int = 0
@@ -97,6 +103,11 @@ func _ready() -> void:
 	cpu_profile = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/execution_profile.json"))
 	cpu_stage_registry.configure(JSON.parse_string(FileAccess.get_file_as_string("res://generated/effects/XG_baoqi/stage_hit.json")))
 	source_random.use_live_random()
+	add_child(diagnostics)
+	diagnostics.snapshot_provider = Callable(self, "_diagnostic_snapshot")
+	diagnostics.visibility_changed.connect(_on_diagnostic_visibility_changed)
+	source_random.value_consumed.connect(_on_random_value_consumed)
+	source_clock.value_consumed.connect(_on_clock_value_consumed)
 	stage_sound = StageSound.new()
 	stage_sound.random_source = source_random
 	add_child(stage_sound)
@@ -174,6 +185,8 @@ func _ready() -> void:
 	# This slice locks P1/P2 assistance to Gaara/Kon.
 	naruto_helper = _make_helper("res://generated/helpers/woailuo")
 	ichigo_helper = _make_helper("res://generated/helpers/kon")
+	_set_diagnostic_actor(naruto, "p1")
+	_set_diagnostic_actor(ichigo, "p2")
 	var helper_presentation: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/helper_portraits/presentation.json"))
 	var depths: Dictionary = helper_presentation["depths"]
 	naruto.z_index = int(depths["p1"])
@@ -216,6 +229,7 @@ func _pause_battle() -> void:
 	super_runtime.game_paused = true
 	naruto.root_zhanting = true
 	ichigo.root_zhanting = true
+	diagnostics.pause_snapshot("user_pause", _diagnostic_snapshot())
 
 
 func _resume_battle() -> void:
@@ -227,6 +241,7 @@ func _resume_battle() -> void:
 		super_runtime.play_mc(actor)
 	super_presentation.resume_black_stg()
 	_sync_super_stage()
+	diagnostics.pause_snapshot("user_resume", _diagnostic_snapshot())
 
 
 func _physics_process(_delta: float) -> void:
@@ -247,6 +262,43 @@ func _physics_process(_delta: float) -> void:
 		"游戏场景":
 			pause_menu.tick()
 			_advance_fight()
+
+
+func _process(delta: float) -> void:
+	if diagnostics.match_id.is_empty():
+		return
+	_diagnostic_watchdog_elapsed_ms += int(delta * 1000.0)
+	if _diagnostic_watchdog_elapsed_ms < 1000:
+		return
+	_diagnostic_watchdog_elapsed_ms = 0
+	var pause := _diagnostic_pause_state()
+	if bool(pause.userPaused) or bool(pause.globalSuperPaused) or not diagnostics.page_visible or battle_intro.active:
+		_diagnostic_reset_progress_watch()
+		return
+	var signature := JSON.stringify({"players": [
+		_diagnostic_player(naruto, naruto_helper),
+		_diagnostic_player(ichigo, ichigo_helper)], "pause": pause})
+	var now := Time.get_ticks_msec()
+	if signature != _diagnostic_progress_signature:
+		_diagnostic_progress_signature = signature
+		_diagnostic_last_progress_ms = now
+		_diagnostic_stall_reported = false
+		return
+	if not _diagnostic_stall_reported and now - _diagnostic_last_progress_ms >= 10000:
+		_diagnostic_stall_reported = true
+		diagnostics.freeze_diagnostic("suspected_stall", {
+			"classification": "heuristic_not_deadlock_proof",
+			"noProgressMs": now - _diagnostic_last_progress_ms,
+			"userPaused": false,
+			"globalSuperPaused": false,
+			"pageVisible": diagnostics.page_visible,
+		}, _diagnostic_snapshot())
+
+
+func _diagnostic_reset_progress_watch() -> void:
+	_diagnostic_progress_signature = ""
+	_diagnostic_last_progress_ms = Time.get_ticks_msec()
+	_diagnostic_stall_reported = false
 
 
 func _on_menu_confirmed(item_id: String) -> void:
@@ -316,6 +368,8 @@ func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
 	ichigo.opponent = naruto
 	naruto_helper = helper_replacements[0]
 	ichigo_helper = helper_replacements[1]
+	_set_diagnostic_actor(naruto, "p1")
+	_set_diagnostic_actor(ichigo, "p2")
 	health_hud.fighters = [naruto, ichigo]
 	health_hud.set_fighter_portraits(fighters)
 	naruto_energy.set_helper(naruto_helper.helper_id)
@@ -392,6 +446,7 @@ func _return_to_title() -> void:
 
 
 func _goto_menu() -> void:
+	diagnostics.end_match("left_battle")
 	_stop_ko()
 	_stop_combat_drivers()
 	if battle_intro != null:
@@ -468,6 +523,8 @@ func _enter_current_fight(modo: int) -> void:
 	session.modo = modo
 	session.p1cpu = false
 	session.p2cpu = modo == 2
+	_set_diagnostic_actor(naruto, "p1")
+	_set_diagnostic_actor(ichigo, "p2")
 	session.root_label = "游戏场景"
 	title_menu.visible = false
 	key_settings.visible = false
@@ -489,6 +546,7 @@ func _enter_current_fight(modo: int) -> void:
 	_start_combat_drivers()
 	_start_countdown()
 	_start_training_recovery()
+	diagnostics.begin_match(_diagnostic_snapshot(true))
 	battle_intro.begin([naruto, ichigo])
 	health_hud.spec["placement"] = battle_intro.spec["hud_frames"]["1"]
 	game_world.focus = battle_intro.focus
@@ -556,6 +614,11 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if super_presentation != null:
 		super_presentation.tick()
 	physics_tick += 1
+	for fighter: FighterRuntime in [naruto, ichigo]:
+		fighter.diagnostic_tick = physics_tick
+	for helper: HelperRuntime in [naruto_helper, ichigo_helper]:
+		if helper != null:
+			helper.diagnostic_tick = physics_tick
 	tick_label.text = "Fixed simulation tick: %d" % physics_tick
 	assert(opponent_driver != null and player_body_driver != null and source_callbacks != null)
 	var fighters: Array[FighterRuntime] = [ichigo, naruto]
@@ -704,7 +767,14 @@ func _stop_training_recovery() -> void:
 func _input_for(fighter: FighterRuntime) -> Dictionary:
 	if fighter == ichigo and session.p2cpu:
 		return {}
-	return session.fighter_input(fighter.player_slot)
+	var inputs := session.fighter_input(fighter.player_slot)
+	diagnostics.push_event("input_consumed", {
+		"slot": fighter.player_slot,
+		"source": "player",
+		"phase": "before_actor_advance",
+		"keys": inputs,
+	}, physics_tick)
+	return inputs
 
 
 func _start_ko() -> void:
@@ -1019,6 +1089,11 @@ func _on_helper_spawn_requested(fighter: FighterRuntime) -> void:
 	var spawn := fighter.helper_spawn.duplicate(true)
 	fighter.helper_spawn.clear()
 	helper.activate(spawn, fighter)
+	diagnostics.push_event("helper_lifecycle", {
+		"event": "activate", "ownerSlot": fighter.player_slot,
+		"helper": helper.helper_id, "resourcePath": helper.helper_directory,
+		"spawn": spawn,
+	}, physics_tick)
 
 
 func _stop_combat_drivers() -> void:
@@ -1167,6 +1242,121 @@ func _refresh_fight_labels() -> void:
 	ichigo_energy.energy = ichigo.energy
 
 
+func _set_diagnostic_actor(fighter: FighterRuntime, slot: String) -> void:
+	fighter.diagnostic_runtime = diagnostics
+	fighter.diagnostic_slot = slot
+	fighter.diagnostic_role = "cpu" if slot == "p2" and session.p2cpu else "player"
+	fighter.diagnostic_tick = physics_tick
+	if slot == "p1":
+		fighter.diagnostic_helper = naruto_helper
+		if naruto_helper != null:
+			naruto_helper.diagnostic_runtime = diagnostics
+			naruto_helper.diagnostic_slot = slot
+	else:
+		fighter.diagnostic_helper = ichigo_helper
+		if ichigo_helper != null:
+			ichigo_helper.diagnostic_runtime = diagnostics
+			ichigo_helper.diagnostic_slot = slot
+
+
+func _diagnostic_snapshot(capture_initial: bool = false) -> Dictionary:
+	var current_players := {
+		"p1": _diagnostic_player(naruto, naruto_helper),
+		"p2": _diagnostic_player(ichigo, ichigo_helper),
+	}
+	if capture_initial or _diagnostic_initial_players.is_empty():
+		_diagnostic_initial_players = current_players.duplicate(true)
+	return {
+		"matchId": diagnostics.match_id,
+		"mode": session.modo,
+		"modeName": _diagnostic_mode_name(session.modo),
+		"p1cpu": session.p1cpu,
+		"p2cpu": session.p2cpu,
+		"map": selected_stage,
+		"stageResourcePath": current_world.fighter_directory if current_world != null else "",
+		"physicsHz": Engine.physics_ticks_per_second,
+		"fightTick": physics_tick,
+		"players": current_players,
+		"initialState": _diagnostic_initial_players,
+		"inputBindings": session.codes.duplicate(true),
+		"pause": _diagnostic_pause_state(),
+		"random": source_random.diagnostic_state(),
+		"clock": source_clock.diagnostic_state(),
+		"replayability": {
+			"inputSource": "session_consumption_events",
+			"randomCapturedFromStart": capture_initial,
+			"clockCapturedFromStart": capture_initial,
+			"checkpointKind": "canonical_match_start" if capture_initial else "latest_observation",
+			"completeCheckpoint": false,
+			"limitation": "Snapshots are diagnostics, not arbitrary scene-state restoration points.",
+		},
+	}
+
+
+func _diagnostic_player(fighter: FighterRuntime, helper: HelperRuntime) -> Dictionary:
+	var helper_state := {}
+	if helper != null:
+		helper_state = {
+			"id": helper.helper_id,
+			"resourcePath": helper.helper_directory,
+			"action": helper.source_action,
+			"sourceFrame": helper.current_source_frame(),
+			"x": helper.position.x,
+			"y": helper.position.y,
+			"facing": helper.facing,
+			"attacking": helper.attacking,
+			"bs": helper.bs,
+			"hited": helper.hited,
+			"zhanting": helper.zhanting,
+			"timelinePlaying": helper.timeline_playing,
+		}
+	return {
+		"slot": fighter.player_slot,
+		"fighter": fighter.fighter_name,
+		"form": fighter.ai_source_state.read_field("形态"),
+		"resourcePath": fighter.fighter_directory,
+		"helper": helper_state,
+		"action": fighter.action,
+		"sourceFrame": fighter.current_source_frame(),
+		"x": fighter.source_x,
+		"y": fighter.source_y,
+		"facing": fighter.facing,
+		"hp": fighter.health,
+		"energy": fighter.energy,
+		"bs": fighter.bs,
+		"hited": fighter.hited,
+		"zhanting": fighter.zhanting,
+		"timelinePlaying": fighter.timeline_playing,
+		"sw": fighter.sw,
+		"guarding": fighter.guarding,
+	}
+
+
+func _diagnostic_pause_state() -> Dictionary:
+	return {
+		"globalSuperPaused": super_runtime.zhanting,
+		"userPaused": super_runtime.game_paused,
+		"fighterZhanting": {"p1": naruto.zhanting, "p2": ichigo.zhanting},
+		"rootZhanting": {"p1": naruto.root_zhanting, "p2": ichigo.root_zhanting},
+	}
+
+
+func _diagnostic_mode_name(mode: int) -> String:
+	match mode:
+		2: return "vs_com"
+		3: return "versus"
+		4: return "training"
+		_: return "unknown"
+
+
+func _on_random_value_consumed(record: Dictionary) -> void:
+	diagnostics.push_event("random_consumed", record, physics_tick if not diagnostics.match_id.is_empty() else -1)
+
+
+func _on_clock_value_consumed(record: Dictionary) -> void:
+	diagnostics.push_event("clock_consumed", record, physics_tick if not diagnostics.match_id.is_empty() else -1)
+
+
 func _play_combo_hud(board_pn: int, hit_count: int) -> void:
 	combo_hud.play(board_pn, hit_count)
 
@@ -1273,7 +1463,12 @@ func _activate_helper(fighter: FighterRuntime, helper: HelperRuntime) -> void:
 	fighter.helper_spawn = {}
 
 
-func _on_super_event(_event: Dictionary, _caster: FighterRuntime) -> void:
+func _on_super_event(event: Dictionary, caster: FighterRuntime) -> void:
+	diagnostics.push_event("super_state", {
+		"slot": caster.player_slot,
+		"sourceEvent": event,
+		"pause": _diagnostic_pause_state(),
+	}, physics_tick)
 	# FighterRuntime already applied SuperRuntime (stopMc / zhanting / shine).
 	# Sync blackMu/ts_face on this tick so gotoAndPlay("in") shows frame 5 now.
 	_sync_super_stage()
