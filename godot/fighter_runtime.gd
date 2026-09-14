@@ -442,10 +442,25 @@ func receive_attack(attack: Dictionary, attacker_facing: int) -> void:
 	_launched = reaction == _death_launch_label()
 	_hurt_falling = _launched or _hurt_vertical_step != 0.0 or position.y < _ground_y
 	hitstun_ticks = ceili(float(ai_source_state.read_field("tdtime")))
+	_clear_interrupted_super_preparation()
 	if ai_timeline_controlled:
 		goto_ai_label(reaction, bool(target["play"]))
 	else:
 		start_action(reaction)
+
+
+func _clear_interrupted_super_preparation() -> void:
+	if guarding or bs != 1:
+		return
+	var shared_super: SuperRuntime = _ensure_super_runtime()
+	if shared_super.zhanting or shared_super.game_paused or not _game_running():
+		return
+	# Intentional fix for a source deadlock: source sets bs before entering bsd.
+	# If a real hit replaces that preparation action, it may not reach the
+	# frame-1 initializer before the next super pause; retaining bs can strand
+	# that later bsw behind an orphaned lock.
+	bs = 0
+	ai_source_state.values["bs"] = 0
 
 
 func _apply_hit_settlement_frame(frame: int) -> void:

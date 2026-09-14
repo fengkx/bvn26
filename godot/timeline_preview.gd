@@ -755,28 +755,37 @@ func _render_placement(
 	var usable_fills: Array = fills.filter(
 		func(fill: Dictionary) -> bool: return _assets.has(int(fill["bitmap_id"]))
 	)
-	for fill_index in usable_fills.size():
-		var fill: Dictionary = usable_fills[fill_index]
+	var compiled_fill_masks: Array = definition.get("bitmap_clip_polygons", [])
+	for fill_index in fills.size():
+		var fill: Dictionary = fills[fill_index]
 		var bitmap_id := int(fill["bitmap_id"])
+		if not _assets.has(bitmap_id):
+			continue
 		var source_texture: Texture2D = load("%s/%s" % [fighter_directory, _assets[bitmap_id]])
 		var bitmap_transform := _matrix_transform(fill.get("matrix", {}), 0.05)
-		if definition.has("bitmap_clip_polygon"):
-			var polygon := Polygon2D.new()
-			var vertices := PackedVector2Array()
-			var uvs := PackedVector2Array()
+		var fill_masks: Array = []
+		if compiled_fill_masks.size() == fills.size():
+			fill_masks = compiled_fill_masks[fill_index]
+		elif fills.size() == 1 and definition.has("bitmap_clip_polygon"):
+			fill_masks = [definition["bitmap_clip_polygon"]]
+		if not fill_masks.is_empty():
 			var inverse_bitmap := bitmap_transform.affine_inverse()
-			for point: Array in definition["bitmap_clip_polygon"]:
-				var vertex := Vector2(float(point[0]), float(point[1]))
-				vertices.append(vertex)
-				uvs.append(inverse_bitmap * vertex)
-			polygon.polygon = vertices
-			polygon.uv = uvs
-			polygon.texture = source_texture
-			polygon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			polygon.transform = placement_transform
-			polygon.z_index = depth
-			_apply_cxform(polygon, rgb_mul, rgb_add, alpha)
-			add_child(polygon)
+			for contour: Array in fill_masks:
+				var polygon := Polygon2D.new()
+				var vertices := PackedVector2Array()
+				var uvs := PackedVector2Array()
+				for point: Array in contour:
+					var vertex := Vector2(float(point[0]), float(point[1]))
+					vertices.append(vertex)
+					uvs.append(inverse_bitmap * vertex)
+				polygon.polygon = vertices
+				polygon.uv = uvs
+				polygon.texture = source_texture
+				polygon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+				polygon.transform = placement_transform
+				polygon.z_index = depth
+				_apply_cxform(polygon, rgb_mul, rgb_add, alpha)
+				add_child(polygon)
 			continue
 		var sprite := Sprite2D.new()
 		sprite.centered = false
