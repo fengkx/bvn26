@@ -108,7 +108,6 @@ func _on_shell_request(args: Array) -> void:
 		var value: Variant = args[1]
 		page_visible = value == true or str(value) == "visible"
 		visibility_changed.emit(page_visible)
-		push_event("page_visibility", {"visible": page_visible})
 		return
 	if args.size() < 2 or str(args[0]) != "snapshot":
 		return

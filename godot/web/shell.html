@@ -463,7 +463,6 @@ button:disabled { opacity: .5; cursor: default; }
     const sessionId = typeof crypto.randomUUID === 'function'
         ? crypto.randomUUID()
         : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
-    const sessionStartedMonoMs = performance.now();
     const logWindowMs = 60_000;
     const legacyEntryLimit = 2000;
     const legacyMessageLimit = 8192;
@@ -479,6 +478,7 @@ button:disabled { opacity: .5; cursor: default; }
     let runtimeEventCount = 0;
     const criticalEvents = [];
     const criticalIncidents = [];
+    const activeIncidents = [];
     const incidentLimit = 8;
     const incidentWindowBeforeMs = 3000;
     const incidentWindowAfterMs = 5000;
@@ -487,7 +487,6 @@ button:disabled { opacity: .5; cursor: default; }
     let criticalDropped = 0;
     let incidentDropped = 0;
     let shellEventSeq = 0;
-    let activeIncident = null;
     let runtimeEventBytes = 0;
     let latestRuntimeSnapshot = null;
     let runtimeBuildId = null;
@@ -596,6 +595,15 @@ button:disabled { opacity: .5; cursor: default; }
         runtimeEvents.push({ event: entry, byteLength, receivedMonoMs });
         runtimeEventCount++;
         runtimeEventBytes += byteLength;
+        for (let index = activeIncidents.length - 1; index >= 0; index--) {
+            const incident = activeIncidents[index];
+            if (receivedMonoMs <= incident.endsMonoMs) {
+                appendIncidentEvent(incident, { event: entry, byteLength });
+            } else {
+                incident.status = 'window_complete';
+                activeIncidents.splice(index, 1);
+            }
+        }
         if (event.type === 'pause_state' || event.type === 'diagnostic_exception') {
             criticalEvents.push(entry);
             if (criticalEvents.length > criticalEventLimit) {
@@ -603,13 +611,6 @@ button:disabled { opacity: .5; cursor: default; }
                 criticalDropped++;
             }
             beginCriticalIncident(entry, receivedMonoMs);
-        } else if (activeIncident) {
-            if (receivedMonoMs <= activeIncident.endsMonoMs) {
-                appendIncidentEvent(activeIncident, { event: entry, byteLength });
-            } else {
-                activeIncident.status = 'window_complete';
-                activeIncident = null;
-            }
         }
         trimRuntimeEvents(receivedMonoMs);
         return true;
@@ -643,11 +644,13 @@ button:disabled { opacity: .5; cursor: default; }
             }
         }
         if (criticalIncidents.length >= incidentLimit) {
-            criticalIncidents.shift();
+            const removed = criticalIncidents.shift();
+            const activeIndex = activeIncidents.indexOf(removed);
+            if (activeIndex >= 0) activeIncidents.splice(activeIndex, 1);
             incidentDropped++;
         }
         criticalIncidents.push(incident);
-        activeIncident = incident;
+        activeIncidents.push(incident);
     }
 
     function appendShellEvent(type, payload) {
@@ -797,9 +800,11 @@ button:disabled { opacity: .5; cursor: default; }
         const retainedItems = runtimeEvents.slice(runtimeEventHead, runtimeEventHead + runtimeEventCount);
         const retainedEvents = retainedItems.map(item => item.event);
         const firstEvent = retainedItems[0] || null;
-        if (activeIncident && nowMonoMs > activeIncident.endsMonoMs) {
-            activeIncident.status = 'window_complete';
-            activeIncident = null;
+        for (let index = activeIncidents.length - 1; index >= 0; index--) {
+            if (nowMonoMs > activeIncidents[index].endsMonoMs) {
+                activeIncidents[index].status = 'window_complete';
+                activeIncidents.splice(index, 1);
+            }
         }
         const snapshot = snapshotResult.snapshot;
         const snapshotBuildId = snapshot && typeof snapshot.buildID === 'string' ? snapshot.buildID : runtimeBuildId;

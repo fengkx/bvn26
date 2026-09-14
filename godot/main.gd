@@ -301,6 +301,10 @@ func _diagnostic_reset_progress_watch() -> void:
 	_diagnostic_stall_reported = false
 
 
+func _on_diagnostic_visibility_changed(_visible: bool) -> void:
+	_diagnostic_reset_progress_watch()
+
+
 func _on_menu_confirmed(item_id: String) -> void:
 	for item in TitleMenu.ITEMS:
 		if str(item["id"]) != item_id:
@@ -1282,13 +1286,17 @@ func _diagnostic_snapshot(capture_initial: bool = false) -> Dictionary:
 		"pause": _diagnostic_pause_state(),
 		"random": source_random.diagnostic_state(),
 		"clock": source_clock.diagnostic_state(),
+		"pageVisible": diagnostics.page_visible,
 		"replayability": {
 			"inputSource": "session_consumption_events",
 			"randomCapturedFromStart": capture_initial,
 			"clockCapturedFromStart": capture_initial,
-			"checkpointKind": "canonical_match_start" if capture_initial else "latest_observation",
+			"checkpointKind": "fresh_match_recipe" if capture_initial else "latest_observation",
+			"randomStartIndex": source_random.absolute_index,
+			"clockStartIndex": source_clock.absolute_index,
+			"canonicalInitialization": capture_initial,
 			"completeCheckpoint": false,
-			"limitation": "Snapshots are diagnostics, not arbitrary scene-state restoration points.",
+			"limitation": "This recipe describes a fresh Main match only; snapshots do not restore arbitrary scene state.",
 		},
 	}
 

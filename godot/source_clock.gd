@@ -61,9 +61,10 @@ func read(site: String) -> Variant:
 	_cursor += 1
 	absolute_index += 1
 	var consumed_record := record.duplicate()
-	consumed_record["diagnosticIndex"] = absolute_index
 	consumed.append(consumed_record)
-	value_consumed.emit(consumed_record)
+	var observed_record := consumed_record.duplicate()
+	observed_record["diagnosticIndex"] = absolute_index
+	value_consumed.emit(observed_record)
 	return int(record["value"])
 
 
