@@ -62,6 +62,7 @@ var _diagnostic_stall_reported := false
 var super_runtime := SuperRuntime.new()
 var super_presentation := SuperPresentation.new()
 var physics_tick: int = 0
+var diagnostic_input_provider: Callable
 var naruto_helper: HelperRuntime
 var ichigo_helper: HelperRuntime
 var screen_flash: ColorRect
@@ -771,10 +772,16 @@ func _stop_training_recovery() -> void:
 func _input_for(fighter: FighterRuntime) -> Dictionary:
 	if fighter == ichigo and session.p2cpu:
 		return {}
-	var inputs := session.fighter_input(fighter.player_slot)
+	var inputs: Dictionary
+	var input_source := "player"
+	if diagnostic_input_provider.is_valid():
+		inputs = diagnostic_input_provider.call(fighter.player_slot, physics_tick)
+		input_source = "diagnostic_tape"
+	else:
+		inputs = session.fighter_input(fighter.player_slot)
 	diagnostics.push_event("input_consumed", {
 		"slot": fighter.player_slot,
-		"source": "player",
+		"source": input_source,
 		"phase": "before_actor_advance",
 		"keys": inputs,
 	}, physics_tick)
@@ -1315,7 +1322,6 @@ func _diagnostic_player(fighter: FighterRuntime, helper: HelperRuntime) -> Dicti
 			"attacking": helper.attacking,
 			"bs": helper.bs,
 			"hited": helper.hited,
-			"zhanting": helper.zhanting,
 			"timelinePlaying": helper.timeline_playing,
 		}
 	return {
