@@ -12,6 +12,7 @@ var match_id: String = ""
 var build_id: String = ""
 var resource_version: String = ""
 var page_visible: bool = true
+var enabled: bool = true
 var _snapshot: Dictionary = {}
 var _web_callback: JavaScriptObject
 var _web_window: JavaScriptObject
@@ -57,6 +58,8 @@ func end_match(reason: String) -> void:
 
 
 func push_event(event_type: String, payload: Dictionary = {}, fight_tick: int = -1) -> Dictionary:
+	if not enabled:
+		return {}
 	if match_id.is_empty() and event_type != "runtime_ready":
 		return {}
 	sequence += 1

@@ -473,6 +473,7 @@ class CombatModelTests(unittest.TestCase):
                 "instance_name": "fensheng",
                 "op": "place_at_opponent",
                 "place_x": True,
+                "line": 3,
                 "place_y": True,
             },
         )

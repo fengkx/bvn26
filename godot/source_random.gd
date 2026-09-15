@@ -16,10 +16,10 @@ var _replaying: bool = false
 var _rng := RandomNumberGenerator.new()
 
 
-func use_recorded_tape(records: Array) -> bool:
+func use_recorded_tape(records: Array, start_index: int = 0) -> bool:
 	_tape = records.duplicate(true)
 	_cursor = 0
-	absolute_index = 0
+	absolute_index = start_index
 	live_retained_dropped = 0
 	_replaying = true
 	failure = ""
@@ -32,7 +32,7 @@ func use_recorded_tape(records: Array) -> bool:
 		if not record["site"] is String or not (record["value"] is float or record["value"] is int):
 			_fail("Invalid random record types at index %d" % (i + 1))
 			return false
-		if int(record.get("index", i + 1)) != i + 1:
+		if int(record.get("index", start_index + i + 1)) != start_index + i + 1:
 			_fail("Non-contiguous random index at %d" % (i + 1))
 			return false
 		var v := float(record["value"])

@@ -139,6 +139,7 @@ func _ready() -> void:
 	add_child(battle_intro)
 	battle_intro.interval_cleared.connect(_ko_clear_interval)
 	battle_intro.fight_started.connect(_ko_fight_started)
+	battle_intro.fight_started.connect(_diagnostic_fight_started)
 	naruto.ko_requested.connect(_on_ko_requested)
 	ichigo.ko_requested.connect(_on_ko_requested)
 	session.load_store()
@@ -272,26 +273,32 @@ func _process(delta: float) -> void:
 	if _diagnostic_watchdog_elapsed_ms < 1000:
 		return
 	_diagnostic_watchdog_elapsed_ms = 0
+	_diagnostic_watchdog_step(Time.get_ticks_msec())
+
+
+func _diagnostic_watchdog_step(now_ms: int) -> void:
+	if diagnostics.match_id.is_empty():
+		return
 	var pause := _diagnostic_pause_state()
-	if bool(pause.userPaused) or bool(pause.globalSuperPaused) or not diagnostics.page_visible or battle_intro.active:
+	if bool(pause.userPaused) or not diagnostics.page_visible or battle_intro.active:
 		_diagnostic_reset_progress_watch()
 		return
 	var signature := JSON.stringify({"players": [
 		_diagnostic_player(naruto, naruto_helper),
 		_diagnostic_player(ichigo, ichigo_helper)], "pause": pause})
-	var now := Time.get_ticks_msec()
 	if signature != _diagnostic_progress_signature:
 		_diagnostic_progress_signature = signature
-		_diagnostic_last_progress_ms = now
+		_diagnostic_last_progress_ms = now_ms
 		_diagnostic_stall_reported = false
 		return
-	if not _diagnostic_stall_reported and now - _diagnostic_last_progress_ms >= 10000:
+	if not _diagnostic_stall_reported and now_ms - _diagnostic_last_progress_ms >= 10000:
 		_diagnostic_stall_reported = true
-		diagnostics.freeze_diagnostic("suspected_stall", {
+		var reason := "suspected_super_pause_stall" if bool(pause.globalSuperPaused) else "suspected_stall"
+		diagnostics.freeze_diagnostic(reason, {
 			"classification": "heuristic_not_deadlock_proof",
-			"noProgressMs": now - _diagnostic_last_progress_ms,
+			"noProgressMs": now_ms - _diagnostic_last_progress_ms,
 			"userPaused": false,
-			"globalSuperPaused": false,
+			"globalSuperPaused": bool(pause.globalSuperPaused),
 			"pageVisible": diagnostics.page_visible,
 		}, _diagnostic_snapshot())
 
@@ -379,6 +386,36 @@ func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
 	health_hud.set_fighter_portraits(fighters)
 	naruto_energy.set_helper(naruto_helper.helper_id)
 	ichigo_energy.set_helper(ichigo_helper.helper_id)
+
+
+func configure_diagnostic_roster(players: Dictionary) -> String:
+	var fighter_ids: Array[String] = []
+	var helper_ids: Array[String] = []
+	for slot in ["p1", "p2"]:
+		var player: Dictionary = players.get(slot, {})
+		var fighter_id := _selection_id_for_resource("fighters", str(player.get("resourcePath", "")))
+		var helper: Dictionary = player.get("helper", {})
+		var helper_id := _selection_id_for_resource("helpers", str(helper.get("resourcePath", "")))
+		if fighter_id.is_empty() or helper_id.is_empty():
+			return "Unavailable fighter/helper resource for " + slot
+		fighter_ids.append(fighter_id)
+		helper_ids.append(helper_id)
+	var same_fighters := naruto.fighter_directory.get_file() == str(character_selection.available.fighters[fighter_ids[0]]) \
+		and ichigo.fighter_directory.get_file() == str(character_selection.available.fighters[fighter_ids[1]])
+	var same_helpers := naruto_helper.helper_directory.get_file() == str(character_selection.available.helpers[helper_ids[0]]) \
+		and ichigo_helper.helper_directory.get_file() == str(character_selection.available.helpers[helper_ids[1]])
+	if not same_fighters or not same_helpers:
+		_replace_selected_actors(fighter_ids, helper_ids)
+	return ""
+
+
+func _selection_id_for_resource(kind: String, resource_path: String) -> String:
+	var collection: Dictionary = character_selection.available.get(kind, {})
+	var resource_name := resource_path.trim_suffix("/").get_file()
+	for selection_id in collection:
+		if str(collection[selection_id]) == resource_name:
+			return str(selection_id)
+	return ""
 
 
 func _on_selected_super_event(event: Dictionary, fighter: FighterRuntime) -> void:
@@ -991,6 +1028,14 @@ func _ko_fight_started() -> void:
 	ko_menu_enabled = true
 
 
+func _diagnostic_fight_started() -> void:
+	diagnostics.push_event("fight_started", {
+		"mode": session.modo,
+		"map": selected_stage,
+		"players": _diagnostic_snapshot().get("players", {}),
+	}, physics_tick)
+
+
 func _ko_return_to_fixed_selection() -> void:
 	var mode := session.modo
 	_goto_menu()
@@ -1295,7 +1340,7 @@ func _diagnostic_snapshot(capture_initial: bool = false) -> Dictionary:
 		"clock": source_clock.diagnostic_state(),
 		"pageVisible": diagnostics.page_visible,
 		"replayability": {
-			"inputSource": "session_consumption_events",
+			"inputSource": "diagnostic_input_provider" if diagnostic_input_provider.is_valid() else "session_consumption_events",
 			"randomCapturedFromStart": capture_initial,
 			"clockCapturedFromStart": capture_initial,
 			"checkpointKind": "fresh_match_recipe" if capture_initial else "latest_observation",

@@ -13,10 +13,10 @@ var absolute_index := 0
 var live_retained_dropped := 0
 
 
-func use_recorded_tape(records: Array) -> bool:
+func use_recorded_tape(records: Array, start_index: int = 0) -> bool:
 	_records = records.duplicate(true)
 	_cursor = 0
-	absolute_index = 0
+	absolute_index = start_index
 	live_retained_dropped = 0
 	_recorded = true
 	failure = ""
@@ -26,6 +26,9 @@ func use_recorded_tape(records: Array) -> bool:
 		var record: Variant = records[index]
 		if not record is Dictionary or not record.get("site") is String:
 			failure = "Malformed clock record at %d" % (index + 1)
+			return false
+		if int(record.get("index", start_index + index + 1)) != start_index + index + 1:
+			failure = "Non-contiguous clock index at %d" % (index + 1)
 			return false
 		var value: Variant = record.get("value")
 		if not (value is int or value is float) or not is_finite(float(value)):

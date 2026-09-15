@@ -458,9 +458,12 @@
         "evidence/replay/"
       ],
       "acceptance": "输入/初态/随机来源显式记录；报告首次不同 tick/实体/字段；原版与合成数据明确区分。",
-      "evidence": [],
+      "evidence": [
+        "evidence/diagnostics/runtime-diagnostic-r01/README.md"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "2026-09-15: Added bounded runtime diagnostics, a canonical fresh-match recipe, consumed player-input/random/clock events, a non-mutating suspected super-pause stall report, and a fixed Main replay executor. A 400-tick controlled native capture replays with 824/824 semantic events and matching snapshot; build identity is absent in this development project, so the result is explicitly version-unverified. Current replay is limited to two human-controlled versus slots, base forms, fresh canonical starts, and complete tapes; AI/CPU, user pause, timers, transformed fighters, and arbitrary checkpoint restore remain unsupported. Web bridge/download verification and full M2-05 acceptance remain pending."
     },
     {
       "id": "M3-01",
