@@ -1,0 +1,55 @@
+{
+  "case": "vs-com-rifagu-renji-you-close-r03",
+  "status": "diagnostic_no_production_fix",
+  "mode": "vs_com",
+  "players": {
+    "p1": {"role": "human", "fighter": "日番谷", "helper": "鼬"},
+    "p2": {"role": "cpu", "fighter": "恋次", "helper": "魂"}
+  },
+  "stage": "现世",
+  "fixture": {
+    "p1_x": 300.0,
+    "p2_x": 350.0,
+    "p1_facing": 1,
+    "p2_facing": -1,
+    "p2_energy": 300.0,
+    "cpu_goran": {"initial": 400.0, "forced_to": 0.0, "fight_tick": 79},
+    "p1_o_taps": "fight ticks 10..88, one tick press/release transitions"
+  },
+  "source": {
+    "build": "/private/tmp/bvn-vscom-rifagu-renji-you-close-source-delay0-r01",
+    "events": "/private/tmp/bvn-vscom-rifagu-renji-you-close-source-delay0-r01-collected/events.jsonl",
+    "helper_active": {"frame178_atm3": [147, 148], "frame1_attacking_false": 171},
+    "renji": {
+      "first_hit": {"fight_tick": 100, "frame": 970, "hp": 960.0},
+      "second_hit": {"fight_tick": 148, "frame": 983, "hp": 860.0},
+      "standing": {"fight_tick": 177, "frame": 1},
+      "first_active_movement": {"fight_tick": 180, "x_from": 322.65, "x_to": 304.25},
+      "first_ai_move_left": {"fight_tick": 193, "value": true, "x_from": 138.6, "x_to": 130.6}
+    }
+  },
+  "port": {
+    "godot_version": "4.7.2.stable.official.ed1daf0bf",
+    "binary": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+    "probe": "/private/tmp/vs_com_you_renji_live_timer_probe.gd",
+    "output": "/private/tmp/vs-com-you-renji-live-timer.json",
+    "timer": "scene Timer, await 1/30 second after each _advance_fight, 240 ticks",
+    "helper_active": {"frame178_atm3": [146, 147], "frame1_attacking_false": 170},
+    "renji": {
+      "first_hit": {"fight_tick": 99, "frame": 970, "hp": 960.0},
+      "second_hit": {"fight_tick": 147, "frame": 983, "hp": 860.0},
+      "standing": {"fight_tick": 176, "frame": 1},
+      "first_active_movement": {"fight_tick": 179, "x_from": 322.65, "x_to": 304.25}
+    }
+  },
+  "comparison": {
+    "damage_result": "both 1000 -> 960 -> 860 with two hit settlements",
+    "helper_lifecycle": "both frame178 attack then frame1/attacking=false",
+    "timing": "source recovery walk starts tick180 and port tick179; source first recorded AI moveLeft predicate is tick193",
+    "limitations": [
+      "CPU goran was manually changed at fight tick79 to make the narrow capture reproducible",
+      "port probe supplied a false source key reader only to avoid CPU-side Renji kis() assertions; AI state and CPU random path were otherwise retained",
+      "the user's browser URL/build and the original natural random seed are not covered"
+    ]
+  }
+}

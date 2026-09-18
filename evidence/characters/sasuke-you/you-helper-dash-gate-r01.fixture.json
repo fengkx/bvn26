@@ -1,0 +1,113 @@
+{
+  "id": "sasuke-you-helper-dash-gate-r01",
+  "status": "diagnostic",
+  "purpose": "Compare ordinary dash and hurt-skill input around the You helper seal timeline.",
+  "setup": {
+    "fighters": {
+      "p1": "sasuke",
+      "p2": "yihu"
+    },
+    "helpers": {
+      "p1": "you",
+      "p2": "kon"
+    },
+    "positions": {
+      "p1_x": 300,
+      "p2_x": 350
+    },
+    "energy": {
+      "p1": 300,
+      "p2": 300
+    },
+    "frames_after_ready": 180
+  },
+  "source_windows": {
+    "visual_seal_changes": [14, 16, 18, 20, 22],
+    "semantic_seal_action": 18,
+    "bsd": 24,
+    "contact_probe": 48,
+    "action_reset": 61,
+    "bsw": 65,
+    "root_stop_on_miss": 76,
+    "aim_opponent_x": 92,
+    "later_bsw": 125,
+    "attack_windows": {
+      "atm1": 48,
+      "atm2": [128, 144, 160],
+      "atm3": 176
+    }
+  },
+  "cases": [
+    {
+      "id": "static_baseline",
+      "inputs": [
+        {"slot": "p1", "keys": ["summon"], "start": 10, "end": 13}
+      ],
+      "expected": {
+        "target_hp": [1000, 960, 920, 880, 780],
+        "target_hit_ticks": [100, 116, 132, 148]
+      },
+      "port_compare": "/tmp/you-helper-static-compare.json",
+      "helper_compare": "/tmp/you-helper-static-helper-compare.json"
+    },
+    {
+      "id": "dash_before_seal_and_during_bsd",
+      "inputs": [
+        {"slot": "p1", "keys": ["summon"], "start": 10, "end": 13},
+        {"slot": "p2", "keys": ["dash"], "start": 32, "end": 35}
+      ],
+      "expected": {
+        "dash_started_before_bsd_continues": true,
+        "new_dash_during_pause_moves": false,
+        "post_bsw_dash_resumes": true
+      },
+      "port_compare": "/tmp/you-helper-dash-seal-compare.json",
+      "helper_compare": "/tmp/you-helper-dash-seal-helper-compare.json"
+    },
+    {
+      "id": "ordinary_dash_during_helper_pause",
+      "inputs": [
+        {"slot": "p1", "keys": ["summon"], "start": 10, "end": 13},
+        {"slot": "p2", "keys": ["dash"], "start": 38, "end": 41}
+      ],
+      "expected": {
+        "target_x": 350,
+        "target_hp": [1000, 960, 920, 880, 780],
+        "target_hit_ticks": [100, 116, 132, 148]
+      },
+      "port_compare": "/tmp/you-helper-dash-postbsd-compare.json",
+      "helper_compare": "/tmp/you-helper-dash-postbsd-helper-compare.json"
+    },
+    {
+      "id": "unhit_summon_input_during_pause",
+      "inputs": [
+        {"slot": "p1", "keys": ["summon"], "start": 10, "end": 13},
+        {"slot": "p2", "keys": ["summon"], "start": 40, "end": 43}
+      ],
+      "expected": {
+        "target_energy": 300,
+        "target_hurt_skill": false,
+        "target_hp": [1000, 960, 920, 880, 780]
+      },
+      "port_compare": "/tmp/you-helper-summon-paused-compare.json",
+      "helper_compare": "/tmp/you-helper-summon-paused-helper-compare.json"
+    },
+    {
+      "id": "hurt_skill_after_first_helper_hit",
+      "timer_mode": "real_wall_timer",
+      "inputs": [
+        {"slot": "p1", "keys": ["summon"], "start": 10, "end": 13},
+        {"slot": "p2", "keys": ["summon"], "start": 100, "end": 104}
+      ],
+      "expected": {
+        "first_helper_hit": {"tick": 100, "target_hp": 960, "target_hits": 1},
+        "hurt_skill": {"tick": 102, "target_energy": 200, "paused": true},
+        "recovery_observed": {"tick": 120, "paused": false},
+        "next_helper_hit": {"tick": 148, "target_hp": 860, "target_hits": 2}
+      },
+      "source_capture": "/private/tmp/bvn-you-helper-hurt-summon-collected/events.jsonl",
+      "port_capture": "/private/tmp/you-helper-hurt-summon-live-port.json",
+      "comparison_scope": "Key outcome alignment only; the wall-timer callback phase differed by one tick around the later stage-effect pause."
+    }
+  ]
+}

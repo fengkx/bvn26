@@ -1,0 +1,83 @@
+{
+  "id": "sasuke-you-helper-dash-gate-r02",
+  "status": "diagnostic_no_runtime_fix",
+  "purpose": "Reproduce the reported near-distance repeated ordinary dash input from You seal start and compare locked original Flash 2.6 with the Godot port.",
+  "source": {
+    "original_player": "Flash Player.app using generated main.swf from locked game/ and scripts/ inputs",
+    "you_swf_sha256": "a00ed19723373b43b347f802a13c822eae21662d2a85b38336fdba9eb641f604",
+    "you_script_sha256": "6f2b9c27fa900866d91fb1dced55c7d8efb73c7b250e60413032ecf98d92f9ca",
+    "port_model": "godot/generated/helpers/you/combat.json and timeline.json",
+    "original_input_validation": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "p1_summon_O": "79",
+      "p2_dash_N3": "66"
+    }
+  },
+  "setup": {
+    "fighters": {
+      "p1": "sasuke",
+      "p2": "yihu"
+    },
+    "helpers": {
+      "p1": "you",
+      "p2": "kon"
+    },
+    "ground": "现世 / same source ground and facing; p2 faces p1",
+    "p1_x": 300,
+    "near_distance_x350": 50,
+    "single_dash_baseline_x380": 80,
+    "energy": {
+      "p1": 300,
+      "p2": 300
+    },
+    "frames_after_ready": 180,
+    "tap_shape": "each dash is one tick pressed followed by one tick released; taps repeat every 2 ticks; no hold"
+  },
+  "cases": [
+    {
+      "id": "baseline_single_dash_x380",
+      "case": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-baseline-x380.case.json",
+      "port_output": "/private/tmp/you-near-baseline-380-port.json",
+      "original_events": "/private/tmp/bvn-you-near-baseline-380-collected/events.jsonl",
+      "fighter_compare": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-baseline-x380.compare.json",
+      "helper_compare": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-baseline-x380.helper-compare.json",
+      "result": "matched 82/82 fighter states and 82/82 helper rows; p2 x380 crosses p1 and ends x230 in both."
+    },
+    {
+      "id": "repeated_taps_from_helper_frame18_x350",
+      "case": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame18-x350.case.json",
+      "port_output": "/private/tmp/you-near-repeat-tap-frame18-x350-port.json",
+      "original_events": "/private/tmp/bvn-you-near-repeat-tap-frame18-x350-collected/events.jsonl",
+      "fighter_compare": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame18-x350.compare.json",
+      "helper_compare": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame18-x350.helper-compare.json",
+      "result": "matched 362/362 fighter states and helper rows; first dash starts before bsd, p2 reaches x290 by pause, resumes after bsw; both end without helper hit."
+    },
+    {
+      "id": "repeated_taps_from_helper_frame22_x350",
+      "case": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame22-x350.case.json",
+      "port_output": "/private/tmp/you-near-repeat-tap-frame22-x350-port.json",
+      "original_events": "/private/tmp/bvn-you-near-repeat-tap-frame22-x350-collected/events.jsonl",
+      "fighter_compare": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame22-x350.compare.json",
+      "helper_compare": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame22-x350.helper-compare.json",
+      "result": "matched 362/362 fighter states and helper rows; pause begins before dash displacement, post-bsw dash moves p2 away; both end HP=1000/hits=0."
+    },
+    {
+      "id": "repeated_taps_from_helper_frame24_x350",
+      "case": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame24-x350.case.json",
+      "port_output": "/private/tmp/you-near-repeat-tap-frame24-x350-port.json",
+      "original_events": "/private/tmp/bvn-you-near-repeat-tap-frame24-x350-collected/events.jsonl",
+      "fighter_compare": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame24-x350.compare.json",
+      "helper_compare": "evidence/characters/sasuke-you/you-helper-dash-gate-r02-frame24-x350.helper-compare.json",
+      "result": "matched 362/362 fighter states and helper rows; p2 remains x350 through pause, first dash after bsw starts at tick99 and reaches x20; both end HP=1000/hits=0."
+    }
+  ],
+  "commands": {
+    "port": "/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --user-data-dir /tmp/bvn-you-near-repeat-tap-<case>-port -s res://tests/move_case_reference.gd -- <case.json> <port-output.json>",
+    "original_build": "python3 tools/probes/build_ai_reference.py --ffdec /private/tmp/bvn-ffdec-26.2.1/ffdec.jar --output /private/tmp/bvn-you-near-repeat-tap-<case>-build --run-id <run-id> --frames 180 --dynamic-move-case --move-case <case.json> --p1-character 佐助 --p2-character 一护 --p1-helper you --p2-helper kon",
+    "original_capture": "python3 tools/probes/capture_native_player.py <build-dir> <original.log> --timeout 100 --allow-window-activation",
+    "collect": "python3 tools/probes/collect_ai_reference.py --build <build-dir> --capture <original.log> --output <collected-dir>",
+    "fighter_compare": "python3 tools/probes/compare_mode_reference.py <collected>/events.jsonl <port-output.json> --output <compare.json>",
+    "helper_compare": "python3 tools/probes/compare_helper_reference.py <collected>/events.jsonl <port-output.json.helpers.json> --output <helper-compare.json>"
+  },
+  "scope_boundary": "These are ordinary dash inputs only. They do not prove the user's exact interactive role, button cadence, or hurt-skill O path if those differ from N3 dash."
+}
