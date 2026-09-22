@@ -1,0 +1,16 @@
+{
+  "format": "lee-observer-path-audit-r01",
+  "status": "invalid_prior_body_identity",
+  "builder": "tools/probes/build_ai_reference.py",
+  "source_lines": {
+    "intro_hooks": "around lines 508-518: fighter/yihu DefineSprite_638 frame actions emit intro_body_enter/exit",
+    "frame_state_hooks": "around lines 519-527: fighter/yihu DefineSprite_638 frame 1/390 emit frame_state_enter/exit",
+    "lee_body_hook": "around lines 534-549: body_boundaries=True wraps fighter-specific outer frame_1/PlaceObject2_<sprite>_1 onClipEvent(enterFrame) and emits body_callback_enter/exit"
+  },
+  "lee_kill700_raw_counts": {
+    "intro_body_enter": 236,
+    "frame_state_enter": 119,
+    "body_callback_enter": 0
+  },
+  "conclusion": "The prior Lee source-order/body evidence used yihu-specific hooks and is invalid for Lee BODY scheduling. Use a new body_boundaries capture with Lee sprite 518 and verify body_callback_enter/exit plus aiBodyBoundary before diagnosing touchFloor or production order."
+}

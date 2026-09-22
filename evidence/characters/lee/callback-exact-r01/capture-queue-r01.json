@@ -1,0 +1,83 @@
+{
+  "schema": "lee-callback-capture-queue-r01",
+  "status": "prepared_not_captured",
+  "source_script": "scripts/fighter/lee.json",
+  "source_script_sha256": "82230e0e97e0b2751ecba3e27b6f82e46c467ae956c51b0a2ba4d9c114c7e967",
+  "run_policy": {
+    "frame_order_probe": false,
+    "body_boundaries": true,
+    "numeric_key_aliases": true,
+    "frames_after_ready": 600,
+    "capture_timeout": 300,
+    "lock_timeout": 180,
+    "single_flash_lock": true
+  },
+  "commands_template": "PYTHONPATH=tools/probes python3 tools/probes/build_ai_reference.py --ffdec /private/tmp/ffdec-26.2.1/ffdec-cli.jar --output /private/tmp/{run_id}-build --run-id {run_id} --frames 600 --dynamic-move-case --move-case {fixture} --body-boundaries --p1-character 小李 --p2-character 一护 --p1-helper 我爱罗 --p2-helper 魂",
+  "capture_template": "python3 tools/probes/capture_native_player.py /private/tmp/{run_id}-build /private/tmp/{run_id}-capture.jsonl --lock-timeout 180 --timeout 300 --allow-window-activation",
+  "entries": [
+    {
+      "source_frame": 738,
+      "action": "空中必杀1",
+      "source_path": "DefineSprite_518/frame_738/DoAction.as",
+      "preconditions": "jump+special airborne; ql>=100; preceding air-super timeline",
+      "expected_marker": "frame_action_enter/exit: lee,p1,518,738,current_frame,action,ql",
+      "status": "pending_capture"
+    },
+    {
+      "source_frame": 771,
+      "action": "空中必杀2",
+      "source_path": "DefineSprite_518/frame_771/DoAction.as",
+      "preconditions": "jump+special airborne; ql>=100; requires prior air-super timeline",
+      "expected_marker": "frame_action_enter/exit: lee,p1,518,771,current_frame,action,ql",
+      "status": "pending_capture"
+    },
+    {
+      "source_frame": 953,
+      "action": "超必杀",
+      "source_path": "DefineSprite_518/frame_953/DoAction.as",
+      "preconditions": "grounded down+special; ql>=300; bishaSuper/onDashing path",
+      "expected_marker": "frame_action_enter/exit: lee,p1,518,953,current_frame,action,ql",
+      "status": "pending_capture"
+    },
+    {
+      "source_frame": 1057,
+      "action": "防御2",
+      "source_path": "DefineSprite_518/frame_1057/DoAction.as",
+      "preconditions": "alive; zhanting=false; sw=false; defence/canhit and down guard input with hit opportunity",
+      "expected_marker": "frame_action_enter/exit: lee,p1,518,1057,current_frame,action,ql",
+      "status": "pending_capture"
+    },
+    {
+      "source_frame": 1128,
+      "action": "击落地",
+      "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+      "preconditions": "real knockdown/fall timeline reaches recovery landing",
+      "expected_marker": "frame_action_enter/exit: lee,p1,518,1128,current_frame,action,ql",
+      "status": "pending_capture"
+    },
+    {
+      "source_frame": 1133,
+      "action": "起身",
+      "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "preconditions": "recovery clip placed; zhanting=false; facing-dependent speed*0.8",
+      "expected_marker": "frame_action_enter/exit: lee,p1,518,1133,current_frame,action,ql",
+      "status": "pending_capture"
+    },
+    {
+      "source_frame": 1149,
+      "action": "起身",
+      "source_path": "DefineSprite_518/frame_1149/DoAction.as",
+      "preconditions": "recovery timeline reaches frame after knockdown",
+      "expected_marker": "frame_action_enter/exit: lee,p1,518,1149,current_frame,action,ql",
+      "status": "pending_capture"
+    },
+    {
+      "source_frame": 1288,
+      "action": "失败",
+      "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+      "preconditions": "source failure/round branch only; no direct normal input",
+      "expected_marker": "frame_action_enter/exit: lee,p1,518,1288,current_frame,action,ql",
+      "status": "pending_capture"
+    }
+  ]
+}

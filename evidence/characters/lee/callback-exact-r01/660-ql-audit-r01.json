@@ -1,0 +1,45 @@
+{
+  "fixture": "lee-callback-intro-round-r02",
+  "source_capture": "evidence/characters/lee/original/lee-callback-intro-round-r04",
+  "source_build": "evidence/characters/lee/callback-exact-r01/prepared-builds-r04/lee-callback-intro-round-r04.build.json",
+  "godot_fixture": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r02.json",
+  "input": [
+    {
+      "slot": "p1",
+      "keys": [
+        "special"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "setup": {
+    "p1_energy": 300,
+    "p2_energy": 300,
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂",
+    "source_slot": "p1",
+    "godot_slot": "p1"
+  },
+  "source_observation": {
+    "source_frame": 660,
+    "entering": true,
+    "display_tick": 564,
+    "fight_tick": 99,
+    "action": 3,
+    "ql_encoded": "f:1:7:104857600:0",
+    "ql_decoded": 200.0
+  },
+  "godot_observation": {
+    "source_frame": 660,
+    "entering": true,
+    "tick": 406,
+    "action": 3,
+    "ql": 200.0
+  },
+  "conclusion": "Superseded: standard decoder yields source ql=200, matching Godot ql=200.",
+  "parity_claim": false,
+  "status": "superseded",
+  "superseded_by": "standard decoder exponent-aware audit r02",
+  "error": "r01 incorrectly divided all fixed-point values by 2^18 and ignored exponent 7"
+}

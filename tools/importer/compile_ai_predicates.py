@@ -125,7 +125,8 @@ def normalize(expr: str) -> str:
     return expr.strip()
 
 
-def emit(node: ast.AST, locals_: set[str], extra_calls: frozenset[str] = frozenset()) -> str:
+def emit(node: ast.AST, locals_: set[str], extra_calls: frozenset[str] = frozenset(), call_aliases: dict[str, str] | None = None) -> str:
+    call_aliases = call_aliases or {}
     if isinstance(node, ast.Constant):
         if node.value is None:
             return 'null'
@@ -137,30 +138,30 @@ def emit(node: ast.AST, locals_: set[str], extra_calls: frozenset[str] = frozens
     if isinstance(node, ast.Dict) and 'literal_object' in extra_calls:
         if any(not isinstance(key, ast.Constant) or not isinstance(key.value, str) for key in node.keys):
             raise ValueError('Only explicit source object keys are supported')
-        return '{' + ', '.join(emit(key, locals_, extra_calls) + ': ' + emit(value, locals_, extra_calls)
+        return '{' + ', '.join(emit(key, locals_, extra_calls, call_aliases) + ': ' + emit(value, locals_, extra_calls, call_aliases)
                               for key, value in zip(node.keys, node.values)) + '}'
     if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
         name = node.func.id
         if name not in {*NAMES, *DISPATCH_NAMES, *extra_calls, 'source_key', 'value', 'sensor', 'body_hit', 'power', 'strict', 'abs', 'is_nan', 'source_round'} or node.keywords:
             raise ValueError(f'Unsupported call: {ast.dump(node)}')
-        args = [emit(arg, locals_, extra_calls) for arg in node.args]
+        args = [emit(arg, locals_, extra_calls, call_aliases) for arg in node.args]
         if name in {'abs', 'is_nan'}:
             args = ['number(' + arg + ')' for arg in args]
-        return name + '(' + ', '.join(args) + ')'
+        return call_aliases.get(name, name) + '(' + ', '.join(args) + ')'
     if isinstance(node, ast.UnaryOp):
-        val = emit(node.operand, locals_, extra_calls)
+        val = emit(node.operand, locals_, extra_calls, call_aliases)
         if isinstance(node.op, ast.Not):
             return '(not truth(' + val + '))'
         if isinstance(node.op, ast.USub):
             return '(-number(' + val + '))'
     if isinstance(node, ast.BoolOp):
         op = ' and ' if isinstance(node.op, ast.And) else ' or '
-        return '(' + op.join('truth(' + emit(v, locals_, extra_calls) + ')' for v in node.values) + ')'
+        return '(' + op.join('truth(' + emit(v, locals_, extra_calls, call_aliases) + ')' for v in node.values) + ')'
     if isinstance(node, ast.Compare):
         # AS2 chained comparisons are left-associative, unlike Python chains.
-        left = emit(node.left, locals_, extra_calls)
+        left = emit(node.left, locals_, extra_calls, call_aliases)
         for op, right_node in zip(node.ops, node.comparators):
-            right = emit(right_node, locals_, extra_calls)
+            right = emit(right_node, locals_, extra_calls, call_aliases)
             if isinstance(op, (ast.Eq, ast.NotEq)):
                 left = ('not ' if isinstance(op, ast.NotEq) else '') + f'equal({left}, {right})'
             else:
@@ -170,19 +171,20 @@ def emit(node: ast.AST, locals_: set[str], extra_calls: frozenset[str] = frozens
                 left = f'(number({left}) {symbol} number({right}))'
         return '(' + left + ')'
     if isinstance(node, ast.BinOp):
-        a, b = emit(node.left, locals_, extra_calls), emit(node.right, locals_, extra_calls)
+        a, b = emit(node.left, locals_, extra_calls, call_aliases), emit(node.right, locals_, extra_calls, call_aliases)
         if isinstance(node.op, ast.Add) and isinstance(node.right, ast.Constant) and isinstance(node.right.value, str):
             return f'({a} + {b})'
         op = {ast.Add: '+', ast.Sub: '-', ast.Mult: '*', ast.Div: '/'}.get(type(node.op))
         if op:
             return f'(number({a}) {op} number({b}))'
     if isinstance(node, ast.IfExp):
-        return f'({emit(node.body, locals_, extra_calls)} if truth({emit(node.test, locals_, extra_calls)}) else {emit(node.orelse, locals_, extra_calls)})'
+        return f'({emit(node.body, locals_, extra_calls, call_aliases)} if truth({emit(node.test, locals_, extra_calls, call_aliases)}) else {emit(node.orelse, locals_, extra_calls, call_aliases)})'
     raise ValueError(f'Unsupported AI expression: {ast.dump(node)}')
 
 
-def expression(source: str, locals_: set[str]) -> str:
-    return emit(ast.parse(normalize(source), mode='eval').body, locals_)
+def expression(source: str, locals_: set[str], call_aliases: dict[str, str] | None = None) -> str:
+    aliases = call_aliases or {}
+    return emit(ast.parse(normalize(source), mode='eval').body, locals_, frozenset(aliases), aliases)
 
 
 def compile_function(name: str, params: str, body: str, *, player: bool = False) -> str:
@@ -245,7 +247,7 @@ def compile_source(source: str, *, player: bool = False) -> str:
     return header + PRELUDE + keys + ''.join(compile_function(name, *funcs[name], player=player) for name in NAMES)
 
 
-def controller_aliases(bundle: dict, sprite: int | None = None) -> list[dict]:
+def controller_aliases(bundle: dict, sprite: int | None = None, *, base_only: bool = False) -> list[dict]:
     if sprite is None:
         loads = [re.match(r'frame_1/PlaceObject[23]_(\d+)_1/', s['path'])
                  for s in bundle['scripts']]
@@ -253,25 +255,36 @@ def controller_aliases(bundle: dict, sprite: int | None = None) -> list[dict]:
         if len(ids) != 1:
             raise ValueError(f'Expected one root base-form placement, got {ids}')
         sprite = ids.pop()
-    placed = {int(m[1]) for s in bundle['scripts']
-              if (m := re.match(rf'DefineSprite_{sprite}/frame_\d+/PlaceObject[23]_(\d+)_', s['path']))}
+    placement_pattern = rf'DefineSprite_{sprite}/frame_(\d+)/PlaceObject[23]_(\d+)_'
+    placed = {
+        int(m[2]) for s in bundle['scripts']
+        if (m := re.match(placement_pattern, s['path']))
+        and (not base_only or int(m[1]) == 1)
+    }
+    required_functions = set(NAMES) | set(DISPATCH_NAMES)
     candidates = [s for s in bundle['scripts']
                   if (m := re.fullmatch(r'DefineSprite_(\d+)/frame_1/DoAction.as', s['path']))
                   and int(m[1]) in placed
                   and 'function gameRunning()' in s['source']
-                  and 'function moveLeft()' in s['source']]
+                  and 'function moveLeft()' in s['source']
+                  and required_functions.issubset(
+                      match[1] for match in FUNCTION.finditer(
+                          s['source'].replace('\r\n', '\n')
+                      )
+                  )]
     if not candidates:
         raise ValueError(f'Expected at least one placed input controller, got {len(candidates)}')
-    source_hashes = {hashlib.sha256(candidate['source'].encode()).hexdigest()
-                     for candidate in candidates}
-    if len(source_hashes) != 1:
-        raise ValueError('Placed input controllers do not share one exact source hash')
+    if base_only:
+        source_hashes = {hashlib.sha256(candidate['source'].encode()).hexdigest()
+                         for candidate in candidates}
+        if len(source_hashes) != 1:
+            raise ValueError('Base-form input controllers do not share one exact source hash')
     return sorted(candidates, key=lambda candidate: candidate['path'])
 
 
 def controller_script(bundle: dict, sprite: int | None = None) -> dict:
-    """Return the canonical first source-identical controller alias."""
-    return controller_aliases(bundle, sprite)[0]
+    """Return the controller active on the requested base-form placement."""
+    return controller_aliases(bundle, sprite, base_only=True)[0]
 
 
 def main() -> None:

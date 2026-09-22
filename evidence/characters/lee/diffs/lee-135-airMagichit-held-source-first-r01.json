@@ -1,0 +1,113 @@
+{
+  "format": "lee-source-first-diff-r01",
+  "fixture_id": "lee-135-airMagichit-held",
+  "status": "different",
+  "first_difference": {
+    "tick": 66,
+    "slot": "p1",
+    "field": "x",
+    "original": 335.0,
+    "native": 375.0
+  },
+  "surrounding_ticks": {
+    "source": {
+      "63": 335.0,
+      "64": 335.0,
+      "65": 335.0,
+      "66": 335.0,
+      "67": 335.0,
+      "68": 335.0,
+      "69": 335.0
+    },
+    "native": {
+      "63": 335.0,
+      "64": 335.0,
+      "65": 335.0,
+      "66": 375.0,
+      "67": 375.0,
+      "68": 375.0,
+      "69": 375.0
+    }
+  },
+  "input": {
+    "ticks": "63-69",
+    "p1": "ranged=true",
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂",
+    "p1_character": "小李",
+    "p2_character": "一护",
+    "stage": "现世",
+    "mode": 3
+  },
+  "source_first_five_questions": {
+    "frame_script": "DefineSprite_518/frame_287/DoAction.as; _parent._x = opponent._x - opponent.mc.bdmn._width * 0.7; _parent._y = opponent._y; frame 287 sets action=1 at frame 282",
+    "placeobject_move": "No PlaceObject/MOVE write causes this x; same frame also has clip enterFrame beida(), recorded separately",
+    "leave_label": "DefineSprite_518/frame_320/DoAction.as: gotoAndStop(\"站立\"); play();",
+    "invariants": "At source frame 287, facing-positive Lee uses opponent x minus opponent bdmn width*0.7 and copies opponent y; source trace keeps x=335 while opponent x=375",
+    "same_input": "Same fixture/build/input/helpers: source tick66 frame287 x335; Godot tick66 frame287 x375, then remains 375"
+  },
+  "minimal_repro": "Godot generated fighters/lee/combat.json body_warps action 招1 frame287 plus godot/fighter_runtime.gd _apply_body_warp_event; inspect bdmn local width path. Do not compensate x in fixture or relax compare.",
+  "hashes": {
+    "evidence/characters/lee/original/lee-135-airMagichit-held-continuous-r01/events.jsonl/events.jsonl": "e8b9f762fd65e7375cca94abf7a8740a4e8e77547b589ca80c4f507669a516d5",
+    "evidence/characters/lee/original/lee-135-airMagichit-held-continuous-r01/build.json": "61e5cc914927856174a18dce88cc090246592ffc202ca6377391fe166f33c519",
+    "evidence/characters/lee/move-cases/lee-135-airMagichit-held.json": "8df68372ed64dad2c4659190564ba6d82eac181c383b850f8600c3a56eabc5a7",
+    "godot/generated/fighters/lee/combat.json": "b2e39de15cff390747f4a6906897ec3499aaa009f409eed26479974c082c5ef0",
+    "godot/fighter_runtime.gd": "2108c4da047f691947818bbfc8b2f415443c8fcd2d2b58239c59a7a2cff216e1",
+    "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf"
+  },
+  "runtime_width_probe": {
+    "probe": "/private/tmp/lee_width_probe2.gd",
+    "observed": "Yihu 被打 action start frame738 had bdmn local size zero at frames738-740; frame741 onward local bounds P(-12.75,-53.3), S(28.60959,52.28613), width41.35959",
+    "implication": "bdmn bounds are child-clock dependent; a single idle width probe is invalid. The diff tick reads opponent during a hurt/display phase and requires same-tick child presentation synchronization before deciding width vs dispatch.",
+    "not_source_width_proof": true
+  },
+  "flash_body_geometry_observer": {
+    "build": "/private/tmp/lee-observer-lee-135-airMagichit-held",
+    "normalized_events": "/private/tmp/lee-observer-lee-135-airMagichit-held/events.jsonl/events.jsonl",
+    "source_boundary_fight_tick": 65,
+    "source_boundary_frame": 287,
+    "p1_x": "f:1:8:87818240:0 -> 335",
+    "p2_x": "f:1:8:98304000:0 -> 375",
+    "bdmn_width": "undefined",
+    "bdmn_height": "undefined",
+    "local_bounds": "undefined",
+    "global_bounds": "undefined",
+    "matrix": "undefined",
+    "callback_order": [
+      "p2 body_callback_enter/exit",
+      "p1 body_callback_enter/key_read/exit",
+      "p1 body_boundary entering=true",
+      "body_geometry(undefined bounds)",
+      "p1 body_boundary entering=false",
+      "next fight tick state frame287 x=335"
+    ],
+    "interpretation": "Flash source has undefined bdmn geometry at the exact frame287 observer boundary and keeps x=335; Godot fallback body.has_area false -> Vector2.ZERO then applies warp, producing opponent.x=375. Integration must preserve source undefined/write semantics or defer authored read according to source callback order."
+  },
+  "paired_278_observer": {
+    "build": "/private/tmp/lee-observer-lee-278-magichit1-dash_twice",
+    "normalized_events": "/private/tmp/lee-observer-lee-278-magichit1-dash_twice/events.jsonl/events.jsonl",
+    "source_boundary_fight_tick": 19,
+    "source_boundary_frame": 287,
+    "p1_x": "f:1:8:78643200:0 -> 300",
+    "p2_x": "f:1:7:120586240:0 -> 230",
+    "bdmn_width": "undefined",
+    "bdmn_height": "undefined",
+    "local_bounds": "undefined",
+    "global_bounds": "undefined",
+    "matrix": "undefined",
+    "next_tick": {
+      "fight_tick": 20,
+      "p1_frame": 287,
+      "source_x": 300
+    },
+    "callback_order": [
+      "p2 body_callback_enter/exit",
+      "p1 body_callback_enter/key_read/exit",
+      "p1 body_boundary entering=true",
+      "body_geometry(undefined bounds)",
+      "p1 body_boundary entering=false",
+      "next fight tick state frame287 x=300"
+    ],
+    "same_root_cause": "At frame287 source bdmn geometry is undefined in both cases; source retains pre-warp x while runtime zero-fallback applies warp."
+  }
+}

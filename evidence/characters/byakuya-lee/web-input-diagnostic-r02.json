@@ -1,0 +1,13 @@
+{
+  "status": "diagnostic_failed_closed",
+  "scope": "Chrome DevTools page 24, temporary diag5 package only",
+  "url": "http://127.0.0.1:8774/?qa=diag5",
+  "pck_sha256": "90feb462b50ec45d7a4f9bf6179120581648009fcdb9e2a5b87494436b6f2668",
+  "dom_dispatch": {
+    "j": {"code": "KeyJ", "keyCode": 74, "hold_ms": 250, "returned_elapsed_ms": 251},
+    "kp1": {"code": "Numpad1", "keyCode": 97, "location": 3, "hold_ms": 250, "returned_elapsed_ms": 307.2}
+  },
+  "dom_observer": "A capturing listener on the same canvas observed both synthetic keydown/keyup pairs and activeElement=canvas.",
+  "godot_probe": "No QA_PROBE_INPUT lines were emitted and QA_PROBE_STATE remained false for J and KP1 across the observed ticks.",
+  "interpretation": "The DevTools evaluate route can dispatch and observe DOM events, but this run did not prove delivery into the Godot keyboard callback. It is not accepted as a held-input or VsHuman result."
+}

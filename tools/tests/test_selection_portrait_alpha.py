@@ -154,7 +154,7 @@ class SelectionPortraitAlphaTests(unittest.TestCase):
     def test_all_roster_frames_use_high_resolution_raster_at_source_logical_size(self):
         directory = ROOT / "godot/generated/main/character_selection"
         portraits = json.loads((directory / "portraits.json").read_text())
-        self.assertEqual(len(portraits), 9)
+        self.assertEqual(len(portraits), 11)
         for name, portrait in portraits.items():
             self.assertEqual(portrait["raster_scale"], 2, name)
             self.assertEqual(len(portrait["textures"]), 5, name)

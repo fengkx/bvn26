@@ -1,0 +1,266 @@
+{
+  "format": "bvn26-byakuya-source-goto-paired-observation-v1",
+  "status": "paired_observation_not_parity",
+  "native": {
+    "run_id": "byakuya-avm-goto-r06-20260921",
+    "fixture": "byakuya-814-zhaoHuan-neutral",
+    "events_total": 5397,
+    "entry": {
+      "seq": 3628,
+      "time_ms": 26949,
+      "display_tick": 466,
+      "fight_tick": 15,
+      "kind": "goto",
+      "value": "entry|label=招换|start=814|script=819|819"
+    },
+    "sync_sequence": [
+      {
+        "seq": 3630,
+        "time_ms": 26949,
+        "display_tick": 466,
+        "fight_tick": 15,
+        "kind": "goto",
+        "value": "A0|819"
+      },
+      {
+        "seq": 3631,
+        "time_ms": 26949,
+        "display_tick": 466,
+        "fight_tick": 15,
+        "kind": "goto",
+        "value": "B0|1"
+      },
+      {
+        "seq": 3632,
+        "time_ms": 26949,
+        "display_tick": 466,
+        "fight_tick": 15,
+        "kind": "goto",
+        "value": "A1|814"
+      },
+      {
+        "seq": 3633,
+        "time_ms": 26949,
+        "display_tick": 466,
+        "fight_tick": 15,
+        "kind": "goto",
+        "value": "after|1|_level0.game.p1.mc.mian|_level0.game.p1.mc.jiao|_level0.game.p1.mc.bdmn"
+      }
+    ],
+    "cross_display_sequence": [
+      {
+        "seq": 3675,
+        "time_ms": 26990,
+        "display_tick": 467,
+        "fight_tick": 16,
+        "kind": "goto",
+        "value": "cross_tick_A|1"
+      },
+      {
+        "seq": 3717,
+        "time_ms": 27021,
+        "display_tick": 468,
+        "fight_tick": 17,
+        "kind": "goto",
+        "value": "cross_tick_B|814"
+      },
+      {
+        "seq": 3745,
+        "time_ms": 27051,
+        "display_tick": 469,
+        "fight_tick": 18,
+        "kind": "goto",
+        "value": "cross_tick_A2|1"
+      }
+    ],
+    "context": "avm-goto-r06/native-context-r01.json"
+  },
+  "godot": {
+    "probe": "godot-main-r01.json",
+    "fixture": {
+      "p1": "白哉",
+      "p1_helper": "魂",
+      "p2": "一护",
+      "p2_helper": "魂",
+      "stage": "现世"
+    },
+    "fight_start_tick": 276,
+    "rows": [
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": false,
+        "entry_serial": 314,
+        "frame_script_serial": 313,
+        "instance_local_frames": {},
+        "operation": "ready_before_injection",
+        "pending_goto": [],
+        "physics_tick": 276,
+        "registry_size": 11,
+        "registry_tick": 276,
+        "relative_fight_tick": 0,
+        "source_frame": 7
+      },
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": true,
+        "entry_serial": 315,
+        "frame_script_serial": 313,
+        "instance_local_frames": {},
+        "operation": "goto_deferred_injected",
+        "pending_goto": [
+          814
+        ],
+        "physics_tick": 276,
+        "registry_size": 11,
+        "registry_tick": 276,
+        "relative_fight_tick": 0,
+        "source_frame": 814
+      },
+      {
+        "action": "站立",
+        "ai_pending": [
+          {
+            "defer_until_tick": 278,
+            "frame": 814,
+            "order": 621,
+            "serial": 314
+          }
+        ],
+        "defer_once": false,
+        "entry_serial": 315,
+        "frame_script_serial": 314,
+        "instance_local_frames": {},
+        "operation": "advance_0",
+        "pending_goto": [],
+        "physics_tick": 277,
+        "registry_size": 10,
+        "registry_tick": 277,
+        "relative_fight_tick": 1,
+        "source_frame": 814
+      },
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": false,
+        "entry_serial": 316,
+        "frame_script_serial": 315,
+        "instance_local_frames": {},
+        "operation": "advance_1",
+        "pending_goto": [],
+        "physics_tick": 278,
+        "registry_size": 10,
+        "registry_tick": 278,
+        "relative_fight_tick": 2,
+        "source_frame": 815
+      },
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": false,
+        "entry_serial": 317,
+        "frame_script_serial": 316,
+        "instance_local_frames": {},
+        "operation": "advance_2",
+        "pending_goto": [],
+        "physics_tick": 279,
+        "registry_size": 10,
+        "registry_tick": 279,
+        "relative_fight_tick": 3,
+        "source_frame": 816
+      },
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": false,
+        "entry_serial": 318,
+        "frame_script_serial": 317,
+        "instance_local_frames": {},
+        "operation": "advance_3",
+        "pending_goto": [],
+        "physics_tick": 280,
+        "registry_size": 10,
+        "registry_tick": 280,
+        "relative_fight_tick": 4,
+        "source_frame": 817
+      },
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": false,
+        "entry_serial": 319,
+        "frame_script_serial": 318,
+        "instance_local_frames": {},
+        "operation": "advance_4",
+        "pending_goto": [],
+        "physics_tick": 281,
+        "registry_size": 10,
+        "registry_tick": 281,
+        "relative_fight_tick": 5,
+        "source_frame": 818
+      },
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": false,
+        "entry_serial": 320,
+        "frame_script_serial": 319,
+        "instance_local_frames": {},
+        "operation": "advance_5",
+        "pending_goto": [],
+        "physics_tick": 282,
+        "registry_size": 10,
+        "registry_tick": 282,
+        "relative_fight_tick": 6,
+        "source_frame": 819
+      },
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": false,
+        "entry_serial": 321,
+        "frame_script_serial": 320,
+        "instance_local_frames": {},
+        "operation": "advance_6",
+        "pending_goto": [],
+        "physics_tick": 283,
+        "registry_size": 10,
+        "registry_tick": 283,
+        "relative_fight_tick": 7,
+        "source_frame": 820
+      },
+      {
+        "action": "站立",
+        "ai_pending": [],
+        "defer_once": false,
+        "entry_serial": 322,
+        "frame_script_serial": 321,
+        "instance_local_frames": {},
+        "operation": "advance_7",
+        "pending_goto": [],
+        "physics_tick": 284,
+        "registry_size": 10,
+        "registry_tick": 284,
+        "relative_fight_tick": 8,
+        "source_frame": 821
+      }
+    ],
+    "actual_frame819_row": "advance_5",
+    "registry_observation": "real main.tscn SourceCallbackRegistry; frame script serial advances on each _advance_fight"
+  },
+  "comparison": {
+    "entry_boundary": "Native controlled observer entered at display_tick 466/fight_tick 15 with source script 819; Godot controlled source_goto queued at ready physics_tick 276 and reached source_frame 819 at relative_fight_tick 6 / physics_tick 282.",
+    "frame_action_execution": "Godot main probe has non-empty registry and frame_script_serial progression through source frame 819; native log confirms source state/helper rows around the controlled observer.",
+    "same_callback_A_B_A": "native_observed_only",
+    "cross_display_A_B_A": "native_observed_only",
+    "child_identity_lifecycle": "unproven",
+    "natural_input_parity": "unproven"
+  },
+  "fail_closed_gaps": [
+    "native observer records paths but not object=== identity or variable sentinels",
+    "Godot probe does not yet execute a matching A->B->A callback sequence",
+    "Godot fighter instance_local_frames remains empty for this controlled entry",
+    "no parity claim"
+  ]
+}

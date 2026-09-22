@@ -1,0 +1,31 @@
+{
+  "format": "lee-fangyux-scope-probe-r02",
+  "status": "built_not_run",
+  "build_path": "/private/tmp/lee-fangyux-scope-build-r02/build.json",
+  "build_sha256": "57102f29de277c1df4e82d5be8752e53768843ab4f9c2bf2627feb72ebc89049",
+  "run_command": "python3 tools/probes/capture_native_player.py --lock-timeout 180 --timeout 180 /private/tmp/lee-fangyux-scope-build-r02 /Users/fengkx/me/code/bvn2_6/evidence/characters/lee/original/lee-fangyux-scope-r02",
+  "instrumentation": {
+    "body_call_scope_probe": true,
+    "expected_events": [
+      "body_call_scope"
+    ],
+    "purpose": "Observe typeof(fangyux) and typeof(_parent.fangyux) at the real child callback without changing schedule."
+  },
+  "source_first_gap": "A source function in parent scope is insufficient to prove AVM unqualified lookup; original-player event is required before runtime/compiler change.",
+  "sources_sha256": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "game/fighter/yihu.swf": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+    "scripts/fighter/yihu.json": "5c4996b3767c2e31810595604c5b869c511c9c4f1cd8c123e059212294fc5d5b",
+    "game/fighter/lee.swf": "2443dc112dbf2be696abb9d924831814ae01990536df8298fa2c1432f35c93d1",
+    "scripts/fighter/lee.json": "82230e0e97e0b2751ecba3e27b6f82e46c467ae956c51b0a2ba4d9c114c7e967",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+    "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46"
+  },
+  "limitations": [
+    "GUI/Flash capture not run because desktop is locked",
+    "No runtime/generated files modified in this revision"
+  ]
+}

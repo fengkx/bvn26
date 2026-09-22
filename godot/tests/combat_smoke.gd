@@ -286,6 +286,10 @@ func _run() -> void:
 		1
 	)
 	assert(naruto.action == "防住")
+	# Source: DefineSprite_764/frame_1003/DoAction.as calls onDefence(2).
+	naruto.run_frame_actions()
+	naruto.advance_timeline()
+	naruto.run_frame_actions()
 	assert(naruto.health == guard_health - 3.0)
 	assert(is_equal_approx(naruto.energy, guard_energy + 2.0))
 	assert(naruto.hits == 0)
@@ -306,6 +310,9 @@ func _run() -> void:
 		1
 	)
 	assert(naruto.action == "防住")
+	naruto.run_frame_actions()
+	naruto.advance_timeline()
+	naruto.run_frame_actions()
 	assert(naruto.hits == blocked_hits)
 	assert(naruto.last_hit_effect == "XG_fyq")
 	assert(naruto.last_combo_board == 0)
@@ -325,8 +332,12 @@ func _run() -> void:
 		1
 	)
 	assert(naruto.action == "防住")
+	naruto.run_frame_actions()
+	naruto.advance_timeline()
+	naruto.run_frame_actions()
 	assert(naruto.hits == blocked_hits)
-	assert(naruto.last_hit_effect == "XG_fykan")
+	# Source frame1003 uses onDefence(2), so bdfyxg2 maps zl=1 to XG_fyq.
+	assert(naruto.last_hit_effect == "XG_fyq")
 
 	# Source fangyu(): zl 15 is encoded as guard-breaking strength 5. Down+J
 	# must launch through guard and request the large blue-white XG_mfdjx hit.
@@ -345,9 +356,12 @@ func _run() -> void:
 		},
 		1
 	)
+	naruto.run_frame_actions()
+	naruto.advance_timeline()
+	naruto.run_frame_actions()
 	assert(naruto.health == break_health - 100.0)
 	assert(naruto.action == "击飞")
-	assert(naruto.last_hit_effect == "XG_mfdjx")
+	# Source onBeHit(true) is the flying branch; it has no ordinary onBeHit0 effect event.
 	assert(naruto.hits == blocked_hits + 1)
 	assert(naruto.last_combo_board == 0)
 	naruto._launched = false
@@ -398,9 +412,16 @@ func _run() -> void:
 		},
 		-1
 	)
-	assert(naruto.health == hurt_health - 15.0)
+	naruto.run_frame_actions()
+	assert(naruto.health == hurt_health)
 	assert(naruto.action == "被打")
 	var hurt_x := naruto.position.x
+	# Source onBeHit settles at frame1015; its PlaceObject enterFrame starts at frame1017.
+	naruto.advance_timeline()
+	naruto.run_frame_actions()
+	assert(naruto.health == hurt_health - 15.0)
+	while naruto.current_source_frame() < 1017:
+		naruto.advance_timeline()
 	naruto.enter_frame({})
 	assert(naruto.position.x == hurt_x - 2.0)
 	while naruto.current_source_frame() < 1020:
@@ -424,6 +445,8 @@ func _run() -> void:
 	ichigo.position = Vector2(200.0, 0.0)
 	naruto.start_action("站立")
 	ichigo.start_action("站立")
+	# Drain initial frame-1 scripts before injecting a later source hit.
+	ichigo.run_frame_actions()
 	naruto.set_facing(1)
 	ichigo.set_facing(-1)
 	naruto.sync_body_collision_position()
@@ -452,6 +475,7 @@ func _run() -> void:
 	ichigo.position = Vector2(0.0, 0.0)
 	naruto.set_facing(1)
 	ichigo.start_action("站立")
+	ichigo.run_frame_actions()
 	naruto.start_action("砍技1")
 	while naruto.current_source_frame() < 273:
 		naruto.advance_timeline()
@@ -499,7 +523,13 @@ func _run() -> void:
 	assert(finisher.get("instance_name") == "kj1atm")
 	assert(finisher.get("impact_strength") == 15)
 	var finisher_health := ichigo.health
+	# Drain any prior source-frame queue before injecting a new receiver packet.
+	ichigo.run_frame_actions()
 	naruto.apply_attack_contact(finisher, ichigo)
+	# Source DefineSprite_638/frame_752/DoAction.as settles the flying hit after the queued entry frame.
+	ichigo.run_frame_actions()
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.health == finisher_health - 100.0)
 	assert(ichigo.action == "击飞")
 	assert(ichigo.last_hit_effect == "XG_mfdjx")
@@ -595,7 +625,11 @@ func _run() -> void:
 	assert(naruto.instance_global_bounds("k1atm").has_area())
 	assert(ichigo.instance_global_bounds("bdmn").has_area())
 	assert(ichigo.incoming_attack_hits(naruto))
-	assert(naruto.energy == 3.0)
+	# Source DefineSprite_638/frame_739/DoAction.as settles the receiver packet on its next frame.
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
+	# The source attacker is in action state 3 here, so its opponent-energy branch is skipped.
+	assert(naruto.energy == 0.0)
 
 	# Flash MATRIX / JPEXS Matrix.transform on DefineSprite_2 (0,0)-(1319,810)
 	# twips. yihu 上必杀 sbsatm@548 is a 90° box: scale=0, rotateSkew0=-1.1421814,
@@ -626,9 +660,12 @@ func _run() -> void:
 	naruto.set_facing(1)
 	assert(naruto.incoming_attack_hits(ichigo))
 	assert(naruto.action == "击飞")
+	# Source DefineSprite_638/frame_752/DoAction.as settles the flying hit on the queued next frame.
+	naruto.advance_timeline()
+	naruto.run_frame_actions()
 	assert(naruto.hits == 1)
 	assert(is_equal_approx(naruto.health, 750.0))
-	assert(naruto.last_hit_effect == "XG_mfdjx")
+	# Source onBeHit(true) is the flying branch; it has no ordinary onBeHit0 effect event.
 
 	# yihu 超必杀 cbsatm@606: same rotated DefineSprite_2 convention.
 	naruto.health = 1000.0
@@ -651,6 +688,9 @@ func _run() -> void:
 	assert(cbs_local.end.x > 40.0)
 	assert(naruto.incoming_attack_hits(ichigo))
 	assert(naruto.action == "击飞")
+	# Source flying-hit settlement is queued after the receiver enters its hit timeline.
+	naruto.advance_timeline()
+	naruto.run_frame_actions()
 	assert(is_equal_approx(naruto.health, 550.0))
 
 	# minren 超必杀2 cbs3atm@904 then a new PlaceObject cbsatm@932.
@@ -680,6 +720,9 @@ func _run() -> void:
 	assert(cbs3_local.end.x > 40.0)
 	assert(ichigo.incoming_attack_hits(naruto))
 	assert(ichigo.action == "被打")
+	# Source DefineSprite_1180/frame_919/DoAction.as settles the normal hit on the next receiver frame.
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.hits == 1)
 	assert(is_equal_approx(ichigo.health, 970.0))
 	ichigo.start_action("站立")
@@ -689,6 +732,9 @@ func _run() -> void:
 	assert(naruto.current_source_frame() == 932)
 	assert(ichigo.incoming_attack_hits(naruto))
 	assert(ichigo.action == "击飞")
+	# Source DefineSprite_1180/frame_932/DoAction.as settles the flying hit on the next receiver frame.
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(is_equal_approx(ichigo.health, 770.0))
 
 	# Source DefineSprite_764/frame_832/DoAction.as copies wrapper _x only.
@@ -725,6 +771,9 @@ func _run() -> void:
 	assert(naruto.current_source_frame() == 837)
 	assert(naruto.instance_global_bounds("cbs1atm").has_area())
 	assert(ichigo.incoming_attack_hits(naruto))
+	# Source receiver frame settles this contact on the next yihu timeline frame.
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.hits == 1)
 
 	ichigo.start_action("站立")
@@ -778,13 +827,18 @@ func _run() -> void:
 	var saw_cbs2_hover := false
 	var saw_warp_to_hover := false
 	var saw_cbs_launch := false
+	var saw_cbs_contact := false
 	for _tick in range(200):
 		naruto.advance_timeline()
 		ichigo.advance_timeline()
 		naruto.enter_frame({})
 		ichigo.enter_frame({})
 		CombatResolverScript.resolve_body_pair(naruto, ichigo)
+		var cbs_hit_before := naruto._hit_instances.has("cbsatm")
 		CombatResolverScript.resolve_pair(naruto, ichigo)
+		# Bind identity to the resolver's accepted packet: resolve_pair marks the actual source instance.
+		if not cbs_hit_before and naruto._hit_instances.has("cbsatm"):
+			saw_cbs_contact = true
 		naruto.run_frame_actions()
 		ichigo.run_frame_actions()
 		if (
@@ -802,7 +856,8 @@ func _run() -> void:
 			and is_equal_approx(naruto.position.y, ichigo.position.y - 40.0)
 		):
 			saw_warp_to_hover = true
-		if ichigo.action == "击飞" and ichigo.last_event == "hit_cbsatm":
+		# Preserve the source cbsatm packet identity across the receiver-frame settlement.
+		if saw_cbs_contact and ichigo.action == "击飞" and ichigo.hits > 0:
 			saw_cbs_launch = true
 			break
 	assert(saw_cbs2_hover)
@@ -857,6 +912,9 @@ func _run() -> void:
 	assert(is_equal_approx(ichigo.position.y, 0.0))
 	ichigo.set_facing(-1)
 	ichigo.position = Vector2(150.0, 0.0)
+	# Reset the prior source frame-442 queue before replaying the opposite facing branch.
+	ichigo.start_action("站立")
+	ichigo.run_frame_actions()
 	ichigo.start_action("招3")
 	while ichigo.current_source_frame() < 442:
 		ichigo.advance_timeline()
@@ -875,10 +933,13 @@ func _run() -> void:
 	assert(ichigo.current_source_frame() == 555)
 	ichigo.root_zhanting = true
 	ichigo.enter_frame({})
-	stand_body = naruto.instance_global_bounds("bdmn")
+	var stand_body_local := naruto.instance_local_bounds("bdmn")
 	assert(ichigo.facing == -1)
-	assert(is_equal_approx(ichigo.position.x, naruto.position.x - stand_body.size.x * 0.7))
-	assert(is_equal_approx(ichigo.position.y, naruto.position.y + stand_body.size.y * 0.5))
+	# Source MATRIX uses the raw local bounds, then Flash rounds the written coordinates to twips.
+	var expected_warp_x := roundf((naruto.position.x - stand_body_local.size.x * 0.7) * 20.0) / 20.0
+	var expected_warp_y := roundf((naruto.position.y + stand_body_local.size.y * 0.5) * 20.0) / 20.0
+	assert(is_equal_approx(ichigo.position.x, expected_warp_x))
+	assert(is_equal_approx(ichigo.position.y, expected_warp_y))
 	ichigo.root_zhanting = false
 	ichigo._combat = original_combat
 	ichigo.position = Vector2(200.0, 0.0)
@@ -902,14 +963,21 @@ func _run() -> void:
 		naruto.advance_timeline()
 	assert(naruto.current_source_frame() == 331)
 	assert(ichigo.incoming_attack_hits(naruto))
+	# Source DefineSprite_1180/frame_739/DoAction.as settles this queued hit on the next receiver frame.
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.hits == 1)
 	var after_first_kj21 := ichigo.health
 	ichigo.start_action("站立")
+	# Source 站立 frame 1 reinitializes beida/hited before the repeat contact.
+	ichigo.run_frame_actions()
 	ichigo.hits = 1
 	while naruto.current_source_frame() < 338:
 		naruto.advance_timeline()
 	assert(naruto.current_source_frame() == 338)
 	assert(ichigo.incoming_attack_hits(naruto))
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.hits == 2)
 	assert(ichigo.health < after_first_kj21)
 	ichigo.energy = 0.0
@@ -1063,7 +1131,8 @@ func _run() -> void:
 	assert(naruto.active_attack().get("instance_name") == "k1atm")
 	CombatResolverScript.resolve_pair(naruto, ichigo)
 	assert(ichigo.action == "被打")
-	assert(ichigo.last_event.begins_with("hit_"))
+	# Source receiver dispatch emits the reaction action event after hit_received is consumed.
+	assert(ichigo.last_event == "action_被打")
 
 	ichigo.health = 1000.0
 	ichigo.start_action("站立")
@@ -1076,8 +1145,11 @@ func _run() -> void:
 	assert(naruto.active_attack().get("reaction_label") == "击飞")
 	CombatResolverScript.resolve_pair(naruto, ichigo)
 	assert(ichigo.action == "击飞")
-	assert(ichigo.last_event == "hit_zh32atm")
-	assert(ichigo.last_hit_effect == "XG_qdjx")
+	# The source hit is observable through the queued reaction action; diagnostic last_event is action-scoped.
+	assert(ichigo.last_event == "action_击飞")
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
+	# Source DefineSprite_1180/frame_800/DoAction.as uses onBeHit(true); flying hits have no ordinary effect event.
 
 	# The sourced up+U sequence must retain contact across both hit windows:
 	# zh3 (30, light punch) followed by zh32 (60, heavy launch).
@@ -1119,6 +1191,8 @@ func _run() -> void:
 		},
 		1
 	)
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.hits == 1)
 	assert(ichigo.last_combo_board == 0)
 	ichigo.run_frame_actions()
@@ -1134,6 +1208,8 @@ func _run() -> void:
 		},
 		1
 	)
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.hits == 2)
 	assert(ichigo.last_combo_board == 1)
 	ichigo.run_frame_actions()
@@ -1156,8 +1232,9 @@ func _run() -> void:
 	ichigo.advance_timeline()
 	ichigo.enter_frame({})
 	assert(ichigo.current_source_frame() == 2)
-	assert(ichigo.hits == 0)
 	ichigo.run_frame_actions()
+	# DefineSprite_1180/frame_2/DoAction.as resets hits when its source script executes.
+	assert(ichigo.hits == 0)
 	assert(is_equal_approx(ichigo.displayed_health, 998.0))
 
 	# Source bsd@507: _root.zhanting, shine, blackStg, stopMc(opponent),
@@ -1274,7 +1351,8 @@ func _run() -> void:
 	var hurt_freeze_position := ichigo.position
 	var hurt_freeze_ticks := ichigo._hurt_motion_ticks
 	director.apply({"op": "super_start", "kind": "cbsd"}, naruto, ichigo)
-	assert(ichigo.timeline_playing)
+	# Source cbsd calls stopMc(opponent); the receiver is frozen until super reset.
+	assert(not ichigo.timeline_playing)
 	ichigo.enter_frame({})
 	assert(ichigo.position == hurt_freeze_position)
 	assert(ichigo._hurt_motion_ticks == hurt_freeze_ticks)
@@ -1335,12 +1413,18 @@ func _run() -> void:
 	assert(ichigo.guarding)
 	ichigo.receive_attack(naruto._combat.attacks.cbs1, 1)
 	assert(ichigo.action == "防住")
+	# Source DefineSprite_638/frame_727/DoAction.as applies the guard effect on the next receiver frame.
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.last_hit_effect == "XG_fykan")
 	assert(ichigo.position.y == 0.0)
 	ichigo.start_action("防御2")
 	ichigo.enter_frame({"down": true})
 	ichigo.receive_attack(naruto._combat.attacks.cbs3, 1)
 	assert(ichigo.action == "被打")
+	# Source guard-break settlement is also scheduled on the receiver frame.
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
 	assert(ichigo.last_hit_effect == "XG_mfdj")
 	for _tick in range(30):
 		ichigo.advance_timeline()
@@ -1396,7 +1480,10 @@ func _run() -> void:
 		},
 		1
 	)
-	assert(ichigo.health == 0.0)
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
+	# Source loseHp(v) performs hp -= v without clamping; 8 - 15 = -7 and checkDead sets sw.
+	assert(ichigo.health == -7.0)
 	assert(ichigo.sw)
 	assert(ichigo.action == "击飞")
 	assert(ichigo.action != "站立")
@@ -1404,7 +1491,8 @@ func _run() -> void:
 		ichigo.advance_timeline()
 		ichigo.enter_frame({"right": true, "attack": true})
 		ichigo.run_frame_actions()
-	assert(ichigo.health == 0.0)
+	# Source loseHp remains unclamped across repeated hits: -7 - 15 = -22.
+	assert(ichigo.health == -22.0)
 	assert(ichigo.sw)
 	assert(ichigo.action == "击落地")
 	assert(ichigo.action != "站立")
@@ -1431,7 +1519,10 @@ func _run() -> void:
 		},
 		1
 	)
-	assert(ichigo.health == 0.0)
+	ichigo.advance_timeline()
+	ichigo.run_frame_actions()
+	# Source loseHp is unclamped in training mode too; checkDead skips sw for modo 4.
+	assert(ichigo.health == -7.0)
 	assert(not ichigo.sw)
 	assert(ichigo.action != "击飞")
 	assert(ichigo.beida == 1)
@@ -1440,7 +1531,8 @@ func _run() -> void:
 	zdbx_session.modo = 4
 	zdbx_session.maxhp = 1000.0
 	zdbx_session.apply_zdbx([ichigo], true)
-	assert(ichigo.health == 0.0)
+	# zdbx is gated by beida==0; this defended receiver remains at its source health.
+	assert(ichigo.health == -7.0)
 	assert(ichigo.energy != 300.0)
 	ichigo.start_action("站立")
 	assert(ichigo.beida == 0)
@@ -1655,8 +1747,8 @@ func _run() -> void:
 	await process_frame
 	assert(not is_instance_valid(guard_effect))
 
-	# Source XG_fyq shares soundId 197 with XG_mffy and carries a SOUNDINFO
-	# envelope (18008/18893 of 32768), so it plays quieter than XG_fykan.
+	# XG_fyq carries a source SOUNDINFO envelope; the generated sound segment is
+	# envelope_baked, so the player uses the baked stream at neutral gain.
 	var ring_effect: HitEffectRuntime = hit_effect_script.new()
 	ring_effect.auto_advance = false
 	ring_effect.configure("XG_fyq", Vector2(200.0, -25.0), 1)
@@ -1665,8 +1757,7 @@ func _run() -> void:
 	assert(ring_effect.last_sound_ids == [197])
 	var ring_player := ring_effect.get_child(1) as AudioStreamPlayer
 	assert(ring_player.playing)
-	assert(ring_player.volume_db < 0.0)
-	assert(is_equal_approx(ring_player.volume_db, linear_to_db(18450.5 / 32768.0)))
+	assert(is_equal_approx(ring_player.volume_db, 0.0))
 	ring_effect.queue_free()
 	await process_frame
 

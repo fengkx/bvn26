@@ -1,0 +1,68 @@
+{
+  "format": "byakuya-audio-gap-source-native-plan-v2",
+  "scope": "bounded source reachability and capture preparation; no parity claim until source raw and native walk share one fixture",
+  "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "source_paths": {
+    "887": {
+      "path": "DefineSprite_631/frame_887/DoAction.as",
+      "source": "onBeHit(true);",
+      "required_branch": "Byakuya receives a hit and enters 击飞"
+    },
+    "934": {
+      "path": "DefineSprite_631 timeline frame 934",
+      "source": "StartSound soundId 44; label 起身",
+      "required_branch": "击飞/击落地 recovery reaches 起身; no DoAction at this exact frame"
+    },
+    "944": {
+      "path": "DefineSprite_631 timeline frame 944",
+      "source": "StartSound soundId 52;",
+      "required_branch": "起身 recovery sound; no DoAction at this exact frame"
+    },
+    "963": {
+      "path": "DefineSprite_631 timeline frame 963",
+      "source": "StartSound soundId 619; depth 27 symbol 618 placed at frame 958",
+      "required_branch": "开场 timeline sound; no DoAction at this exact frame"
+    }
+  },
+  "headless_walk": {
+    "fixture": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-recovery-p2-base631-special-dash62-66-r01/fixture.json",
+    "evidence": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-recovery-p2-base631-special-dash62-66-r01/audio-walk.json",
+    "normal_advance": true,
+    "direct_frame_jump": false,
+    "observed": "Using the Byakuya-specific CPU source-key wiring, the P2 dash edge was observed at fight tick 64 after the actual landing frame 898. The same walk created AudioStreamPlayer rows for source timeline frames 887/581, 934/44, and 944/52. Frame 963 is not a recovery target and is covered by the separate normal intro walk below.",
+    "source_build": "byakuya-recovery-p2-base631-special-dash62-66-r01/source-build/build.json"
+  },
+  "unlocked_flash_capture": {
+    "lock": "/tmp/bvn-native-flash-capture.lock",
+    "command_template": "python3 tools/probes/capture_native_player.py --lock-timeout 600 --timeout 1800 BUILD_DIR CAPTURE_DIR",
+    "prepared_build": "/tmp/byakuya-recovery-p2-base631-special-dash62-66-r01-build (prepared from the persisted dash62-66 fixture; do not run while Mac is locked)",
+    "capture_command": "python3 tools/probes/build_ai_reference.py --ffdec /private/tmp/ffdec-26.2.1/ffdec-cli.jar --output /tmp/byakuya-recovery-p2-base631-special-dash62-66-r01-build --run-id byakuya-recovery-p2-base631-special-dash62-66-r01 --frames 700 --dynamic-move-case --move-case evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-recovery-p2-base631-special-dash62-66-r01/fixture.json --p1-character 一护 --p2-character 白哉 --p1-helper 魂 --p2-helper 魂 && python3 tools/probes/capture_native_player.py --lock-timeout 600 --timeout 1800 /tmp/byakuya-recovery-p2-base631-special-dash62-66-r01-build /tmp/byakuya-recovery-p2-base631-special-dash62-66-r01-capture --allow-window-activation",
+    "post_capture": "Run tools/probes/collect_ai_reference.py on the resulting AIREF log, then run the normal Byakuya audio walk with the exact fixture and compare AudioStreamPlayer start/stop rows to source frames 887/934/944/963."
+  },
+  "controller_audit": {
+    "source_sha256": "4edf974358d4cd41a4aec3121089050bc060977a8051df3b1e60e06318aedd63",
+    "fighter_artifact_sha256": "75988f598bb191a4779061f258a1289fe216cae1017a1680d4faace04762b8f0",
+    "player_controller_sha256": "751131d85e56a1e6985cccd812048cf88de59c6fabc6d1e63faa8ea3cb7d70fe",
+    "supported_callbacks": [
+      "onBeHit(true) at 887",
+      "timeline StartSound 44 at 934",
+      "timeline StartSound 52 at 944",
+      "timeline StartSound 619 at 963"
+    ],
+    "remaining_gap": "Godot now reaches and records 887/934/944 through a source-backed recovery walk, and normal intro records 619 at runtime frame 1. Same-input Flash raw capture and exact source/native frame alignment remain pending until the Mac is unlocked; no parity claim is made for those four gaps."
+  },
+  "headless_input_wiring": {
+    "p2_mode": "player input context explicitly bound after character setup, following Lee recovery harness _wire_source_inputs",
+    "probe": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-recovery-p2-base631-special-dash62-66-r01/diagnostic-probe.gd",
+    "source_input_assertions": 0
+  },
+  "intro_963": {
+    "fixture": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-intro-963-r01/fixture.json",
+    "evidence": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-intro-963-r01/audio-walk.json",
+    "normal_intro_coordinator": true,
+    "direct_frame_jump": false,
+    "observed": "Normal intro produced res://generated/fighters/byakuya/619.mp3 at fight tick 1, runtime normalized source frame 1; exact Flash source-frame correspondence remains pending native capture.",
+    "source_build": "byakuya-intro-963-r01/source-build/build.json"
+  },
+  "recursive_freeze_prep": "evidence/characters/byakuya/audiovisual-r06/freeze-prep-r01/manifest.json"
+}

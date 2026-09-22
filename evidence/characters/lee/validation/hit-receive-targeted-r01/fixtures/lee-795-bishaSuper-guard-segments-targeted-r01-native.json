@@ -1,0 +1,97 @@
+{
+  "id": "lee-795-bishaSuper-guard-segments-targeted-r01",
+  "fighter": "lee",
+  "slot": "p1",
+  "label": "超必杀",
+  "scenario": "guard",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "down",
+        "special"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "down"
+      ],
+      "start": 1,
+      "end": 300
+    }
+  ],
+  "target_frames": [
+    795,
+    986
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "onDefence",
+    "onDashing"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "lee",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "geometry_probe": {
+    "source_frame_ranges": {
+      "p1": [
+        854,
+        855,
+        864,
+        865,
+        873,
+        874,
+        881,
+        882,
+        892,
+        893,
+        902,
+        903,
+        911,
+        912,
+        919,
+        920,
+        935,
+        936
+      ],
+      "p2": [
+        715,
+        739
+      ]
+    },
+    "instances": {
+      "p1": [
+        "cbs1atm",
+        "cbs2atm",
+        "cbs3atm",
+        "cbs4atm",
+        "cbsatm"
+      ],
+      "p2": [
+        "bdmn"
+      ]
+    },
+    "attack_by_slot": {
+      "p1": "cbsatm"
+    }
+  }
+}

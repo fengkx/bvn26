@@ -1,0 +1,99 @@
+{
+  "fighter": "lee",
+  "slot": "p1",
+  "scenario": "rooftop_walk_off_then_early_two_up_dashes_air_super_clear_platforms",
+  "frames": 250,
+  "setup": {
+    "p1": {
+      "x": 500,
+      "energy": 300
+    },
+    "p2": {
+      "x": 1250,
+      "energy": 300
+    }
+  },
+  "target_frames": [
+    701,
+    723,
+    738
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "isHitBan",
+    "onDashing",
+    "bishaAir"
+  ],
+  "status": "prepared",
+  "fighters": {
+    "p1": "lee",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "label": "落",
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "right"
+      ],
+      "start": 0,
+      "end": 36
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "dash"
+      ],
+      "start": 37,
+      "end": 58
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "right"
+      ],
+      "start": 59,
+      "end": 68
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "special"
+      ],
+      "start": 72,
+      "end": 76
+    }
+  ],
+  "id": "lee-callback-738-rooftop-walkoff-r04",
+  "stage": "楼顶",
+  "source_callback_targets": [
+    {
+      "source_sprite_id": 518,
+      "source_frame": 701,
+      "source_path": "DefineSprite_518/frame_701/DoAction.as",
+      "action": "落",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 723,
+      "source_path": "DefineSprite_518/frame_723/DoAction.as",
+      "action": "落",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 738,
+      "source_path": "DefineSprite_518/frame_738/DoAction.as",
+      "action": "落",
+      "kind": "frame_action",
+      "slot": "p1"
+    }
+  ]
+}

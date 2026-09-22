@@ -1,0 +1,361 @@
+{
+  "status": "completed_natural_ko_reset_and_terminal_failure_label_reached",
+  "meaning": "The original source begins with P1 health=1, the P2 N1 input produces KO at fight_tick 16, and the game naturally resets. After Ready, inputs are consumed: left chases after reset, then N1 taps damage P1. A second measured left chase at fight1605..1610 closes the gap after r05 left P1 at x20 and P2 at x92.6. P1 health falls to 100 and reaches DefineSprite_518/frame_1288 at fight_tick 2263; capture then remains paused in the failure timeline through fight_tick 2400. This is an original-player source lifecycle capture, not a Godot parity comparison.",
+  "fixture": {
+    "id": "lee-callback-round-loss-failure-r06",
+    "p1_initial_hp": 1,
+    "p1_initial_energy": 300,
+    "p2_initial_hp": 1000,
+    "p2_initial_energy": 300,
+    "horizon": 2400,
+    "input_window_count": 83
+  },
+  "consumed_key_reads": {
+    "p2_left_key37": 34,
+    "p2_n1_key86": 72
+  },
+  "p1_hp_change_count": 34,
+  "last_hp_changes": [
+    {
+      "fight_tick": 1821,
+      "from_hp": 280.0,
+      "to_hp": 250.0,
+      "x": 20.0,
+      "frame": 1074.0,
+      "action": -1.0
+    },
+    {
+      "fight_tick": 1897,
+      "from_hp": 250.0,
+      "to_hp": 220.0,
+      "x": 20.0,
+      "frame": 1074.0,
+      "action": -1.0
+    },
+    {
+      "fight_tick": 1971,
+      "from_hp": 220.0,
+      "to_hp": 190.0,
+      "x": 20.0,
+      "frame": 1074.0,
+      "action": -1.0
+    },
+    {
+      "fight_tick": 2047,
+      "from_hp": 190.0,
+      "to_hp": 160.0,
+      "x": 20.0,
+      "frame": 1074.0,
+      "action": -1.0
+    },
+    {
+      "fight_tick": 2121,
+      "from_hp": 160.0,
+      "to_hp": 130.0,
+      "x": 20.0,
+      "frame": 1074.0,
+      "action": -1.0
+    },
+    {
+      "fight_tick": 2197,
+      "from_hp": 130.0,
+      "to_hp": 100.0,
+      "x": 20.0,
+      "frame": 1074.0,
+      "action": -1.0
+    }
+  ],
+  "target_1288_body_boundaries": [
+    {
+      "sequence": 78408,
+      "fight_tick": 2263,
+      "display_tick": 2711,
+      "value": "p1,1288,true,1288,0,f:1:6:104857600:0,f:1:8:78643200:0,true,true,true,0,false,0,false"
+    },
+    {
+      "sequence": 78409,
+      "fight_tick": 2263,
+      "display_tick": 2711,
+      "value": "p1,1288,false,1288,0,f:1:6:104857600:0,f:1:8:78643200:0,true,true,true,0,false,0,false"
+    }
+  ],
+  "sampled_states": {
+    "0": {
+      "p1": {
+        "frame": 1.0,
+        "x": 350.0,
+        "action": 0.0,
+        "hp": 1.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 1.0,
+        "x": 300.0,
+        "action": 0.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "16": {
+      "p1": {
+        "frame": 1086.0,
+        "x": 350.0,
+        "action": -1.0,
+        "hp": -29.0,
+        "sw": true,
+        "hits": 1.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 174.0,
+        "x": 309.0,
+        "action": 1.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "273": {
+      "p1": {
+        "frame": 1.0,
+        "x": 374.1,
+        "action": -1.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 2.0,
+        "paused": true
+      },
+      "p2": {
+        "frame": 1.0,
+        "x": 637.1,
+        "action": 0.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": true
+      }
+    },
+    "400": {
+      "p1": {
+        "frame": 2.0,
+        "x": 374.1,
+        "action": 0.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 2.0,
+        "x": 637.1,
+        "action": 0.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "1600": {
+      "p1": {
+        "frame": 4.0,
+        "x": 20.0,
+        "action": 0.0,
+        "hp": 400.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 178.0,
+        "x": 92.6,
+        "action": 1.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "1610": {
+      "p1": {
+        "frame": 7.0,
+        "x": 20.0,
+        "action": 0.0,
+        "hp": 400.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 10.0,
+        "x": 38.6,
+        "action": 0.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "1700": {
+      "p1": {
+        "frame": 5.0,
+        "x": 20.0,
+        "action": 0.0,
+        "hp": 310.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 178.0,
+        "x": 91.6,
+        "action": 1.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "2000": {
+      "p1": {
+        "frame": 5.0,
+        "x": 20.0,
+        "action": 0.0,
+        "hp": 190.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 178.0,
+        "x": 91.6,
+        "action": 1.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "2197": {
+      "p1": {
+        "frame": 1074.0,
+        "x": 20.0,
+        "action": -1.0,
+        "hp": 100.0,
+        "sw": false,
+        "hits": 1.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 175.0,
+        "x": 73.6,
+        "action": 1.0,
+        "hp": 1000.0,
+        "sw": false,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "2263": {
+      "p1": {
+        "frame": 1287.0,
+        "x": 20.0,
+        "action": 0.0,
+        "hp": 100.0,
+        "sw": true,
+        "hits": 0.0,
+        "paused": false
+      },
+      "p2": {
+        "frame": 3.0,
+        "x": 100.6,
+        "action": 0.0,
+        "hp": 1000.0,
+        "sw": true,
+        "hits": 0.0,
+        "paused": false
+      }
+    },
+    "2300": {
+      "p1": {
+        "frame": 1288.0,
+        "x": 20.0,
+        "action": 0.0,
+        "hp": 100.0,
+        "sw": true,
+        "hits": 0.0,
+        "paused": true
+      },
+      "p2": {
+        "frame": 5.0,
+        "x": 100.6,
+        "action": 0.0,
+        "hp": 1000.0,
+        "sw": true,
+        "hits": 0.0,
+        "paused": true
+      }
+    },
+    "2400": {
+      "p1": {
+        "frame": 1288.0,
+        "x": 20.0,
+        "action": 0.0,
+        "hp": 100.0,
+        "sw": true,
+        "hits": 0.0,
+        "paused": true
+      },
+      "p2": {
+        "frame": 1057.0,
+        "x": 100.6,
+        "action": 0.0,
+        "hp": 1000.0,
+        "sw": true,
+        "hits": 0.0,
+        "paused": true
+      }
+    }
+  },
+  "target_1268_1288_frames": [
+    1268,
+    1288
+  ],
+  "raw_capture_sha256": "9239e7656a8b82d39eb8416a46ea6b0f1b7fb6a9d1d77b4420e8d0a156e95e23",
+  "raw_capture_gzip_sha256": "6964cb65610e4aba6bae3cb6aea260882a45adb86ca4d16aab42cf3717ed629c",
+  "events_sha256": "7c3d8743a3c9ca6e02ca4227224f06b8519b3974ccbcc7cdee9fc55dd6879c72",
+  "build_sha256": "16b6b8de757b4142c27b0f3d2938f697011691756b60c9867887b66beb003e26",
+  "case_txt_sha256": "3af749fd7b91664492ba6c61e9617375e224b9b56f98319c34a8e111b4c1e4df",
+  "fixture_json_sha256": "b574481e4a9d7978dc2c8e5af22ca3dcdb95277540c32ad356ba945f60492602",
+  "instrumentation_sha256": "c0fa5786ec683de4ac7d04c25cb34308c025461a31185a8ba70324d31a257e3e",
+  "summary_sha256": "e0a570acbe2267eba4cfeeda2af60bc823e0fb248ab480bf85c747949f0d46c5",
+  "source_runtime_fighter_sha256": "7719dda3eaa55ebd96a3b682f45e8f592f3e0e837b620af09ad2a4712015ce3d",
+  "terminal_cause_assessment": {
+    "assessment": "inferred_timeout_loss_from_source_transition_and_final_hp",
+    "raw_direct_observation": "P1 state was frame 1287 with HP 100 and sw=true at fight_tick 2263; P2 had HP 1000 and sw=true. The Lee body-boundary observer recorded frame 1288 enter/exit at the same fight_tick. The next state observation had P1 at frame 1288, HP 100, and later snapshots remained there.",
+    "timer_value_or_timeover_event_observed": false,
+    "source_control_flow": [
+      {
+        "path": "DefineSprite_1813/frame_1/DoAction.as",
+        "source": "Initializes gametime from maxtime; each 1000ms time() callback decrements gametime when not paused and both actors are not sw; when gametime <= 0 it calls _root.timeover.play()."
+      },
+      {
+        "path": "DefineSprite_1848/frame_40/DoAction.as",
+        "source": "Compares p1.hp > p2.hp; if false, calls p1.mc.gotoAndPlay(\"失败\")."
+      },
+      {
+        "path": "DefineSprite_518/frame_1268/label/失败",
+        "source": "Failure label attached to Lee fighter timeline."
+      },
+      {
+        "path": "DefineSprite_518/frame_1288/DoAction.as",
+        "source": "Observed frame-action callback at terminal failure entry."
+      }
+    ],
+    "inference": "The original timeover-to-failure transition together with HP 100 < 1000 supports timeout adjudication against P1. The capture does not directly record gametime or a timeover event, so the exact countdown value is not claimed as observed."
+  }
+}

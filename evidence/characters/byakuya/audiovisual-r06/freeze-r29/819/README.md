@@ -1,0 +1,3 @@
+# Byakuya 819 freeze r29 client-region audit
+
+The native driver reached source frame 819 and recorded 2,010 canonical snapshot paths with no path/frame changes. Its full-window RGB check rejected the pair because the captured window includes a rounded title/client border. The source stage is 600x400 and the Retina capture is 1200x800; this audit preserves that customer region at `(68,110)-(1268,910)`. The customer pixels differ only at the border edge (see `client-region-audit.json`); this is retained as diagnostic evidence and is not promoted to full visual parity until the capture driver records this crop as its explicit customer-area hash.

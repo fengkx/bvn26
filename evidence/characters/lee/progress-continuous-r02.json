@@ -1,0 +1,23 @@
+{
+  "format": "lee-continuous-progress",
+  "queue_total": 108,
+  "completed": [
+    "lee-1049-defence-dash_twice",
+    "lee-1049-defence-held",
+    "lee-1049-defence-trade",
+    "lee-1050-defence-dash_twice"
+  ],
+  "failed": [
+    {
+      "id": "lee-1050-defence-guard",
+      "error": "CalledProcessError(1, ['python3', 'tools/probes/capture_native_player.py', '/private/tmp/lee-continuous-queue-r02/lee-1050-defence-guard-build', '/private/tmp/lee-continuous-queue-r02/lee-1050-defence-guard-build/capture.jsonl', '--timeout', '180', '--lock-timeout', '180', '--allow-window-activation'])"
+    }
+  ],
+  "started_at": "2026-09-20T19:15:22+0800",
+  "lock": "/tmp/bvn-native-flash-capture.lock",
+  "lock_timeout": 180,
+  "last": "lee-1050-defence-dash_twice",
+  "status": "discarded_duplicate_queue",
+  "reason": "Started after continuous-r01 had already captured overlapping cases; no accepted evidence uses r02.",
+  "accepted_count": 0
+}

@@ -1,0 +1,104 @@
+{
+  "format": "lee-source-timer-external-clock-replay-r01",
+  "status": "experimental_not_accepted",
+  "runner": "/private/tmp/lee-timer-runner-r01/batch-direct2.gd",
+  "runner_sha256": "3978ece065be65bf010cf2102777ac2444b327e7b44550b6990fed84d88da6ee",
+  "provenance": "external timer tape derived from raw timer fire sequence versus same-fight-tick source state sequence; no source_reset_fight_tick read; no production files changed",
+  "callback_delivery": "temporary runner calls the shared game._ko_nextfight callback at tape phase; direct Timer signal emission did not dispatch in recorded-timer mode and is recorded as a runner observation, not runtime evidence",
+  "cases": [
+    {
+      "case": "lee_hp1",
+      "source_raw": "evidence/characters/lee/original/lee-timer-hp1-r01/events.jsonl",
+      "source_raw_sha256": "a587144efd744f9b0cb425d6b20eec181686c804561e8edc69da16058ca36510",
+      "timer_tape": "evidence/characters/lee/source-timer-tapes-r01/lee_hp1.json",
+      "timer_tape_sha256": "f0b05c0e28d956dec358df171810dbd5b4c63ee7dcd5d7f2d69900e54717758c",
+      "native_output": "/private/tmp/lee-timer-runner-r01/out-direct2/lee-recovery-p2-hp1-r01-external-tape-r01.json",
+      "native_sha256": "e9c41464fd49b7ad4e5bd52f46ed7997a4fd2646f58a38353a75ee8f8b3194aa",
+      "source_states": 1402,
+      "native_states": 1402,
+      "difference_rows": 854,
+      "status": "different",
+      "first_difference": {
+        "tick": 274,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 1.0,
+            "native": 2
+          }
+        }
+      }
+    },
+    {
+      "case": "lee_kill700",
+      "source_raw": "evidence/characters/lee/original/lee-timer-kill700-r01/events.jsonl",
+      "source_raw_sha256": "9902dbb329b7e3e59f3b5585ed729802f1cd79399feeb456021009742b849918",
+      "timer_tape": "evidence/characters/lee/source-timer-tapes-r01/lee_kill700.json",
+      "timer_tape_sha256": "01d1e6f208f942a7a34bbbc09b0832be1e0cedaf4fdabd5ff72a23eb579db524",
+      "native_output": "/private/tmp/lee-timer-runner-r01/out-direct2/lee-kill700-external-tape-r01.json",
+      "native_sha256": "0f43aede0e6763ebe13b120a507b2b2a8132deea00ff6c42ea420203438ccade",
+      "source_states": 1402,
+      "native_states": 1402,
+      "difference_rows": 1387,
+      "status": "different",
+      "first_difference": {
+        "tick": 0,
+        "slot": "p1",
+        "fields": {
+          "ql": {
+            "original": 101.0,
+            "native": 300.0
+          }
+        }
+      }
+    },
+    {
+      "case": "byakuya700",
+      "source_raw": "evidence/characters/lee/original/byakuya-timer700-r01/events.jsonl",
+      "source_raw_sha256": "58b0f8d0ff025428b15d87adb311072ce14857102fb2a233823bab4f64c7f307",
+      "timer_tape": "evidence/characters/lee/source-timer-tapes-r01/byakuya700.json",
+      "timer_tape_sha256": "ee3269bed267594f7d639d652c3bc29952c1b25118bcfd3c2ecf97d97129b854",
+      "native_output": "/private/tmp/lee-timer-runner-r01/out-direct2/byakuya-690-bishaSuper-energy_exact-external-tape-r01.json",
+      "native_sha256": "d19c1c41b258b911294f8fbcc860562006fd7ef9a61198bd3f5523b84a4f666f",
+      "source_states": 1402,
+      "native_states": 1402,
+      "difference_rows": 794,
+      "status": "different",
+      "first_difference": {
+        "tick": 304,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 1.0,
+            "native": 2
+          }
+        }
+      }
+    }
+  ],
+  "acceptance_boundary": "All three produce 1402 source and 1402 native rows. Strict field parity is not accepted: hp1/byakuya show post-reset frame observation phase divergence; kill700 also has initial ql/setup mismatch. This is a diagnostic replay, not a shared harness change.",
+  "corrected_kill700": {
+    "fixture": "/private/tmp/fixture source ko-regression-cases-lee574-700.json",
+    "native_output": "/private/tmp/lee-timer-runner-r01/out-direct2/lee-kill700-external-tape-r02.json",
+    "source_states": 1402,
+    "native_states": 1402,
+    "difference_rows": 788,
+    "status": "different",
+    "first_difference": {
+      "tick": 307,
+      "slot": "p1",
+      "fields": {
+        "frame": {
+          "original": 1.0,
+          "native": 2
+        }
+      }
+    },
+    "setup_correction": "p1 energy/ql 101, p2 energy/ql 300; prior hp1 fixture incorrectly used p1 300"
+  },
+  "phase_trace": {
+    "kill700": "/private/tmp/lee-timer-runner-r01/trace-kill.log",
+    "trace_sha256": "eaa7818e53b6875fccc86b9ad000cdba15c952956b8d939f14c11a5c81540dec",
+    "observed": "source fire seq6515 at fight_tick306 after source state; native callback at fixture tick306 reset actors immediately, next snapshot advances new actor to frame2; source next state is frame1. This identifies observation/advance phase, not source timer deadline."
+  }
+}

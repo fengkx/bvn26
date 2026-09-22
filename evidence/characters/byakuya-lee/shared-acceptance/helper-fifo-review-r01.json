@@ -1,0 +1,40 @@
+{
+  "format": "helper-fifo-review-r01",
+  "scope": "read-only review of current helper initial-frame FIFO diff; no runtime edits",
+  "files": {
+    "helper_runtime": "godot/helper_runtime.gd",
+    "main": "godot/main.gd"
+  },
+  "confirmed": [
+    {
+      "finding": "Generation guard is sound",
+      "evidence": "helper_runtime.gd:71-75,106-110,361-368",
+      "detail": "activate/deactivate increments generation and deferred callbacks reject stale generation or inactive helper."
+    },
+    {
+      "finding": "Production queue ordering is explicit",
+      "evidence": "main.gd:778-794,1152-1158",
+      "detail": "child callbacks receive source_frame_sequence order and are selected against fighter pending frame order; no spin when deferred fighter entry is unchanged."
+    },
+    {
+      "finding": "Nested goto preserves queued callback requests",
+      "evidence": "helper_runtime.gd:344-368",
+      "detail": "target frame scripts are queued through the same signal/FIFO; standalone probes retain direct fallback."
+    }
+  ],
+  "risks_pending": [
+    {
+      "severity": "medium",
+      "finding": "Frame-number dedup can suppress same-frame re-entry",
+      "evidence": "helper_runtime.gd:296-301",
+      "detail": "_events_applied is keyed only by frame. A->B->A in one activation skips the second A frame script. This needs source evidence or an entry-generation key before claiming general re-entry support."
+    },
+    {
+      "severity": "low",
+      "finding": "Any connected source_child_frame_requested listener defers activation",
+      "evidence": "helper_runtime.gd:98-101",
+      "detail": "Connection presence is used as the production-FIFO discriminator; a probe with an unrelated listener observes deferred rather than inline activation. Existing standalone tests should assert intended mode."
+    }
+  ],
+  "status": "reviewed_pending_lifecycle_reentry_evidence"
+}

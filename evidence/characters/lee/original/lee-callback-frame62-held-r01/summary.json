@@ -1,0 +1,160 @@
+{
+  "schema": "lee-callback-capture-summary-r01",
+  "run_id": "lee-callback-frame62-held-r01",
+  "target_request": [
+    62,
+    95
+  ],
+  "result": "frame95_observed_frame62_not_observed",
+  "source_build": {
+    "build_json_sha256": "83d99722ce67f104c417048c8e54e749d2f214cbe519fee05f37be090d411ff5",
+    "main_swf_sha256": "1055dce884e1c3e42b022f923c24c24d63b14db2d075a3e389452d6b903c03d7",
+    "lee_swf_sha256": "5dca4172529c9338f34a2ef8268a25e38ba5c560badcad31870bc5bbf63360e8",
+    "instrumentation_sha256": "00fa65f49159922bdb2fb8d59abdc3ab986dab89a7ff2fe4745ede2de6dceb75",
+    "fixture_url": "file:///private/tmp/lee-callback-frame62-held-r01-build/case.txt",
+    "case_sha256": "305d3feb368a3abaf7d1e19e8c6e88a80c2f0d0021a237f4b8a1a989f7755c42",
+    "fixture_sha256": "5a797db9d595c8c0fbcc1b4e38ddb011295610c3883afcb2ebc3adc36de64aa8",
+    "helpers": {
+      "p1": {
+        "character_id": "我爱罗",
+        "asset": "woailuo",
+        "url": "woailuo.swf"
+      },
+      "p2": {
+        "character_id": "魂",
+        "asset": "kon",
+        "url": "kon.swf"
+      }
+    },
+    "frame_order_probe": false,
+    "body_boundaries": true,
+    "frames_after_ready": 600,
+    "external_build_dir": "/private/tmp/lee-callback-frame62-held-r01-build",
+    "build_archive": null,
+    "note": "Built SWF/patch directory remains in private tmp; evidence keeps build metadata, fixture, case, instrumentation diff, and raw capture only."
+  },
+  "capture": {
+    "path": "events.jsonl",
+    "sha256": "5a84afcaff628233a0c4805a7930b0ad7a23329ad91aec4047f935d04aaffa23",
+    "events": 34018,
+    "done": true,
+    "event_counts": {
+      "boot": 1,
+      "input_bindings": 1,
+      "input_next_display": 1053,
+      "body_boundary": 1660,
+      "initCtrl": 6,
+      "helper_load": 2,
+      "frame_state_enter": 143,
+      "intro_body_enter": 285,
+      "intro_body_exit": 285,
+      "frame_state_exit": 143,
+      "body_callback_enter": 2101,
+      "body_callback_exit": 2101,
+      "random": 1,
+      "intro_poll": 21,
+      "intro_poll_state": 21,
+      "state": 1744,
+      "helper_state": 1744,
+      "helper_clip_state": 1744,
+      "helper_lifecycle": 1744,
+      "intro_step": 4,
+      "intro_goto_before": 1,
+      "intro_goto_return": 1,
+      "ready": 1,
+      "key_read": 19210,
+      "done": 1
+    }
+  },
+  "target_events": [
+    {
+      "seq": 7561,
+      "display_frame": 503,
+      "fight_tick": 50,
+      "event": "body_boundary",
+      "slot": "p1",
+      "source_frame": 95,
+      "enter": true,
+      "current_frame": 95,
+      "action": "0",
+      "ql_encoded": "f:1:8:78643200:0",
+      "ql": 300.0
+    },
+    {
+      "seq": 7562,
+      "display_frame": 503,
+      "fight_tick": 50,
+      "event": "body_boundary",
+      "slot": "p1",
+      "source_frame": 95,
+      "enter": false,
+      "current_frame": 83,
+      "action": "0",
+      "ql_encoded": "f:1:8:78643200:0",
+      "ql": 300.0
+    },
+    {
+      "seq": 9511,
+      "display_frame": 555,
+      "fight_tick": 102,
+      "event": "body_boundary",
+      "slot": "p1",
+      "source_frame": 95,
+      "enter": true,
+      "current_frame": 95,
+      "action": "0",
+      "ql_encoded": "f:1:8:78643200:0",
+      "ql": 300.0
+    },
+    {
+      "seq": 9512,
+      "display_frame": 555,
+      "fight_tick": 102,
+      "event": "body_boundary",
+      "slot": "p1",
+      "source_frame": 95,
+      "enter": false,
+      "current_frame": 83,
+      "action": "0",
+      "ql_encoded": "f:1:8:78643200:0",
+      "ql": 300.0
+    }
+  ],
+  "key_window_observations": {
+    "9": {
+      "seq": 5966,
+      "jump": "undefined"
+    },
+    "10": {
+      "seq": 6013,
+      "jump": "true"
+    },
+    "11": {
+      "seq": 6061,
+      "jump": "true"
+    },
+    "109": {
+      "seq": 9743,
+      "jump": "true"
+    },
+    "110": {
+      "seq": 9779,
+      "jump": "undefined"
+    },
+    "111": {
+      "seq": 9812,
+      "jump": "undefined"
+    }
+  },
+  "helper_load_events": [
+    {
+      "seq": 8,
+      "value": "p1,我爱罗,woailuo.swf"
+    },
+    {
+      "seq": 21,
+      "value": "p2,魂,kon.swf"
+    }
+  ],
+  "notes": "P1 body_boundary enters source frame95 at fight_tick50, exits via local current_frame83 after DoAction. No P1 frame62 boundary in 600 fight ticks. Jump alias K/code75 is false tick9, true tick10-109, false tick110."
+}

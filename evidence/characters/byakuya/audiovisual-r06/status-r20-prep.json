@@ -1,0 +1,108 @@
+{
+  "format": "byakuya-r20-offline-status",
+  "scope": "offline audit and rerun preparation; no Flash capture and no production edits",
+  "source_scope": "base Byakuya DefineSprite_631, helpers explicitly Soul/Soul",
+  "matrix": {
+    "fixture_set": "evidence/characters/byakuya/fixtures-full",
+    "catalog_cases": 178,
+    "godot_executed": 178,
+    "neutral_executed": 167,
+    "disabled_negative": 11,
+    "target_seen": 162,
+    "current_two_sided_matched": 162,
+    "current_runtime_hash_at_last_compare": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+    "provenance_note": "The matrix summary proves 167 executable neutral cases and 11 disabled cases. The current authoritative two-sided compare manifest has 162 complete 602-state matches; five older source records are retained in boundary-r11-current-missing5 and must be merged/recompared after the final shared runtime hash. No Godot-only row is promoted to source parity.",
+    "rerun_ready": true,
+    "godot_command": "python3 tools/test_move_cases.py --godot /private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --cases evidence/characters/byakuya/fixtures-full --output /private/tmp/byakuya-matrix-godot-current-rerun --jobs 1",
+    "compare_command": "python3 tools/archive_move_acceptance.py --cases evidence/characters/byakuya/fixtures-full --native /private/tmp/byakuya-matrix-godot-current-rerun --references evidence/characters/byakuya/boundary-r02 evidence/characters/byakuya/boundary-r03 evidence/characters/byakuya/boundary-r04 evidence/characters/byakuya/boundary-r05 evidence/characters/byakuya/boundary-r06 evidence/characters/byakuya/boundary-r07 --output evidence/characters/byakuya/boundary-r12-current-runtime",
+    "rerun_gate": "Run only after integration freezes the shared source-goto/Ready and runtime hashes; preserve r10 as historical evidence and use a fresh output directory."
+  },
+  "current_shared_changes_to_bind": {
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "godot/main.gd": "d38d5e6ddbde661efa991b96b1c0de9034c046b6b4a9aa83ff63ac6a55dfea00",
+    "godot/battle_intro.gd": "af07e1669ddaf91f6930a6eb3b23701cb42cc19f81f86e16d88865bb2a96027b",
+    "godot/energy_bar.gd": "644aab2305372c420f1286b2bc6e6e05461ed984306adcea6d86259e387aed01"
+  },
+  "remaining_evidence": {
+    "hud": {
+      "status": "focused_geometry_accepted_r12",
+      "artifact": "evidence/characters/byakuya/audiovisual-r06/godot-333-gui-r12",
+      "open_boundary": "Source qitiao 300ms callback and nested qt child pause semantics still need runtime replay evidence; no pre-r12 geometry defect remains."
+    },
+    "audio": {
+      "status": "bounded_source_resource_and_tick_match",
+      "artifact": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/source-native-godot-audio-compare-r01.json",
+      "matched": [887, 934, 944],
+      "clock_scope_only": [963],
+      "open_boundary": "Native StartSound/StopSound callbacks and Godot stop/finished lifecycle are not directly observed; 963 local 958->963 cadence matches five ticks but absolute intro load gates differ."
+    },
+    "visual": {
+      "focused_existing": [333, 464, 692],
+      "pending_native_freeze": [819, 576],
+      "rejected_history": ["freeze-r18/819 unstable 500ms", "freeze-r13/819 wrong target 814"],
+      "prepared_builds": {
+        "819": {"path": "/private/tmp/byakuya-freeze-r20-819-build", "run_id": "byakuya-freeze-r20-819", "main_sha256": "55f7d96db376427f59ab86bd9bfddf7e18c914f163ecaf969e091cf3dbd989ff"},
+        "576": {"path": "/private/tmp/byakuya-freeze-r20-576-build", "run_id": "byakuya-freeze-r20-576", "main_sha256": "f574165d94d6b69a5532d55a577ac7f897ed6506fe8a3f7aebb9cd1aaadfe00"}
+      },
+      "open_boundary": "Need desktop handoff, then serial flock capture with target-bound recursive child freeze, nonempty before/after normalized paths, and two stable screenshots."
+    },
+    "pause_and_ready": {
+      "status": "source_audited_runtime_pending",
+      "source": "scripts/main.json:DefineSprite_1774/frame_1/DoAction.as and DefineSprite_1813/frame_1/DoAction.as",
+      "open_boundary": "qitiao is a 300ms source interval and countdown is a 1000ms source interval gated by zhanting/alive/modo; current HUD callback is display-tick driven and exact pause/interval lifecycle is not yet cross-checked against a clean runtime trace. Current source-goto/Ready changes must be frozen before matrix rerun."
+    }
+  },
+  "preflight": {
+    "819": "passed",
+    "576": "passed",
+    "tool": "tools/probes/validate_freeze_build.py",
+    "capture_locked": false,
+    "desktop_handoff": "pending integration"
+  },
+  "matrix_r20_attempt": {
+    "output": "/private/tmp/byakuya-matrix-godot-rerun-r20",
+    "batch_command_started": true,
+    "batch_stopped": true,
+    "result": "blocked_before_case_states",
+    "single_case_reproduction": "byakuya-123-airhit-neutral",
+    "single_case_output": "/private/tmp/byakuya-single-r20/out",
+    "single_case_executed": false,
+    "single_case_states": 0,
+    "first_failure": "godot/tests/move_case_reference.gd:88 assertion: not game.battle_intro.active and rows.size() == 2",
+    "log_evidence": "A temporary diagnostic runner confirmed battle_intro.active becomes false at intro loop_tick=275 after source intro actions (Byakuya 958, Ichigo 822), but the root-observer callback sees active=true on that same _advance_fight call, so it does not call _observe(0). The harness then breaks with rows=0 and its combined assertion fails. This is a harness boundary bug, not evidence that Ready is stuck.",
+    "runtime_files_at_attempt": {
+      "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+      "godot/main.gd": "d38d5e6ddbde661efa991b96b1c0de9034c046b6b4a9aa83ff63ac6a55dfea00",
+      "godot/battle_intro.gd": "af07e1669ddaf91f6930a6eb3b23701cb42cc19f81f86e16d88865bb2a96027b"
+    },
+    "acceptance": "Do not compare or promote this rerun. Existing r10 162-match evidence remains historical until the shared Ready/source-goto regression is fixed and the current runtime hash is frozen."
+  },
+  "freeze_r21_capture": {
+    "819": {
+      "build": "/private/tmp/byakuya-freeze-r21-819-build",
+      "main_sha256": "09a0771f0317b429e9c72d3ba682ed681b60c3e77ca21635770013313bff83be",
+      "target_reached": true,
+      "visual_freeze": "begin/end observed at source frame 819",
+      "status": "rejected_unstable_500ms",
+      "evidence": "evidence/characters/byakuya/audiovisual-r06/freeze-r21/819/failure.json",
+      "note": "The corrected build reached the target; recursive state records were produced, but two window captures changed during the 500ms stability check. It is not visual parity evidence."
+    },
+    "576": {
+      "build": "/private/tmp/byakuya-freeze-r21-576-build",
+      "main_sha256": "a92533705b1c0bc2fe67187a50973bb233441954d353b4ff4ef29546d53296aa",
+      "target_reached": true,
+      "visual_freeze": "begin/end observed at source frame 576",
+      "visual_clip_count": 430,
+      "status": "captured_stable",
+      "evidence": "evidence/characters/byakuya/audiovisual-r06/freeze-r21/576",
+      "note": "Normalized before/after child state sets match and pixel hashes are identical; this is bounded freeze evidence, not full visual parity."
+    },
+    "r20_invalid_reason": "The old r20 builds retained r18 fixture paths/run_id in frame10/case.txt; r20/819 produced only boot/input and no visual_freeze_end.",
+    "preflight_revision": {
+      "tool": "tools/probes/validate_freeze_build.py",
+      "checks": ["metadata run_id", "final main SWF SHA", "final SWF frame_1 aiRun", "final SWF frame_10 current case/fighter/music paths", "rejected stale run IDs"],
+      "r21_819": "passed",
+      "r21_576": "passed"
+    }
+  }
+}

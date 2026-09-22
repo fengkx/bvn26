@@ -1,0 +1,6388 @@
+{
+  "format": "bvn26-combat-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "fighter_id": "小李",
+  "is_naruto": true,
+  "simulation_hz": 30,
+  "source": {
+    "fighter_slice": "data/slices/lee-base.json",
+    "timeline": "data/slices/lee-base.timeline.json",
+    "script_bundle": "scripts/fighter/lee.json",
+    "timeline_symbol_id": 518
+  },
+  "movement": {
+    "speed_per_tick": 10,
+    "standing": {
+      "start_frame": 1,
+      "end_frame": 9
+    },
+    "walking": {
+      "start_frame": 10,
+      "end_frame": 19
+    }
+  },
+  "combo": {
+    "labels": [
+      "砍1",
+      "砍2",
+      "砍3"
+    ],
+    "transitions": [
+      {
+        "from": "砍1",
+        "to": "砍2",
+        "start_frame": 163,
+        "end_frame": 168,
+        "condition": "normal_attack_held",
+        "source_path": "DefineSprite_518/frame_163/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7f8d59cd3bad0c4950d6055c6344bb7a8c800dbb1616dbecac948f986162a248",
+        "action_bytes_sha256": "e8a303c44e27d3b22b5ce2ccc372732f014661d954ab70af3922b20dc1894b53"
+      },
+      {
+        "from": "砍2",
+        "to": "砍3",
+        "start_frame": 187,
+        "end_frame": 192,
+        "condition": "normal_attack_held",
+        "source_path": "DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "cd0d25f89743898b1a850f25ef7cbd916f3b3ab025061c268799683abed47530",
+        "action_bytes_sha256": "8ad58a9d108124ee40c8041eb4b20634178ecb158a12bacc88e4227d25ab4181"
+      }
+    ]
+  },
+  "special": {
+    "entry_label": "必杀",
+    "energy_cost": 100,
+    "transitions": [],
+    "cost_source_path": "DefineSprite_518/frame_575/DoAction.as",
+    "cost_source_sha256": "e7ae956c5ea12d66a571fd87eefbf90e93460ed6905b7b798998e8fc4d390874"
+  },
+  "hitbox_windows": {
+    "砍1": [
+      {
+        "instance_name": "k1atm",
+        "start_frame": 159,
+        "end_frame": 160
+      }
+    ],
+    "砍2": [
+      {
+        "instance_name": "k2atm",
+        "start_frame": 183,
+        "end_frame": 184
+      }
+    ],
+    "砍3": [
+      {
+        "instance_name": "k3atm",
+        "start_frame": 213,
+        "end_frame": 214
+      }
+    ],
+    "必杀": [
+      {
+        "instance_name": "bsatm",
+        "start_frame": 611,
+        "end_frame": 612
+      }
+    ],
+    "跳砍": [
+      {
+        "instance_name": "tkatm",
+        "start_frame": 124,
+        "end_frame": 125
+      }
+    ],
+    "跳招": [
+      {
+        "instance_name": "tz1atm",
+        "start_frame": 137,
+        "end_frame": 138
+      },
+      {
+        "instance_name": "tzatm",
+        "start_frame": 144,
+        "end_frame": 145
+      }
+    ],
+    "砍4": [
+      {
+        "instance_name": "k4atm",
+        "start_frame": 251,
+        "end_frame": 253
+      }
+    ],
+    "招1": [
+      {
+        "instance_name": "zh1atm",
+        "start_frame": 293,
+        "end_frame": 295
+      }
+    ],
+    "砍技2": [
+      {
+        "instance_name": "kj2atm",
+        "start_frame": 361,
+        "end_frame": 362
+      }
+    ],
+    "砍技1": [
+      {
+        "instance_name": "kj1atm",
+        "start_frame": 406,
+        "end_frame": 407
+      },
+      {
+        "instance_name": "kj1atm",
+        "start_frame": 415,
+        "end_frame": 416
+      },
+      {
+        "instance_name": "kj1atm",
+        "start_frame": 424,
+        "end_frame": 425
+      },
+      {
+        "instance_name": "kj11atm",
+        "start_frame": 433,
+        "end_frame": 434
+      }
+    ],
+    "招2": [
+      {
+        "instance_name": "zh21atm",
+        "start_frame": 477,
+        "end_frame": 484
+      },
+      {
+        "instance_name": "zh2atm",
+        "start_frame": 485,
+        "end_frame": 486
+      }
+    ],
+    "招3": [
+      {
+        "instance_name": "zh3atm",
+        "start_frame": 533,
+        "end_frame": 534
+      }
+    ],
+    "必杀2": [
+      {
+        "instance_name": "bs1atm",
+        "start_frame": 674,
+        "end_frame": 675
+      }
+    ],
+    "空中必杀1": [
+      {
+        "instance_name": "kbs1atm",
+        "start_frame": 723,
+        "end_frame": 739
+      }
+    ],
+    "空中必杀2": [
+      {
+        "instance_name": "kbsatm",
+        "start_frame": 742,
+        "end_frame": 747
+      }
+    ],
+    "超必杀": [
+      {
+        "instance_name": "cbs1atm",
+        "start_frame": 854,
+        "end_frame": 855
+      },
+      {
+        "instance_name": "cbs2atm",
+        "start_frame": 864,
+        "end_frame": 865
+      },
+      {
+        "instance_name": "cbs3atm",
+        "start_frame": 873,
+        "end_frame": 874
+      },
+      {
+        "instance_name": "cbs4atm",
+        "start_frame": 881,
+        "end_frame": 882
+      },
+      {
+        "instance_name": "cbs1atm",
+        "start_frame": 892,
+        "end_frame": 893
+      },
+      {
+        "instance_name": "cbs2atm",
+        "start_frame": 902,
+        "end_frame": 903
+      },
+      {
+        "instance_name": "cbs3atm",
+        "start_frame": 911,
+        "end_frame": 912
+      },
+      {
+        "instance_name": "cbs4atm",
+        "start_frame": 919,
+        "end_frame": 920
+      },
+      {
+        "instance_name": "cbsatm",
+        "start_frame": 935,
+        "end_frame": 936
+      }
+    ],
+    "起身": [
+      {
+        "instance_name": "k1atm",
+        "start_frame": 1136,
+        "end_frame": 1137
+      }
+    ]
+  },
+  "action_exits": {
+    "招换": {
+      "frame": 1017,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_1017/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "防住": {
+      "frame": 1070,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_1070/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "被打": {
+      "frame": 1083,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_1083/DoAction.as",
+      "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
+    },
+    "击落地": {
+      "frame": 1128,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "落地": {
+      "frame": 113,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_113/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "起身": {
+      "frame": 1144,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_1144/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "开场": {
+      "frame": 1219,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_1219/DoAction.as",
+      "source_sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642"
+    },
+    "跳砍": {
+      "frame": 128,
+      "target": "落",
+      "source_path": "DefineSprite_518/frame_128/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    "跳招": {
+      "frame": 152,
+      "target": "落",
+      "source_path": "DefineSprite_518/frame_152/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    "砍1": {
+      "frame": 172,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_172/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "砍2": {
+      "frame": 197,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_197/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "砍3": {
+      "frame": 240,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_240/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "砍4": {
+      "frame": 268,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_268/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "瞬步": {
+      "frame": 29,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_29/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "招1": {
+      "frame": 320,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_320/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "砍技2": {
+      "frame": 370,
+      "target": "落",
+      "source_path": "DefineSprite_518/frame_370/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    "砍技1": {
+      "frame": 448,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_448/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "招2": {
+      "frame": 509,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_509/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "招3": {
+      "frame": 558,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_558/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "必杀": {
+      "frame": 634,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_634/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "必杀LOOP": {
+      "frame": 660,
+      "target": "必杀LOOP",
+      "source_path": "DefineSprite_518/frame_660/DoAction.as",
+      "source_sha256": "681cea78422c6bc61c2601d60adf7395de691357067d21ba73b1aa98d1c66d1b"
+    },
+    "必杀2": {
+      "frame": 695,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_695/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "空中必杀1": {
+      "frame": 738,
+      "target": "空中必杀1",
+      "source_path": "DefineSprite_518/frame_738/DoAction.as",
+      "source_sha256": "5c8bfed7b57c7e46ad0d266b503db9e6050090266f5a5355418ba6e238af2c8f"
+    },
+    "空中必杀2": {
+      "frame": 771,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_771/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "站立": {
+      "frame": 8,
+      "target": "站立",
+      "source_path": "DefineSprite_518/frame_8/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    "超必杀": {
+      "frame": 953,
+      "target": "落",
+      "source_path": "DefineSprite_518/frame_953/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    }
+  },
+  "timeline_fallthroughs": [
+    {
+      "from": "必杀1",
+      "to": "必杀LOOP",
+      "frame": 653,
+      "condition": "timeline_fallthrough"
+    },
+    {
+      "from": "空中必杀",
+      "to": "空中必杀1",
+      "frame": 723,
+      "condition": "timeline_fallthrough"
+    }
+  ],
+  "hurt": {
+    "label": "被打",
+    "stop_frame": 1079,
+    "callback_start_frame": 1076,
+    "callback_source_path": "DefineSprite_518/frame_1075/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+    "callback_source_sha256": "820f6d41d52a2df712ecc60a0f87a933ebe00f55e376951756a9d91d3940bb36",
+    "hitstun_ticks_formula": "hitstun_ms / 1000 * 30",
+    "source_path": "DefineSprite_518/frame_1079/DoAction.as",
+    "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+    "launch_stop_frame": 1096,
+    "launch_stop_source_path": "DefineSprite_518/frame_1096/DoAction.as",
+    "launch_stop_source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+  },
+  "death": {
+    "flag": "sw",
+    "launch_label": "击飞",
+    "down_label": "击落地",
+    "knockdown_stop_frame": 1112,
+    "practice_mode_skips": 4,
+    "ko_writes": [
+      {
+        "field": "bdzl",
+        "value": 0
+      },
+      {
+        "field": "sw",
+        "value": true
+      }
+    ],
+    "ko_number_binding": {
+      "name": "p1",
+      "equal": 2,
+      "different": 1
+    },
+    "source_path": "DefineSprite_518/frame_1/DoAction.as",
+    "source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
+    "stop_source_path": "DefineSprite_518/frame_1112/DoAction.as",
+    "stop_source_sha256": "e6ca4a79578cbb546594bd65ac4d2d2aad15c20ec5c951c3dc9a7c4b8fd5371c"
+  },
+  "attacks": {
+    "bs": {
+      "damage": 50,
+      "impact_strength": 3,
+      "vertical_impulse": 20,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 3000,
+      "reaction_label": "被打"
+    },
+    "bs1": {
+      "damage": 300,
+      "impact_strength": 15,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 15,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "cbs": {
+      "damage": 150,
+      "impact_strength": 13,
+      "vertical_impulse": -10,
+      "horizontal_impulse": 15,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "cbs1": {
+      "damage": 40,
+      "impact_strength": 3,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 1000,
+      "reaction_label": "被打"
+    },
+    "cbs2": {
+      "damage": 40,
+      "impact_strength": 3,
+      "vertical_impulse": 10,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 1000,
+      "reaction_label": "被打"
+    },
+    "cbs3": {
+      "damage": 40,
+      "impact_strength": 3,
+      "vertical_impulse": 0,
+      "horizontal_impulse": -10,
+      "hitstun_ms": 1000,
+      "reaction_label": "被打"
+    },
+    "cbs4": {
+      "damage": 40,
+      "impact_strength": 3,
+      "vertical_impulse": 10,
+      "horizontal_impulse": -10,
+      "hitstun_ms": 1000,
+      "reaction_label": "被打"
+    },
+    "k1": {
+      "damage": 20,
+      "impact_strength": 2,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 400,
+      "reaction_label": "被打"
+    },
+    "k2": {
+      "damage": 20,
+      "impact_strength": 2,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 5,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "k3": {
+      "damage": 30,
+      "impact_strength": 2,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 6,
+      "hitstun_ms": 800,
+      "reaction_label": "被打"
+    },
+    "k4": {
+      "damage": 50,
+      "impact_strength": 3,
+      "vertical_impulse": 7,
+      "horizontal_impulse": 5,
+      "hitstun_ms": 600,
+      "reaction_label": "被打"
+    },
+    "kbs": {
+      "damage": 200,
+      "impact_strength": 5,
+      "vertical_impulse": 5,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "kbs1": {
+      "damage": 20,
+      "impact_strength": 2,
+      "vertical_impulse": -20,
+      "horizontal_impulse": 0,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "kj1": {
+      "damage": 20,
+      "impact_strength": 4,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 7,
+      "hitstun_ms": 400,
+      "reaction_label": "被打"
+    },
+    "kj11": {
+      "damage": 30,
+      "impact_strength": 5,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "kj2": {
+      "damage": 60,
+      "impact_strength": 3,
+      "vertical_impulse": 5,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "tk": {
+      "damage": 30,
+      "impact_strength": 2,
+      "vertical_impulse": -5,
+      "horizontal_impulse": 5,
+      "hitstun_ms": 600,
+      "reaction_label": "被打"
+    },
+    "tz": {
+      "damage": 30,
+      "impact_strength": 3,
+      "vertical_impulse": -5,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "tz1": {
+      "damage": 30,
+      "impact_strength": 2,
+      "vertical_impulse": -2,
+      "horizontal_impulse": 5,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "zh1": {
+      "damage": 50,
+      "impact_strength": 5,
+      "vertical_impulse": 8,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 800,
+      "reaction_label": "被打"
+    },
+    "zh11": {
+      "damage": 80,
+      "impact_strength": 3,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 15,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "zh2": {
+      "damage": 80,
+      "impact_strength": 5,
+      "vertical_impulse": 10,
+      "horizontal_impulse": 15,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "zh21": {
+      "damage": 20,
+      "impact_strength": 4,
+      "vertical_impulse": 3,
+      "horizontal_impulse": 8,
+      "hitstun_ms": 800,
+      "reaction_label": "被打"
+    },
+    "zh3": {
+      "damage": 60,
+      "impact_strength": 15,
+      "vertical_impulse": 7,
+      "horizontal_impulse": 7,
+      "hitstun_ms": 800,
+      "reaction_label": "被打"
+    }
+  },
+  "attacks_by_form": {
+    "1": {
+      "form": 1,
+      "status": "extracted",
+      "attacks": {
+        "bs": {
+          "damage": 50,
+          "impact_strength": 3,
+          "vertical_impulse": 20,
+          "horizontal_impulse": 3,
+          "hitstun_ms": 3000,
+          "reaction_label": "被打"
+        },
+        "bs1": {
+          "damage": 300,
+          "impact_strength": 15,
+          "vertical_impulse": 0,
+          "horizontal_impulse": 15,
+          "hitstun_ms": 0,
+          "reaction_label": "击飞"
+        },
+        "cbs": {
+          "damage": 150,
+          "impact_strength": 13,
+          "vertical_impulse": -10,
+          "horizontal_impulse": 15,
+          "hitstun_ms": 0,
+          "reaction_label": "击飞"
+        },
+        "cbs1": {
+          "damage": 40,
+          "impact_strength": 3,
+          "vertical_impulse": 0,
+          "horizontal_impulse": 10,
+          "hitstun_ms": 1000,
+          "reaction_label": "被打"
+        },
+        "cbs2": {
+          "damage": 40,
+          "impact_strength": 3,
+          "vertical_impulse": 10,
+          "horizontal_impulse": 10,
+          "hitstun_ms": 1000,
+          "reaction_label": "被打"
+        },
+        "cbs3": {
+          "damage": 40,
+          "impact_strength": 3,
+          "vertical_impulse": 0,
+          "horizontal_impulse": -10,
+          "hitstun_ms": 1000,
+          "reaction_label": "被打"
+        },
+        "cbs4": {
+          "damage": 40,
+          "impact_strength": 3,
+          "vertical_impulse": 10,
+          "horizontal_impulse": -10,
+          "hitstun_ms": 1000,
+          "reaction_label": "被打"
+        },
+        "k1": {
+          "damage": 20,
+          "impact_strength": 2,
+          "vertical_impulse": 0,
+          "horizontal_impulse": 3,
+          "hitstun_ms": 400,
+          "reaction_label": "被打"
+        },
+        "k2": {
+          "damage": 20,
+          "impact_strength": 2,
+          "vertical_impulse": 0,
+          "horizontal_impulse": 5,
+          "hitstun_ms": 500,
+          "reaction_label": "被打"
+        },
+        "k3": {
+          "damage": 30,
+          "impact_strength": 2,
+          "vertical_impulse": 0,
+          "horizontal_impulse": 6,
+          "hitstun_ms": 800,
+          "reaction_label": "被打"
+        },
+        "k4": {
+          "damage": 50,
+          "impact_strength": 3,
+          "vertical_impulse": 7,
+          "horizontal_impulse": 5,
+          "hitstun_ms": 600,
+          "reaction_label": "被打"
+        },
+        "kbs": {
+          "damage": 200,
+          "impact_strength": 5,
+          "vertical_impulse": 5,
+          "horizontal_impulse": 10,
+          "hitstun_ms": 0,
+          "reaction_label": "击飞"
+        },
+        "kbs1": {
+          "damage": 20,
+          "impact_strength": 2,
+          "vertical_impulse": -20,
+          "horizontal_impulse": 0,
+          "hitstun_ms": 500,
+          "reaction_label": "被打"
+        },
+        "kj1": {
+          "damage": 20,
+          "impact_strength": 4,
+          "vertical_impulse": 0,
+          "horizontal_impulse": 7,
+          "hitstun_ms": 400,
+          "reaction_label": "被打"
+        },
+        "kj11": {
+          "damage": 30,
+          "impact_strength": 5,
+          "vertical_impulse": 0,
+          "horizontal_impulse": 10,
+          "hitstun_ms": 0,
+          "reaction_label": "击飞"
+        },
+        "kj2": {
+          "damage": 60,
+          "impact_strength": 3,
+          "vertical_impulse": 5,
+          "horizontal_impulse": 10,
+          "hitstun_ms": 0,
+          "reaction_label": "击飞"
+        },
+        "tk": {
+          "damage": 30,
+          "impact_strength": 2,
+          "vertical_impulse": -5,
+          "horizontal_impulse": 5,
+          "hitstun_ms": 600,
+          "reaction_label": "被打"
+        },
+        "tz": {
+          "damage": 30,
+          "impact_strength": 3,
+          "vertical_impulse": -5,
+          "horizontal_impulse": 10,
+          "hitstun_ms": 0,
+          "reaction_label": "击飞"
+        },
+        "tz1": {
+          "damage": 30,
+          "impact_strength": 2,
+          "vertical_impulse": -2,
+          "horizontal_impulse": 5,
+          "hitstun_ms": 500,
+          "reaction_label": "被打"
+        },
+        "zh1": {
+          "damage": 50,
+          "impact_strength": 5,
+          "vertical_impulse": 8,
+          "horizontal_impulse": 3,
+          "hitstun_ms": 800,
+          "reaction_label": "被打"
+        },
+        "zh11": {
+          "damage": 80,
+          "impact_strength": 3,
+          "vertical_impulse": 0,
+          "horizontal_impulse": 15,
+          "hitstun_ms": 0,
+          "reaction_label": "击飞"
+        },
+        "zh2": {
+          "damage": 80,
+          "impact_strength": 5,
+          "vertical_impulse": 10,
+          "horizontal_impulse": 15,
+          "hitstun_ms": 0,
+          "reaction_label": "击飞"
+        },
+        "zh21": {
+          "damage": 20,
+          "impact_strength": 4,
+          "vertical_impulse": 3,
+          "horizontal_impulse": 8,
+          "hitstun_ms": 800,
+          "reaction_label": "被打"
+        },
+        "zh3": {
+          "damage": 60,
+          "impact_strength": 15,
+          "vertical_impulse": 7,
+          "horizontal_impulse": 7,
+          "hitstun_ms": 800,
+          "reaction_label": "被打"
+        }
+      }
+    }
+  },
+  "hits_reset_frames": [
+    {
+      "sprite_id": 518,
+      "frame": 2,
+      "source_path": "DefineSprite_518/frame_2/DoAction.as"
+    }
+  ],
+  "on_be_hit_frames": [
+    {
+      "sprite_id": 518,
+      "frame": 1074,
+      "flying": false,
+      "source_path": "DefineSprite_518/frame_1074/DoAction.as"
+    },
+    {
+      "sprite_id": 518,
+      "frame": 1087,
+      "flying": true,
+      "source_path": "DefineSprite_518/frame_1087/DoAction.as"
+    }
+  ],
+  "wall_hit_near": {
+    "source_path": "DefineSprite_518/frame_1/DoAction.as",
+    "distance": 100,
+    "side_split_x": 500
+  },
+  "on_defence_frames": [
+    {
+      "sprite_id": 518,
+      "frame": 1062,
+      "xgtype": 2,
+      "source_path": "DefineSprite_518/frame_1062/DoAction.as"
+    }
+  ],
+  "super_events": [
+    {
+      "action": "必杀",
+      "frame": 578,
+      "source_path": "DefineSprite_518/frame_578/DoAction.as",
+      "source_sha256": "dfbc71676e2bba54ab0908a112ab13284d0e669c60d1670d16295ac51988a60b",
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_bs",
+      "face_label": "小李1"
+    },
+    {
+      "action": "必杀",
+      "frame": 601,
+      "source_path": "DefineSprite_518/frame_601/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "op": "super_end",
+      "kind": "bsw"
+    },
+    {
+      "action": "空中必杀",
+      "frame": 704,
+      "source_path": "DefineSprite_518/frame_704/DoAction.as",
+      "source_sha256": "dfbc71676e2bba54ab0908a112ab13284d0e669c60d1670d16295ac51988a60b",
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_bs",
+      "face_label": "小李1"
+    },
+    {
+      "action": "空中必杀",
+      "frame": 720,
+      "source_path": "DefineSprite_518/frame_720/DoAction.as",
+      "source_sha256": "2b32dc5417633d4d4ad98a0454523a941312e02746d039c6043e9caab11c574b",
+      "op": "super_end",
+      "kind": "bsw"
+    },
+    {
+      "action": "超必杀",
+      "frame": 798,
+      "source_path": "DefineSprite_518/frame_798/DoAction.as",
+      "source_sha256": "1e5135173efac7021bd1136ae9b8c9f8f83d9b75392f0a2607fe3fea16c7a7bf",
+      "op": "super_start",
+      "kind": "cbsd",
+      "xg": "XG_cbs",
+      "face_label": "小李2"
+    },
+    {
+      "action": "超必杀",
+      "frame": 849,
+      "source_path": "DefineSprite_518/frame_849/DoAction.as",
+      "source_sha256": "ef5d0335d54a16e73e60ca8c281b8e2697660a15c5dc7f246d984922bdcdb993",
+      "op": "super_end",
+      "kind": "cbsw"
+    }
+  ],
+  "face_labels": [
+    "小李1",
+    "小李2"
+  ],
+  "timeline_symbol_id": 518,
+  "extracted_partial": false,
+  "hit_fx": {
+    "source_path": "frame_8/DoAction.as",
+    "bdxg": {
+      "1": "XG_kan",
+      "2": "XG_qdj",
+      "3": "XG_qdjx",
+      "4": "XG_mfdj",
+      "5": "XG_mfdjx",
+      "6": "XG_kanx",
+      "7": "XG_fire",
+      "8": "XG_ice",
+      "9": "XG_leidian",
+      "10": "XG_stone"
+    },
+    "color_effects": {
+      "7": {
+        "op": "set_colors",
+        "colors": [
+          {
+            "rb": 255,
+            "gb": 25,
+            "bb": -255
+          },
+          {
+            "rb": 255,
+            "gb": 86,
+            "bb": -255
+          }
+        ],
+        "source_path": "frame_8/DoAction.as#bdxg"
+      },
+      "8": {
+        "op": "set_colors",
+        "colors": [
+          {
+            "rb": 0,
+            "gb": 153,
+            "bb": 255
+          },
+          {
+            "rb": 0,
+            "gb": 198,
+            "bb": 255
+          }
+        ],
+        "source_path": "frame_8/DoAction.as#bdxg"
+      },
+      "9": {
+        "op": "set_colors",
+        "colors": [
+          {
+            "rb": 71,
+            "gb": 91,
+            "bb": 255
+          },
+          {
+            "rb": 178,
+            "gb": 142,
+            "bb": 255
+          }
+        ],
+        "source_path": "frame_8/DoAction.as#bdxg"
+      },
+      "10": {
+        "op": "set_color_matrix",
+        "matrix": [
+          0.3086,
+          0.6094,
+          0.082,
+          0,
+          0,
+          0.3086,
+          0.6094,
+          0.082,
+          0,
+          0,
+          0.3086,
+          0.6094,
+          0.082,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "source_path": "frame_8/DoAction.as#bdxg"
+      }
+    },
+    "bdfyxg": {
+      "1": "XG_fykan",
+      "6": "XG_fykanx",
+      "2": "XG_fyq",
+      "3": "XG_fyqx",
+      "4": "XG_mffy",
+      "5": "XG_mffyx",
+      "7": "XG_mffyx",
+      "8": "XG_mffyx",
+      "9": "XG_mffyx",
+      "10": "XG_mffyx"
+    },
+    "bdfyxg2": {
+      "1": "XG_fyq",
+      "2": "XG_fyq",
+      "3": "XG_fyqx",
+      "6": "XG_fyqx",
+      "4": "XG_mffy",
+      "5": "XG_mffyx",
+      "7": "XG_mffyx",
+      "8": "XG_mffyx",
+      "9": "XG_mffyx",
+      "10": "XG_mffyx"
+    },
+    "clips": {
+      "XG_kan": {
+        "clip": "XG_kan",
+        "source_prefix": "DefineSprite_159_XG_kan",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 1,
+            "op": "shake_root",
+            "source_path": "DefineSprite_159_XG_kan/frame_1/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 2
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_159_XG_kan/frame_2/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_159_XG_kan/frame_2/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 19,
+            "op": "unload",
+            "source_path": "DefineSprite_159_XG_kan/frame_19/DoAction.as"
+          }
+        ]
+      },
+      "XG_qdj": {
+        "clip": "XG_qdj",
+        "source_prefix": "DefineSprite_256_XG_qdj",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 1,
+            "op": "shake_root",
+            "source_path": "DefineSprite_256_XG_qdj/frame_1/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 1,
+            "op": "random_offset",
+            "axis": "x",
+            "positive_factor": 10,
+            "negative_factor": 10,
+            "random_sites": [
+              "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:1",
+              "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:2"
+            ],
+            "source_path": "DefineSprite_256_XG_qdj/frame_1/DoAction.as"
+          },
+          {
+            "frame": 1,
+            "op": "random_offset",
+            "axis": "y",
+            "positive_factor": 20,
+            "negative_factor": 30,
+            "random_sites": [
+              "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:3",
+              "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:4"
+            ],
+            "source_path": "DefineSprite_256_XG_qdj/frame_1/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_256_XG_qdj/frame_2/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_256_XG_qdj/frame_2/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 19,
+            "op": "unload",
+            "source_path": "DefineSprite_256_XG_qdj/frame_19/DoAction.as"
+          }
+        ]
+      },
+      "XG_qdjx": {
+        "clip": "XG_qdjx",
+        "source_prefix": "DefineSprite_236_XG_qdjx",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_236_XG_qdjx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_8/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_8/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 2
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_9/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_9/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 2
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_10/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_10/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 2
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_11/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_11/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 2
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_12/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_12/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 2
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_13/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_13/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 15,
+            "op": "resume_game",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_15/DoAction.as"
+          },
+          {
+            "frame": 19,
+            "op": "unload",
+            "source_path": "DefineSprite_236_XG_qdjx/frame_19/DoAction.as"
+          }
+        ]
+      },
+      "XG_mfdj": {
+        "clip": "XG_mfdj",
+        "source_prefix": "DefineSprite_314_XG_mfdj",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 1,
+            "op": "shake_root",
+            "source_path": "DefineSprite_314_XG_mfdj/frame_1/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_314_XG_mfdj/frame_2/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_314_XG_mfdj/frame_3/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_314_XG_mfdj/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 2
+          },
+          {
+            "frame": 15,
+            "op": "unload",
+            "source_path": "DefineSprite_314_XG_mfdj/frame_15/DoAction.as"
+          }
+        ]
+      },
+      "XG_mfdjx": {
+        "clip": "XG_mfdjx",
+        "source_prefix": "DefineSprite_298_XG_mfdjx",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_8/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_8/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 2
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_9/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_9/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 2
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_10/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_10/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 2
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_11/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_11/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 2
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_12/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_12/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 2
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_13/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_13/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 15,
+            "op": "resume_game",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_15/DoAction.as"
+          },
+          {
+            "frame": 19,
+            "op": "unload",
+            "source_path": "DefineSprite_298_XG_mfdjx/frame_19/DoAction.as"
+          }
+        ]
+      },
+      "XG_kanx": {
+        "clip": "XG_kanx",
+        "source_prefix": "DefineSprite_125_XG_kanx",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_125_XG_kanx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_125_XG_kanx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_8/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_8/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 2
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_9/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_9/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 2
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_10/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_10/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 2
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_11/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_11/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 2
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_12/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_12/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 2
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_13/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_125_XG_kanx/frame_13/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 15,
+            "op": "resume_game",
+            "source_path": "DefineSprite_125_XG_kanx/frame_15/DoAction.as"
+          },
+          {
+            "frame": 19,
+            "op": "unload",
+            "source_path": "DefineSprite_125_XG_kanx/frame_19/DoAction.as"
+          }
+        ]
+      },
+      "XG_fire": {
+        "clip": "XG_fire",
+        "source_prefix": "DefineSprite_423_XG_fire",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_423_XG_fire/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_423_XG_fire/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_8/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_8/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 2
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_9/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_9/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 2
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_10/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_10/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 2
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_11/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_11/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 2
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_12/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_12/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 2
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_13/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_423_XG_fire/frame_13/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 15,
+            "op": "resume_game",
+            "source_path": "DefineSprite_423_XG_fire/frame_15/DoAction.as"
+          },
+          {
+            "frame": 30,
+            "op": "unload",
+            "source_path": "DefineSprite_423_XG_fire/frame_30/DoAction.as"
+          }
+        ]
+      },
+      "XG_ice": {
+        "clip": "XG_ice",
+        "source_prefix": "DefineSprite_358_XG_ice",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_358_XG_ice/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_358_XG_ice/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_8/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_8/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 2
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_9/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_9/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 2
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_10/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_10/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 2
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_11/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_11/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 2
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_12/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_12/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 2
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_13/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_358_XG_ice/frame_13/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 15,
+            "op": "resume_game",
+            "source_path": "DefineSprite_358_XG_ice/frame_15/DoAction.as"
+          },
+          {
+            "frame": 23,
+            "op": "unload",
+            "source_path": "DefineSprite_358_XG_ice/frame_23/DoAction.as"
+          }
+        ]
+      },
+      "XG_leidian": {
+        "clip": "XG_leidian",
+        "source_prefix": "DefineSprite_334_XG_leidian",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_334_XG_leidian/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shine",
+            "color_rgb24": 16777215,
+            "source_path": "DefineSprite_334_XG_leidian/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_8/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -3.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_8/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 3.0,
+            "line": 2
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_9/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 9,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_9/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 2
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_10/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 10,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_10/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 2
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_11/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 11,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_11/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 2
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_12/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 12,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_12/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 2
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_13/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 13,
+            "op": "shake_root",
+            "source_path": "DefineSprite_334_XG_leidian/frame_13/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 15,
+            "op": "resume_game",
+            "source_path": "DefineSprite_334_XG_leidian/frame_15/DoAction.as"
+          },
+          {
+            "frame": 24,
+            "op": "unload",
+            "source_path": "DefineSprite_334_XG_leidian/frame_24/DoAction.as"
+          }
+        ]
+      },
+      "XG_stone": {
+        "clip": "XG_stone",
+        "source_prefix": null,
+        "imported": false,
+        "presentation_events": []
+      },
+      "XG_fykan": {
+        "clip": "XG_fykan",
+        "source_prefix": "DefineSprite_216_XG_fykan",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 1,
+            "op": "shake_root",
+            "source_path": "DefineSprite_216_XG_fykan/frame_1/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_216_XG_fykan/frame_2/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_216_XG_fykan/frame_2/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 11,
+            "op": "unload",
+            "source_path": "DefineSprite_216_XG_fykan/frame_11/DoAction.as"
+          }
+        ]
+      },
+      "XG_fykanx": {
+        "clip": "XG_fykanx",
+        "source_prefix": "DefineSprite_214_XG_fykanx",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_8/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_8/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 9,
+            "op": "resume_game",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_9/DoAction.as"
+          },
+          {
+            "frame": 15,
+            "op": "unload",
+            "source_path": "DefineSprite_214_XG_fykanx/frame_15/DoAction.as"
+          }
+        ]
+      },
+      "XG_fyq": {
+        "clip": "XG_fyq",
+        "source_prefix": "DefineSprite_200_XG_fyq",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 1,
+            "op": "shake_root",
+            "source_path": "DefineSprite_200_XG_fyq/frame_1/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_200_XG_fyq/frame_2/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_200_XG_fyq/frame_2/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 11,
+            "op": "unload",
+            "source_path": "DefineSprite_200_XG_fyq/frame_11/DoAction.as"
+          }
+        ]
+      },
+      "XG_fyqx": {
+        "clip": "XG_fyqx",
+        "source_prefix": "DefineSprite_196_XG_fyqx",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "resume_game",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_8/DoAction.as"
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_8/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_8/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 18,
+            "op": "unload",
+            "source_path": "DefineSprite_196_XG_fyqx/frame_18/DoAction.as"
+          }
+        ]
+      },
+      "XG_mffy": {
+        "clip": "XG_mffy",
+        "source_prefix": "DefineSprite_280_XG_mffy",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 1,
+            "op": "shake_root",
+            "source_path": "DefineSprite_280_XG_mffy/frame_1/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_280_XG_mffy/frame_2/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_280_XG_mffy/frame_2/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 2
+          },
+          {
+            "frame": 12,
+            "op": "unload",
+            "source_path": "DefineSprite_280_XG_mffy/frame_12/DoAction.as"
+          }
+        ]
+      },
+      "XG_mffyx": {
+        "clip": "XG_mffyx",
+        "source_prefix": "DefineSprite_279_XG_mffyx",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 2,
+            "op": "pause_game",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_2/DoAction.as"
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_2/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 2,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_2/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 2.0,
+            "line": 1
+          },
+          {
+            "frame": 3,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_3/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 4,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_4/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": -2.0,
+            "line": 1
+          },
+          {
+            "frame": 5,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_5/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 6,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_6/DoAction.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 1.0,
+            "line": 1
+          },
+          {
+            "frame": 7,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_7/DoAction.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": -1.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "resume_game",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_8/DoAction.as"
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_8/DoAction_2.as",
+            "axis": "y",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 8,
+            "op": "shake_root",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_8/DoAction_2.as",
+            "axis": "x",
+            "operator": "=",
+            "pixels": 0.0,
+            "line": 1
+          },
+          {
+            "frame": 24,
+            "op": "unload",
+            "source_path": "DefineSprite_279_XG_mffyx/frame_24/DoAction.as"
+          }
+        ]
+      },
+      "XG_bs": {
+        "clip": "XG_bs",
+        "source_prefix": "DefineSprite_459_XG_bs",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 17,
+            "op": "unload",
+            "source_path": "DefineSprite_459_XG_bs/frame_17/DoAction.as"
+          }
+        ]
+      },
+      "XG_cbs": {
+        "clip": "XG_cbs",
+        "source_prefix": "DefineSprite_441_XG_cbs",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 17,
+            "op": "unload",
+            "source_path": "DefineSprite_441_XG_cbs/frame_17/DoAction.as"
+          }
+        ]
+      },
+      "XG_bsq": {
+        "clip": "XG_bsq",
+        "source_prefix": "DefineSprite_493_XG_bsq",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 17,
+            "op": "unload",
+            "source_path": "DefineSprite_493_XG_bsq/frame_17/DoAction.as"
+          }
+        ]
+      },
+      "XG_fzcc": {
+        "clip": "XG_fzcc",
+        "source_prefix": "DefineSprite_379_XG_fzcc",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 17,
+            "op": "unload",
+            "source_path": "DefineSprite_379_XG_fzcc/frame_17/DoAction.as"
+          }
+        ]
+      },
+      "XG_fzbs": {
+        "clip": "XG_fzbs",
+        "source_prefix": "DefineSprite_393_XG_fzbs",
+        "imported": true,
+        "presentation_events": [
+          {
+            "frame": 20,
+            "op": "unload",
+            "source_path": "DefineSprite_393_XG_fzbs/frame_20/DoAction.as"
+          }
+        ]
+      }
+    }
+  },
+  "combo_hud": {
+    "p1hits_pn": 2,
+    "p2hits_pn": 1,
+    "p1hits_source_path": "frame_56/DoAction_2.as",
+    "p2hits_source_path": "frame_56/DoAction_2.as",
+    "play_label": "连击",
+    "play_frame": 10,
+    "stop_frame": 1,
+    "show_number_frame": 11,
+    "reset_frame": 50,
+    "show_number_source_path": "DefineSprite_1833/frame_11/DoAction.as",
+    "reset_source_path": "DefineSprite_1833/frame_50/DoAction.as",
+    "bar2_chase_per_tick": "maxhp/500"
+  },
+  "super_presentation": {
+    "format": "bvn26-super-presentation-v1",
+    "source_path": "frame_8/DoAction.as",
+    "black_mu": {
+      "instance_name": "blackMu",
+      "sprite_id": 1510,
+      "idle_frame": 1,
+      "super_frame": 2,
+      "ko_label": "KO",
+      "imported": true,
+      "directory": "res://generated/main/blackMu",
+      "source_path": "frame_8/DoAction.as",
+      "frame_count": 5,
+      "ko_frame": 5
+    },
+    "ts_face": {
+      "instance_name": "ts_face",
+      "sprite_id": 1678,
+      "bg_instance": "bg",
+      "bg_sprite_id": 1517,
+      "face_p1_instance": "face_p1",
+      "face_p2_instance": "face_p2",
+      "face_clip_sprite_id": 1677,
+      "portrait_sprite_id": 1676,
+      "idle_frame": 1,
+      "in_label": "in",
+      "out_label": "out",
+      "in_frame": 5,
+      "out_frame": 35,
+      "bg_frame_count": 38,
+      "face_frame_count": 38,
+      "portrait_labels": {
+        "一户1": 1,
+        "一户2": 2,
+        "一户万解": 3,
+        "一户万解1": 4,
+        "虚护1": 5,
+        "虚护2": 6,
+        "虚护3": 7,
+        "白一护1": 8,
+        "白一护2": 9,
+        "露其亚1": 10,
+        "露其亚2": 11,
+        "恋次1": 12,
+        "恋次2": 13,
+        "恋次3": 14,
+        "日番谷1": 15,
+        "日番谷2": 16,
+        "日番谷3": 17,
+        "白哉1": 18,
+        "白哉2": 19,
+        "白哉3": 20,
+        "鸣人1": 22,
+        "鸣人2": 23,
+        "鸣人3": 24,
+        "鸣人4": 25,
+        "金鸣1": 26,
+        "金鸣2": 27,
+        "樱1": 30,
+        "樱2": 31,
+        "佐助1": 32,
+        "佐助2": 33,
+        "佐助3": 34,
+        "须佐助1": 35,
+        "须佐助2": 36,
+        "卡卡西1": 40,
+        "卡卡西2": 41,
+        "卡卡西3": 42,
+        "茶渡": 43,
+        "小李1": 44,
+        "小李2": 45,
+        "宁次1": 46,
+        "宁次2": 47,
+        "手鞠1": 48,
+        "小乌1": 49,
+        "石田1": 50,
+        "石田2": 51,
+        "石田3": 52,
+        "银1": 53,
+        "银2": 54,
+        "鼬1": 55,
+        "鼬2": 56,
+        "我爱罗1": 57,
+        "我爱罗2": 58,
+        "大蛇丸1": 59,
+        "大蛇丸2": 60,
+        "蓝染1": 61,
+        "蓝染2": 62,
+        "小南1": 63,
+        "小南2": 64,
+        "佩恩1": 65,
+        "佩恩2": 66,
+        "剑八1": 67,
+        "剑八2": 68,
+        "带土1": 69,
+        "带土2": 70,
+        "带土3": 71,
+        "一角1": 72,
+        "一角2": 73,
+        "迪达拉1": 74,
+        "迪达拉2": 75,
+        "自来也1": 76,
+        "自来也2": 77,
+        "重吾1": 78,
+        "重吾2": 79,
+        "香磷1": 80,
+        "香磷2": 81,
+        "奇拉比1": 82,
+        "奇拉比2": 83,
+        "涅浊利1": 84,
+        "涅浊利2": 85
+      },
+      "pn_face_slot": {
+        "1": "face_p2",
+        "2": "face_p1"
+      },
+      "imported": true,
+      "directory": "res://generated/main/ts_face",
+      "source_path": "frame_8/DoAction.as"
+    },
+    "xg": {
+      "bsd": "XG_bs",
+      "cbsd": "XG_cbs"
+    },
+    "hide_stage_instances": [
+      "bgmc",
+      "fgmc"
+    ],
+    "ts_face_imported": true,
+    "black_mu_imported": true,
+    "xg_imported": true
+  },
+  "hit_priority": {
+    "instances": [
+      "tkatm",
+      "tk1atm",
+      "tk2atm",
+      "tk3atm",
+      "tk4atm",
+      "tk5atm",
+      "tzatm",
+      "tz1atm",
+      "tz2atm",
+      "tz3atm",
+      "tz4atm",
+      "tz5atm",
+      "k1atm",
+      "k11atm",
+      "k12atm",
+      "k13atm",
+      "k14atm",
+      "k15atm",
+      "k2atm",
+      "k21atm",
+      "k22atm",
+      "k23atm",
+      "k24atm",
+      "k25atm",
+      "k3atm",
+      "k31atm",
+      "k32atm",
+      "k33atm",
+      "k34atm",
+      "k35atm",
+      "k4atm",
+      "k41atm",
+      "k42atm",
+      "k43atm",
+      "k44atm",
+      "k45atm",
+      "k5atm",
+      "k51atm",
+      "k52atm",
+      "k53atm",
+      "k54atm",
+      "k55atm",
+      "kj1atm",
+      "kj11atm",
+      "kj12atm",
+      "kj13atm",
+      "kj14atm",
+      "kj15atm",
+      "kj2atm",
+      "kj21atm",
+      "kj22atm",
+      "kj23atm",
+      "kj24atm",
+      "kj25atm",
+      "zh1atm",
+      "zh11atm",
+      "zh12atm",
+      "zh13atm",
+      "zh14atm",
+      "zh15atm",
+      "zh2atm",
+      "zh21atm",
+      "zh22atm",
+      "zh23atm",
+      "zh24atm",
+      "zh25atm",
+      "zh3atm",
+      "zh31atm",
+      "zh32atm",
+      "zh33atm",
+      "zh34atm",
+      "zh35atm",
+      "bsatm",
+      "bs1atm",
+      "bs2atm",
+      "bs3atm",
+      "bs4atm",
+      "bs5atm",
+      "sbsatm",
+      "sbs1atm",
+      "sbs2atm",
+      "sbs3atm",
+      "sbs4atm",
+      "sbs5atm",
+      "cbsatm",
+      "cbs1atm",
+      "cbs2atm",
+      "cbs3atm",
+      "cbs4atm",
+      "cbs5atm",
+      "kbsatm",
+      "kbs1atm",
+      "kbs2atm",
+      "kbs3atm",
+      "kbs4atm",
+      "kbs5atm"
+    ],
+    "source_path": "DefineSprite_5/frame_1/DoAction.as",
+    "source_sha256": "944904cc8cc1b735e6c1ad749b1a16f792b83b503ff25418b536245bf57e3524"
+  },
+  "energy_events": [
+    {
+      "action": "招1",
+      "frame": 282,
+      "delta": 10.0,
+      "source_path": "DefineSprite_518/frame_282/DoAction.as",
+      "source_sha256": "0c85cd46a3bf8b983929f013964a3a7a66f861bd1d8f5a3d65a8b2dc66106b3a"
+    },
+    {
+      "action": "砍技2",
+      "frame": 358,
+      "delta": 10.0,
+      "source_path": "DefineSprite_518/frame_358/DoAction.as",
+      "source_sha256": "0c85cd46a3bf8b983929f013964a3a7a66f861bd1d8f5a3d65a8b2dc66106b3a"
+    },
+    {
+      "action": "砍技1",
+      "frame": 405,
+      "delta": 5.0,
+      "source_path": "DefineSprite_518/frame_405/DoAction.as",
+      "source_sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+    },
+    {
+      "action": "招2",
+      "frame": 472,
+      "delta": 10.0,
+      "source_path": "DefineSprite_518/frame_472/DoAction.as",
+      "source_sha256": "0c85cd46a3bf8b983929f013964a3a7a66f861bd1d8f5a3d65a8b2dc66106b3a"
+    },
+    {
+      "action": "招3",
+      "frame": 526,
+      "delta": 5.0,
+      "source_path": "DefineSprite_518/frame_526/DoAction.as",
+      "source_sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+    },
+    {
+      "action": "必杀",
+      "frame": 575,
+      "delta": -100.0,
+      "source_path": "DefineSprite_518/frame_575/DoAction.as",
+      "source_sha256": "e7ae956c5ea12d66a571fd87eefbf90e93460ed6905b7b798998e8fc4d390874"
+    },
+    {
+      "action": "空中必杀",
+      "frame": 702,
+      "delta": -100.0,
+      "source_path": "DefineSprite_518/frame_702/DoAction.as",
+      "source_sha256": "e7ae956c5ea12d66a571fd87eefbf90e93460ed6905b7b798998e8fc4d390874"
+    },
+    {
+      "action": "超必杀",
+      "frame": 796,
+      "delta": -300.0,
+      "source_path": "DefineSprite_518/frame_796/DoAction.as",
+      "source_sha256": "bbc26301ef87268333d8b3d2816249af10e9d7fcd3a9c9f8282930f78473de8b"
+    }
+  ],
+  "health_events": [
+    {
+      "action": "必杀2",
+      "frame": 676,
+      "threshold": 150.0,
+      "above_damage": 150.0,
+      "below_ratio": 0.8,
+      "source_path": "DefineSprite_518/frame_676/DoAction.as",
+      "source_sha256": "cdaf1c9088f0ccdc43fa92438ed650cf93275e69df8cdd9df5002c2a5e11bd6f",
+      "lose_hp_source_path": "DefineSprite_518/frame_1/DoAction.as",
+      "lose_hp_source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df"
+    },
+    {
+      "action": "超必杀",
+      "frame": 806,
+      "threshold": 300.0,
+      "above_damage": 300.0,
+      "below_ratio": 0.8,
+      "source_path": "DefineSprite_518/frame_806/DoAction.as",
+      "source_sha256": "a3d2e875023eaeaf81e44e272c960826ac2ef72548a8787072151a7d930e2af5",
+      "lose_hp_source_path": "DefineSprite_518/frame_1/DoAction.as",
+      "lose_hp_source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df"
+    }
+  ],
+  "presentation_events": [
+    {
+      "action": "必杀",
+      "frame": 607,
+      "op": "screen_flash",
+      "color_rgb24": 14917603,
+      "source_path": "DefineSprite_518/frame_607/DoAction.as",
+      "source_line": 1,
+      "source_sha256": "8914b521d003f40233b6a9d2811d354fe5c64ba46f5c687ab02e7d291dd6e4fb"
+    },
+    {
+      "action": "必杀2",
+      "frame": 672,
+      "op": "screen_flash",
+      "color_rgb24": 16777215,
+      "source_path": "DefineSprite_518/frame_672/DoAction.as",
+      "source_line": 1,
+      "source_sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5"
+    },
+    {
+      "action": "必杀2",
+      "frame": 674,
+      "op": "screen_flash",
+      "color_rgb24": 16718656,
+      "source_path": "DefineSprite_518/frame_674/DoAction.as",
+      "source_line": 1,
+      "source_sha256": "b525277d5fd6194b79102429c61a6e317ba8afb848a07be93a4e6cf2beb4ba27"
+    },
+    {
+      "action": "超必杀",
+      "frame": 837,
+      "op": "screen_flash",
+      "color_rgb24": 14917603,
+      "source_path": "DefineSprite_518/frame_837/DoAction.as",
+      "source_line": 1,
+      "source_sha256": "8914b521d003f40233b6a9d2811d354fe5c64ba46f5c687ab02e7d291dd6e4fb"
+    }
+  ],
+  "clip_placements": [],
+  "body_warps": [
+    {
+      "action": "招1",
+      "frame": 287,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "xscale_gt_0": {
+        "set_facing": 1,
+        "x_bdmn_width": -0.7
+      },
+      "xscale_lt_0": {
+        "set_facing": -1,
+        "x_bdmn_width": 0.7
+      },
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_287/DoAction.as",
+      "source_sha256": "9f235068306dfba652b56185b0a61dadc4dc29418e5247459618abc2ba429064"
+    },
+    {
+      "action": "招1",
+      "frame": 325,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "xscale_gt_0": {
+        "set_facing": 1,
+        "x_bdmn_width": -0.7
+      },
+      "xscale_lt_0": {
+        "set_facing": -1,
+        "x_bdmn_width": 0.7
+      },
+      "place_y": true,
+      "y_bdmn_height": 0.5,
+      "source_path": "DefineSprite_518/frame_325/DoAction.as",
+      "source_sha256": "88c40ed0277f03f3252faba7651b6a05fd724b6b0a46bf2681a7b4f368b6ff83"
+    },
+    {
+      "action": "必杀",
+      "frame": 605,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "xscale_gt_0": {
+        "set_facing": 1,
+        "x_bdmn_width": -0.7
+      },
+      "xscale_lt_0": {
+        "set_facing": -1,
+        "x_bdmn_width": 0.7
+      },
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_605/DoAction.as",
+      "source_sha256": "9f235068306dfba652b56185b0a61dadc4dc29418e5247459618abc2ba429064"
+    },
+    {
+      "action": "必杀1",
+      "frame": 639,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "xscale_gt_0": {
+        "set_facing": 1
+      },
+      "xscale_lt_0": {
+        "set_facing": -1
+      },
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_639/DoAction.as",
+      "source_sha256": "f5ffc9774701fb4d61dd1add6a4e983b340879ba57568b983c8075f16ee5ba4e"
+    },
+    {
+      "action": "超必杀",
+      "frame": 852,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_852/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 862,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_862/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 871,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_871/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 879,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_879/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 890,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_890/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 900,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_900/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 909,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_909/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 917,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_917/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 933,
+      "op": "warp_to_opponent",
+      "place_x": true,
+      "place_y": true,
+      "source_path": "DefineSprite_518/frame_933/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    }
+  ],
+  "motion_windows": [
+    {
+      "action": "跳砍",
+      "start_frame": 121,
+      "end_frame": 123,
+      "forward_pixels": 10.0,
+      "source_path": "DefineSprite_518/frame_121/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485",
+      "action_bytes_sha256": "f28f34a2e3aaff179325a8e8aab89124053bc521edadf95081a75a5996f26947"
+    },
+    {
+      "action": "砍1",
+      "start_frame": 159,
+      "end_frame": 161,
+      "forward_pixels": 5.0,
+      "source_path": "DefineSprite_518/frame_159/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e4470e6009a478fefa03b6d886926655edb291e887a9396cede12982c8a7c6aa",
+      "action_bytes_sha256": "4ead89c5838be8f574bb2d5971a9e5c0ca8a4960e545949e7c78b90556501a84"
+    },
+    {
+      "action": "砍2",
+      "start_frame": 182,
+      "end_frame": 185,
+      "forward_pixels": 10.0,
+      "source_path": "DefineSprite_518/frame_182/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485",
+      "action_bytes_sha256": "f28f34a2e3aaff179325a8e8aab89124053bc521edadf95081a75a5996f26947"
+    },
+    {
+      "action": "砍3",
+      "start_frame": 211,
+      "end_frame": 215,
+      "forward_pixels": 10.0,
+      "source_path": "DefineSprite_518/frame_211/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485",
+      "action_bytes_sha256": "f28f34a2e3aaff179325a8e8aab89124053bc521edadf95081a75a5996f26947"
+    },
+    {
+      "action": "砍4",
+      "start_frame": 247,
+      "end_frame": 250,
+      "forward_pixels": 15.0,
+      "source_path": "DefineSprite_518/frame_247/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "36479b3f2d1308fca03d78a79804095d86e3607e8ca1df2f8cd018a122f163ab",
+      "action_bytes_sha256": "7d3150b8a3f7e600433c4b323936044a9d15c19fa3638b88e074a2be79b69811"
+    },
+    {
+      "action": "砍技2",
+      "start_frame": 360,
+      "end_frame": 365,
+      "forward_pixels": 10.0,
+      "source_path": "DefineSprite_518/frame_360/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8e57b4052eaff5732dc33e77db6ea578b8e78c085c6120b689ac20d1aed22e2f",
+      "action_bytes_sha256": "b5fc0e3e48fcccec4507eb30bb4f6c1e64c790c35b800f2427de96556629b2b5"
+    },
+    {
+      "action": "砍技1",
+      "start_frame": 406,
+      "end_frame": 439,
+      "forward_pixels": 9.0,
+      "source_path": "DefineSprite_518/frame_406/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "628d7957138aa8260e752a71e383841aea07183a5a8bd2b27ca5b9e9520390be",
+      "action_bytes_sha256": "0c6c7aaceba421ea911d4dc23247593aa720a89a6898e532b28d0a6a39407aa8"
+    },
+    {
+      "action": "招2",
+      "start_frame": 473,
+      "end_frame": 477,
+      "forward_pixels": 15.0,
+      "source_path": "DefineSprite_518/frame_473/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c0ba533d0f3d15061d0ae8992c0938bd182c2c14d555a445a5c028f763bc01cb",
+      "action_bytes_sha256": "0c6411048d5da4c56e47c3a4438bd44a8d0be3cb49815cae9e8bad1bba8c5e56"
+    },
+    {
+      "action": "招2",
+      "start_frame": 478,
+      "end_frame": 482,
+      "forward_pixels": 15.0,
+      "source_path": "DefineSprite_518/frame_478/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "36479b3f2d1308fca03d78a79804095d86e3607e8ca1df2f8cd018a122f163ab",
+      "action_bytes_sha256": "7d3150b8a3f7e600433c4b323936044a9d15c19fa3638b88e074a2be79b69811"
+    },
+    {
+      "action": "招3",
+      "start_frame": 527,
+      "end_frame": 532,
+      "forward_pixels": 10.0,
+      "source_path": "DefineSprite_518/frame_527/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485",
+      "action_bytes_sha256": "f28f34a2e3aaff179325a8e8aab89124053bc521edadf95081a75a5996f26947"
+    },
+    {
+      "action": "必杀2",
+      "start_frame": 681,
+      "end_frame": 684,
+      "forward_pixels": -10.0,
+      "source_path": "DefineSprite_518/frame_681/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "a398cdc4f1a71b5c3958334333003148a6999cd519f1fac7fcb76ddf11b5a83d",
+      "action_bytes_sha256": "53b45d01acf7b074cb7dff52e70b6e1e94201ddcc01e550cf1445fe506b0fd5e"
+    },
+    {
+      "action": "超必杀",
+      "start_frame": 853,
+      "end_frame": 860,
+      "forward_pixels": 15.0,
+      "source_path": "DefineSprite_518/frame_853/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "36479b3f2d1308fca03d78a79804095d86e3607e8ca1df2f8cd018a122f163ab",
+      "action_bytes_sha256": "7d3150b8a3f7e600433c4b323936044a9d15c19fa3638b88e074a2be79b69811"
+    },
+    {
+      "action": "超必杀",
+      "start_frame": 863,
+      "end_frame": 869,
+      "forward_pixels": 15.0,
+      "source_path": "DefineSprite_518/frame_863/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "1c3aea54c16084665c29e4acf812f3db6b8f9d260043142dee29902ee39db7f4",
+      "action_bytes_sha256": "886106697f8a67b8e94898e37b88dbac4784439eaaa069de3d791a62c0c0257b"
+    },
+    {
+      "action": "超必杀",
+      "start_frame": 872,
+      "end_frame": 878,
+      "forward_pixels": -15.0,
+      "source_path": "DefineSprite_518/frame_872/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "3105dfc558b687fe67099723f4645897675c21634680e96c58fa63075ccca57e",
+      "action_bytes_sha256": "bd38167b1c5fec7986c216e66ee65544b5fda5e627992d6ad95014e2f80bea64"
+    },
+    {
+      "action": "超必杀",
+      "start_frame": 880,
+      "end_frame": 889,
+      "forward_pixels": -15.0,
+      "source_path": "DefineSprite_518/frame_880/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e705eb101c8d7d9b3009d941e6efaea68dbb7c49f4d753bdd7826cb39921deaf",
+      "action_bytes_sha256": "d7649b9fbd52eb392e9ecca415aca9954903dfa9d93e3b4c4351d746be27f78b"
+    },
+    {
+      "action": "超必杀",
+      "start_frame": 891,
+      "end_frame": 898,
+      "forward_pixels": 15.0,
+      "source_path": "DefineSprite_518/frame_891/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "36479b3f2d1308fca03d78a79804095d86e3607e8ca1df2f8cd018a122f163ab",
+      "action_bytes_sha256": "7d3150b8a3f7e600433c4b323936044a9d15c19fa3638b88e074a2be79b69811"
+    },
+    {
+      "action": "超必杀",
+      "start_frame": 901,
+      "end_frame": 907,
+      "forward_pixels": 15.0,
+      "source_path": "DefineSprite_518/frame_901/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "1c3aea54c16084665c29e4acf812f3db6b8f9d260043142dee29902ee39db7f4",
+      "action_bytes_sha256": "886106697f8a67b8e94898e37b88dbac4784439eaaa069de3d791a62c0c0257b"
+    },
+    {
+      "action": "超必杀",
+      "start_frame": 910,
+      "end_frame": 916,
+      "forward_pixels": -15.0,
+      "source_path": "DefineSprite_518/frame_910/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "3105dfc558b687fe67099723f4645897675c21634680e96c58fa63075ccca57e",
+      "action_bytes_sha256": "bd38167b1c5fec7986c216e66ee65544b5fda5e627992d6ad95014e2f80bea64"
+    },
+    {
+      "action": "超必杀",
+      "start_frame": 918,
+      "end_frame": 927,
+      "forward_pixels": -15.0,
+      "source_path": "DefineSprite_518/frame_918/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e705eb101c8d7d9b3009d941e6efaea68dbb7c49f4d753bdd7826cb39921deaf",
+      "action_bytes_sha256": "d7649b9fbd52eb392e9ecca415aca9954903dfa9d93e3b4c4351d746be27f78b"
+    },
+    {
+      "action": "起身",
+      "start_frame": 1133,
+      "end_frame": 1137,
+      "forward_speed_factor": -0.8,
+      "round_forward": false,
+      "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c99afb396036e5858bad62112ad9b4830014d6a99d4991aef37fba22a137bbab",
+      "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b"
+    }
+  ],
+  "jump_windows": [
+    {
+      "action": "跳",
+      "start_frame": 36,
+      "end_frame": 43,
+      "step": 1,
+      "source_path": "DefineSprite_518/frame_36/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "15d993e9b1598e78ddb3e8ca35054bb2a562bea05b7c388fbcae371981dc8ff2",
+      "action_bytes_sha256": "eb2ffaabfd542e9c87c08c4806c696512039a06e16e2e25eb820abec8930232d"
+    },
+    {
+      "action": "跳",
+      "start_frame": 44,
+      "end_frame": 49,
+      "step": 2,
+      "source_path": "DefineSprite_518/frame_44/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0e74ab6cac90234a068c43bdd8851d4525e750d49fbd8dc7d579dc727df256c3",
+      "action_bytes_sha256": "544f9d34a56c721e03ded3257a40beef56c87a544577c3e981befe9e7fd8b163"
+    },
+    {
+      "action": "落",
+      "start_frame": 50,
+      "end_frame": 65,
+      "step": 3,
+      "source_path": "DefineSprite_518/frame_50/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "1dd832a1ce74067bd825f06d162d2b22e4c1a2c467a47e0dba4c6b9b2e29ac9e",
+      "action_bytes_sha256": "92873abe6916fc792af84f3477d5f1d7d2f9db55e334ea34cc7c236e3a830fc5"
+    },
+    {
+      "action": "跳2",
+      "start_frame": 66,
+      "end_frame": 76,
+      "step": 4,
+      "source_path": "DefineSprite_518/frame_66/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "a5e83704d5060297001dd8191822a1fdb310052896c4d0d1f9d69ca1f9a495f0",
+      "action_bytes_sha256": "39913017abb24003e2dc431169b88074018b46053ba6d885af8000b759724b43"
+    },
+    {
+      "action": "跳2",
+      "start_frame": 77,
+      "end_frame": 82,
+      "step": 5,
+      "source_path": "DefineSprite_518/frame_77/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "092e6f38f29accd57b1b3367b69d2128273fbf865dda02bb9e6ba70780771c6e",
+      "action_bytes_sha256": "4a969b905d125ac42bcbea3e99398b801c936fe7d740e39b2ea477672f5d2238"
+    },
+    {
+      "action": "落2",
+      "start_frame": 83,
+      "end_frame": 108,
+      "step": 6,
+      "source_path": "DefineSprite_518/frame_83/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "767f0d510bc837c4f8ed84dd2c726b752ce3806104bd8670ea9debc210d94b6d",
+      "action_bytes_sha256": "38b6f71be4b99a88923ac849f5f52a62567b687f83407604dc0f9a6a52d0f7f0"
+    }
+  ],
+  "projectiles": [],
+  "summon_events": [
+    {
+      "action": "招换",
+      "frame": 992,
+      "call_kind": "doZhaoHuan",
+      "skip_if_truthy": "hurtSkling",
+      "set_bs": 1,
+      "energy_delta": -100,
+      "function_source_path": "DefineSprite_518/frame_1/DoAction.as",
+      "function_source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
+      "helper_id": "天天",
+      "helper_swf": "tenten.swf",
+      "behind_pixels": 20,
+      "start_frame": 2,
+      "source_path": "DefineSprite_518/frame_992/DoAction.as",
+      "source_sha256": "9a4e1df3b75d75b39859f0968d785f77d37ac0a8433d1017068d334da3f65753"
+    }
+  ],
+  "command_catalog": {
+    "format": "bvn26-command-catalog-v1",
+    "status": "reverse_engineering_intermediate",
+    "id_convention": "source_frame_label",
+    "control_path": "DefineSprite_18/frame_1/DoAction.as",
+    "control_sha256": "2b0bebac6f726da5bc15c525c07c88fdb558cf49c0722121ef7da0a915732f63",
+    "predicates": {
+      "nornalhit": {
+        "name": "nornalhit",
+        "buttons_all": [
+          "attack"
+        ],
+        "buttons_none": [
+          "jump",
+          "up",
+          "down"
+        ],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)"
+      },
+      "skill1": {
+        "name": "skill1",
+        "buttons_all": [
+          "down",
+          "attack"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.斩)"
+      },
+      "skill2": {
+        "name": "skill2",
+        "buttons_all": [
+          "up",
+          "attack"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.上) && _parent.kis(_parent.斩)"
+      },
+      "magichit1": {
+        "name": "magichit1",
+        "buttons_all": [
+          "ranged"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.招)"
+      },
+      "magichit2": {
+        "name": "magichit2",
+        "buttons_all": [
+          "down",
+          "ranged"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.招)"
+      },
+      "magichit3": {
+        "name": "magichit3",
+        "buttons_all": [
+          "up",
+          "ranged"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.上) && _parent.kis(_parent.招)"
+      },
+      "bisha": {
+        "name": "bisha",
+        "buttons_all": [
+          "special"
+        ],
+        "buttons_none": [],
+        "energy_min": 100,
+        "player_expr": "_parent.kis(_parent.必杀)"
+      },
+      "bishaUP": {
+        "name": "bishaUP",
+        "buttons_all": [
+          "up",
+          "special"
+        ],
+        "buttons_none": [],
+        "energy_min": 100,
+        "player_expr": "_parent.kis(_parent.上) && _parent.kis(_parent.必杀)"
+      },
+      "bishaSuper": {
+        "name": "bishaSuper",
+        "buttons_all": [
+          "down",
+          "special"
+        ],
+        "buttons_none": [],
+        "energy_min": 300,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.必杀)"
+      },
+      "bishaAir": {
+        "name": "bishaAir",
+        "buttons_all": [
+          "special"
+        ],
+        "buttons_none": [],
+        "energy_min": 100,
+        "player_expr": "_parent.kis(_parent.必杀)"
+      },
+      "airhit": {
+        "name": "airhit",
+        "buttons_all": [
+          "attack"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.斩)"
+      },
+      "airMagichit": {
+        "name": "airMagichit",
+        "buttons_all": [
+          "ranged"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.招)"
+      },
+      "zhaoHuan": {
+        "name": "zhaoHuan",
+        "buttons_all": [
+          "summon"
+        ],
+        "buttons_none": [],
+        "energy_min": 100,
+        "player_expr": "_parent.kis(_parent.换)"
+      },
+      "wankai": {
+        "name": "wankai",
+        "buttons_all": [
+          "attack",
+          "jump"
+        ],
+        "buttons_none": [],
+        "energy_min": 300,
+        "player_expr": "_parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳)"
+      },
+      "rush": {
+        "name": "rush",
+        "buttons_all": [
+          "dash"
+        ],
+        "buttons_none": [
+          "up",
+          "down"
+        ],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)"
+      },
+      "hide": {
+        "name": "hide",
+        "buttons_all": [
+          "down",
+          "dash"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.冲)"
+      },
+      "jump": {
+        "name": "jump",
+        "buttons_all": [
+          "jump"
+        ],
+        "buttons_none": [
+          "attack"
+        ],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.跳) && !_parent.kis(_parent.斩)"
+      },
+      "jumpDown": {
+        "name": "jumpDown",
+        "buttons_all": [
+          "down",
+          "jump"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下) && _parent.kis(_parent.跳)"
+      },
+      "defence": {
+        "name": "defence",
+        "buttons_all": [
+          "down"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.下)"
+      },
+      "standup": {
+        "name": "standup",
+        "buttons_all": [
+          "dash"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.冲)"
+      },
+      "moveLeft": {
+        "name": "moveLeft",
+        "buttons_all": [
+          "left"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.左)"
+      },
+      "moveRight": {
+        "name": "moveRight",
+        "buttons_all": [
+          "right"
+        ],
+        "buttons_none": [],
+        "energy_min": 0,
+        "player_expr": "_parent.kis(_parent.右)"
+      }
+    },
+    "entries": [
+      {
+        "label": "万解",
+        "group": "shared_control",
+        "start_frame": null,
+        "end_frame": null,
+        "has_timeline": false,
+        "slot": "wankai",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": 2,
+        "dispatch_orders": {
+          "stand": 2
+        },
+        "energy_min": 300,
+        "source_dispatch": [
+          "doAllAction"
+        ],
+        "implementation": "missing_timeline"
+      },
+      {
+        "label": "上必杀",
+        "group": "shared_control",
+        "start_frame": null,
+        "end_frame": null,
+        "has_timeline": false,
+        "slot": "bishaUP",
+        "contexts": [
+          "dash",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": 9,
+        "dispatch_orders": {
+          "stand": 9
+        },
+        "energy_min": 100,
+        "source_dispatch": [
+          "doAllAction",
+          "onDashing"
+        ],
+        "implementation": "missing_timeline"
+      },
+      {
+        "label": "击落地",
+        "group": "extended_actions",
+        "start_frame": 1098,
+        "end_frame": 1132,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "hurt"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "击飞",
+        "group": "extended_actions",
+        "start_frame": 1086,
+        "end_frame": 1097,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "hurt"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "失败",
+        "group": "extended_actions",
+        "start_frame": 1268,
+        "end_frame": 1297,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "cinematic"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "开场",
+        "group": "extended_actions",
+        "start_frame": 1158,
+        "end_frame": 1237,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "cinematic"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "必杀",
+        "group": "special",
+        "start_frame": 574,
+        "end_frame": 634,
+        "has_timeline": true,
+        "slot": "bisha",
+        "contexts": [
+          "dash",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 10,
+        "dispatch_order": 10,
+        "dispatch_orders": {
+          "stand": 10
+        },
+        "energy_min": 100,
+        "source_dispatch": [
+          "doAllAction",
+          "onDashing"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "必杀1",
+        "group": "extended_actions",
+        "start_frame": 635,
+        "end_frame": 652,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "必杀2",
+        "group": "extended_actions",
+        "start_frame": 672,
+        "end_frame": 700,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "必杀LOOP",
+        "group": "extended_actions",
+        "start_frame": 653,
+        "end_frame": 671,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "招1",
+        "group": "extended_actions",
+        "start_frame": 278,
+        "end_frame": 356,
+        "has_timeline": true,
+        "slot": "magichit1",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 7,
+        "dispatch_order": 7,
+        "dispatch_orders": {
+          "stand": 7
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "招2",
+        "group": "extended_actions",
+        "start_frame": 471,
+        "end_frame": 524,
+        "has_timeline": true,
+        "slot": "magichit2",
+        "contexts": [
+          "guard",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 6,
+        "dispatch_order": 6,
+        "dispatch_orders": {
+          "stand": 6,
+          "guard": 2
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand",
+          "onDefence"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "招3",
+        "group": "extended_actions",
+        "start_frame": 525,
+        "end_frame": 573,
+        "has_timeline": true,
+        "slot": "magichit3",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 5,
+        "dispatch_order": 5,
+        "dispatch_orders": {
+          "stand": 5
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "招换",
+        "group": "extended_actions",
+        "start_frame": 987,
+        "end_frame": 1048,
+        "has_timeline": true,
+        "slot": "zhaoHuan",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 11,
+        "dispatch_order": 11,
+        "dispatch_orders": {
+          "stand": 11
+        },
+        "energy_min": 100,
+        "source_dispatch": [
+          "doAllAction"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "瞬步",
+        "group": "movement",
+        "start_frame": 20,
+        "end_frame": 33,
+        "has_timeline": true,
+        "slot": "rush",
+        "contexts": [
+          "air",
+          "stand"
+        ],
+        "handler": "start_dash",
+        "dispatch_priority": 12,
+        "dispatch_order": 12,
+        "dispatch_orders": {
+          "stand": 12,
+          "air": 0
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "onJumping"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍1",
+        "group": "ground_combo",
+        "start_frame": 157,
+        "end_frame": 180,
+        "has_timeline": true,
+        "slot": "nornalhit",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 1,
+        "dispatch_order": 1,
+        "dispatch_orders": {
+          "stand": 1
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍2",
+        "group": "ground_combo",
+        "start_frame": 181,
+        "end_frame": 208,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍3",
+        "group": "ground_combo",
+        "start_frame": 209,
+        "end_frame": 244,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍4",
+        "group": "extended_actions",
+        "start_frame": 245,
+        "end_frame": 277,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍技1",
+        "group": "extended_actions",
+        "start_frame": 404,
+        "end_frame": 470,
+        "has_timeline": true,
+        "slot": "skill1",
+        "contexts": [
+          "guard",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 4,
+        "dispatch_order": 4,
+        "dispatch_orders": {
+          "stand": 4,
+          "guard": 1
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand",
+          "onDefence"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "砍技2",
+        "group": "extended_actions",
+        "start_frame": 357,
+        "end_frame": 403,
+        "has_timeline": true,
+        "slot": "skill2",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 3,
+        "dispatch_order": 3,
+        "dispatch_orders": {
+          "stand": 3
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "空中必杀",
+        "group": "extended_actions",
+        "start_frame": 701,
+        "end_frame": 722,
+        "has_timeline": true,
+        "slot": "bishaAir",
+        "contexts": [
+          "air",
+          "dash"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 4,
+        "dispatch_order": 4,
+        "dispatch_orders": {
+          "air": 4
+        },
+        "energy_min": 100,
+        "source_dispatch": [
+          "onJumping",
+          "onDashing"
+        ],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "空中必杀1",
+        "group": "extended_actions",
+        "start_frame": 723,
+        "end_frame": 739,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "空中必杀2",
+        "group": "extended_actions",
+        "start_frame": 740,
+        "end_frame": 794,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "timeline"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "站立",
+        "group": "movement",
+        "start_frame": 1,
+        "end_frame": 9,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "locomotion"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "胜利",
+        "group": "extended_actions",
+        "start_frame": 1238,
+        "end_frame": 1267,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "cinematic"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "catalog_only"
+      },
+      {
+        "label": "落",
+        "group": "movement",
+        "start_frame": 50,
+        "end_frame": 65,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "locomotion"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "落2",
+        "group": "movement",
+        "start_frame": 83,
+        "end_frame": 108,
+        "has_timeline": true,
+        "slot": "jumpDown",
+        "contexts": [
+          "drop"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [
+          "doDropDown"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "落地",
+        "group": "movement",
+        "start_frame": 109,
+        "end_frame": 120,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "locomotion"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "被打",
+        "group": "hurt",
+        "start_frame": 1073,
+        "end_frame": 1085,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "hurt"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "走",
+        "group": "movement",
+        "start_frame": 10,
+        "end_frame": 19,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "locomotion"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "起身",
+        "group": "extended_actions",
+        "start_frame": 1133,
+        "end_frame": 1157,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "hurt"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "超必杀",
+        "group": "extended_actions",
+        "start_frame": 795,
+        "end_frame": 986,
+        "has_timeline": true,
+        "slot": "bishaSuper",
+        "contexts": [
+          "dash",
+          "guard",
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 8,
+        "dispatch_order": 8,
+        "dispatch_orders": {
+          "stand": 8,
+          "guard": 3
+        },
+        "energy_min": 300,
+        "source_dispatch": [
+          "doAllAction",
+          "onDefence",
+          "onDashing"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "跳",
+        "group": "movement",
+        "start_frame": 34,
+        "end_frame": 49,
+        "has_timeline": true,
+        "slot": "jump",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_jump",
+        "dispatch_priority": 13,
+        "dispatch_order": 13,
+        "dispatch_orders": {
+          "stand": 13
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "跳2",
+        "group": "movement",
+        "start_frame": 66,
+        "end_frame": 82,
+        "has_timeline": true,
+        "slot": "jump",
+        "contexts": [
+          "air"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 1,
+        "dispatch_order": 1,
+        "dispatch_orders": {
+          "air": 1
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "onJumping"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "跳招",
+        "group": "extended_actions",
+        "start_frame": 135,
+        "end_frame": 156,
+        "has_timeline": true,
+        "slot": "airMagichit",
+        "contexts": [
+          "air"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 3,
+        "dispatch_order": 3,
+        "dispatch_orders": {
+          "air": 3
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "onJumping"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "跳砍",
+        "group": "extended_actions",
+        "start_frame": 121,
+        "end_frame": 134,
+        "has_timeline": true,
+        "slot": "airhit",
+        "contexts": [
+          "air"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 2,
+        "dispatch_order": 2,
+        "dispatch_orders": {
+          "air": 2
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "onJumping"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "防住",
+        "group": "extended_actions",
+        "start_frame": 1061,
+        "end_frame": 1072,
+        "has_timeline": true,
+        "slot": null,
+        "contexts": [
+          "guard"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": null,
+        "dispatch_order": null,
+        "dispatch_orders": {},
+        "energy_min": 0,
+        "source_dispatch": [],
+        "implementation": "wired"
+      },
+      {
+        "label": "防御",
+        "group": "extended_actions",
+        "start_frame": 1049,
+        "end_frame": 1049,
+        "has_timeline": true,
+        "slot": "defence",
+        "contexts": [
+          "stand"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 0,
+        "dispatch_order": 0,
+        "dispatch_orders": {
+          "stand": 0
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "implementation": "wired"
+      },
+      {
+        "label": "防御2",
+        "group": "extended_actions",
+        "start_frame": 1050,
+        "end_frame": 1060,
+        "has_timeline": true,
+        "slot": "defence",
+        "contexts": [
+          "guard"
+        ],
+        "handler": "start_action",
+        "dispatch_priority": 0,
+        "dispatch_order": 0,
+        "dispatch_orders": {
+          "guard": 0
+        },
+        "energy_min": 0,
+        "source_dispatch": [
+          "onDefence"
+        ],
+        "implementation": "wired"
+      }
+    ],
+    "cancel_windows": [
+      {
+        "from": "跳砍",
+        "to": "跳招",
+        "predicate": "magichit1",
+        "combo": false,
+        "start_frame": 124,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_124/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "a48d08a46c8160cc9ed9960b5f14de05a562b8101bb6e78982116366376dbaa9",
+        "end_frame": 127
+      },
+      {
+        "from": "砍1",
+        "to": "砍2",
+        "predicate": "nornalhit",
+        "combo": false,
+        "start_frame": 163,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_163/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7f8d59cd3bad0c4950d6055c6344bb7a8c800dbb1616dbecac948f986162a248",
+        "end_frame": 168
+      },
+      {
+        "from": "砍2",
+        "to": "砍3",
+        "predicate": "nornalhit",
+        "combo": false,
+        "start_frame": 187,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "cd0d25f89743898b1a850f25ef7cbd916f3b3ab025061c268799683abed47530",
+        "end_frame": 192
+      },
+      {
+        "from": "砍2",
+        "to": "砍技1",
+        "predicate": "skill1",
+        "combo": false,
+        "start_frame": 187,
+        "kind": "input",
+        "dispatch_order": 1,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "cd0d25f89743898b1a850f25ef7cbd916f3b3ab025061c268799683abed47530",
+        "end_frame": 192
+      },
+      {
+        "from": "砍3",
+        "to": "招1",
+        "predicate": "magichit1",
+        "combo": false,
+        "start_frame": 217,
+        "kind": "input",
+        "dispatch_order": 2,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "ed255f93ed63b0c770f4c5adcbd5900484638d5adf68c0f8f25902e027f72f25",
+        "end_frame": 223
+      },
+      {
+        "from": "砍3",
+        "to": "招2",
+        "predicate": "magichit2",
+        "combo": false,
+        "start_frame": 217,
+        "kind": "input",
+        "dispatch_order": 1,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "ed255f93ed63b0c770f4c5adcbd5900484638d5adf68c0f8f25902e027f72f25",
+        "end_frame": 223
+      },
+      {
+        "from": "砍3",
+        "to": "瞬步",
+        "predicate": "rush",
+        "combo": false,
+        "start_frame": 217,
+        "kind": "input",
+        "dispatch_order": 3,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "ed255f93ed63b0c770f4c5adcbd5900484638d5adf68c0f8f25902e027f72f25",
+        "end_frame": 223
+      },
+      {
+        "from": "砍3",
+        "to": "砍4",
+        "predicate": "nornalhit",
+        "combo": false,
+        "start_frame": 217,
+        "kind": "input",
+        "dispatch_order": 4,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "ed255f93ed63b0c770f4c5adcbd5900484638d5adf68c0f8f25902e027f72f25",
+        "end_frame": 223
+      },
+      {
+        "from": "砍3",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "combo": false,
+        "start_frame": 217,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "ed255f93ed63b0c770f4c5adcbd5900484638d5adf68c0f8f25902e027f72f25",
+        "end_frame": 223
+      },
+      {
+        "from": "砍4",
+        "to": "必杀",
+        "predicate": "bisha",
+        "combo": false,
+        "start_frame": 254,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_254/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "17ab648d76252685078ab979a6532f5d2a612142daa34aef02d805df42e9886e",
+        "end_frame": 261
+      },
+      {
+        "from": "砍4",
+        "to": "砍技2",
+        "predicate": "skill2",
+        "combo": false,
+        "start_frame": 254,
+        "kind": "input",
+        "dispatch_order": 1,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_254/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "17ab648d76252685078ab979a6532f5d2a612142daa34aef02d805df42e9886e",
+        "end_frame": 261
+      },
+      {
+        "from": "招1",
+        "to": "必杀",
+        "predicate": "bisha",
+        "combo": false,
+        "start_frame": 299,
+        "kind": "input",
+        "dispatch_order": 1,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "c72a4ca7c41ca183c08fc73750ea73a31cf37348a8c69d0370aac720795116ec",
+        "end_frame": 319
+      },
+      {
+        "from": "招1",
+        "to": "招2",
+        "predicate": "magichit2",
+        "combo": false,
+        "start_frame": 299,
+        "kind": "input",
+        "dispatch_order": 2,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "c72a4ca7c41ca183c08fc73750ea73a31cf37348a8c69d0370aac720795116ec",
+        "end_frame": 319
+      },
+      {
+        "from": "招1",
+        "to": "瞬步",
+        "predicate": "rush",
+        "combo": false,
+        "start_frame": 299,
+        "kind": "input",
+        "dispatch_order": 4,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "c72a4ca7c41ca183c08fc73750ea73a31cf37348a8c69d0370aac720795116ec",
+        "end_frame": 319
+      },
+      {
+        "from": "招1",
+        "to": "砍技2",
+        "predicate": "skill2",
+        "combo": false,
+        "start_frame": 299,
+        "kind": "input",
+        "dispatch_order": 3,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "c72a4ca7c41ca183c08fc73750ea73a31cf37348a8c69d0370aac720795116ec",
+        "end_frame": 319
+      },
+      {
+        "from": "招1",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "combo": false,
+        "start_frame": 299,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "c72a4ca7c41ca183c08fc73750ea73a31cf37348a8c69d0370aac720795116ec",
+        "end_frame": 319
+      },
+      {
+        "from": "招1",
+        "to": "跳",
+        "predicate": "jump",
+        "combo": false,
+        "start_frame": 299,
+        "kind": "input",
+        "dispatch_order": 5,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "c72a4ca7c41ca183c08fc73750ea73a31cf37348a8c69d0370aac720795116ec",
+        "end_frame": 319
+      },
+      {
+        "from": "招3",
+        "to": "必杀",
+        "predicate": "bisha",
+        "combo": false,
+        "start_frame": 538,
+        "kind": "input",
+        "dispatch_order": 1,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "a8b52fe5829f61c806faf482b9486f8758bf0b559288edaff4b7c165760516ed",
+        "end_frame": 554
+      },
+      {
+        "from": "招3",
+        "to": "招1",
+        "predicate": "magichit1",
+        "combo": false,
+        "start_frame": 538,
+        "kind": "input",
+        "dispatch_order": 5,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "a8b52fe5829f61c806faf482b9486f8758bf0b559288edaff4b7c165760516ed",
+        "end_frame": 554
+      },
+      {
+        "from": "招3",
+        "to": "招2",
+        "predicate": "magichit2",
+        "combo": false,
+        "start_frame": 538,
+        "kind": "input",
+        "dispatch_order": 4,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "a8b52fe5829f61c806faf482b9486f8758bf0b559288edaff4b7c165760516ed",
+        "end_frame": 554
+      },
+      {
+        "from": "招3",
+        "to": "砍技1",
+        "predicate": "skill1",
+        "combo": false,
+        "start_frame": 538,
+        "kind": "input",
+        "dispatch_order": 2,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "a8b52fe5829f61c806faf482b9486f8758bf0b559288edaff4b7c165760516ed",
+        "end_frame": 554
+      },
+      {
+        "from": "招3",
+        "to": "砍技2",
+        "predicate": "skill2",
+        "combo": false,
+        "start_frame": 538,
+        "kind": "input",
+        "dispatch_order": 3,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "a8b52fe5829f61c806faf482b9486f8758bf0b559288edaff4b7c165760516ed",
+        "end_frame": 554
+      },
+      {
+        "from": "招3",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "combo": false,
+        "start_frame": 538,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "a8b52fe5829f61c806faf482b9486f8758bf0b559288edaff4b7c165760516ed",
+        "end_frame": 554
+      },
+      {
+        "from": "防御2",
+        "to": "招2",
+        "predicate": "magichit2",
+        "combo": false,
+        "start_frame": 1050,
+        "kind": "input",
+        "dispatch_order": 2,
+        "implementation": "handled_elsewhere",
+        "source_path": "DefineSprite_518/frame_1050/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750",
+        "end_frame": 1056
+      },
+      {
+        "from": "防御2",
+        "to": "砍技1",
+        "predicate": "skill1",
+        "combo": false,
+        "start_frame": 1050,
+        "kind": "input",
+        "dispatch_order": 1,
+        "implementation": "handled_elsewhere",
+        "source_path": "DefineSprite_518/frame_1050/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750",
+        "end_frame": 1056
+      },
+      {
+        "from": "防御2",
+        "to": "超必杀",
+        "predicate": "bishaSuper",
+        "combo": false,
+        "start_frame": 1050,
+        "kind": "input",
+        "dispatch_order": 3,
+        "implementation": "handled_elsewhere",
+        "source_path": "DefineSprite_518/frame_1050/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750",
+        "end_frame": 1056
+      },
+      {
+        "from": "防御2",
+        "to": "防御2",
+        "predicate": "defence",
+        "combo": false,
+        "start_frame": 1050,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "handled_elsewhere",
+        "source_path": "DefineSprite_518/frame_1050/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750",
+        "end_frame": 1056
+      },
+      {
+        "from": "防住",
+        "to": "防御2",
+        "predicate": "defence",
+        "combo": false,
+        "start_frame": 1066,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "handled_elsewhere",
+        "source_path": "DefineSprite_518/frame_1066/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "f8c45bc590e3677cdd9c881a4d2e0f08a7474a26feb01f17db38df2769a701f6",
+        "end_frame": 1072
+      },
+      {
+        "from": "击落地",
+        "to": "起身",
+        "predicate": "standup",
+        "combo": false,
+        "start_frame": 1098,
+        "kind": "input",
+        "dispatch_order": 0,
+        "implementation": "wired",
+        "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "81288a38fc1ff90270ebad5d537f0b6ca79760db2b93b64846ae3bfaa46c1eff",
+        "end_frame": 1101
+      }
+    ],
+    "gaps": [
+      {
+        "kind": "command",
+        "label": "万解",
+        "slot": "wankai",
+        "reason": "missing_timeline",
+        "has_timeline": false,
+        "contexts": [
+          "stand"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "上必杀",
+        "slot": "bishaUP",
+        "reason": "missing_timeline",
+        "has_timeline": false,
+        "contexts": [
+          "dash",
+          "stand"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "失败",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "开场",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "必杀2",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "必杀LOOP",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "空中必杀",
+        "slot": "bishaAir",
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "air",
+          "dash"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "空中必杀1",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "空中必杀2",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "胜利",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "predicate",
+        "slot": "hide",
+        "reason": "no_dispatch_label"
+      }
+    ]
+  },
+  "indexed_source_events": [
+    {
+      "action": "站立",
+      "frame": 1,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1/DoAction.as",
+      "source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df"
+    },
+    {
+      "action": "站立",
+      "frame": 1,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "552614720eac86a13093bb10e6732d7e05222b348c079e5ac6cd6118ad947ec7"
+    },
+    {
+      "action": "站立",
+      "frame": 1,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1/PlaceObject2_5_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "招换",
+      "frame": 1017,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1017/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "防御2",
+      "frame": 1050,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1050/DoAction.as",
+      "source_sha256": "c79c57fe780892f8a30745b2003f21b14e03cdd4b32f99798fe31014ffd7b9ba"
+    },
+    {
+      "action": "防御2",
+      "frame": 1050,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1050/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750"
+    },
+    {
+      "action": "防御2",
+      "frame": 1050,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1050/PlaceObject2_5_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef"
+    },
+    {
+      "action": "防御2",
+      "frame": 1057,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1057/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "防住",
+      "frame": 1061,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1061/DoAction.as",
+      "source_sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155"
+    },
+    {
+      "action": "防住",
+      "frame": 1061,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1061/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "844f30521e56d21704d4ef4174997e178efdb35469b2b7d9e52c26a0f3104d3d"
+    },
+    {
+      "action": "防住",
+      "frame": 1062,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1062/DoAction.as",
+      "source_sha256": "c3e46f26ed26ad9231fd1d28ec5d960a463c27cba346b54dcf106430ec013acb"
+    },
+    {
+      "action": "防住",
+      "frame": 1064,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1064/PlaceObject2_5_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef"
+    },
+    {
+      "action": "防住",
+      "frame": 1066,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1066/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f8c45bc590e3677cdd9c881a4d2e0f08a7474a26feb01f17db38df2769a701f6"
+    },
+    {
+      "action": "防住",
+      "frame": 1070,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1070/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "被打",
+      "frame": 1073,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1073/DoAction.as",
+      "source_sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155"
+    },
+    {
+      "action": "被打",
+      "frame": 1074,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1074/DoAction.as",
+      "source_sha256": "a70f7b00382927dcb89b970656bc905839113d7af180dae43aa869dec2523aab"
+    },
+    {
+      "action": "被打",
+      "frame": 1075,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1075/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "820f6d41d52a2df712ecc60a0f87a933ebe00f55e376951756a9d91d3940bb36"
+    },
+    {
+      "action": "被打",
+      "frame": 1076,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1076/PlaceObject2_5_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "被打",
+      "frame": 1079,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1079/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "action": "被打",
+      "frame": 1083,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1083/DoAction.as",
+      "source_sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a"
+    },
+    {
+      "action": "击飞",
+      "frame": 1086,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1086/DoAction.as",
+      "source_sha256": "3d2e60b632e641408e73682b4e270113e69a7f17483f991da9ff5baa235e91ba"
+    },
+    {
+      "action": "击飞",
+      "frame": 1087,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1087/DoAction.as",
+      "source_sha256": "199b3ff7630d12585e1d7c77d60d58609e063b7028f54d6a5dd6f0078493ea59"
+    },
+    {
+      "action": "击飞",
+      "frame": 1088,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "9848c11dc3a3e4b1cf1933b347f15901bef201cb0b702c273e2bb5d21f44d90b"
+    },
+    {
+      "action": "击飞",
+      "frame": 1096,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1096/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "action": "击落地",
+      "frame": 1098,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1098/DoAction.as",
+      "source_sha256": "0857faf6455fb0d653d39f90f2ec476c4ac51ff49a817e9a701adf18d3f15835"
+    },
+    {
+      "action": "击落地",
+      "frame": 1098,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "81288a38fc1ff90270ebad5d537f0b6ca79760db2b93b64846ae3bfaa46c1eff"
+    },
+    {
+      "action": "落地",
+      "frame": 110,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_110/DoAction.as",
+      "source_sha256": "254f13f0db54ab20a90ae1668ab15d48b30e8bca3b4be9634ac2f485d73d3e8f"
+    },
+    {
+      "action": "落地",
+      "frame": 110,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_110/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "39abc425de5f1c8008b07e08cd23a78006961d3a21d58d9900600cd168ef9cac"
+    },
+    {
+      "action": "击落地",
+      "frame": 1112,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1112/DoAction.as",
+      "source_sha256": "e6ca4a79578cbb546594bd65ac4d2d2aad15c20ec5c951c3dc9a7c4b8fd5371c"
+    },
+    {
+      "action": "击落地",
+      "frame": 1128,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1128/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "落地",
+      "frame": 113,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_113/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "起身",
+      "frame": 1133,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c99afb396036e5858bad62112ad9b4830014d6a99d4991aef37fba22a137bbab"
+    },
+    {
+      "action": "起身",
+      "frame": 1134,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1134/DoAction.as",
+      "source_sha256": "8d23d84b12e136d5b2b06a528b88fe1aedb91b39aa50aad17afd66ff0cb5be7f"
+    },
+    {
+      "action": "起身",
+      "frame": 1144,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1144/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "起身",
+      "frame": 1149,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1149/DoAction.as",
+      "source_sha256": "804439b2808628500257a76fd4ee5251e916898a7f8cc8cf72896e942abd3652"
+    },
+    {
+      "action": "开场",
+      "frame": 1158,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1158/DoAction.as",
+      "source_sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155"
+    },
+    {
+      "action": "开场",
+      "frame": 1159,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1159/DoAction.as",
+      "source_sha256": "5589d7696cfcee8657b8978cdcbfa7225a34f19a157b01136cdb4c5ef85c1103"
+    },
+    {
+      "action": "开场",
+      "frame": 1161,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1161/DoAction.as",
+      "source_sha256": "33a4f0db67fbae495243fdb38278a68fbec9cda2667ab91011c6b16e55f08344"
+    },
+    {
+      "action": "跳砍",
+      "frame": 121,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_121/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485"
+    },
+    {
+      "action": "开场",
+      "frame": 1219,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1219/DoAction.as",
+      "source_sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642"
+    },
+    {
+      "action": "跳砍",
+      "frame": 122,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_122/DoAction.as",
+      "source_sha256": "98ff37a51bcc0ffe383fd72ac0312ce996c7f8bab49ea55e8a69284d47222cbe"
+    },
+    {
+      "action": "跳砍",
+      "frame": 124,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_124/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "a48d08a46c8160cc9ed9960b5f14de05a562b8101bb6e78982116366376dbaa9"
+    },
+    {
+      "action": "胜利",
+      "frame": 1260,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1260/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "action": "跳砍",
+      "frame": 128,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_128/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    {
+      "action": "失败",
+      "frame": 1288,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_1288/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "action": "走",
+      "frame": 13,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_13/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "跳招",
+      "frame": 136,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_136/DoAction.as",
+      "source_sha256": "98ff37a51bcc0ffe383fd72ac0312ce996c7f8bab49ea55e8a69284d47222cbe"
+    },
+    {
+      "action": "跳招",
+      "frame": 137,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_137/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "a9d8cb5f517ad2cac59e2c188843719a409b0efa3cb00e5cfba860283831bb2d"
+    },
+    {
+      "action": "跳招",
+      "frame": 152,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_152/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    {
+      "action": "砍1",
+      "frame": 158,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_158/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "action": "砍1",
+      "frame": 159,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_159/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e4470e6009a478fefa03b6d886926655edb291e887a9396cede12982c8a7c6aa"
+    },
+    {
+      "action": "砍1",
+      "frame": 163,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_163/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "7f8d59cd3bad0c4950d6055c6344bb7a8c800dbb1616dbecac948f986162a248"
+    },
+    {
+      "action": "砍1",
+      "frame": 169,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_169/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "砍1",
+      "frame": 172,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_172/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "砍2",
+      "frame": 182,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_182/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "action": "砍2",
+      "frame": 182,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_182/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485"
+    },
+    {
+      "action": "砍2",
+      "frame": 187,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "cd0d25f89743898b1a850f25ef7cbd916f3b3ab025061c268799683abed47530"
+    },
+    {
+      "action": "砍2",
+      "frame": 193,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_193/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "砍2",
+      "frame": 197,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_197/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "站立",
+      "frame": 2,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_2/DoAction.as",
+      "source_sha256": "5945dc9bd06c19062d43c753efb05816891856090f3e54f16b42c4353f79d871"
+    },
+    {
+      "action": "瞬步",
+      "frame": 21,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_21/DoAction.as",
+      "source_sha256": "959104852cd78b4021ce0f7f48631e3ed0cf0b71c94da436fa97f3d887390590"
+    },
+    {
+      "action": "瞬步",
+      "frame": 21,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_21/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f5aefcda9ed873c0a17e958c0aae00b7e1cc98f0841414ccb3f550a06c6f5edf"
+    },
+    {
+      "action": "砍3",
+      "frame": 210,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_210/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "action": "砍3",
+      "frame": 211,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_211/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485"
+    },
+    {
+      "action": "砍3",
+      "frame": 217,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "ed255f93ed63b0c770f4c5adcbd5900484638d5adf68c0f8f25902e027f72f25"
+    },
+    {
+      "action": "砍3",
+      "frame": 235,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_235/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "砍3",
+      "frame": 240,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_240/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "砍4",
+      "frame": 246,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_246/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "action": "砍4",
+      "frame": 247,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_247/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "36479b3f2d1308fca03d78a79804095d86e3607e8ca1df2f8cd018a122f163ab"
+    },
+    {
+      "action": "砍4",
+      "frame": 253,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_253/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "砍4",
+      "frame": 254,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_254/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "17ab648d76252685078ab979a6532f5d2a612142daa34aef02d805df42e9886e"
+    },
+    {
+      "action": "瞬步",
+      "frame": 26,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_26/PlaceObject2_5_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "砍4",
+      "frame": 268,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_268/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招1",
+      "frame": 282,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_282/DoAction.as",
+      "source_sha256": "0c85cd46a3bf8b983929f013964a3a7a66f861bd1d8f5a3d65a8b2dc66106b3a"
+    },
+    {
+      "action": "招1",
+      "frame": 287,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_287/DoAction.as",
+      "source_sha256": "9f235068306dfba652b56185b0a61dadc4dc29418e5247459618abc2ba429064"
+    },
+    {
+      "action": "招1",
+      "frame": 287,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_287/PlaceObject2_5_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "瞬步",
+      "frame": 29,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_29/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招1",
+      "frame": 295,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_295/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "招1",
+      "frame": 299,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c72a4ca7c41ca183c08fc73750ea73a31cf37348a8c69d0370aac720795116ec"
+    },
+    {
+      "action": "招1",
+      "frame": 320,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_320/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招1",
+      "frame": 325,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_325/DoAction.as",
+      "source_sha256": "88c40ed0277f03f3252faba7651b6a05fd724b6b0a46bf2681a7b4f368b6ff83"
+    },
+    {
+      "action": "招1",
+      "frame": 332,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_332/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "砍技2",
+      "frame": 358,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_358/DoAction.as",
+      "source_sha256": "0c85cd46a3bf8b983929f013964a3a7a66f861bd1d8f5a3d65a8b2dc66106b3a"
+    },
+    {
+      "action": "跳",
+      "frame": 36,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_36/DoAction.as",
+      "source_sha256": "b890a77fc0b2700bee5d0bb3f7b92b99349b6a62d2f20d8d115b30d037b3613a"
+    },
+    {
+      "action": "跳",
+      "frame": 36,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_36/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "15d993e9b1598e78ddb3e8ca35054bb2a562bea05b7c388fbcae371981dc8ff2"
+    },
+    {
+      "action": "砍技2",
+      "frame": 360,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_360/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8e57b4052eaff5732dc33e77db6ea578b8e78c085c6120b689ac20d1aed22e2f"
+    },
+    {
+      "action": "砍技2",
+      "frame": 366,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_366/PlaceObject2_5_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "砍技2",
+      "frame": 370,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_370/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    {
+      "action": "砍技1",
+      "frame": 405,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_405/DoAction.as",
+      "source_sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+    },
+    {
+      "action": "砍技1",
+      "frame": 406,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_406/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "628d7957138aa8260e752a71e383841aea07183a5a8bd2b27ca5b9e9520390be"
+    },
+    {
+      "action": "跳",
+      "frame": 44,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_44/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0e74ab6cac90234a068c43bdd8851d4525e750d49fbd8dc7d579dc727df256c3"
+    },
+    {
+      "action": "砍技1",
+      "frame": 440,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_440/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "砍技1",
+      "frame": 448,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_448/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招2",
+      "frame": 472,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_472/DoAction.as",
+      "source_sha256": "0c85cd46a3bf8b983929f013964a3a7a66f861bd1d8f5a3d65a8b2dc66106b3a"
+    },
+    {
+      "action": "招2",
+      "frame": 473,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_473/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c0ba533d0f3d15061d0ae8992c0938bd182c2c14d555a445a5c028f763bc01cb"
+    },
+    {
+      "action": "招2",
+      "frame": 478,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_478/DoAction.as",
+      "source_sha256": "579c53cf23e5057079527d45d3ae72f928c48be0d43ad03667c2e3287296ae47"
+    },
+    {
+      "action": "招2",
+      "frame": 478,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_478/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "36479b3f2d1308fca03d78a79804095d86e3607e8ca1df2f8cd018a122f163ab"
+    },
+    {
+      "action": "招2",
+      "frame": 487,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_487/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "落",
+      "frame": 50,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_50/DoAction.as",
+      "source_sha256": "8e9c06fc81a61e04678abae1c01b81280c25d36522c0d5b5ab8721fb9c6ffb8a"
+    },
+    {
+      "action": "落",
+      "frame": 50,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_50/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "1dd832a1ce74067bd825f06d162d2b22e4c1a2c467a47e0dba4c6b9b2e29ac9e"
+    },
+    {
+      "action": "招2",
+      "frame": 509,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_509/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "招3",
+      "frame": 526,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_526/DoAction.as",
+      "source_sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c"
+    },
+    {
+      "action": "招3",
+      "frame": 527,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_527/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485"
+    },
+    {
+      "action": "招3",
+      "frame": 538,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "a8b52fe5829f61c806faf482b9486f8758bf0b559288edaff4b7c165760516ed"
+    },
+    {
+      "action": "招3",
+      "frame": 558,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_558/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "必杀",
+      "frame": 575,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_575/DoAction.as",
+      "source_sha256": "e7ae956c5ea12d66a571fd87eefbf90e93460ed6905b7b798998e8fc4d390874"
+    },
+    {
+      "action": "必杀",
+      "frame": 578,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_578/DoAction.as",
+      "source_sha256": "dfbc71676e2bba54ab0908a112ab13284d0e669c60d1670d16295ac51988a60b"
+    },
+    {
+      "action": "必杀",
+      "frame": 601,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_601/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25"
+    },
+    {
+      "action": "必杀",
+      "frame": 604,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_604/DoAction.as",
+      "source_sha256": "233764e8fca611ab4dba456c95c56ae705d1ca5c2f2d18360b9fa3bfd93738a7"
+    },
+    {
+      "action": "必杀",
+      "frame": 605,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_605/DoAction.as",
+      "source_sha256": "9f235068306dfba652b56185b0a61dadc4dc29418e5247459618abc2ba429064"
+    },
+    {
+      "action": "必杀",
+      "frame": 605,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_605/PlaceObject2_5_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "必杀",
+      "frame": 607,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_607/DoAction.as",
+      "source_sha256": "8914b521d003f40233b6a9d2811d354fe5c64ba46f5c687ab02e7d291dd6e4fb"
+    },
+    {
+      "action": "落",
+      "frame": 62,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_62/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    {
+      "action": "必杀",
+      "frame": 625,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_625/DoAction.as",
+      "source_sha256": "974a0e34f3bdde08153b0646103914aa3d7ab08158ac6bf1f11eced7716b853c"
+    },
+    {
+      "action": "必杀",
+      "frame": 634,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_634/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "必杀1",
+      "frame": 639,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_639/DoAction.as",
+      "source_sha256": "f5ffc9774701fb4d61dd1add6a4e983b340879ba57568b983c8075f16ee5ba4e"
+    },
+    {
+      "action": "必杀1",
+      "frame": 643,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_643/DoAction.as",
+      "source_sha256": "9ef7eb4f9bd7e56e2096897c6d5b585d6d4c1d9ace62d255ccda74799bc11320"
+    },
+    {
+      "action": "必杀LOOP",
+      "frame": 653,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_653/PlaceObject2_18_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "668b7ab23117e21c5d0915bd9d2e4d10a2ead9d782d34bb6e85c9c13c40d9321"
+    },
+    {
+      "action": "跳2",
+      "frame": 66,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_66/DoAction.as",
+      "source_sha256": "77d8ecec992ad9b2739d382fb920a33b321349fcb0a770339700673228ce12b4"
+    },
+    {
+      "action": "跳2",
+      "frame": 66,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_66/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "a5e83704d5060297001dd8191822a1fdb310052896c4d0d1f9d69ca1f9a495f0"
+    },
+    {
+      "action": "必杀LOOP",
+      "frame": 660,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_660/DoAction.as",
+      "source_sha256": "681cea78422c6bc61c2601d60adf7395de691357067d21ba73b1aa98d1c66d1b"
+    },
+    {
+      "action": "必杀2",
+      "frame": 672,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_672/DoAction.as",
+      "source_sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5"
+    },
+    {
+      "action": "必杀2",
+      "frame": 673,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_673/DoAction.as",
+      "source_sha256": "71e06fcd1e4a0c63c287e9c377acd959b1d9f1a8f092f5843f28175e3ddecb2b"
+    },
+    {
+      "action": "必杀2",
+      "frame": 674,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_674/DoAction.as",
+      "source_sha256": "b525277d5fd6194b79102429c61a6e317ba8afb848a07be93a4e6cf2beb4ba27"
+    },
+    {
+      "action": "必杀2",
+      "frame": 676,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_676/DoAction.as",
+      "source_sha256": "cdaf1c9088f0ccdc43fa92438ed650cf93275e69df8cdd9df5002c2a5e11bd6f"
+    },
+    {
+      "action": "必杀2",
+      "frame": 681,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_681/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "a398cdc4f1a71b5c3958334333003148a6999cd519f1fac7fcb76ddf11b5a83d"
+    },
+    {
+      "action": "必杀2",
+      "frame": 688,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_688/PlaceObject2_5_32/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "必杀2",
+      "frame": 695,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_695/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "空中必杀",
+      "frame": 702,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_702/DoAction.as",
+      "source_sha256": "e7ae956c5ea12d66a571fd87eefbf90e93460ed6905b7b798998e8fc4d390874"
+    },
+    {
+      "action": "空中必杀",
+      "frame": 704,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_704/DoAction.as",
+      "source_sha256": "dfbc71676e2bba54ab0908a112ab13284d0e669c60d1670d16295ac51988a60b"
+    },
+    {
+      "action": "空中必杀",
+      "frame": 720,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_720/DoAction.as",
+      "source_sha256": "2b32dc5417633d4d4ad98a0454523a941312e02746d039c6043e9caab11c574b"
+    },
+    {
+      "action": "空中必杀1",
+      "frame": 723,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_723/PlaceObject2_381_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "0cbc76333ec9a04ed951e30a4aa3f806917e790c0bf92c2fc5359ce1671f3252"
+    },
+    {
+      "action": "空中必杀1",
+      "frame": 738,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_738/DoAction.as",
+      "source_sha256": "5c8bfed7b57c7e46ad0d266b503db9e6050090266f5a5355418ba6e238af2c8f"
+    },
+    {
+      "action": "空中必杀2",
+      "frame": 751,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_751/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "跳2",
+      "frame": 77,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_77/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "092e6f38f29accd57b1b3367b69d2128273fbf865dda02bb9e6ba70780771c6e"
+    },
+    {
+      "action": "空中必杀2",
+      "frame": 771,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_771/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "超必杀",
+      "frame": 796,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_796/DoAction.as",
+      "source_sha256": "bbc26301ef87268333d8b3d2816249af10e9d7fcd3a9c9f8282930f78473de8b"
+    },
+    {
+      "action": "超必杀",
+      "frame": 798,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_798/DoAction.as",
+      "source_sha256": "1e5135173efac7021bd1136ae9b8c9f8f83d9b75392f0a2607fe3fea16c7a7bf"
+    },
+    {
+      "action": "站立",
+      "frame": 8,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_8/DoAction.as",
+      "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+    },
+    {
+      "action": "超必杀",
+      "frame": 806,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_806/DoAction.as",
+      "source_sha256": "a3d2e875023eaeaf81e44e272c960826ac2ef72548a8787072151a7d930e2af5"
+    },
+    {
+      "action": "落2",
+      "frame": 83,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_83/DoAction.as",
+      "source_sha256": "8e9c06fc81a61e04678abae1c01b81280c25d36522c0d5b5ab8721fb9c6ffb8a"
+    },
+    {
+      "action": "落2",
+      "frame": 83,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_83/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "767f0d510bc837c4f8ed84dd2c726b752ce3806104bd8670ea9debc210d94b6d"
+    },
+    {
+      "action": "超必杀",
+      "frame": 837,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_837/DoAction.as",
+      "source_sha256": "8914b521d003f40233b6a9d2811d354fe5c64ba46f5c687ab02e7d291dd6e4fb"
+    },
+    {
+      "action": "超必杀",
+      "frame": 849,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_849/DoAction.as",
+      "source_sha256": "ef5d0335d54a16e73e60ca8c281b8e2697660a15c5dc7f246d984922bdcdb993"
+    },
+    {
+      "action": "超必杀",
+      "frame": 852,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_852/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 853,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_853/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "36479b3f2d1308fca03d78a79804095d86e3607e8ca1df2f8cd018a122f163ab"
+    },
+    {
+      "action": "超必杀",
+      "frame": 862,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_862/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 863,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_863/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "1c3aea54c16084665c29e4acf812f3db6b8f9d260043142dee29902ee39db7f4"
+    },
+    {
+      "action": "超必杀",
+      "frame": 871,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_871/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 872,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_872/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "3105dfc558b687fe67099723f4645897675c21634680e96c58fa63075ccca57e"
+    },
+    {
+      "action": "超必杀",
+      "frame": 879,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_879/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 880,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_880/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e705eb101c8d7d9b3009d941e6efaea68dbb7c49f4d753bdd7826cb39921deaf"
+    },
+    {
+      "action": "超必杀",
+      "frame": 890,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_890/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 891,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_891/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "36479b3f2d1308fca03d78a79804095d86e3607e8ca1df2f8cd018a122f163ab"
+    },
+    {
+      "action": "超必杀",
+      "frame": 900,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_900/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 901,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_901/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "1c3aea54c16084665c29e4acf812f3db6b8f9d260043142dee29902ee39db7f4"
+    },
+    {
+      "action": "超必杀",
+      "frame": 909,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_909/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 910,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_910/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "3105dfc558b687fe67099723f4645897675c21634680e96c58fa63075ccca57e"
+    },
+    {
+      "action": "超必杀",
+      "frame": 917,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_917/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 918,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_918/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "e705eb101c8d7d9b3009d941e6efaea68dbb7c49f4d753bdd7826cb39921deaf"
+    },
+    {
+      "action": "超必杀",
+      "frame": 933,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_933/DoAction.as",
+      "source_sha256": "1f9669f7a4383ef243dd1398bf3e16fc7eedbd8e598a2f25724da93f78995e09"
+    },
+    {
+      "action": "超必杀",
+      "frame": 934,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_934/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "24e44b839e96ddfb83c561e141a7c54d9ad7be726b5af12fafcef66bc32f3427"
+    },
+    {
+      "action": "超必杀",
+      "frame": 937,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_937/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "action": "落2",
+      "frame": 95,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_95/DoAction.as",
+      "source_sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8"
+    },
+    {
+      "action": "超必杀",
+      "frame": 953,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_953/DoAction.as",
+      "source_sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e"
+    },
+    {
+      "action": "招换",
+      "frame": 987,
+      "kind": "clip_action",
+      "path": "DefineSprite_518/frame_987/PlaceObject2_5_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e"
+    },
+    {
+      "action": "招换",
+      "frame": 992,
+      "kind": "frame_action",
+      "path": "DefineSprite_518/frame_992/DoAction.as",
+      "source_sha256": "9a4e1df3b75d75b39859f0968d785f77d37ac0a8433d1017068d334da3f65753"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "status": "active_helper_fields_match",
+  "fixture": "byakuya-814-zhaoHuan-neutral",
+  "source_run": "byakuya_zhaohuan_helper_r01",
+  "source_capture_sha256": "550082a2237e881b58ca49bcc2b14b137bdfbab58198ce4570123e3e5ea141e7",
+  "source_helper_rows": 602,
+  "native_helper_rows": 602,
+  "active_rows_compared": 101,
+  "field_difference_counts": {
+    "frame": 0,
+    "root_paused": 0,
+    "atm1": 0,
+    "atm2": 0,
+    "atm3": 0
+  },
+  "fields_compared": [
+    "frame",
+    "attacking",
+    "root_paused",
+    "atm1",
+    "atm2",
+    "atm3"
+  ],
+  "active_lifecycle_window": {
+    "first_tick": 16,
+    "last_tick": 116
+  },
+  "normalizations": [
+    "source undefined atm clip means no placed runtime instance and is compared to native 0"
+  ],
+  "not_compared": [
+    "parent_frame source f._parent is root display container frame, not actor playhead",
+    "inactive visible source display-list flag is not screen visibility"
+  ],
+  "parked_render_evidence": {
+    "source_timeline": "godot/generated/helpers/kon/timeline.json",
+    "frame": 1,
+    "display_list": [],
+    "source_frame1_action_sha256": "5292cb8891be48e48e6ad135ae234d52e19524d6032a4c2a056a8e771044500c",
+    "interpretation": "Kon frame1 has no placed display-list child; source parked visible flag cannot contribute a child pixel, and native frame1 has no active instance."
+  }
+}

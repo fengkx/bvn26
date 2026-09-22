@@ -1,0 +1,69 @@
+{
+  "status": "active_helper_fields_match",
+  "fixture": "lee-987-zhaoHuan-neutral",
+  "source_run": "lee_zhaohuan_helper_r04",
+  "source_capture_sha256": "8f6b2b74b1ff4b5876a2914bec9a10aa0cd985f337fc824075697613179e98c2",
+  "source_helper_rows": 602,
+  "native_helper_rows": 602,
+  "active_rows_compared": 84,
+  "active_frame_attacking_mismatches": 0,
+  "fields_compared": [
+    "frame",
+    "attacking",
+    "root_paused",
+    "atm1",
+    "atm2",
+    "atm3"
+  ],
+  "active_lifecycle_window": {
+    "first_tick": 16,
+    "last_tick": 99
+  },
+  "normalizations": [
+    "source undefined atm clip means no placed runtime instance and is compared to native 0",
+    "source f._visible remains true while parked at frame 1; runtime visible is compared only on active rows"
+  ],
+  "not_compared": [
+    "parent_frame: source f._parent is root display container frame, not actor playhead; no alias is assumed",
+    "inactive visible: source root clip visibility is not equivalent to parked helper runtime visible"
+  ],
+  "lifecycle_boundaries": {
+    "activation_tick": 16,
+    "source_helper_frame_at_activation": 2,
+    "pause_window_ticks": [
+      30,
+      51
+    ],
+    "nested_atm1_birth_tick": 58,
+    "nested_atm1_stop_tick": 91,
+    "nested_atm1_last_frame": 33,
+    "helper_hide_tick": 100,
+    "native_active_visible_window": [
+      16,
+      99
+    ],
+    "parked_source_position": [
+      20.0,
+      -200.0
+    ],
+    "parked_native_position": [
+      20.0,
+      -200.0
+    ],
+    "parked_visibility_equivalence": "off-stage parked coordinates are identical; source _visible=true is retained as a display-list flag and is not treated as screen visibility"
+  },
+  "source_observation_fields": [
+    "helper frame",
+    "_visible",
+    "root zhanting",
+    "parent container frame",
+    "atm1/2/3 clip frame"
+  ],
+  "parked_render_evidence": {
+    "source_timeline": "godot/generated/helpers/woailuo/timeline.json",
+    "frame": 1,
+    "display_list": [],
+    "source_frame1_action_sha256": "edb7f83af7ba2d0817497fc517f12bfe97a98a490fc29323e846c2248228bd8d",
+    "interpretation": "frame 1 has no placed display-list child; parked source f._visible=true therefore contributes no source child pixels. Native frame1 likewise has no active instance and is parked at (20,-200)."
+  }
+}

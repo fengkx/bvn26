@@ -1,0 +1,129 @@
+{
+  "id": "lee-callback-magic-skill2-source-conditioned-r05",
+  "fighter": "lee",
+  "slot": "p1",
+  "label": "砍技2",
+  "scenario": "source_conditioned_up_attack",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    370
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand",
+    "onDefence"
+  ],
+  "status": "source_conditioned_fixture_not_captured",
+  "fighters": {
+    "p1": "lee",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "source_callback_targets": [
+    {
+      "source_sprite_id": 518,
+      "source_frame": 320,
+      "source_path": "DefineSprite_518/frame_320/DoAction.as",
+      "action": "招1",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 325,
+      "source_path": "DefineSprite_518/frame_325/DoAction.as",
+      "action": "招1",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 332,
+      "source_path": "DefineSprite_518/frame_332/DoAction.as",
+      "action": "招1",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 370,
+      "source_path": "DefineSprite_518/frame_370/DoAction.as",
+      "action": "砍技2",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 509,
+      "source_path": "DefineSprite_518/frame_509/DoAction.as",
+      "action": "招2",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 558,
+      "source_path": "DefineSprite_518/frame_558/DoAction.as",
+      "action": "招3",
+      "kind": "frame_action",
+      "slot": "p1"
+    }
+  ],
+  "callback_group": "magic-chain",
+  "callback_purpose": "Source-conditioned reachability candidate: player skill2 input uses up+attack; no runtime or expected-state change.",
+  "preflight_status": "fight_input_preflight",
+  "callback_observer": "read-only source callback observer; no schedule/input changes",
+  "source_condition_evidence": [
+    {
+      "path": "scripts/fighter/Lee.json:frame_1/DoAction.as function skill2()",
+      "condition": "!useAI => kis(上) && kis(斩)",
+      "goto": "砍技2",
+      "needed_for": [
+        370
+      ]
+    },
+    {
+      "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "condition": "gameRunning() && skill2()",
+      "goto": "砍技2",
+      "needed_for": [
+        370
+      ]
+    },
+    {
+      "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_370/DoAction.as",
+      "condition": "unconditional",
+      "effect": "gotoAndStop(\"落\"); play();",
+      "note": "370 is reachable only after entering 砍技2; later 371+ are after this terminal goto."
+    },
+    {
+      "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_320/DoAction.as",
+      "condition": "unconditional",
+      "effect": "gotoAndStop(\"站立\"); play();",
+      "note": "325/332 lie after this terminal action in generated 招1 range; they are not reached by a normal pass from label entry."
+    }
+  ]
+}

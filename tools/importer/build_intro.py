@@ -88,15 +88,16 @@ def build(workspace, output, jar):
                                 '-format', 'shape:png', '-export', 'shape', str(tmp / name), 'game/main.swf'], check=True, stdout=subprocess.DEVNULL)
             for d in shapes:
                 shutil.copyfile(tmp / name / (str(d['character_id']) + '.png'), output / name / ('shape-%s.png' % d['character_id']))
-        # The selector now exposes the three source-backed base forms added to
-        # this slice. Compile each opening from its own root timeline and
-        # kcplayed callbacks; the runtime must never borrow another fighter's
-        # state-frame map.
-        # Candidate base forms are compiled into the production intro registry
-        # before they are exposed by the selection registry. This keeps the
-        # runtime opening chain ready without making a candidate selectable.
-        for name in ['minren', 'yihu', 'rifagu', 'sasuke', 'kakashi', 'renji',
-                     'sakura', 'rukia', 'yulong']:
+        # Compile every materialized base form from its own root timeline and
+        # kcplayed callbacks.  The directory is the generated artifact index;
+        # keeping a hand-maintained roster here silently drops newly imported
+        # source forms (for example Byakuya and Lee).
+        fighter_root = Path('godot/generated/fighters')
+        candidates = sorted(
+            folder.name for folder in fighter_root.iterdir()
+            if folder.is_dir() and (folder / 'fighter.json').is_file()
+        )
+        for name in candidates:
             folder = Path('godot/generated/fighters') / name
             fighter = json.loads((folder / 'fighter.json').read_text())
             timeline = json.loads((folder / 'timeline.json').read_text())
@@ -117,13 +118,42 @@ def build(workspace, output, jar):
                 assignment = re.search(r'kcplayed = (\d+);', text)
                 if assignment:
                     state_frames[match[1]] = int(assignment[1])
-            if sorted(state_frames.values()) != [1, 2, 3]:
+            # Some source openings repeat the ready state (Byakuya writes
+            # kcplayed=3 twice) before the terminal kcplayed=2 transition.
+            # Repetition is authored timing, while the required state domain
+            # remains exactly 1/2/3.
+            if sorted(set(state_frames.values())) != [1, 2, 3]:
                 raise ValueError(f'Incomplete intro state chain: {name}')
             audit_frames = [{'frame': f['frame'], 'changes': f.get('changes', []),
                              'events': f.get('events', []),
                              'scripts': [e for e in evidence if f'/frame_{f["frame"]}/' in e['path']]}
                             for f in timeline['frames'] if action['start_frame'] <= f['frame'] <= action['end_frame']]
             spec['fighters'][name] = {'action': action, 'state_frames': state_frames, 'scripts': evidence, 'frames': audit_frames}
+            timeline_path = fighter['source'].get('timeline_path', f'data/slices/{name}-base.timeline.json')
+            timeline_file = Path(timeline_path)
+            timeline_sha256 = hashlib.sha256(timeline_file.read_bytes()).hexdigest() if timeline_file.is_file() else ''
+            intro = {
+                'format': 'bvn26-fighter-opening-v1',
+                'status': 'source_compiled_not_runtime_integrated',
+                'fighter_id': name,
+                'source_fighter_id': fighter.get('fighter_id', name),
+                'source_sprite_id': sid,
+                'action': action,
+                'state_frames': state_frames,
+                'state_frame_sources': {
+                    frame: next(item for item in evidence if f'/frame_{frame}/' in item['path'])
+                    for frame in state_frames
+                },
+                'source': {
+                    'swf_path': fighter['source']['swf_path'],
+                    'swf_sha256': fighter['source']['swf_sha256'],
+                    'script_bundle_path': fighter['source']['script_bundle_path'],
+                    'script_bundle_sha256': fighter['source']['script_bundle_sha256'],
+                    'timeline_path': timeline_path,
+                    'timeline_sha256': fighter['source'].get('timeline_sha256', timeline_sha256),
+                },
+            }
+            (folder / 'intro.json').write_text(json.dumps(intro, ensure_ascii=False, indent=2) + '\n')
         # Keep decompiled evidence outside production data; runtime consumes fields.
         (Path('evidence') / 'intro-source.json').write_text(json.dumps(spec, ensure_ascii=False, indent=2) + '\n')
         for clip in spec['clips'].values():

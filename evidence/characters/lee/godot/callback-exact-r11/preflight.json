@@ -1,0 +1,187 @@
+{
+  "schema": "lee-callback-exact-r11-preflight",
+  "scope": "Two same-source-run headless cases; all 600 captured fight ticks are observed so repeated target occurrences are retained. Compare only P1 body frame-action source_frame/entering/action/decoded ql.",
+  "cases": [
+    {
+      "case_id": "super-953-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r11/fixtures/super-953-p1.json",
+      "fixture_sha256": "90135f9e2fe50e6ac1c3c8cf352f926d8c1839355fdc5c82254afb5b26a05fb1",
+      "source_run_id": "lee-callback-ground-super-frame953-r01",
+      "source_raw": "evidence/characters/lee/original/lee-callback-ground-super-frame953-r01/events.jsonl",
+      "source_raw_sha256": "8885b1f61d8ef771f826295254f3cd4b7d2ec634cd0f406278235344118cb313",
+      "source_build_original": "evidence/characters/lee/original/lee-callback-ground-super-frame953-r01/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r11/source-builds/super-953-p1/build.json",
+      "source_build_sha256": "cd14b9a1a62a63d4709a11e78ec02caa5011f72493abab20dba93b267cf6285a",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r11/source-builds/super-953-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "19bb5d891e768c89e9f1af0e2cf1bde48db5129fb2429dd938b5e74dd9444bec",
+      "source_output_main_sha256": "6dc6a5e4baf1d81593c5a0a64b44438b4b6275e9ac8e1da7ad61e9a327331319",
+      "source_move_case": {
+        "id": "lee-callback-ground-super-frame953-r01",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "超必杀",
+        "scenario": "callback_ground_super_frame953",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "down",
+              "special"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "target_frames": [
+          953
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction",
+          "onDefence",
+          "onDashing"
+        ],
+        "status": "prepared",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 953,
+            "source_path": "DefineSprite_518/frame_953/DoAction.as",
+            "action": "超必杀",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 600,
+      "target_preflight": [
+        {
+          "source_frame": 953,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ]
+    },
+    {
+      "case_id": "defence-1050-1057-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r11/fixtures/defence-1050-1057-p1.json",
+      "fixture_sha256": "5677f1285d038f1ffbace5cbb3b49dae7238fe6709950bfbe6481980568a9720",
+      "source_run_id": "lee-callback-defence-frame1057-r02",
+      "source_raw": "evidence/characters/lee/original/lee-callback-defence-frame1057-r02/events.jsonl",
+      "source_raw_sha256": "55ccd2bd549f9040fe9485ccbd26e605c342f0dfe318b3a589eb1370c0695943",
+      "source_build_original": "evidence/characters/lee/original/lee-callback-defence-frame1057-r02/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r11/source-builds/defence-1050-1057-p1/build.json",
+      "source_build_sha256": "2bc2e6bc4a334a766bf5656b0821cccc596d1b4af00423973fe6c69e14d57275",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r11/source-builds/defence-1050-1057-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "ed4e4de729b13d9a58d31b0f7f6a576f54d69c73f76bd456c944214a85ab6e39",
+      "source_output_main_sha256": "dc6ebca6d38418a889c9f6e8d9c61ff4db4b71c582725bb3e0617cfbf247821b",
+      "source_move_case": {
+        "id": "lee-callback-defence-frame1057-r02",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "防御2",
+        "scenario": "callback_defence_frame1057",
+        "frames": 600,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "down"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "target_frames": [
+          1050,
+          1057,
+          1060
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "onDefence"
+        ],
+        "status": "prepared",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1057,
+            "source_path": "DefineSprite_518/frame_1057/DoAction.as",
+            "action": "防御",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 600,
+      "target_preflight": [
+        {
+          "source_frame": 1050,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 2
+        },
+        {
+          "source_frame": 1057,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ]
+    }
+  ]
+}

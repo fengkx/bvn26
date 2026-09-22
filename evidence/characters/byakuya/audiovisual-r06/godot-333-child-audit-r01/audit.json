@@ -1,0 +1,246 @@
+{
+  "scope": "bounded read-only Godot live TimelinePreview display-list observation",
+  "fixture": {
+    "helpers": [
+      "魂",
+      "魂"
+    ],
+    "p1": "白哉",
+    "p2": "一护",
+    "stage": "现世"
+  },
+  "target_source_frame": 333,
+  "actual_source_frame": 333,
+  "godot_capture_tick": 286,
+  "path_count": 8,
+  "named_live_timeline_count": 4,
+  "unnamed_shape_or_non_timeline_count": 4,
+  "named_child_frames": {
+    "root/AImain": 1,
+    "root/mian": 1,
+    "root/jiao": 1,
+    "root/bdmn": 1
+  },
+  "observed_paths": [
+    {
+      "child_frame": 1,
+      "depth": 1,
+      "frame_count": 2,
+      "has_live_timeline": true,
+      "name": "AImain",
+      "parent_frame": 333,
+      "path": "root/AImain",
+      "placed_frame": 1,
+      "symbol": 3
+    },
+    {
+      "child_frame": 1,
+      "depth": 23,
+      "frame_count": 1,
+      "has_live_timeline": true,
+      "name": "mian",
+      "parent_frame": 333,
+      "path": "root/mian",
+      "placed_frame": 1,
+      "symbol": 2
+    },
+    {
+      "child_frame": 1,
+      "depth": 1,
+      "frame_count": 0,
+      "has_live_timeline": false,
+      "name": "",
+      "parent_frame": 1,
+      "path": "root/mian/#1.0",
+      "placed_frame": 1,
+      "symbol": 1
+    },
+    {
+      "child_frame": 1,
+      "depth": 25,
+      "frame_count": 1,
+      "has_live_timeline": true,
+      "name": "jiao",
+      "parent_frame": 333,
+      "path": "root/jiao",
+      "placed_frame": 1,
+      "symbol": 5
+    },
+    {
+      "child_frame": 1,
+      "depth": 1,
+      "frame_count": 0,
+      "has_live_timeline": false,
+      "name": "",
+      "parent_frame": 1,
+      "path": "root/jiao/#1.0",
+      "placed_frame": 1,
+      "symbol": 4
+    },
+    {
+      "child_frame": 1,
+      "depth": 27,
+      "frame_count": 0,
+      "has_live_timeline": false,
+      "name": "",
+      "parent_frame": 333,
+      "path": "root/#27.0",
+      "placed_frame": 284,
+      "symbol": 203
+    },
+    {
+      "child_frame": 1,
+      "depth": 32,
+      "frame_count": 1,
+      "has_live_timeline": true,
+      "name": "bdmn",
+      "parent_frame": 333,
+      "path": "root/bdmn",
+      "placed_frame": 26,
+      "symbol": 2
+    },
+    {
+      "child_frame": 1,
+      "depth": 1,
+      "frame_count": 0,
+      "has_live_timeline": false,
+      "name": "",
+      "parent_frame": 1,
+      "path": "root/bdmn/#1.0",
+      "placed_frame": 1,
+      "symbol": 1
+    }
+  ],
+  "source_evidence": {
+    "freeze_capture": "evidence/characters/byakuya/audiovisual-r06/freeze-r13/333-r14/capture-state.txt",
+    "source_frozen_root_frame": 333,
+    "source_capture_has_recursive_visual_paths": true
+  },
+  "interpretation": [
+    "The old empty visual_child_frames field only reports compiled combat-instance clips; it is not a recursive visual child map.",
+    "This probe walks the live fighter TimelinePreview display_list and recursively applies the source placed_frame rule to each DefineSprite timeline.",
+    "It observes 8 live display placements at source frame 333, including named AImain=1, mian=1, jiao=1, bdmn=1 and unnamed symbol 203 at child frame 1.",
+    "It does not claim Flash path parity: the original freeze trace contains more wrapper and retained visual paths than this fighter-local Godot display list. Missing wrapper/stage paths must be audited separately.",
+    "AImain frame 0 vs 1 is an empty-controller representation difference in this human-P1 fixture: source initCtrl unloads AImain after gotoAndStop(1), while generated symbol 3 frame 1 has an empty display list. No visible AImain descendants are present on either side, so this bounded visual observation is normalized as visually equivalent while retaining the lifecycle distinction."
+  ],
+  "probe_script": "godot/tests/byakuya_visual_child_probe.gd",
+  "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot -s res://tests/byakuya_visual_child_probe.gd -- 333 /private/tmp/byakuya-child333-r01",
+  "exit_code": 0,
+  "sha256": {
+    "child-map.json": "831dbad6cff3b03bb3674f42e9308c4fd38c2d2cdfa2444bc83a30bf3f2925e8",
+    "flash-stage-600x400.png": "14ccd72dcfc6dae65f683ba19c3b1dde6681decaef0f50fb4d5bc3f877bf20d9"
+  },
+  "source_leaf_observation": {
+    "capture_display_tick": 448,
+    "source_paths_at_freeze": [
+      {
+        "source_path": "root.game.p1._this._this._this._this.mc",
+        "frame": 333
+      },
+      {
+        "source_path": "root.game.p1._this._this._this._this.mc.bdmn",
+        "frame": 1
+      },
+      {
+        "source_path": "root.game.p1._this._this._this._this.mc.jiao",
+        "frame": 1
+      },
+      {
+        "source_path": "root.game.p1._this._this._this._this.mc.mian",
+        "frame": 1
+      },
+      {
+        "source_path": "root.game.p1._this._this._this._this.mc.AImain",
+        "frame": 0
+      }
+    ],
+    "source_evidence_note": "These are the leaf p1 rows from capture-state.txt at display_tick 448; wrapper _this rows are retained separately and not collapsed into a root-frame claim."
+  },
+  "comparison": {
+    "same_named_children": {
+      "bdmn": {
+        "source": 1,
+        "godot": 1
+      },
+      "jiao": {
+        "source": 1,
+        "godot": 1
+      },
+      "mian": {
+        "source": 1,
+        "godot": 1
+      }
+    },
+    "first_observed_child_frame_difference": {
+      "path": "AImain",
+      "source": 0,
+      "godot": 1,
+      "classification": "visual-child-state-difference; bounded observation only"
+    },
+    "root_frame_comparison": {
+      "source": 333,
+      "godot": 333,
+      "matched": true
+    }
+  },
+  "AImain_semantics": {
+    "source_symbol": 3,
+    "source_frame_count": 2,
+    "source_display_list_frame_1_count": 0,
+    "source_display_list_frame_2_count": 10,
+    "source_controller_path": "scripts/fighter/Byakuya.json DefineSprite_631/frame_1/DoAction.as function initCtrl",
+    "source_human_branch": "if (!_parent.useAI) { AImain.gotoAndStop(1); AImain.unloadMovie(); }",
+    "fixture_p1_useAI": false,
+    "godot_frame_1_child_count": 0,
+    "classification": "representation_difference_empty_controller",
+    "visual_consequence": "no visible AImain descendants in either observation; do not classify as a visual mismatch, but retain source frame0 vs Godot frame1 semantic difference for controller/lifecycle audit"
+  },
+  "screenshot_comparison": {
+    "source_image": "../../freeze-r13/333-r14/flash-window-after.png",
+    "source_stage_crop": "flash-stage-600x400.png",
+    "godot_image": "../../godot-333/godot-stage-600x400.png",
+    "source_crop_rule": {
+      "window_content_rect_pixels": [
+        112,
+        133,
+        1200,
+        800
+      ],
+      "resize": [
+        600,
+        400
+      ],
+      "note": "crop removes only Flash window chrome; no pixels were masked or retouched"
+    },
+    "pixel_diff": {
+      "mae_rgb": [
+        12.196166666666667,
+        12.440458333333334,
+        10.915704166666668
+      ],
+      "diff_extrema_rgb": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          245
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "interpretation": "renderer/HUD/stage observation metric only; not a parity threshold"
+    },
+    "observed_layers": {
+      "background": "same 现世 scene composition and broad camera framing; no obvious missing background layer in this crop",
+      "fighters": "both show 白哉 left and 一护 right with close normalized horizontal placement; exact geometry remains governed by source/runtime metadata, not pixel score",
+      "effect": "333 ranged slash/white sword presentation is visible in both captures",
+      "hud": "Flash timer reads 60 and uses yellow/green energy styling; Godot reads 59 and uses red/blue bar styling",
+      "child_controller": "AImain has no visible descendants in either side for this human-P1 fixture despite source frame0/Godot frame1 representation difference"
+    },
+    "acceptance": "bounded same-fixture visual comparison only; HUD timer/bar differences and pixel metric prevent full visual parity claim"
+  }
+}

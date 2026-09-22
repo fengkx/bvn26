@@ -1,0 +1,542 @@
+{
+  "format": "lee-ai-single-callback-readset-v2",
+  "status": "original_native_observed",
+  "source_run": "lee-cpu-context-r06",
+  "field_order": [
+    "receiver",
+    "attran",
+    "defran",
+    "goran",
+    "jumpran",
+    "bisharan",
+    "lee_ql",
+    "lee_hp",
+    "lee_x",
+    "lee_y",
+    "lee_xscale",
+    "lee_action",
+    "lee_touch",
+    "lee_touchFloor",
+    "lee_jump",
+    "lee_airBody",
+    "opponent_action",
+    "opponent_hp",
+    "opponent_ql",
+    "opponent_x",
+    "opponent_y",
+    "canhit",
+    "root_zhanting",
+    "p2_helper_currentframe",
+    "p2_helper_action"
+  ],
+  "callbacks": [
+    {
+      "context": {
+        "seq": 2795,
+        "time_ms": 24766,
+        "display_tick": 466,
+        "fight_tick": 0,
+        "kind": "lee_ai_context",
+        "value": "_level0.game.p2.mc.instance346,f:1:8:82482491:59211776,f:1:4:83238528:21495808,f:1:3:67812496:6291456,f:1:7:123053480:39649280,f:1:7:92001373:52297728,f:1:0:0:0,f:1:9:131072000:0,f:1:-1:120795955:13421773,f:-1:4:84095795:13421773,f:1:6:92708800:0,f:1:0:0:0,true,undefined,f:1:0:0:0,false,f:1:0:0:0,f:1:9:131072000:0,f:1:0:0:0,f:1:8:98068070:26843546,f:-1:4:104857600:0,true,false,undefined,undefined"
+      },
+      "following_events": [
+        {
+          "seq": 2795,
+          "time_ms": 24766,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "lee_ai_context",
+          "value": "_level0.game.p2.mc.instance346,f:1:8:82482491:59211776,f:1:4:83238528:21495808,f:1:3:67812496:6291456,f:1:7:123053480:39649280,f:1:7:92001373:52297728,f:1:0:0:0,f:1:9:131072000:0,f:1:-1:120795955:13421773,f:-1:4:84095795:13421773,f:1:6:92708800:0,f:1:0:0:0,true,undefined,f:1:0:0:0,false,f:1:0:0:0,f:1:9:131072000:0,f:1:0:0:0,f:1:8:98068070:26843546,f:-1:4:104857600:0,true,false,undefined,undefined"
+        },
+        {
+          "seq": 2796,
+          "time_ms": 24767,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "defence,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2797,
+          "time_ms": 24768,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "nornalhit,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2798,
+          "time_ms": 24769,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "wankai,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2799,
+          "time_ms": 24769,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "skill2,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2800,
+          "time_ms": 24770,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "skill1,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2801,
+          "time_ms": 24771,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "magichit3,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2802,
+          "time_ms": 24771,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "magichit2,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2803,
+          "time_ms": 24771,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "magichit1,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2804,
+          "time_ms": 24772,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "bishaSuper,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2805,
+          "time_ms": 24772,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "bishaUP,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2806,
+          "time_ms": 24772,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "bisha,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2807,
+          "time_ms": 24773,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "zhaoHuan,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2808,
+          "time_ms": 24773,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "moveLeft,_level0.game.p2.mc.instance346,true"
+        },
+        {
+          "seq": 2809,
+          "time_ms": 24773,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "moveRight,_level0.game.p2.mc.instance346,false"
+        },
+        {
+          "seq": 2810,
+          "time_ms": 24774,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "rush,_level0.game.p2.mc.instance346,true"
+        },
+        {
+          "seq": 2811,
+          "time_ms": 24775,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2812,
+          "time_ms": 24775,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 2813,
+          "time_ms": 24776,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 2814,
+          "time_ms": 24776,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2815,
+          "time_ms": 24777,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 2816,
+          "time_ms": 24777,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2817,
+          "time_ms": 24777,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 2818,
+          "time_ms": 24778,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "seq": 2819,
+          "time_ms": 24778,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "seq": 2820,
+          "time_ms": 24778,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "seq": 2821,
+          "time_ms": 24778,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "seq": 2822,
+          "time_ms": 24778,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2823,
+          "time_ms": 24778,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "dash,_level0.game.p2.mc,false"
+        },
+        {
+          "seq": 2824,
+          "time_ms": 24779,
+          "display_tick": 467,
+          "fight_tick": 1,
+          "kind": "input_next_display",
+          "value": "right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+        }
+      ]
+    },
+    {
+      "context": {
+        "seq": 3014,
+        "time_ms": 25101,
+        "display_tick": 476,
+        "fight_tick": 10,
+        "kind": "lee_ai_context",
+        "value": "_level0.game.p2.mc.instance436,f:1:8:95744729:8454144,f:1:8:74601496:10387456,f:1:6:74078501:47579136,f:1:8:70377771:24313856,f:1:7:81784071:3014656,f:1:0:0:0,f:1:9:131072000:0,f:1:-1:120795955:13421773,f:-1:4:84095795:13421773,f:1:6:92708800:0,f:1:0:0:0,true,true,f:1:0:0:0,false,f:1:0:0:0,f:1:9:131072000:0,f:1:0:0:0,f:1:8:98068070:26843546,f:-1:4:104857600:0,true,false,undefined,undefined"
+      },
+      "following_events": [
+        {
+          "seq": 3014,
+          "time_ms": 25101,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "lee_ai_context",
+          "value": "_level0.game.p2.mc.instance436,f:1:8:95744729:8454144,f:1:8:74601496:10387456,f:1:6:74078501:47579136,f:1:8:70377771:24313856,f:1:7:81784071:3014656,f:1:0:0:0,f:1:9:131072000:0,f:1:-1:120795955:13421773,f:-1:4:84095795:13421773,f:1:6:92708800:0,f:1:0:0:0,true,true,f:1:0:0:0,false,f:1:0:0:0,f:1:9:131072000:0,f:1:0:0:0,f:1:8:98068070:26843546,f:-1:4:104857600:0,true,false,undefined,undefined"
+        },
+        {
+          "seq": 3015,
+          "time_ms": 25102,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "defence,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3016,
+          "time_ms": 25103,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "nornalhit,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3017,
+          "time_ms": 25103,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "wankai,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3018,
+          "time_ms": 25104,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "skill2,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3019,
+          "time_ms": 25104,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "skill1,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3020,
+          "time_ms": 25104,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "magichit3,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3021,
+          "time_ms": 25105,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "magichit2,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3022,
+          "time_ms": 25105,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "magichit1,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3023,
+          "time_ms": 25105,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "bishaSuper,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3024,
+          "time_ms": 25106,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "bishaUP,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3025,
+          "time_ms": 25106,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "bisha,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3026,
+          "time_ms": 25107,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "zhaoHuan,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3027,
+          "time_ms": 25107,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "moveLeft,_level0.game.p2.mc.instance436,true"
+        },
+        {
+          "seq": 3028,
+          "time_ms": 25107,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "moveRight,_level0.game.p2.mc.instance436,false"
+        },
+        {
+          "seq": 3029,
+          "time_ms": 25107,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "rush,_level0.game.p2.mc.instance436,true"
+        },
+        {
+          "seq": 3030,
+          "time_ms": 25107,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3031,
+          "time_ms": 25108,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 3032,
+          "time_ms": 25108,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3033,
+          "time_ms": 25108,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3034,
+          "time_ms": 25108,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3035,
+          "time_ms": 25108,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3036,
+          "time_ms": 25108,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 3037,
+          "time_ms": 25109,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "seq": 3038,
+          "time_ms": 25110,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "seq": 3039,
+          "time_ms": 25110,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "seq": 3040,
+          "time_ms": 25110,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "seq": 3041,
+          "time_ms": 25110,
+          "display_tick": 476,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "dash,_level0.game.p2.mc,false"
+        },
+        {
+          "seq": 3042,
+          "time_ms": 25111,
+          "display_tick": 477,
+          "fight_tick": 11,
+          "kind": "input_next_display",
+          "value": "right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+        },
+        {
+          "seq": 3043,
+          "time_ms": 25111,
+          "display_tick": 477,
+          "fight_tick": 11,
+          "kind": "state",
+          "value": "p1,7,f:1:8:98068070:26843546,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "sensor_bounds and sensor_local are emitted by existing geometry event nearby, not duplicated inside callback hook",
+    "helper action is undefined in source at these callbacks; this is observed, not defaulted"
+  ]
+}

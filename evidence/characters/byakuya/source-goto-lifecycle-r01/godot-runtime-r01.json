@@ -1,0 +1,233 @@
+{
+  "checks": {
+    "native_paired_capture": false,
+    "natural_input_parity": false,
+    "same_frame_entry_serial_increased": true
+  },
+  "fighter_directory": "res://generated/fighters/byakuya",
+  "format": "bvn26-byakuya-source-goto-runtime-probe-v1",
+  "rows": [
+    {
+      "action": "站立",
+      "ai_pending": [],
+      "defer_once": false,
+      "display_tick": -1,
+      "entry_serial": 2,
+      "frame_script_serial": 1,
+      "instance_local_frames": {},
+      "operation": "ready",
+      "pending_frames": [],
+      "source_frame": 1
+    },
+    {
+      "action": "站立",
+      "ai_pending": [
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 2
+        }
+      ],
+      "defer_once": false,
+      "display_tick": -1,
+      "entry_serial": 3,
+      "frame_script_serial": 2,
+      "instance_local_frames": {},
+      "operation": "goto_A",
+      "pending_frames": [],
+      "source_frame": 1
+    },
+    {
+      "action": "站立",
+      "ai_pending": [
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 2
+        }
+      ],
+      "defer_once": true,
+      "display_tick": -1,
+      "entry_serial": 4,
+      "frame_script_serial": 2,
+      "instance_local_frames": {},
+      "operation": "goto_B_deferred",
+      "pending_frames": [
+        814
+      ],
+      "source_frame": 814
+    },
+    {
+      "action": "站立",
+      "ai_pending": [
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 2
+        },
+        {
+          "defer_until_tick": 0,
+          "frame": 814,
+          "order": 0,
+          "serial": 3
+        }
+      ],
+      "defer_once": false,
+      "display_tick": -1,
+      "entry_serial": 4,
+      "frame_script_serial": 3,
+      "instance_local_frames": {},
+      "operation": "dispatch_B_deferred",
+      "pending_frames": [],
+      "source_frame": 814
+    },
+    {
+      "action": "站立",
+      "ai_pending": [
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 2
+        },
+        {
+          "defer_until_tick": 0,
+          "frame": 814,
+          "order": 0,
+          "serial": 3
+        },
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 4
+        }
+      ],
+      "defer_once": false,
+      "display_tick": -1,
+      "entry_serial": 5,
+      "frame_script_serial": 4,
+      "instance_local_frames": {},
+      "operation": "goto_A_reentry",
+      "pending_frames": [],
+      "source_frame": 1
+    },
+    {
+      "action": "站立",
+      "ai_pending": [
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 2
+        },
+        {
+          "defer_until_tick": 0,
+          "frame": 814,
+          "order": 0,
+          "serial": 3
+        },
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 4
+        },
+        {
+          "frame": 2,
+          "order": 0,
+          "serial": 5
+        }
+      ],
+      "defer_once": false,
+      "display_tick": -1,
+      "entry_serial": 6,
+      "frame_script_serial": 5,
+      "instance_local_frames": {},
+      "operation": "dispatch_A_reentry",
+      "pending_frames": [],
+      "source_frame": 2
+    },
+    {
+      "action": "站立",
+      "ai_pending": [
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 2
+        },
+        {
+          "defer_until_tick": 0,
+          "frame": 814,
+          "order": 0,
+          "serial": 3
+        },
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 4
+        },
+        {
+          "frame": 2,
+          "order": 0,
+          "serial": 5
+        },
+        {
+          "frame": 814,
+          "order": 0,
+          "serial": 6
+        }
+      ],
+      "defer_once": false,
+      "display_tick": -1,
+      "entry_serial": 7,
+      "frame_script_serial": 6,
+      "instance_local_frames": {},
+      "operation": "goto_B_same_frame_1",
+      "pending_frames": [],
+      "source_frame": 814
+    },
+    {
+      "action": "站立",
+      "ai_pending": [
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 2
+        },
+        {
+          "defer_until_tick": 0,
+          "frame": 814,
+          "order": 0,
+          "serial": 3
+        },
+        {
+          "frame": 1,
+          "order": 0,
+          "serial": 4
+        },
+        {
+          "frame": 2,
+          "order": 0,
+          "serial": 5
+        },
+        {
+          "frame": 814,
+          "order": 0,
+          "serial": 6
+        }
+      ],
+      "defer_once": false,
+      "display_tick": -1,
+      "entry_serial": 8,
+      "frame_script_serial": 6,
+      "instance_local_frames": {},
+      "operation": "goto_B_same_frame_2",
+      "pending_frames": [],
+      "source_frame": 814
+    }
+  ],
+  "scope": "real Godot FighterRuntime source_goto_label lifecycle; no Flash/native parity",
+  "sequence": [
+    "站立",
+    "招换",
+    "站立"
+  ],
+  "status": "executed_analysis_only"
+}

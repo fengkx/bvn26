@@ -1,0 +1,153 @@
+{
+  "id": "lee-callback-ground-first-edge-r09",
+  "fighter": "lee",
+  "slot": "p1",
+  "label": "砍1",
+  "scenario": "source_conditioned_frame163_edge_retry2",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 17,
+      "end": 18
+    }
+  ],
+  "target_frames": [
+    193,
+    197
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "source_conditioned_fixture_not_captured",
+  "fighters": {
+    "p1": "lee",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "source_callback_targets": [
+    {
+      "source_sprite_id": 518,
+      "source_frame": 172,
+      "source_path": "DefineSprite_518/frame_172/DoAction.as",
+      "action": "砍1",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 193,
+      "source_path": "DefineSprite_518/frame_193/DoAction.as",
+      "action": "砍2",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 197,
+      "source_path": "DefineSprite_518/frame_197/DoAction.as",
+      "action": "砍2",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 235,
+      "source_path": "DefineSprite_518/frame_235/DoAction.as",
+      "action": "砍3",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 240,
+      "source_path": "DefineSprite_518/frame_240/DoAction.as",
+      "action": "砍3",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 268,
+      "source_path": "DefineSprite_518/frame_268/DoAction.as",
+      "action": "砍4",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 448,
+      "source_path": "DefineSprite_518/frame_448/DoAction.as",
+      "action": "砍技1",
+      "kind": "frame_action",
+      "slot": "p1"
+    }
+  ],
+  "callback_group": "ground-chain",
+  "callback_purpose": "Second edge covers observed key_read attack at fight_tick17/source frame163 callback, then releases before frame187 callback.",
+  "preflight_status": "fight_input_preflight",
+  "callback_observer": "read-only source callback observer; no schedule/input changes",
+  "source_condition_evidence": [
+    {
+      "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_163/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "condition": "gameRunning() && nornalhit()",
+      "goto": "砍2",
+      "needed_for": [
+        193,
+        197
+      ]
+    },
+    {
+      "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "condition": "gameRunning() && nornalhit()",
+      "goto": "砍3",
+      "needed_for": [
+        235,
+        240
+      ]
+    },
+    {
+      "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "condition": "gameRunning() && nornalhit()",
+      "goto": "砍4",
+      "needed_for": [
+        268
+      ]
+    },
+    {
+      "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_172/DoAction.as",
+      "condition": "unconditional",
+      "effect": "gotoAndStop(\"站立\"); play();",
+      "trace": "Current short-edge trace reaches body frame 172 at fight ticks 25/50/75/100; no later chain frame."
+    },
+    {
+      "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "condition": "release attack before this callback",
+      "expected": "no nornalhit goto砍3; observe 193/197 if normal timeline continues"
+    }
+  ]
+}

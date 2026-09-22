@@ -1,0 +1,87 @@
+{
+  "id": "recovery-p2-1086-1087-1096-1098-1112",
+  "fighters": {
+    "p1": "yihu",
+    "p2": "lee"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300,
+      "health": 1,
+      "wudi": false
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "frames": 700,
+  "target_frames": [
+    1086,
+    1087,
+    1096,
+    1098,
+    1112
+  ],
+  "source_state_preconditions": {
+    "p2": {
+      "health": 1,
+      "wudi": false
+    }
+  },
+  "source_callback_targets": [
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1086,
+      "source_path": "DefineSprite_518/frame_1086/DoAction.as",
+      "action": "受击",
+      "kind": "frame_action",
+      "slot": "p2"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1087,
+      "source_path": "DefineSprite_518/frame_1087/DoAction.as",
+      "action": "受击",
+      "kind": "frame_action",
+      "slot": "p2"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1096,
+      "source_path": "DefineSprite_518/frame_1096/DoAction.as",
+      "action": "击飞",
+      "kind": "frame_action",
+      "slot": "p2"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1098,
+      "source_path": "DefineSprite_518/frame_1098/DoAction.as",
+      "action": "击落地",
+      "kind": "frame_action",
+      "slot": "p2"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1112,
+      "source_path": "DefineSprite_518/frame_1112/DoAction.as",
+      "action": "击落地",
+      "kind": "frame_action",
+      "slot": "p2"
+    }
+  ]
+}

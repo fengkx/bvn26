@@ -1,0 +1,135 @@
+{
+  "run_id": "lee-callback-lifecycle-recovery-r01",
+  "status": "source_capture_complete_1133_clip_reached_other_targets_not_observed",
+  "event_count": 58950,
+  "capture_sha256": "963b0718af01941a5d0ee705106bb5e7cacae08a7e415040871f65a9e7cae698",
+  "build": {
+    "path": "build.json",
+    "sha256": "7cf34396497b169882aa344a1ac67c01d996e0f53854b5e3b80653ead1cde7ff",
+    "main_output_sha256": "c8945f124e83e35cefba4fa63c73391b3f738a0ce593e9d471932976dd7298b2",
+    "lee_output_sha256": "d8d4792420822d516491f59e9d3f3c3b826a241566ec997d2e03ba12a7ff2a68",
+    "instrumentation_sha256": "7e71af5ec6959fc403f1d6f52953e0ca50ce1cc89bc36148bba57d0ccdc6acf2",
+    "schedule_probe": true,
+    "body_boundaries": true
+  },
+  "fixture": {
+    "path": "fixture.json",
+    "sha256": "6df0b05624b6ee0cdaddd9f5133262b62857960f0296e01c6af2473ddabe2f84",
+    "case_path": "case.txt",
+    "case_sha256": "fd02848cd832443c41d3b37609909f65ff3f7e33f278476f023c341e54f42918",
+    "input": "P1 down+special [10,13); P2 dash [76,80)",
+    "slot": "p2 Lee",
+    "helpers_expected": {
+      "p1": "魂",
+      "p2": "魂"
+    },
+    "preconditions": {
+      "p2": {
+        "health": 1000,
+        "wudi": false
+      }
+    }
+  },
+  "ready": {
+    "seq": 10890,
+    "display_frame": 451,
+    "fight_tick": 0
+  },
+  "done": {
+    "seq": 58950,
+    "display_frame": 1351,
+    "fight_tick": 900
+  },
+  "helpers_observed": [
+    {
+      "seq": 22,
+      "display_frame": 2,
+      "fight_tick": -1,
+      "value": "p1,魂,kon.swf"
+    },
+    {
+      "seq": 53,
+      "display_frame": 3,
+      "fight_tick": -1,
+      "value": "p2,魂,kon.swf"
+    }
+  ],
+  "target_clip_1133_schedule_events": [
+    {
+      "seq": 13111,
+      "display_frame": 529,
+      "fight_tick": 78,
+      "event": "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,enter,_level0.game.p2.mc.instance572,1,false,1134,f:-1:4:104857600:0"
+    },
+    {
+      "seq": 13112,
+      "display_frame": 529,
+      "fight_tick": 78,
+      "event": "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,exit,_level0.game.p2.mc.instance572,1,false,1134,f:-1:4:104857600:0"
+    },
+    {
+      "seq": 13134,
+      "display_frame": 530,
+      "fight_tick": 79,
+      "event": "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,enter,_level0.game.p2.mc.instance572,1,false,1135,f:-1:4:104857600:0"
+    },
+    {
+      "seq": 13135,
+      "display_frame": 530,
+      "fight_tick": 79,
+      "event": "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,exit,_level0.game.p2.mc.instance572,1,false,1135,f:-1:4:104857600:0"
+    },
+    {
+      "seq": 13153,
+      "display_frame": 531,
+      "fight_tick": 80,
+      "event": "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,enter,_level0.game.p2.mc.instance572,1,false,1136,f:-1:4:104857600:0"
+    },
+    {
+      "seq": 13154,
+      "display_frame": 531,
+      "fight_tick": 80,
+      "event": "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,exit,_level0.game.p2.mc.instance572,1,false,1136,f:-1:4:104857600:0"
+    },
+    {
+      "seq": 13174,
+      "display_frame": 532,
+      "fight_tick": 81,
+      "event": "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,enter,_level0.game.p2.mc.instance572,1,false,1137,f:-1:4:104857600:0"
+    },
+    {
+      "seq": 13175,
+      "display_frame": 532,
+      "fight_tick": 81,
+      "event": "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,exit,_level0.game.p2.mc.instance572,1,false,1137,f:-1:4:104857600:0"
+    }
+  ],
+  "target_frame_actions_observed": {
+    "1128": [],
+    "1149": [],
+    "1288": []
+  },
+  "relevant_body_boundary_events": [
+    {
+      "seq": 13318,
+      "display_frame": 539,
+      "fight_tick": 88,
+      "slot": "p2",
+      "source_frame": 1144,
+      "enter": true,
+      "current_frame": 1144,
+      "action": "-1"
+    },
+    {
+      "seq": 13319,
+      "display_frame": 539,
+      "fight_tick": 88,
+      "slot": "p2",
+      "source_frame": 1144,
+      "enter": false,
+      "current_frame": 1,
+      "action": "-1"
+    }
+  ],
+  "notes": "1133 is evidenced by exact Lee DefineSprite_518/frame_1133/PlaceObject2_18_30 CLIPACTIONRECORD schedule enter/exit at display 529-532, fight 78-81, instance572, parent current-frame 1134-1137. No exact source DoAction markers for 1128, 1149, 1288 in this run; do not infer from adjacent label/state."
+}

@@ -1,0 +1,72 @@
+{
+  "artifact": "production roster open: Byakuya and Lee base forms",
+  "built_at_utc": "2026-09-22T06:45:41.234238+00:00",
+  "build_command": "GODOT_BIN=/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot tools/build_web.sh",
+  "build_exit_code": 0,
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "web_export_dir": "dist/web",
+  "pck_sha256": "f7bfbc93e37282eaa1b15fac87a1af1923d3cc6e8b88e322ec2d16f4575514eb",
+  "roster": {
+    "fighter_count": 11,
+    "helper_count": 4,
+    "fighters": {
+      "日番谷": "rifagu",
+      "恋次": "renji",
+      "露其雅": "rukia",
+      "一护": "yihu",
+      "鸣人": "minren",
+      "樱": "sakura",
+      "佐助": "sasuke",
+      "卡卡西": "kakashi",
+      "白哉": "byakuya",
+      "小李": "lee",
+      "石田": "yulong"
+    },
+    "helpers": {
+      "鼬": "you",
+      "魂": "kon",
+      "我爱罗": "woailuo",
+      "松本": "jinye"
+    },
+    "portrait_count": 11,
+    "footer_count": 15,
+    "fighter_card_count": 40,
+    "helper_card_count": 26,
+    "base_form_portrait_frames": {
+      "白哉": 5,
+      "小李": 5
+    },
+    "footer_names_nonempty": {
+      "白哉": true,
+      "小李": true
+    }
+  },
+  "checks": {
+    "native_production_menu_smoke": {
+      "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --script res://tests/roster_candidate_flow_smoke.gd -- --base-forms",
+      "result": "ROSTER_CANDIDATE_FLOW_SMOKE_OK",
+      "exit_code": 0,
+      "scope": "Both candidates were selected through the source-card input path as P1 in VsHuman mode 3, with the default Ichigo as P2; normal helper/map confirmation and natural intro reached battle. The script also performs post-entry J/O checks; O test seeds 100 energy. This does not validate Web browser interaction or original-player parity.",
+      "raw_stdout_persisted": false
+    },
+    "asset_registry_static_check": "ROSTER_ASSETS_OK",
+    "web_browser_smoke": "not run",
+    "deployment": "not performed"
+  },
+  "files_sha256": {
+    "dist/web/index.pck": "f7bfbc93e37282eaa1b15fac87a1af1923d3cc6e8b88e322ec2d16f4575514eb",
+    "dist/web/index.html": "7c7ee0ef9558eb4e6606af2c7ebc620b68d31ab2656475af64fc94b1b155b983",
+    "dist/web/index.js": "33c94cb3175f3333b82e2a3be5e8e86f77986f0aa2042b1631f6367a4e5bb6ba",
+    "dist/web/index.wasm": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+    "godot/generated/main/character_selection/available.json": "94ada573ef08a92b057435401f475d294929d4dd76a33dcb656098131e9258c5",
+    "godot/generated/main/character_selection/portraits.json": "467e92690f19dc808667880f6310a4624f8339675a36bbfcd742d7b7dc97979e",
+    "godot/generated/main/character_selection/footer.json": "5218a2e9942d6baa77e9a0248eec41859b29fea3fcc3bb818ace19c8a8fd30c6",
+    "godot/generated/main/character_selection/selection.json": "d54622cc3a7a27320edb07b652be0d426a81118430ba83a780b0b6ed8def6b0d",
+    "godot/generated/main/intro/intro.json": "052821c423b3ab7c5379f0406532770a93326534f97ac8740c659fceb0276ea4",
+    "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot/character_selection.gd": "0065d9a992924c6e3ee79d82f5aaa7ef4ddaf32ecd166a00543ad045445c1c7d",
+    "tools/importer/build_character_selection.py": "b35da5439b5b135607d1c446a550d307dd4ed4469fcc475bb5e9c8be522ff000",
+    "tools/importer/build_selection_portraits.py": "9eb515df1952b47cadbd00f03bdba83bf5b058d938c5dd2c6ecd47577bfa307c",
+    "evidence/characters/roster-2026-09-22/roster-release.json": "14cd600ca17e2c3ce95278135e566089af552b3f838226df8c6e541c9f8de96c"
+  }
+}

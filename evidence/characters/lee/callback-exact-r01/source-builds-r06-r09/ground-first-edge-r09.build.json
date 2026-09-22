@@ -1,0 +1,229 @@
+{
+  "run_id": "lee-callback-ground-first-edge-r09",
+  "status": "built_not_run",
+  "frames_after_ready": 300,
+  "configuration": {
+    "modo": 3,
+    "p1": "小李",
+    "p2": "一护",
+    "p2cpu": false,
+    "AI": 5,
+    "stage": "现世",
+    "p1sf": "我爱罗",
+    "p2sf": "魂"
+  },
+  "sources_sha256": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "game/fighter/lee.swf": "2443dc112dbf2be696abb9d924831814ae01990536df8298fa2c1432f35c93d1",
+    "scripts/fighter/lee.json": "82230e0e97e0b2751ecba3e27b6f82e46c467ae956c51b0a2ba4d9c114c7e967",
+    "game/fighter/yihu.swf": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+    "scripts/fighter/yihu.json": "5c4996b3767c2e31810595604c5b869c511c9c4f1cd8c123e059212294fc5d5b",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+    "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46"
+  },
+  "ffdec_sha256": "23c1e70ff2b08388e35de10afd97a2875386cbfdc2ef99c8176d40b4f8a3ada9",
+  "outputs_sha256": {
+    "game/main.swf": "5a19873bd94174f52e7eedd33d78982f801dcaf23a1542a363c200b8364a7894",
+    "game/fighter/lee.swf": "7719dda3eaa55ebd96a3b682f45e8f592f3e0e837b620af09ad2a4712015ce3d",
+    "game/fighter/yihu.swf": "f2a12c1221410b51bbeb35ecb6a2c99c8103ab3e29d54b8dd7cbf39ca580ffb7",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+  },
+  "instrumentation_sha256": "e55befd1c4acfcaa640a8898847e1ee98a6f7a0b20228c274b2d643b53a9f707",
+  "frame_order_probe": false,
+  "body_boundaries": true,
+  "body_callback_observer": true,
+  "recovery_order_probe": false,
+  "recovery_walk_first": false,
+  "match_flow": false,
+  "helper_probe": null,
+  "dash_probe": null,
+  "dash_trigger_frame": null,
+  "dash_duration": 36,
+  "timeout_probe": null,
+  "ghost_probe": null,
+  "mode_probe": 3,
+  "move_case": {
+    "id": "lee-callback-ground-first-edge-r09",
+    "fighter": "lee",
+    "slot": "p1",
+    "label": "砍1",
+    "scenario": "source_conditioned_frame163_edge_retry2",
+    "frames": 300,
+    "setup": {
+      "p1": {
+        "x": 300,
+        "energy": 300
+      },
+      "p2": {
+        "x": 350,
+        "energy": 300
+      }
+    },
+    "inputs": [
+      {
+        "slot": "p1",
+        "keys": [
+          "attack"
+        ],
+        "start": 10,
+        "end": 13
+      },
+      {
+        "slot": "p1",
+        "keys": [
+          "attack"
+        ],
+        "start": 17,
+        "end": 18
+      }
+    ],
+    "target_frames": [
+      193,
+      197
+    ],
+    "has_source_timeline": true,
+    "source_dispatch": [
+      "doAllAction",
+      "doStand"
+    ],
+    "status": "source_conditioned_fixture_not_captured",
+    "fighters": {
+      "p1": "lee",
+      "p2": "yihu"
+    },
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂",
+    "source_callback_targets": [
+      {
+        "source_sprite_id": 518,
+        "source_frame": 172,
+        "source_path": "DefineSprite_518/frame_172/DoAction.as",
+        "action": "砍1",
+        "kind": "frame_action",
+        "slot": "p1"
+      },
+      {
+        "source_sprite_id": 518,
+        "source_frame": 193,
+        "source_path": "DefineSprite_518/frame_193/DoAction.as",
+        "action": "砍2",
+        "kind": "frame_action",
+        "slot": "p1"
+      },
+      {
+        "source_sprite_id": 518,
+        "source_frame": 197,
+        "source_path": "DefineSprite_518/frame_197/DoAction.as",
+        "action": "砍2",
+        "kind": "frame_action",
+        "slot": "p1"
+      },
+      {
+        "source_sprite_id": 518,
+        "source_frame": 235,
+        "source_path": "DefineSprite_518/frame_235/DoAction.as",
+        "action": "砍3",
+        "kind": "frame_action",
+        "slot": "p1"
+      },
+      {
+        "source_sprite_id": 518,
+        "source_frame": 240,
+        "source_path": "DefineSprite_518/frame_240/DoAction.as",
+        "action": "砍3",
+        "kind": "frame_action",
+        "slot": "p1"
+      },
+      {
+        "source_sprite_id": 518,
+        "source_frame": 268,
+        "source_path": "DefineSprite_518/frame_268/DoAction.as",
+        "action": "砍4",
+        "kind": "frame_action",
+        "slot": "p1"
+      },
+      {
+        "source_sprite_id": 518,
+        "source_frame": 448,
+        "source_path": "DefineSprite_518/frame_448/DoAction.as",
+        "action": "砍技1",
+        "kind": "frame_action",
+        "slot": "p1"
+      }
+    ],
+    "callback_group": "ground-chain",
+    "callback_purpose": "Second edge covers observed key_read attack at fight_tick17/source frame163 callback, then releases before frame187 callback.",
+    "preflight_status": "fight_input_preflight",
+    "callback_observer": "read-only source callback observer; no schedule/input changes",
+    "source_condition_evidence": [
+      {
+        "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_163/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "condition": "gameRunning() && nornalhit()",
+        "goto": "砍2",
+        "needed_for": [
+          193,
+          197
+        ]
+      },
+      {
+        "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "condition": "gameRunning() && nornalhit()",
+        "goto": "砍3",
+        "needed_for": [
+          235,
+          240
+        ]
+      },
+      {
+        "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "condition": "gameRunning() && nornalhit()",
+        "goto": "砍4",
+        "needed_for": [
+          268
+        ]
+      },
+      {
+        "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_172/DoAction.as",
+        "condition": "unconditional",
+        "effect": "gotoAndStop(\"站立\"); play();",
+        "trace": "Current short-edge trace reaches body frame 172 at fight ticks 25/50/75/100; no later chain frame."
+      },
+      {
+        "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "condition": "release attack before this callback",
+        "expected": "no nornalhit goto砍3; observe 193/197 if normal timeline continues"
+      }
+    ]
+  },
+  "dynamic_move_case": true,
+  "fixture_url": "file:///private/tmp/lee-callback-ground-first-edge-r09/case.txt",
+  "player_display": "windowed_showAll",
+  "presentation_probe": false,
+  "root_write_observer": false,
+  "body_call_scope_probe": false,
+  "schedule_probe": false,
+  "hurt_summon_probe": false,
+  "shadow_probe": false,
+  "effect_phase_probe": false,
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "helper_sources": {
+    "p1": {
+      "character_id": "我爱罗",
+      "asset": "woailuo",
+      "url": "woailuo.swf"
+    },
+    "p2": {
+      "character_id": "魂",
+      "asset": "kon",
+      "url": "kon.swf"
+    }
+  },
+  "input_injection": "body_kis_alias_with_per_read_trace",
+  "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
+  "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped"
+}

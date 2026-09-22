@@ -101,11 +101,11 @@ def _verify_runtime_fighter(build, metadata):
     return {'path': str(actual), 'sha256': actual_sha}
 
 
-def capture(build, destination, timeout, app=APP):
+def capture(build, destination, timeout, app=APP, lock_timeout=LOCK_WAIT_SECONDS):
     # Native Flash always writes one account-wide log, including with -n.
     # Serialize independent harnesses before launching or reading that log.
     with LOCK_PATH.open('a') as lock:
-        deadline = time.monotonic() + LOCK_WAIT_SECONDS
+        deadline = time.monotonic() + lock_timeout
         while True:
             try:
                 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -114,7 +114,7 @@ def capture(build, destination, timeout, app=APP):
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     raise TimeoutError(
-                        f'Native Flash capture lock is busy after {LOCK_WAIT_SECONDS:g}s: {LOCK_PATH}'
+                        f'Native Flash capture lock is busy after {lock_timeout:g}s: {LOCK_PATH}'
                     )
                 time.sleep(min(0.1, remaining))
         return _capture_locked(build, destination, timeout, app)
@@ -221,6 +221,8 @@ def main():
     parser.add_argument('build', type=Path)
     parser.add_argument('capture', type=Path)
     parser.add_argument('--timeout', type=float, default=120)
+    parser.add_argument('--lock-timeout', type=float, default=LOCK_WAIT_SECONDS,
+                        help='Maximum seconds to wait for the shared native capture lock')
     parser.add_argument('--player-app', type=Path, default=APP,
                         help='Path to the standalone Flash Player Debugger app bundle')
     parser.add_argument('--allow-window-activation', action='store_true',
@@ -229,7 +231,9 @@ def main():
     if not args.allow_window_activation:
         parser.error('Native Flash may raise its window despite -g; capture is disabled without --allow-window-activation')
     preflight(args.player_app)
-    raise SystemExit(0 if capture(args.build, args.capture, args.timeout, args.player_app) else 1)
+    if args.lock_timeout < 0:
+        parser.error('--lock-timeout must be non-negative')
+    raise SystemExit(0 if capture(args.build, args.capture, args.timeout, args.player_app, args.lock_timeout) else 1)
 
 
 if __name__ == '__main__':

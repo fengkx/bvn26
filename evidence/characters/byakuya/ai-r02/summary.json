@@ -1,0 +1,211 @@
+{
+  "status": "invalid_fixture_for_ai_behavior",
+  "configuration": {
+    "modo": 2,
+    "p1": "一护",
+    "p2": "白哉",
+    "p2cpu": true,
+    "AI": 5,
+    "stage": "现世",
+    "p1sf": "魂",
+    "p2sf": "魂"
+  },
+  "native": {
+    "events": 4813,
+    "counts": {
+      "boot": 1,
+      "input_bindings": 1,
+      "frame_state_enter": 85,
+      "intro_body_enter": 170,
+      "initCtrl": 6,
+      "intro_body_exit": 170,
+      "frame_state_exit": 85,
+      "input_next_display": 650,
+      "helper_load": 2,
+      "random": 206,
+      "intro_poll": 22,
+      "intro_poll_state": 22,
+      "sample": 41,
+      "geometry_frame": 1,
+      "geometry_matrix": 3,
+      "sensor_bounds": 12,
+      "sensor_local": 12,
+      "state": 938,
+      "helper_state": 938,
+      "helper_clip_state": 938,
+      "root_position": 469,
+      "intro_step": 5,
+      "intro_goto_before": 1,
+      "intro_goto_return": 1,
+      "root_write": 1,
+      "ready": 1,
+      "predicate": 18,
+      "key_read": 12,
+      "fixture": 1,
+      "done": 1
+    },
+    "random_tape_records": 206,
+    "clock_tape_records": 0,
+    "byakuya_random_records": 205
+  },
+  "godot": {
+    "p1": "一护",
+    "p2": "白哉",
+    "p2_cpu": true,
+    "ticks": 180,
+    "random": {
+      "absoluteIndex": 5,
+      "failure": "",
+      "mode": "recorded",
+      "replaying": true,
+      "retainedDropped": 0,
+      "retainedPolicy": "complete_replay_tape",
+      "rngSeed": null,
+      "rngState": null
+    },
+    "random_draws": 5,
+    "clock": {
+      "absoluteIndex": 0,
+      "failure": "",
+      "mode": "live",
+      "replaying": false,
+      "retainedDropped": 0,
+      "retainedPolicy": "first_4096"
+    },
+    "script_error": false
+  },
+  "finding": "Full Byakuya-filtered native random tape (41 refreshes x 5 = 205 records) replays without site failure across the 180 fight-tick Godot window. P2 is the actual Byakuya CPU slot and p2_cpu is true. Distinct sampled action remains 0 (standing), matching the native last-state action field, but frame-level parity is not accepted yet; native clock tape contains zero records.",
+  "godot_full_random_replay": {
+    "ticks": 180,
+    "random_draws": 205,
+    "random_failure": "",
+    "script_error": false,
+    "p1": "一护",
+    "p2": "白哉",
+    "p2_cpu": true,
+    "distinct_p2_actions": [
+      0.0
+    ],
+    "clock_draws": 0
+  },
+  "frame_compare": {
+    "native_rows": 362,
+    "godot_rows": 362,
+    "ticks": 181,
+    "fields_directly_compared": [
+      "frame",
+      "action"
+    ],
+    "differences": 370,
+    "first_difference": {
+      "tick": 0,
+      "slot": "p1",
+      "field": "frame",
+      "native": 1,
+      "godot": 5
+    },
+    "scope": "fighter_ai_only",
+    "status": "diverged"
+  },
+  "frame_compare_ready_normalized": {
+    "native_rows": 362,
+    "godot_rows": 362,
+    "ticks": 181,
+    "direct_fields": [
+      "frame",
+      "action"
+    ],
+    "differences": 574,
+    "first_difference": {
+      "tick": 0,
+      "slot": "p2",
+      "field": "frame",
+      "native": 3,
+      "godot": 1,
+      "native_source_fields": [
+        "p2",
+        "3",
+        "f:1:9:83505971:13421773",
+        "f:-1:4:104857600:0",
+        "f:-1:6:104857600:0",
+        "0",
+        "f:1:9:131072000:0",
+        "f:1:0:0:0",
+        "false",
+        "true",
+        "undefined",
+        "0",
+        "false",
+        "0",
+        "false"
+      ],
+      "godot_fields": {
+        "p2_name": "白哉",
+        "p2_frame": 1,
+        "p2_action": 0.0,
+        "p2_energy": 300.0,
+        "p2_x": 550.0,
+        "p2_y": -25.0
+      }
+    },
+    "status": "diverged_boundary_calibration"
+  },
+  "production_ready_compare": {
+    "status": "different",
+    "source_rows": 362,
+    "godot_rows": 362,
+    "fields": [
+      "frame",
+      "x",
+      "y",
+      "xscale",
+      "action",
+      "hp",
+      "ql",
+      "sw",
+      "touch",
+      "touchFloor",
+      "hits",
+      "paused",
+      "hstm",
+      "hurtSkling"
+    ],
+    "difference_rows": 362,
+    "first_difference": {
+      "tick": 0,
+      "slot": "p1",
+      "field": "frame",
+      "source": 1.0,
+      "godot": 5
+    },
+    "source_ready_sequence": 3107,
+    "godot_intro_ticks": 276,
+    "no_manual_ready_injection": true
+  },
+  "random_phase_audit": {
+    "native_total": 206,
+    "main_pre_ready": 1,
+    "byakuya_pre_ready": 145,
+    "byakuya_post_ready": 60,
+    "godot_byakuya_total": 205,
+    "godot_pre_ready": 29,
+    "godot_post_ready": 12,
+    "post_ready_ticks": [
+      5,
+      21,
+      36,
+      51,
+      66,
+      82,
+      97,
+      112,
+      127,
+      143,
+      159,
+      174
+    ],
+    "ready_ai_locals_match": true,
+    "finding": "29 pre-Ready refreshes and 12 post-Ready refreshes are now scheduled at source fight ticks; the prior phase error is corrected."
+  },
+  "invalid_reason": "frame_order_probe=true injected p2 goto389/action1/rootpause"
+}

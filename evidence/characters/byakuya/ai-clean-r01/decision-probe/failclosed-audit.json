@@ -1,0 +1,56 @@
+{
+  "format": "byakuya-ai-decision-failclosed-audit-v1",
+  "status": "source-derived-unit-only_not_full_native_ai_parity",
+  "reason": "The probe restores one controller read set and verifies generated predicate plus goto, but it does not replay an original AI refresh with every local read observed at the same source event sequence.",
+  "accepted_scope": [
+    "generated controller single-callback branch unit",
+    "predicate and goto dispatch for standing attack and defence"
+  ],
+  "rejected_scope": [
+    "same-input native-vs-Godot AI parity",
+    "full AI random/clock/timer order",
+    "production host behavior across a fight"
+  ],
+  "fields": {
+    "source_observed_or_bound": [
+      "x",
+      "y",
+      "scale_X",
+      "xscale",
+      "opponent_x",
+      "opponent_y",
+      "opponent_action",
+      "canhit",
+      "touch",
+      "touchFloor",
+      "jumped",
+      "speed",
+      "jumpPower",
+      "sw",
+      "goran"
+    ],
+    "synthetic_or_unproven": [
+      "ql=0 fixture reset",
+      "opponent_hp=1000",
+      "opponent_sw=false",
+      "opponent_helper_action=null",
+      "jumpran=200",
+      "bisharan=200",
+      "sensors.kanmian=true",
+      "fall=0",
+      "khit=0",
+      "_lastX=637.1"
+    ],
+    "source_values_require_event_binding": [
+      "attran",
+      "defran",
+      "goran"
+    ]
+  },
+  "fail_closed_rules": [
+    "Any synthetic/unproven read field prevents native same-input acceptance.",
+    "Predicate-only success is insufficient; goto label must match.",
+    "Missing source event sequence or service dispatch is a failure, never an implicit pass."
+  ],
+  "evidence": "evidence/characters/byakuya/ai-clean-r01/decision-probe/result.json"
+}

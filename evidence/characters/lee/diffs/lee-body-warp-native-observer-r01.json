@@ -1,0 +1,72 @@
+{
+  "format": "lee-body-warp-native-observer-r01",
+  "probe": "/private/tmp/lee_native_geometry_probe.gd",
+  "source_schedule_unchanged": true,
+  "cases": {
+    "lee-135-airMagichit-held": {
+      "ticks": {
+        "65": {
+          "p1": {
+            "frame": 286,
+            "x": 335.0,
+            "bdmn": "Rect2 zero",
+            "clip": 0
+          },
+          "p2": {
+            "frame": 782,
+            "x": 375.0,
+            "bdmn": "Rect2 zero",
+            "clip": 0
+          }
+        },
+        "66": {
+          "p1": {
+            "frame": 287,
+            "x": 375.0,
+            "bdmn": "P(-8.648713,-47.64513) S(19.1549,48.50719)",
+            "clip": 1
+          },
+          "p2": {
+            "frame": 783,
+            "x": 375.0,
+            "bdmn": "Rect2 zero",
+            "clip": 0
+          }
+        }
+      }
+    },
+    "lee-278-magichit1-dash_twice": {
+      "ticks": {
+        "19": {
+          "p1": {
+            "frame": 286,
+            "x": 300.0,
+            "bdmn": "Rect2 zero",
+            "clip": 0
+          },
+          "p2": {
+            "frame": 28,
+            "x": 245.0,
+            "bdmn": "Rect2 zero",
+            "clip": 0
+          }
+        },
+        "20": {
+          "p1": {
+            "frame": 287,
+            "x": 230.0,
+            "bdmn": "P(-8.648713,-47.64513) S(19.1549,48.50719)",
+            "clip": 1
+          },
+          "p2": {
+            "frame": 29,
+            "x": 230.0,
+            "bdmn": "Rect2 zero",
+            "clip": 0
+          }
+        }
+      }
+    }
+  },
+  "conclusion": "At pre-warp observation ticks, native opponent bdmn is zero-area/clip0; runtime body warp sets P1 x to opponent.x. After warp, P1 own bdmn clip1 becomes visible. This is zero fallback behavior at dispatch, not stale nonzero width100. Source observer independently reports undefined bdmn at the same frame boundary."
+}

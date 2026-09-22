@@ -1,0 +1,57 @@
+{
+  "status": "source_state_derived_natural_round_chain",
+  "run_id": "build.json",
+  "events_sha256": "5a0ff922f1b27e238c515d23798420d7aca231ac3a84a064f3416d43c6973b63",
+  "chain": [
+    {
+      "event": "nextfight_enter",
+      "sequence": 7213,
+      "display_tick": 758,
+      "fight_tick": 306,
+      "time_ms": 35595
+    },
+    {
+      "event": "new_round_frame1_state_p1",
+      "sequence": 7216,
+      "display_tick": 759,
+      "fight_tick": 307,
+      "time_ms": 35598,
+      "paused": true
+    },
+    {
+      "event": "new_round_frame1_state_p2",
+      "sequence": 7220,
+      "display_tick": 759,
+      "fight_tick": 307,
+      "time_ms": 35599,
+      "paused": true
+    },
+    {
+      "event": "post_reset_unpaused_state_p1",
+      "sequence": 8594,
+      "display_tick": 885,
+      "fight_tick": 433,
+      "time_ms": 39793,
+      "slot": "p1",
+      "frame": "1",
+      "action": "0",
+      "health": "f:1:9:131072000:0",
+      "touchFloor": "true",
+      "paused": "false"
+    },
+    {
+      "event": "post_reset_unpaused_state_p2",
+      "sequence": 8598,
+      "display_tick": 885,
+      "fight_tick": 433,
+      "time_ms": 39794,
+      "slot": "p2",
+      "frame": "1",
+      "action": "0",
+      "health": "f:1:9:131072000:0",
+      "touchFloor": "true",
+      "paused": "false"
+    }
+  ],
+  "interpretation": "The resume point is derived from ordinary state records after nextfight, not a ready callback or injected marker."
+}

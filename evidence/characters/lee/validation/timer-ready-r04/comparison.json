@@ -1,0 +1,62 @@
+{
+  "format": "lee-timer-ready-r04",
+  "acceptance_status": "diagnostic_archived_pre_gate_experiment_not_current_acceptance",
+  "runtime_files": {
+    "godot/main.gd": "d38d5e6ddbde661efa991b96b1c0de9034c046b6b4a9aa83ff63ac6a55dfea00",
+    "godot/ai_cpu_driver.gd": "5458a767382ce2a6d595e2bcfaf2f3a0b07d3936743f4be9e1db8668e9daba7a",
+    "godot/player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea",
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac"
+  },
+  "runner_sha256": "ada5595b8e23620a19f463d32e22d1b25cc57fc80e94ffade339838a39c7f091",
+  "cases": [
+    {
+      "case": "hp1",
+      "status": "matched",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 0,
+      "source_path": "evidence/characters/lee/original/lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl",
+      "native_path": "evidence/characters/lee/validation/timer-ready-r04/native/hp1.json"
+    },
+    {
+      "case": "kill700",
+      "status": "matched",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 0,
+      "source_normalized_path": "evidence/characters/lee/validation/timer-ready-r04/source/kill-source-normalized.json",
+      "fixture_path": "evidence/characters/lee/validation/timer-ready-r04/kill-correct.fixture.json",
+      "native_path": "evidence/characters/lee/validation/timer-ready-r04/native/kill-correct.json"
+    },
+    {
+      "case": "byakuya700",
+      "status": "matched",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 0,
+      "source_path": "evidence/characters/lee/original/byakuya-timer700-r01/events.jsonl",
+      "native_path": "evidence/characters/lee/validation/timer-ready-r04/native/byak700.json"
+    }
+  ],
+  "source_first_touch_floor": "Source raw tick0 is undefined and tick1 true. Native body callback was gated until the first root observation, then starts on the next display tick; no snapshot state mutation is used.",
+  "timer_scope": "Source timer ID 8 is registered for _root.nxtfht at source tick 275, fires once at tick 306, and is cancelled by _root.nxtfht clearInterval at tick 307 (the _level0.ready value is the call site, not the timer owner); no source fire occurs after cancellation through tick 700. The current native comparison runner pauses the native Timer and injects the external fire tape, so its still_live-after-fire audit is diagnostic only; natural native Ready-frame cancellation/no-retrigger remains unaccepted.",
+  "regressions": [
+    "COMBAT_SMOKE_OK",
+    "PLAYER_CONTROLLER_SMOKE_OK"
+  ],
+  "limits": [
+    "The runner supplies external fire tape and pauses the native Timer; native register/fire is observed, but natural cancel/no-retrigger lifecycle remains pending.",
+    "The source body ordering evidence covers the Lee hp1 source fixture; no observer instrumentation was added to production."
+  ],
+  "source_body_dispatch_path": "evidence/characters/lee/validation/timer-ready-r04/source-body-dispatch.json",
+  "production_note": "The observer-dependent body_callback_gate experiment was removed before current acceptance. Archived zero-diff outputs under native/ were produced by that rejected experiment and must not be used as current production parity.",
+  "current_pure_baseline": {
+    "runner": "/private/tmp/lee-timer-runner-r01/batch-clean2.gd",
+    "hp1_tick0_differences": 2,
+    "fields": [
+      "p1.touchFloor",
+      "p2.touchFloor"
+    ],
+    "reason": "current production body callback ordering remains under source-first investigation"
+  }
+}

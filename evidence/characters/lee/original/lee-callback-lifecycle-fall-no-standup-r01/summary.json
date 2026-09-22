@@ -1,0 +1,194 @@
+{
+  "run_id": "lee-callback-lifecycle-fall-no-standup-r01",
+  "status": "source_capture_complete_1128_reached",
+  "event_count": 58514,
+  "capture_sha256": "da3b271457f4f397382640a2e557f414905186feda5ea3f01ca2fac14f78d438",
+  "build": {
+    "path": "build.json",
+    "sha256": "c9499461558941bbce2aa1d32694dfd1fd811caa1b18b7d6d9e9d66ff19b299a",
+    "main_output_sha256": "32a5f2252cbae3bbc756da8fc6e9647b7f78988d311eef917fc20103491530fb",
+    "lee_output_sha256": "d8d4792420822d516491f59e9d3f3c3b826a241566ec997d2e03ba12a7ff2a68",
+    "instrumentation_sha256": "40ce808b4623133d1475e778fdef01031524d75a0e29f0927ae647d7b77ff24d",
+    "schedule_probe": true,
+    "body_boundaries": true
+  },
+  "fixture": {
+    "path": "fixture.json",
+    "sha256": "cd060656e5864901e5821d5a448a0c52463677c5e62887b2300c0194c4da4052",
+    "case_path": "case.txt",
+    "case_sha256": "26b6b8300efdc859487526e9990d247459e79e47735a164ed2349cd77aca2bea",
+    "input": "P1 down+special [10,13); P2 has no additional input",
+    "slot": "p2 Lee",
+    "helpers_expected": {
+      "p1": "魂",
+      "p2": "魂"
+    },
+    "preconditions": {
+      "p2": {
+        "health": 1000,
+        "wudi": false
+      }
+    }
+  },
+  "ready": {
+    "seq": 10861,
+    "display_frame": 450,
+    "fight_tick": 0
+  },
+  "done": {
+    "seq": 58514,
+    "display_frame": 1350,
+    "fight_tick": 900
+  },
+  "helpers_observed": [
+    {
+      "seq": 22,
+      "display_frame": 2,
+      "fight_tick": -1,
+      "value": "p1,魂,kon.swf"
+    },
+    {
+      "seq": 53,
+      "display_frame": 3,
+      "fight_tick": -1,
+      "value": "p2,魂,kon.swf"
+    }
+  ],
+  "observed_frames": [
+    {
+      "kind": "body_boundary",
+      "seq": 12458,
+      "display_frame": 496,
+      "fight_tick": 46,
+      "slot": "p2",
+      "source_frame": 1087,
+      "enter": true,
+      "current_frame": 1087,
+      "action": "0",
+      "hp": 1000.0,
+      "ql": 300.0,
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "true",
+      "hits": "0",
+      "paused": "false",
+      "hstm": "0",
+      "hurtSkling": "false"
+    },
+    {
+      "kind": "body_boundary",
+      "seq": 12463,
+      "display_frame": 496,
+      "fight_tick": 46,
+      "slot": "p2",
+      "source_frame": 1087,
+      "enter": false,
+      "current_frame": 1087,
+      "action": "-1",
+      "hp": 550.0,
+      "ql": 345.0,
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "true",
+      "hits": "1",
+      "paused": "false",
+      "hstm": "0",
+      "hurtSkling": "false"
+    },
+    {
+      "kind": "body_boundary",
+      "seq": 13056,
+      "display_frame": 527,
+      "fight_tick": 77,
+      "slot": "p2",
+      "source_frame": 1098,
+      "enter": true,
+      "current_frame": 1098,
+      "action": "-1",
+      "hp": 550.0,
+      "ql": 300.0,
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "true",
+      "hits": "1",
+      "paused": "false",
+      "hstm": "16",
+      "hurtSkling": "false"
+    },
+    {
+      "kind": "body_boundary",
+      "seq": 13057,
+      "display_frame": 527,
+      "fight_tick": 77,
+      "slot": "p2",
+      "source_frame": 1098,
+      "enter": false,
+      "current_frame": 1098,
+      "action": "-1",
+      "hp": 550.0,
+      "ql": 300.0,
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "true",
+      "hits": "1",
+      "paused": "false",
+      "hstm": "16",
+      "hurtSkling": "false"
+    },
+    {
+      "kind": "schedule",
+      "seq": 13732,
+      "display_frame": 556,
+      "fight_tick": 106,
+      "value": "fighter/lee#DefineSprite_518/frame_1128/DoAction.as,enter,_level0.game.p2.mc,1128,false,1128,f:-1:4:104857600:0"
+    },
+    {
+      "kind": "body_boundary",
+      "seq": 13733,
+      "display_frame": 556,
+      "fight_tick": 106,
+      "slot": "p2",
+      "source_frame": 1128,
+      "enter": true,
+      "current_frame": 1128,
+      "action": "-1",
+      "hp": 550.0,
+      "ql": 300.0,
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "true",
+      "hits": "1",
+      "paused": "false",
+      "hstm": "16",
+      "hurtSkling": "false"
+    },
+    {
+      "kind": "body_boundary",
+      "seq": 13734,
+      "display_frame": 556,
+      "fight_tick": 106,
+      "slot": "p2",
+      "source_frame": 1128,
+      "enter": false,
+      "current_frame": 1,
+      "action": "-1",
+      "hp": 550.0,
+      "ql": 300.0,
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "true",
+      "hits": "1",
+      "paused": "false",
+      "hstm": "16",
+      "hurtSkling": "false"
+    },
+    {
+      "kind": "schedule",
+      "seq": 13735,
+      "display_frame": 556,
+      "fight_tick": 106,
+      "value": "fighter/lee#DefineSprite_518/frame_1128/DoAction.as,exit,_level0.game.p2.mc,1,false,1,f:-1:4:104857600:0"
+    }
+  ],
+  "interpretation": "With P2 Lee not holding dash, source runs 1098 standup clip but does not take its conditional goto to 起身; fall timeline reaches frame1128 DoAction at fight106, which unconditionally gotoAndStop(站立);play(). No exact 1133,1149,1288 callback evidence in this run."
+}

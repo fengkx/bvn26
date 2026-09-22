@@ -1,0 +1,45 @@
+{
+  "format": "lee-fangyux-source-first-r01",
+  "source_identity": {
+    "character_id": "小李",
+    "sprite_id": 518,
+    "timeline_path": "data/slices/lee-base.timeline.json",
+    "callback_path": "DefineSprite_518/frame_1061/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+    "child_symbol": 18,
+    "parent_controller_scope": "DefineSprite_518/frame_1/DoAction.as"
+  },
+  "five_questions": {
+    "per_frame_script": {
+      "answer": "frame 1061 child depth30 executes unqualified fangyux() every enterFrame; frame 1061 DoAction only calls play(); frame 1062 DoAction calls onDefence(2).",
+      "evidence": [
+        "scripts/fighter/lee.json: DefineSprite_518/frame_1061/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "scripts/fighter/lee.json: DefineSprite_518/frame_1061/DoAction.as",
+        "scripts/fighter/lee.json: DefineSprite_518/frame_1062/DoAction.as"
+      ]
+    },
+    "placeobject_move": {
+      "answer": "The callback is on placed symbol 18 at depth 30, placed at frame 1061 and retained through frames 1061-1065. It is a child clip callback, not a root frame action.",
+      "evidence": "data/slices/lee-base.timeline.json"
+    },
+    "leave_label": {
+      "answer": "The child callback remains active for its member frames; the parent timeline advances from 1061 to 1062, where onDefence(2) runs. No callback-local goto/stop exists in the child source.",
+      "evidence": "data/slices/lee-base.timeline.json and retained frame scripts"
+    },
+    "source_invariants": {
+      "answer": "The resolved fangyux function is defined in the parent fighter scope and returns undefined when root zhanting is true; otherwise it moves the parent fighter by -htx on X. The child symbol 18 DoAction does not define fangyux.",
+      "source": "scripts/fighter/lee.json: DefineSprite_518/frame_1/DoAction.as function fangyux()"
+    },
+    "same_input_original_compare": {
+      "answer": "The original-player scope probe reached the retained frame1061 callback under the same global-key tape as the accepted native fixture and observed typeof(fangyux)=undefined with typeof(_parent.fangyux)=function. The generated frame_1061_depth_30 no-op therefore preserves the observed AVM lookup result; movement parity remains separately unvalidated.",
+      "generated_evidence": "godot/generated/fighters/lee/player_controller/controller.gd",
+      "metadata_evidence": "godot/generated/fighters/lee/player_controller/controller.json"
+    }
+  },
+  "conclusion": {
+    "status": "scope_observed_noop_semantics",
+    "reason": "The original player directly observed unqualified fangyux as undefined at the child callback while _parent.fangyux was function. The generated no-op is consistent with that lookup result; no generic compiler fix is justified by this probe.",
+    "required_shared_fix": null,
+    "owner": "lee-evidence",
+    "not_modified": ["tools/importer/compile_ai_controller.py", "godot/generated/fighters/lee/player_controller/controller.gd", "game/", "scripts/"]
+  }
+}

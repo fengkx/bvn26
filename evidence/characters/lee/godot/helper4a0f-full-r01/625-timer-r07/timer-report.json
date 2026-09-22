@@ -1,0 +1,68 @@
+{
+  "schema": "lee-625-timer-r07-report",
+  "runner_sha256": "b7f70f8c58b6f2035255afbb904be31998d8701a27d4927467647d8d81e65b0d",
+  "rows": [
+    {
+      "id": "lee-574-bisha-625-dead-negative",
+      "source_events": "evidence/characters/lee/original/lee-574-bisha-625-dead-clean-r01/parsed/events.jsonl",
+      "source_sha256": "42bc1a89412f74b8c7534b199d3c46755502b8939294e9814d36b83a3928e314",
+      "source_build": "evidence/characters/lee/original/lee-574-bisha-625-dead-clean-r01/parsed/build.json",
+      "source_build_sha256": "3c8e3f50178318b7acb63f73bef446bd6ab83440bebca6b083fc55d1ea4191c6",
+      "native": "evidence/characters/lee/godot/helper4a0f-full-r01/625-timer-r07/lee-574-bisha-625-dead-negative.json",
+      "native_sha256": "d6c52281f83dfb6044840a89c7df827d9e332f257a15cf840612fbc14f0618c5",
+      "source_raw_timer_events": "none in parsed events; source build move_case.drive_source_timers=true",
+      "native_timer_route": {
+        "register": {
+          "route": "ko_nextfight_timer.timeout",
+          "wait_ms": 1000.0
+        },
+        "fire": {
+          "physics_tick": 611,
+          "p1_frame": 1260,
+          "p2_frame": 777
+        },
+        "after": {
+          "p1_frame": 1,
+          "p2_frame": 1,
+          "p1_sw": false,
+          "p2_sw": false
+        },
+        "cancel": {
+          "same_timer_instance": true,
+          "after_fire": true
+        }
+      }
+    },
+    {
+      "id": "lee-574-bisha-625-kill-negative",
+      "source_events": "evidence/characters/lee/original/lee-574-bisha-625-kill-clean-r01/parsed/events.jsonl",
+      "source_sha256": "4ba25a37cdf10c7e843627d67af15458fef8ba99592d6822317a268b8bd87d65",
+      "source_build": "evidence/characters/lee/original/lee-574-bisha-625-kill-clean-r01/parsed/build.json",
+      "source_build_sha256": "ca1ec6b9023ffff654591ca1204837f2d3dc32d16a011736551612d2b55ee2ef",
+      "native": "evidence/characters/lee/godot/helper4a0f-full-r01/625-timer-r07/lee-574-bisha-625-kill-negative.json",
+      "native_sha256": "000b213f8614e3827795b7bc3d83f112913c09a31a41c5f4bddbc785f87dde3c",
+      "source_raw_timer_events": "none in parsed events; source build move_case.drive_source_timers=true",
+      "native_timer_route": {
+        "register": {
+          "route": "ko_nextfight_timer.timeout",
+          "wait_ms": 1000.0
+        },
+        "fire": {
+          "physics_tick": 611,
+          "p1_frame": 1260,
+          "p2_frame": 777
+        },
+        "after": {
+          "p1_frame": 1,
+          "p2_frame": 1,
+          "p1_sw": false,
+          "p2_sw": false
+        },
+        "cancel": {
+          "same_timer_instance": true,
+          "after_fire": true
+        }
+      }
+    }
+  ]
+}

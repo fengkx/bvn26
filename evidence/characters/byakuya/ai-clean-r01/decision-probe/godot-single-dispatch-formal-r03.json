@@ -1,0 +1,53 @@
+{
+  "cases": [
+    {
+      "failed": false,
+      "godot_action": "瞬步",
+      "godot_frame": 20,
+      "godot_hook_count": 46,
+      "godot_instances_registered": 2,
+      "goto_match": true,
+      "id": "source-rush-r03",
+      "matched": true,
+      "predicate_match": true,
+      "services": [],
+      "side_effect_scope": "service calls are recorded only; callback side-effect parity is out of scope",
+      "source_fight_tick": 3,
+      "source_goto": "瞬步",
+      "source_goto_frame": 20,
+      "source_predicate": "rush",
+      "source_seq": 2701,
+      "use_ai": true
+    },
+    {
+      "failed": false,
+      "godot_action": "跳2",
+      "godot_frame": 68,
+      "godot_hook_count": 46,
+      "godot_instances_registered": 2,
+      "goto_match": true,
+      "id": "source-jump-r03",
+      "matched": true,
+      "predicate_match": true,
+      "services": [
+        [
+          "effect",
+          "receive:beida"
+        ]
+      ],
+      "side_effect_scope": "service calls are recorded only; callback side-effect parity is out of scope",
+      "source_fight_tick": 66,
+      "source_goto": "跳2",
+      "source_goto_frame": 68,
+      "source_predicate": "jump",
+      "source_seq": 3850,
+      "use_ai": true
+    }
+  ],
+  "fail_closed": true,
+  "format": "byakuya-ai-single-dispatch-probe-v1",
+  "scope": "two source-observed controller callbacks; no boot/intro/full-AI parity",
+  "source_fixture": "evidence/characters/byakuya/ai-clean-r01/source-context-r03.json",
+  "status": "matched",
+  "use_ai": true
+}

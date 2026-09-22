@@ -67,6 +67,45 @@ def compare_root_position(events: Path, native: Path) -> dict:
             'differences': differences}
 
 
+def validate_probe_provenance(events: Path, *, allow_intervention: bool = False,
+                             source_build: Path | None = None) -> dict:
+    """Reject AI behavior comparisons built with schedule-changing probes.
+
+    Frame-order/recovery/schedule probes intentionally alter the original
+    player. They are useful experiments, but cannot be accepted as a normal
+    Vs-Com behavior reference unless explicitly requested by the caller.
+    """
+    if source_build is not None and not source_build.exists():
+        raise FileNotFoundError(f'explicit source build metadata not found: {source_build}')
+    candidates = [source_build] if source_build is not None else [
+        events.parent / 'native-build.json', events.parent / 'build.json',
+        events.parent.parent / 'native-build.json', events.parent.parent / 'build.json',
+    ]
+    metadata = next((path for path in candidates if path is not None and path.exists()), None)
+    if metadata is None:
+        return {'status': 'unknown', 'source_build': None, 'flags': []}
+    data = json.loads(metadata.read_text(encoding='utf-8'))
+    configuration = data.get('configuration', data)
+    probe_names = ('frame_order_probe', 'recovery_order_probe',
+                   'schedule_probe', 'recovery_walk_first')
+    # A metadata file with no provenance keys is not evidence that probes were
+    # disabled. Keep acceptance fail-closed instead of treating an empty build
+    # report as a clean source capture.
+    present = [name for name in probe_names
+               if name in configuration or name in data]
+    if not present:
+        return {'status': 'unknown', 'source_build': str(metadata), 'flags': []}
+    flags = [name for name in probe_names
+             if bool(configuration.get(name, data.get(name, False)))]
+    if flags and not allow_intervention:
+        raise ValueError(
+            'AI behavior reference uses intervention probes: ' + ','.join(flags)
+            + '; pass --allow-intervention only for experiment evidence'
+        )
+    return {'status': 'experimental' if flags else 'verified',
+            'source_build': str(metadata), 'flags': flags}
+
+
 def cancellation_observation(rows: list[dict], case: dict) -> dict:
     boundary = case['window_boundary']
     actor = [row for row in rows if row['slot'] == case['slot']]
@@ -85,11 +124,23 @@ def main():
     parser.add_argument('events', type=Path)
     parser.add_argument('native', type=Path)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--allow-intervention', action='store_true')
+    parser.add_argument('--source-build', type=Path)
     args = parser.parse_args()
     result = compare(args.events, args.native)
+    provenance = validate_probe_provenance(
+        args.events, allow_intervention=args.allow_intervention,
+        source_build=args.source_build,
+    )
+    result['provenance'] = provenance
+    result['acceptance_status'] = (
+        'validated' if result['status'] == 'matched'
+        and provenance['status'] == 'verified' else provenance['status']
+    )
     args.output.write_text(json.dumps(result, indent=2) + '\n')
-    print(json.dumps({key: result[key] for key in ['status', 'source_states', 'native_states']}))
-    raise SystemExit(0 if result['status'] == 'matched' else 1)
+    print(json.dumps({key: result[key] for key in
+                      ['status', 'acceptance_status', 'source_states', 'native_states']}))
+    raise SystemExit(0 if result['acceptance_status'] == 'validated' else 1)
 
 
 if __name__ == '__main__':

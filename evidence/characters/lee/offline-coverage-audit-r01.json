@@ -1,0 +1,1092 @@
+{
+  "format": "lee-offline-coverage-audit-r01",
+  "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "source_identity": {
+    "character_id": "小李",
+    "sprite_id": 518,
+    "timeline": "data/slices/lee-base.timeline.json",
+    "timeline_sha256": "4d0a4c5d6f50f9bdd636555a4b1ca9701c988cdb68c7e51d3e716099aaeba49e",
+    "frame_count": 1297,
+    "label_count": 38,
+    "indexed_source_event_count": 167,
+    "indexed_source_event_kinds": {
+      "frame_action": 111,
+      "clip_action": 56
+    }
+  },
+  "625_gaps": {
+    "rule_source": "scripts/fighter/lee.json / DefineSprite_518/frame_625/DoAction.as",
+    "condition": "opponent.hp > 0 && opponent.action == -1",
+    "true_dispatch": "gotoAndStop(\"必杀1\"); play(); observed_as_624_to_635",
+    "negative_guard": "action=2 guard stays 625..633; hp=1 natural KO lifecycle; hp=0 is initialization/death-restart and is invalid as parity until lifecycle is distinguished",
+    "fixtures": [
+      {
+        "case": "lee-574-bisha-625-repeat-live-r02",
+        "condition": "p2 hp>0 and action=-1",
+        "source_observation": "p1 624->635; frame635 is 必杀1 after frame625 DoAction gotoAndStop/play",
+        "godot_compare": "evidence/characters/byakuya-lee/shared-acceptance/lee625-kill-timer.compare.json (802/802)",
+        "status": "accepted",
+        "fixture_drive_source_timers": true,
+        "timer_semantics": "The fixture drives source timer events; compare preserves source timer progression and does not synthesize a wall-clock timer."
+      },
+      {
+        "case": "lee-574-bisha-guard-r01",
+        "condition": "p2 action=2, guarding=true",
+        "source_observation": "p1 frames625..633; no frame635; p2 frame715 action2",
+        "godot_compare": "existing focused guard compare matched",
+        "status": "accepted_source_negative"
+      },
+      {
+        "case": "lee-574-bisha-625-kill-negative-r01",
+        "condition": "p2 initial hp=1",
+        "source_observation": "p1 frames625..633 then frame1; KO/round lifecycle follows",
+        "godot_compare": "evidence/characters/byakuya-lee/shared-acceptance/lee625-kill-timer.compare.json (shared lifecycle evidence; hp1 branch remains bounded)",
+        "status": "pending_lifecycle",
+        "fixture_drive_source_timers": true
+      },
+      {
+        "case": "lee-574-bisha-625-dead-negative-r01",
+        "condition": "p2 initial hp=0",
+        "source_observation": "precondition hp0 then later hp1000; death/restart/init overwrite not yet distinguished",
+        "godot_compare": "invalid for parity until lifecycle semantics are aligned",
+        "status": "pending_lifecycle"
+      }
+    ],
+    "prepared_builds": {
+      "dead": "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-r01",
+      "kill": "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-r01"
+    },
+    "capture_command_template": "python3 tools/probes/capture_native_player.py --lock-timeout 180 --timeout 180 <build_dir> <capture_path>",
+    "capture_commands": {
+      "dead": "python3 tools/probes/capture_native_player.py --lock-timeout 180 --timeout 180 evidence/characters/lee/original/lee-574-bisha-625-dead-negative-r01 /tmp/lee-574-bisha-625-dead-negative-capture-r02",
+      "kill": "python3 tools/probes/capture_native_player.py --lock-timeout 180 --timeout 180 evidence/characters/lee/original/lee-574-bisha-625-kill-negative-r01 /tmp/lee-574-bisha-625-kill-negative-capture-r02"
+    },
+    "capture_policy": "Run only after GUI unlock; hold /tmp/bvn-native-flash-capture.lock for entire capture, use fresh run_id/output, validate contiguous sequence 1..done, then copy immutable events/build/raw into evidence."
+  },
+  "source_branch_inventory": {
+    "labels": [
+      {
+        "frame": 1,
+        "label": "站立"
+      },
+      {
+        "frame": 10,
+        "label": "走"
+      },
+      {
+        "frame": 20,
+        "label": "瞬步"
+      },
+      {
+        "frame": 34,
+        "label": "跳"
+      },
+      {
+        "frame": 50,
+        "label": "落"
+      },
+      {
+        "frame": 66,
+        "label": "跳2"
+      },
+      {
+        "frame": 83,
+        "label": "落2"
+      },
+      {
+        "frame": 109,
+        "label": "落地"
+      },
+      {
+        "frame": 121,
+        "label": "跳砍"
+      },
+      {
+        "frame": 135,
+        "label": "跳招"
+      },
+      {
+        "frame": 157,
+        "label": "砍1"
+      },
+      {
+        "frame": 181,
+        "label": "砍2"
+      },
+      {
+        "frame": 209,
+        "label": "砍3"
+      },
+      {
+        "frame": 245,
+        "label": "砍4"
+      },
+      {
+        "frame": 278,
+        "label": "招1"
+      },
+      {
+        "frame": 357,
+        "label": "砍技2"
+      },
+      {
+        "frame": 404,
+        "label": "砍技1"
+      },
+      {
+        "frame": 471,
+        "label": "招2"
+      },
+      {
+        "frame": 525,
+        "label": "招3"
+      },
+      {
+        "frame": 574,
+        "label": "必杀"
+      },
+      {
+        "frame": 635,
+        "label": "必杀1"
+      },
+      {
+        "frame": 653,
+        "label": "必杀LOOP"
+      },
+      {
+        "frame": 672,
+        "label": "必杀2"
+      },
+      {
+        "frame": 701,
+        "label": "空中必杀"
+      },
+      {
+        "frame": 723,
+        "label": "空中必杀1"
+      },
+      {
+        "frame": 740,
+        "label": "空中必杀2"
+      },
+      {
+        "frame": 795,
+        "label": "超必杀"
+      },
+      {
+        "frame": 987,
+        "label": "招换"
+      },
+      {
+        "frame": 1049,
+        "label": "防御"
+      },
+      {
+        "frame": 1050,
+        "label": "防御2"
+      },
+      {
+        "frame": 1061,
+        "label": "防住"
+      },
+      {
+        "frame": 1073,
+        "label": "被打"
+      },
+      {
+        "frame": 1086,
+        "label": "击飞"
+      },
+      {
+        "frame": 1098,
+        "label": "击落地"
+      },
+      {
+        "frame": 1133,
+        "label": "起身"
+      },
+      {
+        "frame": 1158,
+        "label": "开场"
+      },
+      {
+        "frame": 1238,
+        "label": "胜利"
+      },
+      {
+        "frame": 1268,
+        "label": "失败"
+      }
+    ],
+    "command_catalog_entries": 40,
+    "command_catalog_gaps": [
+      {
+        "kind": "command",
+        "label": "万解",
+        "slot": "wankai",
+        "reason": "missing_timeline",
+        "has_timeline": false,
+        "contexts": [
+          "stand"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "上必杀",
+        "slot": "bishaUP",
+        "reason": "missing_timeline",
+        "has_timeline": false,
+        "contexts": [
+          "dash",
+          "stand"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "失败",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "开场",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "必杀2",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "必杀LOOP",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "空中必杀",
+        "slot": "bishaAir",
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "air",
+          "dash"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "空中必杀1",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "空中必杀2",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "timeline"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "胜利",
+        "slot": null,
+        "reason": "catalog_only",
+        "has_timeline": true,
+        "contexts": [
+          "cinematic"
+        ]
+      },
+      {
+        "kind": "predicate",
+        "slot": "hide",
+        "reason": "no_dispatch_label"
+      }
+    ],
+    "unsupported_compile_gaps": [
+      {
+        "kind": "command",
+        "label": "万解",
+        "slot": "wankai",
+        "reason": "missing_timeline",
+        "has_timeline": false,
+        "contexts": [
+          "stand"
+        ]
+      },
+      {
+        "kind": "command",
+        "label": "上必杀",
+        "slot": "bishaUP",
+        "reason": "missing_timeline",
+        "has_timeline": false,
+        "contexts": [
+          "dash",
+          "stand"
+        ]
+      }
+    ],
+    "catalog_only_lifecycle_labels": [
+      "失败",
+      "开场",
+      "必杀2",
+      "必杀LOOP",
+      "空中必杀",
+      "空中必杀1",
+      "空中必杀2",
+      "胜利"
+    ],
+    "event_families": {
+      "super_events": [
+        {
+          "frame": 578,
+          "action": "必杀",
+          "kind": "bsd",
+          "source_path": "DefineSprite_518/frame_578/DoAction.as"
+        },
+        {
+          "frame": 601,
+          "action": "必杀",
+          "kind": "bsw",
+          "source_path": "DefineSprite_518/frame_601/DoAction.as"
+        },
+        {
+          "frame": 704,
+          "action": "空中必杀",
+          "kind": "bsd",
+          "source_path": "DefineSprite_518/frame_704/DoAction.as"
+        },
+        {
+          "frame": 720,
+          "action": "空中必杀",
+          "kind": "bsw",
+          "source_path": "DefineSprite_518/frame_720/DoAction.as"
+        },
+        {
+          "frame": 798,
+          "action": "超必杀",
+          "kind": "cbsd",
+          "source_path": "DefineSprite_518/frame_798/DoAction.as"
+        },
+        {
+          "frame": 849,
+          "action": "超必杀",
+          "kind": "cbsw",
+          "source_path": "DefineSprite_518/frame_849/DoAction.as"
+        }
+      ],
+      "energy_events": [
+        {
+          "frame": 282,
+          "action": "招1",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_282/DoAction.as"
+        },
+        {
+          "frame": 358,
+          "action": "砍技2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_358/DoAction.as"
+        },
+        {
+          "frame": 405,
+          "action": "砍技1",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_405/DoAction.as"
+        },
+        {
+          "frame": 472,
+          "action": "招2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_472/DoAction.as"
+        },
+        {
+          "frame": 526,
+          "action": "招3",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_526/DoAction.as"
+        },
+        {
+          "frame": 575,
+          "action": "必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_575/DoAction.as"
+        },
+        {
+          "frame": 702,
+          "action": "空中必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_702/DoAction.as"
+        },
+        {
+          "frame": 796,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_796/DoAction.as"
+        }
+      ],
+      "health_events": [
+        {
+          "frame": 676,
+          "action": "必杀2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_676/DoAction.as"
+        },
+        {
+          "frame": 806,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_806/DoAction.as"
+        }
+      ],
+      "presentation_events": [
+        {
+          "frame": 607,
+          "action": "必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_607/DoAction.as"
+        },
+        {
+          "frame": 672,
+          "action": "必杀2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_672/DoAction.as"
+        },
+        {
+          "frame": 674,
+          "action": "必杀2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_674/DoAction.as"
+        },
+        {
+          "frame": 837,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_837/DoAction.as"
+        }
+      ],
+      "body_warps": [
+        {
+          "frame": 287,
+          "action": "招1",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_287/DoAction.as"
+        },
+        {
+          "frame": 325,
+          "action": "招1",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_325/DoAction.as"
+        },
+        {
+          "frame": 605,
+          "action": "必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_605/DoAction.as"
+        },
+        {
+          "frame": 639,
+          "action": "必杀1",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_639/DoAction.as"
+        },
+        {
+          "frame": 852,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_852/DoAction.as"
+        },
+        {
+          "frame": 862,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_862/DoAction.as"
+        },
+        {
+          "frame": 871,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_871/DoAction.as"
+        },
+        {
+          "frame": 879,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_879/DoAction.as"
+        },
+        {
+          "frame": 890,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_890/DoAction.as"
+        },
+        {
+          "frame": 900,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_900/DoAction.as"
+        },
+        {
+          "frame": 909,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_909/DoAction.as"
+        },
+        {
+          "frame": 917,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_917/DoAction.as"
+        },
+        {
+          "frame": 933,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_933/DoAction.as"
+        }
+      ],
+      "motion_windows": [
+        {
+          "frame": null,
+          "action": "跳砍",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_121/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "砍1",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_159/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "砍2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_182/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "砍3",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_211/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "砍4",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_247/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "砍技2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_360/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "砍技1",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_406/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "招2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_473/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "招2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_478/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "招3",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_527/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "必杀2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_681/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_853/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_863/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_872/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_880/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_891/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_901/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_910/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "超必杀",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_918/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "起身",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        }
+      ],
+      "jump_windows": [
+        {
+          "frame": null,
+          "action": "跳",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_36/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "跳",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_44/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "落",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_50/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "跳2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_66/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "跳2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_77/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        },
+        {
+          "frame": null,
+          "action": "落2",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_83/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        }
+      ],
+      "summon_events": [
+        {
+          "frame": 992,
+          "action": "招换",
+          "kind": null,
+          "source_path": "DefineSprite_518/frame_992/DoAction.as"
+        }
+      ]
+    },
+    "child_callback_inventory": {
+      "timeline_action_bytecode": 111,
+      "clip_enterframe_callbacks": 56,
+      "start_sound_events": 0,
+      "motion_windows": 20,
+      "jump_windows": 6,
+      "nested_summon_events": 1
+    }
+  },
+  "label_evidence_map": [
+    {
+      "label": "万解",
+      "source_timeline": false,
+      "fixture_cases": [
+        "lee-missing-wankai-neutral"
+      ],
+      "comparisons": [],
+      "classification": "unreachable_source_timeline"
+    },
+    {
+      "label": "上必杀",
+      "source_timeline": false,
+      "fixture_cases": [
+        "lee-missing-bishaUP-neutral"
+      ],
+      "comparisons": [],
+      "classification": "unreachable_source_timeline"
+    },
+    {
+      "label": "必杀",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-574-bisha-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-574-bisha-guard-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "招1",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-278-magichit1-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-278-magichit1-neutral-r03/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "招2",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-471-magichit2-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-471-magichit2-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "招3",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-525-magichit3-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-525-magichit3-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "招换",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-987-zhaoHuan-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-987-zhaoHuan-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "瞬步",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-20-rush-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-20-rush-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "砍1",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-157-nornalhit-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-normal-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "砍技1",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-404-skill1-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-404-skill1-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "砍技2",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-357-skill2-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-357-skill2-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "空中必杀",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-701-bishaAir-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-701-bishaAir-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "落2",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-83-jumpDown-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-83-jumpDown-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "超必杀",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-795-bishaSuper-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-795-bishaSuper-energy_above-r02/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        },
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-795-bishaSuper-energy_exact-r02/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        },
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-795-bishaSuper-energy_below-r02/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "跳",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-34-jump-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-34-jump-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "跳2",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-66-jump-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-66-jump2-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "跳招",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-135-airMagichit-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-135-airMagichit-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "跳砍",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-121-airhit-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-121-airhit-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "防御",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-1049-defence-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-1049-defence-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    },
+    {
+      "label": "防御2",
+      "source_timeline": true,
+      "fixture_cases": [
+        "lee-1050-defence-neutral"
+      ],
+      "comparisons": [
+        {
+          "status": "matched",
+          "path": "evidence/characters/lee/godot/lee-1050-defence2-neutral-r01/compare.json",
+          "source_states": 602,
+          "native_states": 602
+        }
+      ],
+      "classification": "matched"
+    }
+  ],
+  "audio": {
+    "evidence": "evidence/characters/lee/sound-coverage-r01.json",
+    "sound_frames": 43,
+    "start_sound_events": 44,
+    "stop_sound_events": 0,
+    "source_walk_reached": 43,
+    "godot_runtime_id_matches": 43
+  },
+  "visual": {
+    "evidence": "evidence/characters/lee/visual-freeze-audit-r01.json",
+    "status": "flash_capture_not_frozen",
+    "reusable_capture_script": "/tmp/lee_flash_visual_capture.py",
+    "requires_gui_unlock": true,
+    "offline_preparation_complete": true,
+    "strict_same_child_frame": false
+  },
+  "remaining_offline_items": [
+    "capture source for 625-dead and 625-kill; no GUI capture started",
+    "strict visual freeze requires GUI unlock and recursive SWF child/presentation freeze",
+    "unsupported source labels: 万解, 上必杀"
+  ]
+}

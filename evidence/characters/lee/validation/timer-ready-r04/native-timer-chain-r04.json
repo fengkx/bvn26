@@ -1,0 +1,72 @@
+{
+  "format": "lee-native-timer-chain-r04",
+  "status": "diagnostic_external_clock_lifecycle_observed",
+  "fixture": "evidence/characters/lee/validation/timer-ready-r04/kill-correct.fixture.json",
+  "runner": "/private/tmp/lee-timer-runner-r01/batch-clean2-observe.gd",
+  "runner_mode": "physics_disabled_external_source_fire_tape; observer only, no actor state writes",
+  "source_timer_id": 8,
+  "events": [
+    {
+      "callback": "nextfight",
+      "kind": "native_register",
+      "timer_id": 680215472721,
+      "wait_ms": 1000.0
+    },
+    {
+      "fight_tick": 306,
+      "kind": "native_fire",
+      "phase": "after_state_snapshot",
+      "source_seq": 6515,
+      "timer_id": 680215472721
+    },
+    {
+      "kind": "native_cancel_after_fire",
+      "still_live": true,
+      "timer_id": 680215472721
+    },
+    {
+      "fight_tick": 306,
+      "kind": "post_tick_timer_state",
+      "live": true,
+      "queued_free": false,
+      "stopped": false,
+      "timer_id": 680215472721
+    },
+    {
+      "fight_tick": 307,
+      "kind": "post_tick_timer_state",
+      "live": true,
+      "queued_free": false,
+      "stopped": false,
+      "timer_id": 680215472721
+    },
+    {
+      "fight_tick": 308,
+      "kind": "post_tick_timer_state",
+      "live": false,
+      "queued_free": null,
+      "stopped": null,
+      "timer_id": -1
+    },
+    {
+      "fight_tick": 308,
+      "kind": "native_cancel_observed",
+      "reason": "ko_nextfight_timer null or freed after Ready/frame processing"
+    },
+    {
+      "fight_tick": 700,
+      "kind": "post_tick_timer_state",
+      "live": false,
+      "queued_free": null,
+      "stopped": null,
+      "timer_id": -1
+    }
+  ],
+  "conclusion": {
+    "registration": "native Timer registered callback nextfight with wait_ms=1000 before source fire",
+    "fire": "external tape delivered source seq 6515 at fight tick 306 after state snapshot; immediate native timer remained live by design until source Ready processing",
+    "cancel": "post-tick state remained live at ticks 306 and 307, became null/freed at tick 308, after Ready/frame processing",
+    "no_retrigger": "timer remained null from tick 308 through tick 700; no second native fire or re-registration observed",
+    "limit": "This is external-clock diagnostic evidence, not natural SceneTree Timer scheduling acceptance."
+  }
+}

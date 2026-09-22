@@ -1,0 +1,88 @@
+{
+  "format": "byakuya-recursive-freeze-prep-r01",
+  "status": "partial_source_capture_visual_pending",
+  "entries": [
+    {
+      "requested_visual": "333",
+      "source_build": "333/source-build/build.json",
+      "source_build_sha256": "939ec8969e76274724fa96a16cd8340476f6c009b48e149b79ffeae19a6b4eb1",
+      "fixture": "333/fixture.json",
+      "fixture_sha256": "eb205d790704c5421cae8de6a996d5ebb5c5e7336c8af785fccd4b8cfeec5ba3",
+      "run_id": "byakuya-freeze-prep-333-r01",
+      "presentation_probe": true,
+      "frame_order_probe": false,
+      "configuration": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "source_scope": "Byakuya base SWF/timeline; recursive freeze capture still requires native GUI",
+      "target_mapping": "DefineSprite_333 / 招1"
+    },
+    {
+      "requested_visual": "576",
+      "source_build": "576/source-build/build.json",
+      "source_build_sha256": "1c18cbca98520528bc4df1d4f5b859e4ca2fb85cde95543a99d75da0648fee2e",
+      "fixture": "576/fixture.json",
+      "fixture_sha256": "7b73a3ce8409709d1ff39689af5f92a97552212e4b7f1a467c2335f0cebcfb16",
+      "run_id": "byakuya-freeze-prep-576-r01",
+      "presentation_probe": true,
+      "frame_order_probe": false,
+      "configuration": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "source_scope": "Byakuya base SWF/timeline; recursive freeze capture still requires native GUI",
+      "target_mapping": "DefineSprite_576 / 上必杀"
+    },
+    {
+      "requested_visual": "819",
+      "source_build": "819/source-build/build.json",
+      "source_build_sha256": "d819f7d50cedf54ad997a8c7e5bac7ce61044010cd7f69db2a24ef91700f0ab8",
+      "fixture": "819/fixture.json",
+      "fixture_sha256": "3b3f758795da2f4370f243c70bd52a0467ff240f3ef87250dc9d94c7a355effc",
+      "run_id": "byakuya-freeze-prep-819-r01",
+      "presentation_probe": true,
+      "frame_order_probe": false,
+      "configuration": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "source_scope": "Byakuya base SWF/timeline; recursive freeze capture still requires native GUI",
+      "target_mapping": "DefineSprite_819 nested summon presentation; input fixture is source label 814 summon neutral"
+    }
+  ],
+  "native_lock": "/tmp/bvn-native-flash-capture.lock",
+  "native_command_template": "python3 tools/probes/capture_native_player.py --lock-timeout 600 --timeout 1800 BUILD_DIR CAPTURE_DIR --allow-window-activation",
+  "freeze_scope": "reuse recursive stop plus child-state before/after observer from r10/r11; no direct frame jump or scheduler intervention",
+  "attempts": {
+    "333_wall": "333-wall-r03/attempt-report.json",
+    "333_neutral": "source build reached no target state; no visual evidence retained",
+    "576": "not_started_after_desktop_handoff",
+    "819": "not_started_after_desktop_handoff"
+  },
+  "visual_acceptance_rule": "Only recursive stop with child-state before/after and two screenshots stable over 500ms qualifies; full-screen screenshot or missing window ID is rejected.",
+  "fresh_visual_builds": {
+    "333_wall": "333-wall-r04/source-build/build.json",
+    "576": "576/source-build/build.json",
+    "819": "819/source-build/build.json"
+  },
+  "fresh_run_requirement": "Use only fresh run IDs listed in fresh_visual_builds; parser must wait for the new run boot before target matching to avoid stale flashlog."
+}

@@ -1,0 +1,21 @@
+{
+  "status": "built_not_captured",
+  "scope": "source-preserving title/menu/selection/intro/Ready/game-running/next-round bounded observer",
+  "source": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d"
+  },
+  "output": {
+    "game/main.swf": "f31b0d2e1a423cdd9ef58d2db1314f24d59da9f8f8b0b8cf2482717466a22b99",
+    "build.json": "4c9f2baeca6fc9270aef20604013d065728c59e996e68701f39576f061f4b366"
+  },
+  "run_id": "boot-ready-r06",
+  "trace_contract": "AIREF|run_id|seq|timer|0|0|kind|value; done=ready_horizon",
+  "ready_begin_source": "DefineSprite_1991/frame_1/DoAction.as::goStep(4)",
+  "game_running_source": "DefineSprite_1991 existing onEnterFrame observes zhanting=false",
+  "observer_lifecycle_proof": "source retains gamePlayers camera/wall onEnterFrame; goStep(4) clears kcint only and does not remove clip",
+  "horizon": "second game_running or 900 source frames after first game_running",
+  "capture_command": "python3 tools/probes/capture_native_player.py /private/tmp/bvn-boot-ready-r06 /private/tmp/bvn-boot-ready-r06/original.log --timeout 180 --lock-timeout 180 --allow-window-activation",
+  "offline_contract": "BOOT_READY_CAPTURE_CONTRACT_OK",
+  "capture_status": "not_run_pending_desktop_input"
+}

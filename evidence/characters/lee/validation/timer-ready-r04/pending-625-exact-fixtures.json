@@ -1,0 +1,123 @@
+{
+  "format": "lee-pending-625-exact-fixtures-r01",
+  "status": "offline_identity_audit",
+  "frame_action_observer_paths": {
+    "sprite": "518",
+    "slot": "p1",
+    "body_outer": "frame_1/PlaceObject2_518_1/CLIPACTIONRECORD onClipEvent(enterFrame)",
+    "distinct_source_paths": [
+      "DefineSprite_518/frame_29/DoAction.as",
+      "DefineSprite_518/frame_1017/DoAction.as"
+    ],
+    "observer_kinds": {
+      "body_boundary": "body_boundary",
+      "body_outer": "body_callback_enter/exit",
+      "frame_action": "schedule enter/exit with exact source path; current build does not rename these events"
+    }
+  },
+  "cases": [
+    {
+      "fixture_id": "lee-574-bisha-625-dead-negative",
+      "fixture_path": "evidence/characters/lee/move-cases/lee-574-bisha-625-dead-negative.json",
+      "fixture_sha256": "3d16881dbb405aa137172188c5c3271094f0b864944019ae477978bff0b805c9",
+      "fighters": {
+        "p1": "lee",
+        "p2": "yihu"
+      },
+      "slot": "p1",
+      "helpers": {
+        "p1": "我爱罗",
+        "p2": "魂"
+      },
+      "inputs": [
+        {
+          "slot": "p1",
+          "keys": [
+            "special"
+          ],
+          "start": 10,
+          "end": 13
+        }
+      ],
+      "setup": {
+        "p1": {
+          "x": 300,
+          "energy": 101
+        },
+        "p2": {
+          "x": 350,
+          "energy": 300
+        }
+      },
+      "source_preconditions": {
+        "p1": {
+          "health": 1000,
+          "wudi": false
+        },
+        "p2": {
+          "health": 0,
+          "wudi": false
+        }
+      },
+      "source_capture_dir": "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-r01",
+      "source_events_sha256": "7079e87413be88af551fd672fb62c45629b5e603b97f4dc957b78fa10b675da2",
+      "source_build_sha256": "7230e1ac6f69101ce8ff366ea7cb5c9b51f4e0d73e070b035fb7cab8c80d60c2",
+      "source_run_id": "lee-574-625-dead-r01",
+      "native_path": "evidence/characters/lee/godot/lee-574-bisha-625-dead-negative-r01/native.json",
+      "status": "source_capture_exists_but_body_observer_missing_and_strict_current_pair_pending",
+      "reason": "dead hp=0 source capture enters initialization/restart lifecycle; kill hp=1 is separate fixture and must not substitute for dead; neither has Lee body_boundaries capture."
+    },
+    {
+      "fixture_id": "lee-574-bisha-625-kill-negative",
+      "fixture_path": "evidence/characters/lee/move-cases/lee-574-bisha-625-kill-negative.json",
+      "fixture_sha256": "207c37c5aec11b8ce925b571fefa4a621f0e5485bd27bc5f6982bb7bde49b287",
+      "fighters": {
+        "p1": "lee",
+        "p2": "yihu"
+      },
+      "slot": "p1",
+      "helpers": {
+        "p1": "我爱罗",
+        "p2": "魂"
+      },
+      "inputs": [
+        {
+          "slot": "p1",
+          "keys": [
+            "special"
+          ],
+          "start": 10,
+          "end": 13
+        }
+      ],
+      "setup": {
+        "p1": {
+          "x": 300,
+          "energy": 101
+        },
+        "p2": {
+          "x": 350,
+          "energy": 300
+        }
+      },
+      "source_preconditions": {
+        "p1": {
+          "health": 1000,
+          "wudi": false
+        },
+        "p2": {
+          "health": 1,
+          "wudi": false
+        }
+      },
+      "source_capture_dir": "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-r01",
+      "source_events_sha256": "c97062b0537e6bc3c8e2989a6dea699b60a76663e30e6ab50dae409d707d436c",
+      "source_build_sha256": "52d0b751b938862fad7917561fe6693fcb79ede081ab14ac3057a4f67ef8b231",
+      "source_run_id": "lee-574-625-kill-r01",
+      "native_path": "evidence/characters/lee/godot/lee-574-bisha-625-kill-negative-r01/native.json",
+      "status": "source_capture_exists_but_body_observer_missing_and_strict_current_pair_pending",
+      "reason": "dead hp=0 source capture enters initialization/restart lifecycle; kill hp=1 is separate fixture and must not substitute for dead; neither has Lee body_boundaries capture."
+    }
+  ],
+  "no_substitution_rule": "Do not use recovery-p2-hp1 as evidence for either exact 625 dead/kill fixture; hp0 and hp1 are distinct source preconditions and lifecycles."
+}

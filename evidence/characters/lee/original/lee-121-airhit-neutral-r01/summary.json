@@ -1,0 +1,160 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "lee-airhit-neutral-r01",
+  "input_delivery": {
+    "status": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "w": "87",
+      "a": "65",
+      "l": "76",
+      "上箭": "38",
+      "下箭": "40",
+      "左箭": "37",
+      "右箭": "39",
+      "N1": "86",
+      "N2": "98",
+      "N3": "66",
+      "N4": "100",
+      "N5": "77",
+      "N6": "78",
+      "right": "68",
+      "attack": "74",
+      "down": "83",
+      "ranged": "85",
+      "jump": "75",
+      "special": "73",
+      "summon": "79"
+    },
+    "reads": 9828,
+    "pressed_reads": {
+      "_level0.game.p1.mc:75": 1,
+      "_level0.game.p1.mc:74": 1
+    }
+  },
+  "events": 12385,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "input_next_display": 754,
+    "initCtrl": 6,
+    "frame_state_enter": 100,
+    "intro_body_enter": 199,
+    "intro_body_exit": 199,
+    "frame_state_exit": 100,
+    "random": 1,
+    "intro_poll": 21,
+    "intro_poll_state": 21,
+    "state": 1146,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "key_read": 9828,
+    "done": 1
+  },
+  "frames_after_ready": 300,
+  "termination_policy": "unique_done_same_frame_tail",
+  "ready": {
+    "run_id": "lee-airhit-neutral-r01",
+    "sequence": 1397,
+    "time_ms": 26616,
+    "display_tick": 454,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "lee-airhit-neutral-r01",
+      "sequence": 4,
+      "time_ms": 11570,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "lee-airhit-neutral-r01",
+      "sequence": 8,
+      "time_ms": 11602,
+      "display_tick": 2,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "lee-airhit-neutral-r01",
+      "sequence": 18,
+      "time_ms": 11780,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "lee-airhit-neutral-r01",
+      "sequence": 19,
+      "time_ms": 11780,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "lee-airhit-neutral-r01",
+      "sequence": 20,
+      "time_ms": 11780,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "lee-airhit-neutral-r01",
+      "sequence": 21,
+      "time_ms": 11780,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": null,
+  "samples_before_ready": 0,
+  "sample_intervals_ms": {},
+  "last_states": [
+    {
+      "run_id": "lee-airhit-neutral-r01",
+      "sequence": 12383,
+      "time_ms": 36623,
+      "display_tick": 754,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p1,7,f:1:8:83886080:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "lee-airhit-neutral-r01",
+      "sequence": 12384,
+      "time_ms": 36623,
+      "display_tick": 754,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p2,7,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "96affeceedd966145a7b7bfe0b3c18cf7fdf8e1c3e092a283588aa099c32ab69",
+  "retained_sha256": {
+    "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "instrumentation.diff": "29df9c2d6fc5b2611c9f293d8e54e8cff2c23b0b8ceb30c6199b743bd3c9f91b",
+    "events.jsonl": "0887039d68d7ec592f1d4e43e1789edf490196f44c39cd222d543364d76e9c97",
+    "random-tape.json": "cb53bca0660823b24e00016f988343d46d96b35e583ac4c9e7802cb2ae980812",
+    "build.json": "80959bac4aaa6b55711fac1b55e73432f38b8b03c365a07bc9e239a5652a1704"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "cases": [
+    {
+      "actual_action": "砍1",
+      "actual_frame": 169,
+      "actual_predicate": true,
+      "expected": true,
+      "expected_predicate": "nornalhit",
+      "goto_expected": "砍1",
+      "goto_matched": true,
+      "id": "standing_attack",
+      "last_event": "action_砍1",
+      "matched": true,
+      "services": [],
+      "source_read_set": "DefineSprite_631/frame_1/DoAction.as#controller predicates",
+      "source_tick": 12,
+      "controller_decision_matched": true
+    },
+    {
+      "actual_action": "防御",
+      "actual_frame": 849,
+      "actual_predicate": true,
+      "expected": true,
+      "expected_predicate": "defence",
+      "goto_expected": "防御",
+      "goto_matched": true,
+      "id": "standing_defence",
+      "last_event": "action_防御",
+      "matched": true,
+      "services": [],
+      "source_read_set": "DefineSprite_631/frame_1/DoAction.as#controller predicates",
+      "source_tick": 149,
+      "controller_decision_matched": true
+    }
+  ],
+  "read_set": [
+    "x",
+    "y",
+    "scale_X",
+    "xscale",
+    "ql",
+    "root_paused",
+    "opponent_x",
+    "opponent_y",
+    "opponent_hp",
+    "opponent_action",
+    "opponent_sw",
+    "opponent_helper_action",
+    "attran",
+    "defran",
+    "goran",
+    "jumpran",
+    "bisharan",
+    "canhit",
+    "sw",
+    "speed",
+    "jumpPower",
+    "jumped",
+    "fall",
+    "khit",
+    "touch",
+    "touchFloor",
+    "sensors.kanmian"
+  ],
+  "scope": "single source controller callback decision, including generated predicate and goto label; not full scene parity",
+  "status": "completed",
+  "source_goto_evidence": {
+    "standing_attack": {
+      "predicate_sequence": 2952,
+      "source_next_state_sequence": 2969,
+      "source_next_frame": 169,
+      "label": "砍1"
+    },
+    "standing_defence": {
+      "predicate_sequence": 4826,
+      "source_next_state_sequence": 4832,
+      "source_next_frame": 849,
+      "label": "防御"
+    }
+  }
+}

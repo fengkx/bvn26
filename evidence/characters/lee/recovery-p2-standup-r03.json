@@ -1,0 +1,99 @@
+{
+  "case_id": "lee-recovery-p2-byakuya-super-tap-r03",
+  "status": "source_observed_standup_and_sound",
+  "source_conditions": {
+    "p1": "白哉 super at ticks 10-12",
+    "p2": "小李 health=1000,wudi=false",
+    "p2_dash_key": "N3=66 tap ticks 76-79",
+    "helpers": [
+      "魂",
+      "魂"
+    ]
+  },
+  "source_observation": {
+    "target_states": [
+      {
+        "fight_tick": 47,
+        "frame": 1087,
+        "value": "p2,1087,f:1:8:74711040:0,f:-1:4:104857600:0,f:1:6:104857600:0,-1,f:1:9:72089600:0,f:1:8:90439680:0,false,true,true,1,false,0,false"
+      },
+      {
+        "fight_tick": 77,
+        "frame": 1098,
+        "value": "p2,1098,f:1:4:83886080:0,f:-1:4:104857600:0,f:1:6:104857600:0,-1,f:1:9:72089600:0,f:1:8:78643200:0,false,true,true,1,false,16,false"
+      },
+      {
+        "fight_tick": 78,
+        "frame": 1133,
+        "value": "p2,1133,f:1:4:83886080:0,f:-1:4:104857600:0,f:1:6:104857600:0,-1,f:1:9:72089600:0,f:1:8:78643200:0,false,true,true,1,false,16,false"
+      },
+      {
+        "fight_tick": 88,
+        "frame": 1143,
+        "value": "p2,1143,f:1:4:83886080:0,f:-1:4:104857600:0,f:1:6:104857600:0,-1,f:1:9:72089600:0,f:1:8:78643200:0,false,true,true,1,false,16,false"
+      }
+    ],
+    "p2_N3_true_reads": [
+      {
+        "fight_tick": 77,
+        "seq": 3726
+      }
+    ],
+    "transition": "1098 -> 1133 at fight tick 78; 1143 at fight tick 88"
+  },
+  "provenance": {
+    "events_sha256": "19db0e79d050e4dfe0d061bd6036122f05c0bdbfb7d9d7be160c342e9f8ff490",
+    "build_sha256": "5a34442e42a5c998dfd33e999444108031e7a04127fed5d300db342581a1aa64",
+    "runtime_fighter_sha256": "6246e5234282511ed9b8e426496a54a036f924a9caaef1044cff3d3d42adb446",
+    "source_hashes": {
+      "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+      "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+      "game/fighter/Byakuya.swf": "c590f9ca2aea152d26aea8d6a10c4ee31a2019d9798c637820f145feef13b52f",
+      "scripts/fighter/Byakuya.json": "4edf974358d4cd41a4aec3121089050bc060977a8051df3b1e60e06318aedd63",
+      "game/fighter/lee.swf": "2443dc112dbf2be696abb9d924831814ae01990536df8298fa2c1432f35c93d1",
+      "scripts/fighter/lee.json": "82230e0e97e0b2751ecba3e27b6f82e46c467ae956c51b0a2ba4d9c114c7e967",
+      "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+      "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+      "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+      "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46"
+    },
+    "fixture_path": "/private/tmp/lee-recovery-p2-byakuya-tap-r03.json",
+    "fixture_sha256": "f97c99bd5d75278b6fd6bb6257507ddb2b8856f99b69c5e6d3be99358e6acea3"
+  },
+  "godot_compare": {
+    "status": "frame_transition_matched",
+    "rows_sha256": "31d821f7f1e190dafb3b1e5a9c94148d3085da5d09e2f4a72d62db5ebd248ecf",
+    "observed_p2": [
+      [
+        47,
+        1087,
+        550.0,
+        -1.0
+      ],
+      [
+        77,
+        1098,
+        550.0,
+        -1.0
+      ],
+      [
+        78,
+        1133,
+        550.0,
+        -1.0
+      ],
+      [
+        88,
+        1143,
+        550.0,
+        -1.0
+      ]
+    ],
+    "same_input_fixture_sha256": "f97c99bd5d75278b6fd6bb6257507ddb2b8856f99b69c5e6d3be99358e6acea3",
+    "scope": "P2 frame/tick transition only; source state encoding does not expose hp as a standalone field here"
+  },
+  "reproduction": {
+    "build": "python3 tools/probes/build_ai_reference.py --ffdec /private/tmp/ffdec-26.2.1/ffdec-cli.jar --output /private/tmp/lee-recovery-p2-byakuya-tap-r03-build --run-id lee-recovery-p2-byakuya-tap-r03 --frames 700 --dynamic-move-case --move-case /private/tmp/lee-recovery-p2-byakuya-tap-r03.json --p1-character 白哉 --p2-character 小李 --p1-helper 魂 --p2-helper 魂",
+    "capture": "python3 tools/probes/capture_native_player.py /private/tmp/lee-recovery-p2-byakuya-tap-r03-build /private/tmp/lee-recovery-p2-byakuya-tap-r03-build/capture.jsonl --timeout 180 --lock-timeout 180 --allow-window-activation"
+  }
+}

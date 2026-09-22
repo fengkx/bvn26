@@ -1,0 +1,119 @@
+{
+  "format": "lee-visual-freeze-evidence-v1",
+  "status": "frozen_same_source_frame_observation",
+  "source_frame": 837,
+  "source_path": "DefineSprite_518/frame_837/DoAction.as",
+  "source_semantics": {
+    "frame_796": "energy -300 only",
+    "frame_798": "cbsd -> blackStg/hide stage/stop clips",
+    "frame_837": "screen_flash"
+  },
+  "flash": {
+    "run_id": "lee-795-freeze-r03",
+    "state": {
+      "seq": 3687,
+      "time_ms": 28732,
+      "display_tick": 508,
+      "fight_tick": 55,
+      "kind": "state",
+      "value": "p1,837,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,3,f:1:9:91750400:0,f:1:0:0:0,false,true,true,0,true,0,false"
+    },
+    "freeze_begin": {
+      "seq": 3688,
+      "time_ms": 28732,
+      "display_tick": 508,
+      "fight_tick": 55,
+      "kind": "visual_freeze",
+      "value": "begin,source_frame_837"
+    },
+    "freeze_end": {
+      "seq": 3712,
+      "time_ms": 28735,
+      "display_tick": 508,
+      "fight_tick": 55,
+      "kind": "visual_freeze",
+      "value": "end,source_frame_837"
+    },
+    "recursive_clip_count": 23,
+    "child_frames_recorded": [],
+    "capture_state": "capture-state.txt",
+    "screenshot": "flash-stage-600x400.png",
+    "child_frames": [
+      "blackMu,2,true,-16,-6",
+      "ts_face,1,true,-3.9,69.95",
+      "ts_face/face_p2,1,true,513.45,60.95",
+      "ts_face/face_p2/face,1,true,-213,0",
+      "ts_face/face_p1,1,true,93.45,60.95",
+      "ts_face/face_p1/face,45,true,-213,0",
+      "ts_face/bg,1,true,0,0",
+      "game.bgmc,1,false,0,-472.2",
+      "game.fgmc,1,false,430.5,-225.5",
+      "p1.mc,837,true,0.9,-20.05",
+      "p1.mc/instance550,11,true,-18.6,26.1",
+      "p1.mc/jiao,1,true,-6.85,8.6",
+      "p1.mc/mian,1,true,-21.75,-22.85",
+      "p1.mc/AImain,0,true,0.5,0.45",
+      "p2.mc,3,true,1,-23.95",
+      "p2.mc/instance346,1,true,-26.85,37.65",
+      "p2.mc/bdmn,1,true,-15.75,-20.8",
+      "p2.mc/instance345,3,true,-30,-23.25",
+      "p2.mc/jiao,1,true,-14.35,10.1",
+      "p2.mc/mian,1,true,-21.75,-5.35",
+      "p2.mc/AImain,0,true,0.5,0.45",
+      "game.layer_effect,1,true,0,0",
+      "game.layer_effect/xgmc0,0,true,300,-50"
+    ],
+    "screenshot_dimensions": {
+      "window_retina": [
+        1424,
+        1080
+      ],
+      "client_retina": [
+        1200,
+        800
+      ],
+      "stage_output": [
+        600,
+        400
+      ],
+      "crop_xywh": [
+        112,
+        132,
+        1200,
+        800
+      ],
+      "method": "crop client viewport from full window then downsample 2x"
+    },
+    "timer": "59 (from frozen capture)"
+  },
+  "godot": {
+    "source_frame": 837,
+    "metadata": "godot-metadata.json",
+    "screenshot": "godot-stage-600x400.png",
+    "screenshot_dimensions": [
+      600,
+      400
+    ],
+    "initial_energy": {
+      "p1": 300,
+      "p2": 300
+    }
+  },
+  "limitations": [
+    "Flash freeze stops enumerated presentation roots and recursively discovered MovieClips after frame837 root/state callback; it does not globally disable arbitrary interval callbacks outside those roots.",
+    "Flash and Godot screenshots are now same source frame and same input/helper/stage/positions; pixel/pose review remains pending."
+  ],
+  "clock_alignment": {
+    "flash_state_display_tick": 508,
+    "flash_state_fight_tick": 55,
+    "flash_timer": 59,
+    "flash_timer_source": "DefineSprite_1813/frame_1/DoAction.as: setInterval(time,1000); time() decrements _root.gametime when zhanting=false and both fighters sw=false",
+    "godot_capture_tick": 360,
+    "godot_fight_start_tick": 306,
+    "godot_relative_fight_tick": 54,
+    "godot_timer": 60,
+    "godot_timer_source": "lee_visual_capture.gd manual _advance_fight loop; no wall-clock await during replay",
+    "difference": "One displayed fight-tick index difference is observed, but timer59/60 causality is unresolved because Flash uses wall-clock setInterval while Godot probe uses manual fixed ticks."
+  },
+  "precondition_audit": "Both fighters now receive explicit energy=300 at the one-time fixture setup; the updated screenshot shows P2 energy=3 after Lee super cost/normal HUD conversion, matching Flash."
+}

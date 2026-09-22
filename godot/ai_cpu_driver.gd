@@ -169,6 +169,10 @@ func _controller_effect(name: String) -> void:
 		_external("receive", [name.trim_prefix("receive:")])
 	elif name == "updateDirect":
 		body.updateDirect()
+	elif name == "bdfyxg":
+		fighter.emit_source_guard_effect(1)
+	elif name == "bdfyxg2":
+		fighter.emit_source_guard_effect(2)
 	else:
 		_external(name, [])
 

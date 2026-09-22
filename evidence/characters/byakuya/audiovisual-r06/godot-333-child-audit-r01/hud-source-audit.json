@@ -1,0 +1,86 @@
+{
+  "scope": "source-first HUD/timer audit for bounded frame333 visual comparison",
+  "fixture": {
+    "p1": "白哉",
+    "p2": "一护",
+    "helpers": [
+      "魂",
+      "魂"
+    ],
+    "stage": "现世",
+    "source_frame": 333,
+    "godot_capture_tick": 286,
+    "godot_fight_start_tick": 276,
+    "godot_relative_fight_tick": 10
+  },
+  "timer": {
+    "source_script": "scripts/main.json DefineSprite_1813/frame_1/DoAction.as",
+    "source_logic": [
+      "root.gametime = root.maxtime",
+      "setInterval(time,1000)",
+      "time decrements gametime only when zhanting=false and both fighters alive",
+      "digits use shi=floor(tm/10), gs=tm-shi*10"
+    ],
+    "source_observation": {
+      "ready_display_tick": 437,
+      "visual_display_tick": 448,
+      "ready_to_visual_display_ticks": 11,
+      "wall_clock_ms_delta_observed": 371,
+      "flash_timer_digit": 60
+    },
+    "godot_observation": {
+      "countdown_tm": 59,
+      "digit_frames": {
+        "十": 6,
+        "个": 10
+      },
+      "countdown_start_call": "godot/main.gd _enter_current_fight -> _start_countdown before battle_intro.begin",
+      "fixed_runner_capture": "godot/tests/byakuya_visual_capture.gd"
+    },
+    "finding": "The source interval is 1000ms and the source frame333 capture is only 371ms after Ready, so source remains 60. Godot starts a real Timer before battle_intro.begin; the deterministic runner can spend over one wall-clock second before capture although only 10 fight ticks elapsed, producing 59. This is a lifecycle/clock anchor mismatch or probe scheduling artifact, not a digit sprite mapping error.",
+    "required_scope": "integration should compare countdown start/Ready anchor and use source-equivalent scheduling; do not subtract or force the displayed digit in a character probe."
+  },
+  "energy_meter": {
+    "source_script": "scripts/main.json DefineSprite_1774/frame_1/DoAction.as and DefineSprite_1782/frame_1/DoAction.as",
+    "source_logic": [
+      "qi = Math.round(root.game[\"p\"+nn].mc.ql)+1; qt.gotoAndStop(qi)",
+      "bs = Math.floor(root.game[\"p\"+nn].mc.ql/100)+1; bss.gotoAndStop(bs)",
+      "qitiao runs on setInterval(qitiao,300)"
+    ],
+    "source_fixture_ql": 300,
+    "source_expected_indices": {
+      "qt": 301,
+      "bss": 4
+    },
+    "godot_path": "godot/energy_bar.gd EnergyBar._draw",
+    "godot_observation": {
+      "energy": 300,
+      "bar_rect_px": [
+        50,
+        15,
+        112,
+        12
+      ],
+      "counter_rect_px": [
+        30,
+        6,
+        18,
+        29
+      ],
+      "colors": [
+        "#168fd0",
+        "#19d892",
+        "#df2533"
+      ],
+      "render_mode": "hand-drawn Control rectangles/text"
+    },
+    "visual_finding": "Flash bottom meter is a narrow authored yellow fill with a small source counter frame; Godot draws a wider 112px custom bar with blue/red/green palette and larger counter. This is a shared HUD representation difference, not Byakuya-specific.",
+    "required_scope": "integration must compile/use source HUD qt/bss timeline assets, placement, masks and authored colors/transforms; do not patch a Byakuya-specific color or width."
+  },
+  "source_files": {
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "godot/energy_bar.gd": "17328aa8c2b60d88c3bfdc5c959200fc396989e0c02f7c5af030039b9c323e94",
+    "godot/main.gd": "5503ca74be8dab425b1a5376d00e6ba6764b9afe11783dff480a92bdb2b3953a"
+  },
+  "acceptance": "333 visual remains bounded and not full parity until timer anchor and shared energy HUD are resolved."
+}

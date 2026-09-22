@@ -1,0 +1,14 @@
+{
+  "driver": "tools/probes/freeze_capture_native.py",
+  "fixture": "freeze-r18/819",
+  "target_reached": true,
+  "visual_clip_count": 430,
+  "before_state_count": 215,
+  "after_state_count": 215,
+  "state_set_equal": true,
+  "before_pixel_sha256": "b1d8bd10ccead047c41f15ec92c417c07f6f0a5fe793efbf420c17fb170ff19b",
+  "after_pixel_sha256": "d905b28ecd4a8a42bf9fdd571a640f9c8068c182676a18a62e80b671a0ba1f88",
+  "stable_500ms": false,
+  "acceptance": "rejected_unstable_500ms",
+  "reason": "The source freeze observer reports equal child path/frame sets, but the two customer-area screenshots differ; the driver must fail closed and archive this diagnostic."
+}

@@ -1,0 +1,73 @@
+{
+  "format": "byakuya-recursive-freeze-prep-r02",
+  "source_patch_reference": [
+    "/tmp/byakuya-freeze-r10/patches/main/frame_1/DoAction.as",
+    "/tmp/byakuya-freeze-r10/patches/main/frame_10/DoAction.as",
+    "/tmp/byakuya-freeze-r11/patches/main/frame_1/DoAction.as",
+    "/tmp/byakuya-freeze-r11/patches/main/frame_10/DoAction.as"
+  ],
+  "items": [
+    {
+      "id": "333-wall-r05",
+      "build": "/tmp/byakuya-freeze-333-wall-r04-build",
+      "run_id": "byakuya-freeze-333-wall-r05",
+      "target_source_frame": 333,
+      "patch_files": [
+        "patches/main/frame_1/DoAction.as",
+        "patches/main/frame_10/DoAction.as"
+      ],
+      "frame1_patch_sha256": "629ceda2f23ccf022acea2d0d3b7984e2d3d3b29b0218e735e5224d7546f7e54",
+      "frame10_patch_sha256": "2be97eb232ea56daafbdeb6488ec43a0c63b052873573e642ce73b3e04568c88",
+      "compiled_main_sha256": "0b2da72d7526c1efa5034c745f2694087959074976c17e5eb30707e4b8ec2973",
+      "status": "compiled_not_run",
+      "capture_status": "not_run_after_recursive_patch",
+      "method": "Copied proven r10/r11 aiVisualWalk recursion: records visual_clip before/after, calls child.stop(), sets root zhanting. No per-child restore is present; capture is expected to terminate after evidence.",
+      "limitation": "No capture result is claimed; desktop token was released before rerun."
+    },
+    {
+      "id": "576-r02",
+      "build": "/tmp/byakuya-freeze-prep-576-r01-build",
+      "run_id": "byakuya-freeze-576-r02",
+      "target_source_frame": 576,
+      "patch_files": [
+        "patches/main/frame_1/DoAction.as",
+        "patches/main/frame_10/DoAction.as"
+      ],
+      "frame1_patch_sha256": "deedbf88c73ab9ff13d8d301bb590e4883389ab9bdd1a3e670aa5cfdf60b209e",
+      "frame10_patch_sha256": "e5b7fd5f424710c8faacb44cd198288f845f0395525728ac391772fe2e09d17d",
+      "compiled_main_sha256": "c92b78761860d821dc5d760daf183642e86de55e9dbfd9dab5e78a4066d80b58",
+      "status": "compiled_not_run",
+      "capture_status": "not_run_after_recursive_patch",
+      "method": "Copied proven r10/r11 aiVisualWalk recursion: records visual_clip before/after, calls child.stop(), sets root zhanting. No per-child restore is present; capture is expected to terminate after evidence.",
+      "limitation": "No capture result is claimed; desktop token was released before rerun."
+    },
+    {
+      "id": "819-r02",
+      "build": "/tmp/byakuya-freeze-prep-819-r01-build",
+      "run_id": "byakuya-freeze-819-r02",
+      "target_source_frame": 819,
+      "patch_files": [
+        "patches/main/frame_1/DoAction.as",
+        "patches/main/frame_10/DoAction.as"
+      ],
+      "frame1_patch_sha256": "a8fcb01696f06101afa6149540afe1bf9b883df02def068c8dbb5007ad170edc",
+      "frame10_patch_sha256": "60d9a3817458231c6f3e498c8ed34fa37fe865295d0b4a447625044d5b9f1e78",
+      "compiled_main_sha256": "aafef60ef4ff69aecf928e3901014f9a7c6505fc38c36b4cabb08ca2e3430d24",
+      "status": "compiled_not_run",
+      "capture_status": "not_run_after_recursive_patch",
+      "method": "Copied proven r10/r11 aiVisualWalk recursion: records visual_clip before/after, calls child.stop(), sets root zhanting. No per-child restore is present; capture is expected to terminate after evidence.",
+      "limitation": "No capture result is claimed; desktop token was released before rerun."
+    }
+  ],
+  "capture_lock": "/tmp/bvn-native-flash-capture.lock",
+  "desktop_status": "released",
+  "acceptance": "pending fresh source capture; no SIGSTOP result is reused",
+  "method_boundary": {
+    "recursive_child_observer": true,
+    "child_stop": true,
+    "child_before_after_logs": "visual_clip root and root_after",
+    "explicit_restore": false,
+    "restore_semantics": "r10/r11 helper sets root zhanting=true and capture exits; it does not restore each child play state. Existing resumeGame() is general game code, not invoked by the visual probe. This is a capture-lifecycle limitation, not a production change.",
+    "next_window_requirement": "If the next capture must leave the player alive, add and audit a probe-only restore path; otherwise terminate after stable screenshots and retain child logs."
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "fixture": "lee625-kill-timer.fixture.json",
+  "timer": {
+    "wait_ms": 1000,
+    "one_shot": false,
+    "paused_during_manual_clock": true
+  },
+  "trace": [
+    {
+      "event": "register",
+      "wait_ms": 1000,
+      "one_shot": false,
+      "registered_tick_phase": "after_ko_frame_callback"
+    },
+    {
+      "event": "fire",
+      "physics_tick": 612,
+      "fixture_tick": 306,
+      "ko_frame_before": 1,
+      "session_before": "游戏场景",
+      "ko_active_before": true,
+      "ko_paused_before": false,
+      "p1_frame_before": 1260,
+      "p2_frame_before": 777,
+      "p1_sw_before": false,
+      "p2_sw_before": true
+    },
+    {
+      "event": "after",
+      "physics_tick": 612,
+      "ko_frame_after": 1,
+      "p1_frame_after": 1,
+      "p2_frame_after": 1,
+      "p1_sw_after": false,
+      "p2_sw_after": false,
+      "session_after": "游戏场景"
+    },
+    {
+      "event": "cancel",
+      "elapsed_ms": 0
+    }
+  ],
+  "comparison": {
+    "source_states": 802,
+    "native_states": 802,
+    "first_difference_tick": null,
+    "difference_count": 0,
+    "status": "matched"
+  },
+  "classification": "harness timer phase now source-aligned",
+  "accepted_as_parity": true
+}

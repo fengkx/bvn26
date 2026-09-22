@@ -1,0 +1,65 @@
+{
+  "created_at": "2026-09-21",
+  "status": "current-package-and-native-hud-capture",
+  "web_url": "http://127.0.0.1:8784/?qa=hud-current-3371c321",
+  "web_pck_sha256": "3371c321c38a14fda20574cd409e2ef66e02ed26585734e1f2a3bb10ae2f8572",
+  "web_scope": "current source export; page35 completed title→fighter/helper→map→battle for default roster (P1 一护, P2 鸣人; helpers 魂/我爱罗). Fresh inline screenshots from Chrome DevTools take_screenshot show battle HUD at countdown 57, pause menu at countdown 41 after Enter, and resumed HUD at countdown 26. Console records COMBAT_EVENT and M0_BOOT_OK; screenshot output was inline-only and could not be persisted to a file.",
+  "native_hud": "evidence/characters/byakuya/audiovisual-r06/godot-576-gui-r04/godot-600x400.png",
+  "native_hud_scope": "current-code fixed-tick frame-576 capture; source-backed layout check, not pixel parity",
+  "sha256": {
+    "godot/energy_bar.gd": "1df7fcd4c852cf6d4abfbd0b4ac2a85617596de2541b989269119507ed8c91b7",
+    "godot/main.tscn": "35cb8e48c210c9f2d41b598fb9683d8ef9c5e1275a9a60cc94b402006e586e38",
+    "godot/generated/main/energy/presentation.json": "e7dfc37e0961fe673b65ad967e7aaf7b60ed2b595e2e3bb7d14ef2cd8d9314d2",
+    "tools/importer/build_energy_presentation.py": "3ddf19449b0742d072df000f68ca86cd83152dd44d25b50ebcfb8fd05f42b4ff",
+    "evidence/characters/byakuya/audiovisual-r06/godot-576-gui-r04/godot-600x400.png": "630168a64548531aef8212544244da84a8b58aa2c71632dfc073afe85d18da85",
+    "evidence/characters/byakuya/audiovisual-r06/godot-576-gui-r04/godot-full.png": "e9b667167a291c8f0f22bf375274a1e53863bca532e1427a27388efb6d284bb4",
+    "dist/web/index.pck": "3371c321c38a14fda20574cd409e2ef66e02ed26585734e1f2a3bb10ae2f8572",
+    "dist/web/index.html": "aab0ceabd3143497ac2c83420f4435c85a9bf29c34d252167d6c6284415f9450",
+    "dist/web/index.js": "33c94cb3175f3333b82e2a3be5e8e86f77986f0aa2042b1631f6367a4e5bb6ba",
+    "dist/web/index.wasm": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
+  },
+  "battle_console": {
+    "page": "35",
+    "mode": "default production roster",
+    "fighters": [
+      "一护",
+      "鸣人"
+    ],
+    "helpers": [
+      "魂",
+      "我爱罗"
+    ],
+    "events": "M0_BOOT_OK plus COMBAT_EVENT intro, helper activation, hit_settlement and KO events",
+    "console_msg_range": "5-87",
+    "webgl_warnings": [
+      "bindBuffer: element array buffers can not be bound to a different target",
+      "bufferSubData: no buffer"
+    ]
+  },
+  "visual_observation": {
+    "page_id": 35,
+    "screenshot_calls": "Chrome DevTools take_screenshot, inline response",
+    "battle_fighters": [
+      "一护",
+      "鸣人"
+    ],
+    "helpers": [
+      "魂",
+      "我爱罗"
+    ],
+    "sequence": [
+      "map_confirm",
+      "battle_hud_countdown_57",
+      "enter_pause_countdown_41",
+      "enter_resume_countdown_26"
+    ],
+    "hud_observed": [
+      "left/right portraits",
+      "health bars",
+      "energy bars and numeric values",
+      "stage canvas"
+    ],
+    "pause_probe": "same page35 battle run; screenshot A immediately after Enter showed pause menu and countdown 50; screenshot B after 3000ms still showed pause menu and countdown 50; screenshot C immediately after Enter resume showed live HUD and countdown 37 with visible 5-hit rush",
+    "pause_semantics": "bounded visual timer-freeze observation; screenshot A/B both showed countdown 50. Resume screenshot C later showed countdown 37, but tool/page scheduling latency is not a measured immediate delta; no session.paused field probe, so source-level pause parity remains open."
+  }
+}

@@ -88,7 +88,17 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 	var start_frame := int(spawn.get("start_frame", _combat.get("start_frame", 2)))
 	play_source_frame(start_frame)
 	_nested_dispatch_frame = current_source_frame()
-	_apply_frame_events()
+	# A placed source clip's first frame script runs through the same FIFO as
+	# other source child frame actions.  The production path connects this
+	# signal to Main's post-observer queue, so applying it inline would create
+	# presentation children one observer phase too early.  Standalone helper
+	# probes keep the direct path because they have no source FIFO to flush.
+	_deferred_frame_generation = _activation_generation
+	_deferred_frame = start_frame
+	if source_child_frame_requested.get_connections().is_empty():
+		_apply_frame_events_at(start_frame, true)
+	else:
+		source_child_frame_requested.emit(_run_deferred_frame.bind(start_frame, _activation_generation))
 	last_event = "helper_activate_%s" % helper_id
 	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 

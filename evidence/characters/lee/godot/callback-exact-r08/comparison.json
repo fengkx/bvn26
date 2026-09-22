@@ -1,0 +1,756 @@
+{
+  "schema": "lee-callback-exact-r08",
+  "scope": "Same source build/run/input identities; current headless Godot exact frame-action callback comparison only. Fields: source_frame, entering, action, ql. Recovery slot is P2. 1098 clip_action remains separate and untested.",
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "command": "`/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot -s res://tests/lee_callback_exact_probe.gd -- --batch <absolute paths.json> <absolute out dir>`",
+  "batch_exitcode": 0,
+  "script_error": false,
+  "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "runtime_file_hashes": {
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+    "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+    "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+    "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+    "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+  },
+  "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+  "engine_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+  "engine_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+  "cases": [
+    {
+      "case_id": "ground-235-240-268",
+      "status": "exact_0diff",
+      "source_fixture_binding": {
+        "source_run_id": "lee-callback-ground-hold-r05",
+        "source_build": "/private/tmp/lee-callback-ground-hold-r05/build.json",
+        "source_build_sha256": "8114e0a463f1e8654dfa5b9eea4a5ea2d99011e4e360008b7e6e93f33b9fa5eb",
+        "source_output_main_sha256": "353ce5982fb01275b26138e1d1d11f691bfbf28e39e5b9e82df7f78da2534d96",
+        "source_instrumentation_sha256": "7d3829bad27ae9987e9bca4e2ccf90ca7b1c49214024abde54a33b566936b86d",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "source_raw_sha256": "1836b81aaefa41a8568d1a2a6f4ef820b0960a34195249ddf1a60ec106ca6714",
+        "source_move_case": {
+          "id": "lee-callback-ground-chain-source-conditioned-r05",
+          "fighter": "lee",
+          "slot": "p1",
+          "label": "砍1",
+          "scenario": "source_conditioned_hold_attack",
+          "frames": 300,
+          "setup": {
+            "p1": {
+              "x": 300,
+              "energy": 300
+            },
+            "p2": {
+              "x": 350,
+              "energy": 300
+            }
+          },
+          "inputs": [
+            {
+              "slot": "p1",
+              "keys": [
+                "attack"
+              ],
+              "start": 10,
+              "end": 260
+            }
+          ],
+          "target_frames": [
+            193,
+            197,
+            235,
+            240,
+            268
+          ],
+          "has_source_timeline": true,
+          "source_dispatch": [
+            "doAllAction",
+            "doStand"
+          ],
+          "status": "source_conditioned_fixture_not_captured",
+          "fighters": {
+            "p1": "lee",
+            "p2": "yihu"
+          },
+          "p1_helper": "我爱罗",
+          "p2_helper": "魂",
+          "source_callback_targets": [
+            {
+              "source_sprite_id": 518,
+              "source_frame": 172,
+              "source_path": "DefineSprite_518/frame_172/DoAction.as",
+              "action": "砍1",
+              "kind": "frame_action",
+              "slot": "p1"
+            },
+            {
+              "source_sprite_id": 518,
+              "source_frame": 193,
+              "source_path": "DefineSprite_518/frame_193/DoAction.as",
+              "action": "砍2",
+              "kind": "frame_action",
+              "slot": "p1"
+            },
+            {
+              "source_sprite_id": 518,
+              "source_frame": 197,
+              "source_path": "DefineSprite_518/frame_197/DoAction.as",
+              "action": "砍2",
+              "kind": "frame_action",
+              "slot": "p1"
+            },
+            {
+              "source_sprite_id": 518,
+              "source_frame": 235,
+              "source_path": "DefineSprite_518/frame_235/DoAction.as",
+              "action": "砍3",
+              "kind": "frame_action",
+              "slot": "p1"
+            },
+            {
+              "source_sprite_id": 518,
+              "source_frame": 240,
+              "source_path": "DefineSprite_518/frame_240/DoAction.as",
+              "action": "砍3",
+              "kind": "frame_action",
+              "slot": "p1"
+            },
+            {
+              "source_sprite_id": 518,
+              "source_frame": 268,
+              "source_path": "DefineSprite_518/frame_268/DoAction.as",
+              "action": "砍4",
+              "kind": "frame_action",
+              "slot": "p1"
+            },
+            {
+              "source_sprite_id": 518,
+              "source_frame": 448,
+              "source_path": "DefineSprite_518/frame_448/DoAction.as",
+              "action": "砍技1",
+              "kind": "frame_action",
+              "slot": "p1"
+            }
+          ],
+          "callback_group": "ground-chain",
+          "callback_purpose": "Source-conditioned reachability candidate: hold attack through frame-entry clip callbacks; no runtime or expected-state change.",
+          "preflight_status": "fight_input_preflight",
+          "callback_observer": "read-only source callback observer; no schedule/input changes",
+          "source_condition_evidence": [
+            {
+              "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_163/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+              "condition": "gameRunning() && nornalhit()",
+              "goto": "砍2",
+              "needed_for": [
+                193,
+                197
+              ]
+            },
+            {
+              "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+              "condition": "gameRunning() && nornalhit()",
+              "goto": "砍3",
+              "needed_for": [
+                235,
+                240
+              ]
+            },
+            {
+              "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+              "condition": "gameRunning() && nornalhit()",
+              "goto": "砍4",
+              "needed_for": [
+                268
+              ]
+            },
+            {
+              "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_172/DoAction.as",
+              "condition": "unconditional",
+              "effect": "gotoAndStop(\"站立\"); play();",
+              "trace": "Current short-edge trace reaches body frame 172 at fight ticks 25/50/75/100; no later chain frame."
+            }
+          ]
+        },
+        "source_config": {
+          "modo": 3,
+          "p1": "小李",
+          "p2": "一护",
+          "p2cpu": false,
+          "AI": 5,
+          "stage": "现世",
+          "p1sf": "我爱罗",
+          "p2sf": "魂"
+        },
+        "source_build_copy": "evidence/characters/lee/godot/callback-exact-r08/source-builds/ground-235-240-268/build.json",
+        "instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r08/source-builds/ground-235-240-268/instrumentation.diff"
+      },
+      "native_fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/ground-235-240-268.json",
+      "native_fixture_sha256": "202bc4f1c913adba6679b1b0d3152607fdd6ad472a002666ee3daccf6fd6dd6a",
+      "native_events": [
+        {
+          "action": 0.0,
+          "current_frame": 268,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 268,
+          "tick": 376
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 268,
+          "tick": 376
+        },
+        {
+          "action": 0.0,
+          "current_frame": 268,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 268,
+          "tick": 436
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 268,
+          "tick": 436
+        },
+        {
+          "action": 0.0,
+          "current_frame": 268,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 268,
+          "tick": 496
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 268,
+          "tick": 496
+        },
+        {
+          "action": 0.0,
+          "current_frame": 268,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 268,
+          "tick": 543
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 268,
+          "tick": 543
+        },
+        {
+          "action": 1.0,
+          "current_frame": 235,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 235,
+          "tick": 584
+        },
+        {
+          "action": 0.0,
+          "current_frame": 235,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 235,
+          "tick": 584
+        },
+        {
+          "action": 0.0,
+          "current_frame": 240,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 240,
+          "tick": 589
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 240,
+          "tick": 589
+        }
+      ],
+      "source_events": [
+        {
+          "source_frame": 268,
+          "entering": true,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 69,
+          "display_tick": 529,
+          "time_ms": 28201,
+          "raw": "p1,268,true,268,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 268,
+          "entering": false,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 69,
+          "display_tick": 529,
+          "time_ms": 28201,
+          "raw": "p1,268,false,1,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 268,
+          "entering": true,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 129,
+          "display_tick": 589,
+          "time_ms": 30199,
+          "raw": "p1,268,true,268,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 268,
+          "entering": false,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 129,
+          "display_tick": 589,
+          "time_ms": 30200,
+          "raw": "p1,268,false,1,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 268,
+          "entering": true,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 189,
+          "display_tick": 649,
+          "time_ms": 32203,
+          "raw": "p1,268,true,268,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 268,
+          "entering": false,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 189,
+          "display_tick": 649,
+          "time_ms": 32203,
+          "raw": "p1,268,false,1,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 268,
+          "entering": true,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 236,
+          "display_tick": 696,
+          "time_ms": 33773,
+          "raw": "p1,268,true,268,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 268,
+          "entering": false,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 236,
+          "display_tick": 696,
+          "time_ms": 33773,
+          "raw": "p1,268,false,1,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 235,
+          "entering": true,
+          "action": 1.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 277,
+          "display_tick": 737,
+          "time_ms": 35132,
+          "raw": "p1,235,true,235,1,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 235,
+          "entering": false,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 277,
+          "display_tick": 737,
+          "time_ms": 35132,
+          "raw": "p1,235,false,235,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 240,
+          "entering": true,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 282,
+          "display_tick": 742,
+          "time_ms": 35308,
+          "raw": "p1,240,true,240,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "source_frame": 240,
+          "entering": false,
+          "action": 0.0,
+          "ql": 300.0,
+          "slot": "p1",
+          "fight_tick": 282,
+          "display_tick": 742,
+          "time_ms": 35308,
+          "raw": "p1,240,false,1,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        }
+      ],
+      "fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": [],
+      "target_enter_counts": {
+        "235": 1,
+        "240": 1,
+        "268": 4
+      },
+      "separation": "body_frame_action_only; 1098 clip_action is not compared"
+    },
+    {
+      "case_id": "recovery-p2-1086-1087-1096-1098-1112",
+      "status": "exact_0diff",
+      "source_fixture_binding": {
+        "source_run_id": "lee-callback-observer-hp1-r02",
+        "source_build": "/Users/fengkx/me/code/bvn2_6/evidence/characters/lee/original/lee-callback-observer-hp1-r02/build.json",
+        "source_build_sha256": "99ab539a228ffb32af2b5bc1e5f89f4d9caf6569ab31dfa05d23d632c4b62952",
+        "source_output_main_sha256": "cc19f17cdee86df16e6993eb040e18c40eeb4da84fbaeb75415a85d078de3078",
+        "source_instrumentation_sha256": "32825ba5e14907b07aee8c2bbd66ac31f34cdaad9576c87188b5885853482bd8",
+        "source_raw": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "source_raw_sha256": "9b47db232b98208909d856676833bb0789ca4c1f3e9b6849955a762e1b04ec36",
+        "source_move_case": {
+          "id": "lee-recovery-p2-hp1-r01",
+          "fighter": "lee",
+          "slot": "p2",
+          "label": "受击恢复",
+          "scenario": "recovery_p2_hp1",
+          "frames": 700,
+          "setup": {
+            "p1": {
+              "x": 300,
+              "energy": 300
+            },
+            "p2": {
+              "x": 350,
+              "energy": 300,
+              "health": 1,
+              "wudi": false
+            }
+          },
+          "inputs": [
+            {
+              "slot": "p1",
+              "keys": [
+                "attack"
+              ],
+              "start": 10,
+              "end": 13
+            }
+          ],
+          "target_frames": [
+            1087,
+            1133,
+            1143
+          ],
+          "has_source_timeline": true,
+          "source_dispatch": [
+            "doAllAction",
+            "doStand"
+          ],
+          "status": "planned_real_input",
+          "fighters": {
+            "p1": "yihu",
+            "p2": "lee"
+          },
+          "p1_helper": "我爱罗",
+          "p2_helper": "魂",
+          "source_state_preconditions": {
+            "p2": {
+              "health": 1,
+              "wudi": false
+            }
+          }
+        },
+        "source_config": {
+          "modo": 3,
+          "p1": "一护",
+          "p2": "小李",
+          "p2cpu": false,
+          "AI": 5,
+          "stage": "现世",
+          "p1sf": "我爱罗",
+          "p2sf": "魂"
+        },
+        "source_build_copy": "evidence/characters/lee/godot/callback-exact-r08/source-builds/recovery-p2-1086-1087-1096-1098-1112/build.json",
+        "instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r08/source-builds/recovery-p2-1086-1087-1096-1098-1112/instrumentation.diff"
+      },
+      "native_fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/recovery-p2-1086-1087-1096-1098-1112.json",
+      "native_fixture_sha256": "cb0bf05d501ab08e89a86be76feb992c125bbcd803f203a74640228959f6d8eb",
+      "native_events": [
+        {
+          "action": -1.0,
+          "current_frame": 1086,
+          "entering": true,
+          "ql": 304.0,
+          "slot": "p2",
+          "source_frame": 1086,
+          "tick": 322
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1086,
+          "entering": false,
+          "ql": 304.0,
+          "slot": "p2",
+          "source_frame": 1086,
+          "tick": 322
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1087,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1087,
+          "tick": 323
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1087,
+          "entering": false,
+          "ql": 304.0,
+          "slot": "p2",
+          "source_frame": 1087,
+          "tick": 323
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1096,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1096,
+          "tick": 332
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1096,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1096,
+          "tick": 332
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1098,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1098,
+          "tick": 367
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1098,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1098,
+          "tick": 367
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1112,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1112,
+          "tick": 381
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1112,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1112,
+          "tick": 381
+        }
+      ],
+      "source_events": [
+        {
+          "source_frame": 1086,
+          "entering": true,
+          "action": -1.0,
+          "ql": 304.0,
+          "slot": "p2",
+          "fight_tick": 16,
+          "display_tick": 483,
+          "time_ms": 27856,
+          "raw": "p2,1086,true,1086,-1,f:-1:5:81788928:0,f:1:8:79691776:0,true,true,true,1,false,0,false"
+        },
+        {
+          "source_frame": 1086,
+          "entering": false,
+          "action": -1.0,
+          "ql": 304.0,
+          "slot": "p2",
+          "fight_tick": 16,
+          "display_tick": 483,
+          "time_ms": 27857,
+          "raw": "p2,1086,false,1086,-1,f:-1:5:81788928:0,f:1:8:79691776:0,true,true,true,1,false,0,false"
+        },
+        {
+          "source_frame": 1087,
+          "entering": true,
+          "action": -1.0,
+          "ql": 300.0,
+          "slot": "p2",
+          "fight_tick": 16,
+          "display_tick": 483,
+          "time_ms": 27886,
+          "raw": "p2,1087,true,1087,-1,f:1:0:0:0,f:1:8:78643200:0,true,true,true,1,false,0,false"
+        },
+        {
+          "source_frame": 1087,
+          "entering": false,
+          "action": -1.0,
+          "ql": 304.0,
+          "slot": "p2",
+          "fight_tick": 16,
+          "display_tick": 483,
+          "time_ms": 27886,
+          "raw": "p2,1087,false,1087,-1,f:-1:5:83886080:0,f:1:8:79691776:0,true,true,true,2,false,0,false"
+        },
+        {
+          "source_frame": 1096,
+          "entering": true,
+          "action": -1.0,
+          "ql": 300.0,
+          "slot": "p2",
+          "fight_tick": 25,
+          "display_tick": 492,
+          "time_ms": 28186,
+          "raw": "p2,1096,true,1096,-1,f:1:0:0:0,f:1:8:78643200:0,true,true,true,2,true,0,false"
+        },
+        {
+          "source_frame": 1096,
+          "entering": false,
+          "action": -1.0,
+          "ql": 300.0,
+          "slot": "p2",
+          "fight_tick": 25,
+          "display_tick": 492,
+          "time_ms": 28186,
+          "raw": "p2,1096,false,1096,-1,f:1:0:0:0,f:1:8:78643200:0,true,true,true,2,true,0,false"
+        },
+        {
+          "source_frame": 1098,
+          "entering": true,
+          "action": -1.0,
+          "ql": 300.0,
+          "slot": "p2",
+          "fight_tick": 61,
+          "display_tick": 528,
+          "time_ms": 29357,
+          "raw": "p2,1098,true,1098,-1,f:1:0:0:0,f:1:8:78643200:0,true,true,true,2,false,16,false"
+        },
+        {
+          "source_frame": 1098,
+          "entering": false,
+          "action": -1.0,
+          "ql": 300.0,
+          "slot": "p2",
+          "fight_tick": 61,
+          "display_tick": 528,
+          "time_ms": 29358,
+          "raw": "p2,1098,false,1098,-1,f:1:0:0:0,f:1:8:78643200:0,true,true,true,2,false,16,false"
+        },
+        {
+          "source_frame": 1112,
+          "entering": true,
+          "action": -1.0,
+          "ql": 300.0,
+          "slot": "p2",
+          "fight_tick": 74,
+          "display_tick": 541,
+          "time_ms": 29822,
+          "raw": "p2,1112,true,1112,-1,f:1:0:0:0,f:1:8:78643200:0,true,true,true,2,false,16,false"
+        },
+        {
+          "source_frame": 1112,
+          "entering": false,
+          "action": -1.0,
+          "ql": 300.0,
+          "slot": "p2",
+          "fight_tick": 74,
+          "display_tick": 541,
+          "time_ms": 29822,
+          "raw": "p2,1112,false,1112,-1,f:1:0:0:0,f:1:8:78643200:0,true,true,true,2,false,16,false"
+        }
+      ],
+      "fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": [],
+      "target_enter_counts": {
+        "1086": 1,
+        "1087": 1,
+        "1096": 1,
+        "1098": 1,
+        "1112": 1
+      },
+      "separation": "body_frame_action_only; 1098 clip_action is not compared"
+    }
+  ],
+  "counts": {
+    "cases": 2,
+    "exact_0diff_cases": 2,
+    "source_events": 22,
+    "native_events": 22,
+    "differences": 0
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "status": "superseded_by_timer_phase_aligned_replay",
+  "original_compare": {
+    "path": "compare.json",
+    "status": "different",
+    "immutable": true,
+    "reason": "The original runner observed the source nextfight timeout after the observation phase."
+  },
+  "replacement": {
+    "path": "../../../byakuya-lee/shared-acceptance/lee625-kill-timer.compare.json",
+    "status": "matched",
+    "acceptance_status": "validated",
+    "source_states": 802,
+    "native_states": 802,
+    "difference_count": 0,
+    "timer_trace": "../../../byakuya-lee/shared-acceptance/lee625-kill-timer.trace.json"
+  },
+  "scope": "The replacement validates the opt-in source-timer runner phase for this fixture; it does not rewrite the original capture or claim broader KO parity."
+}

@@ -1,0 +1,537 @@
+{
+  "format": "lee-callback-observer-dispatch-r01",
+  "status": "observed_source_dispatch_godot_registry_mapping_pending",
+  "method": "Source observer only logs the existing enterFrame callback body; it does not call or reorder the callback. Each case is bound to its configured Lee slot. State comparison is fail-closed when frames or preconditions differ.",
+  "cases": {
+    "recovery": {
+      "fixture": "lee-recovery-p2-byakuya-super-tap-r03",
+      "lee_slot": "p2",
+      "raw": "evidence/characters/lee/original/lee-callback-observer-recovery-r01/events.jsonl/events.jsonl",
+      "raw_sha256": "a2130f1bc6ab82ae04e4fe17ab5b29143e18bb0c6193a2bc7d04de37383d9cdc",
+      "source_states": 1956,
+      "native": "evidence/characters/lee/godot/recovery-p2-r03/lee-recovery-p2-byakuya-tap-r03.json",
+      "native_sha256": "31d821f7f1e190dafb3b1e5a9c94148d3085da5d09e2f4a72d62db5ebd248ecf",
+      "native_states": 1402,
+      "strict_14_fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "status": "invalid_provenance_incomplete_or_initial_mismatch",
+      "first_difference": {
+        "index": 0,
+        "tick": 182,
+        "slot": "p1",
+        "fields": {
+          "tick": {
+            "source": 182,
+            "native": 0
+          },
+          "frame": {
+            "source": 6.0,
+            "native": 1
+          },
+          "x": {
+            "source": 374.1,
+            "native": 300.0
+          },
+          "ql": {
+            "source": 0.0,
+            "native": 300.0
+          },
+          "paused": {
+            "source": true,
+            "native": false
+          }
+        }
+      },
+      "callback_paths": {
+        "DefineSprite_518/frame_1/PlaceObject2_18_31": {
+          "count": 1051,
+          "first": {
+            "seq": 21,
+            "display_tick": 11934,
+            "fight_tick": 3,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "18_31"
+          },
+          "last": {
+            "seq": 38053,
+            "display_tick": 50428,
+            "fight_tick": 1158,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "18_31"
+          },
+          "locals": {
+            "1": 1051
+          }
+        },
+        "DefineSprite_518/frame_1/PlaceObject2_5_29": {
+          "count": 1051,
+          "first": {
+            "seq": 22,
+            "display_tick": 11934,
+            "fight_tick": 3,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "5_29"
+          },
+          "last": {
+            "seq": 38070,
+            "display_tick": 50431,
+            "fight_tick": 1158,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "5_29"
+          },
+          "locals": {
+            "1": 1051
+          }
+        },
+        "DefineSprite_518/frame_1088/PlaceObject2_18_29": {
+          "count": 29,
+          "first": {
+            "seq": 8162,
+            "display_tick": 28057,
+            "fight_tick": 487,
+            "local_frame": 1,
+            "source_frame": 1088,
+            "placement_depth": "18_29"
+          },
+          "last": {
+            "seq": 8556,
+            "display_tick": 28989,
+            "fight_tick": 515,
+            "local_frame": 1,
+            "source_frame": 1088,
+            "placement_depth": "18_29"
+          },
+          "locals": {
+            "1": 29
+          }
+        },
+        "DefineSprite_518/frame_1098/PlaceObject2_18_29": {
+          "count": 1,
+          "first": {
+            "seq": 8572,
+            "display_tick": 29024,
+            "fight_tick": 516,
+            "local_frame": 1,
+            "source_frame": 1098,
+            "placement_depth": "18_29"
+          },
+          "last": {
+            "seq": 8572,
+            "display_tick": 29024,
+            "fight_tick": 516,
+            "local_frame": 1,
+            "source_frame": 1098,
+            "placement_depth": "18_29"
+          },
+          "locals": {
+            "1": 1
+          }
+        },
+        "DefineSprite_518/frame_1133/PlaceObject2_18_30": {
+          "count": 4,
+          "first": {
+            "seq": 8587,
+            "display_tick": 29057,
+            "fight_tick": 517,
+            "local_frame": 1,
+            "source_frame": 1133,
+            "placement_depth": "18_30"
+          },
+          "last": {
+            "seq": 8631,
+            "display_tick": 29156,
+            "fight_tick": 520,
+            "local_frame": 1,
+            "source_frame": 1133,
+            "placement_depth": "18_30"
+          },
+          "locals": {
+            "1": 4
+          }
+        }
+      }
+    },
+    "kill": {
+      "fixture": "lee-574-bisha-625-kill-negative",
+      "lee_slot": "p1",
+      "raw": "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+      "raw_sha256": "7559e64cb97eb103b5ad2593b1cdfa4350acd12607417ee2d35683a72ff09acc",
+      "source_states": 1992,
+      "native": "evidence/characters/lee/godot/lee-574-bisha-625-kill-negative-r02-timer/timer-rows.json",
+      "native_sha256": "000b213f8614e3827795b7bc3d83f112913c09a31a41c5f4bddbc785f87dde3c",
+      "native_states": 802,
+      "strict_14_fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "status": "invalid_provenance_incomplete_or_initial_mismatch",
+      "first_difference": {
+        "index": 0,
+        "tick": 182,
+        "slot": "p1",
+        "fields": {
+          "tick": {
+            "source": 182,
+            "native": 0
+          },
+          "frame": {
+            "source": 6.0,
+            "native": 1
+          },
+          "x": {
+            "source": 374.1,
+            "native": 300.0
+          },
+          "ql": {
+            "source": 0.0,
+            "native": 101.0
+          },
+          "paused": {
+            "source": true,
+            "native": false
+          }
+        }
+      },
+      "callback_paths": {
+        "DefineSprite_518/frame_1/PlaceObject2_18_31": {
+          "count": 978,
+          "first": {
+            "seq": 16,
+            "display_tick": 11666,
+            "fight_tick": 2,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "18_31"
+          },
+          "last": {
+            "seq": 37175,
+            "display_tick": 50758,
+            "fight_tick": 1176,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "18_31"
+          },
+          "locals": {
+            "1": 978
+          }
+        },
+        "DefineSprite_518/frame_1/PlaceObject2_5_29": {
+          "count": 977,
+          "first": {
+            "seq": 17,
+            "display_tick": 11666,
+            "fight_tick": 2,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "5_29"
+          },
+          "last": {
+            "seq": 37187,
+            "display_tick": 50760,
+            "fight_tick": 1176,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "5_29"
+          },
+          "locals": {
+            "1": 977
+          }
+        },
+        "DefineSprite_518/frame_366/PlaceObject2_5_33": {
+          "count": 2,
+          "first": {
+            "seq": 8074,
+            "display_tick": 27151,
+            "fight_tick": 468,
+            "local_frame": 1,
+            "source_frame": 366,
+            "placement_depth": "5_33"
+          },
+          "last": {
+            "seq": 8110,
+            "display_tick": 27188,
+            "fight_tick": 469,
+            "local_frame": 1,
+            "source_frame": 366,
+            "placement_depth": "5_33"
+          },
+          "locals": {
+            "1": 2
+          }
+        },
+        "DefineSprite_518/frame_605/PlaceObject2_5_31": {
+          "count": 50,
+          "first": {
+            "seq": 8700,
+            "display_tick": 28185,
+            "fight_tick": 499,
+            "local_frame": 1,
+            "source_frame": 605,
+            "placement_depth": "5_31"
+          },
+          "last": {
+            "seq": 9611,
+            "display_tick": 29823,
+            "fight_tick": 548,
+            "local_frame": 1,
+            "source_frame": 605,
+            "placement_depth": "5_31"
+          },
+          "locals": {
+            "1": 50
+          }
+        },
+        "DefineSprite_518/frame_653/PlaceObject2_18_28": {
+          "count": 15,
+          "first": {
+            "seq": 9640,
+            "display_tick": 29888,
+            "fight_tick": 550,
+            "local_frame": 1,
+            "source_frame": 653,
+            "placement_depth": "18_28"
+          },
+          "last": {
+            "seq": 9898,
+            "display_tick": 30421,
+            "fight_tick": 566,
+            "local_frame": 1,
+            "source_frame": 653,
+            "placement_depth": "18_28"
+          },
+          "locals": {
+            "1": 15
+          }
+        },
+        "DefineSprite_518/frame_681/PlaceObject2_18_29": {
+          "count": 3,
+          "first": {
+            "seq": 10236,
+            "display_tick": 31188,
+            "fight_tick": 589,
+            "local_frame": 1,
+            "source_frame": 681,
+            "placement_depth": "18_29"
+          },
+          "last": {
+            "seq": 10266,
+            "display_tick": 31251,
+            "fight_tick": 591,
+            "local_frame": 1,
+            "source_frame": 681,
+            "placement_depth": "18_29"
+          },
+          "locals": {
+            "1": 3
+          }
+        },
+        "DefineSprite_518/frame_688/PlaceObject2_5_32": {
+          "count": 7,
+          "first": {
+            "seq": 10337,
+            "display_tick": 31421,
+            "fight_tick": 596,
+            "local_frame": 1,
+            "source_frame": 688,
+            "placement_depth": "5_32"
+          },
+          "last": {
+            "seq": 10433,
+            "display_tick": 31622,
+            "fight_tick": 602,
+            "local_frame": 1,
+            "source_frame": 688,
+            "placement_depth": "5_32"
+          },
+          "locals": {
+            "1": 7
+          }
+        }
+      }
+    },
+    "hp1": {
+      "fixture": "lee-recovery-p2-hp1-r01",
+      "lee_slot": "p2",
+      "raw": "evidence/characters/lee/original/lee-callback-observer-hp1-r01/events.jsonl/events.jsonl",
+      "raw_sha256": "f5723df6f20f717379850e72d74103746b4b5fa51fb509da2e1506d990746fbd",
+      "source_states": 1984,
+      "native": "evidence/characters/lee/godot/recovery-p2-r01/lee-recovery-p2-hp1-r01.json",
+      "native_sha256": "14ad31f8801a5777731b641ebb387b457299ab8dfc99f0d38b25b5227fab9e28",
+      "native_states": 1402,
+      "strict_14_fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "status": "invalid_provenance_incomplete_or_initial_mismatch",
+      "first_difference": {
+        "index": 0,
+        "tick": 182,
+        "slot": "p1",
+        "fields": {
+          "tick": {
+            "source": 182,
+            "native": 0
+          },
+          "frame": {
+            "source": 6.0,
+            "native": 1
+          },
+          "x": {
+            "source": 374.1,
+            "native": 300.0
+          },
+          "ql": {
+            "source": 0.0,
+            "native": 300.0
+          },
+          "paused": {
+            "source": true,
+            "native": false
+          }
+        }
+      },
+      "callback_paths": {
+        "DefineSprite_518/frame_1/PlaceObject2_18_31": {
+          "count": 1093,
+          "first": {
+            "seq": 25,
+            "display_tick": 11786,
+            "fight_tick": 3,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "18_31"
+          },
+          "last": {
+            "seq": 45537,
+            "display_tick": 51020,
+            "fight_tick": 1172,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "18_31"
+          },
+          "locals": {
+            "1": 1093
+          }
+        },
+        "DefineSprite_518/frame_1/PlaceObject2_5_29": {
+          "count": 1093,
+          "first": {
+            "seq": 26,
+            "display_tick": 11786,
+            "fight_tick": 3,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "5_29"
+          },
+          "last": {
+            "seq": 45554,
+            "display_tick": 51024,
+            "fight_tick": 1172,
+            "local_frame": 1,
+            "source_frame": 1,
+            "placement_depth": "5_29"
+          },
+          "locals": {
+            "1": 1093
+          }
+        },
+        "DefineSprite_518/frame_1075/PlaceObject2_18_30": {
+          "count": 12,
+          "first": {
+            "seq": 8189,
+            "display_tick": 27483,
+            "fight_tick": 469,
+            "local_frame": 1,
+            "source_frame": 1075,
+            "placement_depth": "18_30"
+          },
+          "last": {
+            "seq": 8515,
+            "display_tick": 27856,
+            "fight_tick": 480,
+            "local_frame": 1,
+            "source_frame": 1075,
+            "placement_depth": "18_30"
+          },
+          "locals": {
+            "1": 12
+          }
+        },
+        "DefineSprite_518/frame_1076/PlaceObject2_5_28": {
+          "count": 12,
+          "first": {
+            "seq": 8207,
+            "display_tick": 27518,
+            "fight_tick": 470,
+            "local_frame": 1,
+            "source_frame": 1076,
+            "placement_depth": "5_28"
+          },
+          "last": {
+            "seq": 8549,
+            "display_tick": 27888,
+            "fight_tick": 481,
+            "local_frame": 1,
+            "source_frame": 1076,
+            "placement_depth": "5_28"
+          },
+          "locals": {
+            "1": 12
+          }
+        }
+      }
+    }
+  },
+  "godot_registry_evidence": {
+    "source": "godot/generated/fighters/lee/player_controller/body.json",
+    "status": "compiled_metadata_only",
+    "explicit_hurt_hooks": [
+      "DefineSprite_518/frame_1075/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+    ],
+    "runtime_callback_event_log": "absent_in_existing_native_outputs",
+    "conclusion": "Observed source placement/local-frame callbacks are not promoted to Godot callback parity without explicit registry dispatch evidence."
+  }
+}

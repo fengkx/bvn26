@@ -1,0 +1,39 @@
+{
+  "format": "lee-625-branch-matrix-v1",
+  "source_script": "scripts/fighter/lee.json",
+  "source_timeline": "data/slices/lee-base.timeline.json",
+  "branches": [
+    {
+      "case": "lee-574-bisha-625-repeat-live-r02",
+      "condition": "p2 hp>0 and action=-1",
+      "source_observation": "p1 624->635; frame635 is 必杀1 after frame625 DoAction gotoAndStop/play",
+      "godot_compare": "evidence/characters/byakuya-lee/shared-acceptance/lee625-kill-timer.compare.json (802/802)",
+      "status": "accepted",
+      "fixture_drive_source_timers": true,
+      "timer_semantics": "The fixture drives source timer events; compare preserves source timer progression and does not synthesize a wall-clock timer."
+    },
+    {
+      "case": "lee-574-bisha-guard-r01",
+      "condition": "p2 action=2, guarding=true",
+      "source_observation": "p1 frames625..633; no frame635; p2 frame715 action2",
+      "godot_compare": "existing focused guard compare matched",
+      "status": "accepted_source_negative"
+    },
+    {
+      "case": "lee-574-bisha-625-kill-negative-r01",
+      "condition": "p2 initial hp=1",
+      "source_observation": "p1 frames625..633 then frame1; KO/round lifecycle follows",
+      "godot_compare": "evidence/characters/byakuya-lee/shared-acceptance/lee625-kill-timer.compare.json (shared lifecycle evidence; hp1 branch remains bounded)",
+      "status": "pending_lifecycle",
+      "fixture_drive_source_timers": true
+    },
+    {
+      "case": "lee-574-bisha-625-dead-negative-r01",
+      "condition": "p2 initial hp=0",
+      "source_observation": "precondition hp0 then later hp1000; death/restart/init overwrite not yet distinguished",
+      "godot_compare": "invalid for parity until lifecycle semantics are aligned",
+      "status": "pending_lifecycle"
+    }
+  ],
+  "rule": "DoAction at source frame625 checks opponent hp>0 and action==-1, then gotoAndStop 必杀1 and play; frame625 need not appear in sampled state."
+}

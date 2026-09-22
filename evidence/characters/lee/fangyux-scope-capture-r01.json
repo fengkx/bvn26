@@ -1,0 +1,48 @@
+{
+  "format": "lee-fangyux-scope-capture-r01",
+  "results": [
+    {
+      "run_id": "lee-fangyux-scope-r02",
+      "capture": "/private/tmp/lee-fangyux-scope-build-r02/capture-r02.jsonl",
+      "capture_sha256": "7beeec8d7ffbbfb2f1611932ce0f46ad8ac341660d7c7b85e9c2de79fd7f9fcb",
+      "events_lines": 5985,
+      "body_call_scope_events": [],
+      "status": "not_reached"
+    },
+    {
+      "run_id": "lee-fangyux-scope-r07",
+      "capture": "/private/tmp/lee-fangyux-scope-build-r07/capture-r07.jsonl",
+      "capture_sha256": "590a0096c51531d81b784d985f3474abd2837a2823d3c9c938a8d73223e4692f",
+      "events_lines": 18424,
+      "body_call_scope_events": [
+        "AIREF|lee-fangyux-scope-r07|3552|27372|468|15|body_call_scope|DefineSprite_518/frame_1061/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,undefined,function",
+        "AIREF|lee-fangyux-scope-r07|3564|27405|469|16|body_call_scope|DefineSprite_518/frame_1061/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,undefined,function",
+        "AIREF|lee-fangyux-scope-r07|3576|27440|470|17|body_call_scope|DefineSprite_518/frame_1061/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,undefined,function",
+        "AIREF|lee-fangyux-scope-r07|3588|27471|471|18|body_call_scope|DefineSprite_518/frame_1061/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as,undefined,function"
+      ],
+      "status": "observed"
+    }
+  ],
+  "r07_verification": {
+    "loaded_instrumented_lee_swf_sha256": "b49de5b50b461c47b31d2d83ab195b981958de2899b229f9b8e57da54e9c6e9b",
+    "instrumentation_diff": "/private/tmp/lee-fangyux-scope-build-r07/instrumentation.diff",
+    "instrumentation_sha256": "2b5692a2be65e251d58dabdbf0355b9f9b1f9b01ad7337b4d6610a46ec688762",
+    "callback_path": "DefineSprite_518/frame_1061/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+    "source_trace_frame1061": "evidence/characters/lee/original/lee-1050-defence-trade-continuous-r01/events.jsonl/events.jsonl:3544",
+    "observed_events": "4 body_call_scope events at sequence 3552,3564,3576,3588; fight_ticks 15..18; source frame 1061 retained through callback",
+    "lookup_result": "typeof(fangyux)=undefined; typeof(_parent.fangyux)=function",
+    "observer_noninterference": {
+      "comparison_native": "evidence/characters/lee/original/lee-1050-defence-trade-continuous-r01/events.jsonl/events.jsonl",
+      "comparison_scope": "normalized (fight_tick, kind, value), excluding only body_call_scope; ticks 10..19",
+      "r07_events": 136,
+      "native_events": 136,
+      "equal": true,
+      "interpretation": "The observer build has identical input/state/helper/key event values to the accepted native trace over the callback window; inserted lookup logging did not alter the observed trajectory.",
+      "r07_raw_sha256": "590a0096c51531d81b784d985f3474abd2837a2823d3c9c938a8d73223e4692f",
+      "native_raw_sha256": "3b0df942bffeb3b904c7c734eea683910bd8ffff0c859051b39c3bf75c0d5407"
+    },
+    "fixture_input_encoding": "The dynamic fixture intentionally serializes both slot keys into the global AS2 aiHeld map: p1 down=s and p2 attack=N1. The accepted native trace has the identical input_next_display values (N1=true and down=true at fight_ticks 10..12), so this is not a scope-build-only mismatch.",
+    "strict_matrix_impact": "The same tools/probes/move_cases.py encode_case path is used by the strict matrix. P1/P2 keys are disjoint in KEYS; no evidence of a matrix-wide input mismatch was found."
+  },
+  "conclusion": "r07 is a valid positive original-player scope observation. The patched fighter SWF was loaded and the exact child callback fired on the first retained frame1061 callback and the next three ticks; AVM lookup resolved unqualified fangyux as undefined while _parent.fangyux was function. This supports the current generated no-op semantics and does not authorize a compiler/runtime change. r02 remains not_reached. The input tape is the same global-key encoding used by the accepted native trace and strict matrix; the scope result is valid, while movement parity remains a separate runtime acceptance question."
+}

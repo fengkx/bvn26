@@ -1,0 +1,44 @@
+{
+  "format": "lee-recovery-p2-audio-r01",
+  "fixture": "lee-recovery-p2-hp1-r01",
+  "source_sha256": "bed1c255ea54801b5c97100b7c9ef1209a5844e8ece217cd7940c8c34e93571c",
+  "native_sha256": "14ad31f8801a5777731b641ebb387b457299ab8dfc99f0d38b25b5227fab9e28",
+  "rows": [
+    {
+      "side": "source",
+      "frame": 1087,
+      "display_tick": 504,
+      "fight_tick": 17,
+      "sequence": 3980,
+      "value": "p2,1087,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,-1,f:-1:5:83886080:0,f:1:8:79691776:0,true,true,true,2,false,0,false"
+    },
+    {
+      "side": "godot",
+      "frame": 1087,
+      "tick": 17,
+      "action": -1.0,
+      "hp": -40.0,
+      "x": 350.0
+    }
+  ],
+  "result": {
+    "source_reached": [
+      1087
+    ],
+    "source_not_reached": [
+      1133,
+      1143
+    ],
+    "godot_reached": [
+      1087
+    ],
+    "godot_not_reached": [
+      1133,
+      1143
+    ]
+  },
+  "limitations": [
+    "This is KO/recovery state reachability; no original Flash StartSound callback hook.",
+    "The 1133/1143 transition is not reached by this exact P2 hp=1 attack input."
+  ]
+}

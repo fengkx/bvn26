@@ -1,0 +1,61 @@
+{
+  "run_id": "boot-ready-r15-20260921",
+  "evidence_boundary": "source/native UI flow reached through Ready; role/helper labels are screenshot/source-default observations because the current probe emits fixed labels at selection/battle_entry rather than interpolating its value expressions",
+  "mode": {
+    "value": 1,
+    "label": "Normal / 普通单人模式",
+    "evidence": "scripts/main.json frame_7/DoAction.as assigns modo=1; r10/r15 title/menu source path"
+  },
+  "selection": {
+    "p1": "黑崎一护",
+    "p2": "CPU/default path",
+    "evidence": "selection.png bottom status and highlighted Player slot; raw trace only emits fixed selection label"
+  },
+  "helper": {
+    "p1": "魂",
+    "evidence": "helper-selection.png bottom status; raw trace has no helper field"
+  },
+  "map": {
+    "value": "not separately selected",
+    "reason": "source mode=1 nextStep2 calls startgame() directly after helper selection; no map UI event in raw trace"
+  },
+  "ready": {
+    "ready_begin": {
+      "seq": 348,
+      "timer_ms": 393927
+    },
+    "game_running": [
+      {
+        "seq": 477,
+        "timer_ms": 398161
+      },
+      {
+        "seq": 621,
+        "timer_ms": 402928
+      }
+    ],
+    "done": {
+      "seq": 622,
+      "timer_ms": 402928,
+      "value": "ready_horizon"
+    },
+    "note": "ready observer reports begin/running/horizon, not a numeric source root frame"
+  },
+  "event_trace": [
+    "root_frame_1",
+    "root_frame_10",
+    "selection",
+    "battle_entry",
+    "intro_load",
+    "intro_poll",
+    "ready_begin",
+    "game_running",
+    "done/ready_horizon"
+  ],
+  "screenshots_sha256": {
+    "selection.png": "e675ee0dea4593632ea8ed2968a488695229952d8e56257b522e4db541fdaf49",
+    "helper-selection.png": "1a5fe2eb2a08d7bfb67602e6b8243f3c8b98bfff6b967358d49766afddd13caa",
+    "intro-or-battle.png": "ab97ecace1369e3b1a5a2cf8491464d28717fe15bf03be80f4a44532f7f117ad"
+  },
+  "parity_boundary": "No claim of full native/Godot boot parity; no direct role/map raw field comparison because probe schema omitted dynamic values."
+}

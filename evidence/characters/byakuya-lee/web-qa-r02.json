@@ -1,0 +1,31 @@
+{
+  "status": "partial_ui_flow",
+  "scope": "real_title_selection_intro_battle",
+  "page": "http://127.0.0.1:8769/?qa=379950702c326eec77ea4168c64a1d5741d4b96790099e627e83ae76f062552f",
+  "pck_sha256": "379950702c326eec77ea4168c64a1d5741d4b96790099e627e83ae76f062552f",
+  "runtime_sha256": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "selection": {
+    "p1": "白哉",
+    "p2": "小李",
+    "map": "现世",
+    "source_paths": {
+      "p1": "一护[5,7] -> 露其雅[3,7] -> 恋次[2,7] -> 日番谷[0,7] -> 白哉[-1,7]",
+      "p2": "鸣人[7,7] -> 樱[9,7] -> 佐助[11,7] -> 卡卡西[13,7] -> 小李[15,7]"
+    }
+  },
+  "observed_console": [
+    {"event": "action_站立", "fighter": "白哉", "frame": 1},
+    {"event": "action_站立", "fighter": "小李", "frame": 1},
+    {"event": "action_开场", "fighter": "白哉", "frame": 958},
+    {"event": "action_开场", "fighter": "小李", "frame": 1158},
+    {"event": "helper_activate_我爱罗", "frame": 2},
+    {"event": "summon_天天", "fighter": "小李", "frame": 992}
+  ],
+  "input_attempts": ["p1:d", "p1:j", "p1:i", "p1:o", "pause:Enter"],
+  "pause_resume": "not_observed:CPU combat reached KO/selection before pause menu became visible",
+  "return_selection": "observed_after_KO",
+  "console_notes": [
+    "WebGL emitted two INVALID_OPERATION warnings; no SCRIPT ERROR observed.",
+    "An earlier Lee-vs-Lee selection run is rejected and excluded from acceptance."
+  ]
+}

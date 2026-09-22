@@ -1,0 +1,809 @@
+{
+  "schema": "lee-callback-exact-r12-preflight",
+  "scope": "Five actual same-source-run headless fixtures; replay each full recorded fight duration. Compare P1 body frame-action callbacks only: source_frame, entering, decoded action and decoded ql.",
+  "cases": [
+    {
+      "case_id": "magic-320-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/magic-320-p1.json",
+      "fixture_sha256": "7688b3312f8530f6bcfd176fd9e9234717c6988e3fd7498e1f0b324930bcc2cf",
+      "source_run_id": "lee-explore-magic-r04",
+      "source_raw": "evidence/characters/lee/original/lee-explore-magic-r04",
+      "source_raw_sha256": "a0417b127897ab67027d61ec6c7d25fb75762f5e8cc0c7ed967d7353f55da451",
+      "source_build_original": "/private/tmp/lee-explore-magic-r04/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/magic-320-p1/build.json",
+      "source_build_sha256": "dbfd6bca3703663d30603b37c911f07736359016e2ec30936fb8bda1654f8fd9",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/magic-320-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "6ad66204eebc67adda5a521dcf80db6e76a8dcc35cac6347acb1a861e45e77fa",
+      "source_output_main_sha256": "6265ed71fbec30535c1bb71ba15fad9bb1c8e74cb17cbe3cf8008e64740696f0",
+      "source_move_case": {
+        "id": "lee-callback-magic-chain-exploratory-r04",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "招2",
+        "scenario": "neutral_exploratory_multiedge",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "down",
+              "ranged"
+            ],
+            "start": 10,
+            "end": 13
+          },
+          {
+            "slot": "p1",
+            "keys": [
+              "ranged"
+            ],
+            "start": 35,
+            "end": 38
+          },
+          {
+            "slot": "p1",
+            "keys": [
+              "ranged"
+            ],
+            "start": 60,
+            "end": 63
+          },
+          {
+            "slot": "p1",
+            "keys": [
+              "ranged"
+            ],
+            "start": 85,
+            "end": 88
+          },
+          {
+            "slot": "p1",
+            "keys": [
+              "ranged"
+            ],
+            "start": 110,
+            "end": 113
+          }
+        ],
+        "target_frames": [
+          471,
+          524
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand",
+          "onDefence"
+        ],
+        "status": "exploratory_real_input",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "source_callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 320,
+            "source_path": "DefineSprite_518/frame_320/DoAction.as",
+            "action": "招1",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 325,
+            "source_path": "DefineSprite_518/frame_325/DoAction.as",
+            "action": "招1",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 332,
+            "source_path": "DefineSprite_518/frame_332/DoAction.as",
+            "action": "招1",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 370,
+            "source_path": "DefineSprite_518/frame_370/DoAction.as",
+            "action": "砍技2",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 509,
+            "source_path": "DefineSprite_518/frame_509/DoAction.as",
+            "action": "招2",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 558,
+            "source_path": "DefineSprite_518/frame_558/DoAction.as",
+            "action": "招3",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ],
+        "callback_group": "magic-chain",
+        "callback_purpose": "exploratory multi-edge source reachability; no target precondition",
+        "preflight_status": "fight_input_preflight",
+        "callback_observer": "read-only source callback observer; no schedule/input changes"
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 600,
+      "target_preflight": [
+        {
+          "source_frame": 320,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "source_input_delivery_audit": {
+        "status": "source_key_reads_match_recorded_intent",
+        "bindings": {
+          "w": "87",
+          "a": "65",
+          "l": "76",
+          "上箭": "38",
+          "下箭": "40",
+          "左箭": "37",
+          "右箭": "39",
+          "N1": "86",
+          "N2": "98",
+          "N3": "66",
+          "N4": "100",
+          "N5": "77",
+          "N6": "78",
+          "right": "68",
+          "attack": "74",
+          "down": "83",
+          "ranged": "85",
+          "jump": "75",
+          "special": "73",
+          "summon": "79"
+        },
+        "reads": 17674,
+        "pressed_reads": {
+          "_level0.game.p1.mc:83": 4,
+          "_level0.game.p1.mc:85": 2
+        }
+      }
+    },
+    {
+      "case_id": "skill2-370-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/skill2-370-p1.json",
+      "fixture_sha256": "8bf6b186caa440bdab908cbd219611e123ed0535737b5b2ac91323b10f4936a5",
+      "source_run_id": "lee-callback-magic-skill2-r05",
+      "source_raw": "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+      "source_raw_sha256": "cca77ea1142f24ede4261f0f49cf7873e761ee505879630f67ec427f97f13509",
+      "source_build_original": "/private/tmp/lee-callback-magic-skill2-r05/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/skill2-370-p1/build.json",
+      "source_build_sha256": "02822d46a9541cb4f1c77a43396cf3976780487c75d045cf25cabc6df9368403",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/skill2-370-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "4519919003587f9f2b887b4610d98281abccc896e9a202bce0edf93f7ba99c3c",
+      "source_output_main_sha256": "ff58d754c1d5b1613149803df61b7d582dcb686ad8ae47e8a3eb8058f2be00bf",
+      "source_move_case": {
+        "id": "lee-callback-magic-skill2-source-conditioned-r05",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "砍技2",
+        "scenario": "source_conditioned_up_attack",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "up",
+              "attack"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "target_frames": [
+          370
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand",
+          "onDefence"
+        ],
+        "status": "source_conditioned_fixture_not_captured",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "source_callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 320,
+            "source_path": "DefineSprite_518/frame_320/DoAction.as",
+            "action": "招1",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 325,
+            "source_path": "DefineSprite_518/frame_325/DoAction.as",
+            "action": "招1",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 332,
+            "source_path": "DefineSprite_518/frame_332/DoAction.as",
+            "action": "招1",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 370,
+            "source_path": "DefineSprite_518/frame_370/DoAction.as",
+            "action": "砍技2",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 509,
+            "source_path": "DefineSprite_518/frame_509/DoAction.as",
+            "action": "招2",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 558,
+            "source_path": "DefineSprite_518/frame_558/DoAction.as",
+            "action": "招3",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ],
+        "callback_group": "magic-chain",
+        "callback_purpose": "Source-conditioned reachability candidate: player skill2 input uses up+attack; no runtime or expected-state change.",
+        "preflight_status": "fight_input_preflight",
+        "callback_observer": "read-only source callback observer; no schedule/input changes",
+        "source_condition_evidence": [
+          {
+            "path": "scripts/fighter/Lee.json:frame_1/DoAction.as function skill2()",
+            "condition": "!useAI => kis(上) && kis(斩)",
+            "goto": "砍技2",
+            "needed_for": [
+              370
+            ]
+          },
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_299/PlaceObject2_18_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "condition": "gameRunning() && skill2()",
+            "goto": "砍技2",
+            "needed_for": [
+              370
+            ]
+          },
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_370/DoAction.as",
+            "condition": "unconditional",
+            "effect": "gotoAndStop(\"落\"); play();",
+            "note": "370 is reachable only after entering 砍技2; later 371+ are after this terminal goto."
+          },
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_320/DoAction.as",
+            "condition": "unconditional",
+            "effect": "gotoAndStop(\"站立\"); play();",
+            "note": "325/332 lie after this terminal action in generated 招1 range; they are not reached by a normal pass from label entry."
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 300,
+      "target_preflight": [
+        {
+          "source_frame": 370,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "source_input_delivery_audit": {
+        "status": "source_key_reads_match_recorded_intent",
+        "bindings": {
+          "w": "87",
+          "a": "65",
+          "l": "76",
+          "上箭": "38",
+          "下箭": "40",
+          "左箭": "37",
+          "右箭": "39",
+          "N1": "86",
+          "N2": "98",
+          "N3": "66",
+          "N4": "100",
+          "N5": "77",
+          "N6": "78",
+          "right": "68",
+          "attack": "74",
+          "down": "83",
+          "ranged": "85",
+          "jump": "75",
+          "special": "73",
+          "summon": "79"
+        },
+        "reads": 8444,
+        "pressed_reads": {
+          "_level0.game.p1.mc:74": 3,
+          "_level0.game.p1.mc:87": 2
+        }
+      }
+    },
+    {
+      "case_id": "magic3-558-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/magic3-558-p1.json",
+      "fixture_sha256": "ab02e6ceda74d9be9cf89429590009b64e176178c17adea6fda027f226396480",
+      "source_run_id": "lee-callback-magic3-r05",
+      "source_raw": "evidence/characters/lee/original/lee-callback-magic3-r05",
+      "source_raw_sha256": "0f1a08ff3b0119f99fbcc2c42ba2a08feffedd1a0b8a68c989fa578922434bd6",
+      "source_build_original": "/private/tmp/lee-callback-magic3-r05/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/magic3-558-p1/build.json",
+      "source_build_sha256": "cb2bb91a72cd783a79f5efa56adeb84cc4540d82eea9380da8c1f807956a0bec",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/magic3-558-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "2667f6cd7cada803cba40a2abd01861d2f09ebce1cfd38ee47a2b51417f0a570",
+      "source_output_main_sha256": "f3ed2797af7817bfe4783a99651416534c0eb44814ae644d003f7e411a4d8f86",
+      "source_move_case": {
+        "id": "lee-callback-magic3-source-conditioned-r05",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "招3",
+        "scenario": "source_conditioned_up_ranged",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "up",
+              "ranged"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "target_frames": [
+          558
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand",
+          "onDefence"
+        ],
+        "status": "source_conditioned_fixture_not_captured",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "source_callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 558,
+            "source_path": "DefineSprite_518/frame_558/DoAction.as",
+            "action": "招3",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ],
+        "callback_group": "magic-chain",
+        "callback_purpose": "Source-conditioned reachability candidate: player magichit3 input uses up+ranged; no runtime or expected-state change.",
+        "preflight_status": "fight_input_preflight",
+        "callback_observer": "read-only source callback observer; no schedule/input changes",
+        "source_condition_evidence": [
+          {
+            "path": "scripts/fighter/Lee.json:frame_1/DoAction.as function magichit3()",
+            "condition": "!useAI => kis(上) && kis(招)",
+            "goto": "招3",
+            "needed_for": [
+              558
+            ]
+          },
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "condition": "gameRunning() branch list excludes magichit3",
+            "note": "Once in 招3, no magichit3 reentry is tested at frame538."
+          },
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_558/DoAction.as",
+            "condition": "unconditional",
+            "effect": "gotoAndStop(\"站立\"); play()"
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 300,
+      "target_preflight": [
+        {
+          "source_frame": 558,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "source_input_delivery_audit": {
+        "status": "source_key_reads_match_recorded_intent",
+        "bindings": {
+          "w": "87",
+          "a": "65",
+          "l": "76",
+          "上箭": "38",
+          "下箭": "40",
+          "左箭": "37",
+          "右箭": "39",
+          "N1": "86",
+          "N2": "98",
+          "N3": "66",
+          "N4": "100",
+          "N5": "77",
+          "N6": "78",
+          "right": "68",
+          "attack": "74",
+          "down": "83",
+          "ranged": "85",
+          "jump": "75",
+          "special": "73",
+          "summon": "79"
+        },
+        "reads": 8830,
+        "pressed_reads": {
+          "_level0.game.p1.mc:87": 2,
+          "_level0.game.p1.mc:85": 1
+        }
+      }
+    },
+    {
+      "case_id": "air-128-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/air-128-p1.json",
+      "fixture_sha256": "0d556c4db7b1ff03b7519f2ff4af1d35fa594e712ebb6467503e731f93f09712",
+      "source_run_id": "lee-exact-air-r03",
+      "source_raw": "evidence/characters/lee/original/lee-callback-exact-air-r01",
+      "source_raw_sha256": "032aadefa12fbdff78a28352846af17508b16f960abc4813a350ae9c1e814b66",
+      "source_build_original": "/private/tmp/lee-exact-air-r03/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/air-128-p1/build.json",
+      "source_build_sha256": "d338f078ac0627d805b84782f8c517910cc1a86d498ca9ba35bca550e7089d14",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/air-128-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "9f20cfd631a338e73c3dce0ca1333d78d0e6bc91ab730f669a25daab1265986d",
+      "source_output_main_sha256": "db9c5fa2fbc531c2b3334f09810fd1697df0d9a752e3c840f92bc9fc818cd2fd",
+      "source_move_case": {
+        "id": "lee-callback-air-actions-r02",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "跳砍",
+        "scenario": "neutral",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "jump"
+            ],
+            "start": 5,
+            "end": 6
+          },
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 20,
+            "end": 23
+          }
+        ],
+        "target_frames": [
+          121,
+          134
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "onJumping"
+        ],
+        "status": "not_run",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "source_callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 29,
+            "source_path": "DefineSprite_518/frame_29/DoAction.as",
+            "action": "瞬步",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 62,
+            "source_path": "DefineSprite_518/frame_62/DoAction.as",
+            "action": "落",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 113,
+            "source_path": "DefineSprite_518/frame_113/DoAction.as",
+            "action": "落地",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 128,
+            "source_path": "DefineSprite_518/frame_128/DoAction.as",
+            "action": "跳砍",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 152,
+            "source_path": "DefineSprite_518/frame_152/DoAction.as",
+            "action": "跳招",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ],
+        "callback_group": "air-actions",
+        "callback_purpose": "air/landing/air attack",
+        "preflight_status": "fight_input_preflight",
+        "callback_observer": "read-only source callback observer; no schedule/input changes"
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 300,
+      "target_preflight": [
+        {
+          "source_frame": 128,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "source_input_delivery_audit": {
+        "status": "source_key_reads_match_recorded_intent",
+        "bindings": {
+          "w": "87",
+          "a": "65",
+          "l": "76",
+          "上箭": "38",
+          "下箭": "40",
+          "左箭": "37",
+          "右箭": "39",
+          "N1": "86",
+          "N2": "98",
+          "N3": "66",
+          "N4": "100",
+          "N5": "77",
+          "N6": "78",
+          "right": "68",
+          "attack": "74",
+          "down": "83",
+          "ranged": "85",
+          "jump": "75",
+          "special": "73",
+          "summon": "79"
+        },
+        "reads": 9828,
+        "pressed_reads": {
+          "_level0.game.p1.mc:75": 1,
+          "_level0.game.p1.mc:74": 1
+        }
+      }
+    },
+    {
+      "case_id": "air-152-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/air-152-p1.json",
+      "fixture_sha256": "ae30393a05d6f7378ce71b27398720ea38dafb5f3d319eba6d1bad01c19d2cfd",
+      "source_run_id": "observer-lee-135-airMagichit-held",
+      "source_raw": "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl",
+      "source_raw_sha256": "6b716baf7f2d5cf1e2287f3586e6e3c07d63f41c7625143eba5899a716f7347d",
+      "source_build_original": "/private/tmp/lee-observer-lee-135-airMagichit-held/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/air-152-p1/build.json",
+      "source_build_sha256": "91b1cd32452e46a0a8470d69533f7886c8acfa97e47de7cd28b1e856d12a883f",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r12/source-builds/air-152-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "116cd83d7e19f8bc7ec70c2ba02198cf65edbd23e1e2112e67918ad6f8c0f4fa",
+      "source_output_main_sha256": "5594fcc0086d2abcedaebc4016f957f97204b8c0308072ed9fb4898e49edb6d7",
+      "source_move_case": {
+        "id": "lee-135-airMagichit-held",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "跳招",
+        "scenario": "held",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "jump"
+            ],
+            "start": 5,
+            "end": 6
+          },
+          {
+            "slot": "p1",
+            "keys": [
+              "ranged"
+            ],
+            "start": 20,
+            "end": 120
+          }
+        ],
+        "target_frames": [
+          135,
+          156
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "onJumping"
+        ],
+        "status": "not_run",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂"
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 300,
+      "target_preflight": [
+        {
+          "source_frame": 152,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "source_input_delivery_audit": {
+        "status": "source_key_reads_match_recorded_intent",
+        "bindings": {
+          "w": "87",
+          "a": "65",
+          "l": "76",
+          "上箭": "38",
+          "下箭": "40",
+          "左箭": "37",
+          "右箭": "39",
+          "N1": "86",
+          "N2": "98",
+          "N3": "66",
+          "N4": "100",
+          "N5": "77",
+          "N6": "78",
+          "right": "68",
+          "attack": "74",
+          "down": "83",
+          "ranged": "85",
+          "jump": "75",
+          "special": "73",
+          "summon": "79"
+        },
+        "reads": 6641,
+        "pressed_reads": {
+          "_level0.game.p1.mc:75": 1,
+          "_level0.game.p1.mc:85": 3
+        }
+      }
+    }
+  ]
+}

@@ -78,15 +78,20 @@ CALLS = {
     '_parent.updateDirect()': 'adapter.effect("updateDirect")',
     '_root.jumpxg(_parent._parent)': 'adapter.effect("jumpxg")',
     '_root.luodixg(_parent._parent)': 'adapter.effect("luodixg")',
+    # These are source root effects used by a placed guard/effect clip.  They
+    # are dispatched through the same service ABI as the other source effects;
+    # silently dropping the callback would change the blocked-hit timeline.
+    'bdfyxg()': 'adapter.effect("bdfyxg")',
+    'bdfyxg2()': 'adapter.effect("bdfyxg2")',
 }
-def source_expression(source: str, locals_: set[str], scope_fields: set[str]) -> str:
+def source_expression(source: str, locals_: set[str], scope_fields: set[str], call_aliases=None) -> str:
     for field in sorted(scope_fields, key=len, reverse=True):
         source = re.sub(
             rf'(?<![.\w])_parent\.{re.escape(field)}\b',
             f'value({json.dumps(field)})',
             source,
         )
-    return expression(source, locals_)
+    return expression(source, locals_, call_aliases)
 
 
 def compile_body(
@@ -96,6 +101,7 @@ def compile_body(
     *,
     unbound_calls=(),
     scope_fields: set[str] | None = None,
+    call_aliases=None,
 ) -> str:
     params_list = [x.strip() for x in params.split(',') if x.strip()]
     locals_ = LOCALS | set(params_list)
@@ -117,22 +123,22 @@ def compile_body(
         indent = '\t' * depth
         translated = []
         if line.startswith('if(') and line.endswith(')'):
-            translated = ['if truth(' + source_expression(line[3:-1], locals_, source_fields) + '):']
+            translated = ['if truth(' + source_expression(line[3:-1], locals_, source_fields, call_aliases) + '):']
         elif line.startswith('else if(') and line.endswith(')'):
-            translated = ['elif truth(' + source_expression(line[8:-1], locals_, source_fields) + '):']
+            translated = ['elif truth(' + source_expression(line[8:-1], locals_, source_fields, call_aliases) + '):']
         elif line == 'else':
             translated = ['else:']
         elif line.startswith('return ') and line.endswith(';'):
-            translated = ['return ' + source_expression(line[7:-1], locals_, source_fields)]
+            translated = ['return ' + source_expression(line[7:-1], locals_, source_fields, call_aliases)]
         elif match := re.fullmatch(r'var (\w+)(?: = (.+))?;', line):
             local, initial = match.groups()
             locals_.add(local)
-            translated = [f'var {local}: Variant = ' + (source_expression(initial,locals_,source_fields) if initial else 'null')]
+            translated = [f'var {local}: Variant = ' + (source_expression(initial,locals_,source_fields, call_aliases) if initial else 'null')]
         elif match := re.fullmatch(r'(.+?) (\+=|-=|=) (.+);', line):
             target, op, rhs = match.groups()
-            value = source_expression(rhs,locals_,source_fields)
+            value = source_expression(rhs,locals_,source_fields, call_aliases)
             if op != '=':
-                value = f'(number({source_expression(target,locals_,source_fields)}) {op[0]} number({value}))'
+                value = f'(number({source_expression(target,locals_,source_fields, call_aliases)}) {op[0]} number({value}))'
             if target in locals_:
                 translated = [f'{target} = {value}']
             elif target in FIELDS:
@@ -141,24 +147,25 @@ def compile_body(
                 raise ValueError(f'Unsupported assignment in {name}: {line}')
         elif match := re.fullmatch(r'_parent.gotoAnd(Play|Stop)\((.+)\);', line):
             mode, destination = match.groups()
-            translated = ['adapter.goto_label(' + source_expression(destination,locals_,source_fields) + ', ' + str(mode=='Play').lower() + ')',
+            translated = ['adapter.goto_label(' + source_expression(destination,locals_,source_fields, call_aliases) + ', ' + str(mode=='Play').lower() + ')',
                           'if not adapter.controller_alive():', '\treturn null']
         elif line[:-1] in CALLS and line.endswith(';'):
             translated = [CALLS[line[:-1]]]
         elif match := re.fullmatch(r'_parent\._parent\.(moveX|moveY)\((.+)\);', line):
-            translated = [f'adapter.move_axis("{match[1]}", ' + source_expression(match[2],locals_,source_fields) + ')']
+            translated = [f'adapter.move_axis("{match[1]}", ' + source_expression(match[2],locals_,source_fields, call_aliases) + ')']
         elif match := re.fullmatch(r'_parent\.(fangyux|beidax)\((.*)\);', line):
-            args = source_expression(match[2],locals_,source_fields) if match[2] else ''
+            args = source_expression(match[2],locals_,source_fields, call_aliases) if match[2] else ''
             translated = [f'adapter.body_call("{match[1]}", [{args}])',
                           'if not adapter.controller_alive():', '\treturn null']
         elif match := re.fullmatch(r'(fangyux|beidax)\((.*)\);', line):
             if match[1] not in unbound_calls or match[2]:
                 raise ValueError('Unresolved controller-scope body call: ' + line)
-            translated = ['pass # The original unqualified function is undefined in this scope.']
+            else:
+                translated = ['pass # The original unqualified function is undefined in this scope.']
         elif match := re.fullmatch(r'(\w+)\((.*)\);',line):
             if match[1] not in {*NAMES,*DISPATCH_NAMES}:
                 raise ValueError(f'Unsupported call in {name}: {line}')
-            translated = [source_expression(line[:-1],locals_,source_fields)]
+            translated = [source_expression(line[:-1],locals_,source_fields, call_aliases)]
             if match[1] in DISPATCH_NAMES:
                 translated += ['if not adapter.controller_alive():','\treturn null']
         else:
@@ -246,6 +253,16 @@ def receiver_source(bundle: dict, symbol: int) -> dict | None:
     }
 
 
+def nested_controller_source(bundle: dict, symbol: int) -> tuple[dict, dict[str, tuple[str, str]]] | None:
+    """Find a nested controller's own frame-one functions by retained source."""
+    path = f'DefineSprite_{symbol}/frame_1/DoAction.as'
+    script = next((item for item in bundle['scripts'] if item['path'] == path), None)
+    if script is None:
+        return None
+    source = script['source'].replace('\r\n', '\n')
+    return script, {m[1]: (m[2], m[3]) for m in FUNCTION.finditer(source)}
+
+
 def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: bool = False) -> tuple[str,dict]:
     swf = ROOT / bundle['game_file']
     if hashlib.sha256(swf.read_bytes()).hexdigest() != bundle['swf_sha256']:
@@ -254,8 +271,25 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         raise ValueError('Controller and timeline do not share the retained source')
     controller = controller_script(bundle, sprite)
     scope_fields = controller_scope_fields(bundle, sprite)
-    controller_ids = {int(re.search(r'DefineSprite_(\d+)', alias['path'])[1])
-                      for alias in controller_aliases(bundle, sprite)}
+    canonical_hash = hashlib.sha256(controller['source'].encode()).hexdigest()
+    # Later placements may host a different controller for another source
+    # state. They are retained in the source timeline, but this compiled base
+    # controller may only reuse aliases with identical source semantics.
+    all_controller_aliases = controller_aliases(bundle, sprite)
+    controller_ids = {
+        int(re.search(r'DefineSprite_(\d+)', alias['path'])[1])
+        for alias in all_controller_aliases
+        if hashlib.sha256(alias['source'].encode()).hexdigest() == canonical_hash
+    }
+    excluded_controller_aliases = [
+        {
+            'path': alias['path'],
+            'source_sha256': hashlib.sha256(alias['source'].encode()).hexdigest(),
+            'reason': 'different_source_from_base_form_controller',
+        }
+        for alias in all_controller_aliases
+        if hashlib.sha256(alias['source'].encode()).hexdigest() != canonical_hash
+    ]
     source = controller['source']
     funcs = {m[1]:(m[2],m[3]) for m in FUNCTION.finditer(source.replace('\r\n','\n'))}
     text = '# Generated by tools/importer/compile_ai_controller.py; do not edit.\n' + HEADER
@@ -263,6 +297,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         text += compile_body(name,*funcs[name], scope_fields=scope_fields)
     hooks = []
     unbound_call_sites = []
+    compiled_nested_functions = {}
     for script in bundle['scripts']:
         match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
         if not match:
@@ -328,6 +363,67 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
         if not match or int(match[2]) in (receiver_ids | controller_ids):
             continue
+        # A placed child can own a source controller callback without being
+        # the fighter's root input controller. Compile its callback against
+        # the same source predicate ABI and retain its independent lifetime.
+        body = script['source'].replace('\r\n', '\n')
+        if (body.startswith('onClipEvent(enterFrame){\n') and body.endswith('}\n')
+                and (re.search(r'\b(?:gameRunning|magichit\d?|bisha|nornalhit|skill\d?|bdfyxg2?)\s*\(', body)
+                     or '_parent._parent._x' in body
+                     or '_parent._parent._y' in body)):
+            frame, character, depth = map(int, match.groups())
+            nested = nested_controller_source(bundle, character)
+            nested_aliases = {}
+            nested_functions = {}
+            if nested is not None:
+                _, nested_functions = nested
+                referenced = set(re.findall(r'(?<![.\w])([A-Za-z_]\w*)\s*\(', body))
+                pending = [name for name in referenced if name in nested_functions]
+                selected = set()
+                while pending:
+                    name = pending.pop()
+                    if name in selected:
+                        continue
+                    selected.add(name)
+                    pending.extend(
+                        call for call in re.findall(r'(?<![.\w])([A-Za-z_]\w*)\s*\(', nested_functions[name][1])
+                        if call in nested_functions and call not in selected
+                    )
+                nested_aliases = {name: f'child_{character}_{name}' for name in selected}
+                nested_key = (character, hashlib.sha256(nested[0]['source'].encode()).hexdigest())
+                compiled = compiled_nested_functions.setdefault(nested_key, set())
+                for name in sorted(selected - compiled):
+                    params, function_body = nested_functions[name]
+                    text += compile_body(
+                        nested_aliases[name], params, function_body,
+                        scope_fields=scope_fields, call_aliases=nested_aliases,
+                    )
+                    compiled.add(name)
+            method = f'child_frame_{frame}_depth_{depth}_controller_{character}'
+            child_body = body.split('\n', 1)[1].rsplit('}', 1)[0]
+            child_code = compile_body(
+                method, '', child_body, scope_fields=scope_fields,
+                call_aliases=nested_aliases,
+            )
+            membership = [
+                f['frame'] for f in timeline['frames']
+                if any(
+                    p.get('character_id') == character
+                    and p['depth'] == depth
+                    and p['placed_frame'] == frame
+                    for p in f['display_list']
+                )
+            ]
+            if not membership:
+                raise ValueError(f'Child controller placement missing: {script["path"]}')
+            text += child_code
+            hooks.append({
+                'method': method, 'path': script['path'],
+                'controller_id': character, 'placement_frame': frame,
+                'depth': depth, 'member_frames': membership,
+                'child_controller': True,
+            })
+            continue
         motion = parse_projectile_motion(script['source'])
         if motion is None:
             raise ValueError('Uncompiled child callback: ' + script['path'])
@@ -342,7 +438,9 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
             if initial is not None:
                 if 'initial_variables' in initial:
                     variables = initial['initial_variables']
-                    if any(name in ('local_x_factor', 'local_y_factor') for name in motion) and 'movspeed' not in variables:
+                    if (any(name in ('local_x_factor', 'local_y_factor') for name in motion)
+                            and 'movspeed' not in variables
+                            and initial.get('initial_speed_field') != 'speed'):
                         raise ValueError('Projectile movement local is undeclared: ' + script['path'])
                 clip.update({**initial, 'initial_motion_source': {
                     'source_path': load_path,
@@ -358,6 +456,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
                                  'projectile': {'instance_name': placements[0][1]['name'], **clip, **motion}})
     projectile_hooks.extend(renamed_timeline_hooks(bundle, sprite, timeline, projectile_hooks))
     return text,{'status':'compiled_not_integrated','sprite_id':sprite,'hooks':hooks,
+                 'excluded_controller_aliases': excluded_controller_aliases,
                  **({'unbound_call_sites': unbound_call_sites} if unbound_call_sites else {}),
                  'controller_scope_fields': sorted(scope_fields),
                  'receiver_hooks':receiver_hooks,

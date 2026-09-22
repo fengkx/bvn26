@@ -1,0 +1,100 @@
+{
+  "status": "source_callback_path_observed",
+  "acceptance": "original_flash_source_capture_only",
+  "run_id": "lee-callback-738-rooftop-walkoff-r04",
+  "source_stage": "楼顶",
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "right"
+      ],
+      "start": 0,
+      "end": 36
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "dash"
+      ],
+      "start": 37,
+      "end": 58
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "right"
+      ],
+      "start": 59,
+      "end": 68
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "special"
+      ],
+      "start": 72,
+      "end": 76
+    }
+  ],
+  "numeric_key_reads_first_by_code": {
+    "68": {
+      "fight_tick": 0,
+      "seq": 5588,
+      "key_code": "68"
+    },
+    "76": {
+      "fight_tick": 37,
+      "seq": 6978,
+      "key_code": "76"
+    },
+    "87": {
+      "fight_tick": 37,
+      "seq": 6979,
+      "key_code": "87"
+    },
+    "73": {
+      "fight_tick": 72,
+      "seq": 7647,
+      "key_code": "73"
+    }
+  },
+  "initial_p1_state_value": "p1,1,f:1:8:131072000:0,f:-1:8:126353408:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,undefined,0,false,0,false",
+  "observed_frame_738": [
+    {
+      "seq": 8524,
+      "display_tick": 564,
+      "fight_tick": 109,
+      "value": "p1,738,true,738,3,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+    },
+    {
+      "seq": 8525,
+      "display_tick": 564,
+      "fight_tick": 109,
+      "value": "p1,738,false,723,3,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "timeline_after_frame_738": [
+    {
+      "fight_tick": 109,
+      "seq": 8506,
+      "value": "p1,737,f:1:9:124518400:0,f:-1:5:112826777:40265318,f:1:6:104857600:0,3,f:1:9:131072000:0,f:1:0:0:0,false,false,false,0,false,0,false"
+    },
+    {
+      "fight_tick": 110,
+      "seq": 8527,
+      "value": "p1,723,f:1:9:124518400:0,f:-1:4:104857600:0,f:1:6:104857600:0,3,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+    },
+    {
+      "fight_tick": 111,
+      "seq": 8544,
+      "value": "p1,740,f:1:9:124518400:0,f:-1:4:104857600:0,f:1:6:104857600:0,3,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "limits": [
+    "This establishes original-player callback execution only, not Godot parity.",
+    "At frame 738 the source boundary recorded touch/touchFloor true; the next state returned to frame 723 and then advanced to 740. Do not describe this as continued airborne state.",
+    "No flash/game/script source files were modified."
+  ]
+}

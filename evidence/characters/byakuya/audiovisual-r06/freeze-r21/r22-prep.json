@@ -1,0 +1,18 @@
+{
+  "scope": "offline-prep",
+  "target_order": [
+    819,
+    576
+  ],
+  "status": "desktop_required",
+  "source_build_requirement": "unique run_id in final SWF frame1 and frame10; validate before capture",
+  "freeze_requirement": "parse AIREF as seq,time_ms,display_tick,fight_tick; snapshot root/child state at freeze_end and immediately before/after each screenshot; require normalized (path,frame) and RGB stability",
+  "known_576": "r21 stable source capture; child set 215 full-scene entries",
+  "known_819": "r21 fail-closed: freeze begin/end remain display_tick=470 and fight_tick=16; recursive walk emits 215 visual_clip records over wall time, while screenshot interval is not instrumented and RGB changed",
+  "do_not_claim": [
+    "819 visual parity",
+    "Godot child parity at 576",
+    "production runtime fix"
+  ],
+  "next_action": "obtain desktop token, build unique r22, run preflight, then capture 819 and 576 without changing production source"
+}

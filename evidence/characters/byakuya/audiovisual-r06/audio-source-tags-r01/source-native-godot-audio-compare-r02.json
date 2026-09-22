@@ -1,0 +1,108 @@
+{
+  "format": "byakuya-source-native-godot-audio-compare-r02",
+  "scope": "DefineSprite_631 StartSoundTag arrival and Godot player_created resource association for four bounded audio tags. The r03 recovery source capture retains the canonical fixture input adapter and uses an independently inserted marker after each source StartSoundTag.",
+  "evidence": "source-tag-observations.json",
+  "source_native_run": "byakuya-soundtags-rec-r03",
+  "source_native_raw": "original-events.jsonl",
+  "source_native_raw_sha256": "42085b4db10becce79ee80a802ff508f471c1b5af9d2655bee0cc167ae807a7c",
+  "godot_recovery_walk": "../../audiovisual-r05/audio-gap-r01/byakuya-recovery-p2-base631-special-dash62-66-r01/audio-walk.json",
+  "godot_intro_walk": "../../audiovisual-r05/audio-gap-r01/byakuya-intro-963-r01/audio-walk.json",
+  "rows": [
+    {
+      "source_frame": 963,
+      "sound_id": 619,
+      "source_marker_display_tick": 283,
+      "source_marker_fight_tick": -1,
+      "nearby_source_states": [
+        "AIREF|byakuya-soundtags-rec-r03|1350|22476|284|-1|state|p2,963,f:1:9:83505971:13421773,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,undefined,0,true,0,false"
+      ],
+      "godot_player_created": [
+        {
+          "created_fight_tick": 1,
+          "created_source_frame": 1,
+          "player_id": "107055418565",
+          "playing": false,
+          "slot": "p1",
+          "stream_path": "res://generated/fighters/byakuya/619.mp3"
+        }
+      ],
+      "godot_link_scope": "Intro resource association only: normal Godot intro row is P1 Byakuya 619.mp3, normalized post-ready frame 1; do not equate its clock with the source pre-ready tag.",
+      "status": "tag_and_resource_observed"
+    },
+    {
+      "source_frame": 887,
+      "sound_id": 581,
+      "source_marker_display_tick": 483,
+      "source_marker_fight_tick": 32,
+      "nearby_source_states": [
+        "AIREF|byakuya-soundtags-rec-r03|3823|29142|484|33|state|p2,887,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,-1,f:1:9:91750400:0,f:1:8:86507520:0,false,true,true,1,false,0,false"
+      ],
+      "godot_player_created": [
+        {
+          "created_fight_tick": 33,
+          "created_source_frame": 887,
+          "player_id": "304120606478",
+          "playing": true,
+          "slot": "p2",
+          "stream_path": "res://generated/fighters/byakuya/581.mp3"
+        }
+      ],
+      "godot_link_scope": "Same recovery fixture, P2 Byakuya stream path/resource frame; created tick matches sampled source state tick.",
+      "status": "tag_and_resource_observed"
+    },
+    {
+      "source_frame": 934,
+      "sound_id": 44,
+      "source_marker_display_tick": 515,
+      "source_marker_fight_tick": 64,
+      "nearby_source_states": [
+        "AIREF|byakuya-soundtags-rec-r03|4103|30187|515|64|state|p2,934,f:1:9:87818240:0,f:-1:4:104857600:0,f:-1:6:104857600:0,-1,f:1:9:91750400:0,f:1:8:78643200:0,false,true,true,1,false,16,false"
+      ],
+      "godot_player_created": [
+        {
+          "created_fight_tick": 64,
+          "created_source_frame": 934,
+          "player_id": "326904066655",
+          "playing": true,
+          "slot": "p2",
+          "stream_path": "res://generated/fighters/byakuya/44.mp3"
+        }
+      ],
+      "godot_link_scope": "Same recovery fixture, P2 Byakuya stream path/resource frame; created tick matches sampled source state tick.",
+      "status": "tag_and_resource_observed"
+    },
+    {
+      "source_frame": 944,
+      "sound_id": 52,
+      "source_marker_display_tick": 524,
+      "source_marker_fight_tick": 73,
+      "nearby_source_states": [
+        "AIREF|byakuya-soundtags-rec-r03|4200|30511|525|74|state|p2,944,f:1:9:96626278:26843546,f:-1:4:104857600:0,f:-1:6:104857600:0,-1,f:1:9:91750400:0,f:1:8:78643200:0,false,true,true,1,false,16,false"
+      ],
+      "godot_player_created": [
+        {
+          "created_fight_tick": 74,
+          "created_source_frame": 944,
+          "player_id": "335208788884",
+          "playing": true,
+          "slot": "p2",
+          "stream_path": "res://generated/fighters/byakuya/52.mp3"
+        }
+      ],
+      "godot_link_scope": "Same recovery fixture, P2 Byakuya stream path/resource frame; created tick matches sampled source state tick.",
+      "status": "tag_and_resource_observed"
+    }
+  ],
+  "summary": {
+    "source_tags_observed": 4,
+    "godot_resource_rows_found": 4,
+    "same_recovery_fixture_rows": 3,
+    "intro_resource_clock_aligned": false,
+    "sound_output_or_stop_parity": "unproven"
+  },
+  "limits": [
+    "Tag markers establish source StartSoundTag execution in the tagged canonical probe SWF; they do not prove audible output.",
+    "Rows 887/934/944 link to the same Godot recovery fixture and asset IDs. 963 is linked to the normal Godot intro 619.mp3 resource only; source and Godot intro clocks are not aligned in this artifact.",
+    "No speaker waveform, volume, stop, or complete audio parity claim."
+  ]
+}

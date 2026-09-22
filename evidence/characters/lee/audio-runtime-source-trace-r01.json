@@ -1,0 +1,118 @@
+{
+  "format": "lee-audio-runtime-source-trace-r01",
+  "source_timeline_sha256": "4d0a4c5d6f50f9bdd636555a4b1ca9701c988cdb68c7e51d3e716099aaeba49e",
+  "scope": "Actual source fixture state reachability plus authored StartSound event and Godot AudioStreamPlayer playback trace; original Flash audio callback/waveform is not instrumented in these retained captures.",
+  "source_frames": [
+    {
+      "frame": 158,
+      "timeline_events": [
+        {
+          "type": "action_bytecode",
+          "sha256": "9cc84a6886f7dc718934b042ffdd84b8e00dc0809a50a7554a52b490daef36f7"
+        },
+        {
+          "type": "start_sound",
+          "sound_id": 48
+        }
+      ],
+      "source_trace": [
+        {
+          "sequence": 3552,
+          "display_tick": 468,
+          "fight_tick": 12,
+          "value": "p1,158,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,1,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        }
+      ],
+      "source_trace_sha256": "7efba9e46ea270d73ea8011451c7703246416961e97d89ec677e3831c3785cf6",
+      "source_trace_path": "evidence/characters/lee/original/lee-157-nornalhit-neutral-continuous-r01/events.jsonl/events.jsonl"
+    },
+    {
+      "frame": 796,
+      "timeline_events": [
+        {
+          "type": "action_bytecode",
+          "sha256": "c64e8664aa4f7a8eb62e8b344417fca6a0c444188a374869897aa810b233ebc7"
+        },
+        {
+          "type": "start_sound",
+          "sound_id": 409
+        }
+      ],
+      "source_trace": [
+        {
+          "sequence": 1949,
+          "display_tick": 486,
+          "fight_tick": 14,
+          "value": "p1,796,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,3,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        }
+      ],
+      "source_trace_sha256": "e193d2ae382f2db213cfa3f370cc352d178e2d46b52cca0cdcc0ba8bb050e54c",
+      "source_trace_path": "evidence/characters/lee/original/lee-795-bishaSuper-energy_above-r01/events.jsonl"
+    }
+  ],
+  "godot_trace": {
+    "audio_player_status": "passed",
+    "display_server": "macOS",
+    "fighter_directory": "/Users/fengkx/me/code/bvn2_6/godot/generated/fighters/lee",
+    "format": "source-audiovisual-probe-v1",
+    "observations": [
+      {
+        "all_playing_streams": 1,
+        "expected_stream_paths": [
+          "res://generated/fighters/lee/sound_segments/48-d545ce7578b639eb.wav"
+        ],
+        "godot_frame_sound_ids": [
+          48
+        ],
+        "new_playing_streams": 1,
+        "player_stream_paths": [
+          "res://generated/fighters/lee/sound_segments/48-d545ce7578b639eb.wav"
+        ],
+        "screenshot": "/Users/fengkx/me/code/bvn2_6/evidence/characters/lee/audiovisual-r02/frame-158.png",
+        "source_frame": 158,
+        "source_sound_ids": [
+          48
+        ]
+      },
+      {
+        "all_playing_streams": 1,
+        "expected_stream_paths": [],
+        "godot_frame_sound_ids": [],
+        "new_playing_streams": 0,
+        "player_stream_paths": [],
+        "screenshot": "/Users/fengkx/me/code/bvn2_6/evidence/characters/lee/audiovisual-r02/frame-635.png",
+        "source_frame": 635,
+        "source_sound_ids": []
+      },
+      {
+        "all_playing_streams": 2,
+        "expected_stream_paths": [
+          "res://generated/fighters/lee/sound_segments/409-010327db341093e1.wav"
+        ],
+        "godot_frame_sound_ids": [
+          409
+        ],
+        "new_playing_streams": 1,
+        "player_stream_paths": [
+          "res://generated/fighters/lee/sound_segments/409-010327db341093e1.wav"
+        ],
+        "screenshot": "/Users/fengkx/me/code/bvn2_6/evidence/characters/lee/audiovisual-r02/frame-796.png",
+        "source_frame": 796,
+        "source_sound_ids": [
+          409
+        ]
+      }
+    ],
+    "scope": "Godot AudioStreamPlayer start observation and optional rendered key frames; not an original Flash audio playback observation",
+    "source_swf": {
+      "path": "game/fighter/lee.swf",
+      "sha256": "2443dc112dbf2be696abb9d924831814ae01990536df8298fa2c1432f35c93d1"
+    },
+    "visual_capture_status": "captured"
+  },
+  "limitations": [
+    "source captures expose frame/state callbacks, not Flash StartSound callback emission; authored timeline events are therefore separate evidence",
+    "Godot probe runs FighterRuntime.play_source_frame for selected frames and records AudioStreamPlayer starts",
+    "headless capture has no valid visual screenshot"
+  ]
+}

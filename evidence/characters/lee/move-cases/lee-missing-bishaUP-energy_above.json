@@ -1,0 +1,45 @@
+{
+  "id": "lee-missing-bishaUP-energy_above",
+  "fighter": "lee",
+  "slot": "p1",
+  "label": "上必杀",
+  "scenario": "energy_above",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 101
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "special"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    null,
+    null
+  ],
+  "has_source_timeline": false,
+  "source_dispatch": [
+    "doAllAction",
+    "onDashing"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "lee",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂"
+}

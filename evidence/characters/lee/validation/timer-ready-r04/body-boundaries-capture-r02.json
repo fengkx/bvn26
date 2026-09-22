@@ -1,0 +1,172 @@
+{
+  "status": "captured_source_body_boundary",
+  "run_id": "lee-body-boundaries-r02",
+  "build": "/private/tmp/lee-body-boundaries-r02",
+  "fixture": "evidence/characters/lee/validation/timer-ready-r04/kill-correct.fixture.json",
+  "source_identity": {
+    "character_id": "小李",
+    "sprite_id": "sprite_518",
+    "slot": "p1",
+    "outer_callback": "fighter/lee#frame_1/PlaceObject2_518_1/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+    "body_boundary": "fighter/lee#DefineSprite_518/frame_<n>/DoAction.as"
+  },
+  "raw": {
+    "path": "evidence/characters/lee/original/lee-body-boundaries-r02/events.jsonl",
+    "sha256": "7be5c8b955f943f4770b0781d9efb807b1504c61901373f108365432f30ceda3",
+    "rows": 37298,
+    "fight_tick_column": "AIREF pipe field 5 (zero-based index 5; display frame), not field 4 wall-clock/source tick"
+  },
+  "counts": {
+    "body_callback_enter": 2315,
+    "body_callback_exit": 2315,
+    "body_boundary": 1512,
+    "schedule": 13328
+  },
+  "p1_body_boundary_tick0_1": [
+    {
+      "seq": 8,
+      "tick": 0,
+      "source_frame": "1",
+      "enter": "true",
+      "instance_frame": "1",
+      "action": "undefined",
+      "hp": "undefined",
+      "ql": "f:1:0:0:0",
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "undefined",
+      "hits": "undefined",
+      "zhanting": "true",
+      "hstm": "undefined",
+      "hurtSkling": "undefined"
+    },
+    {
+      "seq": 10,
+      "tick": 0,
+      "source_frame": "1",
+      "enter": "false",
+      "instance_frame": "1",
+      "action": "0",
+      "hp": "undefined",
+      "ql": "f:1:0:0:0",
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "undefined",
+      "hits": "0",
+      "zhanting": "true",
+      "hstm": "0",
+      "hurtSkling": "false"
+    },
+    {
+      "seq": 52,
+      "tick": 1,
+      "source_frame": "2",
+      "enter": "true",
+      "instance_frame": "2",
+      "action": "0",
+      "hp": "undefined",
+      "ql": "f:1:0:0:0",
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "undefined",
+      "hits": "0",
+      "zhanting": "true",
+      "hstm": "0",
+      "hurtSkling": "false"
+    },
+    {
+      "seq": 53,
+      "tick": 1,
+      "source_frame": "2",
+      "enter": "false",
+      "instance_frame": "2",
+      "action": "0",
+      "hp": "undefined",
+      "ql": "f:1:0:0:0",
+      "sw": "false",
+      "touch": "true",
+      "touchFloor": "undefined",
+      "hits": "0",
+      "zhanting": "true",
+      "hstm": "0",
+      "hurtSkling": "false"
+    }
+  ],
+  "first_p1_callback_enter": {
+    "seq": 48,
+    "time": 9886,
+    "tick": 1,
+    "frame": -1,
+    "kind": "body_callback_enter",
+    "payload": "p1,f:1:8:98068070:26843546,f:-1:4:104857600:0"
+  },
+  "observation": "Correct fight_tick parsing shows source initial fight tick 0 has touchFloor undefined in both state snapshots and Lee frame1 boundary; after P2/P1 outer callbacks, each DefineSprite_518/638 frame2 boundary writes touchFloor=true, and fight tick 1 state is true. The earlier seq8/10/52/53 values were startup events, not fight tick 0/1.",
+  "captured_at": "2026-09-21",
+  "field_provenance": {
+    "body_boundary_source": "tools/probes/build_ai_reference.py:391, injected at each DefineSprite_518/frame_<n>/DoAction.as before and after original frame script",
+    "body_boundary_fields": "slot,source_frame,enter,current_frame,action,hp,ql,sw,touch,touchFloor,hits,root.zhanting,hstm,hurtSkling",
+    "outer_callback_source": "tools/probes/build_ai_reference.py:538-545, wraps fighter/lee frame_1/PlaceObject2_518_1 onClipEvent(enterFrame) around on_enterframe()",
+    "state_observer": "first state event is tick182 seq3904; no state event exists at tick0 or tick1 in this build, so tick0/1 touchFloor evidence comes from Lee body_boundary p1 and yihu body_boundary p2.",
+    "tick0_1_identity": {
+      "p1": "Lee DefineSprite_518 source frames 1 then 2; body_boundary tick0 seq8/10 and tick1 seq52/53; touchFloor field index 9 is undefined on all four records",
+      "p2": "Yihu DefineSprite_638 source frames 1 then 2; separate observer, not Lee BODY evidence"
+    },
+    "fixture_identity_note": "This r02 BODY build used kill-correct.fixture.json without --dynamic-move-case, so its source preconditions were not injected. It is valid for Lee callback identity and field position, but not valid as hp1 lifecycle evidence."
+  },
+  "correct_fight_phase": {
+    "fight0": {
+      "state_p1": {
+        "seq": 11346,
+        "fight_tick": 0,
+        "touchFloor": "undefined",
+        "source_frame": 1
+      },
+      "state_p2": {
+        "seq": 11350,
+        "fight_tick": 0,
+        "touchFloor": "undefined",
+        "source_frame": 1
+      },
+      "p1_frame1_boundary": {
+        "enter_seq": 11355,
+        "exit_seq": 11356,
+        "touchFloor": "undefined"
+      },
+      "p2_body_callback": {
+        "enter_seq": 11407,
+        "exit_seq": 11409,
+        "source_callback_frame": 1
+      },
+      "p2_frame2_boundary": {
+        "enter_seq": 11412,
+        "exit_seq": 11413,
+        "touchFloor": true
+      },
+      "p1_body_callback": {
+        "enter_seq": 11416,
+        "exit_seq": 11418,
+        "source_callback_frame": 1
+      },
+      "p1_frame2_boundary": {
+        "enter_seq": 11421,
+        "exit_seq": 11422,
+        "touchFloor": true
+      }
+    },
+    "fight1": {
+      "state_p1": {
+        "seq": 11425,
+        "fight_tick": 1,
+        "touchFloor": true,
+        "source_frame": 2
+      },
+      "state_p2": {
+        "seq": 11429,
+        "fight_tick": 1,
+        "touchFloor": true,
+        "source_frame": 2
+      }
+    }
+  },
+  "fixture_identity_note": "The r02 BODY build used kill-correct.fixture.json without --dynamic-move-case; it is valid for callback phase/field provenance, not hp1 lifecycle."
+}

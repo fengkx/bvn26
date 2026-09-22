@@ -5,6 +5,33 @@ func _initialize() -> void:
 	_run.call_deferred()
 
 
+func _place_receiver_at_edge(helper: HelperRuntime, defender: FighterRuntime) -> void:
+	# Construct the fixture from the live transformed bounds.  A single
+	# position update can cross a twip-to-pixel rounding boundary, so repeat
+	# the measured correction once instead of baking a pixel offset into the
+	# test.  The following +0.05px move remains the strict negative case.
+	for _correction in 2:
+		var attack_bounds := helper.instance_global_bounds("atm1")
+		var receiver_bounds := defender.instance_global_bounds("bdmn")
+		defender.position.x += attack_bounds.end.x - receiver_bounds.position.x
+
+
+func _edge_gap(helper: HelperRuntime, defender: FighterRuntime) -> float:
+	return defender.instance_global_bounds("bdmn").position.x - helper.instance_global_bounds("atm1").end.x
+
+
+func _edge_geometry(helper: HelperRuntime, defender: FighterRuntime) -> Dictionary:
+	var attack_bounds := helper.instance_global_bounds("atm1")
+	var receiver_bounds := defender.instance_global_bounds("bdmn")
+	return {
+		"attack_left": attack_bounds.position.x,
+		"attack_right": attack_bounds.end.x,
+		"receiver_left": receiver_bounds.position.x,
+		"receiver_right": receiver_bounds.end.x,
+		"gap": receiver_bounds.position.x - attack_bounds.end.x,
+	}
+
+
 func _run() -> void:
 	var caster := FighterRuntime.new()
 	caster.fighter_directory = "res://generated/fighters/minren"
@@ -26,9 +53,15 @@ func _run() -> void:
 		var first := helper.attack_contact(defender)
 		assert(not first.is_empty())
 		var centered := defender.position
-		defender.position.x += helper.instance_global_bounds("atm1").end.x - defender.instance_global_bounds("bdmn").position.x
+		_place_receiver_at_edge(helper, defender)
+		var edge_gap := _edge_gap(helper, defender)
+		assert(edge_gap == 0.0, "Edge fixture must have exactly zero gap, got %s" % edge_gap)
+		print("HELPER_EDGE_GEOMETRY " + JSON.stringify(_edge_geometry(helper, defender)))
 		assert(not helper.attack_contact(defender).is_empty(), "Flash helper hitTest includes touching edges")
 		defender.position.x += 0.05
+		var negative_gap := _edge_gap(helper, defender)
+		assert(negative_gap > 0.0, "Gap negative fixture must be positive, got %s" % negative_gap)
+		print("HELPER_GAP_GEOMETRY " + JSON.stringify(_edge_geometry(helper, defender)))
 		assert(helper.attack_contact(defender).is_empty(), "A one-twip gap must not be padded into a helper hit")
 		defender.position = centered
 		helper.apply_attack_contact(first, defender)
@@ -69,9 +102,15 @@ func _run() -> void:
 		var first := helper.attack_contact(defender)
 		assert(not first.is_empty() and first["damage"] == 10)
 		var centered := defender.position
-		defender.position.x += helper.instance_global_bounds("atm1").end.x - defender.instance_global_bounds("bdmn").position.x
+		_place_receiver_at_edge(helper, defender)
+		var edge_gap := _edge_gap(helper, defender)
+		assert(edge_gap == 0.0, "Edge fixture must have exactly zero gap, got %s" % edge_gap)
+		print("HELPER_EDGE_GEOMETRY " + JSON.stringify(_edge_geometry(helper, defender)))
 		assert(not helper.attack_contact(defender).is_empty(), "Flash helper hitTest includes touching edges")
 		defender.position.x += 0.05
+		var negative_gap := _edge_gap(helper, defender)
+		assert(negative_gap > 0.0, "Gap negative fixture must be positive, got %s" % negative_gap)
+		print("HELPER_GAP_GEOMETRY " + JSON.stringify(_edge_geometry(helper, defender)))
 		assert(helper.attack_contact(defender).is_empty(), "A one-twip gap must not be padded into a helper hit")
 		defender.position = centered
 		helper.apply_attack_contact(first, defender)

@@ -1,0 +1,25 @@
+{
+  "status": "source_and_native_route_audited",
+  "source": {
+    "timer_tape": "evidence/characters/lee/source-timer-tapes-r01/lee_kill700.json",
+    "timer_tape_sha256": "01d1e6f208f942a7a34bbbc09b0832be1e0cedaf4fdabd5ff72a23eb579db524",
+    "register": "source seq6234/6235, _level0.KO.nextfight, wait 1000ms, id 8",
+    "fire": "source seq6515/6516, nextfight at fight_tick306",
+    "cancel": "source seq6530/6531, clearInterval(_root.nxtfht) at fight_tick307; _level0.ready is caller path, id8 is cancellation target",
+    "no_retrigger": "no source fire after cancel through fight_tick700"
+  },
+  "native_route": {
+    "registration": "godot/main.gd:985-994 creates ko_nextfight_timer, connects timeout to _ko_nextfight, wait_time=args[1]/1000.0",
+    "fire_route": "godot/main.gd:749-753 validates recorded event kind nextfight and emits ko_nextfight_timer.timeout; it does not directly call _ko_nextfight",
+    "callback": "godot/main.gd:1044-1052 _ko_nextfight dispatches ko_timeline.controller.nextfight or timeout_timeline.controller.nextfight",
+    "cancel_route": "godot/main.gd:1024-1028 _ko_clear_interval(\"nxtfht\") stops, queue_frees, and nulls ko_nextfight_timer",
+    "native_evidence": "evidence/characters/lee/validation/timer-ready-r04/native-timer-chain-r05.json",
+    "fresh_output": {
+      "path": "/private/tmp/lee-native-timer-postadvance-r01/kill.json",
+      "sha256": "d93da0d81e888d9d9d8b8c191764f8a49cdc26ca9db88c356f5b38e9176f5111",
+      "audit_path": "/private/tmp/lee-native-timer-postadvance-r01/kill.json.timer-audit.json",
+      "audit_sha256": "6f853aefaaba7be5fdbc84c61a24be31d74a6dc0ec8cf9f88032a13c553259e4"
+    }
+  },
+  "boundary": "External tape route is registered Timer -> timeout signal -> _ko_nextfight. Existing r05 verifies source-order fire/cancel/no-retrigger under the external clock, while natural full KO lifecycle remains bounded separately."
+}

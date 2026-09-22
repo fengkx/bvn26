@@ -1,0 +1,22 @@
+{
+  "run_id": "candidate-selection-r01",
+  "qa_package": "/private/tmp/bvn-qa-hud-r02/dist-full",
+  "pck_sha256": "7c3a4c281b7322e692f7556f586d1a86fee285fef87a41c6eeabcb57247d815d",
+  "server": "http://127.0.0.1:8786/",
+  "browser": "isolated Chromium CDP port 9227 with SwiftShader",
+  "source_grid": "evidence/web/qa-inputdiag-r01/source-selection-grid.json",
+  "selection": {
+    "mode": "Vs Human",
+    "p1": "白哉 cursor reached at source grid [-1,7] and J confirmation advanced to P2",
+    "p2": "cursor reached the right-edge candidate position [15,7], visually retained as P2 candidate cursor"
+  },
+  "input_attempts": [
+    {"method":"DOM KeyboardEvent", "key":"1", "code":"Numpad1", "keyCode":97, "which":97, "location":3, "hold_ms":350},
+    {"method":"DOM KeyboardEvent", "key":"End", "code":"Numpad1", "keyCode":97, "which":97, "location":3, "hold_ms":350},
+    {"method":"CDP Input.dispatchKeyEvent", "key":"1", "code":"Numpad1", "windowsVirtualKeyCode":97, "nativeVirtualKeyCode":97, "location":3},
+    {"method":"CDP Input.dispatchKeyEvent", "key":"End", "code":"Numpad1", "windowsVirtualKeyCode":35, "nativeVirtualKeyCode":35, "location":3},
+    {"method":"repeated CDP keyDown", "key":"1", "code":"Numpad1", "windowsVirtualKeyCode":97, "nativeVirtualKeyCode":97, "location":3, "duration_ms":960}
+  ],
+  "result": "P2 confirmation did not advance to helper phase in this QA export; no I/O/N5/N6 action claim is made.",
+  "boundary": "The package has the documented full-roster availability JSON and the real cursor path was observed. The remaining issue is a reproducible P2 Numpad1 delivery/confirmation mismatch in this isolated export; production roster and mappings were not changed."
+}

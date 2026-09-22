@@ -1,0 +1,27 @@
+{
+  "format": "byakuya-audio-gap-reachability-r02",
+  "fixture": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/fixtures-full/byakuya-455-bishaAir-trade.json",
+  "fixture_sha256": "319b86056708a23f48b496c07ab34c60454c637e0c2ab3a7a23e44a4cea1d337",
+  "godot_runtime": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "normal_advance": true,
+  "direct_frame_jump": false,
+  "ticks": 300,
+  "max_observed_source_frame": 539,
+  "p2_hit_settlement_observed": true,
+  "target_frames": {
+    "887": false,
+    "934": false,
+    "944": false,
+    "963": false
+  },
+  "source_paths": {
+    "887": "scripts/fighter/Byakuya.json:DefineSprite_631/frame_887/DoAction.as onBeHit(true)",
+    "934": "scripts/fighter/Byakuya.json:DefineSprite_631 timeline frame 934 StartSound soundId 44; label 起身; no exact-frame DoAction",
+    "944": "scripts/fighter/Byakuya.json:DefineSprite_631 timeline frame 944 StartSound soundId 52; no exact-frame DoAction",
+    "963": "scripts/fighter/Byakuya.json:DefineSprite_631 timeline frame 963 StartSound soundId 619; depth 27 symbol 618 placed at frame 958; no exact-frame DoAction"
+  },
+  "interpretation": "The trade tape naturally reaches the opponent hit branch (Godot p2 frame 739/752), but does not make Byakuya the receiver or advance the Byakuya recovery/intro children to the four source frames. No audio parity claim is made.",
+  "status": "historical_unreached_trade_walk",
+  "superseded_by": "reachability-r01.json",
+  "scope_note": "Base-form Byakuya DefineSprite_631 only. Historical target mappings were corrected here; these four targets are not transformation-form paths."
+}

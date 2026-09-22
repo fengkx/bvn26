@@ -1,0 +1,16 @@
+{
+  "scope": "shared HUD source-first audit",
+  "source_swf": "game/main.swf",
+  "source_sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+  "five_questions": {
+    "frame_script": "scripts/main.json:DefineSprite_1774/frame_1/DoAction.as qitiao() uses qt.gotoAndStop(round(ql)+1) and bss.gotoAndStop(floor(ql/100)+1); scripts/main.json:DefineSprite_1813/frame_1/DoAction.as owns time().",
+    "placements": "The active HUD root is game/main.swf:DefineSprite_1815/frame_1. Source load mapping is P1=character 1782 at depth 17 with matrix (0.6065521,0.6065521,-651,8049), and P2=character 1774 at depth 1 with matrix (-0.6065521,0.6065521,12658,8049). The P1 wrapper uses bss 1781; P2 uses bss 1773. Both place background 1748 and qt 1764 at (1674,580) twips, with bss at (1094,160) twips; exported in generated/main/energy/presentation.json.",
+    "exit_behavior": "qt and bss remain on their selected source frames; their parent wrappers have no synthetic frame fallthrough. The timer callback remains an interval callback and is gated by zhanting, KO, and modo.",
+    "invariants": "ql index is round(ql)+1, stock index is floor(ql/100)+1, ql callback interval is 300ms; the runtime HUD currently leaves ql sampling timing unchanged pending replay evidence. Timer decrements once per 1000ms only while zhanting=false, both fighters alive, and modo!=4.",
+    "same_input": "333 same fixture r12 reaches source ql=300, qt=301, bss=4 and nested child frame10. The r12 Godot render applies source PNG origins (1759 minX=6 twips, 1773 minX=-13 twips) and keeps the P2 wrapper inside the viewport. The 300ms qitiao callback and nested-child pause semantics remain runtime-pending."
+  },
+  "generated": "godot/generated/main/energy/presentation.json",
+  "build_command": "python3 tools/importer/build_energy_presentation.py --source-swf game/main.swf --ffdec-jar /private/tmp/ffdec-26.2.1/ffdec-cli.jar --output godot/generated/main/energy",
+  "render_probe": "Godot 4.7.2 GUI visual probe, fixture 333, output evidence/characters/byakuya/audiovisual-r06/godot-333-gui-r12/godot-600x400.png; current energy/importer/presentation hashes are in that directory sha256.txt.",
+  "acceptance_boundary": "Source-authored energy assets, qt301 display-list layers, PNG origins, P1/P2 placement matrices, and focused GUI geometry are implemented and rechecked in r12. The source qitiao 300ms callback and nested child behavior during zhanting/pause remain pending; countdown runtime remains unchanged. This is focused HUD evidence, not full visual parity."
+}

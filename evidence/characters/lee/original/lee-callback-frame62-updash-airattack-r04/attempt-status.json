@@ -1,0 +1,94 @@
+{
+  "status": "source_callback_path_observed",
+  "acceptance": "original_flash_source_capture_only",
+  "fixture_id": "lee-callback-frame62-updash-airattack-r04",
+  "run_id": "lee-callback-frame62-updash-airattack-r04",
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "dash"
+      ],
+      "start": 10,
+      "end": 31
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 34,
+      "end": 38
+    }
+  ],
+  "bindings": {
+    "p1.attack": "j=74",
+    "p1.up": "w=87",
+    "p1.dash": "l=76"
+  },
+  "first_state": {
+    "fight_tick": 0,
+    "p1_hp": 1000,
+    "p1_ql": 300,
+    "p1_touch": true,
+    "p1_touchFloor": null
+  },
+  "observed_path": [
+    {
+      "fight_tick": 35,
+      "frame": 121,
+      "sequence": 6505,
+      "y": -237.0,
+      "touch": false
+    },
+    {
+      "fight_tick": 36,
+      "frame": 122,
+      "sequence": 6538,
+      "y": -227.0,
+      "touch": false
+    },
+    {
+      "fight_tick": 41,
+      "frame": 128,
+      "sequence_enter": 6738,
+      "sequence_exit": 6739,
+      "exit_frame": 50,
+      "y": -177.0,
+      "touch": false
+    },
+    {
+      "fight_tick": 42,
+      "frame": 50,
+      "sequence": 6741,
+      "y": -167.0,
+      "touch": false
+    },
+    {
+      "fight_tick": 53,
+      "frame": 62,
+      "sequence_enter": 7162,
+      "sequence_exit": 7163,
+      "exit_frame": 50,
+      "y": -57.0,
+      "touch": false
+    },
+    {
+      "fight_tick": 54,
+      "frame": 50,
+      "sequence": 7165,
+      "y": -47.0,
+      "touch": false
+    }
+  ],
+  "J_numeric_read": {
+    "sequence": 6479,
+    "fight_tick": 34,
+    "value": "_level0.game.p1.mc,74,true"
+  },
+  "limits": [
+    "No Godot same-input comparison in this capture.",
+    "Frame 62 callback transitions back to frame 50; this proves source entry/exit, not a port-parity claim."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "format": "bounded-ai-current-runtime-r01",
+  "status": "validated",
+  "scope": "bounded Ready-checkpoint CPU replay; not full AI parity",
+  "character": "byakuya",
+  "horizon": 180,
+  "source": "evidence/characters/byakuya/ai-clean-r01/events.jsonl",
+  "source_sha256": "239df0ce488a05ac552b1e9436913193f5814fb6bc1546847bc3a2deda4e36bf",
+  "replay": "evidence/characters/byakuya/ai-clean-r01/current-runtime-r01/godot-replay.json",
+  "replay_sha256": "2f60f091b732c6df4c64e7295ddd53f492d5e63822f6ac54e715497504360c09",
+  "acceptance": "evidence/characters/byakuya/ai-clean-r01/current-runtime-r01/acceptance.json",
+  "acceptance_sha256": "31f8275f8f056cc2442f4a9cc362228eb58b5b3bb02b10a1f8fe75a9edab5661",
+  "random_original_index_first": 57,
+  "random_original_index_last": 201,
+  "random_local_cursor_offset": 56,
+  "random_scope_complete": true,
+  "clock_matched": true,
+  "state_rows": 362,
+  "geometry_rows": 362,
+  "helper_rows": 362,
+  "runtime_hashes": {
+    "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "godot/tests/ai_continuous_checkpoint_reference.gd": "51c69e5a311944b1ce27abd632f0d848ed48945741cd2d53a8f6d47f6ed82ac5",
+    "godot/tests/lee_ai_continuous_checkpoint_reference.gd": "9eea6dd1177dcd31e5dfa7229c050745f82dcd1f73aeb468221277ec905727ef"
+  },
+  "runner_sha256": "51c69e5a311944b1ce27abd632f0d848ed48945741cd2d53a8f6d47f6ed82ac5",
+  "notes": [
+    "Existing source random and clock tapes reused unchanged.",
+    "No production runtime or expected output was changed.",
+    "This is bounded CPU evidence only; it does not establish full AI, boot/intro, or Web parity."
+  ]
+}

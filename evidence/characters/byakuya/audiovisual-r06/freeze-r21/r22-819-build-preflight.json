@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "target_frame": 819,
+  "build": "/private/tmp/byakuya-freeze-r22-819-build",
+  "run_id": "byakuya-freeze-r22-819",
+  "fixture_id": "byakuya-819-zhaohuan-air_target",
+  "main_swf_sha256": "26880d9acdde16c9aa279433d46c9a28c631c0629989820ea593a48ff0610547",
+  "frame10_paths": "validated",
+  "driver": "tools/probes/freeze_capture_native.py",
+  "screenshot_sampling": "driver waits for a fresh completed visual_snapshot block before each screenshot; rereads after screenshot; archives post-event logs and screenshot-states.json; strict monotonic end_seq",
+  "capture_status": "not_started_desktop_token_required",
+  "case_sha256": "112badf5f042feac4b95a54724ea68dc5fa82661b0bb810d173176957ea8aa07",
+  "fixture": {
+    "id": "byakuya-819-zhaohuan-air_target",
+    "p1": "byakuya",
+    "p2": "yihu",
+    "helpers": [
+      "魂",
+      "魂"
+    ],
+    "target_frame": 819,
+    "inputs": "p1 summon ticks10-13; p2 jump ticks5-6"
+  },
+  "instrumentation_sha256": "62ffd986c9b5e38ff768e0e4aa4cf84794f9e1a39216a095cc04c8b8642edd42",
+  "capture_observer": "capture-only aiVisualSnapshot interval emits visual_snapshot_begin/clip/end every 100ms after freeze; driver waits for fresh completed snapshot before each screenshot and requires strictly increasing end_seq plus identical states"
+}

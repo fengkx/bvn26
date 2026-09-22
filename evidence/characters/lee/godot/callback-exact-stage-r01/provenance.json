@@ -1,0 +1,28 @@
+{
+  "status": "bounded_native_callback_capture_complete",
+  "source_fixture_path": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/fixture.json",
+  "source_fixture_sha256": "bb982119ae72c6480e8bceab57228739a8969d31ecb85a2ff3df85c5115fd0c4",
+  "native_fixture_path": "evidence/characters/lee/godot/callback-exact-stage-r01/lee-callback-738-rooftop-walkoff-r04.godot-fixture.json",
+  "native_fixture_sha256": "da4bace843fb613259f2db310edb8dd849b636584bbdaf15cdc910351289dffa",
+  "stage": "楼顶",
+  "stage_source": "source build configuration.stage plus stage-build-overlay.diff; source fixture remains unchanged",
+  "source_build_path": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/build.json",
+  "source_build_sha256": "6f456f7b13889f701f7fbf018ca91182c2311eb7d4f6df9d62e85deee6b0150e",
+  "stage_overlay_path": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/stage-build-overlay.diff",
+  "stage_overlay_sha256": "c2a89b5cd6f64fb279a23e86611f2966218dc29c314b40203158d406b9975ed3",
+  "native_runner": "godot/tests/move_case_reference.gd now loads fixture.stage, defaulting to 现世",
+  "preflight": "1-tick headless run loaded res://generated/stages/catalog/frame_18; metadata tick0 P1 Lee x=500 y=-482 touch=true and P2 x=1250 y=-482. Not a full callback/state comparison.",
+  "source_run_id": "lee-callback-738-rooftop-walkoff-r04",
+  "source_raw": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/events.jsonl",
+  "scope_limit": "Callback-only four-field result; no full-state or visual parity. Native callback harness calls _load_selected_stage(fixture.stage); separate move_case_reference stage preflight verifies selected stage catalog directory and tick-zero spawn.",
+  "native_callback_capture": {
+    "fixture_path": "evidence/characters/lee/godot/callback-exact-stage-r01/lee-callback-738-rooftop-walkoff-r04.native-fixture-r02.json",
+    "fixture_sha256": "4ab32aebc5a143c4d1633655bede5427960d5421d6606bceebadf01f52f73007",
+    "engine_log_path": "evidence/characters/lee/godot/callback-exact-stage-r01/engine-r02.log",
+    "engine_log_sha256": "4e4a53aae21f92f5bbca69289bb5ddf8cd6ec2019da588008c04575a3dfe0137",
+    "output_path": "evidence/characters/lee/godot/callback-exact-stage-r01/out/lee-callback-738-rooftop-walkoff-r04-r02.json",
+    "output_sha256": "1e467b307da5081647e6a72743505d745f67bb65dbd85f001de2f4c306b3bea3",
+    "callback_comparison": "evidence/characters/lee/godot/callback-exact-stage-r01/comparison-r01.json",
+    "scope": "Two P1 frame-738 callback events compared on source_frame, entering, decoded action and ql only. Source fight_tick 109 and native fixture_tick 110 are retained as separate clocks; timing not compared."
+  }
+}

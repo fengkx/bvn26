@@ -1,0 +1,30 @@
+{
+  "format": "byakuya-intro-963-godot-clock-r01",
+  "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot -s res://tests/byakuya_audio_walk_probe.gd -- <fixture> <output>",
+  "fixture": "../byakuya-intro-963-r01/fixture.json",
+  "probe": "godot/tests/byakuya_audio_walk_probe.gd",
+  "probe_sha256": "abe4825d6652a11f90cf1da6107ce7acbc42b2f43d265e419a1183af56a034af",
+  "runtime_scope": "probe-only; production runtime unchanged",
+  "audio_walk_sha256": "12b6d6c75d31b18289ca290be2b6276fef12e2ec49fa00f504a20740e5d4885b",
+  "anchors": {
+    "godot_intro_step2_presentation_tick": 30,
+    "godot_963_presentation_tick": 34,
+    "godot_963_relative_to_step2": 4,
+    "godot_ready_boundary_fight_start_tick": 276,
+    "godot_619_created_presentation_tick": 34,
+    "godot_619_created_source_frame": 963,
+    "godot_source_frame_958_queue_signal_tick": 29,
+    "godot_source_frame_963_queue_signal_tick": 34,
+    "godot_frame_interval_958_to_963": 5,
+    "godot_step2_and_frame958_same_tick": true,
+    "godot_step1_presentation_tick": 15,
+    "godot_step3_presentation_tick": 75,
+    "godot_step4_presentation_tick": 150
+  },
+  "notes": [
+    "source_frame_events are signal observations from FighterRuntime queue, not synthesized frames",
+    "Godot queue signals show frame958 at presentation_tick29 and frame963 at34, five ticks apart",
+    "Flash raw shows frame958 display_tick202 and frame963 display_tick207, also five ticks apart",
+    "absolute step/Ready offsets include loader/state gate and are not aligned by fight_tick"
+  ]
+}

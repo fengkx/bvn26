@@ -1,0 +1,148 @@
+{
+  "schema": "lee-callback-738-rooftop-four-field-r01",
+  "status": "exact_0diff",
+  "scope": "Same-build, same-input, P1 frame-action callback comparison on the original rooftop stage. Only source_frame, entering, action and decoded ql are accepted; no full-state, visual or clock parity is claimed.",
+  "source": {
+    "run_id": "lee-callback-738-rooftop-walkoff-r04",
+    "raw": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/events.jsonl",
+    "raw_sha256": "b8cf3219d56f491391b8c18c523b8335ba261f612ba8ec22d51af9503764cec6",
+    "build": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/build.json",
+    "build_sha256": "6f456f7b13889f701f7fbf018ca91182c2311eb7d4f6df9d62e85deee6b0150e",
+    "fixture": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/fixture.json",
+    "fixture_sha256": "bb982119ae72c6480e8bceab57228739a8969d31ecb85a2ff3df85c5115fd0c4",
+    "instrumentation": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/instrumentation.diff",
+    "instrumentation_sha256": "8eff96e440a79dc9ed01cda2c31ab7d4b1af114f2cc57fdfff226fa3ac0a5b69",
+    "stage_overlay": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/stage-build-overlay.diff",
+    "stage_overlay_sha256": "c2a89b5cd6f64fb279a23e86611f2966218dc29c314b40203158d406b9975ed3",
+    "main_swf_sha256": "e458cde1e6bf1398e0858af36a7b620367e87fe3184b07fd8fbd543c3138caec",
+    "lee_swf_sha256": "7719dda3eaa55ebd96a3b682f45e8f592f3e0e837b620af09ad2a4712015ce3d",
+    "rows": [
+      {
+        "slot": "p1",
+        "source_frame": 738,
+        "entering": true,
+        "current_frame": 738,
+        "action": 3.0,
+        "ql": 0.0,
+        "sequence": 8524,
+        "fight_tick": 109,
+        "display_tick": 564
+      },
+      {
+        "slot": "p1",
+        "source_frame": 738,
+        "entering": false,
+        "current_frame": 723,
+        "action": 3.0,
+        "ql": 0.0,
+        "sequence": 8525,
+        "fight_tick": 109,
+        "display_tick": 564
+      }
+    ]
+  },
+  "native": {
+    "fixture": "evidence/characters/lee/godot/callback-exact-stage-r01/lee-callback-738-rooftop-walkoff-r04.native-fixture-r02.json",
+    "fixture_sha256": "4ab32aebc5a143c4d1633655bede5427960d5421d6606bceebadf01f52f73007",
+    "engine_log": "evidence/characters/lee/godot/callback-exact-stage-r01/engine-r02.log",
+    "engine_log_sha256": "4e4a53aae21f92f5bbca69289bb5ddf8cd6ec2019da588008c04575a3dfe0137",
+    "output": "evidence/characters/lee/godot/callback-exact-stage-r01/out/lee-callback-738-rooftop-walkoff-r04-r02.json",
+    "output_sha256": "1e467b307da5081647e6a72743505d745f67bb65dbd85f001de2f4c306b3bea3",
+    "probe_sha256": "3af640b2aac38fa6fae791626a78fb64815dc23402f21ed017f57ef3be05955e",
+    "move_case_runner_sha256": "3a3f86b7f9bdc8a54559d588b0633a0943b3138cfa229f3360a6acd9871b6a7d",
+    "runtime_hashes": {
+      "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+      "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+      "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+      "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+      "godot/generated/main/execution_profile.json": "43362405b51863a8ef19b92ff906eab6f3c65c175570476f05f213894b8ae2f0"
+    },
+    "stage_preflight": {
+      "status": "bounded_native_callback_capture_complete",
+      "source_fixture_path": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/fixture.json",
+      "source_fixture_sha256": "bb982119ae72c6480e8bceab57228739a8969d31ecb85a2ff3df85c5115fd0c4",
+      "native_fixture_path": "evidence/characters/lee/godot/callback-exact-stage-r01/lee-callback-738-rooftop-walkoff-r04.godot-fixture.json",
+      "native_fixture_sha256": "da4bace843fb613259f2db310edb8dd849b636584bbdaf15cdc910351289dffa",
+      "stage": "楼顶",
+      "stage_source": "source build configuration.stage plus stage-build-overlay.diff; source fixture remains unchanged",
+      "source_build_path": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/build.json",
+      "source_build_sha256": "6f456f7b13889f701f7fbf018ca91182c2311eb7d4f6df9d62e85deee6b0150e",
+      "stage_overlay_path": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/stage-build-overlay.diff",
+      "stage_overlay_sha256": "c2a89b5cd6f64fb279a23e86611f2966218dc29c314b40203158d406b9975ed3",
+      "native_runner": "godot/tests/move_case_reference.gd now loads fixture.stage, defaulting to 现世",
+      "preflight": "1-tick headless run loaded res://generated/stages/catalog/frame_18; metadata tick0 P1 Lee x=500 y=-482 touch=true and P2 x=1250 y=-482. Not a full callback/state comparison.",
+      "source_run_id": "lee-callback-738-rooftop-walkoff-r04",
+      "source_raw": "evidence/characters/lee/original/lee-callback-738-rooftop-walkoff-r04/events.jsonl",
+      "scope_limit": "Callback-only four-field result; no full-state or visual parity. Native callback harness calls _load_selected_stage(fixture.stage); separate move_case_reference stage preflight verifies selected stage catalog directory and tick-zero spawn.",
+      "native_callback_capture": {
+        "fixture_path": "evidence/characters/lee/godot/callback-exact-stage-r01/lee-callback-738-rooftop-walkoff-r04.native-fixture-r02.json",
+        "fixture_sha256": "4ab32aebc5a143c4d1633655bede5427960d5421d6606bceebadf01f52f73007",
+        "engine_log_path": "evidence/characters/lee/godot/callback-exact-stage-r01/engine-r02.log",
+        "engine_log_sha256": "4e4a53aae21f92f5bbca69289bb5ddf8cd6ec2019da588008c04575a3dfe0137",
+        "output_path": "evidence/characters/lee/godot/callback-exact-stage-r01/out/lee-callback-738-rooftop-walkoff-r04-r02.json",
+        "output_sha256": "1e467b307da5081647e6a72743505d745f67bb65dbd85f001de2f4c306b3bea3",
+        "callback_comparison": "evidence/characters/lee/godot/callback-exact-stage-r01/comparison-r01.json",
+        "scope": "Two P1 frame-738 callback events compared on source_frame, entering, decoded action and ql only. Source fight_tick 109 and native fixture_tick 110 are retained as separate clocks; timing not compared."
+      }
+    },
+    "rows": [
+      {
+        "slot": "p1",
+        "source_frame": 738,
+        "entering": true,
+        "current_frame": 738,
+        "action": 3.0,
+        "ql": 0.0,
+        "fixture_tick": 110,
+        "tick": 416
+      },
+      {
+        "slot": "p1",
+        "source_frame": 738,
+        "entering": false,
+        "current_frame": 723,
+        "action": 3.0,
+        "ql": 0.0,
+        "fixture_tick": 110,
+        "tick": 416
+      }
+    ],
+    "script_errors": []
+  },
+  "fixture_inputs_setup_helpers_stage_match": true,
+  "fields": [
+    "source_frame",
+    "entering",
+    "action",
+    "ql"
+  ],
+  "source_comparison": [
+    {
+      "source_frame": 738,
+      "entering": true,
+      "action": 3.0,
+      "ql": 0.0
+    },
+    {
+      "source_frame": 738,
+      "entering": false,
+      "action": 3.0,
+      "ql": 0.0
+    }
+  ],
+  "native_comparison": [
+    {
+      "source_frame": 738,
+      "entering": true,
+      "action": 3.0,
+      "ql": 0.0
+    },
+    {
+      "source_frame": 738,
+      "entering": false,
+      "action": 3.0,
+      "ql": 0.0
+    }
+  ],
+  "clock_comparison": "not performed; source fight_tick 109 and native fixture_tick 110 are retained as separate clocks"
+}

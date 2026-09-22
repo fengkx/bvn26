@@ -1,0 +1,37 @@
+{
+  "schema": "byakuya.provenance-boundary-audit.v1",
+  "current_matrix": {
+    "manifest": "evidence/characters/byakuya/godot/full-current-manifest-r02.json",
+    "runtime_main_sha256": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot_outputs": 178,
+    "current_original_raw_validated": 2,
+    "current_original_raw_pending": 176
+  },
+  "historical_inventory": {
+    "path": "evidence/characters/byakuya/fixture-inventory-r03.json",
+    "inventory_revision": "inventory-r07",
+    "counts": {
+      "disabled-negative": 11,
+      "source_matched": 81,
+      "godot-only": 86
+    },
+    "meaning": "source_matched means an old boundary manifest has original raw plus Godot compare at that boundary runtime/generated hash; it does not mean current runtime was re-compared. godot-only means Godot execution only. disabled-negative means intentionally closed transformation."
+  },
+  "historical_boundary_manifests": {
+    "boundary-r04/manifest.json": 5,
+    "boundary-r02/manifest.json": 15,
+    "boundary-r05/manifest.json": 5,
+    "boundary-r06/manifest.json": 5,
+    "boundary-r07/manifest.json": 41,
+    "boundary-r03/manifest.json": 24
+  },
+  "accepted_current_source_cases": [
+    "byakuya-814-zhaoHuan-neutral",
+    "byakuya-20-rush-neutral"
+  ],
+  "invalid_current_source_case": {
+    "id": "byakuya-690-bishaSuper-energy_exact",
+    "reason": "old raw hp1 versus current fixture/native hp1000 at tick0"
+  },
+  "rule": "Do not relabel the 81 historical source_matched cases as current validated until their original raw and fixture are re-bound and strict-compared against current hashes."
+}

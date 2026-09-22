@@ -1,0 +1,44 @@
+{
+  "format": "byakuya-audio-late-branch-audit-v2",
+  "scope": "source-path audit only; no audio parity claim for unreachable branches",
+  "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "searched_raw": {
+    "matrix_capture_dirs": ["/tmp/byakuya-matrix-capture-r07-all", "/tmp/byakuya-matrix-capture-retry-r08"],
+    "persisted_evidence_glob": "evidence/characters/byakuya/**/*.jsonl.gz",
+    "result": "none of the archived original traces contains a reached source_frame 887, 934, 944, or 963"
+  },
+  "cases": [
+    {
+      "source_frame": 887,
+      "sound_id": 581,
+      "source_path": "DefineSprite_631/frame_887/DoAction.as",
+      "source": "onBeHit(true);",
+      "branch": "fighter hit-receive / 击飞 branch",
+      "status": "source_trace_missing"
+    },
+    {
+      "source_frame": 934,
+      "sound_id": 44,
+      "source_path": "DefineSprite_1052/frame_934/DoAction.as",
+      "branch": "source timeline recovery segment; no persisted DoAction entry",
+      "status": "source_trace_missing"
+    },
+    {
+      "source_frame": 944,
+      "sound_id": 52,
+      "source_path": "DefineSprite_1052/frame_944/DoAction.as",
+      "source": "gotoAndStop(\"站立\"); play();",
+      "branch": "defence / recovery return-to-stand",
+      "status": "source_trace_missing"
+    },
+    {
+      "source_frame": 963,
+      "sound_id": 619,
+      "source_path": "DefineSprite_1052/frame_963/PlaceObject2_633_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "beida();",
+      "branch": "hit / 起身 presentation child enterFrame",
+      "status": "source_trace_missing"
+    }
+  ],
+  "required_next_evidence": "A valid same-input original capture that reaches each source branch, then a normal fixture walk recording AudioStreamPlayer start/stop at the corresponding source frame. Resource files and static frame-gap tables are insufficient."
+}

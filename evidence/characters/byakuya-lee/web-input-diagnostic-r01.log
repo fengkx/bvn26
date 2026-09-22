@@ -1,0 +1,29 @@
+QA input diagnostic r01 (temporary IAB package; production roster unchanged)
+
+Packages:
+- diag3: /private/tmp/bvn-qa-inputdiag3/index.pck
+  sha256=c00263d01090abc0ccf682f969ade3625cd4c4aa1d1106b2c49038d22f574fa1
+- diag4: /private/tmp/bvn-qa-inputdiag4/index.pck
+  sha256=481760b6534f61ae061710d13c97e99e0b2b83e387182cfa478ff386362f23117
+- diag5: /private/tmp/bvn-qa-inputdiag5/index.pck
+  sha256=90feb462b50ec45d7a4f9bf6179120581648009fcdb9e2a5b87494436b6f2668
+
+Godot constants (fixed 4.7.2 binary):
+KEY_J=74
+KEY_KP_1=4194439
+
+Raw QA_PROBE_INPUT observations from diag4 IAB engine logs:
+method=KP_1 keycode=49 physical_keycode=4194439 pressed=true
+method=KP_1 keycode=49 physical_keycode=4194439 pressed=false
+method=Numpad1 keycode=49 physical_keycode=4194439 pressed=true
+method=Numpad1 keycode=49 physical_keycode=4194439 pressed=false
+method=1 keycode=49 physical_keycode=49 pressed=true
+method=1 keycode=49 physical_keycode=49 pressed=false
+method=j keycode=74 physical_keycode=74 pressed=true
+method=j keycode=74 physical_keycode=74 pressed=false
+
+Interpretation:
+The IAB CUA pressKey path reaches Godot InputEventKey and confirms the
+physical Numpad1 mapping. The observed pressKey calls are paired down/up
+events; this artifact does not claim a six-physics-tick hold. A completed
+VsHuman helper transition or pause/resume flow is outside this diagnostic.

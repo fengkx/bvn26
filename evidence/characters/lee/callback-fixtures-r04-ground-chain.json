@@ -1,0 +1,138 @@
+{
+  "id": "lee-callback-ground-chain-exploratory-r04",
+  "fighter": "lee",
+  "slot": "p1",
+  "label": "砍1",
+  "scenario": "neutral_exploratory_multiedge",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 35,
+      "end": 38
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 60,
+      "end": 63
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 85,
+      "end": 88
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 110,
+      "end": 113
+    }
+  ],
+  "target_frames": [
+    157,
+    180
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "exploratory_real_input",
+  "fighters": {
+    "p1": "lee",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "source_callback_targets": [
+    {
+      "source_sprite_id": 518,
+      "source_frame": 172,
+      "source_path": "DefineSprite_518/frame_172/DoAction.as",
+      "action": "砍1",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 193,
+      "source_path": "DefineSprite_518/frame_193/DoAction.as",
+      "action": "砍2",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 197,
+      "source_path": "DefineSprite_518/frame_197/DoAction.as",
+      "action": "砍2",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 235,
+      "source_path": "DefineSprite_518/frame_235/DoAction.as",
+      "action": "砍3",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 240,
+      "source_path": "DefineSprite_518/frame_240/DoAction.as",
+      "action": "砍3",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 268,
+      "source_path": "DefineSprite_518/frame_268/DoAction.as",
+      "action": "砍4",
+      "kind": "frame_action",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 448,
+      "source_path": "DefineSprite_518/frame_448/DoAction.as",
+      "action": "砍技1",
+      "kind": "frame_action",
+      "slot": "p1"
+    }
+  ],
+  "callback_group": "ground-chain",
+  "callback_purpose": "exploratory multi-edge source reachability; no target precondition",
+  "preflight_status": "fight_input_preflight",
+  "callback_observer": "read-only source callback observer; no schedule/input changes"
+}

@@ -1,0 +1,23 @@
+--- tools/probes/as2/ai_reference/bootstrap.as
++++ temporary stage overlay/bootstrap.as
+@@ -71,7 +71,7 @@
+ p2selt = "一护";
+ p1sf = "我爱罗";
+ p2sf = "魂";
+-curStage = "现世";
++curStage = "楼顶";
+ modo = 2;
+ p1cpu = false;
+ p2cpu = true;
+
+--- tools/probes/build_ai_reference.py
++++ temporary stage overlay/build_ai_reference.py
+@@ -608,7 +608,7 @@
+     report = {
+         "run_id": run_id, "status": "built_not_run", "frames_after_ready": frames,
+         "configuration": {"modo": mode_probe or 2, "p1": p1_character, "p2": p2_character, "p2cpu": mode_probe is None,
+-                          "AI": 5, "stage": "现世",
++                          "AI": 5, "stage": "楼顶",
+                           "p1sf": selected_helper_ids["p1"],
+                           "p2sf": selected_helper_ids["p2"]},
+         "sources_sha256": sources, "ffdec_sha256": sha(ffdec),

@@ -1,0 +1,27 @@
+{
+  "run": "r06",
+  "pck_sha256": "d921f9a062bebc3bc05a9237b8c959801f5e18b44d594de44d8e20801c6bf23c",
+  "browser": "Chrome headless=new with swiftshader, independent profile",
+  "sequence": "canvas focus; J held 320ms x6; J helper confirm; J map confirm; Enter pause; 3s; Enter resume; J held",
+  "screenshots": [
+    "step0 title/loading",
+    "step1 title",
+    "step2 main menu",
+    "step3 fighter selection",
+    "step4 fighter selection P1/P2",
+    "step5 helper selection",
+    "step6 helper selection second view",
+    "step7 map selection",
+    "step8 battle HUD",
+    "pause-a menu visible",
+    "pause-b menu visible after 3s",
+    "pause-c resumed",
+    "attack-j post-J"
+  ],
+  "observed": {
+    "battle_roles": "default 鸣人/一护 path; screenshot HUD shows fighter portraits and timer",
+    "pause": "pause-a and pause-b both show timer 32 and pause menu; pause-c shows menu gone and timer 32",
+    "resume_followup": "attack-j shows timer 31 after subsequent J hold; tool time between screenshots is recorded only by script execution, so no instant-timing claim"
+  },
+  "scope": "Real UI menu-to-battle and bounded pause/resume visual smoke; not full Web matrix or source timing parity."
+}

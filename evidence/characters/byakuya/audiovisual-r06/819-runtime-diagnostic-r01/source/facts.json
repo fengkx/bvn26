@@ -1,0 +1,67 @@
+{
+  "source_run": "byakuya-effect-phase-r04",
+  "display_tick": 472,
+  "fight_tick": 16,
+  "target": "root.game.p1.mc frame819",
+  "helper": "root.game.p1fz frame2",
+  "effect": "root.game.layer_effect.xgmc0 undefined in same root observer at target; frame2 first observed next callback display473/fight17",
+  "helper_source_script": "game/fighter/fz/kon.swf frame_2/DoAction.as",
+  "effect_class": "DefineSprite_379_XG_fzcc",
+  "effect_start_frame": 1,
+  "effect_target_frame": 2,
+  "godot_probe": "godot/tests/byakuya_819_runtime_probe.gd",
+  "source_effect_path": "root.game.layer_effect.xgmc0",
+  "source_effect_character_id": 362,
+  "source_effect_timeline": "DefineSprite_379_XG_fzcc",
+  "source_effect_matrix_twips": {
+    "translateX": -651,
+    "translateY": -1190,
+    "scaleX": 1,
+    "scaleY": 1,
+    "rotateSkew0": 0,
+    "rotateSkew1": 0
+  },
+  "source_helper_path": "root.game.p1fz",
+  "source_helper_character_id": 2,
+  "source_helper_local_frame": 2,
+  "godot_effect_path": "/root/Main/Game/@Node2D@6280",
+  "godot_effect_directory": "res://generated/effects/XG_fzcc",
+  "godot_effect_frame_at_target": 1,
+  "godot_effect_frame_after_one_display": 2,
+  "godot_phase_probe": {
+    "observer_and_return_same": true,
+    "relative_fight_tick_15": {
+      "p1_frame": 819,
+      "helper_frame": 2,
+      "effect_frame": 1
+    },
+    "relative_fight_tick_16": {
+      "p1_frame": 820,
+      "helper_frame": 3,
+      "effect_frame": 2
+    }
+  },
+  "source_observation": {
+    "display_tick": 472,
+    "fight_tick": 16,
+    "p1_frame": 819,
+    "helper_frame": 2,
+    "effect_frame": null
+  },
+  "source_event_order": {
+    "helper_spawn_display_tick": 471,
+    "helper_spawn_fight_tick": 15,
+    "target_state_display_tick": 472,
+    "target_state_fight_tick": 16,
+    "effect_first_observed_display_tick": 473,
+    "effect_first_observed_fight_tick": 17
+  },
+  "first_difference": "same-callback source observer sees no xgmc0 at p1 frame819/helper2; current reverted Godot observes effect frame1 at p1 frame819/helper2; source first observes effect frame2 next callback",
+  "shared_runtime_changed": false,
+  "runtime_fix_scope": "experimental dispatch-phase fix reverted; no production runtime change",
+  "source_effect_first_observed": {
+    "display_tick": 473,
+    "fight_tick": 17,
+    "effect_frame": 2
+  }
+}

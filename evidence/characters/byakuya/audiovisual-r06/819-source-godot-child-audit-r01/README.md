@@ -1,0 +1,3 @@
+# Byakuya frame 819 source/Godot child audit
+
+The source frame is `DefineSprite_631/frame_819/DoAction.as` (`doZhaoHuan();`). Five bounded categories are recorded from the generated source timeline: persistent controller clips (`AImain`, `mian`, `jiao`), nested placement at depth 27, the `bdmn` EnterFrame collision clip, energy/action settlement, and placement lifetime. The existing Godot metadata reaches frame 819 with the same explicit Soul/Soul fixture, positions, action, and 300 to 200 energy transition. Its `visual_child_frames` is empty, so this audit does not claim runtime child playhead/render parity; a GUI artifact is still required.

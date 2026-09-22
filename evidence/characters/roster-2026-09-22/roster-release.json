@@ -1,0 +1,107 @@
+{
+  "format": "bvn26-base-roster-release-evidence-v1",
+  "date": "2026-09-22",
+  "authorization": "User requested opening Byakuya and Lee base forms based on major-state alignment; no other forms were opened.",
+  "locked_source": {
+    "path": "game/main.swf",
+    "sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d"
+  },
+  "jpexs": {
+    "version": "26.2.1",
+    "jar_sha256": "090ab695053ad94cba6408574c7d7eea20ec60b6ae789ee6056a23f45106762f"
+  },
+  "generators": {
+    "tools/importer/build_character_selection.py": "b35da5439b5b135607d1c446a550d307dd4ed4469fcc475bb5e9c8be522ff000",
+    "tools/importer/build_selection_portraits.py": "9eb515df1952b47cadbd00f03bdba83bf5b058d938c5dd2c6ecd47577bfa307c"
+  },
+  "runtime_registry": {
+    "path": "godot/generated/main/character_selection/available.json",
+    "sha256": "94ada573ef08a92b057435401f475d294929d4dd76a33dcb656098131e9258c5",
+    "fighters": 11,
+    "helpers": 4,
+    "added_base_forms": {
+      "白哉": "byakuya",
+      "小李": "lee"
+    }
+  },
+  "source_art": {
+    "portrait_sprite_id": 1346,
+    "footer_template_character_id": 670,
+    "new_portraits": {
+      "白哉": {
+        "textures": [
+          "portrait-9-1.png",
+          "portrait-9-2.png",
+          "portrait-9-3.png",
+          "portrait-9-4.png",
+          "portrait-9-5.png"
+        ],
+        "bounds_twips": [
+          -1488,
+          140,
+          3516,
+          8830
+        ],
+        "raster_border": 5,
+        "raster_scale": 2,
+        "source_label_frame": 9
+      },
+      "小李": {
+        "textures": [
+          "portrait-10-1.png",
+          "portrait-10-2.png",
+          "portrait-10-3.png",
+          "portrait-10-4.png",
+          "portrait-10-5.png"
+        ],
+        "bounds_twips": [
+          -2874,
+          140,
+          3516,
+          8830
+        ],
+        "raster_border": 5,
+        "raster_scale": 2,
+        "source_label_frame": 28
+      }
+    },
+    "new_footer": {
+      "白哉": {
+        "texture": "footer-name-9.png",
+        "text": "朽木·白哉"
+      },
+      "小李": {
+        "texture": "footer-name-10.png",
+        "text": "李·洛克"
+      }
+    },
+    "portrait_manifest": {
+      "path": "godot/generated/main/character_selection/portraits.json",
+      "sha256": "467e92690f19dc808667880f6310a4624f8339675a36bbfcd742d7b7dc97979e"
+    },
+    "footer_manifest": {
+      "path": "godot/generated/main/character_selection/footer.json",
+      "sha256": "5218a2e9942d6baa77e9a0248eec41859b29fea3fcc3bb818ace19c8a8fd30c6"
+    },
+    "generated_png_sha256": {
+      "godot/generated/main/character_selection/portrait-9-1.png": "8e9a2d3c550e317ef914751534ae8e1ea152ea6abd9627d00e9382443e178979",
+      "godot/generated/main/character_selection/portrait-9-2.png": "30dacf168372041dfd1979297c73a6a05fd9bd611d04b63d5b5c674c7c3e73ff",
+      "godot/generated/main/character_selection/portrait-9-3.png": "ebc5f258754836b6cd18e915a3b079da56b85243c35d1498a404b76aa8be21ef",
+      "godot/generated/main/character_selection/portrait-9-4.png": "64f0112e45bb09deb5522b02bc3908433302365e902f539695b73de7393f04c7",
+      "godot/generated/main/character_selection/portrait-9-5.png": "64f0112e45bb09deb5522b02bc3908433302365e902f539695b73de7393f04c7",
+      "godot/generated/main/character_selection/footer-name-9.png": "ec36781716c46c2e9b2923510edc50ad31bf3ab661ed2a9bcb9e9ccdf20f968c",
+      "godot/generated/main/character_selection/portrait-10-1.png": "24afd2722ac19f7f33b39fe38caef74a713ffa82dfa4e0e09bea9d16067cefa3",
+      "godot/generated/main/character_selection/portrait-10-2.png": "a554bbd4677a3c4cdcc3f23f11f4bfa71c49166c3dbaafd05a7b9906592145d1",
+      "godot/generated/main/character_selection/portrait-10-3.png": "5b20c98d93b8cc9dbb983a378cb7010a1d06ecca9f21bfbe373c4cd3e0af1375",
+      "godot/generated/main/character_selection/portrait-10-4.png": "aeb9b1d57f0fc6db8025dd3dc83f81f12d6491a8ee6b20f092f8deb70d6b60d1",
+      "godot/generated/main/character_selection/portrait-10-5.png": "aeb9b1d57f0fc6db8025dd3dc83f81f12d6491a8ee6b20f092f8deb70d6b60d1",
+      "godot/generated/main/character_selection/footer-name-10.png": "b9fbc06dc23ae31792e807cea2f00caa2a0589f82f54cbe05106de0ec00ae6b2"
+    }
+  },
+  "reproduction": [
+    "python3 tools/importer/export_swf_xml.py --ffdec-jar /path/to/ffdec.jar --output-dir /tmp/main-pinned game/main.swf",
+    "python3 tools/importer/build_selection_portraits.py --workspace /tmp/main-pinned --temporary /tmp/selection-portraits --output godot/generated/main/character_selection --ffdec /path/to/ffdec.jar 鸣人 一护 日番谷 恋次 佐助 卡卡西 樱 露其雅 石田 白哉 小李",
+    "python3 -c \"import sys,json; from pathlib import Path; sys.path.insert(0,'tools/importer'); from build_character_selection import build_available; Path('godot/generated/main/character_selection/available.json').write_text(json.dumps(build_available(),ensure_ascii=False,indent=2)+'\\n')\""
+  ],
+  "scope": "Selector availability only. Base-form combat, AI, visual/audio, native menu and full Web parity remain independently bounded; transform/WKframe forms remain excluded."
+}

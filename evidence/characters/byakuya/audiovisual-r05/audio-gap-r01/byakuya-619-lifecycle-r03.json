@@ -1,0 +1,78 @@
+{
+  "format": "byakuya-619-audio-lifecycle-v1",
+  "status": "bounded_godot_natural_finish_observed",
+  "source": {
+    "timeline": "godot/generated/fighters/byakuya/timeline.json",
+    "scope": "DefineSprite_631",
+    "start_sound": {
+      "source_frame": 963,
+      "sound_id": 619
+    },
+    "explicit_stop_sound_events": 0,
+    "depth_27": {
+      "placed_source_frame": 958,
+      "replaced_source_frame": 1035
+    },
+    "interpretation": "No explicit StopSound/sync-stop tag; playback ends by stream natural completion or player lifecycle."
+  },
+  "asset": {
+    "path": "godot/generated/fighters/byakuya/619.mp3",
+    "sha256": "6882eefa0a2e8cb0b39a51cd0b45011ff7c960bf12ad776e5569654727618e83",
+    "ffprobe_duration_seconds": 0.962
+  },
+  "fixture": {
+    "path": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-intro-963-r01/fixture.json",
+    "sha256": "79a892146fee439db04ac81dc6f7e09f158c4fb74150213b0a5cf3f072936b46",
+    "canonical_frames": 300,
+    "lifecycle_variant": "same input/setup with frames=0 to avoid tight-loop physics starving realtime audio processing"
+  },
+  "probe": {
+    "path": "godot/tests/byakuya_audio_walk_probe.gd",
+    "sha256": "97a69d322684cd596d30cb970a1e4de48676038875c427c3f64fb742373fbc40",
+    "command": "Godot 4.7.2 --headless --audio-driver Dummy --path godot -s res://tests/byakuya_audio_walk_probe.gd -- /private/tmp/byakuya-intro-963-audio-lifetime-fixture-frames0.json /private/tmp/byakuya-intro-audio-lifetime-wall-r04",
+    "output_sha256": "dde5461cae78448deb682431938c6c8ccd063bea132cf3bc5784cc2856a664ef"
+  },
+  "observed": {
+    "player_created": {
+      "created_fight_tick": null,
+      "created_source_frame": 963,
+      "created_wall_clock_ms": 2951,
+      "created_wall_elapsed_ms": 2858,
+      "intro_active": true,
+      "intro_step": 2,
+      "player_id": "182838103883",
+      "playing": true,
+      "presentation_tick": 34,
+      "slot": "p1",
+      "stream_path": "res://generated/fighters/byakuya/619.mp3"
+    },
+    "player_finished": {
+      "player_id": "182838103883",
+      "slot": "p1",
+      "stopped_fight_tick": 0,
+      "stopped_source_frame": 7,
+      "stream_path": "res://generated/fighters/byakuya/619.mp3",
+      "wall_clock_ms": 4366,
+      "wall_elapsed_ms": 126,
+      "wall_since_player_created_ms": 1415
+    },
+    "audio_lifetime_rows": [
+      {
+        "elapsed_ms": 0,
+        "exists": true,
+        "playback_position": 0.0,
+        "player_id": "182838103883",
+        "playing": false,
+        "wall_clock_ms": 4240
+      }
+    ],
+    "wait_ms": 2000,
+    "process_mode": "real monotonic wall-clock await via Time.get_ticks_msec + process_frame; no forced stop"
+  },
+  "conclusion": "Godot 619.mp3 was created at source frame 963 and emitted finished naturally after 1415 ms from player creation in the bounded wall-clock run; this is within the 2 s wait and no explicit stop was injected. This validates the bounded Godot player lifecycle observation only; it does not claim Flash waveform/device parity or prove the canonical 300-physics-tick walk has realtime audio phase equivalence.",
+  "limitations": [
+    "Dummy audio backend; GUI/native audio backend not run in this capture",
+    "canonical 300-tick walk has a tight physics loop and is retained separately; its finished callback is observed but creation-to-finish wall time includes that loop",
+    "no source StopSound event exists to compare"
+  ]
+}

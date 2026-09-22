@@ -177,6 +177,18 @@ PROJECTILE_OPPONENT_GOTO = re.compile(
     r"\{\s*_root\.game\[\"p\" \+ _parent\.pn\]\.mc\.gotoAnd(?P<mode>Play|Stop)"
     r"\(\"(?P<label>[^\"]+)\"\);\s*\}\s*"
 )
+SOURCE_HEALTH_LOSS = re.compile(
+    r"if\s*\(\s*hp\s*>\s*(?P<threshold>\d+(?:\.\d+)?)\s*\)\s*\{\s*"
+    r"loseHp\(\s*(?P<above>\d+(?:\.\d+)?)\s*\)\s*;\s*\}\s*"
+    r"else\s*\{\s*loseHp\(\s*hp\s*\*\s*(?P<ratio>\d+(?:\.\d+)?)\s*\)\s*;\s*\}",
+    re.S,
+)
+SOURCE_LOSE_HP = re.compile(
+    r"function\s+loseHp\s*\(\s*v\s*\)\s*\{\s*"
+    r"if\s*\(\s*wudi\s*\)\s*\{\s*return\s+undefined\s*;\s*\}\s*"
+    r"hp\s*-=\s*v\s*;\s*\}",
+    re.S,
+)
 DIRECT_YFGJ_CALL = re.compile(r"_root\.yfgj\(\s*_parent\._name\s*\)\s*;")
 NESTED_FRAME_SCRIPT = re.compile(
     r"^DefineSprite_(?P<sprite>\d+)/frame_(?P<frame>\d+)/DoAction"
@@ -1110,32 +1122,50 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
 
 
 def parse_projectile_initialization(source: str) -> dict[str, Any] | None:
-    """Parse a child clip's load callback without discarding decimal factors."""
-    match = PROJECTILE_LOAD.fullmatch(source.replace("\r\n", "\n"))
-    if match is None:
-        callback = re.fullmatch(r"onClipEvent\(load\)\{(?P<body>[\s\S]*?)\}\s*", source.replace("\r\n", "\n"))
-        if callback is None:
-            return None
-        body = callback["body"]
-        variables: dict[str, Any] = {}
-        declarations = list(PROJECTILE_LITERAL_DECLARATION.finditer(body))
-        stripped = PROJECTILE_LITERAL_DECLARATION.sub("", body)
-        if re.sub(r"\s+", "", stripped):
-            raise ValueError("Uncompiled projectile load statement")
-        for declaration in declarations:
-            name = declaration["name"]
-            if name in variables:
+    """Compile every scalar local assigned by a child clip's load callback.
+
+    AS2 does not require locals to be declared with ``var``.  In particular,
+    projectile clips commonly initialize ``played`` and ``movspeed`` as plain
+    assignments.  Dropping those assignments makes a later source guard read
+    an undeclared local, so parse the callback statements themselves and keep
+    the source distinction between a literal and the parent's speed field.
+    """
+    normalized = source.replace("\r\n", "\n")
+    callback = re.fullmatch(
+        r"onClipEvent\(load\)\{(?P<body>[\s\S]*?)\}\s*", normalized
+    )
+    if callback is None:
+        return None
+    body = callback["body"]
+    result: dict[str, Any] = {}
+    statements = [part.strip() for part in body.split(";") if part.strip()]
+    for statement in statements:
+        literal = re.fullmatch(
+            r"(?:var\s+)?(?P<name>[A-Za-z_]\w*)\s*=\s*"
+            r"(?P<value>true|false|-?\d+(?:\.\d+)?)", statement
+        )
+        if literal is not None:
+            name = literal["name"]
+            result.setdefault("initial_variables", {})
+            if name in result["initial_variables"]:
                 raise ValueError("Duplicate projectile local declaration: " + name)
-            raw = declaration["value"]
-            variables[name] = (raw == "true" if raw in ("true", "false")
-                               else float(raw) if "." in raw else int(raw))
-        return {"initial_variables": variables}
-    result: dict[str, Any] = {
-        "initial_speed_field": "speed",
-        "initial_speed_factor": float(match["factor"] or 1),
-    }
-    if match["played"]:
-        result["initial_played"] = 0
+            raw = literal["value"]
+            result["initial_variables"][name] = (
+                raw == "true" if raw in ("true", "false")
+                else float(raw) if "." in raw else int(raw)
+            )
+            continue
+        speed = re.fullmatch(
+            r"movspeed\s*=\s*_parent\.speed"
+            r"(?:\s*\*\s*(?P<factor>\d+(?:\.\d+)?))?", statement
+        )
+        if speed is not None:
+            if "initial_speed_field" in result:
+                raise ValueError("Duplicate projectile speed initialization: " + source)
+            result["initial_speed_field"] = "speed"
+            result["initial_speed_factor"] = float(speed["factor"] or 1)
+            continue
+        raise ValueError("Uncompiled projectile load statement: " + statement)
     return result
 
 
@@ -1457,6 +1487,48 @@ def clip_lifetime(
     return end_frame, action_hash
 
 
+def resolve_special_cost(
+    fighter: dict[str, Any],
+    timeline: dict[str, Any],
+    script_bundle: dict[str, Any],
+    scripts: list[dict[str, Any]],
+    sprite_id: int,
+    first_special: str,
+) -> tuple[dict[str, Any], re.Match[str]]:
+    matches = [
+        (script, match)
+        for script in scripts
+        if script["action"] == first_special
+        for match in ENERGY_COST.finditer(script["source"])
+    ]
+    if not matches:
+        span = fighter["actions"]["special"][first_special]
+        boundary_frame = int(span["end_frame"]) + 1
+        allowed = int(span["start_frame"]) == int(span["end_frame"])
+        allowed = allowed and not any(
+            re.search(r"\b(?:gotoAnd(?:Stop|Play)|stop)\s*\(", script["source"])
+            for script in scripts if script["action"] == first_special
+        )
+        direct_path = f"DefineSprite_{sprite_id}/frame_{boundary_frame}/DoAction.as"
+        if allowed:
+            for raw in script_bundle["scripts"]:
+                path_match = SCRIPT_PATH.match(raw["path"])
+                if path_match is None or int(path_match["sprite"]) != sprite_id:
+                    continue
+                if int(path_match["frame"]) != boundary_frame or raw["path"] != direct_path:
+                    continue
+                for match in ENERGY_COST.finditer(raw["source"]):
+                    matches.append((
+                        {"action": first_special, "frame": boundary_frame,
+                         "kind": "fallthrough_frame_action", "path": raw["path"],
+                         "source_sha256": text_sha256(raw["source"]), "source": raw["source"]},
+                        match,
+                    ))
+    if len(matches) != 1:
+        raise ValueError(f"Expected one energy cost for {first_special}, got {len(matches)}")
+    return matches[0]
+
+
 def build_model(
     fighter_path: Path, timeline_path: Path, scripts_path: Path
 ) -> dict[str, Any]:
@@ -1634,18 +1706,19 @@ def build_model(
             }
         )
     first_special = special_labels[0]
-    cost_matches = [
-        (script, match)
-        for script in scripts
-        if script["action"] == first_special
-        for match in ENERGY_COST.finditer(script["source"])
-    ]
-    if len(cost_matches) != 1:
-        raise ValueError(f"Expected one energy cost for {first_special}, got {len(cost_matches)}")
-    cost_script, cost_match = cost_matches[0]
+    cost_script, cost_match = resolve_special_cost(
+        fighter, timeline, script_bundle, scripts, sprite_id, first_special
+    )
 
     energy_events = []
+    health_events = []
     presentation_events = []
+    lose_hp_source = next(
+        (item for item in script_bundle["scripts"]
+         if extract_function(item["source"], "loseHp")
+         and SOURCE_LOSE_HP.fullmatch(extract_function(item["source"], "loseHp") or "")),
+        None,
+    )
     for script in scripts:
         if script["kind"] != "frame_action" or script["frame"] == 1:
             continue
@@ -1672,6 +1745,23 @@ def build_model(
                     "source_path": script["path"],
                     "source_line": source_line,
                     "source_sha256": script["source_sha256"],
+                }
+            )
+        health_match = SOURCE_HEALTH_LOSS.fullmatch(script["source"].strip())
+        if health_match is not None:
+            if lose_hp_source is None:
+                raise ValueError("Health event has no source loseHp guard: " + script["path"])
+            health_events.append(
+                {
+                    "action": script["action"],
+                    "frame": script["frame"],
+                    "threshold": float(health_match["threshold"]),
+                    "above_damage": float(health_match["above"]),
+                    "below_ratio": float(health_match["ratio"]),
+                    "source_path": script["path"],
+                    "source_sha256": script["source_sha256"],
+                    "lose_hp_source_path": lose_hp_source["path"],
+                    "lose_hp_source_sha256": text_sha256(lose_hp_source["source"]),
                 }
             )
 
@@ -1819,7 +1909,9 @@ def build_model(
                 else None
             )
             if initialization and "initial_variables" in initialization:
-                if any(key in projectile for key in ("local_x_factor", "local_y_factor")) and "movspeed" not in initialization["initial_variables"]:
+                if (any(key in projectile for key in ("local_x_factor", "local_y_factor"))
+                        and "movspeed" not in initialization["initial_variables"]
+                        and initialization.get("initial_speed_field") != "speed"):
                     raise ValueError("Projectile movement local is undeclared: " + load_path)
             projectiles.append(
                 {
@@ -1946,6 +2038,9 @@ def build_model(
         "hit_priority": extract_hit_priority(script_bundle),
         "energy_events": sorted(
             energy_events, key=lambda item: (item["frame"], item["action"])
+        ),
+        "health_events": sorted(
+            health_events, key=lambda item: (item["frame"], item["action"])
         ),
         "presentation_events": sorted(
             presentation_events, key=lambda item: (item["frame"], item["action"])

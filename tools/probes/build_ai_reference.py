@@ -16,8 +16,10 @@ import subprocess
 
 try:
     from .shadow_instrumentation import instrument as instrument_shadow
+    from .hit_receive_observer import instrument_hit_receive, observer_schema
 except ImportError:
     from shadow_instrumentation import instrument as instrument_shadow
+    from hit_receive_observer import instrument_hit_receive, observer_schema
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -98,12 +100,29 @@ _root.aiHelperState = function(player)
    var m = f;
    _root.aiEvent("helper_state", player + "," + m._currentframe + "," + _root.aiNumber(f._x) + "," + _root.aiNumber(f._y) + "," + _root.aiNumber(f._xscale) + "," + m.attacking + "," + m.动作 + "," + m.hits + "," + _root.aiHelperClipFrame(f,"atm1") + "," + _root.aiHelperClipFrame(f,"atm2") + "," + _root.aiHelperClipFrame(f,"atm3"));
    _root.aiEvent("helper_clip_state", player + "," + m._currentframe''' + dynamic_value + ''');
+   var parent = f._parent;
+   _root.aiEvent("helper_lifecycle", player + "," + m._currentframe + "," + f._visible + "," + _root.zhanting + "," + (parent == undefined ? undefined : parent._currentframe) + "," + _root.aiHelperClipFrame(f,"atm1") + "," + _root.aiHelperClipFrame(f,"atm2") + "," + _root.aiHelperClipFrame(f,"atm3"));
 };
 '''
 
 
 def quoted(value: str) -> str:
     return json.dumps(value, ensure_ascii=False)
+
+
+def effect_phase_observer_source() -> str:
+    """Observe xgmc0 at the same root state callback as actor snapshots."""
+    return '''_root.aiEffectState = function()
+{
+   var x = _root.game.layer_effect.xgmc0;
+   if(x == undefined)
+   {
+      _root.aiEvent("effect_state", "undefined");
+      return;
+   }
+   _root.aiEvent("effect_state", x._currentframe + "," + _root.aiNumber(x._x) + "," + _root.aiNumber(x._y) + "," + _root.aiNumber(x._xscale));
+};
+'''
 
 
 def instrument(source: str, origin: str, fighter: bool) -> str:
@@ -155,9 +174,11 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
+    if hit_receive_probe and move_case is None:
+        raise ValueError("Hit/receive observation requires an explicit move-case fixture")
     output.mkdir(parents=True)
     game = output / "game"
     game.mkdir()
@@ -176,6 +197,23 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         "p1": helper_selections["p1"]["character_id"] if helper_selections["p1"] else default_p1_helper,
         "p2": helper_selections["p2"]["character_id"] if helper_selections["p2"] else default_p2_helper,
     }
+    if move_case is not None:
+        case = json.loads(move_case.read_text())
+        expected_fighters = case.get("fighters", {})
+        fighter_names = {"p1": p1_character, "p2": p2_character}
+        for slot, expected_id in expected_fighters.items():
+            record = catalog.get(fighter_names.get(slot, ""), {})
+            if Path(str(record.get("url", ""))).stem.lower() != str(expected_id).lower():
+                raise ValueError("move fixture fighter mismatch for %s: %s != %s" %
+                                 (slot, fighter_names.get(slot), expected_id))
+        for slot in ("p1", "p2"):
+            key = slot + "_helper"
+            if key not in case:
+                continue
+            expected_helper = resolve_helper_selection(catalog, str(case[key]))["character_id"]
+            if selected_helper_ids[slot] != expected_helper:
+                raise ValueError("move fixture helper mismatch for %s: %s != %s" %
+                                 (slot, selected_helper_ids[slot], expected_helper))
     fighter_sources = {}
     for slot, character in (("p1", p1_character), ("p2", p2_character)):
         record = catalog[character]
@@ -197,6 +235,9 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
     bootstrap = bootstrap.replace("__GAME_URI__", game.as_uri())
     bootstrap = bootstrap.replace('p1selt = "鸣人";', 'p1selt = ' + quoted(p1_character) + ';')
     bootstrap = bootstrap.replace('p2selt = "一护";', 'p2selt = ' + quoted(p2_character) + ';')
+    if effect_phase_probe:
+        bootstrap = effect_phase_observer_source() + bootstrap
+        bootstrap = bootstrap.replace('      aiState("p2");', '      aiState("p2");\n      aiEffectState();')
     if helper_selections["p1"] is not None:
         bootstrap = re.sub(r'p1sf = "[^"]*";', 'p1sf = ' + quoted(helper_selections["p1"]["character_id"]) + ';', bootstrap)
     if helper_selections["p2"] is not None:
@@ -247,9 +288,23 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         bootstrap = bootstrap.replace('modo = 2;', f'modo = {mode_probe};').replace('p2cpu = true;', 'p2cpu = false;')
         if move_case:
             from move_cases import source_fixture
-            fixture = source_fixture(json.loads(move_case.read_text()))
+            move_case_data = json.loads(move_case.read_text())
+            fixture = source_fixture(move_case_data)
             if dynamic_move_case:
                 fixture = (Path(__file__).parent / "as2/ai_reference/move_case.as").read_text()
+                preconditions = move_case_data.get("source_state_preconditions", {})
+                assignments = []
+                for slot, fields in preconditions.items():
+                    for field, value in fields.items():
+                        encoded = "true" if value is True else "false" if value is False else str(float(value))
+                        source_field = "hp" if field == "health" else field
+                        assignments.append(
+                            f'      _root.game.{slot}.mc.{source_field} = {encoded};\n'
+                            f'      _root.aiEvent("source_state_precondition", "{slot},{field}," + _root.aiNumber(_root.game.{slot}.mc.{source_field}));'
+                        )
+                if assignments:
+                    fixture = fixture.replace('      aiWindows = aiFixture.windows.split(";");',
+                                              '\n'.join(assignments) + '\n      aiWindows = aiFixture.windows.split(";");')
         else:
             fixture = (Path(__file__).parent / "as2/ai_reference/modes.as").read_text()
         bootstrap = bootstrap.replace('   aiHeld = {};', fixture)
@@ -356,6 +411,16 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         bootstrap = '''_root.aiBodyBoundary = function(m, slot, sourceFrame, entering)
 {
    _root.aiEvent("body_boundary",slot + "," + sourceFrame + "," + entering + "," + m._currentframe + "," + m.动作 + "," + _root.aiNumber(m.hp) + "," + _root.aiNumber(m.ql) + "," + m.sw + "," + m.touch + "," + m.touchFloor + "," + m.hits + "," + _root.zhanting + "," + m.hstm + "," + m.hurtSkling);
+   if(sourceFrame == 287 && entering == true)
+   {
+      var f = slot == "p1" ? _root.game.p1 : _root.game.p2;
+      var target = slot == "p1" ? _root.game.p2 : _root.game.p1;
+      var body = target.mc.bdmn;
+      var local = body.getBounds(body);
+      var parent = body.getBounds(target);
+      var matrix = body.transform.matrix;
+      _root.aiEvent("body_geometry",slot + "," + _root.aiNumber(f._x) + "," + _root.aiNumber(target._x) + "," + _root.aiNumber(body._width) + "," + _root.aiNumber(body._height) + "," + _root.aiNumber(local.xMin) + "," + _root.aiNumber(local.xMax) + "," + _root.aiNumber(local.yMin) + "," + _root.aiNumber(local.yMax) + "," + _root.aiNumber(parent.xMin) + "," + _root.aiNumber(parent.xMax) + "," + _root.aiNumber(parent.yMin) + "," + _root.aiNumber(parent.yMax) + "," + _root.aiNumber(matrix.a) + "," + _root.aiNumber(matrix.d) + "," + _root.aiNumber(matrix.tx) + "," + _root.aiNumber(matrix.ty));
+   }
 };
 ''' + bootstrap
     if recovery_walk_first:
@@ -383,6 +448,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         for script in bundle["scripts"]:
             original = script["source"]
             updated = instrument(original, name + "#" + script["path"], name != "main")
+            if hit_receive_probe and name in fighter_sources:
+                updated = instrument_hit_receive(updated, name + "#" + script["path"])
             if (p1_helper is not None or p2_helper is not None) and name == "main":
                 if script["path"] == "DefineSprite_1900/frame_1/DoAction.as":
                     updated, count = re.subn(
@@ -576,6 +643,9 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "schedule_probe": schedule_probe,
         "hurt_summon_probe": hurt_summon_probe,
         "shadow_probe": shadow_probe,
+        "effect_phase_probe": effect_phase_probe,
+        "hit_receive_probe": hit_receive_probe,
+        "hit_receive_event_schema": observer_schema() if hit_receive_probe else None,
         "p1_helper": helper_selections["p1"]["character_id"] if helper_selections["p1"] else None,
         "p2_helper": helper_selections["p2"]["character_id"] if helper_selections["p2"] else None,
         "helper_sources": {slot: selection for slot, selection in helper_selections.items() if selection is not None},
@@ -614,6 +684,9 @@ def main() -> None:
     parser.add_argument("--schedule-probe", action="store_true")
     parser.add_argument("--hurt-summon-probe", action="store_true")
     parser.add_argument("--shadow-probe", action="store_true")
+    parser.add_argument("--effect-phase-probe", action="store_true")
+    parser.add_argument("--hit-receive-probe", action="store_true",
+                        help="Log active hitTest AABBs and source guard/hit packets; requires --move-case")
     parser.add_argument("--p1-character", default="鸣人")
     parser.add_argument("--p2-character", default="一护")
     parser.add_argument("--p1-helper", choices=helper_choices)
@@ -621,7 +694,7 @@ def main() -> None:
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe), ensure_ascii=False))
 
 
 if __name__ == "__main__":

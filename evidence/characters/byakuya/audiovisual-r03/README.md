@@ -1,0 +1,10 @@
+# Byakuya audiovisual freeze r03
+
+This evidence captures two source-authored presentation points with the production source inputs unchanged.
+
+- Source frame 464 is `DefineSprite_631/frame_464/DoAction.as`: `_root.bsd(pn)` followed by `_root.showFace(pn,"白哉1")`.
+- Source frame 692 is `DefineSprite_631/frame_692/DoAction.as`: `_root.cbsd(pn)` followed by `_root.showFace(pn,"白哉3")`.
+- Original captures use fresh run ids, explicit p1/p2 fighters and helpers `魂`, and the shared Flash lock. The state lines and compressed raw event streams are retained beside each PNG.
+- `flash-window.png` is the full captured window including title bar. `flash-stage-600x400-retina.png` is the 1200x800 retina customer-area crop; `flash-600x400.png` is its actual 600x400 downsample.
+- Godot PNGs now come from the dedicated `byakuya_visual_capture.gd` main-scene fixture with P1 白哉, P2 一护, helpers 魂/魂, 现世, positions 300/350 and energy 300. The metadata records actual source frame, action, energy, root super presentation and timer state. They are compared as scene observations, not claimed pixel-identical to Flash. The earlier native 692 screenshot was captured after the state callback and showed a later blue sword effect. The fresh recursive-freeze probe records the actual freeze at display 453/fight 15: P1 body 692, face P1 5 (nested face 20), `ts_face.bg` 5, `blackMu` 2, root `bg` 2, and `layer_effect.xgmc0` 1; `xgmc1` is absent. Its window screenshot hit the Flash loading surface and is marked invalid, so the blue-sword image is not accepted as a same-frame comparison.
+- Valid fresh frozen captures now exist for both frames. Runs `byakuya-freeze-r10` (692) and `byakuya-freeze-r11` (464) preserve root rendering, recursively stop descendants, and record a second `root_after` walk. Two screenshots taken 500 ms apart have identical pixels. The 692 frozen frame has face P1 5/nested face 20/bg 5/blackMu 2/root bg 2/xgmc0 1; the 464 frozen frame has face P1 5/nested face 18/bg 5/blackMu 2/root bg 2/xgmc0 1. The valid files and event traces are beside each original capture.

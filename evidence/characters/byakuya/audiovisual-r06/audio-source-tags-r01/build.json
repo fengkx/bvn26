@@ -1,0 +1,147 @@
+{
+  "run_id": "byakuya-soundtags-rec-r03",
+  "status": "built_not_run",
+  "frames_after_ready": 700,
+  "configuration": {
+    "modo": 3,
+    "p1": "一护",
+    "p2": "白哉",
+    "p2cpu": false,
+    "AI": 5,
+    "stage": "现世",
+    "p1sf": "魂",
+    "p2sf": "魂"
+  },
+  "sources_sha256": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "game/fighter/yihu.swf": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+    "scripts/fighter/yihu.json": "5c4996b3767c2e31810595604c5b869c511c9c4f1cd8c123e059212294fc5d5b",
+    "game/fighter/Byakuya.swf": "c590f9ca2aea152d26aea8d6a10c4ee31a2019d9798c637820f145feef13b52f",
+    "scripts/fighter/Byakuya.json": "4edf974358d4cd41a4aec3121089050bc060977a8051df3b1e60e06318aedd63",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+    "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46"
+  },
+  "ffdec_sha256": "23c1e70ff2b08388e35de10afd97a2875386cbfdc2ef99c8176d40b4f8a3ada9",
+  "outputs_sha256": {
+    "game/main.swf": "6fc324e4eb8a238b67936cac2e938fa364462e6136fd0b95544b3f50cae0ba53",
+    "game/fighter/Byakuya.swf": "91b5353f886d43ed87972a530dd75fd1e1048c459867f12c36ff1b1cb663de0a",
+    "game/fighter/yihu.swf": "e70b55801d6d55491d9fd23626e11a8db2a5aa282f6ecb3ff3e1f76ffe596dc4",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+  },
+  "instrumentation_sha256": "e587ddc3f33fa852267c57cce21da13d4df55bf299549da81e44ee8446b4ce67",
+  "frame_order_probe": false,
+  "body_boundaries": false,
+  "body_callback_observer": false,
+  "recovery_order_probe": false,
+  "recovery_walk_first": false,
+  "match_flow": false,
+  "helper_probe": null,
+  "dash_probe": null,
+  "dash_trigger_frame": null,
+  "dash_duration": 36,
+  "timeout_probe": null,
+  "ghost_probe": null,
+  "mode_probe": 3,
+  "move_case": {
+    "id": "byakuya-recovery-p2-base631-special-dash62-66-r01",
+    "fighter": "byakuya",
+    "slot": "p2",
+    "label": "受击恢复",
+    "scenario": "ichigo_hit_byakuya",
+    "frames": 700,
+    "setup": {
+      "p1": {
+        "x": 300,
+        "energy": 300
+      },
+      "p2": {
+        "x": 350,
+        "energy": 300,
+        "health": 1000,
+        "wudi": false
+      }
+    },
+    "inputs": [
+      {
+        "slot": "p1",
+        "keys": [
+          "special"
+        ],
+        "start": 10,
+        "end": 13
+      },
+      {
+        "slot": "p2",
+        "keys": [
+          "dash"
+        ],
+        "start": 62,
+        "end": 66
+      }
+    ],
+    "target_frames": [
+      887,
+      934,
+      944,
+      963
+    ],
+    "has_source_timeline": true,
+    "source_dispatch": [
+      "doAllAction",
+      "doStand"
+    ],
+    "status": "planned_real_input",
+    "fighters": {
+      "p1": "yihu",
+      "p2": "byakuya"
+    },
+    "p1_helper": "魂",
+    "p2_helper": "魂"
+  },
+  "dynamic_move_case": true,
+  "fixture_url": "file:///private/tmp/byakuya-soundtags-rec-r03-build/case.txt",
+  "player_display": "windowed_showAll",
+  "presentation_probe": false,
+  "root_write_observer": false,
+  "body_call_scope_probe": false,
+  "schedule_probe": false,
+  "hurt_summon_probe": false,
+  "shadow_probe": false,
+  "effect_phase_probe": false,
+  "p1_helper": "魂",
+  "p2_helper": "魂",
+  "helper_sources": {
+    "p1": {
+      "character_id": "魂",
+      "asset": "kon",
+      "url": "kon.swf"
+    },
+    "p2": {
+      "character_id": "魂",
+      "asset": "kon",
+      "url": "kon.swf"
+    }
+  },
+  "input_injection": "body_kis_alias_with_per_read_trace",
+  "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
+  "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
+  "source_sound_tag_instrumentation": {
+    "report": "/private/tmp/byakuya-soundtags-rec-r03-instrumentation.json",
+    "report_sha256": "0d2b01b00db0d184f528263e4b34276edfa523fcdd1cfd041c2870f3b3203b9c",
+    "base_fighter_swf_sha256": "c0c6ec2799d69ed0c735dd379fe1b6d339e58c8bf0b397f7a8fa618730afcbb1",
+    "instrumented_fighter_swf_sha256": "91b5353f886d43ed87972a530dd75fd1e1048c459867f12c36ff1b1cb663de0a",
+    "sprite_id": 631,
+    "tag_frames_and_ids": {
+      "887": 581,
+      "934": 44,
+      "944": 52,
+      "963": 619
+    },
+    "source_scripts_unchanged": true,
+    "base_is_canonical_source_build_output": true
+  }
+}

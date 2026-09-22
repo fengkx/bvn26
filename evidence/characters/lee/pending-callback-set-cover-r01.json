@@ -1,0 +1,781 @@
+{
+  "format": "lee-pending-callback-set-cover-r01",
+  "status": "captured_and_strict_compared_partial",
+  "method": "Greedy set cover over existing Lee original events.jsonl state events by exact p1/p2 source frame; state visibility never promotes callback evidence. Slot filter was corrected: only the build-configured p1/p2 slot whose character is 小李 is eligible; same numeric frame on Byakuya is excluded.",
+  "pending_entries": 49,
+  "unique_pending_source_frames": [
+    8,
+    13,
+    29,
+    62,
+    95,
+    113,
+    128,
+    152,
+    172,
+    193,
+    197,
+    235,
+    240,
+    268,
+    320,
+    325,
+    332,
+    370,
+    448,
+    509,
+    558,
+    634,
+    660,
+    695,
+    738,
+    771,
+    953,
+    1017,
+    1057,
+    1070,
+    1083,
+    1086,
+    1087,
+    1088,
+    1096,
+    1098,
+    1112,
+    1128,
+    1133,
+    1134,
+    1144,
+    1149,
+    1158,
+    1159,
+    1161,
+    1219,
+    1260,
+    1288
+  ],
+  "existing_state_cover": {
+    "selected_case_count": 3,
+    "covered_frames": [
+      1086,
+      1087,
+      1088,
+      1096,
+      1098,
+      1112,
+      1133,
+      1134,
+      1158,
+      1159,
+      1161,
+      1260
+    ],
+    "covered_frame_count": 12,
+    "uncovered_frames": [
+      8,
+      13,
+      29,
+      62,
+      95,
+      113,
+      128,
+      152,
+      172,
+      193,
+      197,
+      235,
+      240,
+      268,
+      320,
+      325,
+      332,
+      370,
+      448,
+      509,
+      558,
+      634,
+      660,
+      695,
+      738,
+      771,
+      953,
+      1017,
+      1057,
+      1070,
+      1083,
+      1128,
+      1144,
+      1149,
+      1219,
+      1288
+    ]
+  },
+  "selected_existing_cases": [
+    {
+      "case": "lee-recovery-p2-byakuya-tap-r03",
+      "lee_slot": "p2",
+      "target_frames": [
+        1086,
+        1087,
+        1088,
+        1096,
+        1098,
+        1133,
+        1134,
+        1158,
+        1159,
+        1161
+      ],
+      "source_raw": "evidence/characters/lee/original/lee-recovery-p2-byakuya-tap-r03"
+    },
+    {
+      "case": "lee-574-bisha-625-kill-r03-700",
+      "lee_slot": "p1",
+      "target_frames": [
+        1158,
+        1159,
+        1161,
+        1260
+      ],
+      "source_raw": "evidence/characters/lee/original/lee-574-bisha-625-kill-r03-700"
+    },
+    {
+      "case": "lee-recovery-p2-hp1-r01",
+      "lee_slot": "p2",
+      "target_frames": [
+        1086,
+        1087,
+        1088,
+        1096,
+        1098,
+        1112,
+        1158,
+        1159,
+        1161
+      ],
+      "source_raw": "evidence/characters/lee/original/lee-recovery-p2-hp1-r01"
+    }
+  ],
+  "new_capture_windows": [
+    {
+      "window": "lee-intro-round-r01",
+      "purpose": "intro/round lifecycle callbacks",
+      "frames": [
+        8,
+        13,
+        95,
+        1219,
+        1288
+      ]
+    },
+    {
+      "window": "lee-air-actions-r01",
+      "purpose": "air landing and air attack transitions",
+      "frames": [
+        29,
+        62,
+        113,
+        128,
+        152
+      ]
+    },
+    {
+      "window": "lee-ground-attack-chain-r01",
+      "purpose": "normal/skill ground attack callbacks",
+      "frames": [
+        172,
+        193,
+        197,
+        235,
+        240,
+        268,
+        448
+      ]
+    },
+    {
+      "window": "lee-magic-chain-r01",
+      "purpose": "magic1/2/3 callbacks",
+      "frames": [
+        320,
+        325,
+        332,
+        370,
+        509,
+        558
+      ]
+    },
+    {
+      "window": "lee-special-continuation-r01",
+      "purpose": "special continuation and super continuation",
+      "frames": [
+        634,
+        660,
+        695,
+        738,
+        771,
+        953
+      ]
+    },
+    {
+      "window": "lee-summon-r01",
+      "purpose": "summon callback",
+      "frames": [
+        1017
+      ]
+    },
+    {
+      "window": "lee-ko-enter-r01",
+      "purpose": "KO/hurt entry callbacks",
+      "frames": [
+        1057,
+        1070,
+        1083
+      ]
+    },
+    {
+      "window": "lee-recovery-standup-r01",
+      "purpose": "recovery/standup callbacks not in existing raw",
+      "frames": [
+        1128,
+        1144,
+        1149
+      ]
+    }
+  ],
+  "estimated_gui_windows": 11,
+  "promotion_rule": "Each selected/new case still requires callback_observer raw event with exact source path, source frame, placement depth, child local frame, and matching input/helper setup; state frame alone remains pending.",
+  "observer_scope": {
+    "all_bundle_callbacks": 192,
+    "lee_callbacks_total": 57,
+    "lee_base518_callbacks": 56,
+    "lee_outer_or_other": 1,
+    "base518_prefix": "fighter/lee#DefineSprite_518/",
+    "other_bundle_scope": "The remaining observer hooks cover yihu and helper bundles in the temporary all-bundle build; they are not Lee acceptance evidence.",
+    "slot_filter_note": "Observer build is all bundles; acceptance must select only fighter/lee# paths and the Lee configured slot."
+  },
+  "source_path_targets": {
+    "8": [
+      {
+        "path": "DefineSprite_518/frame_8/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "13": [
+      {
+        "path": "DefineSprite_518/frame_13/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "29": [
+      {
+        "path": "DefineSprite_518/frame_29/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "62": [
+      {
+        "path": "DefineSprite_518/frame_62/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "95": [
+      {
+        "path": "DefineSprite_518/frame_95/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "113": [
+      {
+        "path": "DefineSprite_518/frame_113/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "128": [
+      {
+        "path": "DefineSprite_518/frame_128/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "152": [
+      {
+        "path": "DefineSprite_518/frame_152/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "172": [
+      {
+        "path": "DefineSprite_518/frame_172/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "193": [
+      {
+        "path": "DefineSprite_518/frame_193/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "197": [
+      {
+        "path": "DefineSprite_518/frame_197/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "235": [
+      {
+        "path": "DefineSprite_518/frame_235/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "240": [
+      {
+        "path": "DefineSprite_518/frame_240/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "268": [
+      {
+        "path": "DefineSprite_518/frame_268/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "320": [
+      {
+        "path": "DefineSprite_518/frame_320/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "325": [
+      {
+        "path": "DefineSprite_518/frame_325/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "332": [
+      {
+        "path": "DefineSprite_518/frame_332/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "370": [
+      {
+        "path": "DefineSprite_518/frame_370/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "448": [
+      {
+        "path": "DefineSprite_518/frame_448/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "509": [
+      {
+        "path": "DefineSprite_518/frame_509/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "558": [
+      {
+        "path": "DefineSprite_518/frame_558/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "634": [
+      {
+        "path": "DefineSprite_518/frame_634/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "660": [
+      {
+        "path": "DefineSprite_518/frame_660/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "695": [
+      {
+        "path": "DefineSprite_518/frame_695/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "738": [
+      {
+        "path": "DefineSprite_518/frame_738/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "771": [
+      {
+        "path": "DefineSprite_518/frame_771/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "953": [
+      {
+        "path": "DefineSprite_518/frame_953/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1017": [
+      {
+        "path": "DefineSprite_518/frame_1017/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1057": [
+      {
+        "path": "DefineSprite_518/frame_1057/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1070": [
+      {
+        "path": "DefineSprite_518/frame_1070/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1083": [
+      {
+        "path": "DefineSprite_518/frame_1083/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1086": [
+      {
+        "path": "DefineSprite_518/frame_1086/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1087": [
+      {
+        "path": "DefineSprite_518/frame_1087/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1088": [
+      {
+        "path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "kind": "clip_action",
+        "placement_controller": {
+          "compiled_as": "player_body_hurt_hook",
+          "method": "enter_frame",
+          "placement_frame": 1088,
+          "depth": 29,
+          "member_frames": [
+            1088,
+            1089,
+            1090,
+            1091,
+            1092,
+            1093,
+            1094,
+            1095,
+            1096,
+            1097
+          ]
+        }
+      }
+    ],
+    "1096": [
+      {
+        "path": "DefineSprite_518/frame_1096/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1098": [
+      {
+        "path": "DefineSprite_518/frame_1098/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      },
+      {
+        "path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "kind": "clip_action",
+        "placement_controller": {
+          "compiled_as": "player_controller_hook",
+          "method": "frame_1098_depth_29",
+          "placement_frame": 1098,
+          "depth": 29,
+          "member_frames": [
+            1098,
+            1099,
+            1100,
+            1101
+          ]
+        }
+      }
+    ],
+    "1112": [
+      {
+        "path": "DefineSprite_518/frame_1112/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1128": [
+      {
+        "path": "DefineSprite_518/frame_1128/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1133": [
+      {
+        "path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "kind": "clip_action",
+        "placement_controller": {
+          "compiled_as": "player_controller_hook",
+          "method": "frame_1133_depth_30",
+          "placement_frame": 1133,
+          "depth": 30,
+          "member_frames": [
+            1133,
+            1134,
+            1135,
+            1136,
+            1137
+          ]
+        }
+      }
+    ],
+    "1134": [
+      {
+        "path": "DefineSprite_518/frame_1134/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1144": [
+      {
+        "path": "DefineSprite_518/frame_1144/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1149": [
+      {
+        "path": "DefineSprite_518/frame_1149/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1158": [
+      {
+        "path": "DefineSprite_518/frame_1158/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1159": [
+      {
+        "path": "DefineSprite_518/frame_1159/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1161": [
+      {
+        "path": "DefineSprite_518/frame_1161/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1219": [
+      {
+        "path": "DefineSprite_518/frame_1219/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1260": [
+      {
+        "path": "DefineSprite_518/frame_1260/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ],
+    "1288": [
+      {
+        "path": "DefineSprite_518/frame_1288/DoAction.as",
+        "kind": "frame_action",
+        "placement_controller": null
+      }
+    ]
+  },
+  "observer_builds": [
+    {
+      "run_id": "lee-callback-observer-recovery-r01",
+      "build_path": "/private/tmp/lee-callback-observer-recovery-r01/build.json",
+      "build_sha256": "365a5ec3538ff3fb7b9f987ff7c45149827f9780309df22b7314b963870b89be",
+      "instrumented_lee_swf_sha256": "37bb9f28f157d3edc2585eb81a59efdf4bbcbd51422379d19f12d54a22b05ecb",
+      "instrumentation_sha256": "2ea59a107aa50aa1e8f44d315686abafce9c0749cca6927ae037e03700649810",
+      "case_id": "lee-recovery-p2-byakuya-tap-r03",
+      "lee_slot": "p2",
+      "target_frames": [
+        1086,
+        1087,
+        1088,
+        1096,
+        1098,
+        1133,
+        1134,
+        1158,
+        1159,
+        1161
+      ],
+      "status": "built_not_run"
+    },
+    {
+      "run_id": "lee-callback-observer-kill-r01",
+      "build_path": "/private/tmp/lee-callback-observer-kill-r01/build.json",
+      "build_sha256": "15e7c09b862d565aff2fa9d559cab2c2ebf6f806b810cce8bedb0f61f6a4c324",
+      "instrumented_lee_swf_sha256": "c9a0159e20e1cac9c8f7e6f7d4db3dba80899cf114db9b54ff3c5677ae3d0f26",
+      "instrumentation_sha256": "61a92e1a71a49016e18f3174f0ea0e5201a0c4cc7672317a0db021e925874706",
+      "case_id": "lee-574-bisha-625-kill-r03-700",
+      "lee_slot": "p1",
+      "target_frames": [
+        1158,
+        1159,
+        1161,
+        1260
+      ],
+      "status": "built_not_run"
+    },
+    {
+      "run_id": "lee-callback-observer-hp1-r01",
+      "build_path": "/private/tmp/lee-callback-observer-hp1-r01/build.json",
+      "build_sha256": "9228db774ee889b6221a68cb3d2c915fc1136498dd0db8fc4c33a498b0264633",
+      "instrumented_lee_swf_sha256": "37bb9f28f157d3edc2585eb81a59efdf4bbcbd51422379d19f12d54a22b05ecb",
+      "instrumentation_sha256": "dd2971c5945c5dd9b03a31706db252c0c6bd806708543853ad6c83a96d23afa8",
+      "case_id": "lee-recovery-p2-hp1-r01",
+      "lee_slot": "p2",
+      "target_frames": [
+        1086,
+        1087,
+        1088,
+        1096,
+        1098,
+        1112,
+        1158,
+        1159,
+        1161
+      ],
+      "status": "built_not_run"
+    }
+  ],
+  "capture_status": "Three actor-filtered observer captures complete under the shared flock; target callback promotion remains pending per exact path/placement rule.",
+  "captures": [
+    {
+      "run_id": "lee-callback-observer-recovery-r01",
+      "case_id": "lee-recovery-p2-byakuya-super-tap-r03",
+      "lee_slot": "p2",
+      "raw_path": "evidence/characters/lee/original/lee-callback-observer-recovery-r01/events.jsonl/events.jsonl",
+      "raw_sha256": "a2130f1bc6ab82ae04e4fe17ab5b29143e18bb0c6193a2bc7d04de37383d9cdc",
+      "events": 38089,
+      "done": true,
+      "lee_observer_events": 2136,
+      "lee_paths_observed": {
+        "fighter/lee#DefineSprite_518/frame_1/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as": 1051,
+        "fighter/lee#DefineSprite_518/frame_1/PlaceObject2_5_29/CLIPACTIONRECORD onClipEvent(enterFrame).as": 1051,
+        "fighter/lee#DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as": 29,
+        "fighter/lee#DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as": 1,
+        "fighter/lee#DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as": 4
+      },
+      "body_call_scope_events": 0,
+      "promotion": "pending until target callback path/state preconditions are mapped against source and Godot"
+    },
+    {
+      "run_id": "lee-callback-observer-kill-r01",
+      "case_id": "lee-574-bisha-625-kill-negative",
+      "lee_slot": "p1",
+      "raw_path": "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+      "raw_sha256": "7559e64cb97eb103b5ad2593b1cdfa4350acd12607417ee2d35683a72ff09acc",
+      "events": 37208,
+      "done": true,
+      "lee_observer_events": 2032,
+      "lee_paths_observed": {
+        "fighter/lee#DefineSprite_518/frame_1/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as": 978,
+        "fighter/lee#DefineSprite_518/frame_1/PlaceObject2_5_29/CLIPACTIONRECORD onClipEvent(enterFrame).as": 977,
+        "fighter/lee#DefineSprite_518/frame_366/PlaceObject2_5_33/CLIPACTIONRECORD onClipEvent(enterFrame).as": 2,
+        "fighter/lee#DefineSprite_518/frame_605/PlaceObject2_5_31/CLIPACTIONRECORD onClipEvent(enterFrame).as": 50,
+        "fighter/lee#DefineSprite_518/frame_653/PlaceObject2_18_28/CLIPACTIONRECORD onClipEvent(enterFrame).as": 15,
+        "fighter/lee#DefineSprite_518/frame_681/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as": 3,
+        "fighter/lee#DefineSprite_518/frame_688/PlaceObject2_5_32/CLIPACTIONRECORD onClipEvent(enterFrame).as": 7
+      },
+      "body_call_scope_events": 0,
+      "promotion": "pending until target callback path/state preconditions are mapped against source and Godot"
+    },
+    {
+      "run_id": "lee-callback-observer-hp1-r01",
+      "case_id": "lee-recovery-p2-hp1-r01",
+      "lee_slot": "p2",
+      "raw_path": "evidence/characters/lee/original/lee-callback-observer-hp1-r01/events.jsonl/events.jsonl",
+      "raw_sha256": "f5723df6f20f717379850e72d74103746b4b5fa51fb509da2e1506d990746fbd",
+      "events": 45588,
+      "done": true,
+      "lee_observer_events": 2210,
+      "lee_paths_observed": {
+        "fighter/lee#DefineSprite_518/frame_1/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as": 1093,
+        "fighter/lee#DefineSprite_518/frame_1/PlaceObject2_5_29/CLIPACTIONRECORD onClipEvent(enterFrame).as": 1093,
+        "fighter/lee#DefineSprite_518/frame_1075/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as": 12,
+        "fighter/lee#DefineSprite_518/frame_1076/PlaceObject2_5_28/CLIPACTIONRECORD onClipEvent(enterFrame).as": 12
+      },
+      "body_call_scope_events": 0,
+      "promotion": "pending until target callback path/state preconditions are mapped against source and Godot"
+    }
+  ],
+  "dispatch_report": "evidence/characters/lee/callback-observer-dispatch-r01.json",
+  "strict_compare_note": "Three observer captures are immutable and mapped by exact Lee slot. Kill/hp1 latest native outputs are not promoted: observer source runs contain 720-frame tails and source preconditions resolve hp=1000 at tick0; latest native outputs are 400/700-frame fixtures. See dispatch report for first divergence and explicit status.",
+  "strict_reruns": [
+    {
+      "run_id": "lee-callback-observer-hp1-r02",
+      "case_id": "lee-recovery-p2-hp1-r01",
+      "raw_path": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+      "native_path": "evidence/characters/lee/godot/recovery-p2-r01/lee-recovery-p2-hp1-r01.json",
+      "status": "different",
+      "compare": "evidence/characters/lee/callback-observer-strict-r02.json"
+    },
+    {
+      "run_id": "lee-callback-observer-kill-r03",
+      "case_id": "lee-574-bisha-625-kill-negative",
+      "raw_path": "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl",
+      "native_path": "evidence/characters/lee/godot/lee-574-bisha-625-kill-negative-r02-timer/timer-rows.json",
+      "status": "different",
+      "compare": "evidence/characters/lee/callback-observer-strict-r02.json"
+    }
+  ],
+  "strict_report": "evidence/characters/lee/callback-observer-strict-r02.json"
+}

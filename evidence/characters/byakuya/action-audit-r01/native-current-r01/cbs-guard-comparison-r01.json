@@ -1,0 +1,252 @@
+{
+  "status": "bounded_contact_and_break_match_with_0_05px_geometry_difference",
+  "source_capture": {
+    "run_id": "hit-receive-byak-690-guard-r01",
+    "events_jsonl": "evidence/characters/byakuya/validation/hit-receive-r02-source/events.jsonl",
+    "events_sha256": "52d889e5146fdd3cee7f065b762744e46af92e9c412f091102dd4a753fc1eacc",
+    "summary_sha256": "8250cf58db069431397cc59a0448e6dd8fc288f123360ef2f9406679be6b3a6e",
+    "build_json": "evidence/characters/byakuya/validation/hit-receive-r02-source/build.json",
+    "build_sha256": "4d16ae513705835efd2c5bbb1632a7f19a74e064c5ee6a9074ad274e73e0c2c2",
+    "swf_outputs_sha256": {
+      "game/main.swf": "047683ef80f27173732e4a13329afb7d5cdc8ac5eb4151a6eae54716f528219f",
+      "game/fighter/Byakuya.swf": "cd007aed25fab6ca1b84684bb1bb2d6b79fb43947273cbb54cea4f6e76580d5e",
+      "game/fighter/yihu.swf": "604f814006506bc0315e8be81ea40575d6954f84cc58d4d2766bd4e01b63783a",
+      "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+      "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+    },
+    "input_delivery": {
+      "status": "source_key_reads_match_recorded_intent",
+      "bindings": {
+        "w": "87",
+        "a": "65",
+        "l": "76",
+        "上箭": "38",
+        "下箭": "40",
+        "左箭": "37",
+        "右箭": "39",
+        "N1": "86",
+        "N2": "98",
+        "N3": "66",
+        "N4": "100",
+        "N5": "77",
+        "N6": "78",
+        "right": "68",
+        "attack": "74",
+        "down": "83",
+        "ranged": "85",
+        "jump": "75",
+        "special": "73",
+        "summon": "79"
+      },
+      "reads": 12363,
+      "pressed_reads": {
+        "_level0.game.p2.mc:40": 822,
+        "_level0.game.p1.mc:83": 5,
+        "_level0.game.p1.mc:73": 1
+      }
+    },
+    "events": [
+      {
+        "sequence": 3739,
+        "time_ms": 29185,
+        "display_tick": 496,
+        "fight_tick": 45,
+        "kind": "source_hit_test",
+        "value": "_level0.game.p2.mc.bdmn,1,-16328,undefined,f:-1:1:109051904:0,f:-1:4:123102822:26843546,f:1:5:97254400:0,f:1:7:67686400:0,f:1:0:0:0,f:1:-2:124485632:0,f:1:0:0:0,f:1:0:0:0,f:1:0:86638592:0,f:-1:1:109051904:0,f:-1:4:123102822:26843546,f:1:8:84331724:53687091,f:-1:6:82103500:53687091,f:1:8:92340224:0,f:-1:4:109051904:0,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,_level0.game.p1.mc,cbs,_level0.game.p1.mc.cbsatm,1,-16356,_level0.game.p1.mc,736,f:-1:8:90675609:40265318,f:1:6:68472012:53687091,f:1:8:94146800:0,f:1:10:67990500:0,f:-1:6:94371840:0,f:1:0:0:0,f:-1:1:120507904:0,f:1:3:87027840:0,f:1:0:0:0,f:-1:8:90675609:40265318,f:1:6:68472012:53687091,f:1:5:76860620:53687091,f:-1:7:116287078:26843546,f:1:8:119747379:13421773,f:1:3:126248550:26843546,f:1:8:117964800:0,f:1:3:125829120:0,f:1:0:0:0,f:1:4:125829120:0,f:1:0:0:0,击飞,true"
+      },
+      {
+        "sequence": 3740,
+        "time_ms": 29186,
+        "display_tick": 496,
+        "fight_tick": 45,
+        "kind": "source_guard_packet",
+        "value": "_level0.game.p2.mc.bdmn,1,f:1:0:67108864:0,f:-1:4:100453580:53687091,f:1:6:104857600:0,f:1:8:117964800:0,f:1:3:125829120:0,击飞,break"
+      }
+    ]
+  },
+  "same_fixture_binding": {
+    "fixture_id": "byakuya-690-bishaSuper-guard",
+    "source_fixture": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-guard/fixture.json",
+    "source_inputs": [
+      {
+        "slot": "p1",
+        "keys": [
+          "down",
+          "special"
+        ],
+        "start": 10,
+        "end": 13
+      },
+      {
+        "slot": "p2",
+        "keys": [
+          "down"
+        ],
+        "start": 1,
+        "end": 300
+      }
+    ],
+    "source_setup": {
+      "p1": {
+        "x": 300,
+        "energy": 300
+      },
+      "p2": {
+        "x": 350,
+        "energy": 300
+      }
+    },
+    "source_fighters": {
+      "p1": "byakuya",
+      "p2": "yihu"
+    },
+    "source_helpers": [
+      "魂",
+      "魂"
+    ],
+    "native_fixture": "cbs-guard.fixture.json",
+    "native_fixture_delta": "adds test-only geometry_probe; input/setup/fighters/helpers unchanged",
+    "source_probe_p1_pressed_reads": 1,
+    "source_probe_p2_down_pressed_reads": 822
+  },
+  "source": {
+    "source_frame": 736,
+    "attack_instance": "cbsatm",
+    "attack_parent_frame": 736,
+    "attack_matrix": {
+      "a": 0,
+      "b": -3.5914154,
+      "c": 10.374527,
+      "d": 0,
+      "tx_twips": -6918,
+      "ty_twips": 1306
+    },
+    "attack_bounds_game_xyxy": [
+      36.65,
+      -221.8,
+      456.8,
+      15.05
+    ],
+    "receiver_instance": "_level0.game.p2.mc.bdmn",
+    "receiver_matrix": {
+      "a": 0.46374512,
+      "b": 0,
+      "c": 0,
+      "d": 1.2910156,
+      "tx_twips": -65,
+      "ty_twips": -587
+    },
+    "receiver_bounds_game_xyxy": [
+      321.7,
+      -78.3,
+      352.25,
+      -26.0
+    ],
+    "hit_test": true,
+    "guard_packet": {
+      "pw": 450,
+      "zl": 15,
+      "htype": "击飞",
+      "branch": "break"
+    }
+  },
+  "native": {
+    "source_frame": 736,
+    "attack_instance": "cbsatm",
+    "attack_parent_frame": 736.0,
+    "attack_matrix": {
+      "hasRotate": "true",
+      "hasScale": "true",
+      "nRotateBits": 21.0,
+      "nScaleBits": 1.0,
+      "nTranslateBits": 14.0,
+      "rotateSkew0": -3.5914154,
+      "rotateSkew1": 10.374527,
+      "scaleX": 0.0,
+      "scaleY": 0.0,
+      "translateX": -6918.0,
+      "translateY": 1306.0,
+      "type": "MATRIX"
+    },
+    "attack_bounds_game_xywh": {
+      "height": 236.85000610351562,
+      "width": 420.1499938964844,
+      "x": 36.599998474121094,
+      "y": -221.8000030517578
+    },
+    "receiver_instance": "p2.bdmn",
+    "receiver_frame": 715,
+    "receiver_matrix": {
+      "hasRotate": "false",
+      "hasScale": "true",
+      "nRotateBits": 0.0,
+      "nScaleBits": 18.0,
+      "nTranslateBits": 11.0,
+      "scaleX": 0.46374512,
+      "scaleY": 1.2910156,
+      "translateX": -65.0,
+      "translateY": -587.0,
+      "type": "MATRIX"
+    },
+    "receiver_bounds_game_xywh": {
+      "height": 52.29999923706055,
+      "width": 30.600000381469727,
+      "x": 321.6499938964844,
+      "y": -78.30000305175781
+    },
+    "hit_contact": true,
+    "native_effect": {
+      "damage": 450.0,
+      "hitstun_ms": 0.0,
+      "horizontal_impulse": 30.0,
+      "impact_strength": 15.0,
+      "instance_name": "cbsatm",
+      "reaction_label": "击飞",
+      "vertical_impulse": 0.0
+    },
+    "defender_state_at_callback": {
+      "action": "防御2",
+      "hp": 1000.0,
+      "ql": 300.0
+    },
+    "defender_state_after_callback": {
+      "action": -1.0,
+      "frame": 752,
+      "hits": 1,
+      "hp": 550.0,
+      "hstm": 0.0,
+      "hurtSkling": false,
+      "paused": false,
+      "ql": 345.0,
+      "slot": "p2",
+      "sw": false,
+      "tick": 47,
+      "touch": true,
+      "touchFloor": true,
+      "x": 350.0,
+      "xscale": -100.0,
+      "y": -25.0
+    }
+  },
+  "bounds_delta_px": {
+    "attack_x_min": 0.05000152587890483,
+    "attack_x_max": 0.05000762939454262,
+    "attack_y_min": 3.0517578011313162e-06,
+    "attack_y_max": -3.0517578117894573e-06,
+    "receiver_x_min": 0.05000610351561363,
+    "receiver_x_max": 5.7220458984375e-06,
+    "receiver_y_min": 3.051757815342171e-06,
+    "receiver_y_max": 3.814697265625e-06
+  },
+  "interpretation": "Source and native both execute a real callback hit/break for cbsatm on root frame 736 against a live P2 bdmn. The source checks hitTest=true and emits pw450,zl15,htype=击飞, branch=break; native records hit_contact damage450 and P2 transitions from defense to 击飞 with HP 1000→550. Matrix coefficients/placement match. Attack x-min/x-max and receiver x-min differ by 0.05 px (one twip at the nominal scale); y differs only by float encoding noise. Preserve exact values and do not apply a tolerance or claim exact AABB equality.",
+  "quantized_delta_twips_nearest": {
+    "attack_x_min": 1,
+    "attack_x_max": 1,
+    "attack_y_min": 0,
+    "attack_y_max": 0,
+    "receiver_x_min": 1,
+    "receiver_x_max": 0,
+    "receiver_y_min": 0,
+    "receiver_y_max": 0
+  }
+}

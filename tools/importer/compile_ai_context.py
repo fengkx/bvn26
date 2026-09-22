@@ -28,6 +28,28 @@ ROOT_CLIP_RENAME = re.compile(
 )
 
 
+def root_opponent_warp(text: str, path: str, frame: int) -> list[dict]:
+    """Compile source writes that move the opponent player container.
+
+    This is the authored `_root.game["p" + pn]` assignment used by Lee's
+    reveal frame.  It is distinct from `_parent` body warps: the target is
+    the other fighter container and both coordinates are copied verbatim.
+    """
+    lines = [line.strip() for line in text.replace('\r\n', '\n').splitlines()]
+    if lines != [
+        '_root.game["p" + pn]._visible = true;',
+        '_root.game["p" + pn]._x = _parent._x;',
+        '_root.game["p" + pn]._y = _parent._y;',
+        '_root.焦点 = "all";',
+    ]:
+        return []
+    return [{
+        'op': 'root_opponent_warp', 'copy_x': True, 'copy_y': True,
+        'visible': True, 'focus': 'all', 'path': path, 'line': 2,
+        'frame': frame,
+    }]
+
+
 def _root_clip_rename_event(
     text: str,
     path: str,
@@ -343,6 +365,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         ))
         calls.extend({'op': 'root_position', 'path': path, 'frame': frame['frame'], **write}
                      for write in root_position_writes(text))
+        calls.extend(root_opponent_warp(text, path, frame['frame']))
         # Keep root container warps on the source frame-script FIFO.  A child
         # callback may jump to another label before this root DoAction is
         # drained; consuming the event by its queued source frame preserves

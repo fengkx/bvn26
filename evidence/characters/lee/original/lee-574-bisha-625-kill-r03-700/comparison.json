@@ -1,0 +1,35 @@
+{
+  "status": "matched",
+  "source_states": 1402,
+  "native_states": 1402,
+  "complete": true,
+  "fields": [
+    "frame",
+    "x",
+    "y",
+    "xscale",
+    "action",
+    "hp",
+    "ql",
+    "sw",
+    "touch",
+    "touchFloor",
+    "hits",
+    "paused",
+    "hstm",
+    "hurtSkling"
+  ],
+  "differences": [],
+  "fixture": "lee-574-bisha-625-kill-negative",
+  "scope": "same-input source/Godot 700 fight ticks, 1402 actor rows through delayed nextfight reset and post-reset frames",
+  "timer_evidence": "godot-timer.log register/fire/after/cancel",
+  "timing_boundary": {
+    "source_fight_tick_after_ready": 612,
+    "source_display_tick": 1078,
+    "godot_timer_physics_tick": 612,
+    "note": "source fight_tick and Godot explicit physics tick both 612 here but are distinct clocks; report keeps both names",
+    "next_round_ready_event": false,
+    "post_reset_input_action": false,
+    "acceptance": "KO/reset state rows matched; next-round intro-to-Ready and post-reset real input are not claimed"
+  }
+}

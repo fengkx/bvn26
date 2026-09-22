@@ -1,0 +1,38 @@
+{
+  "server": "http://127.0.0.1:8785/",
+  "browser": "Chrome headless=new, independent profile /private/tmp/bvn-web-chrome-r04",
+  "cdp": "9225",
+  "pck_sha256": "d921f9a062bebc3bc05a9237b8c959801f5e18b44d594de44d8e20801c6bf23c",
+  "boot": {
+    "status": "passed",
+    "marker": "M0_BOOT_OK",
+    "canvas": {
+      "width": 419,
+      "height": 279,
+      "clientWidth": 419,
+      "clientHeight": 279
+    },
+    "screenshot": "boot.png"
+  },
+  "combat": {
+    "status": "failed_bounded",
+    "script": "tools/test_chromium_web_boot.mjs",
+    "first_action": "走",
+    "wait_ms": 5000,
+    "console_actions": [
+      "站立 only"
+    ],
+    "reason": "CDP keyDown d did not produce action 走; repeated with 7000ms pre-wait and same result. No runtime or test changes."
+  },
+  "limitations": [
+    "Headless Chrome without software WebGL first failed with WebGL2 missing; rerun with --use-gl=swiftshader --enable-unsafe-swiftshader passed boot.",
+    "No pause/resume/reselect claim because combat input smoke stopped at first bounded failure."
+  ],
+  "menu_flow_attempt": {
+    "status": "inconclusive_transport",
+    "method": "independent headless Chrome r05; canvas click then repeated CDP KeyJ down 320ms/up with 500ms observation",
+    "intended_steps": "title -> mode -> fighter/helper/map -> Ready",
+    "result": "temporary CDP flow did not produce a persisted step screenshot or console result before the bounded tool session ended; no UI pass or runtime failure is claimed",
+    "followup_boundary": "boot screenshot remains valid; combat/action/pause/reselect require a fresh bounded flow with target-level progress logging"
+  }
+}

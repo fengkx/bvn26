@@ -1,0 +1,382 @@
+{
+  "schema": "lee.source_precondition_audit.v2",
+  "purpose": "Verify actual source_state_precondition events; sw/death state is not treated as wudi.",
+  "cases": {
+    "lee-574-bisha-625-dead-negative": {
+      "expected": {
+        "p1": {
+          "health": 1000,
+          "wudi": false
+        },
+        "p2": {
+          "health": 0,
+          "wudi": false
+        }
+      },
+      "source": "evidence/characters/lee/original/lee-574-bisha-625-dead-clean-r01/parsed/events.jsonl",
+      "source_sha256": "42bc1a89412f74b8c7534b199d3c46755502b8939294e9814d36b83a3928e314",
+      "events": [
+        {
+          "sequence": 3172,
+          "display_tick": 468,
+          "fight_tick": 0,
+          "value": "p1,health,f:1:9:131072000:0"
+        },
+        {
+          "sequence": 3173,
+          "display_tick": 468,
+          "fight_tick": 0,
+          "value": "p1,wudi,false"
+        },
+        {
+          "sequence": 3174,
+          "display_tick": 468,
+          "fight_tick": 0,
+          "value": "p2,health,f:1:0:0:0"
+        },
+        {
+          "sequence": 3175,
+          "display_tick": 468,
+          "fight_tick": 0,
+          "value": "p2,wudi,false"
+        }
+      ],
+      "observed_preconditions": {
+        "p1.health": "f:1:9:131072000:0",
+        "p1.wudi": "false",
+        "p2.health": "f:1:0:0:0",
+        "p2.wudi": "false"
+      },
+      "wudi_evidence": {
+        "p1.wudi": "false",
+        "p2.wudi": "false"
+      },
+      "status": "verified"
+    },
+    "lee-574-bisha-625-kill-negative": {
+      "expected": {
+        "p1": {
+          "health": 1000,
+          "wudi": false
+        },
+        "p2": {
+          "health": 1,
+          "wudi": false
+        }
+      },
+      "source": "evidence/characters/lee/original/lee-574-bisha-625-kill-clean-r01/parsed/events.jsonl",
+      "source_sha256": "4ba25a37cdf10c7e843627d67af15458fef8ba99592d6822317a268b8bd87d65",
+      "events": [
+        {
+          "sequence": 3033,
+          "display_tick": 454,
+          "fight_tick": 0,
+          "value": "p1,health,f:1:9:131072000:0"
+        },
+        {
+          "sequence": 3034,
+          "display_tick": 454,
+          "fight_tick": 0,
+          "value": "p1,wudi,false"
+        },
+        {
+          "sequence": 3035,
+          "display_tick": 454,
+          "fight_tick": 0,
+          "value": "p2,health,f:1:0:67108864:0"
+        },
+        {
+          "sequence": 3036,
+          "display_tick": 454,
+          "fight_tick": 0,
+          "value": "p2,wudi,false"
+        }
+      ],
+      "observed_preconditions": {
+        "p1.health": "f:1:9:131072000:0",
+        "p1.wudi": "false",
+        "p2.health": "f:1:0:67108864:0",
+        "p2.wudi": "false"
+      },
+      "wudi_evidence": {
+        "p1.wudi": "false",
+        "p2.wudi": "false"
+      },
+      "status": "verified"
+    },
+    "lee-574-bisha-625-miss-far": {
+      "expected": {
+        "p1": {
+          "health": 1000,
+          "wudi": false
+        },
+        "p2": {
+          "health": 1000,
+          "wudi": false
+        }
+      },
+      "source": "evidence/characters/lee/original/lee-574-bisha-625-miss-far-r01/events.jsonl",
+      "source_sha256": "5f0949f4b83586d050cc1aec82a542def9213f97622a7e8ef0ee3d9255a29986",
+      "events": [
+        {
+          "sequence": 2749,
+          "display_tick": 486,
+          "fight_tick": 0,
+          "value": "p1,health,f:1:9:131072000:0"
+        },
+        {
+          "sequence": 2750,
+          "display_tick": 486,
+          "fight_tick": 0,
+          "value": "p1,wudi,false"
+        },
+        {
+          "sequence": 2751,
+          "display_tick": 486,
+          "fight_tick": 0,
+          "value": "p2,health,f:1:9:131072000:0"
+        },
+        {
+          "sequence": 2752,
+          "display_tick": 486,
+          "fight_tick": 0,
+          "value": "p2,wudi,false"
+        }
+      ],
+      "observed_preconditions": {
+        "p1.health": "f:1:9:131072000:0",
+        "p1.wudi": "false",
+        "p2.health": "f:1:9:131072000:0",
+        "p2.wudi": "false"
+      },
+      "wudi_evidence": {
+        "p1.wudi": "false",
+        "p2.wudi": "false"
+      },
+      "status": "verified"
+    },
+    "lee-795-bishaSuper-hp100": {
+      "expected": {
+        "p1": {
+          "health": 100,
+          "wudi": false
+        },
+        "p2": {
+          "health": 1000,
+          "wudi": false
+        }
+      },
+      "source": "evidence/characters/lee/original/lee-795-bishaSuper-hp100-r01/events.jsonl",
+      "source_sha256": "6efdf3bf5fe94beaa640b83a9a9cfcd6e8b6008b9bd4729655d5cd07783de3c5",
+      "events": [
+        {
+          "sequence": 1531,
+          "display_tick": 486,
+          "fight_tick": 0,
+          "value": "p1,health,f:1:6:104857600:0"
+        },
+        {
+          "sequence": 1532,
+          "display_tick": 486,
+          "fight_tick": 0,
+          "value": "p1,wudi,false"
+        },
+        {
+          "sequence": 1533,
+          "display_tick": 486,
+          "fight_tick": 0,
+          "value": "p2,health,f:1:9:131072000:0"
+        },
+        {
+          "sequence": 1534,
+          "display_tick": 486,
+          "fight_tick": 0,
+          "value": "p2,wudi,false"
+        }
+      ],
+      "observed_preconditions": {
+        "p1.health": "f:1:6:104857600:0",
+        "p1.wudi": "false",
+        "p2.health": "f:1:9:131072000:0",
+        "p2.wudi": "false"
+      },
+      "wudi_evidence": {
+        "p1.wudi": "false",
+        "p2.wudi": "false"
+      },
+      "status": "verified"
+    },
+    "lee-795-bishaSuper-hp300": {
+      "expected": {
+        "p1": {
+          "health": 300,
+          "wudi": false
+        },
+        "p2": {
+          "health": 1000,
+          "wudi": false
+        }
+      },
+      "source": "evidence/characters/lee/original/lee-795-bishaSuper-hp300-r01/events.jsonl",
+      "source_sha256": "6ea286a04bf8ff6556ce51f091d82af0e6b71edd2a9e2df59e245cb932789a77",
+      "events": [
+        {
+          "sequence": 1478,
+          "display_tick": 474,
+          "fight_tick": 0,
+          "value": "p1,health,f:1:8:78643200:0"
+        },
+        {
+          "sequence": 1479,
+          "display_tick": 474,
+          "fight_tick": 0,
+          "value": "p1,wudi,false"
+        },
+        {
+          "sequence": 1480,
+          "display_tick": 474,
+          "fight_tick": 0,
+          "value": "p2,health,f:1:9:131072000:0"
+        },
+        {
+          "sequence": 1481,
+          "display_tick": 474,
+          "fight_tick": 0,
+          "value": "p2,wudi,false"
+        }
+      ],
+      "observed_preconditions": {
+        "p1.health": "f:1:8:78643200:0",
+        "p1.wudi": "false",
+        "p2.health": "f:1:9:131072000:0",
+        "p2.wudi": "false"
+      },
+      "wudi_evidence": {
+        "p1.wudi": "false",
+        "p2.wudi": "false"
+      },
+      "status": "verified"
+    },
+    "lee-795-bishaSuper-hp301": {
+      "expected": {
+        "p1": {
+          "health": 301,
+          "wudi": false
+        },
+        "p2": {
+          "health": 1000,
+          "wudi": false
+        }
+      },
+      "source": "evidence/characters/lee/original/lee-795-bishaSuper-hp301-r02/events.jsonl",
+      "source_sha256": "ddb6e575104197bb62b6affe169cea5f3dedb7575127db41f83d5c3b8d7d933a",
+      "events": [
+        {
+          "sequence": 1465,
+          "display_tick": 471,
+          "fight_tick": 0,
+          "value": "p1,health,f:1:8:78905344:0"
+        },
+        {
+          "sequence": 1466,
+          "display_tick": 471,
+          "fight_tick": 0,
+          "value": "p1,wudi,false"
+        },
+        {
+          "sequence": 1467,
+          "display_tick": 471,
+          "fight_tick": 0,
+          "value": "p2,health,f:1:9:131072000:0"
+        },
+        {
+          "sequence": 1468,
+          "display_tick": 471,
+          "fight_tick": 0,
+          "value": "p2,wudi,false"
+        }
+      ],
+      "observed_preconditions": {
+        "p1.health": "f:1:8:78905344:0",
+        "p1.wudi": "false",
+        "p2.health": "f:1:9:131072000:0",
+        "p2.wudi": "false"
+      },
+      "wudi_evidence": {
+        "p1.wudi": "false",
+        "p2.wudi": "false"
+      },
+      "status": "verified"
+    },
+    "lee-795-bishaSuper-wudi301": {
+      "expected": {
+        "p1": {
+          "health": 301,
+          "wudi": true
+        },
+        "p2": {
+          "health": 1000,
+          "wudi": false
+        }
+      },
+      "source": "evidence/characters/lee/original/lee-795-bishaSuper-wudi301-r01/events.jsonl",
+      "source_sha256": "d8034dff17330962d5cb2c8967ea45603f849f73b4f1be6590cf8faa4a488c70",
+      "events": [
+        {
+          "sequence": 1452,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "value": "p1,health,f:1:8:78905344:0"
+        },
+        {
+          "sequence": 1453,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "value": "p1,wudi,true"
+        },
+        {
+          "sequence": 1454,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "value": "p2,health,f:1:9:131072000:0"
+        },
+        {
+          "sequence": 1455,
+          "display_tick": 466,
+          "fight_tick": 0,
+          "value": "p2,wudi,false"
+        }
+      ],
+      "observed_preconditions": {
+        "p1.health": "f:1:8:78905344:0",
+        "p1.wudi": "true",
+        "p2.health": "f:1:9:131072000:0",
+        "p2.wudi": "false"
+      },
+      "wudi_evidence": {
+        "p1.wudi": "true",
+        "p2.wudi": "false"
+      },
+      "status": "verified"
+    },
+    "lee-timer-hp1": {
+      "expected": null,
+      "source": "evidence/characters/lee/original/lee-timer-hp1-r01/events.jsonl",
+      "source_sha256": "a587144efd744f9b0cb425d6b20eec181686c804561e8edc69da16058ca36510",
+      "events": [],
+      "observed_preconditions": {},
+      "wudi_evidence": {},
+      "status": "no_declared_precondition"
+    },
+    "lee-timer-kill700": {
+      "expected": null,
+      "source": "evidence/characters/lee/original/lee-timer-kill700-r01/events.jsonl",
+      "source_sha256": "9902dbb329b7e3e59f3b5585ed729802f1cd79399feeb456021009742b849918",
+      "events": [],
+      "observed_preconditions": {},
+      "wudi_evidence": {},
+      "status": "no_declared_precondition"
+    }
+  },
+  "selection_rule": "Canonical paths are explicitly selected from full-186-index; legacy r01 candidates remain history only."
+}

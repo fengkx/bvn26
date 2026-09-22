@@ -1,0 +1,140 @@
+{
+  "status": "source_first_fight0_order_audited",
+  "raw": "evidence/characters/lee/original/lee-body-boundaries-r02/events.jsonl",
+  "raw_sha256": "7be5c8b955f943f4770b0781d9efb807b1504c61901373f108365432f30ceda3",
+  "run_id": "lee-body-boundaries-r02",
+  "fight_tick_field": "AIREF field index 5",
+  "source_order": [
+    {
+      "seq": 11340,
+      "fight_tick": 0,
+      "kind": "ready",
+      "note": "analysis fixture enters fight"
+    },
+    {
+      "seq": 11341,
+      "fight_tick": 0,
+      "kind": "source_state_precondition",
+      "payload": "p1,health,1000"
+    },
+    {
+      "seq": 11342,
+      "fight_tick": 0,
+      "kind": "source_state_precondition",
+      "payload": "p1,wudi,false"
+    },
+    {
+      "seq": 11343,
+      "fight_tick": 0,
+      "kind": "source_state_precondition",
+      "payload": "p2,health,0",
+      "fixture": "body build was non-dynamic kill-correct; this event is from source precondition experiment, not accepted hp lifecycle"
+    },
+    {
+      "seq": 11344,
+      "fight_tick": 0,
+      "kind": "source_state_precondition",
+      "payload": "p2,wudi,false"
+    },
+    {
+      "seq": 11346,
+      "fight_tick": 0,
+      "kind": "state",
+      "slot": "p1",
+      "source_frame": 1,
+      "touchFloor": "undefined"
+    },
+    {
+      "seq": 11350,
+      "fight_tick": 0,
+      "kind": "state",
+      "slot": "p2",
+      "source_frame": 1,
+      "touchFloor": "undefined"
+    },
+    {
+      "seq": 11355,
+      "fight_tick": 0,
+      "kind": "body_boundary",
+      "slot": "p1",
+      "source_frame": 1,
+      "enter": true,
+      "touchFloor": "undefined"
+    },
+    {
+      "seq": 11356,
+      "fight_tick": 0,
+      "kind": "body_boundary",
+      "slot": "p1",
+      "source_frame": 1,
+      "enter": false,
+      "touchFloor": "undefined"
+    },
+    {
+      "seq": 11407,
+      "fight_tick": 0,
+      "kind": "body_callback_enter",
+      "slot": "p2",
+      "source_callback_frame": 1
+    },
+    {
+      "seq": 11409,
+      "fight_tick": 0,
+      "kind": "body_callback_exit",
+      "slot": "p2",
+      "source_callback_frame": 1
+    },
+    {
+      "seq": 11412,
+      "fight_tick": 0,
+      "kind": "body_boundary",
+      "slot": "p2",
+      "source_frame": 2,
+      "enter": true,
+      "touchFloor": true
+    },
+    {
+      "seq": 11416,
+      "fight_tick": 0,
+      "kind": "body_callback_enter",
+      "slot": "p1",
+      "source_callback_frame": 1
+    },
+    {
+      "seq": 11418,
+      "fight_tick": 0,
+      "kind": "body_callback_exit",
+      "slot": "p1",
+      "source_callback_frame": 1
+    },
+    {
+      "seq": 11421,
+      "fight_tick": 0,
+      "kind": "body_boundary",
+      "slot": "p1",
+      "source_frame": 2,
+      "enter": true,
+      "touchFloor": true
+    },
+    {
+      "seq": 11425,
+      "fight_tick": 1,
+      "kind": "state",
+      "slot": "p1",
+      "source_frame": 2,
+      "touchFloor": true
+    },
+    {
+      "seq": 11429,
+      "fight_tick": 1,
+      "kind": "state",
+      "slot": "p2",
+      "source_frame": 2,
+      "touchFloor": true
+    }
+  ],
+  "fixture_source_order": "tools/probes/as2/ai_reference/move_case.as:1-10 performs gotoAndPlay(\"站立\"), positions, and energy before the source precondition values are observed; the raw ready/precondition/state order is retained above.",
+  "compiled_runtime_order": "godot/main.gd:713-723 prepares callbacks and calls source_callbacks.dispatch before godot/main.gd:757-759 root_observer.call. Lee generated body writes touchFloor=true when y==floorY at godot/generated/fighters/lee/player_body/body.gd:274-277. This is the concrete candidate for the native tick0 true versus source state undefined difference; no runtime change made.",
+  "harness_change": "godot/tests/move_case_reference.gd removed post-loop rows.is_empty() _observe(0) fallback; only the unified root observer snapshot remains.",
+  "acceptance_boundary": "Source hp0/hp1 lifecycle remains pending until the new --dynamic-move-case builds are captured; this ordering report does not validate those preconditions."
+}

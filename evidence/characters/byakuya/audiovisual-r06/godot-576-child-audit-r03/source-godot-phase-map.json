@@ -1,0 +1,124 @@
+{
+  "scope": "source-to-runtime phase mapping for Byakuya 576 bounded visual audit",
+  "fixture": "evidence/characters/byakuya/fixtures-full/byakuya-576-bishaUP-neutral.json",
+  "source_capture": "evidence/characters/byakuya/audiovisual-r06/freeze-r21/576",
+  "source_target": {
+    "target_frame": 576,
+    "source_display_tick": 473,
+    "source_fight_tick": 11,
+    "freeze_event": "visual_freeze_begin at seq3524, visual_freeze_end at seq3525",
+    "p1_state": "frame576",
+    "p2_state": "frame5"
+  },
+  "source_rows": [
+    {
+      "seq": 3265,
+      "time_ms": 29479,
+      "display_tick": 472,
+      "fight_tick": 10,
+      "kind": "input_next_display",
+      "value": "w=true,a=undefined,l=undefined,上箭=undefined,下箭=undefined,左箭=undefined,右箭=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=true,summon=undefined"
+    },
+    {
+      "seq": 3266,
+      "time_ms": 29479,
+      "display_tick": 472,
+      "fight_tick": 10,
+      "kind": "state",
+      "value": "p1,4,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "seq": 3269,
+      "time_ms": 29479,
+      "display_tick": 472,
+      "fight_tick": 10,
+      "kind": "state",
+      "value": "p2,4,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "seq": 3304,
+      "time_ms": 29524,
+      "display_tick": 473,
+      "fight_tick": 11,
+      "kind": "input_next_display",
+      "value": "w=true,a=undefined,l=undefined,上箭=undefined,下箭=undefined,左箭=undefined,右箭=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=true,summon=undefined"
+    },
+    {
+      "seq": 3305,
+      "time_ms": 29524,
+      "display_tick": 473,
+      "fight_tick": 11,
+      "kind": "state",
+      "value": "p1,576,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "seq": 3308,
+      "time_ms": 29525,
+      "display_tick": 473,
+      "fight_tick": 11,
+      "kind": "state",
+      "value": "p2,5,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "seq": 3744,
+      "time_ms": 29585,
+      "display_tick": 474,
+      "fight_tick": 12,
+      "kind": "input_next_display",
+      "value": "w=true,a=undefined,l=undefined,上箭=undefined,下箭=undefined,左箭=undefined,右箭=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=true,summon=undefined"
+    },
+    {
+      "seq": 3745,
+      "time_ms": 29585,
+      "display_tick": 474,
+      "fight_tick": 12,
+      "kind": "state",
+      "value": "p1,576,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,true,0,false"
+    },
+    {
+      "seq": 3748,
+      "time_ms": 29585,
+      "display_tick": 474,
+      "fight_tick": 12,
+      "kind": "state",
+      "value": "p2,5,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,true,0,false"
+    }
+  ],
+  "godot_runtime_probe": {
+    "artifact": "evidence/characters/byakuya/audiovisual-r06/godot-576-child-audit-r03/runtime-display-list.json",
+    "capture_tick": 286,
+    "fight_start_tick": 276,
+    "relative_fight_tick": 10,
+    "direct_placements": 5,
+    "live_render_nodes": 3867,
+    "interpretation": "Godot capture is one logical fight tick earlier than the Flash freeze row. This is a lifecycle observation boundary, not proof of a visual mismatch; GUI comparison must bind source display_tick/fight_tick and Godot presentation/fight tick explicitly.",
+    "not_equal_claim": "capture_tick 286 must not be called source fight_tick 11 without recording the one-tick phase offset."
+  },
+  "source_mapping": "source-display-list-576.json and godot-576-child-audit-r03/runtime-display-list.json align five direct placements by depth/symbol/placed_frame; AImain local frame representation differs (source observer frame 0 vs Godot child frame 2) and remains bounded pending semantic mapping.",
+  "hashes": {
+    "source_events_sha256": "9ec988c12e96c8e291c4eb304aed1d0d1145c405a7493839cbeb145e720659cb",
+    "godot_runtime_display_sha256": "10e8d15363a8cbeb8428dffbd48c552a2e680b1267cf58f46dfc593428054340"
+  },
+  "acceptance": "bounded phase/mapping evidence only; no pixel parity claim",
+  "phase_analysis": {
+    "source": {
+      "fight_tick_9": "P1 frame3; no special input",
+      "fight_tick_10": "input w=true,special=true; P1 frame4",
+      "fight_tick_11": "same input w=true,special=true; P1 enters frame576; P2 frame5",
+      "fight_tick_12": "same held input; P1 remains frame576 and touchFloor changes true"
+    },
+    "godot_probe": {
+      "input_tape": "target576 uses up+special for relative ticks 10..12",
+      "capture_condition": "_advance_fight() is called, then capture occurs once current_source_frame()==576",
+      "capture_relative_tick": 10,
+      "interpretation": "The Godot probe records the post-advance state caused by relative input tick 10. Flash records the corresponding state row at the following display observation (fight_tick 11). This is an observation-boundary difference, not permission to shift traces globally; GUI comparison must capture pre/post advance markers or compare the source input row to the Godot applied-input row explicitly."
+    },
+    "required_next_observer_fields": [
+      "pre_advance_input",
+      "pre_advance_source_frame",
+      "post_advance_source_frame",
+      "display_tick/fight_tick",
+      "Godot physics_tick and applied input tick"
+    ]
+  }
+}

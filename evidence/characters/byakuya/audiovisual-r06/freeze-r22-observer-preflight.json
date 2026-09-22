@@ -1,0 +1,15 @@
+{
+  "scope": "r22 819 capture observer static preflight",
+  "patch": "/private/tmp/byakuya-freeze-r22-819-build/patches/main/frame_1/DoAction.as",
+  "patch_sha256": "62ffd986c9b5e38ff768e0e4aa4cf84794f9e1a39216a095cc04c8b8642edd42",
+  "observer_read_only": true,
+  "snapshot_interval_ms": 100,
+  "freshness_requirements": [
+    "snapshot_end before first screenshot",
+    "second snapshot end_seq strictly greater than first",
+    "state equality between snapshots",
+    "RGB stability",
+    "missing snapshot fails closed"
+  ],
+  "result": "read-only observer passes static preflight; no capture result yet"
+}

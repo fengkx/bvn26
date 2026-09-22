@@ -1,0 +1,16 @@
+{
+  "format": "invalid-fixture-pairing-r01",
+  "run_id": "byakuya-audio-tags-recovery-r02",
+  "reason": "The main fixture scheduled N3 at fight ticks 62-66, but this build replaced the canonical Byakuya probe artifact c0c6ec... with a raw-source re-export e3ddc5... that omitted the CLIPACTIONRECORD onClipEvent(load) _root.aiKeyDown adapter. Canonical prior run had key_read P2 key 66 true at tick63; r02 had no true key_read in ticks 60-68. Therefore it is not same-input recovery evidence for frames 934/944.",
+  "canonical_probe_fighter_sha256": "c0c6ec2799d69ed0c735dd379fe1b6d339e58c8bf0b397f7a8fa618730afcbb1",
+  "replacement_fighter_sha256": "e3ddc5fc31e144b885656f215add2df7e9c297caf3066f5ab01c3fbe5fec959c",
+  "raw_sha256": "b29b58fb0d4d4d16a916ce4281a173276f524fe3527a35a56f80a00397b15fb8",
+  "capture_native_player_exit": "exit 1 during write because destination parent directory did not exist; exact AIREF-prefixed rows were recovered from global flashlog; run did contain done",
+  "tag_frames_observed": [
+    887,
+    963
+  ],
+  "not_accepted_for": [
+    "N3-assisted recovery phase 934/944"
+  ]
+}

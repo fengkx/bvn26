@@ -1,0 +1,14 @@
+{
+  "id": "lee-ko-harness-baseline-r01-timer",
+  "scope": "same existing-role runner with source-deadline timer driver",
+  "fixture": "lee-ko-harness-baseline-r01-timer.fixture.json",
+  "rows": "lee-ko-harness-baseline-r01-timer.rows.json",
+  "drive_source_timers": true,
+  "result": "Timer callback path reached a new ready intro (p1 frame 1179) at tick 175, while p2 remained sw=true; this is a harness/timeline boundary and not accepted parity.",
+  "timer_trace": [
+    "SOURCE_TIMER_REGISTER wait_ms=1000",
+    "SOURCE_TIMER_FIRE deadline_ms=1000",
+    "SOURCE_TIMER_CANCEL"
+  ],
+  "harness_script": "godot/tests/move_case_reference.gd"
+}

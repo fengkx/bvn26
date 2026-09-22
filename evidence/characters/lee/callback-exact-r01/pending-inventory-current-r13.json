@@ -1,0 +1,2545 @@
+{
+  "schema": "lee-callback-inventory-current-r13",
+  "scope": "Current-derived 49-row inventory with r05-r13 same-source-run bounded callback comparisons. Matches cover source_frame, entering, action and decoded ql only; this is not full-state parity. Clip markers remain source-only until a clip-kind native comparison exists.",
+  "counts": {
+    "native_matched": 34,
+    "source_only": 9,
+    "remaining": 4,
+    "normal_input_unreachable": 2
+  },
+  "entries": [
+    {
+      "source_path": "DefineSprite_518/frame_1017/DoAction.as",
+      "source_frame": 1017,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "招换",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01-normalized/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r06.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "Existing exact summon callback comparison; retained here because the original inventory row lacked fixture_frame_observed.",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r06-rerun/fixtures/lee-1017.json",
+        "fixture_sha256": "195b92a10245b94305af1032f89d08b5840281dfb3434063fb5db88d01ce6e3c",
+        "source_raw": "evidence/characters/lee/original/lee-callback-exact-summon-r01",
+        "source_raw_sha256": "88700fe3c3cbfcbdb930827571db18ac32ff159b84e52848a85127696b379da2",
+        "source_build": "evidence/characters/lee/callback-exact-r01/summon-build.json",
+        "source_build_sha256": "832adf73677a831d54384a855c6ebcede8990c8440c19235ef13d16d01dd15b3",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r06-rerun/engine.log",
+        "native_log_sha256": "f2fde22d1c707fe8100738b9d638f5aed6ad62a8dec7b756c1ca5a12b91c96a7",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1057/DoAction.as",
+      "source_frame": 1057,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "防御2",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-defence-frame1057-r02/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r11/comparison.json",
+        "case_id": "defence-1050-1057-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r11/fixtures/defence-1050-1057-p1.json",
+        "fixture_sha256": "5677f1285d038f1ffbace5cbb3b49dae7238fe6709950bfbe6481980568a9720",
+        "source_raw": "evidence/characters/lee/original/lee-callback-defence-frame1057-r02/events.jsonl",
+        "source_raw_sha256": "55ccd2bd549f9040fe9485ccbd26e605c342f0dfe318b3a589eb1370c0695943",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r11/source-builds/defence-1050-1057-p1/build.json",
+        "source_build_sha256": "2bc2e6bc4a334a766bf5656b0821cccc596d1b4af00423973fe6c69e14d57275",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r11/engine.log",
+        "native_log_sha256": "26646af541c1ea63faa162d061f792834a14894e39982b5ab8c38696a4f0a3e0",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1070/DoAction.as",
+      "source_frame": 1070,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "防住",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-defence-entry-r03"
+      ],
+      "notes": "Target-filtered Godot exact probe emitted enter/exit without SCRIPT ERROR; raw log is indexed in native-exact-attempts-r02.json.",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r09/comparison.json",
+        "case_id": "defence-1070-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r09/fixtures/defence-1070-p1.json",
+        "fixture_sha256": "09af7fad7dfa11acf95d089e4738b12102dbfc643357a320af7389cb7c215c0b",
+        "source_raw": "evidence/characters/lee/original/lee-callback-defence-entry-r03",
+        "source_raw_sha256": "c519cc0f6283acc6fa799a81e107ee0bc437ac219bdf76b71deedc11244445b5",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r09/source-builds/defence-1070-p1/build.json",
+        "source_build_sha256": "ee6e40c15fdffb19259d183b0b99872bbe70118e093dd654aedc75b0e2b7ec95",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r09/engine.log",
+        "native_log_sha256": "b851c28d4e9f9fd9de1acb73a5520889fcc0d9732c50aef1a6bb97fae8d0d086",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1083/DoAction.as",
+      "source_frame": 1083,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "被打",
+      "slot": "p1",
+      "status": "source_only",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r01/events.jsonl/events.jsonl"
+      ],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [
+        "p2"
+      ]
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1086/DoAction.as",
+      "source_frame": 1086,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "击飞",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r08/comparison.json",
+        "case_id": "recovery-p2-1086-1087-1096-1098-1112",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "event_count": 2
+      },
+      "notes": "Bounded same-source-build/input callback comparison only; not full character parity.",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+        },
+        "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+        "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/recovery-p2-1086-1087-1096-1098-1112.json",
+        "fixture_sha256": "cb0bf05d501ab08e89a86be76feb992c125bbcd803f203a74640228959f6d8eb",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+        "native_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+        "source_raw": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "source_raw_sha256": "9b47db232b98208909d856676833bb0789ca4c1f3e9b6849955a762e1b04ec36",
+        "source_run_id": "lee-callback-observer-hp1-r02",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r08/source-builds/recovery-p2-1086-1087-1096-1098-1112/build.json",
+        "source_build_sha256": "99ab539a228ffb32af2b5bc1e5f89f4d9caf6569ab31dfa05d23d632c4b62952",
+        "source_output_main_sha256": "cc19f17cdee86df16e6993eb040e18c40eeb4da84fbaeb75415a85d078de3078",
+        "source_instrumentation_sha256": "32825ba5e14907b07aee8c2bbd66ac31f34cdaad9576c87188b5885853482bd8",
+        "source_slot": "p2",
+        "source_setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300,
+            "health": 1,
+            "wudi": false
+          }
+        },
+        "source_inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "source_helpers": [
+          "我爱罗",
+          "魂"
+        ]
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1087/DoAction.as",
+      "source_frame": 1087,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "击飞",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r08/comparison.json",
+        "case_id": "recovery-p2-1086-1087-1096-1098-1112",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "event_count": 2
+      },
+      "notes": "Bounded same-source-build/input callback comparison only; not full character parity.",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+        },
+        "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+        "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/recovery-p2-1086-1087-1096-1098-1112.json",
+        "fixture_sha256": "cb0bf05d501ab08e89a86be76feb992c125bbcd803f203a74640228959f6d8eb",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+        "native_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+        "source_raw": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "source_raw_sha256": "9b47db232b98208909d856676833bb0789ca4c1f3e9b6849955a762e1b04ec36",
+        "source_run_id": "lee-callback-observer-hp1-r02",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r08/source-builds/recovery-p2-1086-1087-1096-1098-1112/build.json",
+        "source_build_sha256": "99ab539a228ffb32af2b5bc1e5f89f4d9caf6569ab31dfa05d23d632c4b62952",
+        "source_output_main_sha256": "cc19f17cdee86df16e6993eb040e18c40eeb4da84fbaeb75415a85d078de3078",
+        "source_instrumentation_sha256": "32825ba5e14907b07aee8c2bbd66ac31f34cdaad9576c87188b5885853482bd8",
+        "source_slot": "p2",
+        "source_setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300,
+            "health": 1,
+            "wudi": false
+          }
+        },
+        "source_inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "source_helpers": [
+          "我爱罗",
+          "魂"
+        ]
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_frame": 1088,
+      "clip_id": "DefineSprite_518",
+      "kind": "clip_action",
+      "action": "击飞",
+      "slot": "p1",
+      "status": "source_only",
+      "source_raw_captures": [],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; clip callback requires a source hit/recovery trigger and no valid same-input capture currently reaches it",
+      "lee_slots_observed": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1096/DoAction.as",
+      "source_frame": 1096,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "击飞",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r08/comparison.json",
+        "case_id": "recovery-p2-1086-1087-1096-1098-1112",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "event_count": 2
+      },
+      "notes": "Bounded same-source-build/input callback comparison only; not full character parity.",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+        },
+        "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+        "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/recovery-p2-1086-1087-1096-1098-1112.json",
+        "fixture_sha256": "cb0bf05d501ab08e89a86be76feb992c125bbcd803f203a74640228959f6d8eb",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+        "native_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+        "source_raw": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "source_raw_sha256": "9b47db232b98208909d856676833bb0789ca4c1f3e9b6849955a762e1b04ec36",
+        "source_run_id": "lee-callback-observer-hp1-r02",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r08/source-builds/recovery-p2-1086-1087-1096-1098-1112/build.json",
+        "source_build_sha256": "99ab539a228ffb32af2b5bc1e5f89f4d9caf6569ab31dfa05d23d632c4b62952",
+        "source_output_main_sha256": "cc19f17cdee86df16e6993eb040e18c40eeb4da84fbaeb75415a85d078de3078",
+        "source_instrumentation_sha256": "32825ba5e14907b07aee8c2bbd66ac31f34cdaad9576c87188b5885853482bd8",
+        "source_slot": "p2",
+        "source_setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300,
+            "health": 1,
+            "wudi": false
+          }
+        },
+        "source_inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "source_helpers": [
+          "我爱罗",
+          "魂"
+        ]
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1098/DoAction.as",
+      "source_frame": 1098,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "击落地",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r08/comparison.json",
+        "case_id": "recovery-p2-1086-1087-1096-1098-1112",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "event_count": 2
+      },
+      "notes": "Bounded same-source-build/input callback comparison only; not full character parity.",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+        },
+        "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+        "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/recovery-p2-1086-1087-1096-1098-1112.json",
+        "fixture_sha256": "cb0bf05d501ab08e89a86be76feb992c125bbcd803f203a74640228959f6d8eb",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+        "native_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+        "source_raw": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "source_raw_sha256": "9b47db232b98208909d856676833bb0789ca4c1f3e9b6849955a762e1b04ec36",
+        "source_run_id": "lee-callback-observer-hp1-r02",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r08/source-builds/recovery-p2-1086-1087-1096-1098-1112/build.json",
+        "source_build_sha256": "99ab539a228ffb32af2b5bc1e5f89f4d9caf6569ab31dfa05d23d632c4b62952",
+        "source_output_main_sha256": "cc19f17cdee86df16e6993eb040e18c40eeb4da84fbaeb75415a85d078de3078",
+        "source_instrumentation_sha256": "32825ba5e14907b07aee8c2bbd66ac31f34cdaad9576c87188b5885853482bd8",
+        "source_slot": "p2",
+        "source_setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300,
+            "health": 1,
+            "wudi": false
+          }
+        },
+        "source_inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "source_helpers": [
+          "我爱罗",
+          "魂"
+        ]
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_frame": 1098,
+      "clip_id": "DefineSprite_518",
+      "kind": "clip_action",
+      "action": "击落地",
+      "slot": "p2",
+      "status": "source_only",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01"
+      ],
+      "godot_exact_scope": null,
+      "notes": "P2 clip callback is distinct from the separately matched 1098 body frame-action callback; no native clip-action comparison in r08.",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; clip callback requires a source hit/recovery trigger and no valid same-input capture currently reaches it",
+      "lee_slots_observed": [
+        "p2"
+      ]
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1112/DoAction.as",
+      "source_frame": 1112,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "击落地",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r08/comparison.json",
+        "case_id": "recovery-p2-1086-1087-1096-1098-1112",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "event_count": 2
+      },
+      "notes": "Bounded same-source-build/input callback comparison only; not full character parity.",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+        },
+        "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+        "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/recovery-p2-1086-1087-1096-1098-1112.json",
+        "fixture_sha256": "cb0bf05d501ab08e89a86be76feb992c125bbcd803f203a74640228959f6d8eb",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+        "native_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+        "source_raw": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "source_raw_sha256": "9b47db232b98208909d856676833bb0789ca4c1f3e9b6849955a762e1b04ec36",
+        "source_run_id": "lee-callback-observer-hp1-r02",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r08/source-builds/recovery-p2-1086-1087-1096-1098-1112/build.json",
+        "source_build_sha256": "99ab539a228ffb32af2b5bc1e5f89f4d9caf6569ab31dfa05d23d632c4b62952",
+        "source_output_main_sha256": "cc19f17cdee86df16e6993eb040e18c40eeb4da84fbaeb75415a85d078de3078",
+        "source_instrumentation_sha256": "32825ba5e14907b07aee8c2bbd66ac31f34cdaad9576c87188b5885853482bd8",
+        "source_slot": "p2",
+        "source_setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300,
+            "health": 1,
+            "wudi": false
+          }
+        },
+        "source_inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "source_helpers": [
+          "我爱罗",
+          "魂"
+        ]
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+      "source_frame": 1128,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "击落地",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r13/comparison.json",
+        "case_id": "recovery-p2-fall-1128-1161",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p2"
+      ],
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r13/fixtures/recovery-p2-fall-1128-1161.json",
+        "fixture_sha256": "52d21e096da2d7cf697e21350d27c43ac90dd720190347685a3974b0c1b8b477",
+        "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl",
+        "source_raw_sha256": "da3b271457f4f397382640a2e557f414905186feda5ea3f01ca2fac14f78d438",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r13/source-builds/recovery-p2/build.json",
+        "source_build_sha256": "c9499461558941bbce2aa1d32694dfd1fd811caa1b18b7d6d9e9d66ff19b299a",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r13/engine.log",
+        "native_log_sha256": "d6e281306eeccd031488f77605e27fea7ef67f4cf55ae88e6ef4913cb2a0cb5c",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_113/DoAction.as",
+      "source_frame": 113,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "落地",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-exact-air-r01",
+        "evidence/characters/lee/original/lee-callback-frame62-held-r01/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl"
+      ],
+      "notes": "Target-filtered Godot exact probe emitted enter/exit without SCRIPT ERROR; raw log is indexed in native-exact-attempts-r02.json.",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r09/comparison.json",
+        "case_id": "held-jump-95-113-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 4
+      },
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r09/fixtures/held-jump-95-113-p1.json",
+        "fixture_sha256": "4df6d1e0c40cc2adcb37231a12f355da2073280730fdcc8dbbe721081ee94e33",
+        "source_raw": "evidence/characters/lee/original/lee-callback-frame62-held-r01/events.jsonl",
+        "source_raw_sha256": "5a84afcaff628233a0c4805a7930b0ad7a23329ad91aec4047f935d04aaffa23",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r09/source-builds/held-jump-95-113-p1/build.json",
+        "source_build_sha256": "83d99722ce67f104c417048c8e54e749d2f214cbe519fee05f37be090d411ff5",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r09/engine.log",
+        "native_log_sha256": "b851c28d4e9f9fd9de1acb73a5520889fcc0d9732c50aef1a6bb97fae8d0d086",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_frame": 1133,
+      "clip_id": "DefineSprite_518",
+      "kind": "clip_action",
+      "action": "起身",
+      "slot": "p2",
+      "status": "source_only",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/events.jsonl"
+      ],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [],
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "provenance_note": "Original schedule enter/exit observed for P2 clip instance572 at fight ticks78-81; no native clip-kind comparison in r13."
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1134/DoAction.as",
+      "source_frame": 1134,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "起身",
+      "slot": "p1",
+      "status": "source_only",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03"
+      ],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [
+        "p2"
+      ]
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1144/DoAction.as",
+      "source_frame": 1144,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "起身",
+      "slot": "p2",
+      "status": "source_only",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03"
+      ],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [
+        "p2"
+      ]
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1149/DoAction.as",
+      "source_frame": 1149,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "起身",
+      "slot": "p1",
+      "status": "remaining",
+      "source_raw_captures": [],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1158/DoAction.as",
+      "source_frame": 1158,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "开场",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-defence-entry-r03",
+        "evidence/characters/lee/original/lee-callback-exact-air-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-ground-chain-r04",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r07",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r08",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+        "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "evidence/characters/lee/original/lee-callback-ground-window-r06",
+        "evidence/characters/lee/original/lee-callback-intro-round-r04",
+        "evidence/characters/lee/original/lee-callback-ko-entry-r04",
+        "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-magic-chain-r04",
+        "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+        "evidence/characters/lee/original/lee-callback-magic3-r05",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-callback-skill1-r06",
+        "evidence/characters/lee/original/lee-callback-special-continuation-r04",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01",
+        "evidence/characters/lee/original/lee-explore-ground-r04",
+        "evidence/characters/lee/original/lee-explore-magic-r04",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r13/comparison.json",
+        "case_id": "recovery-p2-fall-1128-1161",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p2"
+      ],
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r13/fixtures/recovery-p2-fall-1128-1161.json",
+        "fixture_sha256": "52d21e096da2d7cf697e21350d27c43ac90dd720190347685a3974b0c1b8b477",
+        "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl",
+        "source_raw_sha256": "da3b271457f4f397382640a2e557f414905186feda5ea3f01ca2fac14f78d438",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r13/source-builds/recovery-p2/build.json",
+        "source_build_sha256": "c9499461558941bbce2aa1d32694dfd1fd811caa1b18b7d6d9e9d66ff19b299a",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r13/engine.log",
+        "native_log_sha256": "d6e281306eeccd031488f77605e27fea7ef67f4cf55ae88e6ef4913cb2a0cb5c",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1159/DoAction.as",
+      "source_frame": 1159,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "开场",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-defence-entry-r03",
+        "evidence/characters/lee/original/lee-callback-exact-air-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-ground-chain-r04",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r07",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r08",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+        "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "evidence/characters/lee/original/lee-callback-ground-window-r06",
+        "evidence/characters/lee/original/lee-callback-intro-round-r04",
+        "evidence/characters/lee/original/lee-callback-ko-entry-r04",
+        "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-magic-chain-r04",
+        "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+        "evidence/characters/lee/original/lee-callback-magic3-r05",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-callback-skill1-r06",
+        "evidence/characters/lee/original/lee-callback-special-continuation-r04",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01",
+        "evidence/characters/lee/original/lee-explore-ground-r04",
+        "evidence/characters/lee/original/lee-explore-magic-r04",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r13/comparison.json",
+        "case_id": "recovery-p2-fall-1128-1161",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p2"
+      ],
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r13/fixtures/recovery-p2-fall-1128-1161.json",
+        "fixture_sha256": "52d21e096da2d7cf697e21350d27c43ac90dd720190347685a3974b0c1b8b477",
+        "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl",
+        "source_raw_sha256": "da3b271457f4f397382640a2e557f414905186feda5ea3f01ca2fac14f78d438",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r13/source-builds/recovery-p2/build.json",
+        "source_build_sha256": "c9499461558941bbce2aa1d32694dfd1fd811caa1b18b7d6d9e9d66ff19b299a",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r13/engine.log",
+        "native_log_sha256": "d6e281306eeccd031488f77605e27fea7ef67f4cf55ae88e6ef4913cb2a0cb5c",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1161/DoAction.as",
+      "source_frame": 1161,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "开场",
+      "slot": "p2",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-defence-entry-r03",
+        "evidence/characters/lee/original/lee-callback-exact-air-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-ground-chain-r04",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r07",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r08",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+        "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "evidence/characters/lee/original/lee-callback-ground-window-r06",
+        "evidence/characters/lee/original/lee-callback-intro-round-r04",
+        "evidence/characters/lee/original/lee-callback-ko-entry-r04",
+        "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-magic-chain-r04",
+        "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+        "evidence/characters/lee/original/lee-callback-magic3-r05",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-callback-skill1-r06",
+        "evidence/characters/lee/original/lee-callback-special-continuation-r04",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01",
+        "evidence/characters/lee/original/lee-explore-ground-r04",
+        "evidence/characters/lee/original/lee-explore-magic-r04",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r13/comparison.json",
+        "case_id": "recovery-p2-fall-1128-1161",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p2"
+      ],
+      "lee_slots_observed": [
+        "p2"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r13/fixtures/recovery-p2-fall-1128-1161.json",
+        "fixture_sha256": "52d21e096da2d7cf697e21350d27c43ac90dd720190347685a3974b0c1b8b477",
+        "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl",
+        "source_raw_sha256": "da3b271457f4f397382640a2e557f414905186feda5ea3f01ca2fac14f78d438",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r13/source-builds/recovery-p2/build.json",
+        "source_build_sha256": "c9499461558941bbce2aa1d32694dfd1fd811caa1b18b7d6d9e9d66ff19b299a",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r13/engine.log",
+        "native_log_sha256": "d6e281306eeccd031488f77605e27fea7ef67f4cf55ae88e6ef4913cb2a0cb5c",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1219/DoAction.as",
+      "source_frame": 1219,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "开场",
+      "slot": "p1",
+      "status": "source_only",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-defence-entry-r03",
+        "evidence/characters/lee/original/lee-callback-exact-air-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-ground-chain-r04",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r07",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r08",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+        "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "evidence/characters/lee/original/lee-callback-ground-window-r06",
+        "evidence/characters/lee/original/lee-callback-intro-round-r04",
+        "evidence/characters/lee/original/lee-callback-ko-entry-r04",
+        "evidence/characters/lee/original/lee-callback-magic-chain-r04",
+        "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+        "evidence/characters/lee/original/lee-callback-magic3-r05",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-callback-skill1-r06",
+        "evidence/characters/lee/original/lee-callback-special-continuation-r04",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01",
+        "evidence/characters/lee/original/lee-explore-ground-r04",
+        "evidence/characters/lee/original/lee-explore-magic-r04",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/events.jsonl"
+      ],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1",
+        "p2"
+      ]
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1260/DoAction.as",
+      "source_frame": 1260,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "胜利",
+      "slot": "p1",
+      "status": "source_only",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-ko-entry-r04",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl"
+      ],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ]
+    },
+    {
+      "source_path": "DefineSprite_518/frame_128/DoAction.as",
+      "source_frame": 128,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "跳砍",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-exact-air-r01"
+      ],
+      "notes": "Target-filtered Godot exact probe emitted enter/exit without SCRIPT ERROR; raw log is indexed in native-exact-attempts-r02.json.",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r12/comparison.json",
+        "case_id": "air-128-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/air-128-p1.json",
+        "fixture_sha256": "0d556c4db7b1ff03b7519f2ff4af1d35fa594e712ebb6467503e731f93f09712",
+        "source_raw": "evidence/characters/lee/original/lee-callback-exact-air-r01",
+        "source_raw_sha256": "032aadefa12fbdff78a28352846af17508b16f960abc4813a350ae9c1e814b66",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r12/source-builds/air-128-p1/build.json",
+        "source_build_sha256": "d338f078ac0627d805b84782f8c517910cc1a86d498ca9ba35bca550e7089d14",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r12/engine.log",
+        "native_log_sha256": "8e9b7602451a082411236f73a47ffd884eedd3bda83038bb7a716e422a9fc332",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+      "source_frame": 1288,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "失败",
+      "slot": "p1",
+      "status": "remaining",
+      "source_raw_captures": [],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_13/DoAction.as",
+      "source_frame": 13,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "走",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r07.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": [],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r07-rerun/fixtures/frame13.json",
+        "fixture_sha256": "f06f7b6f572e82cd1f3f314f18fbd1a6540dbddd0e5500f3ab51a0c645137662",
+        "source_raw": "evidence/characters/lee/original/lee-callback-frame13-r11/events.jsonl",
+        "source_raw_sha256": "ac8dbfa29f6a38dbc3f555b2a9d13c21674ce98939bb947820e50853ef527d14",
+        "source_build": "evidence/characters/lee/original/lee-callback-frame13-r11/build.json",
+        "source_build_sha256": "b19f2c509225066ed9e318fb308a19fb1dfbfd947a28e6a67de0c810021cebb9",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r07-rerun/engine.log",
+        "native_log_sha256": "4c12cd1d9dd399dbb31d2fe6f5cd6551188fd1efc74a7ab85a47115e3dd82916",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_152/DoAction.as",
+      "source_frame": 152,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "跳招",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r12/comparison.json",
+        "case_id": "air-152-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_not_reached",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/air-152-p1.json",
+        "fixture_sha256": "ae30393a05d6f7378ce71b27398720ea38dafb5f3d319eba6d1bad01c19d2cfd",
+        "source_raw": "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl",
+        "source_raw_sha256": "6b716baf7f2d5cf1e2287f3586e6e3c07d63f41c7625143eba5899a716f7347d",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r12/source-builds/air-152-p1/build.json",
+        "source_build_sha256": "91b1cd32452e46a0a8470d69533f7886c8acfa97e47de7cd28b1e856d12a883f",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r12/engine.log",
+        "native_log_sha256": "8e9b7602451a082411236f73a47ffd884eedd3bda83038bb7a716e422a9fc332",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_172/DoAction.as",
+      "source_frame": 172,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "砍1",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-ground-chain-r04",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r07",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r08",
+        "evidence/characters/lee/original/lee-callback-ground-window-r06",
+        "evidence/characters/lee/original/lee-explore-ground-r04"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r05.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_exact_observed",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r04-rerun/fixtures/lee-callback-ground-chain-r02-target172.json",
+        "fixture_sha256": "da7b86ba2d076051624fbd520109f6a64d8da40ae3a70d1c3a078c57b08d45d2",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-chain-r04",
+        "source_raw_sha256": "45b4eafb29a3cf277d479e9d4137d4a954ca924f9af7ca222c77ad3e9b89a4ad",
+        "source_build": "evidence/characters/lee/callback-exact-r01/prepared-builds-r04/lee-callback-ground-chain-r04.build.json",
+        "source_build_sha256": "9d422c8cea5e6a14c957f433d33c3e13e46f5c4235b5ba4aecb6134e129edf69",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r04-rerun/engine.log",
+        "native_log_sha256": "be3d14d6a576d3a04d160ad75aacbfa0a6bd7df28cdd0f0354838e16c85ff159",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_193/DoAction.as",
+      "source_frame": 193,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "砍2",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r09"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r06.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r06-rerun/fixtures/lee-ground-r09.json",
+        "fixture_sha256": "1557d8f03e0a4097a9f861bb7313a6a1fa6ac92cb7a2bb463da37c5a8f5efd7f",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+        "source_raw_sha256": "54728d1c3cb2e0627fc1655e71f6e9d9349be5dcf5cf596272bad46a1084a357",
+        "source_build": "evidence/characters/lee/callback-exact-r01/source-builds-r06-r09/ground-first-edge-r09.build.json",
+        "source_build_sha256": "27c54135038c49d8a40d4b9573c3aa921bad51cc4f1a3533aadba83a0f9b735b",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r06-rerun/engine.log",
+        "native_log_sha256": "f2fde22d1c707fe8100738b9d638f5aed6ad62a8dec7b756c1ca5a12b91c96a7",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_197/DoAction.as",
+      "source_frame": 197,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "砍2",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r09"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r06.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r06-rerun/fixtures/lee-ground-r09.json",
+        "fixture_sha256": "1557d8f03e0a4097a9f861bb7313a6a1fa6ac92cb7a2bb463da37c5a8f5efd7f",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+        "source_raw_sha256": "54728d1c3cb2e0627fc1655e71f6e9d9349be5dcf5cf596272bad46a1084a357",
+        "source_build": "evidence/characters/lee/callback-exact-r01/source-builds-r06-r09/ground-first-edge-r09.build.json",
+        "source_build_sha256": "27c54135038c49d8a40d4b9573c3aa921bad51cc4f1a3533aadba83a0f9b735b",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r06-rerun/engine.log",
+        "native_log_sha256": "f2fde22d1c707fe8100738b9d638f5aed6ad62a8dec7b756c1ca5a12b91c96a7",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_235/DoAction.as",
+      "source_frame": 235,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "砍3",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-ground-hold-r05"
+      ],
+      "notes": "Bounded same-source-build/input callback comparison only; not full character parity.",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "provenance_note": "Historical native 0diff lacked current exact provenance in r05-r07; downgraded by current-derived aggregate.",
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r08/comparison.json",
+        "case_id": "ground-235-240-268",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "event_count": 2
+      },
+      "native_provenance": {
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+        },
+        "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+        "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/ground-235-240-268.json",
+        "fixture_sha256": "202bc4f1c913adba6679b1b0d3152607fdd6ad472a002666ee3daccf6fd6dd6a",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+        "native_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "source_raw_sha256": "1836b81aaefa41a8568d1a2a6f4ef820b0960a34195249ddf1a60ec106ca6714",
+        "source_run_id": "lee-callback-ground-hold-r05",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r08/source-builds/ground-235-240-268/build.json",
+        "source_build_sha256": "8114e0a463f1e8654dfa5b9eea4a5ea2d99011e4e360008b7e6e93f33b9fa5eb",
+        "source_output_main_sha256": "353ce5982fb01275b26138e1d1d11f691bfbf28e39e5b9e82df7f78da2534d96",
+        "source_instrumentation_sha256": "7d3829bad27ae9987e9bca4e2ccf90ca7b1c49214024abde54a33b566936b86d",
+        "source_slot": "p1",
+        "source_setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "source_inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 260
+          }
+        ],
+        "source_helpers": [
+          "我爱罗",
+          "魂"
+        ]
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_240/DoAction.as",
+      "source_frame": 240,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "砍3",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-ground-hold-r05"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r08/comparison.json",
+        "case_id": "ground-235-240-268",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "event_count": 2
+      },
+      "notes": "Bounded same-source-build/input callback comparison only; not full character parity.",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_not_reached",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+        },
+        "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+        "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/ground-235-240-268.json",
+        "fixture_sha256": "202bc4f1c913adba6679b1b0d3152607fdd6ad472a002666ee3daccf6fd6dd6a",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+        "native_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "source_raw_sha256": "1836b81aaefa41a8568d1a2a6f4ef820b0960a34195249ddf1a60ec106ca6714",
+        "source_run_id": "lee-callback-ground-hold-r05",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r08/source-builds/ground-235-240-268/build.json",
+        "source_build_sha256": "8114e0a463f1e8654dfa5b9eea4a5ea2d99011e4e360008b7e6e93f33b9fa5eb",
+        "source_output_main_sha256": "353ce5982fb01275b26138e1d1d11f691bfbf28e39e5b9e82df7f78da2534d96",
+        "source_instrumentation_sha256": "7d3829bad27ae9987e9bca4e2ccf90ca7b1c49214024abde54a33b566936b86d",
+        "source_slot": "p1",
+        "source_setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "source_inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 260
+          }
+        ],
+        "source_helpers": [
+          "我爱罗",
+          "魂"
+        ]
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_268/DoAction.as",
+      "source_frame": 268,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "砍4",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-ground-hold-r05"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r08/comparison.json",
+        "case_id": "ground-235-240-268",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "event_count": 8
+      },
+      "notes": "Bounded same-source-build/input callback comparison only; not full character parity.",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_not_reached",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9"
+        },
+        "runner_sha256": "c45efcc5c08425d7440a7e0d8ddf3e56c811ce83f28ce3ea927f007eb83246c9",
+        "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/ground-235-240-268.json",
+        "fixture_sha256": "202bc4f1c913adba6679b1b0d3152607fdd6ad472a002666ee3daccf6fd6dd6a",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r08/engine.log",
+        "native_log_sha256": "2d14c980f8d1bb572d58fe1793cffcfbf20dbe4a1561e366f433c631ba243500",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "source_raw_sha256": "1836b81aaefa41a8568d1a2a6f4ef820b0960a34195249ddf1a60ec106ca6714",
+        "source_run_id": "lee-callback-ground-hold-r05",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r08/source-builds/ground-235-240-268/build.json",
+        "source_build_sha256": "8114e0a463f1e8654dfa5b9eea4a5ea2d99011e4e360008b7e6e93f33b9fa5eb",
+        "source_output_main_sha256": "353ce5982fb01275b26138e1d1d11f691bfbf28e39e5b9e82df7f78da2534d96",
+        "source_instrumentation_sha256": "7d3829bad27ae9987e9bca4e2ccf90ca7b1c49214024abde54a33b566936b86d",
+        "source_slot": "p1",
+        "source_setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "source_inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 260
+          }
+        ],
+        "source_helpers": [
+          "我爱罗",
+          "魂"
+        ]
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_29/DoAction.as",
+      "source_frame": 29,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "瞬步",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01-normalized/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r06.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r06-rerun/fixtures/lee-29.json",
+        "fixture_sha256": "5981d666685551b1afb498108f900eb3593b42f953cd47a595beb5c0c1457a67",
+        "source_raw": "evidence/characters/lee/original/lee-callback-exact-rush-r01",
+        "source_raw_sha256": "b11f2a77733330fb156d0d7bd499bac5ad7dd16181336ddafcf0508327cea110",
+        "source_build": "evidence/characters/lee/callback-exact-r01/rush-build.json",
+        "source_build_sha256": "7e399034f400978d9daef4f6165aef9210700ccb8f2a48b236db585f84bd22b2",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r06-rerun/engine.log",
+        "native_log_sha256": "f2fde22d1c707fe8100738b9d638f5aed6ad62a8dec7b756c1ca5a12b91c96a7",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_320/DoAction.as",
+      "source_frame": 320,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "招1",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-explore-magic-r04",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r12/comparison.json",
+        "case_id": "magic-320-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_not_reached",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/magic-320-p1.json",
+        "fixture_sha256": "7688b3312f8530f6bcfd176fd9e9234717c6988e3fd7498e1f0b324930bcc2cf",
+        "source_raw": "evidence/characters/lee/original/lee-explore-magic-r04",
+        "source_raw_sha256": "a0417b127897ab67027d61ec6c7d25fb75762f5e8cc0c7ed967d7353f55da451",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r12/source-builds/magic-320-p1/build.json",
+        "source_build_sha256": "dbfd6bca3703663d30603b37c911f07736359016e2ec30936fb8bda1654f8fd9",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r12/engine.log",
+        "native_log_sha256": "8e9b7602451a082411236f73a47ffd884eedd3bda83038bb7a716e422a9fc332",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_325/DoAction.as",
+      "source_frame": 325,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "招1",
+      "slot": "p1",
+      "status": "normal_input_unreachable",
+      "source_raw_captures": [],
+      "godot_exact_scope": null,
+      "notes": "No normal-input entry: frame 320 terminal return makes 325/332 unreachable.",
+      "observed_slots": [],
+      "lee_slots_observed": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_332/DoAction.as",
+      "source_frame": 332,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "招1",
+      "slot": "p1",
+      "status": "normal_input_unreachable",
+      "source_raw_captures": [],
+      "godot_exact_scope": null,
+      "notes": "No normal-input entry: frame 320 terminal return makes 325/332 unreachable.",
+      "observed_slots": [],
+      "lee_slots_observed": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_370/DoAction.as",
+      "source_frame": 370,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "砍技2",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-magic-skill2-r05"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r12/comparison.json",
+        "case_id": "skill2-370-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_not_reached",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/skill2-370-p1.json",
+        "fixture_sha256": "8bf6b186caa440bdab908cbd219611e123ed0535737b5b2ac91323b10f4936a5",
+        "source_raw": "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+        "source_raw_sha256": "cca77ea1142f24ede4261f0f49cf7873e761ee505879630f67ec427f97f13509",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r12/source-builds/skill2-370-p1/build.json",
+        "source_build_sha256": "02822d46a9541cb4f1c77a43396cf3976780487c75d045cf25cabc6df9368403",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r12/engine.log",
+        "native_log_sha256": "8e9b7602451a082411236f73a47ffd884eedd3bda83038bb7a716e422a9fc332",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_448/DoAction.as",
+      "source_frame": 448,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "砍技1",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-skill1-r06"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r06.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r06-rerun/fixtures/lee-448.json",
+        "fixture_sha256": "1b61e8c2b18110608aeb9f835b3c0ee86139c4480a2b7383b45ed4ff787b4792",
+        "source_raw": "evidence/characters/lee/original/lee-callback-skill1-r06",
+        "source_raw_sha256": "2f42b4bc4db950ecd29893c6ef568bcdce515984f58ca68ea7697452feb240c3",
+        "source_build": "evidence/characters/lee/callback-exact-r01/source-builds-r06-r09/skill1-r06.build.json",
+        "source_build_sha256": "6e5f2e5834aada3430899beda6978531942e3e4d162ebafa30acaea8db45691c",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r06-rerun/engine.log",
+        "native_log_sha256": "f2fde22d1c707fe8100738b9d638f5aed6ad62a8dec7b756c1ca5a12b91c96a7",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_509/DoAction.as",
+      "source_frame": 509,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "招2",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-magic-chain-r04",
+        "evidence/characters/lee/original/lee-explore-magic-r04"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r05.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_exact_observed",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r04-rerun/fixtures/lee-callback-magic-chain-r02-target509.json",
+        "fixture_sha256": "155819d9658c7f87532af87849b86a0e8c25f83b8deedfaab484b1ef50595e27",
+        "source_raw": "evidence/characters/lee/original/lee-callback-magic-chain-r04",
+        "source_raw_sha256": "6240f80763cdd9453f05e9f067b79274022f0a58d7d4b278d5dde2a7e37a19ba",
+        "source_build": "evidence/characters/lee/callback-exact-r01/prepared-builds-r04/lee-callback-magic-chain-r04.build.json",
+        "source_build_sha256": "cef94d74882a30df3d76683aa2226685850fcaf6b770e527c3385331b51dbec8",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r04-rerun/engine.log",
+        "native_log_sha256": "be3d14d6a576d3a04d160ad75aacbfa0a6bd7df28cdd0f0354838e16c85ff159",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_558/DoAction.as",
+      "source_frame": 558,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "招3",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-magic3-r05"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r12/comparison.json",
+        "case_id": "magic3-558-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_not_reached",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r12/fixtures/magic3-558-p1.json",
+        "fixture_sha256": "ab02e6ceda74d9be9cf89429590009b64e176178c17adea6fda027f226396480",
+        "source_raw": "evidence/characters/lee/original/lee-callback-magic3-r05",
+        "source_raw_sha256": "0f1a08ff3b0119f99fbcc2c42ba2a08feffedd1a0b8a68c989fa578922434bd6",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r12/source-builds/magic3-558-p1/build.json",
+        "source_build_sha256": "cb2bb91a72cd783a79f5efa56adeb84cc4540d82eea9380da8c1f807956a0bec",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r12/engine.log",
+        "native_log_sha256": "8e9b7602451a082411236f73a47ffd884eedd3bda83038bb7a716e422a9fc332",
+        "runtime_file_hashes": {
+          "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+          "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+          "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+          "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+          "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+          "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+        }
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_62/DoAction.as",
+      "source_frame": 62,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "落",
+      "slot": "p1",
+      "status": "remaining",
+      "source_raw_captures": [],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [],
+      "remaining_reason": "native_not_reached; existing source capture or selected Godot attempt has no verified target callback",
+      "lee_slots_observed": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_634/DoAction.as",
+      "source_frame": 634,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "必杀",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-ko-entry-r04",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r07.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_not_reached",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r07-rerun/fixtures/kill634.json",
+        "fixture_sha256": "4fa12f34b48db697638cfa5d660e9ae3a30797e89af720551de7f9ef185ccba8",
+        "source_raw": "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl",
+        "source_raw_sha256": "6b95f77a9508d7ea2ccfd031965dddca99c50c9e982764870a9ab9519e81db6f",
+        "source_build": "evidence/characters/lee/original/lee-callback-observer-kill-r03/build.json",
+        "source_build_sha256": "d39fdae2e0957ab686644c0523ce1552903d932c5bad92bc035bd9d5a5f2bf39",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r07-rerun/engine-rerun3.log",
+        "native_log_sha256": "1032c7c62a9d3396aee4564faec7ba0d2c9eb96830636d14d0ba24c51f388714",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_660/DoAction.as",
+      "source_frame": 660,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "必杀LOOP",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-intro-round-r04",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-special-continuation-r04"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r06.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "Corrected source ql decoder gives 200, matching Godot ql 200; previous r01 audit was superseded.",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r06-rerun/fixtures/lee-660.json",
+        "fixture_sha256": "a43eee5075bdb1df8ae8ae9c5b25b91d81bb915038ff8cb396f5ccf0ec0c9863",
+        "source_raw": "evidence/characters/lee/original/lee-callback-intro-round-r04",
+        "source_raw_sha256": "d653b8be2802805fff8ed40c3b8a2da36ee1374dc7326b2eea822486d2322a01",
+        "source_build": "evidence/characters/lee/callback-exact-r01/prepared-builds-r04/lee-callback-intro-round-r04.build.json",
+        "source_build_sha256": "9e8b3d291055f6b0cdab6ec6671c5403cec9326b4580a52f10e269aeaa215cfe",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r06-rerun/engine.log",
+        "native_log_sha256": "f2fde22d1c707fe8100738b9d638f5aed6ad62a8dec7b756c1ca5a12b91c96a7",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_695/DoAction.as",
+      "source_frame": 695,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "必杀2",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-intro-round-r04",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-special-continuation-r04"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/callback-exact-r01/native-exact-r05.json",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": []
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_probe_r03": "native_exact_observed",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r04-rerun/fixtures/lee-callback-special-continuation-r02-target695.json",
+        "fixture_sha256": "90e332be9dcc097ca1528d6d3af31ae6789980caf9022f679b9a272a7eb06ded",
+        "source_raw": "evidence/characters/lee/original/lee-callback-special-continuation-r04",
+        "source_raw_sha256": "4ea1a5bd2655798196569a3df15550d006b843e23763eb82ec8e60042cce6b04",
+        "source_build": "evidence/characters/lee/callback-exact-r01/prepared-builds-r04/lee-callback-special-continuation-r04.build.json",
+        "source_build_sha256": "d8f67a11c3c34f94a61c3887d80175bfcb152fc0458fb8a94db0a5cfbc67a830",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r04-rerun/engine.log",
+        "native_log_sha256": "be3d14d6a576d3a04d160ad75aacbfa0a6bd7df28cdd0f0354838e16c85ff159",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_738/DoAction.as",
+      "source_frame": 738,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "空中必杀1",
+      "slot": "p1",
+      "status": "remaining",
+      "source_raw_captures": [],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [
+        "p2"
+      ],
+      "lee_slots_observed": [],
+      "native_probe_r03": "invalid_inventory_key",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_771/DoAction.as",
+      "source_frame": 771,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "空中必杀2",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-air-super-738-771-r01/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r10/comparison.json",
+        "case_id": "air-super-771-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r10/fixtures/air-super-771-p1.json",
+        "fixture_sha256": "afd985573d53b9c412335040c7f3eaa0a00ba346f5c0f4c44cf145a831ab9259",
+        "source_raw": "evidence/characters/lee/original/lee-callback-air-super-738-771-r01/events.jsonl",
+        "source_raw_sha256": "392a349f3839eac73f59bb34869d6e2007756ecabaf8f72a2a0bb373ae80507f",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r10/source-builds/air-super-771-p1/build.json",
+        "source_build_sha256": "5d32f9879583e8a3a1e3dded0ef1ec0723c8fa487cccf9d608e24180ec8e1e0f",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r10/engine.log",
+        "native_log_sha256": "89205717b48db4ea0754db9c4f5d8bcc6946244789dad6127c747b751d03eeaf",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_8/DoAction.as",
+      "source_frame": 8,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "站立",
+      "slot": "p1",
+      "status": "source_only",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-acceptance-r02-parsed/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-defence-entry-r03",
+        "evidence/characters/lee/original/lee-callback-exact-air-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01",
+        "evidence/characters/lee/original/lee-callback-exact-rush-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01",
+        "evidence/characters/lee/original/lee-callback-exact-summon-r01-normalized/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-ground-chain-r04",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r07",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r08",
+        "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+        "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+        "evidence/characters/lee/original/lee-callback-ground-window-r06",
+        "evidence/characters/lee/original/lee-callback-intro-round-r04",
+        "evidence/characters/lee/original/lee-callback-ko-entry-r04",
+        "evidence/characters/lee/original/lee-callback-magic-chain-r04",
+        "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+        "evidence/characters/lee/original/lee-callback-magic3-r05",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r01/events.jsonl/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl",
+        "evidence/characters/lee/original/lee-callback-recovery-entry-r03",
+        "evidence/characters/lee/original/lee-callback-recovery-standup-r04c",
+        "evidence/characters/lee/original/lee-callback-skill1-r06",
+        "evidence/characters/lee/original/lee-callback-special-continuation-r04",
+        "evidence/characters/lee/original/lee-clip-observer-recovery-r01",
+        "evidence/characters/lee/original/lee-explore-ground-r04",
+        "evidence/characters/lee/original/lee-explore-magic-r04",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-135-airMagichit-held/events.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/capture.jsonl",
+        "evidence/characters/lee/original/observer-r01/lee-278-magichit1-dash_twice/events.jsonl"
+      ],
+      "godot_exact_scope": null,
+      "notes": "",
+      "observed_slots": [
+        "p1",
+        "p2"
+      ],
+      "lee_slots_observed": [
+        "p1",
+        "p2"
+      ],
+      "native_probe_r03": "native_observed",
+      "native_probe_r03_artifact": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_95/DoAction.as",
+      "source_frame": 95,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "落2",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-frame62-held-r01/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r09/comparison.json",
+        "case_id": "held-jump-95-113-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 4
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r09/fixtures/held-jump-95-113-p1.json",
+        "fixture_sha256": "4df6d1e0c40cc2adcb37231a12f355da2073280730fdcc8dbbe721081ee94e33",
+        "source_raw": "evidence/characters/lee/original/lee-callback-frame62-held-r01/events.jsonl",
+        "source_raw_sha256": "5a84afcaff628233a0c4805a7930b0ad7a23329ad91aec4047f935d04aaffa23",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r09/source-builds/held-jump-95-113-p1/build.json",
+        "source_build_sha256": "83d99722ce67f104c417048c8e54e749d2f214cbe519fee05f37be090d411ff5",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r09/engine.log",
+        "native_log_sha256": "b851c28d4e9f9fd9de1acb73a5520889fcc0d9732c50aef1a6bb97fae8d0d086",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    },
+    {
+      "source_path": "DefineSprite_518/frame_953/DoAction.as",
+      "source_frame": 953,
+      "clip_id": "DefineSprite_518",
+      "kind": "frame_action",
+      "action": "超必杀",
+      "slot": "p1",
+      "status": "native_matched",
+      "source_raw_captures": [
+        "evidence/characters/lee/original/lee-callback-ground-super-frame953-r01/events.jsonl"
+      ],
+      "godot_exact_scope": {
+        "artifact": "evidence/characters/lee/godot/callback-exact-r11/comparison.json",
+        "case_id": "super-953-p1",
+        "fields": [
+          "source_frame",
+          "entering",
+          "action",
+          "ql"
+        ],
+        "differences": [],
+        "source_event_count_for_frame": 2
+      },
+      "notes": "",
+      "observed_slots": [
+        "p1"
+      ],
+      "lee_slots_observed": [
+        "p1"
+      ],
+      "native_provenance": {
+        "fixture": "evidence/characters/lee/godot/callback-exact-r11/fixtures/super-953-p1.json",
+        "fixture_sha256": "90135f9e2fe50e6ac1c3c8cf352f926d8c1839355fdc5c82254afb5b26a05fb1",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-super-frame953-r01/events.jsonl",
+        "source_raw_sha256": "8885b1f61d8ef771f826295254f3cd4b7d2ec634cd0f406278235344118cb313",
+        "source_build": "evidence/characters/lee/godot/callback-exact-r11/source-builds/super-953-p1/build.json",
+        "source_build_sha256": "cd14b9a1a62a63d4709a11e78ec02caa5011f72493abab20dba93b267cf6285a",
+        "native_log": "evidence/characters/lee/godot/callback-exact-r11/engine.log",
+        "native_log_sha256": "26646af541c1ea63faa162d061f792834a14894e39982b5ab8c38696a4f0a3e0",
+        "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510"
+      },
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "differences": []
+    }
+  ],
+  "source_build_archive": "evidence/characters/lee/callback-exact-r01/source-builds-r06-r09",
+  "native_probe_attempts": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r03.json",
+  "aggregate_source": "evidence/characters/lee/callback-exact-r01/pending-inventory-aggregate-r02.json",
+  "capture_count": 249,
+  "aggregate_parse_errors": [],
+  "known_case_assertions": {
+    "frame_320_source_observed": true,
+    "frame_1083_recovery_p2": true,
+    "frame_1086_recovery_p2": true,
+    "frame_1088_clip_observed": true,
+    "frame_1098_clip_observed": true,
+    "frame_29_native_comparison": true
+  },
+  "native_exact_current": "evidence/characters/lee/callback-exact-r01/native-exact-r05.json; native-exact-r06.json; native-exact-r07.json; evidence/characters/lee/godot/callback-exact-r08/comparison.json"
+}

@@ -1,0 +1,53 @@
+{
+  "id": "byakuya-421-magichit3-air_target",
+  "fighter": "byakuya",
+  "slot": "p1",
+  "label": "招3",
+  "scenario": "air_target",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "ranged"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    }
+  ],
+  "target_frames": [
+    421,
+    453
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "not_run",
+  "fighters": {
+    "p1": "byakuya",
+    "p2": "yihu"
+  },
+  "p1_helper": "魂",
+  "p2_helper": "魂"
+}

@@ -1,0 +1,111 @@
+{
+  "format": "bvn26-byakuya-source-goto-script-order-compare-v1",
+  "status": "controlled_order_review_no_runtime_first_diff",
+  "native_summary": "avm-goto-r10/summary.json",
+  "godot_probe": "godot-main-r03.json",
+  "native_facts": {
+    "same_callback_display_tick": 465,
+    "same_callback_fight_tick": 15,
+    "frame1_markers_before_cross_A": 3,
+    "frame814_script_marker": false,
+    "cross_A_display_tick": 466,
+    "cross_B_display_tick": 467,
+    "cross_A2_display_tick": 468,
+    "done": true,
+    "identity": "mian/jiao/bdmn === initial in all identity rows"
+  },
+  "godot_facts": {
+    "same_tick_physics_tick": 276,
+    "post_same_tick_first_flush_tick": 277,
+    "post_ready_frame_script_events": [
+      {
+        "entering": true,
+        "physics_tick": 277,
+        "relative_fight_tick": 1,
+        "source_frame": 1
+      },
+      {
+        "entering": false,
+        "physics_tick": 277,
+        "relative_fight_tick": 1,
+        "source_frame": 1
+      },
+      {
+        "entering": true,
+        "physics_tick": 277,
+        "relative_fight_tick": 1,
+        "source_frame": 2
+      },
+      {
+        "entering": false,
+        "physics_tick": 277,
+        "relative_fight_tick": 1,
+        "source_frame": 2
+      },
+      {
+        "entering": true,
+        "physics_tick": 278,
+        "relative_fight_tick": 2,
+        "source_frame": 814
+      },
+      {
+        "entering": false,
+        "physics_tick": 278,
+        "relative_fight_tick": 2,
+        "source_frame": 814
+      },
+      {
+        "entering": true,
+        "physics_tick": 278,
+        "relative_fight_tick": 2,
+        "source_frame": 815
+      },
+      {
+        "entering": false,
+        "physics_tick": 278,
+        "relative_fight_tick": 2,
+        "source_frame": 815
+      },
+      {
+        "entering": true,
+        "physics_tick": 279,
+        "relative_fight_tick": 3,
+        "source_frame": 1
+      },
+      {
+        "entering": false,
+        "physics_tick": 279,
+        "relative_fight_tick": 3,
+        "source_frame": 1
+      },
+      {
+        "entering": true,
+        "physics_tick": 279,
+        "relative_fight_tick": 3,
+        "source_frame": 2
+      },
+      {
+        "entering": false,
+        "physics_tick": 279,
+        "relative_fight_tick": 3,
+        "source_frame": 2
+      }
+    ],
+    "source_frame1_events_at_first_flush": 3,
+    "source_frame814_events_at_first_flush": 2,
+    "cross_A_recorded_after_flush": true,
+    "identity_analogue": "entry_serial/pending queue only; instance_local_frames empty"
+  },
+  "comparison": {
+    "first_scripted_frame_order": "No first difference in actual authored frame-1 execution: native emits 3 frame-1 markers before cross-display A; Godot emits 3 frame-1 boundary pairs before cross-A record. Godot also reports boundary pairs for frame 814, which has no source DoAction; this is a runtime callback-boundary observation, not evidence that source frame 814 executed a script.",
+    "same_callback": "Native goto calls all occur display 465/fight15; Godot calls all occur physics276 and flushes at physics277 before cross-A. No runtime change justified.",
+    "cross_display": "Native identity A/B/A at display466/467/468; Godot label calls and boundary flush at relative ticks1/2/3. This is scheduling evidence only.",
+    "pending": "No source/runtime first-difference requiring source_goto change found in this bounded experiment."
+  },
+  "limitations": [
+    "controlled observer changes behavior",
+    "Godot boundary includes no-op frame814 entries",
+    "native has no object-generation proof beyond stable references",
+    "not natural-input parity"
+  ]
+}

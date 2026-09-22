@@ -1,0 +1,263 @@
+{
+  "id": "lee-callback-round-loss-failure-r02",
+  "fighter": "lee",
+  "slot": "p1",
+  "label": "失败",
+  "scenario": "callback_round_loss_failure_label_after_recovery",
+  "frames": 1600,
+  "setup": {
+    "p1": {
+      "x": 350,
+      "energy": 300,
+      "health": 1,
+      "wudi": false
+    },
+    "p2": {
+      "x": 300,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p2",
+      "keys": [
+        "left"
+      ],
+      "start": 305,
+      "end": 327
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 330,
+      "end": 331
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 355,
+      "end": 356
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 380,
+      "end": 381
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 405,
+      "end": 406
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 430,
+      "end": 431
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 455,
+      "end": 456
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 480,
+      "end": 481
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 505,
+      "end": 506
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 530,
+      "end": 531
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 555,
+      "end": 556
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 580,
+      "end": 581
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 605,
+      "end": 606
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 630,
+      "end": 631
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 655,
+      "end": 656
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 680,
+      "end": 681
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 705,
+      "end": 706
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 730,
+      "end": 731
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 755,
+      "end": 756
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 780,
+      "end": 781
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 805,
+      "end": 806
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 830,
+      "end": 831
+    }
+  ],
+  "target_frames": [
+    1268,
+    1288
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "prepared",
+  "fighters": {
+    "p1": "lee",
+    "p2": "byakuya"
+  },
+  "p1_helper": "魂",
+  "p2_helper": "魂",
+  "source_state_preconditions": {
+    "p1": {
+      "health": 1,
+      "wudi": false
+    }
+  },
+  "callback_group": "recovery-standup",
+  "callback_purpose": "natural terminal failure label after real round recovery",
+  "callback_observer": "read-only generic schedule and body boundary observers; no schedule/input changes",
+  "input_rationale": {
+    "movement": "after r01 round reset around fight 300, P2 starts x637.1 and P1 x374.1; selected Byakuya base sprite 631 uses speed=12, so 22 isolated left-input ticks approximate the measured 263px gap before attacking",
+    "attack": "N1 one-tick taps spaced 25 fight ticks; movement is released before attacks to avoid doAllAction movement goto overriding attack goto"
+  },
+  "source_callback_targets": [
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1268,
+      "source_path": "DefineSprite_518/frame_1268/label/失败",
+      "action": "失败",
+      "kind": "label_entry",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1288,
+      "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+      "action": "失败",
+      "kind": "frame_action",
+      "slot": "p1"
+    }
+  ],
+  "callback_targets": [
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1268,
+      "source_path": "DefineSprite_518/frame_1268/label/失败",
+      "action": "失败",
+      "kind": "label_entry",
+      "slot": "p1"
+    },
+    {
+      "source_sprite_id": 518,
+      "source_frame": 1288,
+      "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+      "action": "失败",
+      "kind": "frame_action",
+      "slot": "p1"
+    }
+  ]
+}

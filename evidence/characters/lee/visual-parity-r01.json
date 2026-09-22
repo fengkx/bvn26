@@ -1,0 +1,57 @@
+{
+  "format": "lee-visual-parity-r01",
+  "viewport": "600x400 full Godot 900x600 viewport resized to Flash game viewport aspect",
+  "stage": "现世",
+  "fighters": [
+    "小李",
+    "一护"
+  ],
+  "helpers": [
+    "我爱罗",
+    "魂"
+  ],
+  "initial_positions": {
+    "p1": 300,
+    "p2": 350
+  },
+  "cases": [
+    {
+      "source_frame": 158,
+      "flash": "evidence/characters/lee/flash-visual-157-r05/flash-stage-600x400.png",
+      "godot": "evidence/characters/lee/godot-visual-157-r08/godot-stage-600x400.png",
+      "flash_state": "p1 frame158 action1 at fight tick12",
+      "godot_state": "valid GUI main-scene input-tape: frame158/action砍1/energy300, capture tick317 relative fight tick11, timer59, stage frame_2, camera canvas identity",
+      "visual_observation": "Valid GUI main-scene capture using the same neutral fixture energy=300, stage现世 and helpers. Flash frame158 shows the attack pose near 一护; Godot reaches frame158 and renders a nearby attack pose with aligned timer/stage, while sprite pose/registration and HUD energy presentation still require detailed parity review.",
+      "status": "valid_visual_comparison_pending_review",
+      "flash_window": "evidence/characters/lee/flash-visual-157-r05/flash-window.png",
+      "full_stage_view": true,
+      "probe_metadata": "evidence/characters/lee/godot-visual-157-r08/metadata.json"
+    },
+    {
+      "source_frame": 796,
+      "flash": "evidence/characters/lee/flash-visual-795-r02/flash-stage-600x400.png",
+      "godot": "evidence/characters/lee/godot-visual-795-r09/godot-stage-600x400.png",
+      "flash_state": "invalid old asynchronous frame796 screenshot",
+      "godot_state": "invalid early-frame observation; no presentation expected before source frame798",
+      "visual_observation": "Superseded: frame796 is the source energy event only; cbsd starts at frame798. The earlier screenshot was not a presentation-frame comparison.",
+      "status": "invalid_observation_time",
+      "flash_window": "evidence/characters/lee/flash-visual-795-r02/flash-window.png",
+      "full_stage_view": true,
+      "probe_metadata": "evidence/characters/lee/godot-visual-795-r09/metadata.json"
+    },
+    {
+      "source_frame": 837,
+      "flash": "evidence/characters/lee/original/lee-795-bishaSuper-visual-freeze-837-r01/flash-stage-600x400.png",
+      "godot": "evidence/characters/lee/original/lee-795-bishaSuper-visual-freeze-837-r01/godot-stage-600x400.png",
+      "flash_state": "p1 frame837; recursive presentation roots frozen after root state callback; 15 clip records",
+      "godot_state": "GUI main-scene input-tape frame837/action超必杀/energy0; both p1 and p2 initial energy explicitly 300; black_mu=2/bgmc=false/fgmc=false/face_label=小李2",
+      "visual_observation": "Same source frame and aligned fixture are captured. Flash client viewport is cropped from the full Retina window (1200x800 to 600x400); Godot is 600x400. Flash timer59 vs Godot timer60 remains unresolved: source uses wall-clock setInterval(time,1000), while Godot probe uses manual fixed ticks.",
+      "status": "same_frame_visual_review_pending",
+      "flash_window": "evidence/characters/lee/original/lee-795-bishaSuper-visual-freeze-837-r01/flash-window.png",
+      "full_stage_view": true,
+      "probe_metadata": "evidence/characters/lee/original/lee-795-bishaSuper-visual-freeze-837-r01/godot-metadata.json"
+    }
+  ],
+  "capture_note": "r08 ordinary and r01 frame837 are GUI main-scene captures. The former 796 super case is explicitly invalid_observation_time because source cbsd starts at 798; it is retained only as diagnostic history.",
+  "status": "visual_comparison_in_progress"
+}

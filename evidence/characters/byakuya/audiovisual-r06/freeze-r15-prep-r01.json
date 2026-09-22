@@ -1,0 +1,37 @@
+{
+  "format": "byakuya-freeze-r15-prep-r01",
+  "scope": "offline preparation only; no Flash capture run",
+  "source_scope": "base Byakuya DefineSprite_631; no production/runtime edits",
+  "diagnostic576": {
+    "build": "/private/tmp/byakuya-freeze-r15-576-build",
+    "method": "collect MovieClip references and child paths before any stop; stop collected clips only after target; record after through retained references",
+    "purpose": "separate for-in enumeration loss from actual child lifecycle change"
+  },
+  "true819": {
+    "build": "/private/tmp/byakuya-freeze-r15-819-build",
+    "fixture": "byakuya-814-zhaoHuan-neutral",
+    "root_trigger": 819,
+    "source_evidence": "scripts/fighter/Byakuya.json: DefineSprite_631/frame_819/DoAction.as calls doZhaoHuan; frame814 has no DoAction"
+  },
+  "outputs": {
+    "byakuya-freeze-r15-576-build": {
+      "run_id": "byakuya-freeze-r15-576",
+      "fixture": "byakuya-576-bishaUP-neutral",
+      "main_sha256": "3ef7c98aa845b6ba681fa72800c8028605b0e20e9fca88b536bf22d7df3af49e",
+      "status": "built_not_run",
+      "desktop_capture_required": true
+    },
+    "byakuya-freeze-r15-819-build": {
+      "run_id": "byakuya-freeze-r15-819",
+      "fixture": "byakuya-814-zhaoHuan-neutral",
+      "main_sha256": "c3c0a4bd2297ee8e7fd615b087e7969ee71e6538895af8f71b506f0915c048fd",
+      "status": "built_not_run",
+      "desktop_capture_required": true
+    }
+  },
+  "next_capture_order": [
+    "true819",
+    "diagnostic576"
+  ],
+  "old_r14_status": "retain as rejected/candidate evidence; do not promote"
+}

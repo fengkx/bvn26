@@ -1,0 +1,134 @@
+{
+  "format": "lee-timer-ready-r03",
+  "acceptance_status": "diagnostic_runner_external_fire_tape_not_accepted",
+  "runtime_files": {
+    "godot/main.gd": "c87304515acb925701082dd74989ff5eedba0498d648ed10c591088a161c6c8f",
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac"
+  },
+  "runner_sha256": "ada5595b8e23620a19f463d32e22d1b25cc57fc80e94ffade339838a39c7f091",
+  "cases": [
+    {
+      "case": "hp1",
+      "status": "matched",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 0,
+      "first_difference": null,
+      "native_sha256": "5cabe13acdc0226e7c305e96c96a79b5cf2d3dbc0ea9b73c7c83c3cbee3ac754",
+      "source_sha256": "283cc6266c13b6350e2912b707b82b359a0c6d3a889cf767c197b30d25878fcf",
+      "timer_audit": [
+        {
+          "callback": "nextfight",
+          "kind": "native_register",
+          "timer_id": 655771067986,
+          "wait_ms": 1000.0
+        },
+        {
+          "fight_tick": 273,
+          "kind": "native_fire",
+          "phase": "after_state_snapshot",
+          "source_seq": 6232,
+          "timer_id": 655771067986
+        },
+        {
+          "kind": "native_cancel_after_fire",
+          "still_live": true,
+          "timer_id": 655771067986
+        }
+      ],
+      "timer_tape": "evidence/characters/lee/source-timer-tapes-r01/lee_hp1.json"
+    },
+    {
+      "case": "kill700",
+      "status": "matched",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 0,
+      "first_difference": null,
+      "native_sha256": "b55af28873a8dc50a6a45afe81e486898348022ccc4e2f81e47edc9cdfe5dae6",
+      "source_sha256": "d3e2dd33e3acec059853c3db6393f7fa07994649c771c2aa59a4a9c3a4a73c57",
+      "timer_audit": [
+        {
+          "callback": "nextfight",
+          "kind": "native_register",
+          "timer_id": 677380123195,
+          "wait_ms": 1000.0
+        },
+        {
+          "fight_tick": 306,
+          "kind": "native_fire",
+          "phase": "after_state_snapshot",
+          "source_seq": 6515,
+          "timer_id": 677380123195
+        },
+        {
+          "kind": "native_cancel_after_fire",
+          "still_live": true,
+          "timer_id": 677380123195
+        }
+      ],
+      "timer_tape": "evidence/characters/lee/source-timer-tapes-r01/lee_kill700.json"
+    },
+    {
+      "case": "byakuya700",
+      "status": "matched",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 0,
+      "first_difference": null,
+      "native_sha256": "72586d2ff5922c9a3fbc9324d56b2bce0814a3f454f5a8186bf92fa01ffa5d90",
+      "source_sha256": "2ed9f28849f7280d65a0ec7b3b30c1ff29cd19ab6f765c83a3795cf062178fd1",
+      "timer_audit": [
+        {
+          "callback": "nextfight",
+          "kind": "native_register",
+          "timer_id": 644329005938,
+          "wait_ms": 1000.0
+        },
+        {
+          "fight_tick": 303,
+          "kind": "native_fire",
+          "phase": "after_state_snapshot",
+          "source_seq": 6286,
+          "timer_id": 644329005938
+        },
+        {
+          "kind": "native_cancel_after_fire",
+          "still_live": true,
+          "timer_id": 644329005938
+        }
+      ],
+      "timer_tape": "evidence/characters/lee/source-timer-tapes-r01/byakuya700.json"
+    }
+  ],
+  "limits": [
+    "native KO timer remains live after fire because source cancel targets _level0.ready, not KO.nextfight; no second source fire event exists in these tapes"
+  ],
+  "scope_limit": "Diagnostic only: the archived runner supplies an external fire tape and does not establish native Timer lifecycle or initial Ready touchFloor parity.",
+  "runner_path": "evidence/characters/lee/validation/timer-ready-r03/runner/batch-clean2.gd",
+  "source_raw_paths": {
+    "hp1": "evidence/characters/lee/original/lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl",
+    "kill700": "evidence/characters/lee/original/lee-timer-kill700-r01/events.jsonl",
+    "byakuya700": "evidence/characters/lee/original/byakuya-timer700-r01/events.jsonl"
+  },
+  "native_output_paths": {
+    "hp1": "evidence/characters/lee/validation/timer-ready-r03/native/lee-recovery-p2-hp1-r01-external-tape-r01.json",
+    "kill700": "evidence/characters/lee/validation/timer-ready-r03/native/lee-kill700-external-tape-r02.json",
+    "byakuya700": "evidence/characters/lee/validation/timer-ready-r03/native/byakuya-690-bishaSuper-energy_exact-external-tape-r01.json"
+  },
+  "native_timer_note": "Runner disables game physics and pauses the live Timer while delivering the recorded external fire. Registration identity and wait_ms are observed; cancel/no-retrigger requires separate natural-clock evidence.",
+  "regression_checks": [
+    "COMBAT_SMOKE_OK",
+    "INTRO_QUEUED_GOTO_SMOKE_OK",
+    "ROUND_RESET_SMOKE_OK",
+    "TIMEOUT_REFERENCE_OK"
+  ],
+  "production_fix": "generic source-goto deferred frame-script/advance and one-shot initial Ready touchFloor undefined lifecycle",
+  "source_normalized_paths": {
+    "hp1": "evidence/characters/lee/validation/timer-ready-r03/source/hp1-source-normalized.json",
+    "kill700": "evidence/characters/lee/validation/timer-ready-r03/source/kill-source-normalized.json",
+    "byakuya700": "evidence/characters/lee/validation/timer-ready-r03/source/byak-source-normalized.json"
+  },
+  "artifact_policy": "Raw source traces and native sidecars are immutable; this revision archives the runner and normalized inputs under the formal evidence directory.",
+  "rejection_reason": "The previous production first-fight touchFloor save/null/restore path was removed because it fabricated observer state. These trajectories must be rerun with a pure runner after source callback timing is established."
+}

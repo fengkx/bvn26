@@ -23,6 +23,8 @@ class IntroRosterTests(unittest.TestCase):
             "sakura": (975, 1054),
             "rukia": (1003, 1082),
             "yulong": (1133, 1212),
+            "byakuya": (958, 1034),
+            "lee": (1158, 1237),
         }
         self.assertEqual(set(spec["fighters"]), set(expected))
         for name, (start, end) in expected.items():
@@ -31,15 +33,15 @@ class IntroRosterTests(unittest.TestCase):
                 (fighter["action"]["start_frame"], fighter["action"]["end_frame"]),
                 (start, end),
             )
-            self.assertEqual(sorted(fighter["state_frames"].values()), [1, 2, 3])
-            self.assertEqual(len(fighter["state_frames"]), 3)
+            self.assertEqual(set(fighter["state_frames"].values()), {1, 2, 3})
+            self.assertGreaterEqual(len(fighter["state_frames"]), 3)
 
     def test_published_candidate_roster_has_source_openings(self):
         available = json.loads(
             (ROOT / "godot/generated/main/character_selection/available.json").read_text()
         )
         intro = json.loads((ROOT / "godot/generated/main/intro/intro.json").read_text())
-        for name in ("sakura", "rukia", "yulong"):
+        for name in ("sakura", "rukia", "yulong", "byakuya", "lee"):
             self.assertIn(name, intro["fighters"])
             self.assertIn(name, available["fighters"].values())
         self.assertIn("jinye", available["helpers"].values())

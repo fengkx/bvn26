@@ -1,0 +1,150 @@
+{
+  "dead": {
+    "fixture": "evidence/characters/lee/move-cases/lee-574-bisha-625-dead-acceptance-r02.json",
+    "source": "evidence/characters/lee/original/lee-574-bisha-625-dead-negative-acceptance-r02-parsed/events.jsonl",
+    "native": "evidence/characters/lee/godot/phase-r02-625/lee-574-bisha-625-dead-timer.json",
+    "compare": "evidence/characters/lee/godot/phase-r02-625/lee-574-bisha-625-dead-timer.compare.json",
+    "source_sha256": "59724841ce0d111de09531ab0d2c019ac6fdb9ef0fcf9b82210803b5e31081d5",
+    "native_sha256": "18928f681f97c5193a7ddde9d19e374c5261a3692531d0a252e4a355e1f52e06",
+    "compare_sha256": "67d25d415d3d40970efa0c7085bf98ca8124e1f7af4e223eb9ba09e2ef4b93ee",
+    "source_states": 802,
+    "native_states": 802,
+    "status": "different",
+    "acceptance_status": "experimental",
+    "difference_count": 2,
+    "first_difference": {
+      "tick": 306,
+      "slot": "p1",
+      "fields": {
+        "frame": {
+          "original": 1260.0,
+          "native": 1
+        },
+        "x": {
+          "original": 326.3,
+          "native": 374.1
+        }
+      }
+    },
+    "difference_rows": [
+      {
+        "tick": 306,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 1260.0,
+            "native": 1
+          },
+          "x": {
+            "original": 326.3,
+            "native": 374.1
+          }
+        }
+      },
+      {
+        "tick": 306,
+        "slot": "p2",
+        "fields": {
+          "frame": {
+            "original": 777.0,
+            "native": 1
+          },
+          "x": {
+            "original": 490.0,
+            "native": 637.1
+          },
+          "hp": {
+            "original": 0.0,
+            "native": 1000.0
+          },
+          "sw": {
+            "original": true,
+            "native": false
+          }
+        }
+      }
+    ],
+    "timer_intervention": "external source timer route; no actor combat fields written by runner",
+    "source_build_schedule_probe": true,
+    "runtime_main_sha256": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "runtime_fighter_sha256": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "runner_sha256": "b3f757d9d1af20572045f2eca4ac9f936714d4f447d68e4ad949be1c284e909a",
+    "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --script res://tests/move_case_reference.gd -- <absolute fixture> <absolute native output>",
+    "clock_tape": "drive_source_timers=true; registered 1000ms ko_nextfight Timer route; fire and cancel observed in native stdout; runner writes no actor combat fields",
+    "phase_evidence": "source state remains KO at fight_tick 306 and resets at 307; current runner emitted timer before snapshot, so native reset appeared at tick306. Runner is now changed to observe then deliver tape for next rerun."
+  },
+  "kill": {
+    "fixture": "evidence/characters/lee/move-cases/lee-574-bisha-625-kill-acceptance-r02.json",
+    "source": "evidence/characters/lee/original/lee-574-bisha-625-kill-negative-acceptance-r02-parsed/events.jsonl",
+    "native": "evidence/characters/lee/godot/phase-r02-625/lee-574-bisha-625-kill-timer.json",
+    "compare": "evidence/characters/lee/godot/phase-r02-625/lee-574-bisha-625-kill-timer.compare.json",
+    "source_sha256": "3fde2ff34ca37de97aa8237e5964a1e2f589543193fc307dd91aa98a764dd889",
+    "native_sha256": "7b52272c9bd5424ae747fccdb9e3336f327e334e68c82f96ec162f3e5617bb87",
+    "compare_sha256": "bcb474793d0f16e6509e84f1e78f3d51c1ea81c7573a6c86e2b90e3640fc28ec",
+    "source_states": 802,
+    "native_states": 802,
+    "status": "different",
+    "acceptance_status": "experimental",
+    "difference_count": 2,
+    "first_difference": {
+      "tick": 306,
+      "slot": "p1",
+      "fields": {
+        "frame": {
+          "original": 1260.0,
+          "native": 1
+        },
+        "x": {
+          "original": 326.3,
+          "native": 374.1
+        }
+      }
+    },
+    "difference_rows": [
+      {
+        "tick": 306,
+        "slot": "p1",
+        "fields": {
+          "frame": {
+            "original": 1260.0,
+            "native": 1
+          },
+          "x": {
+            "original": 326.3,
+            "native": 374.1
+          }
+        }
+      },
+      {
+        "tick": 306,
+        "slot": "p2",
+        "fields": {
+          "frame": {
+            "original": 777.0,
+            "native": 1
+          },
+          "x": {
+            "original": 490.0,
+            "native": 637.1
+          },
+          "hp": {
+            "original": 0.0,
+            "native": 1000.0
+          },
+          "sw": {
+            "original": true,
+            "native": false
+          }
+        }
+      }
+    ],
+    "timer_intervention": "external source timer route; no actor combat fields written by runner",
+    "source_build_schedule_probe": true,
+    "runtime_main_sha256": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "runtime_fighter_sha256": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "runner_sha256": "b3f757d9d1af20572045f2eca4ac9f936714d4f447d68e4ad949be1c284e909a",
+    "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --script res://tests/move_case_reference.gd -- <absolute fixture> <absolute native output>",
+    "clock_tape": "drive_source_timers=true; registered 1000ms ko_nextfight Timer route; fire and cancel observed in native stdout; runner writes no actor combat fields",
+    "phase_evidence": "source state remains KO at fight_tick 306 and resets at 307; current runner emitted timer before snapshot, so native reset appeared at tick306. Runner is now changed to observe then deliver tape for next rerun."
+  }
+}

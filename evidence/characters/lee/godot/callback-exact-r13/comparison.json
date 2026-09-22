@@ -1,0 +1,290 @@
+{
+  "schema": "lee-callback-exact-r13",
+  "scope": "Same-source-run bounded body frame-action callbacks only; compare source_frame, entering, action and decoded ql. This is not full-state or full-role parity.",
+  "batch_exitcode": 0,
+  "script_error": false,
+  "runtime_file_hashes": {
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+    "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+    "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+    "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+    "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+  },
+  "godot_log_sha256": "d6e281306eeccd031488f77605e27fea7ef67f4cf55ae88e6ef4913cb2a0cb5c",
+  "cases": [
+    {
+      "case_id": "recovery-p2-fall-1128-1161",
+      "status": "exact_0diff",
+      "slot": "p2",
+      "callback_kind": "body_boundary/frame_action",
+      "provenance": {
+        "source_run_id": "lee-callback-lifecycle-fall-no-standup-r01",
+        "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-fall-no-standup-r01/events.jsonl",
+        "source_raw_sha256": "da3b271457f4f397382640a2e557f414905186feda5ea3f01ca2fac14f78d438",
+        "source_build_copy": "evidence/characters/lee/godot/callback-exact-r13/source-builds/recovery-p2/build.json",
+        "source_build_sha256": "c9499461558941bbce2aa1d32694dfd1fd811caa1b18b7d6d9e9d66ff19b299a",
+        "source_instrumentation_sha256": "40ce808b4623133d1475e778fdef01031524d75a0e29f0927ae647d7b77ff24d",
+        "source_output_main_sha256": "32a5f2252cbae3bbc756da8fc6e9647b7f78988d311eef917fc20103491530fb",
+        "source_build_status_field": "built_not_run",
+        "source_capture_done_marker": true,
+        "source_move_case": {
+          "id": "lee-callback-lifecycle-fall-no-standup-r01",
+          "fighter": "lee",
+          "slot": "p2",
+          "label": "受击恢复",
+          "scenario": "callback_fall_without_standup",
+          "frames": 900,
+          "setup": {
+            "p1": {
+              "x": 300,
+              "energy": 300
+            },
+            "p2": {
+              "x": 300,
+              "energy": 1000,
+              "health": 1000,
+              "wudi": false
+            }
+          },
+          "inputs": [
+            {
+              "slot": "p1",
+              "keys": [
+                "down",
+                "special"
+              ],
+              "start": 10,
+              "end": 13
+            }
+          ],
+          "target_frames": [
+            1128,
+            1133,
+            1149,
+            1288
+          ],
+          "has_source_timeline": true,
+          "source_dispatch": [
+            "doAllAction",
+            "doStand"
+          ],
+          "status": "prepared",
+          "fighters": {
+            "p1": "byakuya",
+            "p2": "lee"
+          },
+          "p1_helper": "魂",
+          "p2_helper": "魂",
+          "source_state_preconditions": {
+            "p2": {
+              "health": 1000,
+              "wudi": false
+            }
+          },
+          "callback_group": "recovery-standup",
+          "callback_purpose": "fall-through landing without dash input; observe whether frame1128 auto-returns to standing",
+          "callback_observer": "read-only generic schedule and body boundary observers; no schedule/input changes",
+          "source_callback_targets": [
+            {
+              "source_sprite_id": 518,
+              "source_frame": 1128,
+              "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+              "action": "击落地",
+              "kind": "frame_action",
+              "slot": "p2"
+            }
+          ],
+          "callback_targets": [
+            {
+              "source_sprite_id": 518,
+              "source_frame": 1128,
+              "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+              "action": "击落地",
+              "kind": "frame_action",
+              "slot": "p2"
+            }
+          ]
+        },
+        "source_build_config": {
+          "modo": 3,
+          "p1": "白哉",
+          "p2": "小李",
+          "p2cpu": false,
+          "AI": 5,
+          "stage": "现世",
+          "p1sf": "魂",
+          "p2sf": "魂"
+        },
+        "native_fixture": "evidence/characters/lee/godot/callback-exact-r13/fixtures/recovery-p2-fall-1128-1161.json",
+        "native_fixture_sha256": "52d21e096da2d7cf697e21350d27c43ac90dd720190347685a3974b0c1b8b477",
+        "input_setup_helpers_exact_match": true
+      },
+      "source_event_count": 8,
+      "native_event_count": 8,
+      "source_events": [
+        {
+          "source_frame": 1158,
+          "entering": true,
+          "action": 0.0,
+          "ql": 0.0,
+          "seq": 5413,
+          "display_tick": 247,
+          "fight_tick": -1
+        },
+        {
+          "source_frame": 1158,
+          "entering": false,
+          "action": 0.0,
+          "ql": 0.0,
+          "seq": 5414,
+          "display_tick": 247,
+          "fight_tick": -1
+        },
+        {
+          "source_frame": 1159,
+          "entering": true,
+          "action": 0.0,
+          "ql": 0.0,
+          "seq": 5425,
+          "display_tick": 247,
+          "fight_tick": -1
+        },
+        {
+          "source_frame": 1159,
+          "entering": false,
+          "action": 0.0,
+          "ql": 0.0,
+          "seq": 5426,
+          "display_tick": 247,
+          "fight_tick": -1
+        },
+        {
+          "source_frame": 1161,
+          "entering": true,
+          "action": 0.0,
+          "ql": 0.0,
+          "seq": 5471,
+          "display_tick": 249,
+          "fight_tick": -1
+        },
+        {
+          "source_frame": 1161,
+          "entering": false,
+          "action": 0.0,
+          "ql": 0.0,
+          "seq": 5472,
+          "display_tick": 249,
+          "fight_tick": -1
+        },
+        {
+          "source_frame": 1128,
+          "entering": true,
+          "action": -1.0,
+          "ql": 300.0,
+          "seq": 13733,
+          "display_tick": 556,
+          "fight_tick": 106
+        },
+        {
+          "source_frame": 1128,
+          "entering": false,
+          "action": -1.0,
+          "ql": 300.0,
+          "seq": 13734,
+          "display_tick": 556,
+          "fight_tick": 106
+        }
+      ],
+      "native_events": [
+        {
+          "action": 0.0,
+          "current_frame": 1159,
+          "entering": true,
+          "ql": 0.0,
+          "slot": "p2",
+          "source_frame": 1158,
+          "tick": 75
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1159,
+          "entering": false,
+          "ql": 0.0,
+          "slot": "p2",
+          "source_frame": 1158,
+          "tick": 75
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1159,
+          "entering": true,
+          "ql": 0.0,
+          "slot": "p2",
+          "source_frame": 1159,
+          "tick": 75
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1159,
+          "entering": false,
+          "ql": 0.0,
+          "slot": "p2",
+          "source_frame": 1159,
+          "tick": 75
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1161,
+          "entering": true,
+          "ql": 0.0,
+          "slot": "p2",
+          "source_frame": 1161,
+          "tick": 77
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1161,
+          "entering": false,
+          "ql": 0.0,
+          "slot": "p2",
+          "source_frame": 1161,
+          "tick": 77
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1128,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1128,
+          "tick": 383
+        },
+        {
+          "action": -1.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p2",
+          "source_frame": 1128,
+          "tick": 383
+        }
+      ],
+      "compared_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "diffs": []
+    }
+  ],
+  "summary": {
+    "cases": 1,
+    "exact_0diff": 1,
+    "source_events": 8,
+    "native_events": 8,
+    "diffs": 0
+  }
+}

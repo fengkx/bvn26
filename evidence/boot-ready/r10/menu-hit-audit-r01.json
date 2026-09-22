@@ -1,0 +1,100 @@
+{
+  "run_id": "boot-ready-r12-20260921",
+  "source": {
+    "menu_controller": "scripts/main.json:DefineSprite_620/frame_1/PlaceObject2_619_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+    "selection": "Key.isDown(_root.w|s|j); _parent[\"btm\" + select].play(); _parent.anj=1",
+    "normal_action": "scripts/main.json:DefineSprite_594/frame_15/DoAction.as",
+    "normal_action_text": "_root.modo=1; _root.p1cpu=false; _root.p2cpu=true; _root.gotoAndStop(\"HOWTOPLAY\");",
+    "mouse_handlers_found": false,
+    "define_button_tags_found": 0,
+    "btm1_character": "594",
+    "shape_character": "593",
+    "shape_bounds_twips": [
+      0,
+      0,
+      2440,
+      780
+    ],
+    "shape_bounds_px": [
+      0,
+      0,
+      122,
+      39
+    ],
+    "btm1_matrix_twips": [
+      8,
+      -2
+    ],
+    "menu_parent_matrix_twips": [
+      4859,
+      6193
+    ],
+    "runtime_btm1_y": 0.1,
+    "estimated_logical_game_rect": [
+      243.35,
+      309.55,
+      365.35,
+      348.55
+    ],
+    "key_bindings": {
+      "root_j": 74,
+      "root_w": 87,
+      "root_s": 83,
+      "assignment": "scripts/main.json:frame_7/DoAction.as"
+    },
+    "correction": "Key.isDown(_root.j) is a per-frame polling binding; prior instant key/mouse failures do not disprove J input."
+  },
+  "calibration": {
+    "window_expected_logical_bounds": [
+      120,
+      120,
+      600,
+      428
+    ],
+    "canvas_titlebar_offset_y": 27,
+    "calibrated_global_click_center": [
+      424,
+      476
+    ],
+    "basis": "parent+sprite transforms in 1/20 px; game content starts below title bar"
+  },
+  "r12_attempt": {
+    "build": "/private/tmp/bvn-boot-ready-r12",
+    "build_sha256": "0d2179cc05ed4d2a2a162134a0ac1e55d5ec54953b0b0daa023460bcb55842f6",
+    "swf_sha256": "d1e1fb406f65d7c51a8d23d9e248f5abc4053222245420c4632db7ededdbbf1a",
+    "capture": "/private/tmp/bvn-boot-ready-r12/original.log",
+    "capture_result": "events=0, done=false",
+    "actions": "window launch; System Events frontmost; attempted window move; no mouse down/up delivered because Flash window disappeared from AX/CGWindow before calibrated click",
+    "not_validated": true
+  },
+  "xml_sha256": "df7a8aab9eceb5dcf29154226c35ca1bdedb11bcf96f1e1317f711ca22e8d57c",
+  "screenshot_sha256": "cb5b97b24ca295727f5fe736a90c45e119704d5c5be6de6981d2e3bfdaea6ebe",
+  "r14_attempt": {
+    "run_id": "boot-ready-r14-20260921",
+    "build": "/private/tmp/bvn-boot-ready-r14",
+    "capture": "/private/tmp/bvn-boot-ready-r14/original.log",
+    "swf_sha256": "d1e1fb406f65d7c51a8d23d9e248f5abc4053222245420c4632db7ededdbbf1a",
+    "actions": "focused Flash; moved window to {120,120}; native CGEvent virtual key 38 down, 300ms hold, up; immediate screenshot attempt",
+    "result": "events=0, done=false; Flash window absent from AX/CGWindow immediately after hold; no screenshot produced",
+    "not_validated": true,
+    "causal_status": "not_established",
+    "timeline": {
+      "build_metadata_mtime": "2026-09-21T20:14:30+08:00",
+      "capture_end_mtime": "2026-09-21T20:15:00+08:00",
+      "capture_timeout_seconds": 30,
+      "capture_result": "events=0, done=false",
+      "post_action_window_observation": "no Flash AX/CGWindow entry at follow-up",
+      "process_exit_or_crash": "not recorded by capture tool",
+      "fscommand_quit_source_search": "no fscommand/quit/System.exit match in scripts/main.json or game/scripts search"
+    },
+    "contract_audit": {
+      "metadata_run_id": "boot-ready-r14-20260921",
+      "embedded_patch_run_id": "boot-ready-r10-20260921",
+      "build_json_output": "/private/tmp/bvn-boot-ready-r10/game/main.swf",
+      "actual_copied_swf_sha256": "d1e1fb406f65d7c51a8d23d9e248f5abc4053222245420c4632db7ededdbbf1a",
+      "probe_validate": "failed: patch does not contain AIREF sequence and done protocol for metadata run_id",
+      "reason": "r14 was a metadata-only copy of r10; no new SWF was built, so r14 is invalid for input/boot evidence"
+    },
+    "correction": "Do not attribute window disappearance to J; r14 timed out with no matching run-id events and invalid SWF/metadata provenance."
+  }
+}

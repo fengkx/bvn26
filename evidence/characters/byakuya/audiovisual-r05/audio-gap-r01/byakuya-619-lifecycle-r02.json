@@ -1,0 +1,60 @@
+{
+  "format": "byakuya-619-audio-lifecycle-r02",
+  "status": "bounded_start_natural_finish_unobserved",
+  "scope": "Byakuya DefineSprite_631 frame 963 StartSound 619 only; same fixture Godot main-scene intro walk",
+  "fixture": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-intro-963-r01/fixture.json",
+  "fixture_sha256": "79a892146fee439db04ac81dc6f7e09f158c4fb74150213b0a5cf3f072936b46",
+  "probe": "godot/tests/byakuya_audio_walk_probe.gd",
+  "probe_sha256": "87d59281fde206cd77b025c131b8151ba0eb787e52c3b255a6142fe0a3b15357",
+  "command": "Godot 4.7.2 --headless --audio-driver Dummy --path godot -s res://tests/byakuya_audio_walk_probe.gd -- <fixture> <output>",
+  "run_output": "/private/tmp/byakuya-intro-audio-lifetime-dummy-r01/audio-walk.json",
+  "run_output_sha256": "e7324b850247d4ecf064fad47839e8914bb2c25a221a404a5133fd23b16291ec",
+  "source": {
+    "timeline": "godot/generated/fighters/byakuya/timeline.json",
+    "timeline_sha256": "c2ec1a73f98c9ec09af2c2399390859ba4606bdd424a8bbfe3ef11e56c69efca",
+    "frame": 963,
+    "start_sound_events": [
+      {
+        "type": "start_sound",
+        "sound_id": 619
+      }
+    ],
+    "explicit_stop_sound_events": [],
+    "depth_27": {
+      "placed_frame": 958,
+      "character_id": 618,
+      "replacement_frame": 1035,
+      "replacement_character_id": 552
+    },
+    "sound_asset": "godot/generated/fighters/byakuya/619.mp3",
+    "sound_asset_sha256": "6882eefa0a2e8cb0b39a51cd0b45011ff7c960bf12ad776e5569654727618e83",
+    "duration_seconds": 0.962,
+    "sync_flags": []
+  },
+  "godot": {
+    "start_rows": [
+      {
+        "created_fight_tick": null,
+        "created_source_frame": 963,
+        "intro_active": true,
+        "intro_step": 2,
+        "player_id": "182838103883",
+        "playing": true,
+        "presentation_tick": 34,
+        "slot": "p1",
+        "stream_path": "res://generated/fighters/byakuya/619.mp3"
+      }
+    ],
+    "finished_rows": [],
+    "player_created_count": 2,
+    "fight_states": 300,
+    "audio_driver": "Dummy",
+    "headless": true
+  },
+  "conclusion": "Source has one StartSound(619) and no explicit StopSound/syncStop. Current Godot created 619 at intro presentation tick 34. No finished callback was observed in headless Dummy for the bounded run; this is an audio-backend observability limit, not evidence of missing natural completion. Stop/full lifetime parity remains unproven.",
+  "runtime_hashes": {
+    "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac"
+  },
+  "production_runtime_changed": false
+}

@@ -1,0 +1,1363 @@
+{
+  "format": "lee-ai-single-callback-readset-v1",
+  "status": "original_native_observed",
+  "configuration": {
+    "p1": "一护",
+    "p2": "小李",
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂",
+    "mode": "VsCom",
+    "AI": 5,
+    "source_run": "lee-cpu-context-r04"
+  },
+  "context_field_order": [
+    "receiver",
+    "attran",
+    "defran",
+    "goran",
+    "jumpran",
+    "bisharan",
+    "lee_ql",
+    "lee_hp",
+    "lee_x",
+    "lee_y",
+    "lee_xscale",
+    "lee_action",
+    "lee_touch",
+    "lee_touchFloor",
+    "lee_jump",
+    "lee_airBody",
+    "opponent_action",
+    "opponent_hp",
+    "opponent_ql",
+    "opponent_x",
+    "opponent_y"
+  ],
+  "callbacks": [
+    {
+      "context": {
+        "seq": 2884,
+        "time_ms": 29640,
+        "display_tick": 472,
+        "fight_tick": 0,
+        "kind": "lee_ai_context",
+        "value": "_level0.game.p2.mc.instance409,f:1:7:112267342:10944512,f:1:6:125846468:50331648,f:1:5:79246243:43778048,f:1:8:84597891:60850176,f:1:8:100159986:1540096,f:1:0:0:0,f:1:9:131072000:0,f:1:-1:120795955:13421773,f:-1:4:84095795:13421773,f:1:6:92708800:0,f:1:0:0:0,true,undefined,f:1:0:0:0,false,f:1:0:0:0,f:1:9:131072000:0,f:1:0:0:0,f:1:8:98068070:26843546,f:-1:4:104857600:0"
+      },
+      "following_events": [
+        {
+          "seq": 2884,
+          "time_ms": 29640,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "lee_ai_context",
+          "value": "_level0.game.p2.mc.instance409,f:1:7:112267342:10944512,f:1:6:125846468:50331648,f:1:5:79246243:43778048,f:1:8:84597891:60850176,f:1:8:100159986:1540096,f:1:0:0:0,f:1:9:131072000:0,f:1:-1:120795955:13421773,f:-1:4:84095795:13421773,f:1:6:92708800:0,f:1:0:0:0,true,undefined,f:1:0:0:0,false,f:1:0:0:0,f:1:9:131072000:0,f:1:0:0:0,f:1:8:98068070:26843546,f:-1:4:104857600:0"
+        },
+        {
+          "seq": 2885,
+          "time_ms": 29641,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "defence,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2886,
+          "time_ms": 29641,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "nornalhit,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2887,
+          "time_ms": 29642,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "wankai,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2888,
+          "time_ms": 29642,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "skill2,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2889,
+          "time_ms": 29643,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "skill1,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2890,
+          "time_ms": 29644,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "magichit3,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2891,
+          "time_ms": 29644,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "magichit2,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2892,
+          "time_ms": 29645,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "magichit1,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2893,
+          "time_ms": 29646,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "bishaSuper,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2894,
+          "time_ms": 29646,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "bishaUP,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2895,
+          "time_ms": 29647,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "bisha,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2896,
+          "time_ms": 29647,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "zhaoHuan,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2897,
+          "time_ms": 29648,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "moveLeft,_level0.game.p2.mc.instance409,true"
+        },
+        {
+          "seq": 2898,
+          "time_ms": 29648,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "moveRight,_level0.game.p2.mc.instance409,false"
+        },
+        {
+          "seq": 2899,
+          "time_ms": 29648,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "rush,_level0.game.p2.mc.instance409,true"
+        },
+        {
+          "seq": 2900,
+          "time_ms": 29649,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2901,
+          "time_ms": 29649,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 2902,
+          "time_ms": 29650,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 2903,
+          "time_ms": 29650,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2904,
+          "time_ms": 29651,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 2905,
+          "time_ms": 29651,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2906,
+          "time_ms": 29651,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 2907,
+          "time_ms": 29652,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "seq": 2908,
+          "time_ms": 29652,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "seq": 2909,
+          "time_ms": 29652,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "seq": 2910,
+          "time_ms": 29653,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "seq": 2911,
+          "time_ms": 29653,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2912,
+          "time_ms": 29655,
+          "display_tick": 472,
+          "fight_tick": 0,
+          "kind": "predicate",
+          "value": "dash,_level0.game.p2.mc,false"
+        },
+        {
+          "seq": 2913,
+          "time_ms": 29656,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "input_next_display",
+          "value": "right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+        },
+        {
+          "seq": 2914,
+          "time_ms": 29657,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "state",
+          "value": "p1,7,f:1:8:98068070:26843546,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 2915,
+          "time_ms": 29658,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "helper_state",
+          "value": "p1,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 2916,
+          "time_ms": 29659,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "helper_clip_state",
+          "value": "p1,1,atm1=undefined"
+        },
+        {
+          "seq": 2917,
+          "time_ms": 29661,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "state",
+          "value": "p2,20,f:1:9:83505971:13421773,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 2918,
+          "time_ms": 29662,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "helper_state",
+          "value": "p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 2919,
+          "time_ms": 29663,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "helper_clip_state",
+          "value": "p2,1,atm1=undefined"
+        },
+        {
+          "seq": 2920,
+          "time_ms": 29668,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2921,
+          "time_ms": 29668,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 2922,
+          "time_ms": 29669,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 2923,
+          "time_ms": 29669,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2924,
+          "time_ms": 29669,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 2925,
+          "time_ms": 29669,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2926,
+          "time_ms": 29670,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 2927,
+          "time_ms": 29670,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "seq": 2928,
+          "time_ms": 29670,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "seq": 2929,
+          "time_ms": 29670,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "seq": 2930,
+          "time_ms": 29670,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "seq": 2931,
+          "time_ms": 29670,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "predicate",
+          "value": "dash,_level0.game.p2.mc,false"
+        },
+        {
+          "seq": 2932,
+          "time_ms": 29671,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "intro_body_enter",
+          "value": "8,8"
+        },
+        {
+          "seq": 2933,
+          "time_ms": 29671,
+          "display_tick": 473,
+          "fight_tick": 1,
+          "kind": "intro_body_exit",
+          "value": "8,1"
+        },
+        {
+          "seq": 2934,
+          "time_ms": 29672,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "input_next_display",
+          "value": "right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+        },
+        {
+          "seq": 2935,
+          "time_ms": 29672,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "state",
+          "value": "p1,1,f:1:8:98068070:26843546,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 2936,
+          "time_ms": 29672,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "helper_state",
+          "value": "p1,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 2937,
+          "time_ms": 29672,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "helper_clip_state",
+          "value": "p1,1,atm1=undefined"
+        },
+        {
+          "seq": 2938,
+          "time_ms": 29672,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "state",
+          "value": "p2,21,f:1:9:83505971:13421773,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 2939,
+          "time_ms": 29672,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "helper_state",
+          "value": "p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 2940,
+          "time_ms": 29672,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "helper_clip_state",
+          "value": "p2,1,atm1=undefined"
+        },
+        {
+          "seq": 2941,
+          "time_ms": 29672,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "frame_state_enter",
+          "value": "1,1,0,0,false"
+        },
+        {
+          "seq": 2942,
+          "time_ms": 29673,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "intro_body_enter",
+          "value": "1,1"
+        },
+        {
+          "seq": 2943,
+          "time_ms": 29674,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "intro_body_exit",
+          "value": "1,1"
+        },
+        {
+          "seq": 2944,
+          "time_ms": 29675,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "frame_state_exit",
+          "value": "1,1,0,0,false"
+        },
+        {
+          "seq": 2945,
+          "time_ms": 29708,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2946,
+          "time_ms": 29709,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 2947,
+          "time_ms": 29710,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 2948,
+          "time_ms": 29711,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2949,
+          "time_ms": 29711,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 2950,
+          "time_ms": 29712,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 2951,
+          "time_ms": 29712,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 2952,
+          "time_ms": 29712,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "seq": 2953,
+          "time_ms": 29712,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "seq": 2954,
+          "time_ms": 29712,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "seq": 2955,
+          "time_ms": 29712,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "seq": 2956,
+          "time_ms": 29712,
+          "display_tick": 474,
+          "fight_tick": 2,
+          "kind": "predicate",
+          "value": "dash,_level0.game.p2.mc,false"
+        },
+        {
+          "seq": 2957,
+          "time_ms": 29713,
+          "display_tick": 475,
+          "fight_tick": 3,
+          "kind": "input_next_display",
+          "value": "right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+        },
+        {
+          "seq": 2958,
+          "time_ms": 29713,
+          "display_tick": 475,
+          "fight_tick": 3,
+          "kind": "state",
+          "value": "p1,2,f:1:8:98068070:26843546,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 2959,
+          "time_ms": 29713,
+          "display_tick": 475,
+          "fight_tick": 3,
+          "kind": "helper_state",
+          "value": "p1,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 2960,
+          "time_ms": 29713,
+          "display_tick": 475,
+          "fight_tick": 3,
+          "kind": "helper_clip_state",
+          "value": "p1,1,atm1=undefined"
+        },
+        {
+          "seq": 2961,
+          "time_ms": 29713,
+          "display_tick": 475,
+          "fight_tick": 3,
+          "kind": "state",
+          "value": "p2,22,f:1:9:79573811:13421773,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 2962,
+          "time_ms": 29713,
+          "display_tick": 475,
+          "fight_tick": 3,
+          "kind": "helper_state",
+          "value": "p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 2963,
+          "time_ms": 29713,
+          "display_tick": 475,
+          "fight_tick": 3,
+          "kind": "helper_clip_state",
+          "value": "p2,1,atm1=undefined"
+        },
+        {
+          "seq": 2964,
+          "time_ms": 29737,
+          "display_tick": 475,
+          "fight_tick": 3,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        }
+      ]
+    },
+    {
+      "context": {
+        "seq": 3103,
+        "time_ms": 29966,
+        "display_tick": 482,
+        "fight_tick": 10,
+        "kind": "lee_ai_context",
+        "value": "_level0.game.p2.mc.instance497,f:1:7:112267342:10944512,f:1:6:125846468:50331648,f:1:5:79246243:43778048,f:1:8:84597891:60850176,f:1:8:100159986:1540096,f:1:0:0:0,f:1:9:131072000:0,f:1:-1:120795955:13421773,f:-1:4:84095795:13421773,f:1:6:92708800:0,f:1:0:0:0,true,true,f:1:0:0:0,false,f:1:0:0:0,f:1:9:131072000:0,f:1:0:0:0,f:1:8:98068070:26843546,f:-1:4:104857600:0"
+      },
+      "following_events": [
+        {
+          "seq": 3103,
+          "time_ms": 29966,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "lee_ai_context",
+          "value": "_level0.game.p2.mc.instance497,f:1:7:112267342:10944512,f:1:6:125846468:50331648,f:1:5:79246243:43778048,f:1:8:84597891:60850176,f:1:8:100159986:1540096,f:1:0:0:0,f:1:9:131072000:0,f:1:-1:120795955:13421773,f:-1:4:84095795:13421773,f:1:6:92708800:0,f:1:0:0:0,true,true,f:1:0:0:0,false,f:1:0:0:0,f:1:9:131072000:0,f:1:0:0:0,f:1:8:98068070:26843546,f:-1:4:104857600:0"
+        },
+        {
+          "seq": 3104,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "defence,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3105,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "nornalhit,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3106,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "wankai,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3107,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "skill2,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3108,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "skill1,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3109,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "magichit3,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3110,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "magichit2,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3111,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "magichit1,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3112,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "bishaSuper,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3113,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "bishaUP,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3114,
+          "time_ms": 29967,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "bisha,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3115,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "zhaoHuan,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3116,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "moveLeft,_level0.game.p2.mc.instance497,true"
+        },
+        {
+          "seq": 3117,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "moveRight,_level0.game.p2.mc.instance497,false"
+        },
+        {
+          "seq": 3118,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "rush,_level0.game.p2.mc.instance497,true"
+        },
+        {
+          "seq": 3119,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3120,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 3121,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3122,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3123,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3124,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3125,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 3126,
+          "time_ms": 29968,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "seq": 3127,
+          "time_ms": 29969,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "seq": 3128,
+          "time_ms": 29969,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "seq": 3129,
+          "time_ms": 29969,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "seq": 3130,
+          "time_ms": 29969,
+          "display_tick": 482,
+          "fight_tick": 10,
+          "kind": "predicate",
+          "value": "dash,_level0.game.p2.mc,false"
+        },
+        {
+          "seq": 3131,
+          "time_ms": 29969,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "input_next_display",
+          "value": "right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+        },
+        {
+          "seq": 3132,
+          "time_ms": 29970,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "state",
+          "value": "p1,3,f:1:8:98068070:26843546,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 3133,
+          "time_ms": 29970,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "helper_state",
+          "value": "p1,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 3134,
+          "time_ms": 29971,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "helper_clip_state",
+          "value": "p1,1,atm1=undefined"
+        },
+        {
+          "seq": 3135,
+          "time_ms": 29971,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "state",
+          "value": "p2,20,f:1:9:67777331:13421773,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 3136,
+          "time_ms": 29971,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "helper_state",
+          "value": "p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 3137,
+          "time_ms": 29971,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "helper_clip_state",
+          "value": "p2,1,atm1=undefined"
+        },
+        {
+          "seq": 3138,
+          "time_ms": 30008,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3139,
+          "time_ms": 30009,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 3140,
+          "time_ms": 30011,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3141,
+          "time_ms": 30012,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3142,
+          "time_ms": 30012,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3143,
+          "time_ms": 30013,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3144,
+          "time_ms": 30014,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 3145,
+          "time_ms": 30015,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "seq": 3146,
+          "time_ms": 30015,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "seq": 3147,
+          "time_ms": 30016,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "seq": 3148,
+          "time_ms": 30016,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "seq": 3149,
+          "time_ms": 30017,
+          "display_tick": 483,
+          "fight_tick": 11,
+          "kind": "predicate",
+          "value": "dash,_level0.game.p2.mc,false"
+        },
+        {
+          "seq": 3150,
+          "time_ms": 30017,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "input_next_display",
+          "value": "right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+        },
+        {
+          "seq": 3151,
+          "time_ms": 30017,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "state",
+          "value": "p1,4,f:1:8:98068070:26843546,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 3152,
+          "time_ms": 30017,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "helper_state",
+          "value": "p1,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 3153,
+          "time_ms": 30018,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "helper_clip_state",
+          "value": "p1,1,atm1=undefined"
+        },
+        {
+          "seq": 3154,
+          "time_ms": 30018,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "state",
+          "value": "p2,21,f:1:9:67777331:13421773,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 3155,
+          "time_ms": 30018,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "helper_state",
+          "value": "p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 3156,
+          "time_ms": 30018,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "helper_clip_state",
+          "value": "p2,1,atm1=undefined"
+        },
+        {
+          "seq": 3157,
+          "time_ms": 30036,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3158,
+          "time_ms": 30036,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 3159,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3160,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3161,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3162,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3163,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 3164,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "seq": 3165,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "seq": 3166,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "seq": 3167,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "seq": 3168,
+          "time_ms": 30037,
+          "display_tick": 484,
+          "fight_tick": 12,
+          "kind": "predicate",
+          "value": "dash,_level0.game.p2.mc,false"
+        },
+        {
+          "seq": 3169,
+          "time_ms": 30038,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "input_next_display",
+          "value": "right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+        },
+        {
+          "seq": 3170,
+          "time_ms": 30038,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "state",
+          "value": "p1,5,f:1:8:98068070:26843546,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 3171,
+          "time_ms": 30038,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "helper_state",
+          "value": "p1,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 3172,
+          "time_ms": 30038,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "helper_clip_state",
+          "value": "p1,1,atm1=undefined"
+        },
+        {
+          "seq": 3173,
+          "time_ms": 30038,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "state",
+          "value": "p2,22,f:1:8:127690342:26843546,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+        },
+        {
+          "seq": 3174,
+          "time_ms": 30038,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "helper_state",
+          "value": "p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"
+        },
+        {
+          "seq": 3175,
+          "time_ms": 30038,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "helper_clip_state",
+          "value": "p2,1,atm1=undefined"
+        },
+        {
+          "seq": 3176,
+          "time_ms": 30076,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3177,
+          "time_ms": 30077,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "seq": 3178,
+          "time_ms": 30078,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3179,
+          "time_ms": 30079,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3180,
+          "time_ms": 30079,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "seq": 3181,
+          "time_ms": 30080,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "seq": 3182,
+          "time_ms": 30080,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "seq": 3183,
+          "time_ms": 30081,
+          "display_tick": 485,
+          "fight_tick": 13,
+          "kind": "key_read",
+          "value": "_level0.game.p1.mc,65,false"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Context hook is analysis-only at the shared aiPredicate defence entry; it reads source receiver._parent fields before the remaining predicate chain.",
+    "The two windows are single display callbacks from the same clean CPU run; no synthetic random/threshold values were injected.",
+    "Source state/goto events are retained as raw values; binary53 fields are not converted in this summary."
+  ]
+}

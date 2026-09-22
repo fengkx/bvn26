@@ -1,0 +1,45 @@
+{
+  "runtime_change_scope": "activate FIFO only; _events_applied implementation unchanged",
+  "helpers": {
+    "kon": {
+      "action_event_frames": [
+        12,
+        67
+      ],
+      "presentation_event_frames": [
+        2,
+        15,
+        30,
+        102
+      ],
+      "contact_gotos": [],
+      "nested_stops": [],
+      "has_a_to_b_to_a_source_goto": false,
+      "source_first_presentation_frame": 2
+    },
+    "woailuo": {
+      "action_event_frames": [
+        13
+      ],
+      "presentation_event_frames": [
+        2,
+        16,
+        38,
+        44,
+        85
+      ],
+      "contact_gotos": [],
+      "nested_stops": [
+        {
+          "sprite_id": 48,
+          "frame": 33,
+          "source_path": "DefineSprite_48/frame_33/DoAction.as",
+          "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+        }
+      ],
+      "has_a_to_b_to_a_source_goto": false,
+      "source_first_presentation_frame": 2
+    }
+  },
+  "conclusion": "No source contact_goto/re-entry path exists in current Kon or Woailuo combat contracts; the frame-keyed event de-duplication was pre-existing and the FIFO patch does not alter it."
+}

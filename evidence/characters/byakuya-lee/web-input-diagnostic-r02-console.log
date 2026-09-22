@@ -1,0 +1,24 @@
+Chrome DevTools target: page24
+URL: http://127.0.0.1:8774/?qa=diag5
+Package SHA256: 90feb462b50ec45d7a4f9bf6179120581648009fcdb9e2a5b87494436b6f2668
+
+Raw console entries from the target page:
+msgid=14 [log] QA_INPUT_PROBE_READY process_mode=ALWAYS
+msgid=15 [log] M0_BOOT_OK {"display_server":"web","godot":"4.7.2-stable (official)","physics_hz":30}
+msgid=16 [log] QA_PROBE_STATE {"j_logical":false,"j_physical":false,"kp1_logical":false,"kp1_physical":false,"tick":5}
+msgid=65 [log] QA_PROBE_STATE {"j_logical":false,"j_physical":false,"kp1_logical":false,"kp1_physical":false,"tick":250}
+msgid=75 [log] QA_PROBE_STATE {"j_logical":false,"j_physical":false,"kp1_logical":false,"kp1_physical":false,"tick":300}
+msgid=1196 [log] QA_PROBE_STATE {"j_logical":false,"j_physical":false,"kp1_logical":false,"kp1_physical":false,"tick":5910}
+msgid=4876 [log] QA_PROBE_STATE {"j_logical":false,"j_physical":false,"kp1_logical":false,"kp1_physical":false,"tick":24210}
+msgid=5174 [log] QA_PROBE_STATE {"j_logical":false,"j_physical":false,"kp1_logical":false,"kp1_physical":false,"tick":25700}
+
+DevTools evaluate_script invocation (returned true):
+canvas.focus(); dispatch synthetic J keydown; await 250ms; dispatch J keyup;
+dispatch synthetic Numpad1 keydown (key='1', code='Numpad1', keyCode=97,
+location=3); await 250ms; dispatch Numpad1 keyup.
+
+A temporary capturing listener on the same canvas returned two matching
+keydown/keyup pairs and activeElement=canvas. No QA_PROBE_INPUT entries were
+emitted in the target console, and the sampled ALWAYS probe remained false.
+The DOM and Godot probe observations are therefore retained as a failed
+closed diagnostic, not as a held-input acceptance.

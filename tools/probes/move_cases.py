@@ -63,6 +63,25 @@ def encode_resource_interventions(case):
     )
 
 
+def source_state_preconditions(case):
+    result = case.get('source_state_preconditions', {})
+    if not isinstance(result, dict):
+        raise ValueError('source_state_preconditions must be an object')
+    for slot, fields in result.items():
+        if slot not in ('p1', 'p2') or not isinstance(fields, dict):
+            raise ValueError('source state preconditions require p1/p2 objects')
+        for field, value in fields.items():
+            if field == 'health':
+                if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
+                    raise ValueError('health precondition must be finite numeric data')
+            elif field == 'wudi':
+                if not isinstance(value, bool):
+                    raise ValueError('wudi precondition must be boolean')
+            else:
+                raise ValueError(f'unsupported source state precondition: {field}')
+    return result
+
+
 def generate(fighters=None, exclude_commands=()):
     cases = []
     for fighter, slot in fighters or [('minren','p1'),('yihu','p2')]:
@@ -125,6 +144,11 @@ def source_fixture(case):
         lines += [f'      _root.game.{slot}.mc.gotoAndPlay("站立");',
                   f'      _root.game.{slot}._x = {float(values["x"])};',
                   f'      _root.game.{slot}.mc.ql = {float(values["energy"])};']
+        for field, value in source_state_preconditions(case).get(slot, {}).items():
+            as_value = 'true' if value is True else 'false' if value is False else str(float(value))
+            source_field = 'hp' if field == 'health' else field
+            lines.append(f'      _root.game.{slot}.mc.{source_field} = {as_value};')
+            lines.append(f'      _root.aiEvent("source_state_precondition", "{slot},{field}," + _root.aiNumber(_root.game.{slot}.mc.{source_field}));')
     lines += ['   }', '   aiHeld = {};']
     for item in resource_interventions(case):
         field = 'ql'

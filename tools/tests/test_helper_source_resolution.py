@@ -35,6 +35,9 @@ class HelperSourceResolutionTests(unittest.TestCase):
         self.assertIn("var clip = helper[instanceName]", source)
         self.assertIn('aiHelperClipFrame(f,"atm2")', source)
         self.assertIn('"atm1" + "=" + _root.aiHelperClipFrame(f,"atm1")', source)
+        self.assertIn('_root.aiEvent("helper_lifecycle"', source)
+        self.assertIn('f._visible', source)
+        self.assertIn('_root.zhanting', source)
         self.assertNotIn('f.atm2._currentframe', source)
 
 

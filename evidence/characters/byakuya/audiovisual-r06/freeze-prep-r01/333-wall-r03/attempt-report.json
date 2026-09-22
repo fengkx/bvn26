@@ -1,0 +1,35 @@
+{
+  "format": "byakuya-333-wall-freeze-attempt-r01",
+  "status": "source_reached_visual_not_accepted",
+  "fixture": "../333/fixture.json",
+  "source_build": "source-build/build.json",
+  "source_build_sha256": "89113a6cd64a046a0e80c04db95926fa69486ac424d5fa6384061910918de0aa",
+  "raw": "native-capture/ai-reference.log",
+  "raw_sha256": "25e54ccd2c86a465c2c693e763cf9672c609b0b4be699da9bf68a7f49aa1e50b",
+  "target_state": "AIREF|byakuya-freeze-333-wall-r03|3748|27483|461|11|state|p1,333,f:1:4:83886080:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false",
+  "visual_attempts": [
+    {
+      "method": "recursive wrapper v1",
+      "found_target": false,
+      "reason": "flashlog offset/rotation parser missed new run",
+      "accepted": false
+    },
+    {
+      "method": "recursive wrapper v2",
+      "found_target": false,
+      "reason": "no new boot segment after stale Flash instance; aborted to release lock",
+      "accepted": false
+    },
+    {
+      "method": "r10/r11 visual locator",
+      "found_target": true,
+      "window_id": null,
+      "output": "flash-screen.png",
+      "crop_600x400": false,
+      "recursive_stop_verified": false,
+      "stable_500ms": false,
+      "accepted": false
+    }
+  ],
+  "scope": "base DefineSprite_631 source target 333 wall; no visual parity claim"
+}

@@ -1,0 +1,56 @@
+{
+  "run_id": "r07-vs-human",
+  "pck_sha256": "d921f9a062bebc3bc05a9237b8c959801f5e18b44d594de44d8e20801c6bf23c",
+  "browser": "独立Chromium headless + SwiftShader",
+  "flow": [
+    "canvas focus",
+    "S held 320ms: source menu moved to 双人对战",
+    "J held: mode confirm",
+    "P1 J/P2 Numpad1: fighter confirm",
+    "P1 J/P2 Numpad1: helper confirm",
+    "P1 J: map confirm",
+    "intro to battle"
+  ],
+  "roles": {
+    "p1": "一护",
+    "p2": "鸣人"
+  },
+  "console_evidence": {
+    "battle_console": "battle-console.json",
+    "actions_console": "actions-console.json",
+    "p1_p2_standing_and_intro": true,
+    "p1_p2_hit_settlement": true,
+    "p1_health_after": 985.0,
+    "p2_health_after": [
+      960.0,
+      910.0
+    ]
+  },
+  "action_evidence": {
+    "p1_move": "p1-d-after.png",
+    "p2_move": "p2-left-after.png",
+    "p1_attack": "p1-j-after.png",
+    "p2_attack": "p2-n1-after.png",
+    "boundary": "movement screenshots and hit_settlement events prove the bounded input path; no named action_砍 event is claimed"
+  },
+  "return_reselect": {
+    "sequence": "Enter opens pause; ArrowUp twice selects 标题画面; Enter returns to title",
+    "screens": [
+      "title-return-open.png",
+      "title-return-select.png",
+      "title-return-result.png"
+    ],
+    "result": "title-return-result.png shows the title screen after Enter, ArrowUp twice, Enter. A second selection flow was then completed from the observed fighter/helper screens; after the final helper confirm, 20-battle-after-reselect.png shows a new battle HUD (timer 31) and 20-console.json contains subsequent hit_settlement events.",
+    "followup_dir": "reselect/",
+    "second_battle": "20-battle-after-reselect.png",
+    "second_battle_console": "20-console.json",
+    "note": "The intermediate screenshots are named by observed screen; earlier 16/17 were helper selection, so they are not called battle evidence."
+  },
+  "not_claimed": [
+    "full 178-case Web matrix",
+    "full timeout/next-round parity",
+    "original Flash same-input parity",
+    "complete source countdown parity"
+  ],
+  "pause_scope": "The independent default-roster r06 run contains pause A/B/C screenshots; r07 is the true Vs Human run and does not claim separate pause timer parity."
+}

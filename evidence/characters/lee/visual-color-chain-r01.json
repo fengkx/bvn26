@@ -1,0 +1,49 @@
+{
+  "format": "lee-837-visual-color-chain-v1",
+  "status": "bounded_read_only_review",
+  "source_target": {
+    "root_symbol": 518,
+    "root_frame": 837,
+    "placement": {"depth": 30, "character_id": 435, "placed_frame": 795, "matrix_twips": {"translateX": -173, "translateY": -717}},
+    "shape_435": {
+      "type": "DefineShapeTag",
+      "bitmap_child": 434,
+      "shape_bounds_twips": {"Xmin": -890, "Ymin": -131, "Xmax": 1570, "Ymax": 1269},
+      "bitmap_matrix": {"scaleX": 20.0, "scaleY": 20.0, "translateX": -890, "translateY": -131},
+      "color_transform": "absent",
+      "blend_mode": "absent"
+    },
+    "bitmap_434": {"type": "DefineBitsJPEG3Tag", "color_transform": "absent", "blend_mode": "absent"},
+    "parent_chain": [
+      {"node": "root.p1.mc", "source_frame": 837, "freeze_observation": "flash freeze seq3688..3712"},
+      {"node": "depth30/character435", "matrix": {"translateX": -173, "translateY": -717}, "cxform": "identity by absence", "alpha": 1.0, "blend_mode": "normal/default"},
+      {"node": "shape435/bitmap434", "matrix": {"scaleX": 20.0, "scaleY": 20.0, "translateX": -890, "translateY": -131}, "cxform": "identity by absence", "alpha": 1.0, "blend_mode": "normal/default"}
+    ]
+  },
+  "godot_target": {
+    "timeline": "godot/generated/fighters/lee/timeline.json",
+    "source_frame": 837,
+    "placement": {"depth": 30, "character_id": 435, "placed_frame": 795, "matrix_twips": {"translateX": -173, "translateY": -717}},
+    "asset": "godot/generated/fighters/lee/434.png",
+    "static_child_frame": null,
+    "visual_child_frames": {},
+    "renderer_rule": "timeline_preview._apply_cxform receives identity multiplication/add terms and returns after setting alpha=1; no ShaderMaterial is created for this chain",
+    "canvas_item": {"modulate": "Color(1,1,1,1) by default", "self_modulate": "Color(1,1,1,1) by default", "material": null, "blend_mode": "normal/default"}
+  },
+  "same_child_local_frame": {
+    "status": "not_applicable_static_shape",
+    "reason": "435 is DefineShapeTag and 434 is DefineBitsJPEG3Tag; neither is a MovieClip with a local playhead. Flash freeze records p1.mc=837 but no 435/434 child frame, and Godot visual_child_frames is empty."
+  },
+  "result": {
+    "parent_cxform_alpha_blend": "same_identity/default",
+    "first_source_or_runtime_difference": null,
+    "remaining_visual_difference_classification": "rendering_sampling_or_stage/timer_alignment pending; no color-chain defect evidenced"
+  },
+  "evidence": [
+    "data/slices/lee-base.timeline.json frame837 and definitions 434/435",
+    "godot/generated/fighters/lee/timeline.json frame837 and definitions 434/435",
+    "godot/timeline_preview.gd _apply_cxform",
+    "evidence/characters/lee/original/lee-795-bishaSuper-visual-freeze-837-r01/freeze-audit.json",
+    "evidence/characters/lee/original/lee-795-bishaSuper-visual-freeze-837-r01/godot-metadata.json"
+  ]
+}

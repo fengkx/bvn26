@@ -1,0 +1,182 @@
+{
+  "schema": "lee-exact-callback-compare-r01",
+  "runtime_scope": "Godot probe current workspace; native source captures listed per case",
+  "cases": [
+    {
+      "id": "lee-callback-ground-first-edge-r09",
+      "fixture": "evidence/characters/lee/callback-fixtures-r09-ground-first-edge.json",
+      "source_raw": "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+      "godot_json": "evidence/characters/lee/godot/callback-exact-r06-r09/r09.json",
+      "godot_log": "evidence/characters/lee/godot/callback-exact-r06-r09/r09.engine.log",
+      "source_events": [
+        {
+          "frame": 193,
+          "entering": true,
+          "source_line": 7003,
+          "source_display_tick": 513,
+          "source_fight_tick": 29,
+          "action": 1,
+          "ql_source_encoded": "f:1:8:78643200:0",
+          "ql_decoded": 300.0,
+          "ql_decoder": "tools/probes/collect_ai_reference.py:decode_number"
+        },
+        {
+          "frame": 193,
+          "entering": false,
+          "source_line": 7004,
+          "source_display_tick": 513,
+          "source_fight_tick": 29,
+          "action": 0,
+          "ql_source_encoded": "f:1:8:78643200:0",
+          "ql_decoded": 300.0,
+          "ql_decoder": "tools/probes/collect_ai_reference.py:decode_number"
+        },
+        {
+          "frame": 197,
+          "entering": true,
+          "source_line": 7065,
+          "source_display_tick": 517,
+          "source_fight_tick": 33,
+          "action": 0,
+          "ql_source_encoded": "f:1:8:78643200:0",
+          "ql_decoded": 300.0,
+          "ql_decoder": "tools/probes/collect_ai_reference.py:decode_number"
+        },
+        {
+          "frame": 197,
+          "entering": false,
+          "source_line": 7066,
+          "source_display_tick": 517,
+          "source_fight_tick": 33,
+          "action": 0,
+          "ql_source_encoded": "f:1:8:78643200:0",
+          "ql_decoded": 300.0,
+          "ql_decoder": "tools/probes/collect_ai_reference.py:decode_number"
+        }
+      ],
+      "source_raw_sha256": "54728d1c3cb2e0627fc1655e71f6e9d9349be5dcf5cf596272bad46a1084a357",
+      "godot_json_sha256": "f602b98471172e9dbf0b19e380c5579014ec1a4d45be5c20ee902f03dfc01adb",
+      "godot_log_sha256": "ad93b74d7b908c1b3b68021014d47caebcb27e994362e9aedc3279db0996878f",
+      "godot_events": [
+        {
+          "action": 1.0,
+          "current_frame": 193,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 193,
+          "tick": 336
+        },
+        {
+          "action": 0.0,
+          "current_frame": 193,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 193,
+          "tick": 336
+        },
+        {
+          "action": 0.0,
+          "current_frame": 197,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 197,
+          "tick": 340
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 197,
+          "tick": 340
+        }
+      ],
+      "scope": "callback enter/exit sequence + action/ql; clock origins intentionally separate",
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "parity_claim": false,
+      "ql_scope": "Source ql decoded with the project standard binary-number decoder; native ql compared directly.",
+      "ql_decoder": {
+        "implementation": "tools/probes/collect_ai_reference.py:decode_number",
+        "encoding": "Flash f:<sign>:<exponent>:<high>:<low>",
+        "source_field": "body_boundary payload index 6"
+      }
+    },
+    {
+      "id": "lee-callback-skill1-source-conditioned-r06",
+      "fixture": "evidence/characters/lee/callback-fixtures-r06-skill1.json",
+      "source_raw": "evidence/characters/lee/original/lee-callback-skill1-r06",
+      "godot_json": "evidence/characters/lee/godot/callback-exact-r06-r09/skill1.json",
+      "godot_log": "evidence/characters/lee/godot/callback-exact-r06-r09/skill1.engine.log",
+      "source_events": [
+        {
+          "frame": 448,
+          "entering": true,
+          "source_line": 7430,
+          "source_display_tick": 549,
+          "source_fight_tick": 69,
+          "action": 0,
+          "ql_source_encoded": "f:1:8:78643200:0",
+          "ql_decoded": 300.0,
+          "ql_decoder": "tools/probes/collect_ai_reference.py:decode_number"
+        },
+        {
+          "frame": 448,
+          "entering": false,
+          "source_line": 7431,
+          "source_display_tick": 549,
+          "source_fight_tick": 69,
+          "action": 0,
+          "ql_source_encoded": "f:1:8:78643200:0",
+          "ql_decoded": 300.0,
+          "ql_decoder": "tools/probes/collect_ai_reference.py:decode_number"
+        }
+      ],
+      "source_raw_sha256": "2f42b4bc4db950ecd29893c6ef568bcdce515984f58ca68ea7697452feb240c3",
+      "godot_json_sha256": "5b4993ee435a3391435be60b9432c0806cc27d8775199a30f658320ac3fcb598",
+      "godot_log_sha256": "db97a7fb45ad6c2f68495d0ad4c0041ba692395d7a277384f28031e60ff1bb7a",
+      "godot_events": [
+        {
+          "action": 0.0,
+          "current_frame": 448,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 448,
+          "tick": 376
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 448,
+          "tick": 376
+        }
+      ],
+      "scope": "callback enter/exit sequence + action/ql; clock origins intentionally separate",
+      "matched_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "parity_claim": false,
+      "ql_scope": "Source ql decoded with the project standard binary-number decoder; native ql compared directly.",
+      "ql_decoder": {
+        "implementation": "tools/probes/collect_ai_reference.py:decode_number",
+        "encoding": "Flash f:<sign>:<exponent>:<high>:<low>",
+        "source_field": "body_boundary payload index 6"
+      }
+    }
+  ]
+}

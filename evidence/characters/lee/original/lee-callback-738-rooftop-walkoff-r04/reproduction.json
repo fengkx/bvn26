@@ -1,0 +1,40 @@
+{
+  "build_command": [
+    "python3",
+    "/private/tmp/lee-rooftop-build-work/tools/probes/build_ai_reference.py",
+    "--ffdec",
+    "/private/tmp/ffdec-26.2.1/ffdec-cli.jar",
+    "--output",
+    "/private/tmp/lee-rooftop-capture-r04/build",
+    "--run-id",
+    "lee-callback-738-rooftop-walkoff-r04",
+    "--frames",
+    "250",
+    "--body-boundaries",
+    "--dynamic-move-case",
+    "--move-case",
+    "/private/tmp/lee-rooftop-capture-r04/fixture.json",
+    "--p1-character",
+    "小李",
+    "--p2-character",
+    "一护",
+    "--p1-helper",
+    "woailuo",
+    "--p2-helper",
+    "kon"
+  ],
+  "capture_command": [
+    "python3",
+    "tools/probes/capture_native_player.py",
+    "/private/tmp/lee-rooftop-capture-r04/build",
+    "/private/tmp/lee-rooftop-capture-r04/capture.jsonl",
+    "--timeout",
+    "300",
+    "--lock-timeout",
+    "180",
+    "--allow-window-activation"
+  ],
+  "temporary_build_root": "/private/tmp/lee-rooftop-build-work",
+  "temporary_output": "/private/tmp/lee-rooftop-capture-r04",
+  "note": "The source-stage override is documented by stage-build-overlay.diff; no repository game/scripts inputs were modified."
+}

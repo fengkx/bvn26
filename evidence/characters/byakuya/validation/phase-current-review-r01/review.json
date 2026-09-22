@@ -1,0 +1,67 @@
+{
+  "format": "byakuya-phase-current-review-r01",
+  "scope": "read-only preflight for first three source-valid cases from boundary-r11; path/provenance audit and strict comparator attempt",
+  "cases": [
+    {
+      "case_id": "byakuya-123-airhit-neutral",
+      "native": "evidence/characters/byakuya/godot/phase-current/byakuya-123-airhit-neutral.json",
+      "source_events": "evidence/characters/byakuya/native-capture-airhit-r05/events.jsonl.gz",
+      "source_build": "evidence/characters/byakuya/native-capture-airhit-r05/build.json",
+      "source_events_sha256": "ddc35d707acaa5a5c6c2999534c03be61d2683199aaf6768e11e2b3050441fff",
+      "source_build_sha256": "5e6eab734ea3e63095d7954be74e3a6a67cfce566114e61359bc8551421aa8eb",
+      "native_sha256": "14764c7fed4578573cc99120f88364d84128e52b6304e5e30cca5058e12bdf07",
+      "status": "not_compared",
+      "reason": "source/build files exist in workspace, but events.gz is AIREF pipe text rather than JSONL state events; strict comparator fails JSONDecodeError at line 1; no 0-difference claim",
+      "native_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/godot/phase-current/byakuya-123-airhit-neutral.json",
+      "source_events_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/native-capture-airhit-r05/events.jsonl.gz",
+      "source_build_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/native-capture-airhit-r05/build.json"
+    },
+    {
+      "case_id": "byakuya-139-airMagichit-neutral",
+      "native": "evidence/characters/byakuya/godot/phase-current/byakuya-139-airMagichit-neutral.json",
+      "source_events": "evidence/characters/byakuya/native-capture-air-special-r05/events.jsonl.gz",
+      "source_build": "evidence/characters/byakuya/native-capture-air-special-r05/build.json",
+      "source_events_sha256": "625143e113877c8a7568ab8c43c331033f59845e6d2bd19f9a6917da92df9f30",
+      "source_build_sha256": "c8a8a213ba05fe8d7ad5ebacc005356f9be8bd06415a7bd1823473ea6c6daf81",
+      "native_sha256": "e4daaa94ad3e3842e0514dfe755b452655927d1e0f591f9505b3e9cad838f4ff",
+      "status": "not_compared",
+      "reason": "source/build files exist in workspace, but events.gz is AIREF pipe text rather than JSONL state events; strict comparator fails JSONDecodeError at line 1; no 0-difference claim",
+      "native_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/godot/phase-current/byakuya-139-airMagichit-neutral.json",
+      "source_events_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/native-capture-air-special-r05/events.jsonl.gz",
+      "source_build_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/native-capture-air-special-r05/build.json"
+    },
+    {
+      "case_id": "byakuya-849-defence-neutral",
+      "native": "evidence/characters/byakuya/godot/phase-current-r02/byakuya-849-defence-neutral.json",
+      "source_events": "evidence/characters/byakuya/native-capture-defence-r05/events.jsonl.gz",
+      "source_build": "evidence/characters/byakuya/native-capture-defence-r05/build.json",
+      "source_events_sha256": "885587204db31f3af429678834c0ecfdd332fe6239c7ed307074e35b4670f51d",
+      "source_build_sha256": "2f3731cc48bb9a77fd7444099590f09963a17ec6273e1d7dba06d9e6d1141ecc",
+      "native_sha256": "ae8f02219cd79c1512ca2e47c75b24a1d31f504360704845f40448e79979a656",
+      "status": "not_compared",
+      "reason": "source/build files exist in workspace, but events.gz is AIREF pipe text rather than JSONL state events; strict comparator fails JSONDecodeError at line 1; no 0-difference claim",
+      "native_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/godot/phase-current-r02/byakuya-849-defence-neutral.json",
+      "source_events_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/native-capture-defence-r05/events.jsonl.gz",
+      "source_build_abs": "/Users/fengkx/me/code/bvn2_6/evidence/characters/byakuya/native-capture-defence-r05/build.json"
+    }
+  ],
+  "preflight": {
+    "formal_comparator": "tools/probes/compare_mode_reference.py",
+    "required_inputs": [
+      "source state-events JSONL",
+      "native rows",
+      "source build metadata"
+    ],
+    "path_search": {
+      "workspace_source_paths": "found under evidence/characters/byakuya/native-capture-*-r05/",
+      "historical_r11_paths": [
+        "/tmp/byakuya-compare-r11-missing5/manifest.json",
+        "/tmp/byakuya-compare-r11-missing5b/manifest.json"
+      ],
+      "private_tmp_candidate_paths": "/private/tmp/byakuya-matrix-capture-r04 contains alternate scenarios (123 air_target/guard/held/etc), not these neutral IDs; no 139-neutral or 849-neutral source capture"
+    },
+    "runtime_hash_provenance": "native phase-current rows do not record a current runtime hash; r11 historical native path used ddfce1, but this review does not promote it to current",
+    "effect_experiment_risk": "phase-current sidecars include interventions; source build metadata for these three has probe flags false, but strict state compare cannot run because event encoding is AIREF, so no validated status",
+    "existing_manifest_claim": "boundary-r11 records these cases as validated/0-difference, and r11b records the same without provenance; neither claim was overwritten; this review records the exact source paths and failed strict comparator input contract"
+  }
+}

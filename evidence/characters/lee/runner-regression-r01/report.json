@@ -1,0 +1,182 @@
+{
+  "format": "lee-ko-timer-runner-regression-r01",
+  "status": "experimental_mixed_runners_not_accepted",
+  "scope": "Previous four-case claim is withdrawn: it mixed deferred and standard runners, and Byakuya700 has no source timer register/fire evidence. No production/shared runtime change was made.",
+  "runner": {
+    "path": "/private/tmp/move_case_reference_deferred_timer.gd",
+    "sha256": "df02b3f2d8511a1f9971a1ba1813129440fc05ab361a567338a091c26966511f",
+    "algorithm": "generic deadline handling: timer expiry arms a pending callback; next _advance_fight callback delivers it before state observation; no character/tick decrement."
+  },
+  "phase_trace": {
+    "red_standard": "physics tick -> _advance_fight callback -> source timer fire/reset -> state snapshot; hp1/kill reset one fight tick early.",
+    "green_deferred": "physics tick -> _advance_fight callback -> pending source timer fire/reset -> state snapshot; nextfight gotoAndPlay(站立) is observed at source frame 1 on the same logical fight boundary.",
+    "source_evidence": "Source traces show hp1 reset at fight_tick 274 and kill reset at fight_tick 307; no synthetic frame/tick values were injected into the comparison."
+  },
+  "cases": {
+    "lee_hp1": {
+      "source": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+      "source_sha256": "9b47db232b98208909d856676833bb0789ca4c1f3e9b6849955a762e1b04ec36",
+      "green_native": "evidence/characters/lee/runner-regression-r01/green/hp1.native.json",
+      "green_native_sha256": "5cabe13acdc0226e7c305e96c96a79b5cf2d3dbc0ea9b73c7c83c3cbee3ac754",
+      "green_compare": {
+        "status": "matched",
+        "source_states": 1402,
+        "native_states": 1402,
+        "complete": true,
+        "difference_count": 0
+      },
+      "red_native": "/private/tmp/lee-native-r04-hp1/lee-recovery-p2-hp1-r01.json",
+      "red_native_sha256": "6f9187c272621a53f9fcafffe000518b7c068bec7dd918c63ca9696c9dc4b9b3",
+      "red_compare": {
+        "status": "different",
+        "source_states": 1402,
+        "native_states": 1402,
+        "complete": true,
+        "first_difference": {
+          "tick": 273,
+          "slot": "p1",
+          "fields": {
+            "frame": {
+              "original": 924.0,
+              "native": 1
+            },
+            "x": {
+              "original": 310.0,
+              "native": 374.1
+            }
+          }
+        }
+      }
+    },
+    "lee_kill": {
+      "source": "evidence/characters/lee/original/lee-callback-observer-kill-r03/events.jsonl",
+      "source_sha256": "6b95f77a9508d7ea2ccfd031965dddca99c50c9e982764870a9ab9519e81db6f",
+      "green_native": "evidence/characters/lee/runner-regression-r01/green/kill.native.json",
+      "green_native_sha256": "339516a3546ccc23ed321e1bb374756b07ef8e6cb8ef9e4d566c4222712c1353",
+      "green_compare": {
+        "status": "matched",
+        "source_states": 802,
+        "native_states": 802,
+        "complete": true,
+        "difference_count": 0
+      },
+      "red_native": "/private/tmp/lee-native-r04-kill/lee-574-bisha-625-kill-negative.json",
+      "red_native_sha256": "000b213f8614e3827795b7bc3d83f112913c09a31a41c5f4bddbc785f87dde3c",
+      "red_compare": {
+        "status": "different",
+        "source_states": 802,
+        "native_states": 802,
+        "complete": true,
+        "first_difference": {
+          "tick": 306,
+          "slot": "p1",
+          "fields": {
+            "frame": {
+              "original": 1260.0,
+              "native": 1
+            },
+            "x": {
+              "original": 326.3,
+              "native": 374.1
+            }
+          }
+        }
+      }
+    },
+    "lee_700": {
+      "source": "evidence/characters/lee/original/lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+      "source_sha256": "ae01e4ce65d867aa2f78e7e724ed13bc94dc84cdf52696ef5f450e1a88d7cad5",
+      "green_native": "evidence/characters/lee/runner-regression-r01/green/lee700.native.json",
+      "green_native_sha256": "a8a8a8024fa983f5601b8c03024289646142562e35ccf1c8d55cba1f9f49103c",
+      "green_compare": {
+        "status": "matched",
+        "source_states": 1402,
+        "native_states": 1402,
+        "complete": true,
+        "difference_count": 0
+      }
+    },
+    "byakuya_700": {
+      "source": "evidence/characters/byakuya/original/byakuya-690-bishaSuper-hp1-ko-r01/events.jsonl",
+      "source_sha256": "baa13833590e447353a93e20dd9af60588c7470d8c587951b3f19beeb3c10c54",
+      "green_native": "evidence/characters/lee/runner-regression-r01/green/byakuya700.native.json",
+      "green_native_sha256": "72586d2ff5922c9a3fbc9324d56b2bce0814a3f454f5a8186bf92fa01ffa5d90",
+      "green_compare": {
+        "status": "matched",
+        "source_states": 1402,
+        "native_states": 1402,
+        "complete": true,
+        "difference_count": 0
+      }
+    }
+  },
+  "logs": {
+    "red_hp1": {
+      "path": "evidence/characters/lee/runner-regression-r01/red/hp1.engine.log",
+      "sha256": "61ef4beb323bf80d07ede3518a4fea952903efaff7550b4b8a2aacf8c825910b"
+    },
+    "red_kill": {
+      "path": "evidence/characters/lee/runner-regression-r01/red/kill.engine.log",
+      "sha256": "511ffcab8df217ec4d1efe69d1326aaa67688399ab2c04362f0dcba2814b9c97"
+    },
+    "green_hp1": {
+      "path": "evidence/characters/lee/runner-regression-r01/green/hp1.engine.log",
+      "sha256": "4d8f4c877fb7d1295d9b7aa0fc01f075fd63f0ae78b9c68d572bb8a57d8104c8"
+    },
+    "green_kill": {
+      "path": "evidence/characters/lee/runner-regression-r01/green/kill.engine.log",
+      "sha256": "c92a9e3f3fbf872c4e10a7cd2e6ec844eda63f95b10e1c74f358633d2688d412"
+    },
+    "green_lee700": {
+      "path": "evidence/characters/lee/runner-regression-r01/green/lee700.engine.log",
+      "sha256": "80abe0055df29d39c2ad254502bb4afb7e6c2d6f7ec20ddfad573d173c64b50b"
+    },
+    "green_byakuya700": {
+      "path": "evidence/characters/lee/runner-regression-r01/green/byakuya700.engine.log",
+      "sha256": "85d7cae4177939c8f1185ea3027dc90eb31a0329b20eb85c83c31f55549f1b52"
+    }
+  },
+  "limitations": [
+    "The source_reset_fight_tick runner is diagnostic only and must not be used for acceptance.",
+    "The previous green_for_four_cases conclusion is revoked because it mixed runners.",
+    "Lee hp1 and Lee 574 kill700 now pass under one source-clock-phase runner; final acceptance still requires a source timer observer/register-fire tape for these cases.",
+    "Byakuya700 and the aligned Lee700 actor traces remain historical actor-only evidence until timer events are captured; no new GUI capture was started."
+  ],
+  "unified_source_clock_phase": {
+    "status": "diagnostic_only_not_accepted",
+    "runner": "evidence/characters/lee/runner-regression-r01/unified/runner.gd",
+    "runner_sha256": "0919f757d93ae15ce7dc73b0d2c605558f6fb1fac06dfbe2ad5739ce649e5c44",
+    "algorithm": "One runner computes delivery phase from source_reset_fight_tick carried by each source-derived fixture: a deadline reached before the source reset observation is retained and delivered on the next fight callback; otherwise it fires in the current callback. No fighter/case branch or tick decrement.",
+    "cases": {
+      "lee_hp1": {
+        "source": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+        "source_reset_fight_tick": 274,
+        "native": "evidence/characters/lee/runner-regression-r01/unified/hp1.native.json",
+        "native_sha256": "5cabe13acdc0226e7c305e96c96a79b5cf2d3dbc0ea9b73c7c83c3cbee3ac754",
+        "status": "matched",
+        "source_states": 1402,
+        "native_states": 1402
+      },
+      "lee_574_kill700": {
+        "source": "evidence/characters/lee/original/lee-574-bisha-625-kill-r03-700/events.jsonl",
+        "source_reset_fight_tick": 306,
+        "native": "evidence/characters/lee/runner-regression-r01/unified/lee574-kill700.native.json",
+        "native_sha256": "ecdcf2d1a8e1d814165e032ebbe0043652a738323c24cfdb4185da306d6acd35",
+        "status": "matched",
+        "source_states": 1402,
+        "native_states": 1402
+      },
+      "lee_recovery_aligned700": {
+        "source": "evidence/characters/lee/original/lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+        "source_reset_fight_tick": -1,
+        "native": "evidence/characters/lee/runner-regression-r01/unified/aligned.native.json",
+        "native_sha256": "a8a8a8024fa983f5601b8c03024289646142562e35ccf1c8d55cba1f9f49103c",
+        "status": "matched",
+        "source_states": 1402,
+        "native_states": 1402
+      }
+    },
+    "source_timer_evidence_boundary": "The two callback-observer raws contain source reset transitions but do not directly contain timer register/fire events; the older Byakuya700 raw contains only hurtVoice clock entries. Therefore this is a runner experiment, not final timer parity.",
+    "rejection_reason": "source_reset_fight_tick was derived from expected source state output and therefore injects the answer; it is not a valid acceptance scheduler."
+  }
+}

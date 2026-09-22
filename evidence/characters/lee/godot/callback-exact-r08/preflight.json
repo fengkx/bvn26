@@ -1,0 +1,306 @@
+{
+  "schema": "lee-callback-exact-r08-preflight",
+  "scope": "Two same-input headless Godot cases; no Flash/GUI.",
+  "cases": [
+    {
+      "case_id": "ground-235-240-268",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/ground-235-240-268.json",
+      "fixture_sha256": "202bc4f1c913adba6679b1b0d3152607fdd6ad472a002666ee3daccf6fd6dd6a",
+      "source_build_original": "/private/tmp/lee-callback-ground-hold-r05/build.json",
+      "source_build_sha256": "8114e0a463f1e8654dfa5b9eea4a5ea2d99011e4e360008b7e6e93f33b9fa5eb",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r08/source-builds/ground-235-240-268/build.json",
+      "source_instrumentation_original": "/private/tmp/lee-callback-ground-hold-r05/instrumentation.diff",
+      "source_instrumentation_sha256": "7d3829bad27ae9987e9bca4e2ccf90ca7b1c49214024abde54a33b566936b86d",
+      "source_raw": "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+      "source_raw_sha256": "1836b81aaefa41a8568d1a2a6f4ef820b0960a34195249ddf1a60ec106ca6714",
+      "source_run_id": "lee-callback-ground-hold-r05",
+      "source_output_main_sha256": "353ce5982fb01275b26138e1d1d11f691bfbf28e39e5b9e82df7f78da2534d96",
+      "source_move_case": {
+        "id": "lee-callback-ground-chain-source-conditioned-r05",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "砍1",
+        "scenario": "source_conditioned_hold_attack",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 260
+          }
+        ],
+        "target_frames": [
+          193,
+          197,
+          235,
+          240,
+          268
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "status": "source_conditioned_fixture_not_captured",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "source_callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 172,
+            "source_path": "DefineSprite_518/frame_172/DoAction.as",
+            "action": "砍1",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 193,
+            "source_path": "DefineSprite_518/frame_193/DoAction.as",
+            "action": "砍2",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 197,
+            "source_path": "DefineSprite_518/frame_197/DoAction.as",
+            "action": "砍2",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 235,
+            "source_path": "DefineSprite_518/frame_235/DoAction.as",
+            "action": "砍3",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 240,
+            "source_path": "DefineSprite_518/frame_240/DoAction.as",
+            "action": "砍3",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 268,
+            "source_path": "DefineSprite_518/frame_268/DoAction.as",
+            "action": "砍4",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 448,
+            "source_path": "DefineSprite_518/frame_448/DoAction.as",
+            "action": "砍技1",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ],
+        "callback_group": "ground-chain",
+        "callback_purpose": "Source-conditioned reachability candidate: hold attack through frame-entry clip callbacks; no runtime or expected-state change.",
+        "preflight_status": "fight_input_preflight",
+        "callback_observer": "read-only source callback observer; no schedule/input changes",
+        "source_condition_evidence": [
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_163/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "condition": "gameRunning() && nornalhit()",
+            "goto": "砍2",
+            "needed_for": [
+              193,
+              197
+            ]
+          },
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_187/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "condition": "gameRunning() && nornalhit()",
+            "goto": "砍3",
+            "needed_for": [
+              235,
+              240
+            ]
+          },
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "condition": "gameRunning() && nornalhit()",
+            "goto": "砍4",
+            "needed_for": [
+              268
+            ]
+          },
+          {
+            "path": "scripts/fighter/Lee.json:DefineSprite_518/frame_172/DoAction.as",
+            "condition": "unconditional",
+            "effect": "gotoAndStop(\"站立\"); play();",
+            "trace": "Current short-edge trace reaches body frame 172 at fight ticks 25/50/75/100; no later chain frame."
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "target_preflight": [
+        {
+          "source_frame": 235,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 240,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 268,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 4
+        }
+      ],
+      "callback_kind": "frame_action",
+      "notes": "The recovery 1098 clip_action is explicitly excluded; this fixture compares only body frame-action callbacks."
+    },
+    {
+      "case_id": "recovery-p2-1086-1087-1096-1098-1112",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r08/fixtures/recovery-p2-1086-1087-1096-1098-1112.json",
+      "fixture_sha256": "cb0bf05d501ab08e89a86be76feb992c125bbcd803f203a74640228959f6d8eb",
+      "source_build_original": "/Users/fengkx/me/code/bvn2_6/evidence/characters/lee/original/lee-callback-observer-hp1-r02/build.json",
+      "source_build_sha256": "99ab539a228ffb32af2b5bc1e5f89f4d9caf6569ab31dfa05d23d632c4b62952",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r08/source-builds/recovery-p2-1086-1087-1096-1098-1112/build.json",
+      "source_instrumentation_original": "/Users/fengkx/me/code/bvn2_6/evidence/characters/lee/original/lee-callback-observer-hp1-r02/instrumentation.diff",
+      "source_instrumentation_sha256": "32825ba5e14907b07aee8c2bbd66ac31f34cdaad9576c87188b5885853482bd8",
+      "source_raw": "evidence/characters/lee/original/lee-callback-observer-hp1-r02/events.jsonl",
+      "source_raw_sha256": "9b47db232b98208909d856676833bb0789ca4c1f3e9b6849955a762e1b04ec36",
+      "source_run_id": "lee-callback-observer-hp1-r02",
+      "source_output_main_sha256": "cc19f17cdee86df16e6993eb040e18c40eeb4da84fbaeb75415a85d078de3078",
+      "source_move_case": {
+        "id": "lee-recovery-p2-hp1-r01",
+        "fighter": "lee",
+        "slot": "p2",
+        "label": "受击恢复",
+        "scenario": "recovery_p2_hp1",
+        "frames": 700,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300,
+            "health": 1,
+            "wudi": false
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "target_frames": [
+          1087,
+          1133,
+          1143
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "status": "planned_real_input",
+        "fighters": {
+          "p1": "yihu",
+          "p2": "lee"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "source_state_preconditions": {
+          "p2": {
+            "health": 1,
+            "wudi": false
+          }
+        }
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "一护",
+        "p2": "小李",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "target_preflight": [
+        {
+          "source_frame": 1086,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1087,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1096,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1098,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1112,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "callback_kind": "frame_action",
+      "notes": "The recovery 1098 clip_action is explicitly excluded; this fixture compares only body frame-action callbacks."
+    }
+  ]
+}

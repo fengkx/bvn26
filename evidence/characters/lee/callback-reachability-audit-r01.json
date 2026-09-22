@@ -1,0 +1,13 @@
+{
+  "format": "lee-callback-reachability-audit-r01",
+  "source_manifest": "evidence/characters/lee/callback-fixtures-r02/preflight.json",
+  "source_manifest_sha256": "db945749129deb3c46b113eb4512fd5a905255ae5bc26a50719a35be26f47300",
+  "target_count": 36,
+  "kinds": {
+    "frame_action": 36
+  },
+  "native_state_zero_interpretation": "all 36 targets are frame_action observations; zero same-frame end-of-tick state rows cannot establish non-reachability because DoAction may goto/stop transiently before the state snapshot",
+  "required_observer": "frame_action_enter/exit with source sprite, source frame, placement scope, callback order, and Godot run_frame_actions dispatch before/after; no new Flash capture started",
+  "status": "diagnostic_pending_action_observer",
+  "provenance": "offline audit only; no production/runtime changes"
+}

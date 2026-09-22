@@ -1,0 +1,21 @@
+{
+  "artifact": "isolated QA-only Web action probe",
+  "export_exit_code": 0,
+  "url": "http://127.0.0.1:8788/",
+  "pck_sha256": "fe425bcdd5e8e26a0f600e4491efca605bae7d9cfb23fdd15e37ff250831e0c5",
+  "wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+  "runtime_sha256": {
+    "main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+    "fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac"
+  },
+  "qa_sha256": {
+    "qa_web_input_entry.gd": "3e3fe0b28506c0199aa22160cd3b6c7987f947e3c8dc2b66ee19047fc590d60d",
+    "qa_web_input_entry.tscn": "558ed8c309b00cf3398d8b7654192c3d440b1ca4f5a46284cbfc85e2cfbfc81b",
+    "generated/main/character_selection/available.json": "65cb4dd469d3e57976962df6cdd3e78a412c468bd3d32aef32707439db094173",
+    "generated/fighters/byakuya/combat.json": "ffbd4f6250a4850c3bab3a5ecc5976ba55362833cbd3e0ea5d5669a199813096",
+    "generated/fighters/lee/combat.json": "b2e39de15cff390747f4a6906897ec3499aaa009f409eed26479974c082c5ef0"
+  },
+  "entry_override": "project.godot run/main_scene=res://qa_web_input_entry.tscn (isolated copy only)",
+  "caveat": "Export log includes an editor-settings write error outside the QA project directory; Web export completed and ran. No script parse errors or failed resource loads observed."
+}

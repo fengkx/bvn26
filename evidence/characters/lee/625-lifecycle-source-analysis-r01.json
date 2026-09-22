@@ -1,0 +1,59 @@
+{
+  "format": "lee-625-lifecycle-source-analysis-r01",
+  "source_identity": {
+    "fighter": "小李",
+    "sprite_id": 518,
+    "attack_entry": "DefineSprite_518/frame_574/DoAction.as",
+    "branch_frame": "DefineSprite_518/frame_625/DoAction.as",
+    "continuation": "DefineSprite_518/frame_634/DoAction.as"
+  },
+  "source_facts": [
+    {
+      "path": "DefineSprite_518/frame_625/DoAction.as",
+      "fact": "The continuation uses opponent.hp > 0 && opponent.action == -1, then gotoAndStop(\"必杀1\"); play();"
+    },
+    {
+      "path": "scripts/main.json#frame_8/DoAction.as",
+      "fact": "chushi() assigns both fighter hp to maxhp during round initialization. An hp=0 precondition before chushi is overwritten and is not a valid dead-at-625 fixture."
+    },
+    {
+      "path": "DefineSprite_1991/frame_1/DoAction.as",
+      "fact": "Training zdbx() restores hp=maxhp and ql=300 when beida==0; this can overwrite an injected hp=0 unless the state is established after ready and observed before the interval."
+    },
+    {
+      "path": "DefineSprite_1814/frame_1/DoAction.as",
+      "fact": "The health bar stops its low-health updates when either displayed percentage is <=0; this is UI behavior, not proof that the attack continuation reaches frame625."
+    },
+    {
+      "path": "DefineSprite_1858/frame_3/DoAction.as",
+      "fact": "KOstart() pauses the game and stops fighter/helper movie clips; the round lifecycle can interrupt the attack timeline before a later frame625 observation."
+    },
+    {
+      "path": "DefineSprite_1858/frame_30/DoAction.as",
+      "fact": "KOend() resumes the round after the KO presentation."
+    }
+  ],
+  "fixture_decisions": {
+    "kill": {
+      "id": "lee-574-bisha-625-kill-negative-r02",
+      "status": "prepared_pending_capture",
+      "meaning": "Natural hp=1 target is hit by the first attack, then source KO lifecycle is observed. It tests whether the 625 continuation is interrupted by KO, without injecting hp=0 at boot.",
+      "precondition_phase": "after_chushi_ready_before_first_fight_tick",
+      "p1": {"fighter": "小李", "health": 1000, "energy": 101, "helper": "我爱罗", "wudi": false},
+      "p2": {"fighter": "一护", "health": 1, "energy": 300, "helper": "魂", "wudi": false},
+      "input": {"p1": ["special"], "start": 10, "end": 13},
+      "observe": ["source frame625 decision context", "frame634/635 result", "hp transition", "KOstart/KOend", "round reset markers"],
+      "old_fixture_superseded": "evidence/characters/lee/move-cases/lee-574-bisha-625-kill-negative.json"
+    },
+    "dead": {
+      "id": "lee-574-bisha-625-dead-negative-r02",
+      "status": "source_unreachable_as_standalone_branch",
+      "meaning": "An initial hp=0 target cannot be used: chushi and/or zdbx overwrite it, and natural KO pauses the game before a later frame625 branch. The already accepted action=2 guard case is the valid non-KO negative for the hp>0/action==-1 predicate.",
+      "precondition_phase": "none; do not inject hp=0 at boot",
+      "valid_substitute": "evidence/characters/lee/625-branches-r01.json#lee-574-bisha-guard-r01",
+      "old_fixture_superseded": "evidence/characters/lee/move-cases/lee-574-bisha-625-dead-negative.json"
+    }
+  },
+  "capture_command_template": "python3 tools/probes/capture_native_player.py --lock-timeout 180 --timeout 180 <fresh_after_ready_build> <fresh_capture_path>",
+  "capture_gate": "Requires GUI unlock; hold /tmp/bvn-native-flash-capture.lock for the entire run, preserve raw log, and validate contiguous events before acceptance."
+}

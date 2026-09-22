@@ -1,0 +1,14 @@
+{
+  "id": "lee-ko-harness-baseline-r01",
+  "scope": "same move_case_reference runner with existing Naruto/Ichigo roster",
+  "fixture": "/tmp/baseline-minren-yihu-ko.json",
+  "output": "/tmp/baseline-minren-yihu-ko.out.json",
+  "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot -s res://tests/move_case_reference.gd -- /tmp/baseline-minren-yihu-ko.json /tmp/baseline-minren-yihu-ko.out.json",
+  "frames": 400,
+  "rows": 802,
+  "setup": {"p1": "minren", "p2": "yihu", "p2_health": 1, "p1_helper": "我爱罗", "p2_helper": "魂"},
+  "observed": {"first_ko_tick": 152, "p1_reset_tick": 153, "p2_still_dead_tick": 153, "p2_still_paused_tick": 199},
+  "classification": "harness_timer_boundary",
+  "reason": "move_case_reference manually calls _advance_fight and does not deliver the registered nextfight Timer callback; vs_com_ko_smoke explicitly emits ko_nextfight_timer.timeout and therefore exercises a different clock path.",
+  "accepted_as_character_parity": false
+}

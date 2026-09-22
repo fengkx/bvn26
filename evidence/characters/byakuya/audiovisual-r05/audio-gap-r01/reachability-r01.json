@@ -1,0 +1,54 @@
+{
+  "format": "byakuya-audio-gap-reachability-r01",
+  "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "recovery": {
+    "fixture": "byakuya-recovery-p2-base631-special-dash62-66-r01/fixture.json",
+    "fixture_sha256": "2411316c497ba917da59e41b4ae29c5d244380d682f9258127dfcecf6baa86a9",
+    "probe": "byakuya-recovery-p2-base631-special-dash62-66-r01/diagnostic-probe.gd",
+    "probe_sha256": "89bb5fdccf33774aeaf61b12ec2de0bd38417c0764ac7c32f9f46dde2b456dd3",
+    "walk": "byakuya-recovery-p2-base631-special-dash62-66-r01/audio-walk.json",
+    "normal_advance": true,
+    "direct_frame_jump": false,
+    "logical_edge_tick": 64,
+    "source_frame_entered": 898,
+    "observed_streams": {
+      "887": "581.mp3",
+      "934": "44.mp3",
+      "944": "52.mp3"
+    },
+    "unreached": [
+      "963"
+    ],
+    "scope": "Godot normal recovery walk; source/native Flash capture still pending.",
+    "source_build": "byakuya-recovery-p2-base631-special-dash62-66-r01/source-build/build.json",
+    "source_build_sha256": "b2d9c0aee285b78ccbb6d59ca5e255705ad573a7b79542f9976db87eb3c294f7",
+    "source_case": "byakuya-recovery-p2-base631-special-dash62-66-r01/source-build/case.txt",
+    "instrumentation_sha256": "94158e9e97ac678c6fbe0dd752bc165550c5cd6af6b6ef0c69a86942841a7626",
+    "source_scope": "game/fighter/Byakuya.swf + scripts/fighter/Byakuya.json; base DefineSprite_631"
+  },
+  "intro_963": {
+    "fixture": "byakuya-intro-963-r01/fixture.json",
+    "fixture_sha256": "79a892146fee439db04ac81dc6f7e09f158c4fb74150213b0a5cf3f072936b46",
+    "walk": "byakuya-intro-963-r01/audio-walk.json",
+    "normal_intro_coordinator": true,
+    "direct_frame_jump": false,
+    "observed": {
+      "stream": "619.mp3",
+      "created_fight_tick": 1,
+      "runtime_source_frame": 1
+    },
+    "source_target_frame": 963,
+    "scope": "Godot normal intro resource/play event; exact native source-frame mapping pending Flash capture.",
+    "source_build": "byakuya-intro-963-r01/source-build/build.json",
+    "source_build_sha256": "4da419ed3f03eba176fe7b1033a3273e67ee075ce37d144c2ecd06a5106f4c5e",
+    "source_case": "byakuya-intro-963-r01/source-build/case.txt",
+    "instrumentation_sha256": "d0a4670c3d11946340fea0be2efdfc58950d0e7d40bfa62cf2d287fb22efe33c",
+    "source_scope": "game/fighter/Byakuya.swf + scripts/fighter/Byakuya.json; base DefineSprite_631 intro timeline"
+  },
+  "native_capture_provenance": {
+    "recovery": "byakuya-recovery-p2-base631-special-dash62-66-r01/native-provenance-r01.json",
+    "intro_963": "byakuya-intro-963-r01/native-provenance-r01.json"
+  },
+  "strict_audio_compare": "source-native-godot-audio-compare-r01.json",
+  "native_target_state_scope": "Raw AIREF state rows confirm source target state; raw StartSound callbacks were not directly instrumented, so sound IDs are sourced from DefineSprite_631 timeline."
+}

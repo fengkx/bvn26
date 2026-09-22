@@ -1,0 +1,250 @@
+{
+  "format": "lee-clip-action-gap-r01",
+  "scope": "Source reachability only; no native clip callback execution claim.",
+  "source_file": "scripts/fighter/lee.json",
+  "source_sha256": "82230e0e97e0b2751ecba3e27b6f82e46c467ae956c51b0a2ba4d9c114c7e967",
+  "entries": [
+    {
+      "source_path": "DefineSprite_518/frame_1086/DoAction.as",
+      "source_sha256": "3d2e60b632e641408e73682b4e270113e69a7f17483f991da9ff5baa235e91ba",
+      "source": "hited = 0;\r\nplay();\r\n",
+      "reachable_role": "frame_action_driver",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1087/DoAction.as",
+      "source_sha256": "199b3ff7630d12585e1d7c77d60d58609e063b7028f54d6a5dd6f0078493ea59",
+      "source": "onBeHit(true);\r\n",
+      "reachable_role": "frame_action_driver",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "9848c11dc3a3e4b1cf1933b347f15901bef201cb0b702c273e2bb5d21f44d90b",
+      "source": "onClipEvent(enterFrame){\r\n   _parent.beidax(true);\r\n}\r\n",
+      "reachable_role": "clip_action_observer",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1096/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n",
+      "reachable_role": "frame_action_driver",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1098/DoAction.as",
+      "source_sha256": "0857faf6455fb0d653d39f90f2ec476c4ac51ff49a817e9a701adf18d3f15835",
+      "source": "_root.touchFloorEffect(_parent);\r\n",
+      "reachable_role": "frame_action_driver",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "81288a38fc1ff90270ebad5d537f0b6ca79760db2b93b64846ae3bfaa46c1eff",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(standup())\r\n      {\r\n         _parent.gotoAndPlay(\"起身\");\r\n      }\r\n   }\r\n}\r\n",
+      "reachable_role": "clip_action_observer",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1112/DoAction.as",
+      "source_sha256": "e6ca4a79578cbb546594bd65ac4d2d2aad15c20ec5c951c3dc9a7c4b8fd5371c",
+      "source": "if(sw == true)\r\n{\r\n   stop();\r\n}\r\n",
+      "reachable_role": "frame_action_driver",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c99afb396036e5858bad62112ad9b4830014d6a99d4991aef37fba22a137bbab",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_parent._parent._xscale < 0)\r\n      {\r\n         _parent._parent._x += _parent.speed * 0.8;\r\n      }\r\n      else\r\n      {\r\n         _parent._parent._x -= _parent.speed * 0.8;\r\n      }\r\n   }\r\n}\r\n",
+      "reachable_role": "clip_action_observer",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1134/DoAction.as",
+      "source_sha256": "8d23d84b12e136d5b2b06a528b88fe1aedb91b39aa50aad17afd66ff0cb5be7f",
+      "source": "_root._y = 0;\r\n",
+      "reachable_role": "frame_action_driver",
+      "native_status": "not_captured"
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1260/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n",
+      "reachable_role": "frame_action_driver",
+      "native_status": "not_captured"
+    }
+  ],
+  "chains": {
+    "1088": "1087 DoAction calls onBeHit(true) -> frame playback reaches 1088 -> PlaceObject2_18_29 onClipEvent(enterFrame) calls _parent.beidax(true).",
+    "1098-clip": "1098 DoAction calls _root.touchFloorEffect(_parent) -> PlaceObject2_18_29 onClipEvent(enterFrame) checks gameRunning() and standup() -> _parent.gotoAndPlay(\"起身\").",
+    "1133": "entry into 起身 places PlaceObject2_18_30 -> its onClipEvent(enterFrame) applies facing-dependent _parent._parent._x movement while _root.zhanting is false."
+  },
+  "status": "pending_native_clip_observer",
+  "observer_preparation": {
+    "status": "prepared_not_captured",
+    "wrapper_contract": "For each listed clip action in the temporary Lee SWF copy, emit clip_boundary enter before the original callback body and clip_boundary exit in a finally-equivalent post-body position. Payload must include slot, source_path, source_frame, _parent._target, _parent._currentframe, parent parent current frame, current display/fight sequence fields available through aiEvent; original callback code remains unchanged.",
+    "required_assertions": [
+      "enter and exit both present for same source path and invocation sequence",
+      "slot/path/source frame match the fixture Lee slot",
+      "original callback side effect remains between enter and exit",
+      "no marker emitted from a static source listing alone"
+    ],
+    "cases": [
+      {
+        "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "trigger_chain": "frame_1087 DoAction onBeHit(true) -> playback reaches frame_1088 -> clip enterFrame calls _parent.beidax(true)",
+        "fixture_family": "recovery/KO entry",
+        "status": "prepared_not_captured"
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "trigger_chain": "frame_1098 DoAction touchFloorEffect(_parent) -> clip enterFrame checks gameRunning and standup -> _parent.gotoAndPlay(\"起身\")",
+        "fixture_family": "recovery/standup",
+        "status": "prepared_not_captured"
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "trigger_chain": "enter 起身 places clip -> clip enterFrame applies facing-dependent movement while zhanting is false",
+        "fixture_family": "recovery/standup",
+        "status": "prepared_not_captured"
+      }
+    ],
+    "build_policy": "Apply only to temporary body-boundary build copies after normal fixture preflight; do not modify scripts/fighter/lee.json or production runtime."
+  },
+  "native_clip_observer_capture": {
+    "capture_path": "evidence/characters/lee/original/lee-clip-observer-recovery-r01",
+    "capture_sha256": "64266cbb2541c943d471c43e00e4013f4fa4f3a31a12bcfd990edef944589cc8",
+    "build_path": "/private/tmp/lee-clip-observer-recovery-r01",
+    "build_sha256": "97d64b316f2f4706ef3cadd35e10f5804d673f5ab643a8ef869694f3c7e015f0",
+    "run_id": "lee-clip-observer-recovery-r01",
+    "done": true,
+    "slot": "p2",
+    "observed_schedule_events": [
+      {
+        "source_path": "fighter/lee#DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "enter",
+        "count": 43,
+        "first": {
+          "sequence": 12532,
+          "time_ms": 25809,
+          "display_tick": 484,
+          "fight_tick": 18,
+          "value": "fighter/lee#DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as,enter,_level0.game.p2.mc.instance507,1,true,1089,f:-1:4:104857600:0"
+        },
+        "last": {
+          "sequence": 13542,
+          "time_ms": 27211,
+          "display_tick": 526,
+          "fight_tick": 60,
+          "value": "fighter/lee#DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as,enter,_level0.game.p2.mc.instance507,1,false,1096,f:-1:4:104857600:0"
+        }
+      },
+      {
+        "source_path": "fighter/lee#DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "exit",
+        "count": 42,
+        "first": {
+          "sequence": 12533,
+          "time_ms": 25809,
+          "display_tick": 484,
+          "fight_tick": 18,
+          "value": "fighter/lee#DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as,exit,_level0.game.p2.mc.instance507,1,true,1089,f:-1:4:104857600:0"
+        },
+        "last": {
+          "sequence": 13520,
+          "time_ms": 27176,
+          "display_tick": 525,
+          "fight_tick": 59,
+          "value": "fighter/lee#DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as,exit,_level0.game.p2.mc.instance507,1,false,1096,f:-1:4:104857600:0"
+        }
+      },
+      {
+        "source_path": "fighter/lee#DefineSprite_518/frame_1098/DoAction.as",
+        "phase": "enter",
+        "count": 1,
+        "first": {
+          "sequence": 13560,
+          "time_ms": 27215,
+          "display_tick": 527,
+          "fight_tick": 61,
+          "value": "fighter/lee#DefineSprite_518/frame_1098/DoAction.as,enter,_level0.game.p2.mc,1098,false,1098,f:-1:4:104857600:0"
+        },
+        "last": {
+          "sequence": 13560,
+          "time_ms": 27215,
+          "display_tick": 527,
+          "fight_tick": 61,
+          "value": "fighter/lee#DefineSprite_518/frame_1098/DoAction.as,enter,_level0.game.p2.mc,1098,false,1098,f:-1:4:104857600:0"
+        }
+      },
+      {
+        "source_path": "fighter/lee#DefineSprite_518/frame_1098/DoAction.as",
+        "phase": "exit",
+        "count": 1,
+        "first": {
+          "sequence": 13563,
+          "time_ms": 27216,
+          "display_tick": 527,
+          "fight_tick": 61,
+          "value": "fighter/lee#DefineSprite_518/frame_1098/DoAction.as,exit,_level0.game.p2.mc,1098,false,1098,f:-1:4:104857600:0"
+        },
+        "last": {
+          "sequence": 13563,
+          "time_ms": 27216,
+          "display_tick": 527,
+          "fight_tick": 61,
+          "value": "fighter/lee#DefineSprite_518/frame_1098/DoAction.as,exit,_level0.game.p2.mc,1098,false,1098,f:-1:4:104857600:0"
+        }
+      },
+      {
+        "source_path": "fighter/lee#DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "enter",
+        "count": 3,
+        "first": {
+          "sequence": 13566,
+          "time_ms": 27240,
+          "display_tick": 527,
+          "fight_tick": 61,
+          "value": "fighter/lee#DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as,enter,_level0.game.p2.mc.instance514,1,false,1099,f:-1:4:104857600:0"
+        },
+        "last": {
+          "sequence": 13612,
+          "time_ms": 27309,
+          "display_tick": 529,
+          "fight_tick": 63,
+          "value": "fighter/lee#DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as,enter,_level0.game.p2.mc.instance514,1,false,1101,f:-1:4:104857600:0"
+        }
+      },
+      {
+        "source_path": "fighter/lee#DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "exit",
+        "count": 3,
+        "first": {
+          "sequence": 13567,
+          "time_ms": 27241,
+          "display_tick": 527,
+          "fight_tick": 61,
+          "value": "fighter/lee#DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as,exit,_level0.game.p2.mc.instance514,1,false,1099,f:-1:4:104857600:0"
+        },
+        "last": {
+          "sequence": 13613,
+          "time_ms": 27310,
+          "display_tick": 529,
+          "fight_tick": 63,
+          "value": "fighter/lee#DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as,exit,_level0.game.p2.mc.instance514,1,false,1101,f:-1:4:104857600:0"
+        }
+      }
+    ],
+    "observed_paths": [
+      "fighter/lee#DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "fighter/lee#DefineSprite_518/frame_1098/DoAction.as",
+      "fighter/lee#DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+    ],
+    "not_reached": [
+      "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+    ],
+    "status": "source_clip_observer_executed_partial",
+    "scope": "Actual schedule enter/exit markers; no Godot clip parity claim."
+  }
+}

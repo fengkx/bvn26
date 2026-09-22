@@ -1,0 +1,234 @@
+{
+  "status": "native_callback_observation_only_source_geometry_pending",
+  "godot_command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --script tests/move_case_reference.gd -- <fixture.json> <output.json>",
+  "coordinate_note": "game_bounds use instance_local_bounds() (includes the source placement/wrapper and symbol bounds origin), then the existing SourceMatrixBounds.bounds_for_chain with actor._source_node_matrices()[0]. Full actor leaf-to-root source matrices are stored separately. global_bounds are Godot viewport coordinates and are not compared with Flash game-space.",
+  "runtime_hashes": {
+    "godot/tests/move_case_reference.gd": "61f8ef60c65541cb3f863a7c3e64a195cff6a5bd7fe09daa9a847f6b40ac1fec",
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot/combat_resolver.gd": "1629558d0e1c0fd2350620784aac8fb328ce82b592ace3af9f498b432acb1332",
+    "godot/timeline_preview.gd": "87a6860b2e344536198e784871c649667fc9208b039abc77561b9cfeeea3004c",
+    "godot/source_matrix_bounds.gd": "e15b3eeb4b093b749867e452b08475505c10384f2f14af6ff955830f8aad9051",
+    "godot/generated/fighters/byakuya/fighter.json": "75988f598bb191a4779061f258a1289fe216cae1017a1680d4faace04762b8f0",
+    "godot/generated/fighters/byakuya/timeline.json": "c2ec1a73f98c9ec09af2c2399390859ba4606bdd424a8bbfe3ef11e56c69efca",
+    "godot/generated/fighters/byakuya/combat.json": "ffbd4f6250a4850c3bab3a5ecc5976ba55362833cbd3e0ea5d5669a199813096"
+  },
+  "cases": {
+    "zh2-guard": {
+      "native_output_stem": "zh2-guard",
+      "source_run_id": "moves-byakuya-376-magichit2-guard-6ea1048640",
+      "source_fixture": "evidence/characters/byakuya/boundary-r07/byakuya-376-magichit2-guard/fixture.json",
+      "source_fixture_sha256": "c31de5aac240bd81647c628173f220f0f8d03d3124c828c060c8e4ca525961ff",
+      "source_build": "evidence/characters/byakuya/boundary-r07/byakuya-376-magichit2-guard/source-build.json",
+      "source_build_sha256": "6bc008ebc0ee42cc418ce4dd3604828ee35b0d36da78d6be8001bb76d4401659",
+      "source_raw": "evidence/characters/byakuya/boundary-r07/byakuya-376-magichit2-guard/original-events.jsonl.gz",
+      "source_raw_sha256": "a6986b0346911ea95014cad95bbf87cbb8f60886caccba11b2ebbbaed04bab13",
+      "source_outputs_sha256": {
+        "game/main.swf": "e5fff1bfe0e9b076077d8033f813eeef7564297180bd1446d132afa702ed58e1",
+        "game/fighter/Byakuya.swf": "c0c6ec2799d69ed0c735dd379fe1b6d339e58c8bf0b397f7a8fa618730afcbb1",
+        "game/fighter/yihu.swf": "e70b55801d6d55491d9fd23626e11a8db2a5aa282f6ecb3ff3e1f76ffe596dc4",
+        "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+        "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+      },
+      "source_configuration": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "native_fixture_sha256": "df08e14799fee4b4c3810f0c144e01a9e9c5ae182701419a3d23591cbffe78f6",
+      "native_fixture_delta": "observer-only geometry_probe; source input/setup/fighters/helpers unchanged",
+      "native_contact_count": 1
+    },
+    "zh2-mirror": {
+      "native_output_stem": "byakuya-376-magichit2-mirror",
+      "source_run_id": "moves-byakuya-376-magichit2-mirror-6ea1048640",
+      "source_fixture": "evidence/characters/byakuya/boundary-r07/byakuya-376-magichit2-mirror/fixture.json",
+      "source_fixture_sha256": "b83823238b7fe8eb2c760d692c25725eaca23294cfbb1058e9305c5bf16a6289",
+      "source_build": "evidence/characters/byakuya/boundary-r07/byakuya-376-magichit2-mirror/source-build.json",
+      "source_build_sha256": "8dc797f1360d11f29be7b00d225f60946cea69a971bacdbd6face8dd3183f189",
+      "source_raw": "evidence/characters/byakuya/boundary-r07/byakuya-376-magichit2-mirror/original-events.jsonl.gz",
+      "source_raw_sha256": "dc68d35de142f30e8c91d46b747b2d5ac342bf4120d45846ee6ee8f054defcc1",
+      "source_outputs_sha256": {
+        "game/main.swf": "e5fff1bfe0e9b076077d8033f813eeef7564297180bd1446d132afa702ed58e1",
+        "game/fighter/Byakuya.swf": "c0c6ec2799d69ed0c735dd379fe1b6d339e58c8bf0b397f7a8fa618730afcbb1",
+        "game/fighter/yihu.swf": "e70b55801d6d55491d9fd23626e11a8db2a5aa282f6ecb3ff3e1f76ffe596dc4",
+        "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+        "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+      },
+      "source_configuration": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "native_fixture_sha256": "9e3403ee24d159f109732fa4864329142af511e40b2752ddb258bcc3d7dcd880",
+      "native_fixture_delta": "observer-only geometry_probe; source input/setup/fighters/helpers unchanged",
+      "native_contact_count": 1
+    },
+    "cbs-guard": {
+      "native_output_stem": "byakuya-690-bishaSuper-guard",
+      "source_run_id": "moves-byakuya-690-bishaSuper-guard-733e3d3521",
+      "source_fixture": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-guard/fixture.json",
+      "source_fixture_sha256": "2b1412fb3a30a0c8dc9acbe5baf7746681187317235aa4b8e2b048371e138420",
+      "source_build": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-guard/source-build.json",
+      "source_build_sha256": "63fdc39efbbe05e88b6f7cb76045a90ba05dbe6c0b156d30612cc8385413ddc0",
+      "source_raw": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-guard/original-events.jsonl.gz",
+      "source_raw_sha256": "bbcd378465e3d3d44fda8a821eb4f743328be2fcfca24c1933c15f174b27bab2",
+      "source_outputs_sha256": {
+        "game/main.swf": "e5fff1bfe0e9b076077d8033f813eeef7564297180bd1446d132afa702ed58e1",
+        "game/fighter/Byakuya.swf": "c0c6ec2799d69ed0c735dd379fe1b6d339e58c8bf0b397f7a8fa618730afcbb1",
+        "game/fighter/yihu.swf": "e70b55801d6d55491d9fd23626e11a8db2a5aa282f6ecb3ff3e1f76ffe596dc4",
+        "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+        "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+      },
+      "source_configuration": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "native_fixture_sha256": "67696136e4f6df748bec508903e31d37dcdfe0d74540b786f860033095126f32",
+      "native_fixture_delta": "observer-only geometry_probe; source input/setup/fighters/helpers unchanged",
+      "native_contact_count": 1
+    },
+    "cbs-mirror": {
+      "native_output_stem": "byakuya-690-bishaSuper-mirror",
+      "source_run_id": "moves-byakuya-690-bishaSuper-mirror-733e3d3521",
+      "source_fixture": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-mirror/fixture.json",
+      "source_fixture_sha256": "d4a456e42cb38732eaab586d0035aaa10b48cb6f260ddc1074d110b027d6074e",
+      "source_build": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-mirror/source-build.json",
+      "source_build_sha256": "d116273eacd5eb59cbf6ad29ad011bc16c5c06d72b17860b930898959b3754c3",
+      "source_raw": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-mirror/original-events.jsonl.gz",
+      "source_raw_sha256": "850b56bfe7eac022adeb7dda8d5110522849e83f42c7bba68cc0ec5569b59ef9",
+      "source_outputs_sha256": {
+        "game/main.swf": "e5fff1bfe0e9b076077d8033f813eeef7564297180bd1446d132afa702ed58e1",
+        "game/fighter/Byakuya.swf": "c0c6ec2799d69ed0c735dd379fe1b6d339e58c8bf0b397f7a8fa618730afcbb1",
+        "game/fighter/yihu.swf": "e70b55801d6d55491d9fd23626e11a8db2a5aa282f6ecb3ff3e1f76ffe596dc4",
+        "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+        "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+      },
+      "source_configuration": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "native_fixture_sha256": "8973a7f4e72e7436fef747d8629d4b471434c08762e74f5931ac99d8c03e5a8d",
+      "native_fixture_delta": "observer-only geometry_probe; source input/setup/fighters/helpers unchanged",
+      "native_contact_count": 1
+    }
+  },
+  "files": {
+    "cbs-guard.contacts.json": {
+      "sha256": "82dcae5ca046da57b266234f28b3088f4e89bd76a3899a33db3ea8fefae1ae06",
+      "bytes": 2770
+    },
+    "cbs-guard.fixture.json": {
+      "sha256": "67696136e4f6df748bec508903e31d37dcdfe0d74540b786f860033095126f32",
+      "bytes": 1154
+    },
+    "cbs-guard.geometry.json": {
+      "sha256": "98183e8ca30a5fd3cf2a6cc324dc766c216265403814f925d5fae49e244b95d3",
+      "bytes": 44465
+    },
+    "cbs-guard.metadata.json": {
+      "sha256": "2b2248f9dfd0f162a963841d856c83fc78b5d14db023fbe841d9dd15cec26567",
+      "bytes": 644
+    },
+    "cbs-guard.states.json": {
+      "sha256": "c9c40c5f0afa1c77bf4e50e2d9f8e7a44b597515a09eb99353baa0406f6bd849",
+      "bytes": 121646
+    },
+    "cbs-mirror.contacts.json": {
+      "sha256": "5f6d70a445e588ba1163e4c25a7a82f8828cdb5dbdd6f8c628e55f11080d3026",
+      "bytes": 2766
+    },
+    "cbs-mirror.fixture.json": {
+      "sha256": "8973a7f4e72e7436fef747d8629d4b471434c08762e74f5931ac99d8c03e5a8d",
+      "bytes": 1048
+    },
+    "cbs-mirror.geometry.json": {
+      "sha256": "936cadfba633aacb4b02a2bc28d12b1c7d8ae4c4b77f90a8991c8dcfeda88767",
+      "bytes": 44600
+    },
+    "cbs-mirror.metadata.json": {
+      "sha256": "1f8541859638ca09ae8481edd1fd6ed585d57a8ab398f0017443ab624af26ee6",
+      "bytes": 645
+    },
+    "cbs-mirror.states.json": {
+      "sha256": "123c20bf635712c7cbe00c70ad9be47fad89c7120a4886c0745ea9ccb6e0d404",
+      "bytes": 120941
+    },
+    "zh2-guard.contacts.json": {
+      "sha256": "9b125ac00fde258272475c4ff99c19a797110fe299261c6060c50f1a4c92d5e2",
+      "bytes": 2680
+    },
+    "zh2-guard.fixture.json": {
+      "sha256": "df08e14799fee4b4c3810f0c144e01a9e9c5ae182701419a3d23591cbffe78f6",
+      "bytes": 1119
+    },
+    "zh2-guard.geometry.json": {
+      "sha256": "0d5bce9d030da01fd2fb2f1a1de707e11c4ceba1499dc3f6fb3204f1811e98a9",
+      "bytes": 10264
+    },
+    "zh2-guard.metadata.json": {
+      "sha256": "de91d8648f86679428647c2a0fc3ba4cd5cc9b8d2e762cff7e86944ac6d9b39b",
+      "bytes": 643
+    },
+    "zh2-guard.states.json": {
+      "sha256": "e735e72cf2e083432dc3903d4f1444e019a26b52ef2e44a144541d17a2fbb908",
+      "bytes": 122169
+    },
+    "zh2-mirror.contacts.json": {
+      "sha256": "380b5e74e982869d8e5d03d0317f9e8729c2e67d28e15e732a4c54c724310a17",
+      "bytes": 2606
+    },
+    "zh2-mirror.fixture.json": {
+      "sha256": "9e3403ee24d159f109732fa4864329142af511e40b2752ddb258bcc3d7dcd880",
+      "bytes": 1013
+    },
+    "zh2-mirror.geometry.json": {
+      "sha256": "9b87eee00a9c663fc507bb632fd66f0eb03c51734980e26dcb305b14089e4a5d",
+      "bytes": 10240
+    },
+    "zh2-mirror.metadata.json": {
+      "sha256": "47da83d41d544815598d2488860365c3d73d217723bc053e3f5d6716b6ccb1bf",
+      "bytes": 644
+    },
+    "zh2-mirror.states.json": {
+      "sha256": "776a1f44af0abbe1d3d96e8cbfcc84604326631c7c10ef756f726b9bf9ff34a3",
+      "bytes": 121695
+    },
+    "cbs-guard-comparison-r01.json": {
+      "sha256": "1b10b984ac9f6a033ec009d8ad51af1427b9b180dcb8815aa6753d86b9abf098",
+      "bytes": 8175
+    }
+  },
+  "cbs_guard_source_native_comparison": {
+    "path": "cbs-guard-comparison-r01.json",
+    "sha256": "1b10b984ac9f6a033ec009d8ad51af1427b9b180dcb8815aa6753d86b9abf098",
+    "status": "bounded_contact_and_break_match_with_0_05px_geometry_difference"
+  },
+  "source_capture_hashes": {
+    "evidence/characters/byakuya/validation/hit-receive-r02-source/events.jsonl": "52d889e5146fdd3cee7f065b762744e46af92e9c412f091102dd4a753fc1eacc",
+    "evidence/characters/byakuya/validation/hit-receive-r02-source/build.json": "4d16ae513705835efd2c5bbb1632a7f19a74e064c5ee6a9074ad274e73e0c2c2",
+    "evidence/characters/byakuya/validation/hit-receive-r02-source/summary.json": "8250cf58db069431397cc59a0448e6dd8fc288f123360ef2f9406679be6b3a6e"
+  }
+}

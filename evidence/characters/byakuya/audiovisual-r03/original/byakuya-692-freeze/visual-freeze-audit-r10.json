@@ -1,0 +1,30 @@
+{
+  "format": "byakuya-flash-visual-freeze-v2",
+  "status": "valid_same_frame_freeze_with_stable_before_after_screenshots",
+  "run_id": "byakuya-freeze-r10",
+  "freeze_script": "temporary /tmp/build_visual_probe.py derived from tools/probes/build_ai_reference.py; skips root stop, recursively stops descendants, then sets zhanting=true",
+  "freeze_state": {
+    "source_frame": 692,
+    "display_tick": 457,
+    "fight_tick": 15
+  },
+  "child_frames_before": {
+    "p1_body": 692,
+    "face_p1": 5,
+    "nested_face": 20,
+    "ts_face_bg": 5,
+    "blackMu": 2,
+    "root_bg": 2,
+    "xgmc0": 1,
+    "xgmc1": "absent"
+  },
+  "child_frames_after": "identical; root_after walk recorded same values",
+  "screenshots": {
+    "before_retina": "flash-stage-692-before-retina.png",
+    "after_retina": "flash-stage-692-after-retina.png",
+    "before_600x400": "flash-stage-692-before.png",
+    "after_600x400": "flash-stage-692-after.png",
+    "pixel_difference_bbox": null
+  },
+  "interpretation": "The previously observed blue sword was post-target playback. It is absent in the valid frozen frame; xgmc1 was not present at frame 692."
+}

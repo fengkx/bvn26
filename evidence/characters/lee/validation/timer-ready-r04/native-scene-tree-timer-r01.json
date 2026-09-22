@@ -1,0 +1,14 @@
+{
+  "format": "lee-natural-scene-tree-timer-r01",
+  "status": "diagnostic_natural_timer_once",
+  "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot --script /private/tmp/lee-natural-timer-once.gd",
+  "fixture": "default production scene (no fighter replacement; isolated Timer service call)",
+  "observed": {
+    "registered_id": 1,
+    "wait_ms": 100,
+    "timeouts": 1,
+    "live_after_wait": false,
+    "live_after_explicit_clear": false
+  },
+  "conclusion": "A real SceneTree Timer timeout fired once without external tape. The timer was no longer live after the callback; this is a service smoke check, not Lee source parity or full natural KO lifecycle. Engine emitted only known macOS user log/certificate warnings; no SCRIPT ERROR."
+}

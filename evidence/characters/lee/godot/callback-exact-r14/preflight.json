@@ -1,0 +1,293 @@
+{
+  "schema": "lee-callback-exact-r14-preflight",
+  "scope": "Same-source-run P2 recovery/dash fixture; five observed body frame-action markers, bounded to source_frame, entering, decoded action, decoded ql.",
+  "cases": [
+    {
+      "case_id": "recovery-dash-p2-1134-1161",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r14/fixtures/recovery-dash-p2-1134-1161.json",
+      "fixture_sha256": "bd0f4d58502307ea16c2c9bc9582c66a1c5de52c6364313412ba7005ec2ec564",
+      "source_run_id": "lee-callback-lifecycle-recovery-r01",
+      "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01",
+      "source_raw_sha256": "963b0718af01941a5d0ee705106bb5e7cacae08a7e415040871f65a9e7cae698",
+      "source_build_original": "/private/tmp/lee-callback-lifecycle-recovery-r01-build/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r14/source-builds/recovery-dash-p2/build.json",
+      "source_build_sha256": "7cf34396497b169882aa344a1ac67c01d996e0f53854b5e3b80653ead1cde7ff",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r14/source-builds/recovery-dash-p2/instrumentation.diff",
+      "source_instrumentation_sha256": "7e71af5ec6959fc403f1d6f52953e0ca50ce1cc89bc36148bba57d0ccdc6acf2",
+      "source_output_main_sha256": "c8945f124e83e35cefba4fa63c73391b3f738a0ce593e9d471932976dd7298b2",
+      "source_move_case": {
+        "id": "lee-callback-lifecycle-recovery-r01",
+        "fighter": "lee",
+        "slot": "p2",
+        "label": "受击恢复",
+        "scenario": "callback_recovery_lifecycle",
+        "frames": 900,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 300,
+            "energy": 1000,
+            "health": 1000,
+            "wudi": false
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "down",
+              "special"
+            ],
+            "start": 10,
+            "end": 13
+          },
+          {
+            "slot": "p2",
+            "keys": [
+              "dash"
+            ],
+            "start": 76,
+            "end": 80
+          }
+        ],
+        "target_frames": [
+          1128,
+          1133,
+          1149,
+          1288
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "status": "prepared",
+        "fighters": {
+          "p1": "byakuya",
+          "p2": "lee"
+        },
+        "p1_helper": "魂",
+        "p2_helper": "魂",
+        "source_state_preconditions": {
+          "p2": {
+            "health": 1000,
+            "wudi": false
+          }
+        },
+        "callback_group": "recovery-standup",
+        "callback_purpose": "recovery/standup marker",
+        "callback_observer": "read-only generic schedule and body boundary observers; no schedule/input changes",
+        "source_callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1128,
+            "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+            "action": "击落地",
+            "kind": "frame_action",
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1133,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "action": "起身",
+            "kind": "clip_action",
+            "placement_id": 18,
+            "depth": 30,
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1149,
+            "source_path": "DefineSprite_518/frame_1149/DoAction.as",
+            "action": "起身",
+            "kind": "frame_action",
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1288,
+            "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+            "action": "失败",
+            "kind": "frame_action",
+            "slot": "p2"
+          }
+        ],
+        "callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1128,
+            "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+            "action": "击落地",
+            "kind": "frame_action",
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1133,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "action": "起身",
+            "kind": "clip_action",
+            "placement_id": 18,
+            "depth": 30,
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1149,
+            "source_path": "DefineSprite_518/frame_1149/DoAction.as",
+            "action": "起身",
+            "kind": "frame_action",
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1288,
+            "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+            "action": "失败",
+            "kind": "frame_action",
+            "slot": "p2"
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "小李",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 900,
+      "target_preflight": [
+        {
+          "source_frame": 1134,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1144,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1158,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1159,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1161,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "source_events_preflight": [
+        {
+          "seq": 5475,
+          "display_tick": 249,
+          "fight_tick": -1,
+          "slot": "p2",
+          "frame": 1158,
+          "entering": true,
+          "current_frame": 1158
+        },
+        {
+          "seq": 5476,
+          "display_tick": 249,
+          "fight_tick": -1,
+          "slot": "p2",
+          "frame": 1158,
+          "entering": false,
+          "current_frame": 1158
+        },
+        {
+          "seq": 5487,
+          "display_tick": 249,
+          "fight_tick": -1,
+          "slot": "p2",
+          "frame": 1159,
+          "entering": true,
+          "current_frame": 1159
+        },
+        {
+          "seq": 5488,
+          "display_tick": 249,
+          "fight_tick": -1,
+          "slot": "p2",
+          "frame": 1159,
+          "entering": false,
+          "current_frame": 1159
+        },
+        {
+          "seq": 5533,
+          "display_tick": 251,
+          "fight_tick": -1,
+          "slot": "p2",
+          "frame": 1161,
+          "entering": true,
+          "current_frame": 1161
+        },
+        {
+          "seq": 5534,
+          "display_tick": 251,
+          "fight_tick": -1,
+          "slot": "p2",
+          "frame": 1161,
+          "entering": false,
+          "current_frame": 1161
+        },
+        {
+          "seq": 13118,
+          "display_tick": 529,
+          "fight_tick": 78,
+          "slot": "p2",
+          "frame": 1134,
+          "entering": true,
+          "current_frame": 1134
+        },
+        {
+          "seq": 13119,
+          "display_tick": 529,
+          "fight_tick": 78,
+          "slot": "p2",
+          "frame": 1134,
+          "entering": false,
+          "current_frame": 1134
+        },
+        {
+          "seq": 13318,
+          "display_tick": 539,
+          "fight_tick": 88,
+          "slot": "p2",
+          "frame": 1144,
+          "entering": true,
+          "current_frame": 1144
+        },
+        {
+          "seq": 13319,
+          "display_tick": 539,
+          "fight_tick": 88,
+          "slot": "p2",
+          "frame": 1144,
+          "entering": false,
+          "current_frame": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,943 @@
+{
+  "schema": "lee-callback-clip-exact-r15",
+  "scope": "The source and native callback cadence is compared for one same-source P2 recovery fixture. Native placement lifetime and registration behavior are reported separately; the source tape does not directly record clip removal.",
+  "source_run_id": "lee-callback-lifecycle-recovery-r01",
+  "case_id": "recovery-dash-p2-clip1133-body1134-1144",
+  "runtime_files": {
+    "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+    "godot/tests/callback_trace_registry.gd": "7319deae70d8cfbcdc5eaf6566f1106b1a15b8cc7769c879edfde4dcb3f4461c",
+    "godot/tests/lee_callback_exact_probe.gd": "cc4f9f55d4c95f83cd5887f6d189529d69b4626bc43a32d4ee30e85832d375f0"
+  },
+  "test_and_compare_tool_hashes": {
+    "event_tape.py": "12298ac477c7f5e94b41b6b0cf6ca33e042fab08486e3983389558fc872c6005",
+    "event_tape_smoke.py": "0beb2c72870fbd2a7121d2da60b52afabcd76d22c6ecaa3e55d51b160363e392",
+    "compare_clip.py": "7a32f3a57099b5708163aaeeda4e3dea0c269fe6f40368a1291b9673240251ef",
+    "update_inventory.py": "0456a4915c01bff14de0f2366860c266672e6fd094493caa4bd732efced0b425",
+    "godot/tests/callback_trace_registry_smoke.gd": "03fb1c8e2b4933b840cab17757641517b9fa94cd37e4a17ce5496198a53afa26"
+  },
+  "source_provenance": {
+    "raw": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/events.jsonl",
+    "raw_sha256": "963b0718af01941a5d0ee705106bb5e7cacae08a7e415040871f65a9e7cae698",
+    "build": "evidence/characters/lee/godot/callback-exact-r15/source-builds/recovery-dash-p2/build.json",
+    "build_sha256": "7cf34396497b169882aa344a1ac67c01d996e0f53854b5e3b80653ead1cde7ff",
+    "instrumentation_sha256": "7e71af5ec6959fc403f1d6f52953e0ca50ce1cc89bc36148bba57d0ccdc6acf2",
+    "source_main_swf_sha256": "c8945f124e83e35cefba4fa63c73391b3f738a0ce593e9d471932976dd7298b2",
+    "done_marker": true
+  },
+  "native_provenance": {
+    "fixture": "evidence/characters/lee/godot/callback-exact-r15/fixtures/recovery-dash-p2-clip1133-body1134-1144.json",
+    "fixture_sha256": "3136b95982a86df0ae264335e16f9cc9c3c36eefcfec885403a2bb986ec1372b",
+    "fixture_input_setup_helpers_match_source": true,
+    "engine_log_sha256": "34d7a34335a6313760b5ed416bc1946daa1d864db06f5a7e351c27b6cc7c9caf",
+    "engine_exitcode": 0,
+    "script_errors": [],
+    "event_tape_smoke_ok": true,
+    "callback_registry_smoke_ok": true
+  },
+  "callback_comparison": {
+    "status": "exact_0diff",
+    "fields": [
+      "source_path",
+      "phase",
+      "slot",
+      "parent_frame",
+      "child_local_frame"
+    ],
+    "source_events": [
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "enter",
+        "slot": "p2",
+        "child_local_frame": 1,
+        "parent_frame": 1134,
+        "sequence": 13111,
+        "source_display_tick": 529,
+        "source_fight_tick": 78
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "exit",
+        "slot": "p2",
+        "child_local_frame": 1,
+        "parent_frame": 1134,
+        "sequence": 13112,
+        "source_display_tick": 529,
+        "source_fight_tick": 78
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "enter",
+        "slot": "p2",
+        "child_local_frame": 1,
+        "parent_frame": 1135,
+        "sequence": 13134,
+        "source_display_tick": 530,
+        "source_fight_tick": 79
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "exit",
+        "slot": "p2",
+        "child_local_frame": 1,
+        "parent_frame": 1135,
+        "sequence": 13135,
+        "source_display_tick": 530,
+        "source_fight_tick": 79
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "enter",
+        "slot": "p2",
+        "child_local_frame": 1,
+        "parent_frame": 1136,
+        "sequence": 13153,
+        "source_display_tick": 531,
+        "source_fight_tick": 80
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "exit",
+        "slot": "p2",
+        "child_local_frame": 1,
+        "parent_frame": 1136,
+        "sequence": 13154,
+        "source_display_tick": 531,
+        "source_fight_tick": 80
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "enter",
+        "slot": "p2",
+        "child_local_frame": 1,
+        "parent_frame": 1137,
+        "sequence": 13174,
+        "source_display_tick": 532,
+        "source_fight_tick": 81
+      },
+      {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "phase": "exit",
+        "slot": "p2",
+        "child_local_frame": 1,
+        "parent_frame": 1137,
+        "sequence": 13175,
+        "source_display_tick": 532,
+        "source_fight_tick": 81
+      }
+    ],
+    "native_events": [
+      {
+        "child_placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "controller_instance_id": -9223371519713850031,
+        "display_tick": 355,
+        "generation": 7,
+        "method": "frame_1133_depth_30",
+        "parent_action": -1.0,
+        "parent_frame": 1134,
+        "parent_frame_at_registration": 1133,
+        "parent_ql": 300.0,
+        "parent_x": 20.0,
+        "phase": "enter",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "target_alive": true
+      },
+      {
+        "child_placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "controller_instance_id": -9223371519713850031,
+        "display_tick": 355,
+        "generation": 7,
+        "method": "frame_1133_depth_30",
+        "parent_action": -1.0,
+        "parent_frame": 1134,
+        "parent_frame_at_registration": 1133,
+        "parent_ql": 300.0,
+        "parent_x": 12.0,
+        "phase": "exit",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "target_alive": true
+      },
+      {
+        "child_placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "controller_instance_id": -9223371519713850031,
+        "display_tick": 356,
+        "generation": 7,
+        "method": "frame_1133_depth_30",
+        "parent_action": -1.0,
+        "parent_frame": 1135,
+        "parent_frame_at_registration": 1133,
+        "parent_ql": 300.0,
+        "parent_x": 20.0,
+        "phase": "enter",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "target_alive": true
+      },
+      {
+        "child_placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "controller_instance_id": -9223371519713850031,
+        "display_tick": 356,
+        "generation": 7,
+        "method": "frame_1133_depth_30",
+        "parent_action": -1.0,
+        "parent_frame": 1135,
+        "parent_frame_at_registration": 1133,
+        "parent_ql": 300.0,
+        "parent_x": 12.0,
+        "phase": "exit",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "target_alive": true
+      },
+      {
+        "child_placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "controller_instance_id": -9223371519713850031,
+        "display_tick": 357,
+        "generation": 7,
+        "method": "frame_1133_depth_30",
+        "parent_action": -1.0,
+        "parent_frame": 1136,
+        "parent_frame_at_registration": 1133,
+        "parent_ql": 300.0,
+        "parent_x": 20.0,
+        "phase": "enter",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "target_alive": true
+      },
+      {
+        "child_placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "controller_instance_id": -9223371519713850031,
+        "display_tick": 357,
+        "generation": 7,
+        "method": "frame_1133_depth_30",
+        "parent_action": -1.0,
+        "parent_frame": 1136,
+        "parent_frame_at_registration": 1133,
+        "parent_ql": 300.0,
+        "parent_x": 12.0,
+        "phase": "exit",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "target_alive": true
+      },
+      {
+        "child_placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "controller_instance_id": -9223371519713850031,
+        "display_tick": 358,
+        "generation": 7,
+        "method": "frame_1133_depth_30",
+        "parent_action": -1.0,
+        "parent_frame": 1137,
+        "parent_frame_at_registration": 1133,
+        "parent_ql": 300.0,
+        "parent_x": 20.0,
+        "phase": "enter",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "target_alive": true
+      },
+      {
+        "child_placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "controller_instance_id": -9223371519713850031,
+        "display_tick": 358,
+        "generation": 7,
+        "method": "frame_1133_depth_30",
+        "parent_action": -1.0,
+        "parent_frame": 1137,
+        "parent_frame_at_registration": 1133,
+        "parent_ql": 300.0,
+        "parent_x": 12.0,
+        "phase": "exit",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "target_alive": true
+      }
+    ],
+    "source_count": 8,
+    "native_count": 8,
+    "diffs": []
+  },
+  "body_boundary_comparison": {
+    "status": "exact_0diff",
+    "fields": [
+      "source_frame",
+      "entering",
+      "action",
+      "ql"
+    ],
+    "source_events": [
+      {
+        "source_frame": 1134,
+        "entering": true,
+        "action": -1.0,
+        "ql": 300.0,
+        "source_sequence": 13118,
+        "source_display_tick": 529,
+        "source_fight_tick": 78
+      },
+      {
+        "source_frame": 1134,
+        "entering": false,
+        "action": -1.0,
+        "ql": 300.0,
+        "source_sequence": 13119,
+        "source_display_tick": 529,
+        "source_fight_tick": 78
+      },
+      {
+        "source_frame": 1144,
+        "entering": true,
+        "action": -1.0,
+        "ql": 300.0,
+        "source_sequence": 13318,
+        "source_display_tick": 539,
+        "source_fight_tick": 88
+      },
+      {
+        "source_frame": 1144,
+        "entering": false,
+        "action": -1.0,
+        "ql": 300.0,
+        "source_sequence": 13319,
+        "source_display_tick": 539,
+        "source_fight_tick": 88
+      }
+    ],
+    "native_events": [
+      {
+        "action": -1.0,
+        "current_frame": 1134,
+        "entering": true,
+        "ql": 300.0,
+        "slot": "p2",
+        "source_frame": 1134,
+        "tick": 355
+      },
+      {
+        "action": -1.0,
+        "current_frame": 1134,
+        "entering": false,
+        "ql": 300.0,
+        "slot": "p2",
+        "source_frame": 1134,
+        "tick": 355
+      },
+      {
+        "action": -1.0,
+        "current_frame": 1144,
+        "entering": true,
+        "ql": 300.0,
+        "slot": "p2",
+        "source_frame": 1144,
+        "tick": 365
+      },
+      {
+        "action": -1.0,
+        "current_frame": 1,
+        "entering": false,
+        "ql": 300.0,
+        "slot": "p2",
+        "source_frame": 1144,
+        "tick": 365
+      }
+    ],
+    "source_count": 4,
+    "native_count": 4,
+    "diffs": []
+  },
+  "native_lifecycle_observation": {
+    "status": "observed",
+    "fields": [
+      "phase",
+      "parent_frame",
+      "slot",
+      "source_path",
+      "character_id",
+      "depth",
+      "child_local_frame",
+      "generation",
+      "registration_id"
+    ],
+    "events": [
+      {
+        "controller_instance_id": -9223371519713850031,
+        "generation": 7,
+        "parent_frame": 1133,
+        "phase": "placed",
+        "placed_tick": 354,
+        "placement": {
+          "character_id": 18,
+          "child_local_frame": 1,
+          "clip_actions": [
+            {
+              "action_bytes_sha256": "53a29d785f645859b94f9c1567f7411636baa53bc64b1253fbf2816cb6644a0b",
+              "events": [
+                "EnterFrame"
+              ]
+            }
+          ],
+          "depth": 30,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0.0,
+            "nScaleBits": 0.0,
+            "nTranslateBits": 11.0,
+            "translateX": -537.0,
+            "translateY": 553.0,
+            "type": "MATRIX"
+          },
+          "placed_frame": 1133
+        },
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      },
+      {
+        "controller_instance_id": -9223371519713850031,
+        "generation": 7,
+        "parent_frame": 1138,
+        "phase": "removed",
+        "placed_tick": 354,
+        "placement": {},
+        "registration_id": 26,
+        "slot": "p2",
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+      }
+    ],
+    "source_removal_marker_available": false
+  },
+  "test_registry_injection": {
+    "baseline": [
+      {
+        "method": "queue_frame",
+        "placed_tick": 0,
+        "registration": 1,
+        "source_path": ""
+      },
+      {
+        "method": "dispatch",
+        "placed_tick": 0,
+        "registration": 2,
+        "source_path": ""
+      },
+      {
+        "method": "run_body",
+        "placed_tick": 0,
+        "registration": 3,
+        "source_path": ""
+      },
+      {
+        "method": "receive",
+        "placed_tick": 0,
+        "registration": 4,
+        "source_path": ""
+      },
+      {
+        "method": "frame_1_depth_31",
+        "placed_tick": 0,
+        "registration": 5,
+        "source_path": ""
+      },
+      {
+        "method": "run_body",
+        "placed_tick": 0,
+        "registration": 6,
+        "source_path": ""
+      },
+      {
+        "method": "receive",
+        "placed_tick": 0,
+        "registration": 7,
+        "source_path": ""
+      },
+      {
+        "method": "frame_1_depth_31",
+        "placed_tick": 0,
+        "registration": 8,
+        "source_path": ""
+      },
+      {
+        "method": "enter_frame",
+        "placed_tick": 0,
+        "registration": 9,
+        "source_path": ""
+      },
+      {
+        "method": "enter_frame",
+        "placed_tick": 0,
+        "registration": 10,
+        "source_path": ""
+      },
+      {
+        "method": "dispatch",
+        "placed_tick": 0,
+        "registration": 11,
+        "source_path": ""
+      }
+    ],
+    "observed": [
+      {
+        "method": "queue_frame",
+        "placed_tick": 0,
+        "registration": 1,
+        "source_path": ""
+      },
+      {
+        "method": "dispatch",
+        "placed_tick": 0,
+        "registration": 2,
+        "source_path": ""
+      },
+      {
+        "method": "run_body",
+        "placed_tick": 0,
+        "registration": 3,
+        "source_path": ""
+      },
+      {
+        "method": "receive",
+        "placed_tick": 0,
+        "registration": 4,
+        "source_path": ""
+      },
+      {
+        "method": "frame_1_depth_31",
+        "placed_tick": 0,
+        "registration": 5,
+        "source_path": ""
+      },
+      {
+        "method": "run_body",
+        "placed_tick": 0,
+        "registration": 6,
+        "source_path": ""
+      },
+      {
+        "method": "receive",
+        "placed_tick": 0,
+        "registration": 7,
+        "source_path": ""
+      },
+      {
+        "method": "frame_1_depth_31",
+        "placed_tick": 0,
+        "registration": 8,
+        "source_path": ""
+      },
+      {
+        "method": "enter_frame",
+        "placed_tick": 0,
+        "registration": 9,
+        "source_path": ""
+      },
+      {
+        "method": "enter_frame",
+        "placed_tick": 0,
+        "registration": 10,
+        "source_path": ""
+      },
+      {
+        "method": "dispatch",
+        "placed_tick": 0,
+        "registration": 11,
+        "source_path": ""
+      }
+    ],
+    "same_registration_order_and_placed_tick": true
+  }
+}

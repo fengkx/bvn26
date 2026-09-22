@@ -1,0 +1,139 @@
+{
+  "helper": {
+    "timeline": "godot/generated/helpers/woailuo/timeline.json",
+    "frame": 44,
+    "instance": {
+      "depth": 2,
+      "character_id": 48,
+      "name": "atm1",
+      "ratio": 43,
+      "matrix": {
+        "hasRotate": "false",
+        "hasScale": "false",
+        "nRotateBits": 0,
+        "nScaleBits": 0,
+        "nTranslateBits": 13,
+        "translateX": 3437,
+        "translateY": -1783,
+        "type": "MATRIX"
+      },
+      "clip_actions": [
+        {
+          "events": [
+            "Load"
+          ],
+          "action_bytes_sha256": "9fd921e931a12d20f8bc93fc87f2bb38642f95328999f7b37ab807aa80fec0d1"
+        }
+      ],
+      "placed_frame": 44
+    }
+  },
+  "defender": {
+    "timeline": "godot/generated/fighters/yihu/timeline.json",
+    "frame": 44,
+    "instance": {
+      "depth": 32,
+      "character_id": 2,
+      "name": "bdmn",
+      "ratio": 31,
+      "matrix": {
+        "hasRotate": "false",
+        "hasScale": "true",
+        "nRotateBits": 0,
+        "nScaleBits": 18,
+        "nTranslateBits": 10,
+        "scaleX": 0.40379333,
+        "scaleY": 1.104065,
+        "translateX": -315,
+        "translateY": -416,
+        "type": "MATRIX"
+      },
+      "clip_actions": [
+        {
+          "events": [
+            "EnterFrame"
+          ],
+          "action_bytes_sha256": "f49aebda24e199672d5b0eaf83085c70f021ad688082b0eda05c41db509decb7"
+        }
+      ],
+      "placed_frame": 32
+    }
+  },
+  "observed_current_runtime": {
+    "helper_end_x": 427.8500061035156,
+    "receiver_x_at_edge_attempt": 427.8999938964844,
+    "gap_px": 0.04998779296875,
+    "source_hit_test_rule": "SourceHitTest.intersects(..., true)"
+  },
+  "classification": "pre-existing boundary fixture failure; no threshold change",
+  "corrected_fixture": {
+    "construction": "recompute live transformed atm1/bdmn bounds twice; apply measured edge correction",
+    "test": "godot/tests/helper_repeat_contact_smoke.gd",
+    "positive": "touching bounds accepted by source-derived intersects(..., true)",
+    "negative": "defender moved +0.05px after edge placement; no contact",
+    "result": "HELPER_REPEAT_CONTACT_SMOKE_OK",
+    "runtime_threshold_changed": false
+  },
+  "geometry_observations": {
+    "edge_gap_zero": [
+      {
+        "attack_left": 321.850006103516,
+        "attack_right": 427.850006103516,
+        "gap": 0.0,
+        "receiver_left": 427.850006103516,
+        "receiver_right": 454.5
+      },
+      {
+        "attack_left": -27.8500003814697,
+        "attack_right": 78.1500015258789,
+        "gap": 0.0,
+        "receiver_left": 78.1500015258789,
+        "receiver_right": 104.800003051758
+      },
+      {
+        "attack_left": 227.949996948242,
+        "attack_right": 265.399993896484,
+        "gap": 0.0,
+        "receiver_left": 265.399993896484,
+        "receiver_right": 292.049987792969
+      },
+      {
+        "attack_left": 134.600006103516,
+        "attack_right": 172.050003051758,
+        "gap": 0.0,
+        "receiver_left": 172.050003051758,
+        "receiver_right": 198.699996948242
+      }
+    ],
+    "negative_gap_positive": [
+      {
+        "attack_left": 321.850006103516,
+        "attack_right": 427.850006103516,
+        "gap": 0.04998779296875,
+        "receiver_left": 427.899993896484,
+        "receiver_right": 454.549987792969
+      },
+      {
+        "attack_left": -27.8500003814697,
+        "attack_right": 78.1500015258789,
+        "gap": 0.0499954223632812,
+        "receiver_left": 78.1999969482422,
+        "receiver_right": 104.849998474121
+      },
+      {
+        "attack_left": 227.949996948242,
+        "attack_right": 265.399993896484,
+        "gap": 0.050018310546875,
+        "receiver_left": 265.450012207031,
+        "receiver_right": 292.100006103516
+      },
+      {
+        "attack_left": 134.600006103516,
+        "attack_right": 172.050003051758,
+        "gap": 0.0500030517578125,
+        "receiver_left": 172.100006103516,
+        "receiver_right": 198.75
+      }
+    ]
+  }
+}

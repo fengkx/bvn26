@@ -1,0 +1,55 @@
+{
+  "format": "lee-recovery-audio-r03",
+  "fixture": "lee-recovery-p2-byakuya-super-tap-r03",
+  "source_walk": {
+    "frame_1133": {
+      "fight_tick": 78,
+      "sound_id": 36,
+      "event": "start_sound"
+    },
+    "frame_1143": {
+      "fight_tick": 88,
+      "sound_id": 41,
+      "event": "start_sound"
+    },
+    "native_trace_scope": "frame/state trace; original player does not expose StartSound callback stream"
+  },
+  "godot_walk": {
+    "rows_sha256": "31d821f7f1e190dafb3b1e5a9c94148d3085da5d09e2f4a72d62db5ebd248ecf",
+    "frame_1133": {
+      "fight_tick": 78,
+      "observed": true,
+      "audio_stream_player_event": true,
+      "sound_id": 36
+    },
+    "frame_1143": {
+      "fight_tick": 88,
+      "observed": true,
+      "audio_stream_player_event": true,
+      "sound_id": 41
+    },
+    "existing_audio_players_at_relevant_walk": 7,
+    "probe": "godot/tests/lee_recovery_move_case_audio_probe.gd",
+    "sound_sidecar_sha256": "c3476fcb294a7fbe0ba56467945d7fd61ec97fbf0b2b4364862084bec57c3ea9",
+    "observed_sound_rows": [
+      {
+        "slot": "p2",
+        "sound_ids": [
+          36
+        ],
+        "source_frame": 1133,
+        "tick": 78
+      },
+      {
+        "slot": "p2",
+        "sound_ids": [
+          41
+        ],
+        "source_frame": 1143,
+        "tick": 88
+      }
+    ]
+  },
+  "status": "audio_event_matched_same_input",
+  "limitation": "Initial empty sidecar came from rerunning against an existing evidence output path; clean /private/tmp output produced the authoritative sidecar. P2 signal and source frame are now explicit."
+}

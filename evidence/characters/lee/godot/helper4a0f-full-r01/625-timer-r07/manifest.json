@@ -1,0 +1,77 @@
+{
+  "schema": "lee-625-timer-r07-compare",
+  "runner_sha256": "b7f70f8c58b6f2035255afbb904be31998d8701a27d4927467647d8d81e65b0d",
+  "rows": [
+    {
+      "status": "matched",
+      "source_states": 802,
+      "native_states": 802,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": [],
+      "id": "lee-574-bisha-625-dead-negative",
+      "source_events": "evidence/characters/lee/original/lee-574-bisha-625-dead-clean-r01/parsed/events.jsonl",
+      "source_build": "evidence/characters/lee/original/lee-574-bisha-625-dead-clean-r01/parsed/build.json",
+      "native": "evidence/characters/lee/godot/helper4a0f-full-r01/625-timer-r07/lee-574-bisha-625-dead-negative.json",
+      "provenance": {
+        "status": "verified",
+        "source_build": "evidence/characters/lee/original/lee-574-bisha-625-dead-clean-r01/parsed/build.json",
+        "flags": []
+      },
+      "acceptance_status": "validated"
+    },
+    {
+      "status": "matched",
+      "source_states": 802,
+      "native_states": 802,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": [],
+      "id": "lee-574-bisha-625-kill-negative",
+      "source_events": "evidence/characters/lee/original/lee-574-bisha-625-kill-clean-r01/parsed/events.jsonl",
+      "source_build": "evidence/characters/lee/original/lee-574-bisha-625-kill-clean-r01/parsed/build.json",
+      "native": "evidence/characters/lee/godot/helper4a0f-full-r01/625-timer-r07/lee-574-bisha-625-kill-negative.json",
+      "provenance": {
+        "status": "verified",
+        "source_build": "evidence/characters/lee/original/lee-574-bisha-625-kill-clean-r01/parsed/build.json",
+        "flags": []
+      },
+      "acceptance_status": "validated"
+    }
+  ],
+  "reproduce_command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot -s res://tests/move_case_reference.gd -- --batch /Users/fengkx/me/code/bvn2_6/evidence/characters/lee/godot/helper4a0f-full-r01/625-timer-r07/fixtures/cases.json /Users/fengkx/me/code/bvn2_6/evidence/characters/lee/godot/helper4a0f-full-r01/625-timer-r07",
+  "input_contract": "source_build.move_case.drive_source_timers=true; fixture.source_timer_required=true; fixture.timer_input_provenance.route=ko_nextfight_timer.timeout",
+  "batch_entry": "tools/test_move_cases.py",
+  "batch_entry_sha256": "66229e736fb553bc98ea6aa4f0781dc78f431c271ee3a1aadaf77e11b68b7337",
+  "contract": "execute_batch validates all source_build timer contracts before subprocess.run"
+}

@@ -1,0 +1,36 @@
+{
+  "format": "lee-visual-freeze-audit-r01",
+  "status": "flash_capture_not_frozen",
+  "flash_build": "/private/tmp/lee-795-visual-build-r02",
+  "capture_script": "/tmp/lee_flash_visual_capture.py",
+  "lock": "/tmp/bvn-native-flash-capture.lock",
+  "target": {
+    "run_id": "lee-795-visual-r02",
+    "source_frame": 796,
+    "display_tick": 486,
+    "fight_tick": 14,
+    "state_sequence": 1949,
+    "state_time_ms": 30424
+  },
+  "instrumentation": {
+    "main_state": "aiState emits p1 frame, x/y/scale, action, hp, ql, sw, touch, touchFloor, hits, pause, hstm, hurtSkling",
+    "child_frame_observer": false,
+    "presentation_clip_observer": false,
+    "recursive_freeze": false,
+    "interval_freeze": false,
+    "root_or_child_stop_before_screenshot": false
+  },
+  "screenshot_order": [
+    "poll flashlog.txt for the p1 frame796 state line",
+    "query Flash Player Debugger window bounds",
+    "call screencapture -l and screencapture -R",
+    "sleep one second",
+    "terminate Flash"
+  ],
+  "evidence": {
+    "state_before_screenshot": "evidence/characters/lee/original/lee-795-bishaSuper-energy_above-r01/events.jsonl:sequence1949",
+    "screenshot": "evidence/characters/lee/flash-visual-795-r02/flash-stage-600x400.png",
+    "child_state_at_screenshot": "unobserved"
+  },
+  "conclusion": "The Flash PNG proves that a state event was observed, but does not prove that the main clip, nested presentation clips, or interval-driven effects were frozen at frame796. It cannot be used as a strict same-child-frame visual parity oracle. A valid follow-up requires an analysis-only recursive freeze hook in the temporary SWF before emitting the target state event, plus child/presentation frame logging."
+}

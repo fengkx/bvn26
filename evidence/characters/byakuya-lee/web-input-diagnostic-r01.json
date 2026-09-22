@@ -1,0 +1,39 @@
+{
+  "status": "diagnostic_only",
+  "scope": "temporary QA clone; production roster unchanged",
+  "packages": {
+    "diag3": {
+      "path": "/private/tmp/bvn-qa-inputdiag3/index.pck",
+      "sha256": "c00263d01090abc0ccf682f969ade3625cd4c4aa1d1106b2c49038d22f574fa1"
+    },
+    "diag4": {
+      "path": "/private/tmp/bvn-qa-inputdiag4/index.pck",
+      "sha256": "481760b6534f61ae061710d13c97e99e0b2b83e387182cfa478ff386362f23117"
+    },
+    "diag5": {
+      "path": "/private/tmp/bvn-qa-inputdiag5/index.pck",
+      "sha256": "90feb462b50ec45d7a4f9bf6179120581648009fcdb9e2a5b87494436b6f2668"
+    }
+  },
+  "godot_constants": {
+    "KEY_J": 74,
+    "KEY_KP_1": 4194439
+  },
+  "iab_engine_events": [
+    {"method": "KP_1", "keycode": 49, "physical_keycode": 4194439, "pressed": true},
+    {"method": "KP_1", "keycode": 49, "physical_keycode": 4194439, "pressed": false},
+    {"method": "Numpad1", "keycode": 49, "physical_keycode": 4194439, "pressed": true},
+    {"method": "Numpad1", "keycode": 49, "physical_keycode": 4194439, "pressed": false},
+    {"method": "J", "keycode": 74, "physical_keycode": 74, "pressed": true},
+    {"method": "J", "keycode": 74, "physical_keycode": 74, "pressed": false}
+  ],
+  "hold_capability": {
+    "cua_pressKey": "paired key press only; API exposes no duration or separate keyup",
+    "iab_playwright_locator_press": "API exposes timeout only; no duration option",
+    "dom_dispatch_script": "/private/tmp/qa-input-dispatch-r02.js",
+    "dom_dispatch_route": "canvas KeyboardEvent keydown, await 250ms, canvas KeyboardEvent keyup; pending live ALWAYS-probe run",
+    "iab_playwright_evaluate": "documented as read-only page scope, so not used for mutation",
+    "cross_six_physics_tick_hold": "not yet established; pending live DOM dispatch with ALWAYS probe"
+  },
+  "boundary": "Numpad physical mapping reaches Godot InputEventKey in IAB; a completed VsHuman helper transition and pause/resume flow were not claimed from this diagnostic package."
+}

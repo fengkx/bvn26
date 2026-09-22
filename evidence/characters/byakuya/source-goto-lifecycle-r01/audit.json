@@ -1,0 +1,325 @@
+{
+  "format": "bvn26-byakuya-source-goto-lifecycle-audit-v1",
+  "status": "bounded_controlled_identity_observation_complete_natural_parity_pending",
+  "generated_at_utc": "2026-09-21T08:19:52.829125+00:00",
+  "scope": {
+    "form": "base",
+    "source_sprite": 631,
+    "transformation": "closed",
+    "paths": {
+      "swf": "game/fighter/Byakuya.swf",
+      "script_bundle": "scripts/fighter/Byakuya.json",
+      "timeline_slice": "data/slices/Byakuya-base.timeline.json",
+      "generated_fighter": "godot/generated/fighters/byakuya/fighter.json",
+      "generated_combat": "godot/generated/fighters/byakuya/combat.json"
+    },
+    "sha256": {
+      "game/fighter/Byakuya.swf": "c590f9ca2aea152d26aea8d6a10c4ee31a2019d9798c637820f145feef13b52f",
+      "scripts/fighter/Byakuya.json": "4edf974358d4cd41a4aec3121089050bc060977a8051df3b1e60e06318aedd63",
+      "data/slices/Byakuya-base.timeline.json": "c2ec1a73f98c9ec09af2c2399390859ba4606bdd424a8bbfe3ef11e56c69efca",
+      "godot/generated/fighters/byakuya/fighter.json": "75988f598bb191a4779061f258a1289fe216cae1017a1680d4faace04762b8f0",
+      "godot/generated/fighters/byakuya/combat.json": "ffbd4f6250a4850c3bab3a5ecc5976ba55362833cbd3e0ea5d5669a199813096",
+      "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+      "godot/timeline_preview.gd": "87a6860b2e344536198e784871c649667fc9208b039abc77561b9cfeeea3004c",
+      "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+      "godot/ai_controller_instances.gd": "58e79b4de312f8b2310b400daf33ed608b06f00d501d94db03e3834f0685919f"
+    }
+  },
+  "source_sequence": {
+    "A": "站立",
+    "B": "招换",
+    "A_range": {
+      "start_frame": 1,
+      "end_frame": 9
+    },
+    "B_range": {
+      "start_frame": 814,
+      "end_frame": 848
+    },
+    "B_entry": {
+      "frame": 819,
+      "source_script": {
+        "source": "doZhaoHuan();\r\n",
+        "source_sha256": "9a4e1df3b75d75b39859f0968d785f77d37ac0a8433d1017068d334da3f65753"
+      },
+      "timeline": {
+        "frame": 819,
+        "changes": [
+          {
+            "type": "place",
+            "depth": 27,
+            "move": true,
+            "character_id": 562
+          }
+        ],
+        "event_types": [
+          "action_bytecode"
+        ],
+        "display_list": [
+          {
+            "depth": 1,
+            "character_id": 3,
+            "name": "AImain",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 23,
+            "character_id": 2,
+            "name": "mian",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 25,
+            "character_id": 5,
+            "name": "jiao",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 27,
+            "character_id": 562,
+            "name": "",
+            "placed_frame": 284,
+            "ratio": null
+          },
+          {
+            "depth": 30,
+            "character_id": 2,
+            "name": "bdmn",
+            "placed_frame": 760,
+            "ratio": 759
+          }
+        ]
+      }
+    },
+    "B_exit_to_A": {
+      "frame": 844,
+      "source_script": {
+        "source": "gotoAndStop(\"站立\");\r\nplay();\r\n",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "timeline": {
+        "frame": 844,
+        "changes": [],
+        "event_types": [
+          "action_bytecode"
+        ],
+        "display_list": [
+          {
+            "depth": 1,
+            "character_id": 3,
+            "name": "AImain",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 23,
+            "character_id": 2,
+            "name": "mian",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 25,
+            "character_id": 5,
+            "name": "jiao",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 27,
+            "character_id": 566,
+            "name": "",
+            "placed_frame": 284,
+            "ratio": null
+          },
+          {
+            "depth": 30,
+            "character_id": 2,
+            "name": "bdmn",
+            "placed_frame": 760,
+            "ratio": 759
+          }
+        ]
+      }
+    },
+    "A_entry_control": {
+      "frame": 8,
+      "source_script": {
+        "source": "gotoAndStop(\"站立\");\r\nplay();\r\n",
+        "source_sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13"
+      },
+      "timeline": {
+        "frame": 8,
+        "changes": [],
+        "event_types": [
+          "action_bytecode"
+        ],
+        "display_list": [
+          {
+            "depth": 1,
+            "character_id": 3,
+            "name": "AImain",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 23,
+            "character_id": 2,
+            "name": "mian",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 25,
+            "character_id": 5,
+            "name": "jiao",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 27,
+            "character_id": 14,
+            "name": "",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 29,
+            "character_id": 2,
+            "name": "bdmn",
+            "placed_frame": 1,
+            "ratio": null
+          },
+          {
+            "depth": 31,
+            "character_id": 16,
+            "name": "",
+            "placed_frame": 1,
+            "ratio": null
+          }
+        ]
+      }
+    },
+    "interpretation": "819 performs doZhaoHuan and places/updates depth 27; 844 executes gotoAndStop(\"站立\");play(). A->B->A therefore requires a new source entry and fresh depth-27 placement generation where applicable. The generated timeline is contract evidence, not a substitute for locked SWF observation."
+  },
+  "runtime_invariants": [
+    {
+      "id": "entry_serial",
+      "file": "godot/fighter_runtime.gd",
+      "lines": "269-287",
+      "claim": "source_goto_label increments _source_entry_serial and renders destination before queuing frame script; every TimelinePreview frame advance/play_source_frame also increments it."
+    },
+    {
+      "id": "defer_once",
+      "file": "godot/fighter_runtime.gd",
+      "lines": "219-237,269-287",
+      "claim": "defer_frame_script queues the destination, consumes _source_goto_defer_advance_once on the next AI display dispatch, and returns once; no permanent freeze."
+    },
+    {
+      "id": "aba_noncoalesce",
+      "file": "godot/fighter_runtime.gd",
+      "lines": "287-296",
+      "claim": "only an identical consecutive pending frame is coalesced; A->B->A is retained as a real re-entry."
+    },
+    {
+      "id": "new_place_generation",
+      "file": "godot/timeline_preview.gd",
+      "lines": "528-587",
+      "claim": "placement_id plus parent_entry_serial yields a generation/instance id; a placement at the same depth/frame with a new entry serial receives a fresh generation."
+    },
+    {
+      "id": "local_clock",
+      "file": "godot/timeline_preview.gd",
+      "lines": "1213-1235; godot/fighter_runtime.gd:1494-1620",
+      "claim": "named child/projectile local frames are stored independently with local_start, age, playing and source variables; root playhead is not used as a replacement clock when a local record exists."
+    },
+    {
+      "id": "placed_callback_boundary",
+      "file": "godot/source_callback_registry.gd:24-34; godot/ai_controller_instances.gd:37-64",
+      "claim": "a newly placed callback is not dispatched on its placement display tick; dispatch requires placed_tick < display_tick and callback identity/generation is snapshotted."
+    },
+    {
+      "id": "place_local_reset",
+      "file": "godot/fighter_runtime.gd:1264-1271",
+      "claim": "new PlaceObject jump window resets js/jumpinggg at placement frame, with enterFrame beginning on the next root frame."
+    }
+  ],
+  "existing_observations": {
+    "native_819": "r29 has a stable source freeze at frame 819 with canonical snapshot stability, but it is a single B-entry observation; no A->B->A same-input trace.",
+    "godot_819": "godot-819 metadata captures source frame 819 and fixture identity but visual_child_frames is empty and does not bind the current runtime hash; it cannot establish lifecycle parity.",
+    "nested_smoke": {
+      "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --headless --path godot -s res://tests/nested_start_sound_smoke.gd",
+      "exit_code": 0,
+      "status": "passed",
+      "scope": "redraw idempotence, MOVE identity, and same-depth PlaceObject generation; synthetic TimelinePreview test, not Byakuya native A->B->A."
+    },
+    "native_avm_goto_r06": "Normal battle-bootstrap native capture completed: avm-goto-r06, 5397 events, done marker, controlled frame-819 observer at display 466/fight 15; raw context is archived, but object identity/sentinel fields are absent.",
+    "godot_main_r01": "Real main.tscn plus SourceCallbackRegistry probe reached source frame 819 at physics 282/relative fight tick 6 with non-empty registry and advancing frame-script serial; it is one deferred entry, not paired A->B->A.",
+    "native_avm_goto_r09": "Normal battle-bootstrap native capture completed: 5247 events, done marker; same-callback A-B-A, repeated B-B, cross-display A-B-A all recorded mian/jiao/bdmn reference equality and sentinels. This proves reference retention in the controlled path, not new PlaceObject generation.",
+    "godot_main_r02": "Real main.tscn probe executed the same-tick labels and cross-display advances; entry serials/pending queue/registry size were recorded, but instance_local_frames remained empty and there is no AVM object identity analogue."
+  },
+  "acceptance": {
+    "source_goto_same_frame_reentry": "native controlled reference/sentinel observation complete; natural same-input evidence missing",
+    "A_B_A": "native controlled identity observation complete; paired Godot child-generation parity missing",
+    "new_place_local_vars": "native reference sentinels observed stable; new PlaceObject generation and local-variable reset remain unproven",
+    "child_clocks": "runtime mechanism present; controlled Godot child map empty, not accepted as parity",
+    "production_runtime_changed_this_audit": false
+  },
+  "minimum_probe": {
+    "required": "one Byakuya base-form diagnostic fixture with explicit A->B->A sequence (站立 -> 招换 -> 站立), same helpers 魂/魂, same input/clock tape on original and Godot.",
+    "per_display_fields": [
+      "display_tick",
+      "fight_tick",
+      "source_frame",
+      "action",
+      "_source_entry_serial",
+      "_source_goto_pending_frames",
+      "_source_goto_defer_advance_once",
+      "frame_script_execution_serial",
+      "placement_depth",
+      "character_id",
+      "placed_frame",
+      "instance_generation",
+      "placed_tick",
+      "child_local_start",
+      "child_age",
+      "child_playing",
+      "callback_dispatch_order"
+    ],
+    "fail_closed": [
+      "missing native source frame/script event",
+      "missing runtime hash or fixture hash",
+      "empty child map where source has placement",
+      "A->B->A collapsed into one generation",
+      "callback observed on placement tick"
+    ],
+    "allowed_change": "diagnostic probe/evidence only; no production runtime change until native event sequence and first divergence are known."
+  },
+  "analysis_probe": {
+    "tool": "tools/probes/byakuya_source_goto_lifecycle.py",
+    "tool_sha256": "e99631002eefb0b91d9c754dae18357b445fcbf3d3ecc9f92d3d1fbf4b25172c",
+    "output": "evidence/characters/byakuya/source-goto-lifecycle-r01/probe-r01.json",
+    "output_status": "analysis_only_not_parity",
+    "run_id": "byakuya-goto-r01-20260921",
+    "native_capture": "evidence/characters/byakuya/source-goto-lifecycle-r01/avm-goto-r09/summary.json",
+    "godot_runtime": "evidence/characters/byakuya/source-goto-lifecycle-r01/godot-runtime-r01.json",
+    "godot_runtime_status": "executed_analysis_only",
+    "avm_build": "evidence/characters/byakuya/source-goto-lifecycle-r01/avm-goto-r02/build.json",
+    "avm_build_status": "built_not_run",
+    "avm_compiled_script_observer": "evidence/characters/byakuya/source-goto-lifecycle-r01/avm-goto-r02/compiled-frame-819-DoAction.as",
+    "avm_build_r03": "evidence/characters/byakuya/source-goto-lifecycle-r01/avm-goto-r03/build.json",
+    "avm_build_r03_status": "built_not_run",
+    "avm_build_r03_scope": "entry label 招换 starts at frame 814; DoAction observer is frame 819; synchronous and cross-display goto sequences are separately tagged",
+    "avm_build_r04": "evidence/characters/byakuya/source-goto-lifecycle-r01/avm-goto-r04/build.json",
+    "avm_build_r04_status": "built_not_run",
+    "avm_build_r04_main_observer": "compiled main frame_1 defines AIREF event and done traces",
+    "native_capture_status": "captured_controlled_identity_experiment_not_parity",
+    "godot_main": "evidence/characters/byakuya/source-goto-lifecycle-r01/godot-main-r02.json",
+    "godot_main_status": "executed_controlled_sequence_analysis_only",
+    "paired_observation": "evidence/characters/byakuya/source-goto-lifecycle-r01/paired-observation-r02.json",
+    "native_context": "evidence/characters/byakuya/source-goto-lifecycle-r01/avm-goto-r06/native-context-r01.json"
+  }
+}

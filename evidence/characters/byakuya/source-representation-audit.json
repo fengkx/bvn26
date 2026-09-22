@@ -1,0 +1,67 @@
+{
+  "source_hashes": {
+    "game/fighter/Byakuya.swf": "c590f9ca2aea152d26aea8d6a10c4ee31a2019d9798c637820f145feef13b52f",
+    "scripts/fighter/Byakuya.json": "4edf974358d4cd41a4aec3121089050bc060977a8051df3b1e60e06318aedd63"
+  },
+  "audio": {
+    "source_sound_paths": [
+      "DefineSprite_1052/frame_1/DoAction.as",
+      "DefineSprite_631/frame_1/DoAction.as",
+      "DefineSprite_631/frame_1107/DoAction.as"
+    ],
+    "source_sound_path_count": 3,
+    "generated_mp3_count": 22,
+    "representative_sound_ids": [
+      619,
+      620
+    ]
+  },
+  "nested_visual": {
+    "source_controller_scopes": [
+      "DefineSprite_16/frame_1/DoAction.as",
+      "DefineSprite_69/frame_1/DoAction.as",
+      "DefineSprite_631/frame_455/DoAction.as",
+      "DefineSprite_631/frame_819/DoAction.as"
+    ],
+    "dynamic_child_scope_69_distinct_from_16": true,
+    "timeline_fallthroughs": [
+      {
+        "from": "必杀",
+        "to": "空中必杀",
+        "frame": 455,
+        "condition": "timeline_fallthrough"
+      },
+      {
+        "from": "超必杀1",
+        "to": "超必杀0",
+        "frame": 760,
+        "condition": "timeline_fallthrough"
+      }
+    ],
+    "clip_placement_count": 2,
+    "projectile_count": 1,
+    "source_visual_evidence": "timeline.json plus persisted same-input state traces"
+  },
+  "ai": {
+    "control_path": "DefineSprite_16/frame_1/DoAction.as",
+    "predicate_count": 22,
+    "representative_labels": [
+      "砍1",
+      "砍技1",
+      "砍技2",
+      "招1",
+      "招2",
+      "招3",
+      "必杀",
+      "上必杀",
+      "超必杀",
+      "跳",
+      "跳2",
+      "落2",
+      "防御",
+      "防御2"
+    ],
+    "ai_context": "godot/generated/fighters/byakuya/ai.json",
+    "same_input_evidence": "label-coverage.json"
+  }
+}

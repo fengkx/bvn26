@@ -1,0 +1,25 @@
+{
+  "format": "byakuya-base631-audio-reachability-r02",
+  "fixture": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-recovery-p2-base631-special-r01/fixture.json",
+  "fixture_sha256": "474d3c43c3a0aa4a97155be2a742a24f3c4bc88961c6f562e6c8e3f5bf33e2ce",
+  "probe": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-recovery-p2-base631-special-r01/diagnostic-probe.gd",
+  "probe_sha256": "8ea5aa69b68ed9071a7dbe094fa74a3310d06490dd92749b3312fc6c9e21933e",
+  "runtime_hash": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "normal_advance": true,
+  "direct_frame_jump": false,
+  "observed": {
+    "p2_byakuya_reached_frame_887": true,
+    "source_frame_887_sound_id": 581,
+    "godot_player_created": true,
+    "godot_player_stream": "res://generated/fighters/byakuya/581.mp3",
+    "p2_max_observed_frame": 923,
+    "p2_target_frames_reached": {
+      "887": true,
+      "934": false,
+      "944": false,
+      "963": false
+    }
+  },
+  "first_error": "Adapter.source_key assertion at source_callback_registry frame_898: Player controller requires source input; recovery probe lacks the required source input tape for post-hit callback.",
+  "interpretation": "This is a real input-driven reach of base DefineSprite_631 frame 887 and sound 581. Frames 934/944/963 are timeline StartSound events on the same base 631 timeline; no DoAction exists at those exact frames. Their source/native timing remains pending until the post-hit source input callback is supplied and a clean Flash capture is run."
+}

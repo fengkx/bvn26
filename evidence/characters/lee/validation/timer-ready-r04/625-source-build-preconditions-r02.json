@@ -1,0 +1,52 @@
+{
+  "status": "prepared_not_captured",
+  "note": "Earlier r01 captures omitted --dynamic-move-case and therefore did not apply hp preconditions. These r02 builds use dynamic source_fixture injection; capture is required to verify resulting source events.",
+  "cases": [
+    {
+      "name": "dead",
+      "run_id": "lee-625-dead-source-r02",
+      "build": "/private/tmp/lee-625-dead-source-r02",
+      "build_json_sha256": "6b1f48ad3ff7914affcc4b5294baf785222dd1326b8b6c78e29e3f9658dfcf95",
+      "case_txt_sha256": "bc7a0c136a9422dd6a16b6dac8e1b991e1520978945041e6704a4cfc804ccd88",
+      "fixture": "evidence/characters/lee/move-cases/lee-574-bisha-625-dead-negative.json",
+      "fixture_sha256": "3d16881dbb405aa137172188c5c3271094f0b864944019ae477978bff0b805c9",
+      "dynamic_move_case": true,
+      "source_precondition_assignments": [
+        "_root.game.p1.mc.hp = 1000.0;",
+        "_root.game.p2.mc.hp = 0.0;"
+      ],
+      "patch_sha256": "5653f4a644fbe7e92925dd67f97580156d03a33dfe1bee8ebff160e6e9d4c1d8",
+      "capture_status": "pending_desktop_token",
+      "identity": {
+        "p1": "小李",
+        "p2": "一护",
+        "sprite_p1": "sprite_518",
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂"
+      }
+    },
+    {
+      "name": "kill",
+      "run_id": "lee-625-kill-source-r02",
+      "build": "/private/tmp/lee-625-kill-source-r02",
+      "build_json_sha256": "c41f2507d089662d998b55943b7555684473333e467ef33cf79569c35920dd68",
+      "case_txt_sha256": "4b30dc2a59397daf2f02fe6cd96e60093aff4c893d78b255e513a0f82df97a17",
+      "fixture": "evidence/characters/lee/move-cases/lee-574-bisha-625-kill-negative.json",
+      "fixture_sha256": "207c37c5aec11b8ce925b571fefa4a621f0e5485bd27bc5f6982bb7bde49b287",
+      "dynamic_move_case": true,
+      "source_precondition_assignments": [
+        "_root.game.p1.mc.hp = 1000.0;",
+        "_root.game.p2.mc.hp = 1.0;"
+      ],
+      "patch_sha256": "d3c16b2653ee73e1a894ce38a1c293f33c50e4d69249efab791c9344d97ae167",
+      "capture_status": "pending_desktop_token",
+      "identity": {
+        "p1": "小李",
+        "p2": "一护",
+        "sprite_p1": "sprite_518",
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂"
+      }
+    }
+  ]
+}

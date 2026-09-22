@@ -1,0 +1,162 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+  "input_delivery": {
+    "status": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "w": "87",
+      "a": "65",
+      "l": "76",
+      "上箭": "38",
+      "下箭": "40",
+      "左箭": "37",
+      "右箭": "39",
+      "N1": "86",
+      "N2": "98",
+      "N3": "66",
+      "N4": "100",
+      "N5": "77",
+      "N6": "78",
+      "right": "68",
+      "attack": "74",
+      "down": "83",
+      "ranged": "85",
+      "jump": "75",
+      "special": "73",
+      "summon": "79"
+    },
+    "reads": 15668,
+    "pressed_reads": {
+      "_level0.game.p1.mc:83": 5,
+      "_level0.game.p1.mc:73": 1,
+      "_level0.game.p2.mc:66": 125
+    }
+  },
+  "events": 24727,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "input_next_display": 1160,
+    "initCtrl": 6,
+    "helper_load": 2,
+    "random": 2,
+    "intro_poll": 21,
+    "intro_poll_state": 21,
+    "state": 1958,
+    "helper_state": 1958,
+    "helper_clip_state": 1958,
+    "helper_lifecycle": 1958,
+    "intro_step": 5,
+    "intro_goto_before": 2,
+    "intro_goto_return": 2,
+    "ready": 1,
+    "source_state_precondition": 2,
+    "key_read": 15668,
+    "done": 1
+  },
+  "frames_after_ready": 700,
+  "termination_policy": "first_done_with_retained_async_tail",
+  "ready": {
+    "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+    "sequence": 2746,
+    "time_ms": 26022,
+    "display_tick": 460,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+      "sequence": 4,
+      "time_ms": 10781,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+      "sequence": 7,
+      "time_ms": 10799,
+      "display_tick": 2,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+      "sequence": 16,
+      "time_ms": 10991,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+      "sequence": 17,
+      "time_ms": 10991,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+      "sequence": 18,
+      "time_ms": 10991,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+      "sequence": 19,
+      "time_ms": 10991,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": null,
+  "samples_before_ready": 0,
+  "sample_intervals_ms": {},
+  "last_states": [
+    {
+      "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+      "sequence": 24719,
+      "time_ms": 49365,
+      "display_tick": 1160,
+      "fight_tick": 700,
+      "kind": "state",
+      "value": "p1,6,f:1:7:96993280:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:0:0:0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "lee-recovery-p2-byakuya-aligned-r02",
+      "sequence": 24723,
+      "time_ms": 49366,
+      "display_tick": 1160,
+      "fight_tick": 700,
+      "kind": "state",
+      "value": "p2,5,f:1:9:116654080:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:72089600:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "d227b07eee7506c877d325be38c75833a986d66696d281956131e532526fd46b",
+  "retained_sha256": {
+    "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "instrumentation.diff": "50eda0f2ecedfedc87851a31318c9948f3981e4acd0c93026eee63455cc659ea",
+    "events.jsonl": "ae01e4ce65d867aa2f78e7e724ed13bc94dc84cdf52696ef5f450e1a88d7cad5",
+    "random-tape.json": "ed2dd5e6e9c29a96d833b871cfa91993a6a3f0cbde01fc5ec1a95e9cd5298f5c",
+    "build.json": "6ce9fe248304e0f77623c475cb50be433e43e27f241e7439e4f99e7c048ba9eb"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

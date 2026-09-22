@@ -1,0 +1,5 @@
+{
+  "logType": "function",
+  "log": "function record(level, ...args) {\n        const receivedMonoMs = performance.now();\n        const message = args.map(format).join(' ').slice(0, legacyMessageLimit);\n        entries.push({\n            value: { time: new Date().toISOString(), level, message },\n            receivedMonoMs,\n        });\n        while (entries.length && (entries[0].receivedMonoMs < receivedMonoMs - logWindowMs || entries.length > legacyEntryLimit)) {\n            entries.shift();\n            dropped++;\n        }\n        if (level === 'error') appendShellEvent('diagnostic_exception', { level, message });\n    }",
+  "context": "{\"schemaVersion\":2,\"runId\":\"ca50ff44-a8c2-4d46-b014-f723b88fdcf9\",\"buildSidecar\":null,\"buildSidecarStatus\":\"unknown\"}"
+}

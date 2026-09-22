@@ -5,15 +5,89 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 PROBES=Path(__file__).resolve().parents[1]/'probes'
 sys.path.insert(0,str(PROBES))
-from move_cases import generate, source_fixture, encode_case, encode_resource_interventions, KEYS
-from compare_mode_reference import compare, FIELDS, cancellation_observation
+sys.path.insert(0, str(PROBES.parent))
+from move_cases import generate, source_fixture, encode_case, encode_resource_interventions, source_state_preconditions, KEYS
+from compare_mode_reference import (compare, FIELDS, cancellation_observation,
+                                    validate_probe_provenance)
 from cancel_cases import apply_source_target, same_window_route
+from test_move_cases import validate_timer_contract
 
 
 class MoveCasesTest(unittest.TestCase):
+    def test_batch_rejects_source_timer_requirement_when_field_is_dropped(self):
+        fixture = {
+            'id': 'timer-contract',
+            'source_build': str(Path(__file__).resolve().parents[2] /
+                                'evidence/characters/lee/original/'
+                                'lee-574-bisha-625-dead-clean-r01/parsed/build.json'),
+            'drive_source_timers': False,
+        }
+        with self.assertRaisesRegex(ValueError, 'source_timer_required'):
+            validate_timer_contract(fixture)
+
+    def test_batch_validates_before_starting_godot(self):
+        from test_move_cases import execute_batch
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            case = root / 'case.json'
+            case.write_text(json.dumps({
+                'id': 'timer-contract-before-run',
+                'source_build': str(Path(__file__).resolve().parents[2] /
+                                    'evidence/characters/lee/original/'
+                                    'lee-574-bisha-625-dead-clean-r01/parsed/build.json'),
+                'drive_source_timers': False,
+            }))
+            output = root / 'out'
+            output.mkdir()
+            with patch('test_move_cases.subprocess.run') as run:
+                with self.assertRaisesRegex(ValueError, 'source_timer_required'):
+                    execute_batch(Path('/tmp/godot'), [case], output)
+                run.assert_not_called()
+
+    def test_ai_provenance_discovers_legacy_build_layout(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            build_dir = root / 'build'
+            build_dir.mkdir()
+            events = build_dir / 'events.gz'
+            events.write_bytes(b'')
+            metadata = build_dir / 'build.json'
+            metadata.write_text(json.dumps({'configuration': {}}))
+            result = validate_probe_provenance(events)
+            self.assertEqual(result['status'], 'unknown')
+            self.assertEqual(Path(result['source_build']), metadata)
+
+    def test_ai_provenance_missing_source_is_unknown(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            events = Path(tmp) / 'events.jsonl'
+            events.write_text('')
+            result = validate_probe_provenance(events)
+            self.assertEqual(result['status'], 'unknown')
+            self.assertIsNone(result['source_build'])
+
+    def test_ai_provenance_explicit_missing_source_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            events = Path(tmp) / 'events.jsonl'
+            events.write_text('')
+            with self.assertRaises(FileNotFoundError):
+                validate_probe_provenance(events, source_build=Path(tmp) / 'missing.json')
+
+    def test_ai_provenance_intervention_is_experimental(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            events = root / 'events.jsonl'
+            events.write_text('')
+            metadata = root / 'native-build.json'
+            metadata.write_text(json.dumps({'frame_order_probe': True}))
+            with self.assertRaisesRegex(ValueError, 'intervention probes'):
+                validate_probe_provenance(events)
+            result = validate_probe_provenance(events, allow_intervention=True)
+            self.assertEqual(result['status'], 'experimental')
+
     def test_cancel_edge_cannot_use_an_unrelated_action_entry(self):
         window = {'start_frame': 234, 'end_frame': 247}
         self.assertFalse(same_window_route([{'frame': 4}, {'frame': 248}], 1, window))
@@ -101,6 +175,20 @@ class MoveCasesTest(unittest.TestCase):
         self.assertIn('if(aiFight == 55)', source_fixture(case))
         self.assertNotIn('resource_intervention', ordinary_fixture)
         self.assertEqual(encode_resource_interventions(case), '55:p1:energy:300:sakura-overlap-refill')
+
+    def test_source_state_preconditions_are_applied_before_first_frame(self):
+        case = generate([('lee', 'p1')], ['wankai'])[0]
+        case['source_state_preconditions'] = {
+            'p1': {'health': 301, 'wudi': False},
+            'p2': {'health': 1000, 'wudi': True},
+        }
+        static = source_fixture(case)
+        self.assertIn('_root.game.p1.mc.hp = 301.0;', static)
+        self.assertIn('_root.game.p1.mc.wudi = false;', static)
+        self.assertIn('source_state_precondition', static)
+        self.assertEqual(source_state_preconditions(case)['p1']['health'], 301)
+        with self.assertRaisesRegex(ValueError, 'unsupported source state'):
+            source_state_preconditions({'source_state_preconditions': {'p1': {'hp': 1}}})
 
     def test_resource_interventions_reject_ambiguous_or_unsupported_fields(self):
         case = generate([('sakura', 'p1')], ['wankai'])[0]

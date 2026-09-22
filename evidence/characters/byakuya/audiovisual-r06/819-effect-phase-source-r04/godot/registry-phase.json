@@ -1,0 +1,18 @@
+{
+  "runtime_hashes": {
+    "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2"
+  },
+  "probe": "godot/tests/byakuya_819_runtime_probe.gd",
+  "rows": [
+    {"phase":"root_observer","fight_tick":13,"actor_frame":817,"helper_frame":1,"effect_frame":null},
+    {"phase":"after_advance","fight_tick":13,"actor_frame":817,"helper_frame":1,"effect_frame":null},
+    {"phase":"root_observer","fight_tick":14,"actor_frame":818,"helper_frame":1,"effect_frame":null},
+    {"phase":"after_advance","fight_tick":14,"actor_frame":818,"helper_frame":1,"effect_frame":null},
+    {"phase":"root_observer","fight_tick":15,"actor_frame":819,"helper_frame":2,"effect_frame":1},
+    {"phase":"after_advance","fight_tick":15,"actor_frame":819,"helper_frame":2,"effect_frame":1},
+    {"phase":"root_observer","fight_tick":16,"actor_frame":820,"helper_frame":3,"effect_frame":2},
+    {"phase":"after_advance","fight_tick":16,"actor_frame":820,"helper_frame":3,"effect_frame":2}
+  ],
+  "interpretation": "Current reverted runtime creates/observes effect frame1 in the same callback as actor819/helper2; source observer has no effect until next callback. No production fix applied."
+}

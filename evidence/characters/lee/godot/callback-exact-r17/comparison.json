@@ -1,0 +1,117 @@
+{
+  "schema": "lee-callback-body-exact-r17",
+  "scope": "Same-source-input callback comparison for observed P1 frame-action markers only; four fields are compared. The source fixture targets frames 62/128, and the raw tape independently proves each enter/exit pair. Not full-state or full-role parity.",
+  "case_id": "frame62-updash-airattack-r04",
+  "source_run_id": "lee-callback-frame62-updash-airattack-r04",
+  "status": "exact_0diff",
+  "fields": [
+    "source_frame",
+    "entering",
+    "decoded_action",
+    "decoded_ql"
+  ],
+  "source": {
+    "raw": "evidence/characters/lee/original/lee-callback-frame62-updash-airattack-r04/events.jsonl",
+    "raw_sha256": "72e4ecfc5d0424ee9858db4c9bdfea2fe1719d36754b8ee31e7a6618f70b9e25",
+    "build": "evidence/characters/lee/original/lee-callback-frame62-updash-airattack-r04/build.json",
+    "build_sha256": "9fc22e4f9859edc454e884273d75a0be800e5ddcc14f1184f2ee9d10d7a3e7cf",
+    "main_swf_sha256": "01e807ec6596a81042afc8399f0dab1fe61ec7414fe4f957d64f49f3ba202372",
+    "lee_swf_sha256": "7719dda3eaa55ebd96a3b682f45e8f592f3e0e837b620af09ad2a4712015ce3d",
+    "fixture": "evidence/characters/lee/original/lee-callback-frame62-updash-airattack-r04/fixture.json",
+    "fixture_sha256": "d31160373d42d802065a1b4efb1a4d3dd7599aea5ce02d007baa9bab13c93edc",
+    "instrumentation": "evidence/characters/lee/original/lee-callback-frame62-updash-airattack-r04/instrumentation.diff",
+    "instrumentation_sha256": "4e463eecd4fe938412a3ab382318c174120a7787a0979b3beeb00ef7d8c0f418",
+    "build_status_field": "built_not_run",
+    "run_id_bound_raw": "lee-callback-frame62-updash-airattack-r04"
+  },
+  "native": {
+    "fixture": "evidence/characters/lee/godot/callback-exact-r17/fixtures/frame62-updash-airattack-r04.json",
+    "fixture_sha256": "b2e0237d36eb3d333b6010d15e6a9bfcde3cdf4006e9445241648638642512e3",
+    "fixture_inputs_setup_helpers_match_source": true,
+    "engine_log": "evidence/characters/lee/godot/callback-exact-r17/retry-01/engine.log",
+    "engine_log_sha256": "65a9d8720fab66d0c59f01dedfb6e28d066f86e0cc8f1f946c14ff3415173c4b",
+    "batch_success": true,
+    "script_errors": [],
+    "runtime_hashes": {
+      "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+      "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+      "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+      "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+      "godot/tests/lee_callback_exact_probe.gd": "b0ca231c9383d424e4e955d69c5f1cf62a3288b710fd8d11ade6a38cba22c022"
+    },
+    "runner_sha256": "b0ca231c9383d424e4e955d69c5f1cf62a3288b710fd8d11ade6a38cba22c022"
+  },
+  "source_events": [
+    {
+      "source_frame": 128,
+      "entering": true,
+      "action": 1.0,
+      "ql": 100.0,
+      "sequence": 6738,
+      "fight_tick": 41
+    },
+    {
+      "source_frame": 128,
+      "entering": false,
+      "action": 1.0,
+      "ql": 100.0,
+      "sequence": 6739,
+      "fight_tick": 41
+    },
+    {
+      "source_frame": 62,
+      "entering": true,
+      "action": 1.0,
+      "ql": 100.0,
+      "sequence": 7162,
+      "fight_tick": 53
+    },
+    {
+      "source_frame": 62,
+      "entering": false,
+      "action": 1.0,
+      "ql": 100.0,
+      "sequence": 7163,
+      "fight_tick": 53
+    }
+  ],
+  "native_events": [
+    {
+      "action": 1.0,
+      "current_frame": 128,
+      "entering": true,
+      "ql": 100.0,
+      "slot": "p1",
+      "source_frame": 128,
+      "tick": 348
+    },
+    {
+      "action": 1.0,
+      "current_frame": 50,
+      "entering": false,
+      "ql": 100.0,
+      "slot": "p1",
+      "source_frame": 128,
+      "tick": 348
+    },
+    {
+      "action": 1.0,
+      "current_frame": 62,
+      "entering": true,
+      "ql": 100.0,
+      "slot": "p1",
+      "source_frame": 62,
+      "tick": 360
+    },
+    {
+      "action": 1.0,
+      "current_frame": 50,
+      "entering": false,
+      "ql": 100.0,
+      "slot": "p1",
+      "source_frame": 62,
+      "tick": 360
+    }
+  ],
+  "differences": []
+}

@@ -1,0 +1,133 @@
+{
+  "scope": "source_display_list_to_godot_live_instance",
+  "fixture": {
+    "fighter": "白哉",
+    "source_frame": 576,
+    "label": "上必杀"
+  },
+  "source_timeline": "data/slices/Byakuya-base.timeline.json",
+  "rows": [
+    {
+      "source": {
+        "depth": 1,
+        "character_id": 3,
+        "name": "AImain",
+        "placed_frame": 1,
+        "ratio": null
+      },
+      "godot": {
+        "path": "root/AImain",
+        "symbol": 3,
+        "depth": 1,
+        "child_frame": 2,
+        "placed_frame": 1,
+        "frame_count": 2
+      },
+      "status": "direct_instance_aligned"
+    },
+    {
+      "source": {
+        "depth": 23,
+        "character_id": 2,
+        "name": "mian",
+        "placed_frame": 1,
+        "ratio": null
+      },
+      "godot": {
+        "path": "root/mian",
+        "symbol": 2,
+        "depth": 23,
+        "child_frame": 1,
+        "placed_frame": 1,
+        "frame_count": 1
+      },
+      "status": "direct_instance_aligned"
+    },
+    {
+      "source": {
+        "depth": 25,
+        "character_id": 5,
+        "name": "jiao",
+        "placed_frame": 1,
+        "ratio": null
+      },
+      "godot": {
+        "path": "root/jiao",
+        "symbol": 5,
+        "depth": 25,
+        "child_frame": 1,
+        "placed_frame": 1,
+        "frame_count": 1
+      },
+      "status": "direct_instance_aligned"
+    },
+    {
+      "source": {
+        "depth": 27,
+        "character_id": 418,
+        "name": null,
+        "placed_frame": 284,
+        "ratio": null
+      },
+      "godot": {
+        "path": "root/#27.0",
+        "symbol": 418,
+        "depth": 27,
+        "child_frame": 1,
+        "placed_frame": 284,
+        "frame_count": 0
+      },
+      "status": "direct_instance_aligned"
+    },
+    {
+      "source": {
+        "depth": 30,
+        "character_id": 2,
+        "name": "bdmn",
+        "placed_frame": 503,
+        "ratio": 502
+      },
+      "godot": {
+        "path": "root/bdmn",
+        "symbol": 2,
+        "depth": 30,
+        "child_frame": 1,
+        "placed_frame": 503,
+        "frame_count": 1
+      },
+      "status": "direct_instance_aligned"
+    }
+  ],
+  "interpretation": "Depth, symbol and placed_frame align for all five direct P1 instances. Source ratio on bdmn is a morph/display ratio (502) and must not be compared as a Godot child frame; source observer current frame is 1. AImain observer frame 0 versus Godot child frame 2 is an observer/runtime representation difference requiring source timeline semantics before parity claim.",
+  "status": "bounded_direct_instance_alignment_only",
+  "effect_418_child_clock": {
+    "source_definition": {
+      "character_id": 418,
+      "type": "DefineShapeTag",
+      "shape_bounds_twips": {
+        "Xmin": 0,
+        "Ymin": 0,
+        "Xmax": 10000,
+        "Ymax": 10000
+      },
+      "referenced_character_ids": [
+        417
+      ]
+    },
+    "source_placement": {
+      "depth": 27,
+      "placed_frame": 284,
+      "current_parent_frame": 576
+    },
+    "godot_observation": {
+      "path": "root/#27.0",
+      "symbol": 418,
+      "depth": 27,
+      "placed_frame": 284,
+      "child_frame": 1,
+      "frame_count": 0,
+      "has_live_timeline": false
+    },
+    "result": "no_local_child_clock; source is a static shape placement, so child frame 1/frame_count 0 is the correct non-timeline representation. The visual comparison boundary is matrix/bitmap placement, not a nested playback frame."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "status": "completed_first_ko_and_round_reset_but_no_terminal_failure",
+  "meaning": "The initial HP=1 KO and natural nextfight reset occurred; input intent left-arrow [305,327) was fully within zhanting=true and produced no P2 keycode-37 reads or movement. Later isolated N1 taps were consumed, but P1 remained HP=1000 through fight_tick 1600 and failure label/frame 1268/1288 were absent. This is a control-flow/input-phase diagnostic, not a runtime defect or terminal-loss acceptance.",
+  "first_p1_zero": {
+    "seq": 11682,
+    "fight_tick": 16,
+    "value": "p1,1086,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,-1,f:-1:4:121634816:0,f:1:8:79429632:0,true,true,true,1,false,0,false"
+  },
+  "post_reset_ready_state": {
+    "seq": 17350,
+    "fight_tick": 290,
+    "value": "p1,3,f:1:8:98068070:26843546,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,true,0,false"
+  },
+  "p2_left_key37_reads": 0,
+  "target_markers": 0,
+  "horizon": 1600,
+  "raw_capture_sha256": "123acaa45753a3fe11a17ef4c675476157957866875263f1859a2b3f0fe7ea95",
+  "raw_capture_gzip_sha256": "eca9e5981a005614ac8dfedec307751be8854249b11f13e3e303ed3c74298f11",
+  "events_sha256": "3c504378088207bbec3a12c4c33049dfc8fa8ccad9cb2d8269325cead1864761",
+  "build_sha256": "d3fe2fb4b95426f82ce7682e9d3753a1a3a8a2e036ba8e843ba3661e2b111cb3",
+  "capture_environment": "see capture-environment.json"
+}

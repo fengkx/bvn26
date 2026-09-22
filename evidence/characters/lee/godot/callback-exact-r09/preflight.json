@@ -1,0 +1,215 @@
+{
+  "schema": "lee-callback-exact-r09-preflight",
+  "scope": "Two same-input headless Godot cases; source build/raw and fixture identities are bound per case. Observer compares all actual target callback occurrences; no Flash/GUI.",
+  "cases": [
+    {
+      "case_id": "defence-1070-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r09/fixtures/defence-1070-p1.json",
+      "fixture_sha256": "09af7fad7dfa11acf95d089e4738b12102dbfc643357a320af7389cb7c215c0b",
+      "source_build_original": "/private/tmp/lee-callback-defence-entry-r03/build.json",
+      "source_build_sha256": "ee6e40c15fdffb19259d183b0b99872bbe70118e093dd654aedc75b0e2b7ec95",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r09/source-builds/defence-1070-p1/build.json",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r09/source-builds/defence-1070-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "e797f14e5e6f25562ce2a643cc756f1d0241f5885cfeef94ea349380c2d0dbff",
+      "source_raw": "evidence/characters/lee/original/lee-callback-defence-entry-r03",
+      "source_raw_sha256": "c519cc0f6283acc6fa799a81e107ee0bc437ac219bdf76b71deedc11244445b5",
+      "source_run_id": "lee-callback-defence-entry-r03",
+      "source_output_main_sha256": "561daadd18694ef5645ea59135bc100e8a4d34fe45eec6db17031b9db09b71af",
+      "source_move_case": {
+        "id": "lee-callback-defence-entry-r03",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "防御2",
+        "scenario": "trade",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "down"
+            ],
+            "start": 10,
+            "end": 13
+          },
+          {
+            "slot": "p2",
+            "keys": [
+              "attack"
+            ],
+            "start": 10,
+            "end": 13
+          }
+        ],
+        "target_frames": [
+          1050,
+          1060
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "onDefence"
+        ],
+        "status": "planned_real_input",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "callback_group": "ko-entry",
+        "callback_purpose": "defence entry marker",
+        "callback_observer": "read-only source callback observer; no schedule/input changes",
+        "source_callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1057,
+            "source_path": "DefineSprite_518/frame_1057/DoAction.as",
+            "action": "防御2",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1070,
+            "source_path": "DefineSprite_518/frame_1070/DoAction.as",
+            "action": "防住",
+            "kind": "frame_action",
+            "slot": "p1"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1083,
+            "source_path": "DefineSprite_518/frame_1083/DoAction.as",
+            "action": "被打",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 300,
+      "target_preflight": [
+        {
+          "source_frame": 1070,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "callback_kind": "frame_action",
+      "notes": "Exact source run/config/helper/input bound; frame62 target was not observed and is not claimed. For held-jump, capture summary establishes 600 actual frames although the prepared build move_case says 300; native duration matches the completed capture."
+    },
+    {
+      "case_id": "held-jump-95-113-p1",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r09/fixtures/held-jump-95-113-p1.json",
+      "fixture_sha256": "4df6d1e0c40cc2adcb37231a12f355da2073280730fdcc8dbbe721081ee94e33",
+      "source_build_original": "/Users/fengkx/me/code/bvn2_6/evidence/characters/lee/original/lee-callback-frame62-held-r01/build.json",
+      "source_build_sha256": "83d99722ce67f104c417048c8e54e749d2f214cbe519fee05f37be090d411ff5",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r09/source-builds/held-jump-95-113-p1/build.json",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r09/source-builds/held-jump-95-113-p1/instrumentation.diff",
+      "source_instrumentation_sha256": "00fa65f49159922bdb2fb8d59abdc3ab986dab89a7ff2fe4745ede2de6dceb75",
+      "source_raw": "evidence/characters/lee/original/lee-callback-frame62-held-r01/events.jsonl",
+      "source_raw_sha256": "5a84afcaff628233a0c4805a7930b0ad7a23329ad91aec4047f935d04aaffa23",
+      "source_run_id": "lee-callback-frame62-held-r01",
+      "source_output_main_sha256": "1055dce884e1c3e42b022f923c24c24d63b14db2d075a3e389452d6b903c03d7",
+      "source_move_case": {
+        "id": "lee-callback-frame62-held-r01",
+        "fighter": "lee",
+        "slot": "p1",
+        "label": "跳",
+        "scenario": "callback_frame62_held_jump",
+        "frames": 300,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 350,
+            "energy": 300
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "jump"
+            ],
+            "start": 10,
+            "end": 110
+          }
+        ],
+        "target_frames": [
+          62
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction"
+        ],
+        "status": "prepared",
+        "fighters": {
+          "p1": "lee",
+          "p2": "yihu"
+        },
+        "p1_helper": "我爱罗",
+        "p2_helper": "魂",
+        "callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 62,
+            "source_path": "DefineSprite_518/frame_62/DoAction.as",
+            "action": "落",
+            "kind": "frame_action",
+            "slot": "p1"
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "小李",
+        "p2": "一护",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "我爱罗",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 600,
+      "target_preflight": [
+        {
+          "source_frame": 95,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 2
+        },
+        {
+          "source_frame": 113,
+          "slot": "p1",
+          "kind": "body_boundary",
+          "enter_count": 2
+        }
+      ],
+      "callback_kind": "frame_action",
+      "notes": "Exact source run/config/helper/input bound; frame62 target was not observed and is not claimed. For held-jump, capture summary establishes 600 actual frames although the prepared build move_case says 300; native duration matches the completed capture.",
+      "callback_capture": "observe all target occurrences through completed 600 fight ticks; do not early-exit after first target pass"
+    }
+  ]
+}

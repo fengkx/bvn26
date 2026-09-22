@@ -7,6 +7,8 @@ var disabled_actions: PackedStringArray = []
 const SourceCoordinateStore = preload("res://source_coordinate.gd")
 
 var ai_timeline_controlled: bool = false
+var _source_goto_pending_frames: Array[int] = []
+var _source_goto_defer_advance_once := false
 
 # Keep source arithmetic out of Node2D's float32 render projection.
 var _source_x: float = 0.0
@@ -138,6 +140,7 @@ var _zhongli_fall: bool = false
 var _js: float = 0.0
 var _jumpinggg: bool = false
 var _energy_event_applied: bool = false
+var _health_events_applied: Dictionary = {}
 var _summon_applied: bool = false
 var _presentation_events_applied: Dictionary = {}
 var _super_events_applied: Dictionary = {}
@@ -213,6 +216,24 @@ func advance_timeline() -> void:
 
 
 func advance_ai_timeline() -> void:
+	if not _source_goto_pending_frames.is_empty():
+		# A controller goto places the destination frame during the previous
+		# display tick. Its frame script enters on this tick. A playing clip then
+		# advances to the following frame in the same display pass; a stopped clip
+		# remains on the destination. Preserve source order when a controller
+		# emits multiple gotos during one callback.
+		for pending_frame: int in _source_goto_pending_frames:
+			_queue_source_frame(pending_frame, _source_goto_defer_advance_once)
+		_source_goto_pending_frames.clear()
+		# A goto issued while a source MovieClip is being re-placed enters its
+		# destination frame on this dispatch, but its first timeline advance is
+		# the following display tick. This preserves the placed-instance lifetime
+		# without suppressing the whole actor from the runner.
+		if _source_goto_defer_advance_once:
+			_source_goto_defer_advance_once = false
+			return
+		if not timeline_playing:
+			return
 	if not timeline_playing:
 		return
 	var frame := current_source_frame() + 1
@@ -237,11 +258,41 @@ func goto_ai_label(label: String, play: bool) -> void:
 		timeline_playing = play
 		return
 	_set_ai_action_label(label, "controller_goto")
+	_source_goto_pending_frames.clear()
 	timeline_playing = play
 	play_source_frame(_action_start)
 	_queue_source_frame(_action_start)
 	_expire_absent_hit_instances()
 	last_event = "action_%s" % label
+
+
+func source_goto_label(label: String, play: bool, defer_frame_script: bool = false) -> void:
+	# Controller MovieClip.gotoAndStop/gotoAndPlay changes the playhead and
+	# queues the destination frame script. It does not synthesize a fighter
+	# action transition; that state is owned by the destination frame script.
+	if label in disabled_actions:
+		return
+	var frames := action_range(label)
+	assert(not frames.is_empty(), "Uncompiled source label: " + label)
+	_action_start = int(frames["start_frame"])
+	_action_end = int(frames["end_frame"])
+	_current_frame = _action_start
+	_source_entry_serial += 1
+	_render_frame()
+	timeline_playing = play
+	if defer_frame_script:
+		_source_goto_defer_advance_once = true
+		if _source_goto_pending_frames.is_empty() or _source_goto_pending_frames[-1] != _current_frame:
+			_source_goto_pending_frames.append(_current_frame)
+	else:
+		# Only coalesce an identical consecutive goto. A -> B -> A is a real
+		# re-entry and must retain both A entries, including a fresh source
+		# entry serial and child placement lifetime.
+		var last_pending_frame := -1
+		if not _ai_pending_frames.is_empty():
+			last_pending_frame = int(_ai_pending_frames[-1].get("frame", -1))
+		if last_pending_frame != _current_frame:
+			_queue_source_frame(_current_frame)
 
 func _set_ai_action_label(label: String, reason: String = "timeline_label") -> void:
 	var frames := action_range(label)
@@ -253,6 +304,7 @@ func _set_ai_action_label(label: String, reason: String = "timeline_label") -> v
 	_action_end = int(frames["end_frame"])
 	# Native event bookkeeping resets without pre-executing source writes.
 	_energy_event_applied = false
+	_health_events_applied.clear()
 	_summon_applied = false
 	_hurt_stop_applied = false
 	_presentation_events_applied.clear()
@@ -396,6 +448,7 @@ func flush_queued_frame_scripts(limit: int = -1) -> void:
 
 func _run_frame_actions() -> void:
 	_apply_source_energy_event()
+	_apply_source_health_event()
 	_apply_summon_event()
 	_apply_presentation_events()
 	_apply_clip_placements()
@@ -585,6 +638,16 @@ func reset_ai_colors() -> void:
 
 func _guard_effect_for_strength(strength: int, xgtype: int) -> String:
 	return _clip_for_strength("bdfyxg2" if xgtype == 2 else "bdfyxg", strength)
+
+
+func emit_source_guard_effect(xgtype: int = 1) -> void:
+	# Source bdfyxg()/bdfyxg2() callbacks run on the placed guard clip after
+	# receiver state has written bdzl. Reuse the same compiled strength table
+	# used by settlement so the callback cannot invent a role-specific effect.
+	var strength := int(ai_source_state.read_field("bdzl"))
+	var effect := _guard_effect_for_strength(strength, xgtype)
+	if effect != "":
+		hit_effect_requested.emit(effect, position, facing)
 
 
 func _defence_xgtype() -> int:
@@ -948,6 +1011,8 @@ func start_action(label: String, reason: String = "runtime_transition") -> void:
 		push_error("Missing source action for %s: %s" % [fighter_name, label])
 		return
 	var before := _diagnostic_state()
+	_source_goto_pending_frames.clear()
+	_source_goto_defer_advance_once = false
 	var previous_action := action
 	action = label
 	if label == "站立":
@@ -962,6 +1027,7 @@ func start_action(label: String, reason: String = "runtime_transition") -> void:
 	if label == "被打" or label == _death_launch_label():
 		_hurt_stop_applied = false
 	_energy_event_applied = false
+	_health_events_applied.clear()
 	_summon_applied = false
 	_presentation_events_applied.clear()
 	_super_events_applied.clear()
@@ -982,12 +1048,15 @@ func start_action(label: String, reason: String = "runtime_transition") -> void:
 	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
-func _queue_source_frame(frame: int) -> void:
+func _queue_source_frame(frame: int, defer_until_next_tick: bool = false) -> void:
 	_reconcile_source_name_bindings()
 	_source_frame_execution_serial += 1
-	_ai_pending_frames.append({"frame": frame,
+	var entry := {"frame": frame,
 		"order": frame_script_sequence.call() if frame_script_sequence.is_valid() else 0,
-		"serial": _source_frame_execution_serial})
+		"serial": _source_frame_execution_serial}
+	if defer_until_next_tick:
+		entry["defer_until_tick"] = diagnostic_tick + 1
+	_ai_pending_frames.append(entry)
 	source_frame_changed.emit(frame)
 
 
@@ -1000,6 +1069,8 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 		initial_count = mini(initial_count, initial_limit)
 	var applied := 0
 	while not _ai_pending_frames.is_empty() and (drain_nested or applied < initial_count):
+		if int(_ai_pending_frames[0].get("defer_until_tick", -1)) > diagnostic_tick:
+			break
 		applied += 1
 		var pending_entry: Dictionary = _ai_pending_frames.pop_front()
 		var pending: int = int(pending_entry["frame"])
@@ -1034,6 +1105,8 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 					_energy_event_applied = true
 				elif event.get("op") == "body_warp":
 					_apply_body_warp_event(event, pending_serial)
+				elif event.get("op") == "root_opponent_warp":
+					_apply_root_opponent_warp(event, pending_serial)
 				elif event.get("op") == "root_clip_rename":
 					_apply_root_clip_rename(event)
 				elif event.get("op") == "clip_placement":
@@ -1572,6 +1645,11 @@ func _clip_past_hit(instance_name: String, projectile: Dictionary) -> bool:
 
 
 func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> bool:
+	# A settled contact owns this child instance until its source placement
+	# expires.  Collision queries describe how the contact was discovered; they
+	# must not erase the one-shot hit state after the child has moved away.
+	if _hit_instances.has(instance_name):
+		return true
 	if projectile.has("collision_queries"):
 		if opponent == null or not is_instance_valid(opponent):
 			return false
@@ -1581,8 +1659,6 @@ func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> 
 			if bounds.has_area() and target.has_area() and SourceHitTest.intersects(bounds, target):
 				return true
 		return false
-	if _hit_instances.has(instance_name):
-		return true
 	if opponent == null or not is_instance_valid(opponent):
 		return false
 	var body := opponent.instance_global_bounds("bdmn")
@@ -1686,12 +1762,33 @@ func change_energy(amount: float) -> void:
 
 
 func _apply_source_energy_event() -> void:
+	# Source-controlled timelines execute energy writes from their compiled
+	# frame statement. The metadata event list is a legacy fallback only; using
+	# both paths replays the same source write after a queued frame transition.
+	if ai_timeline_controlled or source_body != null:
+		return
 	if _energy_event_applied:
 		return
 	for event: Dictionary in _combat.get("energy_events", []):
 		if event["action"] == action and int(event["frame"]) == current_source_frame():
 			change_energy(float(event["delta"]))
 			_energy_event_applied = true
+
+
+func _apply_source_health_event() -> void:
+	var health_events: Array = _combat.get("health_events", [])
+	for event_index in health_events.size():
+		var event: Dictionary = health_events[event_index]
+		if event["action"] != action or int(event["frame"]) != current_source_frame():
+			continue
+		var event_key := "%s:%d:%d:%s" % [action, int(event["frame"]), event_index, str(event.get("source_sha256", ""))]
+		if _health_events_applied.has(event_key):
+			continue
+		_health_events_applied[event_key] = true
+		if ai_source_state.read_field("wudi") == true:
+			continue
+		var loss := float(event["above_damage"]) if health > float(event["threshold"]) else health * float(event["below_ratio"])
+		health -= loss
 
 
 func _apply_summon_event() -> void:
@@ -1805,23 +1902,57 @@ func _apply_body_warp_event(event: Dictionary, invocation_serial: int = -1) -> v
 	# reads the clip's local width. Global bounds include the scene scale and
 	# would shrink the source-authored container warp before applying it to
 	# source_x coordinates.
+	# AS2 keeps a missing `bdmn` as undefined.  The authored arithmetic then
+	# does not produce a usable coordinate write; a present zero-area clip is a
+	# different case and must still contribute width/height zero.
+	var body_exists := "bdmn" in opponent.current_named_instances()
 	var body := opponent.instance_local_bounds("bdmn")
-	var body_size := body.size if body.has_area() else Vector2.ZERO
-	if bool(warp.get("place_x", true)):
+	# Width and height are independent Flash properties.  Do not collapse a
+	# thin (zero-area) but present clip to (0, 0): one axis may still be valid.
+	var body_size := body.size
+	# Only an authored dimension read is poisoned by a missing clip.  A plain
+	# opponent._x/_y assignment remains a valid source write on its own axis;
+	# this matters for mixed scripts such as x-width + plain y.
+	var x_reads_body_width := branch.has("x_bdmn_width")
+	var y_reads_body_height := warp.has("y_bdmn_height")
+	# Flash MovieClip._width/_height round transformed bounds to the nearest twip.
+	# Lee/Yihu: 26.63017 -> 26.65 and 44.71463 -> 44.7; Lee/Naruto:
+	# 26.610... -> 26.6. This quantizes only source dimension reads.
+	var source_body_size := Vector2(roundf(body_size.x * 20.0) / 20.0, roundf(body_size.y * 20.0) / 20.0)
+	if (not x_reads_body_width or body_exists) and bool(warp.get("place_x", true)):
 		source_x = (
 			opponent.source_x
 			+ float(branch.get("x_pixels", 0.0))
-			+ body_size.x * float(branch.get("x_bdmn_width", 0.0))
+			+ source_body_size.x * float(branch.get("x_bdmn_width", 0.0))
 		)
-	if bool(warp.get("place_y", false)):
+	if (not y_reads_body_height or body_exists) and bool(warp.get("place_y", false)):
 		source_y = (
 			opponent.source_y
 			+ float(warp.get("y_pixels", 0.0))
-			+ body_size.y * float(warp.get("y_bdmn_height", 0.0))
+			+ source_body_size.y * float(warp.get("y_bdmn_height", 0.0))
 		)
 	if bool(warp.get("set_jump", false)):
 		_scripted_jump = true
 		airborne = true
+	_body_warps_applied[event_key] = true
+
+
+func _apply_root_opponent_warp(event: Dictionary, invocation_serial: int = -1) -> void:
+	"""Apply a source `_root.game["p" + pn]` container assignment."""
+	if opponent == null or not is_instance_valid(opponent):
+		return
+	var source_path := str(event.get("path", ""))
+	var source_frame := int(event.get("frame", current_source_frame()))
+	var serial := invocation_serial if invocation_serial >= 0 else _source_frame_execution_serial
+	var event_key := "%s:%d:root_opponent_warp:%d" % [source_path, source_frame, serial]
+	if _body_warps_applied.has(event_key):
+		return
+	if bool(event.get("copy_x", false)):
+		opponent.source_x = source_x
+	if bool(event.get("copy_y", false)):
+		opponent.source_y = source_y
+	if bool(event.get("visible", false)):
+		opponent.visible = true
 	_body_warps_applied[event_key] = true
 
 

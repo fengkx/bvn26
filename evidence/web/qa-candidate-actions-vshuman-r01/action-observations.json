@@ -1,0 +1,93 @@
+{
+  "fixture": "mode 3 versus-human; P1 Byakuya + Kon; P2 Lee + Gaara; p1cpu=false; p2cpu=false; QA-only energy seed 300 after ordinary map selection and intro completion",
+  "actions": [
+    {
+      "key": "I",
+      "code": "KeyI",
+      "keyCode": 73,
+      "location": 0,
+      "sentAtEpochMs": 1790048178955,
+      "energy_before": 300,
+      "energy_observed_after": 200,
+      "p1_after": {
+        "action": "空中必杀",
+        "sourceFrame": 512,
+        "hp": 1000
+      },
+      "p2_after": {
+        "action": "被打",
+        "sourceFrame": 1073,
+        "hp": 940
+      },
+      "evidence": "04-p1-i-super"
+    },
+    {
+      "key": "O",
+      "code": "KeyO",
+      "keyCode": 79,
+      "location": 0,
+      "sentAtEpochMs": 1790048337692,
+      "energy_before": 200,
+      "energy_observed_after": 100,
+      "events": [
+        "helper_activate_魂",
+        "summon_剑八"
+      ],
+      "p1_after": {
+        "action": "站立",
+        "helper_action": 1,
+        "helper_attacking": true,
+        "helper_sourceFrame": 50
+      },
+      "p2_after": {
+        "action": "站立",
+        "hp": 1000
+      },
+      "evidence": "05-p1-o-summon"
+    },
+    {
+      "key": "N5",
+      "code": "Numpad5",
+      "keyCode": 101,
+      "location": 3,
+      "sentAtEpochMs": 1790048371193,
+      "energy_before_observation": 300,
+      "energy_observed_after": 80,
+      "p2_after": {
+        "action": "必杀",
+        "sourceFrame": 615,
+        "hp": 1000
+      },
+      "p1_after": {
+        "action": "被打",
+        "hp": 950
+      },
+      "evidence": "06-p2-n5-special",
+      "note": "Report the observed change only; not a fixed-cost claim."
+    },
+    {
+      "key": "N6",
+      "code": "Numpad6",
+      "keyCode": 102,
+      "location": 3,
+      "sentAtEpochMs": 1790048555742,
+      "energy_before": 300,
+      "energy_at_summon_event": 200,
+      "events": [
+        "helper_activate_我爱罗",
+        "summon_天天"
+      ],
+      "p2_after": {
+        "helper_action": 1,
+        "helper_attacking": true,
+        "helper_sourceFrame": 72,
+        "hp": 1000
+      },
+      "p1_after": {
+        "action": "被打",
+        "hp": 790
+      },
+      "evidence": "10-p2-n6-summon"
+    }
+  ]
+}

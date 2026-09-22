@@ -9,6 +9,11 @@ const CANDIDATES := [
 	{"name": "石田", "directory": "yulong", "moves": [KEY_A, KEY_A, KEY_W]},
 ]
 
+const BASE_FORM_CANDIDATES := [
+	{"name": "白哉", "directory": "byakuya", "moves": [KEY_A, KEY_A, KEY_A, KEY_A, KEY_A]},
+	{"name": "小李", "directory": "lee", "moves": [KEY_D, KEY_D, KEY_D, KEY_D, KEY_D, KEY_D, KEY_D, KEY_D, KEY_D, KEY_D]},
+]
+
 
 func _initialize() -> void:
 	_run.call_deferred()
@@ -52,17 +57,86 @@ func _assert_candidate_available(candidate: Dictionary) -> void:
 		"Production intro registry is missing %s" % candidate.directory)
 
 
+func _assert_base_roster_shared_by_vs_modes() -> void:
+	for mode in [2, 3]:
+		game.character_selection.reset(mode)
+		var visible_ids: Array[String] = []
+		for card: Dictionary in game.character_selection.cards:
+			visible_ids.append(str(card.id))
+		assert(visible_ids.has("白哉") and visible_ids.has("小李"),
+			"Base roster differs or is incomplete in VS mode %d" % mode)
+		game.character_selection.leave()
+
+
 func _choose_candidate_moves(moves: Array) -> void:
 	for code: Key in moves:
 		await _tap(code)
 
 
-func _select_match(candidate: Dictionary) -> void:
+func _selection_neighbor(index: int, direction: String) -> int:
+	var point := Vector2i(int(game.character_selection.cards[index].grid[0]), int(game.character_selection.cards[index].grid[1]))
+	var horizontal := direction == "left" or direction == "right"
+	var step := -1 if direction == "left" or direction == "up" else 1
+	var low := 9999
+	var high := 0
+	for card: Dictionary in game.character_selection.cards:
+		var value := int(card.grid[0 if horizontal else 1])
+		low = mini(low, value)
+		high = maxi(high, value)
+	var start := point.x if horizontal else point.y
+	if step < 0 and start <= low:
+		start = high + 1
+	elif step > 0 and start >= high:
+		start = low - 1
+	for offset in [0, -2, 2]:
+		var coordinate := start + step
+		while coordinate >= low and coordinate <= high:
+			var candidate := Vector2i(coordinate, point.y + offset) if horizontal else Vector2i(point.x + offset, coordinate)
+			for next_index in game.character_selection.cards.size():
+				var next_grid: Array = game.character_selection.cards[next_index].grid
+				if candidate == Vector2i(int(next_grid[0]), int(next_grid[1])):
+					return next_index
+			coordinate += step
+	return index
+
+
+func _source_keyboard_path(candidate: Dictionary) -> Array:
+	var target := -1
+	for index in game.character_selection.cards.size():
+		if str(game.character_selection.cards[index].id) == str(candidate.name):
+			target = index
+			break
+	assert(target >= 0, "Source grid has no candidate card")
+	var start := int(game.character_selection.selected[0])
+	var queue: Array = [start]
+	var previous: Dictionary = {start: {"index": -1, "direction": ""}}
+	# P1's source keyboard bindings are WASD; arrows belong to P2.
+	var directions := {"left": KEY_A, "right": KEY_D, "up": KEY_W, "down": KEY_S}
+	while not queue.is_empty() and not previous.has(target):
+		var current: int = queue.pop_front()
+		for direction: String in directions:
+			var next := _selection_neighbor(current, direction)
+			if next == current or previous.has(next):
+				continue
+			previous[next] = {"index": current, "direction": direction}
+			queue.append(next)
+	assert(previous.has(target), "Source grid candidate is unreachable")
+	var path: Array = []
+	var cursor := target
+	while int(previous[cursor]["index"]) >= 0:
+		path.push_front(directions[previous[cursor]["direction"]])
+		cursor = int(previous[cursor]["index"])
+	return path
+
+
+func _select_match(candidate: Dictionary, use_source_path: bool = false) -> void:
 	intro_started[0] = false
 	game = load("res://main.tscn").instantiate()
 	root.add_child(game)
 	game.set_physics_process(false)
 	await process_frame
+	if use_source_path:
+		_assert_base_roster_shared_by_vs_modes()
 	_assert_candidate_available(candidate)
 	game.battle_intro.fight_started.connect(func() -> void: intro_started[0] = true)
 
@@ -77,8 +151,11 @@ func _select_match(candidate: Dictionary) -> void:
 	assert(game.session.root_label == "选人画面")
 	assert(game.session.modo == 3 and game.character_selection.phase == 0)
 
-	# All confirmations use the production roster through normal keys.
-	await _choose_candidate_moves(candidate.moves)
+	if use_source_path:
+		for code: Key in _source_keyboard_path(candidate):
+			await _tap(code)
+	else:
+		await _choose_candidate_moves(candidate.moves)
 	assert(game.character_selection.fighters[0] == str(candidate.name))
 	await _tap(KEY_J)
 	await _confirm_after_source_delay()
@@ -167,8 +244,14 @@ func _close_game() -> void:
 
 
 func _run() -> void:
-	for candidate: Dictionary in CANDIDATES:
-		await _select_match(candidate)
+	var candidates: Array = CANDIDATES
+	var use_source_path := false
+	for argument in OS.get_cmdline_user_args():
+		if str(argument) == "--base-forms":
+			candidates = BASE_FORM_CANDIDATES
+			use_source_path = true
+	for candidate: Dictionary in candidates:
+		await _select_match(candidate, use_source_path)
 		assert(game.naruto.fighter_directory.get_file() == str(candidate.directory))
 		assert(game.naruto_helper.helper_id == "松本")
 		await _finish_natural_intro()

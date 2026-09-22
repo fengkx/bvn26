@@ -1,0 +1,124 @@
+{
+  "status": "rejected_runtime_experiment_reverted",
+  "experiment": "Moved source_callbacks.dispatch after root_observer to mimic source fight0 state-before-BODY order.",
+  "fixture": "lee-1049-defence-air_target",
+  "native_output": "/private/tmp/lee-phasefix-r01/air.json",
+  "native_output_sha256": "9fb66b2f5f2e22655d3dfd279d56b964eedd7594a182a423d238d0a7f8132d1b",
+  "compare": "/private/tmp/lee-phasefix-r01/air.compare.json",
+  "compare_sha256": "aeb210a858bf60dea69e381c50b5068088040dc30471e9455bf3900853f397b4",
+  "source_states": 602,
+  "native_states": 602,
+  "difference_count": 100,
+  "first_differences": [
+    {
+      "tick": 6,
+      "slot": "p2",
+      "fields": {
+        "frame": {
+          "original": 40.0,
+          "native": 7
+        }
+      }
+    },
+    {
+      "tick": 7,
+      "slot": "p1",
+      "fields": {
+        "frame": {
+          "original": 1.0,
+          "native": 8
+        }
+      }
+    },
+    {
+      "tick": 9,
+      "slot": "p2",
+      "fields": {
+        "y": {
+          "original": -39.0,
+          "native": -25.0
+        },
+        "touch": {
+          "original": false,
+          "native": true
+        },
+        "touchFloor": {
+          "original": false,
+          "native": true
+        }
+      }
+    },
+    {
+      "tick": 10,
+      "slot": "p2",
+      "fields": {
+        "y": {
+          "original": -52.0,
+          "native": -39.0
+        }
+      }
+    },
+    {
+      "tick": 11,
+      "slot": "p1",
+      "fields": {
+        "frame": {
+          "original": 1049.0,
+          "native": 5
+        }
+      }
+    },
+    {
+      "tick": 11,
+      "slot": "p2",
+      "fields": {
+        "y": {
+          "original": -64.0,
+          "native": -52.0
+        }
+      }
+    },
+    {
+      "tick": 12,
+      "slot": "p1",
+      "fields": {
+        "action": {
+          "original": 2.0,
+          "native": 0.0
+        }
+      }
+    },
+    {
+      "tick": 12,
+      "slot": "p2",
+      "fields": {
+        "y": {
+          "original": -75.0,
+          "native": -64.0
+        }
+      }
+    },
+    {
+      "tick": 13,
+      "slot": "p1",
+      "fields": {
+        "frame": {
+          "original": 1050.0,
+          "native": 1051
+        }
+      }
+    },
+    {
+      "tick": 13,
+      "slot": "p2",
+      "fields": {
+        "y": {
+          "original": -85.0,
+          "native": -75.0
+        }
+      }
+    }
+  ],
+  "conclusion": "Global callback reorder is rejected: it creates 100 differences beginning tick6/tick7 and shifts movement/timeline behavior. Production order was restored. The source fight0 touchFloor discrepancy requires a narrower lifecycle/observer boundary explanation; no runtime change is accepted from this experiment.",
+  "runtime_main_sha256_after_revert": "d38d5e6ddbde661efa991b96b1c0de9034c046b6b4a9aa83ff63ac6a55dfea00"
+}

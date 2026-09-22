@@ -1,6 +1,6 @@
 {
   "format": "bvn26-coverage-v1",
-  "note": "配置包含形态和援助，不等于可选角色数。布尔值表示逐项验收通过，不表示代码或素材存在；佐助、卡卡西、恋次基础形态与鼬援助已接入源驱动选人/开场，均保留 partial 边界。佐助18个基础形态对照已在清洁输入下匹配，66个边界案完成native target-reach且66/66显式援助配置原版/native对照均以602/602匹配、无差异或工具错误；卡卡西最终冻结回归20案（19个常规案加no-hit）全部matched；鼬援助482行仅六个公共字段matched，hits/atm1/atm2/atm3尚未比较；恋次54案显式援助配置native复跑匹配，但r04 freeze前后字段待校正。视听/浏览器原版对照、全角色验收与万解/转换仍待完成或按用户要求暂缓。",
+  "note": "配置包含形态和援助，不等于可选角色数。布尔值表示逐项验收通过，不表示代码或素材存在；佐助、卡卡西、恋次基础形态与鼬援助已接入源驱动选人/开场，均保留 partial 边界。佐助18个基础形态对照已在清洁输入下匹配，66个边界案完成native target-reach且66/66显式援助配置原版/native对照均以602/602匹配、无差异或工具错误；卡卡西最终冻结回归20案（19个常规案加no-hit）全部matched；鼬援助482行仅六个公共字段matched，hits/atm1/atm2/atm3尚未比较；恋次54案显式援助配置native复跑匹配，但r04 freeze前后字段待校正。视听/浏览器原版对照、全角色验收与万解/转换仍待完成或按用户要求暂缓。 As of 2026-09-22, user-directed production availability includes only the Byakuya and Lee base forms; their fighter rows remain partial and do not imply full parity.",
   "fighters": [
     {
       "id": "日番谷",
@@ -332,14 +332,15 @@
       "assist_source": null,
       "clone_of": null,
       "WKframe": null,
-      "status": "not_started",
+      "status": "partial",
       "source_available": true,
       "animation": false,
-      "combat": false,
+      "combat": true,
       "transform": false,
       "ai": false,
-      "replay": false,
-      "web": false
+      "replay": true,
+      "web": false,
+      "notes": "178 current cases: 167 source matched at 602/602 with zero differences; 11 disabled-negative; missing_source=0 after r11 filled the five cases absent from superseded r10. Audio, visual/HUD, boot/intro/nextReady and full Web remain pending. fangyux parent-controller scope remains unverified. Base form is published in the production selector by user direction (2026-09-22); status remains partial, and no transformation form is opened."
     },
     {
       "id": "茶渡",
@@ -362,14 +363,15 @@
       "assist_source": null,
       "clone_of": null,
       "WKframe": null,
-      "status": "not_started",
+      "status": "partial",
       "source_available": true,
       "animation": false,
-      "combat": false,
+      "combat": true,
       "transform": false,
       "ai": false,
-      "replay": false,
-      "web": false
+      "replay": true,
+      "web": false,
+      "notes": "186 merged cases: 184 source validated; 2 pending. Audio/visual/HUD, boot/intro/nextReady, complete Web and two death-boundary cases remain pending. fangyux parent-controller scope remains an unverified probe question; no unproven runtime fix accepted. Base form is published in the production selector by user direction (2026-09-22); status remains partial, and no transformation form is opened."
     },
     {
       "id": "宁次",

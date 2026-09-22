@@ -1,0 +1,21 @@
+{
+  "format": "lee-ko-nextfight-source-first-r01",
+  "status": "production_gap_reproduced_shared_fix_required",
+  "source": {
+    "controller": "godot/generated/main/ko/controller.gd:58-75",
+    "frame_script_order": "source timer fire is after state at fight_tick N; next source state at N+1 is frame1 with retained p2 action/hstm/hits; frame2 at N+2 clears them",
+    "source_invariant": "nextfight writes rounds/focus, goto p1/p2 stand, chushi, fall/touch/sw, ready. chushi writes health and placement/facing. It does not write actor action, hits, or hstm.",
+    "place_object_move": "No new fighter PlaceObject on round reset; existing fighter instances are goto targets. New frame callbacks obey next-frame dispatch.",
+    "leave_label": "goto stand with play=true; frame1 state is observed before frame1 callback settlement, frame2 follows.",
+    "same_input_evidence": "source-timer-hp1-r01, source-timer-kill700-r01, byakuya-timer700-r01; all raw timer fire events occur after same-fight-tick state sequence and before next frame1 state."
+  },
+  "runtime_gap": {
+    "file": "godot/main.gd",
+    "lines": "924-932",
+    "behavior": "_ko_service goto calls actor.start_action(label) for non-AI timeline actors; start_action immediately changes action and queues frame1, so the next root snapshot loses source-retained action/hstm/hits.",
+    "observed": "After a generic external-tape callback, frame/position/timer phase can match; remaining strict differences are exactly p2 action/hstm/hits at first post-reset snapshot unless the runner writes fields (which is rejected).",
+    "required_owner": "integration/shared runtime",
+    "proposed_rule": "Introduce a source-goto path for controller timeline goto that changes the playhead/playing state and queues the frame script without synthesizing a fighter action transition or clearing source state. Preserve existing action/hits/hstm until the placed frame's next source callback updates them. Validate against all three timer fixtures and existing KO regressions."
+  },
+  "runner_policy": "The temporary field-rewrite runner is diagnostic_not_accepted and must not be promoted."
+}

@@ -1,0 +1,42 @@
+{
+  "format": "byakuya-ai-visual-repro-index-v1",
+  "commands": [
+    {
+      "command": "/private/tmp/godot-4.7.2/Godot.app/Contents/MacOS/Godot --path godot --headless -s res://tests/byakuya_ai_single_dispatch_probe.gd",
+      "exitcode": 0,
+      "result": "matched"
+    }
+  ],
+  "hashes": {
+    "probe_script": {
+      "path": "godot/tests/byakuya_ai_single_dispatch_probe.gd",
+      "sha256": "50b28daf48210f45e5423ffb62964eeced67992ed2286b15fd10167a2645e8fb"
+    },
+    "source_context_fixture": {
+      "path": "evidence/characters/byakuya/ai-clean-r01/source-context-r03.json",
+      "sha256": "318288351c5ca7bdea49781e4f2973fea367fab4de8258d80d00cc625949a046"
+    },
+    "formal_result": {
+      "path": "evidence/characters/byakuya/ai-clean-r01/decision-probe/godot-single-dispatch-formal-r03.json",
+      "sha256": "73868e095268e4b1a5e45cac186eca137e12beaa1eb645577f165f6206ebaaef"
+    },
+    "jump_phase_audit": {
+      "path": "evidence/characters/byakuya/ai-clean-r01/decision-probe/jump-phase-audit.json",
+      "sha256": "65bb15c935c0253c8e1bb77e13ad54ad4b142d58b0c00987a17d2a1e67a3a39d"
+    },
+    "visual_geometry_audit": {
+      "path": "evidence/characters/byakuya/audiovisual-r03/geometry-audit-r01.json",
+      "sha256": "ae8b96bf2b8b3fb1545778f2078675e44316b4086d148a7bc53e26a62d8f6a63"
+    },
+    "visual_692_freeze": {
+      "path": "evidence/characters/byakuya/audiovisual-r03/original/byakuya-692-freeze/visual-freeze-audit-r10.json",
+      "sha256": "584b0ecbe8206d0cfb1e8a970224717b83e8d5f7dfa380d36147d8fd19619fc9"
+    },
+    "visual_464_freeze": {
+      "path": "evidence/characters/byakuya/audiovisual-r03/original/byakuya-464-freeze/visual-freeze-audit-byakuya-freeze-r11.json",
+      "sha256": "83218550206f218eaba376b1cc1a44e80af2b2d0cf54327f9f1a0af8d3003a71"
+    }
+  },
+  "ai_scope": "2 source-observed callback decisions; service calls recorded only, callback side-effect parity excluded; no boot/intro/full-AI parity",
+  "visual_scope": "valid recursive native freezes r10/r11 plus Godot main-scene captures; HUD/timer/render geometry boundaries remain"
+}

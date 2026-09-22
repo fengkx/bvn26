@@ -1,0 +1,138 @@
+{
+  "status": "diverged",
+  "scope": "fighter_ai_only",
+  "ready_boundary": "native fight_tick 0 and Godot post-intro tick 0",
+  "native_state_rows": 362,
+  "godot_state_rows": 362,
+  "ticks_compared": 181,
+  "fields_compared": [
+    "frame",
+    "action"
+  ],
+  "difference_count": 370,
+  "first_difference": {
+    "key": [
+      0,
+      "p1"
+    ],
+    "field": "frame",
+    "native": 1,
+    "godot": 5
+  },
+  "native_first_rows": [
+    {
+      "tick": 0,
+      "slot": "p1",
+      "frame": 1,
+      "raw": [
+        "p1",
+        "1",
+        "f:1:8:98068070:26843546",
+        "f:-1:4:104857600:0",
+        "f:1:6:104857600:0",
+        "0",
+        "f:1:9:131072000:0",
+        "f:1:0:0:0",
+        "false",
+        "true",
+        "undefined",
+        "0",
+        "false",
+        "0",
+        "false"
+      ],
+      "action": 0,
+      "hp": "f:1:9:131072000:0",
+      "ql": "f:1:0:0:0",
+      "paused": false,
+      "x_raw": 98068070,
+      "y_raw": 26843546
+    },
+    {
+      "tick": 0,
+      "slot": "p2",
+      "frame": 3,
+      "raw": [
+        "p2",
+        "3",
+        "f:1:9:83505971:13421773",
+        "f:-1:4:104857600:0",
+        "f:-1:6:104857600:0",
+        "0",
+        "f:1:9:131072000:0",
+        "f:1:0:0:0",
+        "false",
+        "true",
+        "undefined",
+        "0",
+        "false",
+        "0",
+        "false"
+      ],
+      "action": 0,
+      "hp": "f:1:9:131072000:0",
+      "ql": "f:1:0:0:0",
+      "paused": false,
+      "x_raw": 83505971,
+      "y_raw": 13421773
+    }
+  ],
+  "godot_first_rows": [
+    {
+      "tick": 0,
+      "slot": "p1",
+      "frame": 5,
+      "action": 0,
+      "energy": 0.0,
+      "x": 374.1,
+      "y": -25.0
+    },
+    {
+      "tick": 0,
+      "slot": "p2",
+      "frame": 2,
+      "action": 0,
+      "energy": 0.0,
+      "x": 637.1,
+      "y": -25.0
+    }
+  ],
+  "limits": [
+    "Native raw geometry/HP/energy encodings are retained; only frame/action are compared here because Godot snapshot field mapping is not yet source-normalized.",
+    "Native random stream is fighter-filtered (205 records); main-scene random record is separately retained and not included in this fighter-only scope."
+  ],
+  "all_native_state_fields": [
+    "slot",
+    "frame",
+    "body_transform",
+    "hurt_transform",
+    "attack_transform",
+    "source_action",
+    "hp_transform",
+    "ql_transform",
+    "sw",
+    "timeline_playing",
+    "touch",
+    "hits",
+    "paused",
+    "hstm",
+    "hurtSkling"
+  ],
+  "godot_captured_fields": [
+    "tick",
+    "p1_name",
+    "p2_name",
+    "p1_frame",
+    "p2_frame",
+    "p1_action",
+    "p2_action",
+    "p1_energy",
+    "p2_energy",
+    "p1_x",
+    "p2_x",
+    "p1_y",
+    "p2_y",
+    "p2_cpu"
+  ],
+  "comparison_note": "All 362 source and 362 Godot rows are aligned by fight_tick and slot. Frame/action are directly compared; native full raw state and Godot full captured rows are retained in the paired artifacts. First difference is the Ready boundary p1 frame (native 1 vs Godot 5), followed by p2 frame (native 3 vs Godot 2)."
+}

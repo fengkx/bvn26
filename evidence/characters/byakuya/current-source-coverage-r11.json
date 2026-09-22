@@ -1,0 +1,33 @@
+{
+  "schema": "byakuya.current-source-coverage.v11",
+  "runtime": {
+    "main_sha256": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "fighter_runtime_sha256": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "runner_sha256": "b026d3f98c6c95ad9f8d8e437e3b13f2c24185ce8e071bca72b4d830a9c9d15d"
+  },
+  "matrix": {
+    "fixture_count": 178,
+    "disabled_negative": 11,
+    "active": 167,
+    "validated_source_same_input": 167,
+    "different": 0,
+    "pending": 0
+  },
+  "source_map": "evidence/characters/byakuya/validation/source-fixture-map-r02/manifest.json",
+  "compare_batches": {
+    "boundary_map_raw": "evidence/characters/byakuya/godot-compare-current-r11/manifest.json",
+    "standalone_and_new": "evidence/characters/byakuya/godot-compare-current-r09",
+    "new_690_hp1": "evidence/characters/byakuya/godot-compare-current-r09/690-hp1.json",
+    "new_455": "evidence/characters/byakuya/godot-compare-current-r09/455-neutral.json",
+    "new_576": "evidence/characters/byakuya/godot-compare-current-r11/576-neutral.json",
+    "new_68": "evidence/characters/byakuya/godot-compare-current-r11/68-neutral.json"
+  },
+  "superseded": {
+    "id": "byakuya-690-bishaSuper-hp1-r09",
+    "old_raw": "evidence/characters/byakuya/original/byakuya-690-bishaSuper-hp1-ko-r01/events.jsonl",
+    "reason": "hp1 diagnostic capture is superseded by the canonical both-health-1000 source capture",
+    "replacement": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-energy_exact/original-events.jsonl.gz",
+    "status": "superseded_invalid_precondition"
+  },
+  "notes": "All 167 active base-form fixtures have current-hash source/native actor-field evidence. The 690 exact case is bound to boundary-r03 raw/build with both players health 1000 and matched 602/602; the retained hp1/KO artifacts are historical diagnostics. Eleven disabled-negative fixtures remain outside active."
+}

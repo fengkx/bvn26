@@ -22,6 +22,8 @@ var countdown: MatchCountdown
 var timeout_timeline: KoTimeline
 var timeout_clip: KoClip
 var nextfight_from_timeout := false
+var _source_nextfight_goto_phase := false
+var _intro_just_finished := false
 var config_menu: ConfigMenu
 var pause_menu: BattlePauseMenu
 var health_hud: HealthHud
@@ -640,6 +642,9 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	black_mu.advance_display_timeline()
 	# Both keyboard and AI actors use the same registered source callbacks.
 	battle_intro.tick(1.0 / Engine.physics_ticks_per_second, session.is_slot_down("j") or session.is_slot_down("N1"), true)
+	# The ready clip's terminal frame writes the fight-start flag after the
+	# current root snapshot. Keep the pre-callback floor state for that sample.
+	var intro_boundary_pending: bool = battle_intro.active and battle_intro.clips.ready.current_source_frame() == 127
 	if timeout_timeline != null:
 		timeout_timeline.display_tick = physics_tick + 1
 		timeout_timeline.advance_timelines()
@@ -727,26 +732,42 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if ko_timeline != null:
 		ko_timeline.run_frame_actions()
 		ko_clip.refresh_from_scheduler()
-	battle_intro.run_frame_actions()
 	# The older HUD callback observes newer fighter frame-script settlement
 	# before the root snapshot (r15 source sequences 48536–48541).
 	if source_health_rules != null:
 		source_health_rules.run_pending_frame()
 	health_hud.spec["placement"] = battle_intro.spec["hud_frames"][str(battle_intro.hud_frame)]
 	# DefineSprite_1991's older enterFrame clamps the world after actor
-	# callbacks, before the root observer and deferred goto frame scripts.
-	_apply_focus()
-	game_world.enter_frame(naruto, ichigo, helpers)
+	# callbacks, before the root observer and deferred goto frame scripts. The
+	# first fight snapshot is a boundary: Flash observes it before the intro
+	# clip's final frame can clamp touchFloor, so defer this one world callback.
+	var defer_world_for_intro_boundary: bool = _intro_just_finished or intro_boundary_pending
+	_intro_just_finished = false
+	if not defer_world_for_intro_boundary:
+		_apply_focus()
+		game_world.enter_frame(naruto, ichigo, helpers)
 	for event: Dictionary in recorded_events:
 		if event["phase"] == "before_root_observer":
 			assert(event["kind"] == "nextfight" and ko_recorded_timers)
 			assert(ko_nextfight_timer != null, "Recorded nextfight has no live source interval")
 			ko_nextfight_timer.timeout.emit()
+	# Ready's frame actions are source callbacks. They run after actor BODY
+	# callbacks but before the root state snapshot on the same display.
+	var intro_was_active := battle_intro.active
+	battle_intro.run_frame_actions()
+	if intro_was_active and not battle_intro.active:
+		_intro_just_finished = true
 	# The analysis root observer precedes callback-generated target scripts.
 	# Its terminal capture issues fscommand(quit) at this point. Live play has
 	# no observer and always completes the remaining frame work.
-	if root_observer.is_valid() and root_observer.call():
+	var observer_terminal := false
+	if root_observer.is_valid():
+		observer_terminal = root_observer.call()
+	if observer_terminal:
 		return
+	if defer_world_for_intro_boundary:
+		_apply_focus()
+		game_world.enter_frame(naruto, ichigo, helpers)
 	# Goto targets wait behind the other actors' already queued frame scripts.
 	while true:
 		var next_fighter: FighterRuntime
@@ -765,7 +786,12 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 			continue
 		if next_fighter == null:
 			break
+		var pending_before_flush := next_fighter._ai_pending_frames.size()
 		next_fighter.flush_queued_frame_scripts(1)
+		# A newly placed source frame may be intentionally deferred to the next
+		# display tick. Do not spin on an entry that the lifecycle gate rejected.
+		if next_fighter._ai_pending_frames.size() == pending_before_flush:
+			break
 	if opponent_driver != null:
 		opponent_driver.controller.synchronize(physics_tick)
 	if cpu_services != null:
@@ -924,11 +950,10 @@ func _ko_service(operation: String, args: Array) -> Variant:
 		"goto":
 			var actor := _ko_actor(str(args[0]))
 			if actor != null:
-				if actor.ai_timeline_controlled:
-					actor.goto_ai_label(str(args[1]), bool(args[2]))
-				else:
-					actor.start_action(str(args[1]))
-					actor.timeline_playing = bool(args[2])
+				# This service is called by an extracted MovieClip controller.
+				# Its goto must preserve actor state until the destination frame
+				# script runs; AI controller gotos use goto_ai_label directly.
+				actor.source_goto_label(str(args[1]), bool(args[2]), _source_nextfight_goto_phase)
 			elif args[0] in ["_root.p1win", "_root.p2win"]:
 				# Sprite 1848 frame 67 addresses missing root aliases. The real
 				# HUD clips live under xuetiao; only updateWins reaches them.
@@ -1016,10 +1041,12 @@ func _ko_clear_interval(interval_name: String) -> void:
 
 
 func _ko_nextfight() -> void:
+	_source_nextfight_goto_phase = true
 	if nextfight_from_timeout and timeout_timeline != null:
 		timeout_timeline.controller.nextfight()
 	elif ko_timeline != null:
 		ko_timeline.controller.nextfight()
+	_source_nextfight_goto_phase = false
 
 
 func _ko_fight_started() -> void:
@@ -1105,7 +1132,8 @@ func _start_combat_drivers() -> void:
 		opponent_input_context = preload("res://player_body_driver.gd").Context.new(ichigo)
 		opponent_input_context.use_ai = false
 	opponent_driver.configure(ichigo, ichigo.fighter_directory + "/player_controller", platforms,
-		ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false, source_callbacks, opponent_input_context)
+		ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false,
+		source_callbacks, opponent_input_context)
 	opponent_driver.controller.context.use_ai = session.p2cpu
 	if opponent_input_context != null:
 		opponent_driver.controller.key_reader = opponent_input_context.source_key
@@ -1296,6 +1324,10 @@ func _refresh_fight_labels() -> void:
 	health_hud.refresh()
 	naruto_energy.energy = naruto.energy
 	ichigo_energy.energy = ichigo.energy
+	# The qt301 nested child follows the source display clock, independently
+	# from ql assignments. Both bars receive the same completed display tick.
+	naruto_energy.advance_display_tick(physics_tick)
+	ichigo_energy.advance_display_tick(physics_tick)
 
 
 func _set_diagnostic_actor(fighter: FighterRuntime, slot: String) -> void:

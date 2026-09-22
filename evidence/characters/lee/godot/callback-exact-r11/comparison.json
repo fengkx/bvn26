@@ -1,0 +1,364 @@
+{
+  "schema": "lee-callback-exact-r11",
+  "scope": "Same-source-run bounded body frame-action callbacks only; compare source_frame, entering, action and decoded ql. This is not full-state or full-role parity.",
+  "batch_exitcode": 0,
+  "script_error": false,
+  "runtime_file_hashes": {
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "godot/main.gd": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "godot/helper_runtime.gd": "4a0f08ff087a498e9b15ed37bc166e2af9580ed4aa6b8e7853eaf742ce4f94f7",
+    "godot/source_callback_registry.gd": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2",
+    "godot/generated/fighters/lee/player_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+    "godot/generated/fighters/lee/ai_controller/controller.gd": "be1ff8ab1f5decfd24cf5f2430fc229cb7ff18dcc2c1b7f99a7e7228a23c87cf",
+    "godot/tests/lee_callback_exact_probe.gd": "d71fe8bc151c168ffda1f91c6773822b9631c2ed9c11de2fb3942c929d0d77ae"
+  },
+  "godot_log_sha256": "26646af541c1ea63faa162d061f792834a14894e39982b5ab8c38696a4f0a3e0",
+  "cases": [
+    {
+      "case_id": "super-953-p1",
+      "status": "exact_0diff",
+      "slot": "p1",
+      "callback_kind": "body_boundary/frame_action",
+      "provenance": {
+        "source_run_id": "lee-callback-ground-super-frame953-r01",
+        "source_raw": "evidence/characters/lee/original/lee-callback-ground-super-frame953-r01/events.jsonl",
+        "source_raw_sha256": "8885b1f61d8ef771f826295254f3cd4b7d2ec634cd0f406278235344118cb313",
+        "source_build_copy": "evidence/characters/lee/godot/callback-exact-r11/source-builds/super-953-p1/build.json",
+        "source_build_sha256": "cd14b9a1a62a63d4709a11e78ec02caa5011f72493abab20dba93b267cf6285a",
+        "source_instrumentation_sha256": "19bb5d891e768c89e9f1af0e2cf1bde48db5129fb2429dd938b5e74dd9444bec",
+        "source_output_main_sha256": "6dc6a5e4baf1d81593c5a0a64b44438b4b6275e9ac8e1da7ad61e9a327331319",
+        "source_build_status_field": "built_not_run",
+        "source_capture_done_marker": true,
+        "source_move_case": {
+          "id": "lee-callback-ground-super-frame953-r01",
+          "fighter": "lee",
+          "slot": "p1",
+          "label": "超必杀",
+          "scenario": "callback_ground_super_frame953",
+          "frames": 300,
+          "setup": {
+            "p1": {
+              "x": 300,
+              "energy": 300
+            },
+            "p2": {
+              "x": 350,
+              "energy": 300
+            }
+          },
+          "inputs": [
+            {
+              "slot": "p1",
+              "keys": [
+                "down",
+                "special"
+              ],
+              "start": 10,
+              "end": 13
+            }
+          ],
+          "target_frames": [
+            953
+          ],
+          "has_source_timeline": true,
+          "source_dispatch": [
+            "doAllAction",
+            "onDefence",
+            "onDashing"
+          ],
+          "status": "prepared",
+          "fighters": {
+            "p1": "lee",
+            "p2": "yihu"
+          },
+          "p1_helper": "我爱罗",
+          "p2_helper": "魂",
+          "callback_targets": [
+            {
+              "source_sprite_id": 518,
+              "source_frame": 953,
+              "source_path": "DefineSprite_518/frame_953/DoAction.as",
+              "action": "超必杀",
+              "kind": "frame_action",
+              "slot": "p1"
+            }
+          ]
+        },
+        "source_build_config": {
+          "modo": 3,
+          "p1": "小李",
+          "p2": "一护",
+          "p2cpu": false,
+          "AI": 5,
+          "stage": "现世",
+          "p1sf": "我爱罗",
+          "p2sf": "魂"
+        },
+        "native_fixture": "evidence/characters/lee/godot/callback-exact-r11/fixtures/super-953-p1.json",
+        "native_fixture_sha256": "90135f9e2fe50e6ac1c3c8cf352f926d8c1839355fdc5c82254afb5b26a05fb1",
+        "input_setup_helpers_exact_match": true
+      },
+      "source_event_count": 2,
+      "native_event_count": 2,
+      "source_events": [
+        {
+          "source_frame": 953,
+          "entering": true,
+          "action": 0.0,
+          "ql": 0.0,
+          "seq": 10129,
+          "display_tick": 750,
+          "fight_tick": 287
+        },
+        {
+          "source_frame": 953,
+          "entering": false,
+          "action": 0.0,
+          "ql": 0.0,
+          "seq": 10130,
+          "display_tick": 750,
+          "fight_tick": 287
+        }
+      ],
+      "native_events": [
+        {
+          "action": 0.0,
+          "current_frame": 953,
+          "entering": true,
+          "ql": 0.0,
+          "slot": "p1",
+          "source_frame": 953,
+          "tick": 594
+        },
+        {
+          "action": 0.0,
+          "current_frame": 50,
+          "entering": false,
+          "ql": 0.0,
+          "slot": "p1",
+          "source_frame": 953,
+          "tick": 594
+        }
+      ],
+      "compared_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "diffs": []
+    },
+    {
+      "case_id": "defence-1050-1057-p1",
+      "status": "exact_0diff",
+      "slot": "p1",
+      "callback_kind": "body_boundary/frame_action",
+      "provenance": {
+        "source_run_id": "lee-callback-defence-frame1057-r02",
+        "source_raw": "evidence/characters/lee/original/lee-callback-defence-frame1057-r02/events.jsonl",
+        "source_raw_sha256": "55ccd2bd549f9040fe9485ccbd26e605c342f0dfe318b3a589eb1370c0695943",
+        "source_build_copy": "evidence/characters/lee/godot/callback-exact-r11/source-builds/defence-1050-1057-p1/build.json",
+        "source_build_sha256": "2bc2e6bc4a334a766bf5656b0821cccc596d1b4af00423973fe6c69e14d57275",
+        "source_instrumentation_sha256": "ed4e4de729b13d9a58d31b0f7f6a576f54d69c73f76bd456c944214a85ab6e39",
+        "source_output_main_sha256": "dc6ebca6d38418a889c9f6e8d9c61ff4db4b71c582725bb3e0617cfbf247821b",
+        "source_build_status_field": "built_not_run",
+        "source_capture_done_marker": true,
+        "source_move_case": {
+          "id": "lee-callback-defence-frame1057-r02",
+          "fighter": "lee",
+          "slot": "p1",
+          "label": "防御2",
+          "scenario": "callback_defence_frame1057",
+          "frames": 600,
+          "setup": {
+            "p1": {
+              "x": 300,
+              "energy": 300
+            },
+            "p2": {
+              "x": 350,
+              "energy": 300
+            }
+          },
+          "inputs": [
+            {
+              "slot": "p1",
+              "keys": [
+                "down"
+              ],
+              "start": 10,
+              "end": 13
+            }
+          ],
+          "target_frames": [
+            1050,
+            1057,
+            1060
+          ],
+          "has_source_timeline": true,
+          "source_dispatch": [
+            "onDefence"
+          ],
+          "status": "prepared",
+          "fighters": {
+            "p1": "lee",
+            "p2": "yihu"
+          },
+          "p1_helper": "我爱罗",
+          "p2_helper": "魂",
+          "callback_targets": [
+            {
+              "source_sprite_id": 518,
+              "source_frame": 1057,
+              "source_path": "DefineSprite_518/frame_1057/DoAction.as",
+              "action": "防御",
+              "kind": "frame_action",
+              "slot": "p1"
+            }
+          ]
+        },
+        "source_build_config": {
+          "modo": 3,
+          "p1": "小李",
+          "p2": "一护",
+          "p2cpu": false,
+          "AI": 5,
+          "stage": "现世",
+          "p1sf": "我爱罗",
+          "p2sf": "魂"
+        },
+        "native_fixture": "evidence/characters/lee/godot/callback-exact-r11/fixtures/defence-1050-1057-p1.json",
+        "native_fixture_sha256": "5677f1285d038f1ffbace5cbb3b49dae7238fe6709950bfbe6481980568a9720",
+        "input_setup_helpers_exact_match": true
+      },
+      "source_event_count": 6,
+      "native_event_count": 6,
+      "source_events": [
+        {
+          "source_frame": 1050,
+          "entering": true,
+          "action": 0.0,
+          "ql": 300.0,
+          "seq": 6511,
+          "display_tick": 491,
+          "fight_tick": 11
+        },
+        {
+          "source_frame": 1050,
+          "entering": false,
+          "action": 2.0,
+          "ql": 300.0,
+          "seq": 6512,
+          "display_tick": 491,
+          "fight_tick": 11
+        },
+        {
+          "source_frame": 1050,
+          "entering": true,
+          "action": 2.0,
+          "ql": 300.0,
+          "seq": 6560,
+          "display_tick": 493,
+          "fight_tick": 13
+        },
+        {
+          "source_frame": 1050,
+          "entering": false,
+          "action": 2.0,
+          "ql": 300.0,
+          "seq": 6561,
+          "display_tick": 493,
+          "fight_tick": 13
+        },
+        {
+          "source_frame": 1057,
+          "entering": true,
+          "action": 2.0,
+          "ql": 300.0,
+          "seq": 6806,
+          "display_tick": 499,
+          "fight_tick": 19
+        },
+        {
+          "source_frame": 1057,
+          "entering": false,
+          "action": 2.0,
+          "ql": 300.0,
+          "seq": 6807,
+          "display_tick": 499,
+          "fight_tick": 19
+        }
+      ],
+      "native_events": [
+        {
+          "action": 0.0,
+          "current_frame": 1050,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 1050,
+          "tick": 318
+        },
+        {
+          "action": 2.0,
+          "current_frame": 1050,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 1050,
+          "tick": 318
+        },
+        {
+          "action": 2.0,
+          "current_frame": 1050,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 1050,
+          "tick": 319
+        },
+        {
+          "action": 2.0,
+          "current_frame": 1050,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 1050,
+          "tick": 319
+        },
+        {
+          "action": 2.0,
+          "current_frame": 1057,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 1057,
+          "tick": 326
+        },
+        {
+          "action": 2.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 1057,
+          "tick": 326
+        }
+      ],
+      "compared_fields": [
+        "source_frame",
+        "entering",
+        "action",
+        "ql"
+      ],
+      "diffs": []
+    }
+  ],
+  "summary": {
+    "cases": 2,
+    "exact_0diff": 2,
+    "source_events": 8,
+    "native_events": 8,
+    "diffs": 0
+  }
+}

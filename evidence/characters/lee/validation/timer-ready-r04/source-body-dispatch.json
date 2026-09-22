@@ -1,0 +1,89 @@
+{
+  "source_raw": "evidence/characters/lee/original/lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl",
+  "events": [
+    {
+      "sequence": 3366,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "ready",
+      "value": ""
+    },
+    {
+      "sequence": 3367,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "source_state_precondition",
+      "value": "p2,health,f:1:0:67108864:0"
+    },
+    {
+      "sequence": 3368,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "source_state_precondition",
+      "value": "p2,wudi,false"
+    },
+    {
+      "sequence": 3370,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "state",
+      "value": "p1,1,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,undefined,0,false,0,false"
+    },
+    {
+      "sequence": 3374,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "state",
+      "value": "p2,1,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:0:67108864:0,f:1:8:78643200:0,false,true,undefined,0,false,0,false"
+    },
+    {
+      "sequence": 3378,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "frame_state_enter",
+      "value": "1,1,0,300,false"
+    },
+    {
+      "sequence": 3379,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "intro_body_enter",
+      "value": "1,1"
+    },
+    {
+      "sequence": 3380,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "intro_body_exit",
+      "value": "1,1"
+    },
+    {
+      "sequence": 3381,
+      "display_tick": 487,
+      "fight_tick": 0,
+      "kind": "frame_state_exit",
+      "value": "1,1,0,300,false"
+    },
+    {
+      "sequence": 3419,
+      "display_tick": 488,
+      "fight_tick": 1,
+      "kind": "state",
+      "value": "p1,2,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "sequence": 3423,
+      "display_tick": 488,
+      "fight_tick": 1,
+      "kind": "state",
+      "value": "p2,2,f:1:8:91750400:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:0:67108864:0,f:1:8:78695628:53687091,false,true,true,0,false,0,false"
+    }
+  ],
+  "interpretation": {
+    "status": "invalid_instrumentation_identity_not_body_parity",
+    "finding": "The intro_body_enter/exit and frame_state_enter/exit records came from build_ai_reference.py hooks hard-coded to fighter/yihu DefineSprite_638, not Lee outer BODY callbacks. They must not be used as Lee BODY scheduling evidence.",
+    "raw_check": "The Lee kill700 raw has 0 body_callback_enter records but 236 intro_body_enter records; therefore no Lee outer BODY observer is present in this capture.",
+    "correct_observer": "The body_boundaries=True path wraps the fighter-specific outer callback frame_1/PlaceObject2_<Lee sprite>_1/CLIPACTIONRECORD onClipEvent(enterFrame), emitting body_callback_enter/exit, plus aiBodyBoundary for Lee DefineSprite frame actions. A new Lee capture using that hook is required before any BODY phase conclusion.",
+    "runtime_decision": "No runtime change or BODY phase conclusion is justified by this artifact. Earlier gate experiments remain rejected."
+  }
+}

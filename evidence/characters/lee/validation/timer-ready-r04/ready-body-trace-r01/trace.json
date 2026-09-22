@@ -1,0 +1,47 @@
+{
+  "id": "lee-ready-body-trace-r01",
+  "status": "diagnostic_complete_runtime_unchanged",
+  "fixture": "/private/tmp/lee-phase-case.json",
+  "fixture_sha256": "see-runner-input-not-formal-accepted-fixture",
+  "runtime_sha256_at_capture": "ddfce1b11f6b211dad81dda22105e5d17ae97d2a9e329d40270cfda719a66510",
+  "runner": "godot/tests/move_case_reference.gd",
+  "source_events": {
+    "path": "evidence/characters/lee/original/lee-body-boundaries-r02/events.jsonl",
+    "sha256": "7be5c8b955f943f4770b0781d9efb807b1504c61901373f108365432f30ceda3",
+    "fight_tick_0": [
+      {"seq": 11346, "slot": "p1", "frame": 1, "touchFloor": null},
+      {"seq": 11350, "slot": "p2", "frame": 1, "touchFloor": null},
+      {"seq": 11355, "slot": "p1", "scope": "base518", "event": "frame1_boundary", "touchFloor": null},
+      {"seq": 11407, "slot": "p2", "scope": "base518", "event": "outer_body_enter", "touchFloor": null},
+      {"seq": 11409, "slot": "p2", "scope": "base518", "event": "outer_body_exit", "touchFloor": null},
+      {"seq": 11412, "slot": "p2", "scope": "base518", "event": "frame2_boundary", "touchFloor": true},
+      {"seq": 11416, "slot": "p1", "scope": "base518", "event": "outer_body_enter", "touchFloor": null},
+      {"seq": 11418, "slot": "p1", "scope": "base518", "event": "outer_body_exit", "touchFloor": null},
+      {"seq": 11421, "slot": "p1", "scope": "base518", "event": "frame2_boundary", "touchFloor": true}
+    ],
+    "fight_tick_1": [
+      {"seq": 11425, "slot": "p1", "frame": 1, "touchFloor": true},
+      {"seq": 11429, "slot": "p2", "frame": 1, "touchFloor": true}
+    ]
+  },
+  "native_events": {
+    "path": "evidence/characters/lee/validation/timer-ready-r04/ready-body-trace-r01/native-phase.log",
+    "sha256": "9996efe7a015c4ce21539ea44eb494f5e0bde1af188bc9ddb0f4dd8f32001b06",
+    "observed": [
+      {"tick": 306, "phase": "source_dispatch_before_after", "intro_active": true, "ready_frame": 127, "p1_frame": 7, "p2_frame": 2, "p1_touchFloor": null, "p2_touchFloor": null},
+      {"tick": 307, "phase": "source_dispatch_before", "intro_active": false, "ready_frame": 128, "p1_frame": 8, "p2_frame": 3, "p1_touchFloor": null, "p2_touchFloor": null},
+      {"tick": 307, "phase": "source_callback_registry.dispatch", "slot": "p2", "scope": "yihu/generated body", "body_frame": 276, "write": "touchFloor=null->true", "call_chain": ["source_callback_registry.dispatch", "ai_cpu_driver.run_body", "generated/fighters/yihu/player_controller/body.gd:on_enterframe", "write_value"]},
+      {"tick": 307, "phase": "source_callback_registry.dispatch", "slot": "p1", "scope": "lee/base518 generated body", "body_frame": 276, "write": "touchFloor=null->true", "call_chain": ["source_callback_registry.dispatch", "ai_cpu_driver.run_body", "generated/fighters/lee/player_controller/body.gd:on_enterframe", "write_value"]},
+      {"tick": 307, "phase": "root_observer", "p1_touchFloor": true, "p2_touchFloor": true},
+      {"tick": 308, "phase": "source_dispatch_before", "p1_touchFloor": true, "p2_touchFloor": true}
+    ]
+  },
+  "conclusion": {
+    "first_native_true": "fight/physics tick 307 during SourceCallbackRegistry.dispatch, before root observer and before _observe(0) calls goto_ai_label('站立', true)",
+    "game_world_enter_frame": "not the first writer; deferred tick306 and tick307 happen after the first writes",
+    "runner_goto": "does not create the first true; _observe(0) sees true already",
+    "source_alignment": "source fight_tick0 frame1 and frame1 boundary remain undefined; source body enters before frame2 boundary writes true",
+    "runtime_change": false,
+    "accepted_scope": "diagnostic phase trace only; does not claim parity or justify moving production callbacks"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "lee-callback-exact-r08-harness-attempts",
+  "not_counted": [
+    {
+      "attempt": 1,
+      "issue": "paths.json was passed relative to the Godot project root and was not readable; batch did not run cases; user-data logger could not create its log file."
+    },
+    {
+      "attempt": 2,
+      "issue": "Absolute paths fixed the input; both fixtures executed and emitted callback logs, but the output directory had not been created, so the probe raised a SCRIPT ERROR while writing results. This attempt is not accepted; its log is retained under /private/tmp/lee-callback-exact-r08-attempt2.log."
+    }
+  ]
+}

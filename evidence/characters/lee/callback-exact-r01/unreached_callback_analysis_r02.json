@@ -1,0 +1,188 @@
+{
+  "format": "lee-unreached-callback-analysis-r02",
+  "source_file": "scripts/fighter/Lee.json",
+  "generated_label_reference": "godot/generated/fighters/lee/fighter.json",
+  "scope": "Source causal reachability diagnosis only; no runtime changes and no parity claim.",
+  "ground": {
+    "label_ranges": {
+      "砍1": "157-180",
+      "砍2": "181-208",
+      "砍3": "209-244",
+      "砍4": "245-277"
+    },
+    "targets": {
+      "193": {
+        "path": "DefineSprite_518/frame_193/DoAction.as",
+        "effect": "动作=0",
+        "entry": "砍2",
+        "entry_condition": "frame 163 clip callback nornalhit() -> gotoAndPlay(\"砍2\")"
+      },
+      "197": {
+        "path": "DefineSprite_518/frame_197/DoAction.as",
+        "effect": "gotoAndStop(\"站立\"); play()",
+        "entry": "砍2"
+      },
+      "235": {
+        "path": "DefineSprite_518/frame_235/DoAction.as",
+        "effect": "动作=0",
+        "entry": "砍3",
+        "entry_condition": "frame 187 clip callback nornalhit() -> gotoAndPlay(\"砍3\")"
+      },
+      "240": {
+        "path": "DefineSprite_518/frame_240/DoAction.as",
+        "effect": "gotoAndStop(\"站立\"); play()",
+        "entry": "砍3"
+      },
+      "268": {
+        "path": "DefineSprite_518/frame_268/DoAction.as",
+        "effect": "gotoAndStop(\"站立\"); play()",
+        "entry": "砍4"
+      },
+      "448": {
+        "path": "DefineSprite_518/frame_448/DoAction.as",
+        "effect": "gotoAndStop(\"站立\"); play()",
+        "entry": "砍技1",
+        "entry_condition": "frame 187 clip callback skill1() -> gotoAndPlay(\"砍技1\"); player skill1 requires down+attack"
+      }
+    },
+    "trace_fact": "Short-edge trace input_next_display has attack=true only at fight ticks 10-12,35-37,60-62,85-87,110-112. It reaches body 158 at tick 11 and 172 at tick 25/50/75/100; frame 172 unconditionally returns to 站立. The first chain callback at source frame 163 therefore sees no continuous attack from the short edge, so no 砍2 entry is evidenced.",
+    "candidate_fixture": "evidence/characters/lee/callback-fixtures-r05-ground-hold.json"
+  },
+  "magic": {
+    "label_ranges": {
+      "招1": "278-356",
+      "砍技2": "357-403",
+      "招2": "471-524",
+      "招3": "525-573"
+    },
+    "targets": {
+      "325": {
+        "path": "DefineSprite_518/frame_325/DoAction.as",
+        "effect": "position update",
+        "entry": "招1",
+        "classification": "No source goto directly names an intermediate frame; all audited 招1 entries are label gotos. Normal entry starts at label start and frame320 unconditionally returns to 站立 before 325.",
+        "goto_entry_audit": [
+          "DefineSprite_18/frame_1/DoAction.as",
+          "DefineSprite_381/frame_1/DoAction.as",
+          "DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        ]
+      },
+      "332": {
+        "path": "DefineSprite_518/frame_332/DoAction.as",
+        "effect": "动作=0",
+        "entry": "招1",
+        "classification": "No source goto directly names an intermediate frame; all audited 招1 entries are label gotos. Normal entry starts at label start and frame320 unconditionally returns to 站立 before 325.",
+        "goto_entry_audit": [
+          "DefineSprite_18/frame_1/DoAction.as",
+          "DefineSprite_381/frame_1/DoAction.as",
+          "DefineSprite_518/frame_217/PlaceObject2_18_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "DefineSprite_518/frame_538/PlaceObject2_18_35/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+        ]
+      },
+      "370": {
+        "path": "DefineSprite_518/frame_370/DoAction.as",
+        "effect": "gotoAndStop(\"落\"); play()",
+        "entry": "砍技2",
+        "entry_condition": "skill2() at frame 299; player branch is kis(上)&&kis(斩)"
+      },
+      "558": {
+        "path": "DefineSprite_518/frame_558/DoAction.as",
+        "effect": "gotoAndStop(\"站立\"); play()",
+        "entry": "招3",
+        "entry_condition": "magichit3() uses kis(上)&&kis(招) in player branch, normally from doStand/doAllAction; frame 538 does not test magichit3"
+      }
+    },
+    "trace_fact": "Short-edge magic trace uses down+ranged at ticks 10-12, then ranged-only at 35-37,60-62,85-87,110-112. It reaches body 282,287,295,320 and later 472,478,487,509; no up+attack edge exists, so skill2/砍技2/frame370 is not entered.",
+    "candidate_fixture": "evidence/characters/lee/callback-fixtures-r05-magic-skill2.json"
+  },
+  "r05_execution": {
+    "ground": {
+      "fixture": "evidence/characters/lee/callback-fixtures-r05-ground-hold.json",
+      "raw": "evidence/characters/lee/original/lee-callback-ground-hold-r05",
+      "observed": [
+        235,
+        240,
+        268
+      ],
+      "missing": [
+        193,
+        197
+      ],
+      "input_trace": "attack=true continuously across fight ticks 10..259 (capture input_next_display)"
+    },
+    "magic_skill2": {
+      "fixture": "evidence/characters/lee/callback-fixtures-r05-magic-skill2.json",
+      "raw": "evidence/characters/lee/original/lee-callback-magic-skill2-r05",
+      "observed": [
+        370
+      ],
+      "input_trace": "w/up=true and attack=true at fight ticks 10..12"
+    },
+    "magic3": {
+      "fixture": "evidence/characters/lee/callback-fixtures-r05-magic3.json",
+      "raw": "evidence/characters/lee/original/lee-callback-magic3-r05",
+      "observed": [
+        558
+      ],
+      "input_trace": "w/up=true and ranged=true at fight ticks 10..12"
+    }
+  },
+  "r06_execution": {
+    "ground_window": {
+      "fixture": "evidence/characters/lee/callback-fixtures-r06-ground-window.json",
+      "raw": "evidence/characters/lee/original/lee-callback-ground-window-r06",
+      "observed": [
+        158,
+        169,
+        172
+      ],
+      "missing": [
+        193,
+        197
+      ],
+      "input_trace": "attack edges 10-13 and 16-17; source key read did not hold through frame163"
+    },
+    "skill1": {
+      "fixture": "evidence/characters/lee/callback-fixtures-r06-skill1.json",
+      "raw": "evidence/characters/lee/original/lee-callback-skill1-r06",
+      "observed": [
+        448
+      ],
+      "input_trace": "down+attack 10-13"
+    }
+  },
+  "r09_execution": {
+    "fixture": "evidence/characters/lee/callback-fixtures-r09-ground-first-edge.json",
+    "raw": "evidence/characters/lee/original/lee-callback-ground-first-edge-r09",
+    "observed": [
+      193,
+      197
+    ],
+    "input_trace": "attack 10-13, release, attack 17-18; crosses frame163 and releases before frame187",
+    "parity_claim": false
+  },
+  "frames_325_332_exhaustive_audit": {
+    "status": "normal_input_unreachable_candidate",
+    "range": "DefineSprite_518 招1 generated range 278-356",
+    "terminal_source": "scripts/fighter/Lee.json:DefineSprite_518/frame_320/DoAction.as",
+    "terminal_action": "gotoAndStop(\"站立\"); play();",
+    "numeric_goto_search": {
+      "searched_frames": [
+        325,
+        332
+      ],
+      "matches": [],
+      "scope": "all source scripts and generated Lee timeline actions"
+    },
+    "label_child_goto_search": {
+      "target_labels": [
+        "325",
+        "332"
+      ],
+      "matches": [],
+      "scope": "gotoAndPlay/gotoAndStop numeric/label and child goto references"
+    },
+    "conclusion": "No source path enters 325 or 332 from normal input; do not fabricate a native capture or alter runtime."
+  }
+}

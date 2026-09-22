@@ -1,0 +1,42 @@
+{
+  "schema": "byakuya.current-source-provenance.v1",
+  "runtime_main_sha256": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+  "fighter_runtime_sha256": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+  "cases": [
+    {
+      "id": "byakuya-20-rush-neutral",
+      "source_build": "evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/byakuya-intro-963-r01/native-reference/build.json",
+      "source_build_sha256": "4da419ed3f03eba176fe7b1033a3273e67ee075ce37d144c2ecd06a5106f4c5e",
+      "source_move_case_id": "byakuya-20-rush-neutral",
+      "fixture_id": "byakuya-20-rush-neutral",
+      "fixture_sha256": "79a892146fee439db04ac81dc6f7e09f158c4fb74150213b0a5cf3f072936b46",
+      "godot": "evidence/characters/byakuya/godot/phase-current/byakuya-20-rush-neutral.json",
+      "compare": "evidence/characters/byakuya/godot-compare-current-r02/20-rush.json"
+    },
+    {
+      "id": "byakuya-814-zhaoHuan-neutral",
+      "source_build": "evidence/characters/byakuya/original/byakuya-814-zhaoHuan-neutral-helper-r01/build.json",
+      "source_build_sha256": "11ad7bd6225614ed3012dfc5a4d9b4bb0978e7cda4c6be2778acbc4171a9ed71",
+      "source_move_case_id": "byakuya-814-zhaoHuan-neutral",
+      "fixture_id": "byakuya-814-zhaoHuan-neutral",
+      "fixture_sha256": "3b3f758795da2f4370f243c70bd52a0467ff240f3ef87250dc9d94c7a355effc",
+      "godot": "evidence/characters/byakuya/godot/phase-current-r02/byakuya-814-zhaoHuan-neutral.json",
+      "compare": "evidence/characters/byakuya/godot-compare-current-r02/814.json"
+    },
+    {
+      "id": "byakuya-690-bishaSuper-energy_exact",
+      "source_build": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-energy_exact/source-build.json",
+      "source_build_sha256": "187984b22bd132786b4d2768cffc6809094d877229891cbf35d220f5f74fbb38",
+      "source_move_case_id": "byakuya-690-bishaSuper-energy_exact",
+      "fixture_id": "byakuya-690-bishaSuper-energy_exact",
+      "fixture_sha256": "83325dae8b4c32d2151498951ab997e51113b550025e249d1a47a1eb62df2e55",
+      "godot": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-energy_exact/godot-states.json",
+      "compare": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-energy_exact/comparison.json",
+      "source_raw": "evidence/characters/byakuya/boundary-r03/byakuya-690-bishaSuper-energy_exact/original-events.jsonl.gz",
+      "source_raw_sha256": "22f658f43c3bc66376761c26e3d6c651791ea2e1890d02724f28941fdb463465",
+      "initial_health": "p1=1000,p2=1000",
+      "comparison": "matched 602/602"
+    }
+  ],
+  "rule": "Source availability and fixture hash are checked together with the first native state rows; the canonical 690 exact capture must begin with both players at health 1000."
+}

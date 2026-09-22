@@ -1,0 +1,26 @@
+{
+  "format": "lee-625-branch-observation-v1",
+  "fixture": "evidence/characters/lee/move-cases/lee-574-bisha-625-repeat-live.json",
+  "original_events": "evidence/characters/lee/original/lee-574-bisha-625-repeat-live-r01/events.jsonl",
+  "native_compare": "evidence/characters/lee/godot/lee-574-bisha-625-repeat-live-r02/compare.json",
+  "source_observation": {
+    "fighter": "p1",
+    "fight_tick_40_to_74_source_frames": "603..624",
+    "fight_tick_75_source_frame": 635,
+    "interpretation": "The source timeline labels frame 635 as 必杀1. The observed 624→635 transition is consistent with frame-625 DoAction taking gotoAndStop(必杀1); frame 625 itself need not appear as a sampled state. The live branch is therefore observed, while a dead/non-action=-1 negative branch still needs a dedicated natural fixture."
+  },
+  "superseded_first_compare_difference": {
+    "tick": 111,
+    "slot": "p2",
+    "field": "x",
+    "original": 377.0,
+    "native": 417.0,
+    "difference_count": 290
+  },
+  "status": "accepted_after_shared_rule_fix",
+  "current_compare": {
+    "source_states": 802,
+    "native_states": 802,
+    "differences": 0
+  }
+}

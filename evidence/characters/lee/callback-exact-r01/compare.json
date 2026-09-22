@@ -1,0 +1,108 @@
+{
+  "format": "lee-exact-frame-callback-compare-r01",
+  "scope": "same-input source callback marker vs Godot source_frame_script_boundary; not full state parity",
+  "cases": [
+    {
+      "id": "lee-20-rush-neutral",
+      "target_source_frame": 29,
+      "source_events": [
+        {
+          "sequence": 7002,
+          "display_tick": 512,
+          "fight_tick": 19,
+          "slot": "p1",
+          "source_frame": 29,
+          "entering": true,
+          "current_frame": 29,
+          "action": "0",
+          "ql": "f:1:8:78643200:0"
+        },
+        {
+          "sequence": 7003,
+          "display_tick": 512,
+          "fight_tick": 19,
+          "slot": "p1",
+          "source_frame": 29,
+          "entering": false,
+          "current_frame": 1,
+          "action": "0",
+          "ql": "f:1:8:78643200:0"
+        }
+      ],
+      "godot_events": [
+        {
+          "action": 0.0,
+          "current_frame": 29,
+          "entering": true,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 29,
+          "tick": 326
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 300.0,
+          "slot": "p1",
+          "source_frame": 29,
+          "tick": 326
+        }
+      ],
+      "source_capture_sha256": "96d66a2321b5020798fa026a5537d28cac49c1c60a7f9cd13e7ffb21bb7e38fa",
+      "godot_log_sha256": "e5da2c9218478ff50305b64da63a2faeb8001626d90a9257d2e065c8232b764d",
+      "callback_sequence_match": true
+    },
+    {
+      "id": "lee-callback-summon-r02",
+      "target_source_frame": 1017,
+      "source_events": [
+        {
+          "sequence": 7013,
+          "display_tick": 505,
+          "fight_tick": 40,
+          "slot": "p1",
+          "source_frame": 1017,
+          "entering": true,
+          "current_frame": 1017,
+          "action": "0",
+          "ql": "f:1:7:104857600:0"
+        },
+        {
+          "sequence": 7014,
+          "display_tick": 505,
+          "fight_tick": 40,
+          "slot": "p1",
+          "source_frame": 1017,
+          "entering": false,
+          "current_frame": 1,
+          "action": "0",
+          "ql": "f:1:7:104857600:0"
+        }
+      ],
+      "godot_events": [
+        {
+          "action": 0.0,
+          "current_frame": 1017,
+          "entering": true,
+          "ql": 200.0,
+          "slot": "p1",
+          "source_frame": 1017,
+          "tick": 347
+        },
+        {
+          "action": 0.0,
+          "current_frame": 1,
+          "entering": false,
+          "ql": 200.0,
+          "slot": "p1",
+          "source_frame": 1017,
+          "tick": 347
+        }
+      ],
+      "source_capture_sha256": "384031ba6ee05e247583fe71e55e1a6f942c4a9af92b4226213b44907c921a66",
+      "godot_log_sha256": "d1a83a2dd37039a15e03c0122209bce1a041595f000f671ed3348b6ac89f3161",
+      "callback_sequence_match": true
+    }
+  ]
+}

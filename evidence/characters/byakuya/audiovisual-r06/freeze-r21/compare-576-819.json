@@ -1,0 +1,71 @@
+{
+  "scope": "freeze_scheduler_diagnostic",
+  "comparison": {
+    "576": {
+      "events_sha256": "9ec988c12e96c8e291c4eb304aed1d0d1145c405a7493839cbeb145e720659cb",
+      "begin": {
+        "seq": 3524,
+        "wall": 29557,
+        "display": 473,
+        "fight": 11,
+        "event": "visual_freeze_begin",
+        "payload": "576,5"
+      },
+      "end": {
+        "seq": 3525,
+        "wall": 29557,
+        "display": 473,
+        "fight": 11,
+        "event": "visual_freeze_end",
+        "payload": "zhanting=true"
+      },
+      "events_between": 0,
+      "first_after_begin": null,
+      "last_before_end": null,
+      "interpretation": "Raw AIREF fields show begin and end at the same time_ms/display_tick/fight_tick. This is the stable reference, but screenshot interval state is still only accepted because RGB hashes matched."
+    },
+    "819": {
+      "events_sha256": "401edc2022a60eb6c8337677406d9b4a26f74a97157d2f2284e9885d1c345087",
+      "begin": {
+        "seq": 3373,
+        "wall": 28021,
+        "display": 470,
+        "fight": 16,
+        "event": "visual_freeze_begin",
+        "payload": "819,3"
+      },
+      "end": {
+        "seq": 3589,
+        "wall": 28052,
+        "display": 470,
+        "fight": 16,
+        "event": "visual_freeze_end",
+        "payload": "zhanting=true"
+      },
+      "events_between": 215,
+      "first_after_begin": {
+        "seq": 3374,
+        "wall": 28021,
+        "display": 470,
+        "fight": 16,
+        "event": "visual_clip",
+        "payload": "root,56,true,"
+      },
+      "last_before_end": {
+        "seq": 3588,
+        "wall": 28047,
+        "display": 470,
+        "fight": 16,
+        "event": "visual_clip",
+        "payload": "root.bg,2,true,bg"
+      },
+      "between_event_types": {
+        "visual_clip": 215
+      },
+      "state_or_callback_events_between": false,
+      "interpretation": "Raw AIREF fields are seq|time_ms|display_tick|fight_tick: begin 3373|28021|470|16 and end 3589|28052|470|16. The 31-unit change is wall time; display_tick and fight_tick did not advance. The recursive visual_clip walk itself did not prove a frame/callback restart. The unstable pixels occurred across the post-freeze screenshot interval, which was not instrumented."
+    }
+  },
+  "conclusion": "819 recursion is frame-stable during begin/end; r21 does not identify a production playMc/stop restart. The missing evidence is state/child snapshots immediately before each screenshot and event logging during the post-end screenshot interval.",
+  "next_capture_requirement": "Parse AIREF as seq,time_ms,display_tick,fight_tick. At freeze_end, record root/child state snapshot, then record the same snapshot immediately before each screenshot and after the second screenshot; fail closed if any path/frame changes. Keep playMc/stop/interval event channels separate."
+}

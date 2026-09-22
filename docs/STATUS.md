@@ -1,8 +1,10 @@
 # 当前状态、风险与待验证项
 
-状态同步日期：2026-09-13。按当前工作树与已有证据核对；本次检查范围见 [同步记录](../evidence/status-sync-2026-09-08.md)。
+状态同步日期：2026-09-20。按当前工作树与已有证据核对；本次检查范围见 [同步记录](../evidence/status-sync-2026-09-08.md)。
 
 B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（包含已有局部产物但未验收），对应任务表已补产物与证据。下列开发切片实现不代表里程碑完成。
+
+本轮白哉/小李共享验收记录见 [shared acceptance r01](../evidence/characters/byakuya-lee/shared-acceptance-r01.md)。两角色状态保持 `partial`：当前共享 runtime 下已有 31 个边界 case 重跑，白哉 r11 的 `missing_source=0` 清单与小李当前分类分别见各自 manifest；小李 clean 625 kill/dead r05 已完成 802/802、0 differences 的 validated 对照。旧 native-only、legacy provenance-unverified 与 disabled-negative 行仍分层记录，不提升为 validated。完整 AI、视觉/HUD/音频、真实 boot/intro/nextReady、完整 Web、KO 全生命周期与 production roster 仍保持 pending；fangyux 父 controller 仍待原版作用域探针验证，未经证据的修复已撤回。
 
 ## 已完成的资料与已实现的开发切片
 
@@ -581,4 +583,34 @@ step E remain pending. See
 
 ## 网页播放器工具栏与主音量
 
+### 2026-09-20 — Byakuya / Lee shared acceptance checkpoint
+
+共享 source compiler/runtime 与临时 QA overlay 的本轮结果记录在 [shared acceptance r01](../evidence/characters/byakuya-lee/shared-acceptance-r01.md)。Lee 625 repeat 已按 frame 673 的源 `_root.game["p" + pn]` 容器写入完成 802/802 对照；Byakuya 814 使用正确 `air_target` 与双方魂辅助完成 602/602。白哉已完成 partial standing checkpoint + `intro.begin(fighters,true)` 的 bounded 180 fight-tick 连续 AI replay；小李在修正 `input_next_display` 下一显示观察相位后，以相同 checkpoint 方式完成 source horizon 300 的连续 replay，state/geometry/input/random/clock 通过。另有两角色各新增 20 个同输入 602-state/14-field 边界 case；legacy provenance-unverified、native-only 与 disabled-negative 保持分层，不提升为 validated。两者均不覆盖 boot/完整 intro 或全部 AI 输入的 full parity。交接、契约和完整性校验均通过。Lee KO 后下一回合、白哉浏览器真实选人、完整 AI/视觉/音频/Web 矩阵仍保持未完成，生产 roster 继续关闭；这些 focused 结果不关闭 M6。
+
+最终共享归档补充：当前共享 runtime 已有 31 个边界 case 重跑；白哉 r11 manifest 的 `missing_source=0` 与小李当前分类分别保留在角色证据中，不能用旧 178/186 汇总覆盖当前分类。小李 clean 625 r05 的 kill/dead 两条 802-state 对照均为 `validated`、0 differences。白哉 sound sites 887/581、934/44、944/52 已有 native/Godot 触达证据，963/619 已触达 `IntroCoordinator`，但原版同输入 parity 仍 pending，详见 `evidence/characters/byakuya/audiovisual-r05/audio-gap-r01/`。当前 HUD Web smoke 使用 PCK `3371c321c38a14fda20574cd409e2ef66e02ed26585734e1f2a3bb10ae2f8572`，默认角色已完成 title→fighter/helper/map→battle，且 page35 有 HUD/pause/resume 的 inline smoke 证据；full-roster PCK `7c3a4c281b7322e692f7556f586d1a86fee285fef87a41c6eeabcb57247d815d` 的白哉/小李选人证据仍是局部边界。I/O/N5/N6 正向、暂停菜单主动返回选人、完整 Web 矩阵、原版同输入 parity 与 production roster 仍 pending；自然回合结束后的返回选人与下一局短重入已有观察。旧候选包与旧 runtime hash 仅作历史证据。fangyux 父 controller 仍待原版作用域探针；撤回的未验证修复不计入实现。生产 roster 保持关闭。
+
 默认窗口游玩时完整显示工具栏；全屏状态从浏览器 `fullscreenchange` 读取，右上角工具像自动隐藏 Dock 一样从顶边滑入，收起时显示一个64×18 px半透明深色拉手，含暖灰边线、向下指示和小暗红点缀。Chrome 已确认顶边热区停留25秒保持展开、点击画面后完全收起；root 的全屏 IAB 截图确认新拉手清晰可见。音量真实回执通过72%→0%→50%、静音/取消静音及刷新后仍保持50%验证。触屏和滑杆拖出面板仍未手测。音量滑杆与静音通过 `WebAudioSettings` autoload 桥接 Godot Master bus，真实影响音乐和音效，并把实际状态回传到 popover；JavaScriptObject 使用直接属性赋值/方法调用，修复了 Web 上误调不存在的 `Window.set/call`。设置校验后保存在浏览器 localStorage；音量为零时一次点击即可恢复最近非零音量。键盘焦点控件的键盘事件不传给游戏，浏览器可能保留 Escape 退出全屏，不能保证该键只关闭面板。Godot bus smoke 与 Node 语法检查通过；自动化 Chromium 场景已扩展但未对 root 的交互 Chrome 会话运行。两本地 Web 页 PCK SHA-256 均为 `e3788790ad6d6bd1251a1b86410123e591ae1e7208fac29a04f2e40062d99669`，shell HTML SHA-256 均为 `d4e73de008133ed06511b2868ed178ca4d98f6ec0b6a6be43d263ae5edf625e4`。Firefox/Safari 与原版音画一致性仍待验证。详见[网页外壳证据](../evidence/web-shell/README.md)。
+
+### 2026-09-21 — Current HUD layout/export checkpoint
+
+The source-backed HUD layout update is recorded in `evidence/web/qa-hud-current-r02/` and `evidence/characters/byakuya/audiovisual-r06/godot-576-gui-r04/`. The current-code native frame-576 capture uses the compiled `xuetiao` root/frame-5 matrices and passes the dynamic display-tick lifecycle check; it is a layout/source-frame check, not original-player pixel parity. The current Web export is served at `http://127.0.0.1:8784/?qa=hud-current-3371c321` with PCK SHA256 `3371c321c38a14fda20574cd409e2ef66e02ed26585734e1f2a3bb10ae2f8572`. This short run reached title→fighter/helper/map→battle with the default roster. Fresh page35 Chrome DevTools screenshots showed battle HUD countdown 57; a same-run pause probe held countdown 50 across 3000ms, then a later resume observation showed countdown 37 with a visible 5-hit rush. The result is a bounded smoke with inline-only visual evidence; source-level pause parity remains open. Countdown 60/59 timing, original-player HUD comparison, full Web controls, and production roster availability remain pending.
+
+### Current helper4a0f Web export (2026-09-21)
+
+A fresh local export was generated after the helper runtime freeze. The PCK SHA-256 is `d921f9a062bebc3bc05a9237b8c959801f5e18b44d594de44d8e20801c6bf23c`; the complete artifact and runtime hash record is [qa-hud-current-r03](../evidence/web/qa-hud-current-r03/). This is an export/hash checkpoint only: the browser transport was unavailable in this run, so no new Web UI screenshot or input smoke is claimed. The earlier `3371c321...` page35 observations remain historical bounded smoke evidence.
+
+### Fresh native boot/menu/Ready capture (2026-09-21)
+
+A fresh source-preserving native Flash probe reached `root_frame_1 → root_frame_10 → selection → battle_entry → intro_load → intro_poll → ready_begin → game_running → ready_horizon` with 684 captured events and `done=true`. The run used a newly rebuilt SWF (`boot-ready-r15-20260921`, SHA-256 `3955598e3e07b152d9b30d76a000d4aedf46e4365d6899da78c2ec31442a6ebb`) and a real 300 ms native J hold (`_root.j=74`, macOS virtual key 38). The source-default path visibly reached Ichigo selection and Kon helper selection; Normal mode starts the battle path without a separate map screen. This closes the source-side boot/menu/Ready evidence gap only. It does not establish Godot/Web boot parity, full role/menu coverage, or original-player pixel/audio parity; those remain pending. See [r15 boot evidence](../evidence/boot-ready/r15/README.md) and [flow summary](../evidence/boot-ready/r15/flow-summary-r01.json).
+
+### Byakuya source precondition correction (2026-09-21)
+
+The earlier hp1/KO artifact for `byakuya-690-bishaSuper-energy_exact` is superseded. The canonical boundary-r03 source capture starts with both players at health 1000 and matches the current native state at 602/602. Current classification is restored to 167 source-matched active cases plus 11 disabled-negative cases; the hp1/KO artifacts remain historical diagnostics and are not acceptance evidence.
+
+### Lee bounded callback inventory (2026-09-22)
+
+The current 49-row callback index is [r18](../evidence/characters/lee/godot/callback-exact-r18/pending-inventory-current-r18.json): 44 bounded callback matches, 1 source-only repeated frame-8 sequence, 3 normal-input-unreachable frames, and 1 invalid source-fixture precondition (frame 1083, not a runtime mismatch). P1 frames 1219 and 1260 match on the valid kill fixture; frame 8 differs in repeated callback counts (248 source versus 92 native). The P2 hp1 recovery source started at HP 1000, while its native fixture injected HP 1, so those rows are not a same-input comparison. Frames 1088/1098 are accepted only as source-marker/placement-lifecycle projections; raw wrapper-return events remain preserved. Frame 738 matches the four callback fields on the rooftop fixture, without a source/native clock mapping. Frame 1288 matches the four callback fields, while source fight tick 2263 and native fixture tick 2228 retain a separate 35-tick timing gap. These focused results do not establish full-state, visual, audio, menu, or full-role parity. See the [callback evidence index](../evidence/characters/lee/callback-exact-r01/README.md).
+
+### Production roster opening: 白哉 and 小李 base forms (2026-09-22)
+
+按用户“主要状态对齐就先开放”的明确决定，生产选人现向白哉和小李开放基础形态。两人的源卡片与开场数据原已存在；生成的 production `available.json` 现为 11 名 fighter / 4 名 helper，VS Human 与 VS Com 读取同一开放表。源头像 5 帧与姓名条也已由锁定 `main.swf` 重建，完整来源与哈希见[roster release r01](../evidence/characters/roster-2026-09-22/README.md)。万解及其他形态仍保持不可选。此开放是可玩名单决定，不把白哉/小李 coverage 从 `partial` 提升，也不宣称完整战斗、视觉、音频或浏览器 parity；原版卡片输入的 headless native smoke 与本地 Web 重导由 integration 执行中。

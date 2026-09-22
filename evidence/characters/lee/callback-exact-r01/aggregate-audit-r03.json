@@ -1,0 +1,67 @@
+{
+  "schema": "lee-callback-aggregate-audit-r03",
+  "scope": "Read-only audit of the current aggregator and native-exact-attempts-r02; no source, runtime, aggregator, or baseline changes.",
+  "files": {
+    "aggregator": "tools/probes/aggregate_lee_callback_inventory.py",
+    "native_attempts": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r02.json",
+    "overrides": "evidence/characters/lee/callback-exact-r01/capture-slot-overrides-r01.json",
+    "clip_report": "evidence/characters/lee/callback-exact-r01/clip-action-gap-r01.json"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "fatal_for_acceptance",
+      "finding": "native_matched is keyed only by source frame number. A verified attempt at frame 1070 can therefore mark every inventory row with frame 1070 as native_matched regardless of kind, slot, fixture, or runtime revision.",
+      "evidence": "aggregate_lee_callback_inventory.py:149-163; native-exact-attempts-r02 contains a p1 1070 pair but no comparator artifact keyed by fixture and runtime hash.",
+      "required_fix": "Key evidence by (fixture_id, slot, source_path, source_frame, kind), then require the same key in the row; never promote a frame-global set."
+    },
+    {
+      "id": "F2",
+      "severity": "fatal_for_acceptance",
+      "finding": "The 1070 attempt is an observed native callback pair with source_corresponding values and matched_fields [source_frame, entering, action, ql], but it is not a field-by-field compare result: native-exact-attempts-r02 has no runtime/main/helper/runner hash, no explicit diff list, and no current comparator result.",
+      "evidence": "evidence/characters/lee/callback-exact-r01/native-exact-attempts-r02.json attempt fixture_log ...target1070.log; the log has LEE_EXACT_CALLBACK lines and MOVE_CASE_REFERENCE_OK only.",
+      "required_fix": "Keep 1070 as native_exact_observed until a comparator record binds source raw, native output, fixture/build, current runtime and runner hashes and reports zero differences."
+    },
+    {
+      "id": "F3",
+      "severity": "fatal_for_acceptance",
+      "finding": "The comparator promotion condition accepts callback_sequence_match or a matched_fields set without requiring verified status, fixture identity, current runtime provenance, or differences == 0.",
+      "evidence": "aggregate_lee_callback_inventory.py:145-148.",
+      "required_fix": "Require an explicit verified/accepted comparator status plus exact fixture/source/native hashes, current runtime provenance, and zero differences."
+    },
+    {
+      "id": "F4",
+      "severity": "fatal_for_slot_identity",
+      "finding": "Payload slot is read but not validated against the build/index-resolved Lee slot. A mislabeled body_boundary payload can be counted as Lee evidence; _build_slot also continues past malformed builds and a later override can mask the malformed provenance.",
+      "evidence": "aggregate_lee_callback_inventory.py:78-90 and 115-136; overrides are path-to-slot strings without content/build hashes.",
+      "required_fix": "Require payload slot == resolved slot and reject unknown/mismatched slots; malformed build metadata must be an error, never fall through to an override without an explicit audited exception."
+    },
+    {
+      "id": "F5",
+      "severity": "fatal_for_kind_identity",
+      "finding": "1098 source frame and child clip are distinct in the raw clip report, but frame-global native matching and body-marker fallback can erase that distinction. The source report proves separate events: frame_1098/DoAction at sequences 13560-13563 and frame_1098/PlaceObject2_18_29 clip at 13566-13567 onward.",
+      "evidence": "clip-action-gap-r01.json native_clip_observer_capture.observed_schedule_events; aggregator.py:130-143 and 165-173.",
+      "required_fix": "Match source_path/kind/placement identity, not frame number alone; a body_boundary marker must never satisfy a clip_action row."
+    },
+    {
+      "id": "F6",
+      "severity": "cleanup",
+      "finding": "_legacy_slot is dead code: it is defined but never called by main. Several override paths also contain duplicate events.jsonl/events.jsonl forms and an ignored recovery path, making provenance hard to audit.",
+      "evidence": "aggregate_lee_callback_inventory.py:50-61; capture-slot-overrides-r01.json.",
+      "required_fix": "Either remove the dead fallback or call it through an explicit audited path; normalize and hash every override target."
+    },
+    {
+      "id": "F7",
+      "severity": "cleanup",
+      "finding": "known-case assertions require exact source_only status for 1088/1098 clip rows. A future correctly verified native match would make the assertion fail instead of accepting the stronger status.",
+      "evidence": "aggregate_lee_callback_inventory.py:181-188.",
+      "required_fix": "Assert status in an allowed ordered set, e.g. native_matched or source_only, while separately requiring provenance for native_matched."
+    }
+  ],
+  "case_conclusions": {
+    "1070": "Observed source/native callback-shaped data, not accepted field comparison; current runtime provenance is insufficient.",
+    "1098": "Frame DoAction and PlaceObject2_18_29 clip are genuinely distinguished in clip-action-gap-r01 raw events; current aggregate logic is unsafe because its native path is frame-global and its fallback is not kind-safe.",
+    "override": "Path-only slot overrides are not sufficient identity evidence for acceptance; they need fixture/build/content hashes and payload-slot agreement."
+  },
+  "status": "not_accepted"
+}

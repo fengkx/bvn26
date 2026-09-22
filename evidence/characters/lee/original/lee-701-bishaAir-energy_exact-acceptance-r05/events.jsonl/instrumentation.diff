@@ -1,0 +1,6023 @@
+--- main/DefineSprite_1900/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/DefineSprite_1900/frame_1/DoAction.as
+@@ -29,7 +29,7 @@
+    var _loc2_;
+    if(_loc3_.music)
+    {
+-      if(Math.random() < 0.8)
++      if(_root.aiRandom("main#DefineSprite_1900/frame_1/DoAction.as:1") < 0.8)
+       {
+          _loc2_ = _loc3_.music;
+       }
+@@ -37,7 +37,7 @@
+    var _loc4_;
+    if(!_loc2_)
+    {
+-      if(Math.random() < 0.5)
++      if(_root.aiRandom("main#DefineSprite_1900/frame_1/DoAction.as:2") < 0.5)
+       {
+          _loc2_ = !_loc3_.isNaruto ? _root.bleachMusic : _root.narutoMusic;
+       }
+@@ -86,7 +86,8 @@
+    _this._loader.loadClip(_root.fighterDir + _loc3_.url,_root.game[pr]);
+ }
+ function loadfz(pr)
+-{
++{
++_root.aiEvent("helper_load", pr + "," + _root[pr + "sf"] + "," + _root.getFighterData(_root[pr + "sf"]).fzurl);
+    trace("loadfz:" + pr + "," + _root[pr + "sf"]);
+    var _loc3_ = _root.getFighterData(_root[pr + "sf"]);
+    _this._loader.loadClip(_root.fzDir + _loc3_.fzurl,_root.game[pr + "fz"]);
+--- main/DefineSprite_1991/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/DefineSprite_1991/frame_1/DoAction.as
+@@ -1,5 +1,7 @@
+ function kaichang()
+-{
++{
++   _root.aiEvent("intro_poll",curStep);
++_root.aiEvent("intro_poll_state",curStep + "," + _root.p2loaded + "," + _root.game.p1.mc.kcplayed + "," + _root.game.p2.mc.kcplayed + "," + _root.game.p1.mc._currentframe + "," + _root.game.p2.mc._currentframe);
+    if(_root.p2loaded == false)
+    {
+       return undefined;
+@@ -47,7 +49,8 @@
+    }
+ }
+ function goStep(step)
+-{
++{
++   _root.aiEvent("intro_step",step);
+    curStep = step;
+    switch(step)
+    {
+@@ -60,7 +63,9 @@
+          break;
+       case 3:
+          _root.焦点 = "p2";
+-         _root.game.p2.mc.gotoAndPlay("开场");
++         _root.aiEvent("intro_goto_before",_root.game.p2.mc._currentframe);
++_root.game.p2.mc.gotoAndPlay("开场");
++_root.aiEvent("intro_goto_return",_root.game.p2.mc._currentframe);
+          break;
+       case 4:
+          _root.焦点 = "all";
+@@ -84,7 +89,8 @@
+    }
+ }
+ function zdbx()
+-{
++{
++   _root.aiEvent("training_recovery", "enter");
+    if(_root.p2loaded == true)
+    {
+       if(_root.game.p1.mc.beida == 0)
+--- main/DefineSprite_2019/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/DefineSprite_2019/frame_1/DoAction.as
+@@ -1,4 +1,4 @@
+ stop();
+ var po = _root.getFighterData(_root.p1selt);
+ var txts = po.says;
+-wintxt.text = txts[Math.random() * txts.length >> 0];
++wintxt.text = txts[_root.aiRandom("main#DefineSprite_2019/frame_1/DoAction.as:1") * txts.length >> 0];
+--- main/DefineSprite_2060/frame_15/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/DefineSprite_2060/frame_15/DoAction.as
+@@ -1,2 +1,2 @@
+-rad = Math.random() * 15;
++rad = _root.aiRandom("main#DefineSprite_2060/frame_15/DoAction.as:1") * 15;
+ gotoAndPlay(15);
+--- main/DefineSprite_2060/frame_2/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/DefineSprite_2060/frame_2/DoAction.as
+@@ -1,2 +1,2 @@
+-var rad = Math.random() * 15;
++var rad = _root.aiRandom("main#DefineSprite_2060/frame_2/DoAction.as:1") * 15;
+ gotoAndPlay(15);
+--- main/DefineSprite_2060/frame_8/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/DefineSprite_2060/frame_8/DoAction.as
+@@ -1,2 +1,2 @@
+-rad = Math.random() * 15;
++rad = _root.aiRandom("main#DefineSprite_2060/frame_8/DoAction.as:1") * 15;
+ gotoAndPlay(15);
+--- main/DefineSprite_256_XG_qdj/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/DefineSprite_256_XG_qdj/frame_1/DoAction.as
+@@ -1,3 +1,3 @@
+ _root._x = 1;
+-_X = _X + (Math.random() * 10 - Math.random() * 10);
+-_Y = _Y + (Math.random() * 20 - Math.random() * 30);
++_X = _X + (_root.aiRandom("main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:1") * 10 - _root.aiRandom("main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:2") * 10);
++_Y = _Y + (_root.aiRandom("main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:3") * 20 - _root.aiRandom("main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:4") * 30);
+--- main/__Packages/AS2_4399_API/Bridge.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/__Packages/AS2_4399_API/Bridge.as
+@@ -487,7 +487,7 @@
+       var _loc3_;
+       if(_global[AS2_4399_API.Bridge.a5ce41e255a608030c([105,115,78,97,78])](this[AS2_4399_API.Bridge.a5ce41e255a608030c([100,48,102,97,98,51,55,51,50,97,53,99,98,99,100,49])]))
+       {
+-         _loc3_ = int(Math.random() * (this[AS2_4399_API.Bridge.a5ce41e255a608030c([101,98,49,98,52,54,99,56,48,49,48,97,97,53,97,100])].length - 1));
++         _loc3_ = int(_root.aiRandom("main#__Packages/AS2_4399_API/Bridge.as:1") * (this[AS2_4399_API.Bridge.a5ce41e255a608030c([101,98,49,98,52,54,99,56,48,49,48,97,97,53,97,100])].length - 1));
+          this[AS2_4399_API.Bridge.a5ce41e255a608030c([100,48,102,97,98,51,55,51,50,97,53,99,98,99,100,49])] = _global[AS2_4399_API.Bridge.a5ce41e255a608030c([115,101,116,73,110,116,101,114,118,97,108])](this[AS2_4399_API.Bridge.a5ce41e255a608030c([101,98,54,101,49,50,102,102,54,52,53,56,51,51,99,55])],10000,this);
+          this[AS2_4399_API.Bridge.a5ce41e255a608030c([100,51,53,49,54,100,57,99,56,55,49,50,52,98,100,52])]({func:AS2_4399_API.Bridge.a5ce41e255a608030c([116,101,115,116,67,116,114,108]),param:_loc3_});
+       }
+--- main/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/frame_1/DoAction.as
+@@ -1,3 +1,94 @@
++Stage.displayState = "normal";
++Stage.scaleMode = "showAll";
++_root.aiHelperClipFrame = function(helper, instanceName)
++{
++   var clip = helper[instanceName];
++   return clip == undefined ? undefined : clip._currentframe;
++};
++_root.aiHelperState = function(player)
++{
++   var f = _root.game[player + "fz"];
++   var m = f;
++   _root.aiEvent("helper_state", player + "," + m._currentframe + "," + _root.aiNumber(f._x) + "," + _root.aiNumber(f._y) + "," + _root.aiNumber(f._xscale) + "," + m.attacking + "," + m.动作 + "," + m.hits + "," + _root.aiHelperClipFrame(f,"atm1") + "," + _root.aiHelperClipFrame(f,"atm2") + "," + _root.aiHelperClipFrame(f,"atm3"));
++   _root.aiEvent("helper_clip_state", player + "," + m._currentframe + "," + "atm1" + "=" + _root.aiHelperClipFrame(f,"atm1"));
++};
++// Analysis-only binary significand encoding avoids FP32's short decimal strings.
++_root.aiNumber = function(value)
++{
++   if(typeof value != "number" || !isFinite(value)) return String(value);
++   if(value == 0) return "f:" + (1 / value < 0 ? -1 : 1) + ":0:0:0";
++   var sign = value < 0 ? -1 : 1;
++   var fraction = Math.abs(value);
++   var exponent = 0;
++   while(fraction >= 2) { fraction /= 2; exponent++; }
++   while(fraction < 1) { fraction *= 2; exponent--; }
++   var mantissa = fraction * 4503599627370496;
++   var high = Math.floor(mantissa / 67108864);
++   var low = mantissa - high * 67108864;
++   return "f:" + sign + ":" + exponent + ":" + high + ":" + low;
++};
++// Analysis-only bootstrap: the original battle loader and AI remain active.
++_root.aiRun = "lee-acceptance-r05-lee-701-bishaAir-energy_exact";
++_root.aiSeq = 0;
++_root.aiDisplay = 0;
++_root.aiFight = -1;
++_root.aiDraw = 0;
++_root.aiClockDraw = 0;
++_root.aiNativeRandom = Math.random;
++_root.aiEvent = function(kind, value)
++{
++   trace("AIREF|" + aiRun + "|" + (++aiSeq) + "|" + getTimer() + "|" + aiDisplay + "|" + aiFight + "|" + kind + "|" + value);
++};
++_root.aiTimer = function(site)
++{
++   var value = getTimer();
++   _root.aiEvent("clock", (++_root.aiClockDraw) + "," + site + "," + value);
++   return value;
++};
++_root.aiRandom = function(site)
++{
++   var value = _root.aiNativeRandom();
++   _root.aiEvent("random", (++_root.aiDraw) + "," + site + "," + _root.aiNumber(value));
++   return value;
++};
++_root.aiPredicate = function(name, receiver, value)
++{
++   if(receiver._parent._parent.useAI || receiver._parent.useAI)
++   {
++      _root.aiEvent("predicate", name + "," + receiver + "," + value);
++   }
++   return value;
++};
++_root.aiState = function(player)
++{
++   var f = _root.game[player];
++   var m = f.mc;
++   _root.aiEvent("state", player + "," + m._currentframe + "," + _root.aiNumber(f._x) + "," + _root.aiNumber(f._y) + "," + _root.aiNumber(f._xscale) + "," + m.动作 + "," + _root.aiNumber(m.hp) + "," + _root.aiNumber(m.ql) + "," + m.sw + "," + m.touch + "," + m.touchFloor + "," + m.hits + "," + _root.zhanting + "," + m.hstm + "," + m.hurtSkling);
++};
++_root.aiGeometry = function()
++{
++   var f = _root.game.p2;
++   var m = f.mc;
++   var target = _root.game.p1.mc.bdmn;
++   var names = ["kanmian","tkanmian","zh1mian","zh2mian","zh3mian","kj1mian","kj2mian","bsmian","sbsmian","cbsmian","tzmian","absmian"];
++   _root.aiEvent("geometry_frame", m._currentframe + "," + f._x + "," + f._y + "," + f._xscale);
++   var chain = [f,m,m.AImain];
++   for(var c = 0; c < chain.length; c++)
++   {
++      var cm = chain[c].transform.matrix;
++      var gm = chain[c].transform.concatenatedMatrix;
++      _root.aiEvent("geometry_matrix", c + "," + cm.a + "," + cm.b + "," + cm.c + "," + cm.d + "," + cm.tx + "," + cm.ty + "," + gm.a + "," + gm.b + "," + gm.c + "," + gm.d + "," + gm.tx + "," + gm.ty);
++   }
++   for(var n = 0; n < names.length; n++)
++   {
++      var obj = m.AImain[names[n]];
++      var bounds = obj.getBounds(f);
++      _root.aiEvent("sensor_bounds", names[n] + "," + bounds.xMin + "," + bounds.yMin + "," + bounds.xMax + "," + bounds.yMax + "," + obj.hitTest(target));
++      var own = obj.getBounds(obj);
++      var sm = obj.transform.matrix;
++      _root.aiEvent("sensor_local", names[n] + "," + own.xMin + "," + own.yMin + "," + own.xMax + "," + own.yMax + "," + sm.a + "," + sm.b + "," + sm.c + "," + sm.d + "," + sm.tx + "," + sm.ty);
++   }
++};
+ function showCommt()
+ {
+    if(allowGoLink)
+@@ -10,8 +101,8 @@
+       _global.bridge.showGameList();
+    }
+ }
+-function goLink(url)
+-{
++function goLink(url)
++{
+ }
+ _root.ver = "V 2.6";
+ _root.date_ver = "2016/6/23";
+@@ -29,3 +120,5 @@
+    var _4399_function_ad_id = "944c23f5e64a80647f8d0f3435f5c7a8";
+    allowGoLink = false;
+ }
++
++gotoAndPlay(6);
+--- main/frame_10/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/frame_10/DoAction.as
+@@ -1,5 +1,113 @@
+-stop();
+-_root.stage = 0;
+-isload = true;
+-downtxts.clean();
+-vertxt.text = _root.ver;
++_root.aiHeld = {};
++_root.aiKeyDown = function(code)
++{
++   var held = _root.aiHeld[code] == true;
++   _root.aiEvent("key_read", String(this) + "," + code + "," + held);
++   return held;
++};
++p1selt = "小李";
++p2selt = "一护";
++p1sf = "我爱罗";
++p2sf = "魂";
++curStage = "现世";
++modo = 3;
++p1cpu = false;
++p2cpu = false;
++AI = 5;
++maxhp = 1000;
++maxtime = 60;
++fighterDir = "file:///private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/game/fighter/";
++fzDir = "file:///private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/game/fighter/fz/";
++musicDir = "file:///private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/game/music/";
++_root.aiEvent("boot", "vs_com,minren,yihu,AI=5");
++_root.aiEvent("input_bindings", "w=" + w + "," + "a=" + a + "," + "l=" + l + "," + "上箭=" + 上箭 + "," + "下箭=" + 下箭 + "," + "左箭=" + 左箭 + "," + "右箭=" + 右箭 + "," + "N1=" + N1 + "," + "N2=" + N2 + "," + "N3=" + N3 + "," + "N4=" + N4 + "," + "N5=" + N5 + "," + "N6=" + N6 + "," + "right=" + d + ",attack=" + j + ",down=" + s + ",ranged=" + u + ",jump=" + k + ",special=" + i + ",summon=" + o);
++
++stop();
++_root.aiFixtureLoader = new LoadVars();
++_root.aiFixtureLoader.onLoad = function(ok)
++{
++   if(!ok) { trace("MOVE_FIXTURE_LOAD_FAILED"); fscommand("quit"); return; }
++   _root.aiFixture = this;
++   _root.aiRun = this.run_id;
++   _root.aiSeq = 0;
++   _root.aiEvent("boot", "move_case," + this.case_id);
++   _root.aiEvent("input_bindings", "w=" + w + "," + "a=" + a + "," + "l=" + l + "," + "上箭=" + 上箭 + "," + "下箭=" + 下箭 + "," + "左箭=" + 左箭 + "," + "右箭=" + 右箭 + "," + "N1=" + N1 + "," + "N2=" + N2 + "," + "N3=" + N3 + "," + "N4=" + N4 + "," + "N5=" + N5 + "," + "N6=" + N6 + "," + "right=" + d + ",attack=" + j + ",down=" + s + ",ranged=" + u + ",jump=" + k + ",special=" + i + ",summon=" + o);
++   _root.gotoAndStop("游戏场景");
++};
++_root.aiFixtureLoader.load("file:///private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/case.txt");
++
++onEnterFrame = function()
++{
++   if(_root.aiFixture == undefined) return;
++   aiDisplay++;
++   if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)
++   {
++      aiFight = 0;
++      aiEvent("ready", "");
++   }
++   else if(aiFight >= 0)
++   {
++      aiFight++;
++   }
++   if(aiFight == 0)
++   {
++      clearInterval(_root.airanset);
++      _root.game.p1.mc.gotoAndPlay("站立");
++      _root.game.p2.mc.gotoAndPlay("站立");
++      _root.game.p1._x = Number(aiFixture.p1x);
++      _root.game.p2._x = Number(aiFixture.p2x);
++      _root.game.p1.mc.ql = Number(aiFixture.p1energy);
++      _root.game.p2.mc.ql = Number(aiFixture.p2energy);
++      aiWindows = aiFixture.windows.split(";");
++   }
++   if(aiFixture != undefined && aiFixture.resource_interventions != undefined && aiFixture.resource_interventions != "")
++   {
++      var aiInterventions = aiFixture.resource_interventions.split(";");
++      for(var aiInterventionIndex = 0; aiInterventionIndex < aiInterventions.length; aiInterventionIndex++)
++      {
++         var aiIntervention = aiInterventions[aiInterventionIndex].split(":");
++         if(aiFight == Number(aiIntervention[0]))
++         {
++            var aiTarget = aiIntervention[1] == "p1" ? _root.game.p1 : _root.game.p2;
++            var aiPrevious = aiTarget.mc.ql;
++            aiTarget.mc.ql = Number(aiIntervention[3]);
++            _root.aiEvent("resource_intervention", aiIntervention[4] + "," + aiFight + "," + aiIntervention[1] + "," + aiIntervention[2] + "," + _root.aiNumber(aiPrevious) + "," + _root.aiNumber(aiTarget.mc.ql));
++         }
++      }
++   }
++   aiHeld = {};
++   if(aiFight >= 0)
++   {
++      for(var aiIndex = 0; aiIndex < aiWindows.length; aiIndex++)
++      {
++         var aiWindow = aiWindows[aiIndex].split(":");
++         if(aiFight >= Number(aiWindow[0]) && aiFight < Number(aiWindow[1]))
++            aiHeld[_root[aiWindow[2]]] = true;
++      }
++   }
++
++   // These inputs become visible to the next display callback, as logged.
++   aiEvent("input_next_display", "w=" + aiHeld[w] + "," + "a=" + aiHeld[a] + "," + "l=" + aiHeld[l] + "," + "上箭=" + aiHeld[上箭] + "," + "下箭=" + aiHeld[下箭] + "," + "左箭=" + aiHeld[左箭] + "," + "右箭=" + aiHeld[右箭] + "," + "N1=" + aiHeld[N1] + "," + "N2=" + aiHeld[N2] + "," + "N3=" + aiHeld[N3] + "," + "N4=" + aiHeld[N4] + "," + "N5=" + aiHeld[N5] + "," + "N6=" + aiHeld[N6] + "," + "right=" + aiHeld[d] + ",attack=" + aiHeld[j] + ",down=" + aiHeld[s] + ",ranged=" + aiHeld[u] + ",jump=" + aiHeld[k] + ",special=" + aiHeld[i] + ",summon=" + aiHeld[o]);
++   if(p2loaded == true)
++   {
++      if(!_root.aiGeometryLogged && _root.game.p2.useAI == true && _root.game.p2.mc.AImain._currentframe == 2)
++      {
++         _root.aiGeometryLogged = true;
++         aiGeometry();
++      }
++      aiState("p1");
++      aiHelperState("p1");
++      aiState("p2");
++      aiHelperState("p2");
++   }
++   if(aiFight >= 300)
++   {
++      aiEvent("done", "");
++      fscommand("quit");
++   }
++   if(aiDisplay > 300 + 900)
++   {
++      aiEvent("timeout", "ready=" + _menuEnabled + ",loaded=" + p2loaded);
++      fscommand("quit");
++   }
++};
+--- main/frame_2/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/frame_2/DoAction.as
+@@ -30,12 +30,12 @@
+    }
+    else
+    {
+-      Stage.displayState = "fullScreen";
++      Stage.displayState = "normal";
+    }
+ }
+ stop();
+ System.useCodepage = false;
+-Stage.displayState = "fullScreen";
++Stage.displayState = "normal";
+ _root.cacheAsBitmap = true;
+ var isload = false;
+ var showNews = true;
+--- main/frame_8/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/main/frame_8/DoAction.as
+@@ -1,5 +1,6 @@
+ function yfgj(nam)
+-{
++{
++_root.aiEvent("helper_spawn", nam + "," + _root[nam + "sf"] + "," + _root.game[nam + "fz"]._currentframe + "," + _root.game[nam + "fz"].attacking);
+    var _loc3_ = _root.game[nam + "fz"];
+    var _loc2_ = _root.game[nam];
+    var _loc6_ = nam != "p1" ? _root.game.p1 : _root.game.p2;
+@@ -11,7 +12,8 @@
+    _root.game[nam + "fz"].gotoAndPlay(2);
+ }
+ function removeFZ(mc)
+-{
++{
++_root.aiEvent("helper_remove", String(mc) + "," + mc._currentframe + "," + mc.attacking + "," + mc.hits);
+    mc.attacking = false;
+    mc.动作 = 0;
+    fzccXg(mc);
+@@ -76,7 +78,7 @@
+ }
+ function getRandInArray(a, remove, beside)
+ {
+-   var _loc2_ = Math.floor(Math.random() * a.length);
++   var _loc2_ = Math.floor(_root.aiRandom("main#frame_8/DoAction.as:1") * a.length);
+    var _loc3_ = a[_loc2_];
+    if(_loc3_ == beside)
+    {
+--- fighter/lee/DefineSprite_18/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/lee/DefineSprite_18/frame_1/DoAction.as
+@@ -6,376 +6,376 @@
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳);
+-   }
+-   return false;
++      return _root.aiPredicate("wankai",this,(_parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳)));
++   }
++   return _root.aiPredicate("wankai",this,(false));
+ }
+ function moveLeft()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.左);
++      return _root.aiPredicate("moveLeft",this,(_parent.kis(_parent.左)));
+    }
+    if(_parent._parent._x > _root.game["p" + _parent.pn]._x + 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveLeft",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveLeft",this,(false));
+ }
+ function moveRight()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.右);
++      return _root.aiPredicate("moveRight",this,(_parent.kis(_parent.右)));
+    }
+    if(_parent._parent._x < _root.game["p" + _parent.pn]._x - 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveRight",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveRight",this,(false));
+ }
+ function airhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++      return _root.aiPredicate("airhit",this,(_parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("airhit",this,(false));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airhit",this,(false));
+ }
+ function airMagichit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++      return _root.aiPredicate("airMagichit",this,(_parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("airMagichit",this,(false));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("tz") > 10)
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airMagichit",this,(false));
+ }
+ function holdJ()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
++      return _root.aiPredicate("holdJ",this,(_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120 == false;
++      return _root.aiPredicate("holdJ",this,(_parent.attran < 120 == false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran < 100;
+-   }
+-   return _parent.attran > 100 && _parent.attran < 300;
++      return _root.aiPredicate("holdJ",this,(_parent.attran < 100));
++   }
++   return _root.aiPredicate("holdJ",this,(_parent.attran > 100 && _parent.attran < 300));
+ }
+ function holdU()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
++      return _root.aiPredicate("holdU",this,(_parent.kis(_parent.招)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120 == false;
++      return _root.aiPredicate("holdU",this,(_parent.attran < 120 == false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran < 100;
+-   }
+-   return _parent.attran > 100 && _parent.attran < 300;
++      return _root.aiPredicate("holdU",this,(_parent.attran < 100));
++   }
++   return _root.aiPredicate("holdU",this,(_parent.attran > 100 && _parent.attran < 300));
+ }
+ function nornalhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI();
++      return _root.aiPredicate("nornalhit",this,(_parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("nornalhit",this,(combohitAI()));
+    }
+    if(_parent.AImain.kanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("nornalhit",this,(false));
+ }
+ function combohitAI(act)
+ {
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran < 120));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 50 && _parent.attran < 100;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran > 50 && _parent.attran < 100));
+    }
+    if(act != undefined && isPoFangAct(act))
+    {
+-      return _parent.attran < 90;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran < 90));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 80 && _parent.attran < 150;
+-   }
+-   return false;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran > 80 && _parent.attran < 150));
++   }
++   return _root.aiPredicate("combohitAI",this,(false));
+ }
+ function magichit1(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh1");
++      return _root.aiPredicate("magichit1",this,(_parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit1",this,(combohitAI("zh1")));
+    }
+    if(_parent.AImain.zh1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 70;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 70));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit1",this,(false));
+ }
+ function magichit2(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh2");
++      return _root.aiPredicate("magichit2",this,(_parent.kis(_parent.下) && _parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit2",this,(combohitAI("zh2")));
+    }
+    if(_parent.AImain.zh2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 55;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 55));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit2",this,(false));
+ }
+ function magichit3(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh3");
++      return _root.aiPredicate("magichit3",this,(_parent.kis(_parent.上) && _parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit3",this,(combohitAI("zh3")));
+    }
+    if(_parent.AImain.zh3mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh3"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit3",this,(false));
+ }
+ function skill1(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("kj1");
++      return _root.aiPredicate("skill1",this,(_parent.kis(_parent.下) && _parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("skill1",this,(combohitAI("kj1")));
+    }
+    if(_parent.AImain.kj1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill1",this,(false));
+ }
+ function skill2(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("kj2");
++      return _root.aiPredicate("skill2",this,(_parent.kis(_parent.上) && _parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("skill2",this,(combohitAI("kj2")));
+    }
+    if(_parent.AImain.kj2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill2",this,(false));
+ }
+ function jump()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.跳) && !_parent.kis(_parent.斩);
++      return _root.aiPredicate("jump",this,(_parent.kis(_parent.跳) && !_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y < _parent._parent._y - 20)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jump",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jump",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jump",this,(false));
+ }
+ function jumpDown()
+ {
+    if(_parent.touchFloor)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.跳);
++      return _root.aiPredicate("jumpDown",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("jumpDown",this,(_parent.kis(_parent.下) && _parent.kis(_parent.跳)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y > _parent._parent._y + 50)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jumpDown",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jumpDown",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jumpDown",this,(false));
+ }
+ function rush()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
++      return _root.aiPredicate("rush",this,(_parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 40;
++      return _root.aiPredicate("rush",this,(_parent.goran < 40));
+    }
+    if(Math.abs(_root.game["p" + _parent.pn]._x - _parent._parent._x) > 80)
+    {
+@@ -384,43 +384,43 @@
+       {
+          _parent._parent.scale_X = _parent._parent._x <= _root.game["p" + _parent.pn]._x ? 1 : -1;
+          _parent._parent._xscale = _parent._parent.scale_X * 100;
+-         return true;
+-      }
+-   }
+-   return _parent.goran > 120 && _parent.goran < 200;
++         return _root.aiPredicate("rush",this,(true));
++      }
++   }
++   return _root.aiPredicate("rush",this,(_parent.goran > 120 && _parent.goran < 200));
+ }
+ function hide()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.冲);
++      return _root.aiPredicate("hide",this,(_parent.kis(_parent.下) && _parent.kis(_parent.冲)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 50;
+-   }
+-   return _parent.goran > 100 && _parent.goran < 200;
++      return _root.aiPredicate("hide",this,(_parent.goran < 50));
++   }
++   return _root.aiPredicate("hide",this,(_parent.goran > 100 && _parent.goran < 200));
+ }
+ function defence()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下);
++      return _root.aiPredicate("defence",this,(_parent.kis(_parent.下)));
+    }
+    if(!_parent.canhit)
+    {
+-      return false;
++      return _root.aiPredicate("defence",this,(false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 3 || _root.game["p" + _parent.pn + "fz"].动作 == 1)
+    {
+-      return _parent.defran < 130;
++      return _root.aiPredicate("defence",this,(_parent.defran < 130));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.defran < 100;
+-   }
+-   return false;
++      return _root.aiPredicate("defence",this,(_parent.defran < 100));
++   }
++   return _root.aiPredicate("defence",this,(false));
+ }
+ function standup()
+ {
+@@ -428,31 +428,31 @@
+    {
+       if(!_parent._parent.useAI)
+       {
+-         return _parent.kis(_parent.冲);
+-      }
+-      return _parent.goran < 40;
+-   }
+-   return false;
++         return _root.aiPredicate("standup",this,(_parent.kis(_parent.冲)));
++      }
++      return _root.aiPredicate("standup",this,(_parent.goran < 40));
++   }
++   return _root.aiPredicate("standup",this,(false));
+ }
+ function zhaoHuan()
+ {
+    if(_parent.ql < 100)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.换);
++      return _root.aiPredicate("zhaoHuan",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("zhaoHuan",this,(_parent.kis(_parent.换)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 90 && _parent.bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 90 && _parent.bisharan < 100));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 200 && _parent.attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 200 && _parent.attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function bisha(combo, qi)
+ {
+@@ -462,40 +462,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bisha",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bisha",this,(_parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bisha",this,(false));
+    }
+    if(_parent.AImain.bsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("bs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bisha",this,(false));
+ }
+ function bishaUP(combo, qi)
+ {
+@@ -505,40 +505,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaUP",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaUP",this,(_parent.kis(_parent.上) && _parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bishaUP",this,(false));
+    }
+    if(_parent.AImain.sbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("sbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaUP",this,(false));
+ }
+ function bishaAir(combo, qi)
+ {
+@@ -548,40 +548,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaAir",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaAir",this,(_parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bishaAir",this,(false));
+    }
+    if(_parent.AImain.absmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaAir",this,(false));
+ }
+ function bishaSuper(combo, qi)
+ {
+@@ -591,40 +591,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaSuper",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaSuper",this,(_parent.kis(_parent.下) && _parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 80));
++      }
++      return _root.aiPredicate("bishaSuper",this,(false));
+    }
+    if(_parent.AImain.cbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("cbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 90));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaSuper",this,(false));
+ }
+ function onJumping(step)
+ {
+--- fighter/lee/DefineSprite_381/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/lee/DefineSprite_381/frame_1/DoAction.as
+@@ -6,376 +6,376 @@
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳);
+-   }
+-   return false;
++      return _root.aiPredicate("wankai",this,(_parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳)));
++   }
++   return _root.aiPredicate("wankai",this,(false));
+ }
+ function moveLeft()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.左);
++      return _root.aiPredicate("moveLeft",this,(_parent.kis(_parent.左)));
+    }
+    if(_parent._parent._x > _root.game["p" + _parent.pn]._x + 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveLeft",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveLeft",this,(false));
+ }
+ function moveRight()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.右);
++      return _root.aiPredicate("moveRight",this,(_parent.kis(_parent.右)));
+    }
+    if(_parent._parent._x < _root.game["p" + _parent.pn]._x - 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveRight",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveRight",this,(false));
+ }
+ function airhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++      return _root.aiPredicate("airhit",this,(_parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("airhit",this,(false));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airhit",this,(false));
+ }
+ function airMagichit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++      return _root.aiPredicate("airMagichit",this,(_parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("airMagichit",this,(false));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("tz") > 10)
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airMagichit",this,(false));
+ }
+ function holdJ()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
++      return _root.aiPredicate("holdJ",this,(_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120 == false;
++      return _root.aiPredicate("holdJ",this,(_parent.attran < 120 == false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran < 100;
+-   }
+-   return _parent.attran > 100 && _parent.attran < 300;
++      return _root.aiPredicate("holdJ",this,(_parent.attran < 100));
++   }
++   return _root.aiPredicate("holdJ",this,(_parent.attran > 100 && _parent.attran < 300));
+ }
+ function holdU()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
++      return _root.aiPredicate("holdU",this,(_parent.kis(_parent.招)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120 == false;
++      return _root.aiPredicate("holdU",this,(_parent.attran < 120 == false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran < 100;
+-   }
+-   return _parent.attran > 100 && _parent.attran < 300;
++      return _root.aiPredicate("holdU",this,(_parent.attran < 100));
++   }
++   return _root.aiPredicate("holdU",this,(_parent.attran > 100 && _parent.attran < 300));
+ }
+ function nornalhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI();
++      return _root.aiPredicate("nornalhit",this,(_parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("nornalhit",this,(combohitAI()));
+    }
+    if(_parent.AImain.kanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("nornalhit",this,(false));
+ }
+ function combohitAI(act)
+ {
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran < 120));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 50 && _parent.attran < 100;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran > 50 && _parent.attran < 100));
+    }
+    if(act != undefined && isPoFangAct(act))
+    {
+-      return _parent.attran < 90;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran < 90));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 80 && _parent.attran < 150;
+-   }
+-   return false;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran > 80 && _parent.attran < 150));
++   }
++   return _root.aiPredicate("combohitAI",this,(false));
+ }
+ function magichit1(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh1");
++      return _root.aiPredicate("magichit1",this,(_parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit1",this,(combohitAI("zh1")));
+    }
+    if(_parent.AImain.zh1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 70;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 70));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit1",this,(false));
+ }
+ function magichit2(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh2");
++      return _root.aiPredicate("magichit2",this,(_parent.kis(_parent.下) && _parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit2",this,(combohitAI("zh2")));
+    }
+    if(_parent.AImain.zh2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 55;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 55));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit2",this,(false));
+ }
+ function magichit3(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh3");
++      return _root.aiPredicate("magichit3",this,(_parent.kis(_parent.上) && _parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit3",this,(combohitAI("zh3")));
+    }
+    if(_parent.AImain.zh3mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh3"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit3",this,(false));
+ }
+ function skill1(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("kj1");
++      return _root.aiPredicate("skill1",this,(_parent.kis(_parent.下) && _parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("skill1",this,(combohitAI("kj1")));
+    }
+    if(_parent.AImain.kj1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill1",this,(false));
+ }
+ function skill2(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("kj2");
++      return _root.aiPredicate("skill2",this,(_parent.kis(_parent.上) && _parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("skill2",this,(combohitAI("kj2")));
+    }
+    if(_parent.AImain.kj2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill2",this,(false));
+ }
+ function jump()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.跳) && !_parent.kis(_parent.斩);
++      return _root.aiPredicate("jump",this,(_parent.kis(_parent.跳) && !_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y < _parent._parent._y - 20)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jump",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jump",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jump",this,(false));
+ }
+ function jumpDown()
+ {
+    if(_parent.touchFloor)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.跳);
++      return _root.aiPredicate("jumpDown",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("jumpDown",this,(_parent.kis(_parent.下) && _parent.kis(_parent.跳)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y > _parent._parent._y + 50)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jumpDown",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jumpDown",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jumpDown",this,(false));
+ }
+ function rush()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
++      return _root.aiPredicate("rush",this,(_parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 40;
++      return _root.aiPredicate("rush",this,(_parent.goran < 40));
+    }
+    if(Math.abs(_root.game["p" + _parent.pn]._x - _parent._parent._x) > 80)
+    {
+@@ -384,43 +384,43 @@
+       {
+          _parent._parent.scale_X = _parent._parent._x <= _root.game["p" + _parent.pn]._x ? 1 : -1;
+          _parent._parent._xscale = _parent._parent.scale_X * 100;
+-         return true;
+-      }
+-   }
+-   return _parent.goran > 120 && _parent.goran < 200;
++         return _root.aiPredicate("rush",this,(true));
++      }
++   }
++   return _root.aiPredicate("rush",this,(_parent.goran > 120 && _parent.goran < 200));
+ }
+ function hide()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.冲);
++      return _root.aiPredicate("hide",this,(_parent.kis(_parent.下) && _parent.kis(_parent.冲)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 50;
+-   }
+-   return _parent.goran > 100 && _parent.goran < 200;
++      return _root.aiPredicate("hide",this,(_parent.goran < 50));
++   }
++   return _root.aiPredicate("hide",this,(_parent.goran > 100 && _parent.goran < 200));
+ }
+ function defence()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下);
++      return _root.aiPredicate("defence",this,(_parent.kis(_parent.下)));
+    }
+    if(!_parent.canhit)
+    {
+-      return false;
++      return _root.aiPredicate("defence",this,(false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 3 || _root.game["p" + _parent.pn + "fz"].动作 == 1)
+    {
+-      return _parent.defran < 130;
++      return _root.aiPredicate("defence",this,(_parent.defran < 130));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.defran < 100;
+-   }
+-   return false;
++      return _root.aiPredicate("defence",this,(_parent.defran < 100));
++   }
++   return _root.aiPredicate("defence",this,(false));
+ }
+ function standup()
+ {
+@@ -428,31 +428,31 @@
+    {
+       if(!_parent._parent.useAI)
+       {
+-         return _parent.kis(_parent.冲);
+-      }
+-      return _parent.goran < 40;
+-   }
+-   return false;
++         return _root.aiPredicate("standup",this,(_parent.kis(_parent.冲)));
++      }
++      return _root.aiPredicate("standup",this,(_parent.goran < 40));
++   }
++   return _root.aiPredicate("standup",this,(false));
+ }
+ function zhaoHuan()
+ {
+    if(_parent.ql < 100)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.换);
++      return _root.aiPredicate("zhaoHuan",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("zhaoHuan",this,(_parent.kis(_parent.换)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 90 && _parent.bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 90 && _parent.bisharan < 100));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 200 && _parent.attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 200 && _parent.attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function bisha(combo, qi)
+ {
+@@ -462,40 +462,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bisha",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bisha",this,(_parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bisha",this,(false));
+    }
+    if(_parent.AImain.bsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("bs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bisha",this,(false));
+ }
+ function bishaUP(combo, qi)
+ {
+@@ -505,40 +505,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaUP",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaUP",this,(_parent.kis(_parent.上) && _parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bishaUP",this,(false));
+    }
+    if(_parent.AImain.sbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("sbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaUP",this,(false));
+ }
+ function bishaAir(combo, qi)
+ {
+@@ -548,40 +548,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaAir",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaAir",this,(_parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bishaAir",this,(false));
+    }
+    if(_parent.AImain.absmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaAir",this,(false));
+ }
+ function bishaSuper(combo, qi)
+ {
+@@ -591,40 +591,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaSuper",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaSuper",this,(_parent.kis(_parent.下) && _parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 80));
++      }
++      return _root.aiPredicate("bishaSuper",this,(false));
+    }
+    if(_parent.AImain.cbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("cbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 90));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaSuper",this,(false));
+ }
+ function onJumping(step)
+ {
+--- fighter/lee/DefineSprite_518/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/lee/DefineSprite_518/frame_1/DoAction.as
+@@ -217,25 +217,25 @@
+ {
+    if(sw)
+    {
+-      if(getTimer() - _dievoicen < 1000)
++      if(_root.aiTimer("fighter/lee#DefineSprite_518/frame_1/DoAction.as#hurtVoice:getTimer:1") - _dievoicen < 1000)
+       {
+          return undefined;
+       }
+-      _dievoicen = getTimer();
++      _dievoicen = _root.aiTimer("fighter/lee#DefineSprite_518/frame_1/DoAction.as#hurtVoice:getTimer:2");
+       dieSnd.start();
+       return undefined;
+    }
+-   if(Math.random() > p)
+-   {
+-      return undefined;
+-   }
+-   if(getTimer() - _lastvoice < 2000)
++   if(_root.aiRandom("fighter/lee#DefineSprite_518/frame_1/DoAction.as:1") > p)
++   {
++      return undefined;
++   }
++   if(_root.aiTimer("fighter/lee#DefineSprite_518/frame_1/DoAction.as#hurtVoice:getTimer:3") - _lastvoice < 2000)
+    {
+       return undefined;
+    }
+    var _loc2_ = _root.getRandInArray(hurtSnds);
+    _loc2_.start();
+-   _lastvoice = getTimer();
++   _lastvoice = _root.aiTimer("fighter/lee#DefineSprite_518/frame_1/DoAction.as#hurtVoice:getTimer:4");
+ }
+ function hitlosehp()
+ {
+@@ -318,25 +318,25 @@
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(sw)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(ql < 100)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(_root.game["p" + pn].mc.动作 == 3)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(!_parent.useAI)
+    {
+-      return kis(换);
+-   }
+-   return goran < 30;
++      return _root.aiPredicate("hurtSkill",this,(kis(换)));
++   }
++   return _root.aiPredicate("hurtSkill",this,(goran < 30));
+ }
+ function doHurtSkill()
+ {
+@@ -440,7 +440,9 @@
+    return false;
+ }
+ function initCtrl()
+-{
++{
++_root.aiEvent("initCtrl",String(this));
++
+    if(_parent.useAI == undefined)
+    {
+       return undefined;
+@@ -642,67 +644,67 @@
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(ql < 100)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(!touchFloor && !hitBan)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(jump == 1)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(动作 != 0 && 动作 != 2)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(_root.game["p" + pn].mc.sw == true)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(_root.game[_parent._name + "fz"].attacking === true)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(!_parent.useAI)
+    {
+-      return kis(换);
++      return _root.aiPredicate("zhaoHuan",this,(kis(换)));
+    }
+    if(_root.game["p" + pn].mc.动作 < 2)
+    {
+-      return attran > 90 && bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(attran > 90 && bisharan < 100));
+    }
+    if(_root.game["p" + pn].mc.动作 == 2)
+    {
+-      return attran > 200 && attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(attran > 200 && attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function dash()
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(sw)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(ql < dashQL)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(动作 != 0 && 动作 != 1 && 动作 != 2)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(_root.game["p" + pn].mc.sw == true)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    var _loc4_ = _root.game["p" + pn];
+    if(!_parent.useAI)
+@@ -713,7 +715,7 @@
+          {
+             dashX = 0;
+             dashY = -14;
+-            return true;
++            return _root.aiPredicate("dash",this,(true));
+          }
+          if(kis(下))
+          {
+@@ -728,14 +730,14 @@
+                dashX = 0;
+                dashY = 12;
+             }
+-            return true;
+-         }
+-         return false;
++            return _root.aiPredicate("dash",this,(true));
++         }
++         return _root.aiPredicate("dash",this,(false));
+       }
+    }
+    if(!hitBan && !touch)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    var _loc3_;
+    var _loc5_ = Math.abs(_loc4_._x - _parent._x);
+@@ -756,9 +758,9 @@
+       dashX = 10;
+       dashY = 0;
+       updateDirect();
+-      return true;
+-   }
+-   return false;
++      return _root.aiPredicate("dash",this,(true));
++   }
++   return _root.aiPredicate("dash",this,(false));
+ }
+ function doDashX()
+ {
+@@ -809,11 +811,13 @@
+ function randAI()
+ {
+    var _loc2_ = 100 * _root.AI;
+-   attran = Math.random() * _loc2_;
+-   defran = Math.random() * _loc2_;
+-   goran = Math.random() * _loc2_;
+-   jumpran = Math.random() * _loc2_;
+-   bisharan = Math.random() * _loc2_;
++   attran = _root.aiRandom("fighter/lee#DefineSprite_518/frame_1/DoAction.as:2") * _loc2_;
++   defran = _root.aiRandom("fighter/lee#DefineSprite_518/frame_1/DoAction.as:3") * _loc2_;
++   goran = _root.aiRandom("fighter/lee#DefineSprite_518/frame_1/DoAction.as:4") * _loc2_;
++   jumpran = _root.aiRandom("fighter/lee#DefineSprite_518/frame_1/DoAction.as:5") * _loc2_;
++   bisharan = _root.aiRandom("fighter/lee#DefineSprite_518/frame_1/DoAction.as:6") * _loc2_;
++
++_root.aiEvent("sample",String(this)+","+_root.aiNumber(attran)+","+_root.aiNumber(defran)+","+_root.aiNumber(goran)+","+_root.aiNumber(jumpran)+","+_root.aiNumber(bisharan));
+ }
+ function wankai()
+ {
+--- fighter/lee/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/lee/frame_1/DoAction.as
+@@ -1,5 +1,7 @@
+ function initCtrl(ai)
+-{
++{
++_root.aiEvent("initCtrl",String(this));
++
+    useAI = ai;
+    mc.initCtrl();
+ }
+--- fighter/lee/frame_1/PlaceObject2_518_1/CLIPACTIONRECORD onClipEvent(load).as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/lee/frame_1/PlaceObject2_518_1/CLIPACTIONRECORD onClipEvent(load).as
+@@ -13,7 +13,7 @@
+    var jhp = 0;
+    var ql = 0;
+    var speed = 0;
+-   var kis = Key.isDown;
++   var kis = _root.aiKeyDown;
+    var spd = 10;
+    var jumpPower = 15;
+ }
+--- fighter/yihu/DefineSprite_1180/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_1180/frame_1/DoAction.as
+@@ -217,25 +217,25 @@
+ {
+    if(sw)
+    {
+-      if(getTimer() - _dievoicen < 1000)
++      if(_root.aiTimer("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as#hurtVoice:getTimer:1") - _dievoicen < 1000)
+       {
+          return undefined;
+       }
+-      _dievoicen = getTimer();
++      _dievoicen = _root.aiTimer("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as#hurtVoice:getTimer:2");
+       dieSnd.start();
+       return undefined;
+    }
+-   if(Math.random() > p)
+-   {
+-      return undefined;
+-   }
+-   if(getTimer() - _lastvoice < 2000)
++   if(_root.aiRandom("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as:1") > p)
++   {
++      return undefined;
++   }
++   if(_root.aiTimer("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as#hurtVoice:getTimer:3") - _lastvoice < 2000)
+    {
+       return undefined;
+    }
+    var _loc2_ = _root.getRandInArray(hurtSnds);
+    _loc2_.start();
+-   _lastvoice = getTimer();
++   _lastvoice = _root.aiTimer("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as#hurtVoice:getTimer:4");
+ }
+ function hitlosehp()
+ {
+@@ -318,25 +318,25 @@
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(sw)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(ql < 100)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(_root.game["p" + pn].mc.动作 == 3)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(!_parent.useAI)
+    {
+-      return kis(换);
+-   }
+-   return goran < 30;
++      return _root.aiPredicate("hurtSkill",this,(kis(换)));
++   }
++   return _root.aiPredicate("hurtSkill",this,(goran < 30));
+ }
+ function doHurtSkill()
+ {
+@@ -440,7 +440,9 @@
+    return false;
+ }
+ function initCtrl()
+-{
++{
++_root.aiEvent("initCtrl",String(this));
++
+    if(_parent.useAI == undefined)
+    {
+       return undefined;
+@@ -642,67 +644,67 @@
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(ql < 100)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(!touchFloor && !hitBan)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(jump == 1)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(动作 != 0 && 动作 != 2)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(_root.game["p" + pn].mc.sw == true)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(_root.game[_parent._name + "fz"].attacking === true)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(!_parent.useAI)
+    {
+-      return kis(换);
++      return _root.aiPredicate("zhaoHuan",this,(kis(换)));
+    }
+    if(_root.game["p" + pn].mc.动作 < 2)
+    {
+-      return attran > 90 && bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(attran > 90 && bisharan < 100));
+    }
+    if(_root.game["p" + pn].mc.动作 == 2)
+    {
+-      return attran > 200 && attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(attran > 200 && attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function dash()
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(sw)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(ql < dashQL)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(动作 != 0 && 动作 != 1 && 动作 != 2)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(_root.game["p" + pn].mc.sw == true)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    var _loc4_ = _root.game["p" + pn];
+    if(!_parent.useAI)
+@@ -713,7 +715,7 @@
+          {
+             dashX = 0;
+             dashY = -14;
+-            return true;
++            return _root.aiPredicate("dash",this,(true));
+          }
+          if(kis(下))
+          {
+@@ -728,14 +730,14 @@
+                dashX = 0;
+                dashY = 12;
+             }
+-            return true;
+-         }
+-         return false;
++            return _root.aiPredicate("dash",this,(true));
++         }
++         return _root.aiPredicate("dash",this,(false));
+       }
+    }
+    if(!hitBan && !touch)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    var _loc3_;
+    var _loc5_ = Math.abs(_loc4_._x - _parent._x);
+@@ -756,9 +758,9 @@
+       dashX = 10;
+       dashY = 0;
+       updateDirect();
+-      return true;
+-   }
+-   return false;
++      return _root.aiPredicate("dash",this,(true));
++   }
++   return _root.aiPredicate("dash",this,(false));
+ }
+ function doDashX()
+ {
+@@ -809,11 +811,13 @@
+ function randAI()
+ {
+    var _loc2_ = 100 * _root.AI;
+-   attran = Math.random() * _loc2_;
+-   defran = Math.random() * _loc2_;
+-   goran = Math.random() * _loc2_;
+-   jumpran = Math.random() * _loc2_;
+-   bisharan = Math.random() * _loc2_;
++   attran = _root.aiRandom("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as:2") * _loc2_;
++   defran = _root.aiRandom("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as:3") * _loc2_;
++   goran = _root.aiRandom("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as:4") * _loc2_;
++   jumpran = _root.aiRandom("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as:5") * _loc2_;
++   bisharan = _root.aiRandom("fighter/yihu#DefineSprite_1180/frame_1/DoAction.as:6") * _loc2_;
++
++_root.aiEvent("sample",String(this)+","+_root.aiNumber(attran)+","+_root.aiNumber(defran)+","+_root.aiNumber(goran)+","+_root.aiNumber(jumpran)+","+_root.aiNumber(bisharan));
+ }
+ function wankai()
+ {
+--- fighter/yihu/DefineSprite_1469/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_1469/frame_1/DoAction.as
+@@ -6,284 +6,284 @@
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳);
+-   }
+-   return false;
++      return _root.aiPredicate("wankai",this,(_parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳)));
++   }
++   return _root.aiPredicate("wankai",this,(false));
+ }
+ function moveLeft()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.左);
++      return _root.aiPredicate("moveLeft",this,(_parent.kis(_parent.左)));
+    }
+    if(_parent._parent._x > _root.game["p" + _parent.pn]._x + 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveLeft",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveLeft",this,(false));
+ }
+ function moveRight()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.右);
++      return _root.aiPredicate("moveRight",this,(_parent.kis(_parent.右)));
+    }
+    if(_parent._parent._x < _root.game["p" + _parent.pn]._x - 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveRight",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveRight",this,(false));
+ }
+ function airhit()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
++      return _root.aiPredicate("airhit",this,(_parent.kis(_parent.斩)));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airhit",this,(false));
+ }
+ function airMagichit()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
++      return _root.aiPredicate("airMagichit",this,(_parent.kis(_parent.招)));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("tz") > 10)
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airMagichit",this,(false));
+ }
+ function nornalhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
++      return _root.aiPredicate("nornalhit",this,(_parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
+    }
+    if(combo === true)
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("nornalhit",this,(false));
+    }
+    if(_parent.AImain.kanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("nornalhit",this,(false));
+ }
+ function magichit1()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
++      return _root.aiPredicate("magichit1",this,(_parent.kis(_parent.招)));
+    }
+    if(_parent.AImain.zh1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 < 2)
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit1",this,(false));
+ }
+ function magichit2()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.招);
++      return _root.aiPredicate("magichit2",this,(_parent.kis(_parent.下) && _parent.kis(_parent.招)));
+    }
+    if(_parent.AImain.zh2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 55;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 55));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit2",this,(false));
+ }
+ function magichit3()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.招);
++      return _root.aiPredicate("magichit3",this,(_parent.kis(_parent.上) && _parent.kis(_parent.招)));
+    }
+    if(_parent.AImain.zh3mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh3"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit3",this,(false));
+ }
+ function skill1()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.斩);
++      return _root.aiPredicate("skill1",this,(_parent.kis(_parent.下) && _parent.kis(_parent.斩)));
+    }
+    if(_parent.AImain.kj1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 45;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 45));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill1",this,(false));
+ }
+ function skill2()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.斩);
++      return _root.aiPredicate("skill2",this,(_parent.kis(_parent.上) && _parent.kis(_parent.斩)));
+    }
+    if(_parent.AImain.kj2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 40;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 40));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill2",this,(false));
+ }
+ function jump()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.跳) && !_parent.kis(_parent.斩);
++      return _root.aiPredicate("jump",this,(_parent.kis(_parent.跳) && !_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y < _parent._parent._y - 20)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jump",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jump",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jump",this,(false));
+ }
+ function jumpDown()
+ {
+    if(_parent.jiao.hitTest(_root.game.ban1))
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.跳);
++      return _root.aiPredicate("jumpDown",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("jumpDown",this,(_parent.kis(_parent.下) && _parent.kis(_parent.跳)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y > _parent._parent._y + 20)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jumpDown",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jumpDown",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jumpDown",this,(false));
+ }
+ function rush()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.冲);
++      return _root.aiPredicate("rush",this,(_parent.kis(_parent.冲)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 40;
++      return _root.aiPredicate("rush",this,(_parent.goran < 40));
+    }
+    if(Math.abs(_root.game["p" + _parent.pn]._x - _parent._parent._x) > 80)
+    {
+@@ -292,26 +292,26 @@
+       {
+          _parent._parent.scale_X = _parent._parent._x <= _root.game["p" + _parent.pn]._x ? 1 : -1;
+          _parent._parent._xscale = _parent._parent.scale_X * 100;
+-         return true;
+-      }
+-   }
+-   return _parent.goran > 120 && _parent.goran < 200;
++         return _root.aiPredicate("rush",this,(true));
++      }
++   }
++   return _root.aiPredicate("rush",this,(_parent.goran > 120 && _parent.goran < 200));
+ }
+ function defence()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下);
++      return _root.aiPredicate("defence",this,(_parent.kis(_parent.下)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 3 || _root.game["p" + _parent.pn + "fz"].动作 == 1)
+    {
+-      return _parent.defran < 130;
++      return _root.aiPredicate("defence",this,(_parent.defran < 130));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.defran < 100;
+-   }
+-   return false;
++      return _root.aiPredicate("defence",this,(_parent.defran < 100));
++   }
++   return _root.aiPredicate("defence",this,(false));
+ }
+ function standup()
+ {
+@@ -319,155 +319,155 @@
+    {
+       if(!_parent._parent.useAI)
+       {
+-         return _parent.kis(_parent.冲);
+-      }
+-      return _parent.goran < 40;
+-   }
+-   return false;
++         return _root.aiPredicate("standup",this,(_parent.kis(_parent.冲)));
++      }
++      return _root.aiPredicate("standup",this,(_parent.goran < 40));
++   }
++   return _root.aiPredicate("standup",this,(false));
+ }
+ function zhaoHuan()
+ {
+    if(_parent.ql < 100)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.换);
++      return _root.aiPredicate("zhaoHuan",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("zhaoHuan",this,(_parent.kis(_parent.换)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 90 && _parent.bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 90 && _parent.bisharan < 100));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 200 && _parent.attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 200 && _parent.attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function bisha()
+ {
+    if(_parent.ql < 100)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
++      return _root.aiPredicate("bisha",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bisha",this,(_parent.kis(_parent.必杀)));
+    }
+    if(_parent.AImain.bsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("bs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bisha",this,(false));
+ }
+ function bishaUP()
+ {
+    if(_parent.ql < 100)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.必杀);
++      return _root.aiPredicate("bishaUP",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaUP",this,(_parent.kis(_parent.上) && _parent.kis(_parent.必杀)));
+    }
+    if(_parent.AImain.sbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("sbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaUP",this,(false));
+ }
+ function bishaAir()
+ {
+    if(_parent.ql < 100)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
++      return _root.aiPredicate("bishaAir",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaAir",this,(_parent.kis(_parent.必杀)));
+    }
+    if(_parent.AImain.absmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaAir",this,(false));
+ }
+ function bishaSuper()
+ {
+    if(_parent.ql < 300)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.必杀);
++      return _root.aiPredicate("bishaSuper",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaSuper",this,(_parent.kis(_parent.下) && _parent.kis(_parent.必杀)));
+    }
+    if(_parent.AImain.cbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("cbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 90));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaSuper",this,(false));
+ }
+ function onJumping(step)
+ {
+--- fighter/yihu/DefineSprite_16/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_16/frame_1/DoAction.as
+@@ -6,376 +6,376 @@
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳);
+-   }
+-   return false;
++      return _root.aiPredicate("wankai",this,(_parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳)));
++   }
++   return _root.aiPredicate("wankai",this,(false));
+ }
+ function moveLeft()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.左);
++      return _root.aiPredicate("moveLeft",this,(_parent.kis(_parent.左)));
+    }
+    if(_parent._parent._x > _root.game["p" + _parent.pn]._x + 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveLeft",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveLeft",this,(false));
+ }
+ function moveRight()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.右);
++      return _root.aiPredicate("moveRight",this,(_parent.kis(_parent.右)));
+    }
+    if(_parent._parent._x < _root.game["p" + _parent.pn]._x - 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveRight",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveRight",this,(false));
+ }
+ function airhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++      return _root.aiPredicate("airhit",this,(_parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("airhit",this,(false));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airhit",this,(false));
+ }
+ function airMagichit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++      return _root.aiPredicate("airMagichit",this,(_parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("airMagichit",this,(false));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("tz") > 10)
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airMagichit",this,(false));
+ }
+ function holdJ()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
++      return _root.aiPredicate("holdJ",this,(_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120 == false;
++      return _root.aiPredicate("holdJ",this,(_parent.attran < 120 == false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran < 100;
+-   }
+-   return _parent.attran > 100 && _parent.attran < 300;
++      return _root.aiPredicate("holdJ",this,(_parent.attran < 100));
++   }
++   return _root.aiPredicate("holdJ",this,(_parent.attran > 100 && _parent.attran < 300));
+ }
+ function holdU()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
++      return _root.aiPredicate("holdU",this,(_parent.kis(_parent.招)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120 == false;
++      return _root.aiPredicate("holdU",this,(_parent.attran < 120 == false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran < 100;
+-   }
+-   return _parent.attran > 100 && _parent.attran < 300;
++      return _root.aiPredicate("holdU",this,(_parent.attran < 100));
++   }
++   return _root.aiPredicate("holdU",this,(_parent.attran > 100 && _parent.attran < 300));
+ }
+ function nornalhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI();
++      return _root.aiPredicate("nornalhit",this,(_parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("nornalhit",this,(combohitAI()));
+    }
+    if(_parent.AImain.kanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("nornalhit",this,(false));
+ }
+ function combohitAI(act)
+ {
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran < 120));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 50 && _parent.attran < 100;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran > 50 && _parent.attran < 100));
+    }
+    if(act != undefined && isPoFangAct(act))
+    {
+-      return _parent.attran < 90;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran < 90));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 80 && _parent.attran < 150;
+-   }
+-   return false;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran > 80 && _parent.attran < 150));
++   }
++   return _root.aiPredicate("combohitAI",this,(false));
+ }
+ function magichit1(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh1");
++      return _root.aiPredicate("magichit1",this,(_parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit1",this,(combohitAI("zh1")));
+    }
+    if(_parent.AImain.zh1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 70;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 70));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit1",this,(false));
+ }
+ function magichit2(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh2");
++      return _root.aiPredicate("magichit2",this,(_parent.kis(_parent.下) && _parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit2",this,(combohitAI("zh2")));
+    }
+    if(_parent.AImain.zh2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 55;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 55));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit2",this,(false));
+ }
+ function magichit3(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh3");
++      return _root.aiPredicate("magichit3",this,(_parent.kis(_parent.上) && _parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit3",this,(combohitAI("zh3")));
+    }
+    if(_parent.AImain.zh3mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh3"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit3",this,(false));
+ }
+ function skill1(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("kj1");
++      return _root.aiPredicate("skill1",this,(_parent.kis(_parent.下) && _parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("skill1",this,(combohitAI("kj1")));
+    }
+    if(_parent.AImain.kj1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill1",this,(false));
+ }
+ function skill2(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("kj2");
++      return _root.aiPredicate("skill2",this,(_parent.kis(_parent.上) && _parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("skill2",this,(combohitAI("kj2")));
+    }
+    if(_parent.AImain.kj2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill2",this,(false));
+ }
+ function jump()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.跳) && !_parent.kis(_parent.斩);
++      return _root.aiPredicate("jump",this,(_parent.kis(_parent.跳) && !_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y < _parent._parent._y - 20)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jump",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jump",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jump",this,(false));
+ }
+ function jumpDown()
+ {
+    if(_parent.touchFloor)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.跳);
++      return _root.aiPredicate("jumpDown",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("jumpDown",this,(_parent.kis(_parent.下) && _parent.kis(_parent.跳)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y > _parent._parent._y + 50)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jumpDown",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jumpDown",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jumpDown",this,(false));
+ }
+ function rush()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
++      return _root.aiPredicate("rush",this,(_parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 40;
++      return _root.aiPredicate("rush",this,(_parent.goran < 40));
+    }
+    if(Math.abs(_root.game["p" + _parent.pn]._x - _parent._parent._x) > 80)
+    {
+@@ -384,43 +384,43 @@
+       {
+          _parent._parent.scale_X = _parent._parent._x <= _root.game["p" + _parent.pn]._x ? 1 : -1;
+          _parent._parent._xscale = _parent._parent.scale_X * 100;
+-         return true;
+-      }
+-   }
+-   return _parent.goran > 120 && _parent.goran < 200;
++         return _root.aiPredicate("rush",this,(true));
++      }
++   }
++   return _root.aiPredicate("rush",this,(_parent.goran > 120 && _parent.goran < 200));
+ }
+ function hide()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.冲);
++      return _root.aiPredicate("hide",this,(_parent.kis(_parent.下) && _parent.kis(_parent.冲)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 50;
+-   }
+-   return _parent.goran > 100 && _parent.goran < 200;
++      return _root.aiPredicate("hide",this,(_parent.goran < 50));
++   }
++   return _root.aiPredicate("hide",this,(_parent.goran > 100 && _parent.goran < 200));
+ }
+ function defence()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下);
++      return _root.aiPredicate("defence",this,(_parent.kis(_parent.下)));
+    }
+    if(!_parent.canhit)
+    {
+-      return false;
++      return _root.aiPredicate("defence",this,(false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 3 || _root.game["p" + _parent.pn + "fz"].动作 == 1)
+    {
+-      return _parent.defran < 130;
++      return _root.aiPredicate("defence",this,(_parent.defran < 130));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.defran < 100;
+-   }
+-   return false;
++      return _root.aiPredicate("defence",this,(_parent.defran < 100));
++   }
++   return _root.aiPredicate("defence",this,(false));
+ }
+ function standup()
+ {
+@@ -428,31 +428,31 @@
+    {
+       if(!_parent._parent.useAI)
+       {
+-         return _parent.kis(_parent.冲);
+-      }
+-      return _parent.goran < 40;
+-   }
+-   return false;
++         return _root.aiPredicate("standup",this,(_parent.kis(_parent.冲)));
++      }
++      return _root.aiPredicate("standup",this,(_parent.goran < 40));
++   }
++   return _root.aiPredicate("standup",this,(false));
+ }
+ function zhaoHuan()
+ {
+    if(_parent.ql < 100)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.换);
++      return _root.aiPredicate("zhaoHuan",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("zhaoHuan",this,(_parent.kis(_parent.换)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 90 && _parent.bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 90 && _parent.bisharan < 100));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 200 && _parent.attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 200 && _parent.attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function bisha(combo, qi)
+ {
+@@ -462,40 +462,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bisha",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bisha",this,(_parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bisha",this,(false));
+    }
+    if(_parent.AImain.bsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("bs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bisha",this,(false));
+ }
+ function bishaUP(combo, qi)
+ {
+@@ -505,40 +505,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaUP",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaUP",this,(_parent.kis(_parent.上) && _parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bishaUP",this,(false));
+    }
+    if(_parent.AImain.sbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("sbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaUP",this,(false));
+ }
+ function bishaAir(combo, qi)
+ {
+@@ -548,40 +548,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaAir",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaAir",this,(_parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bishaAir",this,(false));
+    }
+    if(_parent.AImain.absmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaAir",this,(false));
+ }
+ function bishaSuper(combo, qi)
+ {
+@@ -591,40 +591,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaSuper",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaSuper",this,(_parent.kis(_parent.下) && _parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 80));
++      }
++      return _root.aiPredicate("bishaSuper",this,(false));
+    }
+    if(_parent.AImain.cbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("cbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 90));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaSuper",this,(false));
+ }
+ function onJumping(step)
+ {
+--- fighter/yihu/DefineSprite_1672/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_1672/frame_1/DoAction.as
+@@ -217,25 +217,25 @@
+ {
+    if(sw)
+    {
+-      if(getTimer() - _dievoicen < 1000)
++      if(_root.aiTimer("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as#hurtVoice:getTimer:1") - _dievoicen < 1000)
+       {
+          return undefined;
+       }
+-      _dievoicen = getTimer();
++      _dievoicen = _root.aiTimer("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as#hurtVoice:getTimer:2");
+       dieSnd.start();
+       return undefined;
+    }
+-   if(Math.random() > p)
+-   {
+-      return undefined;
+-   }
+-   if(getTimer() - _lastvoice < 2000)
++   if(_root.aiRandom("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as:1") > p)
++   {
++      return undefined;
++   }
++   if(_root.aiTimer("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as#hurtVoice:getTimer:3") - _lastvoice < 2000)
+    {
+       return undefined;
+    }
+    var _loc2_ = _root.getRandInArray(hurtSnds);
+    _loc2_.start();
+-   _lastvoice = getTimer();
++   _lastvoice = _root.aiTimer("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as#hurtVoice:getTimer:4");
+ }
+ function hitlosehp()
+ {
+@@ -318,25 +318,25 @@
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(sw)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(ql < 100)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(_root.game["p" + pn].mc.动作 == 3)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(!_parent.useAI)
+    {
+-      return kis(换);
+-   }
+-   return goran < 30;
++      return _root.aiPredicate("hurtSkill",this,(kis(换)));
++   }
++   return _root.aiPredicate("hurtSkill",this,(goran < 30));
+ }
+ function doHurtSkill()
+ {
+@@ -440,7 +440,9 @@
+    return false;
+ }
+ function initCtrl()
+-{
++{
++_root.aiEvent("initCtrl",String(this));
++
+    if(_parent.useAI == undefined)
+    {
+       return undefined;
+@@ -642,67 +644,67 @@
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(ql < 100)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(!touchFloor && !hitBan)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(jump == 1)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(动作 != 0 && 动作 != 2)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(_root.game["p" + pn].mc.sw == true)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(_root.game[_parent._name + "fz"].attacking === true)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(!_parent.useAI)
+    {
+-      return kis(换);
++      return _root.aiPredicate("zhaoHuan",this,(kis(换)));
+    }
+    if(_root.game["p" + pn].mc.动作 < 2)
+    {
+-      return attran > 90 && bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(attran > 90 && bisharan < 100));
+    }
+    if(_root.game["p" + pn].mc.动作 == 2)
+    {
+-      return attran > 200 && attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(attran > 200 && attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function dash()
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(sw)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(ql < dashQL)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(动作 != 0 && 动作 != 1 && 动作 != 2)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(_root.game["p" + pn].mc.sw == true)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    var _loc4_ = _root.game["p" + pn];
+    if(!_parent.useAI)
+@@ -713,7 +715,7 @@
+          {
+             dashX = 0;
+             dashY = -14;
+-            return true;
++            return _root.aiPredicate("dash",this,(true));
+          }
+          if(kis(下))
+          {
+@@ -728,14 +730,14 @@
+                dashX = 0;
+                dashY = 12;
+             }
+-            return true;
+-         }
+-         return false;
++            return _root.aiPredicate("dash",this,(true));
++         }
++         return _root.aiPredicate("dash",this,(false));
+       }
+    }
+    if(!hitBan && !touch)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    var _loc3_;
+    var _loc5_ = Math.abs(_loc4_._x - _parent._x);
+@@ -756,9 +758,9 @@
+       dashX = 10;
+       dashY = 0;
+       updateDirect();
+-      return true;
+-   }
+-   return false;
++      return _root.aiPredicate("dash",this,(true));
++   }
++   return _root.aiPredicate("dash",this,(false));
+ }
+ function doDashX()
+ {
+@@ -809,11 +811,13 @@
+ function randAI()
+ {
+    var _loc2_ = 100 * _root.AI;
+-   attran = Math.random() * _loc2_;
+-   defran = Math.random() * _loc2_;
+-   goran = Math.random() * _loc2_;
+-   jumpran = Math.random() * _loc2_;
+-   bisharan = Math.random() * _loc2_;
++   attran = _root.aiRandom("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as:2") * _loc2_;
++   defran = _root.aiRandom("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as:3") * _loc2_;
++   goran = _root.aiRandom("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as:4") * _loc2_;
++   jumpran = _root.aiRandom("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as:5") * _loc2_;
++   bisharan = _root.aiRandom("fighter/yihu#DefineSprite_1672/frame_1/DoAction.as:6") * _loc2_;
++
++_root.aiEvent("sample",String(this)+","+_root.aiNumber(attran)+","+_root.aiNumber(defran)+","+_root.aiNumber(goran)+","+_root.aiNumber(jumpran)+","+_root.aiNumber(bisharan));
+ }
+ function wankai()
+ {
+--- fighter/yihu/DefineSprite_638/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_638/frame_1/DoAction.as
+@@ -1,3 +1,5 @@
++_root.aiEvent("frame_state_enter","1," + _currentframe + "," + 动作 + "," + ql + "," + sw);
++_root.aiEvent("intro_body_enter","1," + _currentframe);
+ function setColor(o)
+ {
+    var _loc1_ = new Color(_this);
+@@ -217,25 +219,25 @@
+ {
+    if(sw)
+    {
+-      if(getTimer() - _dievoicen < 1000)
++      if(_root.aiTimer("fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:1") - _dievoicen < 1000)
+       {
+          return undefined;
+       }
+-      _dievoicen = getTimer();
++      _dievoicen = _root.aiTimer("fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:2");
+       dieSnd.start();
+       return undefined;
+    }
+-   if(Math.random() > p)
+-   {
+-      return undefined;
+-   }
+-   if(getTimer() - _lastvoice < 2000)
++   if(_root.aiRandom("fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1") > p)
++   {
++      return undefined;
++   }
++   if(_root.aiTimer("fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:3") - _lastvoice < 2000)
+    {
+       return undefined;
+    }
+    var _loc2_ = _root.getRandInArray(hurtSnds);
+    _loc2_.start();
+-   _lastvoice = getTimer();
++   _lastvoice = _root.aiTimer("fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:4");
+ }
+ function hitlosehp()
+ {
+@@ -318,25 +320,25 @@
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(sw)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(ql < 100)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(_root.game["p" + pn].mc.动作 == 3)
+    {
+-      return false;
++      return _root.aiPredicate("hurtSkill",this,(false));
+    }
+    if(!_parent.useAI)
+    {
+-      return kis(换);
+-   }
+-   return goran < 30;
++      return _root.aiPredicate("hurtSkill",this,(kis(换)));
++   }
++   return _root.aiPredicate("hurtSkill",this,(goran < 30));
+ }
+ function doHurtSkill()
+ {
+@@ -440,7 +442,9 @@
+    return false;
+ }
+ function initCtrl()
+-{
++{
++_root.aiEvent("initCtrl",String(this));
++
+    if(_parent.useAI == undefined)
+    {
+       return undefined;
+@@ -642,67 +646,67 @@
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(ql < 100)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(!touchFloor && !hitBan)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(jump == 1)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(动作 != 0 && 动作 != 2)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(_root.game["p" + pn].mc.sw == true)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(_root.game[_parent._name + "fz"].attacking === true)
+    {
+-      return false;
++      return _root.aiPredicate("zhaoHuan",this,(false));
+    }
+    if(!_parent.useAI)
+    {
+-      return kis(换);
++      return _root.aiPredicate("zhaoHuan",this,(kis(换)));
+    }
+    if(_root.game["p" + pn].mc.动作 < 2)
+    {
+-      return attran > 90 && bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(attran > 90 && bisharan < 100));
+    }
+    if(_root.game["p" + pn].mc.动作 == 2)
+    {
+-      return attran > 200 && attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(attran > 200 && attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function dash()
+ {
+    if(hp <= 0)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(sw)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(ql < dashQL)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(动作 != 0 && 动作 != 1 && 动作 != 2)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    if(_root.game["p" + pn].mc.sw == true)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    var _loc4_ = _root.game["p" + pn];
+    if(!_parent.useAI)
+@@ -713,7 +717,7 @@
+          {
+             dashX = 0;
+             dashY = -14;
+-            return true;
++            return _root.aiPredicate("dash",this,(true));
+          }
+          if(kis(下))
+          {
+@@ -728,14 +732,14 @@
+                dashX = 0;
+                dashY = 12;
+             }
+-            return true;
+-         }
+-         return false;
++            return _root.aiPredicate("dash",this,(true));
++         }
++         return _root.aiPredicate("dash",this,(false));
+       }
+    }
+    if(!hitBan && !touch)
+    {
+-      return false;
++      return _root.aiPredicate("dash",this,(false));
+    }
+    var _loc3_;
+    var _loc5_ = Math.abs(_loc4_._x - _parent._x);
+@@ -756,9 +760,9 @@
+       dashX = 10;
+       dashY = 0;
+       updateDirect();
+-      return true;
+-   }
+-   return false;
++      return _root.aiPredicate("dash",this,(true));
++   }
++   return _root.aiPredicate("dash",this,(false));
+ }
+ function doDashX()
+ {
+@@ -809,11 +813,13 @@
+ function randAI()
+ {
+    var _loc2_ = 100 * _root.AI;
+-   attran = Math.random() * _loc2_;
+-   defran = Math.random() * _loc2_;
+-   goran = Math.random() * _loc2_;
+-   jumpran = Math.random() * _loc2_;
+-   bisharan = Math.random() * _loc2_;
++   attran = _root.aiRandom("fighter/yihu#DefineSprite_638/frame_1/DoAction.as:2") * _loc2_;
++   defran = _root.aiRandom("fighter/yihu#DefineSprite_638/frame_1/DoAction.as:3") * _loc2_;
++   goran = _root.aiRandom("fighter/yihu#DefineSprite_638/frame_1/DoAction.as:4") * _loc2_;
++   jumpran = _root.aiRandom("fighter/yihu#DefineSprite_638/frame_1/DoAction.as:5") * _loc2_;
++   bisharan = _root.aiRandom("fighter/yihu#DefineSprite_638/frame_1/DoAction.as:6") * _loc2_;
++
++_root.aiEvent("sample",String(this)+","+_root.aiNumber(attran)+","+_root.aiNumber(defran)+","+_root.aiNumber(goran)+","+_root.aiNumber(jumpran)+","+_root.aiNumber(bisharan));
+ }
+ function wankai()
+ {
+@@ -939,3 +945,7 @@
+       }
+    }
+ };
++
++_root.aiEvent("intro_body_exit","1," + _currentframe);
++
++_root.aiEvent("frame_state_exit","1," + _currentframe + "," + 动作 + "," + ql + "," + sw);
+--- fighter/yihu/DefineSprite_638/frame_390/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_638/frame_390/DoAction.as
+@@ -1,2 +1,5 @@
++_root.aiEvent("frame_state_enter","390," + _currentframe + "," + 动作 + "," + ql + "," + sw);
+ gotoAndStop("站立");
+ play();
++
++_root.aiEvent("frame_state_exit","390," + _currentframe + "," + 动作 + "," + ql + "," + sw);
+--- fighter/yihu/DefineSprite_638/frame_8/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_638/frame_8/DoAction.as
+@@ -1,2 +1,5 @@
++_root.aiEvent("intro_body_enter","8," + _currentframe);
+ gotoAndStop("站立");
+ play();
++
++_root.aiEvent("intro_body_exit","8," + _currentframe);
+--- fighter/yihu/DefineSprite_638/frame_823/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_638/frame_823/DoAction.as
+@@ -1 +1,4 @@
++_root.aiEvent("intro_body_enter","823," + _currentframe);
+ kcplayed = 1;
++
++_root.aiEvent("intro_body_exit","823," + _currentframe);
+--- fighter/yihu/DefineSprite_638/frame_883/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_638/frame_883/DoAction.as
+@@ -1,3 +1,6 @@
++_root.aiEvent("intro_body_enter","883," + _currentframe);
+ kcplayed = 2;
+ gotoAndStop("站立");
+ play();
++
++_root.aiEvent("intro_body_exit","883," + _currentframe);
+--- fighter/yihu/DefineSprite_651/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/DefineSprite_651/frame_1/DoAction.as
+@@ -6,376 +6,376 @@
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳);
+-   }
+-   return false;
++      return _root.aiPredicate("wankai",this,(_parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳)));
++   }
++   return _root.aiPredicate("wankai",this,(false));
+ }
+ function moveLeft()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.左);
++      return _root.aiPredicate("moveLeft",this,(_parent.kis(_parent.左)));
+    }
+    if(_parent._parent._x > _root.game["p" + _parent.pn]._x + 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveLeft",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveLeft",this,(false));
+ }
+ function moveRight()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.右);
++      return _root.aiPredicate("moveRight",this,(_parent.kis(_parent.右)));
+    }
+    if(_parent._parent._x < _root.game["p" + _parent.pn]._x - 20)
+    {
+-      return _parent.goran < 120;
+-   }
+-   return false;
++      return _root.aiPredicate("moveRight",this,(_parent.goran < 120));
++   }
++   return _root.aiPredicate("moveRight",this,(false));
+ }
+ function airhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++      return _root.aiPredicate("airhit",this,(_parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("airhit",this,(false));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airhit",this,(false));
+ }
+ function airMagichit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 120;
+-      }
+-      return false;
++      return _root.aiPredicate("airMagichit",this,(_parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 120));
++      }
++      return _root.aiPredicate("airMagichit",this,(false));
+    }
+    if(_parent.AImain.tkanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("tz") > 10)
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("airMagichit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("airMagichit",this,(false));
+ }
+ function holdJ()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩);
++      return _root.aiPredicate("holdJ",this,(_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120 == false;
++      return _root.aiPredicate("holdJ",this,(_parent.attran < 120 == false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran < 100;
+-   }
+-   return _parent.attran > 100 && _parent.attran < 300;
++      return _root.aiPredicate("holdJ",this,(_parent.attran < 100));
++   }
++   return _root.aiPredicate("holdJ",this,(_parent.attran > 100 && _parent.attran < 300));
+ }
+ function holdU()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
++      return _root.aiPredicate("holdU",this,(_parent.kis(_parent.招)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120 == false;
++      return _root.aiPredicate("holdU",this,(_parent.attran < 120 == false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran < 100;
+-   }
+-   return _parent.attran > 100 && _parent.attran < 300;
++      return _root.aiPredicate("holdU",this,(_parent.attran < 100));
++   }
++   return _root.aiPredicate("holdU",this,(_parent.attran > 100 && _parent.attran < 300));
+ }
+ function nornalhit(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI();
++      return _root.aiPredicate("nornalhit",this,(_parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("nornalhit",this,(combohitAI()));
+    }
+    if(_parent.AImain.kanmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(_root.game["p" + _parent.pn].mc.动作 == -1)
+       {
+-         return _parent.attran < 120;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 120));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("nornalhit",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("nornalhit",this,(false));
+ }
+ function combohitAI(act)
+ {
+    if(_root.game["p" + _parent.pn].mc.动作 == -1)
+    {
+-      return _parent.attran < 120;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran < 120));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 50 && _parent.attran < 100;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran > 50 && _parent.attran < 100));
+    }
+    if(act != undefined && isPoFangAct(act))
+    {
+-      return _parent.attran < 90;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran < 90));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 80 && _parent.attran < 150;
+-   }
+-   return false;
++      return _root.aiPredicate("combohitAI",this,(_parent.attran > 80 && _parent.attran < 150));
++   }
++   return _root.aiPredicate("combohitAI",this,(false));
+ }
+ function magichit1(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh1");
++      return _root.aiPredicate("magichit1",this,(_parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit1",this,(combohitAI("zh1")));
+    }
+    if(_parent.AImain.zh1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 70;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 70));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit1",this,(false));
+ }
+ function magichit2(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh2");
++      return _root.aiPredicate("magichit2",this,(_parent.kis(_parent.下) && _parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit2",this,(combohitAI("zh2")));
+    }
+    if(_parent.AImain.zh2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 55;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran < 55));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit2",this,(false));
+ }
+ function magichit3(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.招);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("zh3");
++      return _root.aiPredicate("magichit3",this,(_parent.kis(_parent.上) && _parent.kis(_parent.招)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("magichit3",this,(combohitAI("zh3")));
+    }
+    if(_parent.AImain.zh3mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("zh3"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("magichit3",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("magichit3",this,(false));
+ }
+ function skill1(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("kj1");
++      return _root.aiPredicate("skill1",this,(_parent.kis(_parent.下) && _parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("skill1",this,(combohitAI("kj1")));
+    }
+    if(_parent.AImain.kj1mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj1"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill1",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill1",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill1",this,(false));
+ }
+ function skill2(combo)
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.斩);
+-   }
+-   if(combo === true)
+-   {
+-      return combohitAI("kj2");
++      return _root.aiPredicate("skill2",this,(_parent.kis(_parent.上) && _parent.kis(_parent.斩)));
++   }
++   if(combo === true)
++   {
++      return _root.aiPredicate("skill2",this,(combohitAI("kj2")));
+    }
+    if(_parent.AImain.kj2mian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kj2"))
+       {
+-         return _parent.attran < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.attran < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.attran < 50;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.attran > 200 && _parent.attran < 300;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("skill2",this,(_parent.attran < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran < 50));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("skill2",this,(_parent.attran > 200 && _parent.attran < 300));
++      }
++   }
++   return _root.aiPredicate("skill2",this,(false));
+ }
+ function jump()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.跳) && !_parent.kis(_parent.斩);
++      return _root.aiPredicate("jump",this,(_parent.kis(_parent.跳) && !_parent.kis(_parent.斩)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y < _parent._parent._y - 20)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jump",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jump",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jump",this,(false));
+ }
+ function jumpDown()
+ {
+    if(_parent.touchFloor)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.跳);
++      return _root.aiPredicate("jumpDown",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("jumpDown",this,(_parent.kis(_parent.下) && _parent.kis(_parent.跳)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 3)
+    {
+       if(_root.game["p" + _parent.pn]._y > _parent._parent._y + 50)
+       {
+-         return _parent.jumpran < 100;
+-      }
+-      return _parent.jumpran > 100 && _parent.jumpran < 130;
+-   }
+-   return false;
++         return _root.aiPredicate("jumpDown",this,(_parent.jumpran < 100));
++      }
++      return _root.aiPredicate("jumpDown",this,(_parent.jumpran > 100 && _parent.jumpran < 130));
++   }
++   return _root.aiPredicate("jumpDown",this,(false));
+ }
+ function rush()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);
++      return _root.aiPredicate("rush",this,(_parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 40;
++      return _root.aiPredicate("rush",this,(_parent.goran < 40));
+    }
+    if(Math.abs(_root.game["p" + _parent.pn]._x - _parent._parent._x) > 80)
+    {
+@@ -384,43 +384,43 @@
+       {
+          _parent._parent.scale_X = _parent._parent._x <= _root.game["p" + _parent.pn]._x ? 1 : -1;
+          _parent._parent._xscale = _parent._parent.scale_X * 100;
+-         return true;
+-      }
+-   }
+-   return _parent.goran > 120 && _parent.goran < 200;
++         return _root.aiPredicate("rush",this,(true));
++      }
++   }
++   return _root.aiPredicate("rush",this,(_parent.goran > 120 && _parent.goran < 200));
+ }
+ function hide()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.冲);
++      return _root.aiPredicate("hide",this,(_parent.kis(_parent.下) && _parent.kis(_parent.冲)));
+    }
+    var _loc3_;
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.goran < 50;
+-   }
+-   return _parent.goran > 100 && _parent.goran < 200;
++      return _root.aiPredicate("hide",this,(_parent.goran < 50));
++   }
++   return _root.aiPredicate("hide",this,(_parent.goran > 100 && _parent.goran < 200));
+ }
+ function defence()
+ {
+    if(!_parent._parent.useAI)
+    {
+-      return _parent.kis(_parent.下);
++      return _root.aiPredicate("defence",this,(_parent.kis(_parent.下)));
+    }
+    if(!_parent.canhit)
+    {
+-      return false;
++      return _root.aiPredicate("defence",this,(false));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 3 || _root.game["p" + _parent.pn + "fz"].动作 == 1)
+    {
+-      return _parent.defran < 130;
++      return _root.aiPredicate("defence",this,(_parent.defran < 130));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 1)
+    {
+-      return _parent.defran < 100;
+-   }
+-   return false;
++      return _root.aiPredicate("defence",this,(_parent.defran < 100));
++   }
++   return _root.aiPredicate("defence",this,(false));
+ }
+ function standup()
+ {
+@@ -428,31 +428,31 @@
+    {
+       if(!_parent._parent.useAI)
+       {
+-         return _parent.kis(_parent.冲);
+-      }
+-      return _parent.goran < 40;
+-   }
+-   return false;
++         return _root.aiPredicate("standup",this,(_parent.kis(_parent.冲)));
++      }
++      return _root.aiPredicate("standup",this,(_parent.goran < 40));
++   }
++   return _root.aiPredicate("standup",this,(false));
+ }
+ function zhaoHuan()
+ {
+    if(_parent.ql < 100)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.换);
++      return _root.aiPredicate("zhaoHuan",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("zhaoHuan",this,(_parent.kis(_parent.换)));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 < 2)
+    {
+-      return _parent.attran > 90 && _parent.bisharan < 100;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 90 && _parent.bisharan < 100));
+    }
+    if(_root.game["p" + _parent.pn].mc.动作 == 2)
+    {
+-      return _parent.attran > 200 && _parent.attran < 220;
+-   }
+-   return false;
++      return _root.aiPredicate("zhaoHuan",this,(_parent.attran > 200 && _parent.attran < 220));
++   }
++   return _root.aiPredicate("zhaoHuan",this,(false));
+ }
+ function bisha(combo, qi)
+ {
+@@ -462,40 +462,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bisha",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bisha",this,(_parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bisha",this,(false));
+    }
+    if(_parent.AImain.bsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("bs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bisha",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bisha",this,(false));
+ }
+ function bishaUP(combo, qi)
+ {
+@@ -505,40 +505,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.上) && _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaUP",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaUP",this,(_parent.kis(_parent.上) && _parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bishaUP",this,(false));
+    }
+    if(_parent.AImain.sbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("sbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 100;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan < 100));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaUP",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaUP",this,(false));
+ }
+ function bishaAir(combo, qi)
+ {
+@@ -548,40 +548,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaAir",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaAir",this,(_parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 90));
++      }
++      return _root.aiPredicate("bishaAir",this,(false));
+    }
+    if(_parent.AImain.absmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("kbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan < 80));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaAir",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaAir",this,(false));
+ }
+ function bishaSuper(combo, qi)
+ {
+@@ -591,40 +591,40 @@
+    }
+    if(_parent.ql < qi)
+    {
+-      return false;
+-   }
+-   if(!_parent._parent.useAI)
+-   {
+-      return _parent.kis(_parent.下) && _parent.kis(_parent.必杀);
+-   }
+-   if(combo === true)
+-   {
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 80;
+-      }
+-      return false;
++      return _root.aiPredicate("bishaSuper",this,(false));
++   }
++   if(!_parent._parent.useAI)
++   {
++      return _root.aiPredicate("bishaSuper",this,(_parent.kis(_parent.下) && _parent.kis(_parent.必杀)));
++   }
++   if(combo === true)
++   {
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 80));
++      }
++      return _root.aiPredicate("bishaSuper",this,(false));
+    }
+    if(_parent.AImain.cbsmian.hitTest(_root.game["p" + _parent.pn].mc.bdmn))
+    {
+       if(isPoFangAct("cbs"))
+       {
+-         return _parent.bisharan < 60;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == -1)
+-      {
+-         return _parent.bisharan < 90;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 < 2)
+-      {
+-         return _parent.bisharan > 95;
+-      }
+-      if(_root.game["p" + _parent.pn].mc.动作 == 2)
+-      {
+-         return _parent.bisharan > 200 && _parent.bisharan < 250;
+-      }
+-   }
+-   return false;
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 60));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == -1)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan < 90));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 < 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 95));
++      }
++      if(_root.game["p" + _parent.pn].mc.动作 == 2)
++      {
++         return _root.aiPredicate("bishaSuper",this,(_parent.bisharan > 200 && _parent.bisharan < 250));
++      }
++   }
++   return _root.aiPredicate("bishaSuper",this,(false));
+ }
+ function onJumping(step)
+ {
+--- fighter/yihu/frame_1/DoAction.as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/frame_1/DoAction.as
+@@ -1,5 +1,7 @@
+ function initCtrl(ai)
+-{
++{
++_root.aiEvent("initCtrl",String(this));
++
+    useAI = ai;
+    mc.initCtrl();
+ }
+--- fighter/yihu/frame_1/PlaceObject2_638_1/CLIPACTIONRECORD onClipEvent(load).as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/frame_1/PlaceObject2_638_1/CLIPACTIONRECORD onClipEvent(load).as
+@@ -13,7 +13,7 @@
+    var jhp = 0;
+    var ql = 0;
+    var speed = 0;
+-   var kis = Key.isDown;
++   var kis = _root.aiKeyDown;
+    var spd = 6;
+    var jumpPower = 15;
+ }
+--- fighter/yihu/frame_2/PlaceObject2_1180_1/CLIPACTIONRECORD onClipEvent(load).as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/frame_2/PlaceObject2_1180_1/CLIPACTIONRECORD onClipEvent(load).as
+@@ -13,7 +13,7 @@
+    var jhp = 0;
+    var ql = 0;
+    var speed = 0;
+-   var kis = Key.isDown;
++   var kis = _root.aiKeyDown;
+    var spd = 12;
+    var jumpPower = 15;
+ }
+--- fighter/yihu/frame_3/PlaceObject2_1672_1/CLIPACTIONRECORD onClipEvent(load).as
++++ /private/tmp/lee-parity-r05/lee-701-bishaAir-energy_exact-build/patches/fighter/yihu/frame_3/PlaceObject2_1672_1/CLIPACTIONRECORD onClipEvent(load).as
+@@ -13,7 +13,7 @@
+    var jhp = 0;
+    var ql = 0;
+    var speed = 0;
+-   var kis = Key.isDown;
++   var kis = _root.aiKeyDown;
+    var spd = 14;
+    var jumpPower = 15;
+ }

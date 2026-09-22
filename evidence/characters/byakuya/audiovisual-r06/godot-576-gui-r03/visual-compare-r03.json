@@ -1,0 +1,15 @@
+{
+  "scope": "bounded source 576 vs current Godot GUI visual comparison",
+  "source_image": "evidence/characters/byakuya/audiovisual-r06/freeze-r21/576/flash-window-before.png",
+  "godot_image": "evidence/characters/byakuya/audiovisual-r06/godot-576-gui-r03/godot-600x400.png",
+  "fixture": "P1 白哉/P2 一护/helpers 魂魂/stage 现世",
+  "phase": "source display_tick473 fight_tick11; Godot post-advance relative fight tick10; see source-godot-phase-map.json",
+  "observed_differences": [
+    "Source screenshot is a Flash window capture with client stage embedded in a 1200x800 retina window; Godot artifact is a normalized 600x400 stage. Direct pixel hash comparison is invalid until crop/scale normalization.",
+    "Source countdown reads 60 while Godot reads 59; existing HUD audit classifies this as countdown lifecycle/wall-clock anchor mismatch, not digit asset parity.",
+    "Source and Godot fighter/camera positions differ visibly at this observation boundary; no position correction is inferred because source/Godot phase and camera transforms are not yet normalized.",
+    "Current HUD geometry/layer output is present and oriented correctly in the Godot image; this focused screenshot does not establish full HUD or visual parity.",
+    "No target-specific effect parity claim is made from this 576 GUI frame; direct display-list mapping remains the accepted bounded result."
+  ],
+  "acceptance": "GUI artifact valid and current-code traceable; visual parity remains bounded pending phase-normalized crop and source/Godot camera comparison."
+}

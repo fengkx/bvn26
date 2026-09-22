@@ -1,0 +1,199 @@
+{
+  "format": "byakuya-freeze-r13-offline-cross-audit-r02",
+  "scope": "read-only audit of r14 recursive freeze captures; no production changes",
+  "entries": {
+    "333-r14": {
+      "run_id": "byakuya-freeze-r14-333",
+      "fixture": "byakuya-333-magichit1-neutral",
+      "root_target_frame": 333,
+      "target_reached": true,
+      "freeze_begin_end": true,
+      "recursive_paths": {
+        "before_count": 215,
+        "after_count": 215,
+        "path_equal": true,
+        "frame_visibility_equal": true,
+        "missing_after": [],
+        "added_after": [],
+        "changed_common": []
+      },
+      "images": {
+        "before": {
+          "path": "evidence/characters/byakuya/audiovisual-r06/freeze-r13/333-r14/flash-window-before.png",
+          "sha256": "46230347494a001a2c88b69587edf03059dcc626718c5cf85412f30056da9562"
+        },
+        "after": {
+          "path": "evidence/characters/byakuya/audiovisual-r06/freeze-r13/333-r14/flash-window-after.png",
+          "sha256": "46230347494a001a2c88b69587edf03059dcc626718c5cf85412f30056da9562"
+        },
+        "stable_500ms_verified": true
+      },
+      "build": "/private/tmp/byakuya-freeze-r14-333-build",
+      "visual_review": {
+        "source_window_capture": "full-screen/window capture includes Flash title bar; no normalized source client crop is claimed",
+        "godot_capture": "evidence/characters/byakuya/audiovisual-r06/godot-333/godot-stage-600x400.png",
+        "observed_boundary": [
+          "Flash HUD timer reads 60 while Godot metadata timer tm=59 at its capture tick",
+          "Flash and Godot HUD energy bars use visibly different authored presentations (Flash yellow/green, Godot red/blue)",
+          "Godot metadata has no visual_child_frames, so child-level visual equality is unverified"
+        ],
+        "source_frame_same": true,
+        "godot_child_state_same": false
+      }
+    },
+    "576-r14": {
+      "run_id": "byakuya-freeze-r14-576",
+      "fixture": "byakuya-576-bishaUP-neutral",
+      "root_target_frame": 576,
+      "target_reached": true,
+      "freeze_begin_end": true,
+      "recursive_paths": {
+        "before_count": 215,
+        "after_count": 133,
+        "path_equal": false,
+        "frame_visibility_equal": true,
+        "missing_after": [
+          "bg",
+          "blackMu",
+          "game.bgmc",
+          "game.lyr_plr_bkeft",
+          "game.p2._this._this._this.mc.AImain",
+          "game.p2._this._this._this.mc.bdmn",
+          "game.p2._this._this._this.mc.instance334",
+          "game.p2._this._this._this.mc.instance335",
+          "game.p2._this._this._this.mc.jiao",
+          "game.p2._this._this._this.mc.mian",
+          "game.p2._this._this.mc",
+          "game.p2._this._this.mc.AImain",
+          "game.p2._this._this.mc._this",
+          "game.p2._this._this.mc._this.AImain",
+          "game.p2._this._this.mc._this._this",
+          "game.p2._this._this.mc._this.bdmn",
+          "game.p2._this._this.mc._this.instance334",
+          "game.p2._this._this.mc._this.instance335",
+          "game.p2._this._this.mc._this.jiao",
+          "game.p2._this._this.mc._this.mian",
+          "game.p2._this._this.mc.bdmn",
+          "game.p2._this._this.mc.instance334",
+          "game.p2._this._this.mc.instance335",
+          "game.p2._this._this.mc.jiao",
+          "game.p2._this._this.mc.mian",
+          "game.p2._this.mc",
+          "game.p2._this.mc.AImain",
+          "game.p2._this.mc._this",
+          "game.p2._this.mc._this.AImain",
+          "game.p2._this.mc._this._this",
+          "game.p2._this.mc._this._this.AImain",
+          "game.p2._this.mc._this._this._this",
+          "game.p2._this.mc._this._this.bdmn",
+          "game.p2._this.mc._this._this.instance334",
+          "game.p2._this.mc._this._this.instance335",
+          "game.p2._this.mc._this._this.jiao",
+          "game.p2._this.mc._this._this.mian",
+          "game.p2._this.mc._this.bdmn",
+          "game.p2._this.mc._this.instance334",
+          "game.p2._this.mc._this.instance335",
+          "game.p2._this.mc._this.jiao",
+          "game.p2._this.mc._this.mian",
+          "game.p2._this.mc.bdmn",
+          "game.p2._this.mc.instance334",
+          "game.p2._this.mc.instance335",
+          "game.p2._this.mc.jiao",
+          "game.p2._this.mc.mian",
+          "game.p2.mc",
+          "game.p2.mc.AImain",
+          "game.p2.mc._this",
+          "game.p2.mc._this.AImain",
+          "game.p2.mc._this._this",
+          "game.p2.mc._this._this.AImain",
+          "game.p2.mc._this._this._this",
+          "game.p2.mc._this._this._this.AImain",
+          "game.p2.mc._this._this._this._this",
+          "game.p2.mc._this._this._this.bdmn",
+          "game.p2.mc._this._this._this.instance334",
+          "game.p2.mc._this._this._this.instance335",
+          "game.p2.mc._this._this._this.jiao",
+          "game.p2.mc._this._this._this.mian",
+          "game.p2.mc._this._this.bdmn",
+          "game.p2.mc._this._this.instance334",
+          "game.p2.mc._this._this.instance335",
+          "game.p2.mc._this._this.jiao",
+          "game.p2.mc._this._this.mian",
+          "game.p2.mc._this.bdmn",
+          "game.p2.mc._this.instance334",
+          "game.p2.mc._this.instance335",
+          "game.p2.mc._this.jiao",
+          "game.p2.mc._this.mian",
+          "game.p2.mc.bdmn",
+          "game.p2.mc.instance334",
+          "game.p2.mc.instance335",
+          "game.p2.mc.jiao",
+          "game.p2.mc.mian",
+          "ts_face",
+          "ts_face.bg",
+          "ts_face.face_p1",
+          "ts_face.face_p1.face",
+          "ts_face.face_p2",
+          "ts_face.face_p2.face"
+        ],
+        "added_after": [],
+        "changed_common": []
+      },
+      "images": {
+        "before": {
+          "path": "evidence/characters/byakuya/audiovisual-r06/freeze-r13/576-r14/flash-window-before.png",
+          "sha256": "9767eec3514aa1083da3369768863216a9cfd4ffc4ebb3b27c4ba8e8077602da"
+        },
+        "after": {
+          "path": "evidence/characters/byakuya/audiovisual-r06/freeze-r13/576-r14/flash-window-after.png",
+          "sha256": "9767eec3514aa1083da3369768863216a9cfd4ffc4ebb3b27c4ba8e8077602da"
+        },
+        "stable_500ms_verified": true
+      },
+      "build": "/private/tmp/byakuya-freeze-r14-576-build"
+    },
+    "819-r14": {
+      "run_id": "byakuya-freeze-r14-814",
+      "fixture": "byakuya-814-zhaoHuan-neutral",
+      "root_target_frame": 814,
+      "target_reached": true,
+      "freeze_begin_end": true,
+      "recursive_paths": {
+        "before_count": 215,
+        "after_count": 215,
+        "path_equal": true,
+        "frame_visibility_equal": true,
+        "missing_after": [],
+        "added_after": [],
+        "changed_common": []
+      },
+      "images": {
+        "before": {
+          "path": "evidence/characters/byakuya/audiovisual-r06/freeze-r13/819-r14/flash-window-before.png",
+          "sha256": "7be7114693d3adcb8010dc9cdbb5653fd791191998071a585aedacad1781ba1a"
+        },
+        "after": {
+          "path": "evidence/characters/byakuya/audiovisual-r06/freeze-r13/819-r14/flash-window-after.png",
+          "sha256": "7be7114693d3adcb8010dc9cdbb5653fd791191998071a585aedacad1781ba1a"
+        },
+        "stable_500ms_verified": true
+      },
+      "build": "/private/tmp/byakuya-freeze-r14-814-build"
+    }
+  },
+  "acceptance": {
+    "333": "source-freeze-candidate; root frame and recursive paths stable, but Godot child frame map is empty so cross-runtime child parity remains pending",
+    "576": "rejected; 82 paths disappear after recursive stop, including p2 body subtree and ts_face; stable screenshot alone is insufficient",
+    "819": "not an 819 root-frame acceptance; fixture reaches root frame 814, so evidence is retained as nested-819 presentation candidate only"
+  },
+  "provenance_notes": {
+    "old_r13_literal_newline": "The failed r13 build patch stored the aiVisualWalk/aiVisualFreeze function as literal backslash-n text; r14 was rebuilt from the raw multiline observer source and emits freeze events.",
+    "old_null_stability": "The old capture helper could report stable=true when both screenshot paths were absent because None==None; this audit requires both files to exist and non-null SHA before stable_500ms_verified can be true.",
+    "godot_333": "evidence/characters/byakuya/audiovisual-r06/godot-333/metadata.json reports actual_source_frame=333 but visual_child_frames={}.",
+    "capture_helper_r02": {
+      "path": "/tmp/byakuya_recursive_freeze_capture_as2.py",
+      "sha256": "a705f5bed7f5dd3beac46f30227c09e02266ca26910c025b1391aa7addb5af3b",
+      "change": "stable_500ms now requires both screenshots to exist and both non-null SHA values"
+    }
+  }
+}

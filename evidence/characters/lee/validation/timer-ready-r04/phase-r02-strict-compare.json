@@ -1,0 +1,21 @@
+{
+  "runtime": {
+    "main_sha256": "8ef3f927c78426fbd50b2ed700544aff1b31d2727f59adf018a357a900ca8c7d",
+    "fighter_runtime_sha256": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "runner_sha256": "b3f757d9d1af20572045f2eca4ac9f936714d4f447d68e4ad949be1c284e909a",
+    "callback_registry_sha256": "aa66f0e2baad51fcddaaf6cb5c94dbf6ba96426783df5082fcbdd7aefe76b3d2"
+  },
+  "cases": [
+    {"id": "lee-1049-defence-air_target", "source_states": 602, "native_states": 602, "status": "matched", "acceptance_status": "validated", "differences": 0, "compare": "evidence/characters/lee/godot/phase-r02/lee-1049-defence-air_target.compare.json"},
+    {"id": "lee-157-nornalhit-neutral", "source_states": 602, "native_states": 602, "status": "matched", "acceptance_status": "validated", "differences": 0, "compare": "evidence/characters/lee/godot/phase-r02/lee-157-nornalhit-neutral.compare.json"},
+    {"id": "byakuya-454-bisha-energy_exact", "source_states": 602, "native_states": 602, "status": "matched", "acceptance_status": "validated", "differences": 0, "compare": "evidence/characters/lee/godot/phase-r02/byakuya-454-bisha-energy_exact.compare.json"}
+  ],
+  "regressions": {
+    "intro_queued_goto_smoke": "passed",
+    "ready_play_smoke": "passed_exit0",
+    "round_reset_smoke": "passed",
+    "source_callback_registry_smoke": "passed",
+    "ko_controller_smoke": "passed"
+  },
+  "scope": "Three fresh current-run strict 602-row comparisons and focused scheduling regressions. Full Lee/Byakuya matrix remains a separate rerun after this phase change."
+}

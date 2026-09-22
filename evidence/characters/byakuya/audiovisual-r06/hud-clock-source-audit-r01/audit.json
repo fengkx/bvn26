@@ -1,0 +1,103 @@
+{
+  "scope": "Byakuya base-form HUD clock audit; source-first only; no production change",
+  "source": {
+    "swf": "game/main.swf",
+    "swf_sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "script_sha256": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "qitiao_scripts": [
+      "scripts/main.json:DefineSprite_1774/frame_1/DoAction.as (P2 wrapper)",
+      "scripts/main.json:DefineSprite_1782/frame_1/DoAction.as (P1 wrapper)"
+    ],
+    "timer_script": "scripts/main.json:DefineSprite_1813/frame_1/DoAction.as",
+    "hud_root": "game/main.swf:DefineSprite_1815/frame_1"
+  },
+  "source_first_five_questions": {
+    "1_frame_scripts": {
+      "qitiao": [
+        "qi = Math.round(_root.game['p' + nn].mc.ql) + 1",
+        "bs = Math.floor(_root.game['p' + nn].mc.ql / 100) + 1",
+        "qt.gotoAndStop(qi)",
+        "bss.gotoAndStop(bs)",
+        "setInterval(qitiao, 300)"
+      ],
+      "countdown": [
+        "time() is registered with _root.timeset = setInterval(time,1000)",
+        "gametime decrements only when zhanting == false, both fighters sw == false, and modo != 4",
+        "digit clips 十 and 个 are updated from gametime"
+      ],
+      "nested_qt301": "qt frame 301 contains child sprite 1763; source audit records child frames 1..10, with frame 5 using the yellow shape. Child playback is independent of the parent qt selection and must not be replaced by a flat qt bitmap."
+    },
+    "2_placeobject_move": {
+      "hud_root": "DefineSprite_1815 frame 1",
+      "p1": "wrapper 1782 at depth 17, matrix scale +0.6065521, translate (-651,8049) twips; bss child 1781",
+      "p2": "wrapper 1774 at depth 1, matrix scaleX -0.6065521/scaleY 0.6065521, translate (12658,8049) twips; bss child 1773",
+      "shared_qt": "qt 1764 placement (1674,580) twips; bss placement (1094,160) twips",
+      "source_asset": "godot/generated/main/energy/presentation.json"
+    },
+    "3_exit_and_lifecycle": {
+      "qitiao": "The callback is an interval owned by each HUD wrapper. qitiao itself has no zhanting guard and does not clear its interval; pause therefore leaves sampling alive but ql normally unchanged. A valid observer must record callback occurrence and ql, not infer pause from a frozen qt frame.",
+      "qt_child": "qt.gotoAndStop changes the parent selection; it does not imply child 1763 is stopped. Entering qt301 starts/restarts the nested child timeline from its placement state; leaving qt301 removes it. No production shortcut may advance it by assigning a parent frame.",
+      "countdown": "The countdown interval is separate from qitiao and is gated inside time(); maxtime==100 or modo==4 selects the unlimited label instead of registering timeset."
+    },
+    "4_invariants": [
+      "energy index is round(ql)+1",
+      "stock index is floor(ql/100)+1",
+      "qitiao period is 300 ms wall-clock interval",
+      "countdown period is 1000 ms wall-clock interval",
+      "countdown does not decrement during zhanting, fighter sw, KO, or modo 4",
+      "qt301 child frame is an independent source timeline and must retain authored nested layers"
+    ],
+    "5_same_input_observation": {
+      "fixture": "P1 白哉 / P2 一护 / helpers 魂,魂 / stage 现世 / base form",
+      "existing_source_anchor": "source333 same-input observation: ql=300, qt=301, bss=4, nested child frame 10",
+      "existing_godot_anchor": "evidence/characters/byakuya/audiovisual-r06/godot-333-child-audit-r01/hud-source-audit.json",
+      "boundary": "Existing evidence proves authored geometry/assets and focused qt301 rendering. It does not yet prove the real 300 ms callback phase or qitiao/1763 behavior through pause/resume."
+    }
+  },
+  "minimal_same_input_observer": {
+    "status": "prepared_specification_only",
+    "must_not": ["goto qt/bss directly", "inject ql or child frame", "replace qt301 display list with a flat texture", "change production HUD timing"],
+    "source_side_rows": [
+      "display_tick, wall_time_ms, fight_tick",
+      "qitiao callback sequence and callback wall_time_ms",
+      "p1/p2 ql, qt selected frame, bss selected frame",
+      "qt301 child 1763 local frame and source parent/child path",
+      "zhanting, fighter sw, KO/alive, modo, gametime, timeset registration",
+      "input_next_display and source StartSound/stop events when present"
+    ],
+    "godot_side_rows": [
+      "presentation/display tick, physics/fight tick, monotonic wall time",
+      "actual ql sample callback event (not setter call), qt/bss selected frame",
+      "qt301 child local frame and independent child clock event",
+      "pause/resume and fighter alive/sw state",
+      "countdown Timer registration/fire/pause state and displayed gametime",
+      "fixture, source hash, runtime hash, helper identities"
+    ],
+    "acceptance_cases": [
+      "ql transition across 299->300 while running: observe qt 300->301 and bss 3->4 at the next 300 ms callback",
+      "same input with zhanting asserted between callbacks: callback remains observable, ql/selected frames remain source-consistent, countdown does not decrement",
+      "qt301 enter/hold/leave/re-enter: child 1763 sequence is observed from its placement state, does not advance on duplicate display tick, and restarts after removal/re-entry",
+      "countdown: compare source Ready-to-first-timeset callback anchor; do not use a fixed screenshot offset"
+    ],
+    "fail_closed": [
+      "missing callback rows",
+      "direct frame injection or goto in the fixture",
+      "child snapshot absent or reused across two observation times",
+      "wall-clock-only comparison without display/fight lifecycle anchors"
+    ]
+  },
+  "production_status": {
+    "changed": false,
+    "pending": [
+      "qitiao real 300 ms callback phase under the same input",
+      "qitiao behavior while zhanting is active",
+      "qt301 nested child clock during pause and resume",
+      "countdown Ready/timeset lifecycle anchor"
+    ],
+    "accepted_scope": "source-backed audit and observer specification only; current HUD delivery remains focused geometry/layer evidence, not full HUD timing parity"
+  },
+  "hashes": {
+    "godot_energy_bar_gd": "644aab2305372c420f1286b2bc6e6e05461ed984306adcea6d86259e387aed01",
+    "godot_presentation_json": "03a2bca7290192b17102fa67462e8cf2173f2492cfce9e2a4be580b62d51927e"
+  }
+}

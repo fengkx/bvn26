@@ -1,0 +1,81 @@
+{
+  "status": "probe_invalid_for_production_root_cause",
+  "reason": "The earlier dedicated probe did not replay the clean capture's source input and clock streams and also manually consumed random values. Its Ready/ql/hurtVoice differences must not be attributed to production runtime.",
+  "native_facts": {
+    "ready": {
+      "p1_frame": 7,
+      "p2_frame": 2
+    },
+    "fight_tick_17": {
+      "p1_frame": 738,
+      "p2_frame": 173,
+      "random": "fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1"
+    },
+    "fight_tick_18": {
+      "p1_frame": 739,
+      "p2_frame": 174,
+      "p2_ql": 6
+    },
+    "fight_tick_19": {
+      "p2_frame": 175,
+      "predicate": "skill2=true"
+    },
+    "fight_tick_20": {
+      "p2_frame": 273,
+      "p2_action": 1
+    },
+    "fight_tick_25": {
+      "random": [
+        "fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1",
+        "main#frame_8/DoAction.as:1"
+      ],
+      "clock": [
+        "fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:3",
+        "fighter/yihu#DefineSprite_638/frame_1/DoAction.as#hurtVoice:getTimer:4"
+      ]
+    },
+    "fight_tick_32": {
+      "random": "fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1"
+    }
+  },
+  "runtime_paths": {
+    "energy_and_hit": "godot/fighter_runtime.gd:_settle_source_hit -> _apply_hit_settlement_frame",
+    "hurt_voice": "godot/fighter_runtime.gd:_settle_source_hit -> hurt_voice.execute",
+    "hurt_voice_if": "godot/hurt_voice.gd: probability draw occurs before hurt cooldown getTimer check",
+    "ai_transition": "godot/generated/fighters/byakuya/ai_controller/controller.gd:doAllAction/doStand -> skill2 -> goto_label(砍技2)"
+  },
+  "minimal_integration_request": "Build a clean replay from recorded input_next_display, source clock records, and source AI sample/random event order. Do not modify energy, hurtVoice, or AI runtime until that replay reaches the same Ready and p1/p2 source frames. Then compare the first source frame script boundary and settlement callback phase.",
+  "ready_boundary_audit": {
+    "native_load_sequence": [
+      {
+        "display_tick": 0,
+        "kind": "frame_state_enter",
+        "value": "1,1,undefined,0,false"
+      },
+      {
+        "display_tick": 0,
+        "kind": "frame_state_exit",
+        "value": "1,1,0,0,false"
+      },
+      {
+        "display_tick": 279,
+        "kind": "intro_goto_before",
+        "value": "6"
+      },
+      {
+        "display_tick": 279,
+        "kind": "intro_goto_return",
+        "value": "958"
+      },
+      {
+        "display_tick": 452,
+        "kind": "ready",
+        "p1_frame": 7,
+        "p2_frame": 2
+      }
+    ],
+    "source_intro_state_frames": "Byakuya intro compiler records kcplayed state frames 959->1, 961->3, 983->3, 996->2; frame 996 performs gotoAndStop(站立); play().",
+    "predecessor_6_1": "These are not observed as a production load state. They are synthetic predecessor values used by intro_continuous_reference to seed a partial checkpoint from the observed Ready frames (7-1 and 2-1). They must not be used to claim production Ready parity.",
+    "conclusion": "Current probe Ready mismatch is unresolved: it may be a production intro scheduling difference or a probe lifecycle difference. The next valid runner must replay recorded intro polls and observe the natural fighter frames without injecting 6/1."
+  }
+}

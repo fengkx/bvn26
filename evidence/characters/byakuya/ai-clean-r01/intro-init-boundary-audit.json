@@ -1,0 +1,902 @@
+{
+  "status": "diagnostic_read_only_boundary_audit",
+  "source": {
+    "events": "/private/tmp/byakuya-ai-clean-r01/collected/events.jsonl",
+    "build": "/private/tmp/byakuya-ai-clean-r01",
+    "mode": "Vs-Com mode2",
+    "p1": "一护 human",
+    "p2": "白哉 CPU",
+    "helpers": [
+      "魂",
+      "魂"
+    ],
+    "scripts": {
+      "p1": "scripts/fighter/yihu.json; game/fighter/yihu.swf; DefineSprite_? / frame_1/DoAction.as#initCtrl",
+      "p2": "scripts/fighter/Byakuya.json; game/fighter/Byakuya.swf; DefineSprite_631/frame_1/DoAction.as#initCtrl"
+    },
+    "load_and_enterframe": [
+      {
+        "slot": "p1",
+        "load_proxy": "initCtrl seq5 display0 _level0.game.p1.mc",
+        "first_frame_state_enter": "seq3 display0 time12029 value=1,1,undefined,0,false",
+        "helper": "seq9 display1 魂"
+      },
+      {
+        "slot": "p2",
+        "load_proxy": "initCtrl seq10 display1 _level0.game.p2.mc",
+        "first_frame_state_enter": "shared actor boundary seq3 display0; slot-specific initCtrl seq10 display1",
+        "helper": "seq12 display2 魂"
+      }
+    ],
+    "rootpause": "No dedicated rootpause event. Fight state rows carry paused=false at fight ticks 0..15; intro pre-fight state rows carry source pause fields and are not relabeled as rootpause.",
+    "standing_ranges": {
+      "p1_一护": "timeline frame 1 through 9 (next label 走 at 10)",
+      "p2_白哉": "timeline frame 1 through 9 (next label 走 at 10)"
+    },
+    "ready": {
+      "sequence": 2663,
+      "display_tick": 452,
+      "fight_tick": 0,
+      "p1_frame": 7,
+      "p2_frame": 2,
+      "p1_state_seq": 2665,
+      "p2_state_seq": 2668
+    },
+    "first15": [
+      {
+        "sequence": 2665,
+        "display_tick": 452,
+        "fight_tick": 0,
+        "slot": "p1",
+        "frame": 7,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "undefined",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2668,
+        "display_tick": 452,
+        "fight_tick": 0,
+        "slot": "p2",
+        "frame": 2,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "undefined",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2702,
+        "display_tick": 453,
+        "fight_tick": 1,
+        "slot": "p1",
+        "frame": 1,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2705,
+        "display_tick": 453,
+        "fight_tick": 1,
+        "slot": "p2",
+        "frame": 20,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2725,
+        "display_tick": 454,
+        "fight_tick": 2,
+        "slot": "p1",
+        "frame": 2,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2728,
+        "display_tick": 454,
+        "fight_tick": 2,
+        "slot": "p2",
+        "frame": 21,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2747,
+        "display_tick": 455,
+        "fight_tick": 3,
+        "slot": "p1",
+        "frame": 3,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2750,
+        "display_tick": 455,
+        "fight_tick": 3,
+        "slot": "p2",
+        "frame": 22,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2769,
+        "display_tick": 456,
+        "fight_tick": 4,
+        "slot": "p1",
+        "frame": 4,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2772,
+        "display_tick": 456,
+        "fight_tick": 4,
+        "slot": "p2",
+        "frame": 23,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2791,
+        "display_tick": 457,
+        "fight_tick": 5,
+        "slot": "p1",
+        "frame": 5,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2794,
+        "display_tick": 457,
+        "fight_tick": 5,
+        "slot": "p2",
+        "frame": 24,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2813,
+        "display_tick": 458,
+        "fight_tick": 6,
+        "slot": "p1",
+        "frame": 6,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2816,
+        "display_tick": 458,
+        "fight_tick": 6,
+        "slot": "p2",
+        "frame": 25,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2841,
+        "display_tick": 459,
+        "fight_tick": 7,
+        "slot": "p1",
+        "frame": 7,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2844,
+        "display_tick": 459,
+        "fight_tick": 7,
+        "slot": "p2",
+        "frame": 26,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2865,
+        "display_tick": 460,
+        "fight_tick": 8,
+        "slot": "p1",
+        "frame": 1,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2868,
+        "display_tick": 460,
+        "fight_tick": 8,
+        "slot": "p2",
+        "frame": 27,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2888,
+        "display_tick": 461,
+        "fight_tick": 9,
+        "slot": "p1",
+        "frame": 2,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2891,
+        "display_tick": 461,
+        "fight_tick": 9,
+        "slot": "p2",
+        "frame": 28,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2907,
+        "display_tick": 462,
+        "fight_tick": 10,
+        "slot": "p1",
+        "frame": 3,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2910,
+        "display_tick": 462,
+        "fight_tick": 10,
+        "slot": "p2",
+        "frame": 29,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2926,
+        "display_tick": 463,
+        "fight_tick": 11,
+        "slot": "p1",
+        "frame": 4,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2929,
+        "display_tick": 463,
+        "fight_tick": 11,
+        "slot": "p2",
+        "frame": 30,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2945,
+        "display_tick": 464,
+        "fight_tick": 12,
+        "slot": "p1",
+        "frame": 5,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2948,
+        "display_tick": 464,
+        "fight_tick": 12,
+        "slot": "p2",
+        "frame": 1,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2966,
+        "display_tick": 465,
+        "fight_tick": 13,
+        "slot": "p1",
+        "frame": 6,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2969,
+        "display_tick": 465,
+        "fight_tick": 13,
+        "slot": "p2",
+        "frame": 169,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2985,
+        "display_tick": 466,
+        "fight_tick": 14,
+        "slot": "p1",
+        "frame": 7,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 2988,
+        "display_tick": 466,
+        "fight_tick": 14,
+        "slot": "p2",
+        "frame": 170,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 3006,
+        "display_tick": 467,
+        "fight_tick": 15,
+        "slot": "p1",
+        "frame": 1,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      },
+      {
+        "sequence": 3009,
+        "display_tick": 467,
+        "fight_tick": 15,
+        "slot": "p2",
+        "frame": 171,
+        "raw_paused_fields": [
+          "false",
+          "true",
+          "true",
+          "0",
+          "false",
+          "0",
+          "false"
+        ]
+      }
+    ]
+  },
+  "godot_runner": {
+    "production_paths": {
+      "main_enter": "godot/main.gd:_enter_current_fight",
+      "initialize": "godot/main.gd:_initialize_fight lines 618-625: start_action(站立), placement/facing",
+      "intro": "godot/main.gd:_enter_current_fight line 592: battle_intro.begin([naruto,ichigo])",
+      "first_advance": "godot/main.gd:_advance_fight: battle_intro.tick -> physics_tick++ -> actor advance -> recorded callbacks -> observe_fighter_frames"
+    },
+    "probe_extra": "godot/tests/byakuya_ai_tape_probe.gd line 65 calls battle_intro.begin(intro_fighters,true) a second time after _enter_current_fight; this is runner-only extra lifecycle and makes current probe non-production-equivalent.",
+    "tick0_definition": "Probe parity_rows tick=0 is immediately after _enter_current_fight and before first _advance_fight; it is not source display_tick0. Source fight tick0 is Ready at display_tick452.",
+    "rootpause": "battle_intro.begin sets fighter.root_zhanting=true; probe parity_rows first fight tick reports paused=false because battle_intro completes before ready. The poll-phase root pause is true by code, not separately emitted in JSON.",
+    "first15": [
+      {
+        "tick": 0,
+        "slot": "p1",
+        "frame": 1,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 0,
+        "slot": "p2",
+        "frame": 1,
+        "paused": false,
+        "action": 0.0,
+        "x": 637.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 1,
+        "slot": "p1",
+        "frame": 2,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 1,
+        "slot": "p2",
+        "frame": 20,
+        "paused": false,
+        "action": 0.0,
+        "x": 637.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 2,
+        "slot": "p1",
+        "frame": 3,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 2,
+        "slot": "p2",
+        "frame": 21,
+        "paused": false,
+        "action": 0.0,
+        "x": 637.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 3,
+        "slot": "p1",
+        "frame": 4,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 3,
+        "slot": "p2",
+        "frame": 22,
+        "paused": false,
+        "action": 0.0,
+        "x": 601.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 4,
+        "slot": "p1",
+        "frame": 5,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 4,
+        "slot": "p2",
+        "frame": 23,
+        "paused": false,
+        "action": 0.0,
+        "x": 565.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 5,
+        "slot": "p1",
+        "frame": 6,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 5,
+        "slot": "p2",
+        "frame": 24,
+        "paused": false,
+        "action": 0.0,
+        "x": 529.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 6,
+        "slot": "p1",
+        "frame": 7,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 6,
+        "slot": "p2",
+        "frame": 25,
+        "paused": false,
+        "action": 0.0,
+        "x": 493.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 7,
+        "slot": "p1",
+        "frame": 1,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 7,
+        "slot": "p2",
+        "frame": 26,
+        "paused": false,
+        "action": 0.0,
+        "x": 457.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 8,
+        "slot": "p1",
+        "frame": 2,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 8,
+        "slot": "p2",
+        "frame": 27,
+        "paused": false,
+        "action": 0.0,
+        "x": 421.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 9,
+        "slot": "p1",
+        "frame": 3,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 9,
+        "slot": "p2",
+        "frame": 28,
+        "paused": false,
+        "action": 0.0,
+        "x": 421.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 10,
+        "slot": "p1",
+        "frame": 4,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 10,
+        "slot": "p2",
+        "frame": 29,
+        "paused": false,
+        "action": 0.0,
+        "x": 421.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 11,
+        "slot": "p1",
+        "frame": 5,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 11,
+        "slot": "p2",
+        "frame": 30,
+        "paused": false,
+        "action": 0.0,
+        "x": 421.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 12,
+        "slot": "p1",
+        "frame": 6,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 12,
+        "slot": "p2",
+        "frame": 1,
+        "paused": false,
+        "action": 0.0,
+        "x": 421.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 13,
+        "slot": "p1",
+        "frame": 7,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 13,
+        "slot": "p2",
+        "frame": 169,
+        "paused": false,
+        "action": 0.0,
+        "x": 421.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 14,
+        "slot": "p1",
+        "frame": 1,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 14,
+        "slot": "p2",
+        "frame": 170,
+        "paused": false,
+        "action": 1.0,
+        "x": 421.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 15,
+        "slot": "p1",
+        "frame": 2,
+        "paused": false,
+        "action": 0.0,
+        "x": 374.1,
+        "y": -25.0,
+        "ql": 0.0
+      },
+      {
+        "tick": 15,
+        "slot": "p2",
+        "frame": 171,
+        "paused": false,
+        "action": 1.0,
+        "x": 421.1,
+        "y": -25.0,
+        "ql": 0.0
+      }
+    ]
+  },
+  "comparison": {
+    "source_tick0": "display_tick452 Ready; pre-fight display 0..451 is intro/load",
+    "godot_tick0": "probe logical tick0 before first advance; no source display tick equivalence",
+    "actual_missing_or_extra": [
+      "Source has load/enterFrame/display timeline before first intro_poll at display15 and Ready at display452. Current probe has no equivalent recorded load/display phase; it enters fight immediately, then adds a second begin(recorded=true).",
+      "Source first intro_poll seq43 display15 observes frames p1=2,p2=8; current probe first delivered poll at intro tick15 observes frames [1,1] in /private/tmp/ai-clean-polls4.json. This is an actor timeline phase mismatch, not a proven rootpause mismatch.",
+      "Current probe pre-Ready replay includes derived AI refreshes and is diagnostic; no production acceptance."
+    ]
+  }
+}

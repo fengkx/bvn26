@@ -1,0 +1,18 @@
+{
+  "scope": "shared HUD source-first implementation gate",
+  "source_swf": "game/main.swf",
+  "source_sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92",
+  "five_questions": {
+    "frame_script": "DefineSprite_1774/1782/frame_1/DoAction.as defines qitiao(), selecting qt with round(ql)+1 and bss with floor(ql/100)+1; it is scheduled by setInterval(qitiao,300). DefineSprite_1815/frame_1 and frame_5 DoAction.as only stop().",
+    "placements": "root xuetiao depth71 places DefineSprite_1815 at (-22,40) twips with no scale. Active DefineSprite_1815 frame5 places P1 wrapper 1782 at (149,7249) twips with scale (+0.6065521,+0.6065521) and P2 wrapper 1774 at (11858,7249) twips with scale (-0.6065521,+0.6065521). Each wrapper places 1748, 1753, 1764 and its side-specific bss child.",
+    "exit_behavior": "The root/wrapper clips stop on their authored frames; qt/bss remain on selected frames. No wrapper scale override was found in the inspected source scripts. The nested qt child at qt frame301 advances on its own display clock and is retained by the existing runtime contract.",
+    "invariants": "All matrix values remain in source twips and are compiled into presentation.json. The active HUD frame is 5, not frame1. The full first-frame wrapper child union is [-4,-4,234.7,57] source pixels. EnergyBar must consume these compiled fields instead of fixed 134x32 or 0.5 layout constants.",
+    "same_input": "The focused 576/333 source snapshots provide the geometry reference; new Godot validation must compare the current compiled transform and qt301 nested child lifecycle. This change does not claim full screenshot parity until the post-change source/Godot capture is taken."
+  },
+  "compiled_layout": "godot/generated/main/energy/presentation.json:layout",
+  "runtime_consumer": "godot/energy_bar.gd",
+  "production_scope": "EnergyBar and its scene layout only; main.gd is unchanged",
+  "acceptance_boundary": "Source-backed layout implementation with focused dynamic tests; visual parity remains pending until a fresh current-hash screenshot is captured.",
+  "steady_source_reference": "evidence/characters/byakuya/audiovisual-r06/freeze-r21/576/freeze-events.json: root.xuetiao frame 5",
+  "screen_rects": "evidence/characters/byakuya/audiovisual-r06/hud-source-rects-576-r01.json"
+}

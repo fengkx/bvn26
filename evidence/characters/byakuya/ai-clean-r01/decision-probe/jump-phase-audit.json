@@ -1,0 +1,33 @@
+{
+  "format": "byakuya-ai-jump-phase-audit-v1",
+  "source": {
+    "context_sequence": 3850,
+    "fight_tick": 66,
+    "predicate_sequence": 3865,
+    "predicate": "jump=true",
+    "pre_context_state": {
+      "p2_frame": 61,
+      "p1_y": -77.0,
+      "p2_y": -25.0
+    },
+    "next_state_sequence": 3871,
+    "next_state_fight_tick": 67,
+    "next_state_p2_frame": 68,
+    "source_paths": {
+      "DefineSprite_631/frame_1/DoAction.as": "doAllAction() uses gotoAndPlay(跳); onJumping(step) uses gotoAndPlay(跳2) for step 2/3",
+      "DefineSprite_16/frame_1/DoAction.as": "same source callback structure"
+    },
+    "interpretation": "frame 68 follows the observed callback after one source fight tick; it is the onJumping(step 2/3) branch, not a future unrelated action"
+  },
+  "godot": {
+    "probe": "godot/tests/byakuya_ai_single_dispatch_probe.gd",
+    "restored_source_playhead": 62,
+    "action": "跳2",
+    "frame": 68,
+    "source_sequence": 3850,
+    "matched": true,
+    "formal": "godot-single-dispatch-formal-r03.json",
+    "result_hash": "73868e095268e4b1a5e45cac186eca137e12beaa1eb645577f165f6206ebaaef"
+  },
+  "scope": "two source-observed callback decisions; no full boot/intro/180-tick AI parity"
+}

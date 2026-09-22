@@ -1,0 +1,84 @@
+{
+  "format": "lee-timer-ready-r02",
+  "runtime_sha256": "a7a8f61214eb7136277a7be3fffb3d7800656748d72e6aaf2f3fb3008636541b",
+  "fighter_runtime_sha256": "7c37e62db17a1d320959e6a549ca2712d45986e0730a16e4d7e097f13b50e71d",
+  "runner": "/private/tmp/lee-timer-runner-r01/batch-after-root.gd",
+  "source_ready_note": "current source timer tapes observe register/fire/cancel; all three same-field compares have only tick0 touchFloor undefined->true",
+  "cases": [
+    {
+      "case": "hp1",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 2,
+      "first_difference": {
+        "tick": 0,
+        "slot": "p1",
+        "fields": {
+          "touchFloor": {
+            "source": null,
+            "native": true
+          }
+        }
+      },
+      "native_path": "/private/tmp/lee-timer-runner-r01/hp1-native.json",
+      "source_normalized_path": "/private/tmp/lee-timer-runner-r01/hp1-source-normalized.json",
+      "source_timer_tape": "evidence/characters/lee/source-timer-tapes-r01/lee_hp1.json",
+      "native_sha256": "a905814a709b03c1f23e385dd05cdd0858bac009d03e2c21ff7110030c107695",
+      "source_sha256": "283cc6266c13b6350e2912b707b82b359a0c6d3a889cf767c197b30d25878fcf",
+      "timer_tape_sha256": "f0b05c0e28d956dec358df171810dbd5b4c63ee7dcd5d7f2d69900e54717758c",
+      "fixture_path": "/private/tmp/lee-timer-runner-r01/fixtures-hp1.json",
+      "fixture_sha256": "8e8e07635fb387e79e6f910a08c7f22aaeff796b79bf765580c0867e841de8f1"
+    },
+    {
+      "case": "kill700",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 2,
+      "first_difference": {
+        "tick": 0,
+        "slot": "p1",
+        "fields": {
+          "touchFloor": {
+            "source": null,
+            "native": true
+          }
+        }
+      },
+      "native_path": "/private/tmp/lee-timer-runner-r01/out-kill-current/lee-kill700-external-tape-r02.json",
+      "source_normalized_path": "/private/tmp/lee-timer-runner-r01/kill-source-normalized.json",
+      "source_timer_tape": "evidence/characters/lee/source-timer-tapes-r01/lee_kill700.json",
+      "native_sha256": "d93da0d81e888d9d9d8b8c191764f8a49cdc26ca9db88c356f5b38e9176f5111",
+      "source_sha256": "d3e2dd33e3acec059853c3db6393f7fa07994649c771c2aa59a4a9c3a4a73c57",
+      "timer_tape_sha256": "01d1e6f208f942a7a34bbbc09b0832be1e0cedaf4fdabd5ff72a23eb579db524",
+      "fixture_path": "/private/tmp/lee-timer-runner-r01/fixture-kill-correct.json",
+      "fixture_sha256": "933c4002476b08b082f708163855f564847736a64383b009520486f6e6706cc6"
+    },
+    {
+      "case": "byakuya700",
+      "source_rows": 1402,
+      "native_rows": 1402,
+      "different_states": 2,
+      "first_difference": {
+        "tick": 0,
+        "slot": "p1",
+        "fields": {
+          "touchFloor": {
+            "source": null,
+            "native": true
+          }
+        }
+      },
+      "native_path": "/private/tmp/lee-timer-runner-r01/out-byakuya-current/byakuya-690-bishaSuper-energy_exact-external-tape-r01.json",
+      "source_normalized_path": "/private/tmp/lee-timer-runner-r01/byak-source-normalized.json",
+      "source_timer_tape": "evidence/characters/lee/source-timer-tapes-r01/byakuya700.json",
+      "native_sha256": "db0ae733395f4cd48ea8aeed91938351d40ace3ceb4e0bb0dd90f3a52096e551",
+      "source_sha256": "2ed9f28849f7280d65a0ec7b3b30c1ff29cd19ab6f765c83a3795cf062178fd1",
+      "timer_tape_sha256": "ee3269bed267594f7d639d652c3bc29952c1b25118bcfd3c2ecf97d97129b854",
+      "fixture_path": "/private/tmp/lee-timer-runner-r01/fixtures-byakuya700.json",
+      "fixture_sha256": "fa61edde400f08668ca73c47faddcbb70b782c61d45ff5577d81249881ce6dff"
+    }
+  ],
+  "runner_sha256": "a2f44a9820f96c1650c9ac6b8036cd453dbc7fc735f2b12c98441c8345e0de26",
+  "acceptance_status": "diagnostic_runner_mutates_timeline_not_accepted",
+  "note": "The original batch-after-root runner used _new_actor_pending_first_tick to suppress timeline_playing after external fire; all case results are diagnostic only and excluded from production parity."
+}

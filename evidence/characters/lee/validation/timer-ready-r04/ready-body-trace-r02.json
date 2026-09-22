@@ -1,0 +1,28 @@
+{
+  "id": "lee-ready-body-trace-r02",
+  "status": "phase-correction-implemented-and-smoke-verified",
+  "source_first": {
+    "script": "Ready frame 127/128 frame actions and Lee base518 outer BODY/frame1/frame2 callbacks",
+    "place_object_move": "Ready and fighter BODY clips are already placed; enterFrame dispatch uses registered placed_tick ordering",
+    "leave_label": "Ready frame action ends the intro clip; fighter BODY remains registered and advances by source dispatch",
+    "invariant": "Source display 458 has both fighters zhanting=true; display 459 state is zhanting=false with touchFloor undefined; BODY/frame callbacks must run before the first post-ready root state sample",
+    "same_input": "lee-body-boundaries-r02 source capture plus native phase trace; source fight0 BODY/frame2 boundaries establish undefined -> true ordering"
+  },
+  "source_evidence": {
+    "path": "evidence/characters/lee/original/lee-body-boundaries-r02/events.jsonl",
+    "sha256": "7be5c8b955f943f4770b0781d9efb807b1504c61901373f108365432f30ceda3",
+    "ready_display": [458, 459],
+    "reported_order": "display458 BODY callbacks retain zhanting=true; display459 Ready/frame transition clears zhanting before state observation, while touchFloor remains undefined"
+  },
+  "change": {
+    "file": "godot/main.gd",
+    "rule": "battle_intro.run_frame_actions() now runs after source actor BODY dispatch and before root_observer; it is no longer run after the root snapshot",
+    "scope": "generic Ready/frame-action scheduling; no Lee-specific branch, no observer state writes"
+  },
+  "smoke": [
+    {"fixture": "lee-34-jump-air_target", "result": "MOVE_CASE_REFERENCE_OK", "exit": 0},
+    {"fixture": "lee-278-magichit1-neutral", "result": "MOVE_CASE_REFERENCE_OK", "exit": 0},
+    {"fixture": "lee-34-jump-guard", "result": "MOVE_CASE_REFERENCE_OK", "exit": 0}
+  ],
+  "limits": "These are native runner smoke executions; source strict parity and full matrix must be rerun against the stable shared hash. No claim of complete parity is made here."
+}

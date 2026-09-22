@@ -1,0 +1,893 @@
+{
+  "format": "lee-source-callback-pending-classification-r01",
+  "source_inventory": "evidence/characters/lee/source-callback-inventory-r01.json",
+  "source_inventory_sha256": "ca24bdb6179eb7cd0d702602e92853f96b71da00e53f40cd78adcfaab5ce682e",
+  "policy": "Classification describes evidence availability only; no pending entry is promoted to reached or matched.",
+  "totals": {
+    "pending_entries": 49
+  },
+  "counts": {
+    "summon_pending": 1,
+    "ko_recovery_trace_pending": 13,
+    "audio_trace_available_but_callback_frame_unobserved": 2,
+    "native_source_trace_pending": 21,
+    "round_lifecycle_pending_gui_or_native": 6,
+    "special_continuation_pending": 6
+  },
+  "entries": [
+    {
+      "source_path": "DefineSprite_518/frame_1017/DoAction.as",
+      "source_frame": 1017,
+      "action": "招换",
+      "kind": "frame_action",
+      "classification": "summon_pending",
+      "reason": "Summon callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1057/DoAction.as",
+      "source_frame": 1057,
+      "action": "防御2",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1070/DoAction.as",
+      "source_frame": 1070,
+      "action": "防住",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1083/DoAction.as",
+      "source_frame": 1083,
+      "action": "被打",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1086/DoAction.as",
+      "source_frame": 1086,
+      "action": "击飞",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl",
+          "lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 3,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1087/DoAction.as",
+      "source_frame": 1087,
+      "action": "击飞",
+      "kind": "frame_action",
+      "classification": "audio_trace_available_but_callback_frame_unobserved",
+      "reason": "The exact source frame is present in sound-coverage-r01, but callback exact-frame observation is absent.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl",
+          "lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 3,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_frame": 1088,
+      "action": "击飞",
+      "kind": "clip_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl",
+          "lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 3,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1096/DoAction.as",
+      "source_frame": 1096,
+      "action": "击飞",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl",
+          "lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 3,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1098/DoAction.as",
+      "source_frame": 1098,
+      "action": "击落地",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl",
+          "lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 3,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_frame": 1098,
+      "action": "击落地",
+      "kind": "clip_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl",
+          "lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 3,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1112/DoAction.as",
+      "source_frame": 1112,
+      "action": "击落地",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+          "lee-recovery-p2-hp1-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 2,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+      "source_frame": 1128,
+      "action": "击落地",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_113/DoAction.as",
+      "source_frame": 113,
+      "action": "落地",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_frame": 1133,
+      "action": "起身",
+      "kind": "clip_action",
+      "classification": "audio_trace_available_but_callback_frame_unobserved",
+      "reason": "The exact source frame is present in sound-coverage-r01, but callback exact-frame observation is absent.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl"
+        ],
+        "files_total": 1,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1134/DoAction.as",
+      "source_frame": 1134,
+      "action": "起身",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl"
+        ],
+        "files_total": 1,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1144/DoAction.as",
+      "source_frame": 1144,
+      "action": "起身",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1149/DoAction.as",
+      "source_frame": 1149,
+      "action": "起身",
+      "kind": "frame_action",
+      "classification": "ko_recovery_trace_pending",
+      "reason": "KO/recovery interval; exact callback frame is absent from retained source traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1158/DoAction.as",
+      "source_frame": 1158,
+      "action": "开场",
+      "kind": "frame_action",
+      "classification": "round_lifecycle_pending_gui_or_native",
+      "reason": "Round lifecycle callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-1049-defence-air_target-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1049-defence-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-dash_twice-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-guard-acceptance-r06/events.jsonl/events.jsonl",
+          "lee-1049-defence-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-held-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-mirror-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1049-defence-neutral-r01/events.jsonl",
+          "lee-1049-defence-trade-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-trade-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-wall-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1050-defence-air_target-acceptance-r06/events.jsonl/events.jsonl"
+        ],
+        "files_total": 209,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1159/DoAction.as",
+      "source_frame": 1159,
+      "action": "开场",
+      "kind": "frame_action",
+      "classification": "round_lifecycle_pending_gui_or_native",
+      "reason": "Round lifecycle callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-1049-defence-air_target-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1049-defence-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-dash_twice-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-guard-acceptance-r06/events.jsonl/events.jsonl",
+          "lee-1049-defence-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-held-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-mirror-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1049-defence-neutral-r01/events.jsonl",
+          "lee-1049-defence-trade-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-trade-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-wall-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1050-defence-air_target-acceptance-r06/events.jsonl/events.jsonl"
+        ],
+        "files_total": 209,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1161/DoAction.as",
+      "source_frame": 1161,
+      "action": "开场",
+      "kind": "frame_action",
+      "classification": "round_lifecycle_pending_gui_or_native",
+      "reason": "Round lifecycle callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-1049-defence-air_target-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1049-defence-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-dash_twice-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-guard-acceptance-r06/events.jsonl/events.jsonl",
+          "lee-1049-defence-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-held-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-mirror-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1049-defence-neutral-r01/events.jsonl",
+          "lee-1049-defence-trade-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-trade-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1049-defence-wall-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1050-defence-air_target-acceptance-r06/events.jsonl/events.jsonl"
+        ],
+        "files_total": 209,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1219/DoAction.as",
+      "source_frame": 1219,
+      "action": "开场",
+      "kind": "frame_action",
+      "classification": "round_lifecycle_pending_gui_or_native",
+      "reason": "Round lifecycle callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1260/DoAction.as",
+      "source_frame": 1260,
+      "action": "胜利",
+      "kind": "frame_action",
+      "classification": "round_lifecycle_pending_gui_or_native",
+      "reason": "Round lifecycle callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-574-bisha-625-dead-negative-r01/events.jsonl",
+          "lee-574-bisha-625-kill-negative-r01/events.jsonl",
+          "lee-574-bisha-625-kill-r02/events.jsonl",
+          "lee-574-bisha-625-kill-r03-700/events.jsonl"
+        ],
+        "files_total": 4,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_128/DoAction.as",
+      "source_frame": 128,
+      "action": "跳砍",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+      "source_frame": 1288,
+      "action": "失败",
+      "kind": "frame_action",
+      "classification": "round_lifecycle_pending_gui_or_native",
+      "reason": "Round lifecycle callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_13/DoAction.as",
+      "source_frame": 13,
+      "action": "走",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_152/DoAction.as",
+      "source_frame": 152,
+      "action": "跳招",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_172/DoAction.as",
+      "source_frame": 172,
+      "action": "砍1",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_193/DoAction.as",
+      "source_frame": 193,
+      "action": "砍2",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_197/DoAction.as",
+      "source_frame": 197,
+      "action": "砍2",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_235/DoAction.as",
+      "source_frame": 235,
+      "action": "砍3",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_240/DoAction.as",
+      "source_frame": 240,
+      "action": "砍3",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_268/DoAction.as",
+      "source_frame": 268,
+      "action": "砍4",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_29/DoAction.as",
+      "source_frame": 29,
+      "action": "瞬步",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-1049-defence-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1049-defence-dash_twice-continuous-r02/events.jsonl/events.jsonl",
+          "lee-1050-defence-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-1050-defence-dash_twice-continuous-r02/events.jsonl/events.jsonl",
+          "lee-121-airhit-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-135-airMagichit-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-157-nornalhit-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-20-rush-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-278-magichit1-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-34-jump-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-357-skill2-dash_twice-continuous-r01/events.jsonl/events.jsonl",
+          "lee-404-skill1-dash_twice-continuous-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 23,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_320/DoAction.as",
+      "source_frame": 320,
+      "action": "招1",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_325/DoAction.as",
+      "source_frame": 325,
+      "action": "招1",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_332/DoAction.as",
+      "source_frame": 332,
+      "action": "招1",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_370/DoAction.as",
+      "source_frame": 370,
+      "action": "砍技2",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_448/DoAction.as",
+      "source_frame": 448,
+      "action": "砍技1",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_509/DoAction.as",
+      "source_frame": 509,
+      "action": "招2",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_558/DoAction.as",
+      "source_frame": 558,
+      "action": "招3",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_62/DoAction.as",
+      "source_frame": 62,
+      "action": "落",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-1049-defence-air_target-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-1050-defence-air_target-acceptance-r06/events.jsonl/events.jsonl",
+          "lee-157-nornalhit-air_target-acceptance-r03/events.jsonl/events.jsonl",
+          "lee-20-rush-air_target-continuous-r01/events.jsonl/events.jsonl",
+          "lee-34-jump-air_target-continuous-r01/events.jsonl/events.jsonl",
+          "lee-404-skill1-air_target-acceptance-r07/events.jsonl/events.jsonl",
+          "lee-66-jump-air_target-acceptance-r04/events.jsonl/events.jsonl",
+          "lee-83-jumpDown-air_target-acceptance-r10/events.jsonl/events.jsonl",
+          "lee-987-zhaoHuan-air_target-acceptance-r09/events.jsonl/events.jsonl",
+          "lee-missing-wankai-air_target-continuous-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 10,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_634/DoAction.as",
+      "source_frame": 634,
+      "action": "必杀",
+      "kind": "frame_action",
+      "classification": "special_continuation_pending",
+      "reason": "Special continuation callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-special-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 1,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_660/DoAction.as",
+      "source_frame": 660,
+      "action": "必杀LOOP",
+      "kind": "frame_action",
+      "classification": "special_continuation_pending",
+      "reason": "Special continuation callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_695/DoAction.as",
+      "source_frame": 695,
+      "action": "必杀2",
+      "kind": "frame_action",
+      "classification": "special_continuation_pending",
+      "reason": "Special continuation callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-recovery-p2-byakuya-aligned-r02/events.jsonl/events.jsonl",
+          "lee-recovery-p2-byakuya-r01/events.jsonl/events.jsonl",
+          "lee-recovery-p2-byakuya-tap-r03/events.jsonl/events.jsonl"
+        ],
+        "files_total": 3,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_738/DoAction.as",
+      "source_frame": 738,
+      "action": "空中必杀1",
+      "kind": "frame_action",
+      "classification": "special_continuation_pending",
+      "reason": "Special continuation callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-121-airhit-air_target-continuous-r01/events.jsonl/events.jsonl",
+          "lee-121-airhit-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-135-airMagichit-air_target-acceptance-r03/events.jsonl/events.jsonl",
+          "lee-135-airMagichit-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-157-nornalhit-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-157-nornalhit-trade-continuous-r01/events.jsonl/events.jsonl",
+          "lee-278-magichit1-air_target-acceptance-r07/events.jsonl/events.jsonl",
+          "lee-278-magichit1-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-278-magichit1-mirror-acceptance-r07/events.jsonl/events.jsonl",
+          "lee-278-magichit1-neutral-r01/events.jsonl",
+          "lee-278-magichit1-trade-continuous-r01/events.jsonl/events.jsonl",
+          "lee-278-magichit1-wall-acceptance-r03/events.jsonl/events.jsonl"
+        ],
+        "files_total": 85,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_771/DoAction.as",
+      "source_frame": 771,
+      "action": "空中必杀2",
+      "kind": "frame_action",
+      "classification": "special_continuation_pending",
+      "reason": "Special continuation callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": true,
+        "files": [
+          "lee-135-airMagichit-air_target-acceptance-r03/events.jsonl/events.jsonl",
+          "lee-135-airMagichit-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-135-airMagichit-mirror-continuous-r01/events.jsonl/events.jsonl",
+          "lee-135-airMagichit-neutral-r01/events.jsonl",
+          "lee-135-airMagichit-trade-continuous-r01/events.jsonl/events.jsonl",
+          "lee-135-airMagichit-wall-acceptance-r06/events.jsonl/events.jsonl",
+          "lee-357-skill2-air_target-acceptance-r02/events.jsonl",
+          "lee-357-skill2-held-continuous-r01/events.jsonl/events.jsonl",
+          "lee-357-skill2-mirror-acceptance-r02/events.jsonl",
+          "lee-357-skill2-neutral-r01/events.jsonl",
+          "lee-357-skill2-trade-continuous-r01/events.jsonl/events.jsonl",
+          "lee-357-skill2-wall-continuous-r01/events.jsonl/events.jsonl"
+        ],
+        "files_total": 57,
+        "callback_promoted": false,
+        "reason": "Existing raw has state frame only; no child callback observer event in these files."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_8/DoAction.as",
+      "source_frame": 8,
+      "action": "站立",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_95/DoAction.as",
+      "source_frame": 95,
+      "action": "落2",
+      "kind": "frame_action",
+      "classification": "native_source_trace_pending",
+      "reason": "No exact source-frame observation in retained traces.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    },
+    {
+      "source_path": "DefineSprite_518/frame_953/DoAction.as",
+      "source_frame": 953,
+      "action": "超必杀",
+      "kind": "frame_action",
+      "classification": "special_continuation_pending",
+      "reason": "Special continuation callback lacks exact source-frame observation.",
+      "offline_state_frame_audit": {
+        "state_frame_seen": false,
+        "files": [],
+        "files_total": 0,
+        "callback_promoted": false,
+        "reason": "No existing raw state frame for this source frame; callback remains unobserved."
+      }
+    }
+  ],
+  "offline_audit": {
+    "method": "Read existing Lee original events.jsonl only; match state events p1/p2,<source_frame>, then separately require callback observer for promotion.",
+    "state_frame_seen_entries": 19,
+    "state_frame_unseen_entries": 30,
+    "callback_events_found": 0,
+    "promoted_entries": 0,
+    "interpretation": "State-frame reachability is recorded as an audit hint only. No pending entry is promoted without an exact callback observer event."
+  }
+}

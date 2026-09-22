@@ -1,0 +1,1536 @@
+{
+  "schema": "lee-callback-clip-wrapper-return-audit-r01",
+  "source_comparison": "evidence/characters/lee/godot/callback-exact-r16/comparison.json",
+  "scope": "Classify raw native proxy return observations independently; do not rewrite or discard original R16 comparison rows.",
+  "audits": [
+    {
+      "case_id": "round-loss-r03-p1-clip1088",
+      "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_run_id": "lee-callback-round-loss-failure-r03",
+      "source_raw": "evidence/characters/lee/original/lee-callback-round-loss-failure-r03/events.jsonl",
+      "source_build": "evidence/characters/lee/original/lee-callback-round-loss-failure-r03/build.json",
+      "source_fixture": "evidence/characters/lee/original/lee-callback-round-loss-failure-r03/fixture.json",
+      "native_capture": "evidence/characters/lee/godot/callback-exact-r16/retry-01/out/round-loss-r03-p1-clip1088.json.clips.json",
+      "original_raw_event_count": 86,
+      "source_marker_event_count": 85,
+      "wrapper_return_events": [
+        {
+          "raw_native_event_index": 85,
+          "event": {
+            "child_placement": {},
+            "controller_instance_id": -9223371596905824555,
+            "display_tick": 337,
+            "generation": 5,
+            "method": "frame_1088_depth_29",
+            "parent_action": -1.0,
+            "parent_frame": 1098,
+            "parent_frame_at_registration": 1088,
+            "parent_ql": 300.0,
+            "parent_x": 398.0,
+            "phase": "exit",
+            "placed_tick": 294,
+            "placement": {
+              "character_id": 18,
+              "child_local_frame": 1,
+              "clip_actions": [
+                {
+                  "action_bytes_sha256": "8773c0794a3c99058fe5944bb60ece6c7b2e4eda54cb70aee7163804b87cd30f",
+                  "events": [
+                    "EnterFrame"
+                  ]
+                }
+              ],
+              "depth": 29,
+              "matrix": {
+                "hasRotate": "false",
+                "hasScale": "false",
+                "nRotateBits": 0.0,
+                "nScaleBits": 0.0,
+                "nTranslateBits": 11.0,
+                "translateX": -537.0,
+                "translateY": 553.0,
+                "type": "MATRIX"
+              },
+              "placed_frame": 1088
+            },
+            "registration_id": 20,
+            "slot": "p1",
+            "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "target_alive": true
+          },
+          "matched_removal_events": [
+            {
+              "controller_instance_id": -9223371596905824555,
+              "generation": 5,
+              "parent_frame": 1098,
+              "phase": "removed",
+              "placed_tick": 294,
+              "placement": {},
+              "registration_id": 20,
+              "slot": "p1",
+              "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+            }
+          ],
+          "earlier_same_instance_enters": 43,
+          "identity_is_complete": true,
+          "placement_absent_after_wrapped_call": true,
+          "removal_observed_at_same_parent_frame": true,
+          "no_later_callback_for_same_registration": true,
+          "classification": "wrapper_return_after_removed_placement"
+        }
+      ],
+      "legacy_exit_preserved": true,
+      "projected_native_marker_event_count": 85,
+      "source_marker_projection_equals_native_projection": true,
+      "source_marker_projection": [
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 18
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 18
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 19
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 19
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 20
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 20
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 21
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 21
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 22
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 22
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 23
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 23
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 24
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 24
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 25
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 25
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 26
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 26
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 27
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 27
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 28
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 28
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 29
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 29
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 30
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 30
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 31
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 31
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 32
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 32
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 33
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 33
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 34
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 34
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 35
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 35
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 36
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 36
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 37
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 37
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 38
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 38
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 39
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 39
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 40
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 40
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 41
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 41
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 42
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 42
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 43
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 43
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 44
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 44
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 45
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 45
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 46
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 46
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 47
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 47
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 48
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 48
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 49
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 49
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 50
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 50
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 51
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 51
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 52
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 52
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 53
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 53
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 54
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 54
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 55
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 55
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 56
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 56
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 57
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 57
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 58
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 58
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 59
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 59
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 60
+        }
+      ],
+      "native_source_marker_projection": [
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 18
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 18
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 19
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 19
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 20
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 20
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 21
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 21
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 22
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 22
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 23
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 23
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 24
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 24
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 25
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 25
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 26
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 26
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 27
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 27
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 28
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 28
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 29
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 29
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 30
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 30
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 31
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 31
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 32
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 32
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 33
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 33
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 34
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 34
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 35
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 35
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 36
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 36
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 37
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 37
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 38
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 38
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 39
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 39
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 40
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 40
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 41
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 41
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 42
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 42
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 43
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 43
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 44
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 44
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 45
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 45
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 46
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 46
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 47
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 47
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 48
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 48
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 49
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 49
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 50
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 50
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 51
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 51
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 52
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 52
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 53
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 53
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 54
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 54
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 55
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 55
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 56
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 56
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 57
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 57
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 58
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 58
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 59
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 59
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1088/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p1",
+          "child_local_frame": 1,
+          "normalized_tick": 60
+        }
+      ],
+      "acceptance_status": "source_only",
+      "scope_note": "Raw native exit is preserved. Projection excludes it only after same registration/generation/instance had an enter, the callback returned with no child placement, the matching lifetime removal was observed at that parent frame, and the registration had no later callback. This is test-proxy lifecycle evidence, not full clip parity."
+    },
+    {
+      "case_id": "lifecycle-r01-p2-clip1098-1133",
+      "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_run_id": "lee-callback-lifecycle-recovery-r01",
+      "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/events.jsonl",
+      "source_build": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/build.json",
+      "source_fixture": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/fixture.json",
+      "native_capture": "evidence/characters/lee/godot/callback-exact-r16/retry-01/out/lifecycle-r01-p2-clip1098-1133.json.clips.json",
+      "original_raw_event_count": 2,
+      "source_marker_event_count": 1,
+      "wrapper_return_events": [
+        {
+          "raw_native_event_index": 1,
+          "event": {
+            "child_placement": {},
+            "controller_instance_id": -9223369514484164206,
+            "display_tick": 354,
+            "generation": 6,
+            "method": "frame_1098_depth_29",
+            "parent_action": -1.0,
+            "parent_frame": 1133,
+            "parent_frame_at_registration": 1098,
+            "parent_ql": 300.0,
+            "parent_x": 20.0,
+            "phase": "exit",
+            "placed_tick": 353,
+            "placement": {
+              "character_id": 18,
+              "child_local_frame": 1,
+              "clip_actions": [
+                {
+                  "action_bytes_sha256": "53a8f162354555a03ffec6ce268f978a7b8074d3a873ce424500e3e5a0ecbff9",
+                  "events": [
+                    "EnterFrame"
+                  ]
+                }
+              ],
+              "depth": 29,
+              "matrix": {
+                "hasRotate": "false",
+                "hasScale": "false",
+                "nRotateBits": 0.0,
+                "nScaleBits": 0.0,
+                "nTranslateBits": 11.0,
+                "translateX": -537.0,
+                "translateY": 753.0,
+                "type": "MATRIX"
+              },
+              "placed_frame": 1098
+            },
+            "registration_id": 24,
+            "slot": "p2",
+            "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "target_alive": true
+          },
+          "matched_removal_events": [
+            {
+              "controller_instance_id": -9223369514484164206,
+              "generation": 6,
+              "parent_frame": 1133,
+              "phase": "removed",
+              "placed_tick": 353,
+              "placement": {},
+              "registration_id": 24,
+              "slot": "p2",
+              "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as"
+            }
+          ],
+          "earlier_same_instance_enters": 1,
+          "identity_is_complete": true,
+          "placement_absent_after_wrapped_call": true,
+          "removal_observed_at_same_parent_frame": true,
+          "no_later_callback_for_same_registration": true,
+          "classification": "wrapper_return_after_removed_placement"
+        }
+      ],
+      "legacy_exit_preserved": true,
+      "projected_native_marker_event_count": 1,
+      "source_marker_projection_equals_native_projection": true,
+      "source_marker_projection": [
+        {
+          "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 77,
+          "parent_frame": 1099
+        }
+      ],
+      "native_source_marker_projection": [
+        {
+          "source_path": "DefineSprite_518/frame_1098/PlaceObject2_18_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 77,
+          "parent_frame": 1099
+        }
+      ],
+      "acceptance_status": "source_only",
+      "scope_note": "Raw native exit is preserved. Projection excludes it only after same registration/generation/instance had an enter, the callback returned with no child placement, the matching lifetime removal was observed at that parent frame, and the registration had no later callback. This is test-proxy lifecycle evidence, not full clip parity."
+    },
+    {
+      "case_id": "lifecycle-r01-p2-clip1098-1133",
+      "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_run_id": "lee-callback-lifecycle-recovery-r01",
+      "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/events.jsonl",
+      "source_build": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/build.json",
+      "source_fixture": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01/fixture.json",
+      "native_capture": "evidence/characters/lee/godot/callback-exact-r16/retry-01/out/lifecycle-r01-p2-clip1098-1133.json.clips.json",
+      "original_raw_event_count": 8,
+      "source_marker_event_count": 8,
+      "wrapper_return_events": [],
+      "legacy_exit_preserved": true,
+      "projected_native_marker_event_count": 8,
+      "source_marker_projection_equals_native_projection": true,
+      "source_marker_projection": [
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 78,
+          "parent_frame": 1134
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 78,
+          "parent_frame": 1134
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 79,
+          "parent_frame": 1135
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 79,
+          "parent_frame": 1135
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 80,
+          "parent_frame": 1136
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 80,
+          "parent_frame": 1136
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 81,
+          "parent_frame": 1137
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 81,
+          "parent_frame": 1137
+        }
+      ],
+      "native_source_marker_projection": [
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 78,
+          "parent_frame": 1134
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 78,
+          "parent_frame": 1134
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 79,
+          "parent_frame": 1135
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 79,
+          "parent_frame": 1135
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 80,
+          "parent_frame": 1136
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 80,
+          "parent_frame": 1136
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "enter",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 81,
+          "parent_frame": 1137
+        },
+        {
+          "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "phase": "exit",
+          "slot": "p2",
+          "child_local_frame": 1,
+          "normalized_tick": 81,
+          "parent_frame": 1137
+        }
+      ],
+      "acceptance_status": "exact_0diff",
+      "scope_note": "Raw native exit is preserved. Projection excludes it only after same registration/generation/instance had an enter, the callback returned with no child placement, the matching lifetime removal was observed at that parent frame, and the registration had no later callback. This is test-proxy lifecycle evidence, not full clip parity."
+    }
+  ],
+  "all_wrapper_returns_classified": true,
+  "all_projected_sequences_match": true
+}

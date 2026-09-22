@@ -1,0 +1,87 @@
+{
+  "format": "lee-current-runtime-regression-r01",
+  "status": "pure_current_runtime_first_difference_report",
+  "runtime_sha256": {
+    "godot/main.gd": "d38d5e6ddbde661efa991b96b1c0de9034c046b6b4a9aa83ff63ac6a55dfea00",
+    "godot/fighter_runtime.gd": "feb1a03f8a79ef9b9a0e1521d59b4ee57adb7501414c5856cb2c6ded4aefe5ac",
+    "godot/ai_cpu_driver.gd": "5458a767382ce2a6d595e2bcfaf2f3a0b07d3936743f4be9e1db8668e9daba7a",
+    "godot/player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea"
+  },
+  "runner": "/private/tmp/move_case_postintro.gd",
+  "runner_sha256": "21771b23d3051019e4a718f02321c5c32709bf86888bb756fccbf25cb9a3bf7c",
+  "cases": [
+    {
+      "fixture_id": "lee-1049-defence-air_target",
+      "source_events": "evidence/characters/lee/original/lee-1049-defence-air_target-acceptance-r04/events.jsonl/events.jsonl",
+      "native_output": "/private/tmp/lee-current-regress-r02/air.json",
+      "compare": "/private/tmp/lee-current-regress-r02/air.compare.json",
+      "source_sha256": "c34f61856e21764519f37b25c6c5a1440056bd901d76b06ab1f8b4118c058d7b",
+      "native_sha256": "e8c298e0ef6707adf4aa93136d3b6e393bc06474ec9ea71815608aae6321f709",
+      "compare_result": {
+        "status": "different",
+        "source_states": 602,
+        "native_states": 602,
+        "difference_count": 2,
+        "first_difference": {
+          "tick": 0,
+          "slot": "p1",
+          "fields": {
+            "touchFloor": {
+              "original": null,
+              "native": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "fixture_id": "lee-157-nornalhit-neutral",
+      "source_events": "evidence/characters/lee/original/lee-157-nornalhit-neutral-continuous-r01/events.jsonl/events.jsonl",
+      "native_output": "/private/tmp/lee-current-regress-r02/lee-157-nornalhit-neutral.json",
+      "compare": "/private/tmp/lee-current-regress-r02/lee-157-nornalhit-neutral.compare.json",
+      "source_sha256": "7efba9e46ea270d73ea8011451c7703246416961e97d89ec677e3831c3785cf6",
+      "native_sha256": "db6e89e85e7accc7eecb361bd12a63c9b29c3ae011907de1ab989401134d2858",
+      "compare_result": {
+        "status": "different",
+        "source_states": 602,
+        "native_states": 602,
+        "difference_count": 2,
+        "first_difference": {
+          "tick": 0,
+          "slot": "p1",
+          "fields": {
+            "touchFloor": {
+              "original": null,
+              "native": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "fixture_id": "lee-574-bisha-energy_below",
+      "source_events": "evidence/characters/lee/original/lee-574-bisha-energy_below-acceptance-r05/events.jsonl/events.jsonl",
+      "native_output": "/private/tmp/lee-current-regress-r02/lee-574-bisha-energy_below.json",
+      "compare": "/private/tmp/lee-current-regress-r02/lee-574-bisha-energy_below.compare.json",
+      "source_sha256": "a578de91cda3b84b61a363940cd2055a23ee6205bb45aff10d370c0ed48813c7",
+      "native_sha256": "9bcd20ba169ccd02ba75f3c33a325312e84b71b7f26a2625a9f3c7205e0d6d16",
+      "compare_result": {
+        "status": "different",
+        "source_states": 602,
+        "native_states": 602,
+        "difference_count": 2,
+        "first_difference": {
+          "tick": 0,
+          "slot": "p1",
+          "fields": {
+            "touchFloor": {
+              "original": null,
+              "native": true
+            }
+          }
+        }
+      }
+    }
+  ],
+  "interpretation": "All three exact source/input fixtures complete 602 rows and have the same first and only two differences: tick0 p1.touchFloor and p2.touchFloor source undefined versus native true. The runner change only permits one post-intro observation so rows are collected; it does not write combat state beyond the fixture setup already present in move_case_reference."
+}

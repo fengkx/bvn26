@@ -1,0 +1,289 @@
+{
+  "schema": "lee-callback-exact-r15-preflight",
+  "scope": "Same source-build P2 recovery-dash fixture. Body actions compare four fields separately from a test-only controller-hook observer for the P2 frame1133 clip-action placement.",
+  "cases": [
+    {
+      "case_id": "recovery-dash-p2-clip1133-body1134-1144",
+      "fixture": "evidence/characters/lee/godot/callback-exact-r15/fixtures/recovery-dash-p2-clip1133-body1134-1144.json",
+      "fixture_sha256": "3136b95982a86df0ae264335e16f9cc9c3c36eefcfec885403a2bb986ec1372b",
+      "source_run_id": "lee-callback-lifecycle-recovery-r01",
+      "source_raw": "evidence/characters/lee/original/lee-callback-lifecycle-recovery-r01",
+      "source_raw_sha256": "963b0718af01941a5d0ee705106bb5e7cacae08a7e415040871f65a9e7cae698",
+      "source_build_original": "/private/tmp/lee-callback-lifecycle-recovery-r01-build/build.json",
+      "source_build_copy": "evidence/characters/lee/godot/callback-exact-r15/source-builds/recovery-dash-p2/build.json",
+      "source_build_sha256": "7cf34396497b169882aa344a1ac67c01d996e0f53854b5e3b80653ead1cde7ff",
+      "source_instrumentation_copy": "evidence/characters/lee/godot/callback-exact-r15/source-builds/recovery-dash-p2/instrumentation.diff",
+      "source_instrumentation_sha256": "7e71af5ec6959fc403f1d6f52953e0ca50ce1cc89bc36148bba57d0ccdc6acf2",
+      "source_output_main_sha256": "c8945f124e83e35cefba4fa63c73391b3f738a0ce593e9d471932976dd7298b2",
+      "source_move_case": {
+        "id": "lee-callback-lifecycle-recovery-r01",
+        "fighter": "lee",
+        "slot": "p2",
+        "label": "受击恢复",
+        "scenario": "callback_recovery_lifecycle",
+        "frames": 900,
+        "setup": {
+          "p1": {
+            "x": 300,
+            "energy": 300
+          },
+          "p2": {
+            "x": 300,
+            "energy": 1000,
+            "health": 1000,
+            "wudi": false
+          }
+        },
+        "inputs": [
+          {
+            "slot": "p1",
+            "keys": [
+              "down",
+              "special"
+            ],
+            "start": 10,
+            "end": 13
+          },
+          {
+            "slot": "p2",
+            "keys": [
+              "dash"
+            ],
+            "start": 76,
+            "end": 80
+          }
+        ],
+        "target_frames": [
+          1128,
+          1133,
+          1149,
+          1288
+        ],
+        "has_source_timeline": true,
+        "source_dispatch": [
+          "doAllAction",
+          "doStand"
+        ],
+        "status": "prepared",
+        "fighters": {
+          "p1": "byakuya",
+          "p2": "lee"
+        },
+        "p1_helper": "魂",
+        "p2_helper": "魂",
+        "source_state_preconditions": {
+          "p2": {
+            "health": 1000,
+            "wudi": false
+          }
+        },
+        "callback_group": "recovery-standup",
+        "callback_purpose": "recovery/standup marker",
+        "callback_observer": "read-only generic schedule and body boundary observers; no schedule/input changes",
+        "source_callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1128,
+            "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+            "action": "击落地",
+            "kind": "frame_action",
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1133,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "action": "起身",
+            "kind": "clip_action",
+            "placement_id": 18,
+            "depth": 30,
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1149,
+            "source_path": "DefineSprite_518/frame_1149/DoAction.as",
+            "action": "起身",
+            "kind": "frame_action",
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1288,
+            "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+            "action": "失败",
+            "kind": "frame_action",
+            "slot": "p2"
+          }
+        ],
+        "callback_targets": [
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1128,
+            "source_path": "DefineSprite_518/frame_1128/DoAction.as",
+            "action": "击落地",
+            "kind": "frame_action",
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1133,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "action": "起身",
+            "kind": "clip_action",
+            "placement_id": 18,
+            "depth": 30,
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1149,
+            "source_path": "DefineSprite_518/frame_1149/DoAction.as",
+            "action": "起身",
+            "kind": "frame_action",
+            "slot": "p2"
+          },
+          {
+            "source_sprite_id": 518,
+            "source_frame": 1288,
+            "source_path": "DefineSprite_518/frame_1288/DoAction.as",
+            "action": "失败",
+            "kind": "frame_action",
+            "slot": "p2"
+          }
+        ]
+      },
+      "source_build_config": {
+        "modo": 3,
+        "p1": "白哉",
+        "p2": "小李",
+        "p2cpu": false,
+        "AI": 5,
+        "stage": "现世",
+        "p1sf": "魂",
+        "p2sf": "魂"
+      },
+      "actual_capture_frames": 900,
+      "target_preflight": [
+        {
+          "source_frame": 1134,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        },
+        {
+          "source_frame": 1144,
+          "slot": "p2",
+          "kind": "body_boundary",
+          "enter_count": 1
+        }
+      ],
+      "clip_target_preflight": {
+        "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_slot": "p2",
+        "source_instance": "_level0.game.p2.mc.instance572",
+        "placement_frame": 1133,
+        "placement_id": 18,
+        "depth": 30,
+        "source_schedule_events": [
+          {
+            "sequence": 13111,
+            "display_tick": 529,
+            "fight_tick": 78,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "phase": "enter",
+            "source_instance": "_level0.game.p2.mc.instance572",
+            "child_local_frame": 1,
+            "parent_frame": 1134
+          },
+          {
+            "sequence": 13112,
+            "display_tick": 529,
+            "fight_tick": 78,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "phase": "exit",
+            "source_instance": "_level0.game.p2.mc.instance572",
+            "child_local_frame": 1,
+            "parent_frame": 1134
+          },
+          {
+            "sequence": 13134,
+            "display_tick": 530,
+            "fight_tick": 79,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "phase": "enter",
+            "source_instance": "_level0.game.p2.mc.instance572",
+            "child_local_frame": 1,
+            "parent_frame": 1135
+          },
+          {
+            "sequence": 13135,
+            "display_tick": 530,
+            "fight_tick": 79,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "phase": "exit",
+            "source_instance": "_level0.game.p2.mc.instance572",
+            "child_local_frame": 1,
+            "parent_frame": 1135
+          },
+          {
+            "sequence": 13153,
+            "display_tick": 531,
+            "fight_tick": 80,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "phase": "enter",
+            "source_instance": "_level0.game.p2.mc.instance572",
+            "child_local_frame": 1,
+            "parent_frame": 1136
+          },
+          {
+            "sequence": 13154,
+            "display_tick": 531,
+            "fight_tick": 80,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "phase": "exit",
+            "source_instance": "_level0.game.p2.mc.instance572",
+            "child_local_frame": 1,
+            "parent_frame": 1136
+          },
+          {
+            "sequence": 13174,
+            "display_tick": 532,
+            "fight_tick": 81,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "phase": "enter",
+            "source_instance": "_level0.game.p2.mc.instance572",
+            "child_local_frame": 1,
+            "parent_frame": 1137
+          },
+          {
+            "sequence": 13175,
+            "display_tick": 532,
+            "fight_tick": 81,
+            "source_path": "DefineSprite_518/frame_1133/PlaceObject2_18_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+            "phase": "exit",
+            "source_instance": "_level0.game.p2.mc.instance572",
+            "child_local_frame": 1,
+            "parent_frame": 1137
+          }
+        ],
+        "expected_parent_frames": [
+          1134,
+          1135,
+          1136,
+          1137
+        ],
+        "expected_child_local_frames": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  ]
+}
