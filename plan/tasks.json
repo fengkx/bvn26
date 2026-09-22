@@ -362,14 +362,29 @@
         "evidence/movement/"
       ],
       "acceptance": "原版 P1 W/S/A/D+J/K/L/U/I/O 与 P2 方向键+Num1-Num6 全部接入；同输入/同帧顺序、镜像、跳跃、冲刺、长按防御、方向组合、招式位移、边界和 undefined 等实际分支对照；不凭默认物理调手感。",
-      "evidence": [],
+      "evidence": [
+        "evidence/input-decoupling/README.md",
+        "evidence/input-decoupling/results.json"
+      ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "默认键位、移动、跳跃与取消已有源断言；原版同输入轨迹缺失。",
+      "progress_note": "默认键位、移动、跳跃与取消已有源断言；原版同输入轨迹缺失。 2026-09-22: Authorized input decoupling implemented: keyboard adapter, both logical player slots, held intro skip, ordered immediate pause controls, and fresh-match developer recording/playback with strict validation and no keyboard fallback. Controlled 330-tick two-actor roundtrip matches; retained PVP and training traces each match 602 actor states. Original pause timing, full Web lifecycle and migration acceptance remain pending; networking/rollback/external stepping deferred. See evidence/input-decoupling/README.md. CPU r13/r14 retain complete measured-field matches; r15 display tick 2593 remains a preexisting next-round difference, with identical complete pre-change/current reports. Web export/Chromium boot pass; full browser battle flow remains unverified. Review follow-up: armed recording now rejects playback before setup mutation; red-to-green scene regression checks both directions, preserves pending recording, and retains the 330-tick controlled replay match.",
       "current_artifacts": [
         "godot/command_catalog.gd",
-        "godot/tests/combat_smoke.gd"
-      ]
+        "godot/tests/combat_smoke.gd",
+        "godot/keyboard_input_source.gd",
+        "godot/match_input.gd",
+        "godot/tests/input_recording_runner.gd",
+        "godot/tests/match_input_smoke.gd",
+        "godot/tests/match_input_scene_smoke.gd",
+        "spec/schemas/match-input.schema.json",
+        "docs/input-decoupling/IMPLEMENTATION.md"
+      ],
+      "input_decoupling_effort": {
+        "tracked_start_utc": "2026-09-22T08:38:47.118432+00:00",
+        "elapsed_minutes": 20.7,
+        "scope": "Wall time since first baseline import through implementation and native checks; excludes initial reading and final packaging. Not person-day effort."
+      }
     },
     {
       "id": "M2-03",

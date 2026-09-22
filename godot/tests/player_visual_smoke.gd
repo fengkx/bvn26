@@ -59,9 +59,9 @@ func _run() -> void:
 	key.pressed = true
 	Input.parse_input_event(key)
 	Input.flush_buffered_events()
-	check(game._input_for(game.naruto).right, "P1 keyboard input was disabled by CPU mode")
 	var player_x: float = game.naruto.position.x
 	game._advance_fight()
+	check(game._input_for(game.naruto).right, "P1 keyboard input was disabled by CPU mode")
 	check(game.naruto.position.x > player_x, "P1 could not move in Vs Com")
 	for tick in range(2, 7):
 		game._advance_fight()

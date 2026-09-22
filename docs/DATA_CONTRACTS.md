@@ -2,6 +2,14 @@
 
 本文件定义离线工具、Godot 运行时和对照工具之间的拟定接口。`spec/schemas/` 为可校验 JSON Schema；实际图集、动作时序和 Godot 资源尚未生成。已存在的 `scripts/*.json` 是独立的原脚本索引格式，不可直接当作下列运行时数据。
 
+## 开发输入录制契约
+
+2026-09-22 新增独立的 `match-input.schema.json`，用于已实现的逻辑输入录制与回放。
+它不替换下述五类迁移契约中的 `replay.schema.json`，也不代表整局确定性回放。
+完整字段、事件顺序、运行时语义校验及使用方式见
+[输入解耦实现说明](input-decoupling/IMPLEMENTATION.md)。
+`match-input.synthetic.json` 仅为结构示例；其 `complete` 表示存在终止记录，不表示原版验收完成。
+
 ## 统一约定
 
 - JSON 使用 UTF-8。游戏内部 ID 稳定，文件名保留源大小写；跨文件引用不能依赖显示名称自动拼接。

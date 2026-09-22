@@ -67,7 +67,14 @@ func setup_body_boundaries(events: Array, checkpoint_sequence: int, fighters: Ar
 		fighter.source_frame_script_boundary.connect(observe_body_boundary.bind(fighter))
 
 
-func apply_recorded_input(game, value: String, tick: int) -> void:
+func bind_recorded_input(game) -> void:
+	game.match_input.source = func(slot: String, _tick: int) -> Dictionary:
+		return replay_held if slot == "p1" else {}
+	game.match_input.intro_source = func(_tick: int) -> bool:
+		return bool(replay_held.get("attack", false))
+
+
+func apply_recorded_input(_game, value: String, tick: int) -> void:
 	var slots := {"right": "d", "attack": "j", "down": "s", "ranged": "u",
 		"jump": "k", "special": "i", "summon": "o"}
 	var held := {}
@@ -80,13 +87,7 @@ func apply_recorded_input(game, value: String, tick: int) -> void:
 		var pressed := bool(held.get(field, false))
 		if pressed == bool(replay_held.get(field, false)):
 			continue
-		var key := InputEventKey.new()
-		key.keycode = game.session.flash_to_key(int(game.session.codes[slots[field]]))
-		key.physical_keycode = key.keycode
-		key.pressed = pressed
-		Input.parse_input_event(key)
 		input_transitions.append({"display_tick": tick, "field": field, "pressed": pressed})
-	Input.flush_buffered_events()
 	replay_held = held
 
 
@@ -202,6 +203,7 @@ func _run() -> void:
 	root.add_child(game)
 	game.set_physics_process(false)
 	game._enter_current_fight(2)
+	bind_recorded_input(game)
 	game.ichigo.ai_random_clock.cancel()
 	var fighters: Array[FighterRuntime] = [game.naruto, game.ichigo]
 	var intro: BattleIntro = game.battle_intro

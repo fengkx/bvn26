@@ -98,9 +98,9 @@ def main():
             count += 1
         except Exception as error:
             errors.append(f"{path.name}: {error}")
-    expected = {"asset", "fighter", "action", "replay", "trace"}
+    expected = {"asset", "fighter", "action", "replay", "trace", "match-input"}
     if set(schemas) != expected or count != len(expected):
-        errors.append("Expected five schemas and five valid examples")
+        errors.append("Expected one valid example for each of the six schemas")
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1

@@ -48,16 +48,23 @@ func tick() -> void:
 
 
 func handle_mouse(event: InputEventMouseButton) -> void:
-	if not visible or source_frame != int(_spec["detail_frame"]) or event.button_index != MOUSE_BUTTON_LEFT:
-		return
-	var bounds: Array = _spec["back_rect"]
-	var inside := Rect2(bounds[0], bounds[1], bounds[2], bounds[3]).has_point(event.position)
-	if event.pressed:
-		_back_pressed = inside
-	else:
-		if _back_pressed and inside:
-			_show_panel()
-		_back_pressed = false
+	handle_control(control_from_event(event))
+
+
+func control_from_event(event: InputEvent) -> Dictionary:
+	if event is InputEventKey and not event.echo:
+		var button := ""
+		match event.keycode:
+			KEY_ENTER, KEY_KP_ENTER: button = "confirm"
+			KEY_UP: button = "up"
+			KEY_DOWN: button = "down"
+		if not button.is_empty():
+			return {"button": button, "pressed": event.pressed}
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		var bounds: Array = _spec["back_rect"]
+		var inside := Rect2(bounds[0], bounds[1], bounds[2], bounds[3]).has_point(event.position)
+		return {"button": "back", "pressed": event.pressed, "inside": inside}
+	return {}
 
 
 func _show_panel() -> void:
@@ -68,28 +75,41 @@ func _show_panel() -> void:
 
 
 func handle_key(event: InputEventKey) -> void:
-	# DefineSprite_1991 onKeyUp uses fixed key codes, independent of remapping.
-	if event.echo:
+	handle_control(control_from_event(event))
+
+
+func handle_control(control: Dictionary) -> void:
+	if control.is_empty():
 		return
-	var code := event.keycode
-	if event.pressed:
-		# The button's keyPress action runs before the controller's onKeyUp.
-		if visible and source_frame == int(_spec["detail_frame"]) and (code == KEY_ENTER or code == KEY_KP_ENTER):
+	var button: String = control.button
+	if button == "back":
+		if not visible or source_frame != int(_spec["detail_frame"]):
+			return
+		if control.pressed:
+			_back_pressed = control.inside
+		else:
+			if _back_pressed and control.inside:
+				_show_panel()
+			_back_pressed = false
+		return
+	# Preserve Button2009 keyPress before DefineSprite_1991 onKeyUp.
+	if control.pressed:
+		if visible and source_frame == int(_spec["detail_frame"]) and button == "confirm":
 			_show_panel()
 		return
 	if not visible:
-		if code == KEY_ENTER or code == KEY_KP_ENTER:
+		if button == "confirm":
 			selection = 2
 			_show_panel()
 			visible = true
 			_refresh()
 			opened.emit()
 		return
-	if code == KEY_DOWN:
+	if button == "down":
 		selection = (selection + 1) % 3
-	elif code == KEY_UP:
+	elif button == "up":
 		selection = (selection + 2) % 3
-	elif code == KEY_ENTER or code == KEY_KP_ENTER:
+	elif button == "confirm":
 		match selection:
 			0:
 				title_requested.emit()

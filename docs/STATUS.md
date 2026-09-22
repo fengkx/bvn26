@@ -6,6 +6,11 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
 
 本轮白哉/小李共享验收记录见 [shared acceptance r01](../evidence/characters/byakuya-lee/shared-acceptance-r01.md)。两角色状态保持 `partial`：当前共享 runtime 下已有 31 个边界 case 重跑，白哉 r11 的 `missing_source=0` 清单与小李当前分类分别见各自 manifest；小李 clean 625 kill/dead r05 已完成 802/802、0 differences 的 validated 对照。旧 native-only、legacy provenance-unverified 与 disabled-negative 行仍分层记录，不提升为 validated。完整 AI、视觉/HUD/音频、真实 boot/intro/nextReady、完整 Web、KO 全生命周期与 production roster 仍保持 pending；fangyux 父 controller 仍待原版作用域探针验证，未经证据的修复已撤回。
 
+2026-09-22 输入解耦：键盘适配、双人逻辑输入、开场跳过、有序暂停菜单事件，以及从全新对局
+开始的开发录制/回放已实现。330 帧受控录制/回放状态一致，双人/练习各 602 条原版状态匹配。
+实现、使用方式及验证边界见[输入解耦说明](input-decoupling/IMPLEMENTATION.md)；联机、回滚、
+任意实战确定性回放及原版暂停菜单精确输入时序不在本次完成范围，M2/M4 仍 pending。
+
 ## 已完成的资料与已实现的开发切片
 
 - 2026-09-10 电脑鸣人浮空受击脱身修复：从原版角色配置编译 `isNaruto`，

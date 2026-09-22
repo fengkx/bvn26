@@ -161,6 +161,8 @@ const SHOW_KEY_NAME := {
 	109: "Num-",
 }
 
+var keyboard := preload("res://keyboard_input_source.gd").new()
+
 var training_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/training.json"))
 var store_path: String = STORE_PATH
 
@@ -234,8 +236,7 @@ func slot_action(slot: String) -> String:
 
 
 func is_slot_down(slot: String) -> bool:
-	var key := flash_to_key(int(codes[slot]))
-	return Input.is_physical_key_pressed(key) or Input.is_key_pressed(key)
+	return keyboard.is_slot_down(self, slot)
 
 
 func bind_slot(slot: String, flash_code: int) -> void:
@@ -256,19 +257,7 @@ func apply_zdbx(fighters: Array, p2loaded: bool = true) -> void:
 
 
 func fighter_input(player: String) -> Dictionary:
-	var slots := P1_SLOTS if player == "p1" else P2_SLOTS
-	return {
-		"up": is_slot_down(slots[0]),
-		"down": is_slot_down(slots[1]),
-		"left": is_slot_down(slots[2]),
-		"right": is_slot_down(slots[3]),
-		"attack": is_slot_down(slots[4]),
-		"jump": is_slot_down(slots[5]),
-		"dash": is_slot_down(slots[6]),
-		"ranged": is_slot_down(slots[7]),
-		"special": is_slot_down(slots[8]),
-		"summon": is_slot_down(slots[9]),
-	}
+	return keyboard.fighter_input(self, player)
 
 
 func menu_held() -> Dictionary:

@@ -1,6 +1,6 @@
 # Input decoupling glossary
 
-This glossary accompanies the proposed
+This glossary accompanies the agreed
 [input decoupling decision](ADR.md).
 
 | Term | Meaning in this design |

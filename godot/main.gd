@@ -54,6 +54,11 @@ var ko_terminal_pending: bool = false
 var ko_nextfight_timer: Timer
 var ko_interval_sequence: int = 0
 
+var match_input := preload("res://match_input.gd").new()
+var input_recording_path := ""
+var _match_inputs: Dictionary = {}
+var _match_input_active := false
+
 var session := GameSession.new()
 var diagnostics := DiagnosticRuntime.new()
 var _diagnostic_initial_players: Dictionary = {}
@@ -218,12 +223,126 @@ func _input(event: InputEvent) -> void:
 		config_menu.key_down(session.menu_held())
 		get_viewport().set_input_as_handled()
 		return
-	if session.root_label != "游戏场景" or battle_intro.active or naruto.sw or ichigo.sw or not ko_menu_enabled:
+	if match_input.playback:
 		return
-	if event is InputEventKey:
-		pause_menu.handle_key(event)
-	elif event is InputEventMouseButton:
-		pause_menu.handle_mouse(event)
+	var control := pause_menu.control_from_event(event)
+	if not control.is_empty():
+		deliver_match_control(control)
+
+
+func deliver_match_control(control: Dictionary, from_playback: bool = false) -> void:
+	if match_input.playback != from_playback or not match_input.valid_control(control):
+		return
+	if session.root_label != "游戏场景" or battle_intro.active or naruto.sw or ichigo.sw or not ko_menu_enabled:
+		if from_playback:
+			match_input.error = "Recorded control rejected by the current match gate"
+		return
+	if not from_playback:
+		match_input.record_control(physics_tick, control)
+	pause_menu.handle_control(control)
+
+
+func _deliver_recorded_controls() -> bool:
+	for control: Dictionary in match_input.take_controls(physics_tick):
+		deliver_match_control(control, true)
+	return _check_match_input() and session.root_label == "游戏场景"
+
+
+func _check_match_input() -> bool:
+	if match_input.error.is_empty():
+		return true
+	set_physics_process(false)
+	_stop_ko()
+	_stop_training_recovery()
+	_stop_combat_drivers()
+	state_label.text = "Input playback stopped: " + match_input.error
+	push_error(state_label.text)
+	return false
+
+
+func arm_input_recording(path: String) -> String:
+	if physics_tick != 0 or session.root_label == "游戏场景" or match_input.playback or path.is_empty():
+		return "Recording must be armed before a fresh match, with an output path"
+	input_recording_path = path
+	return ""
+
+
+func _input_setup() -> Dictionary:
+	return {
+		"start_tick": physics_tick, "stage": selected_stage,
+		"modo": session.modo, "maxhp": session.maxhp, "ai_level": session.ai_level,
+		"maxtime": session.maxtime, "engine": Engine.get_version_info().string,
+		"fighters": [naruto.fighter_directory.get_file(), ichigo.fighter_directory.get_file()],
+		"helpers": [naruto_helper.helper_directory.get_file(), ichigo_helper.helper_directory.get_file()],
+	}
+
+
+func start_input_playback(data: Variant) -> String:
+	if session.root_label == "游戏场景" or physics_tick != 0 or _match_input_active:
+		return "Playback requires a fresh main scene"
+	if not input_recording_path.is_empty():
+		return "Playback cannot start while recording is armed"
+	var problem: String = match_input.validate(data)
+	if not problem.is_empty():
+		return problem
+	var setup: Dictionary = data.setup
+	if setup.get("engine") != Engine.get_version_info().string:
+		return "Recording engine version differs"
+	for key in ["modo", "maxhp", "ai_level", "maxtime"]:
+		if not (setup.get(key) is int or setup.get(key) is float) or not is_finite(float(setup[key])):
+			return "Missing numeric setup field: " + key
+	for key in ["modo", "ai_level", "maxtime", "start_tick"]:
+		if setup[key] != int(setup[key]):
+			return "Non-integral setup field: " + key
+	if int(setup.modo) not in [2, 3, 4] or setup.maxhp <= 0 or int(setup.ai_level) not in [1, 2, 3, 4, 5] or setup.maxtime < 0:
+		return "Unsupported match settings"
+	var selected := {}
+	for kind in ["fighters", "helpers"]:
+		if not setup.get(kind) is Array or setup[kind].size() != 2:
+			return "Missing match roster: " + kind
+		selected[kind] = []
+		for name in setup[kind]:
+			if not name is String or name.contains("/"):
+				return "Invalid roster resource"
+			var id := _selection_id_for_resource(kind, name)
+			if id.is_empty():
+				return "Unavailable roster resource: " + name
+			selected[kind].append(id)
+	var catalog: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/stages/catalog/catalog.json"))
+	var stage_found := false
+	for stage: Dictionary in catalog.stages:
+		stage_found = stage_found or stage.id == setup.get("stage")
+	if not stage_found:
+		return "Unavailable recorded stage"
+	problem = match_input.begin_playback(data)
+	if not problem.is_empty():
+		return problem
+	session.maxhp = float(setup.maxhp)
+	session.ai_level = int(setup.ai_level)
+	session.maxtime = int(setup.maxtime)
+	physics_tick = int(setup.start_tick)
+	_replace_selected_actors(selected.fighters, selected.helpers)
+	_load_selected_stage(setup.stage)
+	_enter_current_fight(int(setup.modo))
+	stage_sound.select()
+	stage_sound.start()
+	return ""
+
+
+func _finish_match_input(reason: String) -> void:
+	if not _match_input_active:
+		return
+	_match_input_active = false
+	match_input.finish(physics_tick, reason)
+	if not input_recording_path.is_empty() and match_input.document.get("complete", false):
+		var output := FileAccess.open(input_recording_path, FileAccess.WRITE)
+		if output == null:
+			push_error("Cannot save input recording: " + input_recording_path)
+		else:
+			output.store_string(JSON.stringify(match_input.document))
+			print("MATCH_INPUT_SAVED ", input_recording_path)
+		input_recording_path = ""
+	_check_match_input()
 
 
 func _pause_battle() -> void:
@@ -264,6 +383,8 @@ func _physics_process(_delta: float) -> void:
 		"地图":
 			map_selection.tick(session.menu_held())
 		"游戏场景":
+			if not _deliver_recorded_controls():
+				return
 			pause_menu.tick()
 			_advance_fight()
 
@@ -328,6 +449,7 @@ func _on_menu_confirmed(item_id: String) -> void:
 
 
 func _goto_character_selection(modo: int) -> void:
+	_finish_match_input("selection")
 	session.modo = modo
 	session.root_label = "选人画面"
 	title_menu.visible = false
@@ -490,6 +612,7 @@ func _return_to_title() -> void:
 
 
 func _goto_menu() -> void:
+	_finish_match_input("title")
 	diagnostics.end_match("left_battle")
 	_stop_ko()
 	_stop_combat_drivers()
@@ -560,6 +683,8 @@ func _goto_key_settings() -> void:
 
 
 func _enter_current_fight(modo: int) -> void:
+	if match_input.finished:
+		match_input = preload("res://match_input.gd").new()
 	_stop_ko()
 	_stop_combat_drivers()
 	# Fighters/assists remain locked; the map comes from the original map selector.
@@ -591,6 +716,9 @@ func _enter_current_fight(modo: int) -> void:
 	_start_countdown()
 	_start_training_recovery()
 	diagnostics.begin_match(_diagnostic_snapshot(true))
+	_match_input_active = true
+	if not input_recording_path.is_empty():
+		match_input.begin_recording(_input_setup())
 	battle_intro.begin([naruto, ichigo])
 	health_hud.spec["placement"] = battle_intro.spec["hud_frames"]["1"]
 	game_world.focus = battle_intro.focus
@@ -639,9 +767,15 @@ func _chushi() -> void:
 
 
 func _advance_fight(recorded_events: Array = [], root_observer: Callable = Callable()) -> void:
+	if not _deliver_recorded_controls():
+		return
 	black_mu.advance_display_timeline()
 	# Both keyboard and AI actors use the same registered source callbacks.
-	battle_intro.tick(1.0 / Engine.physics_ticks_per_second, session.is_slot_down("j") or session.is_slot_down("N1"), true)
+	var skip := match_input.poll_intro(physics_tick + 1, func() -> bool:
+		return session.is_slot_down("j") or session.is_slot_down("N1"))
+	if not _check_match_input():
+		return
+	battle_intro.tick(1.0 / Engine.physics_ticks_per_second, skip, true)
 	# The ready clip's terminal frame writes the fight-start flag after the
 	# current root snapshot. Keep the pre-callback floor state for that sample.
 	var intro_boundary_pending: bool = battle_intro.active and battle_intro.clips.ready.current_source_frame() == 127
@@ -676,6 +810,9 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		helpers.append(ichigo_helper)
 	naruto.super_helpers = helpers
 	ichigo.super_helpers = helpers
+	_match_inputs = match_input.poll_players(physics_tick, _sample_match_player)
+	if not _check_match_input():
+		return
 	if player_body_driver != null:
 		player_body_driver.begin_tick(physics_tick, _input_for(naruto))
 	if opponent_input_context != null:
@@ -832,16 +969,19 @@ func _stop_training_recovery() -> void:
 		training_timer = null
 
 
+func _sample_match_player(slot: String) -> Dictionary:
+	if diagnostic_input_provider.is_valid() and not (slot == "p2" and session.p2cpu):
+		return diagnostic_input_provider.call(slot, physics_tick)
+	return session.fighter_input(slot)
+
+
 func _input_for(fighter: FighterRuntime) -> Dictionary:
 	if fighter == ichigo and session.p2cpu:
 		return {}
-	var inputs: Dictionary
-	var input_source := "player"
-	if diagnostic_input_provider.is_valid():
-		inputs = diagnostic_input_provider.call(fighter.player_slot, physics_tick)
+	var inputs: Dictionary = _match_inputs[fighter.player_slot].duplicate()
+	var input_source := "playback" if match_input.playback else "player"
+	if diagnostic_input_provider.is_valid() and not match_input.playback:
 		input_source = "diagnostic_tape"
-	else:
-		inputs = session.fighter_input(fighter.player_slot)
 	diagnostics.push_event("input_consumed", {
 		"slot": fighter.player_slot,
 		"source": input_source,

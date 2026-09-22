@@ -1,6 +1,7 @@
 # Input decoupling for future friend-room PvP
 
-Status: Q1-Q6 settled; final shared-understanding confirmation pending.
+Status: Input-boundary implementation authorized and implemented 2026-09-22;
+see [implementation and verification](IMPLEMENTATION.md).
 Date: 2026-09-11.
 
 ## Confirmed decisions
@@ -20,7 +21,7 @@ Date: 2026-09-11.
   in explicitly controlled regression conditions; arbitrary live-match outcome
   reproduction is excluded.
 
-## Current implementation evidence
+## Pre-refactor implementation evidence (2026-09-11)
 
 - `godot/game_session.gd`: `fighter_input` maps configured keys to ten logical
   held buttons; `is_slot_down` reads the global Godot input device.
@@ -71,7 +72,7 @@ playback. Exact state comparisons require controlled initialization, clocks,
 random values and asynchronous callback phases. Existing reference facilities
 can supply those conditions for bounded regression cases.
 
-## Implementation sequence after confirmation
+## Agreed implementation sequence
 
 1. Retain baseline fixtures and complete the source-first input timing audit.
 2. Extract the local keyboard adapter and logical input delivery for both slots,
@@ -86,10 +87,9 @@ can supply those conditions for bounded regression cases.
    existing source/native/Web checks. Report each acceptance boundary separately.
 
 Window-focus policy and future online pause permissions are not changed here.
-No implementation has been performed as part of the design interview. The
-requested grilling workflow requires final shared-understanding confirmation
-before implementation; this draft records decisions without declaring them
-implemented or any migration milestone complete.
+The user explicitly requested implementation on 2026-09-22. The earlier interview
+confirmation requirement is satisfied by that request. Implementation does not
+mark any migration milestone or original gameplay parity gate complete.
 
 ## Proposed acceptance
 
