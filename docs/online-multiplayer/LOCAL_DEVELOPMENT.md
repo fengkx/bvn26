@@ -1,7 +1,11 @@
 # Local room development with SQLite
 
-Status: Research and proposed workflow, 2026-09-22. No package installed, backend
-scaffolded, SQLite database created or server started during this design task.
+Status: Native Wrangler workflow implemented and locally tested, 2026-09-22.
+The original research below records the selection rationale. The subsequent
+implementation is [services/matchmaking](../../services/matchmaking/README.md);
+its SQLite, real WebSocket, restart and Wrangler checks are recorded in
+[server status](SERVER_IMPLEMENTATION.md). SolidObjects was not selected.
+Cloud deployment and natural cloud hibernation/failover remain untested.
 
 ## Recommendation
 
@@ -12,8 +16,8 @@ SolidObjects as an optional alternative if running the same room business logic
 in a standalone Node process is valuable. Do not maintain two independent room
 implementations merely to obtain local SQLite persistence.
 
-This is a recommendation, not a new accepted architecture decision. The selection
-and evidence belong to [NET-007](TODO.md). It does not move Godot battle simulation
+The subsequent server implementation selected this native Wrangler path. Its
+selection and evidence belong to [NET-007](TODO.md) and the server status page. It does not move Godot battle simulation
 to the server and does not replace WebRTC or TURN.
 
 ## What was verified
@@ -70,14 +74,14 @@ SQLite supplies storage, not the entire service. Both runners still need routing
 authentication, atomic room transitions, WebSocket handling, expiry and limits.
 A database file is not a TURN server or a WebRTC signaling protocol.
 
-## Proposed default project layout and commands
+## Implemented default project layout and commands
 
-Create one backend package at `services/matchmaking/` in NET-027. No existing JS
+The backend package is at `services/matchmaking/` under NET-027. No existing JS
 backend package-manager convention was found in the inspected root/service paths;
 use npm as the initial proposal unless a current repository convention supersedes it.
 Pin toolchain/dependencies with the package manager and commit its lockfile.
 
-Proposed scripts, to implement and verify rather than run before scaffolding:
+Implemented scripts are listed below; SolidObjects/parity scripts remain optional and are not implemented:
 
 | Script | Purpose |
 |---|---|
@@ -90,8 +94,11 @@ Proposed scripts, to implement and verify rather than run before scaffolding:
 
 The local environment uses local bindings and development-only secrets; no remote
 binding or production credential should be required for ordinary room tests. Stub
-TURN credential issuance locally when testing authorization; actual relay behavior
-is tested separately with a real provider in NET-040.
+TURN credential issuance locally when testing authorization. A separate Chrome 153
+transport harness against the deployed provider now verifies a forced-relay ICE
+pair and bidirectional ping/pong; details are in
+[forced-relay evidence](../../evidence/online/turn-relay/README.md). This does not
+complete NET-040's cross-city/operator trials or validate a full Godot match.
 
 Use per-test temporary persistence directories for clean isolation and a separate
 ignored development directory for deliberate restart persistence. Reset only the
@@ -155,3 +162,27 @@ storage/DO request counts and unsupported cases. Prefer the smallest validated
 solution for this room service; add SolidObjects only if its portability or actor
 facilities justify the extra surface. No choice here removes NET-019 full-content
 restoration or NET-040 real-network acceptance.
+
+## Godot lobby map-flow checks
+
+The room client's current local UI regression runner is:
+
+```sh
+python3 tools/test_online_lobby_ui.py
+```
+
+It includes the production `MapSelection` adapter and two-Lobby map integration
+smoke. The integration fake serializes and parses service state through JSON so
+integral rule values exercise the same float-valued projection used by Godot's
+HTTP path. It covers owner-only map input, guest mirroring/cancel, configure and
+guest acknowledgment, retry after failed refresh, ready after the service clears
+profiles, and auto-prepare only after both ready states. The smoke is native and
+uses a fake service; it is not browser acceptance.
+
+The current real-browser boundary is recorded separately in
+[client integration](CLIENT_IMPLEMENTATION.md). A same-machine Chrome run
+observed the owner move the map picker and the guest mirror it, but the initial
+map configure failed an exact integer/float dictionary comparison. Production
+now validates and compares integral rule values by numeric meaning. The post-fix
+Web configure/ack/auto-prepare rerun remains pending; do not infer it from the
+native fake-service smoke or the earlier fighter/helper browser run.

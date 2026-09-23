@@ -1,0 +1,99 @@
+{
+  "scope": "Controller/projectile and recorded-timeout reconstruction; not complete battle restore",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "status": "passed",
+  "checks": [
+    {
+      "test": "controller_checkpoint_smoke",
+      "passed": true,
+      "markers": [
+        "CONTROLLER_CHECKPOINT_SMOKE_OK generated_locals=restored projectile=recreated pending_rename=rebound registry=restored"
+      ]
+    },
+    {
+      "test": "timeout_checkpoint_smoke",
+      "passed": true,
+      "markers": [
+        "TIMEOUT_CHECKPOINT_SMOKE_OK targets=rebound nested_ids=restored invalid=atomic live=rejected"
+      ]
+    },
+    {
+      "test": "ai_projectile_driver_smoke",
+      "passed": true,
+      "markers": [
+        "AI_PROJECTILE_DRIVER_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "rollback_services_smoke",
+      "passed": true,
+      "markers": [
+        "ROLLBACK_FAULTS corrections=73 replayed=201 retained_bytes=222508",
+        "ROLLBACK_SERVICES_SMOKE_OK scope=services_and_synthetic_fixture_not_battle"
+      ]
+    },
+    {
+      "test": "manual_match_step_smoke",
+      "passed": true,
+      "markers": [
+        "MANUAL_MATCH_STEP_SMOKE_OK frames=330 runs=2 comparison=selected_fields_not_complete_state"
+      ]
+    },
+    {
+      "test": "source_callback_registry_smoke",
+      "passed": true,
+      "markers": [
+        "SOURCE_CALLBACK_REGISTRY_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "ai_random_smoke",
+      "passed": true,
+      "markers": [
+        "AI_RANDOM_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "hit_effect_clock_smoke",
+      "passed": true,
+      "markers": [
+        "HIT_EFFECT_CLOCK_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "hit_effect_random_smoke",
+      "passed": true,
+      "markers": [
+        "HIT_EFFECT_RANDOM_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "ai_timeouts_smoke",
+      "passed": true,
+      "markers": [
+        "AI_TIMEOUTS_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "match_input_scene_smoke",
+      "passed": true,
+      "markers": [
+        "MATCH_INPUT_SCENE_SMOKE_OK ticks=330 slots=2 intro=poll pause=ordered random=controlled clock=controlled"
+      ]
+    }
+  ],
+  "shared_mode_references": {
+    "pvp": 602,
+    "training-timer": 602,
+    "status": "matched"
+  },
+  "baseline_commit": "28e0382bf14a0058efadc4e5906e16230d5d2cb8",
+  "file_sha256": {
+    "godot/controller_checkpoint.gd": "a486af98bb50b6ebe1dd7b3b4d1cf7b434df220f913d7efe7773ad3e0fbccb18",
+    "godot/pending_operation_state.gd": "7b21d4bd4921b8c6b1502b31579febad4dfd7bc0065c2c3ae8d7fd7af9880593",
+    "godot/ai_source_timeouts.gd": "15f567508a9e0fea21510a7211748ce42db6a1253ab7032c1aaaecad6f795bb7",
+    "godot/tests/controller_checkpoint_smoke.gd": "cae16d41e9be9550f29843e5081edd9a4a80cecaaca8c48dc59b58a76cb4acaf",
+    "godot/tests/timeout_checkpoint_smoke.gd": "61f7dee2528d7801e6c55a00e9c9a153da5a083dc4c5b796cd236c8b879b5d09",
+    "tools/test_rollback_foundations.py": "0b60061399381ed4cc8bd2e9e59d0332541bb9edcf910820a8ccf6599b7ccb21"
+  }
+}

@@ -28,6 +28,11 @@ function createElement(id = '') {
             add: name => classes.add(name),
             remove: name => classes.delete(name),
             contains: name => classes.has(name),
+            toggle(name, force = !classes.has(name)) {
+                if (force) classes.add(name);
+                else classes.delete(name);
+                return force;
+            },
         },
         addEventListener(name, callback) {
             if (!handlers.has(name)) handlers.set(name, []);
@@ -41,7 +46,7 @@ function createElement(id = '') {
         setAttribute(name, value) { attributes.set(name, value); },
         contains(target) { return target === this; },
         matches() { return false; },
-        focus() {},
+        focus() { this.focused = true; },
         remove() {},
         click() { this.clicked = true; },
         getBoundingClientRect() { return { width: 900, height: 600 }; },
@@ -52,12 +57,15 @@ function createPage(buildSidecar, fetchImpl = null) {
     let now = 0;
     const elements = new Map();
     for (const id of ['player', 'canvas', 'fullscreen', 'feedback', 'edge-indicator', 'toolbar',
+        'online-controls', 'online-status', 'online-request', 'online-pause', 'online-accept-pause',
+        'online-refuse-pause', 'online-skip-intro', 'online-exit', 'online-collapse-tools', 'edge-label',
         'audio-control', 'audio-toggle', 'mute-toggle', 'volume-panel', 'volume-slider',
         'volume-value', 'volume-status', 'viewport', 'status', 'status-splash', 'status-progress', 'download']) {
         elements.set(id, createElement(id));
     }
     const player = elements.get('player');
     const viewport = elements.get('viewport');
+    elements.get('edge-indicator').querySelector = selector => selector === '.edge-label' ? elements.get('edge-label') : null;
     const documentHandlers = new Map();
     const windowHandlers = new Map();
     let capturedBlob = null;
@@ -196,6 +204,91 @@ test('does not fabricate build identity when runtime and sidecar disagree', asyn
     assert.equal(report.build.sidecarBuildID, 'a'.repeat(64));
 });
 
+test('routes online edit shortcuts and lets Godot receive the native text paste event', async () => {
+    const page = createPage(sidecar);
+    const { window, elements, documentHandlers, windowHandlers } = page;
+    window.bvnOnlinePasteTargetActive = true;
+    const shortcuts = [];
+    let pasteCalls = 0;
+    window.bvnOnlineShortcutCallback = key => shortcuts.push(key);
+    window.bvnOnlinePasteCallback = (...args) => {
+        assert.equal(args.length, 0, 'paste bridge must not duplicate clipboard text');
+        pasteCalls++;
+    };
+
+    const onlineKeydown = documentHandlers.get('keydown').find(handler =>
+        handler.toString().includes('bvnOnlinePasteTargetActive'));
+    const onlinePaste = windowHandlers.get('paste').find(handler =>
+        handler.toString().includes('bvnOnlinePasteTargetActive'));
+    assert.ok(onlineKeydown);
+    assert.ok(onlinePaste);
+
+    function keyEvent(overrides = {}) {
+        return {
+            target: elements.get('canvas'),
+            key: 'a',
+            code: 'KeyA',
+            metaKey: true,
+            ctrlKey: false,
+            shiftKey: false,
+            altKey: false,
+            isComposing: false,
+            stopped: false,
+            prevented: false,
+            stopImmediatePropagation() { this.stopped = true; },
+            stopPropagation() { this.stopped = true; },
+            preventDefault() { this.prevented = true; },
+            ...overrides,
+        };
+    }
+
+    const selectAll = keyEvent();
+    onlineKeydown(selectAll);
+    assert.deepEqual(shortcuts, ['a']);
+    assert.equal(selectAll.stopped, true);
+    assert.equal(selectAll.prevented, true);
+
+    const pasteKey = keyEvent({ key: 'v', code: 'KeyV' });
+    onlineKeydown(pasteKey);
+    assert.equal(pasteKey.stopped, true);
+    assert.equal(pasteKey.prevented, false, 'native browser paste must still fire');
+
+    const shifted = keyEvent({ shiftKey: true });
+    onlineKeydown(shifted);
+    assert.equal(shortcuts.length, 1, 'unsupported modifier combinations must be ignored');
+    assert.equal(shifted.stopped, false);
+
+    let bubbled = false;
+    const textPaste = {
+        target: elements.get('canvas'),
+        clipboardData: {
+            types: ['text/plain'],
+            getData() { throw new Error('shell must leave clipboard extraction to Godot'); },
+        },
+        prevented: false,
+        stopped: false,
+        preventDefault() { this.prevented = true; },
+        stopImmediatePropagation() { this.stopped = true; },
+        stopPropagation() { this.stopped = true; },
+    };
+    onlinePaste(textPaste);
+    bubbled = !textPaste.stopped;
+    assert.equal(textPaste.prevented, true, 'paste must not fall through to hidden IME content');
+    assert.equal(bubbled, true, 'Godot bubble-phase paste handler must still receive the event');
+    assert.equal(pasteCalls, 1);
+
+    const imagePaste = {
+        ...textPaste,
+        clipboardData: { types: ['image/png'] },
+        stopped: false,
+        prevented: false,
+    };
+    onlinePaste(imagePaste);
+    assert.equal(imagePaste.prevented, true);
+    assert.equal(imagePaste.stopped, false);
+    assert.equal(pasteCalls, 1, 'image-only clipboard data must not trigger text paste');
+});
+
 test('preserves bounded error incidents beyond the rolling window and closes post-trigger capture', async () => {
     const page = createPage(sidecar);
     const { window, elements, context, getBlob } = page;
@@ -272,4 +365,134 @@ test('labels snapshot timeout, missing runtime, and unavailable sidecar explicit
     await timeoutPage.elements.get('download').dispatch('click');
     const timeoutReport = JSON.parse(await timeoutPage.getBlob().text());
     assert.equal(timeoutReport.runtime.snapshotStatus, 'timeout');
+});
+
+function onlineSnapshot(overrides = {}) {
+    return {
+        schemaVersion: 1,
+        active: true,
+        session: 'online-session-1',
+        revision: 1,
+        status: '对局进行中',
+        pauseLabel: '请求暂停',
+        canPause: true,
+        canResume: false,
+        pauseRequest: null,
+        canAcceptPause: false,
+        canRefusePause: false,
+        canSkipIntro: true,
+        canExit: true,
+        exitLabel: '退出本局',
+        ...overrides,
+    };
+}
+
+test('renders online controls and routes only current-session actions with revision and request id', () => {
+    const page = createPage(sidecar);
+    const { window, elements } = page;
+    const calls = [];
+    const token = window.bvnOnlineControlsRegister((...args) => calls.push(args));
+    assert.equal(token, 1);
+    assert.equal(window.bvnOnlineControlsUpdate(JSON.stringify(onlineSnapshot()), token), true);
+    assert.equal(elements.get('online-controls').hidden, false);
+    assert.equal(elements.get('online-status').textContent, '对局进行中');
+    assert.equal(elements.get('online-pause').textContent, '请求暂停');
+    assert.equal(elements.get('online-pause').hidden, false);
+    assert.equal(elements.get('online-skip-intro').hidden, false);
+    elements.get('online-pause').dispatch('click');
+    elements.get('online-skip-intro').dispatch('click');
+    assert.deepEqual(calls, [
+        ['pause', 'online-session-1', 1, ''],
+        ['skip_intro', 'online-session-1', 1, ''],
+    ]);
+    assert.equal(elements.get('canvas').focused, true);
+
+    const request = onlineSnapshot({
+        revision: 2,
+        status: '<img src=x onerror=alert(1)>',
+        pauseLabel: '请求恢复',
+        canPause: false,
+        canResume: true,
+        pauseRequest: { id: 'request-7', text: '<b>对方请求暂停</b>' },
+        canAcceptPause: true,
+        canRefusePause: true,
+    });
+    assert.equal(window.bvnOnlineControlsUpdate(JSON.stringify(request), token), true);
+    assert.equal(elements.get('online-status').textContent, request.status, 'untrusted labels render as text');
+    assert.equal(elements.get('online-request').textContent, request.pauseRequest.text);
+    assert.equal(elements.get('online-accept-pause').hidden, false);
+    elements.get('online-accept-pause').dispatch('click');
+    elements.get('online-refuse-pause').dispatch('click');
+    elements.get('online-pause').dispatch('click');
+    assert.deepEqual(calls.slice(2), [
+        ['accept_pause', 'online-session-1', 2, 'request-7'],
+        ['refuse_pause', 'online-session-1', 2, 'request-7'],
+        ['resume', 'online-session-1', 2, ''],
+    ]);
+});
+
+test('rejects stale owners, malformed snapshots, and stale revisions without changing the current view', () => {
+    const page = createPage(sidecar);
+    const { window, elements } = page;
+    const oldToken = window.bvnOnlineControlsRegister(() => {});
+    const token = window.bvnOnlineControlsRegister(() => {});
+    const initial = JSON.stringify(onlineSnapshot());
+    assert.equal(window.bvnOnlineControlsUpdate(initial, oldToken), false);
+    assert.equal(window.bvnOnlineControlsUnregister(oldToken), false);
+    assert.equal(window.bvnOnlineControlsUpdate(initial, 0), false);
+    assert.equal(elements.get('online-controls').hidden, true);
+    assert.equal(window.bvnOnlineControlsUpdate(initial, token), true);
+    assert.equal(window.bvnOnlineControlsUpdate('{broken', token), false);
+    assert.equal(window.bvnOnlineControlsUpdate(JSON.stringify(onlineSnapshot({ revision: 0, status: '过期' })), token), false);
+    assert.equal(window.bvnOnlineControlsUpdate(JSON.stringify(onlineSnapshot({ status: '同 revision 的冲突内容' })), token), false);
+    assert.equal(window.bvnOnlineControlsUpdate(initial, oldToken), false);
+    assert.equal(elements.get('online-status').textContent, '对局进行中');
+    assert.equal(window.bvnOnlineControlsUnregister(token), true);
+    assert.equal(elements.get('online-controls').hidden, true);
+    assert.equal(elements.get('edge-indicator').classList.contains('online-active'), false);
+});
+
+test('keeps pending fullscreen controls discoverable without auto-opening and permits explicit collapse', async () => {
+    const page = createPage(sidecar);
+    const { window, elements, player, document } = page;
+    document.fullscreenElement = player;
+    const token = window.bvnOnlineControlsRegister(() => {});
+    const pending = onlineSnapshot({
+        pauseRequest: { id: 'request-8', text: '对方请求暂停' },
+        canAcceptPause: true,
+        canRefusePause: true,
+    });
+    assert.equal(window.bvnOnlineControlsUpdate(JSON.stringify(pending), token), true);
+    assert.equal(player.classList.contains('tools-visible'), false, 'incoming request does not auto-open the toolbar');
+    assert.equal(elements.get('edge-indicator').classList.contains('online-request'), true);
+    assert.equal(elements.get('edge-label').textContent, '对方有操作请求');
+
+    await elements.get('edge-indicator').dispatch('pointerenter');
+    await elements.get('edge-indicator').dispatch('pointerleave');
+    await new Promise(resolve => setTimeout(resolve, 40));
+    assert.equal(player.classList.contains('tools-visible'), true, 'pending request keeps an opened toolbar available');
+
+    elements.get('online-collapse-tools').dispatch('click');
+    assert.equal(player.classList.contains('tools-visible'), false);
+    assert.equal(player.classList.contains('tools-collapsed'), true);
+    assert.equal(elements.get('canvas').focused, true);
+    elements.get('edge-indicator').dispatch('click');
+    assert.equal(player.classList.contains('tools-visible'), true);
+    assert.equal(player.classList.contains('tools-collapsed'), false);
+
+    const exitConfirm = onlineSnapshot({ revision: 2, exitLabel: '再点一次确认退出', pauseRequest: null });
+    assert.equal(window.bvnOnlineControlsUpdate(JSON.stringify(exitConfirm), token), true);
+    await elements.get('toolbar').dispatch('pointerleave');
+    await new Promise(resolve => setTimeout(resolve, 40));
+    assert.equal(player.classList.contains('tools-visible'), true, 'exit confirmation remains visible until resolved');
+});
+
+test('places online controls in the existing toolbar and hides inactive controls explicitly', () => {
+    const toolbarStart = html.indexOf('<nav id="toolbar"');
+    const onlineStart = html.indexOf('<section id="online-controls"');
+    const viewportStart = html.indexOf('<div id="viewport"');
+    assert.ok(toolbarStart >= 0 && onlineStart > toolbarStart && viewportStart > onlineStart);
+    assert.match(html, /#online-controls\[hidden\], #online-controls \[hidden\] \{ display: none !important; \}/);
+    assert.match(html, /#player:fullscreen #toolbar/);
+    assert.match(html, /#edge-indicator\.online-request \.edge-label/);
 });

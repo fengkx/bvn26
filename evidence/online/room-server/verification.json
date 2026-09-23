@@ -1,0 +1,89 @@
+{
+  "date": "2026-09-22",
+  "scope": "standalone room server; local runtime only",
+  "platform": "macOS-15.7.5-arm64-arm-64bit",
+  "node": "24.18.0",
+  "npm": "11.16.0",
+  "packages": {
+    "name": "@bvn/matchmaking",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "engines": {
+      "node": ">=24.18.0 <25"
+    },
+    "scripts": {
+      "dev": "wrangler dev --local",
+      "typecheck": "tsc",
+      "build": "wrangler deploy --dry-run --outdir dist",
+      "test": "npm run typecheck && node --test test/*.test.mjs",
+      "test:restart": "node --test --test-name-pattern=restart test/*.test.mjs",
+      "format": "prettier --write src test package.json tsconfig.json wrangler.jsonc",
+      "format:check": "prettier --check src test package.json tsconfig.json wrangler.jsonc"
+    },
+    "dependencies": {
+      "zod": "4.6.5"
+    },
+    "devDependencies": {
+      "@cloudflare/workers-types": "5.20260922.1",
+      "@types/node": "26.6.2",
+      "@types/ws": "8.18.1",
+      "esbuild": "0.28.2",
+      "miniflare": "5.20260921.0-alpha",
+      "prettier": "3.9.8",
+      "typescript": "7.0.2",
+      "wrangler": "4.136.2",
+      "ws": "8.21.3"
+    }
+  },
+  "checks": {
+    "install": "npm ci --ignore-scripts: passed",
+    "format": "npm run format:check: passed",
+    "typecheck": "npm run typecheck: passed",
+    "tests": {
+      "command": "npm test",
+      "passed": 14,
+      "failed": 0,
+      "log": "test-output.txt"
+    },
+    "build": "npm run build: Wrangler dry-run passed, no deployment",
+    "handoff": "passed: 18 documents, 201 links",
+    "contracts": "passed: 6 schemas, 6 examples",
+    "integrity": {
+      "status": "blocked_by_concurrent_unrelated_worktree_changes",
+      "hash_mismatches": [
+        "godot/timeline_preview.gd",
+        "godot/stage_hit_runtime.gd",
+        "godot/main.gd",
+        "godot/hit_effect_runtime.gd",
+        "godot/shadow_snapshot.gd"
+      ]
+    }
+  },
+  "limits": [
+    "No deployed hibernation/failover test",
+    "No real TURN connectivity",
+    "No Godot networking integration",
+    "No full build/content fingerprint generation",
+    "No operating cost or mainland path measurements"
+  ],
+  "actual_effort_person_days": null,
+  "sha256": {
+    "services/matchmaking/.gitignore": "b187630640ebd4f4fe31a336b49babdde59db7282a93f5c7a50c28ed320c90c3",
+    "services/matchmaking/.node-version": "55075b5ec4e8b31936cbbc282b8829116d1fd48f2f2f1856dee592a6650700ce",
+    "services/matchmaking/README.md": "ec22bde05217ae5596f9d5e08799e75157e4a3201a213be3c89296ef34f19576",
+    "services/matchmaking/package-lock.json": "1ad5f309309cdfe70bbba8cbcf4324faf71a93dd5f439510d1a2c2e30967459c",
+    "services/matchmaking/package.json": "7958a52b4b64d19626e6d3174370907872c31ca130481cb460f79d6c66e8af7a",
+    "services/matchmaking/src/catalog.json": "b13cc9a527dfb2582c29933d7dff2aad62bd0cb452fa1b3a1bd03679ad9b7a0e",
+    "services/matchmaking/src/index.ts": "8a5210c38f8624bf21c949f9cacf43853fefdcf7e01fddc222fc4cd060ee286b",
+    "services/matchmaking/src/protocol.ts": "51603429b391c5eb7f89fcdb4849759e8d7bd5e57c76d1f0d5a03432b77f90ab",
+    "services/matchmaking/src/room.ts": "9e0ab461e7533a7c8981f8e859fa1066548f334b099d7fb3a7378ea03cdfe35e",
+    "services/matchmaking/src/state.ts": "ab015c5ae73b9f4b05c518a5850f488b955349afee6d53093f5059d52045dd1a",
+    "services/matchmaking/test/catalog.test.mjs": "0d1a6b29eb30a3656533df008edd548bb935f8644b8fd9ce3d29686c75f04ffa",
+    "services/matchmaking/test/fixture.ts": "26ee86a6de2b606ba3e6a632200d13a6b410839b969a6cb2916f2c71e59a5827",
+    "services/matchmaking/test/server.test.mjs": "aa194abd80c159510ffa71ac89b8e073e51765026094b06411825f0b1c2053b6",
+    "services/matchmaking/test/wrangler.test.mjs": "6d6492bd41a1fa9f5020434e463d54a8fa558533c55fdb913e9f983d2ebe3b98",
+    "services/matchmaking/tsconfig.json": "15dcd49cbfb8b59c2085008032bf12b91681923a4cebea10c661e44498d7c7cc",
+    "services/matchmaking/wrangler.jsonc": "5a77e3bd6e36afd51bc1f7b083871fc3938f37ff1b071fbcab4d97aeb9edcc24"
+  }
+}

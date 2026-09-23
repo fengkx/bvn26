@@ -125,9 +125,12 @@ func dispose() -> void:
 	if registry != null:
 		registry.unregister(registration)
 		registry = null
-	if get_parent() != null:
-		get_parent().remove_child(self)
-	queue_free()
+	if preload("res://rollback_lifetime.gd").owner(self) != null:
+		preload("res://rollback_lifetime.gd").retire(self)
+	else:
+		if get_parent() != null:
+			get_parent().remove_child(self)
+		queue_free()
 
 func _exit_tree() -> void:
 	if registry != null:

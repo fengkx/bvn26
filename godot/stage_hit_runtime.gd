@@ -28,7 +28,7 @@ func advance_timeline() -> void:
 func run_frame_actions() -> void:
 	if current_source_frame() == int(_spec["remove"]["frame"]):
 		expired = true
-		queue_free()
+		preload("res://rollback_lifetime.gd").retire(self)
 
 
 func attack_contact(defender: FighterRuntime) -> Dictionary:

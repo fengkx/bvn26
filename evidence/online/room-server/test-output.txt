@@ -1,0 +1,30 @@
+
+> @bvn/matchmaking@0.1.0 test
+> npm run typecheck && node --test test/*.test.mjs
+
+
+> @bvn/matchmaking@0.1.0 typecheck
+> tsc
+
+✔ server content IDs match the enabled menu catalog (21.586ms)
+✔ atomic admission, private capabilities, isolation and compatibility (585.369125ms)
+✔ setup revisions, transactional rejection, retries, barriers and rematch epochs (339.830375ms)
+✔ real WebSockets authenticate, scope signaling, revoke seats and tolerate disconnect (384.161291ms)
+✔ ten concurrent leases cannot overbook and owner departure releases capacity (464.797792ms)
+✔ alarm expiry runs without a client request; active play and prepare timeout differ (475.255333ms)
+✔ SQLite restart restores epoch, seats and idempotency with new real WebSockets (392.758584ms)
+✔ TURN REST credentials are authenticated, expiring and rate limited (197.373291ms)
+✔ malformed, oversized, unknown gameplay messages and bad origins fail closed (189.404292ms)
+✔ initial-state and confirmed-result mismatches end without a winner (347.278583ms)
+✔ incompatible profiles and disabled content are rejected without consuming sequence (427.011625ms)
+✔ revoked invitations, single-use socket tickets and expired leases cannot be replayed (267.822833ms)
+✔ signaling sockets reject binary, oversized and flooded messages (282.781083ms)
+✔ production Wrangler configuration serves authenticated room WebSockets (1660.2185ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5109.045667

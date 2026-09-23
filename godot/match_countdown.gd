@@ -9,6 +9,7 @@ var root_service: Callable
 var timer: Timer
 var controller: RefCounted
 var unlimited := false
+var recorded_active := false
 var locals := {"tm": 0, "shi": 0, "gs": 0, "played": 0}
 
 class Adapter extends RefCounted:
@@ -37,6 +38,7 @@ func configure(service: Callable, recorded: bool) -> void:
 	var limit := int(service.call("read", ["_root.maxtime"]))
 	service.call("write", ["_root.gametime", limit])
 	unlimited = limit == int(spec.unlimited_value) or int(service.call("read", ["_root.modo"])) == int(spec.training_mode)
+	recorded_active = not unlimited
 	if not unlimited:
 		timer = Timer.new()
 		timer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -52,4 +54,5 @@ func fire() -> void:
 	presentation_changed.emit()
 
 func stop() -> void:
+	recorded_active = false
 	if timer != null: timer.stop()

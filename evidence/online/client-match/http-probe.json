@@ -1,0 +1,67 @@
+{
+  "scope": "Isolated Godot Web HTTPRequest diagnostic using the production OnlineRoomClient; not a production lobby or battle run.",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "page_origin": "http://127.0.0.1:8000/_http_probe/index.html",
+  "service_origin": "http://127.0.0.1:8787",
+  "browser_target_id": "CCCC7DDB747AE49610ABA43EEEEB4CF7",
+  "background_target": true,
+  "probe_runs": 2,
+  "room_tokens_or_ids_logged": false,
+  "client_source": "godot/online_room_client.gd",
+  "client_sha256": "931228c401b5566a62952e48b1e97277496dae0343fd692d6bf7e4a500aa9762",
+  "temporary_probe_source_sha256": {
+    "probe.gd": "3c476a63e086bcdbe8cd97189f717927b67b54b5ad5a686fcec0babd0220fe41",
+    "watch_cdp.mjs": "55d13a8d966accd9657c82cb0d4454a02c824171575ab3321bf9c7a70cd0df59",
+    "project.godot": "4b9a572c2ea0e09fcbb17a06016383b0d10a7c479f61e3afb0251a61f5ee76cf"
+  },
+  "diagnostics_per_run": [
+    {
+      "step": "GET /health",
+      "phase": "request_completed",
+      "transportResult": 0,
+      "httpStatus": 200,
+      "requestErrorCode": -1,
+      "clientError": "",
+      "responseOk": true
+    },
+    {
+      "step": "POST /v1/rooms with {}",
+      "phase": "request_completed",
+      "transportResult": 0,
+      "httpStatus": 400,
+      "requestErrorCode": -1,
+      "clientError": "invalid_message",
+      "responseOk": false
+    },
+    {
+      "step": "POST valid create_room",
+      "phase": "request_completed",
+      "transportResult": 0,
+      "httpStatus": 201,
+      "requestErrorCode": -1,
+      "clientError": "",
+      "responseOk": true
+    },
+    {
+      "step": "POST leave command",
+      "phase": "request_completed",
+      "transportResult": 0,
+      "httpStatus": 200,
+      "requestErrorCode": -1,
+      "clientError": "",
+      "responseOk": true
+    }
+  ],
+  "repeatability": "The fresh target auto-loaded once before the collector attached and was then reloaded with cache disabled; both complete sequences produced the same four status/transport results. Both created rooms were left successfully.",
+  "reproduction": [
+    "Copy godot/online_room_client.gd into a minimal temporary Godot project.",
+    "Export the isolated project to dist/web/_http_probe/index.html with Godot 4.7.2.",
+    "Serve the Web export on localhost:8000 and use service endpoint http://127.0.0.1:8787.",
+    "Open a fresh Chrome CDP target on localhost:8000, enable Network and Runtime, reload, and collect only Online HTTP diagnostic (redacted) plus fixed probe markers."
+  ],
+  "limitations": [
+    "No production Main/menu/lobby path or menu keyboard input was exercised.",
+    "No WebRTC signaling, gameplay channel, rollback battle, real result submission, external network, or deployed service was tested.",
+    "The page stayed in a background target; no focus emulation or Page.bringToFront was used."
+  ]
+}

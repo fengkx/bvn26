@@ -408,8 +408,13 @@ func _sync_retained_visual_clips() -> void:
 	_retained_visual_clips = retained
 
 
-func _render_frame() -> void:
-	_sync_retained_visual_clips()
+func refresh_checkpoint_display() -> void:
+	_render_frame(true)
+
+
+func _render_frame(restoring: bool = false) -> void:
+	if not restoring:
+		_sync_retained_visual_clips()
 	for child in get_children():
 		if child.name in ["SoundLayer", "RuntimeServices"]:
 			continue
@@ -420,8 +425,9 @@ func _render_frame() -> void:
 	var wrapper := _wrapper_transform()
 	for placement: Dictionary in frame["display_list"]:
 		_render_placement(placement, wrapper, 1.0, int(placement["depth"]) if preserve_root_depths else 0, _current_frame, 0, _source_color_mul, _source_color_add)
-	_play_start_sounds()
-	_play_nested_start_sounds()
+	if not restoring:
+		_play_start_sounds()
+		_play_nested_start_sounds()
 	queue_redraw()
 
 
@@ -478,16 +484,18 @@ func _play_start_sounds() -> void:
 			assert(sound_index < segments.size() and segments[sound_index]["source_event"] == event)
 			sound_file = segments[sound_index]["stream"]
 		sound_index += 1
-		if _start_sound_player(event, sound_file, segments.is_empty()):
+		if _start_sound_player(event, sound_file, segments.is_empty(), "root:%d" % sound_index):
 			last_sound_ids.append(sound_id)
 
 
 func _start_sound_player(
-	event: Dictionary, sound_file: String, use_source_volume: bool = true
+	event: Dictionary, sound_file: String, use_source_volume: bool = true, event_identity: String = "root"
 ) -> bool:
 	var stream: AudioStream = load("%s/%s" % [fighter_directory, sound_file])
 	if stream == null:
 		return false
+	if not preload("res://rollback_presentation.gd").allow_sound(self, "%d:%s:%s" % [_source_entry_serial, event_identity, sound_file]):
+		return true
 	var player := AudioStreamPlayer.new()
 	player.stream = stream
 	player.volume_db = _sound_volume_db(event) if use_source_volume else 0.0
@@ -631,7 +639,7 @@ func _play_nested_source_sound(
 	var started := (
 		supported_sound_info
 		and not sound_file.is_empty()
-		and _start_sound_player(event, sound_file)
+		and _start_sound_player(event, sound_file, true, "%s:%d:%d" % [instance_id, sprite_id, frame])
 	)
 	last_nested_sound_events.append({
 		"instance_id": instance_id,

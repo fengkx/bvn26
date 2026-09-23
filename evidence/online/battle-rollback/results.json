@@ -1,0 +1,185 @@
+{
+  "scope": "native offline battle rollback; synthetic external timer envelopes; not Chrome or online acceptance",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "status": "passed",
+  "checks": [
+    {
+      "test": "battle_checkpoint_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "BATTLE_CHECKPOINT_SMOKE_OK rejects=4 restores_negative_scale_rng_health_shadow_timeout=true"
+      ]
+    },
+    {
+      "test": "rollback_battle_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "ROLLBACK_BATTLE_SMOKE_OK frames=330 rollbacks=10 replayed=65 waits=15 elapsed_ms=11421 retained_bytes=5819176 sounds_suppressed=8",
+        "ROLLBACK_PROFILE { \"saves\": 398, \"encode_us\": 4168085, \"pack_us\": 871419, \"retains_us\": 63624 }",
+        "ROLLBACK_INDEPENDENT_RUN_OK frames=330 full_state=true"
+      ]
+    },
+    {
+      "test": "rollback_roster_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "ROLLBACK_ROSTER_CASE_OK fighter=日番谷 helper=鼬 map=现世 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=恋次 helper=魂 map=流魂街 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=露其雅 helper=我爱罗 map=双极 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=一护 helper=松本 map=静涎亭 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=鸣人 helper=鼬 map=尸魂界通道 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=樱 helper=魂 map=木叶村 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=佐助 helper=我爱罗 map=温泉 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=卡卡西 helper=松本 map=火影瀑布 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=白哉 helper=鼬 map=楼顶 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=小李 helper=魂 map=宇智波村 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=石田 helper=我爱罗 map=现世 checkpoints=8",
+        "ROLLBACK_ROSTER_SMOKE_OK fighters=11 helpers=4 maps=10"
+      ]
+    },
+    {
+      "test": "rollback_round_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "ROLLBACK_ROUND_CASE_OK terminal=false checkpoints=23 frames=600",
+        "ROLLBACK_ROUND_CASE_OK terminal=true checkpoints=13 frames=396",
+        "ROLLBACK_ROUND_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "controller_checkpoint_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "CONTROLLER_CHECKPOINT_SMOKE_OK generated_locals=restored projectile=recreated pending_rename=rebound registry=restored"
+      ]
+    },
+    {
+      "test": "timeout_checkpoint_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "TIMEOUT_CHECKPOINT_SMOKE_OK targets=rebound nested_ids=restored invalid=atomic live=rejected"
+      ]
+    },
+    {
+      "test": "ai_projectile_driver_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "AI_PROJECTILE_DRIVER_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "rollback_services_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "ROLLBACK_FAULTS corrections=73 replayed=201 retained_bytes=222508",
+        "ROLLBACK_SERVICES_SMOKE_OK scope=services_and_synthetic_fixture_not_battle"
+      ]
+    },
+    {
+      "test": "manual_match_step_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "MANUAL_MATCH_STEP_SMOKE_OK frames=330 runs=2 comparison=selected_fields_not_complete_state"
+      ]
+    },
+    {
+      "test": "source_callback_registry_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "SOURCE_CALLBACK_REGISTRY_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "ai_random_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "AI_RANDOM_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "hit_effect_clock_smoke",
+      "passed": true,
+      "audio_shutdown_warning": true,
+      "markers": [
+        "HIT_EFFECT_CLOCK_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "hit_effect_random_smoke",
+      "passed": true,
+      "audio_shutdown_warning": true,
+      "markers": [
+        "HIT_EFFECT_RANDOM_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "ai_timeouts_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "AI_TIMEOUTS_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "match_input_scene_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "MATCH_INPUT_SCENE_SMOKE_OK ticks=330 slots=2 intro=poll pause=ordered random=controlled clock=controlled"
+      ]
+    }
+  ],
+  "date": "2026-09-22",
+  "shared_modes": {
+    "status": "passed",
+    "markers": [
+      "SHARED_MODE_MATCH pvp: 602 actor states",
+      "SHARED_MODE_MATCH training-timer: 602 actor states"
+    ]
+  },
+  "base_commit": "28e0382bf14a0058efadc4e5906e16230d5d2cb8",
+  "reviewed_file_sha256": {
+    "godot/ai_source_timeouts.gd": "15f567508a9e0fea21510a7211748ce42db6a1253ab7032c1aaaecad6f795bb7",
+    "godot/battle_checkpoint.gd": "32cc291a6dda5d6de14d5ebb48f047a9041e02a49dd73398c61bf9bfc0d29b72",
+    "godot/controller_checkpoint.gd": "a486af98bb50b6ebe1dd7b3b4d1cf7b434df220f913d7efe7773ad3e0fbccb18",
+    "godot/hit_effect_runtime.gd": "47b98e67aef9c432f5f343cb59ac065db3a09f4c6c009b960753f8e21f85694e",
+    "godot/intro_clip.gd": "025873cc5791bf2d4a74d7d367644775e0d6f45d0a8e551b51973257486d67ef",
+    "godot/main.gd": "d140647670fbf00ce48dc9555f10d70200bdaeeba511f9539f7f5b8c2c4d4d87",
+    "godot/manual_match_step.gd": "b2c41cd855dc21de59130b64c9dac97a1fd885c9d31744c0d4aee18190987889",
+    "godot/pending_operation_state.gd": "7b21d4bd4921b8c6b1502b31579febad4dfd7bc0065c2c3ae8d7fd7af9880593",
+    "godot/rollback_battle.gd": "12d13219b719ca30bf051692bd11b5e579a973d60f1a4f75d74bd987cb119f02",
+    "godot/rollback_lifetime.gd": "b369a59e5ff205691e47371346ad7612b877f7211a25aa7a9383fcf807870344",
+    "godot/rollback_presentation.gd": "d67ac4da555f01c459fe191a01a425571b5aa694a0ddcecf79f3a100e91830bd",
+    "godot/rollback_session.gd": "60537295a68cde7e79ed24fd51539b436d90ac3881a84cda304143bedd197977",
+    "godot/rollback_test_session.gd": "ebcbac97fa46881a5bdbe1a7c4a190260b6396a177a64b7ba25d3ab915eb4765",
+    "godot/shadow_snapshot.gd": "2d97bc0f6a0b1162f06417297dde597ba83473ea8d1bfc75dd4088be4f0d7869",
+    "godot/simulation_state.gd": "dfc0b2c83eaf33418b7516746ee6934df1ef8a3d89e89c566ba4417a86b6bbc4",
+    "godot/source_callback_registry.gd": "00f89a57a53294671c81c1ff6950f8ba967b2bd8ea0942d93bf8f548072a2d69",
+    "godot/source_clock.gd": "c3ea87350a07639545ba7b2e17c7b2850f89e5179ab83e0185a882291c500d5f",
+    "godot/source_random.gd": "fb4be5de29b293a8a632b2fec4acc287615d427fa00c40be71f1c266bd21560d",
+    "godot/stage_hit_runtime.gd": "db59f6cf9ebe05439c425788bb22a8476b97da3f62f9dfb0e025aaa83b5f180b",
+    "godot/tests/ai_continuous_checkpoint_reference.gd": "51c69e5a311944b1ce27abd632f0d848ed48945741cd2d53a8f6d47f6ed82ac5",
+    "godot/tests/battle_checkpoint_smoke.gd": "537d4893374fe7fc266cf23f493ab0eedc554ab6a706edbd2e42fe7f7a15fdf4",
+    "godot/tests/controller_checkpoint_smoke.gd": "cae16d41e9be9550f29843e5081edd9a4a80cecaaca8c48dc59b58a76cb4acaf",
+    "godot/tests/lee_ai_continuous_checkpoint_reference.gd": "9eea6dd1177dcd31e5dfa7229c050745f82dcd1f73aeb468221277ec905727ef",
+    "godot/tests/rollback_battle_smoke.gd": "e81f53a63af31dda550aabaee760adcfc0fd0092c483ad5ed7aabe9456d74d8e",
+    "godot/tests/rollback_fixture.gd": "3d22f40632a99ea046d942688fb8d5acc4e1b62cab7ffc6491b713969dfd3fed",
+    "godot/tests/rollback_roster_smoke.gd": "ba57a2c51bd859e7ba8c46f20a008db4f18e7ffa598c755c57e973cdf145dfdb",
+    "godot/tests/rollback_round_smoke.gd": "ed99f0807cd7964515f948b751182f5e70767065ec6338d716156972ca7288c2",
+    "godot/tests/rollback_services_smoke.gd": "6a4f92a10fa7f3c8affd5ccf40ec5c370370db72c4db0acff1d35b52621a640f",
+    "godot/tests/timeout_checkpoint_smoke.gd": "61f7dee2528d7801e6c55a00e9c9a153da5a083dc4c5b796cd236c8b879b5d09",
+    "godot/timeline_preview.gd": "76cc3b5081e6a3b5791c87f059d3f44687209bd73986506e3a65e678c867df78",
+    "tools/test_rollback_foundations.py": "f191e6c7c4ef6db70fbd0288a447e1c43bd8e3cdf05d9b615ae5549f49952ac4"
+  }
+}

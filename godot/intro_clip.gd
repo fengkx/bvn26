@@ -38,11 +38,16 @@ func _play_start_sounds() -> void:
 		return
 	_sound_played_frame = _current_frame
 	last_sound_ids.clear()
+	var sound_index := 0
 	for event: Dictionary in _frames.get(_current_frame, {}).get("events", []):
 		if str(event.get("type", "")) != "start_sound":
 			continue
 		var sound_id := int(event["sound_id"])
 		assert(_assets.has(sound_id), "Missing intro sound %d" % sound_id)
+		sound_index += 1
+		last_sound_ids.append(sound_id)
+		if not preload("res://rollback_presentation.gd").allow_sound(self, "%d:%d:%d" % [_source_entry_serial, sound_index, sound_id]):
+			continue
 		var player := AudioStreamPlayer.new()
 		player.stream = load("%s/%s" % [fighter_directory, _assets[sound_id]])
 		player.volume_db = _sound_volume_db(event)
@@ -57,4 +62,3 @@ func _play_start_sounds() -> void:
 			player.add_child(timer)
 			timer.timeout.connect(player.queue_free)
 			timer.start(float(event["out_point"]) / 44100.0 - start)
-		last_sound_ids.append(sound_id)

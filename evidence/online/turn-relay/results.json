@@ -1,0 +1,55 @@
+{
+  "marker": "ONLINE_TURN_RELAY_MINIMAL",
+  "runDate": "2026-09-23",
+  "service": "https://bvn26-pvp.fengkx.top",
+  "healthStatus": 200,
+  "roomCreateStatus": 201,
+  "iceStatus": 200,
+  "iceConfiguration": {
+    "serverCount": 2,
+    "urlSchemes": ["stun", "turn", "turns"],
+    "turnUrlCount": 6,
+    "usernamePresent": true,
+    "credentialPresent": true,
+    "expiresInSeconds": 14400
+  },
+  "browser": "Chrome/153.0.8010.53",
+  "testTopology": {
+    "peerConnectionCount": 2,
+    "sameChromePage": true,
+    "iceTransportPolicy": "relay"
+  },
+  "candidates": [
+    {"total": 4, "relay": 4},
+    {"total": 3, "relay": 3}
+  ],
+  "selectedPairs": [
+    {
+      "state": "succeeded",
+      "localType": "relay",
+      "remoteType": "relay",
+      "bytesSent": 566,
+      "bytesReceived": 424
+    },
+    {
+      "state": "succeeded",
+      "localType": "relay",
+      "remoteType": "relay",
+      "bytesSent": 424,
+      "bytesReceived": 566
+    }
+  ],
+  "packets": {
+    "pingSent": true,
+    "pingReceived": true,
+    "pongReceived": true
+  },
+  "iceCandidateErrorCodes": {
+    "701": 8
+  },
+  "roomCleanup": {
+    "leaveStatus": 200,
+    "complete": true
+  },
+  "priorFailedProbeRooms": "Earlier failed signaling probes may have left temporary rooms to expire under the 30-minute idle timeout; their IDs and credentials were not retained."
+}

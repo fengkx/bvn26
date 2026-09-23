@@ -1,0 +1,89 @@
+{
+  "scope": "offline foundations, not complete battle save/restore or online acceptance",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "status": "passed",
+  "checks": [
+    {
+      "test": "rollback_services_smoke",
+      "passed": true,
+      "markers": [
+        "ROLLBACK_FAULTS corrections=73 replayed=201 retained_bytes=222508",
+        "ROLLBACK_SERVICES_SMOKE_OK scope=services_and_synthetic_fixture_not_battle"
+      ]
+    },
+    {
+      "test": "manual_match_step_smoke",
+      "passed": true,
+      "markers": [
+        "MANUAL_MATCH_STEP_SMOKE_OK frames=330 runs=2 comparison=selected_fields_not_complete_state"
+      ]
+    },
+    {
+      "test": "source_callback_registry_smoke",
+      "passed": true,
+      "markers": [
+        "SOURCE_CALLBACK_REGISTRY_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "ai_random_smoke",
+      "passed": true,
+      "markers": [
+        "AI_RANDOM_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "hit_effect_clock_smoke",
+      "passed": true,
+      "markers": [
+        "HIT_EFFECT_CLOCK_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "hit_effect_random_smoke",
+      "passed": true,
+      "markers": [
+        "HIT_EFFECT_RANDOM_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "ai_timeouts_smoke",
+      "passed": true,
+      "markers": [
+        "AI_TIMEOUTS_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "match_input_scene_smoke",
+      "passed": true,
+      "markers": [
+        "MATCH_INPUT_SCENE_SMOKE_OK ticks=330 slots=2 intro=poll pause=ordered random=controlled clock=controlled"
+      ]
+    }
+  ],
+  "baseline_commit": "28e0382bf14a0058efadc4e5906e16230d5d2cb8",
+  "shared_mode_before_and_after": {
+    "pvp": 602,
+    "training-timer": 602,
+    "status": "matched",
+    "scope": "retained original actor fields"
+  },
+  "not_verified": [
+    "complete battle state restore",
+    "all enabled content rollback",
+    "Chrome export and performance",
+    "presentation reconciliation",
+    "networking"
+  ],
+  "file_sha256": {
+    "godot/source_random.gd": "fb4be5de29b293a8a632b2fec4acc287615d427fa00c40be71f1c266bd21560d",
+    "godot/source_clock.gd": "c3ea87350a07639545ba7b2e17c7b2850f89e5179ab83e0185a882291c500d5f",
+    "godot/source_callback_registry.gd": "00f89a57a53294671c81c1ff6950f8ba967b2bd8ea0942d93bf8f548072a2d69",
+    "godot/simulation_state.gd": "dfc0b2c83eaf33418b7516746ee6934df1ef8a3d89e89c566ba4417a86b6bbc4",
+    "godot/manual_match_step.gd": "b2c41cd855dc21de59130b64c9dac97a1fd885c9d31744c0d4aee18190987889",
+    "godot/rollback_test_session.gd": "53334bb4aad76069d6b23a949f259a54edfd535c080731fb56c39e84823e6839",
+    "godot/tests/rollback_services_smoke.gd": "a993a3a61ac2b99eb2a83103f20d05df24afaa1e7a693a568dd43ec90b58c2b7",
+    "godot/tests/manual_match_step_smoke.gd": "fca22385a0adca2f19c28b9087a04cccaf8a0f6843ebe4113070aea8bdf74aec",
+    "tools/test_rollback_foundations.py": "afa288a279bafb96247738025c403f16f5b8ddbb525854fb8af5978cebba2a6d"
+  }
+}

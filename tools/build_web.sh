@@ -55,6 +55,10 @@ esac
 
 mkdir -p "$ROOT_DIR/dist/web"
 "$GODOT_BIN" --headless --path "$ROOT_DIR/godot" --editor --import --quit
+python3 "$ROOT_DIR/tools/build_online_manifest.py"
+python3 "$ROOT_DIR/tools/test_online_manifest.py"
+python3 "$ROOT_DIR/tools/build_online_manifest.py" --check
+python3 "$ROOT_DIR/tools/test_online_lobby_ui.py"
 "$GODOT_BIN" --headless --path "$ROOT_DIR/godot" \
   --export-release Web "$ROOT_DIR/dist/web/index.html"
 

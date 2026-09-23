@@ -3,6 +3,9 @@ extends Control
 
 signal confirmed(item_id: String)
 
+const ONLINE_SLOT := 6
+const ONLINE_ITEM := {"id": "online", "title": "联机对战", "modo": 0, "goto": "", "frames": 20, "confirm_frame": 15, "source": null}
+
 static var ITEMS: Array = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/title_menu/menu.json"))["items"]
 var spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/title_menu/menu.json"))
 var controller: RefCounted = load("res://generated/main/title_menu/controller.gd").new()
@@ -14,7 +17,7 @@ var hint_shown: String = ""
 var pending_item: Dictionary = {}
 var source_frame: int = 1
 var button_frame: int = 1
-const HIDDEN_ITEMS := ["single", "about", "more", "exit"]
+const HIDDEN_ITEMS := ["single", "more", "exit"]
 var _navigation_direction: int = 1
 var _wheel_born: bool = false
 var _selected_button: int = 0
@@ -25,6 +28,7 @@ var _hint: Label
 var _textures: Dictionary = {}
 var _sounds: Dictionary = {}
 var _hint_timer: Timer
+var _online_entry: Button
 
 func _init() -> void:
 	controller.positions = {13: NAN, 14: NAN}
@@ -54,6 +58,30 @@ func _ready() -> void:
 		sprite.material = material
 		_wheel.add_child(sprite)
 		_buttons[int(name.trim_prefix("btm"))] = sprite
+	_online_entry = Button.new()
+	_online_entry.name = "OnlineMenuItem"
+	_online_entry.text = "联机对战"
+	_online_entry.tooltip_text = "创建或加入好友房间"
+	_online_entry.focus_mode = Control.FOCUS_NONE
+	_online_entry.flat = true
+	var online_font := FontVariation.new()
+	online_font.base_font = load("res://generated/main/title_menu/menu-font.ttf")
+	online_font.variation_embolden = 0.7
+	_online_entry.add_theme_font_override("font", online_font)
+	_online_entry.add_theme_font_size_override("font_size", 18)
+	_online_entry.add_theme_constant_override("outline_size", 2)
+	_online_entry.add_theme_color_override("font_outline_color", Color(0.12, 0.16, 0.2, 1.0))
+	_online_entry.add_theme_color_override("font_color", Color.WHITE)
+	var online_highlight := _online_highlight_color()
+	_online_entry.add_theme_color_override("font_hover_color", online_highlight)
+	_online_entry.add_theme_color_override("font_pressed_color", online_highlight)
+	_online_entry.add_theme_color_override("font_focus_color", online_highlight)
+	_online_entry.add_theme_color_override("font_disabled_color", Color(0.65, 0.65, 0.65, 1))
+	for state in ["normal", "hover", "pressed", "disabled", "focus", "hover_pressed"]:
+		_online_entry.add_theme_stylebox_override(state, StyleBoxEmpty.new())
+	_online_entry.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_online_entry.pressed.connect(_request_online_confirmation)
+	_wheel.add_child(_online_entry)
 	var footer := Sprite2D.new()
 	footer.centered = false
 	footer.texture = _texture("footer.png")
@@ -85,8 +113,19 @@ func _ready() -> void:
 func _item_index(index: int) -> int:
 	return {9: 8, 10: 7, 11: 1, 12: 2}.get(index, index)
 
+
+func _menu_item(index: int) -> Dictionary:
+	if _item_index(index) == ONLINE_SLOT:
+		return ONLINE_ITEM
+	return ITEMS[_item_index(index) - 1]
+
+
 func current_item() -> Dictionary:
-	return ITEMS[_item_index(select) - 1]
+	return _menu_item(select)
+
+
+func contains_online_entry_point(point: Vector2) -> bool:
+	return _online_entry != null and _online_entry.visible and _online_entry.get_global_rect().has_point(point)
 
 func apply_held(held: Dictionary) -> Dictionary:
 	# Sprite 666 stops at 72; the controller is placed on frame 63.
@@ -111,16 +150,18 @@ func apply_held(held: Dictionary) -> Dictionary:
 			if held.get("down", false): _navigation_direction = 1
 			controller.tick(held)
 			_skip_unavailable()
-			if controller.confirmed_index != 0 and str(ITEMS[_item_index(controller.confirmed_index) - 1].id) in HIDDEN_ITEMS:
+			if controller.confirmed_index != 0 and str(_menu_item(controller.confirmed_index).id) in HIDDEN_ITEMS:
 				controller.confirmed_index = controller.select
 			for number: int in controller.sounds:
 				if _sounds.has(number):
 					_sounds[number].play()
 			if controller.hint_reset:
 				hint_shown = ""
+			if _item_index(controller.select) == ONLINE_SLOT:
+				controller.hint = "联机对战：创建或加入好友房间"
 			if controller.confirmed_index != 0 and pending_item.is_empty():
 				_selected_button = controller.confirmed_index
-				pending_item = ITEMS[_item_index(_selected_button) - 1].duplicate()
+				pending_item = _menu_item(_selected_button).duplicate()
 				button_frame = 1
 	_refresh()
 	return {}
@@ -149,6 +190,29 @@ func _texture(name: String) -> Texture2D:
 		_textures[name] = load("res://generated/main/title_menu/" + name)
 	return _textures[name]
 
+
+func _online_highlight_color() -> Color:
+	var transform: Dictionary = spec.wheel_placements["btm%d" % ONLINE_SLOT].get("color_transform", {})
+	var color := Color(
+		float(transform.get("redAddTerm", 0)) / 255.0,
+		float(transform.get("greenAddTerm", 0)) / 255.0,
+		float(transform.get("blueAddTerm", 0)) / 255.0,
+		1.0,
+	)
+	return color if color.r > 0.0 or color.g > 0.0 or color.b > 0.0 else Color.WHITE
+
+
+func _request_online_confirmation() -> void:
+	if not pending_item.is_empty():
+		return
+	_selected_button = ONLINE_SLOT
+	controller.select = ONLINE_SLOT
+	controller.confirmed_index = ONLINE_SLOT
+	controller.anj = 1
+	pending_item = ONLINE_ITEM.duplicate(true)
+	button_frame = 1
+	_refresh()
+
 func _refresh() -> void:
 	if _background == null:
 		return
@@ -166,14 +230,27 @@ func _refresh() -> void:
 	_wheel.size = Vector2((float(bounds.Xmax) - float(bounds.Xmin)) * float(mask.scaleX), (float(bounds.Ymax) - float(bounds.Ymin)) * float(mask.scaleY)) / 20.0
 	for index: int in _buttons:
 		var sprite: Sprite2D = _buttons[index]
-		sprite.visible = str(ITEMS[_item_index(index) - 1].id) not in HIDDEN_ITEMS
+		var item := _menu_item(index)
+		sprite.visible = index != ONLINE_SLOT and str(item.id) not in HIDDEN_ITEMS
 		var alpha := float(placement.get("color_transform", {}).get("alphaMultTerm", 256)) / 256.0
 		sprite.material.set_shader_parameter("cx_mul", Color(1, 1, 1, alpha))
 		var p: Dictionary = spec.wheel_placements["btm%d" % index]
 		var frame := button_frame if index == _selected_button else 1
-		sprite.texture = _texture("button-%d-%d.png" % [_item_index(index), mini(frame, int(ITEMS[_item_index(index)-1].frames))])
+		if index != ONLINE_SLOT:
+			sprite.texture = _texture("button-%d-%d.png" % [_item_index(index), mini(frame, int(item.frames))])
 		# The rasterizer's border is outside the authored button bounds.
 		sprite.position = Vector2(float(p.matrix.translateX)/20.0, float(controller.positions[index])) - mask_position - Vector2(5, 5)
+	var online_sprite: Sprite2D = _buttons[ONLINE_SLOT]
+	_online_entry.position = online_sprite.position
+	_online_entry.size = Vector2(203, 39)
+	_online_entry.pivot_offset = _online_entry.size / 2.0
+	_online_entry.visible = _wheel.visible
+	var online_selected := _item_index(select) == ONLINE_SLOT
+	_online_entry.add_theme_color_override("font_color", _online_highlight_color() if online_selected else Color.WHITE)
+	var confirm_pulse := 1.0
+	if online_selected and not pending_item.is_empty():
+		confirm_pulse += 0.025 * sin(TAU * float(button_frame) / float(maxi(1, ONLINE_ITEM.confirm_frame)))
+	_online_entry.scale = Vector2.ONE * confirm_pulse
 
 
 func _skip_unavailable(initial: bool = false) -> void:
@@ -184,5 +261,5 @@ func _skip_unavailable(initial: bool = false) -> void:
 		for index in controller.positions:
 			controller.positions[index] -= 56.0
 	elif str(current_item().id) in HIDDEN_ITEMS:
-		controller.select = 5 if _navigation_direction < 0 else 2
+		controller.select = ONLINE_SLOT if _navigation_direction < 0 else 2
 		controller.an = 1

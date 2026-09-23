@@ -188,8 +188,8 @@ func _ready() -> void:
 	ichigo.screen_flash_requested.connect(_start_screen_flash)
 	naruto.combo_hud_requested.connect(_play_combo_hud)
 	ichigo.combo_hud_requested.connect(_play_combo_hud)
-	naruto.super_event_applied.connect(func(event: Dictionary) -> void: _on_super_event(event, naruto))
-	ichigo.super_event_applied.connect(func(event: Dictionary) -> void: _on_super_event(event, ichigo))
+	naruto.super_event_applied.connect(_on_selected_super_event.bind(naruto))
+	ichigo.super_event_applied.connect(_on_selected_super_event.bind(ichigo))
 	combo_hud.load_spec("res://generated/main/hit_receive.json")
 	# This slice locks P1/P2 assistance to Gaara/Kon.
 	naruto_helper = _make_helper("res://generated/helpers/woailuo")
@@ -766,7 +766,7 @@ func _chushi() -> void:
 	ichigo.sync_body_collision_position()
 
 
-func _advance_fight(recorded_events: Array = [], root_observer: Callable = Callable()) -> void:
+func _advance_fight(recorded_events: Array = [], root_observer: Callable = Callable(), event_supplier: Callable = Callable()) -> void:
 	if not _deliver_recorded_controls():
 		return
 	black_mu.advance_display_timeline()
@@ -831,10 +831,21 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		player_body_services.advance_stage_timelines()
 	# Recorded callbacks carry their phase explicitly; do not infer it from
 	# milliseconds or move an already queued frame script past the callback.
-	for event: Dictionary in recorded_events:
-		if event["phase"] == "before_root_observer":
-			continue
+	for event: Dictionary in _recorded_events_for_phase(recorded_events, "after_actor_advance", event_supplier):
 		assert(event["phase"] == "after_actor_advance", "Unsupported intro callback phase")
+		if event.get("kind") == "countdown":
+			assert(ko_recorded_timers and countdown != null)
+			countdown.fire()
+			continue
+		if event.get("kind") == "body_timeout":
+			var driver: Node = player_body_driver._driver if event.slot == "p1" else opponent_driver
+			var fired: bool = driver.timeouts.recorded and driver.timeouts.fire_recorded(int(event.id))
+			if not fired and event_supplier.is_valid():
+				continue
+			if not fired:
+				match_input.error = "Rejected recorded BODY timeout"
+				return
+			continue
 		if event.get("kind", "intro_poll") == "training_recovery":
 			assert(recorded_training_timers and training_timer != null)
 			training_timer.timeout.emit()
@@ -859,7 +870,8 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	player_body_driver.prepare_frame_actions(int(initial_frame_counts[naruto]))
 	source_callbacks.dispatch(physics_tick)
 	if ko_terminal_pending:
-		_ko_return_to_fixed_selection()
+		if not has_meta("rollback_terminal_barrier"):
+			_ko_return_to_fixed_selection()
 		if root_observer.is_valid():
 			root_observer.call()
 		return
@@ -883,11 +895,14 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if not defer_world_for_intro_boundary:
 		_apply_focus()
 		game_world.enter_frame(naruto, ichigo, helpers)
-	for event: Dictionary in recorded_events:
-		if event["phase"] == "before_root_observer":
-			assert(event["kind"] == "nextfight" and ko_recorded_timers)
-			assert(ko_nextfight_timer != null, "Recorded nextfight has no live source interval")
+	for event: Dictionary in _recorded_events_for_phase(recorded_events, "before_root_observer", event_supplier):
+		assert(event["kind"] == "nextfight" and ko_recorded_timers)
+		if ko_nextfight_timer != null:
 			ko_nextfight_timer.timeout.emit()
+		elif not event_supplier.is_valid():
+			assert(false, "Recorded nextfight has no live source interval")
+	if not match_input.error.is_empty():
+		return
 	# Ready's frame actions are source callbacks. They run after actor BODY
 	# callbacks but before the root state snapshot on the same display.
 	var intro_was_active := battle_intro.active
@@ -943,6 +958,25 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if super_presentation != null:
 		_sync_super_stage()
 	_refresh_fight_labels()
+
+
+func _recorded_events_for_phase(recorded_events: Array, phase: String, event_supplier: Callable) -> Array:
+	if event_supplier.is_valid():
+		var supplied: Variant = event_supplier.call(phase, physics_tick)
+		if not supplied is Array:
+			match_input.error = "Online event supplier returned a non-array"
+			return []
+		for event in supplied:
+			if not event is Dictionary or event.get("phase") != phase:
+				match_input.error = "Online event supplier returned an invalid phase"
+				return []
+		return supplied
+	var matching: Array = []
+	for event: Dictionary in recorded_events:
+		assert(event.get("phase") in ["after_actor_advance", "before_root_observer"], "Unsupported recorded callback phase")
+		if event.get("phase") == phase:
+			matching.append(event)
+	return matching
 
 
 func _start_training_recovery() -> void:
@@ -1163,7 +1197,7 @@ func _ko_clear_interval(interval_name: String) -> void:
 		"nxtfht":
 			if ko_nextfight_timer != null:
 				ko_nextfight_timer.stop()
-				ko_nextfight_timer.queue_free()
+				preload("res://rollback_lifetime.gd").retire(ko_nextfight_timer)
 				ko_nextfight_timer = null
 		"zdbxint":
 			_stop_training_recovery()
@@ -1216,7 +1250,7 @@ func _start_combat_drivers() -> void:
 	# The source HUD exists before asynchronously loaded fighter bodies.
 	source_health_rules = preload("res://source_health_rules.gd").new()
 	var health_fighters: Array[FighterRuntime] = [naruto, ichigo]
-	source_health_rules.configure(health_fighters, func() -> float: return session.maxhp)
+	source_health_rules.configure(health_fighters, _source_max_health)
 	source_health_registration = source_callbacks.register(source_health_rules, "queue_frame", physics_tick)
 	_start_ko()
 	ko_timeline.bind_registry(source_callbacks, physics_tick)
@@ -1784,3 +1818,7 @@ func _start_countdown() -> void:
 	countdown.presentation_changed.connect(health_hud.queue_redraw)
 	countdown.configure(_ko_service, ko_recorded_timers)
 	health_hud.queue_redraw()
+
+
+func _source_max_health() -> float:
+	return session.maxhp

@@ -106,6 +106,20 @@ body {
 #toolbar strong { margin-right: auto; font-size: clamp(20px, 3vw, 30px); font-style: italic; letter-spacing: -1px; }
 #toolbar strong span { color: #ed4339; font-size: .75em; margin: 0 5px; }
 #toolbar strong small { display: block; margin-top: 5px; font: 10px system-ui, sans-serif; letter-spacing: 4px; color: #a99a94; }
+#online-controls[hidden], #online-controls [hidden] { display: none !important; }
+#online-controls {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+    min-width: 0; max-width: 100%; color: #e9d8d0; font-size: 11px;
+}
+#online-status { max-width: min(30vw, 340px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.25; }
+#online-request { color: #f2c3b0; font-weight: 700; }
+#online-controls button {
+    padding: 6px 10px; border-color: #80514b; background: #26191a;
+    font-size: 11px; transform: none;
+}
+#online-controls button:hover { background: #49302c; }
+#online-controls #online-exit { border-color: #ad3b35; }
+#online-controls #online-collapse-tools { margin-left: 2px; }
 button {
     padding: 11px 22px; border: 1px solid #71504b; border-radius: 2px;
     color: #f5efea; background: #211a1a; cursor: pointer; font: 600 13px system-ui, sans-serif;
@@ -135,16 +149,17 @@ button:disabled { opacity: .5; cursor: default; }
 #player:fullscreen #help, #player:fullscreen #toolbar strong { display: none; }
 #player:fullscreen #toolbar {
     position: absolute; top: 12px; right: 14px; z-index: 6; width: auto;
-    box-sizing: border-box; padding: 8px; border: 0; border-bottom: 1px solid #6b3434;
-    border-radius: 0 0 3px 3px; background: #151112e8; flex-wrap: nowrap;
+    box-sizing: border-box; max-width: calc(100vw - 28px); padding: 8px; border: 0; border-bottom: 1px solid #6b3434;
+    border-radius: 0 0 3px 3px; background: #151112e8; flex-wrap: wrap; justify-content: flex-end;
     opacity: 0; transform: translateY(calc(-100% - 14px)); pointer-events: none;
     transition: opacity .18s ease, transform .18s ease;
 }
-#player:fullscreen #toolbar:hover,
-#player:fullscreen #toolbar.keyboard-focus:focus-within,
+#player:fullscreen:not(.tools-collapsed) #toolbar:hover,
+#player:fullscreen:not(.tools-collapsed) #toolbar.keyboard-focus:focus-within,
 #player:fullscreen.tools-visible #toolbar {
     opacity: 1; transform: translateY(0); pointer-events: auto;
 }
+#player:fullscreen.tools-collapsed #toolbar { opacity: 0; transform: translateY(calc(-100% - 14px)); pointer-events: none; }
 #edge-indicator { display: none; }
 #player:fullscreen #edge-indicator {
     display: block; position: absolute; z-index: 7; top: 0; right: 14px;
@@ -156,21 +171,31 @@ button:disabled { opacity: .5; cursor: default; }
 #player:fullscreen #edge-indicator:hover,
 #player:fullscreen.tools-visible #edge-indicator:hover { opacity: 1; }
 #player:fullscreen.tools-visible #edge-indicator { opacity: .22; }
-#edge-indicator span {
+#edge-indicator > span:first-child {
     position: relative; display: block; box-sizing: border-box; width: 64px; height: 18px; margin: 3px auto 0;
     border: 1px solid #c5aaa28c; border-top-color: #ad3d35b8; border-radius: 2px 2px 9px 9px;
     background: #21191ae8; box-shadow: 0 2px 6px #000c, inset 0 1px #ffffff12;
     backdrop-filter: blur(5px); transition: background .18s ease, border-color .18s ease;
 }
-#edge-indicator span::before {
+#edge-indicator > span:first-child::before {
     content: ""; position: absolute; left: 28px; top: 3px; width: 7px; height: 7px;
     border: solid #f0e4de; border-width: 0 2px 2px 0; transform: rotate(45deg);
 }
-#edge-indicator span::after {
+#edge-indicator > span:first-child::after {
     content: ""; position: absolute; left: 9px; top: 7px; width: 3px; height: 3px;
     border-radius: 50%; background: #d14a3e; box-shadow: 0 0 3px #d14a3e88;
 }
-#edge-indicator:hover span { background: #302224f2; border-color: #e0c8bdc9; border-top-color: #ef5146; }
+#edge-indicator:hover > span:first-child { background: #302224f2; border-color: #e0c8bdc9; border-top-color: #ef5146; }
+#edge-indicator span.edge-label {
+    position: absolute; top: 20px; right: 0; display: none; width: max-content; height: auto; max-width: min(240px, calc(100vw - 24px)); margin: 0;
+    padding: 5px 9px; border: 1px solid #8d443b; border-radius: 2px; background: #21191af2;
+    color: #f5d4c6; box-shadow: 0 2px 8px #000b; font: 600 11px/1.25 system-ui, sans-serif; text-align: right;
+}
+#edge-indicator.online-active .edge-label { display: block; }
+#edge-indicator.online-request .edge-label { border-color: #e34238; color: #fff; }
+#player:fullscreen.tools-visible:not(.tools-collapsed) #edge-indicator.online-active { opacity: .85; }
+#online-controls #online-collapse-tools { display: none; }
+#player:fullscreen #online-controls #online-collapse-tools { display: inline-block; }
 #audio-control { position: relative; }
 #audio-toggle {
     display: inline-flex; align-items: center; justify-content: center; gap: 7px;
@@ -216,6 +241,10 @@ button:disabled { opacity: .5; cursor: default; }
     button { padding: 9px 12px; }
     #toolbar strong small { letter-spacing: 2px; }
     #volume-panel { width: min(256px, calc(100vw - 24px)); }
+    #online-controls { flex: 1 1 100%; }
+    #online-status { max-width: 100%; flex: 1 1 100%; }
+    #player:fullscreen #online-controls { flex: 1 1 100%; }
+    #player:fullscreen #online-status { max-width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
     button, #player:fullscreen #toolbar, #player:fullscreen #edge-indicator,
@@ -228,6 +257,16 @@ button:disabled { opacity: .5; cursor: default; }
         <main id="player">
         <nav id="toolbar" aria-label="游戏工具">
             <strong>死神 <span>VS</span> 火影 <span>2.6</span><small>BLEACH VS NARUTO</small></strong>
+            <section id="online-controls" aria-label="联机对战控制" hidden>
+                <span id="online-status" role="status" aria-live="polite"></span>
+                <span id="online-request" hidden></span>
+                <button id="online-pause" type="button" hidden></button>
+                <button id="online-accept-pause" type="button" hidden>同意</button>
+                <button id="online-refuse-pause" type="button" hidden>拒绝</button>
+                <button id="online-skip-intro" type="button" hidden>请求跳过开场</button>
+                <button id="online-exit" type="button" hidden></button>
+                <button id="online-collapse-tools" type="button" aria-label="收起游戏工具" title="收起">收起</button>
+            </section>
             <div id="audio-control" data-muted="false">
                 <button id="audio-toggle" type="button" aria-label="音量设置" aria-expanded="false" aria-controls="volume-panel" title="音量设置">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z"></path><path class="speaker-waves" d="M15 9a4 4 0 0 1 0 6m2-9a7 7 0 0 1 0 12"></path><path class="speaker-cross" d="m16 10 5 5m0-5-5 5"></path></svg>
@@ -250,7 +289,7 @@ button:disabled { opacity: .5; cursor: default; }
             <button id="fullscreen" type="button">进入全屏</button>
             <button id="download" type="button">导出日志</button>
         </nav>
-        <button id="edge-indicator" type="button" aria-label="显示游戏工具"><span></span></button>
+        <button id="edge-indicator" type="button" aria-label="显示游戏工具"><span aria-hidden="true"></span><span class="edge-label" hidden></span></button>
         <p id="help">点击画面，开始对战 · 全屏沉浸游玩 · 遇到问题可导出日志反馈</p>
         <div id="viewport">
         <canvas id="canvas" tabindex="0">
@@ -278,6 +317,16 @@ button:disabled { opacity: .5; cursor: default; }
     const feedback = document.getElementById('feedback');
     const edgeIndicator = document.getElementById('edge-indicator');
     const toolbar = document.getElementById('toolbar');
+    const onlineControls = document.getElementById('online-controls');
+    const onlineStatus = document.getElementById('online-status');
+    const onlineRequest = document.getElementById('online-request');
+    const onlinePause = document.getElementById('online-pause');
+    const onlineAcceptPause = document.getElementById('online-accept-pause');
+    const onlineRefusePause = document.getElementById('online-refuse-pause');
+    const onlineSkipIntro = document.getElementById('online-skip-intro');
+    const onlineExit = document.getElementById('online-exit');
+    const onlineCollapseTools = document.getElementById('online-collapse-tools');
+    const edgeLabel = edgeIndicator.querySelector('.edge-label');
     const audioControl = document.getElementById('audio-control');
     const audioToggle = document.getElementById('audio-toggle');
     const muteToggle = document.getElementById('mute-toggle');
@@ -291,8 +340,182 @@ button:disabled { opacity: .5; cursor: default; }
     let sliderDragging = false;
     let touchPinned = false;
     let edgePointerType = 'mouse';
+    let onlineOwnerToken = 0;
+    let nextOnlineOwnerToken = 1;
+    let onlineControlsCallback = null;
+    let onlineControlsSnapshot = null;
+    let onlineControlsSerialized = '';
+    const seenOnlineSessions = new Set();
     const AUDIO_KEY = 'bvn26.audio.v1';
     const DEFAULT_VOLUME = 72;
+    function validOnlineControlsSnapshot(value) {
+        if (!value || typeof value !== 'object' || Array.isArray(value) || value.schemaVersion !== 1
+                || typeof value.active !== 'boolean' || typeof value.session !== 'string' || value.session.length > 128
+                || !Number.isSafeInteger(value.revision) || value.revision < 0
+                || typeof value.status !== 'string' || value.status.length > 500
+                || typeof value.pauseLabel !== 'string' || value.pauseLabel.length > 80
+                || typeof value.canPause !== 'boolean' || typeof value.canResume !== 'boolean'
+                || typeof value.canAcceptPause !== 'boolean' || typeof value.canRefusePause !== 'boolean'
+                || typeof value.canSkipIntro !== 'boolean' || typeof value.canExit !== 'boolean'
+                || typeof value.exitLabel !== 'string' || value.exitLabel.length > 80) return false;
+        if (value.active && value.session.length === 0) return false;
+        if (value.pauseRequest !== null) {
+            const request = value.pauseRequest;
+            if (!request || typeof request !== 'object' || Array.isArray(request)
+                    || typeof request.id !== 'string' || request.id.length === 0 || request.id.length > 128
+                    || typeof request.text !== 'string' || request.text.length > 240) return false;
+        }
+        return true;
+    }
+    function canonicalOnlineControlsSnapshot(value) {
+        return JSON.stringify({
+            schemaVersion: value.schemaVersion,
+            active: value.active,
+            session: value.session,
+            revision: value.revision,
+            status: value.status,
+            pauseLabel: value.pauseLabel,
+            canPause: value.canPause,
+            canResume: value.canResume,
+            pauseRequest: value.pauseRequest === null ? null : { id: value.pauseRequest.id, text: value.pauseRequest.text },
+            canAcceptPause: value.canAcceptPause,
+            canRefusePause: value.canRefusePause,
+            canSkipIntro: value.canSkipIntro,
+            canExit: value.canExit,
+            exitLabel: value.exitLabel,
+        });
+    }
+    function currentOnlineAction(action) {
+        const state = onlineControlsSnapshot;
+        if (!state || !state.active) return false;
+        switch (action) {
+            case 'pause': return state.canPause;
+            case 'resume': return state.canResume;
+            case 'accept_pause': return state.pauseRequest !== null && state.canAcceptPause;
+            case 'refuse_pause': return state.pauseRequest !== null && state.canRefusePause;
+            case 'skip_intro': return state.canSkipIntro;
+            case 'exit': return state.canExit;
+            default: return false;
+        }
+    }
+    function preserveOnlineToolbarForUserAction() {
+        const state = onlineControlsSnapshot;
+        return Boolean(state?.active && (state.pauseRequest !== null
+            || (state.canExit && state.exitLabel !== '退出本局')));
+    }
+    function sendOnlineAction(action) {
+        const state = onlineControlsSnapshot;
+        if (!currentOnlineAction(action) || typeof onlineControlsCallback !== 'function') return false;
+        const requestId = action === 'accept_pause' || action === 'refuse_pause' ? state.pauseRequest.id : '';
+        try {
+            onlineControlsCallback(action, state.session, state.revision, requestId);
+            canvas.focus();
+            return true;
+        } catch (error) {
+            record('warn', 'Online control callback failed', error);
+            canvas.focus();
+            return false;
+        }
+    }
+    function renderOnlineControls(state) {
+        const active = state.active;
+        onlineControls.hidden = !active;
+        edgeIndicator.classList.toggle('online-active', active);
+        edgeIndicator.classList.toggle('online-request', active && state.pauseRequest !== null);
+        edgeLabel.hidden = !active;
+        edgeLabel.textContent = state.pauseRequest === null ? '联机' : '对方有操作请求';
+        edgeIndicator.setAttribute('aria-label', !active ? '显示游戏工具'
+            : state.pauseRequest === null ? '显示联机控制' : '对方请求了联机操作，显示控制');
+        onlineStatus.hidden = !active || state.status.length === 0;
+        onlineStatus.textContent = state.status;
+        onlineStatus.title = state.status;
+        onlineRequest.hidden = !active || state.pauseRequest === null || state.pauseRequest.text === state.status;
+        onlineRequest.textContent = state.pauseRequest === null ? '' : state.pauseRequest.text;
+        onlinePause.hidden = !active || !(state.canPause || state.canResume);
+        onlinePause.disabled = !(state.canPause || state.canResume);
+        onlinePause.textContent = state.pauseLabel;
+        onlineAcceptPause.hidden = !active || state.pauseRequest === null || !state.canAcceptPause;
+        onlineAcceptPause.disabled = onlineAcceptPause.hidden;
+        onlineRefusePause.hidden = !active || state.pauseRequest === null || !state.canRefusePause;
+        onlineRefusePause.disabled = onlineRefusePause.hidden;
+        onlineSkipIntro.hidden = !active || !state.canSkipIntro;
+        onlineSkipIntro.disabled = onlineSkipIntro.hidden;
+        onlineExit.hidden = !active || !state.canExit;
+        onlineExit.disabled = onlineExit.hidden;
+        onlineExit.textContent = state.exitLabel;
+        if (!active) {
+            onlineRequest.textContent = '';
+            if (isFullscreen()) scheduleHideTools(0);
+        } else if (isFullscreen() && preserveOnlineToolbarForUserAction()
+                && player.classList.contains('tools-visible') && !player.classList.contains('tools-collapsed')) {
+            clearTimeout(toolsTimer);
+        }
+    }
+    function emptyOnlineControlsSnapshot() {
+        return {
+            schemaVersion: 1, active: false, session: '', revision: 0, status: '', pauseLabel: '',
+            canPause: false, canResume: false, pauseRequest: null, canAcceptPause: false,
+            canRefusePause: false, canSkipIntro: false, canExit: false, exitLabel: '',
+        };
+    }
+    window.bvnOnlineControlsRegister = callback => {
+        if (typeof callback !== 'function') return 0;
+        const token = nextOnlineOwnerToken++;
+        if (!Number.isSafeInteger(token) || token <= 0) return 0;
+        onlineOwnerToken = token;
+        onlineControlsCallback = callback;
+        onlineControlsSnapshot = null;
+        onlineControlsSerialized = '';
+        seenOnlineSessions.clear();
+        renderOnlineControls(emptyOnlineControlsSnapshot());
+        return token;
+    };
+    window.bvnOnlineControlsUnregister = token => {
+        if (!Number.isSafeInteger(token) || token <= 0 || onlineControlsCallback === null || token !== onlineOwnerToken) return false;
+        onlineOwnerToken = 0;
+        onlineControlsCallback = null;
+        onlineControlsSnapshot = null;
+        onlineControlsSerialized = '';
+        seenOnlineSessions.clear();
+        renderOnlineControls(emptyOnlineControlsSnapshot());
+        return true;
+    };
+    window.bvnOnlineControlsUpdate = (serialized, token) => {
+        if (!Number.isSafeInteger(token) || token <= 0 || onlineControlsCallback === null
+                || token !== onlineOwnerToken || typeof serialized !== 'string' || serialized.length > 8192) return false;
+        let snapshot;
+        try { snapshot = JSON.parse(serialized); }
+        catch (_) { return false; }
+        if (!validOnlineControlsSnapshot(snapshot)) return false;
+        const canonicalSnapshot = canonicalOnlineControlsSnapshot(snapshot);
+        const current = onlineControlsSnapshot;
+        if (current && snapshot.session === current.session) {
+            if (snapshot.revision < current.revision) return false;
+            if (snapshot.revision === current.revision && canonicalSnapshot !== onlineControlsSerialized) return false;
+        } else if (current && snapshot.session !== current.session && seenOnlineSessions.has(snapshot.session)) {
+            return false;
+        }
+        if (snapshot.active) {
+            seenOnlineSessions.add(snapshot.session);
+            while (seenOnlineSessions.size > 32) seenOnlineSessions.delete(seenOnlineSessions.values().next().value);
+        }
+        onlineControlsSnapshot = snapshot;
+        onlineControlsSerialized = canonicalSnapshot;
+        renderOnlineControls(snapshot);
+        return true;
+    };
+    onlinePause.addEventListener('click', () => sendOnlineAction(onlineControlsSnapshot?.canResume ? 'resume' : 'pause'));
+    onlineAcceptPause.addEventListener('click', () => sendOnlineAction('accept_pause'));
+    onlineRefusePause.addEventListener('click', () => sendOnlineAction('refuse_pause'));
+    onlineSkipIntro.addEventListener('click', () => sendOnlineAction('skip_intro'));
+    onlineExit.addEventListener('click', () => sendOnlineAction('exit'));
+    onlineCollapseTools.addEventListener('click', () => {
+        player.classList.add('tools-collapsed');
+        player.classList.remove('tools-visible');
+        touchPinned = false;
+        scheduleHideTools(0);
+        canvas.focus();
+    });
     function clampVolume(value) {
         return Number.isFinite(value) ? Math.max(0, Math.min(100, Math.round(value))) : DEFAULT_VOLUME;
     }
@@ -355,7 +578,9 @@ button:disabled { opacity: .5; cursor: default; }
         clearTimeout(toolsTimer);
         toolsTimer = setTimeout(() => {
             const keyboardFocusActive = toolbar.classList.contains('keyboard-focus') && toolbar.matches(':focus-within');
-            if (isFullscreen() && !touchPinned && !toolsHovered && !edgeHovered && !sliderDragging && !keyboardFocusActive) {
+            const preserveForOnlineAction = preserveOnlineToolbarForUserAction();
+            if (isFullscreen() && !touchPinned && !toolsHovered && !edgeHovered && !sliderDragging && !keyboardFocusActive
+                    && !preserveForOnlineAction && !player.classList.contains('tools-collapsed')) {
                 if (!volumePanel.hidden) {
                     volumePanel.hidden = true;
                     audioToggle.setAttribute('aria-expanded', 'false');
@@ -366,6 +591,7 @@ button:disabled { opacity: .5; cursor: default; }
     }
     function revealTools() {
         if (!isFullscreen()) return;
+        player.classList.remove('tools-collapsed');
         player.classList.add('tools-visible');
         scheduleHideTools();
     }
@@ -382,6 +608,7 @@ button:disabled { opacity: .5; cursor: default; }
             if (touchPinned) revealTools();
             else {
                 player.classList.remove('tools-visible');
+                player.classList.add('tools-collapsed');
                 scheduleHideTools(0);
             }
             edgePointerType = 'mouse';
@@ -454,6 +681,40 @@ button:disabled { opacity: .5; cursor: default; }
             return;
         }
         if (toolbar.contains(event.target)) event.stopPropagation();
+    }, true);
+    const onlineEditKeys = new Set();
+    function isOnlineEditTarget(event) {
+        return event.target === canvas || event.target?.classList?.contains('ime') === true;
+    }
+    document.addEventListener('keydown', event => {
+        if (!window.bvnOnlinePasteTargetActive || !isOnlineEditTarget(event)
+                || event.isComposing || event.altKey || event.shiftKey
+                || event.metaKey === event.ctrlKey) return;
+        const key = String(event.key || '').toLowerCase();
+        if (!['a', 'c', 'x', 'v'].includes(key)) return;
+        onlineEditKeys.add(event.code);
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+        if (key === 'v') return;
+        event.preventDefault();
+        const callback = window.bvnOnlineShortcutCallback;
+        if (typeof callback === 'function') callback(key);
+    }, true);
+    document.addEventListener('keyup', event => {
+        if (!onlineEditKeys.has(event.code)) return;
+        onlineEditKeys.delete(event.code);
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+    }, true);
+    window.addEventListener('paste', event => {
+        if (!window.bvnOnlinePasteTargetActive || !isOnlineEditTarget(event)
+                || typeof window.bvnOnlinePasteCallback !== 'function' || !event.clipboardData) return;
+        const types = Array.from(event.clipboardData.types || []);
+        event.preventDefault();
+        if (!types.includes('text/plain')) return;
+        // Let Godot's bubble-phase paste handler update its clipboard cache before
+        // the deferred native LineEdit MENU_PASTE action runs.
+        window.bvnOnlinePasteCallback();
     }, true);
     document.addEventListener('keyup', event => {
         if (toolbar.contains(event.target)) event.stopPropagation();
@@ -787,7 +1048,7 @@ button:disabled { opacity: .5; cursor: default; }
         setPanelOpen(false);
         toolsHovered = false;
         touchPinned = false;
-        player.classList.remove('tools-visible');
+        player.classList.remove('tools-visible', 'tools-collapsed');
         clearTimeout(toolsTimer);
         record('fullscreen', active);
     });

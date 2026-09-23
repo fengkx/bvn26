@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<title>$GODOT_PROJECT_NAME</title>
+		<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+
+#status {
+	background-color: $GODOT_SPLASH_COLOR;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+#status-splash.show-image--false {
+	display: none;
+}
+
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
+
+#status-progress, #status-notice {
+	display: none;
+}
+
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
+
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+
+/* Keep the engine's logical canvas while scaling its presentation proportionally. */
+body {
+    overflow: auto; touch-action: auto; font: 14px system-ui, sans-serif;
+    background: #100d0e; color: #f5efea;
+    background-image: linear-gradient(125deg, #9e15152b, transparent 45%),
+        repeating-linear-gradient(135deg, transparent 0 80px, #ffffff03 80px 81px);
+}
+#player { min-height: 100dvh; display: flex; flex-direction: column; align-items: center; }
+#toolbar {
+    box-sizing: border-box; width: min(1200px, 94vw); padding: 26px 0 18px;
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    border-bottom: 1px solid #6b3434;
+}
+#toolbar strong { margin-right: auto; font-size: clamp(20px, 3vw, 30px); font-style: italic; letter-spacing: -1px; }
+#toolbar strong span { color: #ed4339; font-size: .75em; margin: 0 5px; }
+#toolbar strong small { display: block; margin-top: 5px; font: 10px system-ui, sans-serif; letter-spacing: 4px; color: #a99a94; }
+button {
+    padding: 11px 22px; border: 1px solid #71504b; border-radius: 2px;
+    color: #f5efea; background: #211a1a; cursor: pointer; font: 600 13px system-ui, sans-serif;
+    transform: skew(-8deg); transition: background .15s, border-color .15s;
+}
+#fullscreen { background: #ad241f; border-color: #e84a3f; }
+button:hover { background: #49302c; border-color: #f5b095; }
+#fullscreen:hover { background: #cf3028; }
+button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+button:disabled { opacity: .5; cursor: default; }
+#help { margin: 15px 20px; color: #b8a9a2; font-size: 12px; text-align: center; letter-spacing: 1px; }
+#viewport {
+    position: relative; width: min(1200px, 94vw, calc((100dvh - 190px) * 1.5));
+    aspect-ratio: 3 / 2; background: black; flex: none;
+    box-shadow: 0 0 0 1px #76534a, 0 16px 60px #0009;
+}
+#canvas { position: absolute; inset: 0; }
+#feedback { min-height: 1.5em; margin: 14px 20px; color: #d0b6a5; font-size: 12px; text-align: center; }
+#player:fullscreen {
+    background: black; overflow: hidden; width: 100%; height: 100%;
+    min-height: 0; justify-content: center;
+}
+#player:fullscreen #viewport {
+    width: min(100vw, 150dvh); height: min(100dvh, calc(100vw / 1.5));
+    box-shadow: none;
+}
+#player:fullscreen #help, #player:fullscreen #toolbar strong { display: none; }
+#player:fullscreen #toolbar {
+    position: absolute; top: 12px; right: 14px; z-index: 6; width: auto;
+    box-sizing: border-box; padding: 8px; border: 0; border-bottom: 1px solid #6b3434;
+    border-radius: 0 0 3px 3px; background: #151112e8; flex-wrap: nowrap;
+    opacity: 0; transform: translateY(calc(-100% - 14px)); pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
+}
+#player:fullscreen #toolbar:hover,
+#player:fullscreen #toolbar.keyboard-focus:focus-within,
+#player:fullscreen.tools-visible #toolbar {
+    opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+#edge-indicator { display: none; }
+#player:fullscreen #edge-indicator {
+    display: block; position: absolute; z-index: 7; top: 0; right: 14px;
+    box-sizing: border-box; width: 132px; height: 24px; padding: 0; border: 0; border-radius: 0 0 10px 10px;
+    background: transparent; opacity: .92; cursor: pointer;
+    transform: none; transition: opacity .18s ease, background .18s ease;
+}
+#player:fullscreen #edge-indicator:hover { background: transparent; }
+#player:fullscreen #edge-indicator:hover,
+#player:fullscreen.tools-visible #edge-indicator:hover { opacity: 1; }
+#player:fullscreen.tools-visible #edge-indicator { opacity: .22; }
+#edge-indicator span {
+    position: relative; display: block; box-sizing: border-box; width: 64px; height: 18px; margin: 3px auto 0;
+    border: 1px solid #c5aaa28c; border-top-color: #ad3d35b8; border-radius: 2px 2px 9px 9px;
+    background: #21191ae8; box-shadow: 0 2px 6px #000c, inset 0 1px #ffffff12;
+    backdrop-filter: blur(5px); transition: background .18s ease, border-color .18s ease;
+}
+#edge-indicator span::before {
+    content: ""; position: absolute; left: 28px; top: 3px; width: 7px; height: 7px;
+    border: solid #f0e4de; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+#edge-indicator span::after {
+    content: ""; position: absolute; left: 9px; top: 7px; width: 3px; height: 3px;
+    border-radius: 50%; background: #d14a3e; box-shadow: 0 0 3px #d14a3e88;
+}
+#edge-indicator:hover span { background: #302224f2; border-color: #e0c8bdc9; border-top-color: #ef5146; }
+#audio-control { position: relative; }
+#audio-toggle {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    min-width: 44px; padding: 10px 13px; background: #211a1a;
+    transform: none; transition: background .15s, border-color .15s;
+}
+#audio-toggle svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+#audio-toggle .speaker-waves { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+#audio-control[data-muted="true"] #audio-toggle { color: #d9aaa0; }
+.speaker-cross { display: none; fill: none !important; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+#audio-control[data-muted="true"] .speaker-waves,
+#audio-control[data-muted="true"] #mute-toggle .speaker-waves { display: none; }
+#audio-control[data-muted="true"] .speaker-cross { display: block; }
+#volume-panel {
+    position: absolute; top: calc(100% + 10px); right: 0; z-index: 8;
+    box-sizing: border-box; width: 256px; padding: 15px 16px 12px;
+    color: #f5efea; background: #181314f5; border: 1px solid #76534a;
+    border-top: 2px solid #ad241f; box-shadow: 0 12px 36px #000b;
+    transform: skew(0); backdrop-filter: blur(14px);
+}
+#volume-panel[hidden] { display: none; }
+.volume-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; }
+#mute-toggle {
+    display: grid; place-items: center; width: 34px; height: 32px; padding: 6px;
+    border-color: #71504b; transform: none;
+}
+#mute-toggle svg { width: 17px; height: 17px; fill: currentColor; }
+.volume-slider-row { display: flex; align-items: center; gap: 10px; margin-top: 13px; }
+.volume-slider-row svg { width: 16px; height: 16px; fill: #cdb9b1; flex: none; }
+#volume-slider { width: 100%; min-width: 0; accent-color: #e34238; cursor: pointer; touch-action: pan-y; }
+#volume-value { min-width: 34px; color: #f2c3b0; text-align: right; font-variant-numeric: tabular-nums; }
+#volume-status { min-height: 1.2em; margin-top: 9px; color: #aa9993; font-size: 10px; }
+#audio-control:focus-within #volume-panel { outline: none; }
+#toolbar button { flex: none; }
+#player:fullscreen #feedback {
+    position: absolute; bottom: 28px; z-index: 5; margin: 0 20px; min-height: 0;
+    padding: 12px 20px; background: #100d0ee8; border-left: 3px solid #df392e;
+    color: #fff; pointer-events: none; opacity: 0;
+}
+#player:fullscreen.tools-visible #feedback { opacity: 1; }
+@media (max-width: 600px) {
+    #toolbar { padding-top: 14px; }
+    button { padding: 9px 12px; }
+    #toolbar strong small { letter-spacing: 2px; }
+    #volume-panel { width: min(256px, calc(100vw - 24px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+    button, #player:fullscreen #toolbar, #player:fullscreen #edge-indicator,
+    #player:fullscreen #feedback { transition: none; }
+}
+        </style>
+		$GODOT_HEAD_INCLUDE
+	</head>
+	<body>
+        <main id="player">
+        <nav id="toolbar" aria-label="游戏工具">
+            <strong>死神 <span>VS</span> 火影 <span>2.6</span><small>BLEACH VS NARUTO</small></strong>
+            <div id="audio-control" data-muted="false">
+                <button id="audio-toggle" type="button" aria-label="音量设置" aria-expanded="false" aria-controls="volume-panel" title="音量设置">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z"></path><path class="speaker-waves" d="M15 9a4 4 0 0 1 0 6m2-9a7 7 0 0 1 0 12"></path><path class="speaker-cross" d="m16 10 5 5m0-5-5 5"></path></svg>
+                </button>
+                <section id="volume-panel" aria-label="音量控制" hidden>
+                    <div class="volume-heading">
+                        <span>主音量</span>
+                        <button id="mute-toggle" type="button" aria-label="静音" title="静音">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z"></path><path class="speaker-waves" d="M15 9a4 4 0 0 1 0 6m2-9a7 7 0 0 1 0 12"></path><path class="speaker-cross" d="m16 10 5 5m0-5-5 5"></path></svg>
+                        </button>
+                    </div>
+                    <div class="volume-slider-row">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3z"></path></svg>
+                        <input id="volume-slider" type="range" min="0" max="100" step="1" value="72" aria-label="主音量">
+                        <output id="volume-value" for="volume-slider">72%</output>
+                    </div>
+                    <div id="volume-status" role="status" aria-live="polite">等待游戏音频初始化</div>
+                </section>
+            </div>
+            <button id="fullscreen" type="button">进入全屏</button>
+            <button id="download" type="button">导出日志</button>
+        </nav>
+        <button id="edge-indicator" type="button" aria-label="显示游戏工具"><span></span></button>
+        <p id="help">点击画面，开始对战 · 全屏沉浸游玩 · 遇到问题可导出日志反馈</p>
+        <div id="viewport">
+        <canvas id="canvas" tabindex="0">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<img id="status-splash" class="$GODOT_SPLASH_CLASSES" src="$GODOT_SPLASH" alt="">
+			<progress id="status-progress"></progress>
+			<div id="status-notice"></div>
+		</div>
+
+        </div>
+        <p id="feedback" role="status" aria-live="polite"></p>
+        </main>
+        <script>
+(() => {
+    const player = document.getElementById('player');
+    const canvas = document.getElementById('canvas');
+    const fullscreen = document.getElementById('fullscreen');
+    const feedback = document.getElementById('feedback');
+    const edgeIndicator = document.getElementById('edge-indicator');
+    const toolbar = document.getElementById('toolbar');
+    const audioControl = document.getElementById('audio-control');
+    const audioToggle = document.getElementById('audio-toggle');
+    const muteToggle = document.getElementById('mute-toggle');
+    const volumePanel = document.getElementById('volume-panel');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeValue = document.getElementById('volume-value');
+    const volumeStatus = document.getElementById('volume-status');
+    let toolsTimer;
+    let toolsHovered = false;
+    let edgeHovered = false;
+    let sliderDragging = false;
+    let touchPinned = false;
+    let edgePointerType = 'mouse';
+    const AUDIO_KEY = 'bvn26.audio.v1';
+    const DEFAULT_VOLUME = 72;
+    function clampVolume(value) {
+        return Number.isFinite(value) ? Math.max(0, Math.min(100, Math.round(value))) : DEFAULT_VOLUME;
+    }
+    function readAudioSettings() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(AUDIO_KEY) || 'null');
+            if (!saved || typeof saved !== 'object') return { volume: DEFAULT_VOLUME, lastNonzero: DEFAULT_VOLUME, muted: false };
+            const volume = clampVolume(saved.volume);
+            const lastNonzero = clampVolume(saved.lastNonzero);
+            return {
+                volume,
+                lastNonzero: lastNonzero > 0 ? lastNonzero : DEFAULT_VOLUME,
+                muted: typeof saved.muted === 'boolean' ? saved.muted : false,
+            };
+        } catch (_) {
+            return { volume: DEFAULT_VOLUME, lastNonzero: DEFAULT_VOLUME, muted: false };
+        }
+    }
+    const audioSettings = readAudioSettings();
+    let audioSettingsCallback = null;
+    function persistAudioSettings() {
+        try { localStorage.setItem(AUDIO_KEY, JSON.stringify(audioSettings)); }
+        catch (error) { record('warn', 'Audio settings could not be saved', error); }
+    }
+    function syncAudioControls() {
+        volumeSlider.value = String(audioSettings.volume);
+        volumeValue.value = `${audioSettings.volume}%`;
+        volumeValue.textContent = `${audioSettings.volume}%`;
+        const isSilent = audioSettings.muted || audioSettings.volume === 0;
+        audioControl.dataset.muted = String(isSilent);
+        muteToggle.setAttribute('aria-label', isSilent ? '取消静音' : '静音');
+        muteToggle.title = isSilent ? '取消静音' : '静音';
+    }
+    function publishAudioSettings() {
+        persistAudioSettings();
+        syncAudioControls();
+        if (audioSettingsCallback) audioSettingsCallback(audioSettings.volume / 100, audioSettings.muted);
+    }
+    window.bvnRegisterAudioSettings = callback => {
+        audioSettingsCallback = typeof callback === 'function' ? callback : null;
+        publishAudioSettings();
+    };
+    window.bvnUnregisterAudioSettings = callback => {
+        if (!callback || callback === audioSettingsCallback) audioSettingsCallback = null;
+    };
+    window.bvnAudioSettingsApplied = (volumeDb, muted) => {
+        if (!Number.isFinite(volumeDb) || typeof muted !== 'boolean') {
+            volumeStatus.textContent = '音量暂不可用';
+            return;
+        }
+        const actual = volumeDb <= -79 ? 0 : clampVolume(100 * Math.pow(10, volumeDb / 20));
+        volumeStatus.textContent = muted ? '音乐与音效已静音' : `音乐与音效 ${actual}%`;
+    };
+    volumeSlider.value = String(audioSettings.volume);
+    volumeValue.value = `${audioSettings.volume}%`;
+    volumeValue.textContent = `${audioSettings.volume}%`;
+    syncAudioControls();
+    function isFullscreen() { return document.fullscreenElement === player; }
+    function scheduleHideTools(delay = 700) {
+        clearTimeout(toolsTimer);
+        toolsTimer = setTimeout(() => {
+            const keyboardFocusActive = toolbar.classList.contains('keyboard-focus') && toolbar.matches(':focus-within');
+            if (isFullscreen() && !touchPinned && !toolsHovered && !edgeHovered && !sliderDragging && !keyboardFocusActive) {
+                if (!volumePanel.hidden) {
+                    volumePanel.hidden = true;
+                    audioToggle.setAttribute('aria-expanded', 'false');
+                }
+                player.classList.remove('tools-visible');
+            }
+        }, delay);
+    }
+    function revealTools() {
+        if (!isFullscreen()) return;
+        player.classList.add('tools-visible');
+        scheduleHideTools();
+    }
+    player.addEventListener('pointermove', event => {
+        if (isFullscreen() && event.clientY <= 24 && event.clientX >= window.innerWidth - 160) revealTools();
+    });
+    edgeIndicator.addEventListener('pointerdown', event => { edgePointerType = event.pointerType; });
+    edgeIndicator.addEventListener('pointerenter', () => { edgeHovered = true; revealTools(); });
+    edgeIndicator.addEventListener('pointerleave', () => { edgeHovered = false; scheduleHideTools(); });
+    edgeIndicator.addEventListener('focus', revealTools);
+    edgeIndicator.addEventListener('click', () => {
+        if (edgePointerType === 'touch') {
+            touchPinned = !touchPinned;
+            if (touchPinned) revealTools();
+            else {
+                player.classList.remove('tools-visible');
+                scheduleHideTools(0);
+            }
+            edgePointerType = 'mouse';
+            return;
+        }
+        revealTools();
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Tab') toolbar.classList.add('keyboard-focus');
+    }, true);
+    document.addEventListener('pointerdown', () => toolbar.classList.remove('keyboard-focus'), true);
+    toolbar.addEventListener('pointerenter', () => { toolsHovered = true; clearTimeout(toolsTimer); });
+    toolbar.addEventListener('pointerleave', () => { toolsHovered = false; scheduleHideTools(); });
+    toolbar.addEventListener('focusout', () => setTimeout(() => {
+        if (!toolbar.contains(document.activeElement)) {
+            toolbar.classList.remove('keyboard-focus');
+            scheduleHideTools();
+        }
+    }, 0));
+    function setPanelOpen(open) {
+        volumePanel.hidden = !open;
+        audioToggle.setAttribute('aria-expanded', String(open));
+        if (open) {
+            player.classList.add('tools-visible');
+            clearTimeout(toolsTimer);
+        } else if (isFullscreen()) scheduleHideTools(350);
+    }
+    audioToggle.addEventListener('click', () => setPanelOpen(volumePanel.hidden));
+    muteToggle.addEventListener('click', () => {
+        const isSilent = audioSettings.muted || audioSettings.volume === 0;
+        if (isSilent) {
+            audioSettings.muted = false;
+            if (audioSettings.volume === 0) audioSettings.volume = audioSettings.lastNonzero;
+        } else {
+            if (audioSettings.volume > 0) audioSettings.lastNonzero = audioSettings.volume;
+            audioSettings.muted = true;
+        }
+        publishAudioSettings();
+    });
+    volumeSlider.addEventListener('pointerdown', () => { sliderDragging = true; clearTimeout(toolsTimer); });
+    window.addEventListener('pointerup', () => {
+        if (!sliderDragging) return;
+        sliderDragging = false;
+        scheduleHideTools();
+    });
+    window.addEventListener('pointercancel', () => {
+        if (!sliderDragging) return;
+        sliderDragging = false;
+        scheduleHideTools();
+    });
+    volumeSlider.addEventListener('input', () => {
+        audioSettings.volume = clampVolume(Number(volumeSlider.value));
+        if (audioSettings.volume > 0) {
+            audioSettings.lastNonzero = audioSettings.volume;
+            audioSettings.muted = false;
+        }
+        publishAudioSettings();
+    });
+    volumePanel.addEventListener('pointerdown', event => event.stopPropagation());
+    audioControl.addEventListener('pointerdown', event => event.stopPropagation());
+    document.addEventListener('pointerdown', event => {
+        if (!audioControl.contains(event.target)) setPanelOpen(false);
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !volumePanel.hidden) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            setPanelOpen(false);
+            audioToggle.focus();
+            return;
+        }
+        if (toolbar.contains(event.target)) event.stopPropagation();
+    }, true);
+    document.addEventListener('keyup', event => {
+        if (toolbar.contains(event.target)) event.stopPropagation();
+    }, true);
+    const entries = [];
+    const startedAt = new Date().toISOString();
+    const sessionId = typeof crypto.randomUUID === 'function'
+        ? crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    const logWindowMs = 60_000;
+    const legacyEntryLimit = 2000;
+    const legacyMessageLimit = 8192;
+    const runtimeEventLimit = 50_000;
+    const runtimeByteLimit = 16 * 1024 * 1024;
+    const runtimeEventLimitBytes = 32 * 1024;
+    const criticalEventLimit = 64;
+    let dropped = 0;
+    let rejectedRuntimeEvents = 0;
+    const runtimeDropped = { age: 0, count: 0, bytes: 0 };
+    const runtimeEvents = [];
+    let runtimeEventHead = 0;
+    let runtimeEventCount = 0;
+    const criticalEvents = [];
+    const criticalIncidents = [];
+    const activeIncidents = [];
+    const incidentLimit = 8;
+    const incidentWindowBeforeMs = 3000;
+    const incidentWindowAfterMs = 5000;
+    const incidentEventLimit = 3000;
+    const incidentByteLimit = 2 * 1024 * 1024;
+    let criticalDropped = 0;
+    let incidentDropped = 0;
+    let shellEventSeq = 0;
+    let runtimeEventBytes = 0;
+    let latestRuntimeSnapshot = null;
+    let runtimeBuildId = null;
+    let diagnosticsRequestCallback = null;
+    const snapshotWaiters = new Map();
+    let buildSidecar = null;
+    let buildSidecarStatus = 'pending';
+    function format(value) {
+        if (value instanceof Error) return value.stack || value.message;
+        if (typeof value === 'string') return value;
+        try { return JSON.stringify(value) ?? String(value); } catch { return String(value); }
+    }
+    function record(level, ...args) {
+        const receivedMonoMs = performance.now();
+        const message = args.map(format).join(' ').slice(0, legacyMessageLimit);
+        entries.push({
+            value: { time: new Date().toISOString(), level, message },
+            receivedMonoMs,
+        });
+        while (entries.length && (entries[0].receivedMonoMs < receivedMonoMs - logWindowMs || entries.length > legacyEntryLimit)) {
+            entries.shift();
+            dropped++;
+        }
+        if (level === 'error') appendShellEvent('diagnostic_exception', { level, message });
+    }
+    window.bvnLog = record;
+
+    function validBuildSidecar(value) {
+        return value && value.schemaVersion === 1 && typeof value.buildID === 'string'
+            && /^[a-f0-9]{64}$/.test(value.buildID)
+            && /^[a-f0-9]{64}$/.test(value.pckSha256)
+            && value.pckHashKind === 'exported_artifact';
+    }
+    const buildSidecarPromise = (async () => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 1500);
+        try {
+            const response = await fetch(new URL('build-metadata.json', document.baseURI), {
+                cache: 'no-store', signal: controller.signal,
+            });
+            if (!response.ok) throw new Error(`Build metadata HTTP ${response.status}`);
+            const value = await response.json();
+            if (!validBuildSidecar(value)) throw new Error('Build metadata sidecar is malformed');
+            buildSidecar = value;
+            buildSidecarStatus = 'ready';
+            return value;
+        } catch (error) {
+            buildSidecarStatus = 'unknown';
+            record('warn', 'Build metadata unavailable', error);
+            return null;
+        } finally {
+            clearTimeout(timeout);
+        }
+    })();
+
+    function makeRunReportId(prefix) {
+        return `${prefix}-${sessionId}-${Math.random().toString(36).slice(2, 9)}`;
+    }
+    function trimRuntimeEvents(nowMonoMs = performance.now()) {
+        const cutoff = nowMonoMs - logWindowMs;
+        while (runtimeEventCount && runtimeEvents[runtimeEventHead].receivedMonoMs < cutoff) {
+            discardOldestRuntimeEvent('age');
+        }
+        while (runtimeEventCount > runtimeEventLimit) {
+            discardOldestRuntimeEvent('count');
+        }
+        while (runtimeEventBytes > runtimeByteLimit && runtimeEventCount) {
+            discardOldestRuntimeEvent('bytes');
+        }
+    }
+
+    function discardOldestRuntimeEvent(reason) {
+        const item = runtimeEvents[runtimeEventHead];
+        runtimeEvents[runtimeEventHead] = null;
+        runtimeEventHead++;
+        runtimeEventCount--;
+        runtimeEventBytes -= item.byteLength;
+        runtimeDropped[reason]++;
+        // Occasional compaction keeps the hot path O(1) without retaining old payloads.
+        if (runtimeEventHead >= 256 && runtimeEventHead * 2 >= runtimeEvents.length) {
+            runtimeEvents.splice(0, runtimeEventHead);
+            runtimeEventHead = 0;
+        }
+    }
+
+    function appendRuntimeEvent(event) {
+        if (!event || typeof event !== 'object' || Array.isArray(event) || typeof event.type !== 'string') {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+        const receivedMonoMs = performance.now();
+        const entry = {
+            ...event,
+            origin: event.origin || 'runtime',
+            runId: sessionId,
+            receivedAt: new Date().toISOString(),
+            receivedMonoMs,
+        };
+        const encoder = new TextEncoder();
+        const byteLength = encoder.encode(JSON.stringify(entry)).byteLength;
+        if (byteLength > runtimeEventLimitBytes) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+        if (typeof entry.buildID === 'string') runtimeBuildId = entry.buildID;
+        runtimeEvents.push({ event: entry, byteLength, receivedMonoMs });
+        runtimeEventCount++;
+        runtimeEventBytes += byteLength;
+        for (let index = activeIncidents.length - 1; index >= 0; index--) {
+            const incident = activeIncidents[index];
+            if (receivedMonoMs <= incident.endsMonoMs) {
+                appendIncidentEvent(incident, { event: entry, byteLength });
+            } else {
+                incident.status = 'window_complete';
+                activeIncidents.splice(index, 1);
+            }
+        }
+        if (event.type === 'pause_state' || event.type === 'diagnostic_exception') {
+            criticalEvents.push(entry);
+            if (criticalEvents.length > criticalEventLimit) {
+                criticalEvents.shift();
+                criticalDropped++;
+            }
+            beginCriticalIncident(entry, receivedMonoMs);
+        }
+        trimRuntimeEvents(receivedMonoMs);
+        return true;
+    }
+
+    function appendIncidentEvent(incident, item) {
+        incident.events.push(item.event);
+        incident.bytes += item.byteLength;
+        while (incident.events.length > incidentEventLimit || incident.bytes > incidentByteLimit) {
+            const removed = incident.events.shift();
+            incident.bytes -= new TextEncoder().encode(JSON.stringify(removed)).byteLength;
+            incident.droppedEvents++;
+        }
+    }
+
+    function beginCriticalIncident(trigger, triggerMonoMs) {
+        const incident = {
+            trigger,
+            startMonoMs: Math.max(0, triggerMonoMs - incidentWindowBeforeMs),
+            triggerMonoMs,
+            endsMonoMs: triggerMonoMs + incidentWindowAfterMs,
+            status: 'collecting',
+            events: [],
+            bytes: 0,
+            droppedEvents: 0,
+        };
+        const retained = runtimeEvents.slice(runtimeEventHead, runtimeEventHead + runtimeEventCount);
+        for (const item of retained) {
+            if (item.receivedMonoMs >= incident.startMonoMs && item.receivedMonoMs <= incident.endsMonoMs) {
+                appendIncidentEvent(incident, item);
+            }
+        }
+        if (criticalIncidents.length >= incidentLimit) {
+            const removed = criticalIncidents.shift();
+            const activeIndex = activeIncidents.indexOf(removed);
+            if (activeIndex >= 0) activeIncidents.splice(activeIndex, 1);
+            incidentDropped++;
+        }
+        criticalIncidents.push(incident);
+        activeIncidents.push(incident);
+    }
+
+    function appendShellEvent(type, payload) {
+        shellEventSeq++;
+        return appendRuntimeEvent({
+            type,
+            origin: 'shell',
+            shellSeq: shellEventSeq,
+            monoMs: performance.now(),
+            payload,
+        });
+    }
+    window.bvnDiagnosticsGetContext = () => JSON.stringify({
+        schemaVersion: 2,
+        runId: sessionId,
+        buildSidecar,
+        buildSidecarStatus,
+    });
+    window.bvnDiagnosticsPush = serialized => {
+        if (typeof serialized !== 'string' || serialized.length > runtimeEventLimitBytes) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+        try {
+            return appendRuntimeEvent(JSON.parse(serialized));
+        } catch (_) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+    };
+    window.bvnDiagnosticsSetSnapshot = serialized => {
+        if (typeof serialized !== 'string' || serialized.length > runtimeEventLimitBytes) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+        try {
+            const snapshot = JSON.parse(serialized);
+            if (!snapshot || typeof snapshot !== 'object' || Array.isArray(snapshot)) {
+                rejectedRuntimeEvents++;
+                return false;
+            }
+            latestRuntimeSnapshot = snapshot;
+            if (typeof snapshot.buildID === 'string') runtimeBuildId = snapshot.buildID;
+            const waiter = snapshotWaiters.get(snapshot.requestId);
+            if (waiter) {
+                clearTimeout(waiter.timeout);
+                snapshotWaiters.delete(snapshot.requestId);
+                waiter.resolve({ status: 'acknowledged', snapshot });
+            }
+            return true;
+        } catch (_) {
+            rejectedRuntimeEvents++;
+            return false;
+        }
+    };
+    window.bvnDiagnosticsRegister = callback => {
+        diagnosticsRequestCallback = typeof callback === 'function' ? callback : null;
+        if (diagnosticsRequestCallback) diagnosticsRequestCallback('visibility', document.visibilityState);
+    };
+    window.bvnDiagnosticsUnregister = callback => {
+        if (!callback || callback === diagnosticsRequestCallback) diagnosticsRequestCallback = null;
+    };
+
+    function requestRuntimeSnapshot() {
+        if (!diagnosticsRequestCallback) return Promise.resolve({ status: 'runtime_unavailable', snapshot: latestRuntimeSnapshot });
+        const requestId = makeRunReportId('snapshot');
+        return new Promise(resolve => {
+            const timeout = setTimeout(() => {
+                snapshotWaiters.delete(requestId);
+                resolve({ status: 'timeout', snapshot: latestRuntimeSnapshot });
+            }, 1000);
+            snapshotWaiters.set(requestId, { resolve, timeout });
+            try {
+                diagnosticsRequestCallback('snapshot', requestId);
+            } catch (error) {
+                clearTimeout(timeout);
+                snapshotWaiters.delete(requestId);
+                resolve({ status: 'request_error', error: format(error), snapshot: latestRuntimeSnapshot });
+            }
+        });
+    }
+
+    for (const level of ['log', 'info', 'warn', 'error']) {
+        const original = console[level].bind(console);
+        console[level] = (...args) => { record(level, ...args); original(...args); };
+    }
+    window.addEventListener('error', event => record('error', event.error || event.message || 'Resource failed: ' + event.target?.src), true);
+    window.addEventListener('unhandledrejection', event => record('error', event.reason));
+    document.addEventListener('visibilitychange', () => {
+        record('lifecycle', document.visibilityState);
+        appendShellEvent('page_visibility', { state: document.visibilityState });
+        if (diagnosticsRequestCallback) diagnosticsRequestCallback('visibility', document.visibilityState);
+    });
+    canvas.addEventListener('webglcontextlost', () => record('error', 'WebGL context lost'));
+    const viewport = document.getElementById('viewport');
+    function fitCanvasToViewport() {
+        const rect = viewport.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const width = Math.max(1, Math.round(rect.width * dpr));
+        const height = Math.max(1, Math.round(rect.height * dpr));
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+        if (canvas.width !== width) canvas.width = width;
+        if (canvas.height !== height) canvas.height = height;
+        window.bvnCanvasSize = {
+            viewport: { width: rect.width, height: rect.height },
+            canvas: { width: canvas.width, height: canvas.height },
+            devicePixelRatio: dpr,
+        };
+        record('canvasresize', window.bvnCanvasSize);
+    }
+    const viewportObserver = new ResizeObserver(fitCanvasToViewport);
+    viewportObserver.observe(viewport);
+    window.addEventListener('resize', fitCanvasToViewport);
+    document.addEventListener('fullscreenchange', fitCanvasToViewport);
+    fitCanvasToViewport();
+    record('session', 'Web player started');
+    const available = document.fullscreenEnabled && player.requestFullscreen;
+    fullscreen.disabled = !available;
+    if (!available) fullscreen.textContent = '浏览器不支持全屏';
+    fullscreen.addEventListener('click', async () => {
+        try {
+            if (document.fullscreenElement) await document.exitFullscreen();
+            else await player.requestFullscreen();
+            canvas.focus();
+        } catch (error) {
+            record('error', error);
+            feedback.textContent = '全屏切换失败，可继续窗口游玩。' + error.message;
+        }
+    });
+    document.addEventListener('fullscreenchange', () => {
+        const active = isFullscreen();
+        fullscreen.textContent = active ? '退出全屏' : '进入全屏';
+        setPanelOpen(false);
+        toolsHovered = false;
+        touchPinned = false;
+        player.classList.remove('tools-visible');
+        clearTimeout(toolsTimer);
+        record('fullscreen', active);
+    });
+    document.getElementById('download').addEventListener('click', async () => {
+        record('session', 'Log exported');
+        const snapshotResult = await requestRuntimeSnapshot();
+        await buildSidecarPromise;
+        const nowMonoMs = performance.now();
+        trimRuntimeEvents(nowMonoMs);
+        const retainedItems = runtimeEvents.slice(runtimeEventHead, runtimeEventHead + runtimeEventCount);
+        const retainedEvents = retainedItems.map(item => item.event);
+        const firstEvent = retainedItems[0] || null;
+        for (let index = activeIncidents.length - 1; index >= 0; index--) {
+            if (nowMonoMs > activeIncidents[index].endsMonoMs) {
+                activeIncidents[index].status = 'window_complete';
+                activeIncidents.splice(index, 1);
+            }
+        }
+        const snapshot = snapshotResult.snapshot;
+        const snapshotBuildId = snapshot && typeof snapshot.buildID === 'string' ? snapshot.buildID : runtimeBuildId;
+        const sidecarBuildId = buildSidecar && buildSidecar.buildID;
+        const buildStatus = buildSidecarStatus !== 'ready' || !snapshotBuildId
+            ? 'unknown'
+            : snapshotBuildId === sidecarBuildId ? 'match' : 'mismatch';
+        const report = {
+            schemaVersion: 2, startedAt, exportedAt: new Date().toISOString(), runId: sessionId,
+            page: location.origin + location.pathname,
+            userAgent: navigator.userAgent, language: navigator.language,
+            viewport: { width: innerWidth, height: innerHeight, devicePixelRatio },
+            canvas: { width: canvas.width, height: canvas.height },
+            fullscreen: Boolean(document.fullscreenElement),
+            droppedEntries: dropped, messageLimit: legacyMessageLimit, entries: entries.map(item => item.value),
+            build: {
+                status: buildStatus,
+                buildID: snapshotBuildId || null,
+                sidecarBuildID: sidecarBuildId || null,
+                gitCommit: buildSidecar?.gitCommit || null,
+                dirty: typeof buildSidecar?.dirty === 'boolean' ? buildSidecar.dirty : null,
+                dirtyPaths: buildSidecar?.dirtyPaths || [],
+                resourceVersion: buildSidecar?.resourceVersion || snapshot?.resourceVersion || null,
+                pckSha256: buildSidecar?.pckSha256 || null,
+                pckHashKind: buildSidecar?.pckHashKind || null,
+                builtAt: buildSidecar?.builtAt || null,
+                exportedAt: buildSidecar?.exportedAt || null,
+            },
+            runtime: {
+                snapshotStatus: snapshotResult.status,
+                snapshotError: snapshotResult.error || null,
+                snapshot: snapshot || null,
+                events: retainedEvents,
+                criticalEvents: criticalEvents.slice(),
+                criticalIncidents: criticalIncidents.map(incident => ({
+                    trigger: incident.trigger,
+                    status: incident.status,
+                    windowMs: { before: incidentWindowBeforeMs, after: incidentWindowAfterMs },
+                    events: incident.events,
+                    droppedEvents: incident.droppedEvents,
+                })),
+                inputTape: retainedEvents.filter(event => event.type === 'input_consumed'),
+                buffer: {
+                    windowMs: logWindowMs,
+                    coverageMs: firstEvent ? Math.max(0, Math.min(logWindowMs, nowMonoMs - firstEvent.receivedMonoMs)) : 0,
+                    startAt: firstEvent?.event.receivedAt || null,
+                    endAt: retainedItems.length ? retainedItems[retainedItems.length - 1].event.receivedAt : null,
+                    retainedEvents: retainedEvents.length,
+                    retainedBytes: runtimeEventBytes,
+                    byteLimit: runtimeByteLimit,
+                    eventLimit: runtimeEventLimit,
+                    criticalEventLimit,
+                    criticalDropped,
+                    incidentLimit,
+                    incidentDropped,
+                    rejectedEvents: rejectedRuntimeEvents,
+                    dropped: { ...runtimeDropped },
+                },
+            },
+        };
+        const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'bvn26-log-' + new Date().toISOString().replace(/[:.]/g, '-') + '.json';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        feedback.textContent = snapshotResult.status === 'acknowledged'
+            ? '日志已导出，请在反馈问题时附上文件和复现步骤。日志仅保存在本地，刷新后重新记录。'
+            : '日志已导出，但游戏状态回执未完成；文件中会标明这一点。';
+        revealTools();
+        canvas.focus();
+    });
+})();
+        </script>
+        <script src="$GODOT_URL"></script>
+		<script>
+const GODOT_CONFIG = $GODOT_CONFIG;
+const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
+const engine = new Engine({
+    ...GODOT_CONFIG,
+    onPrint: (...args) => console.log(...args),
+    onPrintError: (...args) => console.error(...args),
+});
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+		</script>
+	</body>
+</html>

@@ -98,7 +98,7 @@ func advance_effect() -> void:
 	run_initial_frame()
 	effect_frame += 1
 	if effect_frame > _frame_count:
-		queue_free()
+		preload("res://rollback_lifetime.gd").retire(self)
 		return
 	_preview.play_source_frame(effect_frame)
 	_apply_frame_events()
@@ -143,7 +143,7 @@ func _apply_frame_events() -> void:
 			"shake_root":
 				root_position_requested.emit(event["axis"], event["operator"], float(event["pixels"]))
 			"unload":
-				queue_free()
+				preload("res://rollback_lifetime.gd").retire(self)
 
 
 func _start_frame_sounds() -> void:
@@ -168,11 +168,13 @@ func _start_frame_sounds() -> void:
 		var stream: AudioStream = load("%s/%s" % [_directory, sound_file])
 		if stream == null:
 			continue
+		last_sound_ids.append(sound_id)
+		if not preload("res://rollback_presentation.gd").allow_sound(self, "%d:%d:%d:%s" % [_registration, effect_frame, sound_index, sound_file]):
+			continue
 		var player := AudioStreamPlayer.new()
 		player.stream = stream
 		player.volume_db = 0.0 if not segments.is_empty() else _sound_volume_db(event)
 		player.autoplay = true
-		last_sound_ids.append(sound_id)
 		add_child(player)
 
 

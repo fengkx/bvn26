@@ -53,6 +53,68 @@ func use_live_random() -> void:
 	_rng.randomize()
 
 
+func use_seed(seed_value: int) -> void:
+	# Explicit opt-in; ordinary local play retains the live stream.
+	_replaying = false
+	_tape.clear()
+	_cursor = 0
+	absolute_index = 0
+	live_retained_dropped = 0
+	failure = ""
+	consumed.clear()
+	_rng.seed = seed_value
+
+
+func save_state() -> Dictionary:
+	return {"version": 1, "replaying": _replaying, "tape": _tape.duplicate(true),
+		"cursor": _cursor, "absolute_index": absolute_index,
+		"dropped": live_retained_dropped, "failure": failure,
+		"consumed": consumed.duplicate(true), "seed": _rng.seed, "state": _rng.state}
+
+
+func validate_state(state: Variant) -> String:
+	var value_problem := preload("res://simulation_state.gd").validate_value(state)
+	if not value_problem.is_empty():
+		return value_problem
+	if not state is Dictionary or state.get("version") != 1:
+		return "Unsupported random state"
+	for key in ["cursor", "absolute_index", "dropped", "seed", "state"]:
+		if not state.get(key) is int:
+			return "Invalid random field: " + key
+	if not state.get("replaying") is bool or not state.get("failure") is String:
+		return "Invalid random mode/failure"
+	if not state.get("tape") is Array or not state.get("consumed") is Array:
+		return "Invalid random records"
+	if state.cursor < 0 or state.absolute_index < state.cursor or state.dropped < 0:
+		return "Invalid random position"
+	if state.replaying and state.cursor > state.tape.size():
+		return "Random cursor outside tape"
+	for records in [state.tape, state.consumed]:
+		for record in records:
+			if not record is Dictionary or not record.get("site") is String:
+				return "Invalid random record"
+			var value: Variant = record.get("value")
+			if not (value is float or value is int) or not is_finite(float(value)) or value < 0 or value >= 1:
+				return "Invalid random value"
+	return ""
+
+
+func load_state(state: Variant) -> String:
+	var problem := validate_state(state)
+	if not problem.is_empty():
+		return problem
+	_replaying = state.replaying
+	_tape = state.tape.duplicate(true)
+	_cursor = state.cursor
+	absolute_index = state.absolute_index
+	live_retained_dropped = state.dropped
+	failure = state.failure
+	consumed.assign(state.consumed.duplicate(true))
+	_rng.seed = state.seed
+	_rng.state = state.state
+	return ""
+
+
 func next_value(site: String) -> float:
 	if failure != "":
 		return NAN

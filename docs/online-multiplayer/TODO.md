@@ -1,8 +1,29 @@
 # Implementation TODOs and execution order
 
-Status: Planned. All tasks below are unchecked; no online implementation is
-claimed complete by this document. Scope and product choices come from
+Status: In progress. All 48 full acceptance gates below remain unchecked. A
+production `Main` rollback adapter and online coordinator cover representative
+local battles, controls and result agreement through a test-only in-memory fake
+network; browser/WebRTC and full release acceptance remain open. The full-state,
+rollback and client task boxes remain acceptance gates: representative runs do
+not by themselves satisfy every task's full-scope checks. The client transaction
+is connected and has paired fake-network evidence. See
+[implementation evidence](IMPLEMENTATION.md), [state audit](STATE_AUDIT.md) and
+[client integration](CLIENT_IMPLEMENTATION.md).
+Scope and product choices come from
 [DESIGN.md](DESIGN.md) and the [20 interview answers](INTERVIEW.md).
+
+## Server implementation update — 2026-09-22
+
+The separately requested TypeScript Durable Object server is delivered in
+[services/matchmaking](../../services/matchmaking/README.md). Room lifecycle,
+admission, setup/epochs, signaling, leases, expiry and scoped TURN issuance have
+local contract tests, SQLite restart evidence and a production Wrangler smoke.
+See [server status and per-task boundaries](SERVER_IMPLEMENTATION.md) for
+NET-007 and NET-027–035. Their full-plan checkboxes remain open where upstream
+contracts, deployed lifecycle or client/network acceptance is still missing;
+the independent backend implementation is no longer a proposed artifact.
+The user explicitly authorized this server slice independently of unfinished
+battle-state work. No full-game or migration gate is promoted by its local tests.
 
 ## How to execute and track this plan
 
@@ -103,6 +124,84 @@ another, coordinating changes to NET-005 contracts before integration.
     heavy attacks/helpers, frame cost, memory and resource loading.
   - Done when: hardware/browser versions and p50/p95/p99 are recorded, so later
     optimization has a baseline rather than an assumed performance problem.
+
+## Native rollback implementation update (2026-09-23)
+
+The real Main adapter, whole local checkpoint graph, callback/object restore,
+bounded prediction/correction, fixed input delay, sound deduplication and terminal
+confirmation barrier are implemented. Representative fixtures cover every enabled
+fighter/helper/map, plus independent initialization, KO/round flow and fault delivery.
+Timer delivery uses explicit elapsed-time samples and does not claim Flash wall-clock
+callback equivalence. See [current implementation](IMPLEMENTATION.md) and
+[battle evidence](../../evidence/online/battle-rollback/results.json).
+
+The checkboxes below remain release-gate checkboxes, not file-existence indicators.
+Timer authority and online controls now have native regression coverage. Remaining
+work includes the per-action/mirror matrix (NET-019), Chrome/WASM checkpoint and
+replay measurements (NET-008/026), and the real browser/WebRTC and connectivity path
+(NET-036–046). Representative native success does not close these gates or authorize
+removing unverified content from the promised first release.
+
+## Online client integration update (2026-09-23)
+
+The title menu now exposes the experimental online lobby, and `OnlineLobby`,
+`OnlineRoomClient`, `OnlinePeerTransport` and `OnlineMatchCoordinator` are wired
+through the production `Main` scene. The coordinator normalizes strict integral
+JSON metadata at its boundary; the focused room-projection regression passes
+validation → lobby → real `Main` configuration → fake loaded/start barriers. A
+paired fake-network run covers corrected inputs, ordered intro skip, mutual
+pause/resume, short recovery, the tested 10-second no-winner timeout, and a source
+KO through both result submissions and a fresh epoch.
+
+Native UI smokes, the 15-case rollback foundation suite, 602 PvP/training state
+comparisons and an isolated Godot Web HTTPRequest probe are recorded in
+[client-match evidence](../../evidence/online/client-match/README.md) and
+[client-network evidence](../../evidence/online/client-network/README.md). The HTTP
+probe did not exercise the production menu. A separate Chrome 153 transport
+harness forced `iceTransportPolicy=relay`, observed both selected ICE candidate
+types as `relay`, and completed bidirectional data-channel ping/pong with the
+production service's credentials; see
+[forced-relay evidence](../../evidence/online/turn-relay/README.md). This does not
+validate the production Godot Lobby/coordinator or a complete internet match.
+The user reports two side-by-side browser windows can start a match, but a
+confirmed 60-state hash divergence remains under investigation; background tab
+throttling is also unresolved. The original-style selection adapter is now
+connected to the production Lobby's room-level connection flow. Its two-Lobby
+native integration smoke verifies local-seat-only input, the fighter/helper
+phase barrier, ordered host/guest `select` commands, service state arriving
+before HTTP replies, return to ready controls, same-choice reselection gates,
+cancellation and re-entry. The smoke uses fake room connections and does not
+verify real WebRTC or a complete browser match. A separate Chrome 153 two-tab
+fixture export exercised the production Lobby/RoomClient/PeerTransport and
+selector against the local Worker: WebRTC channels opened, fighter/helper
+choices appeared in authoritative room state, both players reached ready and
+left. This used same-machine LAN mode with `ICE_SERVERS=[]`; it does not verify
+cross-network/TURN, reconnect, or a full battle. The temporary fixture PCK hash
+and screenshot locations are recorded in [client integration](CLIENT_IMPLEMENTATION.md).
+Short invitation-code
+create/join/reinvite has native and backend unit coverage, and the real
+RoomClient-to-Worker smoke passes create, `join-by-code`, signaling, reinvite,
+rejection of the old code, new-code join and cleanup. An earlier local attempt
+reported HTTP 500, but subsequent checks passed; its cause is unknown.
+Cmd+V in the online text fields was confirmed working by the user in Chrome.
+The room flow now continues from fighter/helper selection into the original
+`MapSelection` picker: only the owner drives it, the guest mirrors its
+session/revision snapshot, the service configure is acknowledged by both peers,
+and host auto-prepare is gated on both ready states. The focused map and two-Lobby
+integration smokes pass, including a JSON-round-tripped service projection with
+integral-float rule values, configure/ack completion, refresh failure/retry,
+guest cancellation/re-entry, null-profile readiness and deduplicated prepare
+retry. A Chrome run confirmed host map movement and guest mirroring, but its
+configure response failed the old exact numeric comparison. Production now uses
+validated integral-value comparison; a post-fix browser map configure/ack and
+automatic-prepare result is pending. Full-plan gates remain open.
+The deployed HTTPS service separately returned `/health` 200, create 201,
+authenticated `/ice` 200 with configured STUN/TURN/TURNS entries, and leave 200;
+no credential values were recorded. This proves credential issuance only,
+while the separate forced-relay smoke above verifies a transport-only relay path;
+neither is a complete browser battle or cross-city acceptance.
+Keep every full-plan checkbox open until its own acceptance test passes; do not
+change `plan/tasks.json` based on these implementation slices.
 
 ## R1 — Deterministic battle stepping
 

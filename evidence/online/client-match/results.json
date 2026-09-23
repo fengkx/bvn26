@@ -1,0 +1,217 @@
+{
+  "scope": "online coordinator timing and shared battle regressions; native offline checks, not Chrome or internet acceptance",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "status": "passed",
+  "checks": [
+    {
+      "test": "tools/test_rollback_foundations.py",
+      "passed": true,
+      "report": "foundations.json",
+      "cases": 15
+    },
+    {
+      "test": "tools/test_shared_modes.py",
+      "passed": true,
+      "markers": [
+        "SHARED_MODE_MATCH pvp: 602 actor states",
+        "SHARED_MODE_MATCH training-timer: 602 actor states"
+      ]
+    },
+    {
+      "test": "tests/player_controller_smoke.gd",
+      "passed": true,
+      "markers": [
+        "PLAYER_CONTROLLER_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "tests/player_visual_smoke.gd",
+      "passed": true,
+      "markers": [
+        "PLAYER_VISUAL_SMOKE_OK"
+      ],
+      "notes": [
+        "One test-generated same-frame InputEvent warning; smoke exited successfully."
+      ]
+    },
+    {
+      "test": "tests/online_timer_authority_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_TIMER_AUTHORITY_SMOKE_OK irregular_samples=true second_round_rearmed=true late_resume_bounded=true restored=true"
+      ]
+    },
+    {
+      "test": "tests/online_timer_round_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_TIMER_ROUND_SMOKE_OK ko_to_nextfight=true persistent_countdown=true round=2 replayed=37_frames"
+      ],
+      "audio_shutdown_warning": true,
+      "leaked_instance_count": 15,
+      "leaked_instance_types": [
+        "AudioStreamMP3",
+        "AudioStreamPlaybackMP3"
+      ],
+      "leaked_resource_count": 7,
+      "leaked_resource_types": [
+        "AudioStreamMP3"
+      ],
+      "leaked_resources": [
+        "res://generated/fighters/minren/661.mp3",
+        "res://generated/fighters/yihu/568.mp3",
+        "res://generated/main/ko/1849.mp3",
+        "res://generated/effects/XG_hitfloor/175.mp3",
+        "res://generated/main/intro/ready/1879.mp3",
+        "res://generated/fighters/yihu/595.mp3",
+        "res://generated/main/intro/ready/1861.mp3"
+      ],
+      "notes": [
+        "Verbose shutdown reported only MP3 stream/playback instances and resources; classified as the audio-shutdown warning boundary used by foundations."
+      ]
+    },
+    {
+      "test": "tests/online_match_pair_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_MATCH_PAIR_INITIAL_OK hash=9078270f91f8206c1e144366abd34be703cad3a20061035f69e9b70acb3d16c0 local_preferences_diverge=true",
+        "ONLINE_MATCH_PAIR_STARTED_OK",
+        "ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=15 p1_rollback_count=2 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_INTRO_SKIP_ORDERED_OK target=17",
+        "ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=327 hashes=30,60,90 real_hit=true helper_activity=false",
+        "ONLINE_MATCH_PAIR_PAUSE_BARRIER_OK frame=329 equal_hash=true",
+        "ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=330 equal_hash=true",
+        "ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true",
+        "ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null",
+        "ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=9078270f91f8206c1e144366abd34be703cad3a20061035f69e9b70acb3d16c0 frame=331 p1_rollback_count=6 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_RESULT_COMMIT_OK source_ko=true p1_waited_for_peer=true room_waited_for_both=true winner=1",
+        "ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true"
+      ],
+      "notes": [
+        "Transport reran the expanded pair after winner normalization; it exercised a real source KO, P1 waiting for the peer result, both service submissions/agreement, and a fresh epoch rejecting the old result. The service endpoint was the paired FakeHub, not the deployed HTTP service.",
+        "Latest focused rerun exited 0 with all markers, then Godot reported 5 ObjectDB instances and 2 resources still in use at shutdown; this run did not classify those generic shutdown warnings."
+      ],
+      "command": "/private/tmp/bvn-godot-toolchain/Godot.app/Contents/MacOS/Godot --headless --path godot --script res://tests/online_match_pair_smoke.gd"
+    },
+    {
+      "test": "tests/online_match_start_cancel_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_MATCH_START_CANCEL_OK close_during_refresh=true close_during_ice=true pending_command_settled_before_abort=true live_epoch_abort=true retry_after_unconfirmed_abort=true uncertain_abort_same_request=true terminal_epoch_no_abort=true no_peer_ready=true"
+      ],
+      "command": "/private/tmp/bvn-godot-toolchain/Godot.app/Contents/MacOS/Godot --headless --path godot --script res://tests/online_match_start_cancel_smoke.gd",
+      "log": "/private/tmp/online-match-start-cancel-final.log",
+      "notes": [
+        "Uses a real Main/Lobby with FakeRoom/FakeTransport. Verifies an uncertain abort is retried with the same retained sequence/body and no second abort is dispatched.",
+        "Cancellation retry budget is 20 seconds; a request already in flight may also consume the RoomClient request timeout, so this is not a strict 20-second total wall-clock limit."
+      ]
+    },
+    {
+      "test": "tests/online_match_pending_command_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_MATCH_STARTUP_VISIBILITY_OK signal_forwarded=true timeout_context_only=true disconnect_on_close=true",
+        "ONLINE_MATCH_STARTUP_BARRIERS_OK prior_prepare_drained=true inflight_prepare_waited=true loaded_sent=true start_ack_sent=true peer_connection_barrier=true terminal_reason=start_timeout abort_not_resubmitted=true"
+      ],
+      "command": "/private/tmp/bvn-godot-toolchain/Godot.app/Contents/MacOS/Godot --headless --path godot --script res://tests/online_match_pending_command_smoke.gd",
+      "log": "/private/tmp/online-match-pending-command-final.log"
+    },
+    {
+      "test": "tests/online_match_json_room_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_MATCH_JSON_ROOM_OK room_projection=true lobby_main=true setup_normalized=true start_barriers=true strict_rejection=true"
+      ],
+      "command": "/private/tmp/bvn-godot-toolchain/Godot.app/Contents/MacOS/Godot --headless --verbose --path godot --script res://tests/online_match_json_room_smoke.gd",
+      "notes": [
+        "Exercises a JSON float room projection through production OnlineRoomClient validation, OnlineLobby, and a configured production Main before fake loaded/start barriers.",
+        "Malformed fractional, boolean and out-of-range numeric setups require the specific incomplete-setup rejection and leave the configured Main unchanged.",
+        "Verbose shutdown reports six generic ObjectDB instances (GDScriptNativeClass, GDScript, two RefCounted and two WeakRef) but no leaked resources after test audio teardown; macOS user-log and CA-store warnings are environmental."
+      ]
+    },
+    {
+      "test": "tests/rollback_services_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ROLLBACK_FAULTS corrections=73 replayed=201 retained_bytes=222508",
+        "ROLLBACK_SERVICES_SMOKE_OK scope=services_and_synthetic_fixture_not_battle"
+      ],
+      "log": "/private/tmp/online-match-rollback-services.log",
+      "notes": [
+        "Reran after introducing RollbackSession.can_receive_frame; retained/future window and duplicate input behavior remain covered."
+      ]
+    },
+    {
+      "test": "tests/online_clock_sample_bounds_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_CLOCK_SAMPLE_BOUNDS_OK valid=true retransmit_idempotent=true conflict_rejected=true old_and_future_bounds=true"
+      ],
+      "log": "/private/tmp/online-clock-sample-bounds.log"
+    },
+    {
+      "test": "tests/online_result_winner_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_RESULT_WINNER_OK json_integral_float=true null=true missing_bool_fraction_range_and_negative_frame_rejected=true"
+      ],
+      "log": "/private/tmp/online-result-winner.log"
+    },
+    {
+      "test": "tests/online_match_service_terminal_smoke.gd",
+      "passed": true,
+      "markers": [
+        "ONLINE_MATCH_SERVICE_TERMINAL_OK no_winner_allowlist=true epoch_scoped=true room_unavailable=true rejected_abort_and_result_settle=true transient_not_terminal=true"
+      ],
+      "log": "/private/tmp/online-match-service-terminal.log",
+      "notes": [
+        "Calls both result and abort submission paths against a fake room that rejects the command and exposes a same-epoch terminal state; verifies one command and one refresh settle each loop."
+      ]
+    },
+    {
+      "test": "isolated Godot Web HTTPRequest probe",
+      "passed": true,
+      "evidence": "http-probe.json",
+      "markers": [
+        "GET /health: transportResult=0 httpStatus=200",
+        "POST /v1/rooms {}: transportResult=0 httpStatus=400 error=invalid_message",
+        "create_room: transportResult=0 httpStatus=201",
+        "leave: transportResult=0 httpStatus=200"
+      ],
+      "runs": 2,
+      "notes": [
+        "Production OnlineRoomClient over Godot Web HTTPRequest from a localhost:8000 page to the allowed localhost:8787 service; all created rooms were left. Does not test Main/menu/WebRTC."
+      ]
+    }
+  ],
+  "not_verified": [
+    "Flash-equivalent wall-clock callback phase",
+    "Chrome/browser runtime of the final integrated client",
+    "external-network peer recovery and 10-second timeout",
+    "real matchmaking HTTP result/rematch lifecycle against a deployed service",
+    "complete internet matchmaking acceptance"
+  ],
+  "file_sha256": {
+    "godot/ai_source_timeouts.gd": "15f567508a9e0fea21510a7211748ce42db6a1253ab7032c1aaaecad6f795bb7",
+    "godot/battle_checkpoint.gd": "a0fbf2417296f0bb4aa260f7d3131d0ea3595db7aaee88ddd5c150e6d5d842ea",
+    "godot/main.gd": "d69a7ac80fa0c2a84f1f200e1015d498fed0af853f9b2a7fdf3c01ba303f81d8",
+    "godot/match_countdown.gd": "b0bacc9f7506e1d4ee47ae68001ff5e5adba19487c5a35a5b2ed0ffdb689f513",
+    "godot/online_match.gd": "76220f9badc10503ea37da062e4888644554d8663ca82c499303f2bf650504f3",
+    "godot/online_peer_transport.gd": "24852d96762233b7ca8bfa85fbb64bc939f5182da5fdffcd97eedc28482268bc",
+    "godot/online_room_client.gd": "931228c401b5566a62952e48b1e97277496dae0343fd692d6bf7e4a500aa9762",
+    "godot/online_session_state.gd": "5b0f8f4cc36c681ea4c45893ccddfac876bb5e6af90e398f5aebac7a352bb134",
+    "godot/online_timer_authority.gd": "d43910c5ec8390eb8698b896e9060f3493620542088c9a2f7f6d8b189778b35a",
+    "godot/rollback_battle.gd": "eddc579324b308495ca25a800d7836558fadca644b0988d121def43bbec17b93",
+    "godot/rollback_session.gd": "6c5620170e6658197e261945e7235e337bfb871668e71429dd925d81d4f68164",
+    "godot/tests/online_clock_sample_bounds_smoke.gd": "2c4d46dddd1f12facb7e440c61e4e77129cd5f3ddc8645ee7c3f7f6a96c058b2",
+    "godot/tests/online_match_pair_smoke.gd": "b2538e3b7e577b7a2009ff1b69f898cad9da9643f103685e24993476224c3541",
+    "godot/tests/online_match_service_terminal_smoke.gd": "ed4ea01a940ad50f0401db38db6d758e9d04c8ba9bcbb7fb84093bf30b1bf4d3",
+    "godot/tests/online_result_winner_smoke.gd": "dc2e16331da109d8c695a9d7da3855304e9616613990a475e57f17c7c4e477ca",
+    "godot/tests/online_timer_authority_smoke.gd": "ac5c64beef3967e8f08770b06cf30f58a0b4bfaec95ab6041432453f40bbdfbf",
+    "godot/tests/online_timer_round_smoke.gd": "2861eca0cba6b7781fad2286e6c03aba76ab5f84be5efa3c1775c1738aa8942a",
+    "docs/online-multiplayer/CLIENT_TIMING.md": "69675e2ddd3ac94f21a21c774c983f67facd1a0a54302e6a9b97876556a8ee53",
+    "godot/tests/online_match_json_room_smoke.gd": "2e3039e5485bd071eb96e59343e65f9241f5b6720ea7ae68d42e636bfe889cab",
+    "godot/tests/online_match_start_cancel_smoke.gd": "dd4bf09dba050c479e26814408a8269335d1504b0457c550126c8f48a7b64c5a",
+    "godot/tests/online_match_pending_command_smoke.gd": "acefe23cc330bf820095b28495d2587190b46d413f9e93ffb47445efc3249c64"
+  }
+}

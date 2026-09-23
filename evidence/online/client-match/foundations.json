@@ -1,0 +1,143 @@
+{
+  "scope": "native offline battle rollback; synthetic external timer envelopes; not Chrome or online acceptance",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "status": "passed",
+  "checks": [
+    {
+      "test": "battle_checkpoint_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "BATTLE_CHECKPOINT_SMOKE_OK rejects=4 restores_negative_scale_rng_health_shadow_timeout=true"
+      ]
+    },
+    {
+      "test": "rollback_battle_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "ROLLBACK_BATTLE_SMOKE_OK frames=330 rollbacks=10 replayed=65 waits=15 elapsed_ms=12831 retained_bytes=5798152 sounds_suppressed=8",
+        "ROLLBACK_PROFILE { \"saves\": 398, \"encode_us\": 4805620, \"pack_us\": 993134, \"retains_us\": 73807 }",
+        "ROLLBACK_INDEPENDENT_RUN_OK frames=330 full_state=true"
+      ]
+    },
+    {
+      "test": "rollback_roster_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u65e5\u756a\u8c37 helper=\u9f2c map=\u73b0\u4e16 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u604b\u6b21 helper=\u9b42 map=\u6d41\u9b42\u8857 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u9732\u5176\u96c5 helper=\u6211\u7231\u7f57 map=\u53cc\u6781 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u4e00\u62a4 helper=\u677e\u672c map=\u9759\u6d8e\u4ead checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u9e23\u4eba helper=\u9f2c map=\u5c38\u9b42\u754c\u901a\u9053 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u6a31 helper=\u9b42 map=\u6728\u53f6\u6751 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u4f50\u52a9 helper=\u6211\u7231\u7f57 map=\u6e29\u6cc9 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u5361\u5361\u897f helper=\u677e\u672c map=\u706b\u5f71\u7011\u5e03 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u767d\u54c9 helper=\u9f2c map=\u697c\u9876 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u5c0f\u674e helper=\u9b42 map=\u5b87\u667a\u6ce2\u6751 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=\u77f3\u7530 helper=\u6211\u7231\u7f57 map=\u73b0\u4e16 checkpoints=8",
+        "ROLLBACK_ROSTER_SMOKE_OK fighters=11 helpers=4 maps=10"
+      ]
+    },
+    {
+      "test": "rollback_round_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "ROLLBACK_ROUND_CASE_OK terminal=false checkpoints=23 frames=600",
+        "ROLLBACK_ROUND_CASE_OK terminal=true checkpoints=13 frames=396",
+        "ROLLBACK_ROUND_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "controller_checkpoint_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "CONTROLLER_CHECKPOINT_SMOKE_OK generated_locals=restored projectile=recreated pending_rename=rebound registry=restored"
+      ]
+    },
+    {
+      "test": "timeout_checkpoint_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "TIMEOUT_CHECKPOINT_SMOKE_OK targets=rebound nested_ids=restored invalid=atomic live=rejected"
+      ]
+    },
+    {
+      "test": "ai_projectile_driver_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "AI_PROJECTILE_DRIVER_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "rollback_services_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "ROLLBACK_FAULTS corrections=73 replayed=201 retained_bytes=222508",
+        "ROLLBACK_SERVICES_SMOKE_OK scope=services_and_synthetic_fixture_not_battle"
+      ]
+    },
+    {
+      "test": "manual_match_step_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "MANUAL_MATCH_STEP_SMOKE_OK frames=330 runs=2 comparison=selected_fields_not_complete_state"
+      ]
+    },
+    {
+      "test": "source_callback_registry_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "SOURCE_CALLBACK_REGISTRY_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "ai_random_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "AI_RANDOM_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "hit_effect_clock_smoke",
+      "passed": true,
+      "audio_shutdown_warning": true,
+      "markers": [
+        "HIT_EFFECT_CLOCK_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "hit_effect_random_smoke",
+      "passed": true,
+      "audio_shutdown_warning": true,
+      "markers": [
+        "HIT_EFFECT_RANDOM_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "ai_timeouts_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "AI_TIMEOUTS_SMOKE_OK"
+      ]
+    },
+    {
+      "test": "match_input_scene_smoke",
+      "passed": true,
+      "audio_shutdown_warning": false,
+      "markers": [
+        "MATCH_INPUT_SCENE_SMOKE_OK ticks=330 slots=2 intro=poll pause=ordered random=controlled clock=controlled"
+      ]
+    }
+  ]
+}

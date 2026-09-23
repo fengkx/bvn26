@@ -1,0 +1,9 @@
+# Live TURN relay probe
+
+This evidence records a minimal live-service ICE allocation and WebRTC relay test. The probe created one temporary room on `https://bvn26-pvp.fengkx.top`, fetched its ICE configuration, and used one isolated Chrome page with two `RTCPeerConnection` instances configured with `iceTransportPolicy: "relay"`. The peers exchanged SDP and ICE candidates in page memory, opened a data channel, and exchanged one ping/pong. The owner then left the room; the service returned HTTP 200.
+
+Both selected candidate pairs reported `localType=relay` and `remoteType=relay`, and both peers received the expected data-channel messages. ICE candidate error code 701 was also reported eight times; those events did not prevent the successful relay connection. Candidate addresses, hostnames, SDP, TURN credentials, room IDs, and session tokens are not included in this evidence.
+
+The run used Chrome 153.0.8010.53 and the service-issued ICE configuration, whose response contained STUN/TURN/TURNS URL schemes and short-lived credentials. The JSON result is in [results.json](results.json). The one-shot reproducer is [relay_probe.mjs](relay_probe.mjs); it generates fresh credentials in memory, requires Node with built-in `fetch` and `WebSocket`, and expects an isolated Chrome DevTools endpoint at `http://127.0.0.1:9240`. Running it creates a temporary room and attempts to clean up that room in `finally`.
+
+This proves service-issued TURN credentials can carry a relay-only WebRTC data channel in two peer connections running in one Chrome page. It does not verify two devices, cross-city NAT behavior, Godot's WebRTC integration, or a complete match. Earlier failed signaling-probe runs may have left temporary rooms to expire through the service's 30-minute idle timeout; their identifiers and credentials were not retained.

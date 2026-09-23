@@ -1,7 +1,12 @@
 # Online multiplayer design
 
 Status: All 20 product decisions recorded; assembled design ready for review.
-Implementation and networking validation have not started.
+Native offline battle stepping, local checkpoints and late-input rollback are
+implemented and tested on representative sequences across the enabled roster.
+The experimental title-menu lobby and online coordinator also have native paired
+fake-network checks; Chrome/WebRTC and performance acceptance remain pending.
+The standalone TypeScript Durable Object room server is implemented with local
+SQLite/WebSocket/restart tests; see [server implementation](SERVER_IMPLEMENTATION.md).
 Started: 2026-09-22.
 
 This folder contains the design for online BVN 2.6 matches. It is separate from
@@ -18,6 +23,9 @@ the completed input-boundary work and from original-gameplay parity acceptance.
 - [Architecture and delivery gates](DESIGN.md).
 - [Detailed implementation TODOs](TODO.md): 48 tasks with dependencies, outputs
   and completion checks, including serial and parallel execution order.
+- [Implementation and measured boundaries](IMPLEMENTATION.md).
+- [Online client setup, LAN mode and acceptance boundary](CLIENT_IMPLEMENTATION.md).
+- [State-owner audit and reconstruction gaps](STATE_AUDIT.md).
 - [Local SQLite development](LOCAL_DEVELOPMENT.md): Wrangler recommendation and
   SolidObjects compatibility assessment.
 - [Current content scope](CONTENT_SCOPE.md): 11 fighters, 4 helpers and 10 stages.
@@ -53,7 +61,8 @@ The ADRs record consequential accepted choices. The assembled design includes
 the implementation sequence and validation gates; specific libraries, providers
 and tuning values require the documented experiments before being selected.
 
-No runtime changes or migration milestone completion are part of this interview.
+The subsequent implementation request is tracked separately in IMPLEMENTATION.md;
+no migration milestone is promoted by these networking foundations.
 Any subsequent scheduler or combat work must preserve the source-first evidence
 requirements in [SOURCE_FIRST.md](../SOURCE_FIRST.md) and
 [HIT_RECEIVE_SOP.md](../HIT_RECEIVE_SOP.md).

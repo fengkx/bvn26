@@ -4,9 +4,11 @@ extends Control
 # Compatibility/Web has no 2D MSAA. Resolve a complete sample grid instead of
 # changing bitmap filtering or relying on an unsupported viewport setting.
 const RESOLVE := preload("res://sample_resolve.gdshader")
+const ONLINE_LOBBY := preload("res://online_lobby.gd")
 var source_viewport: SubViewport
 var presentation: TextureRect
 var game: Control
+var online_lobby: OnlineLobby
 var sample_grid: int = 4
 var texture_limit: int = 0
 var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/config/config.json")).rendering
@@ -35,10 +37,31 @@ func _ready() -> void:
 	resized.connect(_resize_surface)
 	get_viewport().size_changed.connect(_resize_surface)
 	_resize_surface()
-	game = preload("res://main.tscn").instantiate()
-	source_viewport.add_child(game)
-	game.session.render_quality_changed.connect(apply_quality)
-	apply_quality(game.session.render_quality)
+	game = _create_game_scene()
+	online_lobby = ONLINE_LOBBY.new()
+	online_lobby.name = "OnlineLobby"
+	online_lobby.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	online_lobby.z_index = 1000
+	add_child(online_lobby)
+	online_lobby.configure(self, game)
+
+
+func _create_game_scene() -> Control:
+	var scene: Control = preload("res://main.tscn").instantiate()
+	source_viewport.add_child(scene)
+	scene.session.render_quality_changed.connect(apply_quality)
+	apply_quality(scene.session.render_quality)
+	return scene
+
+
+func recreate_game_scene() -> Control:
+	if game != null and is_instance_valid(game):
+		game.set_physics_process(false)
+		game.queue_free()
+	game = _create_game_scene()
+	if online_lobby != null and is_instance_valid(online_lobby):
+		online_lobby.configure(self, game)
+	return game
 
 
 func apply_quality(quality: String) -> void:
@@ -70,6 +93,8 @@ func _resize_surface() -> void:
 
 func _input(event: InputEvent) -> void:
 	if source_viewport != null:
+		if online_lobby != null and online_lobby.blocks_game_input(event):
+			return
 		# Events already use the root's logical canvas coordinates. The child
 		# viewport exposes the same coordinates regardless of raster resolution.
 		source_viewport.push_input(event, true)

@@ -13,6 +13,40 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
 
 ## 已完成的资料与已实现的开发切片
 
+- 2026-09-22 联机房间服务端：独立 `services/matchmaking/` TypeScript Worker + SQLite
+  Durable Objects 已实现双人入座、准备/开局协调、WebSocket 信令、十房间准入、过期清理
+  与短期 TURN 凭据。真实本地 WebSocket、SQLite 重启及 Wrangler 配置测试通过。
+  这不包含 Godot 联机接线、云端部署或真实 TURN/大陆链路验收；详见
+  [服务端实现状态](online-multiplayer/SERVER_IMPLEMENTATION.md)。
+
+- 2026-09-22 真实对局离线回滚：Main 已接入完整本地检查点、对象/回调重建、
+  迟到输入预测纠正、固定输入延迟、窗口停等、音效去重和确认后终局切换。
+  已验证 11 角色、4 援助、10 地图的代表性输入，以及 KO/下一回合/终局、
+  冻结残影退场恢复和独立初始化状态一致；既有 PvP 与训练计时对照仍各匹配 602 状态。
+  外部计时事件须显式提供；本轮测试采用合成事件日程。Chrome/WASM、逐招完整矩阵、
+  帧耗时门槛和完整对局浏览器验收仍待完成。生产标题菜单已提供实验性联机入口；
+  本地双 Chrome 已验证房间连接与选人/准备路径，但不覆盖对局同步、结果或互联网链路。
+  见[实现与证据边界](online-multiplayer/IMPLEMENTATION.md)。
+
+- 2026-09-23 联机客户端接线：房间大厅、OnlineRoomClient、WebRTC 数据通道适配器与
+  OnlineMatchCoordinator 已连入 production Main。独立的 JSON 房间投影回归覆盖
+  RoomClient 验证 → Lobby → Main 配置 → 模拟加载/开局屏障，并拒绝布尔、非整数和越界值；
+  双 Main 假网络回归覆盖迟到输入、确认哈希、开场跳过、互相暂停/恢复、10 秒无胜者超时，
+  以及双方一致结果提交。独立 Godot Web HTTPRequest 探针通过 `/health` 200、空创建参数
+  400、创建 201、离开 200；此探针未运行生产菜单或 Main。完整 Chrome WebRTC、真实 ICE/数据通道、
+  TURN/互联网对局及完整联机验收仍 pending。用户报告两个并排浏览器窗口可开始对局，但确认
+  60 状态哈希出现分歧，后台标签节流也待处理；此结果不是可重复的验收证据。原版角色/援助与
+  地图选择现已接入房间级连接：地图由房主控制、客人镜像。双 Lobby 原生集成测试覆盖地图
+  configure/客人确认、JSON 数字往返、规则草稿、ready 和开局门槛；浏览器已观察到地图移动与
+  客人镜像，但首次 configure 因旧的整数/浮点数精确比较失败。修复后的浏览器 configure/确认/
+  自动开局复测仍待完成。短邀请码客户端原生/假服务测试及后端 Miniflare
+  测试通过；真实 RoomClient→本地 Worker 冒烟已覆盖建房、短码加入、信令转发、重邀、旧码拒绝、
+  新码重入和清理。此前曾有一次本地创建返回 HTTP 500，之后 Worker 与 RoomClient 检查通过，
+  原因尚未确定。用户已在 Chrome 确认联机文字框 Cmd+V 可用。
+  详见[客户端接线说明](online-multiplayer/CLIENT_IMPLEMENTATION.md)、
+  [客户端匹配证据](../evidence/online/client-match/README.md)和
+  [网络客户端证据](../evidence/online/client-network/README.md)。
+
 - 2026-09-10 电脑鸣人浮空受击脱身修复：从原版角色配置编译 `isNaruto`，
   移除 P1/P2 的固定阵营；召唤保留 `hurtSkling` 提前返回，避免误叫援助和重复扣气。
   原版两角色受控序列、连续脱身回归、本地 Web 及既有三份电脑对战轨迹通过当前检查，

@@ -1,0 +1,49 @@
+{
+  "marker": "ONLINE_VSHUMAN_TWO_CHROME_LOBBY_OK",
+  "result": "passed",
+  "run_date": "2026-09-23",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "chrome": "Chrome/153.0.8010.53",
+  "node": "v24.18.0",
+  "browser_pages": 2,
+  "same_machine": true,
+  "local_service_health": 200,
+  "ice_servers": [],
+  "lan_host_candidate_opt_in": true,
+  "checks": {
+    "host_and_guest_admitted": true,
+    "connect_buttons_visible_enabled_and_not_busy": true,
+    "production_lobby_handlers_entered": true,
+    "both_webrtc_data_channels_open": true,
+    "both_production_selection_adapters_active": true,
+    "choices_visible_in_both_room_projections": true,
+    "choices": [
+      { "fighter": "sakura", "helper": "jinye" },
+      { "fighter": "sasuke", "helper": "you" }
+    ],
+    "host_ready_before_guest": true,
+    "both_ready_visible_in_both_room_projections": true,
+    "guest_and_host_left_room": true
+  },
+  "screenshots": [
+    "selection-fighters.png"
+  ],
+  "temporary_export_pck_sha256": "b810ae7a78fe160ab5cdb86f72dcf97fa2f83fe2f33fc6c7c62500b0913cccd7",
+  "production_sources": {
+    "godot/online_lobby.gd": "48c42bef782277acc7464ff4c9ee5f94452b9a39980492f038f9730c8710dc74",
+    "godot/online_lobby_connection.gd": "e897d05e53c11ab84238c7295c5c0dc41b76efbb14dbb27a22fa0dd7d80dc78a",
+    "godot/online_character_selection.gd": "a22ed6d5dc25487e07125b6f7a646e7e8dbef7c965ab2448bcaf3a5bedc743a4",
+    "godot/online_room_client.gd": "3ba776a050c1a5acf1a5e84f237821970a37283084c7d4520c717e495fe8fc18",
+    "godot/online_peer_transport.gd": "24852d96762233b7ca8bfa85fbb64bc939f5182da5fdffcd97eedc28482268bc",
+    "godot/web/shell.html": "c647a0c10bb6ef96a76c101be05f01a26251c0688fd9a1c56ba8b0e658330ce9"
+  },
+  "scope_limitations": [
+    "Temporary fixture export, not the production dist/web export",
+    "Same-machine Chrome pages, not two physical devices",
+    "No cross-city or NAT traversal acceptance",
+    "No TURN acceptance",
+    "No match simulation or battle acceptance",
+    "No explicit disconnect/reconnect run in this pass"
+  ],
+  "room_cleanup": "Both test clients invoked the production leave action and observed admitted=false before their tabs closed."
+}

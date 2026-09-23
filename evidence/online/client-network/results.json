@@ -1,0 +1,177 @@
+{
+  "date": "2026-09-23",
+  "scope": "Godot room client, peer transport protocol checks, and local matchmaking service contract",
+  "environment": {
+    "node": "v24.18.0",
+    "npm": "11.16.0",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "wrangler": "4.136.2",
+    "miniflare": "5.20260921.0-alpha"
+  },
+  "checks": [
+    {
+      "name": "room_client_native_protocol",
+      "command": "Godot --headless --path godot --script res://tests/online_room_client_smoke.gd",
+      "result": "passed",
+      "marker": "ONLINE_ROOM_CLIENT_SMOKE_OK state_validation=true monotonic_revision=true leave_projection=true exact_retry=true"
+    },
+    {
+      "name": "peer_transport_native_protocol",
+      "command": "Godot --headless --path godot --script res://tests/online_peer_transport_smoke.gd",
+      "result": "passed",
+      "marker": "ONLINE_PEER_TRANSPORT_SMOKE_OK reordered_input=true reliable_order=true envelope_validation=true early_ice_queue=true",
+      "limit": "No WebRTCPeerConnection was initialized; not a browser transport test."
+    },
+    {
+      "name": "two_main_match_coordinator_pair",
+      "command": "/private/tmp/bvn-godot-toolchain/Godot.app/Contents/MacOS/Godot --headless --path godot --script res://tests/online_match_pair_smoke.gd",
+      "result": "passed",
+      "exitCode": 0,
+      "markers": [
+        "ONLINE_MATCH_PAIR_INITIAL_OK hash=9078270f91f8206c1e144366abd34be703cad3a20061035f69e9b70acb3d16c0 local_preferences_diverge=true",
+        "ONLINE_MATCH_PAIR_STARTED_OK",
+        "ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=15 p1_rollback_count=2 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_INTRO_SKIP_ORDERED_OK target=17",
+        "ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=327 hashes=30,60,90 real_hit=true helper_activity=false",
+        "ONLINE_MATCH_PAIR_PAUSE_BARRIER_OK frame=329 equal_hash=true",
+        "ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=330 equal_hash=true",
+        "ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true",
+        "ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null",
+        "ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=9078270f91f8206c1e144366abd34be703cad3a20061035f69e9b70acb3d16c0 frame=331 p1_rollback_count=6 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_SOURCE_KO_FIXTURE_OK fighter_check_dead=true",
+        "ONLINE_MATCH_PAIR_RESULT_COMMIT_OK source_ko=true p1_waited_for_peer=true room_waited_for_both=true winner=1",
+        "ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true"
+      ],
+      "scope": "Two separate production Main trees, real coordinator/rollback/checkpoint logic, and JSON-round-tripped messages routed by a test-only in-memory transport and fake room/service. Different local input/render preferences retain equal deterministic state. The smoke covers delayed input correction, real health loss, confirmed hashes, ordered intro skip, pause/resume, short recovery, 10-second abort, source fighter KO/result confirmation, service agreement and stale-result rejection after a new epoch.",
+      "limits": [
+        "No real WebRTCPeerConnection or browser networking was used; this is not a Chrome transport acceptance test.",
+        "Roster is minren/woailuo vs yihu/kon; helper activity remained false, and this does not verify every selectable fighter/helper.",
+        "The dedicated Chrome 9232 page stayed at the Vs Com / 与电脑对战 title menu after attempted keys; no room-create HTTP request was observed."
+      ]
+    },
+    {
+      "name": "lobby_terminal_and_uncertain_admission_ui",
+      "command": "/private/tmp/bvn-godot-toolchain/Godot.app/Contents/MacOS/Godot --headless --path godot --script res://tests/online_lobby_terminal_ui_smoke.gd",
+      "result": "passed",
+      "exitCode": 0,
+      "marker": "ONLINE_LOBBY_TERMINAL_UI_OK room_unavailable_clears_credentials=true authoritative_result_preserved=true ordinary_abort_returns=true admission_abandon_warns_and_clears=true",
+      "scope": "Godot lobby UI state transitions with local OnlineRoomClient; no HTTP or remote room mutations.",
+      "limits": [
+        "The test uses a local fake room projection; real Chrome interaction remains a separate pending acceptance gate."
+      ]
+    },
+    {
+      "name": "room_client_local_service_http_websocket",
+      "command": "BVN_MATCHMAKING_URL=http://127.0.0.1:8787 Godot --headless --path godot --script res://tests/online_room_client_service_smoke.gd",
+      "result": "passed",
+      "marker": "ONLINE_ROOM_CLIENT_SERVICE_SMOKE_OK create=true join=true read=true commands=true ticket_ws=true signal_forward=true leave=true",
+      "limit": "Signaling used placeholder text payloads, not SDP or ICE; no browser peer or data channel was created."
+    },
+    {
+      "name": "matchmaking_service_suite",
+      "command": "npm test",
+      "result": "passed",
+      "passed": 15,
+      "failed": 0,
+      "includes": "TypeScript typecheck, isolated SQLite/workerd tests, real local WebSocket tests, and production Wrangler startup smoke."
+    },
+    {
+      "name": "matchmaking_format",
+      "command": "npm run format:check",
+      "result": "passed"
+    },
+    {
+      "name": "matchmaking_dry_run_build",
+      "command": "WRANGLER_SEND_METRICS=false WRANGLER_LOG_PATH=/private/tmp/bvn-matchmaking-build.log npm run build",
+      "result": "passed",
+      "mode": "Wrangler deploy --dry-run; no deployment performed."
+    }
+  ],
+  "sha256": {
+    "services/matchmaking/src/room.ts": "002017f75eeee96f9ea7ac8eb003c5658cb6eb5540f2b1f81663c6780daca8af",
+    "services/matchmaking/src/index.ts": "f9e7898728d2518823d8eb049637b901f4fcc17e0b4e18142e9707a6c736bf20",
+    "services/matchmaking/test/fixture.ts": "b975de413694a635b879ecb1c02b4d1e4aec5f1a4d205412a16962c42f416cc0",
+    "services/matchmaking/test/server.test.mjs": "73eb055256865663e143c97654119e9bc8fe60ef7943ee150ef8c095a19f1fa8",
+    "services/matchmaking/README.md": "8aadadced33b2a35ccda7e00ae47dd8feb4362d8425e66ba98dbd3c50df8a4f3",
+    "docs/online-multiplayer/SERVER_IMPLEMENTATION.md": "afaa4259beadcda4ae61789045a88b7411d98fc83ef9e067272acfed339b9a6f",
+    "godot/online_room_client.gd": "931228c401b5566a62952e48b1e97277496dae0343fd692d6bf7e4a500aa9762",
+    "godot/online_peer_transport.gd": "24852d96762233b7ca8bfa85fbb64bc939f5182da5fdffcd97eedc28482268bc",
+    "godot/tests/online_room_client_smoke.gd": "ea1bfab70989b9a56fc18f97f4218105fef30555be634099f7ef8b15961e5df2",
+    "godot/tests/online_room_client_service_smoke.gd": "e59fb1d60eb1e4c5efd6319648ccc66adb5b485295273c376b5b8ae88c2a7be5",
+    "godot/tests/online_peer_transport_smoke.gd": "e64f2cf277a62f1ca70f7cac94236dde6666d846f37e019239d9cb6816926303",
+    "godot/online_match.gd": "81ad28c91ff9fab3564afde1b7e034d05f76e8714ce7fd502f594f9c166c1afa",
+    "godot/tests/online_match_pair_smoke.gd": "b2538e3b7e577b7a2009ff1b69f898cad9da9643f103685e24993476224c3541",
+    "godot/rollback_battle.gd": "eddc579324b308495ca25a800d7836558fadca644b0988d121def43bbec17b93",
+    "godot/main.gd": "d69a7ac80fa0c2a84f1f200e1015d498fed0af853f9b2a7fdf3c01ba303f81d8",
+    "godot/simulation_state.gd": "dfc0b2c83eaf33418b7516746ee6934df1ef8a3d89e89c566ba4417a86b6bbc4",
+    "tools/build_online_manifest.py": "d873791aec638de8adbd8ba82f90c3969eb96d98917813a26cc1b91bf79eb520",
+    "tools/online_cdp_keys.mjs": "5b499e83327431770431569600bf4ef7cf2026c3a9b8829633b38db7efa31342",
+    "godot/online_lobby.gd": "e3ca7d1ef5304ea9452bda48c60ef2e2055c06a4194a9f35fe9ceacb863d939b",
+    "godot/tests/online_lobby_terminal_ui_smoke.gd": "796ff38e70c2b00fe4737738352a5e5a5db4d34f2271f18fa1686f8f08639180"
+  },
+  "browser_webrtc_transport_probe": {
+    "observedAt": "2026-09-23",
+    "result": "passed",
+    "marker": "ONLINE_WEBRTC_CHROME_PAIR_RESULT",
+    "command": "node /private/tmp/online-webrtc-chrome-9234/run_pair.mjs",
+    "exportCommand": "Godot --headless --path /private/tmp/online-webrtc-integration --export-release Web dist/web/_webrtc_transport/index.html",
+    "environment": {
+      "chrome": "Chrome/153.0.8010.53",
+      "mode": "headless_dedicated_profile",
+      "cdpEndpoint": "127.0.0.1:9234",
+      "staticOrigin": "http://127.0.0.1:8000",
+      "serviceOrigin": "http://127.0.0.1:8787",
+      "iceServers": 0,
+      "elapsedMs": 2974
+    },
+    "httpStatus": {
+      "preflight": 204,
+      "createOrJoin": 201,
+      "ticket": 200,
+      "commandsAndLeave": 200
+    },
+    "peers": {
+      "owner": {
+        "offerSent": 1,
+        "answerReceived": 1,
+        "candidatesSent": 1,
+        "reliableOpen": true,
+        "inputOpen": true,
+        "reliablePacketsReceived": 1,
+        "inputPacketsReceived": 1,
+        "leaveHttp": 200
+      },
+      "guest": {
+        "offerReceived": 1,
+        "answerSent": 1,
+        "candidatesSent": 1,
+        "reliableOpen": true,
+        "inputOpen": true,
+        "reliablePacketsReceived": 1,
+        "inputPacketsReceived": 1,
+        "leaveHttp": 200
+      }
+    },
+    "cleanupComplete": true,
+    "limits": [
+      "Two Chrome pages ran on one machine with an empty ICE server list; this is not two-device or cross-city acceptance.",
+      "No NAT traversal, TURN, production menu flow, browser Main/coordinator or complete battle was tested.",
+      "A noncritical static resource returned 404; both peers still opened both channels, exchanged packets and left successfully.",
+      "No credentials, SDP or ICE candidates were recorded."
+    ],
+    "sourceSha256": {
+      "temporaryOnlineRoomClientCopy": "931228c401b5566a62952e48b1e97277496dae0343fd692d6bf7e4a500aa9762",
+      "fixtureOnlineRoomClientAfterAccessor": "a919b0ad922582fcd9e97d506c2a14837500f5ae83cc8d2af55f5b14fcd6f6c3",
+      "onlinePeerTransport": "24852d96762233b7ca8bfa85fbb64bc939f5182da5fdffcd97eedc28482268bc",
+      "probe": "cf02cf54a394e195532ee009d031c82d8969e7b5aff8b14e81fd5791dd0f0ef5",
+      "driver": "fd46080ec08f98d8eabaac97ab78040a2a142df8459707ed9cebb0dbdc168f45"
+    }
+  },
+  "browser_webrtc_two_peer_acceptance": {
+    "result": "pending",
+    "status": "A transport-only real two-page Chrome WebRTC probe passed; production menu admission, browser Main/coordinator gameplay, two-device connectivity and TURN/cross-city acceptance remain pending. The prior production UI attempt stayed at the title screen and emitted no room-create request.",
+    "observedAt": "2026-09-23T12:45:14+08:00",
+    "cdp_page": "http://127.0.0.1:8000/_webrtc_transport/index.html",
+    "cdp_endpoint": "http://127.0.0.1:9234"
+  }
+}
