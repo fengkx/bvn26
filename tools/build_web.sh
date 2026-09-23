@@ -53,6 +53,9 @@ case "$("$GODOT_BIN" --version)" in
   *) echo "Expected Godot $GODOT_VERSION stable." >&2; exit 1 ;;
 esac
 
+# Python smoke runners must use the same editor, including the CI download.
+export GODOT_BIN
+
 mkdir -p "$ROOT_DIR/dist/web"
 "$GODOT_BIN" --headless --path "$ROOT_DIR/godot" --editor --import --quit
 python3 "$ROOT_DIR/tools/build_online_manifest.py"
