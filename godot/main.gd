@@ -800,7 +800,8 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	for helper: HelperRuntime in [naruto_helper, ichigo_helper]:
 		if helper != null:
 			helper.diagnostic_tick = physics_tick
-	tick_label.text = "Fixed simulation tick: %d" % physics_tick
+	if tick_label.is_visible_in_tree():
+		tick_label.text = "Fixed simulation tick: %d" % physics_tick
 	assert(opponent_driver != null and player_body_driver != null and source_callbacks != null)
 	var fighters: Array[FighterRuntime] = [ichigo, naruto]
 	var helpers: Array = []
@@ -1013,15 +1014,16 @@ func _input_for(fighter: FighterRuntime) -> Dictionary:
 	if fighter == ichigo and session.p2cpu:
 		return {}
 	var inputs: Dictionary = _match_inputs[fighter.player_slot].duplicate()
-	var input_source := "playback" if match_input.playback else "player"
-	if diagnostic_input_provider.is_valid() and not match_input.playback:
-		input_source = "diagnostic_tape"
-	diagnostics.push_event("input_consumed", {
-		"slot": fighter.player_slot,
-		"source": input_source,
-		"phase": "before_actor_advance",
-		"keys": inputs,
-	}, physics_tick)
+	if diagnostics.enabled:
+		var input_source := "playback" if match_input.playback else "player"
+		if diagnostic_input_provider.is_valid() and not match_input.playback:
+			input_source = "diagnostic_tape"
+		diagnostics.push_event("input_consumed", {
+			"slot": fighter.player_slot,
+			"source": input_source,
+			"phase": "before_actor_advance",
+			"keys": inputs,
+		}, physics_tick)
 	return inputs
 
 
@@ -1482,19 +1484,20 @@ func _make_helper(directory: String) -> HelperRuntime:
 
 
 func _refresh_fight_labels() -> void:
-	var mode_name := "TRAINING" if session.modo == 4 else "VS MODE"
-	# HP readout follows bar2 (displayed_health), not the instant mc.hp.
-	state_label.text = "%s    Naruto  HP %d  MP %d  %s:%d    Ichigo  HP %d  MP %d  %s:%d" % [
-		mode_name,
-		int(naruto.displayed_health),
-		int(naruto.energy),
-		_status_name(naruto),
-		naruto.current_source_frame(),
-		int(ichigo.displayed_health),
-		int(ichigo.energy),
-		_status_name(ichigo),
-		ichigo.current_source_frame(),
-	]
+	if state_label.is_visible_in_tree():
+		var mode_name := "TRAINING" if session.modo == 4 else "VS MODE"
+		# HP readout follows bar2 (displayed_health), not the instant mc.hp.
+		state_label.text = "%s    Naruto  HP %d  MP %d  %s:%d    Ichigo  HP %d  MP %d  %s:%d" % [
+			mode_name,
+			int(naruto.displayed_health),
+			int(naruto.energy),
+			_status_name(naruto),
+			naruto.current_source_frame(),
+			int(ichigo.displayed_health),
+			int(ichigo.energy),
+			_status_name(ichigo),
+			ichigo.current_source_frame(),
+		]
 	health_hud.refresh()
 	naruto_energy.energy = naruto.energy
 	ichigo_energy.energy = ichigo.energy

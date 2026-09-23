@@ -47,6 +47,12 @@ const MAIN_EXTERNAL := [
 	"recorded_training_timers",
 ]
 const EXTERNAL_FIELDS := ["diagnostics", "diagnostic_runtime"]
+const FIELD_MODE_IMMUTABLE := 1
+const FIELD_MODE_FIGHTER_SOURCE := 2
+const FIELD_MODE_HUD_SPEC := 4
+const FIELD_MODE_KO_IMMUTABLE := 8
+const FIELD_MODE_HUD_IMMUTABLE := 16
+const FIELD_MODE_SENSES_IMMUTABLE := 32
 var error := ""
 var _game: Node
 var _records: Array = []
@@ -56,10 +62,13 @@ var _container_buckets := {}
 var profile := {"saves": 0, "encode_us": 0, "pack_us": 0, "retains_us": 0}
 var _constants := {}
 var _script_names := {}
-var _property_lists := {}
+var _field_descriptors := {}
+var _script_signal_names := {}
 var _immutable_fields := {}
 var _placement_tables := {}
 var _placements := {}
+var _empty_array_prototypes := {}
+var _empty_dictionary_prototypes := {}
 var _constant_values: Array = []
 var _constant_keys: Array[String] = []
 var _snapshots := {}
@@ -252,8 +261,7 @@ func _constant(value: Variant) -> String:
 				if is_same(value, _constant_values[i]): return _constant_keys[i]
 		key = var_to_bytes(value).hex_encode().sha256_text()
 		if value is Array:
-			var typed_script: Script = value.get_typed_script()
-			var type_key := "%s:%s:%s" % [value.get_typed_builtin(), value.get_typed_class_name(), _constant(typed_script) if typed_script != null else ""]
+			var type_key := _array_type_key(value)
 			key = "array:" + type_key if value.is_empty() else key + ":" + type_key
 	if _constants.has(key): return key
 	_constants[key] = value
@@ -295,9 +303,7 @@ func _encode(value: Variant) -> Variant:
 		var id := _records.size()
 		if not _container_buckets.has(bucket_key): _container_buckets[bucket_key] = []
 		_container_buckets[bucket_key].append([value, id])
-		var prototype: Variant = value.duplicate()
-		prototype.clear()
-		var record := {"kind": "array" if value is Array else "dictionary", "prototype": _constant(prototype), "entries": []}
+		var record := {"kind": "array" if value is Array else "dictionary", "prototype": _empty_prototype_key(value), "entries": []}
 		_records.append(record)
 		_values.append(value)
 		if value is Array:
@@ -320,11 +326,11 @@ func _encode(value: Variant) -> Variant:
 		var script: Script = value.get_script()
 		if script != null:
 			record.script = _constant(script)
-			if not _property_lists.has(script):
-				_property_lists[script] = value.get_property_list().filter(func(item): return item.usage & PROPERTY_USAGE_SCRIPT_VARIABLE)
-			for property in _property_lists[script]:
-				var field: String = property.name
-				if not property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE: continue
+			if not _field_descriptors.has(script):
+				_field_descriptors[script] = _build_field_descriptors(value)
+			for descriptor in _field_descriptors[script]:
+				var field: String = descriptor[0]
+				var field_mode: int = descriptor[1]
 				var contents: Variant = value.get(field)
 				if value == _game and field not in MAIN_FIELDS:
 					if field not in MAIN_EXTERNAL: error = "Unaudited Main field: " + field
@@ -345,22 +351,38 @@ func _encode(value: Variant) -> Variant:
 					_constants[binding] = value.get(field)
 					record.fields[field] = {"constant": binding}
 					continue
-				if value is FighterRuntime and field in ["source_x", "source_y"]: continue
-				if value is HealthHud and field == "spec":
+				if (field_mode & FIELD_MODE_FIGHTER_SOURCE) != 0 and value is FighterRuntime: continue
+				if (field_mode & FIELD_MODE_HUD_SPEC) != 0 and value is HealthHud:
 					record.hud_placement = {"constant": _constant(value.spec.placement)}
 					continue
-				if (field in IMMUTABLE or (value is KoTimeline and field in ["clips", "methods", "callbacks", "load_callbacks"]) or (value is HealthHud and field == "portraits") or (value is AiSenses and field in ["placement", "sensors"])) and (contents is Dictionary or contents is Array) and not (value is HealthHud and field == "spec"):
-					var cache_key := "%s:%s" % [value.get_instance_id(), field]
-					if not _immutable_fields.has(cache_key) or not is_same(_immutable_fields[cache_key][0], contents):
-						_immutable_fields[cache_key] = [contents, _constant(contents)]
-					record.fields[field] = {"constant": _immutable_fields[cache_key][1]}
+				var immutable_field := (field_mode & FIELD_MODE_IMMUTABLE) != 0
+				if not immutable_field and (field_mode & FIELD_MODE_KO_IMMUTABLE) != 0 and value is KoTimeline:
+					immutable_field = true
+				if not immutable_field and (field_mode & FIELD_MODE_HUD_IMMUTABLE) != 0 and value is HealthHud:
+					immutable_field = true
+				if not immutable_field and (field_mode & FIELD_MODE_SENSES_IMMUTABLE) != 0 and value is AiSenses:
+					immutable_field = true
+				if immutable_field and (contents is Dictionary or contents is Array) and not (value is HealthHud and field == "spec"):
+					var instance_id: int = value.get_instance_id()
+					if not _immutable_fields.has(instance_id): _immutable_fields[instance_id] = {}
+					var instance_fields: Dictionary = _immutable_fields[instance_id]
+					if not instance_fields.has(field) or not is_same(instance_fields[field][0], contents):
+						instance_fields[field] = [contents, _constant(contents)]
+					record.fields[field] = {"constant": instance_fields[field][1]}
 				else:
 					record.fields[field] = _encode(contents)
-			for item in script.get_script_signal_list():
+			var signal_names: Array
+			if _script_signal_names.has(script):
+				signal_names = _script_signal_names[script]
+			else:
+				signal_names = []
+				for item in script.get_script_signal_list(): signal_names.append(item.name)
+				_script_signal_names[script] = signal_names
+			for signal_name in signal_names:
 				var connections := []
-				for connection in value.get_signal_connection_list(item.name):
+				for connection in value.get_signal_connection_list(signal_name):
 					connections.append({"callback": _encode(connection.callable), "flags": connection.flags})
-				record.signals[str(item.name)] = connections
+				record.signals[str(signal_name)] = connections
 		elif not value is Node:
 			error = "Unsupported native object: " + value.get_class()
 		if value is Node:
@@ -406,6 +428,60 @@ func _decode(value: Variant) -> Variant:
 		return callback.unbind(value.unbound) if value.unbound > 0 else callback
 	return null
 
+func _build_field_descriptors(value: Object) -> Array:
+	var descriptors: Array = []
+	for property in value.get_property_list():
+		if not property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE: continue
+		var field: String = property.name
+		var mode := 0
+		if field in IMMUTABLE: mode |= FIELD_MODE_IMMUTABLE
+		if field == "source_x" or field == "source_y": mode |= FIELD_MODE_FIGHTER_SOURCE
+		if field == "spec": mode |= FIELD_MODE_HUD_SPEC
+		if field in ["clips", "methods", "callbacks", "load_callbacks"]: mode |= FIELD_MODE_KO_IMMUTABLE
+		if field == "portraits": mode |= FIELD_MODE_HUD_IMMUTABLE
+		if field == "placement" or field == "sensors": mode |= FIELD_MODE_SENSES_IMMUTABLE
+		descriptors.append([field, mode])
+	return descriptors
+
+func _array_type_key(value: Array) -> String:
+	var typed_script: Script = value.get_typed_script()
+	return "%s:%s:%s" % [value.get_typed_builtin(), value.get_typed_class_name(), _constant(typed_script) if typed_script != null else ""]
+
+func _empty_prototype_key(value: Variant) -> String:
+	if value is Array:
+		var signature := _array_type_key(value)
+		if _empty_array_prototypes.has(signature): return _empty_array_prototypes[signature]
+		var prototype: Array = value.duplicate()
+		prototype.clear()
+		var prototype_key := _constant(prototype)
+		_empty_array_prototypes[signature] = prototype_key
+		return prototype_key
+	var dictionary: Dictionary = value
+	var typed_key := dictionary.is_typed_key()
+	var typed_value := dictionary.is_typed_value()
+	var signature: Array = [typed_key]
+	if typed_key:
+		var key_script: Script = dictionary.get_typed_key_script()
+		signature.append(dictionary.get_typed_key_builtin())
+		signature.append(dictionary.get_typed_key_class_name())
+		signature.append(_constant(key_script) if key_script != null else "")
+	signature.append(typed_value)
+	if typed_value:
+		var value_script: Script = dictionary.get_typed_value_script()
+		signature.append(dictionary.get_typed_value_builtin())
+		signature.append(dictionary.get_typed_value_class_name())
+		signature.append(_constant(value_script) if value_script != null else "")
+	var cache: Dictionary = _empty_dictionary_prototypes
+	for part in signature:
+		if not cache.has(part): cache[part] = {}
+		cache = cache[part]
+	if cache.has("prototype_key"): return cache["prototype_key"]
+	var prototype: Dictionary = dictionary.duplicate()
+	prototype.clear()
+	var prototype_key := _constant(prototype)
+	cache["prototype_key"] = prototype_key
+	return prototype_key
+
 func retire(node: Node) -> void:
 	_retired[node.get_instance_id()] = node
 	if node.get_parent() != null:
@@ -424,8 +500,11 @@ func close() -> void:
 	_snapshot_graphs.clear()
 	_sounds.clear()
 	_constants.clear()
+	_script_signal_names.clear()
+	_field_descriptors.clear()
 	_immutable_fields.clear()
-	_property_lists.clear()
+	_empty_array_prototypes.clear()
+	_empty_dictionary_prototypes.clear()
 	_placement_tables.clear()
 	_placements.clear()
 	_constant_values.clear()
@@ -467,8 +546,8 @@ func retain_states(states: Array) -> void:
 			_retired.erase(id)
 	for key in _sounds.keys():
 		if _sounds[key] < oldest: _sounds.erase(key)
-	for key in _immutable_fields.keys():
-		if not is_instance_id_valid(int(key.get_slice(":", 0))): _immutable_fields.erase(key)
+	for instance_id in _immutable_fields.keys():
+		if not is_instance_id_valid(int(instance_id)): _immutable_fields.erase(instance_id)
 	profile.retains_us += Time.get_ticks_usec() - started
 
 func _register_script(script: Script, identity: String) -> void:

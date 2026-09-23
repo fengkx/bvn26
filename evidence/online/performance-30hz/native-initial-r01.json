@@ -1,0 +1,102 @@
+{
+  "scope": "native 330-frame burst; not browser cadence or a paired online match",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "profile_sha256": "c3ec9ff7d15b4bcd741e7fc9871700569397d03be1b929f69330c5ebc76d6dec",
+  "runner": "tools/test_online_performance.py",
+  "results": [
+    {
+      "label": "baseline",
+      "source_manifest": "evidence/online/performance-30hz/frozen-baseline.json",
+      "source_tree_sha256": "5983354e90f1669d877a92bbdfc57cbe8c978794bc6d8210d4971124578602d1",
+      "measurements": [
+        {
+          "advance_us": {
+            "max": 991372,
+            "mean": 38651.8454545455,
+            "p50": 18702,
+            "p95": 148279,
+            "p99": 363556
+          },
+          "checkpoint_profile": {
+            "encode_us": 0,
+            "pack_us": 0,
+            "retains_us": 0,
+            "saves": 0
+          },
+          "end_to_end_step_us": {},
+          "frames": 330,
+          "mode": "battle_only",
+          "replayed_frames": 0,
+          "rollbacks": 0
+        },
+        {
+          "advance_us": {},
+          "checkpoint_profile": {
+            "encode_us": 6356708,
+            "pack_us": 1164507,
+            "retains_us": 120151,
+            "saves": 331
+          },
+          "end_to_end_step_us": {
+            "max": 74946,
+            "mean": 34452.1212121212,
+            "p50": 33275,
+            "p95": 45363,
+            "p99": 58532
+          },
+          "frames": 330,
+          "mode": "rollback_no_late_input",
+          "replayed_frames": 0,
+          "rollbacks": 0
+        }
+      ]
+    },
+    {
+      "label": "candidate",
+      "source_manifest": "evidence/online/performance-30hz/first-round-candidate.json",
+      "source_tree_sha256": "814e66b5a9b982264efd6e39453b6cb5f30a13568cb3fac29e08cfa2d2c2e887",
+      "measurements": [
+        {
+          "advance_us": {
+            "max": 43444,
+            "mean": 11291.1909090909,
+            "p50": 11916,
+            "p95": 15242,
+            "p99": 17233
+          },
+          "checkpoint_profile": {
+            "encode_us": 0,
+            "pack_us": 0,
+            "retains_us": 0,
+            "saves": 0
+          },
+          "end_to_end_step_us": {},
+          "frames": 330,
+          "mode": "battle_only",
+          "replayed_frames": 0,
+          "rollbacks": 0
+        },
+        {
+          "advance_us": {},
+          "checkpoint_profile": {
+            "encode_us": 4587902,
+            "pack_us": 1086918,
+            "retains_us": 112837,
+            "saves": 331
+          },
+          "end_to_end_step_us": {
+            "max": 68664,
+            "mean": 28711.5787878788,
+            "p50": 28763,
+            "p95": 34756,
+            "p99": 37551
+          },
+          "frames": 330,
+          "mode": "rollback_no_late_input",
+          "replayed_frames": 0,
+          "rollbacks": 0
+        }
+      ]
+    }
+  ]
+}

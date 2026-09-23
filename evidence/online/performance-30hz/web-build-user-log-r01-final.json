@@ -1,0 +1,159 @@
+{
+  "status": "packs_ready_waiting_for_visible_browser_capture",
+  "scope": "Same-machine Godot Web burst profile; DOM output is not a real-time 30 Hz paired-match pass.",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "profile": "Transformed copy of the native rollback_performance_profile.gd; user-log-r01 330-tick fixture; result JSON is written into #report",
+  "browser_procedure": "Open baseline URL in one visible tab, capture its #report JSON, then navigate the same tab to candidate URL. Run one page at a time; this is burst timing, not a real-time cadence test.",
+  "dom_result_schema": {
+    "container": "#report",
+    "schemaVersion": 1,
+    "kind": "bvn-online-performance-web-burst"
+  },
+  "harness_source": "/private/tmp/bvn-lag-web-profile",
+  "source_comparison": [
+    {
+      "label": "baseline",
+      "source": "/private/tmp/bvn26-performance-baseline-a17e361b/godot",
+      "source_manifest": "evidence/online/performance-30hz/frozen-baseline.json",
+      "parent_tree_sha256": "5983354e90f1669d877a92bbdfc57cbe8c978794bc6d8210d4971124578602d1",
+      "battle_checkpoint_sha256": "a0fbf2417296f0bb4aa260f7d3131d0ea3595db7aaee88ddd5c150e6d5d842ea",
+      "profile_sha256": "26156d7e2bcf243aa384ab1a866da565fdc0fc637bc5794b670642a7200b8920",
+      "pck_sha256": "0cbd2b2bcbec6be427ffe9928ad093cc8ca512991fc9ee0dab9712934929cab9",
+      "pck_bytes": 109052100,
+      "web_shell_sha256": "0e622085e683322b39adbe38609ee2b709ef0343d2add67d8c6a55c55888eaab",
+      "web_engine_js_sha256": "33c94cb3175f3333b82e2a3be5e8e86f77986f0aa2042b1631f6367a4e5bb6ba",
+      "web_engine_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+      "import": {
+        "command": [
+          "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot",
+          "--log-file",
+          "/private/tmp/bvn26-web-performance-r04-user-log-logs/baseline-import-godot.log",
+          "--headless",
+          "--editor",
+          "--path",
+          "/private/tmp/bvn26-web-performance-r04-user-log/projects/baseline/godot",
+          "--quit"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 2.7164983339607716,
+        "log": "/private/tmp/bvn26-web-performance-r04-user-log-logs/baseline-import.log",
+        "godot_log": "/private/tmp/bvn26-web-performance-r04-user-log-logs/baseline-import-godot.log",
+        "known_environment_diagnostics": [
+          "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+          "ERROR: Cannot save file '/Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres'.",
+          "ERROR: Error saving editor settings to /Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres",
+          "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+          "ERROR: Cannot save file '/Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres'.",
+          "ERROR: Error saving editor settings to /Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres"
+        ]
+      },
+      "export_pack": {
+        "command": [
+          "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot",
+          "--log-file",
+          "/private/tmp/bvn26-web-performance-r04-user-log-logs/baseline-export-pack-godot.log",
+          "--headless",
+          "--path",
+          "/private/tmp/bvn26-web-performance-r04-user-log/projects/baseline/godot",
+          "--export-pack",
+          "Web",
+          "/private/tmp/bvn26-web-performance-r04-user-log/packs/baseline/index.pck"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 6.8341166246682405,
+        "log": "/private/tmp/bvn26-web-performance-r04-user-log-logs/baseline-export-pack.log",
+        "godot_log": "/private/tmp/bvn26-web-performance-r04-user-log-logs/baseline-export-pack-godot.log",
+        "known_environment_diagnostics": [
+          "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+          "ERROR: Cannot save file '/Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres'.",
+          "ERROR: Error saving editor settings to /Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres",
+          "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+          "ERROR: Cannot save file '/Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres'.",
+          "ERROR: Error saving editor settings to /Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres"
+        ]
+      },
+      "url": "http://127.0.0.1:8048/baseline/index.html",
+      "web_audio_worklet_sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+      "web_audio_position_worklet_sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    },
+    {
+      "label": "candidate",
+      "source": "/private/tmp/bvn26-performance-candidate-round3-userfixture/godot",
+      "source_manifest": "evidence/online/performance-30hz/user-log-r01-candidate-overlay.json",
+      "parent_tree_sha256": "c5505dae3bd053b8d05dfc4c08ca99f990d0277e6e07c0cfcaed2dad9c6d7094",
+      "battle_checkpoint_sha256": "fa7d03d2719b2ca61738aaa30f7e5d0b17da583342ef3a3e4e878ce7b9fbcbac",
+      "profile_sha256": "26156d7e2bcf243aa384ab1a866da565fdc0fc637bc5794b670642a7200b8920",
+      "pck_sha256": "34b0086d9c1ee8d1c44a678c330bc3150a3433975e4b686448da9f07f6ca3cf1",
+      "pck_bytes": 109083160,
+      "web_shell_sha256": "e3a0489e1b44198eafec5147473f152dc106240a086241bb3f47161237307888",
+      "web_engine_js_sha256": "33c94cb3175f3333b82e2a3be5e8e86f77986f0aa2042b1631f6367a4e5bb6ba",
+      "web_engine_wasm_sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+      "import": {
+        "command": [
+          "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot",
+          "--log-file",
+          "/private/tmp/bvn26-web-performance-r04-user-log-logs/candidate-import-godot.log",
+          "--headless",
+          "--editor",
+          "--path",
+          "/private/tmp/bvn26-web-performance-r04-user-log/projects/candidate/godot",
+          "--quit"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 2.49964458309114,
+        "log": "/private/tmp/bvn26-web-performance-r04-user-log-logs/candidate-import.log",
+        "godot_log": "/private/tmp/bvn26-web-performance-r04-user-log-logs/candidate-import-godot.log",
+        "known_environment_diagnostics": [
+          "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+          "ERROR: Cannot save file '/Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres'.",
+          "ERROR: Error saving editor settings to /Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres",
+          "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+          "ERROR: Cannot save file '/Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres'.",
+          "ERROR: Error saving editor settings to /Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres"
+        ]
+      },
+      "export_pack": {
+        "command": [
+          "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot",
+          "--log-file",
+          "/private/tmp/bvn26-web-performance-r04-user-log-logs/candidate-export-pack-godot.log",
+          "--headless",
+          "--path",
+          "/private/tmp/bvn26-web-performance-r04-user-log/projects/candidate/godot",
+          "--export-pack",
+          "Web",
+          "/private/tmp/bvn26-web-performance-r04-user-log/packs/candidate/index.pck"
+        ],
+        "exit_code": 0,
+        "wall_seconds": 6.57742725033313,
+        "log": "/private/tmp/bvn26-web-performance-r04-user-log-logs/candidate-export-pack.log",
+        "godot_log": "/private/tmp/bvn26-web-performance-r04-user-log-logs/candidate-export-pack-godot.log",
+        "known_environment_diagnostics": [
+          "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+          "ERROR: Cannot save file '/Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres'.",
+          "ERROR: Error saving editor settings to /Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres",
+          "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+          "ERROR: Cannot save file '/Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres'.",
+          "ERROR: Error saving editor settings to /Users/fengkx/Library/Application Support/Godot/editor_settings-4.7.tres"
+        ]
+      },
+      "url": "http://127.0.0.1:8048/candidate/index.html",
+      "web_audio_worklet_sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+      "web_audio_position_worklet_sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+    }
+  ],
+  "server": {
+    "status": "running",
+    "host": "127.0.0.1",
+    "port": 8048,
+    "directory": "/private/tmp/bvn26-web-performance-r04-user-log/www",
+    "tool_session_id": 87489
+  },
+  "valid_web_assets": {
+    "audio_worklet": "index.audio.worklet.js",
+    "audio_position_worklet": "index.audio.position.worklet.js",
+    "audio_worklet_sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+    "audio_position_worklet_sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+    "note": "Assets added after the first browser load reported 404; both test pages must be reloaded before capturing final measurements."
+  }
+}

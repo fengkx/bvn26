@@ -16,6 +16,7 @@ const State = preload("res://simulation_state.gd")
 const Battle = preload("res://rollback_battle.gd")
 const Rollback = preload("res://rollback_session.gd")
 const TimerAuthority = preload("res://online_timer_authority.gd")
+const PerformanceTelemetry = preload("res://online_performance.gd")
 const HASH_INTERVAL := 30
 const RECOVERY_MS := 10_000
 const MAX_HASH_HISTORY := 256
@@ -98,11 +99,15 @@ var _early_signals: Array[Dictionary] = []
 var _signal_error := ""
 var _startup_pending_messages: Array[Dictionary] = []
 var _signaling_reconnect_active := false
+var _performance = PerformanceTelemetry.new()
+var _performance_wait_reason := ""
+var _last_performance_report: Dictionary = {}
 
 
 func configure(scene: Node, room_setup: Dictionary, player_slot: String, room: Object, transport: Object) -> String:
 	if _configured:
 		return "Online match is already configured"
+	_last_performance_report.clear()
 	if player_slot not in ["p1", "p2"] or room == null or transport == null:
 		return "Online match dependencies or player slot are invalid"
 	var normalized_setup := _normalize_setup(room_setup)
@@ -226,6 +231,8 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 			_startup_context_eligible = false
 			_last_heartbeat_received_ms = Time.get_ticks_msec()
 			_last_heartbeat_sent_ms = _last_heartbeat_received_ms
+			_performance.start(_last_heartbeat_received_ms, rollback.frontier, rollback.confirmed,
+				page_visible, _checkpoint_profile_sample())
 			started.emit()
 			_drain_startup_messages()
 			return ""
@@ -370,6 +377,20 @@ func _finish_startup_cancel(result: String) -> String:
 
 
 func process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
+	if not _configured or not running:
+		return _process_tick(monotonic_now_ms, local_held)
+	_performance_wait_reason = ""
+	_performance.begin_tick(Time.get_ticks_usec(), rollback.frontier if rollback != null else 0)
+	var result := _process_tick(monotonic_now_ms, local_held)
+	if _performance.active:
+		_performance.finish_tick(Time.get_ticks_usec(), rollback.frontier if rollback != null else 0)
+		_performance.set_wait(_performance_wait_reason, monotonic_now_ms)
+		if _performance.summary_due(monotonic_now_ms):
+			_publish_performance_summary(_collect_performance_summary(monotonic_now_ms, false))
+	return result
+
+
+func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 	if not _configured:
 		return "Online match is not configured"
 	if not running:
@@ -381,6 +402,7 @@ func process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 	if not error.is_empty(): return error
 	_poll_heartbeat(monotonic_now_ms)
 	if recovering or paused:
+		_performance_wait_reason = "recovery" if recovering else "paused"
 		_poll_control_barriers(monotonic_now_ms)
 		return ""
 	var next_frame: int = rollback.frontier + 1
@@ -389,15 +411,24 @@ func process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 		if rollback.frontier > control_frame:
 			return _abort_local("control_frame_overshot", {"target": control_frame, "frontier": rollback.frontier})
 		if rollback.frontier == control_frame:
+			_performance_wait_reason = "control"
 			_report_control_ready()
 			_poll_control_barriers(monotonic_now_ms)
 			return ""
 	if not _sample_local_once(local_held): return error
 	if local_slot != clock_authority_slot and not _clock_samples.has(next_frame):
+		_performance_wait_reason = "clock"
 		_poll_control_barriers(monotonic_now_ms)
 		return ""
 	var previous_frontier: int = rollback.frontier
+	var step_started_usec := Time.get_ticks_usec()
 	var result: String = rollback.step()
+	if rollback.frontier > previous_frontier:
+		_performance.record_simulation_step(Time.get_ticks_usec() - step_started_usec)
+	if result == "waiting_for_input":
+		_performance_wait_reason = "input"
+	elif result == "waiting_for_confirmation":
+		_performance_wait_reason = "confirmation"
 	if not result.is_empty() and result not in ["waiting_for_input", "waiting_for_confirmation", "match_finished"]:
 		return _abort_local("simulation", {"error": result, "frame": rollback.frontier + 1})
 	if rollback.frontier > previous_frontier:
@@ -473,6 +504,8 @@ func request_intro_skip() -> String:
 
 
 func close(reason: String = "") -> void:
+	if _performance != null and _performance.active:
+		_finish_performance(false)
 	_generation += 1
 	_room_command_in_flight = false
 	running = false
@@ -613,9 +646,79 @@ func _disconnect_dependencies() -> void:
 
 func _on_page_visibility_changed(visible: bool) -> void:
 	page_visible = visible
+	if _performance != null:
+		_performance.set_page_visible(visible, Time.get_ticks_msec())
 	if _startup_context_eligible and not visible:
 		_startup_hidden_seen = true
 	page_visibility_changed.emit(visible)
+
+
+func performance_report() -> Dictionary:
+	return _last_performance_report.duplicate(true)
+
+
+func _collect_performance_summary(now_ms: int, final: bool) -> Dictionary:
+	var frontier := int(rollback.frontier) if rollback != null else 0
+	var confirmed := int(rollback.confirmed) if rollback != null else 0
+	var context := {
+		"recovering": recovering,
+		"paused": paused,
+		"profile": {
+			"id": str(profile.get("id", "")),
+			"inputDelay": int(profile.get("inputDelay", 0)),
+			"predictionWindow": int(profile.get("predictionWindow", 0)),
+		},
+	}
+	var summary: Dictionary = _performance.collect_summary(now_ms, Time.get_ticks_usec(), frontier,
+		confirmed, context, _checkpoint_profile_sample(), final)
+	_last_performance_report = summary.duplicate(true)
+	return summary
+
+
+func _finish_performance(emit_if_due: bool) -> Dictionary:
+	if _performance == null:
+		return {"schemaVersion": 1, "available": false, "reason": "telemetry_unavailable"}
+	if not _performance.active:
+		return _last_performance_report.duplicate(true) if not _last_performance_report.is_empty() \
+			else {"schemaVersion": 1, "available": false, "reason": "match_not_started"}
+	var now_ms := Time.get_ticks_msec()
+	var emit_summary: bool = emit_if_due and _performance.summary_due(now_ms)
+	var summary := _collect_performance_summary(now_ms, true)
+	_performance.stop()
+	if emit_summary:
+		_publish_performance_summary(summary)
+	return summary
+
+
+func _publish_performance_summary(summary: Dictionary) -> void:
+	var diagnostics := _diagnostic_runtime()
+	if diagnostics != null and diagnostics.has_method("push_event"):
+		diagnostics.call("push_event", "online_performance", summary)
+
+
+func _diagnostic_runtime() -> Object:
+	if game == null or not is_instance_valid(game):
+		return null
+	var value: Variant = game.get("diagnostics")
+	return value if value is Object and is_instance_valid(value) else null
+
+
+func _checkpoint_profile_sample() -> Dictionary:
+	if battle == null or not is_instance_valid(battle):
+		return {"available": false, "reason": "battle_checkpoint_unavailable"}
+	var checkpoint: Variant = battle.get("checkpoint")
+	if not checkpoint is Object or not is_instance_valid(checkpoint):
+		return {"available": false, "reason": "battle_checkpoint_unavailable"}
+	var profile_value: Variant = checkpoint.get("profile")
+	if not profile_value is Dictionary:
+		return {"available": false, "reason": "checkpoint_profile_unavailable"}
+	var totals := {}
+	for pair in [["saves", "saves"], ["encodeUs", "encode_us"], ["packUs", "pack_us"], ["retainsUs", "retains_us"]]:
+		var value: Variant = profile_value.get(pair[1])
+		if not value is int and not value is float:
+			return {"available": false, "reason": "checkpoint_profile_unavailable"}
+		totals[pair[0]] = int(value)
+	return {"available": true, "totals": totals}
 
 
 func _startup_timeout_context(reason: String) -> String:
@@ -1313,7 +1416,13 @@ func _receive_input(payload: Dictionary) -> void:
 		_abort_local("invalid_peer_input", payload)
 		return
 	var frame := int(frame_value)
+	var receive_started_usec := Time.get_ticks_usec()
+	var previous_corrections := int(rollback.rollback_count)
+	var previous_replayed_frames := int(rollback.replayed_frames)
 	var problem: String = rollback.receive(epoch, remote_slot, frame, payload.held)
+	_performance.record_input_receive(Time.get_ticks_usec() - receive_started_usec,
+		int(rollback.rollback_count) - previous_corrections,
+		int(rollback.replayed_frames) - previous_replayed_frames)
 	if not problem.is_empty():
 		_abort_local("peer_input", {"frame": frame, "error": problem})
 		return
@@ -1442,6 +1551,7 @@ func _compare_result(local: Dictionary, remote: Dictionary) -> void:
 	if not _result_submission_started:
 		_result_submission_started = true
 		_submit_confirmed_result.call_deferred(local.duplicate(true), _generation)
+	_finish_performance(true)
 	running = false
 	result_confirmed.emit(local.duplicate(true))
 
@@ -1777,6 +1887,7 @@ func _abort_local(kind: String, details: Dictionary, notify_peer: bool = true) -
 	if error.is_empty():
 		error = kind
 		var report := {"kind": kind, "epoch": epoch, "frame": rollback.frontier if rollback != null else 0, "details": details.duplicate(true)}
+		report["performance"] = _finish_performance(false)
 		if notify_peer:
 			_send_local_abort(kind, details)
 		if not _abort_submission_started and _valid_epoch(epoch):

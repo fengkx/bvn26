@@ -501,7 +501,17 @@ func _run() -> void:
 	assert(first_match.recovering and second_match.recovering, "Both peers did not enter recovery after transport loss")
 	first_peer.set_link_connected(true)
 	second_peer.set_link_connected(true)
-	var recovery_now := Time.get_ticks_msec()
+	var recovery_previous_ms := maxi(first_match._process_now_ms, second_match._process_now_ms)
+	var recovery_wall_ms := Time.get_ticks_msec()
+	var recovery_now := maxi(control_now, recovery_wall_ms)
+	print("ONLINE_MATCH_PAIR_RECOVERY_CLOCK previous_ms=%d wall_now_ms=%d supplied_now_ms=%d raw_delta_ms=%d" % [
+		recovery_previous_ms, recovery_wall_ms, recovery_now, recovery_wall_ms - recovery_previous_ms,
+	])
+	assert(recovery_now >= recovery_previous_ms, "Recovery clock moved backward: previous=%d now=%d" % [recovery_previous_ms, recovery_now])
+	assert(recovery_now >= first_match._disconnect_started_ms and recovery_now >= second_match._disconnect_started_ms,
+		"Recovery tick preceded disconnect start: now=%d p1=%d p2=%d" % [
+			recovery_now, first_match._disconnect_started_ms, second_match._disconnect_started_ms,
+		])
 	for _attempt in 40:
 		recovery_now += 50
 		var tick_error := _step_pair(first_match, second_match, recovery_now, neutral, neutral)

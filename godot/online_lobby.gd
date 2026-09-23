@@ -3284,7 +3284,10 @@ func _show_result(result: Variant, status_line: String = "双方确认结果后�
 
 
 func _on_match_aborted(report: Dictionary, epoch: String, generation: int) -> void:
-	_queue_match_abort(report, epoch, generation)
+	var local_report := report.duplicate(true)
+	if not local_report.has("performance") and coordinator != null and coordinator.has_method("performance_report"):
+		local_report["performance"] = coordinator.call("performance_report")
+	_queue_match_abort(local_report, epoch, generation)
 
 
 func _queue_match_abort(report: Dictionary, epoch: String, generation: int) -> void:

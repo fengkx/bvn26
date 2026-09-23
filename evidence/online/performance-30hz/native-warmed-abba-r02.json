@@ -1,0 +1,1675 @@
+{
+  "validity": "native screening only; not a Web/browser 30 Hz acceptance result",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "order": [
+    "baseline",
+    "candidate",
+    "candidate",
+    "baseline"
+  ],
+  "profile_sha256": "f3538dfdcef79ecb8a208ca0b480bc515d1016065f0e5bc6ba7f6326d16c4153",
+  "warmup": "Each invocation warms a fresh fixture for 90 frames before measured modes; this warms project resources, not the full combat move set.",
+  "fixture": "Default Naruto/Ichigo deterministic 330-frame input r01; fixed seed 727 and recorded intro schedule.",
+  "sources": {
+    "baseline": {
+      "path": "/private/tmp/bvn26-performance-baseline-a17e361b/godot",
+      "manifest": "evidence/online/performance-30hz/frozen-baseline.json",
+      "fingerprint": "5983354e90f1669d877a92bbdfc57cbe8c978794bc6d8210d4971124578602d1",
+      "parent_tree_sha256": null,
+      "battle_checkpoint_sha256": "a0fbf2417296f0bb4aa260f7d3131d0ea3595db7aaee88ddd5c150e6d5d842ea"
+    },
+    "candidate": {
+      "path": "/private/tmp/bvn26-performance-candidate-round2-final/godot",
+      "manifest": "evidence/online/performance-30hz/round2-final-candidate-overlay.json",
+      "fingerprint": "1252260d50316a3ffb03d753cbabd2a9202eae06a199cea180e09cb323665452",
+      "parent_tree_sha256": "cbd31a932cd1e43ad11b87e201d112e2a8c00e1188dcad4479d5721f5b12fab8",
+      "battle_checkpoint_sha256": "c95630c37680922618d985ad980717fd882b587ad6180de644c3647601500c23"
+    }
+  },
+  "runs": [
+    {
+      "ordinal": 1,
+      "label": "baseline",
+      "source": "/private/tmp/bvn26-performance-baseline-a17e361b/godot",
+      "profile_sha256": "f3538dfdcef79ecb8a208ca0b480bc515d1016065f0e5bc6ba7f6326d16c4153",
+      "wall_seconds": 14.52318587526679,
+      "host_before": {
+        "load_average": [
+          4.787109375,
+          8.93994140625,
+          9.60302734375
+        ],
+        "cpu_count": 8
+      },
+      "host_after": {
+        "load_average": [
+          4.91845703125,
+          8.76318359375,
+          9.52783203125
+        ],
+        "cpu_count": 8
+      },
+      "known_environment_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ],
+      "log": "/private/tmp/bvn26-native-perf-r02/01-baseline.log",
+      "godot_log": "/private/tmp/bvn26-native-perf-r02/01-baseline-godot.log",
+      "measurements": [
+        {
+          "advance_us": {
+            "max": 30687,
+            "mean": 7482.93333333333,
+            "p50": 7798,
+            "p95": 9921,
+            "p99": 11526
+          },
+          "checkpoint_profile": {
+            "encode_us": 0,
+            "pack_us": 0,
+            "retains_us": 0,
+            "saves": 0
+          },
+          "frames": 330,
+          "harness_wall_us": 2473469,
+          "input_fixture": "default-naruto-ichigo-r01",
+          "intro_schedule": "poll every 15 ticks; skip intro ticks 30-89",
+          "live_container_sizes": [
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 30,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 60,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 90,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 120,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 150,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 180,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 210,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 1,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 240,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 270,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 300,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 330,
+              "session": {}
+            }
+          ],
+          "mode": "battle_only",
+          "operation_wall_us": 2469368,
+          "random_seed": 727,
+          "receive_inputs_us": {},
+          "receive_plus_step_us": {},
+          "replayed_frames": 0,
+          "rollbacks": 0,
+          "session_step_us": {},
+          "warmup_frames": 90
+        },
+        {
+          "advance_us": {},
+          "checkpoint_profile": {
+            "encode_us": 3749299,
+            "pack_us": 695008,
+            "retains_us": 74871,
+            "saves": 331
+          },
+          "frames": 330,
+          "harness_wall_us": 7078690,
+          "input_fixture": "default-naruto-ichigo-r01",
+          "intro_schedule": "poll every 15 ticks; skip intro ticks 30-89",
+          "live_container_sizes": [
+            {
+              "checkpoint": {
+                "_constant_keys": 83,
+                "_constant_values": 83,
+                "_constants": 1432,
+                "_retired": 0,
+                "_snapshot_graphs": 31,
+                "_snapshots": 31
+              },
+              "frame": 30,
+              "session": {
+                "_states": 31
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 60,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 90,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 120,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 150,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 180,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 93,
+                "_constant_values": 93,
+                "_constants": 1444,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 210,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 93,
+                "_constant_values": 93,
+                "_constants": 1444,
+                "_retired": 1,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 240,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_retired": 1,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 270,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 300,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 330,
+              "session": {
+                "_states": 32
+              }
+            }
+          ],
+          "mode": "rollback_no_late_input",
+          "operation_wall_us": 7074302,
+          "random_seed": 727,
+          "receive_inputs_us": {
+            "max": 81,
+            "mean": 17.0363636363636,
+            "p50": 16,
+            "p95": 21,
+            "p99": 50
+          },
+          "receive_plus_step_us": {
+            "max": 49146,
+            "mean": 21437.2787878788,
+            "p50": 21959,
+            "p95": 24432,
+            "p99": 27018
+          },
+          "replayed_frames": 0,
+          "rollbacks": 0,
+          "session_step_us": {
+            "max": 49127,
+            "mean": 21419.4363636364,
+            "p50": 21942,
+            "p95": 24416,
+            "p99": 27002
+          },
+          "warmup_frames": 90
+        }
+      ]
+    },
+    {
+      "ordinal": 2,
+      "label": "candidate",
+      "source": "/private/tmp/bvn26-performance-candidate-round2-final/godot",
+      "profile_sha256": "f3538dfdcef79ecb8a208ca0b480bc515d1016065f0e5bc6ba7f6326d16c4153",
+      "wall_seconds": 13.875480915419757,
+      "host_before": {
+        "load_average": [
+          4.91845703125,
+          8.76318359375,
+          9.52783203125
+        ],
+        "cpu_count": 8
+      },
+      "host_after": {
+        "load_average": [
+          4.79443359375,
+          8.5458984375,
+          9.4365234375
+        ],
+        "cpu_count": 8
+      },
+      "known_environment_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ],
+      "log": "/private/tmp/bvn26-native-perf-r02/02-candidate.log",
+      "godot_log": "/private/tmp/bvn26-native-perf-r02/02-candidate-godot.log",
+      "measurements": [
+        {
+          "advance_us": {
+            "max": 99551,
+            "mean": 7771.0303030303,
+            "p50": 7833,
+            "p95": 9559,
+            "p99": 28316
+          },
+          "checkpoint_profile": {
+            "encode_us": 0,
+            "pack_us": 0,
+            "retains_us": 0,
+            "saves": 0
+          },
+          "frames": 330,
+          "harness_wall_us": 2568357,
+          "input_fixture": "default-naruto-ichigo-r01",
+          "intro_schedule": "poll every 15 ticks; skip intro ticks 30-89",
+          "live_container_sizes": [
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 30,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 60,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 90,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 120,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 150,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 180,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 210,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 1,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 240,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 270,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 300,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 330,
+              "session": {}
+            }
+          ],
+          "mode": "battle_only",
+          "operation_wall_us": 2564440,
+          "random_seed": 727,
+          "receive_inputs_us": {},
+          "receive_plus_step_us": {},
+          "replayed_frames": 0,
+          "rollbacks": 0,
+          "session_step_us": {},
+          "warmup_frames": 90
+        },
+        {
+          "advance_us": {},
+          "checkpoint_profile": {
+            "encode_us": 3048088,
+            "pack_us": 767614,
+            "retains_us": 79266,
+            "saves": 331
+          },
+          "frames": 330,
+          "harness_wall_us": 6718804,
+          "input_fixture": "default-naruto-ichigo-r01",
+          "intro_schedule": "poll every 15 ticks; skip intro ticks 30-89",
+          "live_container_sizes": [
+            {
+              "checkpoint": {
+                "_constant_keys": 83,
+                "_constant_values": 83,
+                "_constants": 1432,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 31,
+                "_snapshots": 31
+              },
+              "frame": 30,
+              "session": {
+                "_states": 31
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 60,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 90,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 120,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 150,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 180,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 93,
+                "_constant_values": 93,
+                "_constants": 1444,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 210,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 93,
+                "_constant_values": 93,
+                "_constants": 1444,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 1,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 240,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 1,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 270,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 300,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 330,
+              "session": {
+                "_states": 32
+              }
+            }
+          ],
+          "mode": "rollback_no_late_input",
+          "operation_wall_us": 6714195,
+          "random_seed": 727,
+          "receive_inputs_us": {
+            "max": 82,
+            "mean": 17.1,
+            "p50": 16,
+            "p95": 22,
+            "p99": 27
+          },
+          "receive_plus_step_us": {
+            "max": 73254,
+            "mean": 20346.0454545455,
+            "p50": 19683,
+            "p95": 29058,
+            "p99": 48903
+          },
+          "replayed_frames": 0,
+          "rollbacks": 0,
+          "session_step_us": {
+            "max": 73233,
+            "mean": 20328.1757575758,
+            "p50": 19667,
+            "p95": 29039,
+            "p99": 48884
+          },
+          "warmup_frames": 90
+        }
+      ]
+    },
+    {
+      "ordinal": 3,
+      "label": "candidate",
+      "source": "/private/tmp/bvn26-performance-candidate-round2-final/godot",
+      "profile_sha256": "f3538dfdcef79ecb8a208ca0b480bc515d1016065f0e5bc6ba7f6326d16c4153",
+      "wall_seconds": 13.646839458495378,
+      "host_before": {
+        "load_average": [
+          4.79443359375,
+          8.5458984375,
+          9.4365234375
+        ],
+        "cpu_count": 8
+      },
+      "host_after": {
+        "load_average": [
+          5.4306640625,
+          8.51513671875,
+          9.41015625
+        ],
+        "cpu_count": 8
+      },
+      "known_environment_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ],
+      "log": "/private/tmp/bvn26-native-perf-r02/03-candidate.log",
+      "godot_log": "/private/tmp/bvn26-native-perf-r02/03-candidate-godot.log",
+      "measurements": [
+        {
+          "advance_us": {
+            "max": 31149,
+            "mean": 7413.01212121212,
+            "p50": 7897,
+            "p95": 9743,
+            "p99": 11218
+          },
+          "checkpoint_profile": {
+            "encode_us": 0,
+            "pack_us": 0,
+            "retains_us": 0,
+            "saves": 0
+          },
+          "frames": 330,
+          "harness_wall_us": 2450261,
+          "input_fixture": "default-naruto-ichigo-r01",
+          "intro_schedule": "poll every 15 ticks; skip intro ticks 30-89",
+          "live_container_sizes": [
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 30,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 60,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 90,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 120,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 150,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 180,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 210,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 1,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 240,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 270,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 300,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_empty_array_prototypes": 0,
+                "_empty_dictionary_prototypes": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 330,
+              "session": {}
+            }
+          ],
+          "mode": "battle_only",
+          "operation_wall_us": 2446294,
+          "random_seed": 727,
+          "receive_inputs_us": {},
+          "receive_plus_step_us": {},
+          "replayed_frames": 0,
+          "rollbacks": 0,
+          "session_step_us": {},
+          "warmup_frames": 90
+        },
+        {
+          "advance_us": {},
+          "checkpoint_profile": {
+            "encode_us": 2968477,
+            "pack_us": 726399,
+            "retains_us": 79277,
+            "saves": 331
+          },
+          "frames": 330,
+          "harness_wall_us": 6464078,
+          "input_fixture": "default-naruto-ichigo-r01",
+          "intro_schedule": "poll every 15 ticks; skip intro ticks 30-89",
+          "live_container_sizes": [
+            {
+              "checkpoint": {
+                "_constant_keys": 83,
+                "_constant_values": 83,
+                "_constants": 1432,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 31,
+                "_snapshots": 31
+              },
+              "frame": 30,
+              "session": {
+                "_states": 31
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 60,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 90,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 120,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 150,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_empty_array_prototypes": 9,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 180,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 93,
+                "_constant_values": 93,
+                "_constants": 1444,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 210,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 93,
+                "_constant_values": 93,
+                "_constants": 1444,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 1,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 240,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 1,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 270,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 300,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_empty_array_prototypes": 10,
+                "_empty_dictionary_prototypes": 1,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 330,
+              "session": {
+                "_states": 32
+              }
+            }
+          ],
+          "mode": "rollback_no_late_input",
+          "operation_wall_us": 6459513,
+          "random_seed": 727,
+          "receive_inputs_us": {
+            "max": 271,
+            "mean": 18.5606060606061,
+            "p50": 16,
+            "p95": 26,
+            "p99": 58
+          },
+          "receive_plus_step_us": {
+            "max": 47227,
+            "mean": 19574.2818181818,
+            "p50": 19771,
+            "p95": 25271,
+            "p99": 36870
+          },
+          "replayed_frames": 0,
+          "rollbacks": 0,
+          "session_step_us": {
+            "max": 46956,
+            "mean": 19555.0333333333,
+            "p50": 19755,
+            "p95": 25247,
+            "p99": 36849
+          },
+          "warmup_frames": 90
+        }
+      ]
+    },
+    {
+      "ordinal": 4,
+      "label": "baseline",
+      "source": "/private/tmp/bvn26-performance-baseline-a17e361b/godot",
+      "profile_sha256": "f3538dfdcef79ecb8a208ca0b480bc515d1016065f0e5bc6ba7f6326d16c4153",
+      "wall_seconds": 14.318159541115165,
+      "host_before": {
+        "load_average": [
+          5.4306640625,
+          8.51513671875,
+          9.41015625
+        ],
+        "cpu_count": 8
+      },
+      "host_after": {
+        "load_average": [
+          5.18115234375,
+          8.30908203125,
+          9.32080078125
+        ],
+        "cpu_count": 8
+      },
+      "known_environment_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ],
+      "log": "/private/tmp/bvn26-native-perf-r02/04-baseline.log",
+      "godot_log": "/private/tmp/bvn26-native-perf-r02/04-baseline-godot.log",
+      "measurements": [
+        {
+          "advance_us": {
+            "max": 35269,
+            "mean": 7479.99090909091,
+            "p50": 7819,
+            "p95": 10300,
+            "p99": 12938
+          },
+          "checkpoint_profile": {
+            "encode_us": 0,
+            "pack_us": 0,
+            "retains_us": 0,
+            "saves": 0
+          },
+          "frames": 330,
+          "harness_wall_us": 2472416,
+          "input_fixture": "default-naruto-ichigo-r01",
+          "intro_schedule": "poll every 15 ticks; skip intro ticks 30-89",
+          "live_container_sizes": [
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 30,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 60,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 90,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 120,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 150,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 180,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 0,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 210,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 1,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 240,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 270,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 300,
+              "session": {}
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 0,
+                "_constant_values": 0,
+                "_constants": 0,
+                "_retired": 2,
+                "_snapshot_graphs": 0,
+                "_snapshots": 0
+              },
+              "frame": 330,
+              "session": {}
+            }
+          ],
+          "mode": "battle_only",
+          "operation_wall_us": 2468397,
+          "random_seed": 727,
+          "receive_inputs_us": {},
+          "receive_plus_step_us": {},
+          "replayed_frames": 0,
+          "rollbacks": 0,
+          "session_step_us": {},
+          "warmup_frames": 90
+        },
+        {
+          "advance_us": {},
+          "checkpoint_profile": {
+            "encode_us": 3757248,
+            "pack_us": 697581,
+            "retains_us": 78224,
+            "saves": 331
+          },
+          "frames": 330,
+          "harness_wall_us": 7110859,
+          "input_fixture": "default-naruto-ichigo-r01",
+          "intro_schedule": "poll every 15 ticks; skip intro ticks 30-89",
+          "live_container_sizes": [
+            {
+              "checkpoint": {
+                "_constant_keys": 83,
+                "_constant_values": 83,
+                "_constants": 1432,
+                "_retired": 0,
+                "_snapshot_graphs": 31,
+                "_snapshots": 31
+              },
+              "frame": 30,
+              "session": {
+                "_states": 31
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 60,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 90,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 120,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 150,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 86,
+                "_constant_values": 86,
+                "_constants": 1435,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 180,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 93,
+                "_constant_values": 93,
+                "_constants": 1444,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 210,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 93,
+                "_constant_values": 93,
+                "_constants": 1444,
+                "_retired": 1,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 240,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_retired": 1,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 270,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 300,
+              "session": {
+                "_states": 32
+              }
+            },
+            {
+              "checkpoint": {
+                "_constant_keys": 100,
+                "_constant_values": 100,
+                "_constants": 1452,
+                "_retired": 0,
+                "_snapshot_graphs": 32,
+                "_snapshots": 32
+              },
+              "frame": 330,
+              "session": {
+                "_states": 32
+              }
+            }
+          ],
+          "mode": "rollback_no_late_input",
+          "operation_wall_us": 7106532,
+          "random_seed": 727,
+          "receive_inputs_us": {
+            "max": 125,
+            "mean": 16.6030303030303,
+            "p50": 16,
+            "p95": 21,
+            "p99": 27
+          },
+          "receive_plus_step_us": {
+            "max": 46739,
+            "mean": 21534.9454545455,
+            "p50": 21590,
+            "p95": 26937,
+            "p99": 39487
+          },
+          "replayed_frames": 0,
+          "rollbacks": 0,
+          "session_step_us": {
+            "max": 46722,
+            "mean": 21517.5212121212,
+            "p50": 21575,
+            "p95": 26921,
+            "p99": 39468
+          },
+          "warmup_frames": 90
+        }
+      ]
+    }
+  ]
+}
