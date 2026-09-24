@@ -146,3 +146,6 @@ and `/private/tmp/bvn-online-performance-60s/web-paired-60s-d2p6-raw.json`
 The 330-frame burst comparison separately reduced mean receive-plus-step by
 11.47% and checkpoint encoding by 26.64%; the paired 30 Hz gate remains
 **not passed** and these runs do not close NET-026 or exercise assists/supers.
+
+The 2026-09-24 user-log diagnosis and rejected checkpoint experiments are
+recorded in [round 3 checkpoint profiling](round3-checkpoint-profiling.md).
