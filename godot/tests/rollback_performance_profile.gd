@@ -10,6 +10,10 @@ const USER_LOG_SCENARIO := "user-log-r01"
 const USER_FIGHTERS := ["日番谷", "佐助"]
 const USER_HELPERS := ["鼬", "我爱罗"]
 const USER_STAGE := "现世"
+const CURRENT_LOG_ROSTER_SCENARIO := "current-log-roster-r01"
+const CURRENT_LOG_FIGHTERS := ["一护", "佐助"]
+const CURRENT_LOG_HELPERS := ["我爱罗", "松本"]
+const CURRENT_LOG_STAGE := "流魂街"
 const RETENTION_FIELDS := [
 	"_states",
 	"_snapshots",
@@ -214,7 +218,7 @@ func _read_scenario_args() -> bool:
 			return _check("Pass scenario as --scenario=<name>")
 		else:
 			return _check("Unknown performance profile argument: " + argument)
-	if _scenario not in ["default", USER_LOG_SCENARIO]:
+	if _scenario not in ["default", USER_LOG_SCENARIO, CURRENT_LOG_ROSTER_SCENARIO]:
 		return _check("Unknown performance scenario: " + _scenario)
 	return true
 
@@ -225,6 +229,22 @@ func _load_scenario_inputs() -> bool:
 			"id": "default-naruto-ichigo-r01",
 			"kind": "deterministic synthetic screening input",
 		}
+		return true
+	if _scenario == CURRENT_LOG_ROSTER_SCENARIO:
+		_tape_metadata = {
+			"id": CURRENT_LOG_ROSTER_SCENARIO,
+			"kind": "complete deterministic synthetic input from a fresh fixture",
+			"recorded_range": {"first_tick": 1, "last_tick": MEASURED_FRAMES, "ticks": MEASURED_FRAMES},
+			"input_schedule": "the profiler's deterministic movement, attack, jump, ranged, and summon pattern",
+			"derived_from_user_log": false,
+		}
+		var tape: Array = []
+		for frame in range(1, MEASURED_FRAMES + 1):
+			tape.append({"fightTick": frame, "players": _players(frame)})
+		var hashing := HashingContext.new()
+		if hashing.start(HashingContext.HASH_SHA256) != OK or hashing.update(JSON.stringify(tape).to_utf8_buffer()) != OK:
+			return _check("Could not hash the deterministic current-roster input tape")
+		_tape_metadata.input_tape_sha256 = hashing.finish().hex_encode()
 		return true
 	var source := FileAccess.get_file_as_string(USER_TAPE_PATH)
 	if source.is_empty():
@@ -281,16 +301,29 @@ func _load_scenario_inputs() -> bool:
 
 
 func _scenario_id() -> String:
-	return "default-naruto-ichigo-r01" if _scenario == "default" else USER_LOG_SCENARIO
+	match _scenario:
+		"default": return "default-naruto-ichigo-r01"
+		USER_LOG_SCENARIO: return USER_LOG_SCENARIO
+		_: return CURRENT_LOG_ROSTER_SCENARIO
 
 
 func _create_fixture() -> Dictionary:
 	if _scenario == USER_LOG_SCENARIO:
 		return Fixture.create(self, USER_FIGHTERS, USER_HELPERS, USER_STAGE)
+	if _scenario == CURRENT_LOG_ROSTER_SCENARIO:
+		return Fixture.create(self, CURRENT_LOG_FIGHTERS, CURRENT_LOG_HELPERS, CURRENT_LOG_STAGE)
 	return Fixture.create(self)
 
 
 func _validate_fixture_roster(game: Node) -> bool:
+	if _scenario == CURRENT_LOG_ROSTER_SCENARIO:
+		if game.naruto.fighter_name != CURRENT_LOG_FIGHTERS[0] or game.ichigo.fighter_name != CURRENT_LOG_FIGHTERS[1]:
+			return _check("Selected current-log roster fighters do not match the complete synthetic fixture")
+		if game.naruto_helper.helper_id != CURRENT_LOG_HELPERS[0] or game.ichigo_helper.helper_id != CURRENT_LOG_HELPERS[1]:
+			return _check("Selected current-log roster helpers do not match the complete synthetic fixture")
+		if game.naruto_helper.helper_directory.get_file() != "woailuo" or game.selected_stage != CURRENT_LOG_STAGE:
+			return _check("Selected current-log roster helper asset or stage does not match the complete synthetic fixture")
+		return true
 	if _scenario != USER_LOG_SCENARIO:
 		return true
 	if game.naruto.fighter_name != USER_FIGHTERS[0] or game.ichigo.fighter_name != USER_FIGHTERS[1]:

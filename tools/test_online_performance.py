@@ -127,9 +127,9 @@ def main() -> None:
     parser.add_argument("--candidate", type=Path, required=True)
     parser.add_argument(
         "--scenario",
-        choices=("default", "user-log-r01"),
+        choices=("default", "user-log-r01", "current-log-roster-r01"),
         default="default",
-        help="Deterministic screening input; user-log-r01 replays only the exact captured input ticks.",
+        help="Deterministic screening input; current-log-roster-r01 uses a fresh complete fixture matching the latest log's roster and stage.",
     )
     parser.add_argument(
         "--order",
@@ -169,13 +169,18 @@ def main() -> None:
         "order": order,
         "profile_sha256": sha256(PROFILE),
         "warmup": "Each invocation warms a fresh fixture for 90 frames before measured modes; this warms project resources and the opening input window, not the full combat move set.",
-        "fixture": (
-            "Default Naruto/Ichigo deterministic 330-frame input r01; fixed seed 727 and recorded intro schedule."
-            if args.scenario == "default"
-            else "日番谷/佐助, helpers 鼬 (asset you)/我爱罗, stage 现世; source-log inputs replay only on ticks 28-249, with neutral padding outside that partial range; fixed seed 727 and the profiler's deterministic intro schedule."
-        ),
+        "fixture": {
+            "default": "Naruto/Ichigo deterministic 330-frame input r01; fixed seed 727 and recorded intro schedule.",
+            "user-log-r01": "日番谷/佐助, helpers 鼬 (asset you)/我爱罗, stage 现世; source-log inputs replay only on ticks 28-249, with neutral padding outside that partial range; fixed seed 727 and the profiler's deterministic intro schedule.",
+            "current-log-roster-r01": "一护/佐助, helpers 我爱罗/松本, stage 流魂街; complete deterministic 330-tick synthetic input from a fresh fixture; fixed seed 727 and recorded intro schedule. This matches the latest log's roster and stage but is not a replay of its partial live observation.",
+        }[args.scenario],
         "scenario": args.scenario,
-        "input_tape_sha256": sha256(USER_TAPE) if args.scenario == "user-log-r01" else None,
+        "input_tape_sha256": (
+            sha256(USER_TAPE) if args.scenario == "user-log-r01"
+            else runs[0]["measurements"][0]["input_fixture_metadata"].get("input_tape_sha256")
+            if args.scenario == "current-log-roster-r01"
+            else None
+        ),
         "sources": {
             "baseline": {"path": str(args.baseline.resolve()), **source_identity(args.baseline)},
             "candidate": {"path": str(args.candidate.resolve()), **source_identity(args.candidate)},
