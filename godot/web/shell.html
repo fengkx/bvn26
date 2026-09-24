@@ -924,6 +924,269 @@ button:disabled { opacity: .5; cursor: default; }
             payload,
         });
     }
+
+    const rtcConnectionLimit = 8;
+    const rtcSampleLimit = 60;
+    const rtcStateHistoryLimit = 16;
+    const rtcSampleIntervalMs = 1000;
+    const rtcConnections = [];
+    let rtcNextConnectionId = 1;
+    let rtcDroppedConnections = 0;
+    let rtcSampleTimer = null;
+    let rtcConstructorHookStatus = 'unavailable';
+
+    function rtcState(value, allowed) {
+        return typeof value === 'string' && allowed.includes(value) ? value : 'unknown';
+    }
+
+    function rtcCandidateType(value) {
+        return ['host', 'srflx', 'prflx', 'relay'].includes(value) ? value : 'unknown';
+    }
+
+    function rtcCounter(value) {
+        return typeof value === 'number' && Number.isFinite(value) && value >= 0
+            ? Math.round(value) : null;
+    }
+
+    function rtcSnapshot() {
+        return {
+            available: rtcConstructorHookStatus === 'active',
+            constructorHookStatus: rtcConstructorHookStatus,
+            roleBinding: 'unclassified',
+            rttMeaning: 'ICE STUN connectivity/consent measurement; not input end-to-end latency',
+            connectionLimit: rtcConnectionLimit,
+            sampleIntervalMs: rtcSampleIntervalMs,
+            sampleLimitPerConnection: rtcSampleLimit,
+            droppedConnections: rtcDroppedConnections,
+            connections: rtcConnections.map(connection => ({
+                localId: connection.localId,
+                role: connection.role,
+                createdAt: connection.createdAt,
+                createdMonoMs: connection.createdMonoMs,
+                connectionState: connection.connectionState,
+                iceConnectionState: connection.iceConnectionState,
+                stateHistory: connection.stateHistory.slice(),
+                endedAt: connection.endedAt,
+                endedMonoMs: connection.endedMonoMs,
+                endedReason: connection.endedReason,
+                sampleCount: connection.sampleCount,
+                droppedSamples: connection.droppedSamples,
+                statsErrorCount: connection.statsErrorCount,
+                lastSampleStatus: connection.lastSampleStatus,
+                samples: connection.samples.slice(),
+            })),
+        };
+    }
+
+    function recordRtcState(connection) {
+        const peer = connection.peer;
+        if (!peer) return;
+        let nextConnectionState = 'unknown';
+        let nextIceConnectionState = 'unknown';
+        try {
+            nextConnectionState = rtcState(peer.connectionState,
+                ['new', 'connecting', 'connected', 'disconnected', 'failed', 'closed']);
+            nextIceConnectionState = rtcState(peer.iceConnectionState,
+                ['new', 'checking', 'connected', 'completed', 'disconnected', 'failed', 'closed']);
+        } catch (_) {}
+        if (nextConnectionState === connection.connectionState
+                && nextIceConnectionState === connection.iceConnectionState) return;
+        connection.connectionState = nextConnectionState;
+        connection.iceConnectionState = nextIceConnectionState;
+        connection.stateHistory.push({
+            monoMs: Math.max(0, performance.now()),
+            connectionState: nextConnectionState,
+            iceConnectionState: nextIceConnectionState,
+        });
+        if (connection.stateHistory.length > rtcStateHistoryLimit) connection.stateHistory.shift();
+        if (nextConnectionState === 'failed' || nextConnectionState === 'closed'
+                || nextIceConnectionState === 'failed' || nextIceConnectionState === 'closed') {
+            releaseRtcPeer(connection,
+                nextConnectionState === 'failed' || nextIceConnectionState === 'failed' ? 'failed' : 'closed');
+        }
+    }
+
+    function releaseRtcPeer(connection, reason, endedAt = new Date().toISOString(),
+            endedMonoMs = Math.max(0, performance.now())) {
+        const peer = connection.peer;
+        if (!peer) return;
+        for (const listener of connection.stateListeners) {
+            try { peer.removeEventListener(listener.name, listener.callback); } catch (_) {}
+        }
+        connection.stateListeners.length = 0;
+        connection.peer = null;
+        connection.endedAt = endedAt;
+        connection.endedMonoMs = endedMonoMs;
+        connection.endedReason = reason;
+    }
+
+    function rtcStatsSummary(report) {
+        const records = [];
+        if (report && typeof report.forEach === 'function') {
+            report.forEach(stat => { if (stat && typeof stat === 'object') records.push(stat); });
+        } else if (report && typeof report[Symbol.iterator] === 'function') {
+            for (const stat of report) {
+                const value = Array.isArray(stat) ? stat[1] : stat;
+                if (value && typeof value === 'object') records.push(value);
+            }
+        }
+        const findById = id => records.find(stat => stat.id === id) || null;
+        let selectedPair = null;
+        for (const stat of records) {
+            if (stat.type === 'transport' && typeof stat.selectedCandidatePairId === 'string') {
+                selectedPair = findById(stat.selectedCandidatePairId);
+                if (selectedPair) break;
+            }
+        }
+        if (!selectedPair || selectedPair.type !== 'candidate-pair') {
+            return { status: 'selected_pair_unavailable', rttMs: null,
+                localCandidateType: 'unknown', remoteCandidateType: 'unknown',
+                bytesSent: null, bytesReceived: null, packetsSent: null, packetsReceived: null };
+        }
+        const rttMs = typeof selectedPair.currentRoundTripTime === 'number'
+                && Number.isFinite(selectedPair.currentRoundTripTime)
+                && selectedPair.currentRoundTripTime >= 0
+            ? Math.round(selectedPair.currentRoundTripTime * 1000 * 10) / 10 : null;
+        const localCandidate = findById(selectedPair.localCandidateId);
+        const remoteCandidate = findById(selectedPair.remoteCandidateId);
+        return {
+            status: 'available',
+            localCandidateType: rtcCandidateType(localCandidate?.candidateType),
+            remoteCandidateType: rtcCandidateType(remoteCandidate?.candidateType),
+            rttMs,
+            bytesSent: rtcCounter(selectedPair.bytesSent),
+            bytesReceived: rtcCounter(selectedPair.bytesReceived),
+            packetsSent: rtcCounter(selectedPair.packetsSent),
+            packetsReceived: rtcCounter(selectedPair.packetsReceived),
+        };
+    }
+
+    function sampleRtcConnection(connection) {
+        const peer = connection.peer;
+        if (!peer || connection.samplePending) return;
+        connection.samplePending = true;
+        try {
+            Promise.resolve(peer.getStats()).then(report => {
+                if (connection.peer !== peer) return;
+                const sample = {
+                    monoMs: Math.max(0, performance.now()),
+                    ...rtcStatsSummary(report),
+                };
+                connection.lastSampleStatus = sample.status;
+                connection.sampleCount++;
+                connection.samples.push(sample);
+                if (connection.samples.length > rtcSampleLimit) {
+                    connection.samples.shift();
+                    connection.droppedSamples++;
+                }
+            }).catch(() => {
+                if (connection.peer !== peer) return;
+                connection.statsErrorCount++;
+                connection.lastSampleStatus = 'error';
+            }).finally(() => {
+                connection.samplePending = false;
+            });
+        } catch (_) {
+            connection.samplePending = false;
+            connection.statsErrorCount++;
+            connection.lastSampleStatus = 'error';
+        }
+    }
+
+    function sampleRtcConnections() {
+        for (const connection of rtcConnections) {
+            if (connection.peer) {
+                recordRtcState(connection);
+                sampleRtcConnection(connection);
+            }
+        }
+        if (!rtcConnections.some(connection => connection.peer) && rtcSampleTimer !== null) {
+            clearInterval(rtcSampleTimer);
+            rtcSampleTimer = null;
+        }
+    }
+
+    function trackRtcConnection(peer) {
+        while (rtcConnections.length >= rtcConnectionLimit) {
+            const finishedIndex = rtcConnections.findIndex(connection => connection.peer === null);
+            if (finishedIndex < 0) {
+                rtcDroppedConnections++;
+                return;
+            }
+            rtcConnections.splice(finishedIndex, 1);
+            rtcDroppedConnections++;
+        }
+        const connection = {
+            localId: rtcNextConnectionId++,
+            role: 'unclassified',
+            peer,
+            createdAt: new Date().toISOString(),
+            createdMonoMs: Math.max(0, performance.now()),
+            connectionState: 'unknown',
+            iceConnectionState: 'unknown',
+            stateHistory: [],
+            stateListeners: [],
+            endedAt: null,
+            endedMonoMs: null,
+            endedReason: null,
+            samplePending: false,
+            sampleCount: 0,
+            droppedSamples: 0,
+            statsErrorCount: 0,
+            lastSampleStatus: 'pending',
+            samples: [],
+        };
+        rtcConnections.push(connection);
+        recordRtcState(connection);
+        if (connection.peer && peer && typeof peer.addEventListener === 'function') {
+            for (const name of ['connectionstatechange', 'iceconnectionstatechange']) {
+                const callback = () => recordRtcState(connection);
+                try {
+                    peer.addEventListener(name, callback);
+                    connection.stateListeners.push({ name, callback });
+                } catch (_) {}
+            }
+        }
+        if (connection.peer && rtcSampleTimer === null) {
+            rtcSampleTimer = setInterval(sampleRtcConnections, rtcSampleIntervalMs);
+        }
+    }
+
+    function installRtcDiagnosticsHook() {
+        const nativeConstructor = window.RTCPeerConnection;
+        if (typeof nativeConstructor !== 'function') {
+            rtcConstructorHookStatus = 'native_constructor_unavailable';
+            return;
+        }
+        try {
+            let diagnosticConstructor;
+            diagnosticConstructor = new Proxy(nativeConstructor, {
+                construct(target, args, newTarget) {
+                    const peer = Reflect.construct(target, args,
+                        newTarget === diagnosticConstructor ? target : newTarget);
+                    try { trackRtcConnection(peer); } catch (_) {}
+                    return peer;
+                },
+            });
+            window.RTCPeerConnection = diagnosticConstructor;
+            rtcConstructorHookStatus = window.RTCPeerConnection === diagnosticConstructor
+                ? 'active' : 'constructor_not_writable';
+        } catch (_) {
+            rtcConstructorHookStatus = 'constructor_not_writable';
+        }
+    }
+
+    installRtcDiagnosticsHook();
+    window.addEventListener('pagehide', () => {
+        if (rtcSampleTimer !== null) clearInterval(rtcSampleTimer);
+        rtcSampleTimer = null;
+        const endedAt = new Date().toISOString();
+        const endedMonoMs = Math.max(0, performance.now());
+        for (const connection of rtcConnections) {
+            releaseRtcPeer(connection, 'pagehide', endedAt, endedMonoMs);
+        }
+    });
+
     window.bvnDiagnosticsGetContext = () => JSON.stringify({
         schemaVersion: 2,
         runId: sessionId,
@@ -1125,6 +1388,7 @@ button:disabled { opacity: .5; cursor: default; }
                     dropped: { ...runtimeDropped },
                 },
             },
+            webrtc: rtcSnapshot(),
         };
         const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
         const link = document.createElement('a');

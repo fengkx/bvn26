@@ -1,0 +1,214 @@
+{
+  "format": "bvn-checkpoint-microprofile-v1",
+  "date": "2026-09-24",
+  "scope": "Headless native Godot checkpoint diagnostics for the supplied Hitsugaya/Sasuke user-log input tape. This is not a browser or Web performance acceptance run.",
+  "engine": {
+    "version": "4.7.2-stable.official.ed1daf0bf",
+    "command": "/private/tmp/bvn-toolchain-2026-09-12/Godot.app/Contents/MacOS/Godot --headless --path /private/tmp/bvn26-perf-round3-microprofile/baseline-godot --script res://tests/rollback_performance_profile.gd -- --scenario=user-log-r01",
+    "process_exit_code": 0
+  },
+  "input": {
+    "fixture_id": "user-log-r01",
+    "fixture_path": "/private/tmp/bvn26-perf-round3-microprofile/baseline-godot/tests/rollback_performance_user_log_r01.json",
+    "fixture_sha256": "baea2b6b29caa8e45e2431bf724b592ef5546df232d3c0caf4ff0eee0d8eaa64",
+    "frames": 330,
+    "warmup_frames": 90,
+    "padded_neutral_ranges": [
+      [
+        1,
+        27
+      ],
+      [
+        250,
+        330
+      ]
+    ],
+    "recorded_input_range": [
+      28,
+      249
+    ],
+    "fixture_source_log": {
+      "kind": "user-supplied runtime log recorded in the retained fixture metadata",
+      "date": "2026-09-23",
+      "sha256": "76034d2d5abc70c095f3c0046f7a17ce4b6cf55f00557866c7a89371e8492960",
+      "fixture_commit": "3c89d81460297176154452d07e989fe0152606ce"
+    },
+    "newly_supplied_2026_09_24_log": {
+      "sha256": "f46af7c575b5c268a50845919a280d95deecc74c93787f21e3b3b10d9f4525d4",
+      "replayed": false
+    }
+  },
+  "source_hashes": {
+    "unmodified_battle_checkpoint_sha256": "fa7d03d2719b2ca61738aaa30f7e5d0b17da583342ef3a3e4e878ce7b9fbcbac",
+    "unmodified_profile_script_sha256": "460bf74a149f9917466ebcb9c46bf3a71275c99f1e457607b689ebca9087a1b5",
+    "temporary_profile_script_sha256": "6d3eb6a6fe5b9bd77e4e522f19a263a870051a99c062c7de9e0eedc0f58ad92d",
+    "phase1_instrumented_checkpoint_sha256": "a252dca93980790718b2482ded329a4c259795881633ee9319e7fa6c819adf08",
+    "phase2_instrumented_checkpoint_sha256": "20f2e3428dfdefa343e0fdf4a8e3c3479f9f85088a308e49355e6c4069ad1db1"
+  },
+  "runs": {
+    "unmodified_control": {
+      "log_path": "/private/tmp/bvn26-perf-round3-microprofile/baseline-profile.log",
+      "log_sha256": "7fff541fc5a8c9db8768f3155d82dae2b2cb436f508c503e819e43f87e4dafeb",
+      "checkpoint_source_sha256": "fa7d03d2719b2ca61738aaa30f7e5d0b17da583342ef3a3e4e878ce7b9fbcbac",
+      "harness_sha256": "460bf74a149f9917466ebcb9c46bf3a71275c99f1e457607b689ebca9087a1b5",
+      "fixture": "user-log-r01",
+      "warmup_frames": 90,
+      "measured_frames": 330,
+      "checkpoint": {
+        "saves": 331,
+        "encode_total_us": 2672652,
+        "pack_total_us": 675528,
+        "retain_total_us": 69195,
+        "encode_us_per_save": 8074.477341389728,
+        "pack_us_per_save": 2040.870090634441,
+        "retain_us_per_save": 209.04833836858006
+      },
+      "receive_plus_step": {
+        "mean_us": 20057.2939393939,
+        "p95_us": 25106,
+        "p99_us": 26948,
+        "max_us": 32458,
+        "harness_wall_us": 6632285,
+        "rollbacks": 0,
+        "replayed_frames": 0
+      },
+      "microprofile_raw": null
+    },
+    "phase1_hash_identity_prototype_codec": {
+      "log_path": "/tmp/bvn26-checkpoint-microprofile-20260924.log",
+      "log_sha256": "49f928851dfa27fe8b720d886f0ae2285245fffa34cec4165c6f9aee013a5e17",
+      "checkpoint_source_sha256": "a252dca93980790718b2482ded329a4c259795881633ee9319e7fa6c819adf08",
+      "harness_sha256": "6d3eb6a6fe5b9bd77e4e522f19a263a870051a99c062c7de9e0eedc0f58ad92d",
+      "fixture": "user-log-r01",
+      "warmup_frames": 90,
+      "measured_frames": 330,
+      "checkpoint": {
+        "saves": 331,
+        "encode_total_us": 3040599,
+        "pack_total_us": 710451,
+        "retain_total_us": 70351,
+        "encode_us_per_save": 9186.099697885196,
+        "pack_us_per_save": 2146.3776435045315,
+        "retain_us_per_save": 212.5407854984894
+      },
+      "receive_plus_step": {
+        "mean_us": 21951.6242424242,
+        "p95_us": 28488,
+        "p99_us": 40151,
+        "max_us": 49097,
+        "harness_wall_us": 7258698,
+        "rollbacks": 0,
+        "replayed_frames": 0
+      },
+      "microprofile_raw": {
+        "container_hash_calls": 144182,
+        "container_hash_us": 45626,
+        "identity_blocks": 144182,
+        "identity_comparisons": 5174111,
+        "identity_max_comparisons": 122,
+        "identity_us": 578884,
+        "native_scalar_codec_calls": 53247,
+        "native_scalar_codec_us": 25000,
+        "prototype_calls": 141542,
+        "prototype_us": 150138
+      }
+    },
+    "phase2_object_field_blocks": {
+      "log_path": "/tmp/bvn26-checkpoint-fieldprofile-20260924.log",
+      "log_sha256": "cba81a5866babebe1126c2cc1097d2a50af4d84528e6677152825a29fa414e55",
+      "checkpoint_source_sha256": "20f2e3428dfdefa343e0fdf4a8e3c3479f9f85088a308e49355e6c4069ad1db1",
+      "harness_sha256": "6d3eb6a6fe5b9bd77e4e522f19a263a870051a99c062c7de9e0eedc0f58ad92d",
+      "fixture": "user-log-r01",
+      "warmup_frames": 90,
+      "measured_frames": 330,
+      "checkpoint": {
+        "saves": 331,
+        "encode_total_us": 2839493,
+        "pack_total_us": 632067,
+        "retain_total_us": 59217,
+        "encode_us_per_save": 8578.528700906345,
+        "pack_us_per_save": 1909.5679758308156,
+        "retain_us_per_save": 178.90332326283988
+      },
+      "receive_plus_step": {
+        "mean_us": 19392.1575757576,
+        "p95_us": 24041,
+        "p99_us": 25094,
+        "max_us": 25941,
+        "harness_wall_us": 6412113,
+        "rollbacks": 0,
+        "replayed_frames": 0
+      },
+      "microprofile_raw": {
+        "container_hash_calls": 144182,
+        "container_hash_us": 38706,
+        "identity_blocks": 144182,
+        "identity_comparisons": 5174111,
+        "identity_max_comparisons": 122,
+        "identity_us": 548570,
+        "immutable_constant_refreshes": 0,
+        "immutable_field_blocks": 42570,
+        "immutable_field_sample_us": 2966,
+        "immutable_field_samples": 2661,
+        "native_property_get_calls": 53130,
+        "native_property_get_sample_us": 1349,
+        "native_property_get_samples": 3321,
+        "native_scalar_codec_calls": 53247,
+        "native_scalar_codec_us": 22582,
+        "placement_registration_calls": 990,
+        "placement_registration_us": 615,
+        "prototype_calls": 141542,
+        "prototype_us": 137701,
+        "script_property_get_calls": 402141,
+        "script_property_get_sample_us": 4938,
+        "script_property_get_samples": 12567,
+        "signal_connection_entries": 10890,
+        "signal_list_query_calls": 18480,
+        "signal_list_query_sample_us": 1022,
+        "signal_list_query_samples": 1155
+      }
+    }
+  },
+  "phase2_sample_estimates": {
+    "script_property_get": {
+      "calls": 402141,
+      "sample_stride": 32,
+      "samples": 12567,
+      "sample_total_us": 4938
+    },
+    "native_node_property_get": {
+      "calls": 53130,
+      "sample_stride": 16,
+      "samples": 3321,
+      "sample_total_us": 1349
+    },
+    "immutable_field_cache_branch": {
+      "calls": 42570,
+      "sample_stride": 16,
+      "samples": 2661,
+      "sample_total_us": 2966,
+      "constant_refreshes": 0
+    },
+    "signal_list_query": {
+      "calls": 18480,
+      "sample_stride": 16,
+      "samples": 1155,
+      "sample_total_us": 1022,
+      "connection_entries": 10890
+    },
+    "placement_registration": {
+      "calls": 990,
+      "total_us": 615
+    }
+  },
+  "method_limits": {
+    "timers_are_additive": false,
+    "timer_scopes": "Phase 1 measured disjoint hash(value), identity-bucket lookups/scans, complete _empty_prototype_key calls, and the non-recursive var_to_bytes+hex scalar codec block. Phase 2 sampled leaf property gets and signal-list queries; immutable-cache and placement-registration blocks are direct scopes. No phase totals represent the full recursive _encode cost.",
+    "prototype_scope": "_empty_prototype_key duration can include its own _constant work on cache misses; those times are not added to other constant timings.",
+    "sampled_getter_extrapolation": "Property and signal timings are fixed-stride samples; per-save extrapolations are heuristic. Their sub-microsecond sample means are close to timer-resolution overhead.",
+    "instrumentation_overhead": "Not isolated: the uninstrumented control and two instrumented profiles are separate serial runs. Receive+step means were 20.057 ms, 21.952 ms, and 19.392 ms; variation is larger than any reliable overhead estimate. Profile checks/counters themselves also add work.",
+    "graph_parity": "The existing harness compared one final save_state result from battle_only against one final save_state result from rollback_no_late_input after 330 measured frames; State.first_difference reported no difference. Both rollback profiles had zero late rollbacks and zero replayed frames. This is not a per-frame serialized graph trace or browser/network parity result.",
+    "runtime_changes": "None. The baseline source copy was restored after profiling; instrumentation is kept only under /private/tmp.",
+    "acceptance": "No checkpoint optimization was accepted; no 30 Hz browser acceptance is implied."
+  }
+}

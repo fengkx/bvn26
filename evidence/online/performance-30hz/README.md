@@ -149,3 +149,7 @@ The 330-frame burst comparison separately reduced mean receive-plus-step by
 
 The 2026-09-24 user-log diagnosis and rejected checkpoint experiments are
 recorded in [round 3 checkpoint profiling](round3-checkpoint-profiling.md).
+
+The focused 2026-09-24 native checkpoint profile is documented in [checkpoint micro-profile](checkpoint-microprofile-2026-09-24.md), with raw counters and run hashes in the [structured record](checkpoint-microprofile-2026-09-24.json). No checkpoint optimization was accepted, and the browser 30 Hz gate remains **not passed**.
+
+The deterministic [TURN buffer scheduling model](turn-buffer-model.md), with all nine cases in the [structured result](turn-buffer-model.json), tests injected 50/100/150 ms RTT plus fixed jitter while preserving the guest authoritative-clock gate and reliable ordering. Its rates are a scheduling upper bound, not measured FPS or evidence of TURN relay use. New lobbies now initialize at d2/p6 (about 67 ms of input delay at 30 Hz) to reduce waiting in higher-latency sessions; users can adjust the setting, and both peers must agree on a profile.

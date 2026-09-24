@@ -70,6 +70,9 @@ func _run() -> void:
 	lobby._endpoint.text = "http://127.0.0.1:8787"
 	assert(lobby._configure_service(), "Local service endpoint override should remain available")
 	lobby._endpoint.text = "https://bvn26-pvp.fengkx.top"
+	assert(lobby._selected_number(lobby._delay_choice) == 2
+		and lobby._selected_number(lobby._prediction_choice) == 6,
+		"A new online lobby should default to the 2-frame delay / 6-frame prediction profile")
 	var nickname_font: Font = lobby._nickname.get_theme_font("font")
 	assert(nickname_font.has_char(0x9F98), "Nickname LineEdit is missing the supported CJK fallback glyph 龘")
 	assert(lobby._endpoint.placeholder_text == "服务地址", "Service URL placeholder should not use development-only wording")
@@ -226,6 +229,9 @@ func _test_cancel_startup_during_delayed_prepare(
 	settled_state["members"] = members
 	client.room_state = settled_state.duplicate(true)
 	lobby.room_client = client
+	lobby._select_number(lobby._delay_choice, int(shared_profile.inputDelay))
+	lobby._select_number(lobby._prediction_choice, int(shared_profile.predictionWindow))
+	lobby._lan_candidate_opt_in.set_pressed_no_signal(false)
 	lobby._room_id = "a".repeat(64)
 	lobby._slot = 0
 	lobby._room_state = settled_state.duplicate(true)
@@ -239,6 +245,8 @@ func _test_cancel_startup_during_delayed_prepare(
 	lobby._map_handshake_complete = true
 	lobby._map_handshake_setup_revision = 1
 	lobby._map_handshake_stage_id = map_stage
+	assert(str(lobby._current_connection_profile_id()) == str(shared_profile.id),
+		"Delayed-prepare fixture controls must match the already-negotiated room profile")
 	lobby._starting_epoch = "delayed-prepare-epoch"
 	lobby._startup_busy = true
 	lobby._startup_cancel_in_progress = false

@@ -53,8 +53,10 @@ function createElement(id = '') {
     };
 }
 
-function createPage(buildSidecar, fetchImpl = null) {
+function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined) {
     let now = 0;
+    let nextIntervalId = 1;
+    const intervalCallbacks = new Map();
     const elements = new Map();
     for (const id of ['player', 'canvas', 'fullscreen', 'feedback', 'edge-indicator', 'toolbar',
         'online-controls', 'online-status', 'online-request', 'online-pause', 'online-accept-pause',
@@ -87,6 +89,7 @@ function createPage(buildSidecar, fetchImpl = null) {
         devicePixelRatio: 2,
         innerWidth: 1280,
         innerHeight: 720,
+        RTCPeerConnection: rtcConstructor,
         addEventListener(name, callback) {
             if (!windowHandlers.has(name)) windowHandlers.set(name, []);
             windowHandlers.get(name).push(callback);
@@ -121,9 +124,70 @@ function createPage(buildSidecar, fetchImpl = null) {
         Math,
         crypto: { randomUUID: () => 'test-session-id' },
         Promise,
+        setInterval(callback) {
+            const id = nextIntervalId++;
+            intervalCallbacks.set(id, callback);
+            return id;
+        },
+        clearInterval(id) { intervalCallbacks.delete(id); },
     });
     vm.runInContext(shellScript, context, { timeout: 1000 });
-    return { context, window, elements, player, document, documentHandlers, windowHandlers, getBlob: () => capturedBlob };
+    return {
+        context, window, elements, player, document, documentHandlers, windowHandlers,
+        getBlob: () => capturedBlob,
+        advanceIntervals() { for (const callback of [...intervalCallbacks.values()]) callback(); },
+        get intervalCount() { return intervalCallbacks.size; },
+    };
+}
+
+function fakeRTCClass(getStats = async () => new Map()) {
+    return class FakeRTCPeerConnection {
+        static instances = [];
+        static initialConnectionState = 'new';
+        static initialIceConnectionState = 'new';
+
+        constructor(configuration) {
+            assert.equal(new.target, FakeRTCPeerConnection, 'constructor new.target should remain unchanged');
+            this.configuration = configuration;
+            this.connectionState = FakeRTCPeerConnection.initialConnectionState;
+            this.iceConnectionState = FakeRTCPeerConnection.initialIceConnectionState;
+            this.listeners = new Map();
+            this.getStatsImpl = getStats;
+            this.getStatsCalls = 0;
+            FakeRTCPeerConnection.instances.push(this);
+        }
+
+        addEventListener(name, callback) {
+            if (!this.listeners.has(name)) this.listeners.set(name, []);
+            this.listeners.get(name).push(callback);
+        }
+
+        removeEventListener(name, callback) {
+            const callbacks = this.listeners.get(name) || [];
+            this.listeners.set(name, callbacks.filter(existing => existing !== callback));
+        }
+
+        dispatch(name) {
+            for (const callback of this.listeners.get(name) || []) callback();
+        }
+
+        setStates(connectionState, iceConnectionState) {
+            this.connectionState = connectionState;
+            this.iceConnectionState = iceConnectionState;
+            this.dispatch('connectionstatechange');
+            this.dispatch('iceconnectionstatechange');
+        }
+
+        getStats() {
+            this.getStatsCalls++;
+            return this.getStatsImpl();
+        }
+    };
+}
+
+async function flushPromises() {
+    await Promise.resolve();
+    await new Promise(resolve => setImmediate(resolve));
 }
 
 const sha = 'a'.repeat(64);
@@ -181,6 +245,9 @@ test('exports a v2 report with legacy fields, bounded runtime events, tape, and 
     assert.deepEqual(report.runtime.criticalIncidents[0].events.map(event => event.seq), [2, 3]);
     assert.equal(report.runtime.buffer.dropped.age, 1);
     assert.ok(report.runtime.buffer.coverageMs <= 60_000);
+    assert.equal(report.webrtc.available, false);
+    assert.equal(report.webrtc.constructorHookStatus, 'native_constructor_unavailable');
+    assert.deepEqual(report.webrtc.connections, []);
     assert.deepEqual(visibilitySignals, ['visible', 'hidden']);
     const visibilityEvent = report.runtime.events.find(event => event.type === 'page_visibility');
     assert.equal(visibilityEvent.origin, 'shell');
@@ -495,4 +562,171 @@ test('places online controls in the existing toolbar and hides inactive controls
     assert.match(html, /#online-controls\[hidden\], #online-controls \[hidden\] \{ display: none !important; \}/);
     assert.match(html, /#player:fullscreen #toolbar/);
     assert.match(html, /#edge-indicator\.online-request \.edge-label/);
+});
+
+test('tracks bounded selected ICE-pair summaries without leaking candidate or ICE configuration details', async () => {
+    const stats = new Map([
+        ['transport-id-private', { type: 'transport', selectedCandidatePairId: 'pair-id-private' }],
+        ['pair-id-private', {
+            id: 'pair-id-private',
+            type: 'candidate-pair',
+            localCandidateId: 'local-id-private',
+            remoteCandidateId: 'remote-id-private',
+            currentRoundTripTime: 0.0254,
+            bytesSent: 101,
+            bytesReceived: 202,
+            packetsSent: 3,
+            packetsReceived: 4,
+            address: '192.0.2.80',
+            port: 53421,
+        }],
+        ['local-id-private', {
+            id: 'local-id-private',
+            type: 'local-candidate',
+            candidateType: 'relay',
+            address: '192.0.2.81',
+            port: 53422,
+            url: 'turn:turn-secret.example:3478?transport=udp',
+            usernameFragment: 'username-secret',
+            password: 'credential-secret',
+        }],
+        ['remote-id-private', {
+            id: 'remote-id-private', type: 'remote-candidate', candidateType: 'host',
+            ip: '198.51.100.9', port: 53423,
+        }],
+    ]);
+    const FakeRTC = fakeRTCClass(async () => stats);
+    const page = createPage(sidecar, null, FakeRTC);
+    const configuration = { iceServers: [{ urls: 'turn:turn-secret.example', username: 'username-secret', credential: 'credential-secret' }] };
+    const peer = new page.window.RTCPeerConnection(configuration);
+    assert.ok(peer instanceof FakeRTC);
+    assert.equal(peer.configuration, configuration);
+    assert.equal(peer.getStatsCalls, 0);
+    assert.equal(page.intervalCount, 1);
+
+    page.context.setNow(1000);
+    page.advanceIntervals();
+    await flushPromises();
+    assert.equal(peer.getStatsCalls, 1);
+
+    for (let index = 0; index < 60; index++) {
+        page.context.setNow(2000 + index * 1000);
+        page.advanceIntervals();
+        await flushPromises();
+    }
+    peer.setStates('connected', 'completed');
+    peer.setStates('closed', 'closed');
+    page.advanceIntervals();
+    assert.equal(page.intervalCount, 0, 'closed peers stop the sampling timer');
+
+    await page.elements.get('download').dispatch('click');
+    const report = JSON.parse(await page.getBlob().text());
+    const rtc = report.webrtc;
+    assert.equal(rtc.available, true);
+    assert.equal(rtc.roleBinding, 'unclassified');
+    assert.match(rtc.rttMeaning, /not input end-to-end latency/);
+    assert.equal(rtc.connections.length, 1);
+    const connection = rtc.connections[0];
+    assert.equal(connection.localId, 1);
+    assert.equal(connection.role, 'unclassified');
+    assert.equal(connection.endedReason, 'closed');
+    assert.equal(connection.connectionState, 'closed');
+    assert.equal(connection.sampleCount, 61);
+    assert.equal(connection.samples.length, 60);
+    assert.equal(connection.droppedSamples, 1);
+    assert.deepEqual(connection.samples.at(-1), {
+        monoMs: 61_000,
+        status: 'available',
+        localCandidateType: 'relay',
+        remoteCandidateType: 'host',
+        rttMs: 25.4,
+        bytesSent: 101,
+        bytesReceived: 202,
+        packetsSent: 3,
+        packetsReceived: 4,
+    });
+    const exportedRtc = JSON.stringify(rtc);
+    for (const privateValue of ['192.0.2.', '198.51.100.', '53421', 'pair-id-private',
+        'local-id-private', 'turn-secret', 'username-secret', 'credential-secret']) {
+        assert.equal(exportedRtc.includes(privateValue), false, `RTC report leaked ${privateValue}`);
+    }
+});
+
+test('does not overlap pending getStats calls and contains rejections without exporting error details', async () => {
+    let resolvePending;
+    const pendingStats = new Promise(resolve => { resolvePending = resolve; });
+    const FakeRTC = fakeRTCClass(() => pendingStats);
+    const page = createPage(sidecar, null, FakeRTC);
+    const peer = new page.window.RTCPeerConnection({});
+    page.advanceIntervals();
+    page.advanceIntervals();
+    assert.equal(peer.getStatsCalls, 1, 'a slow getStats promise must not overlap the next interval');
+
+    resolvePending(new Map());
+    await flushPromises();
+    peer.getStatsImpl = () => Promise.reject(new Error('turn:private.example username=password'));
+    page.advanceIntervals();
+    await flushPromises();
+    assert.equal(peer.getStatsCalls, 2);
+
+    await page.elements.get('download').dispatch('click');
+    const report = JSON.parse(await page.getBlob().text());
+    assert.equal(report.webrtc.connections[0].statsErrorCount, 1);
+    assert.equal(report.webrtc.connections[0].lastSampleStatus, 'error');
+    assert.equal(JSON.stringify(report.webrtc).includes('private.example'), false);
+    assert.equal(JSON.stringify(report.webrtc).includes('username=password'), false);
+});
+
+test('ignores a getStats rejection that arrives after a connection is released', async () => {
+    let rejectPending;
+    const pendingStats = new Promise((_resolve, reject) => { rejectPending = reject; });
+    const FakeRTC = fakeRTCClass(() => pendingStats);
+    const page = createPage(sidecar, null, FakeRTC);
+    const peer = new page.window.RTCPeerConnection({});
+    page.advanceIntervals();
+    peer.setStates('failed', 'failed');
+    assert.equal(peer.listeners.get('connectionstatechange').length, 0);
+    rejectPending(new Error('turn:private.example username=password'));
+    await flushPromises();
+
+    await page.elements.get('download').dispatch('click');
+    const report = JSON.parse(await page.getBlob().text());
+    assert.equal(report.webrtc.connections[0].endedReason, 'failed');
+    assert.equal(report.webrtc.connections[0].statsErrorCount, 0);
+    assert.equal(report.webrtc.connections[0].lastSampleStatus, 'pending');
+});
+
+test('caps retained RTC connections and releases live references on pagehide', async () => {
+    const FakeRTC = fakeRTCClass();
+    const page = createPage(sidecar, null, FakeRTC);
+    const peers = [];
+    for (let index = 0; index < 8; index++) peers.push(new page.window.RTCPeerConnection({}));
+    new page.window.RTCPeerConnection({});
+    assert.equal(page.intervalCount, 1);
+    assert.deepEqual(peers[0].listeners.get('connectionstatechange').length, 1);
+    peers[0].setStates('closed', 'closed');
+    assert.equal(peers[0].listeners.get('connectionstatechange').length, 0,
+        'closed peers detach diagnostic listeners');
+    new page.window.RTCPeerConnection({});
+    const pagehide = page.windowHandlers.get('pagehide')[0];
+    pagehide();
+    assert.equal(page.intervalCount, 0);
+
+    await page.elements.get('download').dispatch('click');
+    const report = JSON.parse(await page.getBlob().text());
+    assert.equal(report.webrtc.connections.length, 8);
+    assert.equal(report.webrtc.droppedConnections, 2, 'both rejected and evicted summaries are counted');
+    assert.ok(report.webrtc.connections.every(connection => connection.localId !== 1));
+    assert.ok(report.webrtc.connections.every(connection => connection.endedReason === 'pagehide'));
+});
+
+test('does not attach listeners or start sampling when a peer is already closed at construction', () => {
+    const FakeRTC = fakeRTCClass();
+    FakeRTC.initialConnectionState = 'closed';
+    FakeRTC.initialIceConnectionState = 'closed';
+    const page = createPage(sidecar, null, FakeRTC);
+    const peer = new page.window.RTCPeerConnection({});
+
+    assert.equal(peer.listeners.size, 0);
+    assert.equal(page.intervalCount, 0);
 });

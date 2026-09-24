@@ -162,6 +162,8 @@ func _run() -> void:
 	for pair in [[host, host_connection], [guest, guest_connection]]:
 		pair[0]._room_connection = pair[1]
 		pair[0]._room_connection_ready = true
+		pair[0]._select_number(pair[0]._delay_choice, 0)
+		pair[0]._select_number(pair[0]._prediction_choice, 2)
 		pair[0]._local_connection_profile_id = "chrome-exp-d0-p2-lan"
 		pair[0]._remote_connection_profile_id = "chrome-exp-d0-p2-lan"
 		pair[0]._room_id = "fixture-room"
@@ -170,6 +172,9 @@ func _run() -> void:
 		pair[0]._show_room()
 		assert(str(pair[0]._current_connection_profile_id()) == pair[0]._local_connection_profile_id,
 			"Empty service profiles changed local LAN/network controls after peer negotiation")
+		assert(pair[0]._selected_number(pair[0]._delay_choice) == 0
+			and pair[0]._selected_number(pair[0]._prediction_choice) == 2,
+			"Refreshing a room with a null profile replaced the user's selected d0/p2 LAN profile")
 	server.clients = [host_client, guest_client]
 
 	# Host-only map controls retain the current draft and mirror it to the guest.

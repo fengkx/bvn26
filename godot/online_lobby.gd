@@ -548,8 +548,15 @@ func _build_room_view() -> void:
 	_advanced_settings.add_child(profile_grid)
 	_delay_choice = _option()
 	_add_number_options(profile_grid, "输入延迟", _delay_choice, [0, 1, 2], " 帧")
+	_select_number(_delay_choice, 2)
 	_prediction_choice = _option()
 	_add_number_options(profile_grid, "预测上限", _prediction_choice, [2, 4, 6], " 帧")
+	_select_number(_prediction_choice, 6)
+	var profile_latency_hint := Label.new()
+	profile_latency_hint.text = "默认增加约 67 毫秒操作延迟以减少等待；可调低，双方需一致。"
+	profile_latency_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	profile_latency_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_advanced_settings.add_child(profile_latency_hint)
 	for picker in [_time_choice, _life_choice]:
 		picker.item_selected.connect(_on_setup_picker_changed)
 	for picker in [_delay_choice, _prediction_choice]:
