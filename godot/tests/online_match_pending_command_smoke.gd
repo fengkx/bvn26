@@ -397,6 +397,7 @@ func _room_state() -> Dictionary:
 		],
 		"stage": "现世",
 		"rules": {"time": 90, "life": 1},
+		"networkProfile": {"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6},
 		"phase": "preparing",
 		"match": {
 			"epoch": EPOCH,

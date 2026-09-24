@@ -110,6 +110,7 @@ func _run() -> void:
 		}, null],
 		"stage": initial_stage,
 		"rules": {"time": 90, "life": 1},
+		"networkProfile": {"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6},
 		"match": null,
 		"lastResult": null,
 		"negotiation": null,

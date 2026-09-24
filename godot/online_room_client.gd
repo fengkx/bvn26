@@ -171,6 +171,8 @@ func refresh_state() -> Dictionary:
 	if not response.get("ok", false):
 		return _report_request_failure(response)
 	var value: Variant = response.get("value")
+	if _room_state_reply_missing_network_profile(value):
+		return _failure("server_upgrade_required")
 	if not _validate_state_reply(value):
 		return _failure("invalid_service_response")
 	_accept_state(value["state"])
@@ -377,6 +379,10 @@ func is_command_in_flight() -> bool:
 	return _command_in_flight
 
 
+func is_valid_network_profile(value: Variant) -> bool:
+	return _validate_network_profile(value)
+
+
 func _process(_delta: float) -> void:
 	if _socket == null:
 		return
@@ -426,6 +432,8 @@ func _send_pending_admission() -> Dictionary:
 		return _report_request_failure(response)
 	var value: Variant = response.get("value")
 	var is_create: bool = pending["kind"] == "create"
+	if _room_state_reply_missing_network_profile(value):
+		return _failure("server_upgrade_required", true)
 	if not value is Dictionary or not _validate_admission_reply(value, is_create):
 		return _failure("invalid_service_response", true)
 	var expected_room_id := str(value["roomId"])
@@ -469,6 +477,8 @@ func _send_pending_command() -> Dictionary:
 	var expected_seq := int(pending["seq"])
 	if not value is Dictionary or not _is_integer(value.get("acceptedSeq")) or int(value["acceptedSeq"]) != expected_seq:
 		return _failure("invalid_command_ack", true)
+	if _room_state_reply_missing_network_profile(value):
+		return _failure("server_upgrade_required", true)
 	if not value.has("state") or not _validate_room_state(value["state"], _room_id, _slot, true):
 		return _failure("invalid_command_ack", true)
 	var request_body: Variant = JSON.parse_string(str(pending.get("body", "")))
@@ -567,6 +577,9 @@ func _handle_socket_packet(packet: PackedByteArray) -> void:
 		return
 	match kind:
 		"state":
+			if _room_state_missing_network_profile(message.get("state")):
+				_socket_protocol_error("server_upgrade_required")
+				return
 			if not message.get("state") is Dictionary or not _validate_room_state(message["state"]):
 				_socket_protocol_error("invalid_room_state")
 				return
@@ -642,7 +655,7 @@ func _validate_room_state(
 		return false
 	if not value.has_all([
 		"schema", "id", "compatibility", "revision", "setupRevision", "members",
-		"stage", "rules", "phase", "match", "lastResult", "negotiation",
+		"stage", "rules", "networkProfile", "phase", "match", "lastResult", "negotiation",
 		"lastActivity", "leaseUntil"
 	]):
 		return false
@@ -653,6 +666,8 @@ func _validate_room_state(
 	if not _is_integer(value.get("setupRevision")) or int(value["setupRevision"]) < 0:
 		return false
 	if not _validate_compatibility(value.get("compatibility")):
+		return false
+	if not _validate_network_profile(value.get("networkProfile")):
 		return false
 	var members: Variant = value.get("members")
 	var validation_slot := expected_slot if expected_slot in [0, 1] else _slot
@@ -794,6 +809,21 @@ func _validate_profile(value: Variant) -> bool:
 		and int(value["inputDelay"]) >= 0 and int(value["inputDelay"]) <= 8 \
 		and _is_integer(value.get("predictionWindow")) \
 		and int(value["predictionWindow"]) >= 0 and int(value["predictionWindow"]) <= 15
+
+
+func _validate_network_profile(value: Variant) -> bool:
+	if not _validate_profile(value):
+		return false
+	var base_id := "chrome-exp-d%d-p%d" % [int(value["inputDelay"]), int(value["predictionWindow"])]
+	return value["id"] == base_id or value["id"] == base_id + "-lan"
+
+
+func _room_state_reply_missing_network_profile(value: Variant) -> bool:
+	return value is Dictionary and _room_state_missing_network_profile(value.get("state"))
+
+
+func _room_state_missing_network_profile(value: Variant) -> bool:
+	return value is Dictionary and not value.has("networkProfile")
 
 
 func _validate_rules(value: Variant) -> bool:

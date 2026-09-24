@@ -3,6 +3,39 @@ import worker, { Admission } from "../src/index";
 import { Room } from "../src/room";
 export { Admission };
 
+const nativeFetch = globalThis.fetch.bind(globalThis);
+globalThis.fetch = async (input, init) => {
+  const request = new Request(input, init);
+  const url = new URL(request.url);
+  if (
+    url.hostname === "rtc.live.cloudflare.com" &&
+    url.pathname.endsWith("/credentials/generate-ice-servers")
+  ) {
+    const input = (await request.clone().json()) as { ttl?: number };
+    if (
+      request.headers.get("Authorization") !== "Bearer test-only-api-token" ||
+      input.ttl !== 14_400
+    )
+      return Response.json(
+        { error: "invalid_test_issuer_request" },
+        { status: 403 },
+      );
+    return Response.json({
+      iceServers: [
+        {
+          urls: [
+            "turn:turn.example:3478?transport=udp",
+            "turns:turn.example:5349",
+          ],
+          username: "fixture-user",
+          credential: "fixture-credential",
+        },
+      ],
+    });
+  }
+  return nativeFetch(request);
+};
+
 export class TestAdmission extends Admission {
   constructor(ctx: DurableObjectState, env: any) {
     ctx.storage.sql.exec(
@@ -58,6 +91,23 @@ export class TestRoom extends Room {
   inspect(): unknown {
     return this.ctx.storage.sql.exec("SELECT value FROM state").toArray();
   }
+  useLegacyNetworkProfileState(): void {
+    const row = this.ctx.storage.sql
+      .exec<{ value: string }>("SELECT value FROM state WHERE id=1")
+      .one();
+    const state = JSON.parse(row.value);
+    delete state.networkProfile;
+    if (state.match)
+      state.match.profile = {
+        id: "legacy-profile",
+        inputDelay: 0,
+        predictionWindow: 6,
+      };
+    this.ctx.storage.sql.exec(
+      "UPDATE state SET value=? WHERE id=1",
+      JSON.stringify(state),
+    );
+  }
   nextAlarm(): Promise<number | null> {
     return this.ctx.storage.getAlarm();
   }
@@ -81,6 +131,10 @@ export default {
           rows: await room.inspect(),
           nextAlarm: await room.nextAlarm(),
         });
+      if (kind === "legacy-network-profile") {
+        await room.useLegacyNetworkProfileState();
+        return Response.json({ ok: true });
+      }
       if (kind === "scheduled") await room.scheduleExpiry();
       else await room.fireAlarm(kind);
       return Response.json({ ok: true });

@@ -47,12 +47,32 @@ export interface State {
   members: [Member, Member | null];
   stage: string;
   rules: Rules;
+  networkProfile?: Profile;
   phase: "lobby" | "preparing" | "active" | "closed";
   match: Match | null;
   lastResult: { epoch: string; winner: 0 | 1 | null; reason: string } | null;
   negotiation: { id: string; epoch: string | null; expires: number } | null;
   lastActivity: number;
   leaseUntil: number;
+}
+export const DEFAULT_NETWORK_PROFILE: Profile = {
+  id: "chrome-exp-d2-p6",
+  inputDelay: 2,
+  predictionWindow: 6,
+};
+export function networkProfile(state: State): Profile {
+  return state.networkProfile ?? DEFAULT_NETWORK_PROFILE;
+}
+function sameProfile(
+  left: Profile | null | undefined,
+  right: Profile,
+): boolean {
+  return (
+    !!left &&
+    left.id === right.id &&
+    left.inputDelay === right.inputDelay &&
+    left.predictionWindow === right.predictionWindow
+  );
 }
 export function member(credential: string, nickname: string): Member {
   return {
@@ -72,11 +92,13 @@ export function projection(state: State): unknown {
     creationHash: _creation,
     inviteHash: _invite,
     shortInviteHash: _shortInvite,
+    networkProfile: _networkProfile,
     members,
     ...publicState
   } = state;
   return {
     ...publicState,
+    networkProfile: networkProfile(state),
     members: members.map(
       (seat) =>
         seat && {
@@ -147,26 +169,40 @@ export function apply(
       state.rules = op.rules;
       invalidate(state);
       break;
+    case "configure_network":
+      requireThat(slot === 0, "owner_required", 403);
+      {
+        const current = networkProfile(state);
+        state.networkProfile = { ...op.profile };
+        if (!sameProfile(current, op.profile)) invalidate(state);
+      }
+      break;
     case "ready":
       requireThat(seat.choice && state.members[1], "incomplete_setup");
+      if (op.ready)
+        requireThat(
+          sameProfile(op.profile, networkProfile(state)),
+          "network_profile_mismatch",
+        );
       seat.ready = op.ready;
-      seat.profile = op.ready ? op.profile : null;
+      seat.profile = op.ready ? { ...networkProfile(state) } : null;
       break;
     case "prepare": {
       requireThat(slot === 0, "owner_required", 403);
       const guest = state.members[1];
+      const authority = networkProfile(state);
       requireThat(
         seat.ready &&
           guest?.ready &&
-          seat.profile &&
-          JSON.stringify(seat.profile) === JSON.stringify(guest.profile),
+          sameProfile(seat.profile, authority) &&
+          sameProfile(guest.profile, authority),
         "not_ready",
       );
       state.match = {
         epoch: crypto.randomUUID(),
         seed: crypto.getRandomValues(new Uint32Array(1))[0],
         clockBaseline: 0,
-        profile: seat.profile,
+        profile: { ...authority },
         deadline: now + PREPARE_MS,
         loaded: [null, null],
         acknowledged: [false, false],

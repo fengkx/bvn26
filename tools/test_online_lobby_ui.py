@@ -63,7 +63,7 @@ def main() -> int:
         (
             "res://tests/online_lobby_map_selection_integration_smoke.gd",
             (
-                "ONLINE_LOBBY_MAP_SELECTION_INTEGRATION_SMOKE_OK host_authority=true guest_mirror=true map_commit_handshake=true rules_draft=true null_profiles_ready=true auto_prepare_gated=true auto_prepare_deduplicated=true explicit_retry=true cancel_and_reentry=true guest_pending_snapshot=true host_refresh_failure_returns=true guest_refresh_retry=true",
+                "ONLINE_LOBBY_MAP_SELECTION_INTEGRATION_SMOKE_OK network_authority=true guest_read_only=true push_before_http=true profile_change_clears_ready=true uncertain_exact_retry=true map_preserves_profile=true host_authority=true guest_mirror=true map_commit_handshake=true rules_draft=true null_profiles_ready=true auto_prepare_gated=true auto_prepare_deduplicated=true explicit_retry=true cancel_and_reentry=true guest_pending_snapshot=true host_refresh_failure_returns=true guest_refresh_retry=true",
             ),
         ),
         (
@@ -75,7 +75,7 @@ def main() -> int:
         (
             "res://tests/online_room_client_smoke.gd",
             (
-                "ONLINE_ROOM_CLIENT_SMOKE_OK state_validation=true cloudflare_ice=true ice_transport_chain=true string_urls_normalized=true turn_credentials_required=true monotonic_revision=true leave_projection=true exact_retry=true short_code_join=true create_code=true reinvite_retry=true",
+                "ONLINE_ROOM_CLIENT_SMOKE_OK state_validation=true network_profile_validation=true server_upgrade_required=true cloudflare_ice=true ice_transport_chain=true string_urls_normalized=true turn_credentials_required=true monotonic_revision=true leave_projection=true exact_retry=true short_code_join=true create_code=true reinvite_retry=true",
             ),
         ),
     )

@@ -52,6 +52,10 @@ export const profile = z.strictObject({
   inputDelay: z.number().int().min(0).max(8),
   predictionWindow: z.number().int().min(0).max(15),
 });
+export const networkProfile = profile.refine((value) => {
+  const base = `chrome-exp-d${value.inputDelay}-p${value.predictionWindow}`;
+  return value.id === base || value.id === `${base}-lan`;
+});
 export const choice = z.strictObject({ fighter: id, helper: id });
 export const rules = z.strictObject({
   time: z.union([z.literal(30), z.literal(60), z.literal(90), z.literal(100)]),
@@ -67,6 +71,11 @@ const epoch = z.string().uuid();
 export const operation = z.discriminatedUnion("type", [
   z.strictObject({ type: z.literal("select"), revision, choice }),
   z.strictObject({ type: z.literal("configure"), revision, stage: id, rules }),
+  z.strictObject({
+    type: z.literal("configure_network"),
+    revision,
+    profile: networkProfile,
+  }),
   z.strictObject({
     type: z.literal("ready"),
     revision,

@@ -1,6 +1,6 @@
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
-import { randomBytes, createHmac } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -32,7 +32,7 @@ const compatibility = {
   build: "a".repeat(64),
   content: "b".repeat(64),
 };
-const profile = { id: "test-only", inputDelay: 2, predictionWindow: 6 };
+const profile = { id: "chrome-exp-d2-p6", inputDelay: 2, predictionWindow: 6 };
 async function runtime(persistence, bindings = {}) {
   const options = convertV4MiniflareOptions({
     name: "matchmaking-tests",
@@ -264,6 +264,174 @@ test("atomic admission, private capabilities, isolation and compatibility", asyn
     room.input.inviteToken,
   ])
     assert.ok(!publicState.includes(forbidden));
+});
+
+test("room network profile is owner controlled, authoritative, and independent of map setup", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  const defaultProfile = {
+    id: "chrome-exp-d2-p6",
+    inputDelay: 2,
+    predictionWindow: 6,
+  };
+  const lanProfile = {
+    id: "chrome-exp-d1-p3-lan",
+    inputDelay: 1,
+    predictionWindow: 3,
+  };
+  assert.deepEqual(room.state.networkProfile, defaultProfile);
+
+  const setupRevision = await setup(server, room);
+  await op(server, room, 0, { type: "negotiate", epoch: null });
+  assert.ok(room.state.negotiation);
+
+  const noOp = await op(server, room, 0, {
+    type: "configure_network",
+    revision: room.state.setupRevision,
+    profile: defaultProfile,
+  });
+  assert.equal(noOp.state.setupRevision, setupRevision);
+  assert.ok(noOp.state.members.every((seat) => seat.ready));
+  assert.ok(noOp.state.negotiation);
+
+  const guestSequence = room.guestSeq;
+  const guestEdit = await op(server, room, 1, {
+    type: "configure_network",
+    revision: room.state.setupRevision,
+    profile: lanProfile,
+  });
+  assert.equal(guestEdit.error, "owner_required");
+  assert.equal(room.guestSeq, guestSequence);
+  assert.equal(room.state.networkProfile.id, defaultProfile.id);
+  assert.ok(room.state.negotiation);
+
+  const ownerSequence = room.ownerSeq;
+  const invalidProfile = await op(server, room, 0, {
+    type: "configure_network",
+    revision: room.state.setupRevision,
+    profile: { ...lanProfile, id: "chrome-exp-d2-p3-lan" },
+  });
+  assert.equal(invalidProfile.error, "invalid_message");
+  assert.equal(room.ownerSeq, ownerSequence);
+
+  const ownerEdit = await op(server, room, 0, {
+    type: "configure_network",
+    revision: room.state.setupRevision,
+    profile: lanProfile,
+  });
+  assert.equal(ownerEdit.status, 200);
+  assert.deepEqual(ownerEdit.state.networkProfile, lanProfile);
+  assert.equal(ownerEdit.state.setupRevision, setupRevision + 1);
+  assert.ok(
+    ownerEdit.state.members.every((seat) => !seat.ready && !seat.profile),
+  );
+  assert.equal(ownerEdit.state.negotiation, null);
+
+  const mapEdit = await op(server, room, 0, {
+    type: "configure",
+    revision: ownerEdit.state.setupRevision,
+    stage: "流魂街",
+    rules: { time: 60, life: 2 },
+  });
+  assert.deepEqual(mapEdit.state.networkProfile, lanProfile);
+
+  const staleReady = await op(server, room, 1, {
+    type: "ready",
+    revision: mapEdit.state.setupRevision,
+    ready: true,
+    profile: defaultProfile,
+  });
+  assert.equal(staleReady.error, "network_profile_mismatch");
+  assert.equal(room.guestSeq, guestSequence);
+
+  const readyRevision = mapEdit.state.setupRevision;
+  for (const slot of [0, 1])
+    assert.equal(
+      (
+        await op(server, room, slot, {
+          type: "ready",
+          revision: readyRevision,
+          ready: true,
+          profile: lanProfile,
+        })
+      ).status,
+      200,
+    );
+  const prepared = await op(server, room, 0, {
+    type: "prepare",
+    revision: readyRevision,
+  });
+  assert.equal(prepared.status, 200);
+  assert.deepEqual(prepared.state.match.profile, lanProfile);
+});
+
+test("legacy state projects a default network profile without changing the current match profile", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  const epoch = await start(server, room);
+  await request(server, "/_test/alarm", {
+    id: room.roomId,
+    kind: "legacy-network-profile",
+  });
+
+  const legacyProfile = {
+    id: "legacy-profile",
+    inputDelay: 0,
+    predictionWindow: 6,
+  };
+  const current = await request(
+    server,
+    endpoint(room, "state"),
+    undefined,
+    room.owner,
+  );
+  assert.deepEqual(current.state.networkProfile, profile);
+  assert.equal(current.state.match.epoch, epoch);
+  assert.deepEqual(current.state.match.profile, legacyProfile);
+
+  const raw = await request(server, "/_test/alarm", {
+    id: room.roomId,
+    kind: "inspect",
+  });
+  const persisted = JSON.parse(raw.rows[0].value);
+  assert.equal(Object.hasOwn(persisted, "networkProfile"), false);
+  assert.deepEqual(persisted.match.profile, legacyProfile);
+});
+
+test("setting the legacy default lazily does not invalidate matching readiness", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  const revision = await setup(server, room);
+  await op(server, room, 0, { type: "negotiate", epoch: null });
+  const negotiationId = room.state.negotiation.id;
+  await request(server, "/_test/alarm", {
+    id: room.roomId,
+    kind: "legacy-network-profile",
+  });
+
+  const projected = await request(
+    server,
+    endpoint(room, "state"),
+    undefined,
+    room.owner,
+  );
+  assert.deepEqual(projected.state.networkProfile, profile);
+  const migrated = await op(server, room, 0, {
+    type: "configure_network",
+    revision,
+    profile,
+  });
+  assert.equal(migrated.status, 200);
+  assert.equal(migrated.state.setupRevision, revision);
+  assert.ok(migrated.state.members.every((seat) => seat.ready));
+  assert.equal(migrated.state.negotiation.id, negotiationId);
+
+  const raw = await request(server, "/_test/alarm", {
+    id: room.roomId,
+    kind: "inspect",
+  });
+  const persisted = JSON.parse(raw.rows[0].value);
+  assert.deepEqual(persisted.networkProfile, profile);
 });
 
 test("short invitation codes are private, single-use, retryable and rotatable", async (t) => {
@@ -807,10 +975,10 @@ test("SQLite restart restores epoch, seats and idempotency with new real WebSock
   assert.equal((await b.receive("signal")).payload, "restart-candidate");
 });
 
-test("TURN REST credentials are authenticated, expiring and rate limited", async (t) => {
+test("TURN REST issuance is authenticated, short-lived and rate limited", async (t) => {
   const server = await withServer(t, {
-    TURN_SECRET: "test-only-issuer-secret",
-    TURN_URLS: "turn:localhost:3478,turns:localhost:5349",
+    TURN_KEY_ID: "0123456789abcdef0123456789abcdef",
+    TURN_API_TOKEN: "test-only-api-token",
   });
   const room = await createRoom(server);
   assert.equal(
@@ -818,16 +986,15 @@ test("TURN REST credentials are authenticated, expiring and rate limited", async
     401,
   );
   const response = await request(server, endpoint(room, "ice"), {}, room.owner);
-  assert.equal(response.expiresIn, 600);
+  assert.equal(response.expiresIn, 14_400);
   const ice = response.iceServers[0];
-  assert.equal(
-    ice.credential,
-    createHmac("sha1", "test-only-issuer-secret")
-      .update(ice.username)
-      .digest("base64"),
-  );
-  assert.ok(Number(ice.username.split(":")[0]) > Date.now() / 1000 + 590);
-  assert.ok(!JSON.stringify(response).includes("test-only-issuer-secret"));
+  assert.deepEqual(ice.urls, [
+    "turn:turn.example:3478?transport=udp",
+    "turns:turn.example:5349",
+  ]);
+  assert.equal(ice.username, "fixture-user");
+  assert.equal(ice.credential, "fixture-credential");
+  assert.ok(!JSON.stringify(response).includes("test-only-api-token"));
   for (let i = 0; i < 3; i++)
     await request(server, endpoint(room, "ice"), {}, room.owner);
   assert.equal(
@@ -912,7 +1079,7 @@ test("initial-state and confirmed-result mismatches end without a winner", async
   });
 });
 
-test("incompatible profiles and disabled content are rejected without consuming sequence", async (t) => {
+test("disabled content is rejected without consuming sequence", async (t) => {
   const server = await withServer(t);
   const room = await createRoom(server);
   const revision = await setup(server, room);
@@ -928,16 +1095,6 @@ test("incompatible profiles and disabled content are rejected without consuming 
     "unsupported_content",
   );
   assert.equal(room.ownerSeq, seq);
-  await op(server, room, 1, {
-    type: "ready",
-    revision,
-    ready: true,
-    profile: { ...profile, predictionWindow: 8 },
-  });
-  assert.equal(
-    (await op(server, room, 0, { type: "prepare", revision })).error,
-    "not_ready",
-  );
 });
 
 test("revoked invitations, single-use socket tickets and expired leases cannot be replayed", async (t) => {

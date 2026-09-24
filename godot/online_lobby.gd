@@ -35,6 +35,8 @@ var _last_result_text := ""
 var _signal_connected := false
 var _admission_uncertain := false
 var _profile_draft_dirty := false
+var _pending_network_profile: Dictionary = {}
+var _network_profile_authority: Dictionary = {}
 var _lifecycle_generation := 0
 var _terminal_pending_epoch := ""
 var _terminal_finished_epoch := ""
@@ -545,7 +547,7 @@ func _build_room_view() -> void:
 	profile_grid.columns = 2
 	profile_grid.add_theme_constant_override("h_separation", 12)
 	profile_grid.add_theme_constant_override("v_separation", 4)
-	_advanced_settings.add_child(profile_grid)
+	_owner_settings.add_child(profile_grid)
 	_delay_choice = _option()
 	_add_number_options(profile_grid, "输入延迟", _delay_choice, [0, 1, 2], " 帧")
 	_select_number(_delay_choice, 2)
@@ -553,10 +555,10 @@ func _build_room_view() -> void:
 	_add_number_options(profile_grid, "预测上限", _prediction_choice, [2, 4, 6], " 帧")
 	_select_number(_prediction_choice, 6)
 	var profile_latency_hint := Label.new()
-	profile_latency_hint.text = "默认增加约 67 毫秒操作延迟以减少等待；可调低，双方需一致。"
+	profile_latency_hint.text = "默认增加约 67 毫秒操作延迟以减少等待；由房主统一设置。"
 	profile_latency_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	profile_latency_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_advanced_settings.add_child(profile_latency_hint)
+	_owner_settings.add_child(profile_latency_hint)
 	for picker in [_time_choice, _life_choice]:
 		picker.item_selected.connect(_on_setup_picker_changed)
 	for picker in [_delay_choice, _prediction_choice]:
@@ -571,10 +573,10 @@ func _build_room_view() -> void:
 	_profile_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_advanced_settings.add_child(_profile_status)
 	_lan_candidate_opt_in = CheckBox.new()
-	_lan_candidate_opt_in.text = "本机 / 同一局域网对战（双方开启，无需中转）"
-	_lan_candidate_opt_in.tooltip_text = "只用于本机或同一局域网测试；双方必须同时开启。跨网络对战仍需服务端配置 TURN。默认关闭。"
+	_lan_candidate_opt_in.text = "本机 / 同一局域网对战（无需中转）"
+	_lan_candidate_opt_in.tooltip_text = "只用于本机或同一局域网测试；跨网络对战仍需服务端配置 TURN。由房主选择并同步双方。"
 	_lan_candidate_opt_in.toggled.connect(_on_profile_option_toggled)
-	_advanced_settings.add_child(_lan_candidate_opt_in)
+	_owner_settings.add_child(_lan_candidate_opt_in)
 
 	var actions := HBoxContainer.new()
 	actions.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -777,6 +779,9 @@ func _on_abandon_admission_pressed() -> void:
 		return
 	_set_admission_uncertain(false)
 	_room_state.clear()
+	_pending_network_profile.clear()
+	_network_profile_authority.clear()
+	_profile_draft_dirty = false
 	_room_id = ""
 	_invite_token = ""
 	_invite_code = ""
@@ -821,25 +826,61 @@ func _on_connect_selection_pressed() -> void:
 func _start_room_connection() -> void:
 	if _room_connection_ready or _room_connection_starting or _room_id.is_empty() or _slot not in [0, 1]:
 		return
-	if room_client.has_uncertain_command():
+	if room_client.has_uncertain_command() or room_client.is_command_in_flight():
 		_show_error("command_outcome_uncertain")
 		_retry_button.visible = true
+		return
+	if _profile_draft_dirty or not _pending_network_profile.is_empty():
+		_show_error("network_profile_not_committed")
 		return
 	if _room_connection != null:
 		_close_room_connection()
 	_room_connection_starting = true
 	var generation := _room_connection_generation + 1
 	_room_connection_generation = generation
+	var lifecycle_generation := _lifecycle_generation
+	var expected_room_id := _room_id
 	_room_connection_ready = false
 	_remote_connection_profile_id = ""
-	_local_connection_profile_id = _current_connection_profile_id()
+	_local_connection_profile_id = ""
 	_status.text = "正在建立选人连接…"
 	_refresh_room_view()
+	var room_reply: Dictionary = await room_client.refresh_state()
+	if not _room_connection_attempt_current(generation, lifecycle_generation, expected_room_id):
+		_abandon_stale_room_connection_attempt(generation, lifecycle_generation, expected_room_id)
+		return
+	if room_reply.has("error"):
+		_room_connection_starting = false
+		_show_error(str(room_reply.get("error", "service_error")))
+		_refresh_room_view()
+		return
+	_accept_state(room_reply.get("state"))
+	if not _room_connection_attempt_current(generation, lifecycle_generation, expected_room_id):
+		_abandon_stale_room_connection_attempt(generation, lifecycle_generation, expected_room_id)
+		return
+	var profile := _authoritative_network_profile()
+	if profile.is_empty():
+		_room_connection_starting = false
+		_show_error("server_upgrade_required")
+		_refresh_room_view()
+		return
+	if _slot == 0 and not _same_network_profile(_current_network_profile(), profile):
+		_room_connection_starting = false
+		_profile_draft_dirty = false
+		_sync_network_profile_controls_from_state()
+		_show_error("network_profile_not_committed")
+		_refresh_room_view()
+		return
+	var expected_setup_revision := int(_room_state.get("setupRevision", -1))
+	_local_connection_profile_id = str(profile.get("id", ""))
 
 	var ice_servers: Array = []
-	if not _lan_candidate_opt_in.button_pressed:
+	if not _local_connection_profile_id.ends_with("-lan"):
 		var ice_reply: Dictionary = await room_client.get_ice_servers()
-		if generation != _room_connection_generation:
+		if not _room_connection_attempt_current(
+			generation, lifecycle_generation, expected_room_id, profile, expected_setup_revision
+		):
+			_abandon_stale_room_connection_attempt(generation, lifecycle_generation, expected_room_id)
 			return
 		if ice_reply.has("error"):
 			_room_connection_starting = false
@@ -847,6 +888,11 @@ func _start_room_connection() -> void:
 			_refresh_room_view()
 			return
 		ice_servers = _as_array(ice_reply.get("iceServers", []))
+	if not _room_connection_attempt_current(
+		generation, lifecycle_generation, expected_room_id, profile, expected_setup_revision
+	):
+		_abandon_stale_room_connection_attempt(generation, lifecycle_generation, expected_room_id)
+		return
 
 	var connection := ROOM_CONNECTION.new() as Node
 	connection.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -862,7 +908,10 @@ func _start_room_connection() -> void:
 		_refresh_room_view()
 		return
 	var issue := str(await connection.start())
-	if generation != _room_connection_generation or connection != _room_connection:
+	if not _room_connection_attempt_current(
+		generation, lifecycle_generation, expected_room_id, profile, expected_setup_revision
+	) or connection != _room_connection:
+		_abandon_stale_room_connection_attempt(generation, lifecycle_generation, expected_room_id)
 		return
 	_room_connection_starting = false
 	if not issue.is_empty():
@@ -878,10 +927,85 @@ func _start_room_connection() -> void:
 	_maybe_begin_initial_selection()
 
 
+func _room_connection_attempt_current(
+	generation: int,
+	lifecycle_generation: int,
+	expected_room_id: String,
+	profile: Dictionary = {},
+	setup_revision: int = -1
+) -> bool:
+	if generation != _room_connection_generation or lifecycle_generation != _lifecycle_generation \
+		or _room_id != expected_room_id or room_client == null or room_client.get_room_id() != expected_room_id \
+		or room_client.has_uncertain_command() or room_client.is_command_in_flight():
+		return false
+	if not profile.is_empty() and (
+		not _same_network_profile(_authoritative_network_profile(), profile)
+		or int(_room_state.get("setupRevision", -1)) != setup_revision
+	):
+		return false
+	return true
+
+
+func _abandon_stale_room_connection_attempt(generation: int, lifecycle_generation: int, expected_room_id: String) -> void:
+	if generation != _room_connection_generation or lifecycle_generation != _lifecycle_generation \
+		or _room_id != expected_room_id or room_client == null \
+		or room_client.get_room_id() != expected_room_id:
+		return
+	_close_room_connection()
+	_status.text = "房间设置已变化，请重新建立连接。"
+	_refresh_room_view()
+
+
 func _current_connection_profile_id() -> String:
+	return str(_current_network_profile().get("id", ""))
+
+
+func _current_network_profile() -> Dictionary:
 	var delay := _selected_number(_delay_choice)
 	var prediction := _selected_number(_prediction_choice)
-	return "chrome-exp-d%d-p%d%s" % [delay, prediction, "-lan" if _lan_candidate_opt_in.button_pressed else ""]
+	var profile_id := "chrome-exp-d%d-p%d" % [delay, prediction]
+	if _lan_candidate_opt_in.button_pressed:
+		profile_id += "-lan"
+	return {"id": profile_id, "inputDelay": delay, "predictionWindow": prediction}
+
+
+func _authoritative_network_profile() -> Dictionary:
+	return _network_profile_authority.duplicate(true)
+
+
+func _network_profile_from_state(state: Dictionary) -> Dictionary:
+	var profile := _as_dictionary(state.get("networkProfile"))
+	if profile.is_empty() or not _valid_network_profile(profile):
+		return {}
+	return profile.duplicate(true)
+
+
+func _valid_network_profile(profile: Dictionary) -> bool:
+	if not profile.has_all(["id", "inputDelay", "predictionWindow"]):
+		return false
+	var id: Variant = profile.get("id")
+	var delay: Variant = profile.get("inputDelay")
+	var prediction: Variant = profile.get("predictionWindow")
+	if not id is String or not _is_integral_profile_number(delay) \
+		or not _is_integral_profile_number(prediction):
+		return false
+	var normalized_delay := int(delay)
+	var normalized_prediction := int(prediction)
+	if normalized_delay < 0 or normalized_delay > 8 or normalized_prediction < 0 or normalized_prediction > 15:
+		return false
+	var base_id := "chrome-exp-d%d-p%d" % [normalized_delay, normalized_prediction]
+	return id == base_id or id == base_id + "-lan"
+
+
+func _is_integral_profile_number(value: Variant) -> bool:
+	return value is int or (value is float and is_finite(value) and floor(value) == value)
+
+
+func _same_network_profile(left: Dictionary, right: Dictionary) -> bool:
+	return _valid_network_profile(left) and _valid_network_profile(right) \
+		and str(left.get("id")) == str(right.get("id")) \
+		and int(left.get("inputDelay", -1)) == int(right.get("inputDelay", -2)) \
+		and int(left.get("predictionWindow", -1)) == int(right.get("predictionWindow", -2))
 
 
 func _on_reselect_pressed() -> void:
@@ -1915,7 +2039,28 @@ func _show_room() -> void:
 func _accept_state(state: Variant) -> void:
 	if not state is Dictionary:
 		return
-	_room_state = state.duplicate(true)
+	var incoming: Dictionary = state.duplicate(true)
+	if not _room_id.is_empty() and str(incoming.get("id", "")) != _room_id:
+		return
+	if str(_room_state.get("id", "")) == str(incoming.get("id", "")) \
+		and int(incoming.get("revision", -1)) < int(_room_state.get("revision", -1)):
+		return
+	var next_network_profile := _network_profile_from_state(incoming)
+	if next_network_profile.is_empty():
+		_show_error("server_upgrade_required")
+		return
+	var previous_network_profile := _network_profile_authority.duplicate(true)
+	_room_state = incoming
+	_network_profile_authority = next_network_profile.duplicate(true)
+	if not previous_network_profile.is_empty() \
+		and not _same_network_profile(previous_network_profile, next_network_profile):
+		var matches_pending := not _pending_network_profile.is_empty() \
+			and _same_network_profile(_pending_network_profile, next_network_profile)
+		_close_room_connection()
+		if not matches_pending:
+			_pending_network_profile.clear()
+			_profile_draft_dirty = false
+			_status.text = "房主网络设置已更新；旧连接和准备状态已清除。"
 	if _map_handshake_complete and (
 		int(_room_state.get("setupRevision", -1)) != _map_handshake_setup_revision
 		or str(_room_state.get("stage", "")) != _map_handshake_stage_id
@@ -1984,7 +2129,8 @@ func _refresh_room_view() -> void:
 	_rotate_invite_button.visible = owner
 	_rotate_invite_button.disabled = _busy or room_client.has_uncertain_command()
 	if not _dirty and not _busy:
-		_sync_options_from_state()
+		_sync_network_profile_controls_from_state()
+	_sync_network_profile_controls_from_state()
 	var local_choice := _as_dictionary(local_member.get("choice"))
 	var remote_choice := _as_dictionary(remote_member.get("choice"))
 	var player_one_choice := _as_dictionary(_as_dictionary(members[0]).get("choice")) if members.size() > 0 else {}
@@ -1993,38 +2139,50 @@ func _refresh_room_view() -> void:
 		_choice_label(player_one_choice), _choice_helper_label(player_one_choice),
 		_choice_label(player_two_choice), _choice_helper_label(player_two_choice),
 	]
-	var local_profile := _as_dictionary(local_member.get("profile"))
-	var remote_profile := _as_dictionary(remote_member.get("profile"))
-	var profiles_match := not local_profile.is_empty() and local_profile == remote_profile
+	var network_profile := _authoritative_network_profile()
+	var network_profile_id := str(network_profile.get("id", ""))
 	var connection_profiles_match := not _local_connection_profile_id.is_empty() \
-		and _local_connection_profile_id == _remote_connection_profile_id
-	_profile_status.text = "输入延迟 %d 帧 · 预测上限 %d 帧（双方须一致）\n%s" % [
-		_selected_number(_delay_choice), _selected_number(_prediction_choice),
-		"双方档位一致" if connection_profiles_match else "等待另一位玩家选择相同档位",
+		and _local_connection_profile_id == _remote_connection_profile_id \
+		and _local_connection_profile_id == network_profile_id
+	_profile_status.text = "输入延迟 %d 帧 · 预测上限 %d 帧（房主统一设置）\n%s" % [
+		int(network_profile.get("inputDelay", 0)), int(network_profile.get("predictionWindow", 0)),
+		"已连接到房主设置" if connection_profiles_match else "请按房主设置重新连接",
 	]
-	_profile_status.text += "\n连接方式：" + ("本机 / 同一局域网" if _lan_candidate_opt_in.button_pressed else "互联网连接（需服务配置中转）")
+	_profile_status.text += "\n连接方式：" + ("本机 / 同一局域网" if network_profile_id.ends_with("-lan") else "互联网连接（需服务配置中转）")
 	var stage_id := str(_room_state.get("stage", ""))
 	var rules := _as_dictionary(_room_state.get("rules"))
 	var stage_name := str(_stage_labels.get(stage_id, "未确认地图"))
 	_stage_summary.text = "%s · %d秒 · 生命×%d" % [
 		stage_name, int(rules.get("time", 90)), int(rules.get("life", 1)),
 	]
+	if not network_profile.is_empty():
+		_stage_summary.text += "\n网络：延迟%d帧 · 预测%d帧 · %s" % [
+			int(network_profile.get("inputDelay", 0)),
+			int(network_profile.get("predictionWindow", 0)),
+			"局域网" if network_profile_id.ends_with("-lan") else "互联网",
+		]
 	_stage_summary.text += "\n" + _roster_status.text
 	_owner_settings.visible = owner
 	_time_choice.disabled = _busy or _selection_active or _map_active or not lobby_phase
 	_life_choice.disabled = _busy or _selection_active or _map_active or not lobby_phase
-	_delay_choice.disabled = _busy or local_ready or _room_connection_starting or not lobby_phase
-	_prediction_choice.disabled = _busy or local_ready or _room_connection_starting or not lobby_phase
-	_lan_candidate_opt_in.disabled = _busy or local_ready or _room_connection_starting or not lobby_phase
+	var network_profile_busy := _busy or _room_connection_starting \
+		or not _pending_network_profile.is_empty() \
+		or (room_client != null and (room_client.has_uncertain_command() or room_client.is_command_in_flight()))
+	var can_edit_network_profile := owner and lobby_phase and not network_profile_busy \
+		and not _selection_active and not _selection_commit_busy and not _map_active and not _map_committing
+	_delay_choice.disabled = not can_edit_network_profile
+	_prediction_choice.disabled = not can_edit_network_profile
+	_lan_candidate_opt_in.disabled = not can_edit_network_profile
 	var map_matches_state := _map_handshake_complete \
 		and _map_handshake_setup_revision == int(_room_state.get("setupRevision", -1)) \
 		and _map_handshake_stage_id == stage_id
-	var common_gate := lobby_phase and not _busy and not _selection_active \
+	var common_gate := lobby_phase and not _busy and not network_profile_busy and not _selection_active \
 		and not _selection_commit_busy and not _map_active and not _map_committing
 	var local_choice_ok := _valid_selection_choice(local_choice)
 	var remote_choice_ok := _valid_selection_choice(remote_choice)
-	var ready_gate := common_gate and not _dirty and both_choices and map_matches_state \
-		and _room_connection_ready and connection_profiles_match and local_choice_ok and remote_choice_ok \
+	var ready_gate := common_gate and not _dirty and not _profile_draft_dirty \
+		and both_choices and map_matches_state and _room_connection_ready \
+		and connection_profiles_match and local_choice_ok and remote_choice_ok \
 		and has_both_members
 	if not lobby_phase or _busy or _selection_active or _selection_commit_busy or _map_active:
 		_room_primary_action = ""
@@ -2034,7 +2192,8 @@ func _refresh_room_view() -> void:
 		if not _room_connection_ready:
 			_room_primary_action = "connect"
 			_connect_selection_button.text = "连接并选择角色" if not _room_connection_starting else "正在连接…"
-			_connect_selection_button.disabled = _busy or _room_connection_starting or not has_both_members \
+			_connect_selection_button.disabled = _busy or network_profile_busy or _profile_draft_dirty \
+				or _room_connection_starting or not has_both_members \
 				or remote_member.is_empty()
 		elif not both_choices or not map_matches_state or not connection_profiles_match or _dirty:
 			if owner and both_choices and map_matches_state and _dirty:
@@ -2061,14 +2220,17 @@ func _refresh_room_view() -> void:
 	_setup_button.visible = owner and lobby_phase and _room_connection_ready and both_choices \
 		and not _selection_active and not _map_active and not _selection_commit_busy
 	_setup_button.text = "应用规则并选图" if _dirty else "改选地图"
-	_setup_button.disabled = _busy or _map_committing or (local_ready and remote_ready and not owner)
+	_setup_button.disabled = _busy or network_profile_busy or _profile_draft_dirty \
+		or _map_committing or (local_ready and remote_ready and not owner)
 	_reselect_button.visible = lobby_phase and _room_connection_ready and both_choices \
 		and not _selection_active and not _map_active
-	_reselect_button.disabled = _busy or _selection_commit_busy or not has_both_members
+	_reselect_button.disabled = _busy or network_profile_busy or _selection_commit_busy or not has_both_members
 	_leave_button.disabled = _busy or not lobby_phase
 	_retry_button.visible = room_client != null and room_client.has_uncertain_command() \
 		or _prepare_retry_available or _map_ack_pending or _map_commit_delivery_pending or _map_done_delivery_pending
-	if _map_ack_pending:
+	if not _pending_network_profile.is_empty():
+		_retry_button.text = "重试网络设置"
+	elif _map_ack_pending:
 		_retry_button.text = "重试地图同步"
 	elif _map_commit_delivery_pending or _map_done_delivery_pending:
 		_retry_button.text = "重试地图通知"
@@ -2081,19 +2243,20 @@ func _refresh_room_view() -> void:
 func _sync_options_from_state() -> void:
 	if _room_state.is_empty():
 		return
-	var members := _as_array(_room_state.get("members", []))
-	var local_member := _as_dictionary(members[_slot]) if _slot >= 0 and _slot < members.size() else {}
 	var rules := _as_dictionary(_room_state.get("rules"))
 	_select_number(_time_choice, int(rules.get("time", 90)))
 	_select_number(_life_choice, int(rules.get("life", 1)))
 	_rules_draft = {"time": int(rules.get("time", 90)), "life": int(rules.get("life", 1))}
-	if not _profile_draft_dirty:
-		var profile := _as_dictionary(local_member.get("profile"))
-		var profile_id := str(profile.get("id", ""))
-		if profile_id.is_empty():
-			profile_id = _local_connection_profile_id
-		if not profile_id.is_empty():
-			_lan_candidate_opt_in.set_pressed_no_signal(profile_id.ends_with("-lan"))
+
+
+func _sync_network_profile_controls_from_state() -> void:
+	var profile := _authoritative_network_profile()
+	if not profile.is_empty() and (_slot != 0 or not _profile_draft_dirty):
+		_select_number(_delay_choice, int(profile.get("inputDelay", 2)))
+		_select_number(_prediction_choice, int(profile.get("predictionWindow", 6)))
+		_lan_candidate_opt_in.set_pressed_no_signal(str(profile.get("id", "")).ends_with("-lan"))
+		if _slot != 0:
+			_profile_draft_dirty = false
 
 
 func _on_setup_picker_changed(_index: int) -> void:
@@ -2124,21 +2287,109 @@ func _on_room_primary_pressed() -> void:
 
 
 func _on_profile_picker_changed(_index: int) -> void:
-	_profile_draft_dirty = true
-	_disconnect_selection_for_profile_change()
-	_refresh_room_view()
+	await _commit_network_profile_from_controls()
 
 
 func _on_profile_option_toggled(_pressed: bool) -> void:
+	await _commit_network_profile_from_controls()
+
+
+func _commit_network_profile_from_controls() -> void:
+	if _slot != 0 or _busy or _room_connection_starting or _room_state.is_empty() \
+		or str(_room_state.get("phase", "")) != "lobby":
+		_profile_draft_dirty = false
+		_sync_network_profile_controls_from_state()
+		_refresh_room_view()
+		return
+	if room_client == null or room_client.has_uncertain_command() or room_client.is_command_in_flight():
+		_profile_draft_dirty = false
+		_sync_network_profile_controls_from_state()
+		_show_error("command_outcome_uncertain")
+		_refresh_room_view()
+		return
+	var desired := _current_network_profile()
+	var current := _authoritative_network_profile()
+	if current.is_empty():
+		_profile_draft_dirty = false
+		_sync_network_profile_controls_from_state()
+		_show_error("server_upgrade_required")
+		_refresh_room_view()
+		return
+	if _same_network_profile(desired, current):
+		_profile_draft_dirty = false
+		_refresh_room_view()
+		return
 	_profile_draft_dirty = true
-	_disconnect_selection_for_profile_change()
+	_pending_network_profile = desired.duplicate(true)
+	var request_generation := _lifecycle_generation
+	var request_room_id := _room_id
+	var setup_revision := int(_room_state.get("setupRevision", -1))
+	_close_room_connection()
+	_busy = true
+	_status.text = "正在同步房主网络设置…"
+	_refresh_room_view()
+	var response: Dictionary = await room_client.command({
+		"type": "configure_network",
+		"revision": setup_revision,
+		"profile": desired.duplicate(true),
+	})
+	if request_generation != _lifecycle_generation or request_room_id != _room_id:
+		return
+	_busy = false
+	if response.has("error"):
+		if bool(response.get("uncertain", false)):
+			_show_command_error(response)
+		else:
+			_pending_network_profile.clear()
+			_profile_draft_dirty = false
+			_accept_state(room_client.get_room_state())
+			_sync_network_profile_controls_from_state()
+			_show_command_error(response)
+		_refresh_room_view()
+		return
+	_accept_state(response.get("state"))
+	var authoritative := _authoritative_network_profile()
+	_pending_network_profile.clear()
+	_profile_draft_dirty = false
+	_sync_network_profile_controls_from_state()
+	if not _same_network_profile(authoritative, desired):
+		_show_error("network_profile_changed")
+	else:
+		_status.text = "房主网络设置已同步；双方需要重新连接并准备。"
 	_refresh_room_view()
 
 
-func _disconnect_selection_for_profile_change() -> void:
-	if _room_connection_ready or _room_connection_starting or _room_connection != null:
-		_close_room_connection()
-		_status.text = "双方网络档位不同；请返回房间调整后重新连接。"
+func _retry_pending_network_profile() -> void:
+	if _busy or _pending_network_profile.is_empty() or not room_client.has_uncertain_command():
+		return
+	_busy = true
+	var request_generation := _lifecycle_generation
+	var request_room_id := _room_id
+	_refresh_room_view()
+	var response: Dictionary = await room_client.retry_pending_command()
+	if request_generation != _lifecycle_generation or request_room_id != _room_id:
+		return
+	_busy = false
+	if response.has("error"):
+		if not bool(response.get("uncertain", false)):
+			_pending_network_profile.clear()
+			_profile_draft_dirty = false
+			_accept_state(room_client.get_room_state())
+			_sync_network_profile_controls_from_state()
+		_show_command_error(response)
+		_refresh_room_view()
+		return
+	_accept_state(response.get("state"))
+	var expected_profile := _pending_network_profile.duplicate(true)
+	var authoritative := _authoritative_network_profile()
+	_pending_network_profile.clear()
+	_profile_draft_dirty = false
+	_sync_network_profile_controls_from_state()
+	if _same_network_profile(authoritative, expected_profile):
+		_status.text = "房主网络设置已同步；双方需要重新连接并准备。"
+	else:
+		_show_error("network_profile_changed")
+	_refresh_room_view()
 
 
 func _on_commit_setup_pressed() -> void:
@@ -2151,21 +2402,18 @@ func _on_commit_setup_pressed() -> void:
 func _on_ready_pressed() -> void:
 	if _busy or _selection_active or _selection_commit_busy or _map_active or _room_state.is_empty():
 		return
+	var profile := _authoritative_network_profile()
+	if profile.is_empty():
+		_show_error("server_upgrade_required")
+		return
 	var members := _as_array(_room_state.get("members", []))
 	var local_member := _as_dictionary(members[_slot]) if _slot >= 0 and _slot < members.size() else {}
 	var ready := not bool(local_member.get("ready", false))
 	if ready and not _can_ready_current_room():
 		return
-	var delay := _selected_number(_delay_choice)
-	var prediction := _selected_number(_prediction_choice)
-	var profile := {
-		"id": "chrome-exp-d%d-p%d%s" % [delay, prediction, "-lan" if _lan_candidate_opt_in.button_pressed else ""],
-		"inputDelay": delay,
-		"predictionWindow": prediction,
-	}
 	await _submit_operation({
 		"type": "ready", "revision": int(_room_state.get("setupRevision", 0)),
-		"ready": ready, "profile": profile,
+		"ready": ready, "profile": profile.duplicate(true),
 	})
 
 
@@ -2183,11 +2431,15 @@ func _map_handshake_matches_room() -> bool:
 
 
 func _can_ready_current_room() -> bool:
+	var profile := _authoritative_network_profile()
+	if profile.is_empty() or _profile_draft_dirty or not _pending_network_profile.is_empty():
+		return false
 	return str(_room_state.get("phase", "")) == "lobby" \
 		and not _dirty and not _selection_active and not _selection_commit_busy and not _map_active \
 		and _room_connection_ready and _local_connection_profile_id == _remote_connection_profile_id \
 		and not _local_connection_profile_id.is_empty() \
-		and _current_connection_profile_id() == _local_connection_profile_id \
+		and _local_connection_profile_id == str(profile.get("id", "")) \
+		and (_slot != 0 or _same_network_profile(_current_network_profile(), profile)) \
 		and _map_handshake_matches_room() \
 		and _has_both_committed_choices()
 
@@ -2202,8 +2454,10 @@ func _can_prepare_current_room() -> bool:
 	var second := _as_dictionary(members[1])
 	var first_profile := _as_dictionary(first.get("profile"))
 	var second_profile := _as_dictionary(second.get("profile"))
+	var authority := _authoritative_network_profile()
 	return bool(first.get("ready", false)) and bool(second.get("ready", false)) \
-		and not first_profile.is_empty() and first_profile == second_profile
+		and not authority.is_empty() and _same_network_profile(first_profile, authority) \
+		and _same_network_profile(second_profile, authority)
 
 
 func _maybe_auto_prepare(explicit_retry: bool = false) -> void:
@@ -2407,6 +2661,8 @@ func _on_retry_signaling_pressed() -> void:
 		return
 	if _admission_uncertain:
 		await _on_retry_admission_pressed()
+	elif not _pending_network_profile.is_empty() and room_client.has_uncertain_command():
+		await _retry_pending_network_profile()
 	elif _map_ack_pending and _slot == 1 and not _map_pending_commit.is_empty():
 		await _verify_guest_map_commit(_map_pending_commit.duplicate(true))
 	elif _map_commit_delivery_pending and _slot == 0:
@@ -2634,6 +2890,8 @@ func _on_abandon_startup_pressed() -> void:
 	if room_client != null:
 		room_client.clear_credentials()
 	_room_state.clear()
+	_pending_network_profile.clear()
+	_network_profile_authority.clear()
 	_room_id = ""
 	_invite_token = ""
 	_invite_code = ""
@@ -3368,6 +3626,9 @@ func _finish_room_match_abort(report: Dictionary, epoch: String, generation: int
 		var result_line := _format_result(service_result) if known_result else "本局最终结果未能从房间服务确认。"
 		room_client.clear_credentials()
 		_room_state.clear()
+		_pending_network_profile.clear()
+		_network_profile_authority.clear()
+		_profile_draft_dirty = false
 		_room_id = ""
 		_invite_token = ""
 		_invite_code = ""
@@ -3546,6 +3807,8 @@ func _on_leave_room_pressed() -> void:
 		return
 	room_client.clear_credentials()
 	_room_state.clear()
+	_pending_network_profile.clear()
+	_network_profile_authority.clear()
 	_room_id = ""
 	_invite_token = ""
 	_invite_code = ""
@@ -3606,6 +3869,9 @@ func _abandon_pending_terminal() -> void:
 			leave_issue = str(leave_reply.get("error", "server_unreachable"))
 	room_client.clear_credentials()
 	_room_state.clear()
+	_pending_network_profile.clear()
+	_network_profile_authority.clear()
+	_profile_draft_dirty = false
 	_room_id = ""
 	_invite_token = ""
 	_invite_code = ""
@@ -3807,7 +4073,11 @@ func _show_error(code: String) -> void:
 		"peer_transport_missing": "点对点传输模块尚未加载。",
 		"match_coordinator_missing": "在线对局协调器尚未加载。",
 		"secure_random_unavailable": "浏览器安全随机数不可用。",
-		"turn_not_configured": "服务未配置互联网中转。若双方在本机或同一局域网，请双方开启本机 / 同一局域网模式后重新准备；跨网络对战需先配置 TURN 服务。",
+		"server_upgrade_required": "房间服务版本过旧，暂不支持房主统一网络设置；请升级服务后重试。",
+		"network_profile_not_committed": "房主网络设置尚未同步完成；请重试后再连接。",
+		"network_profile_changed": "房主网络设置已变化；请按新设置重新连接并准备。",
+		"network_profile_mismatch": "当前连接与房主网络设置不一致；请重新连接。",
+		"turn_not_configured": "服务未配置互联网中转。若使用本机或同一局域网，请由房主开启对应模式并重新连接；跨网络对战需先配置 TURN 服务。",
 	}
 	if code.contains("turn_not_configured"):
 		_status.text = str(messages.turn_not_configured)

@@ -59,17 +59,17 @@ battle. This is a client lifecycle rule; a server cannot prove a browser was not
 reloaded when a caller has copied the credentials. Invitations are separate
 capabilities, preferably shared in a URL fragment to avoid request/referrer logs.
 
-| Method / path | Request / purpose |
-|---|---|
-| `GET /health` | Service/protocol liveness, no credentials |
-| `POST /v1/rooms` | `{createToken, sessionToken, inviteToken, nickname, compatibility}`; response adds short `inviteCode` |
-| `POST /v1/rooms/:id/join` | `{sessionToken, inviteToken, nickname, compatibility}` |
-| `POST /v1/rooms/join-by-code` | `{code, sessionToken, nickname, compatibility}`; code is in the JSON body, never the URL |
-| `GET /v1/rooms/:id/state` | Authenticated current projection and caller slot |
-| `POST /v1/rooms/:id/commands` | Authenticated `{version:1, seq, operation}` |
-| `POST /v1/rooms/:id/ticket` | Authenticated, one-use WebSocket ticket, 30-second TTL |
-| `GET /v1/rooms/:id/socket` | WebSocket upgrade, protocols `['bvn.v1', ticket]` |
-| `POST /v1/rooms/:id/ice` | Authenticated short-lived TURN REST credentials |
+| Method / path                 | Request / purpose                                                                                     |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `GET /health`                 | Service/protocol liveness, no credentials                                                             |
+| `POST /v1/rooms`              | `{createToken, sessionToken, inviteToken, nickname, compatibility}`; response adds short `inviteCode` |
+| `POST /v1/rooms/:id/join`     | `{sessionToken, inviteToken, nickname, compatibility}`                                                |
+| `POST /v1/rooms/join-by-code` | `{code, sessionToken, nickname, compatibility}`; code is in the JSON body, never the URL              |
+| `GET /v1/rooms/:id/state`     | Authenticated current projection and caller slot                                                      |
+| `POST /v1/rooms/:id/commands` | Authenticated `{version:1, seq, operation}`                                                           |
+| `POST /v1/rooms/:id/ticket`   | Authenticated, one-use WebSocket ticket, 30-second TTL                                                |
+| `GET /v1/rooms/:id/socket`    | WebSocket upgrade, protocols `['bvn.v1', ticket]`                                                     |
+| `POST /v1/rooms/:id/ice`      | Authenticated short-lived TURN REST credentials                                                       |
 
 Authenticated HTTP routes use `Authorization: Bearer <sessionToken>`. Browser
 WebSockets use the one-use ticket as the second subprotocol, never a URL query
@@ -121,25 +121,45 @@ Successful leave revokes the credential, so its retry returns unauthorized/close
 that also confirms it cannot mutate the room again. Idempotency data is bounded
 to one reply per seat and persists with the state, not raw signaling payloads.
 
-| Operation | Fields and authorization |
-|---|---|
-| `select` | `revision, choice:{fighter,helper}`; changes only caller's selection |
-| `configure` | `revision, stage, rules:{time,life}`; owner only |
-| `ready` | `revision, ready, profile:{id,inputDelay,predictionWindow}` |
-| `prepare` | `revision`; owner, both ready with identical profiles |
-| `loaded` | `epoch, initialHash`; each peer reports its initialized state |
-| `start_ack` | `epoch`; allowed after both initial hashes match |
-| `result` | `epoch, frame, hash, winner` (`0`, `1` or `null`) |
-| `abort` | `epoch`; ends without a winner |
-| `negotiate` | `epoch` (null in lobby); owner with an admitted peer |
-| `reinvite` | `inviteToken`; owner in lobby, replaces the invitation |
-| `leave` | Guest frees seat; owner closes room; active match has no winner |
-| `keepalive` | Explicit authenticated room activity |
+| Operation           | Fields and authorization                                                                               |
+| ------------------- | ------------------------------------------------------------------------------------------------------ |
+| `select`            | `revision, choice:{fighter,helper}`; changes only caller's selection                                   |
+| `configure`         | `revision, stage, rules:{time,life}`; owner only                                                       |
+| `configure_network` | `revision, profile:{id,inputDelay,predictionWindow}`; owner only                                       |
+| `ready`             | `revision, ready, profile:{id,inputDelay,predictionWindow}`; ready profile must equal the room profile |
+| `prepare`           | `revision`; owner, both ready with the authoritative room profile                                      |
+| `loaded`            | `epoch, initialHash`; each peer reports its initialized state                                          |
+| `start_ack`         | `epoch`; allowed after both initial hashes match                                                       |
+| `result`            | `epoch, frame, hash, winner` (`0`, `1` or `null`)                                                      |
+| `abort`             | `epoch`; ends without a winner                                                                         |
+| `negotiate`         | `epoch` (null in lobby); owner with an admitted peer                                                   |
+| `reinvite`          | `inviteToken`; owner in lobby, replaces the invitation                                                 |
+| `leave`             | Guest frees seat; owner closes room; active match has no winner                                        |
+| `keepalive`         | Explicit authenticated room activity                                                                   |
 
-Use `state.setupRevision` for the `revision` field; any selection/map/rule or
-membership change cancels both ready flags. `state.revision` orders room
-projections, including connection replacement and lifecycle changes. Ignore
-older projections on clients, including replies to retried old commands.
+Use `state.setupRevision` for the `revision` field. Every projection includes
+`state.networkProfile:{id,inputDelay,predictionWindow}`. New rooms default to
+`{id:"chrome-exp-d2-p6",inputDelay:2,predictionWindow:6}`. Older SQLite rows
+without this field project the same default; an already preparing or active
+match continues to use its stored `match.profile` until it ends.
+
+Only slot 0 may change the shared network profile while in the lobby, by sending
+`configure_network` with the current setup revision. IDs must be canonical
+`chrome-exp-dN-pN` or `chrome-exp-dN-pN-lan`, and N must agree with the bounded
+input-delay/prediction-window fields. The `-lan` suffix records the client's
+explicit LAN candidate policy; the room server does not choose ICE servers.
+Changing the profile invalidates both ready flags and the current negotiation;
+resubmitting the same profile preserves readiness. Character, map, rule and
+membership changes still invalidate readiness and negotiation but preserve the
+independent room network profile. `ready:true` must include the exact current
+room profile or is rejected as `network_profile_mismatch` without consuming the
+command sequence. `ready:false` clears only the caller's readiness. `prepare`
+rechecks that both stored ready profiles match the current room profile and
+copies that authority into `match.profile`.
+
+`state.revision` orders room projections, including connection replacement and
+lifecycle changes. Ignore older projections on clients, including replies to
+retried old commands.
 
 Rule IDs preserve existing configuration: `time` is 30/60/90/**100** (100 is the
 source infinity sentinel); `life` is 1–5 (100%–500%, mapping to `maxhp=life*1000`).

@@ -25,6 +25,7 @@ import {
   invalidate,
   member,
   projection,
+  DEFAULT_NETWORK_PROFILE,
   type State,
 } from "./state";
 import { normalizeInviteCode, validInviteCode } from "./invite_code";
@@ -181,6 +182,7 @@ export class Room extends DurableObject<Env> {
           members: [member(credential, input.nickname), null],
           stage: "现世",
           rules: { time: 90, life: 1 },
+          networkProfile: { ...DEFAULT_NETWORK_PROFILE },
           phase: "lobby",
           match: null,
           lastResult: null,
@@ -555,7 +557,11 @@ export class Room extends DurableObject<Env> {
       "turn_not_configured",
       503,
     );
-    requireThat(/^[a-f0-9]{32}$/.test(this.env.TURN_KEY_ID), "turn_misconfigured", 503);
+    requireThat(
+      /^[a-f0-9]{32}$/.test(this.env.TURN_KEY_ID),
+      "turn_misconfigured",
+      503,
+    );
     const ttl = 4 * 60 * 60;
     let response: Response;
     try {

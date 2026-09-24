@@ -3,9 +3,15 @@ extends "res://online_room_client.gd"
 var command_requests: Array[String] = []
 var admission_requests: Array[String] = []
 var fixture_state: Dictionary = {}
+var omit_network_profile := false
 
 
 func _request_json(method: int, path: String, body_text: String, authenticated: bool) -> Dictionary:
+	if method == HTTPClient.METHOD_GET and path.ends_with("/state") and authenticated:
+		var state := fixture_state.duplicate(true)
+		if omit_network_profile:
+			state.erase("networkProfile")
+		return {"ok": true, "value": {"slot": _slot, "state": state}}
 	if path == "/v1/rooms/join-by-code" or path == "/v1/rooms":
 		if method != HTTPClient.METHOD_POST or authenticated:
 			return {"ok": false, "error": "unexpected_request", "uncertain": false}

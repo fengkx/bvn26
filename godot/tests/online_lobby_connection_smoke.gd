@@ -181,6 +181,7 @@ class FakeRoomClient extends Node:
 			"revision": 1,
 			"setupRevision": 0,
 			"members": [{"choice": null}, {"choice": null}],
+			"networkProfile": {"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6},
 			"negotiation": negotiation,
 		}
 

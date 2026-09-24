@@ -29,6 +29,27 @@ func _run() -> void:
 	var state := _state(ROOM_ID, 7, [local_member, remote_member])
 	_expect(client._validate_room_state(state, ROOM_ID, 1, false), "valid room projection was rejected")
 	_expect(client._validate_state_reply({"slot": 1, "state": state}), "GET state response shape was rejected")
+	var legacy_state := state.duplicate(true)
+	legacy_state.erase("networkProfile")
+	_expect(client._room_state_reply_missing_network_profile({"slot": 1, "state": legacy_state}),
+		"room state without networkProfile did not require a server upgrade")
+	_expect(not client._validate_state_reply({"slot": 1, "state": legacy_state}),
+		"legacy room projection without authoritative networkProfile was accepted")
+	var legacy_client = FAULT_CLIENT_SCRIPT.new()
+	root.add_child(legacy_client)
+	legacy_client._base_url = "http://127.0.0.1:8787"
+	legacy_client._room_id = ROOM_ID
+	legacy_client._session_token = "L".repeat(43)
+	legacy_client._slot = 1
+	legacy_client.fixture_state = legacy_state
+	legacy_client.omit_network_profile = true
+	var upgrade_required: Dictionary = await legacy_client.refresh_state()
+	_expect(upgrade_required.get("error") == "server_upgrade_required",
+		"legacy service state did not produce the explicit server_upgrade_required error")
+	var malformed_network_profile := state.duplicate(true)
+	malformed_network_profile["networkProfile"] = {"id": "chrome-exp-d2-p6", "inputDelay": 2.5, "predictionWindow": 6}
+	_expect(not client._validate_room_state(malformed_network_profile, ROOM_ID, 1, false),
+		"fractional authoritative network profile was accepted")
 	var fresh_client = ROOM_CLIENT_SCRIPT.new()
 	fresh_client._slot = -1
 	_expect(fresh_client._validate_admission_reply({"roomId": ROOM_ID, "slot": 1, "state": state}), "join response was rejected before installing slot")
@@ -191,13 +212,14 @@ func _run() -> void:
 		"successful reinvite did not replace the old internal invitation token")
 
 	if failures.is_empty():
-		print("ONLINE_ROOM_CLIENT_SMOKE_OK state_validation=true cloudflare_ice=true ice_transport_chain=true string_urls_normalized=true turn_credentials_required=true monotonic_revision=true leave_projection=true exact_retry=true short_code_join=true create_code=true reinvite_retry=true")
+		print("ONLINE_ROOM_CLIENT_SMOKE_OK state_validation=true network_profile_validation=true server_upgrade_required=true cloudflare_ice=true ice_transport_chain=true string_urls_normalized=true turn_credentials_required=true monotonic_revision=true leave_projection=true exact_retry=true short_code_join=true create_code=true reinvite_retry=true")
 	else:
 		push_error("ONLINE_ROOM_CLIENT_SMOKE_FAILED " + "; ".join(failures))
 	client.queue_free()
 	fault_client.queue_free()
 	code_client.queue_free()
 	owner_client.queue_free()
+	legacy_client.queue_free()
 	fresh_client.queue_free()
 	peer_transport.queue_free()
 	quit(0 if failures.is_empty() else 1)
@@ -223,6 +245,7 @@ func _state(room_id: String, revision: int, members: Array) -> Dictionary:
 		"members": members,
 		"stage": "现世",
 		"rules": {"time": 90, "life": 1},
+		"networkProfile": {"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6},
 		"phase": "lobby",
 		"match": null,
 		"lastResult": null,
