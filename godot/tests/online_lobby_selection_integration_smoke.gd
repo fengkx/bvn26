@@ -78,6 +78,7 @@ class FakeSelectionRoomServer extends RefCounted:
 class FakeSelectionRoomClient extends OnlineRoomClient:
 	var server: FakeSelectionRoomServer
 	var slot := -1
+	var next_sequence := 0
 	var select_commands: Array[Dictionary] = []
 	var operations: Array[Dictionary] = []
 
@@ -93,7 +94,29 @@ class FakeSelectionRoomClient extends OnlineRoomClient:
 
 	func command(operation: Dictionary) -> Dictionary:
 		operations.append(operation.duplicate(true))
-		if str(operation.get("type", "")) != "select":
+		next_sequence += 1
+		var operation_type := str(operation.get("type", ""))
+		if operation_type == "configure_network":
+			if slot != 0 or int(operation.get("revision", -1)) != int(server.state.get("setupRevision", -2)):
+				return {"error": "stale_revision"}
+			var next_state: Dictionary = server.state.duplicate(true)
+			next_state["networkProfile"] = operation.get("profile", {}).duplicate(true)
+			next_state["revision"] = int(next_state.get("revision", 0)) + 1
+			next_state["setupRevision"] = int(next_state.get("setupRevision", 0)) + 1
+			var members: Array = next_state.get("members", []).duplicate(true)
+			for member_index in members.size():
+				if members[member_index] is Dictionary:
+					var member: Dictionary = members[member_index].duplicate(true)
+					member["ready"] = false
+					member["profile"] = null
+					members[member_index] = member
+			next_state["members"] = members
+			next_state["negotiation"] = null
+			server.state = next_state
+			server.command_order.append(slot)
+			server.publish_state_before_reply(slot)
+			return {"state": server.state.duplicate(true), "acceptedSeq": next_sequence}
+		if operation_type != "select":
 			return {"error": "unexpected_operation"}
 		select_commands.append(operation.duplicate(true))
 		server.command_order.append(slot)
@@ -115,7 +138,7 @@ class FakeSelectionRoomClient extends OnlineRoomClient:
 			else:
 				await server.guest_http_reply_released
 			server.waiting_slots.erase(slot)
-		return {"state": server.state.duplicate(true), "acceptedSeq": select_commands.size()}
+		return {"state": server.state.duplicate(true), "acceptedSeq": next_sequence}
 
 
 func _initialize() -> void:
@@ -155,8 +178,8 @@ func _run() -> void:
 	guest._room_connection_ready = true
 	host._slot = 0
 	guest._slot = 1
-	host._room_id = "fake-host-room"
-	guest._room_id = "fake-guest-room"
+	host._room_id = "fake-selection-room"
+	guest._room_id = "fake-selection-room"
 
 	var host_choice := {
 		"fighter": host._fighter_ids[0],
@@ -168,7 +191,7 @@ func _run() -> void:
 	}
 	var state := _room_state(host_choice, guest_choice, host._stage_ids[0])
 	for lobby in [host, guest]:
-		lobby._room_state = state.duplicate(true)
+		lobby.call("_accept_state", state)
 		lobby._show_room()
 		assert(not (host_game if lobby == host else guest_game).is_physics_processing(),
 			"Room view should pause the title menu before opening selector")
@@ -401,6 +424,7 @@ func _run() -> void:
 	host.call("_end_selection_session", false)
 	assert(not host._busy and not host._selection_commit_busy,
 		"Selection teardown did not restore the Lobby's prior busy state")
+	host._delay_choice.select(0)
 	host._on_profile_picker_changed(0)
 	assert(host._room_connection == null and not host._room_connection_ready,
 		"A connection-profile change retained the stale peer connection")
@@ -417,6 +441,7 @@ func _run() -> void:
 
 func _room_state(host_choice: Dictionary, guest_choice: Dictionary, stage_id: String) -> Dictionary:
 	return {
+		"id": "fake-selection-room",
 		"phase": "lobby",
 		"revision": 1,
 		"setupRevision": 1,
@@ -426,7 +451,7 @@ func _room_state(host_choice: Dictionary, guest_choice: Dictionary, stage_id: St
 		],
 		"stage": stage_id,
 		"rules": {"time": 90, "life": 1},
-		"networkProfile": {"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6},
+		"networkProfile": {"id": "chrome-exp-d1-p2-lan", "inputDelay": 1, "predictionWindow": 2},
 		"match": null,
 		"lastResult": null,
 		"negotiation": null,

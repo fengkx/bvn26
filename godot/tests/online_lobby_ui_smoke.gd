@@ -76,7 +76,7 @@ func _run() -> void:
 	var nickname_font: Font = lobby._nickname.get_theme_font("font")
 	assert(nickname_font.has_char(0x9F98), "Nickname LineEdit is missing the supported CJK fallback glyph 龘")
 	assert(lobby._endpoint.placeholder_text == "服务地址", "Service URL placeholder should not use development-only wording")
-	assert(lobby._lan_candidate_opt_in.text == "本机 / 同一局域网对战（双方开启，无需中转）")
+	assert(lobby._lan_candidate_opt_in.text == "本机 / 同一局域网对战（无需中转）")
 	assert(lobby._room_visibility_hint.text.contains("两个窗口并排") and lobby._room_visibility_hint.text.contains("保持可见"))
 	lobby._startup_busy = true
 	lobby._on_page_visibility_changed(false)
@@ -90,7 +90,7 @@ func _run() -> void:
 	var parsed_legacy: Dictionary = lobby._parse_invitation("%s.%s" % ["a".repeat(64), "b".repeat(43)])
 	assert(parsed_legacy.get("kind") == "legacy", "Legacy roomId.token invitation input stopped working")
 	lobby._show_error("ICE lookup failed: turn_not_configured")
-	assert(lobby._status.text == "服务未配置互联网中转。若双方在本机或同一局域网，请双方开启本机 / 同一局域网模式后重新准备；跨网络对战需先配置 TURN 服务。")
+	assert(lobby._status.text == "服务未配置互联网中转。若使用本机或同一局域网，请由房主开启对应模式并重新连接；跨网络对战需先配置 TURN 服务。")
 	lobby._slot = 0
 	lobby._room_id = "a".repeat(64)
 	lobby._invite_token = "b".repeat(43)
@@ -99,6 +99,7 @@ func _run() -> void:
 	var initial_helper := lobby._helper_ids[0]
 	var initial_stage := lobby._stage_ids[0]
 	var state := {
+		"id": lobby._room_id,
 		"phase": "lobby",
 		"revision": 1,
 		"setupRevision": 1,
@@ -215,7 +216,7 @@ func _test_cancel_startup_during_delayed_prepare(
 	var map_stage := str(lobby._stage_ids[0])
 	settled_state["stage"] = map_stage
 	settled_state["setupRevision"] = 1
-	var shared_profile := {"id": "chrome-exp-d0-p2", "inputDelay": 0, "predictionWindow": 2}
+	var shared_profile := {"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6}
 	var members: Array = settled_state.get("members", []).duplicate(true)
 	var owner_member: Dictionary = members[0].duplicate(true)
 	owner_member["ready"] = true

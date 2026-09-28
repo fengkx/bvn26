@@ -89,7 +89,11 @@ class FakeMapServer extends RefCounted:
 				if not _valid_network_profile(requested_profile):
 					return {"error": "network_profile_invalid"}
 				var canonical_profile := wire_copy(requested_profile) as Dictionary
-				if canonical_profile != state.get("networkProfile", {}):
+				var hold_response := hold_next_network_response
+				hold_next_network_response = false
+				if hold_response:
+					network_response_held = true
+				if not _same_network_profile(canonical_profile, state.get("networkProfile", {})):
 					state["networkProfile"] = canonical_profile
 					state["setupRevision"] = int(state.get("setupRevision", 0)) + 1
 					state["revision"] = int(state.get("revision", 0)) + 1
@@ -97,9 +101,7 @@ class FakeMapServer extends RefCounted:
 					if push_before_command_reply:
 						publish_state()
 						network_configure_pushed.emit(slot, wire_state())
-				if hold_next_network_response:
-					hold_next_network_response = false
-					network_response_held = true
+				if hold_response:
 					await network_configure_response_released
 					network_response_held = false
 				return {"state": wire_state(), "acceptedSeq": command_types.size()}
@@ -125,7 +127,7 @@ class FakeMapServer extends RefCounted:
 			"ready":
 				var ready_profile: Dictionary = operation.get("profile", {})
 				if bool(operation.get("ready", false)) \
-					and ready_profile != state.get("networkProfile", {}):
+					and not _same_network_profile(ready_profile, state.get("networkProfile", {})):
 					return {"error": "network_profile_mismatch"}
 				var members: Array = state.get("members", []).duplicate(true)
 				var member: Dictionary = members[slot].duplicate(true)
@@ -154,14 +156,31 @@ class FakeMapServer extends RefCounted:
 			return false
 		var delay_value: Variant = profile.get("inputDelay")
 		var prediction_value: Variant = profile.get("predictionWindow")
-		if typeof(delay_value) != TYPE_INT or typeof(prediction_value) != TYPE_INT:
+		if typeof(delay_value) not in [TYPE_INT, TYPE_FLOAT] \
+			or typeof(prediction_value) not in [TYPE_INT, TYPE_FLOAT]:
 			return false
 		var delay := int(delay_value)
 		var prediction := int(prediction_value)
-		if delay < 0 or delay > 8 or prediction < 0 or prediction > 15:
+		if float(delay_value) != float(delay) or float(prediction_value) != float(prediction) \
+			or delay < 0 or delay > 8 or prediction < 0 or prediction > 15:
 			return false
 		var suffix := "-lan" if str(profile.get("id", "")).ends_with("-lan") else ""
 		return str(profile.get("id", "")) == "chrome-exp-d%d-p%d%s" % [delay, prediction, suffix]
+
+	func _same_network_profile(left: Variant, right: Variant) -> bool:
+		var left_canonical := _canonical_network_profile(left)
+		var right_canonical := _canonical_network_profile(right)
+		return not left_canonical.is_empty() and left_canonical == right_canonical
+
+	func _canonical_network_profile(value: Variant) -> Dictionary:
+		if not value is Dictionary or not _valid_network_profile(value):
+			return {}
+		var profile: Dictionary = value
+		return {
+			"id": str(profile.get("id", "")),
+			"inputDelay": int(profile.get("inputDelay", -1)),
+			"predictionWindow": int(profile.get("predictionWindow", -1)),
+		}
 
 	func _clear_ready_profiles_and_negotiation() -> void:
 		var members: Array = state.get("members", []).duplicate(true)
@@ -290,12 +309,20 @@ func _run() -> void:
 	host.call_deferred("_on_profile_picker_changed", 0)
 	var pushed: Array = await server.network_configure_pushed
 	assert(server.network_response_held, "configure_network reply was not held after the room push")
-	assert(pushed[0] == 0 and pushed[1].networkProfile == {
+	assert(pushed[0] == 0 and server._same_network_profile(pushed[1].networkProfile, {
 		"id": "chrome-exp-d0-p6", "inputDelay": 0, "predictionWindow": 6,
-	}, "Host profile change did not commit the selected d0/p6 value")
+	}), "Host profile change did not commit the selected d0/p6 value")
+	assert(server._same_network_profile(
+		{"id": "chrome-exp-d2-p6", "inputDelay": 2.0, "predictionWindow": 6.0},
+		{"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6}
+	), "Integral JSON profile numbers were not compared by their room values")
+	assert(not server._same_network_profile(
+		{"id": "chrome-exp-d2-p6", "inputDelay": 2.5, "predictionWindow": 6.0},
+		{"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6}
+	), "Fractional JSON profile values were accepted as canonical")
 	for _frame in 2:
 		await process_frame
-	assert(guest._room_state.networkProfile == pushed[1].networkProfile,
+	assert(server._same_network_profile(guest._room_state.networkProfile, pushed[1].networkProfile),
 		"Guest did not adopt the authoritative profile before the host HTTP response")
 	assert(guest._selected_number(guest._delay_choice) == 0
 		and guest._selected_number(guest._prediction_choice) == 6,
@@ -305,7 +332,7 @@ func _run() -> void:
 	assert(host._busy and host._delay_choice.disabled,
 		"Owner controls stayed editable while configure_network was in flight")
 	assert(not host._room_connection_ready and not guest._room_connection_ready
-		and host_connection.connection_state == "closed" and guest_connection.connection_state == "closed",
+		and host._room_connection == null and guest._room_connection == null,
 		"Changing network settings kept a connection negotiated for the old profile")
 	assert(server.state.members[0].profile == null and server.state.members[1].profile == null
 		and not server.state.members[0].ready and not server.state.members[1].ready
@@ -317,7 +344,7 @@ func _run() -> void:
 			break
 		await process_frame
 	assert(not host._busy, "Owner did not settle profile update after the HTTP response")
-	assert(host._room_state.networkProfile == pushed[1].networkProfile,
+	assert(server._same_network_profile(host._room_state.networkProfile, pushed[1].networkProfile),
 		"An older HTTP reply replaced the authoritative state push")
 	assert(host._dirty and host._rules_draft == {"time": 60, "life": 2}
 		and host._selected_number(host._time_choice) == 60
@@ -332,7 +359,7 @@ func _run() -> void:
 	guest._lan_candidate_opt_in.set_pressed_no_signal(true)
 	await guest._on_profile_option_toggled(true)
 	assert(server.configure_network_requests.size() == guest_request_count
-		and guest._room_state.networkProfile == pushed[1].networkProfile
+		and server._same_network_profile(guest._room_state.networkProfile, pushed[1].networkProfile)
 		and guest._selected_number(guest._delay_choice) == 0
 		and not guest._lan_candidate_opt_in.button_pressed,
 		"Guest settings handler changed the authoritative room network profile")
@@ -352,9 +379,9 @@ func _run() -> void:
 	var committed_network_profile: Dictionary = {
 		"id": "chrome-exp-d0-p6-lan", "inputDelay": 0, "predictionWindow": 6,
 	}
-	assert(server.state.networkProfile == committed_network_profile,
+	assert(server._same_network_profile(server.state.networkProfile, committed_network_profile),
 		"LAN choice did not become the room's canonical network profile")
-	assert(guest._room_state.networkProfile == committed_network_profile,
+	assert(server._same_network_profile(guest._room_state.networkProfile, committed_network_profile),
 		"Guest did not adopt the retried LAN profile")
 	assert(host._dirty and host._rules_draft == {"time": 60, "life": 2}
 		and host._selected_number(host._time_choice) == 60
@@ -483,7 +510,7 @@ func _run() -> void:
 	assert(not host._map_active and not guest._map_active,
 		"The configure / map_ack / map_done handshake did not return both players to the room")
 	assert(server.state.stage == host_stage, "The selected map was not committed to service state")
-	assert(server.state.networkProfile == map_baseline_network_profile,
+	assert(server._same_network_profile(server.state.networkProfile, map_baseline_network_profile),
 		"Map configuration overwrote the room's network profile")
 	assert(typeof(server.state.rules.time) == TYPE_FLOAT and typeof(server.state.rules.life) == TYPE_FLOAT,
 		"The fake service did not preserve the JSON number representation for room rules")
@@ -540,7 +567,8 @@ func _run() -> void:
 	for lobby in [host, guest]:
 		lobby.queue_free()
 	for node in [host_game, guest_game, host_connection, guest_connection, host_connection_after_change, guest_connection_after_change]:
-		node.queue_free()
+		if is_instance_valid(node):
+			node.queue_free()
 	await process_frame
 	quit(0)
 
@@ -583,6 +611,7 @@ func _install_client(lobby: OnlineLobby, server: FakeMapServer, slot: int) -> Fa
 
 func _room_state(host_choice: Dictionary, guest_choice: Dictionary, stage_id: String) -> Dictionary:
 	return {
+		"id": "fixture-room",
 		"phase": "lobby",
 		"revision": 1,
 		"setupRevision": 1,
