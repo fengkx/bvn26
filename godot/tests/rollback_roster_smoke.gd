@@ -4,6 +4,10 @@ const Battle = preload("res://rollback_battle.gd")
 const Inputs = preload("res://rollback_test_session.gd")
 const State = preload("res://simulation_state.gd")
 
+func _decode_graph(graph: Variant) -> Array:
+	var graph_bytes: PackedByteArray = graph.hex_decode() if graph is String else graph
+	return bytes_to_var(graph_bytes)
+
 func _initialize() -> void:
 	_run.call_deferred()
 
@@ -63,8 +67,8 @@ func _run() -> void:
 			var restored: Dictionary = battle.save_state()
 			var difference := State.first_difference(checkpoints[last], restored)
 			if not difference.is_empty():
-				FileAccess.open("/tmp/roster-expected.json", FileAccess.WRITE).store_string(JSON.stringify(bytes_to_var(checkpoints[last].owners.battle.owners.graph.hex_decode()), "  "))
-				FileAccess.open("/tmp/roster-actual.json", FileAccess.WRITE).store_string(JSON.stringify(bytes_to_var(restored.owners.battle.owners.graph.hex_decode()), "  "))
+				FileAccess.open("/tmp/roster-expected.json", FileAccess.WRITE).store_string(JSON.stringify(_decode_graph(checkpoints[last].owners.battle.owners.graph), "  "))
+				FileAccess.open("/tmp/roster-actual.json", FileAccess.WRITE).store_string(JSON.stringify(_decode_graph(restored.owners.battle.owners.graph), "  "))
 			assert(difference.is_empty(), "%s %d..%d: %s" % [names[index], first, last, difference])
 		print("ROLLBACK_ROSTER_CASE_OK fighter=%s helper=%s map=%s checkpoints=%d" % [names[index], helpers[index % helpers.size()], stages[index % stages.size()].id, boundaries.size()])
 		preload("res://tests/rollback_fixture.gd").dispose(game, battle)

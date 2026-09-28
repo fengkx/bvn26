@@ -3,6 +3,10 @@ extends SceneTree
 const Coordinator = preload("res://online_match.gd")
 const State = preload("res://simulation_state.gd")
 
+func _decode_graph(graph: Variant) -> Array:
+	var graph_bytes: PackedByteArray = graph.hex_decode() if graph is String else graph
+	return bytes_to_var(graph_bytes)
+
 class Dependency extends Node:
 	signal state_changed(state: Dictionary)
 	signal socket_state_changed(connected: bool)
@@ -334,8 +338,8 @@ func _run() -> void:
 	assert(first.session.render_quality != second.session.render_quality)
 	var difference := State.first_difference(first_state, second_state)
 	if not difference.is_empty():
-		var left_graph: Array = bytes_to_var(first_state.owners.battle.owners.battle.owners.graph.hex_decode())
-		var right_graph: Array = bytes_to_var(second_state.owners.battle.owners.battle.owners.graph.hex_decode())
+		var left_graph: Array = _decode_graph(first_state.owners.battle.owners.battle.owners.graph)
+		var right_graph: Array = _decode_graph(second_state.owners.battle.owners.battle.owners.graph)
 		var graph_difference := State.first_difference(left_graph, right_graph)
 		print("ONLINE_MATCH_PAIR_INITIAL_MISMATCH state=%s graph=%s" % [difference, graph_difference])
 		var record_index := -1

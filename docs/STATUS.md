@@ -47,6 +47,14 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
   [客户端匹配证据](../evidence/online/client-match/README.md)和
   [网络客户端证据](../evidence/online/client-network/README.md)。
 
+- 2026-09-28 检查点编码局部优化：数组项、字典键/值与对象普通字段中的 nil/bool/int/
+  finite float/String 直接走现有值路径，避免重复调用 `_encode()`；StringName 与非有限浮点
+  保留原编码。331 帧逐图原始字节对照（只对旧 tape 的字典 pair 布局作显式展开）、330 帧
+  迟到输入完整状态对照、检查点篡改边界、标量边界和不可变字段 warm-cache 回归通过。
+  这只证明状态未变和结构性调用减少；真实双端日志构建身份未知，未证明帧率改善。M4-03
+  性能预算、稳定计时和真实双端 30 Hz 验收仍 pending；记录见
+  [标量编码候选证据](../evidence/online/performance-30hz/checkpoint-scalar-inline-r4-2026-09-28.md)。
+
 - 2026-09-10 电脑鸣人浮空受击脱身修复：从原版角色配置编译 `isNaruto`，
   移除 P1/P2 的固定阵营；召唤保留 `hurtSkling` 提前返回，避免误叫援助和重复扣气。
   原版两角色受控序列、连续脱身回归、本地 Web 及既有三份电脑对战轨迹通过当前检查，

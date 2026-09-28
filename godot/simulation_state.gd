@@ -5,6 +5,7 @@ extends RefCounted
 const FORMAT := "bvn-simulation-state"
 const VERSION := 1
 const MAX_DEPTH := 64
+const BINARY_GRAPH_BUILD := "battle-local-pba-dict-flat-v2"
 
 
 static func validate_value(value: Variant, path: String = "$", depth: int = 0) -> String:
@@ -21,6 +22,10 @@ static func validate_value(value: Variant, path: String = "$", depth: int = 0) -
 				if not problem.is_empty():
 					return problem
 		TYPE_DICTIONARY:
+			# Local rollback checkpoints keep their complete Variant graph bytes. This
+			# one envelope is the only place packed bytes are accepted as state.
+			if _is_binary_graph_snapshot(value):
+				return ""
 			for key in value:
 				if not key is String:
 					return path + ": state keys must be strings"
@@ -49,7 +54,14 @@ static func canonical(value: Variant) -> Variant:
 
 
 static func pack_state(build: String, frame: int, owners: Dictionary) -> Dictionary:
-	var problem := validate_value(owners)
+	var problem := ""
+	if build == BINARY_GRAPH_BUILD and owners.size() == 1 and owners.get("graph") is PackedByteArray:
+		for key in owners:
+			if not key is String:
+				problem = "state keys must be strings"
+				break
+	else:
+		problem = validate_value(owners)
 	if not problem.is_empty() or build.is_empty() or frame < 0:
 		return {"error": problem if not problem.is_empty() else "Invalid build/frame"}
 	# Variant bytes preserve signed 64-bit RNG state and distinguish null/false.
@@ -61,7 +73,7 @@ static func validate_snapshot(snapshot: Variant, build: String, owner_names: Arr
 	var problem := validate_value(snapshot)
 	if not problem.is_empty():
 		return problem
-	if not snapshot is Dictionary or snapshot.get("format") != FORMAT or snapshot.get("version") != VERSION:
+	if not snapshot is Dictionary or snapshot.get("format") != FORMAT or not snapshot.get("version") is int or snapshot.get("version") != VERSION:
 		return "Unsupported simulation state format/version"
 	if snapshot.get("build") != build or not snapshot.get("frame") is int or snapshot.frame < 0:
 		return "Incompatible build or frame"
@@ -80,6 +92,15 @@ static func fingerprint(snapshot: Dictionary) -> String:
 	context.start(HashingContext.HASH_SHA256)
 	context.update(var_to_bytes(canonical(snapshot)))
 	return context.finish().hex_encode()
+
+
+static func _is_binary_graph_snapshot(value: Dictionary) -> bool:
+	if value.size() != 5 or value.get("format") != FORMAT or not value.get("version") is int or value.get("version") != VERSION:
+		return false
+	if value.get("build") != BINARY_GRAPH_BUILD or not value.get("frame") is int or value.frame < 0:
+		return false
+	var owners: Variant = value.get("owners")
+	return owners is Dictionary and owners.size() == 1 and owners.get("graph") is PackedByteArray
 
 
 static func first_difference(left: Variant, right: Variant, path: String = "$") -> String:

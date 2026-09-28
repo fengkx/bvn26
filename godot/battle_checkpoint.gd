@@ -53,6 +53,8 @@ const FIELD_MODE_HUD_SPEC := 4
 const FIELD_MODE_KO_IMMUTABLE := 8
 const FIELD_MODE_HUD_IMMUTABLE := 16
 const FIELD_MODE_SENSES_IMMUTABLE := 32
+# Keep caller-side scalar bypasses identical to _encode's value-only fast path.
+const DIRECT_SCALAR_BUILTINS := [TYPE_NIL, TYPE_BOOL, TYPE_INT, TYPE_STRING]
 var error := ""
 var _game: Node
 var _records: Array = []
@@ -114,7 +116,9 @@ func save_state() -> Dictionary:
 		return {"error": error}
 	profile.encode_us += Time.get_ticks_usec() - started
 	started = Time.get_ticks_usec()
-	var snapshot := State.pack_state("battle-local-v1", _game.physics_tick, {"graph": var_to_bytes(_records).hex_encode()})
+	var snapshot := State.pack_state(State.BINARY_GRAPH_BUILD, _game.physics_tick, {"graph": var_to_bytes(_records)})
+	if snapshot.has("error"):
+		return snapshot
 	var key := _snapshot_key(snapshot)
 	var nodes := {}
 	for id in _values.size():
@@ -134,10 +138,10 @@ func save_state() -> Dictionary:
 	return snapshot
 
 func validate_state(snapshot: Dictionary) -> String:
-	var problem: String = State.validate_snapshot(snapshot, "battle-local-v1", ["graph"])
+	var problem: String = State.validate_snapshot(snapshot, State.BINARY_GRAPH_BUILD, ["graph"])
 	if not problem.is_empty():
 		return problem
-	if not snapshot.owners.graph is String:
+	if not snapshot.owners.graph is PackedByteArray:
 		return "Invalid battle graph encoding"
 	var key := _snapshot_key(snapshot)
 	if not _snapshots.has(key) or _snapshot_graphs[key] != snapshot.owners.graph:
@@ -153,12 +157,15 @@ func load_state(snapshot: Dictionary) -> String:
 	var problem := validate_state(snapshot)
 	if not problem.is_empty():
 		return problem
+	var records_value: Variant = bytes_to_var(snapshot.owners.graph)
+	problem = _validate_graph_records(records_value)
+	if not problem.is_empty(): return problem
+	var records: Array = records_value
 	# KO clip dictionaries own their dispatch objects, which in turn reference
 	# the dictionaries. Break the outgoing graph before replacing its roots.
 	for timeline in [_game.ko_timeline, _game.timeout_timeline]:
 		if timeline != null: timeline.unbind_registry()
 	_immutable_fields.clear()
-	var records: Array = bytes_to_var(snapshot.owners.graph.hex_decode())
 	var nodes: Dictionary = _snapshots[_snapshot_key(snapshot)]
 	_restored = []
 	for id in records.size():
@@ -193,9 +200,11 @@ func load_state(snapshot: Dictionary) -> String:
 		var record: Dictionary = records[id]
 		if record.kind in ["array", "dictionary"]:
 			_restored[id].clear()
-			for entry in record.entries:
-				if record.kind == "array": _restored[id].append(_decode(entry))
-				else: _restored[id][_decode(entry[0])] = _decode(entry[1])
+			if record.kind == "array":
+				for entry in record.entries: _restored[id].append(_decode(entry))
+			else:
+				for entry_index in range(0, record.entries.size(), 2):
+					_restored[id][_decode(record.entries[entry_index])] = _decode(record.entries[entry_index + 1])
 	for id in records.size():
 		var record: Dictionary = records[id]
 		var target: Variant = _restored[id]
@@ -274,7 +283,7 @@ func _encode(value: Variant) -> Variant:
 	if value is GameSession:
 		_constants["external:session"] = value
 		return {"constant": "external:session"}
-	if typeof(value) in [TYPE_NIL, TYPE_BOOL, TYPE_INT, TYPE_STRING] or (value is float and is_finite(value)):
+	if typeof(value) in DIRECT_SCALAR_BUILTINS or (value is float and is_finite(value)):
 		return value
 	if value is Callable:
 		if value.is_null(): return {"empty_callable": true}
@@ -307,9 +316,13 @@ func _encode(value: Variant) -> Variant:
 		_records.append(record)
 		_values.append(value)
 		if value is Array:
-			for entry in value: record.entries.append(_encode(entry))
+			for entry in value:
+				record.entries.append(entry if typeof(entry) in DIRECT_SCALAR_BUILTINS or (entry is float and is_finite(entry)) else _encode(entry))
 		else:
-			for key in value: record.entries.append([_encode(key), _encode(value[key])])
+			for key in value:
+				record.entries.append(key if typeof(key) in DIRECT_SCALAR_BUILTINS or (key is float and is_finite(key)) else _encode(key))
+				var item: Variant = value[key]
+				record.entries.append(item if typeof(item) in DIRECT_SCALAR_BUILTINS or (item is float and is_finite(item)) else _encode(item))
 		return {"ref": id}
 	if value is Object:
 		if not is_instance_valid(value): return null
@@ -370,7 +383,7 @@ func _encode(value: Variant) -> Variant:
 						instance_fields[field] = [contents, _constant(contents)]
 					record.fields[field] = {"constant": instance_fields[field][1]}
 				else:
-					record.fields[field] = _encode(contents)
+					record.fields[field] = contents if typeof(contents) in DIRECT_SCALAR_BUILTINS or (contents is float and is_finite(contents)) else _encode(contents)
 			var signal_names: Array
 			if _script_signal_names.has(script):
 				signal_names = _script_signal_names[script]
@@ -412,7 +425,7 @@ func _encode(value: Variant) -> Variant:
 		error = "Non-value native handle in checkpoint"
 		return null
 	# Native scalar types (including packed arrays) use Godot's value-only codec.
-	if typeof(value) in [TYPE_NIL, TYPE_BOOL, TYPE_INT, TYPE_STRING] or (value is float and is_finite(value)):
+	if typeof(value) in DIRECT_SCALAR_BUILTINS or (value is float and is_finite(value)):
 		return value
 	return {"value": var_to_bytes(value).hex_encode()}
 
@@ -427,6 +440,16 @@ func _decode(value: Variant) -> Variant:
 		var callback := Callable(_decode(value.callable), value.method).bindv(_decode(value.args))
 		return callback.unbind(value.unbound) if value.unbound > 0 else callback
 	return null
+
+func _validate_graph_records(value: Variant) -> String:
+	if not value is Array: return "Invalid battle graph records"
+	for record in value:
+		if not record is Dictionary: return "Invalid battle graph record"
+		if record.get("kind") == "dictionary":
+			var entries: Variant = record.get("entries")
+			if not entries is Array or entries.size() % 2 != 0:
+				return "Invalid dictionary graph entries"
+	return ""
 
 func _build_field_descriptors(value: Object) -> Array:
 	var descriptors: Array = []
@@ -574,4 +597,4 @@ func _register_placements(timeline: KoTimeline) -> void:
 				_placements[bucket].append([placement, key])
 
 func _snapshot_key(snapshot: Dictionary) -> String:
-	return "%d:%d" % [snapshot.frame, snapshot.owners.graph.hash()]
+	return "%d:%d" % [snapshot.frame, hash(snapshot.owners.graph)]

@@ -11,13 +11,28 @@ func _run() -> void:
 	var battle: RefCounted = fixture.battle
 	var initial: Dictionary = battle.save_state()
 	assert(not initial.has("error"), str(initial))
-	for corruption in ["frame", "build", "graph", "graph_type"]:
+	var local_snapshot: Dictionary = initial.owners.battle
+	var graph: PackedByteArray = local_snapshot.owners.graph
+	assert(State.validate_value({"graph": graph}) != "", "Packed bytes escaped their checkpoint contract")
+	assert(State.validate_value(local_snapshot).is_empty(), "Binary graph checkpoint envelope was rejected")
+	assert(State.fingerprint(initial) != "", "Checkpoint bytes were not fingerprinted")
+	var foreign_fixture := Fixture.create(self, ["日番谷", "恋次"], ["鼬", "魂"], "流魂街")
+	assert(not foreign_fixture.battle.validate_state(initial).is_empty(), "Foreign battle checkpoint was accepted")
+	Fixture.dispose(foreign_fixture.game, foreign_fixture.battle)
+	await process_frame
+	for corruption in ["frame", "build", "graph_byte", "graph_length", "graph_type", "version_type"]:
 		var broken := initial.duplicate(true)
 		match corruption:
 			"frame": broken.frame += 1
 			"build": broken.build = "other-build"
-			"graph": broken.owners.battle.owners.graph += "00"
+			"graph_byte": broken.owners.battle.owners.graph[0] ^= 1
+			"graph_length": broken.owners.battle.owners.graph.append(0)
 			"graph_type": broken.owners.battle.owners.graph = null
+			"version_type": broken.owners.battle.version = float(State.VERSION)
+		if corruption in ["graph_byte", "graph_length"]:
+			assert(State.first_difference(initial, broken) != "", "Graph tampering was not visible")
+			assert(State.fingerprint(initial) != State.fingerprint(broken), "Graph bytes were omitted from fingerprint")
+			assert(local_snapshot.owners.graph == graph, "Packed byte copy-on-write changed the retained graph")
 		assert(not battle.load_state(broken).is_empty())
 		assert(State.first_difference(initial, battle.save_state()).is_empty())
 	var scale_before: Vector2 = game.ichigo.scale
@@ -69,7 +84,12 @@ func _run() -> void:
 	assert(game.naruto._start_sound_player({}, sound_file, true, "nested:A"))
 	assert(battle.checkpoint.published_sounds == published + 2)
 	assert(battle.checkpoint.suppressed_sounds == suppressed + 1)
+	var expired_key: String = battle.checkpoint._snapshot_key(initial.owners.battle)
+	battle.retain_states([frozen])
+	assert(not battle.checkpoint._snapshots.has(expired_key), "Expired node retention was not released")
+	assert(not battle.checkpoint._snapshot_graphs.has(expired_key), "Expired graph retention was not released")
+	assert(not battle.load_state(initial).is_empty(), "Expired checkpoint was accepted")
 	Fixture.dispose(game, battle)
 	await process_frame
-	print("BATTLE_CHECKPOINT_SMOKE_OK rejects=4 restores_negative_scale_rng_health_shadow_timeout=true")
+	print("BATTLE_CHECKPOINT_SMOKE_OK rejects=frame_build_graph_byte_graph_length_graph_type_version_foreign_expired cow=true raw_bytes=true")
 	quit()

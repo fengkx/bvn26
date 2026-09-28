@@ -58,8 +58,9 @@ func _run() -> void:
 			_fixture_cleanup(output, game, battle)
 			_fail(str(snapshot.error))
 			return
-		var graph: String = snapshot.owners.battle.owners.graph
-		output.store_string("%d:%d:%s\n" % [frame, graph.length(), graph])
+		var graph: Variant = snapshot.owners.battle.owners.graph
+		var graph_bytes: PackedByteArray = graph.hex_decode() if graph is String else graph
+		output.store_string("%d:%d:%s\n" % [frame, graph_bytes.size(), graph_bytes.hex_encode()])
 	output.flush()
 	output.close()
 	Fixture.dispose(game, battle)
