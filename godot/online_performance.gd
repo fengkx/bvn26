@@ -6,6 +6,10 @@ const SAMPLE_LIMIT := 120
 const WAIT_REASONS := ["clock", "input", "control", "confirmation", "paused", "recovery"]
 const WORK_KINDS := ["coordinator_tick", "tick_interval", "simulation_step", "input_receive", "correction"]
 const CHECKPOINT_COUNTERS := ["saves", "encodeUs", "packUs", "retainsUs"]
+const ROLLBACK_COUNTERS := ["advance_count", "advance_us", "save_count", "save_us",
+	"validate_count", "validate_us", "copy_count", "copy_us", "load_count", "load_us",
+	"replay_advance_count", "replay_advance_us", "replay_save_count", "saves_skipped_count",
+	"rebuild_count", "rebuild_us"]
 
 var active := false
 var _match_started_ms := -1
@@ -23,6 +27,8 @@ var _page_visible := true
 var _hidden_accounted_until_ms := -1
 var _window_work: Dictionary = {}
 var _match_work: Dictionary = {}
+var _window_sync: Dictionary = {}
+var _match_sync: Dictionary = {}
 var _window_wait_ms: Dictionary = {}
 var _match_wait_ms: Dictionary = {}
 var _window_wait_count: Dictionary = {}
@@ -34,9 +40,11 @@ var _match_hidden_ms := 0
 var _window_hidden_count := 0
 var _match_hidden_count := 0
 var _checkpoint_previous: Dictionary = {}
+var _rollback_previous: Dictionary = {}
 
 
-func start(now_ms: int, frontier: int, confirmed: int, page_visible: bool, checkpoint_profile: Dictionary) -> void:
+func start(now_ms: int, frontier: int, confirmed: int, page_visible: bool,
+		checkpoint_profile: Dictionary, rollback_profile: Dictionary = {}) -> void:
 	active = true
 	_match_started_ms = now_ms
 	_window_started_ms = now_ms
@@ -62,7 +70,10 @@ func start(now_ms: int, frontier: int, confirmed: int, page_visible: bool, check
 	_match_wait_count = _empty_wait_values()
 	_window_work = _empty_work_values(true)
 	_match_work = _empty_work_values(false)
+	_window_sync = _empty_sync_values(true)
+	_match_sync = _empty_sync_values(false)
 	_checkpoint_previous = _normalized_checkpoint_totals(checkpoint_profile)
+	_rollback_previous = _normalized_rollback_totals(rollback_profile)
 
 
 func begin_tick(now_usec: int, frontier: int) -> void:
@@ -103,6 +114,48 @@ func record_input_receive(elapsed_usec: int, correction_count: int, replayed_fra
 	_match_work.replayedFrames += maxi(0, replayed_frames)
 
 
+func record_sync_tick(remote_message_count: int, correction_count: int,
+		frontier: int, remote_frontier: Variant) -> void:
+	if not active:
+		return
+	_window_sync.tickCount += 1
+	_match_sync.tickCount += 1
+	_window_sync.remoteMessages += maxi(0, remote_message_count)
+	_match_sync.remoteMessages += maxi(0, remote_message_count)
+	_window_sync.corrections += maxi(0, correction_count)
+	_match_sync.corrections += maxi(0, correction_count)
+	_record_sync_sample(_window_sync.remoteMessagesPerTick, maxi(0, remote_message_count))
+	_record_sync_sample(_match_sync.remoteMessagesPerTick, maxi(0, remote_message_count))
+	_record_sync_sample(_window_sync.correctionsPerTick, maxi(0, correction_count))
+	_record_sync_sample(_match_sync.correctionsPerTick, maxi(0, correction_count))
+	if remote_frontier is int or remote_frontier is float:
+		var advantage := frontier - int(remote_frontier)
+		_record_sync_sample(_window_sync.frameAdvantage, advantage)
+		_record_sync_sample(_match_sync.frameAdvantage, advantage)
+
+
+func record_transport_drain(messages_delivered: int, correction_count: int) -> void:
+	if not active:
+		return
+	_window_sync.drainCount += 1
+	_match_sync.drainCount += 1
+	_window_sync.drainMessages += maxi(0, messages_delivered)
+	_match_sync.drainMessages += maxi(0, messages_delivered)
+	_window_sync.drainCorrections += maxi(0, correction_count)
+	_match_sync.drainCorrections += maxi(0, correction_count)
+	_record_sync_sample(_window_sync.messagesPerDrain, maxi(0, messages_delivered))
+	_record_sync_sample(_match_sync.messagesPerDrain, maxi(0, messages_delivered))
+	_record_sync_sample(_window_sync.correctionsPerDrain, maxi(0, correction_count))
+	_record_sync_sample(_match_sync.correctionsPerDrain, maxi(0, correction_count))
+
+
+func record_input_arrival_lead(frame_lead: int) -> void:
+	if not active:
+		return
+	_record_sync_sample(_window_sync.inputArrivalLead, frame_lead)
+	_record_sync_sample(_match_sync.inputArrivalLead, frame_lead)
+
+
 func set_wait(reason: String, now_ms: int) -> void:
 	if not active:
 		return
@@ -135,9 +188,10 @@ func summary_due(now_ms: int) -> bool:
 
 
 func collect_summary(now_ms: int, now_usec: int, frontier: int, confirmed: int,
-		context: Dictionary, checkpoint_profile: Dictionary, final: bool = false) -> Dictionary:
+		context: Dictionary, checkpoint_profile: Dictionary,
+		rollback_profile: Dictionary = {}, final: bool = false) -> Dictionary:
 	if not active:
-		return {"schemaVersion": 1, "available": false, "reason": "match_not_started"}
+		return {"schemaVersion": 2, "available": false, "reason": "match_not_started"}
 	finish_tick(now_usec, frontier)
 	_account_wait(now_ms)
 	_account_hidden(now_ms)
@@ -147,7 +201,7 @@ func collect_summary(now_ms: int, now_usec: int, frontier: int, confirmed: int,
 	var match_frontier_delta := frontier - _match_frontier
 	var confirmed_delta := confirmed - _window_confirmed
 	var summary := {
-		"schemaVersion": 1,
+		"schemaVersion": 2,
 		"available": true,
 		"final": final,
 		"windowMs": elapsed_ms,
@@ -211,6 +265,8 @@ func collect_summary(now_ms: int, now_usec: int, frontier: int, confirmed: int,
 		"paused": bool(context.get("paused", false)),
 		"currentWait": _current_wait,
 		"checkpoint": _checkpoint_summary(checkpoint_profile),
+		"rollbackWork": _rollback_work_summary(rollback_profile),
+		"sync": _sync_summary(_window_sync),
 		"network": {"rttAvailable": false, "rttMs": null,
 			"rttReason": "peer_transport_does_not_expose_reliable_rtt_stats"},
 		"profile": context.get("profile", {}).duplicate(true) if context.get("profile", {}) is Dictionary else {},
@@ -225,6 +281,7 @@ func collect_summary(now_ms: int, now_usec: int, frontier: int, confirmed: int,
 	_window_wait_ms = _empty_wait_values()
 	_window_wait_count = _empty_wait_values()
 	_window_work = _empty_work_values(true)
+	_window_sync = _empty_sync_values(true)
 	_last_summary_ms = now_ms
 	if final:
 		active = false
@@ -308,6 +365,123 @@ func _normalized_checkpoint_totals(value: Dictionary) -> Dictionary:
 	return normalized
 
 
+func _rollback_work_summary(rollback_profile: Dictionary) -> Dictionary:
+	if not bool(rollback_profile.get("available", false)):
+		return {"available": false, "reason": str(rollback_profile.get("reason", "rollback_profile_unavailable"))}
+	var totals := _normalized_rollback_totals(rollback_profile)
+	if totals.is_empty():
+		return {"available": false, "reason": "rollback_profile_unavailable"}
+	var delta := {}
+	for key in ROLLBACK_COUNTERS:
+		delta[key] = int(totals[key]) - int(_rollback_previous.get(key, totals[key]))
+	_rollback_previous = totals.duplicate(true)
+	return {"available": true, "totals": totals, "windowDelta": delta,
+		"loadTimingScope": "adapter.load_state exclusive of measured presentation rebuild time"}
+
+
+func _normalized_rollback_totals(value: Dictionary) -> Dictionary:
+	if not bool(value.get("available", false)):
+		return {}
+	var totals: Dictionary = value.get("totals", {}) if value.get("totals") is Dictionary else value
+	var normalized := {}
+	for key in ROLLBACK_COUNTERS:
+		var counter: Variant = totals.get(key)
+		if not counter is int and not counter is float:
+			return {}
+		normalized[key] = int(counter)
+	return normalized
+
+
+func _sync_summary(sync: Dictionary) -> Dictionary:
+	return {
+		"ticks": {
+			"count": int(sync.tickCount),
+			"remoteMessages": int(sync.remoteMessages),
+			"corrections": int(sync.corrections),
+			"remoteMessagesPerTick": _sync_sample_summary(sync.remoteMessagesPerTick, [0.5, 0.95]),
+			"correctionsPerTick": _sync_sample_summary(sync.correctionsPerTick, [0.5, 0.95]),
+		},
+		"transportDrains": {
+			"count": int(sync.drainCount),
+			"messagesDelivered": int(sync.drainMessages),
+			"corrections": int(sync.drainCorrections),
+			"messagesPerDrain": _sync_sample_summary(sync.messagesPerDrain, [0.5, 0.95]),
+			"correctionsPerDrain": _sync_sample_summary(sync.correctionsPerDrain, [0.5, 0.95]),
+		},
+		"inputArrivalLead": _sync_sample_summary(sync.inputArrivalLead, [0.05, 0.5, 0.95]),
+		"frameAdvantage": _sync_sample_summary(sync.frameAdvantage, [0.5, 0.95]),
+		"definitions": {
+			"inputArrivalLead": "remote input frame - local frontier at arrival; negative means the predicted frame had already been simulated",
+			"frameAdvantage": "local frontier - (latest remote input frame - inputDelay - 1), sampled before the local tick",
+			"transportDrain": "one transport _process packet-drain loop; messages count validated packets emitted to the coordinator",
+		},
+	}
+
+
+func _sync_sample_summary(stats: Dictionary, percentiles: Array) -> Dictionary:
+	var samples: Array = stats.get("samples", []).duplicate()
+	samples.sort()
+	var result := {
+		"count": int(stats.count),
+		"total": int(stats.total),
+		"max": stats.max,
+		"sampleCount": samples.size(),
+		"sampleDropped": int(stats.get("sampleDropped", 0)),
+		"samplesTruncated": int(stats.get("sampleDropped", 0)) > 0,
+	}
+	for fraction in percentiles:
+		var label := "p%d" % int(round(float(fraction) * 100.0))
+		result[label] = _sample_percentile(samples, float(fraction))
+	return result
+
+
+func _sample_percentile(samples: Array, fraction: float) -> Variant:
+	if samples.is_empty():
+		return null
+	var index := clampi(int(ceil(float(samples.size()) * fraction)) - 1, 0, samples.size() - 1)
+	return int(samples[index])
+
+
+func _record_sync_sample(stats: Dictionary, sample: int) -> void:
+	stats.count += 1
+	stats.total += sample
+	stats.max = sample if stats.max == null else maxi(int(stats.max), sample)
+	if not stats.has("samples"):
+		return
+	if stats.samples.size() < SAMPLE_LIMIT:
+		stats.samples.append(sample)
+	else:
+		stats.samples[int(stats.sampleCursor)] = sample
+		stats.sampleCursor = (int(stats.sampleCursor) + 1) % SAMPLE_LIMIT
+		stats.sampleDropped += 1
+
+
+func _empty_sample_stats(with_samples: bool) -> Dictionary:
+	var result := {"count": 0, "total": 0, "max": null}
+	if with_samples:
+		result["samples"] = []
+		result["sampleCursor"] = 0
+		result["sampleDropped"] = 0
+	return result
+
+
+func _empty_sync_values(with_samples: bool) -> Dictionary:
+	return {
+		"tickCount": 0,
+		"remoteMessages": 0,
+		"corrections": 0,
+		"remoteMessagesPerTick": _empty_sample_stats(with_samples),
+		"correctionsPerTick": _empty_sample_stats(with_samples),
+		"drainCount": 0,
+		"drainMessages": 0,
+		"drainCorrections": 0,
+		"messagesPerDrain": _empty_sample_stats(with_samples),
+		"correctionsPerDrain": _empty_sample_stats(with_samples),
+		"inputArrivalLead": _empty_sample_stats(with_samples),
+		"frameAdvantage": _empty_sample_stats(with_samples),
+	}
+
+
 func _match_totals() -> Dictionary:
 	var work := {}
 	for kind in WORK_KINDS:
@@ -320,6 +494,7 @@ func _match_totals() -> Dictionary:
 		"frontierAdvanced": _match_frontier_advanced,
 		"waitMs": _match_wait_ms.duplicate(true),
 		"waitCount": _match_wait_count.duplicate(true),
+		"sync": _sync_summary(_match_sync),
 		"hiddenMs": _match_hidden_ms,
 		"hiddenCount": _match_hidden_count,
 	}

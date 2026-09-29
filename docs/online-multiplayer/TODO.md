@@ -203,6 +203,22 @@ neither is a complete browser battle or cross-city acceptance.
 Keep every full-plan checkbox open until its own acceptance test passes; do not
 change `plan/tasks.json` based on these implementation slices.
 
+## Cross-machine lag plan — 2026-09-29
+
+A real two-machine TURN match ran at about 14 Hz on both peers. The
+[diagnosis](NETWORK_LAG_PLAN.md) attributes it to host CPU saturation, the guest
+clock gate coupling both peers, per-frame corrections and per-frame checkpoint
+saves, not to network RTT. The [implementation plan](NETWORK_LAG_IMPLEMENTATION.md)
+defines packages LAG-01 to LAG-50 that feed NET-021, NET-022, NET-024, NET-026,
+NET-037 and NET-040. LAG-01–03 implementation and local tests are recorded;
+LAG-01's final export and local IAB browser log agree on build and PCK identity.
+All six LAG-04 simulator scenarios pass their recorded correctness/hash checks,
+but the slow-host result (30 Hz, zero corrections) does not reproduce the field
+pattern and the cost model remains provisional. LAG-11/10 and later optimization
+packages have not started. No two-machine field or deployed-page browser-log
+gate has passed. The existing NET task checkboxes remain unchanged; see the
+[evidence index](../../evidence/online/network-lag/README.md).
+
 ## R1 — Deterministic battle stepping
 
 - [ ] **NET-009 — Extract an explicit match-step boundary**

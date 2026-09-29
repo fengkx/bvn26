@@ -2,6 +2,7 @@ class_name HelperRuntime
 extends TimelinePreview
 
 const HelperClipCallbackScript = preload("res://helper_clip_callback.gd")
+const RollbackPresentation = preload("res://rollback_presentation.gd")
 
 signal effect_requested(clip_name: String, source_position: Vector2, source_facing: int, offset_y: float)
 signal source_child_frame_requested(operation: Callable)
@@ -100,7 +101,8 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 	else:
 		source_child_frame_requested.emit(_run_deferred_frame.bind(start_frame, _activation_generation))
 	last_event = "helper_activate_%s" % helper_id
-	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
+	if RollbackPresentation.should_emit_combat_console_event(self):
+		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
 func deactivate(clear_source_action: bool = true) -> void:
@@ -225,7 +227,11 @@ func _diagnostic_rect(bounds: Rect2) -> Dictionary:
 func _emit_diagnostic(event_type: String, payload: Dictionary) -> void:
 	if diagnostic_runtime == null or not is_instance_valid(diagnostic_runtime):
 		return
-	diagnostic_runtime.call("push_event", event_type, payload, diagnostic_tick)
+	var event_payload := payload
+	if RollbackPresentation.is_replaying(self):
+		event_payload = payload.duplicate(true)
+		event_payload["replay"] = true
+	diagnostic_runtime.call("push_event", event_type, event_payload, diagnostic_tick)
 
 
 func attack_contact(defender: FighterRuntime) -> Dictionary:

@@ -102,12 +102,18 @@ var _signaling_reconnect_active := false
 var _performance = PerformanceTelemetry.new()
 var _performance_wait_reason := ""
 var _last_performance_report: Dictionary = {}
+var _tick_remote_message_count := 0
+var _tick_correction_count := 0
+var _latest_remote_input_frame := -1
+var _transport_drain_open := false
+var _transport_drain_correction_count := 0
 
 
 func configure(scene: Node, room_setup: Dictionary, player_slot: String, room: Object, transport: Object) -> String:
 	if _configured:
 		return "Online match is already configured"
 	_last_performance_report.clear()
+	_reset_sync_telemetry()
 	if player_slot not in ["p1", "p2"] or room == null or transport == null:
 		return "Online match dependencies or player slot are invalid"
 	var normalized_setup := _normalize_setup(room_setup)
@@ -232,7 +238,7 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 			_last_heartbeat_received_ms = Time.get_ticks_msec()
 			_last_heartbeat_sent_ms = _last_heartbeat_received_ms
 			_performance.start(_last_heartbeat_received_ms, rollback.frontier, rollback.confirmed,
-				page_visible, _checkpoint_profile_sample())
+				page_visible, _checkpoint_profile_sample(), _rollback_profile_sample())
 			started.emit()
 			_drain_startup_messages()
 			return ""
@@ -380,9 +386,17 @@ func process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 	if not _configured or not running:
 		return _process_tick(monotonic_now_ms, local_held)
 	_performance_wait_reason = ""
+	var observed_frontier := int(rollback.frontier) if rollback != null else 0
+	var observed_remote_frontier: Variant = null
+	if _latest_remote_input_frame >= 0:
+		observed_remote_frontier = _latest_remote_input_frame - int(profile.get("inputDelay", 0)) - 1
 	_performance.begin_tick(Time.get_ticks_usec(), rollback.frontier if rollback != null else 0)
 	var result := _process_tick(monotonic_now_ms, local_held)
 	if _performance.active:
+		_performance.record_sync_tick(_tick_remote_message_count, _tick_correction_count,
+			observed_frontier, observed_remote_frontier)
+		_tick_remote_message_count = 0
+		_tick_correction_count = 0
 		_performance.finish_tick(Time.get_ticks_usec(), rollback.frontier if rollback != null else 0)
 		_performance.set_wait(_performance_wait_reason, monotonic_now_ms)
 		if _performance.summary_due(monotonic_now_ms):
@@ -457,6 +471,8 @@ func receive_peer_message(channel: String, type: String, payload: Dictionary, se
 
 
 func _dispatch_peer_message(channel: String, type: String, payload: Dictionary) -> void:
+	if _performance.active:
+		_tick_remote_message_count += 1
 	match type:
 		"input_frame": _receive_input(payload)
 		"clock_sample": _receive_clock_sample(payload)
@@ -477,6 +493,26 @@ func _drain_startup_messages() -> void:
 	while running and not _startup_pending_messages.is_empty():
 		var message: Dictionary = _startup_pending_messages.pop_front()
 		_dispatch_peer_message(str(message.channel), str(message.type), message.payload)
+
+
+func _on_transport_message_drain_started() -> void:
+	_transport_drain_open = true
+	_transport_drain_correction_count = 0
+
+
+func _on_transport_message_drain_completed(messages_delivered: int) -> void:
+	if _transport_drain_open and _performance.active:
+		_performance.record_transport_drain(messages_delivered, _transport_drain_correction_count)
+	_transport_drain_open = false
+	_transport_drain_correction_count = 0
+
+
+func _reset_sync_telemetry() -> void:
+	_tick_remote_message_count = 0
+	_tick_correction_count = 0
+	_latest_remote_input_frame = -1
+	_transport_drain_open = false
+	_transport_drain_correction_count = 0
 
 
 func request_pause() -> String:
@@ -510,6 +546,7 @@ func close(reason: String = "") -> void:
 	_room_command_in_flight = false
 	running = false
 	_startup_context_eligible = false
+	_reset_sync_telemetry()
 	_disconnect_dependencies()
 	if peer_transport != null and peer_transport.has_method("close_peer"):
 		peer_transport.close_peer()
@@ -552,6 +589,23 @@ func load_state(snapshot: Dictionary) -> String:
 	problem = battle.load_state(snapshot.owners.battle)
 	if not problem.is_empty(): return problem
 	return timers.load_state(snapshot.owners.timers)
+
+
+func begin_replay() -> void:
+	if battle != null and battle.has_method("begin_replay"):
+		battle.call("begin_replay")
+
+
+func end_replay() -> void:
+	if battle != null and battle.has_method("end_replay"):
+		battle.call("end_replay")
+
+
+func profile_counters() -> Dictionary:
+	if battle == null or not is_instance_valid(battle) or not battle.has_method("profile_counters"):
+		return {}
+	var value: Variant = battle.call("profile_counters")
+	return value if value is Dictionary else {}
 
 
 func advance(frame: int, players: Dictionary) -> String:
@@ -614,6 +668,10 @@ func _connect_dependencies() -> void:
 		room_client.error.connect(_on_room_error)
 	if peer_transport.has_signal("peer_message"):
 		peer_transport.peer_message.connect(receive_peer_message)
+	if peer_transport.has_signal("message_drain_started"):
+		peer_transport.message_drain_started.connect(_on_transport_message_drain_started)
+	if peer_transport.has_signal("message_drain_completed"):
+		peer_transport.message_drain_completed.connect(_on_transport_message_drain_completed)
 	if peer_transport.has_signal("peer_state_changed"):
 		peer_transport.peer_state_changed.connect(_on_peer_state)
 	if peer_transport.has_signal("outgoing_signal"):
@@ -636,7 +694,10 @@ func _disconnect_dependencies() -> void:
 			if room_client.has_signal(signal_name) and room_client.is_connected(signal_name, callback):
 				room_client.disconnect(signal_name, callback)
 	if peer_transport != null:
-		for pair in [["peer_message", receive_peer_message], ["peer_state_changed", _on_peer_state],
+		for pair in [["peer_message", receive_peer_message],
+			["message_drain_started", _on_transport_message_drain_started],
+			["message_drain_completed", _on_transport_message_drain_completed],
+			["peer_state_changed", _on_peer_state],
 			["outgoing_signal", _on_outgoing_signal], ["transport_error", _on_peer_error]]:
 			var signal_name: String = pair[0]
 			var callback: Callable = pair[1]
@@ -670,17 +731,17 @@ func _collect_performance_summary(now_ms: int, final: bool) -> Dictionary:
 		},
 	}
 	var summary: Dictionary = _performance.collect_summary(now_ms, Time.get_ticks_usec(), frontier,
-		confirmed, context, _checkpoint_profile_sample(), final)
+		confirmed, context, _checkpoint_profile_sample(), _rollback_profile_sample(), final)
 	_last_performance_report = summary.duplicate(true)
 	return summary
 
 
 func _finish_performance(emit_if_due: bool) -> Dictionary:
 	if _performance == null:
-		return {"schemaVersion": 1, "available": false, "reason": "telemetry_unavailable"}
+		return {"schemaVersion": 2, "available": false, "reason": "telemetry_unavailable"}
 	if not _performance.active:
 		return _last_performance_report.duplicate(true) if not _last_performance_report.is_empty() \
-			else {"schemaVersion": 1, "available": false, "reason": "match_not_started"}
+			else {"schemaVersion": 2, "available": false, "reason": "match_not_started"}
 	var now_ms := Time.get_ticks_msec()
 	var emit_summary: bool = emit_if_due and _performance.summary_due(now_ms)
 	var summary := _collect_performance_summary(now_ms, true)
@@ -719,6 +780,15 @@ func _checkpoint_profile_sample() -> Dictionary:
 			return {"available": false, "reason": "checkpoint_profile_unavailable"}
 		totals[pair[0]] = int(value)
 	return {"available": true, "totals": totals}
+
+
+func _rollback_profile_sample() -> Dictionary:
+	if rollback == null or not is_instance_valid(rollback) or not rollback.has_method("profile_counters"):
+		return {"available": false, "reason": "rollback_profile_unavailable"}
+	var counters: Variant = rollback.call("profile_counters")
+	if not counters is Dictionary:
+		return {"available": false, "reason": "rollback_profile_unavailable"}
+	return {"available": true, "totals": counters.duplicate(true)}
 
 
 func _startup_timeout_context(reason: String) -> String:
@@ -1416,16 +1486,25 @@ func _receive_input(payload: Dictionary) -> void:
 		_abort_local("invalid_peer_input", payload)
 		return
 	var frame := int(frame_value)
+	var input_arrival_lead: int = frame - int(rollback.frontier)
 	var receive_started_usec := Time.get_ticks_usec()
 	var previous_corrections := int(rollback.rollback_count)
 	var previous_replayed_frames := int(rollback.replayed_frames)
 	var problem: String = rollback.receive(epoch, remote_slot, frame, payload.held)
+	var correction_delta := int(rollback.rollback_count) - previous_corrections
+	if _performance.active:
+		_tick_correction_count += correction_delta
+		if _transport_drain_open:
+			_transport_drain_correction_count += correction_delta
 	_performance.record_input_receive(Time.get_ticks_usec() - receive_started_usec,
-		int(rollback.rollback_count) - previous_corrections,
+		correction_delta,
 		int(rollback.replayed_frames) - previous_replayed_frames)
 	if not problem.is_empty():
 		_abort_local("peer_input", {"frame": frame, "error": problem})
 		return
+	if _performance.active:
+		_latest_remote_input_frame = maxi(_latest_remote_input_frame, frame)
+		_performance.record_input_arrival_lead(input_arrival_lead)
 	_maybe_hash_confirmed()
 	_maybe_finish_result()
 

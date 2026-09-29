@@ -137,6 +137,21 @@ func load_state(snapshot: Dictionary) -> String:
 	if problem.is_empty(): _terminal_frame = snapshot.owners.terminal_frame
 	return problem
 
+
+func profile_counters() -> Dictionary:
+	return {
+		"rebuild_count": int(checkpoint.profile.get("rebuild_count", 0)),
+		"rebuild_us": int(checkpoint.profile.get("rebuild_us", 0)),
+	}
+
+
+func begin_replay() -> void:
+	checkpoint.replaying = true
+
+
+func end_replay() -> void:
+	checkpoint.replaying = false
+
 func confirm_through(frame: int) -> void:
 	_confirmed = maxi(_confirmed, frame)
 

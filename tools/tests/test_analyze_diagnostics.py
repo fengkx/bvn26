@@ -44,6 +44,43 @@ class AnalyzeDiagnosticsTests(unittest.TestCase):
         self.assertEqual(summary["runtime"]["inputCount"], 1)
         self.assertTrue(any("complete scene-restoration" in warning for warning in summary["replayability"]["warnings"]))
 
+    def test_reports_replay_diagnostics_and_online_performance_separately(self) -> None:
+        report = self._v2_report()
+        report["runtime"]["events"].extend([
+            {"seq": 3, "type": "hit_settled", "fightTick": 12,
+             "payload": {"replay": True, "damage": 90}},
+            {"seq": 4, "type": "online_performance", "fightTick": 12,
+             "payload": {
+                 "schemaVersion": 2,
+                 "rollbackWork": {"windowDelta": {"advance_count": 4, "replay_advance_count": 2}},
+                 "sync": {
+                     "ticks": {"remoteMessages": 2, "corrections": 1,
+                               "remoteMessagesPerTick": {"p95": 1},
+                               "correctionsPerTick": {"p95": 1}},
+                     "transportDrains": {"count": 1, "messagesDelivered": 2, "corrections": 1,
+                                         "messagesPerDrain": {"p95": 2},
+                                         "correctionsPerDrain": {"p95": 1}},
+                     "inputArrivalLead": {"p5": -2, "p50": 0, "p95": 1},
+                     "frameAdvantage": {"p50": 3, "p95": 4, "max": 4},
+                 },
+             }},
+        ])
+
+        summary = diagnostics.analyze_report(report)
+        self.assertEqual(summary["runtime"]["eventCount"], 4)
+        self.assertEqual(summary["runtime"]["replayEvents"]["count"], 1)
+        self.assertEqual(summary["runtime"]["onlinePerformance"]["count"], 1)
+        self.assertEqual(summary["runtime"]["onlinePerformance"]["latest"]["rollbackWork"]["windowDelta"]["replay_advance_count"], 2)
+
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            diagnostics._print_result(summary, as_json=False)
+        rendered = output.getvalue()
+        self.assertIn("Replay-tagged diagnostic events: 1", rendered)
+        self.assertIn("original predicted event", rendered)
+        self.assertIn("rollbackWork delta={'advance_count': 4, 'replay_advance_count': 2}", rendered)
+        self.assertIn("arrivalLead p5/p50/p95=-2/0/1", rendered)
+
     def test_compare_reports_first_event_and_checkpoint_difference(self) -> None:
         left = self._v2_report()
         right = self._v2_report()

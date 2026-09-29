@@ -280,6 +280,15 @@ def analyze_report(report: dict[str, Any], source_path: str | None = None) -> di
     legacy_types = Counter(str(event.get("type", "unknown")) for event in legacy_events)
     runtime_events = _runtime_events(report)
     runtime_types = Counter(str(event.get("type", "unknown")) for event in runtime_events)
+    replay_events = [
+        event for event in runtime_events
+        if isinstance(event.get("payload"), dict) and event["payload"].get("replay") is True
+    ]
+    replay_types = Counter(str(event.get("type", "unknown")) for event in replay_events)
+    performance_events = [
+        event for event in runtime_events
+        if event.get("type") == "online_performance" and isinstance(event.get("payload"), dict)
+    ]
     hit_events = [event for event in runtime_events if event.get("type") in {"hit_settled", "hit_settlement"}]
     last_hit = None
     if hit_events:
@@ -342,6 +351,15 @@ def analyze_report(report: dict[str, Any], source_path: str | None = None) -> di
             "snapshotStatus": runtime.get("snapshotStatus"),
             "eventCount": len(runtime_events),
             "eventTypes": dict(sorted(runtime_types.items())),
+            "replayEvents": {
+                "count": len(replay_events),
+                "types": dict(sorted(replay_types.items())),
+                "last": replay_events[-1] if replay_events else None,
+            },
+            "onlinePerformance": {
+                "count": len(performance_events),
+                "latest": performance_events[-1].get("payload") if performance_events else None,
+            },
             "randomEventCount": runtime_types.get("random_consumed", 0),
             "clockEventCount": runtime_types.get("clock_consumed", 0),
             "inputCount": len(runtime.get("inputTape", [])) if isinstance(runtime.get("inputTape"), list) else None,
@@ -713,6 +731,27 @@ def _print_result(value: Any, as_json: bool) -> None:
         if runtime["eventCount"] or runtime["snapshotStatus"] is not None:
             match = runtime["match"]
             print(f"Runtime events: {runtime['eventCount']} {runtime['eventTypes']}  inputs: {runtime['inputCount']}  snapshot={runtime['snapshotStatus']}")
+            replay_events = runtime.get("replayEvents", {})
+            if replay_events.get("count", 0):
+                print(f"Replay-tagged diagnostic events: {replay_events['count']} {replay_events.get('types', {})}; the console may still contain the original predicted event.")
+            performance = runtime.get("onlinePerformance", {})
+            latest_performance = performance.get("latest") if isinstance(performance, dict) else None
+            if isinstance(latest_performance, dict):
+                work = latest_performance.get("rollbackWork", {})
+                work_delta = work.get("windowDelta", {}) if isinstance(work, dict) else {}
+                sync = latest_performance.get("sync", {})
+                ticks = sync.get("ticks", {}) if isinstance(sync, dict) else {}
+                drains = sync.get("transportDrains", {}) if isinstance(sync, dict) else {}
+                lead = sync.get("inputArrivalLead", {}) if isinstance(sync, dict) else {}
+                advantage = sync.get("frameAdvantage", {}) if isinstance(sync, dict) else {}
+                print(f"Online performance v{latest_performance.get('schemaVersion', '?')} windows: {performance.get('count', 0)}; rollbackWork delta={work_delta}")
+                print("Sync window: "
+                      f"tick messages={ticks.get('remoteMessages', 0)} corrections={ticks.get('corrections', 0)} "
+                      f"p95/tick={ticks.get('remoteMessagesPerTick', {}).get('p95')} / {ticks.get('correctionsPerTick', {}).get('p95')}; "
+                      f"drains={drains.get('count', 0)} messages={drains.get('messagesDelivered', 0)} corrections={drains.get('corrections', 0)} "
+                      f"p95/drain={drains.get('messagesPerDrain', {}).get('p95')} / {drains.get('correctionsPerDrain', {}).get('p95')}; "
+                      f"arrivalLead p5/p50/p95={lead.get('p5')}/{lead.get('p50')}/{lead.get('p95')}; "
+                      f"frameAdvantage p50/p95/max={advantage.get('p50')}/{advantage.get('p95')}/{advantage.get('max')}")
             if match:
                 print(f"Match: mode={match.get('modeName', match.get('mode'))} map={match.get('map')} tick={match.get('fightTick')}")
             for player in runtime["players"]:

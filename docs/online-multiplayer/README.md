@@ -32,6 +32,14 @@ the completed input-boundary work and from original-gameplay parity acceptance.
 - [Dependency candidates and validation](DEPENDENCIES.md).
 - [Trial cost scenarios and controls](COSTS.md).
 - [Acceptance and measurement plan](VALIDATION_PLAN.md).
+- [Cross-machine lag diagnosis and optimization plan](NETWORK_LAG_PLAN.md):
+  2026-09-29 two-peer TURN log analysis; LAG-01–03 have local implementation
+  evidence and LAG-01's local IAB identity log matches its export; LAG-04
+  calibration and deployed/two-machine field gates remain open.
+- [Cross-machine lag implementation plan](NETWORK_LAG_IMPLEMENTATION.md): work
+  packages LAG-01 to LAG-50 with current implementation states, tests,
+  milestones and estimates. The Web build, paired-field and browser acceptance
+  status is indexed in [network-lag evidence](../../evidence/online/network-lag/README.md).
 
 Accepted direction: DO room coordination and signaling, WebRTC gameplay transport,
 full rollback in the first playable online version, anonymous private invitations,

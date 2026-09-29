@@ -4,6 +4,8 @@ class_name OnlinePeerTransport
 signal outgoing_signal(kind: String, epoch: Variant, negotiation_id: String, payload: String)
 signal peer_state_changed(state: String)
 signal peer_message(channel: String, type: String, payload: Variant, sequence: int)
+signal message_drain_started
+signal message_drain_completed(messages_delivered: int)
 signal transport_error(code: String)
 
 const PROTOCOL_VERSION := 1
@@ -191,6 +193,8 @@ func get_channel_state(channel: String) -> String:
 func _process(_delta: float) -> void:
 	if _peer == null:
 		return
+	message_drain_started.emit()
+	var messages_delivered := 0
 	_peer.poll()
 	_set_connection_state(_connection_state_name(_peer.get_connection_state()))
 	for channel_name in CHANNELS:
@@ -199,7 +203,9 @@ func _process(_delta: float) -> void:
 			continue
 		while data_channel.get_available_packet_count() > 0:
 			var packet: PackedByteArray = data_channel.get_packet()
-			_receive_packet(channel_name, packet)
+			if _receive_packet(channel_name, packet):
+				messages_delivered += 1
+	message_drain_completed.emit(messages_delivered)
 
 
 func _on_session_description_created(kind: String, sdp: String) -> void:
@@ -283,29 +289,30 @@ func _add_remote_candidate(candidate: Dictionary) -> bool:
 	return true
 
 
-func _receive_packet(channel: String, packet: PackedByteArray) -> void:
+func _receive_packet(channel: String, packet: PackedByteArray) -> bool:
 	if packet.size() > MAX_MESSAGE_BYTES:
 		_fail("peer_message_too_large")
-		return
+		return false
 	var decoded: Variant = JSON.parse_string(packet.get_string_from_utf8())
 	if not decoded is Dictionary or not _validate_envelope(decoded, channel):
 		_fail("invalid_peer_envelope")
-		return
+		return false
 	var sequence := int(decoded["seq"])
 	if channel == CHANNEL_RELIABLE:
 		if sequence != _last_reliable_sequence + 1:
 			_fail("reliable_sequence_gap")
-			return
+			return false
 		_last_reliable_sequence = sequence
 	else:
 		if _recent_unordered_sequences.has(sequence):
-			return
+			return false
 		_recent_unordered_sequences[sequence] = true
 		_recent_unordered_order.append(sequence)
 		if _recent_unordered_order.size() > MAX_RECENT_UNORDERED_SEQUENCES:
 			var expired: int = _recent_unordered_order.pop_front()
 			_recent_unordered_sequences.erase(expired)
 	peer_message.emit(channel, decoded["type"], decoded["payload"], sequence)
+	return true
 
 
 func _validate_envelope(value: Dictionary, _channel: String) -> bool:

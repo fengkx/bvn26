@@ -5,6 +5,7 @@ extends TimelinePreview
 var disabled_actions: PackedStringArray = []
 
 const SourceCoordinateStore = preload("res://source_coordinate.gd")
+const RollbackPresentation = preload("res://rollback_presentation.gd")
 
 var ai_timeline_controlled: bool = false
 var _source_goto_pending_frames: Array[int] = []
@@ -602,7 +603,8 @@ func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
 			near = source_x > float(wall_rule["side_split_x"]) if facing != 1 else source_x < float(wall_rule["side_split_x"])
 		ai_source_state.values["hitNear"] = near
 	last_event = "guard_settlement" if defended else "hit_settlement"
-	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
+	if RollbackPresentation.should_emit_combat_console_event(self):
+		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
 func _normalized_impact_strength(strength: int) -> int:
@@ -1045,7 +1047,8 @@ func start_action(label: String, reason: String = "runtime_transition") -> void:
 		_emit_diagnostic("action_transition", {"slot": diagnostic_slot,
 			"source": diagnostic_role, "reason": reason, "phase": "start_action",
 			"before": before, "after": _diagnostic_state()})
-	print("COMBAT_EVENT ", JSON.stringify(snapshot()))
+	if RollbackPresentation.should_emit_combat_console_event(self):
+		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
 func _queue_source_frame(frame: int, defer_until_next_tick: bool = false) -> void:
@@ -1809,7 +1812,8 @@ func _apply_summon_event() -> void:
 		if event.get("set_bs") != null:
 			bs = int(event["set_bs"])
 		last_event = "summon_%s" % event.get("helper_id", "helper")
-		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
+		if RollbackPresentation.should_emit_combat_console_event(self):
+			print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 		return
 
 
@@ -2333,7 +2337,11 @@ func _diagnostic_rect(bounds: Rect2) -> Dictionary:
 func _emit_diagnostic(event_type: String, payload: Dictionary) -> void:
 	if diagnostic_runtime == null or not is_instance_valid(diagnostic_runtime):
 		return
-	diagnostic_runtime.call("push_event", event_type, payload, diagnostic_tick)
+	var event_payload := payload
+	if RollbackPresentation.is_replaying(self):
+		event_payload = payload.duplicate(true)
+		event_payload["replay"] = true
+	diagnostic_runtime.call("push_event", event_type, event_payload, diagnostic_tick)
 
 
 func _frame_in(window: Dictionary) -> bool:

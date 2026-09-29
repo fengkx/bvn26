@@ -61,7 +61,11 @@ var _records: Array = []
 var _values: Array = []
 var _objects := {}
 var _container_buckets := {}
-var profile := {"saves": 0, "encode_us": 0, "pack_us": 0, "retains_us": 0}
+var profile := {
+	"saves": 0, "encode_us": 0, "pack_us": 0, "retains_us": 0,
+	"rebuild_count": 0, "rebuild_us": 0,
+}
+var replaying := false
 var _constants := {}
 var _script_names := {}
 var _field_descriptors := {}
@@ -242,7 +246,10 @@ func load_state(snapshot: Dictionary) -> String:
 				target.connect(signal_name, _decode(connection.callback), connection.flags)
 	for target in _restored:
 		if target is TimelinePreview and target.is_inside_tree():
+			var rebuild_started_usec := Time.get_ticks_usec()
 			target.refresh_checkpoint_display()
+			profile.rebuild_count += 1
+			profile.rebuild_us += maxi(0, Time.get_ticks_usec() - rebuild_started_usec)
 	_restored.clear()
 	_placement_tables.clear()
 	_placements.clear()

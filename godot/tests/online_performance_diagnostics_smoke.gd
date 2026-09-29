@@ -44,9 +44,11 @@ func _initialize() -> void:
 func _run() -> void:
 	_test_bounded_samples_and_window_reset()
 	_test_exclusive_wait_accounting()
+	_test_rollback_work_and_sync_metrics()
+	_test_rollback_profile_counts()
 	_test_optional_diagnostics_and_teardown()
 	_test_telemetry_stays_out_of_causal_snapshot()
-	print("ONLINE_PERFORMANCE_DIAGNOSTICS_OK bounded_samples=true window_reset=true exclusive_waits=true optional_diagnostics=true teardown=true snapshot_isolation=true")
+	print("ONLINE_PERFORMANCE_DIAGNOSTICS_OK bounded_samples=true window_reset=true exclusive_waits=true rollback_work=true sync_metrics=true optional_diagnostics=true teardown=true snapshot_isolation=true")
 	quit()
 
 
@@ -82,6 +84,100 @@ func _test_exclusive_wait_accounting() -> void:
 	assert(summary.waitMs.values().reduce(func(total: int, value: int) -> int: return total + value, 0) == 90)
 	assert(summary.waitCount.clock == 1 and summary.waitCount.input == 1)
 	performance.stop()
+
+
+func _test_rollback_work_and_sync_metrics() -> void:
+	var performance = Perf.new()
+	var baseline := _rollback_counters()
+	baseline.save_count = 1 # configure's initial checkpoint is before the window baseline.
+	performance.start(0, 0, 0, true, {"available": false}, {"available": true, "totals": baseline})
+	performance.record_sync_tick(2, 1, 6, 3)
+	performance.record_transport_drain(3, 1)
+	performance.record_input_arrival_lead(-2)
+	var current := _rollback_counters()
+	current.advance_count = 1
+	current.advance_us = 100
+	current.save_count = 4
+	current.save_us = 400
+	current.validate_count = 2
+	current.validate_us = 20
+	current.copy_count = 3
+	current.copy_us = 30
+	current.load_count = 1
+	current.load_us = 50
+	current.replay_advance_count = 2
+	current.replay_advance_us = 200
+	current.replay_save_count = 2
+	current.rebuild_count = 1
+	current.rebuild_us = 10
+	var summary: Dictionary = performance.collect_summary(1_000, 1_000_000, 6, 6, {},
+		{"available": false}, {"available": true, "totals": current})
+	assert(summary.schemaVersion == 2)
+	assert(summary.rollbackWork.available)
+	assert(summary.rollbackWork.windowDelta.advance_count == 1)
+	assert(summary.rollbackWork.windowDelta.save_count == 3)
+	assert(summary.rollbackWork.windowDelta.replay_save_count == 2)
+	assert(summary.rollbackWork.windowDelta.saves_skipped_count == 0)
+	assert(summary.sync.ticks.remoteMessages == 2 and summary.sync.ticks.corrections == 1)
+	assert(summary.sync.ticks.remoteMessagesPerTick.max == 2)
+	assert(summary.sync.transportDrains.count == 1)
+	assert(summary.sync.transportDrains.messagesDelivered == 3)
+	assert(summary.sync.transportDrains.corrections == 1)
+	assert(summary.sync.inputArrivalLead.p50 == -2)
+	assert(summary.sync.frameAdvantage.p50 == 3)
+	assert(summary.matchTotals.sync.ticks.count == 1)
+	performance.stop()
+
+
+func _rollback_counters() -> Dictionary:
+	return {
+		"advance_count": 0, "advance_us": 0,
+		"save_count": 0, "save_us": 0,
+		"validate_count": 0, "validate_us": 0,
+		"copy_count": 0, "copy_us": 0,
+		"load_count": 0, "load_us": 0,
+		"replay_advance_count": 0, "replay_advance_us": 0,
+		"replay_save_count": 0, "saves_skipped_count": 0,
+		"rebuild_count": 0, "rebuild_us": 0,
+	}
+
+
+func _test_rollback_profile_counts() -> void:
+	var rollback = Rollback.new()
+	var adapter := FakeAdapter.new()
+	assert(rollback.configure(adapter, "copy-profile", 0, 2).is_empty())
+	var configured := rollback.profile_counters()
+	assert(configured.save_count == 1)
+	assert(configured.copy_count == 1)
+	var held := _neutral_input()
+	var first_step_copy_delta := 0
+	for frame in range(1, 3):
+		assert(rollback.sample_local("p1", frame, held).get("error", "").is_empty())
+		assert(rollback.receive("copy-profile", "p2", frame, held).is_empty())
+		var before_step := int(rollback.profile_counters().copy_count)
+		assert(rollback.step().is_empty())
+		var after_step := int(rollback.profile_counters().copy_count)
+		if frame == 2:
+			assert(after_step - before_step == first_step_copy_delta + 2,
+				"Advancing the retained floor must count both input-anchor copies")
+		else:
+			first_step_copy_delta = after_step - before_step
+	var before_local_packet := int(rollback.profile_counters().copy_count)
+	assert(rollback.sample_local("p1", 3, held).get("error", "").is_empty())
+	var after_local_packet := int(rollback.profile_counters().copy_count)
+	assert(after_local_packet - before_local_packet == 2,
+		"Local input and its packet must count two dictionary copies")
+	assert(rollback.receive("copy-profile", "p2", 3, held).is_empty())
+	var after_remote_input := int(rollback.profile_counters().copy_count)
+	assert(after_remote_input - after_local_packet == 1,
+		"Accepted remote input must count its owned dictionary copy")
+
+
+func _neutral_input() -> Dictionary:
+	var held := {}
+	for button in Rollback.BUTTONS:
+		held[button] = false
+	return held
 
 
 func _test_optional_diagnostics_and_teardown() -> void:
