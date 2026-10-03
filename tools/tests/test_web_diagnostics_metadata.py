@@ -113,9 +113,17 @@ class WebDiagnosticsMetadataTests(unittest.TestCase):
             self.assertEqual(paths, ["godot/project.godot"])
 
     def test_prepare_uses_vercel_commit_when_git_metadata_is_missing(self) -> None:
+        self._prepare_with_vercel_commit()
+
+    def test_prepare_uses_vercel_commit_with_unusable_git_directory(self) -> None:
+        self._prepare_with_vercel_commit(unusable_git=True)
+
+    def _prepare_with_vercel_commit(self, *, unusable_git: bool = False) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "source"
             root.mkdir()
+            if unusable_git:
+                (root / ".git").mkdir()
             project = Path(temporary) / "snapshot" / "godot"
             (project / "generated").mkdir(parents=True)
             (project / "project.godot").write_text("config_version=5\n", encoding="utf-8")
@@ -147,12 +155,34 @@ class WebDiagnosticsMetadataTests(unittest.TestCase):
             embedded = json.loads((project / "generated/build_metadata.json").read_text(encoding="utf-8"))
             self.assertEqual(embedded["gitCommit"], commit)
             self.assertEqual(embedded["dirtyPaths"], [])
+            self.assertIsNone(embedded["dirty"])
+            pck = Path(temporary) / "index.pck"
+            pck.write_bytes(b"exported fixture")
+            sidecar = metadata.finalize_metadata(project / metadata.METADATA_RELATIVE_PATH, pck)
+            self.assertEqual(sidecar["gitCommit"], commit)
+            self.assertIsNone(sidecar["dirty"])
 
     def test_missing_git_and_vercel_commit_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             with self.assertRaisesRegex(ValueError, "non-empty git commit"):
                 metadata.git_commit(root)
+
+    def test_invalid_vercel_commit_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            for commit in ["master", "unknown", "abc123", "$(git rev-parse HEAD)"]:
+                with self.subTest(commit=commit), self.assertRaisesRegex(ValueError, "vercelCommit=invalid"):
+                    metadata.git_commit(Path(temporary), vercel_fallback=commit)
+
+    def test_fallback_works_when_git_executable_is_unavailable(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            with patch.object(metadata.subprocess, "run", side_effect=FileNotFoundError):
+                self.assertEqual(metadata.git_commit(root, vercel_fallback="b" * 40), "b" * 40)
+                self.assertEqual(metadata.discover_included_dirty_paths(
+                    root, root / "godot", root / "godot", allow_missing_git=True), [])
+                with self.assertRaises(FileNotFoundError):
+                    metadata.discover_included_dirty_paths(root, root / "godot", root / "godot")
 
     def test_preflight_reports_vercel_remediation_without_git(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -162,7 +192,8 @@ class WebDiagnosticsMetadataTests(unittest.TestCase):
                        "preflight", "--repo", temporary]
             missing = subprocess.run(command, env=environment, capture_output=True, text=True)
             self.assertEqual(missing.returncode, 1)
-            self.assertIn("Automatically expose System Environment Variables", missing.stderr)
+            self.assertIn("vercelCommit=missing", missing.stderr)
+            self.assertIn("If already enabled", missing.stderr)
             self.assertNotIn("Traceback", missing.stderr)
             environment["VERCEL_GIT_COMMIT_SHA"] = "d" * 40
             present = subprocess.run(command, env=environment, capture_output=True, text=True)

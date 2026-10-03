@@ -234,21 +234,30 @@ are intentionally unchanged.
 
 ## Vercel build commit provenance
 
-The Web build requires either a readable Git HEAD or, when `.git` is absent,
-`VERCEL_GIT_COMMIT_SHA`. For Git-connected Vercel projects, enable **Settings →
-Environment Variables → Automatically expose System Environment Variables**,
-then redeploy. For CLI/source uploads, supply the exact source commit as a
-build environment variable for that deployment. Do not save a fixed SHA as a
-permanent project variable: later artifacts would claim the wrong revision.
-See [Vercel system variables](https://vercel.com/docs/environment-variables/system-environment-variables).
+The Web build prefers a readable Git HEAD and falls back to a full
+`VERCEL_GIT_COMMIT_SHA` when Git cannot resolve HEAD. A `.git` path may exist
+without a usable checkout; its presence must not disable the fallback.
+The previous guard incorrectly rejected a supplied Vercel commit in that case.
+This failure has been reproduced locally and fixed. The user's enabled system
+variable setting alone cannot establish what was available in the failed build.
 
-`build_web.sh` now checks provenance before downloading the engine/templates.
-Missing provenance fails with `WEB_BUILD_PROVENANCE_ERROR`, actionable setup
-instructions, and cleanup of stale sidecars. A content fingerprint does not
-replace Git provenance. The `embedded` line printed by metadata unit tests is a
-temporary test fixture, not evidence that deployment metadata was generated.
+The early `WEB_BUILD_PROVENANCE_OK` message records `source=git` or
+`source=vercel`. Errors record the Git exit code, whether `.git` exists, and
+whether the Vercel commit is missing or invalid, without dumping environment
+values. Missing provenance still fails instead of inventing a revision.
+When Git cannot be inspected, `dirty` is null (unknown), not a clean-checkout
+claim. Packaged source bytes and the exported PCK remain fingerprinted.
 
-Local regression: 8 metadata tests and 4 pipeline tests cover missing/present
-Vercel provenance, Git precedence, early failure/cleanup, template binding and
-import failure. This does not establish a successful Vercel deployment; the
-project setting still needs to supply the commit at build time.
+If system variables are disabled, enable **Settings → Environment Variables →
+Enable access to System Environment Variables**. If already enabled, inspect
+the deployment's source and commit metadata; do not assume the toggle is off.
+For CLI/source uploads, supply the exact source commit as a build variable for
+that deployment. Do not pin a permanent SHA. See
+[Vercel system variables](https://vercel.com/docs/environment-variables/system-environment-variables).
+The `embedded` line from metadata unit tests is a fixture, not the real export.
+
+Local metadata and pipeline regression tests cover missing and unusable Git,
+valid/invalid/missing fallback commits, Git precedence, early cleanup, template
+binding and import failure. A failed import must still remove stale sidecars.
+The unusable-Git regression failed before this fix and passes after it. Vercel
+runtime conditions and a successful deployment remain unverified.

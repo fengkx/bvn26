@@ -286,6 +286,8 @@ class WebBuildPipelineTests(unittest.TestCase):
                 }
             )
 
+            # Existing metadata does not guarantee that Git can read HEAD.
+            (repo / ".git").mkdir()
             result = subprocess.run(
                 ["bash", str(tools / "build_web.sh")],
                 cwd=repo,

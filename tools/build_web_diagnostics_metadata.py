@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import tempfile
 from datetime import datetime, timezone
@@ -103,22 +104,27 @@ def discover_included_dirty_paths(
     if git_project_path.is_absolute() or ".." in git_project_path.parts:
         raise ValueError("git project path must be relative to the repository")
 
-    tree = subprocess.run(
-        [
-            "git",
-            "ls-tree",
-            "-r",
-            "-z",
-            "HEAD",
-            "--",
-            git_project_path.as_posix(),
-        ],
-        cwd=repo_root,
-        check=False,
-        capture_output=True,
-    )
+    try:
+        tree = subprocess.run(
+            [
+                "git",
+                "ls-tree",
+                "-r",
+                "-z",
+                "HEAD",
+                "--",
+                git_project_path.as_posix(),
+            ],
+            cwd=repo_root,
+            check=False,
+            capture_output=True,
+        )
+    except OSError:
+        if allow_missing_git:
+            return []
+        raise
     if tree.returncode != 0:
-        if allow_missing_git and not (repo_root / ".git").exists():
+        if allow_missing_git:
             return []
         detail = tree.stderr.decode("utf-8", errors="replace").strip()
         raise RuntimeError(f"cannot inspect committed project tree in {repo_root}: {detail}")
@@ -244,10 +250,14 @@ def finalize_metadata(embedded_path: Path, pck_path: Path) -> dict[str, Any]:
 
 
 def git_commit(repo_root: Path, *, vercel_fallback: str | None = None) -> str:
-    """Resolve HEAD, using Vercel's commit only when repository metadata is absent."""
+    return resolve_git_commit(repo_root, vercel_fallback=vercel_fallback)[0]
+
+
+def resolve_git_commit(repo_root: Path, *, vercel_fallback: str | None = None) -> tuple[str, str]:
+    """Prefer readable HEAD; a .git path alone does not prove Git is usable."""
     try:
         result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
+            ["git", "rev-parse", "--verify", "HEAD^{commit}"],
             cwd=repo_root,
             check=False,
             capture_output=True,
@@ -256,16 +266,20 @@ def git_commit(repo_root: Path, *, vercel_fallback: str | None = None) -> str:
     except OSError:
         result = None
     if result is not None and result.returncode == 0 and result.stdout.strip():
-        return result.stdout.strip()
+        return result.stdout.strip(), "git"
 
     fallback = (vercel_fallback or "").strip()
-    if not (repo_root / ".git").exists() and fallback:
-        return fallback
+    if re.fullmatch(r"[0-9a-fA-F]{40}|[0-9a-fA-F]{64}", fallback):
+        return fallback.lower(), "vercel"
+    git_exit = result.returncode if result is not None else "unavailable"
     raise ValueError(
         "cannot resolve a non-empty git commit; provide a Git checkout or "
-        "VERCEL_GIT_COMMIT_SHA when .git is unavailable. "
-        "For Vercel Git deployments, enable Project Settings > Environment Variables > "
-        "Automatically expose System Environment Variables, then redeploy. "
+        "a full VERCEL_GIT_COMMIT_SHA when Git cannot read HEAD. "
+        f"gitExit={git_exit}, gitPathExists={(repo_root / '.git').exists()}, "
+        f"vercelCommit={'invalid' if fallback else 'missing'}. "
+        "If system variables are disabled, enable access in Project Settings > "
+        "Environment Variables. If already enabled, inspect the deployment's Git source "
+        "and commit metadata. "
         "For source uploads, pass the exact source commit as VERCEL_GIT_COMMIT_SHA "
         "for that deployment; do not pin a permanent commit value."
     )
@@ -295,21 +309,21 @@ def main() -> int:
 
     if args.command == "preflight":
         try:
-            commit = git_commit(args.repo, vercel_fallback=os.environ.get("VERCEL_GIT_COMMIT_SHA"))
+            commit, source = resolve_git_commit(args.repo, vercel_fallback=os.environ.get("VERCEL_GIT_COMMIT_SHA"))
         except ValueError as exc:
             parser.exit(1, f"WEB_BUILD_PROVENANCE_ERROR: {exc}\n")
-        print(f"WEB_BUILD_PROVENANCE_OK gitCommit={commit}")
+        print(f"WEB_BUILD_PROVENANCE_OK gitCommit={commit} source={source}")
         return 0
 
     if args.command == "prepare":
         fallback_commit = os.environ.get("VERCEL_GIT_COMMIT_SHA")
-        commit = git_commit(args.repo, vercel_fallback=fallback_commit)
+        commit, source = resolve_git_commit(args.repo, vercel_fallback=fallback_commit)
         dirty_paths = discover_included_dirty_paths(
             args.repo,
             args.source_project,
             args.project,
             git_project_path=args.git_project_path,
-            allow_missing_git=bool(fallback_commit and not (args.repo / ".git").exists()),
+            allow_missing_git=source == "vercel",
         )
         metadata = prepare_metadata(
             args.project,
@@ -318,6 +332,10 @@ def main() -> int:
             template_sha256=sha256_file(args.template),
             engine_version=args.engine_version,
         )
+        if source == "vercel":
+            # Without a readable HEAD, an empty path list is not proof of a
+            # clean checkout. Source bytes are still covered by the build ID.
+            metadata["dirty"] = None
         embedded_path = args.project / METADATA_RELATIVE_PATH
         write_json(embedded_path, metadata)
         print(
@@ -325,6 +343,8 @@ def main() -> int:
                 {
                     "embedded": str(embedded_path),
                     "buildID": metadata["buildID"],
+                    "gitCommitSource": source,
+                    "dirtyCheckAvailable": source == "git",
                     "dirtyPathCount": len(dirty_paths),
                     "dirtyPathSample": dirty_paths[:20],
                     "dirtyPathSampleTruncated": len(dirty_paths) > 20,
