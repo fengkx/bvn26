@@ -59,11 +59,14 @@ func _run() -> void:
 		for position in range(boundaries.size() - 1):
 			var first: int = boundaries[position]
 			var last: int = boundaries[position + 1]
+			battle.begin_replay()
 			var problem: String = battle.load_state(checkpoints[first])
 			assert(problem.is_empty(), problem)
 			for frame in range(first + 1, last + 1):
 				problem = battle.advance(frame, _players(frame))
 				assert(problem.is_empty(), problem)
+			battle.end_replay()
+			assert(battle.checkpoint._pending_displays.is_empty())
 			var restored: Dictionary = battle.save_state()
 			var difference := State.first_difference(checkpoints[last], restored)
 			if not difference.is_empty():

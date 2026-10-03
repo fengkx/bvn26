@@ -1,0 +1,2254 @@
+{
+  "date": "2026-10-03",
+  "scope": "Local sparse-save and pacing experiments; not paired Web acceptance",
+  "source_sha256": {
+    "godot/rollback_session.gd": "79c1da698476071dddbbf9dab8295e1987b6c26c5d0a7f369a67dc4cf717efa3",
+    "godot/online_match.gd": "bd1a34664c6b962fb83ccdcab8a999794d02f0efb57a88633678d7742a42a903",
+    "godot/online_performance.gd": "1a2c7120e775e8e862d5da93481476ee1a28302139daaa59eacf6f5042c75204",
+    "godot/tests/rollback_sparse_smoke.gd": "2fc360c8c6e05b5b6da4fdd4e84cb44a25e112f876d474d16833948413387a74",
+    "godot/tests/online_sparse_recovery_smoke.gd": "b2e2e6f4ac6636db797f16d6f94758f790c7ef1f02741813b14e49b8fe31f9b6",
+    "godot/tests/online_host_pacing_smoke.gd": "5a1dd331b7599c0d218f033dde9cfac01b8a317f40be97540da32bac227b29c8",
+    "godot/tests/rollback_confirmed_input_profile.gd": "13a57bd9d979d7029dbcbe73ff4365383143a6ee92243cce573d6a66a4ef3d6b",
+    "godot/tests/rollback_batched_battle_smoke.gd": "b5baae577e4d2bd51bad02421b35ad76db22e6de65731c230867ab99524ec8d8",
+    "godot/tests/online_lag_simulator.gd": "ecaa31060aadba89094ab7e66df8197d34dfae2c711090cec43e1dc585adc34b",
+    "godot/tests/rollback_delayed_input_profile.gd": "4f402f2327f49fc78377019ae9c91139dde59ad5d4148e62519b307563b36057"
+  },
+  "confirmed_input_abba": [
+    {
+      "frames": 330,
+      "full_state_equal": true,
+      "profile": {
+        "advance_count": 330,
+        "advance_us": 2126537,
+        "copy_count": 2580,
+        "copy_us": 3025,
+        "load_count": 0,
+        "load_us": 0,
+        "rebuild_count": 13,
+        "rebuild_us": 1054,
+        "replay_advance_count": 0,
+        "replay_advance_us": 0,
+        "replay_save_count": 0,
+        "save_count": 331,
+        "save_us": 2281365,
+        "saves_skipped_count": 0,
+        "validate_count": 663,
+        "validate_us": 47526
+      },
+      "semantic_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+      "sparse": false,
+      "step_us": {
+        "count": 330,
+        "max": 35793,
+        "mean": 13693.103030303,
+        "p50": 14251,
+        "p95": 15314,
+        "p99": 16378
+      }
+    },
+    {
+      "frames": 330,
+      "full_state_equal": true,
+      "profile": {
+        "advance_count": 330,
+        "advance_us": 2097436,
+        "copy_count": 1790,
+        "copy_us": 2030,
+        "load_count": 0,
+        "load_us": 0,
+        "rebuild_count": 13,
+        "rebuild_us": 1059,
+        "replay_advance_count": 0,
+        "replay_advance_us": 0,
+        "replay_save_count": 0,
+        "save_count": 51,
+        "save_us": 358334,
+        "saves_skipped_count": 280,
+        "validate_count": 103,
+        "validate_us": 7366
+      },
+      "semantic_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+      "sparse": true,
+      "step_us": {
+        "count": 330,
+        "max": 28190,
+        "mean": 7461.86060606061,
+        "p50": 6957,
+        "p95": 14320,
+        "p99": 14774
+      }
+    },
+    {
+      "frames": 330,
+      "full_state_equal": true,
+      "profile": {
+        "advance_count": 330,
+        "advance_us": 2089406,
+        "copy_count": 1790,
+        "copy_us": 2044,
+        "load_count": 0,
+        "load_us": 0,
+        "rebuild_count": 13,
+        "rebuild_us": 1030,
+        "replay_advance_count": 0,
+        "replay_advance_us": 0,
+        "replay_save_count": 0,
+        "save_count": 51,
+        "save_us": 356085,
+        "saves_skipped_count": 280,
+        "validate_count": 103,
+        "validate_us": 7254
+      },
+      "semantic_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+      "sparse": true,
+      "step_us": {
+        "count": 330,
+        "max": 28469,
+        "mean": 7430.93636363636,
+        "p50": 6956,
+        "p95": 14273,
+        "p99": 14800
+      }
+    },
+    {
+      "frames": 330,
+      "full_state_equal": true,
+      "profile": {
+        "advance_count": 330,
+        "advance_us": 2120013,
+        "copy_count": 2580,
+        "copy_us": 2998,
+        "load_count": 0,
+        "load_us": 0,
+        "rebuild_count": 13,
+        "rebuild_us": 1149,
+        "replay_advance_count": 0,
+        "replay_advance_us": 0,
+        "replay_save_count": 0,
+        "save_count": 331,
+        "save_us": 2281124,
+        "saves_skipped_count": 0,
+        "validate_count": 663,
+        "validate_us": 47214
+      },
+      "semantic_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+      "sparse": false,
+      "step_us": {
+        "count": 330,
+        "max": 35557,
+        "mean": 13669.803030303,
+        "p50": 14238,
+        "p95": 15126,
+        "p99": 16670
+      }
+    }
+  ],
+  "delayed_input_and_sparse_checks": [
+    {
+      "name": "rollback_batched_battle_smoke",
+      "args": [
+        "--sparse"
+      ],
+      "exit": 0,
+      "errors": [],
+      "log": "/private/tmp/bvn-online-lag10/0-rollback_batched_battle_smoke.log",
+      "markers": [
+        "ROLLBACK_BATCHED_BATTLE_SMOKE_OK frames=330 retained_graphs=3010 immediate_corrections=6 batch_corrections=6 immediate_replayed=40 batch_replayed=40"
+      ]
+    },
+    {
+      "name": "online_match_pair_smoke",
+      "args": [
+        "--sparse"
+      ],
+      "exit": 0,
+      "errors": [],
+      "log": "/private/tmp/bvn-online-lag10/1-online_match_pair_smoke.log",
+      "markers": [
+        "ONLINE_MATCH_PAIR_INITIAL_OK hash=925ef6e0610b139f7ee60a32af0c10e5908ef5daf917f537f7d89b9491590d53 local_preferences_diverge=true",
+        "ONLINE_MATCH_PAIR_STARTED_OK",
+        "ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=15 p1_rollback_count=1 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_INTRO_SKIP_ORDERED_OK target=17",
+        "ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=327 hashes=30,60,90 real_hit=true helper_activity=false",
+        "ONLINE_MATCH_PAIR_PAUSE_BARRIER_OK frame=329 equal_hash=true",
+        "ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=330 equal_hash=true",
+        "ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true",
+        "ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null",
+        "ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=925ef6e0610b139f7ee60a32af0c10e5908ef5daf917f537f7d89b9491590d53 frame=331 p1_rollback_count=4 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_SOURCE_KO_FIXTURE_OK fighter_check_dead=true",
+        "ONLINE_MATCH_PAIR_RESULT_COMMIT_OK source_ko=true p1_waited_for_peer=true room_waited_for_both=true winner=1",
+        "ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true"
+      ]
+    },
+    {
+      "name": "rollback_delayed_input_profile",
+      "args": [
+        "--batch"
+      ],
+      "exit": 0,
+      "errors": [],
+      "log": "/private/tmp/bvn-online-lag10/2-rollback_delayed_input_profile.log",
+      "markers": [],
+      "profile": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2075249,
+          "pack_us": 497742,
+          "rebuild_count": 78,
+          "rebuild_us": 3152,
+          "retains_us": 26982,
+          "saves": 371
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 119876,
+          "mean": 101546.5,
+          "p50": 94657,
+          "p95": 119876,
+          "p99": 119876
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5204673,
+        "receive_us": {
+          "count": 675,
+          "max": 22,
+          "mean": 10.8459259259259,
+          "p50": 11,
+          "p95": 13,
+          "p99": 15
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2177192,
+          "copy_count": 2785,
+          "copy_us": 3250,
+          "load_count": 6,
+          "load_us": 37484,
+          "rebuild_count": 78,
+          "rebuild_us": 3152,
+          "replay_advance_count": 40,
+          "replay_advance_us": 268024,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2577964,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 54009
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 38386,
+          "mean": 13157.9768115942,
+          "p50": 14024,
+          "p95": 15353,
+          "p99": 32409
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 133786,
+          "mean": 14823.9913793103,
+          "p50": 14049,
+          "p95": 15606,
+          "p99": 108841
+        }
+      }
+    },
+    {
+      "name": "rollback_delayed_input_profile",
+      "args": [
+        "--batch",
+        "--sparse"
+      ],
+      "exit": 0,
+      "errors": [],
+      "log": "/private/tmp/bvn-online-lag10/3-rollback_delayed_input_profile.log",
+      "markers": [],
+      "profile": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2058756,
+          "pack_us": 496424,
+          "rebuild_count": 78,
+          "rebuild_us": 3112,
+          "retains_us": 1737,
+          "saves": 367
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 105974,
+          "mean": 96455.0,
+          "p50": 92900,
+          "p95": 105974,
+          "p99": 105974
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5122125,
+        "receive_us": {
+          "count": 675,
+          "max": 429,
+          "mean": 16.077037037037,
+          "p50": 12,
+          "p95": 14,
+          "p99": 271
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2144380,
+          "copy_count": 2163,
+          "copy_us": 2742,
+          "load_count": 6,
+          "load_us": 36908,
+          "rebuild_count": 78,
+          "rebuild_us": 3112,
+          "replay_advance_count": 40,
+          "replay_advance_us": 267271,
+          "replay_save_count": 36,
+          "save_count": 367,
+          "save_us": 2560095,
+          "saves_skipped_count": 4,
+          "validate_count": 741,
+          "validate_us": 53230
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 36748,
+          "mean": 12999.8782608696,
+          "p50": 13975,
+          "p95": 15143,
+          "p99": 17712
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 119988,
+          "mean": 14589.5833333333,
+          "p50": 14014,
+          "p95": 15456,
+          "p99": 105873
+        }
+      }
+    },
+    {
+      "name": "rollback_delayed_input_profile",
+      "args": [
+        "--batch",
+        "--sparse"
+      ],
+      "exit": 0,
+      "errors": [],
+      "log": "/private/tmp/bvn-online-lag10/4-rollback_delayed_input_profile.log",
+      "markers": [],
+      "profile": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2078865,
+          "pack_us": 499519,
+          "rebuild_count": 78,
+          "rebuild_us": 3099,
+          "retains_us": 1748,
+          "saves": 367
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 106660,
+          "mean": 96018.3333333333,
+          "p50": 91944,
+          "p95": 106660,
+          "p99": 106660
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5156063,
+        "receive_us": {
+          "count": 675,
+          "max": 420,
+          "mean": 16.2,
+          "p50": 12,
+          "p95": 15,
+          "p99": 268
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2154818,
+          "copy_count": 2163,
+          "copy_us": 2749,
+          "load_count": 6,
+          "load_us": 37222,
+          "rebuild_count": 78,
+          "rebuild_us": 3099,
+          "replay_advance_count": 40,
+          "replay_advance_us": 265450,
+          "replay_save_count": 36,
+          "save_count": 367,
+          "save_us": 2583304,
+          "saves_skipped_count": 4,
+          "validate_count": 741,
+          "validate_us": 54097
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 35952,
+          "mean": 13102.768115942,
+          "p50": 14072,
+          "p95": 15082,
+          "p99": 17465
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 120583,
+          "mean": 14684.3132183908,
+          "p50": 14130,
+          "p95": 15247,
+          "p99": 106005
+        }
+      }
+    },
+    {
+      "name": "rollback_delayed_input_profile",
+      "args": [
+        "--batch"
+      ],
+      "exit": 0,
+      "errors": [],
+      "log": "/private/tmp/bvn-online-lag10/5-rollback_delayed_input_profile.log",
+      "markers": [],
+      "profile": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2117254,
+          "pack_us": 509375,
+          "rebuild_count": 78,
+          "rebuild_us": 3527,
+          "retains_us": 27746,
+          "saves": 371
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 125756,
+          "mean": 105715.166666667,
+          "p50": 103779,
+          "p95": 125756,
+          "p99": 125756
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5288524,
+        "receive_us": {
+          "count": 675,
+          "max": 27,
+          "mean": 11.1244444444444,
+          "p50": 11,
+          "p95": 15,
+          "p99": 17
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2188328,
+          "copy_count": 2785,
+          "copy_us": 3337,
+          "load_count": 6,
+          "load_us": 39669,
+          "rebuild_count": 78,
+          "rebuild_us": 3527,
+          "replay_advance_count": 40,
+          "replay_advance_us": 280117,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2631721,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 54627
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 38611,
+          "mean": 13325.2666666667,
+          "p50": 14117,
+          "p95": 16148,
+          "p99": 18745
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 139640,
+          "mean": 15062.5402298851,
+          "p50": 14155,
+          "p95": 16374,
+          "p99": 116272
+        }
+      }
+    }
+  ],
+  "simulator": [
+    {
+      "scenario": "lan",
+      "pacing": false,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9981.38466666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          4396.484,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1578000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 2818484,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 453552,
+            "copy_count": 2518,
+            "copy_us": 3843,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 298,
+            "save_us": 2141980,
+            "saves_skipped_count": 2,
+            "validate_count": 596,
+            "validate_us": 60794
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 419926,
+            "copy_count": 1828,
+            "copy_us": 2277,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 66092,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1817
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "lossy",
+      "pacing": false,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9997.18866666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          9115.514,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2993700,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 6121814,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 432378,
+            "copy_count": 2518,
+            "copy_us": 4004,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 298,
+            "save_us": 2140003,
+            "saves_skipped_count": 2,
+            "validate_count": 596,
+            "validate_us": 60630
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 421210,
+            "copy_count": 1828,
+            "copy_us": 2313,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 66222,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1787
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "turn100",
+      "pacing": false,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9997.18866666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          9394.118,
+          1318.086
+        ],
+        "callerTicks": [
+          241,
+          300
+        ],
+        "confirmed": [
+          238,
+          240
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          241,
+          238
+        ],
+        "logicalRateHz": [
+          24.1,
+          23.8
+        ],
+        "ticksMergedDuringBusy": [
+          59,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2404939,
+            "copy": 0,
+            "load": 463491,
+            "rebuild": 0,
+            "replay_advance": 588761,
+            "save": 5936927,
+            "validate": 0
+          },
+          {
+            "advance": 1251880,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 66206,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 241,
+            "advance_us": 352465,
+            "copy_count": 2217,
+            "copy_us": 3715,
+            "load_count": 21,
+            "load_us": 136717,
+            "rebuild_count": 294,
+            "rebuild_us": 15835,
+            "replay_advance_count": 59,
+            "replay_advance_us": 83176,
+            "replay_save_count": 59,
+            "save_count": 289,
+            "save_us": 2127104,
+            "saves_skipped_count": 11,
+            "validate_count": 599,
+            "validate_us": 62087
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 238,
+            "advance_us": 315232,
+            "copy_count": 1455,
+            "copy_us": 1878,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 7,
+            "save_us": 51793,
+            "saves_skipped_count": 231,
+            "validate_count": 14,
+            "validate_us": 1393
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "turn40",
+      "pacing": false,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9981.38466666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          4396.484,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1578000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 2818484,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 457326,
+            "copy_count": 2518,
+            "copy_us": 4036,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 298,
+            "save_us": 2194781,
+            "saves_skipped_count": 2,
+            "validate_count": 596,
+            "validate_us": 61645
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 447912,
+            "copy_count": 1828,
+            "copy_us": 2303,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 66360,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1810
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "turn40-fixedskip",
+      "pacing": false,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9948.05133333334,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          2733.7,
+          1390.664
+        ],
+        "callerTicks": [
+          250,
+          300
+        ],
+        "confirmed": [
+          250,
+          252
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          50,
+          0
+        ],
+        "frontier": [
+          250,
+          250
+        ],
+        "logicalRateHz": [
+          25.0,
+          25.0
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1315000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 1418700,
+            "validate": 0
+          },
+          {
+            "advance": 1315000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 75664,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 250,
+            "advance_us": 344102,
+            "copy_count": 1870,
+            "copy_us": 2764,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 150,
+            "save_us": 1079282,
+            "saves_skipped_count": 100,
+            "validate_count": 300,
+            "validate_us": 30496
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 250,
+            "advance_us": 329908,
+            "copy_count": 1530,
+            "copy_us": 1904,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 8,
+            "save_us": 58006,
+            "saves_skipped_count": 242,
+            "validate_count": 16,
+            "validate_us": 1582
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "turn40-slowhost",
+      "pacing": false,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9997.18866666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          9115.514,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2993700,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 6121814,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 432441,
+            "copy_count": 2518,
+            "copy_us": 3969,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 298,
+            "save_us": 2128966,
+            "saves_skipped_count": 2,
+            "validate_count": 596,
+            "validate_us": 60227
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 420368,
+            "copy_count": 1828,
+            "copy_us": 2308,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 67427,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1838
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "lan",
+      "pacing": true,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9981.38466666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          4396.484,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1578000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 2818484,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 431411,
+            "copy_count": 2518,
+            "copy_us": 3846,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 298,
+            "save_us": 2119528,
+            "saves_skipped_count": 2,
+            "validate_count": 596,
+            "validate_us": 60468
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 419440,
+            "copy_count": 1828,
+            "copy_us": 2210,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 65206,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1844
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "lossy",
+      "pacing": true,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9997.18866666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          9115.514,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2993700,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 6121814,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 430351,
+            "copy_count": 2518,
+            "copy_us": 3927,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 298,
+            "save_us": 2123553,
+            "saves_skipped_count": 2,
+            "validate_count": 596,
+            "validate_us": 60691
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 419029,
+            "copy_count": 1828,
+            "copy_us": 2289,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 65273,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1805
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "turn100",
+      "pacing": true,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          10002.3916666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          8690.942,
+          1307.566
+        ],
+        "callerTicks": [
+          258,
+          300
+        ],
+        "confirmed": [
+          238,
+          238
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          239,
+          236
+        ],
+        "logicalRateHz": [
+          23.9,
+          23.6
+        ],
+        "ticksMergedDuringBusy": [
+          42,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2384981,
+            "copy": 0,
+            "load": 463491,
+            "rebuild": 0,
+            "replay_advance": 419118,
+            "save": 5423352,
+            "validate": 0
+          },
+          {
+            "advance": 1241360,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 66206,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 239,
+            "advance_us": 347128,
+            "copy_count": 2133,
+            "copy_us": 3518,
+            "load_count": 21,
+            "load_us": 135080,
+            "rebuild_count": 294,
+            "rebuild_us": 15290,
+            "replay_advance_count": 42,
+            "replay_advance_us": 55762,
+            "replay_save_count": 42,
+            "save_count": 264,
+            "save_us": 1936097,
+            "saves_skipped_count": 17,
+            "validate_count": 549,
+            "validate_us": 57675
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 236,
+            "advance_us": 314998,
+            "copy_count": 1443,
+            "copy_us": 1870,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 7,
+            "save_us": 51890,
+            "saves_skipped_count": 229,
+            "validate_count": 14,
+            "validate_us": 1414
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "turn40",
+      "pacing": true,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9981.38466666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          4396.484,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1578000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 2818484,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 439504,
+            "copy_count": 2518,
+            "copy_us": 3933,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 298,
+            "save_us": 2137144,
+            "saves_skipped_count": 2,
+            "validate_count": 596,
+            "validate_us": 60779
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 425706,
+            "copy_count": 1828,
+            "copy_us": 2268,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 66179,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1816
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "turn40-fixedskip",
+      "pacing": true,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9948.05133333334,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          2733.7,
+          1390.664
+        ],
+        "callerTicks": [
+          250,
+          300
+        ],
+        "confirmed": [
+          250,
+          252
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          50,
+          0
+        ],
+        "frontier": [
+          250,
+          250
+        ],
+        "logicalRateHz": [
+          25.0,
+          25.0
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1315000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 1418700,
+            "validate": 0
+          },
+          {
+            "advance": 1315000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 75664,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 250,
+            "advance_us": 342728,
+            "copy_count": 1870,
+            "copy_us": 2748,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 150,
+            "save_us": 1074289,
+            "saves_skipped_count": 100,
+            "validate_count": 300,
+            "validate_us": 30418
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 250,
+            "advance_us": 329378,
+            "copy_count": 1530,
+            "copy_us": 1858,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 8,
+            "save_us": 58745,
+            "saves_skipped_count": 242,
+            "validate_count": 16,
+            "validate_us": 1599
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    },
+    {
+      "scenario": "turn40-slowhost",
+      "pacing": true,
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9997.18866666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          9115.514,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2993700,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 6121814,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 437927,
+            "copy_count": 2518,
+            "copy_us": 4079,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 298,
+            "save_us": 2127963,
+            "saves_skipped_count": 2,
+            "validate_count": 596,
+            "validate_us": 60563
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 425188,
+            "copy_count": 1828,
+            "copy_us": 2314,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 66690,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1806
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate"
+    }
+  ],
+  "log_sha256": {
+    "/private/tmp/bvn-online-lag10/confirmed-1.log": "4be5994c330ac4689375467fdcc8f84b2fbfe448fd7ea7bd3c70c5847b18612b",
+    "/private/tmp/bvn-online-lag10/confirmed-0.log": "fcd24c5b05915ad26b29499d55af10eb6bfd93b546710c4622253551967c090e",
+    "/private/tmp/bvn-online-lag10/confirmed-2.log": "92360fd74bb6f951fd8f3bb9e1e22993b15b318ad58aa3fae2f2722c30010df9",
+    "/private/tmp/bvn-online-lag10/confirmed-3.log": "f2bdf398eed31e44b9b3e58931818681416408511972ef4a37cb6694afaf0f1b",
+    "/private/tmp/bvn-online-lag10/sim-engine.log": "88fb4b4b50c6496b96095dd4d250493ff46a9eea6c757c24d6da29a27d9b419f",
+    "/private/tmp/bvn-online-lag10/confirmed-engine.log": "f2bdf398eed31e44b9b3e58931818681416408511972ef4a37cb6694afaf0f1b",
+    "/private/tmp/bvn-online-lag10/1-online_match_pair_smoke.log": "cd75a88a38e9d69670aa8d1386dac94cb4cc77ad84d5ff22c65afd9f2f149948",
+    "/private/tmp/bvn-online-lag10/5-rollback_delayed_input_profile.log": "7b2c3d49e1bfcf759799c8b4077184fcb86c86605651ccd60de7b55fcdc1aa4e",
+    "/private/tmp/bvn-online-lag10/0-rollback_batched_battle_smoke.log": "5c5349df86c17a7f46bcba4e5ac5c9a091258cdd4688f605c8c5dc3dc3fd95d0",
+    "/private/tmp/bvn-online-lag10/3-rollback_delayed_input_profile.log": "c083866d01fb2997c6264f383ab334e8981856c7610e92e3b03e7b30004c6054",
+    "/private/tmp/bvn-online-lag10/4-rollback_delayed_input_profile.log": "987700a0177f6f49343cea335b010d87e94ab0e1750f220fe5a5498614b07054",
+    "/private/tmp/bvn-online-lag10/engine.log": "7b2c3d49e1bfcf759799c8b4077184fcb86c86605651ccd60de7b55fcdc1aa4e",
+    "/private/tmp/bvn-online-lag10/simulator-pacing-True.log": "e26baca5d78391a15a4dd4530a6e667136f3bf8447a5eb67b182ba8cf4934cc7",
+    "/private/tmp/bvn-online-lag10/simulator-pacing-False.log": "fd906f95b57a67eb45d01b12c9e98c3fcb353e233660a05c6cae2d02f2181b8e",
+    "/private/tmp/bvn-online-lag10/2-rollback_delayed_input_profile.log": "5ca895b9483def9dca0b6a53a7e1cbec2b38f068627f542b2333f10d0adb9b34"
+  },
+  "commands": {
+    "confirmed": "python3 /private/tmp/bvn-online-lag10/confirmed.py",
+    "delayed_and_pair": "python3 /private/tmp/bvn-online-lag10/run.py",
+    "simulator": "python3 /private/tmp/bvn-online-lag10/sim.py"
+  },
+  "limitations": [
+    "Native CPU timings, not browser FPS",
+    "Uncalibrated virtual costs",
+    "Pacing disabled by default: no rate gain",
+    "Sparse saves opt-in pending paired Web checks",
+    "No fix established for reported nine-second super freeze",
+    "No deployment or push"
+  ],
+  "godot_checks": [
+    {
+      "name": "rollback_sparse_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_SPARSE_SMOKE_OK frames=126 exact_state=true baseline_saves=133 sparse_saves=28 stale_snapshots_removed=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_sparse_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_sparse_smoke.log",
+        "-s",
+        "res://tests/rollback_sparse_smoke.gd"
+      ],
+      "log_sha256": "96a0c5916e89785e6d39bdb91a869a7cc37cfe8f8171a223a8a9a37c4e246adb"
+    },
+    {
+      "name": "online_sparse_recovery_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_SPARSE_RECOVERY_SMOKE_OK confirmed_60_59_compares_30=true mixed_policies=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_sparse_recovery_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_sparse_recovery_smoke.log",
+        "-s",
+        "res://tests/online_sparse_recovery_smoke.gd"
+      ],
+      "log_sha256": "699c9cf943c1f5ee59d44f1e0164454956728091ef413c6c1a4c7933ac4fd4cd"
+    },
+    {
+      "name": "online_host_pacing_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_HOST_PACING_SMOKE_OK cooldown=2 guest_control_pause_recovery_excluded=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_host_pacing_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_host_pacing_smoke.log",
+        "-s",
+        "res://tests/online_host_pacing_smoke.gd"
+      ],
+      "log_sha256": "c94800dcc7de48c3ff0f44145ab150ce15b2d15991d9291ec78ca82c3e565016"
+    },
+    {
+      "name": "rollback_batched_correction_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_BATCHED_CORRECTION_SMOKE_OK all_frames_equal=true orders=3 duplicate_idempotent=true final_reads_settled=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_batched_correction_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_batched_correction_smoke.log",
+        "-s",
+        "res://tests/rollback_batched_correction_smoke.gd"
+      ],
+      "log_sha256": "3f10d0f290f9d4290efe6a625f917efabcc636f04442354ebe61f548ecceee2d"
+    },
+    {
+      "name": "online_batched_ordering_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_BATCH_ORDERING_CASE_OK state_hash",
+        "ONLINE_BATCH_ORDERING_CASE_OK result",
+        "ONLINE_BATCH_ORDERING_CASE_OK pause_request",
+        "ONLINE_BATCH_ORDERING_CASE_OK resume_commit",
+        "ONLINE_BATCH_ORDERING_CASE_OK recovery_sync",
+        "ONLINE_BATCH_ORDERING_CASE_OK invalid_input",
+        "ONLINE_BATCHED_ORDERING_SMOKE_OK cases=6"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_batched_ordering_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_batched_ordering_smoke.log",
+        "-s",
+        "res://tests/online_batched_ordering_smoke.gd"
+      ],
+      "log_sha256": "be061f0c0e5ab773a5c3974ecc07fcafcc0158d332836780b9b9dd4a90e6d96d"
+    },
+    {
+      "name": "rollback_replay_hooks_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_REPLAY_HOOKS_SMOKE_OK correction_state_equal=true replay_diagnostics_tagged=true predicted_events_retained=true failure_cleanup=8"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_replay_hooks_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_replay_hooks_smoke.log",
+        "-s",
+        "res://tests/rollback_replay_hooks_smoke.gd"
+      ],
+      "log_sha256": "656c0c23af172068fe2b39784d96d5d5d16073a4e9505d2644c8f0918998ec57"
+    },
+    {
+      "name": "online_performance_diagnostics_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_PERFORMANCE_DIAGNOSTICS_OK bounded_samples=true window_reset=true exclusive_waits=true rollback_work=true sync_metrics=true optional_diagnostics=true teardown=true snapshot_isolation=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_performance_diagnostics_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_performance_diagnostics_smoke.log",
+        "-s",
+        "res://tests/online_performance_diagnostics_smoke.gd"
+      ],
+      "log_sha256": "48ebce099d837fa18f398e735431df097db6f0fcda6941d5d01445acd1d24e87"
+    },
+    {
+      "name": "online_timer_round_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_TIMER_ROUND_SMOKE_OK ko_to_nextfight=true persistent_countdown=true round=2 replayed=37_frames"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_timer_round_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_timer_round_smoke.log",
+        "-s",
+        "res://tests/online_timer_round_smoke.gd"
+      ],
+      "log_sha256": "5c093eae5b77403dc35872cb47883228d7cda164758f5736b93db4c9a619147f"
+    },
+    {
+      "name": "online_clock_sample_bounds_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_CLOCK_SAMPLE_BOUNDS_OK valid=true retransmit_idempotent=true conflict_rejected=true old_and_future_bounds=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_clock_sample_bounds_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_clock_sample_bounds_smoke.log",
+        "-s",
+        "res://tests/online_clock_sample_bounds_smoke.gd"
+      ],
+      "log_sha256": "6b92bf3e33c659178f1dacc92e0c97012b77545068bc83522d764a12179f58e3"
+    },
+    {
+      "name": "rollback_services_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_SERVICES_SMOKE_OK scope=services_and_synthetic_fixture_not_battle"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_services_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_services_smoke.log",
+        "-s",
+        "res://tests/rollback_services_smoke.gd"
+      ],
+      "log_sha256": "6eeb49be086b321ceba8e105b9fb084d6ef8d78e49b86284f0107971c3009c77"
+    },
+    {
+      "name": "rollback_battle_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_BATTLE_SMOKE_OK frames=330 rollbacks=10 replayed=65 waits=15 elapsed_ms=7947 retained_bytes=2842680 sounds_suppressed=8",
+        "ROLLBACK_INDEPENDENT_RUN_OK frames=330 full_state=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_battle_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_battle_smoke.log",
+        "-s",
+        "res://tests/rollback_battle_smoke.gd"
+      ],
+      "log_sha256": "df56ee91273d7548985d73fa7f43f066785a10a27acb1726111255f2240febc1"
+    },
+    {
+      "name": "online_match_start_cancel_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_START_CANCEL_OK close_during_refresh=true close_during_ice=true pending_command_settled_before_abort=true live_epoch_abort=true retry_after_unconfirmed_abort=true uncertain_abort_same_request=true terminal_epoch_no_abort=true no_peer_ready=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_match_start_cancel_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_match_start_cancel_smoke.log",
+        "-s",
+        "res://tests/online_match_start_cancel_smoke.gd"
+      ],
+      "log_sha256": "31cba0b00d69b9d3b73848c887fe6ccce1afffb57c39d14a1a84486b79612a47"
+    },
+    {
+      "name": "online_match_service_terminal_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_SERVICE_TERMINAL_OK no_winner_allowlist=true epoch_scoped=true room_unavailable=true rejected_abort_and_result_settle=true transient_not_terminal=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_match_service_terminal_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_match_service_terminal_smoke.log",
+        "-s",
+        "res://tests/online_match_service_terminal_smoke.gd"
+      ],
+      "log_sha256": "fb7e1e7656834c2c644b5f59a9384286fac429f5463b39ef1eefd78d56a91fcb"
+    }
+  ],
+  "repository_checks": {
+    "verify": "passed: 75 assets, 74 dependencies, 62 SWFs, 62 script bundles, 8853 exports",
+    "check_handoff": "passed: 18 documents, 207 local links, 31 migration tasks",
+    "validate_contracts": "passed: 6 schemas, 6 examples; gameplay_tested=false",
+    "online_manifest": "passed",
+    "manifest_tests": "7 passed",
+    "analyzer_tests": "9 passed, 2 skipped",
+    "diff_check": "passed",
+    "locked_inputs": "game/ and scripts/ unchanged"
+  },
+  "manifest": {
+    "schemaVersion": 1,
+    "engine": "4.7.2-stable",
+    "compatibility": {
+      "protocol": 1,
+      "build": "f996ec768944f9bd869e6cee960e25b403891bf7b130b15e2e96f938c04f3051",
+      "content": "dec92731a02b8a63262e0cec5451b674c8f78321242a4b5e1d7d47c541da51b7"
+    },
+    "roster": {
+      "fighters": [
+        "byakuya",
+        "kakashi",
+        "lee",
+        "minren",
+        "renji",
+        "rifagu",
+        "rukia",
+        "sakura",
+        "sasuke",
+        "yihu",
+        "yulong"
+      ],
+      "helpers": [
+        "jinye",
+        "kon",
+        "woailuo",
+        "you"
+      ],
+      "stages": [
+        "双极",
+        "宇智波村",
+        "尸魂界通道",
+        "木叶村",
+        "楼顶",
+        "流魂街",
+        "温泉",
+        "火影瀑布",
+        "现世",
+        "静涎亭"
+      ]
+    },
+    "inputSummary": {
+      "build": {
+        "count": 173,
+        "sha256": "f996ec768944f9bd869e6cee960e25b403891bf7b130b15e2e96f938c04f3051"
+      },
+      "content": {
+        "count": 10146,
+        "sha256": "dec92731a02b8a63262e0cec5451b674c8f78321242a4b5e1d7d47c541da51b7"
+      }
+    }
+  },
+  "environment": {
+    "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+    "platform": "macOS ARM64 native headless",
+    "initial_git_head": "56218a30",
+    "measurement": "ABBA, reference warm-up, no concurrent tests during timing",
+    "known_stderr": "macOS certificate lookup and existing exit resource/ObjectDB warnings; no script errors in successful runs"
+  }
+}

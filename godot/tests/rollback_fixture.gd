@@ -2,9 +2,9 @@ extends RefCounted
 
 const Battle = preload("res://rollback_battle.gd")
 
-static func create(tree: SceneTree, fighters: Array = [], helpers: Array = [], stage: String = "") -> Dictionary:
+static func create(tree: SceneTree, fighters: Array = [], helpers: Array = [], stage: String = "", parent: Node = null) -> Dictionary:
 	var game = load("res://main.tscn").instantiate()
-	tree.root.add_child(game)
+	(parent if parent != null else tree.root).add_child(game)
 	game.set_physics_process(false)
 	game.set_process(false)
 	game.ko_recorded_timers = true

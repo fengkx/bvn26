@@ -8,6 +8,21 @@ var spec: Dictionary = {}
 var _boards: Dictionary = {}
 
 
+func set_presentation_enabled(enabled: bool) -> void:
+	visible = enabled
+	if enabled:
+		remove_meta("suppress_display")
+	else:
+		set_meta("suppress_display", true)
+	for board: Dictionary in _boards.values():
+		var preview: TimelinePreview = board.preview
+		if enabled:
+			preview.remove_meta("suppress_display")
+			preview.materialize_display()
+		else:
+			preview.set_meta("suppress_display", true)
+
+
 func load_spec(path: String) -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
@@ -69,6 +84,8 @@ func _ensure_boards() -> void:
 
 func _make_board(board_pn: int, _mirrored: bool) -> void:
 	var preview := TimelinePreview.new()
+	if has_meta("suppress_display"):
+		preview.set_meta("suppress_display", true)
 	preview.fighter_directory = "res://generated/main/combo"
 	preview.autoplay = false
 	preview.show_collision_shapes = false

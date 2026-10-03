@@ -1,0 +1,2361 @@
+{
+  "date": "2026-10-03",
+  "scope": "Optional prediction checkpoint stride two; field-path encoder candidate rejected",
+  "native_default_abba": [
+    {
+      "candidate": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2098470,
+          "pack_us": 504776,
+          "rebuild_count": 78,
+          "rebuild_us": 3212,
+          "retains_us": 28562,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 119504,
+          "mean": 104565.833333333,
+          "p50": 96209,
+          "p95": 119504,
+          "p99": 119504
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5222018,
+        "receive_us": {
+          "count": 675,
+          "max": 26,
+          "mean": 11.1185185185185,
+          "p50": 11,
+          "p95": 14,
+          "p99": 17
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2150380,
+          "copy_count": 2785,
+          "copy_us": 3357,
+          "load_count": 6,
+          "load_us": 38289,
+          "rebuild_count": 78,
+          "rebuild_us": 3212,
+          "replay_advance_count": 40,
+          "replay_advance_us": 274327,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2608380,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 54278
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 37334,
+          "mean": 13147.231884058,
+          "p50": 14122,
+          "p95": 15360,
+          "p99": 18414
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 133477,
+          "mean": 14865.7270114943,
+          "p50": 14161,
+          "p95": 15496,
+          "p99": 111824
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/stride-engine-0.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch"
+      ]
+    },
+    {
+      "candidate": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 1079687,
+          "pack_us": 253929,
+          "rebuild_count": 78,
+          "rebuild_us": 3725,
+          "retains_us": 1169,
+          "saves": 184
+        },
+        "checkpoint_stride": 2,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 90762,
+          "mean": 83505.1666666667,
+          "p50": 82487,
+          "p95": 90762,
+          "p99": 90762
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 3972713,
+        "receive_us": {
+          "count": 675,
+          "max": 370,
+          "mean": 15.2948148148148,
+          "p50": 12,
+          "p95": 17,
+          "p99": 206
+        },
+        "replayed_frames": 44,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2198601,
+          "copy_count": 1992,
+          "copy_us": 2570,
+          "load_count": 6,
+          "load_us": 41125,
+          "rebuild_count": 78,
+          "rebuild_us": 3725,
+          "replay_advance_count": 44,
+          "replay_advance_us": 304374,
+          "replay_save_count": 18,
+          "save_count": 184,
+          "save_us": 1336329,
+          "saves_skipped_count": 191,
+          "validate_count": 375,
+          "validate_us": 27608
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 32693,
+          "mean": 9879.40289855072,
+          "p50": 8201,
+          "p95": 15454,
+          "p99": 24229
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 105787,
+          "mean": 11271.2959770115,
+          "p50": 8377,
+          "p95": 15862,
+          "p99": 89762
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/stride-engine-1.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--sparse",
+        "--stride-two"
+      ]
+    },
+    {
+      "candidate": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 1057211,
+          "pack_us": 250313,
+          "rebuild_count": 78,
+          "rebuild_us": 3188,
+          "retains_us": 1129,
+          "saves": 184
+        },
+        "checkpoint_stride": 2,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 107460,
+          "mean": 82684.6666666667,
+          "p50": 75014,
+          "p95": 107460,
+          "p99": 107460
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 3888900,
+        "receive_us": {
+          "count": 675,
+          "max": 355,
+          "mean": 14.5955555555556,
+          "p50": 11,
+          "p95": 14,
+          "p99": 193
+        },
+        "replayed_frames": 44,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2148624,
+          "copy_count": 1992,
+          "copy_us": 2486,
+          "load_count": 6,
+          "load_us": 38181,
+          "rebuild_count": 78,
+          "rebuild_us": 3188,
+          "replay_advance_count": 44,
+          "replay_advance_us": 303762,
+          "replay_save_count": 18,
+          "save_count": 184,
+          "save_us": 1310044,
+          "saves_skipped_count": 191,
+          "validate_count": 375,
+          "validate_us": 26950
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 33049,
+          "mean": 9658.60869565217,
+          "p50": 7814,
+          "p95": 14780,
+          "p99": 21243
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 140569,
+          "mean": 11036.5,
+          "p50": 7904,
+          "p95": 15066,
+          "p99": 82709
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/stride-engine-2.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--sparse",
+        "--stride-two"
+      ]
+    },
+    {
+      "candidate": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2210052,
+          "pack_us": 540864,
+          "rebuild_count": 78,
+          "rebuild_us": 3325,
+          "retains_us": 29216,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 121591,
+          "mean": 108026.833333333,
+          "p50": 107699,
+          "p95": 121591,
+          "p99": 121591
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5509228,
+        "receive_us": {
+          "count": 675,
+          "max": 46,
+          "mean": 11.9659259259259,
+          "p50": 12,
+          "p95": 16,
+          "p99": 29
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2271212,
+          "copy_count": 2785,
+          "copy_us": 3619,
+          "load_count": 6,
+          "load_us": 39202,
+          "rebuild_count": 78,
+          "rebuild_us": 3325,
+          "replay_advance_count": 40,
+          "replay_advance_us": 286187,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2756428,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 56151
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 50332,
+          "mean": 13917.9014492754,
+          "p50": 14310,
+          "p95": 17450,
+          "p99": 35243
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 135822,
+          "mean": 15691.8132183908,
+          "p50": 14327,
+          "p95": 19195,
+          "p99": 123276
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/stride-engine-3.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch"
+      ]
+    }
+  ],
+  "native_field_roster_abba": [
+    {
+      "candidate": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2277750,
+          "pack_us": 542551,
+          "rebuild_count": 85,
+          "rebuild_us": 4630,
+          "retains_us": 28659,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 125445,
+          "mean": 106896.0,
+          "p50": 103606,
+          "p95": 125445,
+          "p99": 125445
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "field_roster_synthetic_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 541,
+        "operation_wall_us": 5776158,
+        "receive_us": {
+          "count": 675,
+          "max": 32,
+          "mean": 11.4192592592593,
+          "p50": 11,
+          "p95": 15,
+          "p99": 19
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "4f45a77184aff40ebaba9720ca2578c29fc29cb3fb875ac129902e3f813f4509",
+        "semantic_reference_sha256": "4f45a77184aff40ebaba9720ca2578c29fc29cb3fb875ac129902e3f813f4509",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2359667,
+          "copy_count": 2785,
+          "copy_us": 3466,
+          "load_count": 6,
+          "load_us": 42026,
+          "rebuild_count": 85,
+          "rebuild_us": 4630,
+          "replay_advance_count": 40,
+          "replay_advance_us": 275929,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2825600,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 57017
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 35210,
+          "mean": 14374.2057971014,
+          "p50": 14825,
+          "p95": 17700,
+          "p99": 28497
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 154007,
+          "mean": 16122.9195402299,
+          "p50": 14851,
+          "p95": 18151,
+          "p99": 116858
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/field-engine-0.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--field-roster"
+      ]
+    },
+    {
+      "candidate": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 1145120,
+          "pack_us": 269767,
+          "rebuild_count": 85,
+          "rebuild_us": 4008,
+          "retains_us": 1194,
+          "saves": 184
+        },
+        "checkpoint_stride": 2,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 93693,
+          "mean": 82329.5,
+          "p50": 78329,
+          "p95": 93693,
+          "p99": 93693
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "field_roster_synthetic_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 541,
+        "operation_wall_us": 4349035,
+        "receive_us": {
+          "count": 675,
+          "max": 400,
+          "mean": 15.1422222222222,
+          "p50": 12,
+          "p95": 14,
+          "p99": 217
+        },
+        "replayed_frames": 44,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "4f45a77184aff40ebaba9720ca2578c29fc29cb3fb875ac129902e3f813f4509",
+        "semantic_reference_sha256": "4f45a77184aff40ebaba9720ca2578c29fc29cb3fb875ac129902e3f813f4509",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2386532,
+          "copy_count": 1992,
+          "copy_us": 2470,
+          "load_count": 6,
+          "load_us": 40114,
+          "rebuild_count": 85,
+          "rebuild_us": 4008,
+          "replay_advance_count": 44,
+          "replay_advance_us": 297428,
+          "replay_save_count": 18,
+          "save_count": 184,
+          "save_us": 1417549,
+          "saves_skipped_count": 191,
+          "validate_count": 375,
+          "validate_us": 28549
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 62692,
+          "mean": 10658.8347826087,
+          "p50": 8713,
+          "p95": 16002,
+          "p99": 31048
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 109349,
+          "mean": 12023.2097701149,
+          "p50": 9186,
+          "p95": 16485,
+          "p99": 86400
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/field-engine-1.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--field-roster",
+        "--sparse",
+        "--stride-two"
+      ]
+    },
+    {
+      "candidate": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 1125827,
+          "pack_us": 263653,
+          "rebuild_count": 85,
+          "rebuild_us": 4063,
+          "retains_us": 1196,
+          "saves": 184
+        },
+        "checkpoint_stride": 2,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 93626,
+          "mean": 82448.3333333333,
+          "p50": 78579,
+          "p95": 93626,
+          "p99": 93626
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "field_roster_synthetic_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 541,
+        "operation_wall_us": 4288931,
+        "receive_us": {
+          "count": 675,
+          "max": 417,
+          "mean": 15.2888888888889,
+          "p50": 12,
+          "p95": 15,
+          "p99": 218
+        },
+        "replayed_frames": 44,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "4f45a77184aff40ebaba9720ca2578c29fc29cb3fb875ac129902e3f813f4509",
+        "semantic_reference_sha256": "4f45a77184aff40ebaba9720ca2578c29fc29cb3fb875ac129902e3f813f4509",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2339485,
+          "copy_count": 1992,
+          "copy_us": 2455,
+          "load_count": 6,
+          "load_us": 40393,
+          "rebuild_count": 85,
+          "rebuild_us": 4063,
+          "replay_advance_count": 44,
+          "replay_advance_us": 297930,
+          "replay_save_count": 18,
+          "save_count": 184,
+          "save_us": 1392056,
+          "saves_skipped_count": 191,
+          "validate_count": 375,
+          "validate_us": 28484
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 30903,
+          "mean": 10448.284057971,
+          "p50": 8511,
+          "p95": 16125,
+          "p99": 19312
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 108818,
+          "mean": 11816.7873563218,
+          "p50": 8701,
+          "p95": 16378,
+          "p99": 87082
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/field-engine-2.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--field-roster",
+        "--sparse",
+        "--stride-two"
+      ]
+    },
+    {
+      "candidate": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2261055,
+          "pack_us": 537402,
+          "rebuild_count": 85,
+          "rebuild_us": 4327,
+          "retains_us": 29110,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 126043,
+          "mean": 110143.833333333,
+          "p50": 106069,
+          "p95": 126043,
+          "p99": 126043
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "field_roster_synthetic_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 541,
+        "operation_wall_us": 5765936,
+        "receive_us": {
+          "count": 675,
+          "max": 40,
+          "mean": 11.3762962962963,
+          "p50": 11,
+          "p95": 15,
+          "p99": 22
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "4f45a77184aff40ebaba9720ca2578c29fc29cb3fb875ac129902e3f813f4509",
+        "semantic_reference_sha256": "4f45a77184aff40ebaba9720ca2578c29fc29cb3fb875ac129902e3f813f4509",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2359913,
+          "copy_count": 2785,
+          "copy_us": 3357,
+          "load_count": 6,
+          "load_us": 42004,
+          "rebuild_count": 85,
+          "rebuild_us": 4327,
+          "replay_advance_count": 40,
+          "replay_advance_us": 284393,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2803746,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 57841
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 21545,
+          "mean": 14280.4753623188,
+          "p50": 15039,
+          "p95": 16616,
+          "p99": 19383
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 141378,
+          "mean": 16086.0632183908,
+          "p50": 15078,
+          "p95": 17104,
+          "p99": 121325
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/field-engine-3.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--field-roster"
+      ]
+    }
+  ],
+  "rejected_field_path_abba": [
+    {
+      "candidate": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2084916,
+          "pack_us": 497102,
+          "rebuild_count": 78,
+          "rebuild_us": 3078,
+          "retains_us": 27225,
+          "saves": 371
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 119041,
+          "mean": 101216.666666667,
+          "p50": 96482,
+          "p95": 119041,
+          "p99": 119041
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5177337,
+        "receive_us": {
+          "count": 675,
+          "max": 22,
+          "mean": 10.8903703703704,
+          "p50": 11,
+          "p95": 14,
+          "p99": 16
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2139338,
+          "copy_count": 2785,
+          "copy_us": 3274,
+          "load_count": 6,
+          "load_us": 37507,
+          "rebuild_count": 78,
+          "rebuild_us": 3078,
+          "replay_advance_count": 40,
+          "replay_advance_us": 266446,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2587001,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 54067
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 36840,
+          "mean": 13081.2550724638,
+          "p50": 14072,
+          "p95": 15360,
+          "p99": 17432
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 132838,
+          "mean": 14742.4367816092,
+          "p50": 14099,
+          "p95": 15665,
+          "p99": 110102
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "/private/tmp/bvn-online-hotpath/baseline-godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/engine-0.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch"
+      ]
+    },
+    {
+      "candidate": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2027198,
+          "pack_us": 522633,
+          "rebuild_count": 78,
+          "rebuild_us": 3406,
+          "retains_us": 28670,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 116017,
+          "mean": 103303.0,
+          "p50": 103635,
+          "p95": 116017,
+          "p99": 116017
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5263264,
+        "receive_us": {
+          "count": 675,
+          "max": 392,
+          "mean": 12.1303703703704,
+          "p50": 11,
+          "p95": 15,
+          "p99": 20
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2233706,
+          "copy_count": 2785,
+          "copy_us": 3473,
+          "load_count": 6,
+          "load_us": 40798,
+          "rebuild_count": 78,
+          "rebuild_us": 3406,
+          "replay_advance_count": 40,
+          "replay_advance_us": 277086,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2555226,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 55030
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 36352,
+          "mean": 13283.5594202899,
+          "p50": 13932,
+          "p95": 16542,
+          "p99": 25588
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 132617,
+          "mean": 14981.4540229885,
+          "p50": 13963,
+          "p95": 17780,
+          "p99": 117595
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/engine-1.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch"
+      ]
+    },
+    {
+      "candidate": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2093329,
+          "pack_us": 537647,
+          "rebuild_count": 78,
+          "rebuild_us": 4059,
+          "retains_us": 29393,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 149271,
+          "mean": 113643.333333333,
+          "p50": 111245,
+          "p95": 149271,
+          "p99": 149271
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5434278,
+        "receive_us": {
+          "count": 675,
+          "max": 81,
+          "mean": 11.8148148148148,
+          "p50": 12,
+          "p95": 15,
+          "p99": 19
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2286717,
+          "copy_count": 2785,
+          "copy_us": 3521,
+          "load_count": 6,
+          "load_us": 54696,
+          "rebuild_count": 78,
+          "rebuild_us": 4059,
+          "replay_advance_count": 40,
+          "replay_advance_us": 301552,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2636572,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 56078
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 48246,
+          "mean": 13606.5826086957,
+          "p50": 14010,
+          "p95": 16746,
+          "p99": 38359
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 166087,
+          "mean": 15479.566091954,
+          "p50": 14031,
+          "p95": 17686,
+          "p99": 126976
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/engine-2.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch"
+      ]
+    },
+    {
+      "candidate": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2156737,
+          "pack_us": 516410,
+          "rebuild_count": 78,
+          "rebuild_us": 3238,
+          "retains_us": 28473,
+          "saves": 371
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 126135,
+          "mean": 104690.0,
+          "p50": 98537,
+          "p95": 126135,
+          "p99": 126135
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5361930,
+        "receive_us": {
+          "count": 675,
+          "max": 28,
+          "mean": 11.4340740740741,
+          "p50": 12,
+          "p95": 15,
+          "p99": 21
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2215889,
+          "copy_count": 2785,
+          "copy_us": 3464,
+          "load_count": 6,
+          "load_us": 38899,
+          "rebuild_count": 78,
+          "rebuild_us": 3238,
+          "replay_advance_count": 40,
+          "replay_advance_us": 275465,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2678455,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 55557
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 37588,
+          "mean": 13549.2753623188,
+          "p50": 14521,
+          "p95": 15864,
+          "p99": 18150
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 141123,
+          "mean": 15267.8534482759,
+          "p50": 14560,
+          "p95": 16381,
+          "p99": 112226
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "/private/tmp/bvn-online-hotpath/baseline-godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/engine-3.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch"
+      ]
+    }
+  ],
+  "encoder_raw_graph_comparison": [
+    {
+      "label": "baseline",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "/private/tmp/bvn-online-hotpath/baseline-godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/capture-engine.log",
+        "-s",
+        "res://tests/battle_checkpoint_graph_capture.gd",
+        "--",
+        "/private/tmp/bvn-online-hotpath/baseline.tape"
+      ],
+      "sha256": "d4d481fb02ba34f943b18a994131d87e159fa10eb2491b20ccac525ade1c54e9",
+      "bytes": 155530838
+    },
+    {
+      "label": "candidate",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/capture-engine.log",
+        "-s",
+        "res://tests/battle_checkpoint_graph_capture.gd",
+        "--",
+        "/private/tmp/bvn-online-hotpath/candidate.tape"
+      ],
+      "sha256": "d4d481fb02ba34f943b18a994131d87e159fa10eb2491b20ccac525ade1c54e9",
+      "bytes": 155530838
+    }
+  ],
+  "roster_checks": [
+    {
+      "name": "rollback_roster_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_ROSTER_CASE_OK fighter=日番谷 helper=鼬 map=现世 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=恋次 helper=魂 map=流魂街 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=露其雅 helper=我爱罗 map=双极 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=一护 helper=松本 map=静涎亭 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=鸣人 helper=鼬 map=尸魂界通道 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=樱 helper=魂 map=木叶村 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=佐助 helper=我爱罗 map=温泉 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=卡卡西 helper=松本 map=火影瀑布 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=白哉 helper=鼬 map=楼顶 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=小李 helper=魂 map=宇智波村 checkpoints=8",
+        "ROLLBACK_ROSTER_CASE_OK fighter=石田 helper=我爱罗 map=现世 checkpoints=8",
+        "ROLLBACK_ROSTER_SMOKE_OK fighters=11 helpers=4 maps=10"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_roster_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_roster_smoke.log",
+        "-s",
+        "res://tests/rollback_roster_smoke.gd"
+      ],
+      "log_sha256": "cba7c9b7cc35beeb5beb465fa3cb45a270f2b1226b645a715295ef98e92e1f11"
+    },
+    {
+      "name": "rollback_round_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_ROUND_CASE_OK terminal=false checkpoints=23 frames=600",
+        "ROLLBACK_ROUND_CASE_OK terminal=true checkpoints=13 frames=396",
+        "ROLLBACK_ROUND_SMOKE_OK"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_round_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_round_smoke.log",
+        "-s",
+        "res://tests/rollback_round_smoke.gd"
+      ],
+      "log_sha256": "b90890b9b3466a6270255302786206943ba2e38f7a4130f1248e2ed3900c7c25"
+    },
+    {
+      "name": "controller_checkpoint_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "CONTROLLER_CHECKPOINT_SMOKE_OK generated_locals=restored projectile=recreated pending_rename=rebound registry=restored"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-controller_checkpoint_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-controller_checkpoint_smoke.log",
+        "-s",
+        "res://tests/controller_checkpoint_smoke.gd"
+      ],
+      "log_sha256": "75655b8142344480b70c4fbe89bdb7e8c2fa749d68c889bae528fc99a30115c1"
+    },
+    {
+      "name": "timeout_checkpoint_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "TIMEOUT_CHECKPOINT_SMOKE_OK targets=rebound nested_ids=restored invalid=atomic live=rejected"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-timeout_checkpoint_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-timeout_checkpoint_smoke.log",
+        "-s",
+        "res://tests/timeout_checkpoint_smoke.gd"
+      ],
+      "log_sha256": "c86a489e8cbc294c9f4d07cbca1aa04c5c15bfaa75ded53d15571e6c59379340"
+    }
+  ],
+  "baseline_encoder_sha256": "28f3f70470a85f6aaa48ec64013299acc1e7407d3cc97911a70df4f04c76b6ff",
+  "current_encoder_sha256": "28f3f70470a85f6aaa48ec64013299acc1e7407d3cc97911a70df4f04c76b6ff",
+  "limitations": [
+    "Native macOS ARM64 headless, Godot 4.7.2; not browser FPS",
+    "Sparse saving default remains off; stride default remains one",
+    "Field-roster uses synthetic inputs, not a reconstructed field recording",
+    "No claim of resolving the nine-second super freeze",
+    "No commit, push or deployment"
+  ],
+  "commands": {
+    "default_abba": "python3 /private/tmp/bvn-online-hotpath/stride.py",
+    "field_roster_abba": "python3 /private/tmp/bvn-online-hotpath/field.py",
+    "graph_bytes": "python3 /private/tmp/bvn-online-hotpath/capture.py",
+    "paired": "python3 /private/tmp/bvn-online-hotpath/check.py"
+  },
+  "native_default_abba_summary": {
+    "baseline_mean_us": 5365623.0,
+    "candidate_mean_us": 3930806.5,
+    "improvement_percent": 26.740911540001978,
+    "baseline_worst_correction_us": 121591,
+    "candidate_worst_correction_us": 107460
+  },
+  "native_field_roster_abba_summary": {
+    "baseline_mean_us": 5771047.0,
+    "candidate_mean_us": 4318983.0,
+    "improvement_percent": 25.161188255787902,
+    "baseline_worst_correction_us": 126043,
+    "candidate_worst_correction_us": 93693
+  },
+  "final_godot_checks": [
+    {
+      "name": "rollback_checkpoint_stride_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_CHECKPOINT_STRIDE_SMOKE_OK orders=3 odd_frontier=true full_state_equal=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_checkpoint_stride_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_checkpoint_stride_smoke.log",
+        "-s",
+        "res://tests/rollback_checkpoint_stride_smoke.gd"
+      ],
+      "log_sha256": "072be07b7fe1c5287d31a53ca0890d683814c7b2ee899aaac22cb0f10ffce3ce"
+    },
+    {
+      "name": "rollback_sparse_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_SPARSE_SMOKE_OK frames=126 exact_state=true baseline_saves=133 sparse_saves=28 stale_snapshots_removed=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_sparse_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_sparse_smoke.log",
+        "-s",
+        "res://tests/rollback_sparse_smoke.gd"
+      ],
+      "log_sha256": "96a0c5916e89785e6d39bdb91a869a7cc37cfe8f8171a223a8a9a37c4e246adb"
+    },
+    {
+      "name": "online_sparse_recovery_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_SPARSE_RECOVERY_SMOKE_OK confirmed_60_59_compares_30=true mixed_policies=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_sparse_recovery_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_sparse_recovery_smoke.log",
+        "-s",
+        "res://tests/online_sparse_recovery_smoke.gd"
+      ],
+      "log_sha256": "699c9cf943c1f5ee59d44f1e0164454956728091ef413c6c1a4c7933ac4fd4cd"
+    },
+    {
+      "name": "rollback_replay_hooks_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_REPLAY_HOOKS_SMOKE_OK correction_state_equal=true replay_diagnostics_tagged=true predicted_events_retained=true failure_cleanup=8"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_replay_hooks_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-rollback_replay_hooks_smoke.log",
+        "-s",
+        "res://tests/rollback_replay_hooks_smoke.gd"
+      ],
+      "log_sha256": "656c0c23af172068fe2b39784d96d5d5d16073a4e9505d2644c8f0918998ec57"
+    },
+    {
+      "name": "online_performance_diagnostics_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_PERFORMANCE_DIAGNOSTICS_OK bounded_samples=true window_reset=true exclusive_waits=true rollback_work=true sync_metrics=true optional_diagnostics=true teardown=true snapshot_isolation=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_performance_diagnostics_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_performance_diagnostics_smoke.log",
+        "-s",
+        "res://tests/online_performance_diagnostics_smoke.gd"
+      ],
+      "log_sha256": "48ebce099d837fa18f398e735431df097db6f0fcda6941d5d01445acd1d24e87"
+    },
+    {
+      "name": "online_timer_round_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_TIMER_ROUND_SMOKE_OK ko_to_nextfight=true persistent_countdown=true round=2 replayed=37_frames"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_timer_round_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_timer_round_smoke.log",
+        "-s",
+        "res://tests/online_timer_round_smoke.gd"
+      ],
+      "log_sha256": "5c093eae5b77403dc35872cb47883228d7cda164758f5736b93db4c9a619147f"
+    },
+    {
+      "name": "online_clock_sample_bounds_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_CLOCK_SAMPLE_BOUNDS_OK valid=true retransmit_idempotent=true conflict_rejected=true old_and_future_bounds=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_clock_sample_bounds_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_clock_sample_bounds_smoke.log",
+        "-s",
+        "res://tests/online_clock_sample_bounds_smoke.gd"
+      ],
+      "log_sha256": "6b92bf3e33c659178f1dacc92e0c97012b77545068bc83522d764a12179f58e3"
+    },
+    {
+      "name": "online_match_start_cancel_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_START_CANCEL_OK close_during_refresh=true close_during_ice=true pending_command_settled_before_abort=true live_epoch_abort=true retry_after_unconfirmed_abort=true uncertain_abort_same_request=true terminal_epoch_no_abort=true no_peer_ready=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_match_start_cancel_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_match_start_cancel_smoke.log",
+        "-s",
+        "res://tests/online_match_start_cancel_smoke.gd"
+      ],
+      "log_sha256": "31cba0b00d69b9d3b73848c887fe6ccce1afffb57c39d14a1a84486b79612a47"
+    },
+    {
+      "name": "online_match_service_terminal_smoke",
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_SERVICE_TERMINAL_OK no_winner_allowlist=true epoch_scoped=true room_unavailable=true rejected_abort_and_result_settle=true transient_not_terminal=true"
+      ],
+      "log": "/private/tmp/bvn-online-20261003/checked-online_match_service_terminal_smoke.log",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-online_match_service_terminal_smoke.log",
+        "-s",
+        "res://tests/online_match_service_terminal_smoke.gd"
+      ],
+      "log_sha256": "fb7e1e7656834c2c644b5f59a9384286fac429f5463b39ef1eefd78d56a91fcb"
+    }
+  ],
+  "paired_state_checks": [
+    {
+      "name": "rollback_batched_battle_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/check-engine.log",
+        "-s",
+        "res://tests/rollback_batched_battle_smoke.gd",
+        "--",
+        "--sparse",
+        "--stride-two"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_BATCHED_BATTLE_SMOKE_OK frames=330 retained_graphs=1524 immediate_corrections=6 batch_corrections=6 immediate_replayed=40 batch_replayed=44"
+      ]
+    },
+    {
+      "name": "online_match_pair_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/check-engine.log",
+        "-s",
+        "res://tests/online_match_pair_smoke.gd",
+        "--",
+        "--sparse",
+        "--stride-two"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_PAIR_INITIAL_OK hash=925ef6e0610b139f7ee60a32af0c10e5908ef5daf917f537f7d89b9491590d53 local_preferences_diverge=true",
+        "ONLINE_MATCH_PAIR_STARTED_OK",
+        "ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=15 p1_rollback_count=1 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_INTRO_SKIP_ORDERED_OK target=17",
+        "ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=327 hashes=30,60,90 real_hit=true helper_activity=false",
+        "ONLINE_MATCH_PAIR_PAUSE_BARRIER_OK frame=329 equal_hash=true",
+        "ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=330 equal_hash=true",
+        "ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true",
+        "ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null",
+        "ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=925ef6e0610b139f7ee60a32af0c10e5908ef5daf917f537f7d89b9491590d53 frame=331 p1_rollback_count=4 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_SOURCE_KO_FIXTURE_OK fighter_check_dead=true",
+        "ONLINE_MATCH_PAIR_RESULT_COMMIT_OK source_ko=true p1_waited_for_peer=true room_waited_for_both=true winner=1",
+        "ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true"
+      ]
+    },
+    {
+      "name": "rollback_batched_battle_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-hotpath/check-engine.log",
+        "-s",
+        "res://tests/rollback_batched_battle_smoke.gd",
+        "--",
+        "--sparse",
+        "--stride-two",
+        "--field-roster"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_BATCHED_BATTLE_SMOKE_OK frames=330 retained_graphs=1524 immediate_corrections=6 batch_corrections=6 immediate_replayed=40 batch_replayed=44"
+      ]
+    }
+  ],
+  "simulator": [
+    {
+      "scenario": "lan",
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9981.38466666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          2987.242,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1578000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 1409242,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 460652,
+            "copy_count": 2171,
+            "copy_us": 3185,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 149,
+            "save_us": 1105499,
+            "saves_skipped_count": 151,
+            "validate_count": 298,
+            "validate_us": 30714
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 437120,
+            "copy_count": 1828,
+            "copy_us": 2304,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 67928,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1869
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate_not_browser_fps"
+    },
+    {
+      "scenario": "lossy",
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9997.18866666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          6054.607,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2993700,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 3060907,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 438511,
+            "copy_count": 2171,
+            "copy_us": 3225,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 149,
+            "save_us": 1086906,
+            "saves_skipped_count": 151,
+            "validate_count": 298,
+            "validate_us": 30663
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 426156,
+            "copy_count": 1828,
+            "copy_us": 2359,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 67743,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1858
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate_not_browser_fps"
+    },
+    {
+      "scenario": "turn100",
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9997.18866666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          7614.814,
+          1390.664
+        ],
+        "callerTicks": [
+          252,
+          300
+        ],
+        "confirmed": [
+          250,
+          252
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          252,
+          250
+        ],
+        "logicalRateHz": [
+          25.2,
+          25.0
+        ],
+        "ticksMergedDuringBusy": [
+          48,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2514708,
+            "copy": 0,
+            "load": 772485,
+            "rebuild": 0,
+            "replay_advance": 938026,
+            "save": 3389595,
+            "validate": 0
+          },
+          {
+            "advance": 1315000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 75664,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 252,
+            "advance_us": 397043,
+            "copy_count": 2160,
+            "copy_us": 3436,
+            "load_count": 35,
+            "load_us": 234177,
+            "rebuild_count": 490,
+            "rebuild_us": 32081,
+            "replay_advance_count": 94,
+            "replay_advance_us": 138067,
+            "replay_save_count": 39,
+            "save_count": 165,
+            "save_us": 1305027,
+            "saves_skipped_count": 181,
+            "validate_count": 365,
+            "validate_us": 40443
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 250,
+            "advance_us": 348068,
+            "copy_count": 1530,
+            "copy_us": 2053,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 8,
+            "save_us": 62441,
+            "saves_skipped_count": 242,
+            "validate_count": 16,
+            "validate_us": 1688
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate_not_browser_fps"
+    },
+    {
+      "scenario": "turn40",
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9981.38466666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          2987.242,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1578000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 1409242,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 441116,
+            "copy_count": 2171,
+            "copy_us": 3175,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 149,
+            "save_us": 1088934,
+            "saves_skipped_count": 151,
+            "validate_count": 298,
+            "validate_us": 30396
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 429267,
+            "copy_count": 1828,
+            "copy_us": 2317,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 66700,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1809
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate_not_browser_fps"
+    },
+    {
+      "scenario": "turn40-fixedskip",
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9948.05133333334,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          2024.35,
+          1390.664
+        ],
+        "callerTicks": [
+          250,
+          300
+        ],
+        "confirmed": [
+          250,
+          252
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          50,
+          0
+        ],
+        "frontier": [
+          250,
+          250
+        ],
+        "logicalRateHz": [
+          25.0,
+          25.0
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 1315000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 709350,
+            "validate": 0
+          },
+          {
+            "advance": 1315000,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 75664,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 250,
+            "advance_us": 347863,
+            "copy_count": 1695,
+            "copy_us": 2303,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 75,
+            "save_us": 546723,
+            "saves_skipped_count": 175,
+            "validate_count": 150,
+            "validate_us": 15215
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 250,
+            "advance_us": 331756,
+            "copy_count": 1530,
+            "copy_us": 1930,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 8,
+            "save_us": 58597,
+            "saves_skipped_count": 242,
+            "validate_count": 16,
+            "validate_us": 1621
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate_not_browser_fps"
+    },
+    {
+      "scenario": "turn40-slowhost",
+      "ok": true,
+      "acceptance": {
+        "commonHashesEqual": true,
+        "enoughCommonHashes": true,
+        "minimumCommonHashes": 3,
+        "reliableConservedAndOrdered": true
+      },
+      "virtual": {
+        "busyUntilMs": [
+          9997.18866666667,
+          9971.92666666667
+        ],
+        "busyWorkMs": [
+          6054.607,
+          1657.862
+        ],
+        "callerTicks": [
+          300,
+          300
+        ],
+        "confirmed": [
+          300,
+          301
+        ],
+        "durationMs": 10000,
+        "fixedSkippedTicks": [
+          0,
+          0
+        ],
+        "frontier": [
+          300,
+          299
+        ],
+        "logicalRateHz": [
+          30.0,
+          29.9
+        ],
+        "ticksMergedDuringBusy": [
+          0,
+          0
+        ],
+        "workCostUsByKind": [
+          {
+            "advance": 2993700,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 3060907,
+            "validate": 0
+          },
+          {
+            "advance": 1572740,
+            "copy": 0,
+            "load": 0,
+            "rebuild": 0,
+            "replay_advance": 0,
+            "save": 85122,
+            "validate": 0
+          }
+        ]
+      },
+      "profileDelta": [
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 300,
+            "advance_us": 452163,
+            "copy_count": 2171,
+            "copy_us": 3230,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 149,
+            "save_us": 1107685,
+            "saves_skipped_count": 151,
+            "validate_count": 298,
+            "validate_us": 30882
+          }
+        },
+        {
+          "available": true,
+          "delta": {
+            "advance_count": 299,
+            "advance_us": 440146,
+            "copy_count": 1828,
+            "copy_us": 2378,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 9,
+            "save_us": 70875,
+            "saves_skipped_count": 290,
+            "validate_count": 18,
+            "validate_us": 1865
+          }
+        }
+      ],
+      "cost_model_status": "provisional_estimate_not_browser_fps"
+    }
+  ],
+  "source_sha256": {
+    "godot/rollback_session.gd": "d43b7b83bdde9124a40d1252fad54a5457c689d2dccdc1d4f023568792a97f9d",
+    "godot/online_match.gd": "92f18e398f6bee4e600e68aa1c0d6d922485086c779e29429517d10652dd10f1",
+    "godot/battle_checkpoint.gd": "28f3f70470a85f6aaa48ec64013299acc1e7407d3cc97911a70df4f04c76b6ff",
+    "godot/tests/rollback_checkpoint_stride_smoke.gd": "2a2b798153d118f73e322c85fa14f83400589b8e7c5af3fcb8b52696f32927b2",
+    "godot/tests/rollback_delayed_input_profile.gd": "3c3dbf3180f0d53bf1f564e71986370f25813b06e6a081ccb8d455a311efbed9",
+    "godot/tests/rollback_batched_battle_smoke.gd": "a2326eb61397de8003f02b9a8722323fec1b619020849191b88e9716c7727eba",
+    "godot/tests/online_match_pair_smoke.gd": "9f793f982b6665c3524e1cc7bc2376c7c6a09a6f522435ec45736e2deecd2c91",
+    "godot/tests/online_lag_simulator.gd": "73b2e8d6a93ceb9eddbb54482b7c8c9f43d8e3a5ba16bd9c5fe45c0a0566d48d"
+  },
+  "log_sha256": {
+    "/private/tmp/bvn-online-hotpath/field-3.log": "e4ab76af2579d09a8e152f7c6bbe873031ccabb3c3477c8c4605a2b83acc28a1",
+    "/private/tmp/bvn-online-hotpath/field-2.log": "190cd52b0a92bcf0b7070067f93d6594c50e46ed838d7d936dc14c03a3daf7a3",
+    "/private/tmp/bvn-online-hotpath/probe-engine.log": "0af026f4a07f2873d546aeb15597cf969cf8a2fe952df2cec124b01d67758aae",
+    "/private/tmp/bvn-online-hotpath/field-0.log": "0576204c20623866d6a227861342efe96c9f0cc9ad840d7f77b523a4ae2eef61",
+    "/private/tmp/bvn-online-hotpath/field-1.log": "e5a03b7f17cc97719f4e3ba77d37e79e3a33f528e650a8e640bed107dda07bc5",
+    "/private/tmp/bvn-online-hotpath/simulator.log": "b39a22ce58c810426634e6a1fa17bb2b6e249bac96c3c25b124d1bb93a6a1995",
+    "/private/tmp/bvn-online-hotpath/engine-3.log": "a6bc3f3d1dcbc88e6a60bd64457a728efa57c70af05e5df385d9f7e596f52d18",
+    "/private/tmp/bvn-online-hotpath/check-engine.log": "12186982b66fe8bdc512f54ba32dba5953fa189b7a27198be68fb13a5126e437",
+    "/private/tmp/bvn-online-hotpath/engine-2.log": "735279a28d0d20c47d7a3ee167c80b8443d395f019769f1d26d6412599d00398",
+    "/private/tmp/bvn-online-hotpath/probe.log": "0af026f4a07f2873d546aeb15597cf969cf8a2fe952df2cec124b01d67758aae",
+    "/private/tmp/bvn-online-hotpath/engine-0.log": "a31702f2f72779324f34738a32fa9a802fdf0250ee456bc573668f28cc87f423",
+    "/private/tmp/bvn-online-hotpath/capture-engine.log": "eea0ef4a4db913691949cc0942413a492fa95d3b301d67c05f6de8478db74b00",
+    "/private/tmp/bvn-online-hotpath/engine-1.log": "85b5dc5f77a907523521dbbc40b82ece54938a59c07544be92b4e5e15bdda753",
+    "/private/tmp/bvn-online-hotpath/check-1-online_match_pair_smoke.log": "58f049613ac26552088019e54fa5694961a548d79ed2773dc668ecc3435d55a8",
+    "/private/tmp/bvn-online-hotpath/stride-2.log": "e1a69be13fa0a928e5cd51f158b39c00b607cd12892ae0660e01a3a839e2f295",
+    "/private/tmp/bvn-online-hotpath/check-0-rollback_batched_battle_smoke.log": "e3281554cf671f17e81acc99e2a43e3a2b9b4818cccfbb1fce310af5c86c6e5b",
+    "/private/tmp/bvn-online-hotpath/stride-3.log": "771f0cd5178082d0cc402b7a873b50d0a480bdf6145a02ebb4b4d0019e93c2cf",
+    "/private/tmp/bvn-online-hotpath/stride-1.log": "5cf73783b404bb55256538761349b3abfac11476d6d523da9ff235606b25cd73",
+    "/private/tmp/bvn-online-hotpath/capture-candidate.log": "3c59d12dc60d0c8b4dd319f3db7c96eef33e260269765d0025688a825e2a176c",
+    "/private/tmp/bvn-online-hotpath/capture-baseline.log": "eea0ef4a4db913691949cc0942413a492fa95d3b301d67c05f6de8478db74b00",
+    "/private/tmp/bvn-online-hotpath/stride-0.log": "2ea61eff054368a2049071e50d444acb0e275367a1d1d243b223a2ff5924b2e6",
+    "/private/tmp/bvn-online-hotpath/check-online_match_pair_smoke.log": "81b2bdc5d7e4d850f440661992d6ce33380543aa401e710fb5994131bddbceda",
+    "/private/tmp/bvn-online-hotpath/field-engine-1.log": "e5a03b7f17cc97719f4e3ba77d37e79e3a33f528e650a8e640bed107dda07bc5",
+    "/private/tmp/bvn-online-hotpath/stride-engine-0.log": "2ea61eff054368a2049071e50d444acb0e275367a1d1d243b223a2ff5924b2e6",
+    "/private/tmp/bvn-online-hotpath/stride-engine-1.log": "5cf73783b404bb55256538761349b3abfac11476d6d523da9ff235606b25cd73",
+    "/private/tmp/bvn-online-hotpath/field-engine-0.log": "0576204c20623866d6a227861342efe96c9f0cc9ad840d7f77b523a4ae2eef61",
+    "/private/tmp/bvn-online-hotpath/field-engine-2.log": "190cd52b0a92bcf0b7070067f93d6594c50e46ed838d7d936dc14c03a3daf7a3",
+    "/private/tmp/bvn-online-hotpath/stride-engine-3.log": "771f0cd5178082d0cc402b7a873b50d0a480bdf6145a02ebb4b4d0019e93c2cf",
+    "/private/tmp/bvn-online-hotpath/check-2-rollback_batched_battle_smoke.log": "12186982b66fe8bdc512f54ba32dba5953fa189b7a27198be68fb13a5126e437",
+    "/private/tmp/bvn-online-hotpath/stride-engine-2.log": "e1a69be13fa0a928e5cd51f158b39c00b607cd12892ae0660e01a3a839e2f295",
+    "/private/tmp/bvn-online-hotpath/field-engine-3.log": "e4ab76af2579d09a8e152f7c6bbe873031ccabb3c3477c8c4605a2b83acc28a1",
+    "/private/tmp/bvn-online-hotpath/simulator-engine.log": "542dfd3d826ec02691b5bd079c3280af655121af5554b0cef353f383e22a6048",
+    "/private/tmp/bvn-online-hotpath/abba-0.log": "a31702f2f72779324f34738a32fa9a802fdf0250ee456bc573668f28cc87f423",
+    "/private/tmp/bvn-online-hotpath/abba-1.log": "85b5dc5f77a907523521dbbc40b82ece54938a59c07544be92b4e5e15bdda753",
+    "/private/tmp/bvn-online-hotpath/check-rollback_batched_battle_smoke.log": "e3281554cf671f17e81acc99e2a43e3a2b9b4818cccfbb1fce310af5c86c6e5b",
+    "/private/tmp/bvn-online-hotpath/abba-3.log": "a6bc3f3d1dcbc88e6a60bd64457a728efa57c70af05e5df385d9f7e596f52d18",
+    "/private/tmp/bvn-online-hotpath/abba-2.log": "735279a28d0d20c47d7a3ee167c80b8443d395f019769f1d26d6412599d00398"
+  },
+  "checks": {
+    "verify": "passed, 75 assets / 74 dependencies / 8853 exports",
+    "handoff": "passed, 18 documents / 208 links / 31 tasks",
+    "contracts": "passed, 6 schemas and 6 examples; not gameplay acceptance",
+    "online_manifest": "passed",
+    "manifest_unit_tests": "7 passed",
+    "diagnostics_analyzer": "9 passed, 2 skipped",
+    "locked_game_scripts": "unchanged",
+    "diff_check": "passed"
+  },
+  "manifest": {
+    "schemaVersion": 1,
+    "engine": "4.7.2-stable",
+    "compatibility": {
+      "protocol": 1,
+      "build": "7383979189bb34e0010de5514df8af8ee66604b8cd0c6bac2d91df300d046034",
+      "content": "dec92731a02b8a63262e0cec5451b674c8f78321242a4b5e1d7d47c541da51b7"
+    },
+    "roster": {
+      "fighters": [
+        "byakuya",
+        "kakashi",
+        "lee",
+        "minren",
+        "renji",
+        "rifagu",
+        "rukia",
+        "sakura",
+        "sasuke",
+        "yihu",
+        "yulong"
+      ],
+      "helpers": [
+        "jinye",
+        "kon",
+        "woailuo",
+        "you"
+      ],
+      "stages": [
+        "双极",
+        "宇智波村",
+        "尸魂界通道",
+        "木叶村",
+        "楼顶",
+        "流魂街",
+        "温泉",
+        "火影瀑布",
+        "现世",
+        "静涎亭"
+      ]
+    },
+    "inputSummary": {
+      "build": {
+        "count": 173,
+        "sha256": "7383979189bb34e0010de5514df8af8ee66604b8cd0c6bac2d91df300d046034"
+      },
+      "content": {
+        "count": 10146,
+        "sha256": "dec92731a02b8a63262e0cec5451b674c8f78321242a4b5e1d7d47c541da51b7"
+      }
+    }
+  }
+}

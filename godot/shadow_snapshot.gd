@@ -35,6 +35,10 @@ static func should_capture(actor: FighterRuntime) -> bool:
 	return true
 
 func capture(actor: FighterRuntime, rgb: Dictionary, callbacks: SourceCallbackRegistry, tick: int) -> void:
+	# Source BitmapData captures this frame, even inside a correction batch.
+	var checkpoint: Variant = preload("res://rollback_lifetime.gd").owner(actor)
+	if checkpoint != null:
+		checkpoint.flush_display(actor)
 	set_meta("source_shadow", true)
 	registry = callbacks
 	captured_frame = actor.current_source_frame()

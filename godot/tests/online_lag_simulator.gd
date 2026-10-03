@@ -246,6 +246,7 @@ func _run() -> void:
 func _parse_args() -> Dictionary:
 	var result := {"scenario": "lan", "all": false, "self_test": false, "duration_ms": -1, "seed": -1, "record": ""}
 	for argument in OS.get_cmdline_user_args():
+		if argument in ["--sparse", "--pacing", "--stride-two"]: continue
 		if argument == "--all":
 			result.all = true
 		elif argument == "--self-test":
@@ -373,6 +374,10 @@ func _run_scenario(scenario: Dictionary) -> Dictionary:
 	root.add_child(second_transport)
 	var first_match = Coordinator.new()
 	var second_match = Coordinator.new()
+	for coordinator in [first_match, second_match]:
+		coordinator.sparse_saves = OS.get_cmdline_user_args().has("--sparse")
+		coordinator.checkpoint_stride = 2 if OS.get_cmdline_user_args().has("--stride-two") else 1
+		coordinator.host_pacing = OS.get_cmdline_user_args().has("--pacing")
 	var first_error: String = first_match.configure(first_game, setup, "p1", first_room, first_transport)
 	var second_error: String = second_match.configure(second_game, setup, "p2", second_room, second_transport)
 	if not first_error.is_empty() or not second_error.is_empty():

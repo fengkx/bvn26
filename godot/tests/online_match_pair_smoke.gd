@@ -54,10 +54,18 @@ func _run() -> void:
 	root.add_child(second_peer)
 	var first_match := Coordinator.new()
 	var second_match := Coordinator.new()
+	if OS.get_cmdline_user_args().has("--sparse"):
+		first_match.sparse_saves = true
+		second_match.sparse_saves = true
+		if OS.get_cmdline_user_args().has("--stride-two"):
+			first_match.checkpoint_stride = 2
+			second_match.checkpoint_stride = 2
 	var first_error: String = first_match.configure(first, setup, "p1", first_room, first_peer)
 	var second_error: String = second_match.configure(second, setup, "p2", second_room, second_peer)
 	assert(first_error.is_empty(), "P1 configure failed: " + first_error)
 	assert(second_error.is_empty(), "P2 configure failed: " + second_error)
+	assert(not first.combo_hud.visible and not second.combo_hud.visible)
+	assert(first.diagnostics.enabled and second.diagnostics.enabled)
 	var first_state: Dictionary = first_match.save_state()
 	var second_state: Dictionary = second_match.save_state()
 	assert(not first_state.has("error"), str(first_state))
@@ -112,6 +120,8 @@ func _run() -> void:
 	assert(not hub.held_from_p2.is_empty(), "Fake network did not hold P2 messages")
 	hub.release_p2_messages()
 	assert(first_match.rollback.rollback_count > 0, "Late P2 input did not trigger rollback correction")
+	var bootstrap_corrections: int = first_match.rollback.rollback_count
+	assert(bootstrap_corrections == 1, "One input drain must correct once")
 	for tick in range(13, 19):
 		var tick_error := _step_pair(first_match, second_match, time_origin + tick * 33, neutral, neutral)
 		assert(tick_error.is_empty(), tick_error)
@@ -170,7 +180,7 @@ func _run() -> void:
 		await process_frame
 	assert(intro_was_completed and combat_start_tick >= 0 and not second.battle_intro.active,
 		"Ordered intro skip did not finish the intro on both peers")
-	assert(first_match.rollback.rollback_count > 2, "Delayed combat input did not cause an additional rollback")
+	assert(first_match.rollback.rollback_count > bootstrap_corrections, "Delayed combat input did not cause an additional rollback")
 	assert(late_combat_input_released, "Delayed combat input was not released")
 	assert(first.naruto.health < p1_health_before_fight or first.ichigo.health < p2_health_before_fight,
 		"Combat inputs did not produce a real hit or health change")
@@ -280,6 +290,8 @@ func _run() -> void:
 	])
 	first_match.close()
 	second_match.close()
+	assert(not first.combo_hud.has_meta("suppress_display"))
+	assert(not second.combo_hud.has_meta("suppress_display"))
 	first_room.free()
 	first_peer.free()
 	second_room.free()

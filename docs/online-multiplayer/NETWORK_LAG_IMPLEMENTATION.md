@@ -5,8 +5,12 @@ Status: In progress, updated 2026-09-29; design revised the same day after revie
 receive, simulator cost model, order). LAG-01–03 have implementation and
 local-test evidence. LAG-01's final export and local IAB log identity check pass.
 LAG-04 has a simulator implementation, but its observed slow-host result does
-not reproduce the field pattern and its cost model is not calibrated. LAG-11/10
-and later optimization packages have not started. No two-machine field or
+not reproduce the field pattern and its cost model is not calibrated.
+2026-10-03: LAG-11 now has transport-drain batching and local correctness/performance
+evidence; paired Web/TURN acceptance remains pending. LAG-10 has an opt-in sparse
+save implementation and LAG-20 has an opt-in pacing experiment; see
+[local evidence](../../evidence/online/network-lag/lag10-20-local.md). Later packages
+have not started. No two-machine field or
 deployed-page browser-log acceptance gate has passed. This document
 turns the diagnosis in [NETWORK_LAG_PLAN.md](NETWORK_LAG_PLAN.md) into work
 packages with files, designs, tests, evidence and completion checks. A local
@@ -39,10 +43,11 @@ proposed in the diagnosis:
    as a predicted frame. Skipping saves for already-confirmed frames helps the
    guest immediately but helps the host only after host pacing (LAG-20) keeps it
    close enough to the guest that most frames are confirmed when advanced.
-3. **Save policy, batching and host pacing are local-only.** They do not change
-   the simulated state or the wire protocol, so each peer can toggle them
-   independently for A/B runs in one build. Only the transport change (LAG-30)
-   requires both peers on the same protocol.
+3. **Save policy, batching and host pacing are locally selectable.** Their toggles do not change
+   the state representation, so each peer can toggle them independently within
+   one build. Sparse recovery adds a mandatory hashFloor field and compares
+   periodic checkpoints; mixed builds must be rejected by the manifest. LAG-30
+   will also change the transport protocol.
 4. **The paired fake network cannot reproduce this.** `FakeHub` in
    `godot/tests/online_match_pair_smoke.gd` delivers or holds messages; it has no
    latency, jitter, loss or slow-peer model. A deterministic simulator (LAG-04)
@@ -67,10 +72,10 @@ proposed in the diagnosis:
 | LAG-02 | Split performance counters and sync metrics | — | 1–1.5 d | Implemented; local smoke/analyzer tests pass; paired field measurement pending |
 | LAG-03 | Replay-silent console and diagnostics | — | 0.5 d | Implemented; replay-hook smoke passes; paired field measurement pending |
 | LAG-04 | Deterministic latency/loss/cost-model simulator | LAG-02 (cost constants) | 2.5–3.5 d | Implemented; slow-host validation/cost calibration pending |
-| LAG-11 | One correction per message batch | LAG-02, LAG-04 | 2–3 d | Not started |
-| LAG-10 | Sparse checkpoint saves | LAG-11 | 3–4 d | Not started |
-| LAG-12 | Measured hot-path trimming | LAG-02 field data | 1 d | Not started |
-| LAG-20 | Host pacing by frame advantage (experimental flag) | LAG-02, LAG-04 | 1.5–2 d | Not started |
+| LAG-11 | One correction per message batch | LAG-02, LAG-04 | 2–3 d | Implemented for packet drains; local tests and native A/B pass; paired Web/TURN gate pending |
+| LAG-10 | Sparse checkpoint saves | LAG-11 | 3–4 d | Opt-in implementation; local state/performance checks, field gate pending |
+| LAG-12 | Measured hot-path trimming | LAG-02 field data | 1 d | Field-path candidate measured and rejected; no stable total gain |
+| LAG-20 | Host pacing by frame advantage (experimental flag) | LAG-02, LAG-04 | 1.5–2 d | Experiment implemented; model shows no rate benefit, default off |
 | LAG-30 | Redundant inputs and clock samples on the unordered channel | LAG-04, LAG-10 | 2.5–3.5 d | Not started |
 | LAG-22 | Bounded catch-up (needs decision) | LAG-10, LAG-20 | 1–2 d | Not started |
 | LAG-40 | Guest main-loop freeze during super pause | LAG-01 | 1–2 d | Not started |
@@ -335,18 +340,17 @@ Terms, all owned by `RollbackSession`:
 - `confirmed` (unchanged): the highest frame `F` such that both slots have an
   actual input for every frame up to `F`. It can be above `frontier`.
 - `_dirty_from`: the lowest frame at or below `frontier` that was simulated with
-  an input different from the actual input now stored; `INT_MAX` when clean.
-- `settled() = min(confirmed, frontier, _dirty_from - 1)`: frames whose state is
-  final. Hashes, results, control barriers, recovery and `confirm_through` use
+  an input different from the actual input now stored; `-1` when clean.
+- `settled()` first reconciles dirty history, then returns
+  `min(confirmed, frontier)` (`-1` on failure): frames whose state is final. Hashes, results, control barriers, recovery and `confirm_through` use
   `settled()`, never `confirmed`.
 - `input_floor`: frames at or below it are rejected as too old; frames above it
   are accepted. It is an explicit field computed exactly like
   today's `retain_from` (`min(confirmed, frontier - capacity + 1)`, never
-  lowered). It replaces `oldest_frame()` in `can_receive_frame` and replaces
-  `states[0].frame` in `OnlineMatch.retain_states` (which receives the floor as
-  an argument). LAG-11 introduces it with values identical to today's, so the
-  receive window and clock/local-input pruning do not move when LAG-10 later
-  saves fewer frames.
+  lowered). It replaces `oldest_frame()` in `can_receive_frame` and in recovery
+  retransmission admission. The replay journal retention floor can be older,
+  because replay from a sparse checkpoint still needs its clock/input history.
+  Save policy never expands input admission.
 
 Invariants:
 
@@ -400,6 +404,16 @@ the next `reconcile()`):
 | `reconcile()` fails | Session error is set; `OnlineMatch` aborts with reason `correction_failed`, `_dirty_from`, the triggering frame and the stored actual inputs for the dirty range. |
 
 ### LAG-11 One correction per message batch
+
+Implementation update (2026-10-03): see [local evidence](../../evidence/online/network-lag/lag11-local.md).
+The implementation opts into deferred correction only inside an explicit transport
+drain; standalone callers retain immediate correction. A control or recovery
+message that needs final state is an early reconciliation barrier, so a drain
+with interleaved controls can require more than one correction. Input-only bursts
+reconcile once. The original experimental-flag/default-off proposal below is
+superseded for this bounded integration; sparse saves, pacing and transport
+changes remain unimplemented. Simulator calibration and field acceptance are
+still open, so this local result does not close M1 or authorize subsequent gates.
 
 Current behavior: `RollbackSession.receive()` calls `_correct(frame)` for each
 mismatched frame as it arrives, from the transport `_process` callback, and
@@ -495,8 +509,13 @@ Coordinator changes (`godot/online_match.gd`):
   _pending_control_frame()` while a control frame is pending;
   `game.ko_terminal_pending and frame == game.physics_tick` (checked after the
   advance that set it).
-- `retain_states(states, input_floor)` prunes clock samples, local inputs and
-  intro-skip frames at `input_floor`, no longer at `states[0].frame`.
+- Implemented retention refinement: `input_floor` controls admission and recovery
+  retransmission. `retain_states(states)` keeps replay journals through the oldest
+  required restore checkpoint, computed by minimum frame rather than array order.
+  Pruning those clock samples at the newer input floor would make replay from an
+  older sparse checkpoint impossible. History is conservatively contiguous from
+  that restore base; periodic recovery retention is enabled for both online save
+  policies, while generic every-frame fixtures keep their original capacity.
 - `_maybe_hash_confirmed`, `_maybe_finish_result` and the control barriers keep
   exact `state_at` reads; invariant 2 guarantees those frames exist, and a
   missing one is a bug that aborts as today (`missing_result_state`, etc.).
@@ -737,3 +756,22 @@ sequence. A same-machine run or native benchmark does not satisfy this.
 | Recovery frame selection change breaks reconnection | Pair smoke recovery cases; protocol change pinned by manifest fingerprint |
 | Unordered channel starves after a long loss burst | Unacknowledged-range resend capped at 32 frames plus the unchanged reliable recovery path |
 | Improvements measured on different builds | LAG-01 first; field comparisons only between logs with verified build identity |
+
+### 2026-10-03 prediction stride experiment
+
+Sparse saves can now use `checkpoint_stride=2`, retaining every second predicted
+frame and the existing forced hash/control/KO frames. All logical frames still
+advance. This uses the existing nearest-predecessor replay path and trades at
+most one extra frame per correction for fewer saves. The default remains stride
+one; browser selection is `?online_sparse=1&online_stride=2`. See
+[local experiment](../../evidence/online/network-lag/lag12-stride-local.md).
+The field-descriptor micro-optimization was reverted after unstable timing;
+no encoder format, source timing, or acceptance threshold changed.
+
+## Replay presentation — 2026-10-03
+
+Replay drawing now flushes once at correction completion, with current-pose
+shadow capture exceptions. Online combo drawing is suppressed; logical counters
+and diagnostics remain active. This is enabled by default. Native total-time
+gains are not conclusive; no NET gate is closed. See
+[local evidence](../../evidence/online/network-lag/replay-display-local.md).

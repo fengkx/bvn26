@@ -37,11 +37,13 @@ var _nested_sound_container_states: Dictionary = {}
 var _nested_sound_placement_generations: Dictionary = {}
 var _source_entry_serial: int = 0
 var _sound_segments: Dictionary = {}
-var _cxform_shader: Shader
+# Shader programs are immutable render caches shared by all previews. Their
+# lazy creation must not become per-instance rollback state.
+static var _cxform_shader: Shader
 var _source_color_mul := Color(1, 1, 1, 1)
 var _source_color_add := Color(0, 0, 0, 0)
 var _source_color_matrix: Array = []
-var _source_filter_shader: Shader
+static var _source_filter_shader: Shader
 
 const SourceBoundsMath = preload("res://source_matrix_bounds.gd")
 const TWIPS_PER_PIXEL := 20.0
@@ -415,6 +417,21 @@ func refresh_checkpoint_display() -> void:
 func _render_frame(restoring: bool = false) -> void:
 	if not restoring:
 		_sync_retained_visual_clips()
+	if not has_meta("suppress_display"):
+		var checkpoint: Variant = preload("res://rollback_lifetime.gd").owner(self)
+		var deferred: bool = checkpoint != null and checkpoint.defer_display(self)
+		if not deferred:
+			materialize_display()
+	if not restoring and _frames.has(_current_frame):
+		_play_start_sounds()
+		_play_nested_start_sounds()
+
+
+func materialize_display() -> void:
+	# Display nodes are derived; source clocks and sound observations stay in
+	# _render_frame and must still run on every replayed source frame.
+	if has_meta("suppress_display"):
+		return
 	for child in get_children():
 		if child.name in ["SoundLayer", "RuntimeServices"]:
 			continue
@@ -425,9 +442,6 @@ func _render_frame(restoring: bool = false) -> void:
 	var wrapper := _wrapper_transform()
 	for placement: Dictionary in frame["display_list"]:
 		_render_placement(placement, wrapper, 1.0, int(placement["depth"]) if preserve_root_depths else 0, _current_frame, 0, _source_color_mul, _source_color_add)
-	if not restoring:
-		_play_start_sounds()
-		_play_nested_start_sounds()
 	queue_redraw()
 
 

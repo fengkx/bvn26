@@ -3,7 +3,7 @@ class_name OnlinePerformance
 
 const SUMMARY_INTERVAL_MS := 1_000
 const SAMPLE_LIMIT := 120
-const WAIT_REASONS := ["clock", "input", "control", "confirmation", "paused", "recovery"]
+const WAIT_REASONS := ["clock", "input", "control", "confirmation", "paused", "recovery", "sync"]
 const WORK_KINDS := ["coordinator_tick", "tick_interval", "simulation_step", "input_receive", "correction"]
 const CHECKPOINT_COUNTERS := ["saves", "encodeUs", "packUs", "retainsUs"]
 const ROLLBACK_COUNTERS := ["advance_count", "advance_us", "save_count", "save_us",
@@ -255,7 +255,7 @@ func collect_summary(now_ms: int, now_usec: int, frontier: int, confirmed: int,
 		"correctionReceiveSampleCount": int(_window_work.correction.samples.size()),
 		"correctionReceiveSampleDropped": int(_window_work.correction.sampleDropped),
 		"correctionReceiveSamplesTruncated": int(_window_work.correction.sampleDropped) > 0,
-		"correctionReceiveTimingScope": "full rollback.receive() call when rollback_count increases, including non-replay receive overhead",
+		"correctionReceiveTimingScope": "rollback.receive() or batch reconciliation when rollback_count increases; included in input_receive, may also overlap coordinator_tick",
 		"waitMs": _window_wait_ms.duplicate(true),
 		"waitCount": _window_wait_count.duplicate(true),
 		"pageVisible": _page_visible,

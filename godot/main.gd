@@ -707,7 +707,7 @@ func _enter_current_fight(modo: int) -> void:
 		black_mu.visible = true
 	if ts_face != null:
 		ts_face.visible = true
-	combo_hud.visible = true
+	combo_hud.visible = not combo_hud.has_meta("suppress_display")
 	naruto_energy.visible = true
 	ichigo_energy.visible = true
 	_initialize_fight()

@@ -147,9 +147,12 @@ class FakeHub extends RefCounted:
 
 	func release_p2_messages() -> void:
 		hold_p2_to_p1 = false
+		peers[0].message_drain_started.emit()
+		var delivered := held_from_p2.size()
 		for message in held_from_p2:
 			_deliver(message)
 		held_from_p2.clear()
+		peers[0].message_drain_completed.emit(delivered)
 
 	func release_p2_result() -> void:
 		hold_p2_result_to_p1 = false

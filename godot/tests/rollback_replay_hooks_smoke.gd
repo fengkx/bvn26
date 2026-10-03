@@ -105,9 +105,10 @@ func _advance_predicted(session: RefCounted) -> void:
 
 func _run() -> void:
 	_test_successful_correction()
-	for failure in ["validate", "load", "advance", "save"]:
-		_test_failure_cleanup(failure)
-	print("ROLLBACK_REPLAY_HOOKS_SMOKE_OK correction_state_equal=true replay_diagnostics_tagged=true predicted_events_retained=true failure_cleanup=4")
+	for deferred in [false, true]:
+		for failure in ["validate", "load", "advance", "save"]:
+			_test_failure_cleanup(failure, deferred)
+	print("ROLLBACK_REPLAY_HOOKS_SMOKE_OK correction_state_equal=true replay_diagnostics_tagged=true predicted_events_retained=true failure_cleanup=8")
 	quit()
 
 
@@ -152,15 +153,20 @@ func _test_successful_correction() -> void:
 	reference_recorder.free()
 
 
-func _test_failure_cleanup(failure: String) -> void:
+func _test_failure_cleanup(failure: String, deferred: bool) -> void:
 	var recorder := DiagnosticRecorder.new()
 	var adapter := _make_adapter(recorder)
 	var session := Session.new()
 	assert(session.configure(adapter, "replay-test", 6, 16).is_empty())
 	_advance_predicted(session)
 	adapter.fail_mode = failure
-	var problem: String = session.receive("replay-test", "p2", 2, _buttons(true))
+	var problem: String = session.receive("replay-test", "p2", 2, _buttons(true), deferred)
+	if deferred:
+		assert(problem.is_empty() and adapter.begin_count == 0)
+		problem = session.reconcile()
 	assert(not problem.is_empty(), "Expected injected %s failure" % failure)
+	var pending: Dictionary = session.pending_correction()
+	assert(pending.target == 3 and pending.actual.p2.has(2) and pending.actual.p2.has(3))
 	assert(not adapter.replaying, "Replay flag remained set after %s failure" % failure)
 	assert(adapter.begin_count == 1 and adapter.end_count == 1,
 		"Replay hooks were not balanced after %s failure" % failure)

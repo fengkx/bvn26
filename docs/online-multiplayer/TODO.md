@@ -214,8 +214,10 @@ NET-037 and NET-040. LAG-01–03 implementation and local tests are recorded;
 LAG-01's final export and local IAB browser log agree on build and PCK identity.
 All six LAG-04 simulator scenarios pass their recorded correctness/hash checks,
 but the slow-host result (30 Hz, zero corrections) does not reproduce the field
-pattern and the cost model remains provisional. LAG-11/10 and later optimization
-packages have not started. No two-machine field or deployed-page browser-log
+pattern and the cost model remains provisional. LAG-11 now batches input-only
+packet drains into one correction, with local ordering, full-state and native
+A/B evidence in [lag11-local.md](../../evidence/online/network-lag/lag11-local.md).
+LAG-10 and later optimization packages have not started. No two-machine field or deployed-page browser-log
 gate has passed. The existing NET task checkboxes remain unchanged; see the
 [evidence index](../../evidence/online/network-lag/README.md).
 
@@ -534,3 +536,22 @@ Retain raw local databases, exported builds, profiling traces and large run logs
 outside committed source. Commit compact evidence indexes and reproducible tests
 according to project conventions. Update this checklist and its dependency evidence
 as implementation progresses; do not pre-check work because it is planned.
+
+## Sparse saves and pacing experiment — 2026-10-03
+
+LAG-10 and LAG-20 now have opt-in implementations and
+[local evidence](../../evidence/online/network-lag/lag10-20-local.md). Sparse saving
+reduces confirmed-input CPU work; prediction-heavy host cost remains. Pacing
+did not improve modeled throughput and stays off. No NET gate is closed.
+
+The subsequent [prediction-stride experiment](../../evidence/online/network-lag/lag12-stride-local.md)
+adds optional stride two with exact state/control checks. The LAG-12 field-path
+candidate was reverted because total-time improvement did not repeat.
+
+## Replay presentation — 2026-10-03
+
+Replay drawing now flushes once at correction completion, with current-pose
+shadow capture exceptions. Online combo drawing is suppressed; logical counters
+and diagnostics remain active. This is enabled by default. Native total-time
+gains are not conclusive; no NET gate is closed. See
+[local evidence](../../evidence/online/network-lag/replay-display-local.md).

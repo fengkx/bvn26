@@ -18,6 +18,9 @@ class FakeRollback extends RefCounted:
 	func state_at(_frame: int) -> Dictionary:
 		return {}
 
+	func pending_correction() -> Dictionary:
+		return {}
+
 
 func _initialize() -> void:
 	var coordinator := _guest()

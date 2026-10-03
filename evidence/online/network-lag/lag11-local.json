@@ -1,0 +1,701 @@
+{
+  "status": "local correctness and native performance screen only; paired Web/TURN gate pending",
+  "base_commit": "56218a30ab4a90de675349a02dfbbb4488d66b9c",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "environment": {
+    "os": "macOS-26.7-arm64-arm-64bit",
+    "machine": "arm64",
+    "logical_cpus": 8
+  },
+  "actual_person_days": null,
+  "runtime_and_test_sha256": {
+    "godot/online_match.gd": "54bce01f47f8e962962a31ca0995547780d2b97312ef001f76ffd92365ca06f5",
+    "godot/online_performance.gd": "fee2ad050da8d6d5b7fee672691abe95438fcbf70b830e8eb2630eacfb6c5c51",
+    "godot/rollback_session.gd": "c827beccd17f75e37dc8cac13400ae1506a7584474b042eb2a93953f4eb9fee5",
+    "godot/tests/online_clock_sample_bounds_smoke.gd": "fba3ce08f2e5c450e44d3befc679aeb0bcabec2b5675bf7be3be959a42ca011e",
+    "godot/tests/online_match_pair_smoke.gd": "810df0faea499f37ec5ed617a5fde74e9d31d741855d75d5a5e927eae9abcf63",
+    "godot/tests/online_pair_fixture.gd": "6170f8226e9cb4a50665f69b7d80d251bd746b11b5d9e2b11b1aa68d93b8040c",
+    "godot/tests/rollback_delayed_input_profile.gd": "e316dcc3470ac3571bcf5eea1daeacd36ac0d49eb378e25e4b8379e78260863c",
+    "godot/tests/rollback_fixture.gd": "06d30fc810d9aa901a6163e705e654ca5e539270d803829f4ff843b6aa402f97",
+    "godot/tests/rollback_replay_hooks_smoke.gd": "1b833b3046226956651768ac14c508a3867d4c021c68825f4016752d7baf066f",
+    "godot/tests/rollback_batched_correction_smoke.gd": "45113ca8677d205fdfc3fd179284bd705433cb6fdce2ed22d0827b57f8db18a4",
+    "godot/tests/online_batched_ordering_smoke.gd": "78af6e7e4b58e0bcbc206ea599526a5433708ec3218480146be7b0f1d939d502",
+    "godot/tests/rollback_batched_battle_smoke.gd": "dcc571b1a5abdbf8507f5a57f61f54492c52e8762d3ddf88db6828bd6139d18a"
+  },
+  "profile_runs": [
+    {
+      "kind": "baseline",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "/private/tmp/bvn-online-20261003/baseline-godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-0.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "write-state",
+        "/private/tmp/bvn-online-20261003/reference.bin"
+      ],
+      "seconds": 9.264206874999218,
+      "load": [
+        2.31591796875,
+        2.14697265625,
+        2.0087890625
+      ],
+      "log": "/private/tmp/bvn-online-20261003/profile-0-baseline.log",
+      "measurement": {
+        "batch_corrections": false,
+        "checkpoint_profile": {
+          "encode_us": 2226036,
+          "pack_us": 535682,
+          "rebuild_count": 131,
+          "rebuild_us": 5142,
+          "retains_us": 28814,
+          "saves": 396
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 10,
+          "max": 117170,
+          "mean": 97183.7,
+          "p50": 94151,
+          "p95": 117170,
+          "p99": 117170
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5555334,
+        "receive_us": {
+          "count": 675,
+          "max": 117170,
+          "mean": 1450.32148148148,
+          "p50": 11,
+          "p95": 14,
+          "p99": 93224
+        },
+        "replayed_frames": 65,
+        "rollbacks": 10,
+        "semantic_cross_source_difference": "written",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "step_us": {
+          "count": 345,
+          "max": 40073,
+          "mean": 13121.0579710145,
+          "p50": 14069,
+          "p95": 15604,
+          "p99": 19049
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 328237,
+          "mean": 15828.9540229885,
+          "p50": 14089,
+          "p95": 16590,
+          "p99": 110399
+        }
+      },
+      "source_sha256": {
+        "rollback_session.gd": "255699f219411481e159937eb54d5e139ce914513aa705905fa51839541838e0",
+        "battle_checkpoint.gd": "28f3f70470a85f6aaa48ec64013299acc1e7407d3cc97911a70df4f04c76b6ff",
+        "simulation_state.gd": "847277c7bfd89b58f107b56ad8375b9c774dd2b5e0b3dcd8d29641ffadf683cb",
+        "tests/rollback_delayed_input_profile.gd": "e316dcc3470ac3571bcf5eea1daeacd36ac0d49eb378e25e4b8379e78260863c"
+      },
+      "log_sha256": "ec22c8d1edc766b689558560d8c1e70594c6ce520047e8a098454385ef891f77"
+    },
+    {
+      "kind": "candidate",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-1.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "compare-state",
+        "/private/tmp/bvn-online-20261003/reference.bin",
+        "--batch"
+      ],
+      "seconds": 8.586412083008327,
+      "load": [
+        2.18701171875,
+        2.12548828125,
+        2.001953125
+      ],
+      "log": "/private/tmp/bvn-online-20261003/profile-1-candidate.log",
+      "measurement": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2073424,
+          "pack_us": 498235,
+          "rebuild_count": 78,
+          "rebuild_us": 3038,
+          "retains_us": 27191,
+          "saves": 371
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 118171,
+          "mean": 100093.666666667,
+          "p50": 94108,
+          "p95": 118171,
+          "p99": 118171
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5152006,
+        "receive_us": {
+          "count": 675,
+          "max": 70,
+          "mean": 10.6740740740741,
+          "p50": 11,
+          "p95": 13,
+          "p99": 16
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "step_us": {
+          "count": 345,
+          "max": 35324,
+          "mean": 13033.8492753623,
+          "p50": 14042,
+          "p95": 15401,
+          "p99": 17140
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 132236,
+          "mean": 14675.5086206897,
+          "p50": 14077,
+          "p95": 15666,
+          "p99": 108324
+        }
+      },
+      "source_sha256": {
+        "rollback_session.gd": "c827beccd17f75e37dc8cac13400ae1506a7584474b042eb2a93953f4eb9fee5",
+        "battle_checkpoint.gd": "28f3f70470a85f6aaa48ec64013299acc1e7407d3cc97911a70df4f04c76b6ff",
+        "simulation_state.gd": "847277c7bfd89b58f107b56ad8375b9c774dd2b5e0b3dcd8d29641ffadf683cb",
+        "tests/rollback_delayed_input_profile.gd": "e316dcc3470ac3571bcf5eea1daeacd36ac0d49eb378e25e4b8379e78260863c"
+      },
+      "log_sha256": "15eb84a3974370ae559594204a50be71bb9a4bf8dad3f9212a3a3476d9db9fcb"
+    },
+    {
+      "kind": "candidate",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-2.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "compare-state",
+        "/private/tmp/bvn-online-20261003/reference.bin",
+        "--batch"
+      ],
+      "seconds": 8.520236040989403,
+      "load": [
+        2.00390625,
+        2.087890625,
+        1.98974609375
+      ],
+      "log": "/private/tmp/bvn-online-20261003/profile-2-candidate.log",
+      "measurement": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "encode_us": 2060224,
+          "pack_us": 499878,
+          "rebuild_count": 78,
+          "rebuild_us": 3016,
+          "retains_us": 26749,
+          "saves": 371
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 120278,
+          "mean": 99820.5,
+          "p50": 93694,
+          "p95": 120278,
+          "p99": 120278
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5127226,
+        "receive_us": {
+          "count": 675,
+          "max": 24,
+          "mean": 10.4622222222222,
+          "p50": 11,
+          "p95": 13,
+          "p99": 16
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "step_us": {
+          "count": 345,
+          "max": 35730,
+          "mean": 12969.1594202899,
+          "p50": 14033,
+          "p95": 14818,
+          "p99": 17431
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 134231,
+          "mean": 14606.2643678161,
+          "p50": 14078,
+          "p95": 14983,
+          "p99": 106669
+        }
+      },
+      "source_sha256": {
+        "rollback_session.gd": "c827beccd17f75e37dc8cac13400ae1506a7584474b042eb2a93953f4eb9fee5",
+        "battle_checkpoint.gd": "28f3f70470a85f6aaa48ec64013299acc1e7407d3cc97911a70df4f04c76b6ff",
+        "simulation_state.gd": "847277c7bfd89b58f107b56ad8375b9c774dd2b5e0b3dcd8d29641ffadf683cb",
+        "tests/rollback_delayed_input_profile.gd": "e316dcc3470ac3571bcf5eea1daeacd36ac0d49eb378e25e4b8379e78260863c"
+      },
+      "log_sha256": "b41d9028cbc29141b2fdaad90a57502dabdd2a8302d3a91cce4c32bfd4788793"
+    },
+    {
+      "kind": "baseline",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "/private/tmp/bvn-online-20261003/baseline-godot",
+        "--log-file",
+        "/private/tmp/bvn-online-20261003/engine-3.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "compare-state",
+        "/private/tmp/bvn-online-20261003/reference.bin"
+      ],
+      "seconds": 8.897895291011082,
+      "load": [
+        2.08349609375,
+        2.10302734375,
+        1.99560546875
+      ],
+      "log": "/private/tmp/bvn-online-20261003/profile-3-baseline.log",
+      "measurement": {
+        "batch_corrections": false,
+        "checkpoint_profile": {
+          "encode_us": 2205958,
+          "pack_us": 531451,
+          "rebuild_count": 131,
+          "rebuild_us": 5045,
+          "retains_us": 27338,
+          "saves": 396
+        },
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 10,
+          "max": 119530,
+          "mean": 97214.2,
+          "p50": 92605,
+          "p95": 119530,
+          "p99": 119530
+        },
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5520568,
+        "receive_us": {
+          "count": 675,
+          "max": 119530,
+          "mean": 1450.62814814815,
+          "p50": 11,
+          "p95": 13,
+          "p99": 92298
+        },
+        "replayed_frames": 65,
+        "rollbacks": 10,
+        "semantic_cross_source_difference": "",
+        "semantic_full_state_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "semantic_reference_sha256": "ca3978eef5cc7eb9c88b300395ca94dffec9516b9ea01881c46034db70ac566b",
+        "step_us": {
+          "count": 345,
+          "max": 35880,
+          "mean": 13023.7420289855,
+          "p50": 14097,
+          "p95": 14852,
+          "p99": 17571
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 329919,
+          "mean": 15732.8505747126,
+          "p50": 14113,
+          "p95": 15138,
+          "p99": 111064
+        }
+      },
+      "source_sha256": {
+        "rollback_session.gd": "255699f219411481e159937eb54d5e139ce914513aa705905fa51839541838e0",
+        "battle_checkpoint.gd": "28f3f70470a85f6aaa48ec64013299acc1e7407d3cc97911a70df4f04c76b6ff",
+        "simulation_state.gd": "847277c7bfd89b58f107b56ad8375b9c774dd2b5e0b3dcd8d29641ffadf683cb",
+        "tests/rollback_delayed_input_profile.gd": "e316dcc3470ac3571bcf5eea1daeacd36ac0d49eb378e25e4b8379e78260863c"
+      },
+      "log_sha256": "aec3193aa1c6dde1d2f5b76c22a3af2faeb31fe3a5cc914132627daa2e452352"
+    }
+  ],
+  "checks": [
+    {
+      "test": "online_batched_ordering_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-online_batched_ordering_smoke.log",
+      "log_sha256": "be061f0c0e5ab773a5c3974ecc07fcafcc0158d332836780b9b9dd4a90e6d96d",
+      "markers": [
+        "ONLINE_BATCH_ORDERING_CASE_OK state_hash",
+        "ONLINE_BATCH_ORDERING_CASE_OK result",
+        "ONLINE_BATCH_ORDERING_CASE_OK pause_request",
+        "ONLINE_BATCH_ORDERING_CASE_OK resume_commit",
+        "ONLINE_BATCH_ORDERING_CASE_OK recovery_sync",
+        "ONLINE_BATCH_ORDERING_CASE_OK invalid_input",
+        "ONLINE_BATCHED_ORDERING_SMOKE_OK cases=6"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    },
+    {
+      "test": "online_clock_sample_bounds_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-online_clock_sample_bounds_smoke.log",
+      "log_sha256": "6b92bf3e33c659178f1dacc92e0c97012b77545068bc83522d764a12179f58e3",
+      "markers": [
+        "ONLINE_CLOCK_SAMPLE_BOUNDS_OK valid=true retransmit_idempotent=true conflict_rejected=true old_and_future_bounds=true"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    },
+    {
+      "test": "online_match_pair_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-online_match_pair_smoke.log",
+      "log_sha256": "5f2064c4ab2be1c622b92bb13e4af656479ec60a6d80abc4d58339aafe115ac7",
+      "markers": [
+        "ONLINE_MATCH_PAIR_INITIAL_OK hash=925ef6e0610b139f7ee60a32af0c10e5908ef5daf917f537f7d89b9491590d53 local_preferences_diverge=true",
+        "ONLINE_MATCH_PAIR_STARTED_OK",
+        "ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=15 p1_rollback_count=1 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_INTRO_SKIP_ORDERED_OK target=17",
+        "ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=327 hashes=30,60,90 real_hit=true helper_activity=false",
+        "ONLINE_MATCH_PAIR_PAUSE_BARRIER_OK frame=329 equal_hash=true",
+        "ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=330 equal_hash=true",
+        "ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true",
+        "ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null",
+        "ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=925ef6e0610b139f7ee60a32af0c10e5908ef5daf917f537f7d89b9491590d53 frame=331 p1_rollback_count=4 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_SOURCE_KO_FIXTURE_OK fighter_check_dead=true",
+        "ONLINE_MATCH_PAIR_RESULT_COMMIT_OK source_ko=true p1_waited_for_peer=true room_waited_for_both=true winner=1",
+        "ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+        "WARNING: 7 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 3 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "test": "online_match_service_terminal_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-online_match_service_terminal_smoke.log",
+      "log_sha256": "fb7e1e7656834c2c644b5f59a9384286fac429f5463b39ef1eefd78d56a91fcb",
+      "markers": [
+        "ONLINE_MATCH_SERVICE_TERMINAL_OK no_winner_allowlist=true epoch_scoped=true room_unavailable=true rejected_abort_and_result_settle=true transient_not_terminal=true"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    },
+    {
+      "test": "online_match_start_cancel_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-online_match_start_cancel_smoke.log",
+      "log_sha256": "5629c8862a9b29f75761552bd4899f000ab04098322e74e2788a1a26c2888093",
+      "markers": [
+        "ONLINE_MATCH_START_CANCEL_OK close_during_refresh=true close_during_ice=true pending_command_settled_before_abort=true live_epoch_abort=true retry_after_unconfirmed_abort=true uncertain_abort_same_request=true terminal_epoch_no_abort=true no_peer_ready=true"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+        "WARNING: 26 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ]
+    },
+    {
+      "test": "online_performance_diagnostics_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-online_performance_diagnostics_smoke.log",
+      "log_sha256": "48ebce099d837fa18f398e735431df097db6f0fcda6941d5d01445acd1d24e87",
+      "markers": [
+        "ONLINE_PERFORMANCE_DIAGNOSTICS_OK bounded_samples=true window_reset=true exclusive_waits=true rollback_work=true sync_metrics=true optional_diagnostics=true teardown=true snapshot_isolation=true"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    },
+    {
+      "test": "online_timer_round_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-online_timer_round_smoke.log",
+      "log_sha256": "45abbbd39e60e50c2649bc30a206e4953c2e6793882d6d28e277913248d5e035",
+      "markers": [
+        "ONLINE_TIMER_ROUND_SMOKE_OK ko_to_nextfight=true persistent_countdown=true round=2 replayed=37_frames"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+        "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 3 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "test": "rollback_batched_battle_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_batched_battle_smoke.log",
+      "log_sha256": "56283d8d2ac1831911d7796a4e8cad756e26c55c9e4478a5cac5171b77fff5e1",
+      "markers": [
+        "ROLLBACK_BATCHED_BATTLE_SMOKE_OK frames=330 retained_graphs=1314 immediate_corrections=10 batch_corrections=6 immediate_replayed=65 batch_replayed=40"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    },
+    {
+      "test": "rollback_batched_correction_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_batched_correction_smoke.log",
+      "log_sha256": "3f10d0f290f9d4290efe6a625f917efabcc636f04442354ebe61f548ecceee2d",
+      "markers": [
+        "ROLLBACK_BATCHED_CORRECTION_SMOKE_OK all_frames_equal=true orders=3 duplicate_idempotent=true final_reads_settled=true"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    },
+    {
+      "test": "rollback_battle_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_battle_smoke.log",
+      "log_sha256": "1d97d79ed02fd70c70eb1591a59f98e3ecd9aeeaebda616a1a2f90971da2844c",
+      "markers": [
+        "ROLLBACK_BATTLE_SMOKE_OK frames=330 rollbacks=10 replayed=65 waits=15 elapsed_ms=7720 retained_bytes=2842680 sounds_suppressed=8",
+        "ROLLBACK_INDEPENDENT_RUN_OK frames=330 full_state=true"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    },
+    {
+      "test": "rollback_replay_hooks_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_replay_hooks_smoke.log",
+      "log_sha256": "656c0c23af172068fe2b39784d96d5d5d16073a4e9505d2644c8f0918998ec57",
+      "markers": [
+        "ROLLBACK_REPLAY_HOOKS_SMOKE_OK correction_state_equal=true replay_diagnostics_tagged=true predicted_events_retained=true failure_cleanup=8"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    },
+    {
+      "test": "rollback_services_smoke",
+      "exit_code": 0,
+      "log": "/private/tmp/bvn-online-20261003/checked-rollback_services_smoke.log",
+      "log_sha256": "6eeb49be086b321ceba8e105b9fb084d6ef8d78e49b86284f0107971c3009c77",
+      "markers": [
+        "ROLLBACK_SERVICES_SMOKE_OK scope=services_and_synthetic_fixture_not_battle"
+      ],
+      "environment_or_shutdown_diagnostics": [
+        "ERROR: Condition \"ret != noErr\" is true. Returning: \"\""
+      ]
+    }
+  ],
+  "simulator": {
+    "command": "Godot --headless --path godot -s res://tests/online_lag_simulator.gd -- --all --duration-ms=10000 --record=/private/tmp/bvn-online-20261003/simulator-candidate.json",
+    "exit_code": 0,
+    "raw_jsonl": "/private/tmp/bvn-online-20261003/simulator-candidate.json",
+    "raw_sha256": "79e9a573224b297661e1c8abdcb2a9723bf2e2157d7a684da6345b8cd1578094",
+    "log": "/private/tmp/bvn-online-20261003/simulator.log",
+    "log_sha256": "b0aabd393cb21cb9b98c6a59105d26bf838ae7cdac1cac0b11f03b13847ddebf",
+    "cases": [
+      {
+        "scenario": "lan",
+        "seed": 40401,
+        "acceptance": {
+          "commonHashesEqual": true,
+          "enoughCommonHashes": true,
+          "minimumCommonHashes": 3,
+          "reliableConservedAndOrdered": true
+        },
+        "virtual_logical_rate_hz": [
+          30.0,
+          29.9
+        ],
+        "common_hash_count": 9,
+        "corrections": [
+          0,
+          0
+        ],
+        "max_corrections_per_drain": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "lossy",
+        "seed": 40406,
+        "acceptance": {
+          "commonHashesEqual": true,
+          "enoughCommonHashes": true,
+          "minimumCommonHashes": 3,
+          "reliableConservedAndOrdered": true
+        },
+        "virtual_logical_rate_hz": [
+          30.0,
+          29.9
+        ],
+        "common_hash_count": 9,
+        "corrections": [
+          0,
+          0
+        ],
+        "max_corrections_per_drain": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "turn100",
+        "seed": 40405,
+        "acceptance": {
+          "commonHashesEqual": true,
+          "enoughCommonHashes": true,
+          "minimumCommonHashes": 3,
+          "reliableConservedAndOrdered": true
+        },
+        "virtual_logical_rate_hz": [
+          24.1,
+          23.8
+        ],
+        "common_hash_count": 7,
+        "corrections": [
+          21,
+          0
+        ],
+        "max_corrections_per_drain": [
+          1,
+          0
+        ]
+      },
+      {
+        "scenario": "turn40",
+        "seed": 40402,
+        "acceptance": {
+          "commonHashesEqual": true,
+          "enoughCommonHashes": true,
+          "minimumCommonHashes": 3,
+          "reliableConservedAndOrdered": true
+        },
+        "virtual_logical_rate_hz": [
+          30.0,
+          29.9
+        ],
+        "common_hash_count": 9,
+        "corrections": [
+          0,
+          0
+        ],
+        "max_corrections_per_drain": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "turn40-fixedskip",
+        "seed": 40404,
+        "acceptance": {
+          "commonHashesEqual": true,
+          "enoughCommonHashes": true,
+          "minimumCommonHashes": 3,
+          "reliableConservedAndOrdered": true
+        },
+        "virtual_logical_rate_hz": [
+          25.0,
+          25.0
+        ],
+        "common_hash_count": 8,
+        "corrections": [
+          0,
+          0
+        ],
+        "max_corrections_per_drain": [
+          0,
+          0
+        ]
+      },
+      {
+        "scenario": "turn40-slowhost",
+        "seed": 40403,
+        "acceptance": {
+          "commonHashesEqual": true,
+          "enoughCommonHashes": true,
+          "minimumCommonHashes": 3,
+          "reliableConservedAndOrdered": true
+        },
+        "virtual_logical_rate_hz": [
+          30.0,
+          29.9
+        ],
+        "common_hash_count": 9,
+        "corrections": [
+          0,
+          0
+        ],
+        "max_corrections_per_drain": [
+          0,
+          0
+        ]
+      }
+    ],
+    "limits": "provisional work costs; no real TURN; no calibrated field reproduction; product unordered input channel unused"
+  },
+  "repository_checks": {
+    "verify": "passed: 75 assets, 74 dependencies, 62 SWFs, 62 script bundles",
+    "check_handoff": "passed",
+    "validate_contracts": "passed: 6 schemas, 6 examples",
+    "online_manifest": "passed: 11 fighters, 4 helpers, 10 stages",
+    "manifest_tests": "7 passed",
+    "analyzer_tests": "9 passed, 2 skipped",
+    "git_diff_check": "passed"
+  }
+}

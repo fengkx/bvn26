@@ -4,8 +4,11 @@ Status: In progress, updated 2026-09-29. LAG-01–03 have implementation and
 local-test evidence; LAG-01's final export and local IAB identity log match.
 LAG-04 has a simulator implementation, but its slow-host result does not
 reproduce the field pattern and its cost model remains uncalibrated. No
-two-machine field or deployed-page browser-log gate has passed. LAG-11/10 and
-later optimization packages have not started. Current
+two-machine field or deployed-page browser-log gate has passed. LAG-11 transport-drain batching has local correctness and native A/B evidence
+as of 2026-10-03; see [the record](../../evidence/online/network-lag/lag11-local.md).
+LAG-10 sparse saves and LAG-20 host pacing have opt-in local implementations;
+[local evidence](../../evidence/online/network-lag/lag10-20-local.md) records their
+limits. LAG-30/22/40 and paired acceptance remain open. Current
 package states and evidence are tracked in
 [NETWORK_LAG_IMPLEMENTATION.md](NETWORK_LAG_IMPLEMENTATION.md), which supersedes
 the step order below where they differ. This diagnosis is based on

@@ -32,9 +32,21 @@ func _frame_events(game: Node, frame: int) -> Array:
 	return [frame * 33, skip, callbacks]
 
 func _run() -> void:
-	var fixture := Fixture.create(self)
+	var args := OS.get_cmdline_user_args()
+	var eager_display := args.has("--eager-display")
+	if eager_display: args.remove_at(args.find("--eager-display"))
+	var batch_corrections := args.has("--batch")
+	if batch_corrections: args.remove_at(args.find("--batch"))
+	var stride := 2 if args.has("--stride-two") else 1
+	if args.has("--stride-two"): args.remove_at(args.find("--stride-two"))
+	var sparse := args.has("--sparse")
+	if sparse: args.remove_at(args.find("--sparse"))
+	var field_roster := args.has("--field-roster")
+	if field_roster: args.remove_at(args.find("--field-roster"))
+	var fixture := Fixture.create(self, ["白哉", "小李"], ["松本", "我爱罗"], "温泉") if field_roster else Fixture.create(self)
 	var game: Node = fixture.game
 	var battle: RefCounted = fixture.battle
+	battle.checkpoint.defer_replay_display = not eager_display
 	# The fixture already owns a configured rollback battle; keep it and run the
 	# same no-late reference and delayed-input schedule as rollback_battle_smoke.
 	var initial: Dictionary = battle.save_state()
@@ -57,8 +69,11 @@ func _run() -> void:
 		Fixture.dispose(game, battle)
 		quit(1)
 		return
-	battle.checkpoint.profile = {"saves": 0, "encode_us": 0, "pack_us": 0, "retains_us": 0}
+	for counter in battle.checkpoint.profile:
+		battle.checkpoint.profile[counter] = 0
 	var session := Session.new()
+	session.sparse_saves = sparse
+	session.checkpoint_stride = stride
 	problem = session.configure(battle, "real-battle", 8, 12)
 	if not _check(problem):
 		Fixture.dispose(game, battle)
@@ -94,7 +109,7 @@ func _run() -> void:
 			for remote_frame in range(through, delivered, -1):
 				var rollback_before := session.rollback_count
 				var receive_started := Time.get_ticks_usec()
-				problem = session.receive("real-battle", "p2", remote_frame, _players(remote_frame).p2)
+				problem = session.call("receive", "real-battle", "p2", remote_frame, _players(remote_frame).p2, true) if batch_corrections else session.receive("real-battle", "p2", remote_frame, _players(remote_frame).p2)
 				var receive_us := Time.get_ticks_usec() - receive_started
 				receive_samples.append(receive_us)
 				if session.rollback_count > rollback_before:
@@ -103,11 +118,20 @@ func _run() -> void:
 					Fixture.dispose(game, battle)
 					quit(1)
 					return
-				problem = session.receive("real-battle", "p2", remote_frame, _players(remote_frame).p2)
+				problem = session.call("receive", "real-battle", "p2", remote_frame, _players(remote_frame).p2, true) if batch_corrections else session.receive("real-battle", "p2", remote_frame, _players(remote_frame).p2)
 				if not _check(problem):
 					Fixture.dispose(game, battle)
 					quit(1)
 					return
+			if batch_corrections:
+				var correction_started := Time.get_ticks_usec()
+				var corrections_before := session.rollback_count
+				if not _check(session.call("reconcile")):
+					Fixture.dispose(game, battle)
+					quit(1)
+					return
+				if session.rollback_count > corrections_before:
+					correction_receive_samples.append(Time.get_ticks_usec() - correction_started)
 			delivered = maxi(delivered, through)
 		if session.frontier < MEASURED_FRAMES:
 			var previous := session.frontier
@@ -139,7 +163,6 @@ func _run() -> void:
 		return
 	var operation_wall_us := Time.get_ticks_usec() - measured_started
 	var semantic_cross_source_difference := "not_compared"
-	var args := OS.get_cmdline_user_args()
 	if args.size() == 2 and args[0] == "write-state":
 		var state_file := FileAccess.open(args[1], FileAccess.WRITE)
 		if state_file == null:
@@ -172,9 +195,14 @@ func _run() -> void:
 		return
 	var profile: Dictionary = battle.checkpoint.profile.duplicate(true)
 	var result := {
-		"fixture": "rollback_battle_smoke_default_330_ticks",
+		"fixture": "field_roster_synthetic_330_ticks" if field_roster else "rollback_battle_smoke_default_330_ticks",
 		"delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
 		"frames": MEASURED_FRAMES,
+		"batch_corrections": batch_corrections,
+		"defer_replay_display": not eager_display,
+		"sparse_saves": sparse,
+		"checkpoint_stride": stride,
+		"session_profile": session.profile_counters(),
 		"frontier": session.frontier,
 		"confirmed": session.confirmed,
 		"rollbacks": session.rollback_count,

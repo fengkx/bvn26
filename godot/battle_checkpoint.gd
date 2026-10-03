@@ -64,8 +64,12 @@ var _container_buckets := {}
 var profile := {
 	"saves": 0, "encode_us": 0, "pack_us": 0, "retains_us": 0,
 	"rebuild_count": 0, "rebuild_us": 0,
+	"display_deferred_count": 0, "display_flush_count": 0, "display_flush_us": 0,
 }
 var replaying := false
+var defer_replay_display := true
+var _pending_displays := {}
+
 var _constants := {}
 var _script_names := {}
 var _field_descriptors := {}
@@ -86,6 +90,34 @@ var _retired := {}
 var _sounds := {}
 var published_sounds := 0
 var suppressed_sounds := 0
+
+func defer_display(node: Node) -> bool:
+	if not replaying or not defer_replay_display:
+		return false
+	var instance_id := node.get_instance_id()
+	if not _pending_displays.has(instance_id):
+		_pending_displays[instance_id] = weakref(node)
+	profile.display_deferred_count += 1
+	return true
+
+func flush_display(node: Node) -> void:
+	if _pending_displays.erase(node.get_instance_id()) and node.is_inside_tree():
+		_materialize_display(node)
+
+func flush_displays() -> void:
+	var pending := _pending_displays.values()
+	_pending_displays.clear()
+	for reference: WeakRef in pending:
+		var node: Node = reference.get_ref()
+		if node != null and node.is_inside_tree() and not node.is_queued_for_deletion():
+			_materialize_display(node)
+
+func _materialize_display(node: Node) -> void:
+	var started := Time.get_ticks_usec()
+	node.materialize_display()
+	profile.display_flush_count += 1
+	profile.display_flush_us += Time.get_ticks_usec() - started
+
 
 func configure(game: Node) -> void:
 	_game = game
@@ -518,6 +550,7 @@ func retire(node: Node) -> void:
 		node.get_parent().remove_child(node)
 
 func close() -> void:
+	_pending_displays.clear()
 	_values.clear()
 	_weak.clear()
 	_container_buckets.clear()

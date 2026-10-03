@@ -32,12 +32,22 @@ var _anchors := {"p1": {}, "p2": {}}
 var _build := ""
 var _owners: Array = []
 var _replaying := false
+var _dirty_from := -1
+var _correction_target := -1
+var input_floor := 0
+# Keep the baseline selectable until paired Web acceptance has passed.
+var sparse_saves := false
+# A stride of two trades at most one extra replayed frame for fewer saves.
+var checkpoint_stride := 1
+var retain_hash_history := false
+const CHECKPOINT_INTERVAL := 30
+var _history_floor := 0
 
 
 func configure(adapter: RefCounted, match_epoch: String, window: int, capacity: int, input_delay: int = 0) -> String:
 	if _adapter != null:
 		return "Session already configured"
-	if match_epoch.is_empty() or window < 0 or input_delay < 0 or capacity < window + input_delay + 2:
+	if match_epoch.is_empty() or window < 0 or input_delay < 0 or capacity < window + input_delay + 2 or checkpoint_stride not in [1, 2]:
 		return "Invalid rollback history limits"
 	for method in ["save_state", "validate_state", "load_state", "advance"]:
 		if not adapter.has_method(method):
@@ -66,7 +76,7 @@ func configure(adapter: RefCounted, match_epoch: String, window: int, capacity: 
 	return ""
 
 
-func receive(match_epoch: String, slot: String, frame: int, held: Dictionary) -> String:
+func receive(match_epoch: String, slot: String, frame: int, held: Dictionary, defer_correction: bool = false) -> String:
 	if not error.is_empty():
 		return error
 	if _adapter == null or match_epoch != epoch or slot not in ["p1", "p2"]:
@@ -80,14 +90,47 @@ func receive(match_epoch: String, slot: String, frame: int, held: Dictionary) ->
 		return "" if _actual[slot][frame] == held else "Conflicting immutable input"
 	_actual[slot][frame] = _profiled_copy_dictionary(held, true)
 	if frame <= frontier and _used[frame][slot] != held:
-		problem = _correct(frame)
-		if not problem.is_empty():
-			error = problem
-			return error
+		_dirty_from = frame if _dirty_from < 0 else mini(_dirty_from, frame)
 	while _actual.p1.has(confirmed + 1) and _actual.p2.has(confirmed + 1):
 		confirmed += 1
+	if not defer_correction:
+		problem = reconcile()
+		if not problem.is_empty(): return problem
 	_prune()
 	return ""
+
+
+func reconcile() -> String:
+	if not error.is_empty():
+		return error
+	if _dirty_from < 0:
+		return ""
+	_correction_target = frontier
+	error = _correct(_dirty_from)
+	if not error.is_empty():
+		return error
+	_dirty_from = -1
+	_correction_target = -1
+	_prune()
+	return ""
+
+
+func settled() -> int:
+	if not reconcile().is_empty():
+		return -1
+	return mini(confirmed, frontier)
+
+
+func pending_correction() -> Dictionary:
+	if _dirty_from < 0:
+		return {}
+	var inputs := {"p1": {}, "p2": {}}
+	var target := maxi(frontier, _correction_target)
+	for slot in inputs:
+		for frame in _actual[slot]:
+			if frame >= _dirty_from and frame <= target:
+				inputs[slot][frame] = _actual[slot][frame].duplicate()
+	return {"dirty_from": _dirty_from, "frontier": frontier, "target": target, "actual": inputs}
 
 
 func step() -> String:
@@ -95,6 +138,8 @@ func step() -> String:
 		return error
 	if _adapter == null:
 		return "Session not configured"
+	if not reconcile().is_empty():
+		return error
 	if frontier + 1 > confirmed + _window:
 		return "waiting_for_input"
 	var problem := _advance_one()
@@ -105,6 +150,8 @@ func step() -> String:
 
 
 func state_at(frame: int) -> Dictionary:
+	if not reconcile().is_empty():
+		return {}
 	return _profiled_copy_dictionary(_states.get(frame, {}), true)
 
 
@@ -112,8 +159,26 @@ func oldest_frame() -> int:
 	return int(_states.keys().min()) if not _states.is_empty() else 0
 
 
+func latest_saved_at_or_before(frame: int) -> int:
+	var latest := -1
+	for saved in _states:
+		if saved <= frame: latest = maxi(latest, saved)
+	return latest
+
+
+func latest_hash_frame() -> int:
+	return (settled() / CHECKPOINT_INTERVAL) * CHECKPOINT_INTERVAL
+
+
+func hash_floor() -> int:
+	var first := -1
+	for frame in _states:
+		if frame % CHECKPOINT_INTERVAL == 0 and (first < 0 or frame < first): first = frame
+	return first
+
+
 func can_receive_frame(frame: int) -> bool:
-	return frame >= oldest_frame() + 1 and frame <= frontier + _capacity
+	return frame > input_floor and frame <= frontier + _capacity
 
 
 func retained_bytes() -> int:
@@ -157,6 +222,13 @@ func _advance_one() -> String:
 	_record_profile_duration("replay_advance" if _replaying else "advance", advance_started_usec)
 	if not problem.is_empty():
 		return problem
+	if sparse_saves and (frame < confirmed or frame % checkpoint_stride != 0) and frame % CHECKPOINT_INTERVAL != 0 \
+		and not (_adapter.has_method("must_save_frame") and _adapter.call("must_save_frame", frame)):
+		_used[frame] = players
+		_states.erase(frame)
+		frontier = frame
+		profile.saves_skipped_count += 1
+		return ""
 	var snapshot: Dictionary = _profiled_save_state(_adapter)
 	problem = _profiled_validate_snapshot(snapshot, _build, _owners)
 	if not problem.is_empty() or snapshot.frame != frame:
@@ -171,7 +243,7 @@ func _advance_one() -> String:
 
 
 func _correct(frame: int) -> String:
-	if not _states.has(frame - 1):
+	if latest_saved_at_or_before(frame - 1) < 0:
 		return "Missing pre-correction snapshot"
 	var has_begin_hook := _adapter.has_method("begin_replay")
 	var has_end_hook := _adapter.has_method("end_replay")
@@ -188,13 +260,14 @@ func _correct(frame: int) -> String:
 
 
 func _correct_replay(frame: int) -> String:
-	var snapshot: Dictionary = _profiled_copy_dictionary(_states[frame - 1], true)
+	var restore_frame := latest_saved_at_or_before(frame - 1)
+	var snapshot: Dictionary = _profiled_copy_dictionary(_states[restore_frame], true)
 	var problem: String = _profiled_adapter_validate(_adapter, snapshot)
 	if not problem.is_empty(): return problem
 	problem = _profiled_load_state(snapshot)
 	if not problem.is_empty(): return problem
 	var target := frontier
-	frontier = frame - 1
+	frontier = restore_frame
 	rollback_count += 1
 	while frontier < target:
 		problem = _advance_one()
@@ -277,22 +350,33 @@ func _adapter_profile_counters() -> Dictionary:
 
 
 func _prune() -> void:
+	# Confirmed input is not final state until all contradicting predictions are replayed.
+	if _dirty_from >= 0 or not error.is_empty():
+		return
 	if _adapter.has_method("confirm_through"):
 		_adapter.confirm_through(mini(confirmed, frontier))
 	# Never discard the state immediately before an unconfirmed input.
 	var retain_from := mini(confirmed, maxi(0, frontier - _capacity + 1))
-	if retain_from <= oldest_frame():
+	input_floor = maxi(input_floor, retain_from)
+	var history_floor := latest_saved_at_or_before(input_floor)
+	if sparse_saves or retain_hash_history:
+		# Recovery needs a common periodic checkpoint across different save policies.
+		var recovery_start := maxi(0, mini(confirmed, frontier) - _window - _delay - 1)
+		var recovery_anchor := (recovery_start / CHECKPOINT_INTERVAL) * CHECKPOINT_INTERVAL
+		history_floor = mini(history_floor, recovery_anchor)
+	if history_floor <= _history_floor:
 		return
+	_history_floor = history_floor
 	for slot in ["p1", "p2"]:
-		_anchors[slot] = _profiled_copy_dictionary(_used[retain_from][slot], false)
+		_anchors[slot] = _profiled_copy_dictionary(_used[history_floor][slot], false)
 		for frame in _actual[slot].keys():
-			if frame <= retain_from:
+			if frame <= history_floor:
 				_actual[slot].erase(frame)
 	for frame in _states.keys():
-		if frame < retain_from:
+		if frame < history_floor:
 			_states.erase(frame)
 	for frame in _used.keys():
-		if frame <= retain_from:
+		if frame <= history_floor:
 			_used.erase(frame)
 	if _adapter.has_method("retain_states"):
 		_adapter.retain_states(_states.values())

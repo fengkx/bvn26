@@ -17,7 +17,7 @@ const Battle = preload("res://rollback_battle.gd")
 const Rollback = preload("res://rollback_session.gd")
 const TimerAuthority = preload("res://online_timer_authority.gd")
 const PerformanceTelemetry = preload("res://online_performance.gd")
-const HASH_INTERVAL := 30
+const HASH_INTERVAL := Rollback.CHECKPOINT_INTERVAL
 const RECOVERY_MS := 10_000
 const MAX_HASH_HISTORY := 256
 const HEARTBEAT_INTERVAL_MS := 1_000
@@ -36,6 +36,10 @@ var setup: Dictionary = {}
 var epoch := ""
 var profile: Dictionary = {}
 var clock_authority_slot := "p1"
+var sparse_saves := false
+var checkpoint_stride := 1
+var host_pacing := false
+var _pacing_cooldown := 0
 var battle: RefCounted
 var rollback: RefCounted
 var timers: RefCounted
@@ -45,6 +49,7 @@ var recovering := false
 var paused := false
 var page_visible := true
 var _configured := false
+var _combo_visible_before_online := true
 var _startup_context_eligible := false
 var _startup_hidden_seen := false
 var _startup_active := false
@@ -123,6 +128,15 @@ func configure(scene: Node, room_setup: Dictionary, player_slot: String, room: O
 		return "Online match requires a configured human-vs-human battle"
 	if scene.physics_tick != 0 or scene.is_physics_processing():
 		return "Online match must configure before its first battle tick"
+	if OS.has_feature("web"):
+		sparse_saves = sparse_saves or bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_sparse') === '1'"))
+		if bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_stride') === '2'")):
+			checkpoint_stride = 2
+		host_pacing = host_pacing or bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_pacing') === '1'"))
+	else:
+		sparse_saves = sparse_saves or OS.get_cmdline_user_args().has("--online-sparse-saves")
+		if OS.get_cmdline_user_args().has("--online-checkpoint-stride-two"): checkpoint_stride = 2
+		host_pacing = host_pacing or OS.get_cmdline_user_args().has("--online-host-pacing")
 	game = scene
 	setup = State.canonical(normalized_setup)
 	local_slot = player_slot
@@ -147,6 +161,8 @@ func configure(scene: Node, room_setup: Dictionary, player_slot: String, room: O
 		battle = null
 		timers = null
 		return problem
+	_combo_visible_before_online = game.combo_hud.visible
+	game.combo_hud.set_presentation_enabled(false)
 	_configured = true
 	_connect_dependencies()
 	return ""
@@ -218,10 +234,14 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 	# service barriers, negotiation and channel establishment have completed.
 	if _startup_cancelled(startup_generation): return "Online match closed during startup"
 	timers.configure(game, 0)
+	_pacing_cooldown = 0
 	_clock_origin_ms = -1
 	_clock_paused_total_ms = 0
 	_clock_samples.clear()
 	var match_state := Rollback.new()
+	match_state.sparse_saves = sparse_saves
+	match_state.checkpoint_stride = checkpoint_stride
+	match_state.retain_hash_history = true
 	problem = match_state.configure(self, epoch, int(profile.predictionWindow), maxi(32, int(profile.predictionWindow) + int(profile.inputDelay) + 8), int(profile.inputDelay))
 	if not problem.is_empty():
 		return await _abort_start_for_generation(startup_generation, "rollback_setup", {"error": problem})
@@ -415,6 +435,7 @@ func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 	_check_recovery_deadline(monotonic_now_ms)
 	if not error.is_empty(): return error
 	_poll_heartbeat(monotonic_now_ms)
+	if not _reconcile_inputs(): return error
 	if recovering or paused:
 		_performance_wait_reason = "recovery" if recovering else "paused"
 		_poll_control_barriers(monotonic_now_ms)
@@ -430,6 +451,10 @@ func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 			_poll_control_barriers(monotonic_now_ms)
 			return ""
 	if not _sample_local_once(local_held): return error
+	if _should_pace_host():
+		_performance_wait_reason = "sync"
+		_poll_control_barriers(monotonic_now_ms)
+		return ""
 	if local_slot != clock_authority_slot and not _clock_samples.has(next_frame):
 		_performance_wait_reason = "clock"
 		_poll_control_barriers(monotonic_now_ms)
@@ -454,6 +479,22 @@ func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 	return ""
 
 
+func _should_pace_host() -> bool:
+	if _pacing_cooldown > 0:
+		_pacing_cooldown -= 1
+		return false
+	if not host_pacing or local_slot != clock_authority_slot or recovering or paused \
+		or not _pause_state.is_empty() or not _resume_state.is_empty() or _latest_remote_input_frame < 0:
+		return false
+	var delay := int(profile.get("inputDelay", 0))
+	var remote_frontier := _latest_remote_input_frame - delay - 1
+	if rollback.frontier - remote_frontier <= delay + 2:
+		return false
+	# At most one skipped step in any three ticks; input and heartbeat still run.
+	_pacing_cooldown = 2
+	return true
+
+
 func receive_peer_message(channel: String, type: String, payload: Dictionary, sequence: int) -> void:
 	if channel != "reliable" or not payload is Dictionary or not error.is_empty():
 		return
@@ -471,6 +512,9 @@ func receive_peer_message(channel: String, type: String, payload: Dictionary, se
 
 
 func _dispatch_peer_message(channel: String, type: String, payload: Dictionary) -> void:
+	# Input and clock packets may accumulate; control/recovery messages read final history.
+	if type in ["control", "recovery_sync", "recovery_compare_request", "recovery_compare", "recovery_commit"]:
+		if not _reconcile_inputs(): return
 	if _performance.active:
 		_tick_remote_message_count += 1
 	match type:
@@ -490,9 +534,13 @@ func _dispatch_peer_message(channel: String, type: String, payload: Dictionary) 
 
 
 func _drain_startup_messages() -> void:
+	_on_transport_message_drain_started()
+	var delivered := 0
 	while running and not _startup_pending_messages.is_empty():
 		var message: Dictionary = _startup_pending_messages.pop_front()
 		_dispatch_peer_message(str(message.channel), str(message.type), message.payload)
+		delivered += 1
+	_on_transport_message_drain_completed(delivered)
 
 
 func _on_transport_message_drain_started() -> void:
@@ -501,10 +549,35 @@ func _on_transport_message_drain_started() -> void:
 
 
 func _on_transport_message_drain_completed(messages_delivered: int) -> void:
+	if messages_delivered > 0 and running and error.is_empty() and _reconcile_inputs():
+		_maybe_hash_confirmed()
+		_maybe_finish_result()
 	if _transport_drain_open and _performance.active:
 		_performance.record_transport_drain(messages_delivered, _transport_drain_correction_count)
 	_transport_drain_open = false
 	_transport_drain_correction_count = 0
+
+
+func _reconcile_inputs() -> bool:
+	if rollback == null:
+		return true
+	if not error.is_empty():
+		return false
+	var started := Time.get_ticks_usec()
+	var corrections_before := int(rollback.rollback_count)
+	var replayed_before := int(rollback.replayed_frames)
+	var problem: String = rollback.reconcile()
+	var corrections := int(rollback.rollback_count) - corrections_before
+	if corrections > 0:
+		_tick_correction_count += corrections
+		if _transport_drain_open:
+			_transport_drain_correction_count += corrections
+		_performance.record_input_receive(Time.get_ticks_usec() - started, corrections,
+			int(rollback.replayed_frames) - replayed_before)
+	if not problem.is_empty():
+		_abort_local("correction_failed", {"error": problem, "pending": rollback.pending_correction()})
+		return false
+	return true
 
 
 func _reset_sync_telemetry() -> void:
@@ -550,6 +623,9 @@ func close(reason: String = "") -> void:
 	_disconnect_dependencies()
 	if peer_transport != null and peer_transport.has_method("close_peer"):
 		peer_transport.close_peer()
+	if _configured and game != null and is_instance_valid(game):
+		game.combo_hud.set_presentation_enabled(true)
+		game.combo_hud.visible = _combo_visible_before_online
 	if battle != null:
 		battle.close()
 	battle = null
@@ -639,9 +715,13 @@ func confirm_through(frame: int) -> void:
 	if battle != null: battle.confirm_through(frame)
 
 
+func must_save_frame(frame: int) -> bool:
+	return (_control_frame_pending() and frame == _pending_control_frame()) or game.ko_terminal_pending
+
+
 func retain_states(states: Array) -> void:
 	if battle != null: battle.retain_states(states.map(func(item: Dictionary) -> Dictionary: return item.owners.battle))
-	var oldest: int = int(states[0].frame) if not states.is_empty() else 0
+	var oldest: int = rollback.oldest_frame() if rollback != null else 0
 	for frame in _clock_samples.keys():
 		if frame <= oldest: _clock_samples.erase(frame)
 	for frame in _local_inputs.keys():
@@ -728,6 +808,9 @@ func _collect_performance_summary(now_ms: int, final: bool) -> Dictionary:
 			"id": str(profile.get("id", "")),
 			"inputDelay": int(profile.get("inputDelay", 0)),
 			"predictionWindow": int(profile.get("predictionWindow", 0)),
+			"sparseSaves": sparse_saves,
+			"checkpointStride": checkpoint_stride,
+			"hostPacing": host_pacing,
 		},
 	}
 	var summary: Dictionary = _performance.collect_summary(now_ms, Time.get_ticks_usec(), frontier,
@@ -1151,6 +1234,7 @@ func _begin_recovery(reason: String, now_ms: int) -> void:
 
 
 func _send_recovery_sync(now_ms: int) -> void:
+	if not _reconcile_inputs(): return
 	if peer_transport == null or not _peer_link_connected():
 		return
 	if _recovery_id.is_empty() and local_slot != "p2":
@@ -1163,14 +1247,14 @@ func _send_recovery_sync(now_ms: int) -> void:
 		return
 	if _recovery_sync_sent_ms >= 0 and now_ms - _recovery_sync_sent_ms < 500:
 		return
-	var confirmed_frame: int = mini(rollback.confirmed, rollback.frontier)
+	var confirmed_frame: int = rollback.latest_hash_frame()
 	var snapshot: Dictionary = rollback.state_at(confirmed_frame)
 	if snapshot.is_empty():
 		_abort_local("recovery_state_pruned", {"confirmed": confirmed_frame})
 		return
 	if not _send_peer("recovery_sync", {"epoch": epoch, "recovery_id": _recovery_id,
 		"frontier": rollback.frontier, "confirmed": rollback.confirmed,
-		"oldest": rollback.oldest_frame(), "confirmedFrame": confirmed_frame,
+		"oldest": rollback.input_floor, "hashFloor": rollback.hash_floor(), "confirmedFrame": confirmed_frame,
 		"confirmedHash": State.fingerprint(snapshot)}):
 		return
 	_recovery_sync_sent_ms = now_ms
@@ -1192,12 +1276,13 @@ func _send_recovery_sync(now_ms: int) -> void:
 
 
 func _propose_recovery_comparison() -> void:
+	if not _reconcile_inputs(): return
 	if local_slot != "p1" or not _recovery_state.has("remote_sync"):
 		return
 	var remote: Dictionary = _recovery_state.remote_sync
-	var local_confirmed := mini(rollback.confirmed, rollback.frontier)
+	var local_confirmed: int = rollback.latest_hash_frame()
 	var frame := mini(local_confirmed, int(remote.get("confirmedFrame", -1)))
-	var earliest := maxi(rollback.oldest_frame(), int(remote.get("oldest", 0)))
+	var earliest := maxi(rollback.hash_floor(), int(remote.get("hashFloor", 0)))
 	if frame < earliest:
 		_abort_local("invalid_recovery_frame", remote)
 		return
@@ -1223,10 +1308,16 @@ func _receive_recovery_sync(payload: Dictionary) -> void:
 		return
 	if _is_completed_recovery_id(incoming_id):
 		return
-	for field in ["frontier", "confirmed", "oldest", "confirmedFrame"]:
+	for field in ["frontier", "confirmed", "oldest", "confirmedFrame", "hashFloor"]:
 		if not _integral_number(payload.get(field)):
 			_abort_local("invalid_recovery_sync", payload)
 			return
+	if int(payload.hashFloor) < 0 or int(payload.hashFloor) % HASH_INTERVAL != 0 \
+		or int(payload.confirmedFrame) % HASH_INTERVAL != 0 \
+		or int(payload.confirmedFrame) < int(payload.hashFloor) \
+		or int(payload.confirmedFrame) > mini(int(payload.frontier), int(payload.confirmed)):
+		_abort_local("invalid_recovery_hash_range", payload)
+		return
 	if not _is_digest(str(payload.get("confirmedHash", ""))):
 		_abort_local("invalid_recovery_sync_hash", payload)
 		return
@@ -1264,7 +1355,7 @@ func _receive_recovery_compare_request(payload: Dictionary) -> void:
 		return
 	var frame := int(frame_value)
 	var snapshot: Dictionary = rollback.state_at(frame)
-	if snapshot.is_empty() or rollback.confirmed < frame:
+	if frame % HASH_INTERVAL != 0 or snapshot.is_empty() or rollback.settled() < frame:
 		_abort_local("recovery_compare_state_unavailable", {"frame": frame})
 		return
 	var digest := State.fingerprint(snapshot)
@@ -1303,7 +1394,7 @@ func _receive_recovery_commit(payload: Dictionary) -> void:
 		return
 	var frame := int(frame_value)
 	var snapshot: Dictionary = rollback.state_at(frame)
-	if snapshot.is_empty() or State.fingerprint(snapshot) != str(payload.get("hash", "")):
+	if frame % HASH_INTERVAL != 0 or snapshot.is_empty() or State.fingerprint(snapshot) != str(payload.get("hash", "")):
 		_abort_local("recovery_commit_mismatch", {"frame": frame})
 		return
 	_complete_recovery("reconciled")
@@ -1357,7 +1448,7 @@ func _pending_control_frame() -> int:
 
 
 func _input_frame_is_confirmed(frame: int) -> bool:
-	return rollback.frontier >= frame and rollback.confirmed >= frame
+	return _reconcile_inputs() and rollback.settled() >= frame
 
 
 func _report_control_ready() -> void:
@@ -1490,7 +1581,7 @@ func _receive_input(payload: Dictionary) -> void:
 	var receive_started_usec := Time.get_ticks_usec()
 	var previous_corrections := int(rollback.rollback_count)
 	var previous_replayed_frames := int(rollback.replayed_frames)
-	var problem: String = rollback.receive(epoch, remote_slot, frame, payload.held)
+	var problem: String = rollback.receive(epoch, remote_slot, frame, payload.held, _transport_drain_open)
 	var correction_delta := int(rollback.rollback_count) - previous_corrections
 	if _performance.active:
 		_tick_correction_count += correction_delta
@@ -1505,8 +1596,9 @@ func _receive_input(payload: Dictionary) -> void:
 	if _performance.active:
 		_latest_remote_input_frame = maxi(_latest_remote_input_frame, frame)
 		_performance.record_input_arrival_lead(input_arrival_lead)
-	_maybe_hash_confirmed()
-	_maybe_finish_result()
+	if not _transport_drain_open:
+		_maybe_hash_confirmed()
+		_maybe_finish_result()
 
 
 func _receive_clock_sample(payload: Dictionary) -> void:
@@ -1536,7 +1628,8 @@ func _receive_clock_sample(payload: Dictionary) -> void:
 
 func _maybe_hash_confirmed() -> void:
 	if rollback == null: return
-	while _next_hash_frame <= mini(rollback.confirmed, rollback.frontier):
+	if not _reconcile_inputs(): return
+	while _next_hash_frame <= rollback.settled():
 		var snapshot: Dictionary = rollback.state_at(_next_hash_frame)
 		if snapshot.is_empty():
 			_abort_local("missing_hash_state", {"frame": _next_hash_frame})
@@ -1573,6 +1666,7 @@ func _compare_hash(frame: int) -> void:
 
 
 func _maybe_finish_result() -> void:
+	if not _reconcile_inputs(): return
 	if game == null or not game.ko_terminal_pending or rollback.confirmed < game.physics_tick:
 		return
 	var frame: int = game.physics_tick
@@ -1920,7 +2014,7 @@ func _flush_pending_peer_messages(now_ms: int) -> void:
 func _send_local_abort(kind: String, details: Dictionary) -> void:
 	var frame: int = rollback.frontier if rollback != null else 0
 	var digest := str(details.get("local_hash", details.get("hash", "")))
-	if not _is_digest(digest) and rollback != null:
+	if not _is_digest(digest) and rollback != null and rollback.pending_correction().is_empty():
 		var confirmed_frame := mini(rollback.confirmed, rollback.frontier)
 		var snapshot: Dictionary = rollback.state_at(confirmed_frame)
 		if not snapshot.is_empty():
@@ -1964,6 +2058,9 @@ func _startup_state_is_live(state: Dictionary) -> bool:
 
 func _abort_local(kind: String, details: Dictionary, notify_peer: bool = true) -> String:
 	if error.is_empty():
+		if rollback != null and not rollback.pending_correction().is_empty():
+			details = details.duplicate(true)
+			details["pending_correction"] = rollback.pending_correction()
 		error = kind
 		var report := {"kind": kind, "epoch": epoch, "frame": rollback.frontier if rollback != null else 0, "details": details.duplicate(true)}
 		report["performance"] = _finish_performance(false)

@@ -173,6 +173,18 @@ func _test_rollback_profile_counts() -> void:
 		"Accepted remote input must count its owned dictionary copy")
 
 
+	for frame in range(3, 32):
+		if frame > 3:
+			assert(rollback.sample_local("p1", frame, held).get("error", "").is_empty())
+			assert(rollback.receive("copy-profile", "p2", frame, held).is_empty())
+		var old_floor: int = rollback.oldest_frame()
+		var before_step := int(rollback.profile_counters().copy_count)
+		assert(rollback.step().is_empty())
+		var anchor_copies := 2 if rollback.oldest_frame() > old_floor else 0
+		assert(int(rollback.profile_counters().copy_count) - before_step == first_step_copy_delta + anchor_copies)
+	assert(rollback.oldest_frame() == 30)
+
+
 func _neutral_input() -> Dictionary:
 	var held := {}
 	for button in Rollback.BUTTONS:

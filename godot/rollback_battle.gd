@@ -151,6 +151,7 @@ func begin_replay() -> void:
 
 func end_replay() -> void:
 	checkpoint.replaying = false
+	checkpoint.flush_displays()
 
 func confirm_through(frame: int) -> void:
 	_confirmed = maxi(_confirmed, frame)
