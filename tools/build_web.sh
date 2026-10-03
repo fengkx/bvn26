@@ -20,6 +20,10 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# CI source uploads may omit .git and system variables. Fail before downloads
+# rather than exporting an artifact with invented commit provenance.
+python3 "$ROOT_DIR/tools/build_web_diagnostics_metadata.py" preflight --repo "$ROOT_DIR"
+
 BUILD_LOG_ROOT="${TMPDIR:-/tmp}/bvn26-web-build-logs"
 BUILD_LOG_DIR="$BUILD_LOG_ROOT/$(date -u '+%Y%m%dT%H%M%SZ')-$$"
 mkdir -p "$BUILD_LOG_DIR"

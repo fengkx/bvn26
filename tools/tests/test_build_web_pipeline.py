@@ -47,6 +47,7 @@ class WebBuildPipelineTests(unittest.TestCase):
             )
             fake_godot.chmod(0o755)
             environment = os.environ.copy()
+            environment.pop("VERCEL_GIT_COMMIT_SHA", None)
             environment.update(
                 {
                     "GODOT_BIN": str(fake_godot),
@@ -55,6 +56,18 @@ class WebBuildPipelineTests(unittest.TestCase):
                 }
             )
 
+            missing_commit = subprocess.run(
+                ["bash", str(tools / "build_web.sh")], cwd=repo, env=environment,
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(missing_commit.returncode, 1)
+            self.assertIn("WEB_BUILD_PROVENANCE_ERROR", missing_commit.stderr)
+            self.assertNotIn("Web build raw logs:", missing_commit.stdout)
+            self.assertFalse(output.joinpath("build-metadata.json").exists())
+            self.assertFalse(any(path.name.startswith("bvn26-web-build.") for path in build_tmp.iterdir()))
+
+            environment["VERCEL_GIT_COMMIT_SHA"] = "c" * 40
+            (output / "build-metadata.json").write_text('{"old":"sidecar"}\n', encoding="utf-8")
             result = subprocess.run(
                 ["bash", str(tools / "build_web.sh")],
                 cwd=repo,

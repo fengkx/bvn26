@@ -154,6 +154,30 @@ class WebDiagnosticsMetadataTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "non-empty git commit"):
                 metadata.git_commit(root)
 
+    def test_preflight_reports_vercel_remediation_without_git(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            environment = os.environ.copy()
+            environment.pop("VERCEL_GIT_COMMIT_SHA", None)
+            command = [sys.executable, str(ROOT / "tools/build_web_diagnostics_metadata.py"),
+                       "preflight", "--repo", temporary]
+            missing = subprocess.run(command, env=environment, capture_output=True, text=True)
+            self.assertEqual(missing.returncode, 1)
+            self.assertIn("Automatically expose System Environment Variables", missing.stderr)
+            self.assertNotIn("Traceback", missing.stderr)
+            environment["VERCEL_GIT_COMMIT_SHA"] = "d" * 40
+            present = subprocess.run(command, env=environment, capture_output=True, text=True)
+            self.assertEqual(present.returncode, 0, present.stderr)
+            self.assertIn("gitCommit=" + "d" * 40, present.stdout)
+
+    def test_git_checkout_takes_precedence_over_environment(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self._git(root, "init", "-q")
+            self._git(root, "-c", "user.email=test@example.invalid", "-c", "user.name=Test",
+                      "commit", "--allow-empty", "-qm", "fixture")
+            expected = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            self.assertEqual(metadata.git_commit(root, vercel_fallback="d" * 40), expected)
+
     def test_finalize_failure_removes_existing_sidecar(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

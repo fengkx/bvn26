@@ -263,13 +263,19 @@ def git_commit(repo_root: Path, *, vercel_fallback: str | None = None) -> str:
         return fallback
     raise ValueError(
         "cannot resolve a non-empty git commit; provide a Git checkout or "
-        "VERCEL_GIT_COMMIT_SHA when .git is unavailable"
+        "VERCEL_GIT_COMMIT_SHA when .git is unavailable. "
+        "For Vercel Git deployments, enable Project Settings > Environment Variables > "
+        "Automatically expose System Environment Variables, then redeploy. "
+        "For source uploads, pass the exact source commit as VERCEL_GIT_COMMIT_SHA "
+        "for that deployment; do not pin a permanent commit value."
     )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
+    preflight = subparsers.add_parser("preflight", help="check commit provenance before downloading build tools")
+    preflight.add_argument("--repo", type=Path, required=True)
     prepare = subparsers.add_parser("prepare", help="write metadata to the temporary Godot project")
     prepare.add_argument("--repo", type=Path, required=True)
     prepare.add_argument("--source-project", type=Path, required=True)
@@ -286,6 +292,14 @@ def main() -> int:
     finish.add_argument("--pck", type=Path, required=True)
     finish.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+
+    if args.command == "preflight":
+        try:
+            commit = git_commit(args.repo, vercel_fallback=os.environ.get("VERCEL_GIT_COMMIT_SHA"))
+        except ValueError as exc:
+            parser.exit(1, f"WEB_BUILD_PROVENANCE_ERROR: {exc}\n")
+        print(f"WEB_BUILD_PROVENANCE_OK gitCommit={commit}")
+        return 0
 
     if args.command == "prepare":
         fallback_commit = os.environ.get("VERCEL_GIT_COMMIT_SHA")

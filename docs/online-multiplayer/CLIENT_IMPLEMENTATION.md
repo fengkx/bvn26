@@ -231,3 +231,24 @@ forced-relay transport path has a separate Chrome smoke, while cross-city testin
 production Godot full-match acceptance, full content/action coverage, browser
 performance and migration gates remain open; the checkboxes in [TODO.md](TODO.md)
 are intentionally unchanged.
+
+## Vercel build commit provenance
+
+The Web build requires either a readable Git HEAD or, when `.git` is absent,
+`VERCEL_GIT_COMMIT_SHA`. For Git-connected Vercel projects, enable **Settings →
+Environment Variables → Automatically expose System Environment Variables**,
+then redeploy. For CLI/source uploads, supply the exact source commit as a
+build environment variable for that deployment. Do not save a fixed SHA as a
+permanent project variable: later artifacts would claim the wrong revision.
+See [Vercel system variables](https://vercel.com/docs/environment-variables/system-environment-variables).
+
+`build_web.sh` now checks provenance before downloading the engine/templates.
+Missing provenance fails with `WEB_BUILD_PROVENANCE_ERROR`, actionable setup
+instructions, and cleanup of stale sidecars. A content fingerprint does not
+replace Git provenance. The `embedded` line printed by metadata unit tests is a
+temporary test fixture, not evidence that deployment metadata was generated.
+
+Local regression: 8 metadata tests and 4 pipeline tests cover missing/present
+Vercel provenance, Git precedence, early failure/cleanup, template binding and
+import failure. This does not establish a successful Vercel deployment; the
+project setting still needs to supply the commit at build time.
