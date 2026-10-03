@@ -261,3 +261,27 @@ valid/invalid/missing fallback commits, Git precedence, early cleanup, template
 binding and import failure. A failed import must still remove stale sidecars.
 The unusable-Git regression failed before this fix and passes after it. Vercel
 runtime conditions and a successful deployment remain unverified.
+
+### Clean-import compatibility fix — 2026-10-03
+
+Vercel's upload excludes `godot/**/*.import`. Godot creates these files during
+import, while the compatibility content fingerprint includes their settings.
+Generating compatibility only before import made the subsequent check fail.
+The staged build now regenerates compatibility after import, verifies it, then
+prepares final embedded metadata and exports. A second check after export rejects
+any later compatibility input drift before publishing. Import settings remain
+hashed; no compatibility check was removed.
+
+Validation: the new pipeline fixture reproduces the old `stale online
+compatibility output` error and passes with this fix. All 6 pipeline tests pass,
+including export-time drift rejection and stale-sidecar cleanup. A real Godot
+4.7.2 macOS build from a copy with `.godot` and all `.import` files omitted passed
+import, 7 manifest tests, the lobby suite, Web export and post-export checks.
+The official Web template hash matches the supplied Vercel log:
+`d3ee2f08cef0cf3cf6678a6355a92a8db48ccdd35cbd2e8bfd5f0e8a0b4032a0`.
+
+Local build log: `/private/tmp/bvn-web-import-fix/build.log`.
+Build ID: `184bd093479474ea228c9743bbae718d07326a822f920eba24fd23af1a665933`.
+PCK SHA-256: `c8a120b727005a042bddc8a666540e7b22ba6e507af74c3506d83ba2aecb8f1e`.
+Temporary build/output files remain outside the repository. This is full local
+Web export evidence, not a verified Vercel deployment or browser gameplay run.

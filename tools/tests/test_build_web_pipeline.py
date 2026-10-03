@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import shutil
 import subprocess
 import tempfile
+import textwrap
 import unittest
 from pathlib import Path
 
@@ -188,6 +190,15 @@ class WebBuildPipelineTests(unittest.TestCase):
             self.assertIn("Unexpected project error", unknown_output.stderr)
 
     def test_script_error_with_zero_exit_fails_and_removes_sidecar(self) -> None:
+        self._run_import_pipeline(fail_import=True)
+
+    def test_import_generated_files_are_in_final_export_manifest(self) -> None:
+        self._run_import_pipeline(fail_import=False)
+
+    def test_export_input_drift_prevents_publishing(self) -> None:
+        self._run_import_pipeline(fail_import=False, mutate_export=True)
+
+    def _run_import_pipeline(self, *, fail_import: bool, mutate_export: bool = False) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             sandbox = Path(temporary)
             repo = sandbox / "repo"
@@ -274,6 +285,35 @@ class WebBuildPipelineTests(unittest.TestCase):
                 "exit 0\n",
                 encoding="utf-8",
             )
+            if not fail_import:
+                # This fixture tests build orchestration, not lobby behavior.
+                (tools / "test_online_lobby_ui.py").write_text("print('LOBBY_FIXTURE_OK')\n")
+                fake_godot.write_text(textwrap.dedent("""\
+                    #!/usr/bin/env python3
+                    import hashlib, json, os, sys
+                    from pathlib import Path
+                    args = sys.argv[1:]
+                    if '--version' in args:
+                        print('4.7.2.stable.official')
+                        sys.exit(0)
+                    project = Path(args[args.index('--path') + 1])
+                    if '--import' in args:
+                        (project / 'generated/music/track.mp3.import').write_text('generated import settings')
+                    elif '--export-release' in args:
+                        manifest = json.loads((project / 'generated/online/manifest.json').read_text())
+                        inputs = json.loads((project.parent / 'evidence/online/manifest-inputs.json').read_text())
+                        assert manifest['compatibility'] == inputs['compatibility']
+                        record = next(r for r in inputs['inputs']['content'] if r['path'].endswith('track.mp3.import'))
+                        assert record['sha256'] == hashlib.sha256(b'generated import settings').hexdigest()
+                        embedded = json.loads((project / 'generated/build_metadata.json').read_text())
+                        import build_web_diagnostics_metadata as metadata
+                        assert embedded['sourceTreeSha256'] == metadata.sha256_tree(project, exclude={metadata.METADATA_RELATIVE_PATH})
+                        output = Path(args[args.index('--export-release') + 2])
+                        for suffix in ['.html', '.js', '.wasm', '.pck']:
+                            output.with_suffix(suffix).write_bytes(b'exported fixture')
+                        if os.environ.get('FIXTURE_MUTATE_EXPORT') == '1':
+                            (project / 'generated/music/track.mp3.import').write_text('changed during export')
+                    """), encoding="utf-8")
             fake_godot.chmod(0o755)
             environment = os.environ.copy()
             environment.update(
@@ -283,6 +323,8 @@ class WebBuildPipelineTests(unittest.TestCase):
                     "TMPDIR": str(build_tmp),
                     "VERCEL_GIT_COMMIT_SHA": "c" * 40,
                     "EXPECTED_WEB_TEMPLATE": str((template_dir / "web_nothreads_release.zip").resolve()),
+                    "PYTHONPATH": str(tools),
+                    "FIXTURE_MUTATE_EXPORT": "1" if mutate_export else "0",
                 }
             )
 
@@ -296,6 +338,20 @@ class WebBuildPipelineTests(unittest.TestCase):
                 text=True,
                 check=False,
             )
+
+            if not fail_import:
+                if mutate_export:
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn("stale online compatibility output", result.stderr)
+                    self.assertFalse(output.joinpath("build-metadata.json").exists())
+                    self.assertFalse(output.joinpath("index.pck").exists())
+                    return
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertIn("WEB_BUILD_METADATA_OK", result.stdout)
+                sidecar = json.loads((output / "build-metadata.json").read_text())
+                self.assertEqual(sidecar["pckSha256"], hashlib.sha256(b"exported fixture").hexdigest())
+                self.assertFalse(any(path.name.startswith("bvn26-web-build.") for path in build_tmp.iterdir()))
+                return
 
             self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertIn("GODOT_LOG_SCAN_FAIL", result.stderr)

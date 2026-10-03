@@ -166,6 +166,9 @@ prepare_metadata() {
 prepare_metadata
 
 run_godot_checked import --headless --path "$PROJECT_STAGE" --editor --import --quit
+# Clean CI uploads omit .import files. Import creates them, and the content
+# fingerprint includes their settings, so finalize compatibility after import.
+python3 "$STAGING_REPO/tools/build_online_manifest.py"
 python3 "$STAGING_REPO/tools/test_online_manifest.py"
 python3 "$STAGING_REPO/tools/build_online_manifest.py" --check
 python3 "$STAGING_REPO/tools/test_online_lobby_ui.py"
@@ -175,6 +178,8 @@ EXPORT_STAGE="$BUILD_TEMP_DIR/export"
 mkdir -p "$EXPORT_STAGE"
 run_godot_checked export --headless --path "$PROJECT_STAGE" \
   --export-release Web "$EXPORT_STAGE/index.html"
+# Never publish an export that changed the finalized compatibility inputs.
+python3 "$STAGING_REPO/tools/build_online_manifest.py" --check
 
 for extension in html js wasm pck; do
   test -s "$EXPORT_STAGE/index.$extension"
