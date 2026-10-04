@@ -38,3 +38,7 @@ Replay presentation and online combo suppression are enabled by default;
 [local evidence](replay-display-local.md) records state, visual and diagnostic
 equality plus native timings. Total-time gains are inconclusive; Web acceptance
 remains pending.
+
+2026-10-04: [Sparse-default evidence](sparse-default-local.md) supersedes the
+opt-in policy above. Online uses stride two by default with explicit full-save
+fallback. Native gains do not establish browser performance acceptance.

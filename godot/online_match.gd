@@ -36,8 +36,8 @@ var setup: Dictionary = {}
 var epoch := ""
 var profile: Dictionary = {}
 var clock_authority_slot := "p1"
-var sparse_saves := false
-var checkpoint_stride := 1
+var sparse_saves := true
+var checkpoint_stride := 2
 var host_pacing := false
 var _pacing_cooldown := 0
 var battle: RefCounted
@@ -114,6 +114,14 @@ var _transport_drain_open := false
 var _transport_drain_correction_count := 0
 
 
+func _apply_checkpoint_options(sparse: String, stride: String) -> void:
+	# Keep explicit fallbacks available for paired browser measurements.
+	if sparse in ["0", "1"]:
+		sparse_saves = sparse == "1"
+	if stride in ["1", "2"]:
+		checkpoint_stride = int(stride)
+
+
 func configure(scene: Node, room_setup: Dictionary, player_slot: String, room: Object, transport: Object) -> String:
 	if _configured:
 		return "Online match is already configured"
@@ -129,13 +137,15 @@ func configure(scene: Node, room_setup: Dictionary, player_slot: String, room: O
 	if scene.physics_tick != 0 or scene.is_physics_processing():
 		return "Online match must configure before its first battle tick"
 	if OS.has_feature("web"):
-		sparse_saves = sparse_saves or bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_sparse') === '1'"))
-		if bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_stride') === '2'")):
-			checkpoint_stride = 2
+		_apply_checkpoint_options(
+			str(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_sparse') || ''")),
+			str(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_stride') || ''")))
 		host_pacing = host_pacing or bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_pacing') === '1'"))
 	else:
 		sparse_saves = sparse_saves or OS.get_cmdline_user_args().has("--online-sparse-saves")
 		if OS.get_cmdline_user_args().has("--online-checkpoint-stride-two"): checkpoint_stride = 2
+		if OS.get_cmdline_user_args().has("--online-full-saves"): sparse_saves = false
+		if OS.get_cmdline_user_args().has("--online-checkpoint-stride-one"): checkpoint_stride = 1
 		host_pacing = host_pacing or OS.get_cmdline_user_args().has("--online-host-pacing")
 	game = scene
 	setup = State.canonical(normalized_setup)

@@ -1,0 +1,1992 @@
+{
+  "date": "2026-10-04",
+  "scope": "Native ABBA; browser benefit pending",
+  "user_baseline": [
+    {
+      "file": "bvn26-localP1.json",
+      "sha256": "516e7699eb33f4c57b92521903ee9be59b09ef0978eab11503c631a1e79fe5e9",
+      "build": {
+        "status": "match",
+        "buildID": "5a51f1691d0e194bf819982900dc912e67c7d1ac8478e57c7600dd9e69e5ff2b",
+        "sidecarBuildID": "5a51f1691d0e194bf819982900dc912e67c7d1ac8478e57c7600dd9e69e5ff2b",
+        "gitCommit": "6a64b0435a90a51556fce8c4bf808a7df505d00c",
+        "dirty": null,
+        "dirtyPaths": [],
+        "resourceVersion": "1fe726297cac27ef16a99df817c26daf7d4a91f6a6be8be7104d76c1304552a5",
+        "pckSha256": "7ac75d07dddd2b89b9c92dde3e0743e02492831ffbec42ef3fb54f1506b7e5d7",
+        "pckHashKind": "exported_artifact",
+        "builtAt": "2026-10-03T11:46:50Z",
+        "exportedAt": "2026-10-03T11:47:14Z"
+      },
+      "last_performance": {
+        "available": true,
+        "checkpoint": {
+          "available": true,
+          "totals": {
+            "encodeUs": 27019300,
+            "packUs": 5903500,
+            "retainsUs": 524000,
+            "saves": 3101
+          },
+          "windowDelta": {
+            "encodeUs": 261400,
+            "packUs": 57600,
+            "retainsUs": 5500,
+            "saves": 29
+          }
+        },
+        "confirmed": 2654,
+        "confirmedDelta": 28,
+        "coordinatorTickMaxUs": 17600,
+        "coordinatorTickP95Us": 16500,
+        "coordinatorTickP99Us": 17600,
+        "coordinatorTickSampleCount": 31,
+        "coordinatorTickSampleDropped": 0,
+        "coordinatorTickSamplesTruncated": false,
+        "coordinatorTickTotalUs": 399700,
+        "correctionCount": 0,
+        "correctionReceiveMaxUs": 0,
+        "correctionReceiveP95Us": -1,
+        "correctionReceiveP99Us": -1,
+        "correctionReceiveSampleCount": 0,
+        "correctionReceiveSampleDropped": 0,
+        "correctionReceiveSamplesTruncated": false,
+        "correctionReceiveTimingScope": "rollback.receive() or batch reconciliation when rollback_count increases; included in input_receive, may also overlap coordinator_tick",
+        "correctionReceiveTotalUs": 0,
+        "currentWait": "",
+        "final": false,
+        "frontier": 2660,
+        "frontierAdvanced": 29,
+        "frontierDelta": 29,
+        "frontierHz": 28.2101167315175,
+        "hiddenCount": 0,
+        "hiddenMs": 0,
+        "inputReceiveCount": 28,
+        "inputReceiveMaxUs": 600,
+        "inputReceiveP95Us": 100,
+        "inputReceiveP99Us": 600,
+        "inputReceiveSampleCount": 28,
+        "inputReceiveSampleDropped": 0,
+        "inputReceiveSamplesTruncated": false,
+        "inputReceiveTotalUs": 1300,
+        "matchElapsedMs": 95340,
+        "matchFrontierAdvanced": 2660,
+        "matchFrontierDelta": 2660,
+        "matchFrontierHz": 27.9001468428781,
+        "matchTotals": {
+          "correctionCount": 83,
+          "frontierAdvanced": 2660,
+          "hiddenCount": 0,
+          "hiddenMs": 0,
+          "replayedFrames": 438,
+          "sync": {
+            "definitions": {
+              "frameAdvantage": "local frontier - (latest remote input frame - inputDelay - 1), sampled before the local tick",
+              "inputArrivalLead": "remote input frame - local frontier at arrival; negative means the predicted frame had already been simulated",
+              "transportDrain": "one transport _process packet-drain loop; messages count validated packets emitted to the coordinator"
+            },
+            "frameAdvantage": {
+              "count": 2860,
+              "max": 9,
+              "p50": null,
+              "p95": null,
+              "sampleCount": 0,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 21641
+            },
+            "inputArrivalLead": {
+              "count": 2652,
+              "max": 3,
+              "p5": null,
+              "p50": null,
+              "p95": null,
+              "sampleCount": 0,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": -11849
+            },
+            "ticks": {
+              "corrections": 83,
+              "correctionsPerTick": {
+                "count": 2860,
+                "max": 1,
+                "p50": null,
+                "p95": null,
+                "sampleCount": 0,
+                "sampleDropped": 0,
+                "samplesTruncated": false,
+                "total": 83
+              },
+              "count": 2860,
+              "remoteMessages": 2834,
+              "remoteMessagesPerTick": {
+                "count": 2860,
+                "max": 6,
+                "p50": null,
+                "p95": null,
+                "sampleCount": 0,
+                "sampleDropped": 0,
+                "samplesTruncated": false,
+                "total": 2834
+              }
+            },
+            "transportDrains": {
+              "corrections": 83,
+              "correctionsPerDrain": {
+                "count": 4918,
+                "max": 1,
+                "p50": null,
+                "p95": null,
+                "sampleCount": 0,
+                "sampleDropped": 0,
+                "samplesTruncated": false,
+                "total": 83
+              },
+              "count": 4918,
+              "messagesDelivered": 2834,
+              "messagesPerDrain": {
+                "count": 4918,
+                "max": 6,
+                "p50": null,
+                "p95": null,
+                "sampleCount": 0,
+                "sampleDropped": 0,
+                "samplesTruncated": false,
+                "total": 2834
+              }
+            }
+          },
+          "waitCount": {
+            "clock": 0,
+            "confirmation": 0,
+            "control": 0,
+            "input": 139,
+            "paused": 0,
+            "recovery": 0,
+            "sync": 0
+          },
+          "waitMs": {
+            "clock": 0,
+            "confirmation": 0,
+            "control": 0,
+            "input": 7429,
+            "paused": 0,
+            "recovery": 0,
+            "sync": 0
+          },
+          "work": {
+            "coordinator_tick": {
+              "count": 2860,
+              "maxUs": 32500,
+              "totalUs": 46664000
+            },
+            "correction": {
+              "count": 83,
+              "maxUs": 137100,
+              "totalUs": 7933400
+            },
+            "input_receive": {
+              "count": 2735,
+              "maxUs": 137100,
+              "totalUs": 8047800
+            },
+            "simulation_step": {
+              "count": 2660,
+              "maxUs": 32300,
+              "totalUs": 46191300
+            },
+            "tick_interval": {
+              "count": 2859,
+              "maxUs": 198800,
+              "totalUs": 95306900
+            }
+          }
+        },
+        "network": {
+          "rttAvailable": false,
+          "rttMs": null,
+          "rttReason": "peer_transport_does_not_expose_reliable_rtt_stats"
+        },
+        "pageVisible": true,
+        "paused": false,
+        "profile": {
+          "checkpointStride": 1,
+          "hostPacing": false,
+          "id": "chrome-exp-d2-p6",
+          "inputDelay": 2,
+          "predictionWindow": 6,
+          "sparseSaves": false
+        },
+        "recovering": false,
+        "replayedFrames": 0,
+        "rollbackWork": {
+          "available": true,
+          "loadTimingScope": "adapter.load_state exclusive of measured presentation rebuild time",
+          "totals": {
+            "advance_count": 2660,
+            "advance_us": 16282700,
+            "copy_count": 23776,
+            "copy_us": 80600,
+            "load_count": 83,
+            "load_us": 710500,
+            "rebuild_count": 1177,
+            "rebuild_us": 3300,
+            "replay_advance_count": 438,
+            "replay_advance_us": 2563400,
+            "replay_save_count": 438,
+            "save_count": 3099,
+            "save_us": 32762400,
+            "saves_skipped_count": 0,
+            "validate_count": 6282,
+            "validate_us": 944800
+          },
+          "windowDelta": {
+            "advance_count": 29,
+            "advance_us": 55100,
+            "copy_count": 239,
+            "copy_us": 700,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 29,
+            "save_us": 321300,
+            "saves_skipped_count": 0,
+            "validate_count": 58,
+            "validate_us": 9600
+          }
+        },
+        "schemaVersion": 2,
+        "simulationStepCount": 29,
+        "simulationStepMaxUs": 17200,
+        "simulationStepP95Us": 16300,
+        "simulationStepP99Us": 17200,
+        "simulationStepSampleCount": 29,
+        "simulationStepSampleDropped": 0,
+        "simulationStepSamplesTruncated": false,
+        "simulationStepTotalUs": 394600,
+        "sync": {
+          "definitions": {
+            "frameAdvantage": "local frontier - (latest remote input frame - inputDelay - 1), sampled before the local tick",
+            "inputArrivalLead": "remote input frame - local frontier at arrival; negative means the predicted frame had already been simulated",
+            "transportDrain": "one transport _process packet-drain loop; messages count validated packets emitted to the coordinator"
+          },
+          "frameAdvantage": {
+            "count": 31,
+            "max": 9,
+            "p50": 7,
+            "p95": 9,
+            "sampleCount": 31,
+            "sampleDropped": 0,
+            "samplesTruncated": false,
+            "total": 231
+          },
+          "inputArrivalLead": {
+            "count": 28,
+            "max": -3,
+            "p5": -5,
+            "p50": -4,
+            "p95": -3,
+            "sampleCount": 28,
+            "sampleDropped": 0,
+            "samplesTruncated": false,
+            "total": -121
+          },
+          "ticks": {
+            "corrections": 0,
+            "correctionsPerTick": {
+              "count": 31,
+              "max": 0,
+              "p50": 0,
+              "p95": 0,
+              "sampleCount": 31,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 0
+            },
+            "count": 31,
+            "remoteMessages": 30,
+            "remoteMessagesPerTick": {
+              "count": 31,
+              "max": 3,
+              "p50": 1,
+              "p95": 2,
+              "sampleCount": 31,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 30
+            }
+          },
+          "transportDrains": {
+            "corrections": 0,
+            "correctionsPerDrain": {
+              "count": 49,
+              "max": 0,
+              "p50": 0,
+              "p95": 0,
+              "sampleCount": 49,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 0
+            },
+            "count": 49,
+            "messagesDelivered": 30,
+            "messagesPerDrain": {
+              "count": 49,
+              "max": 3,
+              "p50": 1,
+              "p95": 1,
+              "sampleCount": 49,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 30
+            }
+          }
+        },
+        "tickCount": 31,
+        "tickIntervalCount": 31,
+        "tickIntervalMaxUs": 58400,
+        "tickIntervalP95Us": 57600,
+        "tickIntervalP99Us": 58400,
+        "tickIntervalSampleCount": 31,
+        "tickIntervalSampleDropped": 0,
+        "tickIntervalSamplesTruncated": false,
+        "waitCount": {
+          "clock": 0,
+          "confirmation": 0,
+          "control": 0,
+          "input": 2,
+          "paused": 0,
+          "recovery": 0,
+          "sync": 0
+        },
+        "waitMs": {
+          "clock": 0,
+          "confirmation": 0,
+          "control": 0,
+          "input": 61,
+          "paused": 0,
+          "recovery": 0,
+          "sync": 0
+        },
+        "windowMs": 1028
+      }
+    },
+    {
+      "file": "bvn26-localP2.json",
+      "sha256": "e7f2c293b5b00b5f8ed9e8ede85ff3401f5073644cf3eecbcf507be4f93f0ace",
+      "build": {
+        "status": "match",
+        "buildID": "5a51f1691d0e194bf819982900dc912e67c7d1ac8478e57c7600dd9e69e5ff2b",
+        "sidecarBuildID": "5a51f1691d0e194bf819982900dc912e67c7d1ac8478e57c7600dd9e69e5ff2b",
+        "gitCommit": "6a64b0435a90a51556fce8c4bf808a7df505d00c",
+        "dirty": null,
+        "dirtyPaths": [],
+        "resourceVersion": "1fe726297cac27ef16a99df817c26daf7d4a91f6a6be8be7104d76c1304552a5",
+        "pckSha256": "7ac75d07dddd2b89b9c92dde3e0743e02492831ffbec42ef3fb54f1506b7e5d7",
+        "pckHashKind": "exported_artifact",
+        "builtAt": "2026-10-03T11:46:50Z",
+        "exportedAt": "2026-10-03T11:47:14Z"
+      },
+      "last_performance": {
+        "available": true,
+        "checkpoint": {
+          "available": true,
+          "totals": {
+            "encodeUs": 27767700,
+            "packUs": 6110600,
+            "retainsUs": 698700,
+            "saves": 2646
+          },
+          "windowDelta": {
+            "encodeUs": 334500,
+            "packUs": 74600,
+            "retainsUs": 9100,
+            "saves": 29
+          }
+        },
+        "confirmed": 2645,
+        "confirmedDelta": 29,
+        "coordinatorTickMaxUs": 21300,
+        "coordinatorTickP95Us": 20300,
+        "coordinatorTickP99Us": 21300,
+        "coordinatorTickSampleCount": 31,
+        "coordinatorTickSampleDropped": 0,
+        "coordinatorTickSamplesTruncated": false,
+        "coordinatorTickTotalUs": 506400,
+        "correctionCount": 0,
+        "correctionReceiveMaxUs": 0,
+        "correctionReceiveP95Us": -1,
+        "correctionReceiveP99Us": -1,
+        "correctionReceiveSampleCount": 0,
+        "correctionReceiveSampleDropped": 0,
+        "correctionReceiveSamplesTruncated": false,
+        "correctionReceiveTimingScope": "rollback.receive() or batch reconciliation when rollback_count increases; included in input_receive, may also overlap coordinator_tick",
+        "correctionReceiveTotalUs": 0,
+        "currentWait": "",
+        "final": false,
+        "frontier": 2643,
+        "frontierAdvanced": 29,
+        "frontierDelta": 29,
+        "frontierHz": 28.8557213930348,
+        "hiddenCount": 0,
+        "hiddenMs": 0,
+        "inputReceiveCount": 29,
+        "inputReceiveMaxUs": 100,
+        "inputReceiveP95Us": 100,
+        "inputReceiveP99Us": 100,
+        "inputReceiveSampleCount": 29,
+        "inputReceiveSampleDropped": 0,
+        "inputReceiveSamplesTruncated": false,
+        "inputReceiveTotalUs": 300,
+        "matchElapsedMs": 95010,
+        "matchFrontierAdvanced": 2643,
+        "matchFrontierDelta": 2643,
+        "matchFrontierHz": 27.8181244079571,
+        "matchTotals": {
+          "correctionCount": 0,
+          "frontierAdvanced": 2643,
+          "hiddenCount": 0,
+          "hiddenMs": 0,
+          "replayedFrames": 0,
+          "sync": {
+            "definitions": {
+              "frameAdvantage": "local frontier - (latest remote input frame - inputDelay - 1), sampled before the local tick",
+              "inputArrivalLead": "remote input frame - local frontier at arrival; negative means the predicted frame had already been simulated",
+              "transportDrain": "one transport _process packet-drain loop; messages count validated packets emitted to the coordinator"
+            },
+            "frameAdvantage": {
+              "count": 2843,
+              "max": 1,
+              "p50": null,
+              "p95": null,
+              "sampleCount": 0,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": -2240
+            },
+            "inputArrivalLead": {
+              "count": 2644,
+              "max": 8,
+              "p5": null,
+              "p50": null,
+              "p95": null,
+              "sampleCount": 0,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 10264
+            },
+            "ticks": {
+              "corrections": 0,
+              "correctionsPerTick": {
+                "count": 2851,
+                "max": 0,
+                "p50": null,
+                "p95": null,
+                "sampleCount": 0,
+                "sampleDropped": 0,
+                "samplesTruncated": false,
+                "total": 0
+              },
+              "count": 2851,
+              "remoteMessages": 5468,
+              "remoteMessagesPerTick": {
+                "count": 2851,
+                "max": 9,
+                "p50": null,
+                "p95": null,
+                "sampleCount": 0,
+                "sampleDropped": 0,
+                "samplesTruncated": false,
+                "total": 5468
+              }
+            },
+            "transportDrains": {
+              "corrections": 0,
+              "correctionsPerDrain": {
+                "count": 5196,
+                "max": 0,
+                "p50": null,
+                "p95": null,
+                "sampleCount": 0,
+                "sampleDropped": 0,
+                "samplesTruncated": false,
+                "total": 0
+              },
+              "count": 5196,
+              "messagesDelivered": 5468,
+              "messagesPerDrain": {
+                "count": 5196,
+                "max": 9,
+                "p50": null,
+                "p95": null,
+                "sampleCount": 0,
+                "sampleDropped": 0,
+                "samplesTruncated": false,
+                "total": 5468
+              }
+            }
+          },
+          "waitCount": {
+            "clock": 125,
+            "confirmation": 0,
+            "control": 0,
+            "input": 0,
+            "paused": 0,
+            "recovery": 0,
+            "sync": 0
+          },
+          "waitMs": {
+            "clock": 6360,
+            "confirmation": 0,
+            "control": 0,
+            "input": 0,
+            "paused": 0,
+            "recovery": 0,
+            "sync": 0
+          },
+          "work": {
+            "coordinator_tick": {
+              "count": 2851,
+              "maxUs": 38100,
+              "totalUs": 54820500
+            },
+            "correction": {
+              "count": 0,
+              "maxUs": 0,
+              "totalUs": 0
+            },
+            "input_receive": {
+              "count": 2644,
+              "maxUs": 200,
+              "totalUs": 59400
+            },
+            "simulation_step": {
+              "count": 2643,
+              "maxUs": 37800,
+              "totalUs": 54205100
+            },
+            "tick_interval": {
+              "count": 2850,
+              "maxUs": 116700,
+              "totalUs": 95002900
+            }
+          }
+        },
+        "network": {
+          "rttAvailable": false,
+          "rttMs": null,
+          "rttReason": "peer_transport_does_not_expose_reliable_rtt_stats"
+        },
+        "pageVisible": true,
+        "paused": false,
+        "profile": {
+          "checkpointStride": 1,
+          "hostPacing": false,
+          "id": "chrome-exp-d2-p6",
+          "inputDelay": 2,
+          "predictionWindow": 6,
+          "sparseSaves": false
+        },
+        "recovering": false,
+        "replayedFrames": 0,
+        "rollbackWork": {
+          "available": true,
+          "loadTimingScope": "adapter.load_state exclusive of measured presentation rebuild time",
+          "totals": {
+            "advance_count": 2643,
+            "advance_us": 18681200,
+            "copy_count": 22593,
+            "copy_us": 76900,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 2644,
+            "save_us": 33662100,
+            "saves_skipped_count": 0,
+            "validate_count": 5289,
+            "validate_us": 813000
+          },
+          "windowDelta": {
+            "advance_count": 29,
+            "advance_us": 64600,
+            "copy_count": 250,
+            "copy_us": 400,
+            "load_count": 0,
+            "load_us": 0,
+            "rebuild_count": 0,
+            "rebuild_us": 0,
+            "replay_advance_count": 0,
+            "replay_advance_us": 0,
+            "replay_save_count": 0,
+            "save_count": 29,
+            "save_us": 411800,
+            "saves_skipped_count": 0,
+            "validate_count": 58,
+            "validate_us": 10300
+          }
+        },
+        "schemaVersion": 2,
+        "simulationStepCount": 29,
+        "simulationStepMaxUs": 21100,
+        "simulationStepP95Us": 20100,
+        "simulationStepP99Us": 21100,
+        "simulationStepSampleCount": 29,
+        "simulationStepSampleDropped": 0,
+        "simulationStepSamplesTruncated": false,
+        "simulationStepTotalUs": 500000,
+        "sync": {
+          "definitions": {
+            "frameAdvantage": "local frontier - (latest remote input frame - inputDelay - 1), sampled before the local tick",
+            "inputArrivalLead": "remote input frame - local frontier at arrival; negative means the predicted frame had already been simulated",
+            "transportDrain": "one transport _process packet-drain loop; messages count validated packets emitted to the coordinator"
+          },
+          "frameAdvantage": {
+            "count": 31,
+            "max": 1,
+            "p50": -1,
+            "p95": 1,
+            "sampleCount": 31,
+            "sampleDropped": 0,
+            "samplesTruncated": false,
+            "total": -20
+          },
+          "inputArrivalLead": {
+            "count": 29,
+            "max": 4,
+            "p5": 3,
+            "p50": 4,
+            "p95": 4,
+            "sampleCount": 29,
+            "sampleDropped": 0,
+            "samplesTruncated": false,
+            "total": 109
+          },
+          "ticks": {
+            "corrections": 0,
+            "correctionsPerTick": {
+              "count": 31,
+              "max": 0,
+              "p50": 0,
+              "p95": 0,
+              "sampleCount": 31,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 0
+            },
+            "count": 31,
+            "remoteMessages": 59,
+            "remoteMessagesPerTick": {
+              "count": 31,
+              "max": 4,
+              "p50": 2,
+              "p95": 4,
+              "sampleCount": 31,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 59
+            }
+          },
+          "transportDrains": {
+            "corrections": 0,
+            "correctionsPerDrain": {
+              "count": 49,
+              "max": 0,
+              "p50": 0,
+              "p95": 0,
+              "sampleCount": 49,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 0
+            },
+            "count": 49,
+            "messagesDelivered": 59,
+            "messagesPerDrain": {
+              "count": 49,
+              "max": 4,
+              "p50": 2,
+              "p95": 2,
+              "sampleCount": 49,
+              "sampleDropped": 0,
+              "samplesTruncated": false,
+              "total": 59
+            }
+          }
+        },
+        "tickCount": 31,
+        "tickIntervalCount": 31,
+        "tickIntervalMaxUs": 51300,
+        "tickIntervalP95Us": 50300,
+        "tickIntervalP99Us": 51300,
+        "tickIntervalSampleCount": 31,
+        "tickIntervalSampleDropped": 0,
+        "tickIntervalSamplesTruncated": false,
+        "waitCount": {
+          "clock": 2,
+          "confirmation": 0,
+          "control": 0,
+          "input": 0,
+          "paused": 0,
+          "recovery": 0,
+          "sync": 0
+        },
+        "waitMs": {
+          "clock": 74,
+          "confirmation": 0,
+          "control": 0,
+          "input": 0,
+          "paused": 0,
+          "recovery": 0,
+          "sync": 0
+        },
+        "windowMs": 1005
+      }
+    }
+  ],
+  "profiles": [
+    {
+      "field_roster": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "display_deferred_count": 512,
+          "display_flush_count": 80,
+          "display_flush_us": 3812,
+          "encode_us": 2121284,
+          "pack_us": 509283,
+          "rebuild_count": 78,
+          "rebuild_us": 120,
+          "retains_us": 28726,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 121232,
+          "mean": 99247.5,
+          "p50": 93451,
+          "p95": 121232,
+          "p99": 121232
+        },
+        "defer_replay_display": true,
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5245377,
+        "receive_us": {
+          "count": 675,
+          "max": 27,
+          "mean": 11.1185185185185,
+          "p50": 11,
+          "p95": 14,
+          "p99": 17
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "301ebd84c98efe0e40f4ce4f49d8243cb9682969096838d1ee3c68254eae4764",
+        "semantic_reference_sha256": "301ebd84c98efe0e40f4ce4f49d8243cb9682969096838d1ee3c68254eae4764",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2168554,
+          "copy_count": 2785,
+          "copy_us": 3343,
+          "load_count": 6,
+          "load_us": 38556,
+          "rebuild_count": 78,
+          "rebuild_us": 120,
+          "replay_advance_count": 40,
+          "replay_advance_us": 246935,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2635693,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 54659
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 36032,
+          "mean": 13296.8869565217,
+          "p50": 14287,
+          "p95": 15443,
+          "p99": 17540
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 136924,
+          "mean": 14923.1149425287,
+          "p50": 14319,
+          "p95": 15622,
+          "p99": 107120
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/engine.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch"
+      ],
+      "sparse_stride_two": false
+    },
+    {
+      "field_roster": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "display_deferred_count": 557,
+          "display_flush_count": 80,
+          "display_flush_us": 3736,
+          "encode_us": 1097956,
+          "pack_us": 258879,
+          "rebuild_count": 78,
+          "rebuild_us": 133,
+          "retains_us": 1161,
+          "saves": 184
+        },
+        "checkpoint_stride": 2,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 86261,
+          "mean": 78019.3333333333,
+          "p50": 72011,
+          "p95": 86261,
+          "p99": 86261
+        },
+        "defer_replay_display": true,
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 3965829,
+        "receive_us": {
+          "count": 675,
+          "max": 365,
+          "mean": 14.9896296296296,
+          "p50": 12,
+          "p95": 16,
+          "p99": 195
+        },
+        "replayed_frames": 44,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "301ebd84c98efe0e40f4ce4f49d8243cb9682969096838d1ee3c68254eae4764",
+        "semantic_reference_sha256": "301ebd84c98efe0e40f4ce4f49d8243cb9682969096838d1ee3c68254eae4764",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2198948,
+          "copy_count": 1992,
+          "copy_us": 2552,
+          "load_count": 6,
+          "load_us": 40073,
+          "rebuild_count": 78,
+          "rebuild_us": 133,
+          "replay_advance_count": 44,
+          "replay_advance_us": 275014,
+          "replay_save_count": 18,
+          "save_count": 184,
+          "save_us": 1359541,
+          "saves_skipped_count": 191,
+          "validate_count": 375,
+          "validate_us": 28531
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 32865,
+          "mean": 9958.5652173913,
+          "p50": 8302,
+          "p95": 15366,
+          "p99": 23393
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 100070,
+          "mean": 11255.117816092,
+          "p50": 8372,
+          "p95": 16374,
+          "p99": 79434
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/engine.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--sparse",
+        "--stride-two"
+      ],
+      "sparse_stride_two": true
+    },
+    {
+      "field_roster": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "display_deferred_count": 557,
+          "display_flush_count": 80,
+          "display_flush_us": 4125,
+          "encode_us": 1118549,
+          "pack_us": 264132,
+          "rebuild_count": 78,
+          "rebuild_us": 133,
+          "retains_us": 1198,
+          "saves": 184
+        },
+        "checkpoint_stride": 2,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 92980,
+          "mean": 82547.3333333333,
+          "p50": 80855,
+          "p95": 92980,
+          "p99": 92980
+        },
+        "defer_replay_display": true,
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 4040498,
+        "receive_us": {
+          "count": 675,
+          "max": 370,
+          "mean": 15.3185185185185,
+          "p50": 12,
+          "p95": 16,
+          "p99": 210
+        },
+        "replayed_frames": 44,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "301ebd84c98efe0e40f4ce4f49d8243cb9682969096838d1ee3c68254eae4764",
+        "semantic_reference_sha256": "301ebd84c98efe0e40f4ce4f49d8243cb9682969096838d1ee3c68254eae4764",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2227277,
+          "copy_count": 1992,
+          "copy_us": 2587,
+          "load_count": 6,
+          "load_us": 40203,
+          "rebuild_count": 78,
+          "rebuild_us": 133,
+          "replay_advance_count": 44,
+          "replay_advance_us": 291916,
+          "replay_save_count": 18,
+          "save_count": 184,
+          "save_us": 1385458,
+          "saves_skipped_count": 191,
+          "validate_count": 375,
+          "validate_us": 28336
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 33148,
+          "mean": 10087.652173913,
+          "p50": 8471,
+          "p95": 15960,
+          "p99": 28584
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 112426,
+          "mean": 11461.6522988506,
+          "p50": 8516,
+          "p95": 16383,
+          "p99": 94026
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/engine.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--sparse",
+        "--stride-two"
+      ],
+      "sparse_stride_two": true
+    },
+    {
+      "field_roster": false,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "display_deferred_count": 512,
+          "display_flush_count": 80,
+          "display_flush_us": 3579,
+          "encode_us": 2126136,
+          "pack_us": 509641,
+          "rebuild_count": 78,
+          "rebuild_us": 133,
+          "retains_us": 27528,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 115309,
+          "mean": 98328.3333333333,
+          "p50": 94246,
+          "p95": 115309,
+          "p99": 115309
+        },
+        "defer_replay_display": true,
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "rollback_battle_smoke_default_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 509,
+        "operation_wall_us": 5258830,
+        "receive_us": {
+          "count": 675,
+          "max": 38,
+          "mean": 11.2088888888889,
+          "p50": 11,
+          "p95": 15,
+          "p99": 27
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "301ebd84c98efe0e40f4ce4f49d8243cb9682969096838d1ee3c68254eae4764",
+        "semantic_reference_sha256": "301ebd84c98efe0e40f4ce4f49d8243cb9682969096838d1ee3c68254eae4764",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2189763,
+          "copy_count": 2785,
+          "copy_us": 3360,
+          "load_count": 6,
+          "load_us": 38024,
+          "rebuild_count": 78,
+          "rebuild_us": 133,
+          "replay_advance_count": 40,
+          "replay_advance_us": 243996,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 2640894,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 54713
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 36165,
+          "mean": 13369.8898550725,
+          "p50": 14293,
+          "p95": 16055,
+          "p99": 26410
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 129359,
+          "mean": 14979.8074712644,
+          "p50": 14320,
+          "p95": 16701,
+          "p99": 108179
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/engine.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch"
+      ],
+      "sparse_stride_two": false
+    },
+    {
+      "field_roster": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "display_deferred_count": 523,
+          "display_flush_count": 86,
+          "display_flush_us": 7896,
+          "encode_us": 3065958,
+          "pack_us": 689276,
+          "rebuild_count": 85,
+          "rebuild_us": 156,
+          "retains_us": 43670,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 161210,
+          "mean": 122957.5,
+          "p50": 110237,
+          "p95": 161210,
+          "p99": 161210
+        },
+        "defer_replay_display": true,
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "field_roster_synthetic_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 541,
+        "operation_wall_us": 7809326,
+        "receive_us": {
+          "count": 675,
+          "max": 1341,
+          "mean": 17.2459259259259,
+          "p50": 13,
+          "p95": 23,
+          "p99": 65
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "dece4fa2ac87db68733d2a1c8a1a8482120acdc6352964b5ec14d618a953e032",
+        "semantic_reference_sha256": "dece4fa2ac87db68733d2a1c8a1a8482120acdc6352964b5ec14d618a953e032",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 3308343,
+          "copy_count": 2785,
+          "copy_us": 4955,
+          "load_count": 6,
+          "load_us": 50057,
+          "rebuild_count": 85,
+          "rebuild_us": 156,
+          "replay_advance_count": 40,
+          "replay_advance_us": 286995,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 3762910,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 67724
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 148711,
+          "mean": 19737.3594202899,
+          "p50": 17240,
+          "p95": 31774,
+          "p99": 76070
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 180745,
+          "mean": 21734.1408045977,
+          "p50": 17287,
+          "p95": 39340,
+          "p99": 137913
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/engine.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--field-roster"
+      ],
+      "sparse_stride_two": false
+    },
+    {
+      "field_roster": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "display_deferred_count": 568,
+          "display_flush_count": 86,
+          "display_flush_us": 5519,
+          "encode_us": 1304517,
+          "pack_us": 303406,
+          "rebuild_count": 85,
+          "rebuild_us": 150,
+          "retains_us": 1350,
+          "saves": 184
+        },
+        "checkpoint_stride": 2,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 99983,
+          "mean": 83256.5,
+          "p50": 74307,
+          "p95": 99983,
+          "p99": 99983
+        },
+        "defer_replay_display": true,
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "field_roster_synthetic_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 541,
+        "operation_wall_us": 4814870,
+        "receive_us": {
+          "count": 675,
+          "max": 472,
+          "mean": 17.9822222222222,
+          "p50": 12,
+          "p95": 29,
+          "p99": 229
+        },
+        "replayed_frames": 44,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "dece4fa2ac87db68733d2a1c8a1a8482120acdc6352964b5ec14d618a953e032",
+        "semantic_reference_sha256": "dece4fa2ac87db68733d2a1c8a1a8482120acdc6352964b5ec14d618a953e032",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2640169,
+          "copy_count": 1992,
+          "copy_us": 3040,
+          "load_count": 6,
+          "load_us": 44272,
+          "rebuild_count": 85,
+          "rebuild_us": 150,
+          "replay_advance_count": 44,
+          "replay_advance_us": 281115,
+          "replay_save_count": 18,
+          "save_count": 184,
+          "save_us": 1611200,
+          "saves_skipped_count": 191,
+          "validate_count": 375,
+          "validate_us": 33659
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 46363,
+          "mean": 11929.4376811594,
+          "p50": 11687,
+          "p95": 20858,
+          "p99": 29158
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 110175,
+          "mean": 13305.9770114943,
+          "p50": 11992,
+          "p95": 22038,
+          "p99": 82478
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/engine.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--sparse",
+        "--stride-two",
+        "--field-roster"
+      ],
+      "sparse_stride_two": true
+    },
+    {
+      "field_roster": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "display_deferred_count": 568,
+          "display_flush_count": 86,
+          "display_flush_us": 7700,
+          "encode_us": 1378900,
+          "pack_us": 308761,
+          "rebuild_count": 85,
+          "rebuild_us": 153,
+          "retains_us": 1392,
+          "saves": 184
+        },
+        "checkpoint_stride": 2,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 145675,
+          "mean": 92674.6666666667,
+          "p50": 77430,
+          "p95": 145675,
+          "p99": 145675
+        },
+        "defer_replay_display": true,
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "field_roster_synthetic_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 541,
+        "operation_wall_us": 4934000,
+        "receive_us": {
+          "count": 675,
+          "max": 418,
+          "mean": 17.4548148148148,
+          "p50": 12,
+          "p95": 20,
+          "p99": 258
+        },
+        "replayed_frames": 44,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "dece4fa2ac87db68733d2a1c8a1a8482120acdc6352964b5ec14d618a953e032",
+        "semantic_reference_sha256": "dece4fa2ac87db68733d2a1c8a1a8482120acdc6352964b5ec14d618a953e032",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2653006,
+          "copy_count": 1992,
+          "copy_us": 2876,
+          "load_count": 6,
+          "load_us": 44333,
+          "rebuild_count": 85,
+          "rebuild_us": 153,
+          "replay_advance_count": 44,
+          "replay_advance_us": 309821,
+          "replay_save_count": 18,
+          "save_count": 184,
+          "save_us": 1690940,
+          "saves_skipped_count": 191,
+          "validate_count": 375,
+          "validate_us": 30872
+        },
+        "sparse_saves": true,
+        "step_us": {
+          "count": 345,
+          "max": 85906,
+          "mean": 12106.9246376812,
+          "p50": 11082,
+          "p95": 19809,
+          "p99": 25792
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 170211,
+          "mean": 13643.2471264368,
+          "p50": 11137,
+          "p95": 21188,
+          "p99": 86662
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/engine.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--sparse",
+        "--stride-two",
+        "--field-roster"
+      ],
+      "sparse_stride_two": true
+    },
+    {
+      "field_roster": true,
+      "result": {
+        "batch_corrections": true,
+        "checkpoint_profile": {
+          "display_deferred_count": 523,
+          "display_flush_count": 86,
+          "display_flush_us": 6391,
+          "encode_us": 2932305,
+          "pack_us": 674304,
+          "rebuild_count": 85,
+          "rebuild_us": 154,
+          "retains_us": 36887,
+          "saves": 371
+        },
+        "checkpoint_stride": 1,
+        "confirmed": 330,
+        "correction_receive_us": {
+          "count": 6,
+          "max": 221640,
+          "mean": 148477.333333333,
+          "p50": 132632,
+          "p95": 221640,
+          "p99": 221640
+        },
+        "defer_replay_display": true,
+        "delayed_input_schedule": "same reverse-order, 5-frame-old P2 batches, duplicate delivery, and temporary outage as rollback_battle_smoke.gd",
+        "fixture": "field_roster_synthetic_330_ticks",
+        "frames": 330,
+        "frontier": 330,
+        "logical_record_count": 541,
+        "operation_wall_us": 7213367,
+        "receive_us": {
+          "count": 675,
+          "max": 174,
+          "mean": 14.08,
+          "p50": 12,
+          "p95": 24,
+          "p99": 59
+        },
+        "replayed_frames": 40,
+        "rollbacks": 6,
+        "semantic_cross_source_difference": "not_compared",
+        "semantic_full_state_sha256": "dece4fa2ac87db68733d2a1c8a1a8482120acdc6352964b5ec14d618a953e032",
+        "semantic_reference_sha256": "dece4fa2ac87db68733d2a1c8a1a8482120acdc6352964b5ec14d618a953e032",
+        "session_profile": {
+          "advance_count": 330,
+          "advance_us": 2901923,
+          "copy_count": 2785,
+          "copy_us": 4613,
+          "load_count": 6,
+          "load_us": 60110,
+          "rebuild_count": 85,
+          "rebuild_us": 154,
+          "replay_advance_count": 40,
+          "replay_advance_us": 324870,
+          "replay_save_count": 40,
+          "save_count": 371,
+          "save_us": 3613814,
+          "saves_skipped_count": 0,
+          "validate_count": 749,
+          "validate_us": 64365
+        },
+        "sparse_saves": false,
+        "step_us": {
+          "count": 345,
+          "max": 79296,
+          "mean": 17781.1043478261,
+          "p50": 16910,
+          "p95": 28560,
+          "p99": 48774
+        },
+        "waits": 15,
+        "wall_tick_us": {
+          "count": 348,
+          "max": 252620,
+          "mean": 20226.4712643678,
+          "p50": 16887,
+          "p95": 31687,
+          "p99": 151540
+        }
+      },
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/engine.log",
+        "-s",
+        "res://tests/rollback_delayed_input_profile.gd",
+        "--",
+        "--batch",
+        "--field-roster"
+      ],
+      "sparse_stride_two": false
+    }
+  ],
+  "summary": [
+    {
+      "field_roster": false,
+      "baseline_us": [
+        5245377,
+        5258830
+      ],
+      "sparse_stride_two_us": [
+        3965829,
+        4040498
+      ],
+      "mean_reduction_percent": 23.779805557906464
+    },
+    {
+      "field_roster": true,
+      "baseline_us": [
+        7809326,
+        7213367
+      ],
+      "sparse_stride_two_us": [
+        4814870,
+        4934000
+      ],
+      "mean_reduction_percent": 35.10570974192178
+    }
+  ],
+  "checks": [
+    {
+      "name": "online_checkpoint_options_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_checkpoint_options_smoke.gd",
+        "--"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_CHECKPOINT_OPTIONS_SMOKE_OK default_stride_two=true explicit_fallback=true"
+      ]
+    },
+    {
+      "name": "online_match_pair_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_match_pair_smoke.gd",
+        "--"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_PAIR_INITIAL_OK hash=b293956889c5f470bd80e968f505271256251219e0e437f6e2157d1f15fa7514 local_preferences_diverge=true",
+        "ONLINE_MATCH_PAIR_STARTED_OK",
+        "ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=15 p1_rollback_count=1 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_INTRO_SKIP_ORDERED_OK target=17",
+        "ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=327 hashes=30,60,90 real_hit=true helper_activity=false",
+        "ONLINE_MATCH_PAIR_PAUSE_BARRIER_OK frame=329 equal_hash=true",
+        "ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=330 equal_hash=true",
+        "ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true",
+        "ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null",
+        "ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=b293956889c5f470bd80e968f505271256251219e0e437f6e2157d1f15fa7514 frame=331 p1_rollback_count=4 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_SOURCE_KO_FIXTURE_OK fighter_check_dead=true",
+        "ONLINE_MATCH_PAIR_RESULT_COMMIT_OK source_ko=true p1_waited_for_peer=true room_waited_for_both=true winner=1",
+        "ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true"
+      ]
+    },
+    {
+      "name": "online_match_pair_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_match_pair_smoke.gd",
+        "--",
+        "--mixed-saves"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_PAIR_INITIAL_OK hash=b293956889c5f470bd80e968f505271256251219e0e437f6e2157d1f15fa7514 local_preferences_diverge=true",
+        "ONLINE_MATCH_PAIR_STARTED_OK",
+        "ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=15 p1_rollback_count=1 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_INTRO_SKIP_ORDERED_OK target=17",
+        "ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=327 hashes=30,60,90 real_hit=true helper_activity=false",
+        "ONLINE_MATCH_PAIR_PAUSE_BARRIER_OK frame=329 equal_hash=true",
+        "ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=330 equal_hash=true",
+        "ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true",
+        "ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null",
+        "ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=b293956889c5f470bd80e968f505271256251219e0e437f6e2157d1f15fa7514 frame=331 p1_rollback_count=4 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_SOURCE_KO_FIXTURE_OK fighter_check_dead=true",
+        "ONLINE_MATCH_PAIR_RESULT_COMMIT_OK source_ko=true p1_waited_for_peer=true room_waited_for_both=true winner=1",
+        "ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true"
+      ]
+    },
+    {
+      "name": "online_match_pair_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_match_pair_smoke.gd",
+        "--",
+        "--full-saves"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_PAIR_INITIAL_OK hash=b293956889c5f470bd80e968f505271256251219e0e437f6e2157d1f15fa7514 local_preferences_diverge=true",
+        "ONLINE_MATCH_PAIR_STARTED_OK",
+        "ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=15 p1_rollback_count=1 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_INTRO_SKIP_ORDERED_OK target=17",
+        "ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=327 hashes=30,60,90 real_hit=true helper_activity=false",
+        "ONLINE_MATCH_PAIR_PAUSE_BARRIER_OK frame=329 equal_hash=true",
+        "ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=330 equal_hash=true",
+        "ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true",
+        "ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null",
+        "ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=b293956889c5f470bd80e968f505271256251219e0e437f6e2157d1f15fa7514 frame=331 p1_rollback_count=4 json_roundtrip=true",
+        "ONLINE_MATCH_PAIR_SOURCE_KO_FIXTURE_OK fighter_check_dead=true",
+        "ONLINE_MATCH_PAIR_RESULT_COMMIT_OK source_ko=true p1_waited_for_peer=true room_waited_for_both=true winner=1",
+        "ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true"
+      ]
+    },
+    {
+      "name": "online_sparse_recovery_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_sparse_recovery_smoke.gd",
+        "--"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_SPARSE_RECOVERY_SMOKE_OK confirmed_60_59_compares_30=true mixed_policies=true"
+      ]
+    },
+    {
+      "name": "rollback_batched_battle_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/rollback_batched_battle_smoke.gd",
+        "--",
+        "--sparse",
+        "--stride-two"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_BATCHED_BATTLE_SMOKE_OK frames=330 retained_graphs=1524 immediate_corrections=6 batch_corrections=6 immediate_replayed=40 batch_replayed=44"
+      ]
+    },
+    {
+      "name": "rollback_batched_battle_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/rollback_batched_battle_smoke.gd",
+        "--",
+        "--sparse",
+        "--stride-two",
+        "--field-roster"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ROLLBACK_BATCHED_BATTLE_SMOKE_OK frames=330 retained_graphs=1524 immediate_corrections=6 batch_corrections=6 immediate_replayed=40 batch_replayed=44"
+      ]
+    },
+    {
+      "name": "online_batched_ordering_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_batched_ordering_smoke.gd",
+        "--"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_BATCH_ORDERING_CASE_OK state_hash",
+        "ONLINE_BATCH_ORDERING_CASE_OK result",
+        "ONLINE_BATCH_ORDERING_CASE_OK pause_request",
+        "ONLINE_BATCH_ORDERING_CASE_OK resume_commit",
+        "ONLINE_BATCH_ORDERING_CASE_OK recovery_sync",
+        "ONLINE_BATCH_ORDERING_CASE_OK invalid_input",
+        "ONLINE_BATCHED_ORDERING_SMOKE_OK cases=6"
+      ]
+    },
+    {
+      "name": "online_timer_round_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_timer_round_smoke.gd",
+        "--"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_TIMER_ROUND_SMOKE_OK ko_to_nextfight=true persistent_countdown=true round=2 replayed=37_frames"
+      ]
+    },
+    {
+      "name": "online_match_start_cancel_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_match_start_cancel_smoke.gd",
+        "--"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_START_CANCEL_OK close_during_refresh=true close_during_ice=true pending_command_settled_before_abort=true live_epoch_abort=true retry_after_unconfirmed_abort=true uncertain_abort_same_request=true terminal_epoch_no_abort=true no_peer_ready=true"
+      ]
+    },
+    {
+      "name": "online_match_service_terminal_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_match_service_terminal_smoke.gd",
+        "--"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_MATCH_SERVICE_TERMINAL_OK no_winner_allowlist=true epoch_scoped=true room_unavailable=true rejected_abort_and_result_settle=true transient_not_terminal=true"
+      ]
+    },
+    {
+      "name": "online_performance_diagnostics_smoke",
+      "command": [
+        "/private/tmp/bvn-online-20261003/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--max-fps",
+        "60",
+        "--path",
+        "godot",
+        "--log-file",
+        "/private/tmp/bvn-sparse-default-20261004/check-engine.log",
+        "-s",
+        "res://tests/online_performance_diagnostics_smoke.gd",
+        "--"
+      ],
+      "exit": 0,
+      "errors": [],
+      "markers": [
+        "ONLINE_PERFORMANCE_DIAGNOSTICS_OK bounded_samples=true window_reset=true exclusive_waits=true rollback_work=true sync_metrics=true optional_diagnostics=true teardown=true snapshot_isolation=true"
+      ]
+    }
+  ],
+  "compatibility_manifest": {
+    "schemaVersion": 1,
+    "engine": "4.7.2-stable",
+    "compatibility": {
+      "protocol": 1,
+      "build": "80defea071e29541aafbf70a1197e7e7ade4f08a785a6073c3fef929d1714b6d",
+      "content": "dec92731a02b8a63262e0cec5451b674c8f78321242a4b5e1d7d47c541da51b7"
+    },
+    "roster": {
+      "fighters": [
+        "byakuya",
+        "kakashi",
+        "lee",
+        "minren",
+        "renji",
+        "rifagu",
+        "rukia",
+        "sakura",
+        "sasuke",
+        "yihu",
+        "yulong"
+      ],
+      "helpers": [
+        "jinye",
+        "kon",
+        "woailuo",
+        "you"
+      ],
+      "stages": [
+        "\u53cc\u6781",
+        "\u5b87\u667a\u6ce2\u6751",
+        "\u5c38\u9b42\u754c\u901a\u9053",
+        "\u6728\u53f6\u6751",
+        "\u697c\u9876",
+        "\u6d41\u9b42\u8857",
+        "\u6e29\u6cc9",
+        "\u706b\u5f71\u7011\u5e03",
+        "\u73b0\u4e16",
+        "\u9759\u6d8e\u4ead"
+      ]
+    },
+    "inputSummary": {
+      "build": {
+        "count": 173,
+        "sha256": "80defea071e29541aafbf70a1197e7e7ade4f08a785a6073c3fef929d1714b6d"
+      },
+      "content": {
+        "count": 10146,
+        "sha256": "dec92731a02b8a63262e0cec5451b674c8f78321242a4b5e1d7d47c541da51b7"
+      }
+    }
+  },
+  "source_sha256": {
+    "godot/online_match.gd": "d7a60c3f4ef677d26c4bb6594d96b9384b952bdd7d16552875ce8cfa1fb64a07",
+    "godot/rollback_session.gd": "d43b7b83bdde9124a40d1252fad54a5457c689d2dccdc1d4f023568792a97f9d",
+    "godot/battle_checkpoint.gd": "37c9cc607f53877e54abcc7f77602b81d66c8df1fba7a42bfdced2f76896f0c1",
+    "godot/tests/online_match_pair_smoke.gd": "dc90166c4e5c4650c83991de9cf80b259d631b306ef2bdd0e16ad32ba3ce3181",
+    "godot/tests/online_checkpoint_options_smoke.gd": "8b6410b511686427998433be3e388320751c51e0a678b7911fe4e7a08c75aa25",
+    "godot/tests/rollback_delayed_input_profile.gd": "f61bca03de33e51ea4513f03397260e345b9f1c2d99ccafc44b462f0f8b48c80"
+  },
+  "log_sha256": {
+    "check-5-rollback_batched_battle_smoke.log": "e3281554cf671f17e81acc99e2a43e3a2b9b4818cccfbb1fce310af5c86c6e5b",
+    "check-10-online_match_service_terminal_smoke.log": "fb7e1e7656834c2c644b5f59a9384286fac429f5463b39ef1eefd78d56a91fcb",
+    "check-7-online_batched_ordering_smoke.log": "be061f0c0e5ab773a5c3974ecc07fcafcc0158d332836780b9b9dd4a90e6d96d",
+    "check-8-online_timer_round_smoke.log": "5c093eae5b77403dc35872cb47883228d7cda164758f5736b93db4c9a619147f",
+    "check-4-online_sparse_recovery_smoke.log": "699c9cf943c1f5ee59d44f1e0164454956728091ef413c6c1a4c7933ac4fd4cd",
+    "check-0-online_checkpoint_options_smoke.log": "bdd0efe050085af2a263751d447d9be8945e52cf573493e23d420f55f7abbcb5",
+    "profile-False-0.log": "b16cb1828e0ff142353cb0cf406cf7176cd234202e725d17c301801bc466844c",
+    "check-engine.log": "48ebce099d837fa18f398e735431df097db6f0fcda6941d5d01445acd1d24e87",
+    "profile-False-1.log": "af1af1156f36202f81e5b99481301559e0ae8a629d4282f3471b08fa860af91f",
+    "profile-False-3.log": "f3109d6225387db790ed713e1dd6f7b80310615403334c18236ac0916eed7926",
+    "profile-False-2.log": "d69aafb8328efc4edff547bd9ade5727827cbd48aeea07f1756268407b4d73e2",
+    "check-1-online_match_pair_smoke.log": "ca294c4c5f81aeffbcf3daad96a4eed0e367d31238479d3795bb4d93b228f465",
+    "profile-True-1.log": "f9d600aa034495029d6215e13db8c24b4ab774d0da5daa269a5e11337c3c8577",
+    "profile-True-0.log": "d5f15e29db733c3c0ba462e28a7dd6711b870857d7d0b42a9c52b17b7d541252",
+    "check-6-rollback_batched_battle_smoke.log": "12186982b66fe8bdc512f54ba32dba5953fa189b7a27198be68fb13a5126e437",
+    "profile-True-2.log": "80f5341134bcb8ee42f989cc38f7e473312a36ba936e38fff3f23324bd3abc0d",
+    "profile-True-3.log": "acd2900958eaf42457ff56daf41f6677bcea44cf9ef436798f851c8c9666e974",
+    "check-2-online_match_pair_smoke.log": "b7480a37cda24f4b7084881f1cc92140ccaea610e429c783ca8d07f21d0d43e7",
+    "check-9-online_match_start_cancel_smoke.log": "5629c8862a9b29f75761552bd4899f000ab04098322e74e2788a1a26c2888093",
+    "engine.log": "acd2900958eaf42457ff56daf41f6677bcea44cf9ef436798f851c8c9666e974",
+    "check-11-online_performance_diagnostics_smoke.log": "48ebce099d837fa18f398e735431df097db6f0fcda6941d5d01445acd1d24e87",
+    "check-3-online_match_pair_smoke.log": "e8522d9a7f209501426f81a5d03ec23603a6f45ccfa04f18b87a4059ff5cdc52"
+  },
+  "web_export": {
+    "metadata": {
+      "schemaVersion": 1,
+      "buildID": "1d549ac46db7bb162b495fe63f2f2d8ffb11a77ddd6bb24d14e7b29bb1c1f9a8",
+      "gitCommit": "6a64b0435a90a51556fce8c4bf808a7df505d00c",
+      "dirty": null,
+      "dirtyPaths": [],
+      "resourceVersion": "13447532e07ea0d74651a3000521b3359143373259e21e5cfa00a6b54b0efdec",
+      "sourceTreeSha256": "60c864c4c8bee1cb4538c787c38eb09cde3895ce8254a7988b8a260ab4db08a4",
+      "templateSha256": "d3ee2f08cef0cf3cf6678a6355a92a8db48ccdd35cbd2e8bfd5f0e8a0b4032a0",
+      "engineVersion": "4.7.2",
+      "builtAt": "2026-10-04T08:00:14Z",
+      "exportedAt": "2026-10-04T08:00:25Z",
+      "pckSha256": "e7d7d5e5d594ead90b3cc7be0828b26068594d55480558c205d88e1755e351bb",
+      "pckHashKind": "exported_artifact"
+    },
+    "log_sha256": "fd53ca96242c1486129fb730f1336f2e8673f5b78b16e07375dd0017d15af475",
+    "scope": "Clean temporary macOS Godot 4.7.2 Web export; source copy includes uncommitted changes over the recorded base commit; no browser gameplay run"
+  },
+  "repository_checks": {
+    "verify": "passed",
+    "check_handoff": "passed",
+    "validate_contracts": "passed",
+    "manifest_check": "passed",
+    "manifest_tests": 7,
+    "diff_check": "passed"
+  }
+}

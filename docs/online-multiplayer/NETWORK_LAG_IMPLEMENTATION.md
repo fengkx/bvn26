@@ -775,3 +775,11 @@ shadow capture exceptions. Online combo drawing is suppressed; logical counters
 and diagnostics remain active. This is enabled by default. Native total-time
 gains are not conclusive; no NET gate is closed. See
 [local evidence](../../evidence/online/network-lag/replay-display-local.md).
+
+## Online checkpoint default — 2026-10-04
+
+Sparse saves with stride two are now the online default, superseding the earlier
+opt-in status. `?online_sparse=0` restores full saving; host pacing stays off.
+Native measurements and state checks are recorded in
+[local evidence](../../evidence/online/network-lag/sparse-default-local.md).
+Browser performance and all existing NET acceptance gates remain pending.

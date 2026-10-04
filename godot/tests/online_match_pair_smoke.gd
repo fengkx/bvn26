@@ -54,9 +54,19 @@ func _run() -> void:
 	root.add_child(second_peer)
 	var first_match := Coordinator.new()
 	var second_match := Coordinator.new()
+	assert(first_match.sparse_saves and first_match.checkpoint_stride == 2)
+	assert(second_match.sparse_saves and second_match.checkpoint_stride == 2)
+	if OS.get_cmdline_user_args().has("--mixed-saves"):
+		second_match.sparse_saves = false
+		second_match.checkpoint_stride = 1
+	if OS.get_cmdline_user_args().has("--full-saves"):
+		first_match.sparse_saves = false
+		second_match.sparse_saves = false
 	if OS.get_cmdline_user_args().has("--sparse"):
 		first_match.sparse_saves = true
 		second_match.sparse_saves = true
+		first_match.checkpoint_stride = 1
+		second_match.checkpoint_stride = 1
 		if OS.get_cmdline_user_args().has("--stride-two"):
 			first_match.checkpoint_stride = 2
 			second_match.checkpoint_stride = 2
