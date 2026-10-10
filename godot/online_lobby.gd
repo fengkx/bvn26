@@ -61,6 +61,9 @@ var _room_connection: Node
 var _room_connection_ready := false
 var _room_connection_starting := false
 var _room_connection_generation := 0
+var _auto_connection_request := ""
+var _connection_phase := "idle"
+var _last_connection_error: Dictionary = {}
 var _room_state_poll_elapsed := 0.0
 var _room_state_poll_in_flight := false
 var _selection_adapter: OnlineCharacterSelectionAdapter
@@ -197,6 +200,10 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if is_instance_valid(game_root) and game_root.has_method("_diagnostic_snapshot"):
+		var diagnostics = game_root.get("diagnostics")
+		if diagnostics is DiagnosticRuntime and diagnostics.snapshot_provider == Callable(self, "_diagnostic_snapshot"):
+			diagnostics.snapshot_provider = Callable(game_root, "_diagnostic_snapshot")
 	_close_room_connection()
 	_end_selection_session(false)
 	_unregister_web_match_hud()
@@ -213,9 +220,35 @@ func configure(surface: RenderSurface, game: Control) -> void:
 	render_surface = surface
 	game_root = game
 	if game_root != null:
+		if game_root.has_method("_diagnostic_snapshot"):
+			var diagnostics = game_root.get("diagnostics")
+			if diagnostics is DiagnosticRuntime:
+				diagnostics.snapshot_provider = Callable(self, "_diagnostic_snapshot")
 		var title_menu := game_root.get("title_menu") as TitleMenu
 		if title_menu != null and not title_menu.confirmed.is_connected(_on_game_menu_confirmed):
 			title_menu.confirmed.connect(_on_game_menu_confirmed)
+
+
+func _diagnostic_snapshot() -> Dictionary:
+	var snapshot: Dictionary = game_root._diagnostic_snapshot() if is_instance_valid(game_root) else {}
+	snapshot["onlineLobby"] = get_connection_diagnostic()
+	return snapshot
+
+
+func get_connection_diagnostic() -> Dictionary:
+	var phase := _connection_phase
+	if is_instance_valid(_room_connection) and _room_connection.has_method("get_startup_phase"):
+		phase = str(_room_connection.get_startup_phase())
+	return {
+		"slot": _slot, "phase": phase, "inRoom": not _room_id.is_empty(),
+		"roomPhase": str(_room_state.get("phase", "")),
+		"busy": _busy, "starting": _room_connection_starting, "connected": _room_connection_ready,
+		"signalingConnected": room_client != null and room_client.is_signaling_connected(),
+		"negotiationPresent": _room_state.get("negotiation") is Dictionary,
+		"profileDraftDirty": _profile_draft_dirty,
+		"commandUncertain": room_client != null and room_client.has_uncertain_command(),
+		"lastError": _last_connection_error.duplicate(true),
+	}
 
 
 func blocks_game_input(event: InputEvent) -> bool:
@@ -843,6 +876,7 @@ func _start_room_connection() -> void:
 	_room_connection_ready = false
 	_remote_connection_profile_id = ""
 	_local_connection_profile_id = ""
+	_connection_phase = "refresh_room"
 	_status.text = "正在建立选人连接…"
 	_refresh_room_view()
 	var room_reply: Dictionary = await room_client.refresh_state()
@@ -876,6 +910,7 @@ func _start_room_connection() -> void:
 
 	var ice_servers: Array = []
 	if not _local_connection_profile_id.ends_with("-lan"):
+		_connection_phase = "ice_servers"
 		var ice_reply: Dictionary = await room_client.get_ice_servers()
 		if not _room_connection_attempt_current(
 			generation, lifecycle_generation, expected_room_id, profile, expected_setup_revision
@@ -907,6 +942,7 @@ func _start_room_connection() -> void:
 		_show_error("peer_configuration_failed")
 		_refresh_room_view()
 		return
+	_connection_phase = "signaling"
 	var issue := str(await connection.start())
 	if not _room_connection_attempt_current(
 		generation, lifecycle_generation, expected_room_id, profile, expected_setup_revision
@@ -2076,7 +2112,31 @@ func _accept_state(state: Variant) -> void:
 		if not _startup_cancel_requested and not epoch.is_empty() and epoch != _starting_epoch:
 			_start_prepared_match.call_deferred(_room_state.duplicate(true))
 	elif str(_room_state.get("phase", "")) == "lobby":
+		_maybe_accept_connection_request.call_deferred()
 		_maybe_auto_prepare.call_deferred()
+
+
+func _maybe_accept_connection_request() -> void:
+	if _slot != 1 or _room_id.is_empty() or _room_state.get("phase") != "lobby" \
+		or _busy or _startup_busy or _room_connection_starting or _room_connection_ready \
+		or _selection_active or _selection_commit_busy or _map_active \
+		or _profile_draft_dirty or not _pending_network_profile.is_empty():
+		return
+	if room_client == null or room_client.has_uncertain_command() or room_client.is_command_in_flight():
+		return
+	var members := _as_array(_room_state.get("members"))
+	var negotiation := _as_dictionary(_room_state.get("negotiation"))
+	if members.size() != 2 or not members[0] is Dictionary or not members[1] is Dictionary \
+		or negotiation.get("epoch") != null or str(negotiation.get("id", "")).is_empty() \
+		or float(negotiation.get("expires", 0)) <= Time.get_unix_time_from_system() * 1000.0:
+		return
+	var request_key := _room_id + ":" + str(negotiation.id)
+	if request_key == _auto_connection_request:
+		return
+	# Polling can discover the host before this guest has a signaling socket.
+	# Try each request once; a failed request must not cause a reconnect loop.
+	_auto_connection_request = request_key
+	await _start_room_connection()
 
 
 func _on_room_state_changed(state: Dictionary) -> void:
@@ -4059,6 +4119,13 @@ func _recovery_label(state: String) -> String:
 
 
 func _show_error(code: String) -> void:
+	# Keep only machine codes and stages, never room credentials, SDP or URLs.
+	var safe_code := code if RegEx.create_from_string("^[a-z0-9_]{1,80}$").search(code) != null else "unclassified_error"
+	var diagnostic := get_connection_diagnostic()
+	diagnostic.erase("lastError")
+	diagnostic["code"] = safe_code
+	_last_connection_error = diagnostic
+	push_warning("Online lobby diagnostic: " + JSON.stringify(diagnostic))
 	var messages := {
 		"invalid_service_url": "服务地址需以 http:// 或 https:// 开头。",
 		"invalid_invitation": "加入码格式不正确。",
@@ -4078,6 +4145,9 @@ func _show_error(code: String) -> void:
 		"network_profile_changed": "房主网络设置已变化；请按新设置重新连接并准备。",
 		"network_profile_mismatch": "当前连接与房主网络设置不一致；请重新连接。",
 		"turn_not_configured": "服务未配置互联网中转。若使用本机或同一局域网，请由房主开启对应模式并重新连接；跨网络对战需先配置 TURN 服务。",
+		"signal_delivery_failed": "连接邀请未送达对方。请确认对方仍在房间内，再由房主重试连接。",
+		"negotiation_timeout": "等待房主连接请求超时，请由房主按连接并选择角色。",
+		"data_channels_timeout": "双方未能建立对战通道，请重试连接；跨网络对战请关闭本机 / 同一局域网模式。",
 	}
 	if code.contains("turn_not_configured"):
 		_status.text = str(messages.turn_not_configured)

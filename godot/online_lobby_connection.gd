@@ -31,6 +31,7 @@ var _startup_peer_messages: Array[Dictionary] = []
 var _signal_retry_queue: Array[Dictionary] = []
 var _pending_signals: Dictionary = {}
 var _signal_error := ""
+var _startup_phase := "idle"
 
 
 func _process(_delta: float) -> void:
@@ -73,6 +74,10 @@ func configure(room_client: Object, local_slot: int, ice_servers: Array) -> bool
 
 
 func start() -> String:
+	return await _start_until(Time.get_ticks_msec() + START_TIMEOUT_MS)
+
+
+func _start_until(deadline: int) -> String:
 	if not _configured or not is_instance_valid(_room_client):
 		return "not_configured"
 	if _connected and _channels_open():
@@ -88,7 +93,6 @@ func start() -> String:
 
 	_generation += 1
 	var generation := _generation
-	var deadline := Time.get_ticks_msec() + START_TIMEOUT_MS
 	_starting = true
 	_connected = false
 	_signaling_frozen = false
@@ -99,6 +103,7 @@ func start() -> String:
 	_signal_error = ""
 	_set_connection_state("connecting")
 
+	_startup_phase = "signaling"
 	var signaling_state: Dictionary = await _ensure_signaling(deadline, generation)
 	if _was_cancelled(generation):
 		return "start_cancelled"
@@ -109,8 +114,10 @@ func start() -> String:
 
 	var negotiation: Dictionary
 	if _local_slot == 0:
+		_startup_phase = "create_negotiation"
 		negotiation = await _create_negotiation(deadline, generation)
 	else:
+		_startup_phase = "wait_negotiation"
 		negotiation = await _wait_for_negotiation(deadline, generation)
 	if _was_cancelled(generation):
 		return "start_cancelled"
@@ -126,6 +133,7 @@ func start() -> String:
 		return _fail_start("room_not_ready", generation)
 	var room_id := str(_room_client.get_room_id())
 	var remote_slot := 1 - _local_slot
+	_startup_phase = "create_peer"
 	_peer_transport = _new_peer_transport()
 	if _peer_transport == null:
 		return _fail_start("peer_transport_unavailable", generation)
@@ -147,13 +155,22 @@ func start() -> String:
 	if _local_slot == 0 and not _peer_transport.begin_offer():
 		return _fail_start("offer_creation_failed", generation)
 
+	_startup_phase = "data_channels"
 	while Time.get_ticks_msec() < deadline:
 		if _was_cancelled(generation):
 			return "start_cancelled"
+		var latest_state: Variant = _room_client.get_room_state()
+		if _local_slot == 0 and _valid_lobby_state(latest_state) and latest_state.get("negotiation") == null:
+			# Replacing a guest socket invalidates the old server negotiation.
+			# Re-offer within the original deadline while the guest is listening.
+			_starting = false
+			_early_signals.clear()
+			return await _start_until(deadline)
 		if not _signal_error.is_empty():
 			return _fail_start(_signal_error, generation)
 		_flush_signals(Time.get_ticks_msec())
 		if _channels_open():
+			_startup_phase = "connected"
 			_connected = true
 			_starting = false
 			_signaling_frozen = true
@@ -195,6 +212,10 @@ func close() -> void:
 
 func get_connection_state() -> String:
 	return _connection_state
+
+
+func get_startup_phase() -> String:
+	return _startup_phase
 
 
 func _ensure_signaling(deadline: int, generation: int) -> Dictionary:

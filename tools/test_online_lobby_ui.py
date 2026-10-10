@@ -31,6 +31,10 @@ def main() -> int:
     godot = find_godot()
     cases = (
         (
+            "res://tests/online_lobby_auto_connect_smoke.gd",
+            ("ONLINE_LOBBY_AUTO_CONNECT_SMOKE_OK",),
+        ),
+        (
             "res://tests/online_lobby_ui_smoke.gd",
             (
                 "ONLINE_LOBBY_UI_SMOKE_OK owner_setup_draft_preserved=true map_picker_not_dropdown=true role_dropdowns_absent=true dialog_fits=true",

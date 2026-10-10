@@ -85,6 +85,8 @@ class FakeRoomClient extends Node:
 	var in_flight := false
 	var hold_connect := false
 	var close_signaling_count := 0
+	var invalidate_first_offer := false
+	var negotiate_count := 0
 
 	func _init(local_slot: int, negotiation: Variant = null) -> void:
 		slot = local_slot
@@ -130,7 +132,8 @@ class FakeRoomClient extends Node:
 			return {"acceptedSeq": 2, "state": get_room_state()}
 		if operation.get("type") != "negotiate" or operation.get("epoch") != null:
 			return {"error": "invalid_fixture_command"}
-		state["negotiation"] = _negotiation(HOST_NEGOTIATION)
+		negotiate_count += 1
+		state["negotiation"] = _negotiation(HOST_NEGOTIATION if negotiate_count == 1 else CURRENT_NEGOTIATION)
 		state["revision"] = int(state.revision) + 1
 		return {"acceptedSeq": 1, "state": get_room_state()}
 
@@ -148,6 +151,10 @@ class FakeRoomClient extends Node:
 			return false
 		signal_send_count += 1
 		last_signal_sequence += 1
+		if invalidate_first_offer and signal_send_count == 1:
+			state["negotiation"] = null
+			signaling_message.emit.call_deferred({"type": "error", "error": "stale_negotiation"})
+			return true
 		var delivered := signal_send_count >= 2
 		if delivered and connection != null:
 			var peer: Variant = connection.get("_peer_transport")
@@ -195,6 +202,7 @@ func _initialize() -> void:
 
 func _run() -> void:
 	await _test_owner_retries_undelivered_offer()
+	await _test_owner_reoffers_after_guest_socket_replacement()
 	await _test_guest_uses_fresh_negotiation_and_buffers_early_offer()
 	await _test_guest_reconnect_receives_offer_after_listener_rebind()
 	await _test_close_cancels_start_without_leaving()
@@ -226,6 +234,25 @@ func _test_owner_retries_undelivered_offer() -> void:
 	connection.close()
 	_expect(connection.get_connection_state() == "closed", "close did not mark connection closed")
 	_expect(client.leave_count == 0, "closing the pre-match transport left the room")
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_owner_reoffers_after_guest_socket_replacement() -> void:
+	var client := FakeRoomClient.new(0)
+	client.invalidate_first_offer = true
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	client.connection = connection
+	root.add_child(connection)
+	_expect(connection.configure(client, 0, []), "reconnecting host configuration failed")
+	var issue: String = await connection.start()
+	_expect(issue.is_empty(), "guest socket replacement failed: " + issue)
+	_expect(client.negotiate_count == 2, "host did not renew the invalidated negotiation")
+	_expect(connection._negotiation_id == CURRENT_NEGOTIATION, "host reused stale negotiation")
+	connection.close()
 	client.queue_free()
 	connection.queue_free()
 	await process_frame

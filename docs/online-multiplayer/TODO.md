@@ -25,6 +25,13 @@ the independent backend implementation is no longer a proposed artifact.
 The user explicitly authorized this server slice independently of unfinished
 battle-state work. No full-game or migration gate is promoted by its local tests.
 
+## Lobby connection repair — 2026-10-10
+
+NET-036–045 local follow-up: guest auto-response and host re-offer after socket
+replacement are implemented with native regressions. Production two-browser
+acceptance remains open; no full-plan gate is closed. Evidence and actual effort:
+[lobby connection repair](../../evidence/online/lobby-connect/2026-10-10.md).
+
 ## How to execute and track this plan
 
 - Select a task only when its listed dependencies have passed their acceptance
