@@ -6,6 +6,7 @@ import {
   Fault,
   hash,
   IDLE_MS,
+  INVITE_TOMBSTONE_MS,
   json,
   joinByCode,
   parse,
@@ -276,7 +277,10 @@ export class Admission extends DurableObject<Env> {
     );
     return true;
   }
-  lookupInviteCode(digest: string, guestHash: string): string | null {
+  lookupInviteCode(
+    digest: string,
+    guestHash: string,
+  ): { roomId: string } | { error: "invite_expired" | "invalid_invite" } {
     const row = this.ctx.storage.sql
       .exec<{
         room_id: string;
@@ -288,11 +292,16 @@ export class Admission extends DurableObject<Env> {
         digest,
       )
       .toArray()[0];
-    if (!row || row.expires <= Date.now()) return null;
-    if (row.status === "active") return row.room_id;
+    if (!row) return { error: "invalid_invite" };
+    if (row.status === "expired") return { error: "invite_expired" };
+    if (row.expires <= Date.now())
+      return row.status === "active" || row.status === "used"
+        ? { error: "invite_expired" }
+        : { error: "invalid_invite" };
+    if (row.status === "active") return { roomId: row.room_id };
     if (row.status === "used" && row.guest_hash === guestHash)
-      return row.room_id;
-    return null;
+      return { roomId: row.room_id };
+    return { error: "invalid_invite" };
   }
   consumeInviteCode(
     digest: string,
@@ -354,8 +363,14 @@ export class Admission extends DurableObject<Env> {
     return rows[0]?.expires ?? null;
   }
   release(id: string): void {
+    const retainUntil = Date.now() + INVITE_TOMBSTONE_MS;
     this.ctx.storage.sql.exec("DELETE FROM leases WHERE id = ?", id);
-    this.ctx.storage.sql.exec("DELETE FROM invite_codes WHERE room_id = ?", id);
+    // Keep the digest so a later join can tell a deleted room from a typo.
+    this.ctx.storage.sql.exec(
+      "UPDATE invite_codes SET status = 'expired', expires = ? WHERE room_id = ?",
+      retainUntil,
+      id,
+    );
     this.ctx.storage.sql.exec(
       "DELETE FROM invite_generations WHERE room_id = ?",
       id,
@@ -375,10 +390,14 @@ export class Admission extends DurableObject<Env> {
       "DELETE FROM rates WHERE window < ?",
       Math.floor(now / 60_000),
     );
+    const pendingCodes = this.ctx.storage.sql
+      .exec<{ n: number }>("SELECT COUNT(*) n FROM invite_codes")
+      .one().n;
     if (
       this.ctx.storage.sql
         .exec<{ n: number }>("SELECT COUNT(*) n FROM leases")
-        .one().n
+        .one().n ||
+      pendingCodes
     )
       await this.ctx.storage.setAlarm(now + 60_000);
   }
@@ -462,11 +481,13 @@ export default {
               hash(normalizedCode),
               hash(input.sessionToken),
             ]);
-            const roomId = await admission.lookupInviteCode(
+            const inviteLookup = await admission.lookupInviteCode(
               codeDigest,
               guestHash,
             );
-            requireThat(roomId, "invalid_invite", 403);
+            if ("error" in inviteLookup)
+              throw new Fault(403, inviteLookup.error);
+            const roomId = inviteLookup.roomId;
             response = await env.ROOMS.getByName(roomId).fetch(
               new Request("https://room/join-by-code", {
                 method: "POST",

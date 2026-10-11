@@ -8,6 +8,7 @@ import {
   Fault,
   hash,
   IDLE_MS,
+  SOCKET_ACTIVITY_MS,
   join,
   joinByCode,
   json,
@@ -382,6 +383,8 @@ export class Room extends DurableObject<Env> {
             state.id,
             previousShortInvite,
           );
+        if (input.operation.type === "leave" && state.phase === "closed")
+          await this.env.ADMISSION.getByName("global-v1").release(state.id);
         state = this.read();
         this.broadcast(state);
         await this.schedule(state);
@@ -449,6 +452,7 @@ export class Room extends DurableObject<Env> {
     state.members[ticket.slot]!.connection = connection;
     if (replacingConnection) state.negotiation = null;
     state.revision++;
+    state.lastActivity = Date.now();
     this.write(state);
     this.broadcast(state);
     const pair = new WebSocketPair();
@@ -463,6 +467,7 @@ export class Room extends DurableObject<Env> {
       count: 0,
     } satisfies Attachment);
     this.send(server, { type: "state", state: projection(state) });
+    await this.schedule(state);
     return new Response(null, {
       status: 101,
       webSocket: client,
@@ -495,6 +500,11 @@ export class Room extends DurableObject<Env> {
       socket.serializeAttachment(attached);
       requireThat(attached.count <= 120, "rate_limited", 429);
       this.rate("signals", 240);
+      if (state.phase === "lobby") {
+        state.lastActivity = Date.now();
+        this.write(state);
+        await this.schedule(state);
+      }
       let decoded: unknown;
       try {
         decoded = JSON.parse(message);
@@ -595,6 +605,13 @@ export class Room extends DurableObject<Env> {
     );
     return json({ iceServers: issued.iceServers, expiresIn: ttl });
   }
+  private socketHeartbeatRecent(now: number): boolean {
+    return this.ctx.getWebSockets().some((socket) => {
+      const last =
+        this.ctx.getWebSocketAutoResponseTimestamp(socket)?.getTime() ?? 0;
+      return last > now - SOCKET_ACTIVITY_MS;
+    });
+  }
   async alarm(): Promise<void> {
     let state = this.read();
     const now = Date.now();
@@ -603,6 +620,12 @@ export class Room extends DurableObject<Env> {
       state.revision++;
       this.write(state);
       this.broadcast(state);
+    }
+    // Ping is auto-answered and does not enter webSocketMessage. A recent
+    // auto-response means a member is still waiting in the lobby.
+    if (state.phase === "lobby" && this.socketHeartbeatRecent(now)) {
+      state.lastActivity = now;
+      this.write(state);
     }
     const expired =
       state.leaseUntil <= now ||
@@ -619,11 +642,8 @@ export class Room extends DurableObject<Env> {
     if (state.phase === "active") {
       // A recent heartbeat proves room-service reachability, not battle health.
       const reachable =
-        this.ctx.getWebSockets().some((socket) => {
-          const last =
-            this.ctx.getWebSocketAutoResponseTimestamp(socket)?.getTime() ?? 0;
-          return last > now - 10 * 60_000;
-        }) || state.lastActivity > now - 10 * 60_000;
+        this.socketHeartbeatRecent(now) ||
+        state.lastActivity > now - SOCKET_ACTIVITY_MS;
       if (reachable) {
         const expires = await this.env.ADMISSION.getByName("global-v1").renew(
           state.id,

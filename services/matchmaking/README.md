@@ -225,8 +225,28 @@ If neither page can reach the room service, the 30-minute lease eventually
 expires to avoid permanently leaked capacity. The old **peer** battle may still
 finish; another match then needs a new room. This is separate from the **10-second
 peer interruption** policy, which belongs in the client. A room-service outage
-must not trigger that battle timeout. Idle lobby expiry is 30 minutes; pings and
-mere state reads do not keep an unused lobby alive.
+must not trigger that battle timeout.
+
+Idle lobby expiry is still 30 minutes after `lastActivity`, but a waiting
+player counts as activity. Opening the signaling socket refreshes
+`lastActivity`. Textual `ping` is auto-answered and does not run
+`webSocketMessage`; the lobby alarm treats an auto-response newer than 10
+minutes like the active-match heartbeat and refreshes `lastActivity` before
+the idle check. Other authenticated lobby socket messages do the same. Clients
+should also send the `keepalive` command about every 5 minutes while that
+socket is open so activity is persisted even if an alarm is late. HTTP state
+reads do not refresh `lastActivity`. Without a recent ping, keepalive,
+create/join, or other command, an empty lobby still closes 30 minutes after
+`lastActivity`.
+
+When a room is released (idle expiry, lease expiry, or the owner leaving), its
+short codes are kept as `expired` tombstones for 7 days. `POST
+/v1/rooms/join-by-code` then returns `invite_expired` (403). A malformed code,
+an unknown code, and a code revoked by rotation or guest departure stay
+`invalid_invite`. After the tombstone window the digest is deleted, so an old
+code is no longer distinguishable from one that never existed. Owner leave
+releases the admission lease immediately and tombstones the code in that
+request.
 
 ## Persistence, limits and TURN
 

@@ -601,7 +601,7 @@ test("short invitation codes are private, single-use, retryable and rotatable", 
         compatibility,
       })
     ).error,
-    "invalid_invite",
+    "invite_expired",
   );
 
   const racingRoom = await createRoom(server);
@@ -1137,7 +1137,67 @@ test("revoked invitations, single-use socket tickets and expired leases cannot b
         compatibility,
       })
     ).error,
+    "invite_expired",
+  );
+});
+
+test("unknown codes stay invalid_invite and a released code is invite_expired", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  const joinByCode = (code) =>
+    request(server, "/v1/rooms/join-by-code", {
+      code,
+      sessionToken: token(),
+      nickname: "guest",
+      compatibility,
+    });
+  assert.equal((await joinByCode("not-a-code")).error, "invalid_invite");
+  assert.equal(
+    (await joinByCode("quiet-yak-22222222")).error,
     "invalid_invite",
+  );
+  const beforeActivity = room.state.lastActivity;
+  const kept = await op(server, room, 0, { type: "keepalive" });
+  assert.equal(kept.status, 200);
+  assert.ok(kept.state.lastActivity >= beforeActivity);
+  await request(server, "/_test/alarm", { id: room.roomId, kind: "idle" });
+  assert.equal((await joinByCode(room.inviteCode)).error, "invite_expired");
+  assert.equal(
+    (await request(server, endpoint(room, "state"), undefined, room.owner))
+      .status,
+    410,
+  );
+});
+
+test("a recently pinged lobby socket keeps the room past the idle deadline", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  const connected = await socket(server, room, room.owner);
+  t.after(() => connected.ws.terminate());
+  connected.ws.send("ping");
+  assert.equal(await connected.receive("pong"), "pong");
+  await request(server, "/_test/alarm", { id: room.roomId, kind: "idle" });
+  const state = await request(
+    server,
+    endpoint(room, "state"),
+    undefined,
+    room.owner,
+  );
+  assert.equal(state.status, 200, JSON.stringify(state));
+  assert.equal(state.state.phase, "lobby");
+  assert.ok(state.state.lastActivity > Date.now() - 60_000);
+});
+
+test("an open lobby socket without a recent ping still expires", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  const connected = await socket(server, room, room.owner);
+  t.after(() => connected.ws.terminate());
+  await request(server, "/_test/alarm", { id: room.roomId, kind: "idle" });
+  assert.equal(
+    (await request(server, endpoint(room, "state"), undefined, room.owner))
+      .status,
+    410,
   );
 });
 

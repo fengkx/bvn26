@@ -3,6 +3,8 @@ import { z } from "zod";
 export const VERSION = 1;
 export const MAX_BYTES = 16_384;
 export const IDLE_MS = 30 * 60_000;
+export const SOCKET_ACTIVITY_MS = 10 * 60_000;
+export const INVITE_TOMBSTONE_MS = 7 * 24 * 60 * 60_000;
 export const PREPARE_MS = 30_000;
 export const TICKET_MS = 30_000;
 export const token = z.string().regex(/^[A-Za-z0-9_-]{43}$/);

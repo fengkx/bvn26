@@ -2,6 +2,11 @@ class_name OnlineLobby
 extends Control
 
 const DEFAULT_SERVICE_URL := "https://bvn26-pvp.fengkx.top"
+const LOBBY_IDLE_MS := 30 * 60 * 1000
+const LOBBY_KEEPALIVE_SECONDS := 300.0
+const LOBBY_RECONNECT_BASE_SECONDS := 1.0
+const LOBBY_RECONNECT_MAX_SECONDS := 30.0
+const LOBBY_STATUS_REFRESH_SECONDS := 30.0
 const CLIENT := preload("res://online_room_client.gd")
 const ROOM_CONNECTION := preload("res://online_lobby_connection.gd")
 const ONLINE_USER_TEXT_FONT := preload("res://online_user_text_font.gd")
@@ -33,6 +38,13 @@ var _dirty := false
 var _exit_confirmation_deadline := -1
 var _last_result_text := ""
 var _signal_connected := false
+var _lobby_signaling_desired := false
+var _lobby_signaling_in_flight := false
+var _lobby_presence_generation := 0
+var _lobby_keepalive_elapsed := 0.0
+var _lobby_reconnect_wait := 0.0
+var _lobby_reconnect_attempt := 0
+var _lobby_status_refresh_elapsed := 0.0
 var _admission_uncertain := false
 var _profile_draft_dirty := false
 var _pending_network_profile: Dictionary = {}
@@ -711,6 +723,7 @@ func _on_create_pressed() -> void:
 	_accept_state(response.state)
 	_show_room()
 	_refresh_room_view()
+	_arm_lobby_presence()
 
 
 func _on_join_pressed() -> void:
@@ -748,6 +761,7 @@ func _on_join_pressed() -> void:
 	_accept_state(response.state)
 	_show_room()
 	_refresh_room_view()
+	_arm_lobby_presence()
 
 
 func _configure_service() -> bool:
@@ -790,6 +804,7 @@ func _on_retry_admission_pressed() -> void:
 	_accept_state(response.get("state"))
 	_show_room()
 	_refresh_room_view()
+	_arm_lobby_presence()
 
 
 func _set_admission_uncertain(uncertain: bool) -> void:
@@ -820,6 +835,7 @@ func _on_abandon_admission_pressed() -> void:
 	_invite_code = ""
 	_slot = -1
 	_signal_connected = false
+	_stop_lobby_presence()
 	_starting_epoch = ""
 	_terminal_pending_epoch = ""
 	_terminal_finished_epoch = ""
@@ -836,18 +852,208 @@ func _compatibility() -> Dictionary:
 
 
 func _connect_signaling() -> void:
-	if _busy or _room_id.is_empty():
+	_arm_lobby_presence()
+
+
+func _arm_lobby_presence(update_status := true) -> void:
+	if _room_id.is_empty() or room_client == null or not is_instance_valid(room_client):
 		return
-	_retry_button.visible = false
+	if str(_room_state.get("phase", "")) != "lobby":
+		return
+	_lobby_signaling_desired = true
+	_lobby_keepalive_elapsed = 0.0
+	_lobby_reconnect_attempt = 0
+	_lobby_reconnect_wait = 0.0
+	_lobby_status_refresh_elapsed = 0.0
+	if update_status:
+		_refresh_lobby_presence_status(true)
+	_ensure_lobby_signaling()
+
+
+func _stop_lobby_presence() -> void:
+	_lobby_signaling_desired = false
+	_lobby_presence_generation += 1
+	_lobby_keepalive_elapsed = 0.0
+	_lobby_reconnect_wait = 0.0
+	_lobby_reconnect_attempt = 0
+	_lobby_status_refresh_elapsed = 0.0
+
+
+func _wait_until_lobby_presence_idle() -> void:
+	var spins := 0
+	while spins < 900 and _lobby_signaling_in_flight:
+		await get_tree().process_frame
+		spins += 1
+	while spins < 900 and room_client != null and is_instance_valid(room_client) \
+		and room_client.is_command_in_flight():
+		await get_tree().process_frame
+		spins += 1
+
+
+func _ensure_lobby_signaling() -> void:
+	if _lobby_signaling_in_flight or not _lobby_signaling_desired:
+		return
+	if room_client == null or not is_instance_valid(room_client) or _room_id.is_empty():
+		return
+	if room_client.is_signaling_connected():
+		_signal_connected = true
+		_refresh_lobby_presence_status(false)
+		return
+	if _room_connection_starting or _room_connection_ready or _startup_busy or _match_started:
+		return
+	if str(_room_state.get("phase", "")) != "lobby":
+		return
+	_lobby_signaling_in_flight = true
+	var generation := _lobby_presence_generation
+	var room_id := _room_id
 	var response: Dictionary = await room_client.connect_signaling()
+	_lobby_signaling_in_flight = false
+	if generation != _lobby_presence_generation or room_id != _room_id or not _lobby_signaling_desired:
+		return
 	if response.has("error"):
 		_signal_connected = false
-		_retry_button.visible = true
-		_show_error(str(response.error))
-	else:
-		_signal_connected = true
-		_accept_state(response.get("state", room_client.get_room_state()))
-		_status.text = "信令已连接；对局输入将经浏览器点对点通道传输。"
+		if str(response.get("error", "")) == "socket_connecting":
+			_lobby_reconnect_wait = 0.5
+			return
+		_schedule_lobby_reconnect()
+		if _can_show_lobby_presence_status():
+			_status.text = "信令已断开，约 %d 秒后重新连接。" % int(ceili(_lobby_reconnect_wait))
+		return
+	_signal_connected = true
+	_lobby_reconnect_attempt = 0
+	_lobby_reconnect_wait = 0.0
+	if response.get("state") is Dictionary:
+		_accept_state(response.get("state"))
+	_refresh_lobby_presence_status(false)
+
+
+func _schedule_lobby_reconnect() -> void:
+	var exponent := mini(_lobby_reconnect_attempt, 5)
+	_lobby_reconnect_wait = minf(
+		LOBBY_RECONNECT_MAX_SECONDS,
+		LOBBY_RECONNECT_BASE_SECONDS * float(1 << exponent)
+	)
+	_lobby_reconnect_attempt += 1
+
+
+func _send_lobby_keepalive() -> void:
+	if not _lobby_signaling_desired or room_client == null or not is_instance_valid(room_client):
+		return
+	if room_client.has_uncertain_command() or room_client.is_command_in_flight():
+		return
+	if not room_client.is_signaling_connected():
+		return
+	var generation := _lobby_presence_generation
+	var room_id := _room_id
+	var result: Dictionary = await room_client.command({"type": "keepalive"})
+	if generation != _lobby_presence_generation or room_id != _room_id or not _lobby_signaling_desired:
+		return
+	if result.has("error"):
+		if bool(result.get("uncertain", false)) and _retry_button != null:
+			_retry_button.visible = true
+		return
+	_accept_state(result.get("state"))
+
+
+func _tick_lobby_presence(delta: float) -> void:
+	if not _lobby_signaling_desired or _room_id.is_empty() or room_client == null \
+		or not is_instance_valid(room_client):
+		return
+	if str(_room_state.get("phase", "")) != "lobby" or _startup_busy or _match_started:
+		return
+	if room_client.is_signaling_connected():
+		_lobby_keepalive_elapsed += delta
+		_lobby_status_refresh_elapsed += delta
+		if _lobby_status_refresh_elapsed >= LOBBY_STATUS_REFRESH_SECONDS \
+			and _status_is_lobby_presence():
+			_lobby_status_refresh_elapsed = 0.0
+			_refresh_lobby_presence_status(true)
+		if _lobby_keepalive_elapsed >= LOBBY_KEEPALIVE_SECONDS:
+			if room_client.has_uncertain_command() or room_client.is_command_in_flight():
+				return
+			_lobby_keepalive_elapsed = 0.0
+			_send_lobby_keepalive()
+		return
+	if _lobby_signaling_in_flight or _room_connection_starting or _room_connection_ready:
+		return
+	if _lobby_reconnect_wait > 0.0:
+		_lobby_reconnect_wait = maxf(0.0, _lobby_reconnect_wait - delta)
+		if _lobby_reconnect_wait > 0.0:
+			return
+	_ensure_lobby_signaling()
+
+
+func _can_show_lobby_presence_status() -> bool:
+	if _status == null or _room_id.is_empty() or _room_state.is_empty():
+		return false
+	if _match_started or _startup_busy or _selection_active or _map_active:
+		return false
+	if _room_connection_starting or _room_connection_ready:
+		return false
+	if str(_room_state.get("phase", "")) != "lobby":
+		return false
+	return _dialog != null and _dialog.visible and _room_view != null and _room_view.visible
+
+
+func _status_is_lobby_presence() -> bool:
+	if _status == null:
+		return false
+	var text := _status.text
+	return text.begins_with("房间已创建") \
+		or text.begins_with("邀请口令已显示") \
+		or text.begins_with("已加入房间") \
+		or text.begins_with("双方已在房间") \
+		or text.begins_with("信令已断开") \
+		or text.begins_with("正在创建房间") \
+		or text.begins_with("正在加入房间")
+
+
+func _refresh_lobby_presence_status(force := false) -> void:
+	if not _can_show_lobby_presence_status():
+		return
+	if not force and not _status_is_lobby_presence():
+		return
+	_status.text = _lobby_presence_status_text()
+
+
+func _lobby_presence_status_text() -> String:
+	var connected := room_client != null and is_instance_valid(room_client) \
+		and room_client.is_signaling_connected()
+	var members := _as_array(_room_state.get("members", []))
+	var has_guest := members.size() > 1 and members[1] is Dictionary
+	var idle_note := _lobby_idle_note(connected)
+	if _slot == 0 and not has_guest:
+		if connected:
+			return "邀请口令已显示，信令已连接，正在等待对手加入。" + idle_note
+		return "房间已创建。邀请口令已显示，正在连接信令并等待对手。" + idle_note
+	if _slot == 1:
+		if connected:
+			return "已加入房间，信令已连接。可以连接并选择角色。" + idle_note
+		return "已加入房间，正在连接信令。" + idle_note
+	if connected:
+		return "双方已在房间，信令已连接。可以连接并选择角色。" + idle_note
+	return "双方已在房间，正在连接信令。" + idle_note
+
+
+func _lobby_idle_note(connected: bool) -> String:
+	if _slot != 0:
+		return ""
+	var minutes := _lobby_idle_remaining_minutes()
+	if connected:
+		return " 信令保持连接时房间不会因空闲关闭（断开后约 %d 分钟）。" % maxi(minutes, 1)
+	if minutes <= 0:
+		return " 房间即将因空闲关闭。"
+	return " 信令断开后约 %d 分钟关闭。" % minutes
+
+
+func _lobby_idle_remaining_minutes() -> int:
+	var last := int(_room_state.get("lastActivity", 0))
+	if last <= 0:
+		return 30
+	var remaining_ms := float(last + LOBBY_IDLE_MS) - Time.get_unix_time_from_system() * 1000.0
+	if remaining_ms <= 0.0:
+		return 0
+	return int(ceili(remaining_ms / 60000.0))
 
 
 func _on_connect_selection_pressed() -> void:
@@ -2114,6 +2320,7 @@ func _accept_state(state: Variant) -> void:
 	elif str(_room_state.get("phase", "")) == "lobby":
 		_maybe_accept_connection_request.call_deferred()
 		_maybe_auto_prepare.call_deferred()
+		_refresh_lobby_presence_status(false)
 
 
 func _maybe_accept_connection_request() -> void:
@@ -2142,6 +2349,7 @@ func _maybe_accept_connection_request() -> void:
 func _on_room_state_changed(state: Dictionary) -> void:
 	_accept_state(state)
 	if str(state.get("phase", "")) == "closed":
+		_stop_lobby_presence()
 		_close_room_connection()
 		_show_error("room_closed")
 
@@ -2156,7 +2364,16 @@ func _on_socket_state_changed(connected: bool) -> void:
 	if _retry_button != null:
 		_retry_button.visible = room_client != null and room_client.has_uncertain_command()
 	if connected:
-		_status.text = "信令连接中。邀请口令只显示给本机，不会写入日志。"
+		_lobby_reconnect_attempt = 0
+		_lobby_reconnect_wait = 0.0
+		_refresh_lobby_presence_status(false)
+	elif _lobby_signaling_desired and not _lobby_signaling_in_flight and _lobby_reconnect_wait <= 0.0 \
+		and not _room_connection_starting and not _room_connection_ready:
+		_schedule_lobby_reconnect()
+		if _can_show_lobby_presence_status() and (
+			_status_is_lobby_presence() or _status.text.begins_with("信令已断开")
+		):
+			_status.text = "信令已断开，约 %d 秒后重新连接。" % int(ceili(_lobby_reconnect_wait))
 
 
 func _on_room_error(code: String) -> void:
@@ -2805,6 +3022,7 @@ func _start_prepared_match(state: Dictionary) -> void:
 		return
 	_lifecycle_generation += 1
 	var generation := _lifecycle_generation
+	_stop_lobby_presence()
 	_close_room_connection()
 	_starting_epoch = epoch
 	_startup_busy = true
@@ -2819,6 +3037,9 @@ func _start_prepared_match(state: Dictionary) -> void:
 	_home_view.visible = false
 	_match_view.visible = false
 	if not _signal_connected:
+		await _wait_until_lobby_presence_idle()
+		if generation != _lifecycle_generation or _starting_epoch != epoch:
+			return
 		var socket_reply: Dictionary = await room_client.connect_signaling()
 		if generation != _lifecycle_generation or _starting_epoch != epoch:
 			return
@@ -2936,6 +3157,7 @@ func _on_cancel_start_pressed() -> void:
 	_show_room()
 	_status.text = "开局已取消；你仍留在房间，可以重新准备。"
 	_refresh_room_view()
+	_arm_lobby_presence(false)
 
 
 func _on_abandon_startup_pressed() -> void:
@@ -2957,6 +3179,7 @@ func _on_abandon_startup_pressed() -> void:
 	_invite_code = ""
 	_slot = -1
 	_signal_connected = false
+	_stop_lobby_presence()
 	_admission_uncertain = false
 	_profile_draft_dirty = false
 	_lan_candidate_opt_in.set_pressed_no_signal(false)
@@ -3076,8 +3299,9 @@ func _physics_process(_delta: float) -> void:
 		_queue_match_abort({"reason": issue}, _starting_epoch, _lifecycle_generation)
 
 
-func _process(_delta: float) -> void:
-	_tick_room_state_poll(_delta)
+func _process(delta: float) -> void:
+	_tick_lobby_presence(delta)
+	_tick_room_state_poll(delta)
 	_sync_web_paste_target()
 	if _home_footer != null:
 		_home_footer.visible = _dialog.visible and _home_view.visible
@@ -3694,6 +3918,7 @@ func _finish_room_match_abort(report: Dictionary, epoch: String, generation: int
 		_invite_code = ""
 		_slot = -1
 		_signal_connected = false
+		_stop_lobby_presence()
 		_starting_epoch = ""
 		_terminal_pending_epoch = ""
 		_terminal_commit_queued_epoch = ""
@@ -3786,6 +4011,7 @@ func _startup_failed(epoch: String, reason: String, generation: int = -1, abort_
 	_busy = false
 	_show_room()
 	_show_error(reason)
+	_arm_lobby_presence(false)
 
 
 func _abort_room_match(epoch: String, generation: int) -> void:
@@ -3824,6 +4050,7 @@ func _on_rematch_pressed() -> void:
 	_show_room()
 	_status.text = "角色、援助和规则仍在房间内；再次准备后由房主开始新的一局。"
 	_refresh_room_view()
+	_arm_lobby_presence(false)
 
 
 func _on_leave_room_pressed() -> void:
@@ -3836,9 +4063,14 @@ func _on_leave_room_pressed() -> void:
 		_on_close_pressed()
 		return
 	_lifecycle_generation += 1
+	_stop_lobby_presence()
 	set_physics_process(false)
 	_close_room_connection()
 	_busy = true
+	await _wait_until_lobby_presence_idle()
+	if room_client == null or _room_id.is_empty():
+		_busy = false
+		return
 	_close_match_runtime("room_leave")
 	var room_state := room_client.get_room_state()
 	var match_state := _as_dictionary(room_state.get("match"))
@@ -3847,6 +4079,7 @@ func _on_leave_room_pressed() -> void:
 		if pending.has("error"):
 			_busy = false
 			_show_command_error(pending)
+			_arm_lobby_presence(false)
 			return
 		room_state = _as_dictionary(pending.get("state"))
 		match_state = _as_dictionary(room_state.get("match"))
@@ -3857,6 +4090,7 @@ func _on_leave_room_pressed() -> void:
 		if abort_result.has("error"):
 			_busy = false
 			_show_command_error(abort_result)
+			_arm_lobby_presence(false)
 			return
 	var leave_result: Dictionary = await room_client.command({"type": "leave"})
 	if leave_result.get("uncertain", false):
@@ -3864,6 +4098,7 @@ func _on_leave_room_pressed() -> void:
 	if leave_result.has("error"):
 		_busy = false
 		_show_command_error(leave_result)
+		_arm_lobby_presence(false)
 		return
 	room_client.clear_credentials()
 	_room_state.clear()
@@ -3891,6 +4126,7 @@ func _on_leave_room_pressed() -> void:
 
 func _abandon_pending_terminal() -> void:
 	_busy = true
+	_stop_lobby_presence()
 	_lifecycle_generation += 1
 	var generation := _lifecycle_generation
 	var epoch := _starting_epoch
@@ -4129,6 +4365,9 @@ func _show_error(code: String) -> void:
 	var messages := {
 		"invalid_service_url": "服务地址需以 http:// 或 https:// 开头。",
 		"invalid_invitation": "加入码格式不正确。",
+		"invalid_invite": "加入码不正确。请核对朋友发来的口令。",
+		"invite_expired": "加入码已过期，房间已关闭。请让房主重新创建房间。",
+		"room_expired": "房间已过期。请让房主重新创建房间。",
 		"incompatible_build": "双方游戏版本或启用内容不一致。",
 		"room_full": "房间已有两位玩家。",
 		"room_closed": "房间已关闭或过期。",
