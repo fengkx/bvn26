@@ -6,10 +6,18 @@ signal peer_message(type: String, payload: Variant, sequence: int)
 signal transport_error(code: String)
 
 const PEER_TRANSPORT_SCRIPT := preload("res://online_peer_transport.gd")
-const START_TIMEOUT_MS := 60_000
-const NEGOTIATION_POLL_MS := 250
+# Waiting for the other player is not part of the ICE budget. 10 minutes covers
+# a late click; cancel/close still ends the wait immediately.
+const PEER_WAIT_TIMEOUT_MS := 10 * 60_000
+# Matches services/matchmaking NEGOTIATION_TTL_MS. Starts only once a negotiation id exists.
+const DATA_CHANNEL_TIMEOUT_MS := 45_000
+const RECONNECT_BASE_MS := 1_000
+const RECONNECT_MAX_MS := 30_000
+const STATE_POLL_BASE_MS := 5_000
+const STATE_POLL_MAX_MS := 30_000
 const MAX_BUFFERED_SIGNALS := 256
 const MAX_SIGNAL_DELIVERY_ATTEMPTS := 8
+const MAX_NEGOTIATION_RESTARTS := 3
 
 var _room_client: Object
 var _local_slot := -1
@@ -32,6 +40,12 @@ var _signal_retry_queue: Array[Dictionary] = []
 var _pending_signals: Dictionary = {}
 var _signal_error := ""
 var _startup_phase := "idle"
+var _negotiation_restarts := 0
+var _rejected_negotiation_id := ""
+var _delivered_signals: Array[Dictionary] = []
+var _remote_signaling_down := false
+var _peer_wait_timeout_ms := PEER_WAIT_TIMEOUT_MS
+var _data_channel_timeout_ms := DATA_CHANNEL_TIMEOUT_MS
 
 
 func _process(_delta: float) -> void:
@@ -63,21 +77,27 @@ func configure(room_client: Object, local_slot: int, ice_servers: Array) -> bool
 	_local_slot = local_slot
 	_ice_servers = ice_servers.duplicate(true)
 	_signaling_frozen = false
-	if not _room_client.is_connected("signaling_message", _on_signaling_message):
-		_room_client.connect("signaling_message", _on_signaling_message)
 	var room_state: Variant = _room_client.get_room_state()
 	_initial_negotiation_id = ""
 	if room_state is Dictionary and room_state.get("negotiation") is Dictionary:
 		_initial_negotiation_id = str(room_state["negotiation"].get("id", ""))
+	_early_signals.clear()
+	_absorb_recent_signals()
 	_configured = true
+	if not _room_client.is_connected("signaling_message", _on_signaling_message):
+		_room_client.connect("signaling_message", _on_signaling_message)
 	return true
 
 
 func start() -> String:
-	return await _start_until(Time.get_ticks_msec() + START_TIMEOUT_MS)
+	if _starting:
+		return "connection_starting"
+	_negotiation_restarts = 0
+	_rejected_negotiation_id = ""
+	return await _start_until(Time.get_ticks_msec() + _peer_wait_timeout_ms)
 
 
-func _start_until(deadline: int) -> String:
+func _start_until(peer_deadline: int) -> String:
 	if not _configured or not is_instance_valid(_room_client):
 		return "not_configured"
 	if _connected and _channels_open():
@@ -100,25 +120,31 @@ func _start_until(deadline: int) -> String:
 	_startup_peer_messages.clear()
 	_signal_retry_queue.clear()
 	_pending_signals.clear()
+	_delivered_signals.clear()
+	_remote_signaling_down = false
 	_signal_error = ""
 	_set_connection_state("connecting")
 
 	_startup_phase = "signaling"
-	var signaling_state: Dictionary = await _ensure_signaling(deadline, generation)
+	var signaling_state: Dictionary = await _maintain_signaling(peer_deadline, generation)
 	if _was_cancelled(generation):
 		return "start_cancelled"
 	if signaling_state.has("error"):
 		return _fail_start(str(signaling_state.get("error", "signaling_failed")), generation)
-	if Time.get_ticks_msec() >= deadline:
-		return _fail_start("start_timeout", generation)
 
 	var negotiation: Dictionary
 	if _local_slot == 0:
+		_startup_phase = "wait_peer"
+		var peer_ready: Dictionary = await _wait_for_peer_signaling(peer_deadline, generation)
+		if _was_cancelled(generation):
+			return "start_cancelled"
+		if peer_ready.has("error"):
+			return _fail_start(str(peer_ready.get("error", "peer_wait_timeout")), generation)
 		_startup_phase = "create_negotiation"
-		negotiation = await _create_negotiation(deadline, generation)
+		negotiation = await _create_negotiation(peer_deadline, generation)
 	else:
 		_startup_phase = "wait_negotiation"
-		negotiation = await _wait_for_negotiation(deadline, generation)
+		negotiation = await _wait_for_negotiation(peer_deadline, generation)
 	if _was_cancelled(generation):
 		return "start_cancelled"
 	if negotiation.has("error"):
@@ -126,13 +152,14 @@ func _start_until(deadline: int) -> String:
 	_negotiation_id = str(negotiation.get("id", ""))
 	if _negotiation_id.is_empty():
 		return _fail_start("negotiation_missing", generation)
-	_used_negotiation_ids[_negotiation_id] = true
+	_rejected_negotiation_id = ""
 
 	var current_state: Variant = _room_client.get_room_state()
 	if not _valid_lobby_state(current_state):
 		return _fail_start("room_not_ready", generation)
 	var room_id := str(_room_client.get_room_id())
 	var remote_slot := 1 - _local_slot
+	var ice_deadline := _ice_deadline(negotiation, peer_deadline)
 	_startup_phase = "create_peer"
 	_peer_transport = _new_peer_transport()
 	if _peer_transport == null:
@@ -156,24 +183,43 @@ func _start_until(deadline: int) -> String:
 		return _fail_start("offer_creation_failed", generation)
 
 	_startup_phase = "data_channels"
-	while Time.get_ticks_msec() < deadline:
+	var signal_attempt := 0
+	var next_signal_retry := 0
+	while Time.get_ticks_msec() < ice_deadline:
 		if _was_cancelled(generation):
 			return "start_cancelled"
 		var latest_state: Variant = _room_client.get_room_state()
 		if _local_slot == 0 and _valid_lobby_state(latest_state) and latest_state.get("negotiation") == null:
-			# Replacing a guest socket invalidates the old server negotiation.
-			# Re-offer within the original deadline while the guest is listening.
-			_starting = false
-			_early_signals.clear()
-			return await _start_until(deadline)
+			return await _restart_negotiation(peer_deadline, generation, "")
+		_note_remote_signaling(latest_state)
+		if _signal_error == "stale_negotiation":
+			return await _restart_negotiation(peer_deadline, generation, _negotiation_id if _local_slot == 1 else "")
 		if not _signal_error.is_empty():
 			return _fail_start(_signal_error, generation)
+		if not _room_client.is_signaling_connected():
+			if Time.get_ticks_msec() < next_signal_retry:
+				await _room_client.get_tree().process_frame
+				continue
+			var restored: Dictionary = await _ensure_signaling(ice_deadline, generation)
+			if _was_cancelled(generation):
+				return "start_cancelled"
+			if restored.has("error"):
+				var restored_code := str(restored.get("error", "signaling_disconnected"))
+				if _fatal_signaling_error(restored_code) or Time.get_ticks_msec() >= ice_deadline:
+					return _fail_start(restored_code, generation)
+				signal_attempt += 1
+				next_signal_retry = Time.get_ticks_msec() + _reconnect_backoff_ms(signal_attempt)
+				await _room_client.get_tree().process_frame
+				continue
+			signal_attempt = 0
+			_requeue_pending_signals()
 		_flush_signals(Time.get_ticks_msec())
 		if _channels_open():
 			_startup_phase = "connected"
 			_connected = true
 			_starting = false
 			_signaling_frozen = true
+			_used_negotiation_ids[_negotiation_id] = true
 			_signal_retry_queue.clear()
 			_pending_signals.clear()
 			_set_connection_state("connected")
@@ -182,11 +228,34 @@ func _start_until(deadline: int) -> String:
 			for pending_message in startup_messages:
 				peer_message.emit(str(pending_message.get("type", "")), pending_message.get("payload"), int(pending_message.get("sequence", 0)))
 			return ""
-		if not _room_client.is_signaling_connected():
-			return _fail_start("signaling_disconnected", generation)
 		await _room_client.get_tree().process_frame
 
 	return _fail_start("data_channels_timeout", generation)
+
+
+func _restart_negotiation(peer_deadline: int, generation: int, rejected_id: String) -> String:
+	if generation != _generation or not _starting:
+		return "start_cancelled"
+	if _negotiation_restarts >= MAX_NEGOTIATION_RESTARTS:
+		return _fail_start("stale_negotiation", generation)
+	_negotiation_restarts += 1
+	if not rejected_id.is_empty():
+		_rejected_negotiation_id = rejected_id
+	_signal_error = ""
+	_early_signals.clear()
+	_signal_retry_queue.clear()
+	_pending_signals.clear()
+	_delivered_signals.clear()
+	_remote_signaling_down = false
+	_close_peer_transport()
+	# Keep _starting set so close() aborts this pause on the next frame.
+	var resume_at := Time.get_ticks_msec() + _reconnect_backoff_ms(_negotiation_restarts)
+	while generation == _generation and _starting and Time.get_ticks_msec() < resume_at:
+		await _room_client.get_tree().process_frame
+	if generation != _generation or not _starting:
+		return "start_cancelled"
+	_starting = false
+	return await _start_until(peer_deadline)
 
 
 func send_peer_message(message_type: String, payload: Variant) -> bool:
@@ -204,6 +273,8 @@ func close() -> void:
 	_early_signals.clear()
 	_signal_retry_queue.clear()
 	_pending_signals.clear()
+	_delivered_signals.clear()
+	_remote_signaling_down = false
 	_signal_error = ""
 	_startup_peer_messages.clear()
 	_close_peer_transport()
@@ -225,12 +296,37 @@ func _ensure_signaling(deadline: int, generation: int) -> Dictionary:
 	if _was_cancelled(generation):
 		return {"error": "start_cancelled"}
 	if Time.get_ticks_msec() >= deadline:
-		return {"error": "start_timeout"}
+		return {"error": "peer_wait_timeout"}
 	if result.has("error"):
 		return {"error": str(result.get("error", "signaling_failed"))}
 	if not _room_client.is_signaling_connected():
 		return {"error": "signaling_not_ready"}
 	return result
+
+
+func _maintain_signaling(deadline: int, generation: int) -> Dictionary:
+	var attempt := 0
+	while not _was_cancelled(generation) and Time.get_ticks_msec() < deadline:
+		var was_connected: bool = bool(_room_client.is_signaling_connected())
+		var result: Dictionary = await _ensure_signaling(deadline, generation)
+		if _was_cancelled(generation):
+			return {"error": "start_cancelled"}
+		if not result.has("error"):
+			if not was_connected:
+				_requeue_pending_signals()
+			return result
+		var code := str(result.get("error", ""))
+		if _fatal_signaling_error(code):
+			return result
+		if Time.get_ticks_msec() >= deadline:
+			return {"error": "peer_wait_timeout"}
+		attempt += 1
+		var resume_at := Time.get_ticks_msec() + _reconnect_backoff_ms(attempt)
+		while not _was_cancelled(generation) and Time.get_ticks_msec() < resume_at and Time.get_ticks_msec() < deadline:
+			await _room_client.get_tree().process_frame
+	if _was_cancelled(generation):
+		return {"error": "start_cancelled"}
+	return {"error": "peer_wait_timeout"}
 
 
 func _create_negotiation(deadline: int, generation: int) -> Dictionary:
@@ -245,7 +341,7 @@ func _create_negotiation(deadline: int, generation: int) -> Dictionary:
 	if _was_cancelled(generation):
 		return {"error": "start_cancelled"}
 	if Time.get_ticks_msec() >= deadline:
-		return {"error": "start_timeout"}
+		return {"error": "peer_wait_timeout"}
 	if reply.has("error"):
 		return {"error": str(reply.get("error", "negotiate_failed"))}
 	var state: Variant = reply.get("state")
@@ -257,26 +353,112 @@ func _create_negotiation(deadline: int, generation: int) -> Dictionary:
 	return negotiation
 
 
-func _wait_for_negotiation(deadline: int, generation: int) -> Dictionary:
+func _wait_for_peer_signaling(deadline: int, generation: int) -> Dictionary:
+	var pacing := _wait_pacing()
 	while not _was_cancelled(generation) and Time.get_ticks_msec() < deadline:
-		var result: Dictionary = await _room_client.refresh_state()
+		if bool(_room_client.is_signaling_connected()):
+			var live := _acceptable_peer_state(_room_client.get_room_state())
+			if not live.is_empty():
+				return {"state": live}
+		var progress: Dictionary = await _service_disconnected_wait(deadline, generation, pacing)
+		if progress.has("error"):
+			return progress
+		if progress.has("state"):
+			var refreshed: Variant = progress.get("state")
+			if not _valid_lobby_state(refreshed):
+				return {"error": "room_not_ready"}
+			var ready := _acceptable_peer_state(refreshed)
+			if not ready.is_empty():
+				return {"state": ready}
+		await _room_client.get_tree().process_frame
+	if _was_cancelled(generation):
+		return {"error": "start_cancelled"}
+	return {"error": "peer_wait_timeout"}
+
+
+func _wait_for_negotiation(deadline: int, generation: int) -> Dictionary:
+	var pacing := _wait_pacing()
+	while not _was_cancelled(generation) and Time.get_ticks_msec() < deadline:
+		if bool(_room_client.is_signaling_connected()):
+			var live := _acceptable_negotiation(_room_client.get_room_state())
+			if not live.is_empty():
+				return live
+		var progress: Dictionary = await _service_disconnected_wait(deadline, generation, pacing)
+		if progress.has("error"):
+			return progress
+		if progress.has("state"):
+			var refreshed: Variant = progress.get("state")
+			if not _valid_lobby_state(refreshed):
+				return {"error": "room_not_ready"}
+			var negotiation := _acceptable_negotiation(refreshed)
+			if not negotiation.is_empty():
+				return negotiation
+		await _room_client.get_tree().process_frame
+	if _was_cancelled(generation):
+		return {"error": "start_cancelled"}
+	return {"error": "peer_wait_timeout"}
+
+
+func _wait_pacing() -> Dictionary:
+	return {
+		"next_reconnect": 0,
+		"next_poll": 0,
+		"reconnect_attempt": 0,
+		"poll_attempt": 0,
+	}
+
+
+# HTTP refresh and socket reconnect run only while signaling is down. A live
+# socket already receives room state, so this returns without a request.
+func _service_disconnected_wait(deadline: int, generation: int, pacing: Dictionary) -> Dictionary:
+	if bool(_room_client.is_signaling_connected()):
+		pacing["reconnect_attempt"] = 0
+		return {}
+	var now := Time.get_ticks_msec()
+	if now >= int(pacing["next_reconnect"]):
+		var result: Dictionary = await _ensure_signaling(deadline, generation)
 		if _was_cancelled(generation):
 			return {"error": "start_cancelled"}
-		if result.has("error"):
-			return {"error": str(result.get("error", "room_refresh_failed"))}
-		var state: Variant = result.get("state", _room_client.get_room_state())
-		if not _valid_lobby_state(state):
-			return {"error": "room_not_ready"}
-		var negotiation := _null_epoch_negotiation(state)
-		if not negotiation.is_empty() \
-			and not _used_negotiation_ids.has(str(negotiation.get("id", ""))) \
-			and not _negotiation_expired(negotiation) \
-			and (str(negotiation.get("id", "")) != _initial_negotiation_id \
-				or _has_early_signal_for_negotiation(str(negotiation.get("id", "")))) \
-			and not _used_negotiation_ids.has(str(negotiation.get("id", ""))):
-			return negotiation
-		await _room_client.get_tree().create_timer(NEGOTIATION_POLL_MS / 1000.0).timeout
-	return {"error": "negotiation_timeout"}
+		if not result.has("error"):
+			_requeue_pending_signals()
+			pacing["reconnect_attempt"] = 0
+			return {}
+		var code := str(result.get("error", ""))
+		if _fatal_signaling_error(code):
+			return {"error": code}
+		pacing["reconnect_attempt"] = int(pacing["reconnect_attempt"]) + 1
+		pacing["next_reconnect"] = Time.get_ticks_msec() + _reconnect_backoff_ms(int(pacing["reconnect_attempt"]))
+	now = Time.get_ticks_msec()
+	if now >= int(pacing["next_poll"]) and not _page_hidden():
+		var refreshed: Dictionary = await _room_client.refresh_state()
+		pacing["poll_attempt"] = int(pacing["poll_attempt"]) + 1
+		pacing["next_poll"] = Time.get_ticks_msec() + _state_poll_backoff_ms(int(pacing["poll_attempt"]))
+		if _was_cancelled(generation):
+			return {"error": "start_cancelled"}
+		if refreshed.has("error"):
+			var refresh_code := str(refreshed.get("error", "room_refresh_failed"))
+			if _fatal_signaling_error(refresh_code):
+				return {"error": refresh_code}
+		else:
+			return {"state": refreshed.get("state", _room_client.get_room_state())}
+	return {}
+
+
+func _reconnect_backoff_ms(attempt: int) -> int:
+	return mini(RECONNECT_MAX_MS, RECONNECT_BASE_MS * (1 << clampi(attempt - 1, 0, 5)))
+
+
+func _state_poll_backoff_ms(attempt: int) -> int:
+	return mini(STATE_POLL_MAX_MS, STATE_POLL_BASE_MS * (1 << clampi(attempt - 1, 0, 3)))
+
+
+func _page_hidden() -> bool:
+	if not OS.has_feature("web"):
+		return false
+	var document: Variant = JavaScriptBridge.get_interface("document")
+	if document == null:
+		return false
+	return str(document.visibilityState) == "hidden"
 
 
 func _on_signaling_message(message: Dictionary) -> void:
@@ -311,13 +493,20 @@ func _on_signaling_message(message: Dictionary) -> void:
 				else:
 					retry["retry_at"] = Time.get_ticks_msec() + _signal_retry_delay_ms(attempts)
 					_signal_retry_queue.push_front(retry)
+			else:
+				_remember_delivered_signal(pending)
 		"error":
 			var code := str(message.get("error", "signaling_error"))
-			if _connected and code == "stale_negotiation":
-				return
+			if code == "stale_negotiation":
+				if _connected:
+					return
+				var stale_id := str(message.get("negotiationId", ""))
+				if not stale_id.is_empty() and not _negotiation_id.is_empty() and stale_id != _negotiation_id:
+					return
 			_signal_error = code
 		"socket_closed":
-			_signal_error = "signaling_disconnected"
+			if _connected:
+				_signal_error = "signaling_disconnected"
 
 
 func _on_outgoing_signal(kind: String, message_epoch: Variant, negotiation_id: String, payload: String) -> void:
@@ -414,6 +603,141 @@ func _fail_start(code: String, generation: int) -> String:
 		_set_connection_state("failed")
 		transport_error.emit(code)
 	return code
+
+
+func _ice_deadline(negotiation: Dictionary, peer_deadline: int) -> int:
+	var now := Time.get_ticks_msec()
+	var expires: Variant = negotiation.get("expires")
+	var remaining := _data_channel_timeout_ms
+	if _integral_number(expires):
+		remaining = int(expires) - int(Time.get_unix_time_from_system() * 1000.0)
+		if remaining < 0:
+			remaining = 0
+		remaining = mini(remaining, _data_channel_timeout_ms)
+	return mini(peer_deadline, now + remaining)
+
+
+func _acceptable_peer_state(state: Variant) -> Dictionary:
+	if not _valid_lobby_state(state):
+		return {}
+	if _local_slot != 0:
+		return state
+	var members: Array = state.get("members")
+	var peer: Variant = members[1]
+	if not peer is Dictionary:
+		return {}
+	# Missing on older servers: do not block the host forever.
+	if peer.has("signaling") and not bool(peer.get("signaling")):
+		return {}
+	return state
+
+
+func _acceptable_negotiation(state: Variant) -> Dictionary:
+	if not state is Dictionary:
+		return {}
+	var negotiation := _null_epoch_negotiation(state)
+	if negotiation.is_empty() or _negotiation_expired(negotiation):
+		return {}
+	var negotiation_id := str(negotiation.get("id", ""))
+	if _used_negotiation_ids.has(negotiation_id):
+		return {}
+	var needs_offer := negotiation_id == _initial_negotiation_id or negotiation_id == _rejected_negotiation_id
+	if needs_offer and not _has_early_signal_for_negotiation(negotiation_id):
+		return {}
+	return negotiation
+
+
+func _absorb_recent_signals() -> void:
+	if _room_client == null or not _room_client.has_method("consume_recent_signals"):
+		return
+	var pending: Variant = _room_client.consume_recent_signals()
+	if not pending is Array:
+		return
+	for message in pending:
+		if not message is Dictionary:
+			continue
+		if _early_signals.size() >= MAX_BUFFERED_SIGNALS:
+			_signal_error = "too_many_early_signals"
+			return
+		_early_signals.append((message as Dictionary).duplicate(true))
+
+
+func _remember_delivered_signal(pending: Dictionary) -> void:
+	var copy := pending.duplicate(true)
+	copy["peer_resends"] = int(copy.get("peer_resends", 0))
+	if _delivered_signals.size() >= MAX_BUFFERED_SIGNALS:
+		_delivered_signals.pop_front()
+	_delivered_signals.append(copy)
+
+
+func _note_remote_signaling(state: Variant) -> void:
+	var flag := _remote_signaling_flag(state)
+	if flag == 0:
+		_remote_signaling_down = true
+	elif flag == 1 and _remote_signaling_down:
+		_remote_signaling_down = false
+		_requeue_delivered_signals()
+
+
+func _remote_signaling_flag(state: Variant) -> int:
+	if not state is Dictionary:
+		return -1
+	var members: Variant = state.get("members")
+	if not members is Array:
+		return -1
+	var remote_slot := 1 - _local_slot
+	if remote_slot < 0 or remote_slot >= members.size() or not members[remote_slot] is Dictionary:
+		return -1
+	var peer: Dictionary = members[remote_slot]
+	if not peer.has("signaling"):
+		return -1
+	return 1 if bool(peer.get("signaling")) else 0
+
+
+func _requeue_delivered_signals() -> void:
+	for delivered in _delivered_signals:
+		var resends := int(delivered.get("peer_resends", 0))
+		if resends >= MAX_NEGOTIATION_RESTARTS:
+			continue
+		var payload := str(delivered.get("payload", ""))
+		var kind := str(delivered.get("kind", ""))
+		var already := false
+		for queued in _signal_retry_queue:
+			if str(queued.get("kind", "")) == kind and str(queued.get("payload", "")) == payload:
+				already = true
+				break
+		if already:
+			continue
+		var retry := delivered.duplicate(true)
+		retry["peer_resends"] = resends + 1
+		retry["attempts"] = 0
+		retry["retry_at"] = 0
+		delivered["peer_resends"] = resends + 1
+		_signal_retry_queue.append(retry)
+
+
+func _requeue_pending_signals() -> void:
+	for sequence in _pending_signals.keys():
+		var pending: Variant = _pending_signals[sequence]
+		if not pending is Dictionary:
+			continue
+		var retry: Dictionary = pending.duplicate(true)
+		retry["retry_at"] = 0
+		_signal_retry_queue.push_front(retry)
+	_pending_signals.clear()
+
+
+func _fatal_signaling_error(code: String) -> bool:
+	return code in [
+		"not_in_room",
+		"room_closed",
+		"room_expired",
+		"unauthorized",
+		"session_changed",
+		"not_configured",
+		"start_cancelled",
+		"room_not_ready",
+	]
 
 
 func _valid_lobby_state(value: Variant) -> bool:

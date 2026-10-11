@@ -78,6 +78,9 @@ var _connection_phase := "idle"
 var _last_connection_error: Dictionary = {}
 var _room_state_poll_elapsed := 0.0
 var _room_state_poll_in_flight := false
+var _room_state_poll_attempt := 0
+var _room_state_poll_interval := 5.0
+var _room_state_poll_stopped := false
 var _selection_adapter: OnlineCharacterSelectionAdapter
 var _selection_session_id := ""
 var _selection_active := false
@@ -865,6 +868,10 @@ func _arm_lobby_presence(update_status := true) -> void:
 	_lobby_reconnect_attempt = 0
 	_lobby_reconnect_wait = 0.0
 	_lobby_status_refresh_elapsed = 0.0
+	_room_state_poll_stopped = false
+	_room_state_poll_attempt = 0
+	_room_state_poll_interval = 5.0
+	_room_state_poll_elapsed = 0.0
 	if update_status:
 		_refresh_lobby_presence_status(true)
 	_ensure_lobby_signaling()
@@ -921,6 +928,7 @@ func _ensure_lobby_signaling() -> void:
 			_lobby_reconnect_wait = 0.5
 			return
 		if _lobby_presence_error_is_terminal(code):
+			_room_state_poll_stopped = true
 			_abandon_lobby_presence(code)
 			return
 		_schedule_lobby_reconnect()
@@ -959,6 +967,7 @@ func _send_lobby_keepalive() -> void:
 	if result.has("error"):
 		var code := str(result.get("error", ""))
 		if _lobby_presence_error_is_terminal(code):
+			_room_state_poll_stopped = true
 			_abandon_lobby_presence(code)
 			return
 		if bool(result.get("uncertain", false)) and _retry_button != null:
@@ -2083,8 +2092,11 @@ func _close_room_connection() -> void:
 		old_connection.queue_free()
 	else:
 		_room_connection = null
-	if had_connection and room_client != null and is_instance_valid(room_client) \
-		and room_client.has_method("close_signaling"):
+	# Signaling belongs to lobby presence. Closing it on every attempt replaces the
+	# socket and used to invalidate the in-flight negotiation. Match start and
+	# leave clear presence first, and that path still closes the socket.
+	if had_connection and not _lobby_signaling_desired and room_client != null \
+		and is_instance_valid(room_client) and room_client.has_method("close_signaling"):
 		room_client.close_signaling()
 
 
@@ -3337,6 +3349,7 @@ func _physics_process(_delta: float) -> void:
 
 func _process(delta: float) -> void:
 	_tick_lobby_presence(delta)
+	_tick_connection_wait_status()
 	_tick_room_state_poll(delta)
 	_sync_web_paste_target()
 	if _home_footer != null:
@@ -3364,18 +3377,43 @@ func _process(delta: float) -> void:
 	_push_web_match_hud()
 
 
+func _tick_connection_wait_status() -> void:
+	if not _room_connection_starting or _status == null or _room_connection == null \
+		or not is_instance_valid(_room_connection):
+		return
+	var phase := ""
+	if _room_connection.has_method("get_startup_phase"):
+		phase = str(_room_connection.get_startup_phase())
+	var waiting := ""
+	match phase:
+		"wait_peer":
+			waiting = "正在等待对手连接信令。对方进入房间后会自动开始连接。"
+		"wait_negotiation":
+			waiting = "正在等待房主发起连接。房主稍后按连接即可，不必在短时间内同时点击。"
+		"data_channels":
+			waiting = "正在建立对战通道…"
+		"create_negotiation", "signaling", "create_peer":
+			waiting = "正在建立选人连接…"
+	if not waiting.is_empty() and _status.text != waiting:
+		_status.text = waiting
+
+
 func _tick_room_state_poll(delta: float) -> void:
 	if not _should_poll_room_state():
 		_room_state_poll_elapsed = 0.0
 		return
 	_room_state_poll_elapsed += delta
-	if _room_state_poll_elapsed < 2.0:
+	# The socket already pushes room state. Poll only while it is down, and back off
+	# so a cross-region GET (about a second) cannot stack for the whole lobby wait.
+	if _room_state_poll_elapsed < _room_state_poll_interval:
 		return
 	_room_state_poll_elapsed = 0.0
 	_poll_room_state.call_deferred()
 
 
 func _should_poll_room_state() -> bool:
+	if _room_state_poll_stopped or _page_hidden():
+		return false
 	if _room_id.is_empty() or room_client == null or not is_instance_valid(room_client):
 		return false
 	if str(_room_state.get("phase", "")) != "lobby" or _busy or _startup_busy \
@@ -3401,11 +3439,29 @@ func _poll_room_state() -> void:
 	if lifecycle_generation != _lifecycle_generation or requested_room_id != _room_id:
 		return
 	if response.has("error"):
+		var code := str(response.get("error", ""))
+		if _lobby_presence_error_is_terminal(code):
+			_room_state_poll_stopped = true
+			_abandon_lobby_presence(code)
+			return
+		_room_state_poll_attempt += 1
+		_room_state_poll_interval = minf(30.0, 5.0 * float(1 << mini(_room_state_poll_attempt - 1, 3)))
 		return
+	_room_state_poll_attempt = 0
+	_room_state_poll_interval = 5.0
 	var state: Variant = response.get("state")
 	if state is Dictionary:
 		_accept_state(state)
 		_refresh_room_view()
+
+
+func _page_hidden() -> bool:
+	if not OS.has_feature("web"):
+		return false
+	var document: Variant = JavaScriptBridge.get_interface("document")
+	if document == null:
+		return false
+	return str(document.visibilityState) == "hidden"
 
 
 func _sync_match_hud_controls() -> void:
@@ -4422,6 +4478,10 @@ func _show_error(code: String) -> void:
 		"turn_not_configured": "服务未配置互联网中转。若使用本机或同一局域网，请由房主开启对应模式并重新连接；跨网络对战需先配置 TURN 服务。",
 		"signal_delivery_failed": "连接邀请未送达对方。请确认对方仍在房间内，再由房主重试连接。",
 		"negotiation_timeout": "等待房主连接请求超时，请由房主按连接并选择角色。",
+		"peer_wait_timeout": "等待对手超时。请确认对方仍在房间，然后重新按连接。",
+		"stale_negotiation": "连接握手已过期。请再按一次连接。",
+		"connection_starting": "正在连接，请稍候，不必重复点击。",
+		"signaling_disconnected": "信令在建立通道时断开。请再按一次连接。",
 		"data_channels_timeout": "双方未能建立对战通道，请重试连接；跨网络对战请关闭本机 / 同一局域网模式。",
 	}
 	if code.contains("turn_not_configured"):

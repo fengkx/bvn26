@@ -928,7 +928,7 @@ button:disabled { opacity: .5; cursor: default; }
     const rtcConnectionLimit = 8;
     const rtcSampleLimit = 60;
     const rtcStateHistoryLimit = 16;
-    const rtcSampleIntervalMs = 1000;
+    const rtcSampleIntervalMs = 3000;
     const rtcConnections = [];
     let rtcNextConnectionId = 1;
     let rtcDroppedConnections = 0;
@@ -973,6 +973,9 @@ button:disabled { opacity: .5; cursor: default; }
                 droppedSamples: connection.droppedSamples,
                 statsErrorCount: connection.statsErrorCount,
                 lastSampleStatus: connection.lastSampleStatus,
+                selectedPair: connection.selectedPair
+                    ? { ...connection.selectedPair }
+                    : null,
                 samples: connection.samples.slice(),
             })),
         };
@@ -1041,6 +1044,7 @@ button:disabled { opacity: .5; cursor: default; }
         if (!selectedPair || selectedPair.type !== 'candidate-pair') {
             return { status: 'selected_pair_unavailable', rttMs: null,
                 localCandidateType: 'unknown', remoteCandidateType: 'unknown',
+                protocol: null,
                 bytesSent: null, bytesReceived: null, packetsSent: null, packetsReceived: null };
         }
         const rttMs = typeof selectedPair.currentRoundTripTime === 'number'
@@ -1053,12 +1057,47 @@ button:disabled { opacity: .5; cursor: default; }
             status: 'available',
             localCandidateType: rtcCandidateType(localCandidate?.candidateType),
             remoteCandidateType: rtcCandidateType(remoteCandidate?.candidateType),
+            protocol: rtcTransportProtocol(selectedPair, localCandidate, remoteCandidate),
             rttMs,
+            ...rtcPairQuality(selectedPair),
             bytesSent: rtcCounter(selectedPair.bytesSent),
             bytesReceived: rtcCounter(selectedPair.bytesReceived),
             packetsSent: rtcCounter(selectedPair.packetsSent),
             packetsReceived: rtcCounter(selectedPair.packetsReceived),
         };
+    }
+
+    function rtcTransportProtocol(pair, localCandidate, remoteCandidate) {
+        for (const source of [pair, localCandidate, remoteCandidate]) {
+            const protocol = source && source.protocol;
+            if (protocol === 'udp' || protocol === 'tcp') return protocol;
+        }
+        return null;
+    }
+
+    // Data channels do not produce inbound-rtp. Read optional quality only from
+    // the selected candidate pair, and omit the keys when the pair has neither.
+    function rtcPairQuality(pair) {
+        const quality = {};
+        if (pair && typeof pair.jitter === 'number' && Number.isFinite(pair.jitter) && pair.jitter >= 0)
+            quality.jitterMs = Math.round(pair.jitter * 1000 * 10) / 10;
+        if (pair && typeof pair.packetsLost === 'number' && Number.isFinite(pair.packetsLost) && pair.packetsLost >= 0)
+            quality.packetsLost = Math.round(pair.packetsLost);
+        return quality;
+    }
+
+    function noteSelectedPair(connection, summary) {
+        if (!summary || summary.status !== 'available') return;
+        const protocol = summary.protocol || 'unknown';
+        const signature = `${summary.localCandidateType}|${summary.remoteCandidateType}|${protocol}`;
+        if (signature === connection.selectedPairSignature) return;
+        connection.selectedPairSignature = signature;
+        connection.selectedPair = {
+            localCandidateType: summary.localCandidateType,
+            remoteCandidateType: summary.remoteCandidateType,
+            protocol,
+        };
+        appendShellEvent('ice_selected_pair', connection.selectedPair);
     }
 
     function sampleRtcConnection(connection) {
@@ -1072,6 +1111,7 @@ button:disabled { opacity: .5; cursor: default; }
                     monoMs: Math.max(0, performance.now()),
                     ...rtcStatsSummary(report),
                 };
+                noteSelectedPair(connection, sample);
                 connection.lastSampleStatus = sample.status;
                 connection.sampleCount++;
                 connection.samples.push(sample);

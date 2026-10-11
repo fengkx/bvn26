@@ -74,10 +74,12 @@ capabilities, preferably shared in a URL fragment to avoid request/referrer logs
 Authenticated HTTP routes use `Authorization: Bearer <sessionToken>`. Browser
 WebSockets use the one-use ticket as the second subprotocol, never a URL query
 parameter. The server selects `bvn.v1`. Do not log the subprotocol request header.
-A new ticket invalidates any unused ticket for that seat. The first socket for a
-seat preserves a negotiation already created for the room; replacing an existing
-seat connection closes the old socket and invalidates the previous negotiation.
-Clients should connect both signaling sockets before negotiating where possible.
+A new ticket invalidates any unused ticket for that seat. Replacing a seat's
+socket closes the previous socket and keeps the current negotiation id, so a
+reconnect during offer/answer/ICE does not invalidate the exchange. Each
+projected member includes `signaling`, true only while that seat's live socket
+matches its connection. Clients should still connect both sockets before the
+owner sends `negotiate`.
 
 `compatibility` is `{protocol:1, build:<sha256>, content:<sha256>}`. Both peers must
 supply identical fingerprints. These are caller-supplied identifiers, not server
@@ -190,9 +192,15 @@ one ping every minute when possible. The room connection does not carry inputs,
 pause/resume, simulation controls, diagnostics or snapshots.
 
 Connect both signaling sockets and wait for each socket's initial room state. The
-owner then sends `negotiate`; both peers read its new UUID and expiry before
-creating or sending an offer. A first socket attach preserves the negotiation,
-but replacing a seat connection revokes it. Then send:
+owner sends `negotiate` once the peer member exists and, when `signaling` is
+present, that peer's socket is up. Each new `negotiate` command mints a new id
+for a new PeerConnection, even within the previous id's TTL. Retrying the same
+command sequence returns its original reply. To extend the same in-flight
+handshake, send `resumeNegotiationId` with the current id: before expiry this
+refreshes its TTL, but only until three TTLs after that id was created. An expired
+resume mints a new id; a mismatched id is rejected as `stale_negotiation`.
+Socket replacement alone preserves the current id. Both peers read that
+UUID and expiry before creating or sending an offer. Then send:
 
 ```json
 {
@@ -211,12 +219,24 @@ at most 12,000 characters within the outer byte limit. The peer receives the
 message plus `from`; the sender receives `{type:'signal_ack',seq,delivered}`.
 Sequence numbers increase per socket; duplicate or decreasing values fail.
 `delivered` means a send was accepted by the peer's live server-side socket, **not**
-that the peer processed it. There is no durable SDP/ICE queue. When `delivered` is
-false, the client may retry that signal with a higher per-socket sequence number;
-the receiving client must tolerate repeated descriptions/candidates if an
-acknowledgment is lost. If signaling is lost, obtain new tickets as needed, start
-a new negotiation and retry the WebRTC exchange. Negotiations expire after 60
-seconds; old IDs/epochs never spill into a new exchange.
+that the peer processed it. A newly accepted signal for the current negotiation
+is stored in the room SQLite `relayed` table and replayed onto a later socket
+for that seat. The write happens inside the request that already woke the
+object; it does not set an alarm or keep the isolate awake. The same kind and
+payload is acknowledged and not forwarded again, so one description cannot
+bounce between the peers. Rows for any other negotiation id are deleted, and
+at most 64 signals are kept. Hibernation drops the in-memory isolate; the
+SQLite rows remain. Raw SDP is not part of the room projection. When
+`delivered` is false, the client may retry that signal with a higher per-socket
+sequence number. The receiving client must tolerate a repeated description or
+candidate, whether the retry raced an acknowledgment or the server replayed it.
+If the signaling socket drops, obtain a new ticket and continue the same
+negotiation. A
+`stale_negotiation` error includes `negotiationId` so a client can ignore a
+reject for an id it has already replaced. Negotiations expire after 45 seconds,
+the same post-negotiate ICE/data-channel budget the lobby client uses. Waiting
+for the other player is not part of that budget. Old IDs/epochs never spill into
+a new exchange.
 
 Socket close/error is not voluntary leave and does not end an active battle.
 An active match is exempt from idle expiry. Its service lease is renewed while

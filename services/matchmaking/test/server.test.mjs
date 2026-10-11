@@ -71,6 +71,16 @@ async function request(server, path, input, credential, method) {
   });
   return { status: response.status, ...(await response.json()) };
 }
+function stripSignaling(state) {
+  return {
+    ...state,
+    members: state.members.map((seat) => {
+      if (!seat) return seat;
+      const { signaling: _signaling, ...rest } = seat;
+      return rest;
+    }),
+  };
+}
 async function createRoom(server, override = {}) {
   const input = {
     createToken: token(),
@@ -204,7 +214,11 @@ async function socket(server, room, credential, origin) {
     throw new Error(`Missing ${type}: ${JSON.stringify(queue)}`);
   }
   await receive("state");
-  return { ws, receive, ticket: response.ticket };
+  function pending(type) {
+    return queue.filter((value) => value === type || value?.type === type)
+      .length;
+  }
+  return { ws, receive, pending, ticket: response.ticket };
 }
 async function withServer(t, bindings) {
   const persistence = await mkdtemp(join(directory, "sqlite-"));
@@ -843,9 +857,26 @@ test("real WebSockets authenticate, scope signaling, revoke seats and tolerate d
     undefined,
     room.owner,
   );
-  assert.equal(afterReplacement.state.negotiation, null);
-  b.ws.send(JSON.stringify({ ...message, seq: 1 }));
-  assert.equal((await b.receive("error")).error, "stale_negotiation");
+  assert.equal(afterReplacement.state.negotiation.id, negotiationId);
+  assert.equal(afterReplacement.state.members[0].signaling, true);
+  assert.equal(afterReplacement.state.members[1].signaling, true);
+  replacement.ws.send(
+    JSON.stringify({ ...message, seq: 0, payload: "replaced-sdp" }),
+  );
+  assert.equal((await b.receive("signal")).payload, "replaced-sdp");
+  assert.equal((await replacement.receive("signal_ack")).delivered, true);
+  const wrongId = crypto.randomUUID();
+  b.ws.send(
+    JSON.stringify({
+      ...message,
+      seq: 0,
+      kind: "answer",
+      negotiationId: wrongId,
+    }),
+  );
+  const stale = await b.receive("error");
+  assert.equal(stale.error, "stale_negotiation");
+  assert.equal(stale.negotiationId, wrongId);
   b.ws.terminate();
   assert.equal(
     (await request(server, endpoint(room, "state"), undefined, room.owner))
@@ -865,6 +896,268 @@ test("real WebSockets authenticate, scope signaling, revoke seats and tolerate d
         .status,
     ),
   );
+});
+
+test("lobby handshake survives guest-first, host-late, resume, and socket replacement", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  await joinRoom(server, room);
+  const guest = await socket(server, room, room.guest);
+  t.after(() => guest.ws.terminate());
+  const beforeHost = (
+    await request(server, endpoint(room, "state"), undefined, room.owner)
+  ).state;
+  assert.equal(beforeHost.negotiation, null);
+  assert.equal(beforeHost.members[0].signaling, false);
+  assert.equal(beforeHost.members[1].signaling, true);
+
+  const host = await socket(server, room, room.owner);
+  t.after(() => host.ws.terminate());
+  const first = await op(server, room, 0, { type: "negotiate", epoch: null });
+  const negotiationId = first.state.negotiation.id;
+  const ttl = first.state.negotiation.expires - Date.now();
+  assert.ok(ttl > 40_000 && ttl <= 45_000, `negotiation ttl ${ttl}`);
+  const again = await op(server, room, 0, {
+    type: "negotiate",
+    epoch: null,
+    resumeNegotiationId: negotiationId,
+  });
+  assert.equal(again.state.negotiation.id, negotiationId);
+  assert.ok(again.state.negotiation.expires >= first.state.negotiation.expires);
+  const offer = {
+    version: 1,
+    type: "signal",
+    seq: 0,
+    epoch: null,
+    negotiationId,
+    kind: "offer",
+    payload: "late-host-offer",
+  };
+  host.ws.send(JSON.stringify(offer));
+  assert.equal((await guest.receive("signal")).payload, offer.payload);
+  assert.equal((await host.receive("signal_ack")).delivered, true);
+  host.ws.send(JSON.stringify({ ...offer, seq: 1 }));
+  assert.equal((await host.receive("signal_ack")).delivered, true);
+  await new Promise((resolve) => setTimeout(resolve, 40));
+  assert.equal(guest.pending("signal"), 0);
+
+  const replacedGuest = await socket(server, room, room.guest);
+  t.after(() => replacedGuest.ws.terminate());
+  await new Promise((resolve) => setTimeout(resolve, 30));
+  assert.notEqual(guest.ws.readyState, WebSocket.OPEN);
+  assert.equal(replacedGuest.pending("state"), 0);
+  const duringHandshake = (
+    await request(server, endpoint(room, "state"), undefined, room.owner)
+  ).state;
+  assert.equal(duringHandshake.negotiation.id, negotiationId);
+  assert.equal(duringHandshake.members[1].signaling, true);
+  assert.equal(
+    (await replacedGuest.receive("signal")).payload,
+    "late-host-offer",
+  );
+  host.ws.send(
+    JSON.stringify({ ...offer, seq: 2, payload: "offer-after-reconnect" }),
+  );
+  assert.equal(
+    (await replacedGuest.receive("signal")).payload,
+    "offer-after-reconnect",
+  );
+  assert.equal((await host.receive("signal_ack")).delivered, true);
+
+  const hostFirst = await createRoom(server);
+  await joinRoom(server, hostFirst);
+  const created = await op(server, hostFirst, 0, {
+    type: "negotiate",
+    epoch: null,
+  });
+  const earlyId = created.state.negotiation.id;
+  const earlyGuest = await socket(server, hostFirst, hostFirst.guest);
+  const earlyHost = await socket(server, hostFirst, hostFirst.owner);
+  t.after(() => {
+    earlyGuest.ws.terminate();
+    earlyHost.ws.terminate();
+  });
+  const afterGuest = (
+    await request(
+      server,
+      endpoint(hostFirst, "state"),
+      undefined,
+      hostFirst.owner,
+    )
+  ).state;
+  assert.equal(afterGuest.negotiation.id, earlyId);
+  assert.equal(afterGuest.members[0].signaling, true);
+  assert.equal(afterGuest.members[1].signaling, true);
+  earlyHost.ws.send(
+    JSON.stringify({
+      ...offer,
+      negotiationId: earlyId,
+      payload: "host-first-offer",
+    }),
+  );
+  assert.equal(
+    (await earlyGuest.receive("signal")).payload,
+    "host-first-offer",
+  );
+});
+
+test("a new host attempt rotates the id within TTL while command retries and resume preserve it", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  await joinRoom(server, room);
+  const host = await socket(server, room, room.owner);
+  const guest = await socket(server, room, room.guest);
+  t.after(() => {
+    host.ws.terminate();
+    guest.ws.terminate();
+  });
+  const operation = { type: "negotiate", epoch: null };
+  const first = await op(server, room, 0, operation);
+  const oldId = first.state.negotiation.id;
+  const signal = {
+    version: 1,
+    type: "signal",
+    seq: 0,
+    epoch: null,
+    negotiationId: oldId,
+    kind: "offer",
+    payload: "first-peer-offer",
+  };
+  host.ws.send(JSON.stringify(signal));
+  assert.equal((await guest.receive("signal")).negotiationId, oldId);
+  await host.receive("signal_ack");
+  guest.ws.send(
+    JSON.stringify({ ...signal, kind: "answer", payload: "first-peer-answer" }),
+  );
+  await host.receive("signal");
+  await guest.receive("signal_ack");
+
+  const replay = await op(server, room, 0, operation, room.ownerSeq);
+  assert.deepEqual(replay.state.negotiation, first.state.negotiation);
+  // Legacy hosts send no extra field when they replace their PeerConnection.
+  const fresh = await op(server, room, 0, operation);
+  const freshId = fresh.state.negotiation.id;
+  assert.ok(Date.now() < first.state.negotiation.expires);
+  assert.notEqual(freshId, oldId);
+  const staleResume = await op(server, room, 0, {
+    ...operation,
+    resumeNegotiationId: oldId,
+  });
+  assert.equal(staleResume.error, "stale_negotiation");
+  const resumed = await op(server, room, 0, {
+    ...operation,
+    resumeNegotiationId: freshId,
+  });
+  assert.equal(resumed.state.negotiation.id, freshId);
+  assert.equal(
+    resumed.state.negotiation.created,
+    fresh.state.negotiation.created,
+  );
+
+  host.ws.send(JSON.stringify({ ...signal, seq: 1 }));
+  assert.equal((await host.receive("error")).error, "stale_negotiation");
+  host.ws.send(
+    JSON.stringify({
+      ...signal,
+      seq: 2,
+      negotiationId: freshId,
+      payload: "new-peer-offer",
+    }),
+  );
+  assert.equal((await guest.receive("signal")).negotiationId, freshId);
+  assert.equal((await host.receive("signal_ack")).delivered, true);
+  guest.ws.send(
+    JSON.stringify({
+      ...signal,
+      seq: 1,
+      negotiationId: freshId,
+      kind: "answer",
+      payload: "new-peer-answer",
+    }),
+  );
+  assert.equal((await host.receive("signal")).negotiationId, freshId);
+  assert.equal((await guest.receive("signal_ack")).delivered, true);
+});
+
+test("negotiate cannot extend the same id past three TTLs", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  await joinRoom(server, room);
+  const first = await op(server, room, 0, { type: "negotiate", epoch: null });
+  const negotiationId = first.state.negotiation.id;
+  assert.equal(typeof first.state.negotiation.created, "number");
+  const refreshed = await op(server, room, 0, {
+    type: "negotiate",
+    epoch: null,
+    resumeNegotiationId: negotiationId,
+  });
+  assert.equal(refreshed.state.negotiation.id, negotiationId);
+  assert.ok(
+    refreshed.state.negotiation.expires <=
+      refreshed.state.negotiation.created + 3 * 45_000,
+  );
+  await request(server, "/_test/alarm", {
+    id: room.roomId,
+    kind: "backdate-negotiation",
+    created: Date.now() - 3 * 45_000 - 5,
+  });
+  const minted = await op(server, room, 0, {
+    type: "negotiate",
+    epoch: null,
+    resumeNegotiationId: negotiationId,
+  });
+  assert.notEqual(minted.state.negotiation.id, negotiationId);
+  const ttl = minted.state.negotiation.expires - Date.now();
+  assert.ok(ttl > 40_000 && ttl <= 45_000, `fresh ttl ${ttl}`);
+});
+
+test("stored signals replay after the room object is evicted", async (t) => {
+  const persistence = await mkdtemp(join(directory, "hibernate-"));
+  let server = await runtime(persistence);
+  t.after(() => server.mf.dispose());
+  const room = await createRoom(server);
+  await joinRoom(server, room);
+  const host = await socket(server, room, room.owner);
+  const guest = await socket(server, room, room.guest);
+  t.after(() => {
+    host.ws.terminate();
+    guest.ws.terminate();
+  });
+  const negotiated = await op(server, room, 0, {
+    type: "negotiate",
+    epoch: null,
+  });
+  const negotiationId = negotiated.state.negotiation.id;
+  host.ws.send(
+    JSON.stringify({
+      version: 1,
+      type: "signal",
+      seq: 0,
+      epoch: null,
+      negotiationId,
+      kind: "offer",
+      payload: "offer-before-eviction",
+    }),
+  );
+  assert.equal(
+    (await guest.receive("signal")).payload,
+    "offer-before-eviction",
+  );
+  assert.equal((await host.receive("signal_ack")).delivered, true);
+  host.ws.terminate();
+  guest.ws.terminate();
+  await server.mf.dispose();
+  server = await runtime(persistence);
+  const revived = await socket(server, room, room.guest);
+  t.after(() => revived.ws.terminate());
+  assert.equal(
+    (await revived.receive("signal")).payload,
+    "offer-before-eviction",
+  );
+  const state = (
+    await request(server, endpoint(room, "state"), undefined, room.owner)
+  ).state;
+  assert.equal(state.negotiation.id, negotiationId);
 });
 
 test("ten concurrent leases cannot overbook and owner departure releases capacity", async (t) => {
@@ -944,7 +1237,7 @@ test("SQLite restart restores epoch, seats and idempotency with new real WebSock
   const afterState = (
     await request(server, endpoint(room, "state"), undefined, room.owner)
   ).state;
-  assert.deepEqual(afterState, beforeState);
+  assert.deepEqual(stripSignaling(afterState), stripSignaling(beforeState));
   assert.equal(afterState.match.epoch, epoch);
   const replay = await op(
     server,

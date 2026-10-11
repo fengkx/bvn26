@@ -4,6 +4,8 @@ import {
   type Compatibility,
   type Profile,
   type Rules,
+  NEGOTIATION_MAX_LIFETIME_MS,
+  NEGOTIATION_TTL_MS,
   PREPARE_MS,
   requireThat,
 } from "./protocol";
@@ -51,7 +53,12 @@ export interface State {
   phase: "lobby" | "preparing" | "active" | "closed";
   match: Match | null;
   lastResult: { epoch: string; winner: 0 | 1 | null; reason: string } | null;
-  negotiation: { id: string; epoch: string | null; expires: number } | null;
+  negotiation: {
+    id: string;
+    epoch: string | null;
+    created: number;
+    expires: number;
+  } | null;
   lastActivity: number;
   leaseUntil: number;
   createdAt?: number;
@@ -88,7 +95,10 @@ export function member(credential: string, nickname: string): Member {
     connection: null,
   };
 }
-export function projection(state: State): unknown {
+export function projection(
+  state: State,
+  signaling: readonly [boolean, boolean] = [false, false],
+): unknown {
   const {
     creationHash: _creation,
     inviteHash: _invite,
@@ -102,13 +112,14 @@ export function projection(state: State): unknown {
     ...publicState,
     networkProfile: networkProfile(state),
     members: members.map(
-      (seat) =>
+      (seat, index) =>
         seat && {
           nickname: seat.nickname,
           choice: seat.choice,
           ready: seat.ready,
           profile: seat.profile,
           seq: seat.seq,
+          signaling: signaling[index] === true,
         },
     ),
   };
@@ -273,10 +284,37 @@ export function apply(
         403,
       );
       requireThat(op.epoch === (state.match?.epoch ?? null), "stale_epoch");
+      {
+        const existing = state.negotiation;
+        // A new PeerConnection needs a new id, including for legacy clients.
+        // Only an explicit resume may extend an existing handshake.
+        if (op.resumeNegotiationId !== undefined)
+          requireThat(
+            existing?.id === op.resumeNegotiationId,
+            "stale_negotiation",
+          );
+        // Rows written before `created` existed count their remaining TTL as age.
+        const created =
+          existing?.created ??
+          (existing ? existing.expires - NEGOTIATION_TTL_MS : now);
+        const lifetimeEnd = created + NEGOTIATION_MAX_LIFETIME_MS;
+        if (
+          existing &&
+          op.resumeNegotiationId === existing.id &&
+          existing.epoch === op.epoch &&
+          existing.expires > now &&
+          now < lifetimeEnd
+        ) {
+          existing.created = created;
+          existing.expires = Math.min(now + NEGOTIATION_TTL_MS, lifetimeEnd);
+          break;
+        }
+      }
       state.negotiation = {
         id: crypto.randomUUID(),
         epoch: op.epoch,
-        expires: now + 60_000,
+        created: now,
+        expires: now + NEGOTIATION_TTL_MS,
       };
       break;
     case "reinvite":

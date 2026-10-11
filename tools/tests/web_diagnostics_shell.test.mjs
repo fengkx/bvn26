@@ -577,6 +577,8 @@ test('tracks bounded selected ICE-pair summaries without leaking candidate or IC
             bytesReceived: 202,
             packetsSent: 3,
             packetsReceived: 4,
+            jitter: 0.02,
+            packetsLost: 7,
             address: '192.0.2.80',
             port: 53421,
         }],
@@ -584,6 +586,7 @@ test('tracks bounded selected ICE-pair summaries without leaking candidate or IC
             id: 'local-id-private',
             type: 'local-candidate',
             candidateType: 'relay',
+            protocol: 'udp',
             address: '192.0.2.81',
             port: 53422,
             url: 'turn:turn-secret.example:3478?transport=udp',
@@ -592,7 +595,14 @@ test('tracks bounded selected ICE-pair summaries without leaking candidate or IC
         }],
         ['remote-id-private', {
             id: 'remote-id-private', type: 'remote-candidate', candidateType: 'host',
+            protocol: 'udp',
             ip: '198.51.100.9', port: 53423,
+        }],
+        ['inbound-rtp-private', {
+            id: 'inbound-rtp-private',
+            type: 'inbound-rtp',
+            jitter: 0.012,
+            packetsLost: 2,
         }],
     ]);
     const FakeRTC = fakeRTCClass(async () => stats);
@@ -623,6 +633,7 @@ test('tracks bounded selected ICE-pair summaries without leaking candidate or IC
     const report = JSON.parse(await page.getBlob().text());
     const rtc = report.webrtc;
     assert.equal(rtc.available, true);
+    assert.equal(rtc.sampleIntervalMs, 3000);
     assert.equal(rtc.roleBinding, 'unclassified');
     assert.match(rtc.rttMeaning, /not input end-to-end latency/);
     assert.equal(rtc.connections.length, 1);
@@ -634,17 +645,28 @@ test('tracks bounded selected ICE-pair summaries without leaking candidate or IC
     assert.equal(connection.sampleCount, 61);
     assert.equal(connection.samples.length, 60);
     assert.equal(connection.droppedSamples, 1);
+    assert.deepEqual(connection.selectedPair, {
+        localCandidateType: 'relay',
+        remoteCandidateType: 'host',
+        protocol: 'udp',
+    });
     assert.deepEqual(connection.samples.at(-1), {
         monoMs: 61_000,
         status: 'available',
         localCandidateType: 'relay',
         remoteCandidateType: 'host',
+        protocol: 'udp',
         rttMs: 25.4,
+        jitterMs: 20,
+        packetsLost: 7,
         bytesSent: 101,
         bytesReceived: 202,
         packetsSent: 3,
         packetsReceived: 4,
     });
+    const pairEvents = report.runtime.events.filter(event => event.type === 'ice_selected_pair');
+    assert.equal(pairEvents.length, 1, 'selected pair should be logged once, not per sample');
+    assert.deepEqual(pairEvents[0].payload, connection.selectedPair);
     const exportedRtc = JSON.stringify(rtc);
     for (const privateValue of ['192.0.2.', '198.51.100.', '53421', 'pair-id-private',
         'local-id-private', 'turn-secret', 'username-secret', 'credential-secret']) {

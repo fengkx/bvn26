@@ -54,6 +54,10 @@ export class Room extends DurableObject<Env> {
     ctx.storage.sql.exec(
       "CREATE TABLE IF NOT EXISTS rates (key TEXT PRIMARY KEY, window INTEGER NOT NULL, count INTEGER NOT NULL)",
     );
+    // Survives hibernation. Read only while a request is already awake.
+    ctx.storage.sql.exec(
+      "CREATE TABLE IF NOT EXISTS relayed (id INTEGER PRIMARY KEY AUTOINCREMENT, negotiation TEXT NOT NULL, recipient INTEGER NOT NULL, kind TEXT NOT NULL, payload TEXT NOT NULL, frame TEXT NOT NULL, UNIQUE (negotiation, kind, payload))",
+    );
     ctx.setWebSocketAutoResponse(
       new WebSocketRequestResponsePair("ping", "pong"),
     );
@@ -171,11 +175,33 @@ export class Room extends DurableObject<Env> {
     this.write(this.closedMarker(state));
     this.ctx.storage.sql.exec("DELETE FROM tickets");
     this.ctx.storage.sql.exec("DELETE FROM rates");
+    this.ctx.storage.sql.exec("DELETE FROM relayed");
     await this.env.ADMISSION.getByName("global-v1").release(state.id);
     await this.ctx.storage.deleteAlarm();
   }
-  private broadcast(state: State): void {
+  private signalingFlags(state: State, ignore?: WebSocket): [boolean, boolean] {
+    const flags: [boolean, boolean] = [false, false];
     for (const socket of this.ctx.getWebSockets()) {
+      if (socket === ignore) continue;
+      const attached = socket.deserializeAttachment() as Attachment | null;
+      if (!attached) continue;
+      const seat = state.members[attached.slot];
+      if (
+        seat &&
+        seat.credential === attached.credential &&
+        seat.connection === attached.connection
+      )
+        flags[attached.slot] = true;
+    }
+    return flags;
+  }
+  private present(state: State, ignore?: WebSocket): unknown {
+    return projection(state, this.signalingFlags(state, ignore));
+  }
+  private broadcast(state: State, ignore?: WebSocket): void {
+    const view = this.present(state, ignore);
+    for (const socket of this.ctx.getWebSockets()) {
+      if (socket === ignore) continue;
       const attached = socket.deserializeAttachment() as Attachment;
       const seat = state.members[attached.slot];
       if (
@@ -184,7 +210,7 @@ export class Room extends DurableObject<Env> {
         seat.connection !== attached.connection
       ) {
         socket.close(1000, "membership_ended");
-      } else this.send(socket, { type: "state", state: projection(state) });
+      } else this.send(socket, { type: "state", state: view });
     }
   }
   private send(socket: WebSocket, value: unknown): boolean {
@@ -193,6 +219,74 @@ export class Room extends DurableObject<Env> {
       return true;
     } catch {
       return false;
+    }
+  }
+  private rememberRelayed(
+    negotiationId: string,
+    to: 0 | 1,
+    kind: string,
+    payload: string,
+    frame: Record<string, unknown>,
+  ): boolean {
+    const sql = this.ctx.storage.sql;
+    sql.exec("DELETE FROM relayed WHERE negotiation != ?", negotiationId);
+    const duplicate = sql
+      .exec<{ id: number }>(
+        "SELECT id FROM relayed WHERE negotiation = ? AND kind = ? AND payload = ?",
+        negotiationId,
+        kind,
+        payload,
+      )
+      .toArray()[0];
+    // The same description must not bounce back to the other peer.
+    if (duplicate) return false;
+    const count =
+      sql
+        .exec<{ count: number }>(
+          "SELECT COUNT(*) AS count FROM relayed WHERE negotiation = ?",
+          negotiationId,
+        )
+        .toArray()[0]?.count ?? 0;
+    if (count >= 64) {
+      sql.exec(
+        "DELETE FROM relayed WHERE id = (SELECT MIN(id) FROM relayed WHERE negotiation = ?)",
+        negotiationId,
+      );
+    }
+    sql.exec(
+      "INSERT INTO relayed (negotiation, recipient, kind, payload, frame) VALUES (?, ?, ?, ?, ?)",
+      negotiationId,
+      to,
+      kind,
+      payload,
+      JSON.stringify(frame),
+    );
+    return true;
+  }
+  private replayRelayed(
+    socket: WebSocket,
+    slot: 0 | 1,
+    negotiationId: string | undefined,
+  ): void {
+    const sql = this.ctx.storage.sql;
+    if (!negotiationId) {
+      sql.exec("DELETE FROM relayed");
+      return;
+    }
+    sql.exec("DELETE FROM relayed WHERE negotiation != ?", negotiationId);
+    const rows = sql
+      .exec<{ frame: string }>(
+        "SELECT frame FROM relayed WHERE negotiation = ? AND recipient = ? ORDER BY id",
+        negotiationId,
+        slot,
+      )
+      .toArray();
+    for (const row of rows) {
+      try {
+        this.send(socket, JSON.parse(row.frame));
+      } catch {
+        /* A corrupt row must not break the socket upgrade. */
+      }
     }
   }
   async fetch(request: Request): Promise<Response> {
@@ -221,7 +315,7 @@ export class Room extends DurableObject<Env> {
             state.shortInviteHash = shortInviteHash;
             this.write(state);
           }
-          return json({ roomId: id, slot: 0, state: projection(state) });
+          return json({ roomId: id, slot: 0, state: this.present(state) });
         }
         const state: State = {
           schema: 1,
@@ -246,7 +340,7 @@ export class Room extends DurableObject<Env> {
         };
         this.write(state);
         await this.schedule(state);
-        return json({ roomId: id, slot: 0, state: projection(state) }, 201);
+        return json({ roomId: id, slot: 0, state: this.present(state) }, 201);
       }
       if (path === "/join" && request.method === "POST") {
         const input = parse(join, await body(request));
@@ -270,7 +364,7 @@ export class Room extends DurableObject<Env> {
           return json({
             roomId: state.id,
             slot: existing,
-            state: projection(state),
+            state: this.present(state),
           });
         requireThat(!state.members[1], "room_full");
         state.members[1] = member(credential, input.nickname);
@@ -281,7 +375,7 @@ export class Room extends DurableObject<Env> {
         this.broadcast(state);
         await this.schedule(state);
         return json(
-          { roomId: state.id, slot: 1, state: projection(state) },
+          { roomId: state.id, slot: 1, state: this.present(state) },
           201,
         );
       }
@@ -308,7 +402,7 @@ export class Room extends DurableObject<Env> {
           return json({
             roomId: state.id,
             slot: 1,
-            state: projection(state),
+            state: this.present(state),
           });
         requireThat(existing === -1, "invalid_invite", 403);
         requireThat(!state.members[1], "room_full");
@@ -320,7 +414,7 @@ export class Room extends DurableObject<Env> {
         this.broadcast(state);
         await this.schedule(state);
         return json(
-          { roomId: state.id, slot: 1, state: projection(state) },
+          { roomId: state.id, slot: 1, state: this.present(state) },
           201,
         );
       }
@@ -333,7 +427,7 @@ export class Room extends DurableObject<Env> {
       let state = this.live();
       const slot = this.slot(state, credential);
       if (path === "/state" && request.method === "GET")
-        return json({ slot, state: projection(state) });
+        return json({ slot, state: this.present(state) });
       if (path === "/commands" && request.method === "POST") {
         const input = parse(command, await body(request));
         const requestHash = await hash(JSON.stringify(input));
@@ -359,7 +453,7 @@ export class Room extends DurableObject<Env> {
               state.shortInviteHash = invite.digest;
               seat.lastReply = {
                 acceptedSeq: input.seq,
-                state: projection(state),
+                state: this.present(state),
                 inviteCode: invite.code,
               };
               this.write(state);
@@ -415,7 +509,7 @@ export class Room extends DurableObject<Env> {
         seat.lastCommand = requestHash;
         const reply = {
           acceptedSeq: input.seq,
-          state: projection(state),
+          state: this.present(state),
           ...(shortInvite ? { inviteCode: shortInvite.code } : {}),
         };
         seat.lastReply = reply;
@@ -507,13 +601,12 @@ export class Room extends DurableObject<Env> {
       401,
     );
     const connection = crypto.randomUUID();
-    const replacingConnection = state.members[ticket.slot]!.connection !== null;
     state.members[ticket.slot]!.connection = connection;
-    if (replacingConnection) state.negotiation = null;
+    // A replacement closes the previous socket below. It must not drop an
+    // in-flight negotiation: the new socket continues the same id.
     state.revision++;
     state.lastActivity = Date.now();
     this.write(state);
-    this.broadcast(state);
     const pair = new WebSocketPair();
     const [client, server] = Object.values(pair);
     this.ctx.acceptWebSocket(server);
@@ -525,7 +618,9 @@ export class Room extends DurableObject<Env> {
       window: 0,
       count: 0,
     } satisfies Attachment);
-    this.send(server, { type: "state", state: projection(state) });
+    this.broadcast(state);
+    // The new socket did not see signals delivered to the connection it replaced.
+    this.replayRelayed(server, ticket.slot, state.negotiation?.id);
     await this.schedule(state);
     return new Response(null, {
       status: 101,
@@ -579,13 +674,19 @@ export class Room extends DurableObject<Env> {
       const input = parse(signal, decoded);
       requireThat(input.seq > attached.seq, "invalid_sequence");
       const negotiation = state.negotiation;
-      requireThat(
-        negotiation &&
-          negotiation.id === input.negotiationId &&
-          negotiation.epoch === input.epoch &&
-          negotiation.expires > Date.now(),
-        "stale_negotiation",
-      );
+      if (
+        !negotiation ||
+        negotiation.id !== input.negotiationId ||
+        negotiation.epoch !== input.epoch ||
+        negotiation.expires <= Date.now()
+      ) {
+        this.send(socket, {
+          type: "error",
+          error: "stale_negotiation",
+          negotiationId: input.negotiationId,
+        });
+        return;
+      }
       requireThat(input.epoch === (state.match?.epoch ?? null), "stale_epoch");
       requireThat(
         (input.kind !== "offer" || attached.slot === 0) &&
@@ -596,6 +697,22 @@ export class Room extends DurableObject<Env> {
       attached.seq = input.seq;
       socket.serializeAttachment(attached);
       const peerSlot = attached.slot === 0 ? 1 : 0;
+      const frame = { ...input, from: attached.slot };
+      const fresh = this.rememberRelayed(
+        negotiation.id,
+        peerSlot,
+        input.kind,
+        input.payload,
+        frame,
+      );
+      if (!fresh) {
+        this.send(socket, {
+          type: "signal_ack",
+          seq: input.seq,
+          delivered: true,
+        });
+        return;
+      }
       let delivered = false;
       for (const peer of this.ctx.getWebSockets()) {
         const target = peer.deserializeAttachment() as Attachment;
@@ -604,8 +721,7 @@ export class Room extends DurableObject<Env> {
           target.credential === state.members[peerSlot]?.credential &&
           target.connection === state.members[peerSlot]?.connection
         )
-          delivered =
-            this.send(peer, { ...input, from: attached.slot }) || delivered;
+          delivered = this.send(peer, frame) || delivered;
       }
       this.send(socket, { type: "signal_ack", seq: input.seq, delivered });
     } catch (error) {
@@ -620,8 +736,26 @@ export class Room extends DurableObject<Env> {
         socket.close(1008, "protocol_error");
     }
   }
-  webSocketClose(): void {
-    /* Transport loss is not a voluntary departure. */
+  webSocketClose(socket: WebSocket): void {
+    // Transport loss is not a voluntary departure. A replacement already
+    // broadcast while the new connection id was current; closing the old
+    // socket must not broadcast again.
+    try {
+      const state = this.read();
+      if (state.phase === "closed") return;
+      const attached = socket.deserializeAttachment() as Attachment | null;
+      const seat = attached ? state.members[attached.slot] : undefined;
+      if (
+        !attached ||
+        !seat ||
+        seat.credential !== attached.credential ||
+        seat.connection !== attached.connection
+      )
+        return;
+      this.broadcast(state, socket);
+    } catch {
+      /* The room row may already be gone. */
+    }
   }
   webSocketError(socket: WebSocket): void {
     socket.close(1011, "socket_error");

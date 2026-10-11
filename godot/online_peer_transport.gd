@@ -27,6 +27,9 @@ var _peer: WebRTCPeerConnection
 var _channels: Dictionary = {}
 var _connection_state := "new"
 var _remote_description_set := false
+var _remote_description_kind := ""
+var _remote_description_payload := ""
+var _seen_remote_candidates: Dictionary = {}
 var _pending_remote_candidates: Array[Dictionary] = []
 var _outgoing_sequences := {CHANNEL_RELIABLE: 0, CHANNEL_INPUT: 0}
 var _last_reliable_sequence := 0
@@ -65,6 +68,9 @@ func configure(
 	_negotiation_id = negotiation_id
 	_reset_sequences()
 	_remote_description_set = false
+	_remote_description_kind = ""
+	_remote_description_payload = ""
+	_seen_remote_candidates.clear()
 	_pending_remote_candidates.clear()
 	return true
 
@@ -121,10 +127,15 @@ func handle_signal(message: Dictionary) -> bool:
 		return _fail("unexpected_offer_role")
 	if kind == "answer" and (_local_slot != 0 or _remote_slot != 1):
 		return _fail("unexpected_answer_role")
+	# A replacement socket replays the description the previous socket already applied.
+	if _remote_description_set and kind == _remote_description_kind and payload == _remote_description_payload:
+		return true
 	var result := _peer.set_remote_description(kind, payload)
 	if result != OK:
 		return _fail("remote_description_failed_%d" % result)
 	_remote_description_set = true
+	_remote_description_kind = kind
+	_remote_description_payload = payload
 	return _flush_remote_candidates()
 
 
@@ -168,6 +179,9 @@ func close_peer() -> void:
 		_peer.close()
 	_peer = null
 	_remote_description_set = false
+	_remote_description_kind = ""
+	_remote_description_payload = ""
+	_seen_remote_candidates.clear()
 	_pending_remote_candidates.clear()
 	_set_connection_state("closed")
 	_reset_sequences()
@@ -260,12 +274,18 @@ func _handle_remote_candidate(payload: String) -> bool:
 		"index": int(decoded["index"]),
 		"name": decoded["name"],
 	}
+	if _seen_remote_candidates.has(payload):
+		return true
 	if not _remote_description_set:
 		if _pending_remote_candidates.size() >= MAX_CANDIDATES_BEFORE_SDP:
 			return _fail("too_many_early_ice_candidates")
 		_pending_remote_candidates.append(candidate)
+		_seen_remote_candidates[payload] = true
 		return true
-	return _add_remote_candidate(candidate)
+	if not _add_remote_candidate(candidate):
+		return false
+	_seen_remote_candidates[payload] = true
+	return true
 
 
 func _flush_remote_candidates() -> bool:

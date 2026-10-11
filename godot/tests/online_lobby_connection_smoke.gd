@@ -78,6 +78,8 @@ class FakeRoomClient extends Node:
 	var last_signal_sequence := -1
 	var leave_count := 0
 	var refresh_count := 0
+	var connect_calls := 0
+	var fail_connect_error := ""
 	var refresh_state_after_first: Dictionary
 	var stale_offer_on_connect := false
 	var current_offer_on_refresh := false
@@ -86,7 +88,9 @@ class FakeRoomClient extends Node:
 	var hold_connect := false
 	var close_signaling_count := 0
 	var invalidate_first_offer := false
+	var disconnect_on_first_signal := false
 	var negotiate_count := 0
+	var buffered_signals: Array = []
 
 	func _init(local_slot: int, negotiation: Variant = null) -> void:
 		slot = local_slot
@@ -105,8 +109,12 @@ class FakeRoomClient extends Node:
 		return signaling_connected
 
 	func connect_signaling() -> Dictionary:
+		connect_calls += 1
 		if hold_connect:
 			await connect_release
+		if not fail_connect_error.is_empty():
+			signaling_connected = false
+			return {"error": fail_connect_error}
 		signaling_connected = true
 		if stale_offer_on_connect:
 			signaling_message.emit(_signal_message(OLD_NEGOTIATION, 0))
@@ -132,6 +140,8 @@ class FakeRoomClient extends Node:
 			return {"acceptedSeq": 2, "state": get_room_state()}
 		if operation.get("type") != "negotiate" or operation.get("epoch") != null:
 			return {"error": "invalid_fixture_command"}
+		if operation.has("resumeNegotiationId"):
+			return {"error": "new_peer_must_not_resume"}
 		negotiate_count += 1
 		state["negotiation"] = _negotiation(HOST_NEGOTIATION if negotiate_count == 1 else CURRENT_NEGOTIATION)
 		state["revision"] = int(state.revision) + 1
@@ -149,6 +159,10 @@ class FakeRoomClient extends Node:
 	func send_signal(kind: String, epoch: Variant, negotiation_id: String, payload: String) -> bool:
 		if not signaling_connected or epoch != null or negotiation_id.is_empty() or payload.is_empty():
 			return false
+		if disconnect_on_first_signal and signal_send_count == 0:
+			signal_send_count += 1
+			signaling_connected = false
+			return false
 		signal_send_count += 1
 		last_signal_sequence += 1
 		if invalidate_first_offer and signal_send_count == 1:
@@ -165,6 +179,11 @@ class FakeRoomClient extends Node:
 
 	func get_last_signal_sequence() -> int:
 		return last_signal_sequence
+
+	func consume_recent_signals() -> Array:
+		var pending: Array = buffered_signals.duplicate(true)
+		buffered_signals.clear()
+		return pending
 
 	func signal_leave() -> void:
 		leave_count += 1
@@ -206,8 +225,17 @@ func _run() -> void:
 	await _test_guest_uses_fresh_negotiation_and_buffers_early_offer()
 	await _test_guest_reconnect_receives_offer_after_listener_rebind()
 	await _test_close_cancels_start_without_leaving()
+	await _test_guest_waits_through_short_ice_budget()
+	await _test_host_waits_for_guest_signaling()
+	await _test_signaling_reconnect_during_handshake()
+	await _test_host_retries_after_connected_channel_closes()
+	await _test_double_start_is_rejected()
+	await _test_guest_accepts_offer_buffered_before_subscribe()
+	await _test_wait_does_not_poll_while_signaling_is_up()
+	await _test_signaling_reconnect_backs_off()
+	await _test_close_during_wait_peer_stops()
 	if failures.is_empty():
-		print("ONLINE_LOBBY_CONNECTION_SMOKE_OK host_retry=true guest_fresh_negotiation=true idle_guest_signal_buffer=true early_signal_filter=true first_data_message_preserved=true reliable_send=true guest_reconnect_rebinds_before_offer=true close_cancels_start=true close_does_not_leave=true")
+		print("ONLINE_LOBBY_CONNECTION_SMOKE_OK host_retry=true guest_fresh_negotiation=true idle_guest_signal_buffer=true early_signal_filter=true first_data_message_preserved=true reliable_send=true guest_reconnect_rebinds_before_offer=true close_cancels_start=true close_does_not_leave=true guest_late_host=true host_waits_for_guest_signaling=true signaling_reconnect=true double_start_rejected=true pre_subscribe_offer=true poll_idle_while_socket_up=true reconnect_backoff=true close_stops_wait_peer=true")
 	else:
 		push_error("ONLINE_LOBBY_CONNECTION_SMOKE_FAILED " + "; ".join(failures))
 	quit(0 if failures.is_empty() else 1)
@@ -359,6 +387,250 @@ func _test_guest_reconnect_receives_offer_after_listener_rebind() -> void:
 	client.queue_free()
 	old_connection.queue_free()
 	new_connection.queue_free()
+	await process_frame
+
+
+func _test_guest_waits_through_short_ice_budget() -> void:
+	var client := FakeRoomClient.new(1)
+	client.signaling_connected = true
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	connection._data_channel_timeout_ms = 200
+	connection._peer_wait_timeout_ms = 5_000
+	client.connection = connection
+	root.add_child(connection)
+	_expect(connection.configure(client, 1, []), "late guest configuration was rejected")
+	var outcome := {"done": false, "error": ""}
+	Callable(self, "_capture_start").call_deferred(connection, outcome)
+	await create_timer(0.45).timeout
+	_expect(not outcome.done, "guest spent the ICE budget while still waiting for the host")
+	_expect(connection.get_startup_phase() == "wait_negotiation", "guest left the idle wait: " + connection.get_startup_phase())
+	client.state = client._room_state(client._negotiation(CURRENT_NEGOTIATION))
+	client.signaling_message.emit(client._signal_message(CURRENT_NEGOTIATION, 0))
+	var spins := 0
+	while not outcome.done and spins < 120:
+		await process_frame
+		spins += 1
+	_expect(outcome.done and str(outcome.error).is_empty(), "guest did not finish after the late host offer: " + str(outcome.error))
+	connection.close()
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_host_waits_for_guest_signaling() -> void:
+	var client := FakeRoomClient.new(0)
+	client.signaling_connected = true
+	client.state = client._room_state(null)
+	client.state["members"][1]["signaling"] = false
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	client.connection = connection
+	root.add_child(connection)
+	_expect(connection.configure(client, 0, []), "waiting host configuration was rejected")
+	var outcome := {"done": false, "error": ""}
+	Callable(self, "_capture_start").call_deferred(connection, outcome)
+	await create_timer(0.2).timeout
+	_expect(client.negotiate_count == 0, "host negotiated before the guest signaling socket was up")
+	_expect(connection.get_startup_phase() == "wait_peer", "host was not waiting for the guest: " + connection.get_startup_phase())
+	client.state["members"][1]["signaling"] = true
+	var spins := 0
+	while not outcome.done and spins < 40:
+		await create_timer(0.05).timeout
+		spins += 1
+	_expect(outcome.done and str(outcome.error).is_empty(), "host did not connect after the guest signaling socket appeared: " + str(outcome.error))
+	_expect(client.negotiate_count == 1, "host negotiate ran more than once: %d" % client.negotiate_count)
+	connection.close()
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_signaling_reconnect_during_handshake() -> void:
+	var client := FakeRoomClient.new(0)
+	client.signaling_connected = true
+	client.disconnect_on_first_signal = true
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	client.connection = connection
+	root.add_child(connection)
+	_expect(connection.configure(client, 0, []), "reconnect handshake configuration was rejected")
+	var issue: String = await connection.start()
+	_expect(issue.is_empty(), "signaling drop during handshake failed: " + issue)
+	_expect(client.negotiate_count == 1, "a signaling reconnect started a second negotiation")
+	_expect(connection.get_connection_state() == "connected", "handshake did not recover after the signaling reconnect")
+	connection.close()
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_host_retries_after_connected_channel_closes() -> void:
+	var client := FakeRoomClient.new(0)
+	client.signaling_connected = true
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	client.connection = connection
+	root.add_child(connection)
+	_expect(connection.configure(client, 0, []), "host retry configuration was rejected")
+	var issue: String = await connection.start()
+	_expect(issue.is_empty(), "initial host connection failed: " + issue)
+	var old_peer: Node = connection._peer_transport
+	old_peer.close_peer()
+	connection._process(0.0)
+	_expect(connection.get_connection_state() == "disconnected", "closed channel was not detected")
+	issue = await connection.start()
+	_expect(issue.is_empty(), "host retry failed: " + issue)
+	_expect(client.negotiate_count == 2, "new PeerConnection did not request a fresh negotiation")
+	_expect(connection._peer_transport.negotiation_id == CURRENT_NEGOTIATION, "host retry reused the old id")
+	connection.close()
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_double_start_is_rejected() -> void:
+	var client := FakeRoomClient.new(0)
+	client.hold_connect = true
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	client.connection = connection
+	root.add_child(connection)
+	_expect(connection.configure(client, 0, []), "double-start configuration was rejected")
+	var outcome := {"done": false, "error": ""}
+	Callable(self, "_capture_start").call_deferred(connection, outcome)
+	var ready_spins := 0
+	while connection.get_startup_phase() == "idle" and ready_spins < 30:
+		await process_frame
+		ready_spins += 1
+	var second: String = await connection.start()
+	_expect(second == "connection_starting", "a second start was not rejected: " + second)
+	_expect(client.negotiate_count == 0, "the duplicate start negotiated before the first attempt")
+	client.hold_connect = false
+	client.connect_release.emit()
+	var spins := 0
+	while not outcome.done and spins < 40:
+		await create_timer(0.05).timeout
+		spins += 1
+	_expect(outcome.done and str(outcome.error).is_empty(), "the first start did not finish after the duplicate was rejected: " + str(outcome.error))
+	_expect(client.negotiate_count == 1, "double start created %d negotiations" % client.negotiate_count)
+	connection.close()
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_guest_accepts_offer_buffered_before_subscribe() -> void:
+	var client := FakeRoomClient.new(1, FakeRoomClient._negotiation(CURRENT_NEGOTIATION))
+	client.signaling_connected = true
+	client.buffered_signals.append(client._signal_message(CURRENT_NEGOTIATION, 0))
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	connection._peer_wait_timeout_ms = 800
+	client.connection = connection
+	root.add_child(connection)
+	_expect(connection.configure(client, 1, []), "pre-subscribe guest configuration was rejected")
+	_expect(client.buffered_signals.is_empty(), "configure left the pre-subscribe offer in the room buffer")
+	var issue: String = await connection.start()
+	_expect(issue.is_empty(), "guest missed an offer that arrived before it subscribed: " + issue)
+	var peer: Variant = connection.get("_peer_transport")
+	_expect(peer.handled_negotiations == [CURRENT_NEGOTIATION], "pre-subscribe offer was not applied")
+	connection.close()
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_wait_does_not_poll_while_signaling_is_up() -> void:
+	var client := FakeRoomClient.new(1)
+	client.signaling_connected = true
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	connection._peer_wait_timeout_ms = 5_000
+	root.add_child(connection)
+	_expect(connection.configure(client, 1, []), "idle-poll guest configuration was rejected")
+	var outcome := {"done": false, "error": ""}
+	Callable(self, "_capture_start").call_deferred(connection, outcome)
+	await create_timer(0.6).timeout
+	_expect(not outcome.done, "guest finished while the host had not negotiated")
+	_expect(connection.get_startup_phase() == "wait_negotiation", "guest left the idle wait: " + connection.get_startup_phase())
+	_expect(client.refresh_count == 0, "wait polled /state while the signaling socket was up: %d" % client.refresh_count)
+	_expect(client.connect_calls == 0, "wait reconnected a socket that was already up")
+	connection.close()
+	var spins := 0
+	while not outcome.done and spins < 20:
+		await process_frame
+		spins += 1
+	_expect(outcome.done and str(outcome.error) == "start_cancelled", "closing during wait_negotiation did not stop: " + str(outcome.error))
+	_expect(client.refresh_count == 0 and client.connect_calls == 0, "close during wait kept polling")
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_signaling_reconnect_backs_off() -> void:
+	var client := FakeRoomClient.new(0)
+	client.fail_connect_error = "socket_timeout"
+	client.state["members"][1]["signaling"] = false
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	connection._peer_wait_timeout_ms = 8_000
+	root.add_child(connection)
+	_expect(connection.configure(client, 0, []), "backoff host configuration was rejected")
+	var outcome := {"done": false, "error": ""}
+	Callable(self, "_capture_start").call_deferred(connection, outcome)
+	await create_timer(2.6).timeout
+	_expect(not outcome.done, "host gave up before the reconnect backoff could be measured")
+	_expect(client.connect_calls >= 2 and client.connect_calls <= 3, "reconnect was not bounded to about one then two seconds: %d" % client.connect_calls)
+	var calls := client.connect_calls
+	var refreshes := client.refresh_count
+	connection.close()
+	var spins := 0
+	while not outcome.done and spins < 20:
+		await process_frame
+		spins += 1
+	_expect(outcome.done and str(outcome.error) == "start_cancelled", "close during reconnect backoff did not stop: " + str(outcome.error))
+	_expect(client.connect_calls == calls and client.refresh_count == refreshes, "close during reconnect kept dialing")
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_close_during_wait_peer_stops() -> void:
+	var client := FakeRoomClient.new(0)
+	client.signaling_connected = true
+	client.state["members"][1]["signaling"] = false
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	connection._peer_wait_timeout_ms = 60_000
+	root.add_child(connection)
+	_expect(connection.configure(client, 0, []), "wait-peer close configuration was rejected")
+	var outcome := {"done": false, "error": ""}
+	Callable(self, "_capture_start").call_deferred(connection, outcome)
+	await create_timer(0.2).timeout
+	_expect(connection.get_startup_phase() == "wait_peer", "host was not waiting for the guest: " + connection.get_startup_phase())
+	_expect(client.refresh_count == 0, "wait_peer polled /state while signaling was up")
+	var calls := client.connect_calls
+	var refreshes := client.refresh_count
+	connection.close()
+	var spins := 0
+	while not outcome.done and spins < 20:
+		await process_frame
+		spins += 1
+	_expect(spins < 15, "close during wait_peer waited out a timer")
+	_expect(outcome.done and str(outcome.error) == "start_cancelled", "close during wait_peer did not stop: " + str(outcome.error))
+	_expect(client.connect_calls == calls and client.refresh_count == refreshes, "close during wait_peer kept polling or reconnecting")
+	client.queue_free()
+	connection.queue_free()
 	await process_frame
 
 
