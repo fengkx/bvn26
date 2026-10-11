@@ -35,6 +35,12 @@ def main() -> int:
             ("ONLINE_LOBBY_AUTO_CONNECT_SMOKE_OK",),
         ),
         (
+            "res://tests/online_lobby_presence_smoke.gd",
+            (
+                "ONLINE_LOBBY_PRESENCE_SMOKE_OK create_connects=true invite_status=true reconnect_backoff=true selection_socket_held=true keepalive=15m terminal_stop=true",
+            ),
+        ),
+        (
             "res://tests/online_lobby_ui_smoke.gd",
             (
                 "ONLINE_LOBBY_UI_SMOKE_OK owner_setup_draft_preserved=true map_picker_not_dropdown=true role_dropdowns_absent=true dialog_fits=true",

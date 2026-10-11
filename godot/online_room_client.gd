@@ -30,6 +30,8 @@ var _admission_in_flight := false
 
 var _socket: WebSocketPeer
 var _socket_connecting := false
+var _signaling_request: HTTPRequest
+var _capture_signaling_request := false
 var _socket_waiting_for_state := false
 var _socket_initial_state_received := false
 var _socket_last_error := ""
@@ -244,6 +246,7 @@ func connect_signaling() -> Dictionary:
 	_socket_initial_state_received = false
 	_socket_last_error = ""
 
+	_capture_signaling_request = true
 	var ticket_reply: Dictionary = await _request_json(
 		HTTPClient.METHOD_POST,
 		"/v1/rooms/%s/ticket" % _room_id,
@@ -251,7 +254,9 @@ func connect_signaling() -> Dictionary:
 		true
 	)
 	if generation != _lifecycle_generation or socket_attempt != _socket_attempt_id:
-		return {"error": "session_changed", "uncertain": false}
+		if socket_attempt == _socket_attempt_id:
+			_socket_connecting = false
+		return {"error": "socket_cancelled", "uncertain": false}
 	if not ticket_reply.get("ok", false):
 		_socket_connecting = false
 		return _report_request_failure(ticket_reply)
@@ -274,6 +279,8 @@ func connect_signaling() -> Dictionary:
 	var deadline := Time.get_ticks_msec() + SOCKET_TIMEOUT_MS
 	while Time.get_ticks_msec() < deadline:
 		if generation != _lifecycle_generation or socket_attempt != _socket_attempt_id:
+			if socket_attempt == _socket_attempt_id:
+				_socket_connecting = false
 			return {"error": "socket_cancelled", "uncertain": false}
 		if _socket_last_error != "":
 			var failure_code := _socket_last_error
@@ -327,6 +334,18 @@ func send_signal(kind: String, epoch: Variant, negotiation_id: String, payload: 
 
 func close_signaling() -> void:
 	_close_socket(true)
+
+
+func cancel_signaling() -> void:
+	var request_node := _signaling_request
+	_signaling_request = null
+	_close_socket(false)
+	if request_node != null and is_instance_valid(request_node):
+		request_node.cancel_request()
+		# HTTPRequest does not emit on cancel; resume the waiter so it frees the
+		# node and observes the invalidated socket attempt before reporting errors.
+		request_node.call_deferred("emit_signal", "request_completed",
+			HTTPRequest.RESULT_REQUEST_FAILED, 0, PackedStringArray(), PackedByteArray())
 
 
 func clear_credentials() -> void:
@@ -497,6 +516,8 @@ func _send_pending_command() -> Dictionary:
 
 
 func _request_json(method: int, path: String, body_text: String, authenticated: bool) -> Dictionary:
+	var capture_signaling := _capture_signaling_request
+	_capture_signaling_request = false
 	_last_http_diagnostic = {"phase": "not_started", "transportResult": "not_started", "httpStatus": 0}
 	if _base_url.is_empty():
 		return {"ok": false, "error": "service_not_configured", "uncertain": false}
@@ -506,16 +527,22 @@ func _request_json(method: int, path: String, body_text: String, authenticated: 
 	request_node.timeout = REQUEST_TIMEOUT_SECONDS
 	request_node.body_size_limit = MAX_HTTP_BODY_BYTES
 	add_child(request_node)
+	if capture_signaling:
+		_signaling_request = request_node
 	var headers := PackedStringArray(["Accept: application/json"])
 	if not body_text.is_empty():
 		headers.append("Content-Type: application/json")
 	if authenticated:
 		if _session_token.is_empty():
+			if _signaling_request == request_node:
+				_signaling_request = null
 			request_node.queue_free()
 			return {"ok": false, "error": "not_authenticated", "uncertain": false}
 		headers.append("Authorization: Bearer " + _session_token)
 	var request_error := request_node.request(_base_url + path, headers, method, body_text)
 	if request_error != OK:
+		if _signaling_request == request_node:
+			_signaling_request = null
 		request_node.queue_free()
 		_last_http_diagnostic = {
 			"phase": "request_start",
@@ -527,6 +554,10 @@ func _request_json(method: int, path: String, body_text: String, authenticated: 
 		start_failure.merge(_last_http_diagnostic, true)
 		return start_failure
 	var completed: Array = await request_node.request_completed
+	if _signaling_request == request_node:
+		_signaling_request = null
+	if not is_instance_valid(request_node):
+		return {"ok": false, "error": "request_cancelled", "uncertain": false}
 	request_node.queue_free()
 	var result_code := int(completed[0])
 	var response_code := int(completed[1])

@@ -6,6 +6,7 @@ import {
   Fault,
   hash,
   IDLE_MS,
+  INVITE_TOMBSTONE_MS,
   json,
   joinByCode,
   parse,
@@ -114,7 +115,7 @@ export class Admission extends DurableObject<Env> {
       return { error: "capacity_reached" };
     const expires = now + IDLE_MS;
     sql.exec("INSERT INTO leases VALUES (?, ?, ?)", id, fingerprint, expires);
-    await this.ctx.storage.setAlarm(now + 60_000);
+    await this.scheduleCleanup();
     return { expires };
   }
   lookup(id: string): number | null {
@@ -276,7 +277,10 @@ export class Admission extends DurableObject<Env> {
     );
     return true;
   }
-  lookupInviteCode(digest: string, guestHash: string): string | null {
+  lookupInviteCode(
+    digest: string,
+    guestHash: string,
+  ): { roomId: string } | { error: "invite_expired" | "invalid_invite" } {
     const row = this.ctx.storage.sql
       .exec<{
         room_id: string;
@@ -288,11 +292,23 @@ export class Admission extends DurableObject<Env> {
         digest,
       )
       .toArray()[0];
-    if (!row || row.expires <= Date.now()) return null;
-    if (row.status === "active") return row.room_id;
+    if (!row) return { error: "invalid_invite" };
+    if (row.expires <= Date.now()) {
+      this.ctx.storage.sql.exec(
+        "DELETE FROM invite_codes WHERE digest = ?",
+        digest,
+      );
+      return row.status === "active" ||
+        row.status === "used" ||
+        row.status === "expired"
+        ? { error: "invite_expired" }
+        : { error: "invalid_invite" };
+    }
+    if (row.status === "expired") return { error: "invite_expired" };
+    if (row.status === "active") return { roomId: row.room_id };
     if (row.status === "used" && row.guest_hash === guestHash)
-      return row.room_id;
-    return null;
+      return { roomId: row.room_id };
+    return { error: "invalid_invite" };
   }
   consumeInviteCode(
     digest: string,
@@ -354,12 +370,47 @@ export class Admission extends DurableObject<Env> {
     return rows[0]?.expires ?? null;
   }
   release(id: string): void {
+    const retainUntil = Date.now() + INVITE_TOMBSTONE_MS;
     this.ctx.storage.sql.exec("DELETE FROM leases WHERE id = ?", id);
-    this.ctx.storage.sql.exec("DELETE FROM invite_codes WHERE room_id = ?", id);
+    // Only codes a guest could have seen become invite_expired tombstones.
+    this.ctx.storage.sql.exec(
+      "UPDATE invite_codes SET status = 'expired', expires = ? WHERE room_id = ? AND status IN ('active', 'used')",
+      retainUntil,
+      id,
+    );
+    this.ctx.storage.sql.exec(
+      "DELETE FROM invite_codes WHERE room_id = ? AND status != 'expired'",
+      id,
+    );
     this.ctx.storage.sql.exec(
       "DELETE FROM invite_generations WHERE room_id = ?",
       id,
     );
+  }
+  private nextExpiry(): number | null {
+    const lease = this.ctx.storage.sql
+      .exec<{ expires: number | null }>(
+        "SELECT MIN(expires) AS expires FROM leases",
+      )
+      .one().expires;
+    const code = this.ctx.storage.sql
+      .exec<{ expires: number | null }>(
+        "SELECT MIN(expires) AS expires FROM invite_codes",
+      )
+      .one().expires;
+    const times = [lease, code].filter(
+      (value): value is number => typeof value === "number",
+    );
+    return times.length ? Math.min(...times) : null;
+  }
+  private async scheduleCleanup(): Promise<void> {
+    const next = this.nextExpiry();
+    if (next == null) {
+      await this.ctx.storage.deleteAlarm();
+      return;
+    }
+    // One alarm at the soonest lease or tombstone. No per-row and no 60s loop.
+    await this.ctx.storage.setAlarm(Math.max(next, Date.now() + 1_000));
   }
   async alarm(): Promise<void> {
     const now = Date.now();
@@ -375,12 +426,7 @@ export class Admission extends DurableObject<Env> {
       "DELETE FROM rates WHERE window < ?",
       Math.floor(now / 60_000),
     );
-    if (
-      this.ctx.storage.sql
-        .exec<{ n: number }>("SELECT COUNT(*) n FROM leases")
-        .one().n
-    )
-      await this.ctx.storage.setAlarm(now + 60_000);
+    await this.scheduleCleanup();
   }
 }
 
@@ -462,11 +508,13 @@ export default {
               hash(normalizedCode),
               hash(input.sessionToken),
             ]);
-            const roomId = await admission.lookupInviteCode(
+            const inviteLookup = await admission.lookupInviteCode(
               codeDigest,
               guestHash,
             );
-            requireThat(roomId, "invalid_invite", 403);
+            if ("error" in inviteLookup)
+              throw new Fault(403, inviteLookup.error);
+            const roomId = inviteLookup.roomId;
             response = await env.ROOMS.getByName(roomId).fetch(
               new Request("https://room/join-by-code", {
                 method: "POST",

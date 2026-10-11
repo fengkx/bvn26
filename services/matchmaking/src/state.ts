@@ -54,6 +54,7 @@ export interface State {
   negotiation: { id: string; epoch: string | null; expires: number } | null;
   lastActivity: number;
   leaseUntil: number;
+  createdAt?: number;
 }
 export const DEFAULT_NETWORK_PROFILE: Profile = {
   id: "chrome-exp-d2-p6",
@@ -93,6 +94,7 @@ export function projection(state: State): unknown {
     inviteHash: _invite,
     shortInviteHash: _shortInvite,
     networkProfile: _networkProfile,
+    createdAt: _createdAt,
     members,
     ...publicState
   } = state;

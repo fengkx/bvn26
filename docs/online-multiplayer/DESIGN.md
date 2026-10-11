@@ -131,8 +131,10 @@ Prediction alone must not destroy match state or trigger irreversible scene exit
 On confirmed-state mismatch, end without a winner and offer local diagnostics;
 do not adopt the owner's state. Voluntary exit also ends without a winner. Guest
 departure leaves the room available for a replacement; owner departure closes it
-without ownership transfer. An inactive room expires after 30 minutes; active
-gameplay is exempt. Distinguish explicit departure from a transient connection loss.
+without ownership transfer. A lobby with no recent signaling heartbeat or
+keepalive expires after 30 minutes. A connected, pinging lobby stays open
+until its 2 hour maximum age. Active gameplay is exempt. Clients send a lobby
+keepalive about every 15 minutes. Distinguish explicit departure from a transient connection loss.
 If the room/signaling connection fails while the WebRTC peer path remains healthy,
 continue the current match and its peer control operations. Reconnect room service
 in the background. Failure of signaling alone does not start the 10-second battle

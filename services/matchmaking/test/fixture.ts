@@ -64,6 +64,18 @@ export class TestAdmission extends Admission {
       .toArray()[0];
     return row?.code ?? super.makeInviteCode();
   }
+  nextAlarm(): Promise<number | null> {
+    return this.ctx.storage.getAlarm();
+  }
+  async fireAlarm(): Promise<void> {
+    await this.alarm();
+  }
+  expireInvites(): void {
+    this.ctx.storage.sql.exec(
+      "UPDATE invite_codes SET expires = ?",
+      Date.now() - 1_000,
+    );
+  }
 }
 
 export class TestRoom extends Room {
@@ -75,6 +87,8 @@ export class TestRoom extends Room {
     if (kind === "idle") state.lastActivity = Date.now() - 31 * 60_000;
     if (kind === "lease") state.leaseUntil = Date.now() - 1;
     if (kind === "preparing") state.match.deadline = Date.now() - 1;
+    if (kind === "max-age")
+      state.createdAt = Date.now() - 2 * 60 * 60_000 - 1_000;
     this.ctx.storage.sql.exec(
       "UPDATE state SET value=? WHERE id=1",
       JSON.stringify(state),
@@ -119,6 +133,18 @@ export default {
       if (path === "/_test/invite-candidates") {
         const { codes } = (await request.json()) as { codes: string[] };
         await env.ADMISSION.getByName("global-v1").queueInviteCandidates(codes);
+        return Response.json({ ok: true });
+      }
+      if (path === "/_test/admission") {
+        const { kind } = (await request.json()) as { kind: string };
+        const admission = env.ADMISSION.getByName("global-v1");
+        if (kind === "inspect")
+          return Response.json({ nextAlarm: await admission.nextAlarm() });
+        if (kind === "expire-invites") {
+          await admission.expireInvites();
+          return Response.json({ ok: true });
+        }
+        await admission.fireAlarm();
         return Response.json({ ok: true });
       }
       const { id, kind } = (await request.json()) as {
