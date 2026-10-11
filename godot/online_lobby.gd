@@ -3,7 +3,7 @@ extends Control
 
 const DEFAULT_SERVICE_URL := "https://bvn26-pvp.fengkx.top"
 const LOBBY_IDLE_MS := 30 * 60 * 1000
-const LOBBY_KEEPALIVE_SECONDS := 300.0
+const LOBBY_KEEPALIVE_SECONDS := 900.0
 const LOBBY_RECONNECT_BASE_SECONDS := 1.0
 const LOBBY_RECONNECT_MAX_SECONDS := 30.0
 const LOBBY_STATUS_REFRESH_SECONDS := 30.0
@@ -879,13 +879,15 @@ func _stop_lobby_presence() -> void:
 	_lobby_status_refresh_elapsed = 0.0
 
 
-func _wait_until_lobby_presence_idle() -> void:
+func _cancel_lobby_signaling() -> void:
+	_stop_lobby_presence()
+	if room_client != null and is_instance_valid(room_client) \
+		and room_client.has_method("cancel_signaling"):
+		room_client.cancel_signaling()
+	# The cancelled ticket request resumes on a deferred signal. Yield until
+	# that call drops its in-flight flag so a later connect does not overlap it.
 	var spins := 0
-	while spins < 900 and _lobby_signaling_in_flight:
-		await get_tree().process_frame
-		spins += 1
-	while spins < 900 and room_client != null and is_instance_valid(room_client) \
-		and room_client.is_command_in_flight():
+	while _lobby_signaling_in_flight and spins < 3:
 		await get_tree().process_frame
 		spins += 1
 
@@ -912,8 +914,14 @@ func _ensure_lobby_signaling() -> void:
 		return
 	if response.has("error"):
 		_signal_connected = false
-		if str(response.get("error", "")) == "socket_connecting":
+		var code := str(response.get("error", ""))
+		if code == "socket_cancelled" or code == "session_changed":
+			return
+		if code == "socket_connecting":
 			_lobby_reconnect_wait = 0.5
+			return
+		if _lobby_presence_error_is_terminal(code):
+			_abandon_lobby_presence(code)
 			return
 		_schedule_lobby_reconnect()
 		if _can_show_lobby_presence_status():
@@ -949,10 +957,33 @@ func _send_lobby_keepalive() -> void:
 	if generation != _lobby_presence_generation or room_id != _room_id or not _lobby_signaling_desired:
 		return
 	if result.has("error"):
+		var code := str(result.get("error", ""))
+		if _lobby_presence_error_is_terminal(code):
+			_abandon_lobby_presence(code)
+			return
 		if bool(result.get("uncertain", false)) and _retry_button != null:
 			_retry_button.visible = true
 		return
 	_accept_state(result.get("state"))
+
+
+func _lobby_presence_error_is_terminal(code: String) -> bool:
+	return code in [
+		"invalid_invite",
+		"invite_expired",
+		"room_closed",
+		"room_expired",
+		"room_not_found",
+		"not_found",
+		"service_http_404",
+	]
+
+
+func _abandon_lobby_presence(code: String) -> void:
+	_stop_lobby_presence()
+	_signal_connected = false
+	if _can_show_lobby_presence_status():
+		_show_error(code)
 
 
 func _tick_lobby_presence(delta: float) -> void:
@@ -1040,7 +1071,7 @@ func _lobby_idle_note(connected: bool) -> String:
 		return ""
 	var minutes := _lobby_idle_remaining_minutes()
 	if connected:
-		return " 信令保持连接时房间不会因空闲关闭（断开后约 %d 分钟）。" % maxi(minutes, 1)
+		return " 信令保持连接时房间最长约 2 小时，断开后约 %d 分钟关闭。" % maxi(minutes, 1)
 	if minutes <= 0:
 		return " 房间即将因空闲关闭。"
 	return " 信令断开后约 %d 分钟关闭。" % minutes
@@ -3037,7 +3068,7 @@ func _start_prepared_match(state: Dictionary) -> void:
 	_home_view.visible = false
 	_match_view.visible = false
 	if not _signal_connected:
-		await _wait_until_lobby_presence_idle()
+		await _cancel_lobby_signaling()
 		if generation != _lifecycle_generation or _starting_epoch != epoch:
 			return
 		var socket_reply: Dictionary = await room_client.connect_signaling()
@@ -4067,7 +4098,7 @@ func _on_leave_room_pressed() -> void:
 	set_physics_process(false)
 	_close_room_connection()
 	_busy = true
-	await _wait_until_lobby_presence_idle()
+	await _cancel_lobby_signaling()
 	if room_client == null or _room_id.is_empty():
 		_busy = false
 		return

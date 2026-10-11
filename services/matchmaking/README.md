@@ -230,23 +230,28 @@ must not trigger that battle timeout.
 Idle lobby expiry is still 30 minutes after `lastActivity`, but a waiting
 player counts as activity. Opening the signaling socket refreshes
 `lastActivity`. Textual `ping` is auto-answered and does not run
-`webSocketMessage`; the lobby alarm treats an auto-response newer than 10
-minutes like the active-match heartbeat and refreshes `lastActivity` before
-the idle check. Other authenticated lobby socket messages do the same. Clients
-should also send the `keepalive` command about every 5 minutes while that
-socket is open so activity is persisted even if an alarm is late. HTTP state
-reads do not refresh `lastActivity`. Without a recent ping, keepalive,
-create/join, or other command, an empty lobby still closes 30 minutes after
-`lastActivity`.
+`webSocketMessage`; the existing lobby alarm reads
+`getWebSocketAutoResponseTimestamp` and, when that timestamp is newer than 10
+minutes, refreshes `lastActivity` before the idle check. Authenticated lobby
+socket messages refresh `lastActivity` only when it is already older than 60
+seconds. Clients send the `keepalive` command about every 15 minutes while
+that socket is open. HTTP state reads do not refresh `lastActivity`. A lobby
+also closes at 2 hours after creation even if pings continue. Without a recent
+ping, keepalive, create/join, or other command, an empty lobby still closes
+30 minutes after `lastActivity`. Closed rooms keep a minimal marker so the
+old id cannot be recreated, and their alarm is deleted.
 
-When a room is released (idle expiry, lease expiry, or the owner leaving), its
-short codes are kept as `expired` tombstones for 7 days. `POST
-/v1/rooms/join-by-code` then returns `invite_expired` (403). A malformed code,
-an unknown code, and a code revoked by rotation or guest departure stay
-`invalid_invite`. After the tombstone window the digest is deleted, so an old
-code is no longer distinguishable from one that never existed. Owner leave
-releases the admission lease immediately and tombstones the code in that
-request.
+When a room is released (idle expiry, lease expiry, or the owner leaving),
+`active` and `used` short codes are kept as `expired` tombstones for 7 days.
+`POST /v1/rooms/join-by-code` then returns `invite_expired` (403). Revoked
+codes are deleted, so a rotated or guest-cleared code stays `invalid_invite`.
+A malformed code and an unknown code also stay `invalid_invite`. After the
+tombstone window the digest is deleted, so an old code is no longer
+distinguishable from one that never existed. Owner leave releases the
+admission lease once and tombstones the current code in that request. The
+admission object schedules one alarm at the soonest lease or code expiry and
+does not arm another alarm when both tables are empty. Lookup also deletes a
+row whose `expires` has already passed.
 
 ## Persistence, limits and TURN
 

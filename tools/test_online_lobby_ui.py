@@ -37,7 +37,7 @@ def main() -> int:
         (
             "res://tests/online_lobby_presence_smoke.gd",
             (
-                "ONLINE_LOBBY_PRESENCE_SMOKE_OK create_connects=true invite_status=true reconnect_backoff=true selection_socket_held=true keepalive=true",
+                "ONLINE_LOBBY_PRESENCE_SMOKE_OK create_connects=true invite_status=true reconnect_backoff=true selection_socket_held=true keepalive=15m terminal_stop=true",
             ),
         ),
         (

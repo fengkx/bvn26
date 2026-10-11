@@ -8,10 +8,16 @@ class PresenceRoomClient:
 	var connect_calls := 0
 	var commands: Array[Dictionary] = []
 	var connected := false
+	var terminal_code := ""
 	var published_state: Dictionary = {}
 
 	func connect_signaling() -> Dictionary:
 		connect_calls += 1
+		if terminal_code != "":
+			var code := terminal_code
+			terminal_code = ""
+			connected = false
+			return {"error": code, "uncertain": false}
 		connected = true
 		return {"state": published_state.duplicate(true)}
 
@@ -85,7 +91,7 @@ func _run() -> void:
 	assert(not lobby._status.text.begins_with("正在创建房间"),
 		"Create status stayed on the in-progress text: " + lobby._status.text)
 	assert(lobby._status.text.contains("邀请口令已显示") and lobby._status.text.contains("信令已连接")
-		and lobby._status.text.contains("正在等待对手") and lobby._status.text.contains("不会因空闲关闭"),
+		and lobby._status.text.contains("正在等待对手") and lobby._status.text.contains("最长约 2 小时"),
 		"Host lobby status did not show the invite and a live socket: " + lobby._status.text)
 	lobby._slot = 1
 	var guest_status := lobby._lobby_presence_status_text()
@@ -114,10 +120,29 @@ func _run() -> void:
 	lobby._room_connection_ready = false
 	client.connected = true
 
-	lobby._process(299.0)
-	assert(client.commands.is_empty(), "Keepalive fired before the 5 minute interval")
+	lobby._process(899.0)
+	assert(client.commands.is_empty(), "Keepalive fired before the 15 minute interval")
 	lobby._process(2.0)
 	assert(client.commands.size() == 1 and str(client.commands[0].get("type", "")) == "keepalive",
 		"An open lobby socket did not send keepalive: " + JSON.stringify(client.commands))
-	print("ONLINE_LOBBY_PRESENCE_SMOKE_OK create_connects=true invite_status=true reconnect_backoff=true selection_socket_held=true keepalive=true")
+
+	lobby._lobby_reconnect_attempt = 8
+	lobby._schedule_lobby_reconnect()
+	assert(lobby._lobby_reconnect_wait <= 30.0, "Lobby reconnect backoff exceeded 30 seconds")
+	lobby._lobby_reconnect_wait = 0.0
+	lobby._lobby_reconnect_attempt = 0
+
+	var calls_before_terminal := client.connect_calls
+	client.terminal_code = "invite_expired"
+	client.connected = false
+	lobby._process(0.0)
+	assert(client.connect_calls == calls_before_terminal + 1,
+		"A terminal lobby error did not attempt the in-flight reconnect once")
+	assert(not lobby._lobby_signaling_desired, "invite_expired kept scheduling lobby reconnects")
+	assert(lobby._status.text.contains("已过期"),
+		"invite_expired did not explain that the code is gone: " + lobby._status.text)
+	lobby._process(120.0)
+	assert(client.connect_calls == calls_before_terminal + 1,
+		"Lobby reconnect continued after invite_expired")
+	print("ONLINE_LOBBY_PRESENCE_SMOKE_OK create_connects=true invite_status=true reconnect_backoff=true selection_socket_held=true keepalive=15m terminal_stop=true")
 	quit(0)

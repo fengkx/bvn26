@@ -8,6 +8,8 @@ import {
   Fault,
   hash,
   IDLE_MS,
+  LOBBY_ACTIVITY_WRITE_MS,
+  MAX_LOBBY_MS,
   SOCKET_ACTIVITY_MS,
   join,
   joinByCode,
@@ -113,14 +115,64 @@ export class Room extends DurableObject<Env> {
     );
   }
   private async schedule(state: State): Promise<void> {
-    let deadline = Math.min(
-      Date.now() + 5 * 60_000,
-      state.phase === "active" ? Infinity : state.lastActivity + IDLE_MS,
-    );
-    if (state.phase === "preparing")
-      deadline = Math.min(deadline, state.match!.deadline);
-    if (state.phase === "closed") deadline = Date.now() + 1;
-    await this.ctx.storage.setAlarm(Math.min(deadline, state.leaseUntil));
+    if (state.phase === "closed") {
+      await this.ctx.storage.deleteAlarm();
+      return;
+    }
+    const now = Date.now();
+    const heartbeatLive =
+      this.socketHeartbeatRecent(now) ||
+      state.lastActivity > now - SOCKET_ACTIVITY_MS;
+    const socketsOpen = this.ctx.getWebSockets().length > 0;
+    let deadline = state.lastActivity + IDLE_MS;
+    if (state.phase === "active")
+      deadline = heartbeatLive ? now + 5 * 60_000 : state.leaseUntil;
+    else if (socketsOpen || heartbeatLive)
+      deadline = Math.min(deadline, now + 5 * 60_000);
+    if (state.phase === "preparing" && state.match)
+      deadline = Math.min(deadline, state.match.deadline);
+    if (state.phase === "lobby" && typeof state.createdAt === "number")
+      deadline = Math.min(deadline, state.createdAt + MAX_LOBBY_MS);
+    deadline = Math.min(deadline, state.leaseUntil);
+    if (!(deadline > now)) {
+      await this.ctx.storage.deleteAlarm();
+      return;
+    }
+    await this.ctx.storage.setAlarm(deadline);
+  }
+  private closedMarker(state: State): State {
+    return {
+      schema: 1,
+      id: state.id,
+      creationHash: state.creationHash,
+      inviteHash: "",
+      shortInviteHash: null,
+      compatibility: state.compatibility,
+      revision: state.revision,
+      setupRevision: state.setupRevision,
+      members: [member("", ""), null],
+      stage: state.stage,
+      rules: state.rules,
+      phase: "closed",
+      match: null,
+      lastResult: null,
+      negotiation: null,
+      lastActivity: 0,
+      leaseUntil: 0,
+      createdAt: state.createdAt,
+    };
+  }
+  private async shutdown(state: State): Promise<void> {
+    if (state.phase !== "closed") {
+      state.phase = "closed";
+      state.revision++;
+    }
+    this.broadcast(state);
+    this.write(this.closedMarker(state));
+    this.ctx.storage.sql.exec("DELETE FROM tickets");
+    this.ctx.storage.sql.exec("DELETE FROM rates");
+    await this.env.ADMISSION.getByName("global-v1").release(state.id);
+    await this.ctx.storage.deleteAlarm();
   }
   private broadcast(state: State): void {
     for (const socket of this.ctx.getWebSockets()) {
@@ -190,6 +242,7 @@ export class Room extends DurableObject<Env> {
           negotiation: null,
           lastActivity: Date.now(),
           leaseUntil,
+          createdAt: Date.now(),
         };
         this.write(state);
         await this.schedule(state);
@@ -378,13 +431,19 @@ export class Room extends DurableObject<Env> {
             503,
           );
         }
-        if (input.operation.type === "leave" && previousShortInvite)
+        if (
+          input.operation.type === "leave" &&
+          previousShortInvite &&
+          state.phase !== "closed"
+        )
           await this.env.ADMISSION.getByName("global-v1").revokeInviteCode(
             state.id,
             previousShortInvite,
           );
-        if (input.operation.type === "leave" && state.phase === "closed")
-          await this.env.ADMISSION.getByName("global-v1").release(state.id);
+        if (input.operation.type === "leave" && state.phase === "closed") {
+          await this.shutdown(state);
+          return json(reply);
+        }
         state = this.read();
         this.broadcast(state);
         await this.schedule(state);
@@ -500,8 +559,14 @@ export class Room extends DurableObject<Env> {
       socket.serializeAttachment(attached);
       requireThat(attached.count <= 120, "rate_limited", 429);
       this.rate("signals", 240);
-      if (state.phase === "lobby") {
-        state.lastActivity = Date.now();
+      const now = Date.now();
+      const createdAt = state.createdAt ?? state.lastActivity;
+      if (
+        state.phase === "lobby" &&
+        createdAt + MAX_LOBBY_MS > now &&
+        now - state.lastActivity >= LOBBY_ACTIVITY_WRITE_MS
+      ) {
+        state.lastActivity = now;
         this.write(state);
         await this.schedule(state);
       }
@@ -614,53 +679,69 @@ export class Room extends DurableObject<Env> {
   }
   async alarm(): Promise<void> {
     let state = this.read();
+    if (state.phase === "closed") {
+      await this.ctx.storage.deleteAlarm();
+      return;
+    }
     const now = Date.now();
+    let persist = false;
+    if (typeof state.createdAt !== "number") {
+      state.createdAt = state.lastActivity;
+      persist = true;
+    }
+    let visible = false;
     if (state.phase === "preparing" && state.match!.deadline <= now) {
       finish(state, "start_timeout");
       state.revision++;
-      this.write(state);
-      this.broadcast(state);
+      persist = true;
+      visible = true;
     }
-    // Ping is auto-answered and does not enter webSocketMessage. A recent
-    // auto-response means a member is still waiting in the lobby.
-    if (state.phase === "lobby" && this.socketHeartbeatRecent(now)) {
+    const lobbyExpired =
+      state.phase === "lobby" && state.createdAt + MAX_LOBBY_MS <= now;
+    // Ping is auto-answered and does not enter webSocketMessage. Read the
+    // hibernated auto-response timestamp here, and only persist a change.
+    if (
+      state.phase === "lobby" &&
+      !lobbyExpired &&
+      this.socketHeartbeatRecent(now) &&
+      now - state.lastActivity >= LOBBY_ACTIVITY_WRITE_MS
+    ) {
       state.lastActivity = now;
-      this.write(state);
+      persist = true;
+      visible = true;
     }
     const expired =
+      lobbyExpired ||
       state.leaseUntil <= now ||
       (state.phase !== "active" && state.lastActivity + IDLE_MS <= now);
-    if (expired || state.phase === "closed") {
-      state.phase = "closed";
-      this.write(state);
-      this.broadcast(state);
-      await this.env.ADMISSION.getByName("global-v1").release(state.id);
-      this.ctx.storage.sql.exec("DELETE FROM tickets");
-      this.ctx.storage.sql.exec("DELETE FROM rates");
+    if (expired) {
+      await this.shutdown(state);
       return;
     }
-    if (state.phase === "active") {
-      // A recent heartbeat proves room-service reachability, not battle health.
-      const reachable =
-        this.socketHeartbeatRecent(now) ||
-        state.lastActivity > now - SOCKET_ACTIVITY_MS;
-      if (reachable) {
-        const expires = await this.env.ADMISSION.getByName("global-v1").renew(
-          state.id,
-        );
-        // Another request may have changed the room during the RPC.
-        state = this.read();
-        if (expires && state.phase !== "closed") state.leaseUntil = expires;
-      }
-    } else {
+    if (persist) this.write(state);
+    const renewLease =
+      state.phase !== "active" ||
+      this.socketHeartbeatRecent(now) ||
+      state.lastActivity > now - SOCKET_ACTIVITY_MS;
+    if (renewLease) {
       const expires = await this.env.ADMISSION.getByName("global-v1").renew(
         state.id,
       );
       state = this.read();
-      if (expires && state.phase !== "closed") state.leaseUntil = expires;
+      if (state.phase === "closed") {
+        await this.ctx.storage.deleteAlarm();
+        return;
+      }
+      if (!expires) {
+        await this.shutdown(state);
+        return;
+      }
+      if (state.leaseUntil !== expires) {
+        state.leaseUntil = expires;
+        this.write(state);
+      }
     }
-    this.write(state);
-    this.broadcast(state);
+    if (visible) this.broadcast(state);
     await this.schedule(state);
   }
 }
