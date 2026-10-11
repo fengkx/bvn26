@@ -211,8 +211,30 @@ func _run() -> void:
 	_expect(owner_client._invite_token == rotation_request.get("operation", {}).get("inviteToken"),
 		"successful reinvite did not replace the old internal invitation token")
 
+	var buffered_state := _state(ROOM_ID, 40, [local_member, remote_member])
+	buffered_state["negotiation"] = {"id": NEGOTIATION, "epoch": null, "expires": 20_000, "created": 1_000}
+	client._accept_state(buffered_state)
+	var other_negotiation := "33333333-3333-4333-8333-333333333333"
+	client._handle_socket_packet(_signal_packet(other_negotiation, 0))
+	_expect(client._recent_signals.is_empty(), "a signal for a replaced negotiation was buffered")
+	client._handle_socket_packet(_signal_packet(NEGOTIATION, 0))
+	_expect(client._recent_signals.size() == 1, "an offer with no handshake subscriber was dropped")
+	var first_listener := func(_message: Dictionary) -> void: pass
+	var second_listener := func(_message: Dictionary) -> void: pass
+	client.signaling_message.connect(first_listener)
+	client.signaling_message.connect(second_listener)
+	client._handle_socket_packet(_signal_packet(NEGOTIATION, 1))
+	_expect(client._recent_signals.size() == 1, "a signal was buffered after a handshake subscriber connected")
+	client.signaling_message.disconnect(first_listener)
+	client.signaling_message.disconnect(second_listener)
+	var replaced_state := buffered_state.duplicate(true)
+	replaced_state["revision"] = 41
+	replaced_state["negotiation"] = {"id": other_negotiation, "epoch": null, "expires": 20_000, "created": 2_000}
+	client._accept_state(replaced_state)
+	_expect(client._recent_signals.is_empty(), "a replaced negotiation id stayed in the signal buffer")
+
 	if failures.is_empty():
-		print("ONLINE_ROOM_CLIENT_SMOKE_OK state_validation=true network_profile_validation=true server_upgrade_required=true cloudflare_ice=true ice_transport_chain=true string_urls_normalized=true turn_credentials_required=true monotonic_revision=true leave_projection=true exact_retry=true short_code_join=true create_code=true reinvite_retry=true")
+		print("ONLINE_ROOM_CLIENT_SMOKE_OK state_validation=true network_profile_validation=true server_upgrade_required=true cloudflare_ice=true ice_transport_chain=true string_urls_normalized=true turn_credentials_required=true monotonic_revision=true leave_projection=true exact_retry=true short_code_join=true create_code=true reinvite_retry=true recent_signal_buffer=true")
 	else:
 		push_error("ONLINE_ROOM_CLIENT_SMOKE_FAILED " + "; ".join(failures))
 	client.queue_free()
@@ -266,6 +288,19 @@ func _match() -> Dictionary:
 		"acknowledged": [false, false],
 		"results": [null, null],
 	}
+
+
+func _signal_packet(negotiation_id: String, sequence: int) -> PackedByteArray:
+	return JSON.stringify({
+		"version": 1,
+		"type": "signal",
+		"seq": sequence,
+		"epoch": null,
+		"negotiationId": negotiation_id,
+		"kind": "offer",
+		"payload": "sdp",
+		"from": 0,
+	}).to_utf8_buffer()
 
 
 func _expect(condition: bool, description: String) -> void:

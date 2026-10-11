@@ -400,6 +400,31 @@ func consume_recent_signals() -> Array:
 	return pending
 
 
+# The lobby keeps one passive listener. A handshake or match adds another and
+# applies the signal itself, so the buffer exists only for that gap. Signals for
+# a negotiation the room has already replaced are not kept.
+func _should_remember_signal(message: Dictionary) -> bool:
+	if signaling_message.get_connections().size() > 1:
+		return false
+	return _signal_matches_current_negotiation(message)
+
+
+func _prune_recent_signals() -> void:
+	var kept: Array[Dictionary] = []
+	for message in _recent_signals:
+		if _signal_matches_current_negotiation(message):
+			kept.append(message)
+	_recent_signals = kept
+
+
+func _signal_matches_current_negotiation(message: Dictionary) -> bool:
+	var negotiation: Variant = _room_state.get("negotiation")
+	if not negotiation is Dictionary:
+		return false
+	var current_id: Variant = negotiation.get("id")
+	return current_id is String and not current_id.is_empty() and message.get("negotiationId") == current_id
+
+
 func has_uncertain_command() -> bool:
 	return not _pending_command.is_empty()
 
@@ -631,9 +656,10 @@ func _handle_socket_packet(packet: PackedByteArray) -> void:
 			if not _validate_signaling_message(message):
 				_socket_protocol_error("invalid_signal_message")
 				return
-			if _recent_signals.size() >= MAX_RECENT_SIGNALS:
-				_recent_signals.pop_front()
-			_recent_signals.append(message.duplicate(true))
+			if _should_remember_signal(message):
+				if _recent_signals.size() >= MAX_RECENT_SIGNALS:
+					_recent_signals.pop_front()
+				_recent_signals.append(message.duplicate(true))
 			signaling_message.emit(message.duplicate(true))
 		"signal_ack":
 			if not _is_integer(message.get("seq")) or not message.get("delivered") is bool:
@@ -663,6 +689,7 @@ func _accept_state(state: Dictionary) -> void:
 		var members: Array = state["members"]
 		if members[_slot] is Dictionary:
 			_last_accepted_seq = int(members[_slot].get("seq", _last_accepted_seq))
+	_prune_recent_signals()
 	state_changed.emit(_room_state.duplicate(true))
 
 

@@ -4,6 +4,7 @@ import {
   type Compatibility,
   type Profile,
   type Rules,
+  NEGOTIATION_MAX_LIFETIME_MS,
   NEGOTIATION_TTL_MS,
   PREPARE_MS,
   requireThat,
@@ -52,7 +53,12 @@ export interface State {
   phase: "lobby" | "preparing" | "active" | "closed";
   match: Match | null;
   lastResult: { epoch: string; winner: 0 | 1 | null; reason: string } | null;
-  negotiation: { id: string; epoch: string | null; expires: number } | null;
+  negotiation: {
+    id: string;
+    epoch: string | null;
+    created: number;
+    expires: number;
+  } | null;
   lastActivity: number;
   leaseUntil: number;
   createdAt?: number;
@@ -278,18 +284,28 @@ export function apply(
         403,
       );
       requireThat(op.epoch === (state.match?.epoch ?? null), "stale_epoch");
-      if (
-        state.negotiation &&
-        state.negotiation.epoch === op.epoch &&
-        state.negotiation.expires > now
-      ) {
-        // A double click or an automatic retry continues the same exchange.
-        state.negotiation.expires = now + NEGOTIATION_TTL_MS;
-        break;
+      {
+        const existing = state.negotiation;
+        // Rows written before `created` existed count their remaining TTL as age.
+        const created =
+          existing?.created ??
+          (existing ? existing.expires - NEGOTIATION_TTL_MS : now);
+        const lifetimeEnd = created + NEGOTIATION_MAX_LIFETIME_MS;
+        if (
+          existing &&
+          existing.epoch === op.epoch &&
+          existing.expires > now &&
+          now < lifetimeEnd
+        ) {
+          existing.created = created;
+          existing.expires = Math.min(now + NEGOTIATION_TTL_MS, lifetimeEnd);
+          break;
+        }
       }
       state.negotiation = {
         id: crypto.randomUUID(),
         epoch: op.epoch,
+        created: now,
         expires: now + NEGOTIATION_TTL_MS,
       };
       break;

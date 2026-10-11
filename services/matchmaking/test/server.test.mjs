@@ -214,7 +214,11 @@ async function socket(server, room, credential, origin) {
     throw new Error(`Missing ${type}: ${JSON.stringify(queue)}`);
   }
   await receive("state");
-  return { ws, receive, ticket: response.ticket };
+  function pending(type) {
+    return queue.filter((value) => value === type || value?.type === type)
+      .length;
+  }
+  return { ws, receive, pending, ticket: response.ticket };
 }
 async function withServer(t, bindings) {
   const persistence = await mkdtemp(join(directory, "sqlite-"));
@@ -928,11 +932,16 @@ test("lobby handshake survives guest-first, host-late, double negotiate, and soc
   host.ws.send(JSON.stringify(offer));
   assert.equal((await guest.receive("signal")).payload, offer.payload);
   assert.equal((await host.receive("signal_ack")).delivered, true);
+  host.ws.send(JSON.stringify({ ...offer, seq: 1 }));
+  assert.equal((await host.receive("signal_ack")).delivered, true);
+  await new Promise((resolve) => setTimeout(resolve, 40));
+  assert.equal(guest.pending("signal"), 0);
 
   const replacedGuest = await socket(server, room, room.guest);
   t.after(() => replacedGuest.ws.terminate());
   await new Promise((resolve) => setTimeout(resolve, 30));
   assert.notEqual(guest.ws.readyState, WebSocket.OPEN);
+  assert.equal(replacedGuest.pending("state"), 0);
   const duringHandshake = (
     await request(server, endpoint(room, "state"), undefined, room.owner)
   ).state;
@@ -943,7 +952,7 @@ test("lobby handshake survives guest-first, host-late, double negotiate, and soc
     "late-host-offer",
   );
   host.ws.send(
-    JSON.stringify({ ...offer, seq: 1, payload: "offer-after-reconnect" }),
+    JSON.stringify({ ...offer, seq: 2, payload: "offer-after-reconnect" }),
   );
   assert.equal(
     (await replacedGuest.receive("signal")).payload,
@@ -986,6 +995,82 @@ test("lobby handshake survives guest-first, host-late, double negotiate, and soc
     (await earlyGuest.receive("signal")).payload,
     "host-first-offer",
   );
+});
+
+test("negotiate cannot extend the same id past three TTLs", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  await joinRoom(server, room);
+  const first = await op(server, room, 0, { type: "negotiate", epoch: null });
+  const negotiationId = first.state.negotiation.id;
+  assert.equal(typeof first.state.negotiation.created, "number");
+  const refreshed = await op(server, room, 0, {
+    type: "negotiate",
+    epoch: null,
+  });
+  assert.equal(refreshed.state.negotiation.id, negotiationId);
+  assert.ok(
+    refreshed.state.negotiation.expires <=
+      refreshed.state.negotiation.created + 3 * 45_000,
+  );
+  await request(server, "/_test/alarm", {
+    id: room.roomId,
+    kind: "backdate-negotiation",
+    created: Date.now() - 3 * 45_000 - 5,
+  });
+  const minted = await op(server, room, 0, { type: "negotiate", epoch: null });
+  assert.notEqual(minted.state.negotiation.id, negotiationId);
+  const ttl = minted.state.negotiation.expires - Date.now();
+  assert.ok(ttl > 40_000 && ttl <= 45_000, `fresh ttl ${ttl}`);
+});
+
+test("stored signals replay after the room object is evicted", async (t) => {
+  const persistence = await mkdtemp(join(directory, "hibernate-"));
+  let server = await runtime(persistence);
+  t.after(() => server.mf.dispose());
+  const room = await createRoom(server);
+  await joinRoom(server, room);
+  const host = await socket(server, room, room.owner);
+  const guest = await socket(server, room, room.guest);
+  t.after(() => {
+    host.ws.terminate();
+    guest.ws.terminate();
+  });
+  const negotiated = await op(server, room, 0, {
+    type: "negotiate",
+    epoch: null,
+  });
+  const negotiationId = negotiated.state.negotiation.id;
+  host.ws.send(
+    JSON.stringify({
+      version: 1,
+      type: "signal",
+      seq: 0,
+      epoch: null,
+      negotiationId,
+      kind: "offer",
+      payload: "offer-before-eviction",
+    }),
+  );
+  assert.equal(
+    (await guest.receive("signal")).payload,
+    "offer-before-eviction",
+  );
+  assert.equal((await host.receive("signal_ack")).delivered, true);
+  host.ws.terminate();
+  guest.ws.terminate();
+  await server.mf.dispose();
+  server = await runtime(persistence);
+  const revived = await socket(server, room, room.guest);
+  t.after(() => revived.ws.terminate());
+  assert.equal(
+    (await revived.receive("signal")).payload,
+    "offer-before-eviction",
+  );
+  const state = (
+    await request(server, endpoint(room, "state"), undefined, room.owner)
+  ).state;
+  assert.equal(state.negotiation.id, negotiationId);
 });
 
 test("ten concurrent leases cannot overbook and owner departure releases capacity", async (t) => {

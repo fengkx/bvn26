@@ -43,14 +43,6 @@ interface Attachment {
 }
 
 export class Room extends DurableObject<Env> {
-  // Best-effort relay for the life of this object. A replacement socket has a
-  // new sequence space and would otherwise miss SDP already accepted for the
-  // current negotiation. Not persisted: hibernation drops it, and clients retry.
-  private relayedSignals: Array<{
-    negotiationId: string;
-    to: 0 | 1;
-    frame: Record<string, unknown>;
-  }> = [];
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
     ctx.storage.sql.exec(
@@ -61,6 +53,10 @@ export class Room extends DurableObject<Env> {
     );
     ctx.storage.sql.exec(
       "CREATE TABLE IF NOT EXISTS rates (key TEXT PRIMARY KEY, window INTEGER NOT NULL, count INTEGER NOT NULL)",
+    );
+    // Survives hibernation. Read only while a request is already awake.
+    ctx.storage.sql.exec(
+      "CREATE TABLE IF NOT EXISTS relayed (id INTEGER PRIMARY KEY AUTOINCREMENT, negotiation TEXT NOT NULL, recipient INTEGER NOT NULL, kind TEXT NOT NULL, payload TEXT NOT NULL, frame TEXT NOT NULL, UNIQUE (negotiation, kind, payload))",
     );
     ctx.setWebSocketAutoResponse(
       new WebSocketRequestResponsePair("ping", "pong"),
@@ -179,6 +175,7 @@ export class Room extends DurableObject<Env> {
     this.write(this.closedMarker(state));
     this.ctx.storage.sql.exec("DELETE FROM tickets");
     this.ctx.storage.sql.exec("DELETE FROM rates");
+    this.ctx.storage.sql.exec("DELETE FROM relayed");
     await this.env.ADMISSION.getByName("global-v1").release(state.id);
     await this.ctx.storage.deleteAlarm();
   }
@@ -227,33 +224,70 @@ export class Room extends DurableObject<Env> {
   private rememberRelayed(
     negotiationId: string,
     to: 0 | 1,
+    kind: string,
+    payload: string,
     frame: Record<string, unknown>,
-  ): void {
-    this.relayedSignals = this.relayedSignals.filter(
-      (item) => item.negotiationId === negotiationId,
-    );
-    this.relayedSignals.push({ negotiationId, to, frame });
-    let kept = 0;
-    for (let index = this.relayedSignals.length - 1; index >= 0; index -= 1) {
-      if (this.relayedSignals[index]?.to !== to) continue;
-      kept += 1;
-      if (kept > 64) this.relayedSignals.splice(index, 1);
+  ): boolean {
+    const sql = this.ctx.storage.sql;
+    sql.exec("DELETE FROM relayed WHERE negotiation != ?", negotiationId);
+    const duplicate = sql
+      .exec<{ id: number }>(
+        "SELECT id FROM relayed WHERE negotiation = ? AND kind = ? AND payload = ?",
+        negotiationId,
+        kind,
+        payload,
+      )
+      .toArray()[0];
+    // The same description must not bounce back to the other peer.
+    if (duplicate) return false;
+    const count =
+      sql
+        .exec<{ count: number }>(
+          "SELECT COUNT(*) AS count FROM relayed WHERE negotiation = ?",
+          negotiationId,
+        )
+        .toArray()[0]?.count ?? 0;
+    if (count >= 64) {
+      sql.exec(
+        "DELETE FROM relayed WHERE id = (SELECT MIN(id) FROM relayed WHERE negotiation = ?)",
+        negotiationId,
+      );
     }
+    sql.exec(
+      "INSERT INTO relayed (negotiation, recipient, kind, payload, frame) VALUES (?, ?, ?, ?, ?)",
+      negotiationId,
+      to,
+      kind,
+      payload,
+      JSON.stringify(frame),
+    );
+    return true;
   }
   private replayRelayed(
     socket: WebSocket,
     slot: 0 | 1,
     negotiationId: string | undefined,
   ): void {
+    const sql = this.ctx.storage.sql;
     if (!negotiationId) {
-      this.relayedSignals = [];
+      sql.exec("DELETE FROM relayed");
       return;
     }
-    this.relayedSignals = this.relayedSignals.filter(
-      (item) => item.negotiationId === negotiationId,
-    );
-    for (const item of this.relayedSignals)
-      if (item.to === slot) this.send(socket, item.frame);
+    sql.exec("DELETE FROM relayed WHERE negotiation != ?", negotiationId);
+    const rows = sql
+      .exec<{ frame: string }>(
+        "SELECT frame FROM relayed WHERE negotiation = ? AND recipient = ? ORDER BY id",
+        negotiationId,
+        slot,
+      )
+      .toArray();
+    for (const row of rows) {
+      try {
+        this.send(socket, JSON.parse(row.frame));
+      } catch {
+        /* A corrupt row must not break the socket upgrade. */
+      }
+    }
   }
   async fetch(request: Request): Promise<Response> {
     try {
@@ -663,8 +697,23 @@ export class Room extends DurableObject<Env> {
       attached.seq = input.seq;
       socket.serializeAttachment(attached);
       const peerSlot = attached.slot === 0 ? 1 : 0;
-      let delivered = false;
       const frame = { ...input, from: attached.slot };
+      const fresh = this.rememberRelayed(
+        negotiation.id,
+        peerSlot,
+        input.kind,
+        input.payload,
+        frame,
+      );
+      if (!fresh) {
+        this.send(socket, {
+          type: "signal_ack",
+          seq: input.seq,
+          delivered: true,
+        });
+        return;
+      }
+      let delivered = false;
       for (const peer of this.ctx.getWebSockets()) {
         const target = peer.deserializeAttachment() as Attachment;
         if (
@@ -674,7 +723,6 @@ export class Room extends DurableObject<Env> {
         )
           delivered = this.send(peer, frame) || delivered;
       }
-      if (delivered) this.rememberRelayed(negotiation.id, peerSlot, frame);
       this.send(socket, { type: "signal_ack", seq: input.seq, delivered });
     } catch (error) {
       this.send(socket, {
@@ -689,11 +737,21 @@ export class Room extends DurableObject<Env> {
     }
   }
   webSocketClose(socket: WebSocket): void {
-    // Transport loss is not a voluntary departure. Peers still need the
-    // signaling flag to flip so a waiting host does not offer into a dead socket.
+    // Transport loss is not a voluntary departure. A replacement already
+    // broadcast while the new connection id was current; closing the old
+    // socket must not broadcast again.
     try {
       const state = this.read();
       if (state.phase === "closed") return;
+      const attached = socket.deserializeAttachment() as Attachment | null;
+      const seat = attached ? state.members[attached.slot] : undefined;
+      if (
+        !attached ||
+        !seat ||
+        seat.credential !== attached.credential ||
+        seat.connection !== attached.connection
+      )
+        return;
       this.broadcast(state, socket);
     } catch {
       /* The room row may already be gone. */

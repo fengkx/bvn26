@@ -194,8 +194,9 @@ pause/resume, simulation controls, diagnostics or snapshots.
 Connect both signaling sockets and wait for each socket's initial room state. The
 owner sends `negotiate` once the peer member exists and, when `signaling` is
 present, that peer's socket is up. Repeating `negotiate` for the same epoch
-before expiry keeps the id and refreshes its TTL. Both peers read that UUID and
-expiry before creating or sending an offer. Then send:
+before expiry keeps the id and refreshes its TTL, but only until three TTLs
+after that id was created. A later repeat mints a new id. Both peers read that
+UUID and expiry before creating or sending an offer. Then send:
 
 ```json
 {
@@ -214,9 +215,14 @@ at most 12,000 characters within the outer byte limit. The peer receives the
 message plus `from`; the sender receives `{type:'signal_ack',seq,delivered}`.
 Sequence numbers increase per socket; duplicate or decreasing values fail.
 `delivered` means a send was accepted by the peer's live server-side socket, **not**
-that the peer processed it. Accepted signals for the current negotiation are
-replayed onto a replacement socket while this Durable Object stays in memory.
-Hibernation drops that buffer; raw SDP/ICE is still not persisted. When
+that the peer processed it. A newly accepted signal for the current negotiation
+is stored in the room SQLite `relayed` table and replayed onto a later socket
+for that seat. The write happens inside the request that already woke the
+object; it does not set an alarm or keep the isolate awake. The same kind and
+payload is acknowledged and not forwarded again, so one description cannot
+bounce between the peers. Rows for any other negotiation id are deleted, and
+at most 64 signals are kept. Hibernation drops the in-memory isolate; the
+SQLite rows remain. Raw SDP is not part of the room projection. When
 `delivered` is false, the client may retry that signal with a higher per-socket
 sequence number. The receiving client must tolerate a repeated description or
 candidate, whether the retry raced an acknowledgment or the server replayed it.

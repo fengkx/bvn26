@@ -31,14 +31,18 @@ NET-005's gameplay-input, control-ordering or complete-state contracts.
   new-epoch rematches and bounded persisted request idempotency.
 - Hibernation-compatible WebSocket acceptance and attachments, one-use 30-second
   tickets, automatic ping/pong, authenticated bounded offer/answer/ICE forwarding,
-  negotiation expiry and stale-epoch rejection. Raw SDP/ICE is not persisted.
+  negotiation expiry and stale-epoch rejection. Raw SDP/ICE is not part of the
+  room projection. Accepted signals for the current negotiation are stored in a
+  SQLite relay buffer so a replacement socket can replay them after eviction.
+  That buffer does not schedule an alarm.
 - 2026-09-23 review fixes: preparation timeout transitions are persisted and
   broadcast before awaiting the admission lease RPC; health responses use the
   common CORS decoration. A later handshake fix keeps the negotiation id across
   socket replacement; projections add a per-seat `signaling` flag, and
-  `negotiate` is idempotent until the 45-second TTL. While the room object stays
-  in memory, signals already accepted for that id are replayed onto a
-  replacement socket; clients ignore an identical description or candidate.
+  `negotiate` keeps the same id only until three 45-second TTLs from creation.
+  Accepted signals are replayed from SQLite after eviction; clients ignore an
+  identical description or candidate. A repeated kind and payload is not
+  forwarded again.
   Regression tests inspect
   raw SQLite after the alarm, verify arbitrary-origin preflight and HTTP
   responses, preserve WebSocket ticket authentication across origins, and

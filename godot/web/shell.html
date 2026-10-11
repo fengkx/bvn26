@@ -1041,10 +1041,8 @@ button:disabled { opacity: .5; cursor: default; }
                 if (selectedPair) break;
             }
         }
-        const quality = rtcMediaQuality(records);
         if (!selectedPair || selectedPair.type !== 'candidate-pair') {
             return { status: 'selected_pair_unavailable', rttMs: null,
-                jitterMs: quality.jitterMs, packetsLost: quality.packetsLost,
                 localCandidateType: 'unknown', remoteCandidateType: 'unknown',
                 protocol: null,
                 bytesSent: null, bytesReceived: null, packetsSent: null, packetsReceived: null };
@@ -1061,8 +1059,7 @@ button:disabled { opacity: .5; cursor: default; }
             remoteCandidateType: rtcCandidateType(remoteCandidate?.candidateType),
             protocol: rtcTransportProtocol(selectedPair, localCandidate, remoteCandidate),
             rttMs,
-            jitterMs: quality.jitterMs,
-            packetsLost: quality.packetsLost,
+            ...rtcPairQuality(selectedPair),
             bytesSent: rtcCounter(selectedPair.bytesSent),
             bytesReceived: rtcCounter(selectedPair.bytesReceived),
             packetsSent: rtcCounter(selectedPair.packetsSent),
@@ -1078,21 +1075,15 @@ button:disabled { opacity: .5; cursor: default; }
         return null;
     }
 
-    function rtcMediaQuality(records) {
-        let jitterMs = null;
-        let packetsLost = null;
-        for (const stat of records) {
-            if (!stat || (stat.type !== 'inbound-rtp' && stat.type !== 'remote-inbound-rtp')) continue;
-            if (typeof stat.jitter === 'number' && Number.isFinite(stat.jitter) && stat.jitter >= 0) {
-                const ms = Math.round(stat.jitter * 1000 * 10) / 10;
-                jitterMs = jitterMs == null ? ms : Math.max(jitterMs, ms);
-            }
-            if (typeof stat.packetsLost === 'number' && Number.isFinite(stat.packetsLost) && stat.packetsLost >= 0) {
-                const lost = Math.round(stat.packetsLost);
-                packetsLost = packetsLost == null ? lost : packetsLost + lost;
-            }
-        }
-        return { jitterMs, packetsLost };
+    // Data channels do not produce inbound-rtp. Read optional quality only from
+    // the selected candidate pair, and omit the keys when the pair has neither.
+    function rtcPairQuality(pair) {
+        const quality = {};
+        if (pair && typeof pair.jitter === 'number' && Number.isFinite(pair.jitter) && pair.jitter >= 0)
+            quality.jitterMs = Math.round(pair.jitter * 1000 * 10) / 10;
+        if (pair && typeof pair.packetsLost === 'number' && Number.isFinite(pair.packetsLost) && pair.packetsLost >= 0)
+            quality.packetsLost = Math.round(pair.packetsLost);
+        return quality;
     }
 
     function noteSelectedPair(connection, summary) {

@@ -105,6 +105,17 @@ export class TestRoom extends Room {
   inspect(): unknown {
     return this.ctx.storage.sql.exec("SELECT value FROM state").toArray();
   }
+  backdateNegotiation(created: number): void {
+    const row = this.ctx.storage.sql
+      .exec<{ value: string }>("SELECT value FROM state WHERE id=1")
+      .one();
+    const state = JSON.parse(row.value);
+    state.negotiation.created = created;
+    this.ctx.storage.sql.exec(
+      "UPDATE state SET value=? WHERE id=1",
+      JSON.stringify(state),
+    );
+  }
   useLegacyNetworkProfileState(): void {
     const row = this.ctx.storage.sql
       .exec<{ value: string }>("SELECT value FROM state WHERE id=1")
@@ -147,9 +158,10 @@ export default {
         await admission.fireAlarm();
         return Response.json({ ok: true });
       }
-      const { id, kind } = (await request.json()) as {
+      const { id, kind, created } = (await request.json()) as {
         id: string;
         kind: string;
+        created?: number;
       };
       const room = env.ROOMS.getByName(id);
       if (kind === "inspect")
@@ -159,6 +171,10 @@ export default {
         });
       if (kind === "legacy-network-profile") {
         await room.useLegacyNetworkProfileState();
+        return Response.json({ ok: true });
+      }
+      if (kind === "backdate-negotiation") {
+        await room.backdateNegotiation(created ?? 0);
         return Response.json({ ok: true });
       }
       if (kind === "scheduled") await room.scheduleExpiry();
