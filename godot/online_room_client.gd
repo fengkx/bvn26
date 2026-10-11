@@ -37,6 +37,8 @@ var _socket_initial_state_received := false
 var _socket_last_error := ""
 var _socket_last_ping_ms := 0
 var _signal_sequence := -1
+var _recent_signals: Array[Dictionary] = []
+const MAX_RECENT_SIGNALS := 64
 var _socket_attempt_id := 0
 var _last_http_diagnostic: Dictionary = {}
 
@@ -390,6 +392,14 @@ func get_last_signal_sequence() -> int:
 	return _signal_sequence
 
 
+# Signals that arrived before a lobby connection subscribed. Consuming clears them
+# so a later subscriber does not apply the same payload twice.
+func consume_recent_signals() -> Array:
+	var pending: Array = _recent_signals.duplicate(true)
+	_recent_signals.clear()
+	return pending
+
+
 func has_uncertain_command() -> bool:
 	return not _pending_command.is_empty()
 
@@ -621,6 +631,9 @@ func _handle_socket_packet(packet: PackedByteArray) -> void:
 			if not _validate_signaling_message(message):
 				_socket_protocol_error("invalid_signal_message")
 				return
+			if _recent_signals.size() >= MAX_RECENT_SIGNALS:
+				_recent_signals.pop_front()
+			_recent_signals.append(message.duplicate(true))
 			signaling_message.emit(message.duplicate(true))
 		"signal_ack":
 			if not _is_integer(message.get("seq")) or not message.get("delivered") is bool:

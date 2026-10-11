@@ -4,6 +4,7 @@ import {
   type Compatibility,
   type Profile,
   type Rules,
+  NEGOTIATION_TTL_MS,
   PREPARE_MS,
   requireThat,
 } from "./protocol";
@@ -88,7 +89,10 @@ export function member(credential: string, nickname: string): Member {
     connection: null,
   };
 }
-export function projection(state: State): unknown {
+export function projection(
+  state: State,
+  signaling: readonly [boolean, boolean] = [false, false],
+): unknown {
   const {
     creationHash: _creation,
     inviteHash: _invite,
@@ -102,13 +106,14 @@ export function projection(state: State): unknown {
     ...publicState,
     networkProfile: networkProfile(state),
     members: members.map(
-      (seat) =>
+      (seat, index) =>
         seat && {
           nickname: seat.nickname,
           choice: seat.choice,
           ready: seat.ready,
           profile: seat.profile,
           seq: seat.seq,
+          signaling: signaling[index] === true,
         },
     ),
   };
@@ -273,10 +278,19 @@ export function apply(
         403,
       );
       requireThat(op.epoch === (state.match?.epoch ?? null), "stale_epoch");
+      if (
+        state.negotiation &&
+        state.negotiation.epoch === op.epoch &&
+        state.negotiation.expires > now
+      ) {
+        // A double click or an automatic retry continues the same exchange.
+        state.negotiation.expires = now + NEGOTIATION_TTL_MS;
+        break;
+      }
       state.negotiation = {
         id: crypto.randomUUID(),
         epoch: op.epoch,
-        expires: now + 60_000,
+        expires: now + NEGOTIATION_TTL_MS,
       };
       break;
     case "reinvite":

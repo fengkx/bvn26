@@ -34,11 +34,15 @@ NET-005's gameplay-input, control-ordering or complete-state contracts.
   negotiation expiry and stale-epoch rejection. Raw SDP/ICE is not persisted.
 - 2026-09-23 review fixes: preparation timeout transitions are persisted and
   broadcast before awaiting the admission lease RPC; health responses use the
-  common CORS decoration; a seat's first signaling socket preserves a pending
-  negotiation while replacing an existing socket still invalidates it. Regression
-  tests inspect raw SQLite after the alarm, verify arbitrary-origin preflight and
-  HTTP responses, preserve WebSocket ticket authentication across origins, and
-  exercise first attach versus replacement with actual WebSockets.
+  common CORS decoration. A later handshake fix keeps the negotiation id across
+  socket replacement; projections add a per-seat `signaling` flag, and
+  `negotiate` is idempotent until the 45-second TTL. While the room object stays
+  in memory, signals already accepted for that id are replayed onto a
+  replacement socket; clients ignore an identical description or candidate.
+  Regression tests inspect
+  raw SQLite after the alarm, verify arbitrary-origin preflight and HTTP
+  responses, preserve WebSocket ticket authentication across origins, and
+  exercise guest-first, host-first, and replacement with actual WebSockets.
 - Alarm-based 30-minute idle expiry, independent service reachability leases,
   and active-match exemption from idle expiry. Disconnect alone never means exit.
   Unreachable abandoned service leases eventually release capacity; an existing

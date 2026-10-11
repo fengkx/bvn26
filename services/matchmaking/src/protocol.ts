@@ -9,6 +9,10 @@ export const MAX_LOBBY_MS = 2 * 60 * 60_000;
 export const INVITE_TOMBSTONE_MS = 7 * 24 * 60 * 60_000;
 export const PREPARE_MS = 30_000;
 export const TICKET_MS = 30_000;
+// ICE/data-channel budget after both peers are ready. The lobby client uses the
+// same 45s window, measured from negotiate, and does not spend it waiting for
+// the other player to click.
+export const NEGOTIATION_TTL_MS = 45_000;
 export const token = z.string().regex(/^[A-Za-z0-9_-]{43}$/);
 export const digest = z.string().regex(/^[a-f0-9]{64}$/);
 const id = z.string().min(1).max(80);
