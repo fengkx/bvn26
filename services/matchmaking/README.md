@@ -193,9 +193,13 @@ pause/resume, simulation controls, diagnostics or snapshots.
 
 Connect both signaling sockets and wait for each socket's initial room state. The
 owner sends `negotiate` once the peer member exists and, when `signaling` is
-present, that peer's socket is up. Repeating `negotiate` for the same epoch
-before expiry keeps the id and refreshes its TTL, but only until three TTLs
-after that id was created. A later repeat mints a new id. Both peers read that
+present, that peer's socket is up. Each new `negotiate` command mints a new id
+for a new PeerConnection, even within the previous id's TTL. Retrying the same
+command sequence returns its original reply. To extend the same in-flight
+handshake, send `resumeNegotiationId` with the current id: before expiry this
+refreshes its TTL, but only until three TTLs after that id was created. An expired
+resume mints a new id; a mismatched id is rejected as `stale_negotiation`.
+Socket replacement alone preserves the current id. Both peers read that
 UUID and expiry before creating or sending an offer. Then send:
 
 ```json

@@ -13,7 +13,7 @@ export const TICKET_MS = 30_000;
 // same 45s window, measured from negotiate, and does not spend it waiting for
 // the other player to click.
 export const NEGOTIATION_TTL_MS = 45_000;
-// A repeat negotiate refreshes the TTL, but the same id cannot live past this.
+// An explicit resume refreshes the TTL, but the same id cannot live past this.
 export const NEGOTIATION_MAX_LIFETIME_MS = NEGOTIATION_TTL_MS * 3;
 export const token = z.string().regex(/^[A-Za-z0-9_-]{43}$/);
 export const digest = z.string().regex(/^[a-f0-9]{64}$/);
@@ -103,7 +103,11 @@ export const operation = z.discriminatedUnion("type", [
     winner: z.union([z.literal(0), z.literal(1), z.null()]),
   }),
   z.strictObject({ type: z.literal("abort"), epoch }),
-  z.strictObject({ type: z.literal("negotiate"), epoch: epoch.nullable() }),
+  z.strictObject({
+    type: z.literal("negotiate"),
+    epoch: epoch.nullable(),
+    resumeNegotiationId: id.optional(),
+  }),
   z.strictObject({ type: z.literal("reinvite"), inviteToken: token }),
   z.strictObject({ type: z.literal("leave") }),
   z.strictObject({ type: z.literal("keepalive") }),

@@ -898,7 +898,7 @@ test("real WebSockets authenticate, scope signaling, revoke seats and tolerate d
   );
 });
 
-test("lobby handshake survives guest-first, host-late, double negotiate, and socket replacement", async (t) => {
+test("lobby handshake survives guest-first, host-late, resume, and socket replacement", async (t) => {
   const server = await withServer(t);
   const room = await createRoom(server);
   await joinRoom(server, room);
@@ -917,7 +917,11 @@ test("lobby handshake survives guest-first, host-late, double negotiate, and soc
   const negotiationId = first.state.negotiation.id;
   const ttl = first.state.negotiation.expires - Date.now();
   assert.ok(ttl > 40_000 && ttl <= 45_000, `negotiation ttl ${ttl}`);
-  const again = await op(server, room, 0, { type: "negotiate", epoch: null });
+  const again = await op(server, room, 0, {
+    type: "negotiate",
+    epoch: null,
+    resumeNegotiationId: negotiationId,
+  });
   assert.equal(again.state.negotiation.id, negotiationId);
   assert.ok(again.state.negotiation.expires >= first.state.negotiation.expires);
   const offer = {
@@ -997,6 +1001,84 @@ test("lobby handshake survives guest-first, host-late, double negotiate, and soc
   );
 });
 
+test("a new host attempt rotates the id within TTL while command retries and resume preserve it", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  await joinRoom(server, room);
+  const host = await socket(server, room, room.owner);
+  const guest = await socket(server, room, room.guest);
+  t.after(() => {
+    host.ws.terminate();
+    guest.ws.terminate();
+  });
+  const operation = { type: "negotiate", epoch: null };
+  const first = await op(server, room, 0, operation);
+  const oldId = first.state.negotiation.id;
+  const signal = {
+    version: 1,
+    type: "signal",
+    seq: 0,
+    epoch: null,
+    negotiationId: oldId,
+    kind: "offer",
+    payload: "first-peer-offer",
+  };
+  host.ws.send(JSON.stringify(signal));
+  assert.equal((await guest.receive("signal")).negotiationId, oldId);
+  await host.receive("signal_ack");
+  guest.ws.send(
+    JSON.stringify({ ...signal, kind: "answer", payload: "first-peer-answer" }),
+  );
+  await host.receive("signal");
+  await guest.receive("signal_ack");
+
+  const replay = await op(server, room, 0, operation, room.ownerSeq);
+  assert.deepEqual(replay.state.negotiation, first.state.negotiation);
+  // Legacy hosts send no extra field when they replace their PeerConnection.
+  const fresh = await op(server, room, 0, operation);
+  const freshId = fresh.state.negotiation.id;
+  assert.ok(Date.now() < first.state.negotiation.expires);
+  assert.notEqual(freshId, oldId);
+  const staleResume = await op(server, room, 0, {
+    ...operation,
+    resumeNegotiationId: oldId,
+  });
+  assert.equal(staleResume.error, "stale_negotiation");
+  const resumed = await op(server, room, 0, {
+    ...operation,
+    resumeNegotiationId: freshId,
+  });
+  assert.equal(resumed.state.negotiation.id, freshId);
+  assert.equal(
+    resumed.state.negotiation.created,
+    fresh.state.negotiation.created,
+  );
+
+  host.ws.send(JSON.stringify({ ...signal, seq: 1 }));
+  assert.equal((await host.receive("error")).error, "stale_negotiation");
+  host.ws.send(
+    JSON.stringify({
+      ...signal,
+      seq: 2,
+      negotiationId: freshId,
+      payload: "new-peer-offer",
+    }),
+  );
+  assert.equal((await guest.receive("signal")).negotiationId, freshId);
+  assert.equal((await host.receive("signal_ack")).delivered, true);
+  guest.ws.send(
+    JSON.stringify({
+      ...signal,
+      seq: 1,
+      negotiationId: freshId,
+      kind: "answer",
+      payload: "new-peer-answer",
+    }),
+  );
+  assert.equal((await host.receive("signal")).negotiationId, freshId);
+  assert.equal((await guest.receive("signal_ack")).delivered, true);
+});
+
 test("negotiate cannot extend the same id past three TTLs", async (t) => {
   const server = await withServer(t);
   const room = await createRoom(server);
@@ -1007,6 +1089,7 @@ test("negotiate cannot extend the same id past three TTLs", async (t) => {
   const refreshed = await op(server, room, 0, {
     type: "negotiate",
     epoch: null,
+    resumeNegotiationId: negotiationId,
   });
   assert.equal(refreshed.state.negotiation.id, negotiationId);
   assert.ok(
@@ -1018,7 +1101,11 @@ test("negotiate cannot extend the same id past three TTLs", async (t) => {
     kind: "backdate-negotiation",
     created: Date.now() - 3 * 45_000 - 5,
   });
-  const minted = await op(server, room, 0, { type: "negotiate", epoch: null });
+  const minted = await op(server, room, 0, {
+    type: "negotiate",
+    epoch: null,
+    resumeNegotiationId: negotiationId,
+  });
   assert.notEqual(minted.state.negotiation.id, negotiationId);
   const ttl = minted.state.negotiation.expires - Date.now();
   assert.ok(ttl > 40_000 && ttl <= 45_000, `fresh ttl ${ttl}`);

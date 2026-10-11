@@ -48,6 +48,14 @@ func _run() -> void:
 	lobby._accept_state(state)
 	await process_frame
 	assert(lobby.starts == 1, "Repeated polling must not retry a failed request forever")
+	state.negotiation.expires += 10000
+	lobby._accept_state(state)
+	await process_frame
+	assert(lobby.starts == 1, "Extending the same handshake must not restart the guest")
+	# The completed selection channel has disconnected, but its request key remains.
+	lobby._room_connection_ready = true
+	lobby._close_room_connection()
+	assert(lobby._auto_connection_request.ends_with(str(state.negotiation.id)))
 	state.negotiation.id = "22222222-2222-4222-8222-222222222222"
 	lobby._room_connection_starting = true
 	lobby._accept_state(state)

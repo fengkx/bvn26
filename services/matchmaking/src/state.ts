@@ -286,6 +286,13 @@ export function apply(
       requireThat(op.epoch === (state.match?.epoch ?? null), "stale_epoch");
       {
         const existing = state.negotiation;
+        // A new PeerConnection needs a new id, including for legacy clients.
+        // Only an explicit resume may extend an existing handshake.
+        if (op.resumeNegotiationId !== undefined)
+          requireThat(
+            existing?.id === op.resumeNegotiationId,
+            "stale_negotiation",
+          );
         // Rows written before `created` existed count their remaining TTL as age.
         const created =
           existing?.created ??
@@ -293,6 +300,7 @@ export function apply(
         const lifetimeEnd = created + NEGOTIATION_MAX_LIFETIME_MS;
         if (
           existing &&
+          op.resumeNegotiationId === existing.id &&
           existing.epoch === op.epoch &&
           existing.expires > now &&
           now < lifetimeEnd

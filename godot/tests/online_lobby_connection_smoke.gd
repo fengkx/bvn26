@@ -140,6 +140,8 @@ class FakeRoomClient extends Node:
 			return {"acceptedSeq": 2, "state": get_room_state()}
 		if operation.get("type") != "negotiate" or operation.get("epoch") != null:
 			return {"error": "invalid_fixture_command"}
+		if operation.has("resumeNegotiationId"):
+			return {"error": "new_peer_must_not_resume"}
 		negotiate_count += 1
 		state["negotiation"] = _negotiation(HOST_NEGOTIATION if negotiate_count == 1 else CURRENT_NEGOTIATION)
 		state["revision"] = int(state.revision) + 1
@@ -226,6 +228,7 @@ func _run() -> void:
 	await _test_guest_waits_through_short_ice_budget()
 	await _test_host_waits_for_guest_signaling()
 	await _test_signaling_reconnect_during_handshake()
+	await _test_host_retries_after_connected_channel_closes()
 	await _test_double_start_is_rejected()
 	await _test_guest_accepts_offer_buffered_before_subscribe()
 	await _test_wait_does_not_poll_while_signaling_is_up()
@@ -459,6 +462,31 @@ func _test_signaling_reconnect_during_handshake() -> void:
 	_expect(issue.is_empty(), "signaling drop during handshake failed: " + issue)
 	_expect(client.negotiate_count == 1, "a signaling reconnect started a second negotiation")
 	_expect(connection.get_connection_state() == "connected", "handshake did not recover after the signaling reconnect")
+	connection.close()
+	client.queue_free()
+	connection.queue_free()
+	await process_frame
+
+
+func _test_host_retries_after_connected_channel_closes() -> void:
+	var client := FakeRoomClient.new(0)
+	client.signaling_connected = true
+	root.add_child(client)
+	var connection = ConnectionScript.new()
+	connection._peer_transport_factory = func() -> Node: return FakePeerTransport.new()
+	client.connection = connection
+	root.add_child(connection)
+	_expect(connection.configure(client, 0, []), "host retry configuration was rejected")
+	var issue: String = await connection.start()
+	_expect(issue.is_empty(), "initial host connection failed: " + issue)
+	var old_peer: Node = connection._peer_transport
+	old_peer.close_peer()
+	connection._process(0.0)
+	_expect(connection.get_connection_state() == "disconnected", "closed channel was not detected")
+	issue = await connection.start()
+	_expect(issue.is_empty(), "host retry failed: " + issue)
+	_expect(client.negotiate_count == 2, "new PeerConnection did not request a fresh negotiation")
+	_expect(connection._peer_transport.negotiation_id == CURRENT_NEGOTIATION, "host retry reused the old id")
 	connection.close()
 	client.queue_free()
 	connection.queue_free()
