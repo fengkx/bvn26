@@ -338,9 +338,14 @@ func close_signaling() -> void:
 
 func cancel_signaling() -> void:
 	var request_node := _signaling_request
+	_signaling_request = null
+	_close_socket(false)
 	if request_node != null and is_instance_valid(request_node):
 		request_node.cancel_request()
-	_close_socket(false)
+		# HTTPRequest does not emit on cancel; resume the waiter so it frees the
+		# node and observes the invalidated socket attempt before reporting errors.
+		request_node.call_deferred("emit_signal", "request_completed",
+			HTTPRequest.RESULT_REQUEST_FAILED, 0, PackedStringArray(), PackedByteArray())
 
 
 func clear_credentials() -> void:

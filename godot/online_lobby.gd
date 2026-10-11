@@ -969,6 +969,11 @@ func _send_lobby_keepalive() -> void:
 
 func _lobby_presence_error_is_terminal(code: String) -> bool:
 	return code in [
+		"unauthorized",
+		"not_authenticated",
+		"not_in_room",
+		"membership_ended",
+		"service_http_401",
 		"invalid_invite",
 		"invite_expired",
 		"room_closed",

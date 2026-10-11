@@ -144,5 +144,61 @@ func _run() -> void:
 	lobby._process(120.0)
 	assert(client.connect_calls == calls_before_terminal + 1,
 		"Lobby reconnect continued after invite_expired")
-	print("ONLINE_LOBBY_PRESENCE_SMOKE_OK create_connects=true invite_status=true reconnect_backoff=true selection_socket_held=true keepalive=15m terminal_stop=true")
+	for code in ["unauthorized", "not_authenticated", "not_in_room", "membership_ended", "service_http_401"]:
+		client.terminal_code = code
+		client.connected = false
+		var calls_before_auth_failure := client.connect_calls
+		lobby._arm_lobby_presence()
+		assert(not lobby._lobby_signaling_desired, code + " kept lobby presence active")
+		lobby._process(120.0)
+		assert(client.connect_calls == calls_before_auth_failure + 1,
+			code + " kept requesting signaling tickets")
+	assert(not lobby._lobby_presence_error_is_terminal("invalid_ticket"),
+		"An expired single-use ticket should allow fetching a fresh ticket")
+	client.terminal_code = "http_transport_failed"
+	client.connected = false
+	lobby._arm_lobby_presence()
+	assert(lobby._lobby_signaling_desired and lobby._lobby_reconnect_wait > 0.0,
+		"Transient transport failure stopped lobby presence")
+	var calls_before_retry := client.connect_calls
+	lobby._process(31.0)
+	assert(client.connect_calls == calls_before_retry + 1 and client.connected,
+		"Transient transport failure did not reconnect")
+	assert(await _check_ticket_cancellation(lobby, state), "Ticket cancellation checks failed")
+	print("ONLINE_LOBBY_PRESENCE_SMOKE_OK create_connects=true invite_status=true reconnect_backoff=true selection_socket_held=true keepalive=15m terminal_stop=true auth_stop=true ticket_cancel_restart=true")
 	quit(0)
+
+
+func _check_ticket_cancellation(lobby: OnlineLobby, state: Dictionary) -> bool:
+	# Keep real HTTPRequests pending without relying on an external service.
+	var server := TCPServer.new()
+	assert(server.listen(0, "127.0.0.1") == OK)
+	var client := OnlineRoomClient.new()
+	lobby.add_child(client)
+	lobby.room_client = client
+	client._base_url = "http://127.0.0.1:%d" % server.get_local_port()
+	var errors: Array[String] = []
+	client.error.connect(func(code: String) -> void: errors.append(code))
+	for attempt in 2:
+		client._room_id = str(state["id"])
+		client._slot = 0
+		client._session_token = "A".repeat(43)
+		lobby._arm_lobby_presence()
+		var request_node := client._signaling_request
+		assert(request_node != null and lobby._lobby_signaling_in_flight,
+			"A fresh lobby could not start a signaling ticket request")
+		if attempt == 1:
+			client.cancel_signaling()
+		await lobby._cancel_lobby_signaling()
+		client.cancel_signaling()
+		assert(not lobby._lobby_signaling_in_flight and not client._socket_connecting,
+			"Cancelling a ticket left signaling in flight")
+		assert(client._signaling_request == null, "Cancelled request remained attached")
+		assert(not lobby._lobby_signaling_desired and lobby._lobby_reconnect_wait == 0.0,
+			"Cancelled request scheduled a reconnect")
+		await process_frame
+		assert(not is_instance_valid(request_node), "Cancelled HTTPRequest was not freed")
+		client.clear_credentials()
+	assert(errors.is_empty(), "Cancellation reported a stale transport error: " + str(errors))
+	server.stop()
+	return true
