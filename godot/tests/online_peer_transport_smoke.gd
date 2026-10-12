@@ -30,6 +30,12 @@ func _run() -> void:
 	_expect(received.size() == 2, "reordered input or duplicate handling was incorrect")
 	_expect(received.size() >= 2 and received[0].sequence == 2 and received[1].sequence == 1, "reordered input did not reach the coordinator in arrival order")
 
+	var retired := _envelope(1)
+	retired.epoch = "55555555-5555-4555-8555-555555555555"
+	var errors_before := errors.size()
+	transport._receive_packet("reliable", JSON.stringify(retired).to_utf8_buffer())
+	_expect(errors.size() == errors_before and received.size() == 2, "Retired epoch poisoned the new connection")
+
 	var reliable_one := _envelope(1)
 	reliable_one["type"] = "match_start_ack"
 	transport._receive_packet("reliable", JSON.stringify(reliable_one).to_utf8_buffer())

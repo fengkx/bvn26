@@ -147,10 +147,12 @@ func profile_counters() -> Dictionary:
 
 func begin_replay() -> void:
 	checkpoint.replaying = true
+	game.diagnostics.replaying = true
 
 
 func end_replay() -> void:
 	checkpoint.replaying = false
+	game.diagnostics.replaying = false
 	checkpoint.flush_displays()
 
 func confirm_through(frame: int) -> void:

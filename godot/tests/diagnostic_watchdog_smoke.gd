@@ -49,6 +49,14 @@ func _run() -> void:
 	_game._diagnostic_watchdog_step(70000)
 	_game._diagnostic_watchdog_step(90000)
 	assert(_incident_count() == 1, "A hidden page must not produce a stall incident")
+	_game.diagnostics.page_visible = true
+	_game.super_runtime.zhanting = true
+	_game.set_meta("online_wait", "recovery")
+	_game._diagnostic_watchdog_step(100000)
+	_game._diagnostic_watchdog_step(110001)
+	assert(_incident_count() == 2)
+	assert(_events.back().payload.reason == "online_simulation_stall")
+	assert(_game.super_runtime.zhanting, "Network waits must never force-unpause source effects")
 	print("DIAGNOSTIC_WATCHDOG_OK progressing_super=0 frozen_super=1 user_pause=0 hidden=0")
 	_game.queue_free()
 	await process_frame

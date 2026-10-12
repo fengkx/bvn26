@@ -145,36 +145,37 @@ func _rollback_counters() -> Dictionary:
 func _test_rollback_profile_counts() -> void:
 	var rollback = Rollback.new()
 	var adapter := FakeAdapter.new()
-	assert(rollback.configure(adapter, "copy-profile", 0, 2).is_empty())
+	# Exercise retained snapshot anchors; lockstep deliberately omits these saves.
+	assert(rollback.configure(adapter, "copy-profile", 1, 3).is_empty())
 	var configured := rollback.profile_counters()
 	assert(configured.save_count == 1)
 	assert(configured.copy_count == 1)
 	var held := _neutral_input()
 	var first_step_copy_delta := 0
-	for frame in range(1, 3):
+	for frame in range(1, 4):
 		assert(rollback.sample_local("p1", frame, held).get("error", "").is_empty())
 		assert(rollback.receive("copy-profile", "p2", frame, held).is_empty())
 		var before_step := int(rollback.profile_counters().copy_count)
 		assert(rollback.step().is_empty())
 		var after_step := int(rollback.profile_counters().copy_count)
-		if frame == 2:
+		if frame == 3:
 			assert(after_step - before_step == first_step_copy_delta + 2,
 				"Advancing the retained floor must count both input-anchor copies")
 		else:
 			first_step_copy_delta = after_step - before_step
 	var before_local_packet := int(rollback.profile_counters().copy_count)
-	assert(rollback.sample_local("p1", 3, held).get("error", "").is_empty())
+	assert(rollback.sample_local("p1", 4, held).get("error", "").is_empty())
 	var after_local_packet := int(rollback.profile_counters().copy_count)
 	assert(after_local_packet - before_local_packet == 2,
 		"Local input and its packet must count two dictionary copies")
-	assert(rollback.receive("copy-profile", "p2", 3, held).is_empty())
+	assert(rollback.receive("copy-profile", "p2", 4, held).is_empty())
 	var after_remote_input := int(rollback.profile_counters().copy_count)
 	assert(after_remote_input - after_local_packet == 1,
 		"Accepted remote input must count its owned dictionary copy")
 
 
-	for frame in range(3, 32):
-		if frame > 3:
+	for frame in range(4, 33):
+		if frame > 4:
 			assert(rollback.sample_local("p1", frame, held).get("error", "").is_empty())
 			assert(rollback.receive("copy-profile", "p2", frame, held).is_empty())
 		var old_floor: int = rollback.oldest_frame()

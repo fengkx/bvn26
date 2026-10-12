@@ -678,6 +678,7 @@ export class Room extends DurableObject<Env> {
         !negotiation ||
         negotiation.id !== input.negotiationId ||
         negotiation.epoch !== input.epoch ||
+        input.epoch !== (state.match?.epoch ?? null) ||
         negotiation.expires <= Date.now()
       ) {
         this.send(socket, {
@@ -687,7 +688,6 @@ export class Room extends DurableObject<Env> {
         });
         return;
       }
-      requireThat(input.epoch === (state.match?.epoch ?? null), "stale_epoch");
       requireThat(
         (input.kind !== "offer" || attached.slot === 0) &&
           (input.kind !== "answer" || attached.slot === 1),

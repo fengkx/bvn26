@@ -62,8 +62,7 @@ func _run() -> void:
 			compared += 1
 		assert(fixtures[1].battle.checkpoint._pending_displays.is_empty())
 		await process_frame
-	assert(not fixtures[0].events.is_empty())
-	assert(State.first_difference(fixtures[0].events, fixtures[1].events).is_empty(), "Diagnostic events changed")
+	assert(fixtures[0].events.is_empty() and fixtures[1].events.is_empty(), "Replay must not record diagnostic events")
 	# BitmapData consumers must see the current pose, before the final flush.
 	for fixture in fixtures:
 		fixture.battle.begin_replay()

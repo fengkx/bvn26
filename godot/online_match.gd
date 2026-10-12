@@ -38,8 +38,17 @@ var profile: Dictionary = {}
 var clock_authority_slot := "p1"
 var sparse_saves := true
 var checkpoint_stride := 2
-var host_pacing := false
-var _pacing_cooldown := 0
+var host_pacing := true
+var _frame_advantage := 0.0
+var _pacing_active := false
+var _pacing_steps := 0
+const INPUT_REDUNDANCY := 64
+var _unacked_inputs := {}
+var _remote_input_seen := {}
+var _remote_input_ack := 0
+var _local_input_ack := 0
+var _input_ack_progress_ms := -1
+var _input_ack_recovery_started := false
 var battle: RefCounted
 var rollback: RefCounted
 var timers: RefCounted
@@ -102,6 +111,7 @@ var _pending_peer_messages: Array[Dictionary] = []
 var _signal_retry_queue: Array[Dictionary] = []
 var _early_signals: Array[Dictionary] = []
 var _signal_error := ""
+var _match_negotiation_id := ""
 var _startup_pending_messages: Array[Dictionary] = []
 var _signaling_reconnect_active := false
 var _performance = PerformanceTelemetry.new()
@@ -244,7 +254,7 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 	# service barriers, negotiation and channel establishment have completed.
 	if _startup_cancelled(startup_generation): return "Online match closed during startup"
 	timers.configure(game, 0)
-	_pacing_cooldown = 0
+	_pacing_steps = 0
 	_clock_origin_ms = -1
 	_clock_paused_total_ms = 0
 	_clock_samples.clear()
@@ -422,6 +432,7 @@ func process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 		observed_remote_frontier = _latest_remote_input_frame - int(profile.get("inputDelay", 0)) - 1
 	_performance.begin_tick(Time.get_ticks_usec(), rollback.frontier if rollback != null else 0)
 	var result := _process_tick(monotonic_now_ms, local_held)
+	if game != null: game.set_meta("online_wait", _performance_wait_reason)
 	if _performance.active:
 		_performance.record_sync_tick(_tick_remote_message_count, _tick_correction_count,
 			observed_frontier, observed_remote_frontier)
@@ -447,26 +458,28 @@ func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 	_poll_heartbeat(monotonic_now_ms)
 	if not _reconcile_inputs(): return error
 	if recovering or paused:
+		_send_input_packet()
 		_performance_wait_reason = "recovery" if recovering else "paused"
 		_poll_control_barriers(monotonic_now_ms)
 		return ""
-	var next_frame: int = rollback.frontier + 1
 	if _control_frame_pending():
 		var control_frame := _pending_control_frame()
 		if rollback.frontier > control_frame:
 			return _abort_local("control_frame_overshot", {"target": control_frame, "frontier": rollback.frontier})
 		if rollback.frontier == control_frame:
+			_send_input_packet()
 			_performance_wait_reason = "control"
 			_report_control_ready()
 			_poll_control_barriers(monotonic_now_ms)
 			return ""
 	if not _sample_local_once(local_held): return error
+	_send_input_packet()
+	if not error.is_empty(): return error
+	if recovering:
+		_performance_wait_reason = "recovery"
+		return ""
 	if _should_pace_host():
 		_performance_wait_reason = "sync"
-		_poll_control_barriers(monotonic_now_ms)
-		return ""
-	if local_slot != clock_authority_slot and not _clock_samples.has(next_frame):
-		_performance_wait_reason = "clock"
 		_poll_control_barriers(monotonic_now_ms)
 		return ""
 	var previous_frontier: int = rollback.frontier
@@ -481,6 +494,7 @@ func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 	if not result.is_empty() and result not in ["waiting_for_input", "waiting_for_confirmation", "match_finished"]:
 		return _abort_local("simulation", {"error": result, "frame": rollback.frontier + 1})
 	if rollback.frontier > previous_frontier:
+		_pacing_steps += 1
 		_sampled_frontier = -1
 		_sampled_held.clear()
 		_maybe_hash_confirmed()
@@ -490,28 +504,34 @@ func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 
 
 func _should_pace_host() -> bool:
-	if _pacing_cooldown > 0:
-		_pacing_cooldown -= 1
+	if not host_pacing or recovering or paused or not _pause_state.is_empty() \
+		or not _resume_state.is_empty() or _latest_remote_input_frame < 0:
 		return false
-	if not host_pacing or local_slot != clock_authority_slot or recovering or paused \
-		or not _pause_state.is_empty() or not _resume_state.is_empty() or _latest_remote_input_frame < 0:
+	var remote_frontier := _latest_remote_input_frame - int(profile.get("inputDelay", 0)) - 1
+	_frame_advantage = lerpf(_frame_advantage, float(rollback.frontier - remote_frontier), 0.125)
+	if _frame_advantage > 3.0: _pacing_active = true
+	elif _frame_advantage < 1.0: _pacing_active = false
+	# One extra tick per ten successful advances bounds stretch to 10%, even
+	# when inputs or the remote clock stop arriving. Neither peer waits on clock.
+	if not _pacing_active:
+		_pacing_steps = 0
 		return false
-	var delay := int(profile.get("inputDelay", 0))
-	var remote_frontier := _latest_remote_input_frame - delay - 1
-	if rollback.frontier - remote_frontier <= delay + 2:
-		return false
-	# At most one skipped step in any three ticks; input and heartbeat still run.
-	_pacing_cooldown = 2
+	if _pacing_steps < 10: return false
+	_pacing_steps = 0
 	return true
 
 
 func receive_peer_message(channel: String, type: String, payload: Dictionary, sequence: int) -> void:
-	if channel != "reliable" or not payload is Dictionary or not error.is_empty():
+	if channel not in ["reliable", "input"] or not payload is Dictionary or not error.is_empty():
 		return
-	if _received_sequences.has(sequence): return
-	_received_sequences[sequence] = true
+	# A delayed terminal/control packet belongs to its original match only.
+	if payload.has("epoch") and payload.epoch != epoch: return
+	if (channel == "input") != (type == "input_batch"): return
+	var sequence_key := "%s:%d" % [channel, sequence]
+	if _received_sequences.has(sequence_key): return
+	_received_sequences[sequence_key] = true
 	if _received_sequences.size() > 4096:
-		_received_sequences.erase(_received_sequences.keys().min())
+		_received_sequences.erase(_received_sequences.keys()[0])
 	if not running and type not in ["match_ready", "match_abort"]:
 		if _startup_pending_messages.size() >= 512:
 			_abort_local("startup_message_overflow", {"type": type})
@@ -528,6 +548,7 @@ func _dispatch_peer_message(channel: String, type: String, payload: Dictionary) 
 	if _performance.active:
 		_tick_remote_message_count += 1
 	match type:
+		"input_batch": _receive_input_packet(payload)
 		"input_frame": _receive_input(payload)
 		"clock_sample": _receive_clock_sample(payload)
 		"state_hash": _receive_state_hash(payload)
@@ -634,6 +655,7 @@ func close(reason: String = "") -> void:
 	if peer_transport != null and peer_transport.has_method("close_peer"):
 		peer_transport.close_peer()
 	if _configured and game != null and is_instance_valid(game):
+		game.remove_meta("online_wait")
 		game.combo_hud.set_presentation_enabled(true)
 		game.combo_hud.visible = _combo_visible_before_online
 	if battle != null:
@@ -695,19 +717,9 @@ func profile_counters() -> Dictionary:
 
 
 func advance(frame: int, players: Dictionary) -> String:
-	if not _clock_samples.has(frame):
-		if local_slot == clock_authority_slot:
-			if _clock_origin_ms < 0:
-				_clock_origin_ms = _process_now_ms
-			var elapsed := maxi(0, _process_now_ms - _clock_origin_ms - _clock_paused_total_ms)
-			if not _clock_samples.is_empty():
-				elapsed = maxi(elapsed, int(_clock_samples[_clock_samples.keys().max()]))
-			_clock_samples[frame] = elapsed
-			if not _send_peer("clock_sample", {"frame": frame, "elapsed_ms": elapsed}):
-				return "Could not publish authoritative clock sample"
-		else:
-			return "waiting_for_clock_sample"
-	var elapsed_ms := int(_clock_samples[frame])
+	# Negotiated build policy: simulation time, independent of peer wall clocks.
+	# Pauses/recovery do not advance frames; rollback derives identical samples.
+	var elapsed_ms := (frame * 1000) / 30
 	var problem: String = timers.set_time(elapsed_ms)
 	if not problem.is_empty(): return problem
 	problem = battle.set_frame_clock(frame, elapsed_ms)
@@ -735,7 +747,7 @@ func retain_states(states: Array) -> void:
 	for frame in _clock_samples.keys():
 		if frame <= oldest: _clock_samples.erase(frame)
 	for frame in _local_inputs.keys():
-		if frame <= oldest: _local_inputs.erase(frame)
+		if frame <= oldest and frame <= _local_input_ack: _local_inputs.erase(frame)
 	for frame in _intro_skip_frames.keys():
 		if frame <= oldest: _intro_skip_frames.erase(frame)
 
@@ -1101,6 +1113,7 @@ func _refresh_room_state() -> Dictionary:
 
 
 func _room_command(operation: Dictionary, deadline_ms: int = -1) -> Dictionary:
+	if deadline_ms < 0: deadline_ms = Time.get_ticks_msec() + 30_000
 	var generation := _generation
 	var client := room_client
 	if client == null:
@@ -1211,10 +1224,70 @@ func _sample_local_once(local_held: Dictionary) -> bool:
 	_sampled_frontier = next_frame
 	_sampled_held = sample.held.duplicate(true)
 	_local_inputs[int(sample.frame)] = sample.held.duplicate(true)
-	if not _send_peer("input_frame", {"frame": int(sample.frame), "held": sample.held}):
-		_abort_local("peer_send_input", {"frame": sample.frame})
+	if _unacked_inputs.is_empty():
+		_input_ack_progress_ms = _process_now_ms
+		_input_ack_recovery_started = false
+	_unacked_inputs[int(sample.frame)] = sample.held.duplicate(true)
+	if _unacked_inputs.size() > INPUT_REDUNDANCY:
+		_abort_local("input_redundancy_overflow", {"frame": sample.frame})
 		return false
 	return true
+
+
+func _send_input_packet() -> void:
+	if peer_transport == null: return
+	if _input_ack_progress_ms < 0: _input_ack_progress_ms = _process_now_ms
+	if not _unacked_inputs.is_empty():
+		var waiting_ms := _process_now_ms - _input_ack_progress_ms
+		if waiting_ms >= RECOVERY_MS * 2:
+			_abort_local("input_ack_timeout", {"ack": _local_input_ack})
+			return
+		if waiting_ms >= RECOVERY_MS and not recovering and not _input_ack_recovery_started:
+			_input_ack_recovery_started = true
+			_begin_recovery("input_ack_timeout", _process_now_ms)
+	var frames: Array = _unacked_inputs.keys()
+	frames.sort()
+	var inputs := []
+	for frame in frames:
+		inputs.append({"frame": frame, "held": _unacked_inputs[frame]})
+	# Loss is recovered by the next bounded packet, including while lockstep waits.
+	peer_transport.send_peer_message("input", "input_batch", {
+		"epoch": epoch, "ack": maxi(_remote_input_ack, int(profile.get("inputDelay", 0))), "inputs": inputs})
+
+
+func _receive_input_packet(payload: Dictionary) -> void:
+	if payload.get("epoch") != epoch: return
+	var highest_local := int(profile.get("inputDelay", 0))
+	if not _local_inputs.is_empty(): highest_local = maxi(highest_local, int(_local_inputs.keys().max()))
+	var ack: Variant = _wire_integer(payload.get("ack"), 0, highest_local)
+	var inputs: Variant = payload.get("inputs")
+	if ack == null or not inputs is Array or inputs.size() > INPUT_REDUNDANCY:
+		_abort_local("invalid_input_batch", {})
+		return
+	if int(ack) > _local_input_ack:
+		_local_input_ack = int(ack)
+		_input_ack_progress_ms = _process_now_ms
+		_input_ack_recovery_started = false
+		for frame in _unacked_inputs.keys():
+			if frame <= _local_input_ack: _unacked_inputs.erase(frame)
+	_remote_input_ack = maxi(_remote_input_ack, int(profile.get("inputDelay", 0)))
+	for item in inputs:
+		if not item is Dictionary or not _integral_number(item.get("frame")) or not item.get("held") is Dictionary \
+			or not Rollback.validate_input(item.held).is_empty():
+			_abort_local("invalid_input_batch", {})
+			return
+		var frame := int(item.frame)
+		if frame <= 0:
+			_abort_local("invalid_input_batch", {})
+			return
+		if frame <= rollback.input_floor: continue
+		_receive_input(item, true)
+		if not error.is_empty(): return
+		if frame > _remote_input_ack: _remote_input_seen[frame] = true
+		while _remote_input_seen.erase(_remote_input_ack + 1): _remote_input_ack += 1
+	if not _transport_drain_open and _reconcile_inputs():
+		_maybe_hash_confirmed()
+		_maybe_finish_result()
 
 
 func _poll_heartbeat(now_ms: int) -> void:
@@ -1277,7 +1350,8 @@ func _send_recovery_sync(now_ms: int) -> void:
 	var resend_limit := remote_frontier + maxi(32, int(profile.predictionWindow) + int(profile.inputDelay) + 8)
 	for frame in _local_inputs.keys():
 		if int(frame) > remote_oldest and int(frame) <= resend_limit:
-			_send_peer("input_frame", {"frame": int(frame), "held": _local_inputs[frame]})
+			peer_transport.send_peer_message("input", "input_batch", {"epoch": epoch, "ack": _remote_input_ack,
+				"inputs": [{"frame": int(frame), "held": _local_inputs[frame]}]})
 	for frame in _clock_samples.keys():
 		if local_slot == clock_authority_slot and int(frame) > remote_oldest and int(frame) <= resend_limit:
 			_send_peer("clock_sample", {"frame": int(frame), "elapsed_ms": int(_clock_samples[frame])})
@@ -1433,7 +1507,8 @@ func _attempt_signaling_reconnect(generation: int) -> void:
 	if _signaling_reconnect_active or room_client == null or not room_client.has_method("connect_signaling"):
 		return
 	_signaling_reconnect_active = true
-	while generation == _generation and room_client != null:
+	var deadline := Time.get_ticks_msec() + RECOVERY_MS
+	while generation == _generation and room_client != null and Time.get_ticks_msec() < deadline:
 		if room_client.has_method("is_signaling_connected") and room_client.is_signaling_connected():
 			_room_service_available = true
 			break
@@ -1559,6 +1634,7 @@ func _open_peer_transport(startup_generation: int) -> String:
 	var local_index := 0 if local_slot == "p1" else 1
 	var remote_index := 1 - local_index
 	if _startup_cancelled(startup_generation): return "Online match closed during startup"
+	_match_negotiation_id = negotiation_id
 	if not transport.configure(client.get_room_id(), epoch, local_index, remote_index, negotiation_id): return "Peer transport configuration failed"
 	if not transport.create_peer(ice_servers): return "Peer creation failed"
 	_peer_configured = true
@@ -1581,7 +1657,7 @@ func _open_peer_transport(startup_generation: int) -> String:
 	return ""
 
 
-func _receive_input(payload: Dictionary) -> void:
+func _receive_input(payload: Dictionary, defer_correction: bool = false) -> void:
 	var frame_value: Variant = payload.get("frame")
 	if not running or not _integral_number(frame_value) or not payload.get("held") is Dictionary:
 		_abort_local("invalid_peer_input", payload)
@@ -1591,7 +1667,7 @@ func _receive_input(payload: Dictionary) -> void:
 	var receive_started_usec := Time.get_ticks_usec()
 	var previous_corrections := int(rollback.rollback_count)
 	var previous_replayed_frames := int(rollback.replayed_frames)
-	var problem: String = rollback.receive(epoch, remote_slot, frame, payload.held, _transport_drain_open)
+	var problem: String = rollback.receive(epoch, remote_slot, frame, payload.held, _transport_drain_open or defer_correction)
 	var correction_delta := int(rollback.rollback_count) - previous_corrections
 	if _performance.active:
 		_tick_correction_count += correction_delta
@@ -1603,10 +1679,10 @@ func _receive_input(payload: Dictionary) -> void:
 	if not problem.is_empty():
 		_abort_local("peer_input", {"frame": frame, "error": problem})
 		return
+	_latest_remote_input_frame = maxi(_latest_remote_input_frame, frame)
 	if _performance.active:
-		_latest_remote_input_frame = maxi(_latest_remote_input_frame, frame)
 		_performance.record_input_arrival_lead(input_arrival_lead)
-	if not _transport_drain_open:
+	if not _transport_drain_open and not defer_correction:
 		_maybe_hash_confirmed()
 		_maybe_finish_result()
 
@@ -2228,6 +2304,7 @@ func _on_signaling_message(message: Dictionary) -> void:
 				_signal_retry_queue.append(item)
 		return
 	if message.get("type") == "error":
+		if message.has("negotiationId") and message.negotiationId != _match_negotiation_id: return
 		_signal_error = str(message.get("error", "signaling_error"))
 		return
 	if not _peer_configured:

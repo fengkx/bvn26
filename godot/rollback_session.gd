@@ -222,7 +222,7 @@ func _advance_one() -> String:
 	_record_profile_duration("replay_advance" if _replaying else "advance", advance_started_usec)
 	if not problem.is_empty():
 		return problem
-	if sparse_saves and (frame < confirmed or frame % checkpoint_stride != 0) and frame % CHECKPOINT_INTERVAL != 0 \
+	if (_window == 0 or (sparse_saves and (frame < confirmed or frame % checkpoint_stride != 0))) and frame % CHECKPOINT_INTERVAL != 0 \
 		and not (_adapter.has_method("must_save_frame") and _adapter.call("must_save_frame", frame)):
 		_used[frame] = players
 		_states.erase(frame)
