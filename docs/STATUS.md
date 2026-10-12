@@ -693,3 +693,16 @@ The current 49-row callback index is [r18](../evidence/characters/lee/godot/call
 ### Production roster opening: 白哉 and 小李 base forms (2026-09-22)
 
 按用户“主要状态对齐就先开放”的明确决定，生产选人现向白哉和小李开放基础形态。两人的源卡片与开场数据原已存在；生成的 production `available.json` 现为 11 名 fighter / 4 名 helper，VS Human 与 VS Com 读取同一开放表。源头像 5 帧与姓名条也已由锁定 `main.swf` 重建，完整来源与哈希见[roster release r01](../evidence/characters/roster-2026-09-22/README.md)。万解及其他形态仍保持不可选。此开放是可玩名单决定，不把白哉/小李 coverage 从 `partial` 提升，也不宣称完整战斗、视觉、音频或浏览器 parity；原版卡片输入的 headless native smoke 与本地 Web 重导由 integration 执行中。
+
+
+### Online netcode step 1 (2026-10-12)
+
+User-authorized networking work on `fix/netcode-step1` replaces reliable per-frame inputs with bounded redundant unordered batches and cumulative ACKs. Online timers now follow deterministic simulation time; both peers use bounded symmetric pacing. Lockstep/delay URL options use the existing pre-match profile barrier. Initial checkpoint layout noise, retired-epoch messages, deferred startup races, and replay diagnostic emission have targeted fixes. The retained super-pause incident coincides with no simulation progress/page suspension; no source pause-release rule was changed. Full human/Web acceptance and baseline smoke failures remain open; this does not complete M4 or establish Flash parity. Evidence and current test results: [netcode step 1](../evidence/online/netcode-step1-2026-10-12.json). No deployment or merge performed.
+
+
+PR #4 review follow-up: startup uses the Worker's preparation deadline, input
+backlogs apply sampling backpressure, suspended-tab recovery has a bounded grace,
+and lockstep retains common recovery checkpoints. Startup epoch buffering and
+replay/fixture disposal regressions are covered. Detailed baseline comparisons:
+[evidence](../evidence/online/netcode-step1-review-2026-10-12.json). Full paired Web
+acceptance remains pending; no deployment, merge, or milestone completion.

@@ -1,0 +1,1553 @@
+{
+  "date": "2026-10-12",
+  "base_commit": "d8437fab",
+  "branch": "fix/netcode-step1",
+  "status": "implemented_with_open_validation_failures",
+  "part1": {
+    "window_zero": {
+      "accepted_without_clamp": [
+        "godot/online_match.gd:953",
+        "godot/online_lobby.gd:1271",
+        "services/matchmaking/src/protocol.ts:63",
+        "services/matchmaking/src/state.ts:185",
+        "godot/rollback_session.gd:48"
+      ],
+      "baseline_ui_limitation": "Lobby dropdown exposed prediction 2/4/6 and delay 0/1/2 only. Parsing accepted wider ranges.",
+      "step_gate": "godot/rollback_session.gd:143 requires next frame <= confirmed + window",
+      "snapshots": "Sparse saves did not skip every confirmed==frame checkpoint; keep frame 0, periodic 30-frame hashes, pending controls and terminal boundaries.",
+      "clock_gate": "godot/online_match.gd:468 separately blocked the guest, including window=0."
+    },
+    "sync_waits": {
+      "producer": "godot/online_match.gd:464",
+      "counter": "godot/online_performance.gd:159",
+      "meaning": "Count transitions into pacing waits, not transport blocking calls.",
+      "baseline_policy": "Host-only, one skipped tick in three above delay+2 advantage. Guest depended on host clock. Pacing compounded input waits and correction costs; its 1/3 skip limit alone cannot explain 5.6 simulated Hz.",
+      "evidence_boundary": "User-provided automated waits (1057/65.8s input; 1340/37.9s sync) are distinct from the supplied human log, whose hostPacing flag is false."
+    },
+    "snapshot_bytes": {
+      "encoder": "godot/battle_checkpoint.gd:155 (base commit)",
+      "format": "Godot var_to_bytes value graph plus nested battle/timer envelopes",
+      "human_logs": "No per-snapshot byte counts; save counts and timings only.",
+      "measured_native_fixture": {
+        "battle_graph_bytes": 218048,
+        "battle_envelope_bytes": 218468,
+        "online_initial_bytes": 218972,
+        "online_frame60_bytes": 220352,
+        "online_initial_at_30Hz_bytes_per_second": 6569160,
+        "online_initial_at_30Hz_bits_per_second": 52553280
+      },
+      "limitations": "Two-fighter fixture, not a full-match size distribution. Excludes transport framing and compression. Local constant/node references make this format unsuitable for direct cross-peer streaming."
+    }
+  },
+  "changes": [
+    "Unordered input batches, bounded to 64 unacknowledged frames, contiguous cumulative ACK, channel-specific duplicate tracking, retries during input/control/pause/recovery waits, bounded timeout.",
+    "Both peers derive online timer samples as floor(frame*1000/30); timers and callback registrations remain checkpointed. No per-frame clock sample dependency.",
+    "Symmetric EWMA frame advantage, 3-frame enter/1-frame leave hysteresis, at most one extra tick per ten successful simulation steps.",
+    "Exclude unused fixed-scene sibling order from checkpoints. Different local parent layout reproduced initial hash mismatch at graph[0].order before fix, matched afterward.",
+    "Ignore old-epoch peer/control/result packets without advancing new sequence counters; reject superseded deferred startup; scope stale signaling replies by negotiation ID.",
+    "Host online_window=0 and online_delay=3|4 flow through configure_network and existing symmetric readiness barrier; profile stays frozen mid-match.",
+    "Suppress diagnostic event emission during rollback replay and skip constructing replay input events; classify no-simulation-progress separately from super animation stalls."
+  ],
+  "source_first_scope": "No fighter timelines, attacks, pause-release rules, or locked game/scripts inputs changed. Frame-derived time is an explicitly online deterministic policy, not a claim of equivalence to Flash wall-clock timers during lag.",
+  "super_pause_evidence": {
+    "human_trace_frame": 2408,
+    "host_hidden_seconds": 17.56,
+    "guest_wait": "recovery",
+    "conclusion": "The supplied retained trace supports transport/page suspension, not a proven source super deadlock. Clock gating removed; no forced super unpause patch. Full human rerun remains required."
+  },
+  "validation": {
+    "worker": "31/31 passed",
+    "python_tools_tests": "270 run: 268 passed, 2 skipped, Python 3.14.4",
+    "python_top_level_tools": "10 passed",
+    "contracts": "6 schemas and 6 examples passed",
+    "godot": {
+      "discovered": 165,
+      "executed": 165,
+      "passed": 139,
+      "not_passed": 26,
+      "remaining": [],
+      "results": [
+        {
+          "test": "ai_body_context_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_colors_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "ai_combat_services_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "ai_context_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "ai_cpu_driver_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_escape_effect_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_helper_state_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_hit_gate_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "ai_hit_pause_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_host_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed: Unconnected CPU frame service",
+            "SCRIPT ERROR: Assertion failed: Unconnected CPU frame service"
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed: Unconnected CPU frame service",
+              "SCRIPT ERROR: Assertion failed: Unconnected CPU frame service"
+            ]
+          }
+        },
+        {
+          "test": "ai_instances_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_projectile_driver_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_projectile_instance_variables_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_projectile_source_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "ai_random_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_source_state_increment_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_stage_hit_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "ai_stage_registry_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "ai_super_frames_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "ai_timeouts_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "battle_checkpoint_flat_dictionary_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "battle_checkpoint_immutable_cache_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "battle_checkpoint_prototype_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "battle_checkpoint_scalar_inline_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "battle_checkpoint_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes.log"
+        },
+        {
+          "test": "bitmap_clip_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "body_warp_event_dedup_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "body_warp_xscale_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "callback_trace_registry_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "character_selection_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "combat_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "combo_hud_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "conditional_frame_boundary_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "config_flow_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "config_reference_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+            ]
+          }
+        },
+        {
+          "test": "controller_checkpoint_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "diagnostic_consumer_bounds_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "diagnostic_match_export_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-diagnostic-tests.log"
+        },
+        {
+          "test": "diagnostic_perf_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-diagnostic-tests.log"
+        },
+        {
+          "test": "diagnostic_replay_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-diagnostic-tests.log"
+        },
+        {
+          "test": "diagnostic_watchdog_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "effect_callback_order_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+            ]
+          }
+        },
+        {
+          "test": "energy_layout_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "escape_faction_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "expanded_selection_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Assertion failed."
+            ]
+          }
+        },
+        {
+          "test": "health_hud_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "helper_presentation_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "helper_repeat_contact_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "hit_effect_clock_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "hit_effect_random_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": true,
+            "errors": []
+          }
+        },
+        {
+          "test": "hit_settlement_frame_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "hud_timeline_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "hurt_summon_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "hurt_voice_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "interrupted_super_lock_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "intro_poll_replay_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "intro_queued_goto_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "intro_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "jinye_import_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+            ]
+          }
+        },
+        {
+          "test": "kakashi_visual_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "key_settings_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "ko_background_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "ko_clip_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "ko_controller_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "ko_instance_order_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "ko_request_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "ko_timeline_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "kon_helper_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "manual_match_step_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "map_selection_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "match_input_scene_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "match_input_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "menu_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "move_list_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "nested_start_sound_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_batched_ordering_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_character_selection_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_checkpoint_options_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_clock_sample_bounds_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_host_pacing_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_hud_browser_smoke.gd",
+          "passed": false,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "status": "requires_web_scene_not_native_script"
+        },
+        {
+          "test": "online_independent_clock_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_initial_layout_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_lobby_auto_connect_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_lobby_connection_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_lobby_map_selection_integration_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_lobby_presence_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_lobby_selection_integration_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_lobby_terminal_ui_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_lobby_ui_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_lobby_web_hud_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_map_selection_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_match_json_room_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_match_pair_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 3 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "ERROR: 3 resources still in use at exit (run with --verbose for details)."
+            ]
+          }
+        },
+        {
+          "test": "online_match_pending_command_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-pending-recheck.log"
+        },
+        {
+          "test": "online_match_service_terminal_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_match_start_cancel_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_peer_transport_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_performance_diagnostics_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-updated-tests.log"
+        },
+        {
+          "test": "online_profile_epoch_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_redundant_inputs_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_result_winner_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_room_client_service_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-service-recheck.log"
+        },
+        {
+          "test": "online_room_client_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_sparse_recovery_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_timer_authority_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "online_timer_round_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 3 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": true,
+            "errors": []
+          }
+        },
+        {
+          "test": "online_user_text_font_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "pause_menu_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "player_body_compile_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "player_body_lifecycle_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "player_controller_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "player_floor_state_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "player_hurt_lifetime_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "player_visual_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "ready_play_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+            ]
+          }
+        },
+        {
+          "test": "renji_import_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "repeated_clip_placement_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 3 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": true,
+            "errors": []
+          }
+        },
+        {
+          "test": "replay_display_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-updated-tests.log"
+        },
+        {
+          "test": "replay_input_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_batched_battle_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_batched_correction_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_battle_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_checkpoint_stride_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_replay_hooks_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_roster_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_round_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_services_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rollback_sparse_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "roster_candidate_flow_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "round_reset_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rukia_base_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "rukia_u_bitmap_fill_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "sakura_import_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "sakura_ino_helper_binding_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "selected_fighters_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "shadow_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "shared_mode_lifecycle_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "sound_segments_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 4 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_attack_name_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_callback_registry_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_effect_placement_phase_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_flash_dedup_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_health_rules_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_hit_test_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_matrix_bounds_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_number_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "source_repeat_contact_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": true,
+            "errors": []
+          }
+        },
+        {
+          "test": "source_rotated_collision_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "stage_sound_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+            ]
+          }
+        },
+        {
+          "test": "standing_loop_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "super_guard_reference_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "timeout_checkpoint_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "title_menu_online_entry_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "title_menu_source_smoke.gd",
+          "passed": false,
+          "errors": [
+            "SCRIPT ERROR: Invalid assignment of property or key 'hide_single' with value of type 'bool' on a base object of type 'Control (TitleMenu)'."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": false,
+            "errors": [
+              "SCRIPT ERROR: Invalid assignment of property or key 'hide_single' with value of type 'bool' on a base object of type 'Control (TitleMenu)'."
+            ],
+            "log": "/private/tmp/netcode-title-base.log"
+          }
+        },
+        {
+          "test": "transformation_gate_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "uryu_q5_reference_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "vs_com_intro_poll_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "vs_com_ko_resume_smoke.gd",
+          "passed": false,
+          "errors": [
+            "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+          ],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log",
+          "base_runtime": {
+            "passed": true,
+            "errors": []
+          }
+        },
+        {
+          "test": "vs_com_ko_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "vs_com_menu_entry_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "vs_com_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "web_audio_settings_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "win_hud_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        },
+        {
+          "test": "you_helper_dynamic_contact_smoke.gd",
+          "passed": true,
+          "errors": [],
+          "run_log": "/private/tmp/netcode-all-smokes-rest.log"
+        }
+      ],
+      "interpretation": "139 passed; 25 native checks failed and 1 Web-only scene harness was not validly run as a native script. No failure is waived. The two changed behavior assertions were updated and rerun successfully; corrected fixture/service invocations and the startup-timing rerun are reflected here.",
+      "exit_leak_investigation": "Verbose hit_effect_random run identified AudioStreamMP3 and AudioStreamPlaybackMP3 retained for generated/effects/XG_qdj/239.mp3. Dummy audio driver reproduces it. Several exit leaks reproduce on base; others do not, and remain unresolved rather than being labeled baseline failures."
+    },
+    "manual_web": "pending; no deployed build or fresh human match claimed",
+    "shared_modes": "PVP and training-timer matched 602 original actor states each",
+    "worker_format": "Prettier check passed; Wrangler config changes are formatting only",
+    "local_http_integration": "online_room_client_service_smoke passed against wrangler dev --local",
+    "simulations": [
+      {
+        "name": "lossy",
+        "seed": 40406,
+        "profile": {
+          "checkpointStride": 2,
+          "hostPacing": true,
+          "id": "chrome-exp-d3-p6",
+          "inputDelay": 3,
+          "predictionWindow": 6,
+          "sparseSaves": true
+        },
+        "ok": true,
+        "virtual": {
+          "busyUntilMs": [
+            9997.18866666667,
+            9981.38466666667
+          ],
+          "busyWorkMs": [
+            3199.13,
+            1672.58
+          ],
+          "callerTicks": [
+            300,
+            300
+          ],
+          "confirmed": [
+            302,
+            302
+          ],
+          "durationMs": 10000,
+          "fixedSkippedTicks": [
+            0,
+            0
+          ],
+          "frontier": [
+            300,
+            300
+          ],
+          "logicalRateHz": [
+            30.0,
+            30.0
+          ],
+          "ticksMergedDuringBusy": [
+            0,
+            0
+          ],
+          "workCostUsByKind": [
+            {
+              "advance": 2993700,
+              "copy": 0,
+              "load": 0,
+              "rebuild": 0,
+              "replay_advance": 0,
+              "save": 205430,
+              "validate": 0
+            },
+            {
+              "advance": 1578000,
+              "copy": 0,
+              "load": 0,
+              "rebuild": 0,
+              "replay_advance": 0,
+              "save": 94580,
+              "validate": 0
+            }
+          ]
+        },
+        "hashes_equal": true,
+        "common_hash_count": 10,
+        "lost_input_packets": 20,
+        "clock_waits": [
+          0,
+          0
+        ],
+        "limitation": "Virtual cost model, not measured browser/real-match frame rate."
+      },
+      {
+        "name": "lockstep",
+        "seed": 40406,
+        "profile": {
+          "checkpointStride": 2,
+          "hostPacing": true,
+          "id": "chrome-exp-d4-p0",
+          "inputDelay": 4,
+          "predictionWindow": 0,
+          "sparseSaves": true
+        },
+        "ok": true,
+        "virtual": {
+          "busyUntilMs": [
+            9997.18866666667,
+            9981.38466666667
+          ],
+          "busyWorkMs": [
+            3199.13,
+            1672.58
+          ],
+          "callerTicks": [
+            300,
+            300
+          ],
+          "confirmed": [
+            303,
+            303
+          ],
+          "durationMs": 10000,
+          "fixedSkippedTicks": [
+            0,
+            0
+          ],
+          "frontier": [
+            300,
+            300
+          ],
+          "logicalRateHz": [
+            30.0,
+            30.0
+          ],
+          "ticksMergedDuringBusy": [
+            0,
+            0
+          ],
+          "workCostUsByKind": [
+            {
+              "advance": 2993700,
+              "copy": 0,
+              "load": 0,
+              "rebuild": 0,
+              "replay_advance": 0,
+              "save": 205430,
+              "validate": 0
+            },
+            {
+              "advance": 1578000,
+              "copy": 0,
+              "load": 0,
+              "rebuild": 0,
+              "replay_advance": 0,
+              "save": 94580,
+              "validate": 0
+            }
+          ]
+        },
+        "hashes_equal": true,
+        "common_hash_count": 10,
+        "lost_input_packets": 20,
+        "clock_waits": [
+          0,
+          0
+        ],
+        "limitation": "Virtual cost model, not measured browser/real-match frame rate."
+      },
+      {
+        "name": "turn100",
+        "seed": 40405,
+        "profile": {
+          "checkpointStride": 2,
+          "hostPacing": true,
+          "id": "chrome-exp-d3-p6",
+          "inputDelay": 3,
+          "predictionWindow": 6,
+          "sparseSaves": true
+        },
+        "ok": true,
+        "virtual": {
+          "busyUntilMs": [
+            9997.18866666667,
+            9981.38466666667
+          ],
+          "busyWorkMs": [
+            3199.13,
+            1672.58
+          ],
+          "callerTicks": [
+            300,
+            300
+          ],
+          "confirmed": [
+            301,
+            301
+          ],
+          "durationMs": 10000,
+          "fixedSkippedTicks": [
+            0,
+            0
+          ],
+          "frontier": [
+            300,
+            300
+          ],
+          "logicalRateHz": [
+            30.0,
+            30.0
+          ],
+          "ticksMergedDuringBusy": [
+            0,
+            0
+          ],
+          "workCostUsByKind": [
+            {
+              "advance": 2993700,
+              "copy": 0,
+              "load": 0,
+              "rebuild": 0,
+              "replay_advance": 0,
+              "save": 205430,
+              "validate": 0
+            },
+            {
+              "advance": 1578000,
+              "copy": 0,
+              "load": 0,
+              "rebuild": 0,
+              "replay_advance": 0,
+              "save": 94580,
+              "validate": 0
+            }
+          ]
+        },
+        "hashes_equal": true,
+        "common_hash_count": 10,
+        "lost_input_packets": 0,
+        "clock_waits": [
+          0,
+          0
+        ],
+        "limitation": "Virtual cost model, not measured browser/real-match frame rate."
+      }
+    ],
+    "integrity": "verify.py, check_handoff.py, build_online_manifest.py --check and git diff --check passed",
+    "super_guard_reference": "1800 original/native snapshots matched",
+    "commands": [
+      "npm test (services/matchmaking)",
+      "npm run format:check (services/matchmaking)",
+      "python3 -m unittest discover -s tools/tests",
+      "python3 -m unittest discover -s tools -p test_*.py",
+      "python3 tools/test_shared_modes.py --godot <Godot-4.7.2>",
+      "godot --headless --path godot --log-file <temporary-log> --script res://tests/<native-smoke>.gd (every *smoke.gd enumerated; rendering tests use native display; diagnostics require output arguments; service test uses local Worker)",
+      "python3 tools/verify.py",
+      "python3 tools/check_handoff.py",
+      "python3 tools/validate_contracts.py",
+      "python3 tools/build_online_manifest.py --check",
+      "git diff --check"
+    ]
+  },
+  "effort": {
+    "implementation_person_days": null,
+    "note": "No estimated person-days recorded as actual work. Executed test durations retained in temporary runner output."
+  },
+  "manual_steps": [
+    "Use the same rebuilt fingerprint on two visible browser windows; host opens ?online_delay=3 then establishes selection connection; both must show d3-p6 before ready.",
+    "Repeat with host ?online_window=0&online_delay=4. Both must show d4-p0, no rollback prediction, and only periodic/control/terminal checkpoints.",
+    "Exercise loss, jitter, duplicate and reordered input packets; confirm state hashes match, clock wait stays zero, control uses reliable channel, and ACK progress drops redundant frames.",
+    "Finish/abort a round then start another in the same room; late previous-epoch result and ICE errors must not abort the new match.",
+    "Cast supers on both sides, pause/resume, briefly hide one window, restore and export diagnostics. Distinguish source animation progress from coordinator waits; extended loss must terminate within bounded recovery."
+  ],
+  "build_fingerprint": {
+    "schemaVersion": 1,
+    "engine": "4.7.2-stable",
+    "compatibility": {
+      "protocol": 1,
+      "build": "68c11c0105409db1bec6de67ecdfb71e84b9758eec0a2d0dbe539196b78a9c91",
+      "content": "99bf2db25750f4b8a3d46be6c1b2370c187747ea1c32798a6156a491870c8887"
+    },
+    "roster": {
+      "fighters": [
+        "byakuya",
+        "kakashi",
+        "lee",
+        "minren",
+        "renji",
+        "rifagu",
+        "rukia",
+        "sakura",
+        "sasuke",
+        "yihu",
+        "yulong"
+      ],
+      "helpers": [
+        "jinye",
+        "kon",
+        "woailuo",
+        "you"
+      ],
+      "stages": [
+        "双极",
+        "宇智波村",
+        "尸魂界通道",
+        "木叶村",
+        "楼顶",
+        "流魂街",
+        "温泉",
+        "火影瀑布",
+        "现世",
+        "静涎亭"
+      ]
+    },
+    "inputSummary": {
+      "build": {
+        "count": 173,
+        "sha256": "68c11c0105409db1bec6de67ecdfb71e84b9758eec0a2d0dbe539196b78a9c91"
+      },
+      "content": {
+        "count": 10146,
+        "sha256": "99bf2db25750f4b8a3d46be6c1b2370c187747ea1c32798a6156a491870c8887"
+      }
+    }
+  }
+}

@@ -1,0 +1,2627 @@
+{
+  "status": "completed_with_preexisting_failures",
+  "base_commit": "d8437fab6bd3b43576b6134d4bbe2846acea0764",
+  "reviewed_head": "37c9a4dd",
+  "branch": "fix/netcode-step1",
+  "pr": "https://github.com/fengkx/bvn2_6/pull/4",
+  "started_at": "2026-10-12T16:41:00+08:00",
+  "recorded_at": "2026-10-12T17:54:54.219562+08:00",
+  "actual_elapsed_minutes": 73.9,
+  "scope": "Review fixes only; no merge, deployment, source gameplay changes, Worker scheduling changes, or claimed Flash parity.",
+  "fixes": [
+    {
+      "item": 1,
+      "files": [
+        "godot/online_match.gd",
+        "godot/tests/online_match_pending_command_smoke.gd"
+      ],
+      "change": "Require explicit command deadlines; convert Worker match.deadline to a remaining monotonic startup budget for loaded, start_ack, negotiate and barrier waits. Result/abort settlement has a separate bounded total deadline."
+    },
+    {
+      "item": 2,
+      "files": [
+        "godot/online_match.gd",
+        "godot/tests/online_redundant_inputs_smoke.gd",
+        "godot/tests/online_review_regressions_smoke.gd"
+      ],
+      "change": "Allow 60s without input ACK progress and a 30s recovery window; start ACK recovery after 10s. Test 17.56s page suspension and eventual bounded failure."
+    },
+    {
+      "item": 3,
+      "files": [
+        "godot/online_match.gd",
+        "godot/tests/online_review_regressions_smoke.gd"
+      ],
+      "change": "Stop sampling at 64 unacknowledged frames; keep bounded retransmission and resume after ACK. Do not abort ordinary lag."
+    },
+    {
+      "item": 4,
+      "files": [
+        "godot/rollback_session.gd",
+        "godot/tests/online_review_regressions_smoke.gd"
+      ],
+      "change": "Retain the common periodic recovery checkpoint with predictionWindow=0 even when sparse_saves and retain_hash_history are disabled; exercise packet loss, delay 0/4, recovery and matching final state."
+    },
+    {
+      "item": 5,
+      "files": [
+        "godot/rollback_battle.gd",
+        "godot/diagnostic_runtime.gd",
+        "godot/tests/online_review_regressions_smoke.gd"
+      ],
+      "change": "Reset checkpoint/diagnostic replay flags in close/end_match, including interrupted replay."
+    },
+    {
+      "item": 6,
+      "files": [
+        "godot/online_match.gd",
+        "godot/tests/online_review_regressions_smoke.gd"
+      ],
+      "change": "Bound and defer pre-epoch messages until service epoch/profile validation; stale epoch messages do not consume sequence numbers. Test early match_ready and match_abort."
+    },
+    {
+      "item": 7,
+      "files": [
+        "godot/online_match.gd",
+        "godot/tests/online_independent_clock_smoke.gd"
+      ],
+      "change": "Remove obsolete clock_sample state, handling and obsolete bounds smoke; recovery ACK includes the neutral inputDelay prefix."
+    },
+    {
+      "item": 8,
+      "files": [
+        "godot/tests/online_match_pair_smoke.gd",
+        "godot/tests/online_timer_round_smoke.gd"
+      ],
+      "change": "Disconnect self-capturing pair signal closures, verify transport hub release, explicitly release battle/timer owners and stop round audio. Add WeakRef owner-release assertions.",
+      "diagnosis": "Pair before-fix verbose run reproduced three retained script resources (online_performance.gd, online_match.gd and the pair smoke). Historical timer three-resource leak was intermittent and did not reproduce consistently; final owner/audio cleanup and WeakRef assertions pass without exit warnings."
+    },
+    {
+      "item": 9,
+      "files": [
+        "evidence/online/netcode-step1-review-2026-10-12.json"
+      ],
+      "change": "Rerun all smoke entries and compare failing scenarios against a clean d8437fab worktree with imported asset cache; leave pre-existing failures unchanged."
+    }
+  ],
+  "toolchain": {
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "python": "3.14.4",
+    "node": "24.18.0",
+    "chrome": "154.0.8037.99"
+  },
+  "validation": {
+    "python": {
+      "run": 270,
+      "passed": 268,
+      "skipped": 2,
+      "skip_reason": "Native Main diagnostic capture unavailable for two analyze_diagnostics cases",
+      "log": "/private/tmp/netcode-review-fixes/python-complete.log"
+    },
+    "source_modes": {
+      "status": "passed",
+      "pvp_actor_states": 602,
+      "training_actor_states": 602,
+      "log": "/private/tmp/netcode-review-fixes/shared-modes-complete.log"
+    },
+    "python_top_level": {
+      "passed": 10,
+      "log": "/private/tmp/netcode-review-fixes/python-top.log"
+    },
+    "worker": {
+      "passed": 31,
+      "logs": [
+        "/private/tmp/netcode-review-fixes/worker-node24.log",
+        "/private/tmp/netcode-review-fixes/wrangler-final.log"
+      ],
+      "note": "30 tests passed in the full run; local Wrangler integration initially exceeded its startup timeout under load, then passed independently with Node 24.18 and an isolated registry. TypeScript and format checks pass."
+    },
+    "web_shell": {
+      "passed": 16,
+      "log": "/private/tmp/netcode-review-fixes/web-shell.log"
+    },
+    "hud_browser": {
+      "status": "passed",
+      "log": "/private/tmp/netcode-review-fixes/hud.log",
+      "scope": "Real Godot Web, production OnlineLobby/JavaScriptBridge/shell, fake coordinator; pause callback, window/fullscreen/narrow layout. Local temporary export only; not paired-browser gameplay acceptance."
+    },
+    "checks": {
+      "integrity": "passed",
+      "handoff": "passed",
+      "contracts": "6 schemas and 6 examples passed",
+      "online_manifest": "passed"
+    },
+    "godot_summary": {
+      "baseline_failure": 26,
+      "passed": 139
+    },
+    "godot_tests": [
+      {
+        "test": "diagnostic_match_export_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 82.66,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "diagnostic_match_export_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 30.45,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/diagnostic_match_export_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/diagnostic_match_export_smoke.log"
+      },
+      {
+        "test": "ai_colors_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 18.8,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_colors_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 9.25,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_colors_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_colors_smoke.log"
+      },
+      {
+        "test": "ai_body_context_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 23.59,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_body_context_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 14.08,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_body_context_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_body_context_smoke.log"
+      },
+      {
+        "test": "ai_context_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 21.19,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_context_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 16.01,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_context_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_context_smoke.log"
+      },
+      {
+        "test": "ai_combat_services_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 28.18,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_combat_services_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 17.57,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_combat_services_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_combat_services_smoke.log"
+      },
+      {
+        "test": "ai_cpu_driver_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 30.73,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_cpu_driver_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 34.5,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_cpu_driver_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_cpu_driver_smoke.log"
+      },
+      {
+        "test": "ai_escape_effect_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 41.62,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_escape_effect_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 41.89,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_escape_effect_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_escape_effect_smoke.log"
+      },
+      {
+        "test": "ai_helper_state_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 14.21,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_helper_state_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 10.26,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_helper_state_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_helper_state_smoke.log"
+      },
+      {
+        "test": "ai_hit_gate_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 21.91,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_hit_gate_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 7.04,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_hit_gate_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_hit_gate_smoke.log"
+      },
+      {
+        "test": "ai_hit_pause_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 61.18,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_hit_pause_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 34.81,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_hit_pause_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/ai_hit_pause_smoke.log"
+      },
+      {
+        "test": "ai_host_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 19.9,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed: Unconnected CPU frame service",
+          "SCRIPT ERROR: Assertion failed: Unconnected CPU frame service"
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_host_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 10.15,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed: Unconnected CPU frame service",
+            "SCRIPT ERROR: Assertion failed: Unconnected CPU frame service"
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_host_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/ai_host_smoke.log"
+      },
+      {
+        "test": "ai_instances_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 9.41,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_instances_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 4.77,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_instances_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_instances_smoke.log"
+      },
+      {
+        "test": "ai_projectile_instance_variables_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 32.7,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_projectile_instance_variables_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 15.12,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_projectile_instance_variables_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_projectile_instance_variables_smoke.log"
+      },
+      {
+        "test": "ai_projectile_driver_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 36.36,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_projectile_driver_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 17.79,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_projectile_driver_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_projectile_driver_smoke.log"
+      },
+      {
+        "test": "ai_random_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 14.32,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_random_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 8.16,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_random_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_random_smoke.log"
+      },
+      {
+        "test": "ai_projectile_source_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 43.88,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_projectile_source_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 14.54,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_projectile_source_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_projectile_source_smoke.log"
+      },
+      {
+        "test": "ai_source_state_increment_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 22.09,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_source_state_increment_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 10.67,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_source_state_increment_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_source_state_increment_smoke.log"
+      },
+      {
+        "test": "ai_stage_hit_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 25.0,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_stage_hit_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 11.0,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_stage_hit_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_stage_hit_smoke.log"
+      },
+      {
+        "test": "ai_stage_registry_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 31.69,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_stage_registry_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 7.62,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_stage_registry_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_stage_registry_smoke.log"
+      },
+      {
+        "test": "ai_timeouts_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 14.83,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_timeouts_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 4.33,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_timeouts_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_timeouts_smoke.log"
+      },
+      {
+        "test": "ai_super_frames_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 34.34,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "ai_super_frames_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 8.61,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/ai_super_frames_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ai_super_frames_smoke.log"
+      },
+      {
+        "test": "battle_checkpoint_prototype_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 17.14,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "battle_checkpoint_prototype_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 9.16,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/battle_checkpoint_prototype_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/battle_checkpoint_prototype_smoke.log"
+      },
+      {
+        "test": "battle_checkpoint_scalar_inline_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 15.44,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "battle_checkpoint_scalar_inline_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 8.46,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/battle_checkpoint_scalar_inline_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/battle_checkpoint_scalar_inline_smoke.log"
+      },
+      {
+        "test": "battle_checkpoint_immutable_cache_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 48.84,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "battle_checkpoint_immutable_cache_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 18.15,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/battle_checkpoint_immutable_cache_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/battle_checkpoint_immutable_cache_smoke.log"
+      },
+      {
+        "test": "battle_checkpoint_flat_dictionary_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 51.07,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "battle_checkpoint_flat_dictionary_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 19.32,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/battle_checkpoint_flat_dictionary_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/battle_checkpoint_flat_dictionary_smoke.log"
+      },
+      {
+        "test": "body_warp_event_dedup_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 19.43,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "body_warp_event_dedup_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 4.4,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/body_warp_event_dedup_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/body_warp_event_dedup_smoke.log"
+      },
+      {
+        "test": "body_warp_xscale_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 21.26,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "body_warp_xscale_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 4.01,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/body_warp_xscale_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/body_warp_xscale_smoke.log"
+      },
+      {
+        "test": "callback_trace_registry_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 11.66,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "callback_trace_registry_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 2.88,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/callback_trace_registry_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/callback_trace_registry_smoke.log"
+      },
+      {
+        "test": "battle_checkpoint_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 95.02,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "battle_checkpoint_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 22.59,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/battle_checkpoint_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/battle_checkpoint_smoke.log"
+      },
+      {
+        "test": "character_selection_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 32.99,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "character_selection_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 9.82,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/character_selection_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/character_selection_smoke.log"
+      },
+      {
+        "test": "combo_hud_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 15.82,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "combo_hud_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 8.4,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/combo_hud_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/combo_hud_smoke.log"
+      },
+      {
+        "test": "conditional_frame_boundary_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 49.64,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "conditional_frame_boundary_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 46.56,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/conditional_frame_boundary_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/conditional_frame_boundary_smoke.log"
+      },
+      {
+        "test": "config_flow_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 57.16,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "config_flow_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 46.67,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/config_flow_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/config_flow_smoke.log"
+      },
+      {
+        "test": "config_reference_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 7.33,
+        "errors": [
+          "WARNING: 60 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "config_reference_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 6.57,
+          "errors": [
+            "WARNING: 44 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/config_reference_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/config_reference_smoke.log"
+      },
+      {
+        "test": "controller_checkpoint_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 22.73,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "controller_checkpoint_smoke.gd",
+          "status": "failed",
+          "returncode": -2,
+          "seconds": 24.63,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/controller_checkpoint_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/controller_checkpoint_smoke.log"
+      },
+      {
+        "test": "combat_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 154.22,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "combat_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 77.82,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/combat_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/combat_smoke.log"
+      },
+      {
+        "test": "bitmap_clip_smoke.gd",
+        "status": "passed",
+        "errors": [],
+        "log": "/private/tmp/netcode-review-fixes/bitmap-native2.log",
+        "mode": "native rendering",
+        "baseline": {
+          "test": "bitmap_clip_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 240.27,
+          "errors": [],
+          "timeout": true,
+          "log": "/private/tmp/netcode-review-fixes/base/bitmap_clip_smoke.log"
+        },
+        "classification": "passed"
+      },
+      {
+        "test": "diagnostic_consumer_bounds_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 5.0,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "diagnostic_consumer_bounds_smoke.gd",
+          "status": "failed",
+          "returncode": -2,
+          "seconds": 13.44,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/diagnostic_consumer_bounds_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/diagnostic_consumer_bounds_smoke.log"
+      },
+      {
+        "test": "diagnostic_watchdog_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 35.41,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "diagnostic_watchdog_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 41.87,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/diagnostic_watchdog_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/diagnostic_watchdog_smoke.log"
+      },
+      {
+        "test": "effect_callback_order_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 8.82,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "effect_callback_order_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 11.79,
+          "errors": [
+            "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/effect_callback_order_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/effect_callback_order_smoke.log"
+      },
+      {
+        "test": "energy_layout_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 5.7,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/energy_layout_smoke.log"
+      },
+      {
+        "test": "diagnostic_replay_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 85.03,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "diagnostic_replay_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 104.01,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/diagnostic_replay_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/diagnostic_replay_smoke.log"
+      },
+      {
+        "test": "expanded_selection_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 19.61,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "expanded_selection_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 52.83,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/expanded_selection_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/expanded_selection_smoke.log"
+      },
+      {
+        "test": "diagnostic_perf_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 134.77,
+        "errors": [
+          "WARNING: 10 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "diagnostic_perf_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 152.85,
+          "errors": [
+            "WARNING: 10 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/diagnostic_perf_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/diagnostic_perf_smoke.log"
+      },
+      {
+        "test": "health_hud_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 29.51,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/health_hud_smoke.log"
+      },
+      {
+        "test": "escape_faction_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 85.58,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/escape_faction_smoke.log"
+      },
+      {
+        "test": "helper_repeat_contact_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 27.7,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/helper_repeat_contact_smoke.log"
+      },
+      {
+        "test": "hit_effect_random_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 9.17,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "hit_effect_random_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 19.02,
+          "errors": [
+            "WARNING: 3 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+            "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/hit_effect_random_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/hit_effect_random_smoke.log"
+      },
+      {
+        "test": "helper_presentation_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 38.53,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "helper_presentation_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 33.88,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/helper_presentation_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/helper_presentation_smoke.log"
+      },
+      {
+        "test": "hit_effect_clock_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 35.77,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/hit_effect_clock_smoke.log"
+      },
+      {
+        "test": "hud_timeline_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 8.51,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/hud_timeline_smoke.log"
+      },
+      {
+        "test": "hit_settlement_frame_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 12.32,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/hit_settlement_frame_smoke.log"
+      },
+      {
+        "test": "hurt_voice_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 5.67,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/hurt_voice_smoke.log"
+      },
+      {
+        "test": "hurt_summon_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 17.19,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/hurt_summon_smoke.log"
+      },
+      {
+        "test": "intro_poll_replay_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 10.92,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/intro_poll_replay_smoke.log"
+      },
+      {
+        "test": "interrupted_super_lock_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 18.11,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/interrupted_super_lock_smoke.log"
+      },
+      {
+        "test": "intro_queued_goto_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 18.44,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/intro_queued_goto_smoke.log"
+      },
+      {
+        "test": "jinye_import_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 11.67,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "jinye_import_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 15.15,
+          "errors": [
+            "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+            "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/jinye_import_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/jinye_import_smoke.log"
+      },
+      {
+        "test": "key_settings_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 7.3,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/key_settings_smoke.log"
+      },
+      {
+        "test": "kakashi_visual_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 10.82,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/kakashi_visual_smoke.log"
+      },
+      {
+        "test": "ko_clip_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 11.56,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ko_clip_smoke.log"
+      },
+      {
+        "test": "ko_controller_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 9.33,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ko_controller_smoke.log"
+      },
+      {
+        "test": "ko_instance_order_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 12.74,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ko_instance_order_smoke.log"
+      },
+      {
+        "test": "ko_request_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 32.71,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ko_request_smoke.log"
+      },
+      {
+        "test": "intro_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 95.0,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/intro_smoke.log"
+      },
+      {
+        "test": "ko_background_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 77.7,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ko_background_smoke.log"
+      },
+      {
+        "test": "ko_timeline_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 13.21,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/ko_timeline_smoke.log"
+      },
+      {
+        "test": "kon_helper_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 129.29,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "kon_helper_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 106.79,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/kon_helper_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/kon_helper_smoke.log"
+      },
+      {
+        "test": "map_selection_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 152.54,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/map_selection_smoke.log"
+      },
+      {
+        "test": "match_input_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 32.59,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/match_input_smoke.log"
+      },
+      {
+        "test": "menu_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 41.55,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/menu_smoke.log"
+      },
+      {
+        "test": "manual_match_step_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 154.36,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/manual_match_step_smoke.log"
+      },
+      {
+        "test": "nested_start_sound_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 21.17,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/nested_start_sound_smoke.log"
+      },
+      {
+        "test": "online_batched_ordering_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 26.81,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_batched_ordering_smoke.log"
+      },
+      {
+        "test": "online_character_selection_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 31.53,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_character_selection_smoke.log"
+      },
+      {
+        "test": "move_list_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 112.4,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "move_list_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 81.47,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/move_list_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/move_list_smoke.log"
+      },
+      {
+        "test": "online_checkpoint_options_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 22.49,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_checkpoint_options_smoke.log"
+      },
+      {
+        "test": "online_host_pacing_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 20.15,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_host_pacing_smoke.log"
+      },
+      {
+        "test": "match_input_scene_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 314.38,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "match_input_scene_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 358.89,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/match_input_scene_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/match_input_scene_smoke.log"
+      },
+      {
+        "test": "online_lobby_auto_connect_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 28.57,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_lobby_auto_connect_smoke.log"
+      },
+      {
+        "test": "online_initial_layout_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 186.95,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_initial_layout_smoke.log"
+      },
+      {
+        "test": "online_independent_clock_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 217.9,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_independent_clock_smoke.log"
+      },
+      {
+        "test": "online_lobby_connection_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 181.36,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_lobby_connection_smoke.log"
+      },
+      {
+        "test": "online_lobby_presence_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 32.92,
+        "errors": [
+          "SCRIPT ERROR: Assertion failed: Cancellation reported a stale transport error: [\"http_transport_failed\"]",
+          "SCRIPT ERROR: Assertion failed: Ticket cancellation checks failed"
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "online_lobby_presence_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 34.37,
+          "errors": [
+            "SCRIPT ERROR: Assertion failed: Cancellation reported a stale transport error: [\"http_transport_failed\"]",
+            "SCRIPT ERROR: Assertion failed: Ticket cancellation checks failed"
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/online_lobby_presence_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/online_lobby_presence_smoke.log"
+      },
+      {
+        "test": "online_lobby_map_selection_integration_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 45.68,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_lobby_map_selection_integration_smoke.log"
+      },
+      {
+        "test": "online_lobby_selection_integration_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 49.76,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_lobby_selection_integration_smoke.log"
+      },
+      {
+        "test": "online_lobby_terminal_ui_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 31.3,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_lobby_terminal_ui_smoke.log"
+      },
+      {
+        "test": "online_map_selection_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 9.53,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_map_selection_smoke.log"
+      },
+      {
+        "test": "online_lobby_ui_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 42.89,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_lobby_ui_smoke.log"
+      },
+      {
+        "test": "online_lobby_web_hud_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 18.59,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_lobby_web_hud_smoke.log"
+      },
+      {
+        "test": "online_match_json_room_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 43.48,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "online_match_json_room_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 44.51,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/online_match_json_room_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/online_match_json_room_smoke.log"
+      },
+      {
+        "test": "online_match_service_terminal_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 21.56,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_match_service_terminal_smoke.log"
+      },
+      {
+        "test": "online_match_pending_command_smoke.gd",
+        "status": "failed",
+        "returncode": 1,
+        "seconds": 118.11,
+        "errors": [
+          "ERROR: ONLINE_MATCH_PENDING_COMMAND_FAILED Terminal startup did not settle promptly without emitting started",
+          "WARNING: 18 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "online_match_pending_command_smoke.gd",
+          "status": "failed",
+          "returncode": 1,
+          "seconds": 143.54,
+          "errors": [
+            "ERROR: ONLINE_MATCH_PENDING_COMMAND_FAILED Terminal startup did not settle promptly without emitting started",
+            "WARNING: 18 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/online_match_pending_command_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/online_match_pending_command_smoke.log"
+      },
+      {
+        "test": "online_peer_transport_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 8.89,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_peer_transport_smoke.log"
+      },
+      {
+        "test": "online_performance_diagnostics_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 21.89,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_performance_diagnostics_smoke.log"
+      },
+      {
+        "test": "online_profile_epoch_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 28.31,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_profile_epoch_smoke.log"
+      },
+      {
+        "test": "online_redundant_inputs_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 10.86,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_redundant_inputs_smoke.log"
+      },
+      {
+        "test": "online_result_winner_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 9.78,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_result_winner_smoke.log"
+      },
+      {
+        "test": "online_review_regressions_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 37.57,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_review_regressions_smoke.log"
+      },
+      {
+        "test": "online_match_pair_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 978.15,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "online_match_pair_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 240.52,
+          "errors": [],
+          "timeout": true,
+          "log": "/private/tmp/netcode-review-fixes/base/online_match_pair_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_match_pair_smoke.log"
+      },
+      {
+        "test": "online_match_start_cancel_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 182.17,
+        "errors": [
+          "WARNING: 26 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "online_match_start_cancel_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 255.91,
+          "errors": [
+            "WARNING: 26 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/online_match_start_cancel_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/online_match_start_cancel_smoke.log"
+      },
+      {
+        "test": "online_room_client_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 6.67,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_room_client_smoke.log"
+      },
+      {
+        "test": "online_room_client_service_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 13.65,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_room_client_service_smoke.log"
+      },
+      {
+        "test": "online_sparse_recovery_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 19.5,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_sparse_recovery_smoke.log"
+      },
+      {
+        "test": "online_user_text_font_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 18.17,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_user_text_font_smoke.log"
+      },
+      {
+        "test": "online_timer_authority_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 39.58,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_timer_authority_smoke.log"
+      },
+      {
+        "test": "player_body_compile_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 9.71,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/player_body_compile_smoke.log"
+      },
+      {
+        "test": "player_body_lifecycle_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 44.86,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/player_body_lifecycle_smoke.log"
+      },
+      {
+        "test": "online_timer_round_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 105.63,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "online_timer_round_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 95.7,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/online_timer_round_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/online_timer_round_smoke.log"
+      },
+      {
+        "test": "player_controller_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 22.12,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/player_controller_smoke.log"
+      },
+      {
+        "test": "player_hurt_lifetime_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 6.39,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/player_hurt_lifetime_smoke.log"
+      },
+      {
+        "test": "player_floor_state_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 11.52,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/player_floor_state_smoke.log"
+      },
+      {
+        "test": "ready_play_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 10.51,
+        "errors": [
+          "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "ready_play_smoke.gd",
+          "status": "failed",
+          "errors": [
+            "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+            "ERROR: 1 resources still in use at exit."
+          ],
+          "log": "/private/tmp/netcode-review-fixes/ready-base-1.log",
+          "note": "Repeated baseline run reproduced the identical ready/1861.mp3 playback leak."
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/ready_play_smoke.log"
+      },
+      {
+        "test": "pause_menu_smoke.gd",
+        "status": "failed",
+        "returncode": 0,
+        "seconds": 104.02,
+        "errors": [
+          "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "pause_menu_smoke.gd",
+          "status": "failed",
+          "returncode": 0,
+          "seconds": 144.48,
+          "errors": [
+            "WARNING: 6 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/pause_menu_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/pause_menu_smoke.log"
+      },
+      {
+        "test": "renji_import_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 17.22,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/renji_import_smoke.log"
+      },
+      {
+        "test": "player_visual_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 76.51,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/player_visual_smoke.log"
+      },
+      {
+        "test": "repeated_clip_placement_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 82.92,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "repeated_clip_placement_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 90.43,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/repeated_clip_placement_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/repeated_clip_placement_smoke.log"
+      },
+      {
+        "test": "replay_input_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 23.27,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/replay_input_smoke.log"
+      },
+      {
+        "test": "rollback_batched_correction_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 5.75,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/rollback_batched_correction_smoke.log"
+      },
+      {
+        "test": "replay_display_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 662.18,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/replay_display_smoke.log"
+      },
+      {
+        "test": "rollback_checkpoint_stride_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 8.56,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/rollback_checkpoint_stride_smoke.log"
+      },
+      {
+        "test": "rollback_replay_hooks_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 19.54,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/rollback_replay_hooks_smoke.log"
+      },
+      {
+        "test": "rollback_batched_battle_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 750.93,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/rollback_batched_battle_smoke.log"
+      },
+      {
+        "test": "rollback_battle_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 336.75,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/rollback_battle_smoke.log"
+      },
+      {
+        "test": "rollback_services_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 96.01,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/rollback_services_smoke.log"
+      },
+      {
+        "test": "rollback_sparse_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 13.4,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/rollback_sparse_smoke.log"
+      },
+      {
+        "test": "rollback_roster_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 1094.2,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "rollback_roster_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 240.33,
+          "errors": [],
+          "timeout": true,
+          "log": "/private/tmp/netcode-review-fixes/base/rollback_roster_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/rollback_roster_smoke.log"
+      },
+      {
+        "test": "round_reset_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 36.13,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/round_reset_smoke.log"
+      },
+      {
+        "test": "rollback_round_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 442.07,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/rollback_round_smoke.log"
+      },
+      {
+        "test": "rukia_base_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 29.11,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/rukia_base_smoke.log"
+      },
+      {
+        "test": "sakura_import_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 24.93,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/sakura_import_smoke.log"
+      },
+      {
+        "test": "sakura_ino_helper_binding_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 46.92,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/sakura_ino_helper_binding_smoke.log"
+      },
+      {
+        "test": "roster_candidate_flow_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 176.02,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/roster_candidate_flow_smoke.log"
+      },
+      {
+        "test": "selected_fighters_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 83.84,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/selected_fighters_smoke.log"
+      },
+      {
+        "test": "rukia_u_bitmap_fill_smoke.gd",
+        "status": "passed",
+        "errors": [],
+        "log": "/private/tmp/netcode-review-fixes/rukia-native.log",
+        "mode": "native rendering",
+        "baseline": null,
+        "classification": "passed"
+      },
+      {
+        "test": "sound_segments_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 9.06,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "sound_segments_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 22.52,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/sound_segments_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/sound_segments_smoke.log"
+      },
+      {
+        "test": "source_attack_name_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 11.27,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_attack_name_smoke.log"
+      },
+      {
+        "test": "source_callback_registry_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 4.52,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_callback_registry_smoke.log"
+      },
+      {
+        "test": "source_effect_placement_phase_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 6.01,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "source_effect_placement_phase_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 24.9,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/source_effect_placement_phase_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_effect_placement_phase_smoke.log"
+      },
+      {
+        "test": "shadow_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 188.3,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/shadow_smoke.log"
+      },
+      {
+        "test": "source_health_rules_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 10.93,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_health_rules_smoke.log"
+      },
+      {
+        "test": "source_hit_test_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 3.7,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_hit_test_smoke.log"
+      },
+      {
+        "test": "source_matrix_bounds_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 6.33,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_matrix_bounds_smoke.log"
+      },
+      {
+        "test": "source_number_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 3.71,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_number_smoke.log"
+      },
+      {
+        "test": "source_repeat_contact_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 9.6,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "source_repeat_contact_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 50.28,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/source_repeat_contact_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_repeat_contact_smoke.log"
+      },
+      {
+        "test": "source_rotated_collision_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 10.32,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_rotated_collision_smoke.log"
+      },
+      {
+        "test": "stage_sound_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 4.03,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "stage_sound_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 21.8,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/stage_sound_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/stage_sound_smoke.log"
+      },
+      {
+        "test": "source_flash_dedup_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 90.24,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/source_flash_dedup_smoke.log"
+      },
+      {
+        "test": "standing_loop_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 12.03,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/standing_loop_smoke.log"
+      },
+      {
+        "test": "timeout_checkpoint_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 4.09,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/timeout_checkpoint_smoke.log"
+      },
+      {
+        "test": "title_menu_online_entry_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 4.55,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/title_menu_online_entry_smoke.log"
+      },
+      {
+        "test": "title_menu_source_smoke.gd",
+        "status": "failed",
+        "returncode": -15,
+        "seconds": 6.14,
+        "errors": [
+          "SCRIPT ERROR: Invalid assignment of property or key 'hide_single' with value of type 'bool' on a base object of type 'Control (TitleMenu)'."
+        ],
+        "timeout": false,
+        "baseline": {
+          "test": "title_menu_source_smoke.gd",
+          "status": "failed",
+          "returncode": -15,
+          "seconds": 26.86,
+          "errors": [
+            "SCRIPT ERROR: Invalid assignment of property or key 'hide_single' with value of type 'bool' on a base object of type 'Control (TitleMenu)'."
+          ],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/title_menu_source_smoke.log"
+        },
+        "classification": "baseline_failure",
+        "log": "/private/tmp/netcode-review-fixes/head/title_menu_source_smoke.log"
+      },
+      {
+        "test": "transformation_gate_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 27.13,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/transformation_gate_smoke.log"
+      },
+      {
+        "test": "shared_mode_lifecycle_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 280.8,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/shared_mode_lifecycle_smoke.log"
+      },
+      {
+        "test": "uryu_q5_reference_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 27.64,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/uryu_q5_reference_smoke.log"
+      },
+      {
+        "test": "vs_com_intro_poll_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 19.9,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/vs_com_intro_poll_smoke.log"
+      },
+      {
+        "test": "vs_com_ko_resume_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 45.1,
+        "errors": [],
+        "timeout": false,
+        "baseline": {
+          "test": "vs_com_ko_resume_smoke.gd",
+          "status": "passed",
+          "returncode": 0,
+          "seconds": 96.09,
+          "errors": [],
+          "timeout": false,
+          "log": "/private/tmp/netcode-review-fixes/base/vs_com_ko_resume_smoke.log"
+        },
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/vs_com_ko_resume_smoke.log"
+      },
+      {
+        "test": "vs_com_menu_entry_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 32.09,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/vs_com_menu_entry_smoke.log"
+      },
+      {
+        "test": "super_guard_reference_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 434.96,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/super_guard_reference_smoke.log"
+      },
+      {
+        "test": "web_audio_settings_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 8.28,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/web_audio_settings_smoke.log"
+      },
+      {
+        "test": "win_hud_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 14.66,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/win_hud_smoke.log"
+      },
+      {
+        "test": "you_helper_dynamic_contact_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 19.26,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/you_helper_dynamic_contact_smoke.log"
+      },
+      {
+        "test": "vs_com_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 151.48,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head/vs_com_smoke.log"
+      },
+      {
+        "test": "vs_com_ko_smoke.gd",
+        "status": "passed",
+        "returncode": 0,
+        "seconds": 156.22,
+        "errors": [],
+        "timeout": false,
+        "baseline": null,
+        "classification": "passed",
+        "log": "/private/tmp/netcode-review-fixes/head-rerun/vs_com_ko_smoke.log"
+      },
+      {
+        "test": "online_hud_browser_smoke.gd",
+        "status": "passed",
+        "errors": [],
+        "log": "/private/tmp/netcode-review-fixes/hud.log",
+        "mode": "browser",
+        "baseline": null,
+        "classification": "passed"
+      }
+    ],
+    "super_guard": {
+      "status": "passed",
+      "source_snapshots": 1800,
+      "log": "/private/tmp/netcode-review-fixes/head-rerun/super_guard_reference_smoke.log"
+    },
+    "godot_new_regressions": 0
+  },
+  "method": [
+    "Every current godot/tests/*smoke.gd entry is attempted. A SCRIPT ERROR, nonzero exit, resource ERROR or leaked-at-exit WARNING fails a native smoke; an OK marker alone never overrides it.",
+    "Long-running native scenarios initially exceeded the batch runner 240s process timeout and were rerun with 1200s/3600s external process budgets. No simulation assertions, reference outputs, hash thresholds or engine quit limits were relaxed.",
+    "bitmap_clip and rukia_u_bitmap_fill require a rendering backend and are rerun natively; online_hud_browser requires the exported Web scene.",
+    "The source-reference wrapper initially exceeded its 90s external process timeout; an unchanged comparison rerun used a 1200s subprocess budget.",
+    "Baseline warning checks are stricter than the prior report, which did not count warning-only ObjectDB leaks. ready_play reproduced the identical ready/1861.mp3 AudioStream/Playback leak in a repeated baseline run.",
+    "Raw logs, tool downloads, imported caches, temporary projects and browser screenshots stay outside the repository. Web export succeeded; editor-settings persistence emitted sandbox permission errors unrelated to the exported HUD runtime."
+  ],
+  "limitations": [
+    "Fresh paired-browser/human super-pause acceptance remains pending; no FPS or Flash-equivalence claim.",
+    "M4-01 remains pending."
+  ],
+  "raw_log_root": "/private/tmp/netcode-review-fixes",
+  "commands": [
+    "python3 -m unittest discover -v -s tools/tests",
+    "python3 -m unittest tools.test_online_manifest tools.test_online_user_font",
+    "npm test (services/matchmaking, Node 24.18.0)",
+    "npm run format:check (services/matchmaking)",
+    "node --test tools/tests/web_diagnostics_shell.test.mjs",
+    "Godot --headless --audio-driver Dummy --path godot -s res://tests/<smoke>.gd (all entries; diagnostic export/replay arguments supplied)",
+    "Godot --path godot -s res://tests/bitmap_clip_smoke.gd",
+    "Godot --path godot -s res://tests/rukia_u_bitmap_fill_smoke.gd",
+    "node tools/test_online_hud_godot_chromium.mjs (temporary copy with isolated local ports only)",
+    "python3 tools/test_shared_modes.py --godot <Godot> (external subprocess budget increased only)",
+    "python3 tools/verify.py",
+    "python3 tools/check_handoff.py",
+    "python3 tools/validate_contracts.py",
+    "python3 tools/build_online_manifest.py --check",
+    "git diff --check"
+  ]
+}

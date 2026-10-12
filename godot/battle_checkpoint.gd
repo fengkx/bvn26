@@ -40,6 +40,7 @@ const MAIN_EXTERNAL := [
 	"diagnostics",
 	"_diagnostic_initial_players",
 	"_diagnostic_progress_signature",
+	"_diagnostic_progress_tick",
 	"_diagnostic_last_progress_ms",
 	"_diagnostic_watchdog_elapsed_ms",
 	"_diagnostic_stall_reported",
@@ -442,7 +443,9 @@ func _encode(value: Variant) -> Variant:
 				error = "Unaudited native node: " + value.get_class()
 			if value is Timer and not value.is_stopped(): error = "Live timer in checkpoint"
 			record.parent = _encode(value.get_parent()) if value is HitEffectRuntime or value is StageHitRuntime or value is ShadowSnapshot or value == _game.ko_nextfight_timer else null
-			record.order = value.get_index() if value.get_parent() != null else 0
+			# Fixed scene siblings include local UI and deferred scene disposal.
+			# Only dynamically restored parents consume an ordering field.
+			record.order = value.get_index() if record.parent != null else 0
 			record.native = {}
 			record.meta = {}
 			if value == _game.screen_flash:

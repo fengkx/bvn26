@@ -1589,3 +1589,78 @@ test("a pinging lobby still closes at the two hour maximum", async (t) => {
   });
   assert.equal(raw.nextAlarm, null);
 });
+
+test("lockstep delay profiles stay frozen and retired signaling cannot poison a rematch", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  await setup(server, room);
+  const host = await socket(server, room, room.owner);
+  t.after(() => host.ws.terminate());
+  let oldEpoch = null;
+  let oldNegotiation = null;
+  for (const delay of [3, 4]) {
+    const selected = {
+      id: `chrome-exp-d${delay}-p0`,
+      inputDelay: delay,
+      predictionWindow: 0,
+    };
+    const configured = await op(server, room, 0, {
+      type: "configure_network",
+      revision: room.state.setupRevision,
+      profile: selected,
+    });
+    assert.equal(configured.status, 200);
+    for (const slot of [0, 1]) {
+      const ready = await op(server, room, slot, {
+        type: "ready",
+        revision: room.state.setupRevision,
+        ready: true,
+        profile: selected,
+      });
+      assert.equal(ready.status, 200);
+    }
+    await op(server, room, 0, {
+      type: "prepare",
+      revision: room.state.setupRevision,
+    });
+    const epoch = room.state.match.epoch;
+    assert.deepEqual(room.state.match.profile, selected);
+    await op(server, room, 0, { type: "negotiate", epoch });
+    if (oldEpoch) {
+      host.ws.send(
+        JSON.stringify({
+          version: 1,
+          type: "signal",
+          seq: 1,
+          epoch: oldEpoch,
+          negotiationId: oldNegotiation,
+          kind: "candidate",
+          payload: "retired-candidate",
+        }),
+      );
+      const rejected = await host.receive("error");
+      assert.equal(rejected.error, "stale_negotiation");
+      assert.equal(rejected.negotiationId, oldNegotiation);
+    }
+    oldEpoch = epoch;
+    oldNegotiation = room.state.negotiation.id;
+    for (const slot of [0, 1])
+      await op(server, room, slot, {
+        type: "loaded",
+        epoch,
+        initialHash: "c".repeat(64),
+      });
+    for (const slot of [0, 1])
+      await op(server, room, slot, { type: "start_ack", epoch });
+    assert.equal(room.state.phase, "active");
+    const rejected = await op(server, room, 0, {
+      type: "configure_network",
+      revision: room.state.setupRevision,
+      profile,
+    });
+    assert.equal(rejected.error, "not_in_lobby");
+    assert.deepEqual(room.state.match.profile, selected);
+    await op(server, room, 0, { type: "abort", epoch });
+    assert.equal(room.state.phase, "lobby");
+  }
+});

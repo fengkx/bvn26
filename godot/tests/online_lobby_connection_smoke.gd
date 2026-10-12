@@ -275,7 +275,8 @@ func _test_match_start_announces_close() -> void:
 			peer.open = ready
 			lobby._room_connection = connection
 			lobby._room_connection_ready = ready
-			await lobby._start_prepared_match({"match": {"epoch": "fixture-epoch"}})
+			lobby._room_state = {"phase": "preparing", "match": {"epoch": "fixture-epoch"}}
+			await lobby._start_prepared_match(lobby._room_state.duplicate(true))
 			_expect(peer.closed, "match start did not close the selection peer")
 			var expected: Array = [{
 				"channel": "reliable", "type": "lobby_connection_closing",

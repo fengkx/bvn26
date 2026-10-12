@@ -598,10 +598,10 @@ func _build_room_view() -> void:
 	profile_grid.add_theme_constant_override("v_separation", 4)
 	_owner_settings.add_child(profile_grid)
 	_delay_choice = _option()
-	_add_number_options(profile_grid, "输入延迟", _delay_choice, [0, 1, 2], " 帧")
+	_add_number_options(profile_grid, "输入延迟", _delay_choice, [0, 1, 2, 3, 4], " 帧")
 	_select_number(_delay_choice, 2)
 	_prediction_choice = _option()
-	_add_number_options(profile_grid, "预测上限", _prediction_choice, [2, 4, 6], " 帧")
+	_add_number_options(profile_grid, "预测上限", _prediction_choice, [0, 2, 4, 6], " 帧")
 	_select_number(_prediction_choice, 6)
 	var profile_latency_hint := Label.new()
 	profile_latency_hint.text = "默认增加约 67 毫秒操作延迟以减少等待；由房主统一设置。"
@@ -1108,9 +1108,26 @@ func _on_connect_selection_pressed() -> void:
 	await _start_room_connection()
 
 
+func _apply_network_url_options(window: String, delay: String) -> bool:
+	if _slot != 0 or _room_state.get("phase") != "lobby": return false
+	var changed := false
+	if window == "0" and _selected_number(_prediction_choice) != 0:
+		_select_number(_prediction_choice, 0)
+		changed = true
+	if delay in ["3", "4"] and _selected_number(_delay_choice) != int(delay):
+		_select_number(_delay_choice, int(delay))
+		changed = true
+	return changed
+
+
 func _start_room_connection() -> void:
 	if _room_connection_ready or _room_connection_starting or _room_id.is_empty() or _slot not in [0, 1]:
 		return
+	if OS.has_feature("web") and _apply_network_url_options(
+		str(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_window') || ''")),
+		str(JavaScriptBridge.eval("new URLSearchParams(location.search).get('online_delay') || ''"))):
+		await _commit_network_profile_from_controls()
+		if not _same_network_profile(_current_network_profile(), _authoritative_network_profile()): return
 	if room_client.has_uncertain_command() or room_client.is_command_in_flight():
 		_show_error("command_outcome_uncertain")
 		_retry_button.visible = true
@@ -3084,6 +3101,10 @@ func _start_prepared_match(state: Dictionary) -> void:
 	var match_state := _as_dictionary(state.get("match"))
 	var epoch := str(match_state.get("epoch", ""))
 	if epoch.is_empty() or epoch == _starting_epoch:
+		return
+	# State signals schedule this callback; a terminal/new-epoch update can win
+	# before it runs. Never start a coordinator from the superseded snapshot.
+	if _room_state.get("phase") != "preparing" or str(_as_dictionary(_room_state.get("match")).get("epoch", "")) != epoch:
 		return
 	_lifecycle_generation += 1
 	var generation := _lifecycle_generation

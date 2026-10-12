@@ -63,6 +63,7 @@ var session := GameSession.new()
 var diagnostics := DiagnosticRuntime.new()
 var _diagnostic_initial_players: Dictionary = {}
 var _diagnostic_progress_signature := ""
+var _diagnostic_progress_tick := 0
 var _diagnostic_last_progress_ms := 0
 var _diagnostic_watchdog_elapsed_ms := 0
 var _diagnostic_stall_reported := false
@@ -412,12 +413,17 @@ func _diagnostic_watchdog_step(now_ms: int) -> void:
 	if signature != _diagnostic_progress_signature:
 		_diagnostic_progress_signature = signature
 		_diagnostic_last_progress_ms = now_ms
+		_diagnostic_progress_tick = physics_tick
 		_diagnostic_stall_reported = false
 		return
 	if not _diagnostic_stall_reported and now_ms - _diagnostic_last_progress_ms >= 10000:
 		_diagnostic_stall_reported = true
 		var reason := "suspected_super_pause_stall" if bool(pause.globalSuperPaused) else "suspected_stall"
+		if has_meta("online_wait") and physics_tick == _diagnostic_progress_tick:
+			reason = "online_simulation_stall"
 		diagnostics.freeze_diagnostic(reason, {
+			"onlineWait": get_meta("online_wait", ""),
+			"simulationAdvanced": physics_tick != _diagnostic_progress_tick,
 			"classification": "heuristic_not_deadlock_proof",
 			"noProgressMs": now_ms - _diagnostic_last_progress_ms,
 			"userPaused": false,
@@ -1014,7 +1020,7 @@ func _input_for(fighter: FighterRuntime) -> Dictionary:
 	if fighter == ichigo and session.p2cpu:
 		return {}
 	var inputs: Dictionary = _match_inputs[fighter.player_slot].duplicate()
-	if diagnostics.enabled:
+	if diagnostics.enabled and not diagnostics.replaying:
 		var input_source := "playback" if match_input.playback else "player"
 		if diagnostic_input_provider.is_valid() and not match_input.playback:
 			input_source = "diagnostic_tape"

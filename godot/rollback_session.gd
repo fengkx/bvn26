@@ -222,7 +222,7 @@ func _advance_one() -> String:
 	_record_profile_duration("replay_advance" if _replaying else "advance", advance_started_usec)
 	if not problem.is_empty():
 		return problem
-	if sparse_saves and (frame < confirmed or frame % checkpoint_stride != 0) and frame % CHECKPOINT_INTERVAL != 0 \
+	if (_window == 0 or (sparse_saves and (frame < confirmed or frame % checkpoint_stride != 0))) and frame % CHECKPOINT_INTERVAL != 0 \
 		and not (_adapter.has_method("must_save_frame") and _adapter.call("must_save_frame", frame)):
 		_used[frame] = players
 		_states.erase(frame)
@@ -359,7 +359,7 @@ func _prune() -> void:
 	var retain_from := mini(confirmed, maxi(0, frontier - _capacity + 1))
 	input_floor = maxi(input_floor, retain_from)
 	var history_floor := latest_saved_at_or_before(input_floor)
-	if sparse_saves or retain_hash_history:
+	if _window == 0 or sparse_saves or retain_hash_history:
 		# Recovery needs a common periodic checkpoint across different save policies.
 		var recovery_start := maxi(0, mini(confirmed, frontier) - _window - _delay - 1)
 		var recovery_anchor := (recovery_start / CHECKPOINT_INTERVAL) * CHECKPOINT_INTERVAL

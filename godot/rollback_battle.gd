@@ -147,10 +147,12 @@ func profile_counters() -> Dictionary:
 
 func begin_replay() -> void:
 	checkpoint.replaying = true
+	game.diagnostics.replaying = true
 
 
 func end_replay() -> void:
 	checkpoint.replaying = false
+	game.diagnostics.replaying = false
 	checkpoint.flush_displays()
 
 func confirm_through(frame: int) -> void:
@@ -170,7 +172,9 @@ func retain_states(states: Array) -> void:
 		if frame <= oldest: _intro_skip_journal.erase(frame)
 
 func close() -> void:
+	checkpoint.replaying = false
 	if game == null: return
+	game.diagnostics.replaying = false
 	game.set_process_input(_input_enabled)
 	game.set_process_unhandled_input(_unhandled_enabled)
 	game.match_input.source = Callable()

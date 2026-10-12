@@ -119,6 +119,7 @@ func _run() -> void:
 		assert(tick_error.is_empty(), tick_error)
 		await process_frame
 	assert(first_match.rollback.frontier == 3 and second_match.rollback.frontier == 3)
+	_align_pair(first_match, second_match, neutral)
 	difference = State.first_difference(first_match.save_state(), second_match.save_state())
 	assert(difference.is_empty(), "Same input/clock state differs at frame 3: " + difference)
 	hub.hold_p2_to_p1 = true
@@ -136,8 +137,10 @@ func _run() -> void:
 		var tick_error := _step_pair(first_match, second_match, time_origin + tick * 33, neutral, neutral)
 		assert(tick_error.is_empty(), tick_error)
 		await process_frame
+	_align_pair(first_match, second_match, neutral)
 	assert(first_match.rollback.frontier == second_match.rollback.frontier,
 		"Peers did not return to the same simulation frontier: %d vs %d" % [first_match.rollback.frontier, second_match.rollback.frontier])
+	_align_pair(first_match, second_match, neutral)
 	difference = State.first_difference(first_match.save_state(), second_match.save_state())
 	assert(difference.is_empty(), "Late JSON-roundtripped input did not converge: " + difference)
 	print("ONLINE_MATCH_PAIR_BOOTSTRAP_CORRECTION_OK frame=%d p1_rollback_count=%d json_roundtrip=true" % [
@@ -157,7 +160,7 @@ func _run() -> void:
 	var p2_health_before_fight: float = first.ichigo.health
 	var saw_helper_activation := false
 	var late_combat_input_released := false
-	for tick in range(19, 331):
+	for tick in range(19, 601):
 		var p1_buttons: Array[String] = []
 		var p2_buttons: Array[String] = []
 		if not first.battle_intro.active and combat_start_tick < 0:
@@ -201,24 +204,25 @@ func _run() -> void:
 			assert(hub.state_hash_frames[slot].has(expected_frame), "Slot %d never sent confirmed frame hash %d" % [slot, expected_frame])
 	assert(first_match._local_hashes.is_empty() and first_match._remote_hashes.is_empty(), "Periodic confirmed hashes remain unmatched")
 	assert(second_match._local_hashes.is_empty() and second_match._remote_hashes.is_empty(), "Peer periodic confirmed hashes remain unmatched")
+	_align_pair(first_match, second_match, neutral)
 	difference = State.first_difference(first_match.save_state(), second_match.save_state())
 	assert(difference.is_empty(), "Fight states differ after live attack/movement/helper inputs: " + difference)
 	print("ONLINE_MATCH_PAIR_FIGHT_HASH_OK frame=%d hashes=30,60,90 real_hit=true helper_activity=%s" % [
 		first_match.rollback.frontier, str(saw_helper_activation),
 	])
 	var control_errors: Array[String] = []
-	second_match.pause_requested.connect(func(request: Dictionary) -> void:
+	var on_pause := func(request: Dictionary) -> void:
 		var response: String = second_match.respond_pause(str(request.get("id", "")), true)
 		if not response.is_empty():
 			control_errors.append(response)
-	)
-	second_match.resume_requested.connect(func(request: Dictionary) -> void:
+	second_match.pause_requested.connect(on_pause)
+	var on_resume := func(request: Dictionary) -> void:
 		var response: String = second_match.respond_resume(str(request.get("id", "")), true)
 		if not response.is_empty():
 			control_errors.append(response)
-	)
+	second_match.resume_requested.connect(on_resume)
 	assert(first_match.request_pause().is_empty(), "P1 pause request failed")
-	var control_now := time_origin + 330 * 33
+	var control_now := time_origin + 600 * 33
 	for _attempt in 30:
 		control_now += 33
 		var tick_error := _step_pair(first_match, second_match, control_now, neutral, neutral)
@@ -229,6 +233,7 @@ func _run() -> void:
 	assert(control_errors.is_empty(), "Pause response failed: " + "; ".join(control_errors))
 	assert(first_match.paused and second_match.paused, "Both peers did not commit the pause barrier")
 	assert(first_match.rollback.frontier == second_match.rollback.frontier, "Pause did not stop both peers at the same frame")
+	_align_pair(first_match, second_match, neutral)
 	difference = State.first_difference(first_match.save_state(), second_match.save_state())
 	assert(difference.is_empty(), "Peers disagreed on the confirmed pause state: " + difference)
 	var pause_frame: int = first_match.rollback.frontier
@@ -243,6 +248,7 @@ func _run() -> void:
 			break
 	assert(control_errors.is_empty(), "Resume response failed: " + "; ".join(control_errors))
 	assert(not first_match.paused and not second_match.paused, "Both peers did not commit the resume barrier")
+	_align_pair(first_match, second_match, neutral)
 	difference = State.first_difference(first_match.save_state(), second_match.save_state())
 	assert(difference.is_empty(), "Peers diverged while resuming: " + difference)
 	print("ONLINE_MATCH_PAIR_RESUME_BARRIER_OK frame=%d equal_hash=true" % first_match.rollback.frontier)
@@ -275,6 +281,7 @@ func _run() -> void:
 	assert(not first_match.recovering and not second_match.recovering, "Recovered channels did not reconcile")
 	assert(recovery_events.has("p1:reconciled") and recovery_events.has("p2:reconciled"),
 		"Both peers did not complete the recovery comparison/commit protocol: " + str(recovery_events))
+	_align_pair(first_match, second_match, neutral)
 	difference = State.first_difference(first_match.save_state(), second_match.save_state())
 	assert(difference.is_empty(), "Peers diverged after short recovery: " + difference)
 	print("ONLINE_MATCH_PAIR_SHORT_RECOVERY_OK both_reconciled=true equal_hash=true")
@@ -284,22 +291,30 @@ func _run() -> void:
 	second_peer.set_link_connected(false)
 	assert(first_match.recovering and second_match.recovering, "Peers did not begin the timeout recovery window")
 	var timeout_origin: int = first_match._disconnect_started_ms
-	var before_deadline_error := first_match.process_tick(timeout_origin + 9_999, neutral)
-	assert(before_deadline_error.is_empty(), "Recovery aborted before its 10-second deadline: %s (origin=%d current=%d recovery_start=%d)" % [
+	var before_deadline_error := first_match.process_tick(timeout_origin + Coordinator.RECOVERY_MS - 1, neutral)
+	assert(before_deadline_error.is_empty(), "Recovery aborted before its 30-second deadline: %s (origin=%d current=%d recovery_start=%d)" % [
 		before_deadline_error, timeout_origin, first_match._process_now_ms, first_match._recovery_started_ms,
 	])
-	assert(first_match.running and first_match.recovering, "Peer stopped before the 10-second deadline")
-	first_match.process_tick(timeout_origin + 10_000, neutral)
+	assert(first_match.running and first_match.recovering, "Peer stopped before the 30-second deadline")
+	first_match.process_tick(timeout_origin + Coordinator.RECOVERY_MS, neutral)
 	assert(first_match.error == "peer_disconnect_timeout" and not first_match.running,
-		"Peer disconnect did not abort without a winner at 10 seconds")
+		"Peer disconnect did not abort without a winner at 30 seconds")
 	assert(not abort_reports.is_empty() and abort_reports.back().get("details", {}).get("winner", "missing") == null,
 		"Disconnect timeout diagnostics did not record a null winner")
-	print("ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null")
+	print("ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=30000 winner=null")
 	print("ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=%s frame=%d p1_rollback_count=%d json_roundtrip=true" % [
 		initial_hash, first_match.rollback.frontier, first_match.rollback.rollback_count,
 	])
+	second_match.pause_requested.disconnect(on_pause)
+	second_match.resume_requested.disconnect(on_resume)
+	on_pause = Callable()
+	on_resume = Callable()
 	first_match.close()
 	second_match.close()
+	assert(hub.peers.is_empty(), "Closing both transports must release hub registrations")
+	var second_match_ref: WeakRef = weakref(second_match)
+	second_match = null
+	assert(second_match_ref.get_ref() == null, "Pause/resume callbacks retained the closed coordinator")
 	assert(not first.combo_hud.has_meta("suppress_display"))
 	assert(not second.combo_hud.has_meta("suppress_display"))
 	first_room.free()
@@ -476,8 +491,8 @@ func _run() -> void:
 	assert(previous_epoch != next_first_match.epoch and next_first_match.running and next_second_match.running,
 		"Rematch did not start under a fresh epoch")
 	next_first_match.receive_peer_message("reliable", "result", agreed_result, hub.next_peer_sequence[1] + 1)
-	assert(next_first_match.error == "invalid_peer_result" and not next_first_match.running,
-		"A result from the previous epoch was not rejected")
+	assert(next_first_match.error.is_empty() and next_first_match.running,
+		"A result from the previous epoch poisoned the rematch")
 	print("ONLINE_MATCH_PAIR_NEW_EPOCH_OK previous_result_rejected=true epoch_changed=true")
 	next_first_match.close()
 	next_second_match.close()
@@ -547,3 +562,13 @@ func _create_game(parent: Node, seed: int) -> Node:
 	for timer in game.title_menu.find_children("*", "Timer", true, false):
 		timer.stop()
 	return game
+
+
+func _align_pair(first: Object, second: Object, held: Dictionary) -> void:
+	# Independent clocks permit temporary frontier differences. Compare complete
+	# checkpoints only after delivering both peers to the same simulation frame.
+	for attempt in 32:
+		if first.rollback.frontier == second.rollback.frontier: return
+		var behind: Object = first if first.rollback.frontier < second.rollback.frontier else second
+		assert(behind.process_tick(behind._process_now_ms, held).is_empty())
+	assert(false, "Peers could not reach a common frame")

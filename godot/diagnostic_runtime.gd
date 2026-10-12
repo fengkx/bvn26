@@ -13,6 +13,7 @@ var build_id: String = ""
 var resource_version: String = ""
 var page_visible: bool = true
 var enabled: bool = true
+var replaying := false
 var _snapshot: Dictionary = {}
 var _web_callback: JavaScriptObject
 var _web_window: JavaScriptObject
@@ -51,6 +52,7 @@ func begin_match(snapshot: Dictionary) -> void:
 
 
 func end_match(reason: String) -> void:
+	replaying = false
 	if match_id.is_empty():
 		return
 	push_event("match_ended", {"matchId": match_id, "reason": reason})
@@ -58,7 +60,7 @@ func end_match(reason: String) -> void:
 
 
 func push_event(event_type: String, payload: Dictionary = {}, fight_tick: int = -1) -> Dictionary:
-	if not enabled:
+	if not enabled or replaying:
 		return {}
 	if match_id.is_empty() and event_type != "runtime_ready":
 		return {}

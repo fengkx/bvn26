@@ -314,6 +314,12 @@ func _receive_packet(channel: String, packet: PackedByteArray) -> bool:
 		_fail("peer_message_too_large")
 		return false
 	var decoded: Variant = JSON.parse_string(packet.get_string_from_utf8())
+	# An already queued packet from the retired connection must not abort a
+	# fresh epoch or consume its sequence numbers.
+	if decoded is Dictionary and decoded.get("roomId") == _room_id \
+		and decoded.get("from") == _remote_slot and decoded.get("epoch") != _epoch \
+		and (decoded.get("epoch") == null or _valid_uuid(decoded.get("epoch"))):
+		return false
 	if not decoded is Dictionary or not _validate_envelope(decoded, channel):
 		_fail("invalid_peer_envelope")
 		return false

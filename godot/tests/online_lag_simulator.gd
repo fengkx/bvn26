@@ -840,6 +840,12 @@ func _input_for(slot: int, coordinator: Object, tape: Dictionary, seeded: Array[
 
 
 func _scenario_setup(seed: int) -> Dictionary:
+	var network_profile: Dictionary = DEFAULT_PROFILE.duplicate(true)
+	for argument in OS.get_cmdline_user_args():
+		if argument == "--online-window=0": network_profile.predictionWindow = 0
+		if argument in ["--online-delay=3", "--online-delay=4"]:
+			network_profile.inputDelay = int(argument.get_slice("=", 1))
+	network_profile.id = "chrome-exp-d%d-p%d" % [network_profile.inputDelay, network_profile.predictionWindow]
 	return {
 		"members": [
 			{"choice": {"fighter": "minren", "helper": "woailuo"}},
@@ -848,7 +854,7 @@ func _scenario_setup(seed: int) -> Dictionary:
 		"stage": "现世",
 		"rules": {"time": 100, "life": 5},
 		"seed": seed,
-		"profile": DEFAULT_PROFILE.duplicate(true),
+		"profile": network_profile,
 	}
 
 
