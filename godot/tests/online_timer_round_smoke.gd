@@ -80,7 +80,13 @@ class OnlineRoundAdapter extends RefCounted:
 
 	func dispose() -> void:
 		if battle != null: battle.close()
+		battle = null
+		timers = null
 		if game != null:
+			# Headless audio may still own the final round-intro playback at exit.
+			for player in game.find_children("*", "AudioStreamPlayer", true, false):
+				player.stop()
+				player.stream = null
 			game._goto_menu()
 			game.free()
 		game = null
@@ -135,6 +141,10 @@ func _run() -> void:
 	assert(adapter.game.countdown == source_countdown and adapter.game.countdown.recorded_active,
 		"Restoring the cross-round checkpoint replaced the persistent countdown registration")
 	print("ONLINE_TIMER_ROUND_SMOKE_OK ko_to_nextfight=true persistent_countdown=true round=%d replayed=%d_frames" % [int(adapter.game.ko_state["_root.rounds"]), int(after_round.frame - before_round.frame)])
+	var battle_ref: WeakRef = weakref(adapter.battle)
+	var timer_ref: WeakRef = weakref(adapter.timers)
 	adapter.dispose()
+	assert(battle_ref.get_ref() == null and timer_ref.get_ref() == null, "Round teardown retained its battle/timer owners")
+	adapter = null
 	await process_frame
 	quit()

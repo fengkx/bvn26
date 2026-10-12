@@ -698,3 +698,11 @@ The current 49-row callback index is [r18](../evidence/characters/lee/godot/call
 ### Online netcode step 1 (2026-10-12)
 
 User-authorized networking work on `fix/netcode-step1` replaces reliable per-frame inputs with bounded redundant unordered batches and cumulative ACKs. Online timers now follow deterministic simulation time; both peers use bounded symmetric pacing. Lockstep/delay URL options use the existing pre-match profile barrier. Initial checkpoint layout noise, retired-epoch messages, deferred startup races, and replay diagnostic emission have targeted fixes. The retained super-pause incident coincides with no simulation progress/page suspension; no source pause-release rule was changed. Full human/Web acceptance and baseline smoke failures remain open; this does not complete M4 or establish Flash parity. Evidence and current test results: [netcode step 1](../evidence/online/netcode-step1-2026-10-12.json). No deployment or merge performed.
+
+
+PR #4 review follow-up: startup uses the Worker's preparation deadline, input
+backlogs apply sampling backpressure, suspended-tab recovery has a bounded grace,
+and lockstep retains common recovery checkpoints. Startup epoch buffering and
+replay/fixture disposal regressions are covered. Detailed baseline comparisons:
+[evidence](../evidence/online/netcode-step1-review-2026-10-12.json). Full paired Web
+acceptance remains pending; no deployment, merge, or milestone completion.

@@ -211,16 +211,16 @@ func _run() -> void:
 		first_match.rollback.frontier, str(saw_helper_activation),
 	])
 	var control_errors: Array[String] = []
-	second_match.pause_requested.connect(func(request: Dictionary) -> void:
+	var on_pause := func(request: Dictionary) -> void:
 		var response: String = second_match.respond_pause(str(request.get("id", "")), true)
 		if not response.is_empty():
 			control_errors.append(response)
-	)
-	second_match.resume_requested.connect(func(request: Dictionary) -> void:
+	second_match.pause_requested.connect(on_pause)
+	var on_resume := func(request: Dictionary) -> void:
 		var response: String = second_match.respond_resume(str(request.get("id", "")), true)
 		if not response.is_empty():
 			control_errors.append(response)
-	)
+	second_match.resume_requested.connect(on_resume)
 	assert(first_match.request_pause().is_empty(), "P1 pause request failed")
 	var control_now := time_origin + 600 * 33
 	for _attempt in 30:
@@ -291,22 +291,30 @@ func _run() -> void:
 	second_peer.set_link_connected(false)
 	assert(first_match.recovering and second_match.recovering, "Peers did not begin the timeout recovery window")
 	var timeout_origin: int = first_match._disconnect_started_ms
-	var before_deadline_error := first_match.process_tick(timeout_origin + 9_999, neutral)
-	assert(before_deadline_error.is_empty(), "Recovery aborted before its 10-second deadline: %s (origin=%d current=%d recovery_start=%d)" % [
+	var before_deadline_error := first_match.process_tick(timeout_origin + Coordinator.RECOVERY_MS - 1, neutral)
+	assert(before_deadline_error.is_empty(), "Recovery aborted before its 30-second deadline: %s (origin=%d current=%d recovery_start=%d)" % [
 		before_deadline_error, timeout_origin, first_match._process_now_ms, first_match._recovery_started_ms,
 	])
-	assert(first_match.running and first_match.recovering, "Peer stopped before the 10-second deadline")
-	first_match.process_tick(timeout_origin + 10_000, neutral)
+	assert(first_match.running and first_match.recovering, "Peer stopped before the 30-second deadline")
+	first_match.process_tick(timeout_origin + Coordinator.RECOVERY_MS, neutral)
 	assert(first_match.error == "peer_disconnect_timeout" and not first_match.running,
-		"Peer disconnect did not abort without a winner at 10 seconds")
+		"Peer disconnect did not abort without a winner at 30 seconds")
 	assert(not abort_reports.is_empty() and abort_reports.back().get("details", {}).get("winner", "missing") == null,
 		"Disconnect timeout diagnostics did not record a null winner")
-	print("ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=10000 winner=null")
+	print("ONLINE_MATCH_PAIR_TIMEOUT_ABORT_OK fake_elapsed_ms=30000 winner=null")
 	print("ONLINE_MATCH_PAIR_SMOKE_OK initial_hash=%s frame=%d p1_rollback_count=%d json_roundtrip=true" % [
 		initial_hash, first_match.rollback.frontier, first_match.rollback.rollback_count,
 	])
+	second_match.pause_requested.disconnect(on_pause)
+	second_match.resume_requested.disconnect(on_resume)
+	on_pause = Callable()
+	on_resume = Callable()
 	first_match.close()
 	second_match.close()
+	assert(hub.peers.is_empty(), "Closing both transports must release hub registrations")
+	var second_match_ref: WeakRef = weakref(second_match)
+	second_match = null
+	assert(second_match_ref.get_ref() == null, "Pause/resume callbacks retained the closed coordinator")
 	assert(not first.combo_hud.has_meta("suppress_display"))
 	assert(not second.combo_hud.has_meta("suppress_display"))
 	first_room.free()

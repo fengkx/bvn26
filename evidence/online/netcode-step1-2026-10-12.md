@@ -42,3 +42,38 @@ Compatibility is isolated with regenerated build fingerprints. There are no new 
 3. Inject packet loss, duplication and reordering; verify cumulative ACK progress, matching hashes, reliable controls and zero clock waits.
 4. Finish/abort and start a second match in the same room; late first-epoch results/ICE must not abort it.
 5. Cast supers on both sides, pause/resume and briefly hide/restore a tab. Export both diagnostics; verify animation resumes or bounded recovery ends the match. Do not infer gameplay deadlock solely from the previous heuristic warning.
+
+
+## PR #4 review follow-up
+
+The follow-up fixes service-deadline propagation through startup, suspended-tab
+recovery budgets, input sampling backpressure, lockstep recovery checkpoint
+retention, replay diagnostic cleanup, pre-epoch startup message delivery, and
+obsolete host-clock packet removal. Recovery retransmission ACKs include the
+negotiated neutral input-delay prefix. Result and abort settlement retries have
+an explicit total deadline; no Worker scheduling or alarms changed.
+
+Pair-smoke pause/resume closures are disconnected before coordinator disposal;
+round-smoke disposal releases battle/timer owners and stops remaining playback.
+Weak-reference assertions check owner release, and transport registrations are
+checked after close. The previous pair exit leak was three script resources
+retained by a self-capturing signal callback; the round test's earlier three-resource
+exit diagnostic was intermittent, so both owner lifetime and audio teardown are
+checked without claiming every historical audio leak is deterministic.
+
+Current validation and comparisons against clean `d8437fab` are tracked in
+`netcode-step1-review-2026-10-12.json`. Existing failing source/AI/menu tests remain
+unchanged. Native model recovery is not paired-browser or Flash parity acceptance.
+
+### Review baseline comparison
+
+The following failures were reproduced on a clean `d8437fab` worktree. Warning-only ObjectDB leaks are counted as failures here, so these totals are stricter than the initial Part 1 report.
+
+| Category | Pre-existing failing smoke tests |
+| --- | --- |
+| Assertion / startup timing | `ai_colors`, `ai_context`, `ai_combat_services`, `ai_hit_gate`, `ai_host`, `ai_projectile_source`, `ai_stage_hit`, `ai_stage_registry`, `config_flow`, `expanded_selection`, `online_lobby_presence`, `online_match_pending_command`, `title_menu_source` |
+| Exit resource / ObjectDB leak | `diagnostic_match_export`, `config_reference`, `diagnostic_watchdog`, `diagnostic_replay`, `diagnostic_perf`, `helper_presentation`, `kon_helper`, `move_list`, `match_input_scene`, `online_match_json_room`, `online_match_start_cancel`, `ready_play`, `pause_menu` |
+
+`online_match_pending_command` reaches the startup-deadline assertions, then fails its existing strict terminal-startup wall-time check on both revisions under this environment. `online_lobby_presence` reproduces the same stale `http_transport_failed` cancellation assertion on both revisions. `ready_play` intermittently retains the same `ready/1861.mp3` stream/playback on both revisions. No assertion, original trace or comparison tolerance was weakened.
+
+Final follow-up result: **165 Godot smoke entries completed; 139 passed, 26 failures reproduced on `d8437fab`, zero newly identified regressions.** Pair and timer-round exit checks are clean. Python: 270 run (268 passed, 2 skipped), plus 10 top-level tests. Worker: 31 passed; shell: 16 passed; real Godot Web HUD passed in Chrome. PVP/training each matched 602 source states; super/guard matched 1,800 snapshots. Integrity, handoff, contracts and compatibility checks passed. Fresh paired-browser gameplay acceptance remains pending.

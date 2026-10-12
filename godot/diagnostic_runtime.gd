@@ -52,6 +52,7 @@ func begin_match(snapshot: Dictionary) -> void:
 
 
 func end_match(reason: String) -> void:
+	replaying = false
 	if match_id.is_empty():
 		return
 	push_event("match_ended", {"matchId": match_id, "reason": reason})

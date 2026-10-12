@@ -88,7 +88,10 @@ func _initialize() -> void:
 	peer._process_now_ms = 11123
 	peer._send_input_packet()
 	assert(peer.recovery_attempts == 1)
-	peer._process_now_ms = 20123
+	peer._process_now_ms = 17683
+	peer._send_input_packet()
+	assert(peer.error.is_empty(), "Background suspension must not abort input delivery")
+	peer._process_now_ms = 60123
 	peer._send_input_packet()
 	assert(peer.error == "input_ack_timeout")
 	print("ONLINE_REDUNDANT_INPUTS_SMOKE_OK loss_gap_duplicate_reorder_ack_lockstep=true")

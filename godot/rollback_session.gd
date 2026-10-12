@@ -359,7 +359,7 @@ func _prune() -> void:
 	var retain_from := mini(confirmed, maxi(0, frontier - _capacity + 1))
 	input_floor = maxi(input_floor, retain_from)
 	var history_floor := latest_saved_at_or_before(input_floor)
-	if sparse_saves or retain_hash_history:
+	if _window == 0 or sparse_saves or retain_hash_history:
 		# Recovery needs a common periodic checkpoint across different save policies.
 		var recovery_start := maxi(0, mini(confirmed, frontier) - _window - _delay - 1)
 		var recovery_anchor := (recovery_start / CHECKPOINT_INTERVAL) * CHECKPOINT_INTERVAL

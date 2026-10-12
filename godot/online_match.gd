@@ -18,7 +18,11 @@ const Rollback = preload("res://rollback_session.gd")
 const TimerAuthority = preload("res://online_timer_authority.gd")
 const PerformanceTelemetry = preload("res://online_performance.gd")
 const HASH_INTERVAL := Rollback.CHECKPOINT_INTERVAL
-const RECOVERY_MS := 10_000
+# Allow the observed ~18s background suspension plus a bounded reconciliation grace.
+const RECOVERY_MS := 30_000
+const INPUT_ACK_RECOVERY_MS := 10_000
+const INPUT_ACK_TIMEOUT_MS := 60_000
+const ROOM_SETTLEMENT_MS := 30_000
 const MAX_HASH_HISTORY := 256
 const HEARTBEAT_INTERVAL_MS := 1_000
 const HEARTBEAT_TIMEOUT_MS := 5_000
@@ -73,7 +77,7 @@ var _clock_paused_total_ms := 0
 var _pause_started_ms := -1
 var _process_now_ms := -1
 var _disconnect_started_ms := -1
-var _clock_samples := {}
+var _early_epoch_messages: Array[Dictionary] = []
 var _intro_skip_frames := {}
 var _local_inputs := {}
 var _local_hashes := {}
@@ -223,11 +227,13 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 	var service_profile := _normalize_profile(service_match.get("profile"))
 	if service_match.get("epoch") != epoch or service_profile.is_empty() or service_profile != profile:
 		return await _abort_start_for_generation(startup_generation, "profile_barrier", {"error": "Room epoch/profile differs from the local setup"})
+	_drain_early_epoch_messages()
+	if not error.is_empty(): return error
 	var snapshot := save_state()
 	if snapshot.has("error"):
 		return snapshot.error
 	var initial_hash := _start_hash(snapshot)
-	var reply: Dictionary = await _room_command({"type": "loaded", "epoch": epoch, "initialHash": initial_hash})
+	var reply: Dictionary = await _room_command({"type": "loaded", "epoch": epoch, "initialHash": initial_hash}, _startup_deadline_ms())
 	if _startup_cancelled(startup_generation): return "Online match closed during startup"
 	if not _command_accepted(reply):
 		return await _abort_start_for_generation(startup_generation, "loaded", reply)
@@ -236,7 +242,7 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 	if not problem.is_empty():
 		problem = _startup_timeout_context(problem)
 		return await _abort_start_for_generation(startup_generation, "loaded_barrier", {"error": problem})
-	reply = await _room_command({"type": "start_ack", "epoch": epoch})
+	reply = await _room_command({"type": "start_ack", "epoch": epoch}, _startup_deadline_ms())
 	if _startup_cancelled(startup_generation): return "Online match closed during startup"
 	if not _command_accepted(reply):
 		return await _abort_start_for_generation(startup_generation, "start_ack", reply)
@@ -257,7 +263,6 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 	_pacing_steps = 0
 	_clock_origin_ms = -1
 	_clock_paused_total_ms = 0
-	_clock_samples.clear()
 	var match_state := Rollback.new()
 	match_state.sparse_saves = sparse_saves
 	match_state.checkpoint_stride = checkpoint_stride
@@ -272,6 +277,7 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 	var startup_client := room_client
 	while Time.get_ticks_msec() < ready_deadline:
 		if _startup_cancelled(startup_generation): return "Online match closed during startup"
+		if not error.is_empty(): return error
 		if _peer_ready:
 			running = true
 			_startup_context_eligible = false
@@ -472,6 +478,11 @@ func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 			_report_control_ready()
 			_poll_control_barriers(monotonic_now_ms)
 			return ""
+	# ACK loss can outlive the prediction window while remote inputs still arrive.
+	if _sampled_frontier != rollback.frontier + 1 and _unacked_inputs.size() >= INPUT_REDUNDANCY:
+		_send_input_packet()
+		_performance_wait_reason = "input"
+		return error
 	if not _sample_local_once(local_held): return error
 	_send_input_packet()
 	if not error.is_empty(): return error
@@ -524,6 +535,12 @@ func _should_pace_host() -> bool:
 func receive_peer_message(channel: String, type: String, payload: Dictionary, sequence: int) -> void:
 	if channel not in ["reliable", "input"] or not payload is Dictionary or not error.is_empty():
 		return
+	if epoch.is_empty() and payload.has("epoch"):
+		if _early_epoch_messages.size() >= 512:
+			_abort_local("startup_message_overflow", {"type": type})
+			return
+		_early_epoch_messages.append({"channel": channel, "type": type, "payload": payload.duplicate(true), "sequence": sequence})
+		return
 	# A delayed terminal/control packet belongs to its original match only.
 	if payload.has("epoch") and payload.epoch != epoch: return
 	if (channel == "input") != (type == "input_batch"): return
@@ -541,8 +558,15 @@ func receive_peer_message(channel: String, type: String, payload: Dictionary, se
 	_dispatch_peer_message(channel, type, payload)
 
 
+func _drain_early_epoch_messages() -> void:
+	var pending := _early_epoch_messages
+	_early_epoch_messages = []
+	for message in pending:
+		receive_peer_message(message.channel, message.type, message.payload, message.sequence)
+
+
 func _dispatch_peer_message(channel: String, type: String, payload: Dictionary) -> void:
-	# Input and clock packets may accumulate; control/recovery messages read final history.
+	# Input packets may accumulate; control/recovery messages read final history.
 	if type in ["control", "recovery_sync", "recovery_compare_request", "recovery_compare", "recovery_commit"]:
 		if not _reconcile_inputs(): return
 	if _performance.active:
@@ -550,7 +574,6 @@ func _dispatch_peer_message(channel: String, type: String, payload: Dictionary) 
 	match type:
 		"input_batch": _receive_input_packet(payload)
 		"input_frame": _receive_input(payload)
-		"clock_sample": _receive_clock_sample(payload)
 		"state_hash": _receive_state_hash(payload)
 		"match_ready": _receive_match_ready(payload)
 		"control": _receive_control(payload)
@@ -666,6 +689,8 @@ func close(reason: String = "") -> void:
 	_configured = false
 	_peer_channel_open = false
 	_pending_peer_messages.clear()
+	_early_epoch_messages.clear()
+	_startup_pending_messages.clear()
 	room_client = null
 	peer_transport = null
 	game = null
@@ -744,8 +769,6 @@ func must_save_frame(frame: int) -> bool:
 func retain_states(states: Array) -> void:
 	if battle != null: battle.retain_states(states.map(func(item: Dictionary) -> Dictionary: return item.owners.battle))
 	var oldest: int = rollback.oldest_frame() if rollback != null else 0
-	for frame in _clock_samples.keys():
-		if frame <= oldest: _clock_samples.erase(frame)
 	for frame in _local_inputs.keys():
 		if frame <= oldest and frame <= _local_input_ack: _local_inputs.erase(frame)
 	for frame in _intro_skip_frames.keys():
@@ -1036,11 +1059,20 @@ func _start_hash(snapshot: Dictionary) -> String:
 	})
 
 
+func _startup_deadline_ms() -> int:
+	# Worker timestamps are Unix milliseconds; freeze the remaining budget onto
+	# the monotonic clock for each operation instead of starting another 30s wait.
+	var match_state: Dictionary = _room_state.get("match", {}) if _room_state.get("match") is Dictionary else {}
+	var deadline: Variant = match_state.get("deadline")
+	if not _integral_number(deadline): return Time.get_ticks_msec()
+	return Time.get_ticks_msec() + maxi(0, int(deadline) - int(Time.get_unix_time_from_system() * 1000))
+
+
 func _wait_for_loaded_barrier(initial_hash: String, startup_generation: int) -> String:
 	var client := room_client
 	if client == null:
 		return "Room client is unavailable"
-	var deadline := Time.get_ticks_msec() + 30_000
+	var deadline := _startup_deadline_ms()
 	while Time.get_ticks_msec() < deadline:
 		var state := await _refresh_room_state()
 		if _startup_cancelled(startup_generation): return "Online match closed during startup"
@@ -1062,7 +1094,7 @@ func _wait_for_active_barrier(startup_generation: int) -> String:
 	var client := room_client
 	if client == null:
 		return "Room client is unavailable"
-	var deadline := Time.get_ticks_msec() + 30_000
+	var deadline := _startup_deadline_ms()
 	while Time.get_ticks_msec() < deadline:
 		var state := await _refresh_room_state()
 		if _startup_cancelled(startup_generation): return "Online match closed during startup"
@@ -1112,8 +1144,7 @@ func _refresh_room_state() -> Dictionary:
 	return _room_state.duplicate(true)
 
 
-func _room_command(operation: Dictionary, deadline_ms: int = -1) -> Dictionary:
-	if deadline_ms < 0: deadline_ms = Time.get_ticks_msec() + 30_000
+func _room_command(operation: Dictionary, deadline_ms: int) -> Dictionary:
 	var generation := _generation
 	var client := room_client
 	if client == null:
@@ -1126,7 +1157,7 @@ func _room_command(operation: Dictionary, deadline_ms: int = -1) -> Dictionary:
 			return {"error": "room_client_unavailable", "uncertain": false}
 		if is_startup_command and _startup_cancel_requested:
 			return {"error": "startup_cancelled", "uncertain": false}
-		if deadline_ms >= 0 and Time.get_ticks_msec() >= deadline_ms:
+		if Time.get_ticks_msec() >= deadline_ms:
 			return {"error": "command_settlement_timeout", "uncertain": true}
 		var client_tree: SceneTree = client.get_tree()
 		if client_tree == null:
@@ -1147,14 +1178,14 @@ func _room_command(operation: Dictionary, deadline_ms: int = -1) -> Dictionary:
 	if is_startup_command and _startup_cancel_requested:
 		_room_command_in_flight = false
 		return {"error": "startup_cancelled", "uncertain": false}
-	if deadline_ms >= 0 and Time.get_ticks_msec() >= deadline_ms:
+	if Time.get_ticks_msec() >= deadline_ms:
 		_room_command_in_flight = false
 		return {"error": "command_settlement_timeout", "uncertain": true}
 	var reply: Dictionary = await client.command(operation)
 	while generation == _generation and (reply.get("error") == "command_outcome_uncertain" or bool(reply.get("uncertain", false))):
 		if is_startup_command and _startup_cancel_requested:
 			break
-		if deadline_ms >= 0 and Time.get_ticks_msec() >= deadline_ms:
+		if Time.get_ticks_msec() >= deadline_ms:
 			break
 		_room_service_available = false
 		await client.get_tree().create_timer(0.5).timeout
@@ -1166,17 +1197,17 @@ func _room_command(operation: Dictionary, deadline_ms: int = -1) -> Dictionary:
 		return {"error": "match_closed"}
 	if is_startup_command and _startup_cancel_requested and (reply.get("error") == "command_outcome_uncertain" or bool(reply.get("uncertain", false))):
 		return {"error": "command_outcome_uncertain", "uncertain": true}
-	if deadline_ms >= 0 and Time.get_ticks_msec() >= deadline_ms and (reply.get("error") == "command_outcome_uncertain" or bool(reply.get("uncertain", false))):
+	if Time.get_ticks_msec() >= deadline_ms and (reply.get("error") == "command_outcome_uncertain" or bool(reply.get("uncertain", false))):
 		return {"error": "command_settlement_timeout", "uncertain": true}
 	if reply.has("error") and reply.get("error") in ["network_error", "socket_closed", "socket_timeout", "http_transport_failed"]:
 		_room_service_available = false
 	return reply
 
 
-func _settle_pending_room_command(client: Object, generation: int, deadline_ms: int = -1, stop_on_startup_cancel: bool = false) -> Dictionary:
+func _settle_pending_room_command(client: Object, generation: int, deadline_ms: int, stop_on_startup_cancel: bool = false) -> Dictionary:
 	if not is_instance_valid(client) or not client.has_method("has_uncertain_command"):
 		return {"error": "match_closed", "uncertain": false} if generation != _generation else {}
-	var deadline := deadline_ms if deadline_ms >= 0 else Time.get_ticks_msec() + 30_000
+	var deadline := deadline_ms
 	while true:
 		if generation != _generation or not is_instance_valid(client):
 			return {"error": "match_closed", "uncertain": false}
@@ -1228,9 +1259,6 @@ func _sample_local_once(local_held: Dictionary) -> bool:
 		_input_ack_progress_ms = _process_now_ms
 		_input_ack_recovery_started = false
 	_unacked_inputs[int(sample.frame)] = sample.held.duplicate(true)
-	if _unacked_inputs.size() > INPUT_REDUNDANCY:
-		_abort_local("input_redundancy_overflow", {"frame": sample.frame})
-		return false
 	return true
 
 
@@ -1239,16 +1267,16 @@ func _send_input_packet() -> void:
 	if _input_ack_progress_ms < 0: _input_ack_progress_ms = _process_now_ms
 	if not _unacked_inputs.is_empty():
 		var waiting_ms := _process_now_ms - _input_ack_progress_ms
-		if waiting_ms >= RECOVERY_MS * 2:
+		if waiting_ms >= INPUT_ACK_TIMEOUT_MS:
 			_abort_local("input_ack_timeout", {"ack": _local_input_ack})
 			return
-		if waiting_ms >= RECOVERY_MS and not recovering and not _input_ack_recovery_started:
+		if waiting_ms >= INPUT_ACK_RECOVERY_MS and not recovering and not _input_ack_recovery_started:
 			_input_ack_recovery_started = true
 			_begin_recovery("input_ack_timeout", _process_now_ms)
 	var frames: Array = _unacked_inputs.keys()
 	frames.sort()
 	var inputs := []
-	for frame in frames:
+	for frame in frames.slice(0, INPUT_REDUNDANCY):
 		inputs.append({"frame": frame, "held": _unacked_inputs[frame]})
 	# Loss is recovered by the next bounded packet, including while lockstep waits.
 	peer_transport.send_peer_message("input", "input_batch", {
@@ -1350,11 +1378,8 @@ func _send_recovery_sync(now_ms: int) -> void:
 	var resend_limit := remote_frontier + maxi(32, int(profile.predictionWindow) + int(profile.inputDelay) + 8)
 	for frame in _local_inputs.keys():
 		if int(frame) > remote_oldest and int(frame) <= resend_limit:
-			peer_transport.send_peer_message("input", "input_batch", {"epoch": epoch, "ack": _remote_input_ack,
+			peer_transport.send_peer_message("input", "input_batch", {"epoch": epoch, "ack": maxi(_remote_input_ack, int(profile.get("inputDelay", 0))),
 				"inputs": [{"frame": int(frame), "held": _local_inputs[frame]}]})
-	for frame in _clock_samples.keys():
-		if local_slot == clock_authority_slot and int(frame) > remote_oldest and int(frame) <= resend_limit:
-			_send_peer("clock_sample", {"frame": int(frame), "elapsed_ms": int(_clock_samples[frame])})
 	if local_slot == "p1" and _recovery_state.has("remote_sync"):
 		_propose_recovery_comparison()
 
@@ -1603,12 +1628,12 @@ func _open_peer_transport(startup_generation: int) -> String:
 			return "Room signaling failed: " + str(signaling.get("error", "unknown"))
 	var negotiation_id := ""
 	if local_slot == "p1":
-		var negotiation: Dictionary = await _room_command({"type": "negotiate", "epoch": epoch})
+		var negotiation: Dictionary = await _room_command({"type": "negotiate", "epoch": epoch}, _startup_deadline_ms())
 		if _startup_cancelled(startup_generation): return "Online match closed during startup"
 		if not _command_accepted(negotiation): return "Room negotiation failed: " + str(negotiation.get("error", "unknown"))
 		_room_state = negotiation.get("state", {})
 	else:
-		var deadline := Time.get_ticks_msec() + 30_000
+		var deadline := _startup_deadline_ms()
 		while Time.get_ticks_msec() < deadline:
 			var refreshed := await _refresh_room_state()
 			if _startup_cancelled(startup_generation): return "Online match closed during startup"
@@ -1686,31 +1711,6 @@ func _receive_input(payload: Dictionary, defer_correction: bool = false) -> void
 		_maybe_hash_confirmed()
 		_maybe_finish_result()
 
-
-func _receive_clock_sample(payload: Dictionary) -> void:
-	var frame_value: Variant = payload.get("frame")
-	var elapsed_value: Variant = payload.get("elapsed_ms")
-	if local_slot == clock_authority_slot or not _integral_number(frame_value) or not _integral_number(elapsed_value):
-		_abort_local("clock_authority", {"slot": local_slot})
-		return
-	var frame := int(frame_value)
-	var elapsed := int(elapsed_value)
-	if frame <= 0 or elapsed < 0:
-		_abort_local("invalid_clock_sample", payload)
-		return
-	if _clock_samples.has(frame):
-		if int(_clock_samples[frame]) != elapsed:
-			_abort_local("conflicting_clock_sample", {"frame": frame})
-		return
-	if rollback == null or not rollback.can_receive_frame(frame):
-		_abort_local("clock_sample_outside_receive_window", {"frame": frame,
-			"oldest": rollback.oldest_frame() + 1 if rollback != null else -1})
-		return
-	for existing in _clock_samples.keys():
-		if existing < frame and int(_clock_samples[existing]) > elapsed:
-			_abort_local("clock_regression", {"frame": frame, "elapsed_ms": elapsed})
-			return
-	_clock_samples[frame] = elapsed
 
 func _maybe_hash_confirmed() -> void:
 	if rollback == null: return
@@ -1818,9 +1818,10 @@ func _compare_result(local: Dictionary, remote: Dictionary) -> void:
 func _submit_confirmed_result(local: Dictionary, generation: int) -> void:
 	var operation := {"type": "result", "epoch": local.epoch, "frame": int(local.frame), "hash": local.hash, "winner": local.winner}
 	var accepted := false
-	while generation == _generation and not _result_submission_complete:
+	var settlement_deadline := Time.get_ticks_msec() + ROOM_SETTLEMENT_MS
+	while generation == _generation and not _result_submission_complete and Time.get_ticks_msec() < settlement_deadline:
 		if not accepted:
-			var reply: Dictionary = await _room_command(operation)
+			var reply: Dictionary = await _room_command(operation, settlement_deadline)
 			if generation != _generation:
 				return
 			accepted = _command_accepted(reply)
@@ -1841,6 +1842,10 @@ func _submit_confirmed_result(local: Dictionary, generation: int) -> void:
 		if state.has("error"):
 			_room_service_available = false
 		await room_client.get_tree().create_timer(1.0).timeout
+
+	if generation == _generation and not _result_submission_complete:
+		_settle_service_abort({"kind": "result_settlement_timeout", "epoch": epoch, "details": {"uncertain": true}},
+			{"kind": "room_unavailable", "reason": "command_settlement_timeout"})
 
 
 func _settle_result_service_state(local: Dictionary, state: Dictionary) -> bool:
@@ -2131,7 +2136,7 @@ func _abort_start_for_generation(generation: int, stage: String, details: Dictio
 
 func _abort_start(stage: String, details: Dictionary, latest_state: Dictionary, generation: int) -> String:
 	if not latest_state.has("error") and _startup_state_is_live(latest_state) and not _startup_cancelled(generation):
-		await _room_command({"type": "abort", "epoch": epoch})
+		await _room_command({"type": "abort", "epoch": epoch}, Time.get_ticks_msec() + ROOM_SETTLEMENT_MS)
 	return "Online start failed at %s: %s" % [stage, str(details.get("error", "unknown"))]
 
 
@@ -2168,15 +2173,16 @@ func _check_recovery_deadline(now_ms: int) -> void:
 func _abort_room_match(generation: int) -> void:
 	if room_client == null or generation != _generation:
 		return
-	await _room_command({"type": "abort", "epoch": epoch})
+	await _room_command({"type": "abort", "epoch": epoch}, Time.get_ticks_msec() + ROOM_SETTLEMENT_MS)
 
 
 func _submit_confirmed_abort(report: Dictionary, generation: int) -> void:
 	var operation := {"type": "abort", "epoch": epoch}
 	var command_accepted := false
-	while generation == _generation:
+	var settlement_deadline := Time.get_ticks_msec() + ROOM_SETTLEMENT_MS
+	while generation == _generation and Time.get_ticks_msec() < settlement_deadline:
 		if not command_accepted:
-			var reply: Dictionary = await _room_command(operation)
+			var reply: Dictionary = await _room_command(operation, settlement_deadline)
 			if generation != _generation:
 				return
 			command_accepted = _command_accepted(reply)
@@ -2198,6 +2204,9 @@ func _submit_confirmed_abort(report: Dictionary, generation: int) -> void:
 		if state.has("error") or not command_accepted:
 			_room_service_available = false
 		await room_client.get_tree().create_timer(1.0).timeout
+
+	if generation == _generation:
+		_settle_service_abort(report, {"kind": "room_unavailable", "reason": "command_settlement_timeout"})
 
 
 func _service_terminal_outcome(state: Dictionary) -> Dictionary:

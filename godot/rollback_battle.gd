@@ -172,7 +172,9 @@ func retain_states(states: Array) -> void:
 		if frame <= oldest: _intro_skip_journal.erase(frame)
 
 func close() -> void:
+	checkpoint.replaying = false
 	if game == null: return
+	game.diagnostics.replaying = false
 	game.set_process_input(_input_enabled)
 	game.set_process_unhandled_input(_unhandled_enabled)
 	game.match_input.source = Callable()

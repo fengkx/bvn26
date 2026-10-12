@@ -9,6 +9,14 @@ const NEGOTIATION_ID := "550e8400-e29b-41d4-a716-446655440000"
 const PROFILE := {"id": "chrome-exp-d2-p2-lan", "inputDelay": 2, "predictionWindow": 2}
 
 
+class DeadlineCoordinator extends Coordinator:
+	var deadlines := {}
+
+	func _room_command(operation: Dictionary, deadline_ms: int) -> Dictionary:
+		deadlines[str(operation.type)] = deadline_ms
+		return await super._room_command(operation, deadline_ms)
+
+
 class FakeRoom extends Node:
 	var state: Dictionary = {}
 	var pending_prepare := true
@@ -177,7 +185,7 @@ func _run_pending_command_case(prepare_is_in_flight: bool) -> void:
 	root.add_child(room)
 	var transport := FakeTransport.new()
 	root.add_child(transport)
-	var coordinator: OnlineMatchCoordinator = Coordinator.new()
+	var coordinator := DeadlineCoordinator.new()
 	var configure_error: String = coordinator.configure(game, _setup(room_state), "p1", room, transport)
 	if not configure_error.is_empty():
 		_fail("Could not configure coordinator: " + configure_error)
@@ -217,6 +225,9 @@ func _run_pending_command_case(prepare_is_in_flight: bool) -> void:
 		_fail("Room applied the wrong startup operation sequence: " + str(room.applied_operations) + "; in_flight=" + str(prepare_is_in_flight))
 	if _started_count != 1:
 		_fail("Coordinator did not emit started after the actual loaded and start_ack commands; in_flight=" + str(prepare_is_in_flight))
+	for operation in ["loaded", "start_ack", "negotiate"]:
+		if int(coordinator.deadlines.get(operation, 0)) - Time.get_ticks_msec() < 60_000:
+			_fail("Startup operation ignored the Worker's extended preparation deadline: " + operation)
 	var visibility_count_before_close := _visibility_events.size()
 	coordinator.close("test_cleanup")
 	if not prepare_is_in_flight:
@@ -271,7 +282,7 @@ func _run_terminal_barrier_case() -> void:
 	root.add_child(room)
 	var transport := FakeTransport.new()
 	root.add_child(transport)
-	var coordinator: OnlineMatchCoordinator = Coordinator.new()
+	var coordinator := DeadlineCoordinator.new()
 	var configure_error: String = coordinator.configure(game, _setup(room_state), "p1", room, transport)
 	if not configure_error.is_empty():
 		_fail("Could not configure coordinator for startup terminal case: " + configure_error)
@@ -327,7 +338,7 @@ func _run_peer_connection_barrier_case() -> void:
 	var transport := FakeTransport.new()
 	transport.connected = false
 	root.add_child(transport)
-	var coordinator: OnlineMatchCoordinator = Coordinator.new()
+	var coordinator := DeadlineCoordinator.new()
 	var configure_error: String = coordinator.configure(game, _setup(room_state), "p1", room, transport)
 	if not configure_error.is_empty():
 		_fail("Could not configure coordinator for peer connection case: " + configure_error)
@@ -404,7 +415,7 @@ func _room_state() -> Dictionary:
 			"seed": 271828,
 			"clockBaseline": 0,
 			"profile": profile.duplicate(true),
-			"deadline": 9_999_999_999,
+			"deadline": int(Time.get_unix_time_from_system() * 1000) + 120_000,
 			"loaded": [null, null],
 			"acknowledged": [false, false],
 			"results": [null, null],

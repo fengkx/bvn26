@@ -486,7 +486,7 @@ func _room_state() -> Dictionary:
 			"seed": 271828,
 			"clockBaseline": 0,
 			"profile": profile.duplicate(true),
-			"deadline": 9_999_999_999,
+			"deadline": int(Time.get_unix_time_from_system() * 1000) + 120_000,
 			"loaded": [null, null],
 			"acknowledged": [false, false],
 			"results": [null, null],

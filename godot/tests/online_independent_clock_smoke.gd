@@ -26,7 +26,6 @@ func _run() -> void:
 		for index in 2:
 			peers[index]._process_now_ms = frame * (33 if index == 0 else 999)
 			assert(peers[index].advance(frame, {"p1": held, "p2": held}).is_empty())
-			assert(peers[index]._clock_samples.is_empty())
 		if frame == 30: checkpoint = peers[1].save_state()
 	assert(State.first_difference(peers[0].save_state(), peers[1].save_state()).is_empty())
 	var final: Dictionary = peers[1].save_state()
