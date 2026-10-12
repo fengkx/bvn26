@@ -73,6 +73,7 @@ var _room_connection: Node
 var _room_connection_ready := false
 var _room_connection_starting := false
 var _room_connection_generation := 0
+var _room_connection_expected_close_generation := -1
 var _auto_connection_request := ""
 var _connection_phase := "idle"
 var _last_connection_error: Dictionary = {}
@@ -1312,7 +1313,8 @@ func _on_room_connection_changed(state: String) -> void:
 		_remote_connection_profile_id = ""
 		if _selection_active:
 			_end_selection_session(false)
-			_status.text = "选人连接已中断；角色尚未提交。"
+			if state == "failed" or not _room_connection_close_expected():
+				_status.text = "选人连接已中断；角色尚未提交。"
 		if _room_connection != null and is_instance_valid(_room_connection):
 			call_deferred(
 				"_close_room_connection_if_current",
@@ -1332,9 +1334,21 @@ func _close_room_connection_if_current(connection: Node, generation: int) -> voi
 	_refresh_room_view()
 
 
+func _room_connection_close_expected() -> bool:
+	# The reliable close notice can arrive before the room phase broadcast.
+	var match_state := _as_dictionary(_room_state.get("match"))
+	return _room_connection_expected_close_generation == _room_connection_generation \
+		or str(_room_state.get("phase", "")) in ["preparing", "playing", "active"] \
+		or (match_state.get("epoch") != null and not str(match_state.get("epoch", "")).is_empty()) \
+		or _startup_busy or _match_started or not _starting_epoch.is_empty()
+
+
 func _on_room_connection_error(code: String) -> void:
 	_room_connection_ready = false
 	_room_connection_starting = false
+	if code == "data_channel_closed" and _room_connection_close_expected():
+		_on_room_connection_changed("disconnected")
+		return
 	_show_error(code)
 	_refresh_room_view()
 
@@ -1344,6 +1358,9 @@ func _on_room_connection_message(message_type: String, payload: Variant, _sequen
 		return
 	var message: Dictionary = payload
 	match message_type:
+		"lobby_connection_closing":
+			if message.get("version") == 1:
+				_room_connection_expected_close_generation = _room_connection_generation
 		"selection_connection_profile":
 			if message.get("version") != 1 or not message.get("id") is String:
 				return
@@ -3071,6 +3088,10 @@ func _start_prepared_match(state: Dictionary) -> void:
 	_lifecycle_generation += 1
 	var generation := _lifecycle_generation
 	_stop_lobby_presence()
+	if _room_connection != null and _room_connection_ready:
+		_room_connection.send_peer_message("lobby_connection_closing", {
+			"version": 1, "reason": "match_start", "epoch": epoch,
+		})
 	_close_room_connection()
 	_starting_epoch = epoch
 	_startup_busy = true

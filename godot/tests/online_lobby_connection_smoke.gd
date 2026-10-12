@@ -10,6 +10,21 @@ var failures: Array[String] = []
 var received_messages: Array[Dictionary] = []
 
 
+class DiagnosticLobby extends OnlineLobby:
+	var shown_errors: Array[String] = []
+	var stop_before_match_signaling := false
+
+	func _show_error(code: String) -> void:
+		shown_errors.append(code)
+		super._show_error(code)
+
+	func _cancel_lobby_signaling() -> void:
+		if stop_before_match_signaling:
+			_lifecycle_generation += 1
+		else:
+			await super._cancel_lobby_signaling()
+
+
 class FakePeerTransport extends Node:
 	signal outgoing_signal(kind: String, epoch: Variant, negotiation_id: String, payload: String)
 	signal peer_state_changed(state: String)
@@ -220,6 +235,8 @@ func _initialize() -> void:
 
 
 func _run() -> void:
+	await _test_match_start_announces_close()
+	await _test_lobby_connection_close_diagnostics()
 	await _test_owner_retries_undelivered_offer()
 	await _test_owner_reoffers_after_guest_socket_replacement()
 	await _test_guest_uses_fresh_negotiation_and_buffers_early_offer()
@@ -235,10 +252,95 @@ func _run() -> void:
 	await _test_signaling_reconnect_backs_off()
 	await _test_close_during_wait_peer_stops()
 	if failures.is_empty():
-		print("ONLINE_LOBBY_CONNECTION_SMOKE_OK host_retry=true guest_fresh_negotiation=true idle_guest_signal_buffer=true early_signal_filter=true first_data_message_preserved=true reliable_send=true guest_reconnect_rebinds_before_offer=true close_cancels_start=true close_does_not_leave=true guest_late_host=true host_waits_for_guest_signaling=true signaling_reconnect=true double_start_rejected=true pre_subscribe_offer=true poll_idle_while_socket_up=true reconnect_backoff=true close_stops_wait_peer=true")
+		print("ONLINE_LOBBY_CONNECTION_SMOKE_OK match_close_announcement=true expected_close_silent=true selection_drop_reported=true host_retry=true guest_fresh_negotiation=true idle_guest_signal_buffer=true early_signal_filter=true first_data_message_preserved=true reliable_send=true guest_reconnect_rebinds_before_offer=true close_cancels_start=true close_does_not_leave=true guest_late_host=true host_waits_for_guest_signaling=true signaling_reconnect=true double_start_rejected=true pre_subscribe_offer=true poll_idle_while_socket_up=true reconnect_backoff=true close_stops_wait_peer=true")
 	else:
 		push_error("ONLINE_LOBBY_CONNECTION_SMOKE_FAILED " + "; ".join(failures))
 	quit(0 if failures.is_empty() else 1)
+
+
+func _test_match_start_announces_close() -> void:
+	for slot in [0, 1]:
+		for ready in [true, false]:
+			var lobby := DiagnosticLobby.new()
+			root.add_child(lobby)
+			lobby.set_process(false)
+			lobby._slot = slot
+			lobby.stop_before_match_signaling = true
+			var connection := ConnectionScript.new()
+			var peer := FakePeerTransport.new()
+			root.add_child(connection)
+			connection.add_child(peer)
+			connection._peer_transport = peer
+			connection._connected = ready
+			peer.open = ready
+			lobby._room_connection = connection
+			lobby._room_connection_ready = ready
+			await lobby._start_prepared_match({"match": {"epoch": "fixture-epoch"}})
+			_expect(peer.closed, "match start did not close the selection peer")
+			var expected: Array = [{
+				"channel": "reliable", "type": "lobby_connection_closing",
+				"payload": {"version": 1, "reason": "match_start", "epoch": "fixture-epoch"},
+			}] if ready else []
+			_expect(peer.sent_messages == expected, "match start close announcement mismatch for slot %d ready=%s" % [slot, ready])
+			lobby.queue_free()
+			await process_frame
+
+
+func _test_lobby_connection_close_diagnostics() -> void:
+	for scenario in ["announced", "preparing", "playing", "epoch", "startup", "unannounced", "stale_generation", "unknown_version", "other_error"]:
+		var lobby := DiagnosticLobby.new()
+		root.add_child(lobby)
+		lobby.set_process(false)
+		lobby._room_state = {"phase": "lobby", "match": {"epoch": null}}
+		lobby._status.text = "Ready"
+		lobby._selection_active = true
+		var connection := ConnectionScript.new()
+		var peer := FakePeerTransport.new()
+		root.add_child(connection)
+		connection.add_child(peer)
+		connection._peer_transport = peer
+		connection._connected = true
+		lobby._room_connection = connection
+		lobby._room_connection_ready = true
+		lobby._room_connection_starting = true
+		connection.connection_changed.connect(lobby._on_room_connection_changed)
+		connection.peer_message.connect(lobby._on_room_connection_message)
+		connection.transport_error.connect(lobby._on_room_connection_error)
+		if scenario in ["announced", "stale_generation", "unknown_version", "other_error"]:
+			connection.peer_message.emit("lobby_connection_closing", {
+				"version": 2 if scenario == "unknown_version" else 1,
+				"reason": "match_start", "epoch": "fixture-epoch",
+			}, 1)
+		match scenario:
+			"stale_generation":
+				lobby._room_connection_generation += 1
+			"preparing", "playing":
+				lobby._room_state.phase = scenario
+			"epoch":
+				lobby._room_state.match.epoch = "fixture-epoch"
+			"startup":
+				lobby._startup_busy = true
+		var expected: bool = scenario in ["announced", "preparing", "playing", "epoch", "startup"]
+		if scenario == "other_error":
+			connection.transport_error.emit("peer_failed")
+		else:
+			# Exercise the production disconnected -> transport_error ordering.
+			connection._process(0.0)
+		_expect(not lobby._room_connection_ready and not lobby._room_connection_starting, scenario + ": connection flags not cleared")
+		if expected:
+			_expect(lobby.shown_errors.is_empty(), scenario + ": close reached the warning/UI error path")
+			_expect(lobby.get_connection_diagnostic().lastError.is_empty(), scenario + ": close recorded lastError")
+			_expect(lobby._status.text == "Ready", scenario + ": close changed the status text")
+		else:
+			var code := "peer_failed" if scenario == "other_error" else "data_channel_closed"
+			_expect(lobby.shown_errors == [code], scenario + ": unexpected error was suppressed")
+			_expect(lobby.get_connection_diagnostic().lastError.get("code") == code, scenario + ": missing lastError")
+		await process_frame
+		if scenario != "other_error":
+			_expect(lobby._room_connection == null, scenario + ": deferred close did not run")
+		lobby._close_room_connection()
+		lobby.queue_free()
+		await process_frame
 
 
 func _test_owner_retries_undelivered_offer() -> void:
