@@ -8424,6 +8424,32 @@
           "scripts": []
         }
       ]
+    },
+    "yin": {
+      "action": {
+        "start_frame": 1072,
+        "end_frame": 1151
+      },
+      "state_frames": {
+        "1073": 1,
+        "1075": 3,
+        "1119": 2
+      },
+      "scripts": [
+        {
+          "path": "DefineSprite_435/frame_1073/DoAction.as",
+          "source": "play();\r\nkcplayed = 1;"
+        },
+        {
+          "path": "DefineSprite_435/frame_1075/DoAction.as",
+          "source": "kcplayed = 3;"
+        },
+        {
+          "path": "DefineSprite_435/frame_1119/DoAction.as",
+          "source": "kcplayed = 2;\r\ngotoAndStop(\"站立\");\r\nplay();"
+        }
+      ],
+      "timeline": "data/slices/yin-base.timeline.json"
     }
   },
   "hud_frames": {
