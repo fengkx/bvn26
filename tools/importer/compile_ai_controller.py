@@ -368,7 +368,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         # the same source predicate ABI and retain its independent lifetime.
         body = script['source'].replace('\r\n', '\n')
         if (body.startswith('onClipEvent(enterFrame){\n') and body.endswith('}\n')
-                and (re.search(r'\b(?:gameRunning|magichit\d?|bisha|nornalhit|skill\d?|bdfyxg2?)\s*\(', body)
+                and (re.search(r'\b(?:gameRunning|magichit\d?|bisha|nornalhit|skill\d?|bdfyxg2?|moveX|moveY)\s*\(', body)
                      or '_parent._parent._x' in body
                      or '_parent._parent._y' in body)):
             frame, character, depth = map(int, match.groups())
