@@ -742,3 +742,32 @@ checks pass. Python is 279 run / 0 failures / 0 errors / 2 skipped locally; mast
 is 276 / 0 / 0 / 2. Five known Godot failures reproduce with identical errors and
 locations on master. See [review evidence](../evidence/characters/neji/premerge-review.json).
 This does not close full Flash/audiovisual parity, change M6 status, deploy or merge.
+
+## 2026-10-13 — Ikkaku base-form port
+
+Ikkaku (`yijiao`, 一角) is imported from locked Sprite 455 and available in local
+and online catalogs. Source controllers, receiver aliases, placement lifetimes,
+all moves, guard/interrupt behavior, original assets, sound segments, opening,
+portraits and footer are compiled. Generic importer support covers pure-motion
+child controllers, identical receiver aliases and literal wrapper frame moves;
+the shared frame-service interpreter executes those moves in source order.
+Focused native Flash results and late-input rollback evidence are in
+[evidence](../evidence/characters/ikkaku/README.md). The inherited pre-super
+interrupt anti-deadlock deviation is unchanged. Default assist and Worker
+deployment are out of scope; the Worker requires a later redeploy. Full
+audiovisual/browser/AI and exhaustive boundary parity remain pending. M6 is
+still pending; focused evidence does not complete whole-roster acceptance.
+
+### Ikkaku PR #8 rebase review (2026-10-13)
+
+Rebased onto Neji master `46567086`, retaining Chad, Neji and Ikkaku in all
+15-fighter selection/online catalogs. All 12 fresh native Flash comparisons
+match 482/482 states over 14 exact fields; the frame-545 150px movement and its
+mirrored -150px counterpart remain exact. Fifteen roster rollback cases and
+Ikkaku/Neji/Chad/Gin dedicated rollback/reset checks pass, including Ikkaku's
+three-frame late-input correction. Python: PR 283 run / 281 passed / 2 skipped;
+master 279 / 277 / 2. Five known Godot failures reproduce identical errors and
+locations on master. Combat/stage_sound assertion markers pass with separately
+recorded dummy-audio shutdown diagnostics. Online manifest/catalog regenerated;
+no Worker deployment. See [review evidence](../evidence/characters/ikkaku/rebase-review.json).
+Full role acceptance remains pending; M6 is not marked complete.

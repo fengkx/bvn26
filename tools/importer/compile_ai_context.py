@@ -386,6 +386,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             face=re.fullmatch(r'_root\.showFace\(pn,"([^"]+)"\);',line)
             jump=re.fullmatch(r'gotoAnd(Play|Stop)\("([^"]+)"\);',line)
             energy=re.fullmatch(r'ql ([+-])= (\d+(?:\.\d+)?);',line)
+            movement=re.fullmatch(r'_parent\.(moveX|moveY)\((-?\d+(?:\.\d+)?)\);',line)
             if line == 'wankai_start();':
                 calls.append({'op': 'inline_frame', 'path': path, 'line': number,
                               'frame': frame['frame'], 'calls': inline_frame_function(
@@ -396,6 +397,16 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif re.fullmatch(r'_root\.shine\(\);', line):
                 calls.append({'op': 'screen_flash', 'color_rgb24': 0xFFFFFF,
                               'path': path, 'line': number, 'frame': frame['frame']})
+            elif movement:
+                wrapper = next((m[0] for m in FUNCTION.finditer(scripts['frame_1/DoAction.as'])
+                                if m[1] == movement[1]), '')
+                expected = ('function moveX(spd){_X=_X+spd*scale_X;}' if movement[1] == 'moveX'
+                            else 'function moveY(spd){_Y=_Y+spd;}')
+                if re.sub(r'\s+', '', wrapper) != re.sub(r'\s+', '', expected):
+                    raise ValueError('Unsupported wrapper movement implementation: ' + movement[1])
+                calls.append({'op': 'wrapper_move', 'axis': movement[1],
+                              'pixels': float(movement[2]), 'path': path,
+                              'line': number, 'frame': frame['frame']})
             elif energy:
                 calls.append({'op':'energy_delta','delta':float(energy[2]) * (1 if energy[1]=='+' else -1),
                               'path':path,'line':number,'frame':frame['frame']})
