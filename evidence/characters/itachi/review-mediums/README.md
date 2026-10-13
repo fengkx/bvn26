@@ -120,12 +120,13 @@ was not reached.
 | Required behavior | Fixture suffix | Native Flash observation |
 |---|---|---|
 | All 22 windows / all 13 predicates | `window-0` through `window-21` | Every calibrated source frame is observed; each destination first appears on the next tick. See `window-coverage.json`. |
-| Hit during an active attack | `attack-interrupt-active` | Tick 13 enters 191; tick 15 changes 192 → 1009; tick 16 settles 40 damage. |
+| Hit during an active attack | `attack-interrupt-active` | Tick 13 observes 191, tick 14 observes 192, and tick 15 observes 1009; tick 16 settles 40 damage (HP 1000 → 960). |
 | Blocking incoming attacks | `guard-break` (initial diagnostic) | Actually blocks up-J: enters 997 at tick 24; chip HP is 998/996/990 at ticks 25/29/33, with hits=0. It does **not** prove guard break. |
 | Interrupt guard by breaking it | `guard-break-active` | Down-J's source `kj1zl=13` changes 986 → 1022 at tick 39; tick 40 settles 80 damage. |
 | Confirmed hit, cancellation, then interruption; alternate active assist | `helper-you` | Opponent loses 30 HP at tick 19; Itachi cancels 202 → 300 at tick 23; the selected You assist interrupts 307 → 1009 at tick 89, then settles 40 damage at 90. |
 | Changed spacing / cancel after whiff | `spacing` | Opponent starts at X=500 instead of 350. J does not damage the opponent, but cancellation enters 300 at tick 23; down-J deals 150 at tick 38. |
-| Knockdown recovery input | `knockdown-ranged`, `window-21-at_start` | Source knockdown reaches 1034 at tick 50; dash input produces the authored recovery destination at tick 51. |
+| Knockdown timing calibration (not recovery-trigger proof) | `knockdown-ranged` | Tick 50 observes 1034; tick 51 observes 1035. No frame 1069 occurs in this trace. |
+| Knockdown recovery input | `window-21-at_start` | Tick 50 observes 1034; dash input produces the authored recovery destination 1069 at tick 51. This case alone proves this recovery trigger. |
 | Three placements on the same fighter, movement and both facings | `repeated-placement-cross` | Down-J enters 300 at ticks 13/158/243. Facing changes +100 → −100 at tick 132. Opponent X at the three hits is 350/240/80, with HP 850/700/550. |
 
 The 35 new comparisons include six retained exploratory intentions, rather than
@@ -143,3 +144,40 @@ pre-super deadlock is still an intentional behavioral difference, not an oracle
 adjustment. `preservation.json` records unchanged anti-deadlock function bytes
 and ancestry through PR #10/#11/#12. The online build fingerprint is regenerated;
 content fingerprints are unchanged.
+
+## Preservation hash reproduction
+
+The function hash includes its declaration, body and **one** trailing blank line
+(544 raw bytes, ending in two LF bytes). The previous `8db65d1d…` value included
+both separator blank lines (545 bytes); that value is reproducible too, but its
+range was undocumented. The explicitly bounded hash is `d39b2b50…` at every
+revision listed in `preservation.json`. This corrects evidence scope; no function
+bytes changed. Run from the repository root:
+
+```sh
+python3 - <<'PYTHON'
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+
+record = json.loads(Path(
+    "evidence/characters/itachi/review-mediums/preservation.json"
+).read_text())["anti_deadlock"]
+for revision in ["HEAD", *record["verified_revisions"]]:
+    data = subprocess.check_output(["git", "show", f"{revision}:{record['path']}"])
+    start = data.index(b"func _clear_interrupted_super_preparation()")
+    end = data.index(b"\n\n", start) + 2
+    function = data[start:end]
+    digest = hashlib.sha256(function).hexdigest()
+    assert len(function) == 544
+    assert digest == record["function_sha256"]
+    subprocess.run(["git", "merge-base", "--is-ancestor", revision, "HEAD"], check=True)
+    print(revision, len(function), digest)
+PYTHON
+```
+
+The trigger-table corrections do not change the 35 exact comparisons or the
+22-window matrix. `knockdown-ranged` remains a matching calibration capture,
+not an additional recovery-trigger proof. Original traces and runtime code are
+unchanged by these evidence corrections.
