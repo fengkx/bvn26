@@ -1,0 +1,120 @@
+{
+  "status": "reproduced_web_canvas_focus_keyup_loss",
+  "date": "2026-10-13",
+  "branch": "fix/training-p2",
+  "baseline_commit": "f8d22f3a42ce9931dde2714725695b75791915c9",
+  "production_url": "https://bvn26.vercel.app",
+  "production_pck_sha256_verified": true,
+  "flash_behavior": {
+    "mode": 4,
+    "p1cpu": false,
+    "p2cpu": false,
+    "p2_control": "Player keyboard (arrows and Num1-Num6), not a permanently disabled dummy. Idle without input; normal receive/recovery behavior.",
+    "ai": "initCtrl unloads AImain and does not register randAI for a player-controlled fighter.",
+    "recovery": "Every 1000 ms, for each fighter with beida == 0, refill HP to maxhp and energy to 300. No displacement."
+  },
+  "source_citations": "source-excerpts.json",
+  "fresh_flash_comparison": {
+    "method": "tools/probes/capture_native_player.py using native Flash Player Debugger",
+    "case": "Existing mode-probe=4 with P1 Naruto and P2 Itachi, 300 frames; walk, attack, dash, super, summon and recorded training timer callbacks.",
+    "result": "602/602 exact actor states; no tolerance",
+    "comparison": "comparison.json",
+    "source_events": "flash-events.jsonl.gz",
+    "native_states": "native-states.json.gz",
+    "native_harness": "native-reference.gd",
+    "capture_activation_authorized": true,
+    "capture_lock": "Respected shared lock; initial busy attempt retried without interrupting the other worktree."
+  },
+  "native_diagnostics": [
+    {
+      "case": "P2 Itachi, 180 empty-input ticks after natural intro",
+      "result": "P2 x=637.1, idle, use_ai=false, no held buttons; initial run during first asset import is excluded from acceptance."
+    },
+    {
+      "case": "Downloaded production PCK, P2 Itachi, 180 empty-input ticks",
+      "result": "P2 x=637.1 throughout, idle, controller use_ai=false; no SCRIPT ERROR."
+    },
+    {
+      "case": "VS COM -> training, Itachi receives repeated P1 attacks",
+      "result": "Receive/knockback then idle; no P2 inputs and use_ai=false; no spontaneous dash."
+    },
+    {
+      "case": "Default selection with live physics/training timers",
+      "result": "P1 Ichigo/P2 Naruto; P2 remains at x=637.1 through intro and observation."
+    }
+  ],
+  "existing_tests": {
+    "tools/test_shared_modes.py": "passed: PvP 602/602; training-timer 602/602",
+    "godot/tests/shared_mode_lifecycle_smoke.gd": "passed again after focus fix, no SCRIPT ERROR",
+    "tools/verify.py": "passed: 75 assets, 62 script bundles",
+    "tools/check_handoff.py": "passed",
+    "godot/tests/input_focus_smoke.gd": "INPUT_FOCUS_SMOKE_OK, no SCRIPT ERROR"
+  },
+  "web_default": {
+    "browser": "Independently launched Playwright Chromium headless shell; fresh browser context; no user Chrome access",
+    "flow": "Title menu -> Training -> default fighters/helpers -> current-world map",
+    "observations": [
+      {
+        "tick": 336,
+        "p2": "Naruto",
+        "x": 637.1,
+        "action": "stand"
+      },
+      {
+        "tick": 448,
+        "p2": "Naruto",
+        "x": 637.1,
+        "action": "stand"
+      }
+    ],
+    "mode": 4,
+    "p2cpu": false,
+    "retained_input_events": 688,
+    "p2_held_input_events": 0,
+    "note": "The diagnostic rolling buffer covers 60 seconds; it retains intro-to-idle transitions and fight_started, no autonomous combat transitions. This is not a claim that every possible browser/input environment is covered.",
+    "evidence": "web-default.json.gz"
+  },
+  "fix": "Shared RenderSurface tracks delivered key events and releases them on canvas/window focus loss.",
+  "runtime_changes": [
+    "godot/render_surface.gd"
+  ],
+  "itachi_specific_changes": [],
+  "acceptance": "Concrete focus-loss input bug reproduced and fixed; untouched fresh sessions remained idle. Original reported sequence cannot be identified uniquely without its diagnostic log.",
+  "web_itachi": {
+    "flow": "Training after returning from the default training match; P1 Ichigo, P2 Itachi, default assists/current-world map",
+    "fight_tick": 568,
+    "p2cpu": false,
+    "p2_position": [
+      637.1,
+      -25
+    ],
+    "p2_action": "站立",
+    "retained_input_events": 800,
+    "p2_held_input_events": 0,
+    "autonomous_action_events": 0,
+    "evidence": "web-itachi.json.gz",
+    "limitations": "Headless Chromium software WebGL; fresh profile. User browser storage, device key state, and exact original failing sequence are unavailable."
+  },
+  "input_hypotheses": {
+    "default_binding_overlap": "rejected by default-map injection",
+    "gamepad_touch": "no production keyboard adapter; injected device-1 axis/button and touch did not activate P2",
+    "custom_overlapping_bindings": "reproduced only when a configured overlapping key is pressed; consistent with Flash",
+    "ime_text": "text-only event did not activate P2; alternate-layout custom bindings remain environment-dependent",
+    "ai_after_mode_change": "AI interval sampled 60 times before switch; controller/body flags false and interval canceled in training",
+    "p1_interaction_rematch_reselect": "passed targeted native probe",
+    "single_dash_release": "Itachi and Naruto returned to stable idle"
+  },
+  "local_web_pack": {
+    "sha256": "eb083048a889e5166d718325a69454df9216795178fbf1922f77a00e4b2175ca",
+    "engine": "production 4.7.2",
+    "metadata": "unknown (local --export-pack; not a production build)",
+    "source_file_sha256": "1d5bd0255b72cec102f123ae70a871f89548dd8a026842e8061e0a8f8bc64893"
+  },
+  "web_focus_fix": {
+    "before": "web-focus-before.json.gz: 160 retained dash=true ticks after toolbar keyup",
+    "after": "web-focus-after.json.gz: 8 genuinely held ticks, then false after blur",
+    "held": "web-focus-held.json.gz: normal held input stays true (507 ticks)",
+    "released": "web-focus-released.json.gz: last 100 P2 input samples false after toolbar release",
+    "fixed_release_tick": 4663
+  }
+}

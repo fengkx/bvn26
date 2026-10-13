@@ -2,6 +2,8 @@
 
 状态同步日期：2026-09-20。按当前工作树与已有证据核对；本次检查范围见 [同步记录](../evidence/status-sync-2026-09-08.md)。
 
+2026-10-13 训练 P2 输入修复：已在生产无头 Chromium 复现按住 NumPad3 后转焦工具栏、在那里松键导致持续瞬步。共用 RenderSurface 在失焦时补发释放事件，保留原版训练的 P2 键盘控制；未改角色或 AI。原生 Flash Naruto/Itachi 对照 602/602 状态一致，详情与验收边界见[调查记录](../evidence/combat/training-p2-investigation/README.md)。全新无输入未复现，完整跨浏览器验收仍 pending。
+
 B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（包含已有局部产物但未验收），对应任务表已补产物与证据。下列开发切片实现不代表里程碑完成。
 
 本轮白哉/小李共享验收记录见 [shared acceptance r01](../evidence/characters/byakuya-lee/shared-acceptance-r01.md)。两角色状态保持 `partial`：当前共享 runtime 下已有 31 个边界 case 重跑，白哉 r11 的 `missing_source=0` 清单与小李当前分类分别见各自 manifest；小李 clean 625 kill/dead r05 已完成 802/802、0 differences 的 validated 对照。旧 native-only、legacy provenance-unverified 与 disabled-negative 行仍分层记录，不提升为 validated。完整 AI、视觉/HUD/音频、真实 boot/intro/nextReady、完整 Web、KO 全生命周期与 production roster 仍保持 pending；fangyux 父 controller 仍待原版作用域探针验证，未经证据的修复已撤回。
