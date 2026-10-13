@@ -1302,8 +1302,10 @@ def parse_clip_timeline(
         if motion_init is not None:
             if frame != 1:
                 raise ValueError("Projectile initialization outside frame 1: " + script["path"])
-            initial_motion = {"initial_speed": float(motion_init[1]), "initial_played": 0,
-                              "initial_motion_source": record}
+            initial_motion = {
+                "initial_variables": {"movspeed": float(motion_init[1]), "played": 0},
+                "initial_motion_source": record,
+            }
         rename = CLIP_RENAME.search(script["source"])
         if rename is not None:
             rename_frames.append({**record, "instance_name": rename["name"]})

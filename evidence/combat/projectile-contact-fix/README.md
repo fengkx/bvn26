@@ -133,3 +133,28 @@ Replay the two new captures, including both fighter and child state checks:
 ```sh
 python3 tools/test_projectile_contact_references.py --projectile-states --godot /path/to/Godot --output /tmp/bvn-projectile-states
 ```
+
+
+## PR #10 re-review: frame-1 initialization
+
+The preceding follow-up missed Ichigo's frame-1 declarations: legacy
+`initial_speed`/`initial_played` did not seed the runtime's source-local map.
+The shared compiler now emits `initial_variables` for this pattern, and all
+three Ichigo action/combat projectiles plus player/AI hooks are refreshed.
+Naruto, Hitsugaya and Byakuya lose only redundant `initial_played` fields.
+Runtime judgement and scheduling are unchanged.
+
+Fresh Ichigo guard capture matches **21/21 child states**, including **12
+post-contact states**, and **602/602 fighter states**. Alongside rerun Naruto
+and Hitsugaya captures, the contact total is **70/70 child states and 1,806/1,806
+fighter states**. The preliminary Ichigo neutral capture has no value mismatch
+but does not exercise child contact; it is retained separately and excluded.
+
+Focused saved replays pass **22/22 cases, 13,604/13,604 fighter states**, including
+all three Ichigo attacks, Naruto ranged, Hitsugaya/Byakuya guard and trade cases,
+and Chad/Gin/Neji interrupt cases. **17 distinct compiler/projectile Python tests,
+7 online-manifest tests and 21 contact-history casts pass**; all **9** child
+X/frame/speed mutation negatives are rejected. Package integrity, handoff,
+online fingerprints and whitespace checks pass. This supersedes the preceding
+claim that Ichigo initialization was complete; historical counts remain separate.
+See [re-review results](rereview.json) and [source gate](source-first.md).

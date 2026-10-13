@@ -1,5 +1,6 @@
 """Projectile callbacks query their own current geometry, not receiver history."""
 import json
+import re
 from pathlib import Path
 import sys
 import tempfile
@@ -7,7 +8,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/importer"))
-from build_combat_model import parse_projectile_motion, parse_projectile_initialization
+from build_combat_model import parse_projectile_motion, parse_projectile_initialization, parse_clip_timeline
 sys.path.insert(0, str(ROOT / "tools/probes"))
 from compare_projectile_reference import compare as compare_projectiles
 
@@ -15,7 +16,7 @@ from compare_projectile_reference import compare as compare_projectiles
 class ProjectileContactTests(unittest.TestCase):
     def test_saved_flash_child_states_reject_post_hit_flight_and_wrong_frame(self):
         base = ROOT / "evidence/combat/projectile-contact-fix/projectile-states"
-        for role in ("minren", "rifagu"):
+        for role in ("minren", "rifagu", "yihu"):
             source = base / role / "events.jsonl.gz"
             native = base / role / "native.projectiles.json"
             self.assertEqual(compare_projectiles(source, native)["status"], "matched")
@@ -50,6 +51,45 @@ class ProjectileContactTests(unittest.TestCase):
         combat = json.loads((ROOT / "godot/generated/fighters/kakashi/combat.json").read_text())
         self.assertEqual(len(actions["motion_windows"]), 12)
         self.assertEqual(actions["motion_windows"], combat["motion_windows"])
+
+    def test_frame_one_projectile_locals_are_compiled_for_every_artifact(self):
+        bundle = json.loads((ROOT / "scripts/fighter/yihu.json").read_text())
+        clip = parse_clip_timeline(bundle, 99)
+        self.assertEqual(clip["initial_variables"], {"movspeed": 18, "played": 0})
+        self.assertEqual(clip["stop_frames"], [1, 10])
+        self.assertEqual(clip["rename_frames"][0]["frame"], 5)
+        self.assertNotIn("initial_played", clip)
+        for role in ("minren", "rifagu", "yihu", "byakuya"):
+            for path in (ROOT / f"godot/generated/fighters/{role}").glob("*_controller/controller.json"):
+                model = json.loads(path.read_text())
+                for hook in model["projectile_hooks"]:
+                    projectile = hook["projectile"]
+                    self.assertNotIn("initial_played", projectile)
+                    if role == "yihu" and projectile.get("character_id") == 99:
+                        self.assertEqual(projectile["initial_variables"], clip["initial_variables"])
+        for path in ["data/actions/yihu-base.json", "godot/generated/fighters/yihu/combat.json"]:
+            projectiles = json.loads((ROOT / path).read_text())["projectiles"]
+            self.assertEqual(len(projectiles), 3)
+            for projectile in projectiles:
+                self.assertEqual(projectile["initial_variables"], clip["initial_variables"])
+                self.assertTrue(projectile["on_hit_goto_grouped"])
+                self.assertEqual(projectile["on_hit_events"][0]["goto_frame"], 5)
+
+    def test_frame_one_pattern_is_shared_across_source_bundles(self):
+        pattern = re.compile(r"stop\(\);\s*var movspeed = (-?\d+(?:\.\d+)?);\s*var played = 0;")
+        matched = 0
+        for path in (ROOT / "scripts/fighter").glob("*.json"):
+            bundle = json.loads(path.read_text())
+            for script in bundle["scripts"]:
+                match = pattern.fullmatch(script["source"].strip())
+                if match is None:
+                    continue
+                sprite = int(re.match(r"DefineSprite_(\d+)/", script["path"])[1])
+                with self.subTest(bundle=path.name, source=script["path"]):
+                    clip = parse_clip_timeline(bundle, sprite)
+                    self.assertEqual(clip["initial_variables"], {"movspeed": float(match[1]), "played": 0})
+                matched += 1
+        self.assertGreater(matched, 1)
 
     def test_implicit_and_explicit_self_hit_test_have_the_same_receiver(self):
         bundle = json.loads((ROOT / "scripts/fighter/Kakashi.json").read_text())
@@ -106,7 +146,11 @@ class ProjectileContactTests(unittest.TestCase):
                         with self.subTest(file=str(path.relative_to(ROOT)), source=source_path):
                             load_path = source_path.replace("onClipEvent(enterFrame)", "onClipEvent(load)")
                             initial = parse_projectile_initialization(sources[role].get(load_path, ""))
-                            for key, value in {**compiled, **(initial or {})}.items():
+                            frame_initial = {}
+                            if node.get("character_id"):
+                                bundle = {"scripts": [{"path": p, "source": s} for p, s in sources[role].items()]}
+                                frame_initial = parse_clip_timeline(bundle, node["character_id"])
+                            for key, value in {**compiled, **(initial or {}), **frame_initial}.items():
                                 self.assertEqual(node.get(key), value, key)
                     for value in node.values():
                         check(value, source_path)

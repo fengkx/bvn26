@@ -105,3 +105,35 @@ artifact had only 10); no manual window is added.
   The inputs/setup are copied from the saved corpus; only the read-only
   projectile observation configuration is added. Full fighter and child
   comparisons, red traces and reproduction commands are recorded there.
+
+## PR #10 re-review: Ichigo frame-1 locals
+
+1. `scripts/fighter/yihu.json`, `DefineSprite_99/frame_1/DoAction.as`
+   stops and declares `movspeed=18`, `played=0`. Frame 5 renames the child
+   to `abcd`; frame 10 stops. Frames 2–4 and 6–9 have no DoAction.
+   Sprite 638's frame 150/327/421 `PlaceObject2_99_28` enterFrame callbacks
+   test the current child against the opponent's authored clips while unpaused.
+   Their guarded contact block writes `played=1`, `movspeed=0`, then
+   `gotoAndPlay(5)`; the non-contact branch moves by the current `movspeed`.
+2. `data/slices/yihu-base.timeline.json` records fresh Sprite 99 placements at
+   depth 28, frames 150/327/421. Retained display entries carry those
+   `placed_frame` values; no prior cast's locals carry into a new placement.
+   Existing next-root-frame callback scheduling is unchanged.
+3. The child stays at frame 1 until the guarded contact goto, plays through
+   the frame-5 rename, and stops at 10. Parent lifetime removal is unchanged.
+4. Assertions lock authored initial locals, a single grouped contact transition,
+   zero movement after contact loss, and fresh locals on mirrored/repeated casts.
+   The generic frame-1 compiler rule is exercised against every source bundle
+   with this exact declaration pattern; unimported forms remain unimported.
+5. Fresh standalone Flash captures use the existing input fixture plus a
+   read-only child observer. Neutral damage matches 28 child rows but does not
+   execute the child's contact branch. The separate guard fixture reaches
+   `played=1`, `movspeed=0`, frame 5 at tick 27, then frame 10 at tick 32;
+   local X remains 54.7 through tick 38. All 21 child and 602 fighter rows match.
+
+The fix changes compiler output to `initial_variables`, consumed by the existing
+runtime. Player/AI hooks and action/combat artifacts use the same source rule.
+Only projectile initialization fields are refreshed, avoiding unrelated stale
+controller metadata. Unused `initial_played` is removed from Naruto, Hitsugaya
+and Byakuya hooks; their existing `initial_variables.played` remains intact.
+No runtime, attack, interrupt, receiver or guard judgement is changed.

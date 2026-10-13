@@ -407,11 +407,12 @@
       "evidence": [
         "evidence/combat/review-2026-09-08.md",
         "evidence/combat/projectile-contact-fix/README.md",
-        "evidence/combat/projectile-contact-fix/review.json"
+        "evidence/combat/projectile-contact-fix/review.json",
+        "evidence/combat/projectile-contact-fix/rereview.json"
       ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "矩阵、实例寿命和候选顺序已有实现；AT-07 原版对照未完成。 2026-10-13: Kakashi/Sakura historical contact-count cases each match 602 source states. The 58-case saved corpus covering 13 primary roles (Renji only as an overlap opponent) matches 40,476 states; 112 roster rollback checkpoints and three dedicated rollback checks pass. Source child hitTest queries are independent of receiver hit history; implicit receivers compile to self. Full milestone remains pending. Measured work window is recorded in projectile-contact-fix/validation.json. PR #10 follow-up: all five stale Naruto/Hitsugaya/Ichigo projectile contact/load fields are recompiled consistently. 23 affected replays match 13,846 states; two fresh Flash captures match 49 child states (36 post-contact) and 1,204 fighter states. Full status stays pending; measured review session time is recorded in review.json.",
+      "progress_note": "矩阵、实例寿命和候选顺序已有实现；AT-07 原版对照未完成。 2026-10-13: Kakashi/Sakura historical contact-count cases each match 602 source states. The 58-case saved corpus covering 13 primary roles (Renji only as an overlap opponent) matches 40,476 states; 112 roster rollback checkpoints and three dedicated rollback checks pass. Source child hitTest queries are independent of receiver hit history; implicit receivers compile to self. Full milestone remains pending. Measured work window is recorded in projectile-contact-fix/validation.json. PR #10 follow-up: all five stale Naruto/Hitsugaya/Ichigo projectile contact/load fields are recompiled consistently. 23 affected replays match 13,846 states; two fresh Flash captures match 49 child states (36 post-contact) and 1,204 fighter states. Full status stays pending; measured review session time is recorded in review.json. 2026-10-13 PR #10 re-review: Ichigo Sprite 99 frame-1 locals now compile into initial_variables across all three projectiles and player/AI hooks. Fresh guarded Flash contact matches 21 child states (12 post-contact) plus 602 fighter states; 21 repeated/mirrored contact smoke casts pass. Neutral child capture is retained but not counted as contact acceptance. Runtime judgement is unchanged. Detailed focused results are in evidence/combat/projectile-contact-fix/rereview.json. Milestone remains pending; session person-days were not measured.",
       "current_artifacts": [
         "godot/combat_resolver.gd",
         "evidence/combat/review-2026-09-08.md",

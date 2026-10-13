@@ -1,0 +1,50 @@
+{
+  "id": "yihu-320-magichit1-guard",
+  "fighter": "yihu",
+  "slot": "p2",
+  "label": "招1",
+  "scenario": "guard",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p2",
+      "keys": [
+        "ranged"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "down"
+      ],
+      "start": 1,
+      "end": 300
+    }
+  ],
+  "target_frames": [
+    320,
+    356
+  ],
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "not_run",
+  "projectile_probe": {
+    "p2": {
+      "zh1atm": 28
+    }
+  }
+}

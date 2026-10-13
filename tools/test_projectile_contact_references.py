@@ -18,7 +18,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--case", action="append", help="restrict to a saved case ID")
     parser.add_argument("--projectile-states", action="store_true",
-                        help="replay the Naruto/Hitsugaya child-position and playback captures")
+                        help="replay the Naruto/Hitsugaya/Ichigo child-position and playback captures")
     args = parser.parse_args()
     report = ROOT / "evidence/combat/projectile-contact-fix/regressions.json"
     if args.projectile_states:

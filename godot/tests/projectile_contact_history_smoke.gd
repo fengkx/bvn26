@@ -6,7 +6,11 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	for spec in [["kakashi", 425, "zh1atm", 3], ["sakura", 442, "zh12atm", 5]]:
+	var casts := 0
+	for spec in [["kakashi", 425, "zh1atm", 3], ["sakura", 442, "zh12atm", 5],
+		["minren", 382, "zh1atm", 5], ["rifagu", 154, "tzatm", 5],
+		["yihu", 150, "zh1atm", 5], ["yihu", 327, "zh1atm", 5],
+		["yihu", 421, "zh1atm", 5]]:
 		var fighter := FighterRuntime.new()
 		fighter.fighter_directory = "res://generated/fighters/" + spec[0]
 		var opponent := FighterRuntime.new()
@@ -23,11 +27,11 @@ func _run() -> void:
 				projectile = candidate
 		assert(not projectile.is_empty())
 		var name: String = spec[2]
-		# The source load locals are fresh on every placement, including a
+		# Source load/frame-1 locals are fresh on every placement, including a
 		# repeated cast after the preceding receiver hit has already settled.
 		for facing in [1, -1, 1]:
 			fighter.start_action("站立")
-			fighter.start_action("招1")
+			fighter.start_action(projectile["action"])
 			fighter.play_source_frame(spec[1])
 			fighter.facing = facing
 			fighter.position = Vector2(300, 0)
@@ -50,8 +54,9 @@ func _run() -> void:
 			opponent.position = Vector2(1500, 0)
 			assert(not fighter.run_projectile_callback(projectile))
 			assert(fighter.instance_local_offset(name).x == speed)
+			casts += 1
 		fighter.queue_free()
 		opponent.queue_free()
 		await process_frame
-	print("PROJECTILE_CONTACT_HISTORY_SMOKE_OK casts=6")
+	print("PROJECTILE_CONTACT_HISTORY_SMOKE_OK casts=%d" % casts)
 	quit()

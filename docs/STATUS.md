@@ -775,3 +775,16 @@ locations on master. Combat/stage_sound assertion markers pass with separately
 recorded dummy-audio shutdown diagnostics. Online manifest/catalog regenerated;
 no Worker deployment. See [review evidence](../evidence/characters/ikkaku/rebase-review.json).
 Full role acceptance remains pending; M6 is not marked complete.
+
+### PR #10 Ichigo projectile initialization re-review (2026-10-13)
+
+The frame-1 declarations in Ichigo Sprite 99 now compile to `initial_variables`
+for all three base projectiles and both controller modes. Runtime hit/guard and
+interrupt scheduling is unchanged. Redundant legacy `initial_played` fields
+are removed where source locals already exist. Fresh Flash guard contact matches
+21 child states (12 after contact) and 602 fighter states; the preliminary neutral
+capture is retained but does not qualify as contact coverage. Extended contact
+smoke covers 21 casts across five fighters, including all three Ichigo placements.
+See [source gate](../evidence/combat/projectile-contact-fix/source-first.md) and
+[child captures](../evidence/combat/projectile-contact-fix/projectile-states/README.md).
+Full role, audiovisual/Web and milestone acceptance remain pending.
