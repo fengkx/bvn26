@@ -983,9 +983,11 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
         r'(?:(\w+)\.)?hitTest\(_root\.game\["p" \+ _parent\.pn\]\.mc\.(\w+)\)',
         source,
     )
-    if queries:
-        if len(queries) != source.count('hitTest('):
-            raise ValueError("Partially recognized projectile collision query")
+    if len(queries) != source.count('hitTest('):
+        raise ValueError("Partially recognized projectile collision query")
+    if queries or motion:
+        # An explicit empty list preserves movement-only ClipActions. Omitting
+        # it would enable the runtime's legacy stop-on-body-contact fallback.
         motion["collision_queries"] = [
             {"receiver": "self" if receiver in (None, "this") else receiver, "target": target}
             for receiver, target in queries

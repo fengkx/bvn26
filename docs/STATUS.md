@@ -714,4 +714,4 @@ acceptance remains pending; no deployment, merge, or milestone completion.
 
 ### Neji import (2026-10-13)
 
-Neji base form is source-imported in an isolated worktree and wired into local/online selection. Focused original-player move/interrupt/guard comparisons and rollback validation are in progress; see [Neji evidence](../evidence/characters/neji/README.md). The shared interrupted-super deadlock fix is retained as an explicit Flash deviation. Hinata is deferred; full audiovisual/browser/AI acceptance remains pending.
+Neji base form is source-imported in an isolated worktree and wired into local/online selection. Twelve focused original-player move/interrupt/guard/pause comparisons match all 1,202 states each; rollback and existing suites pass. A source-derived empty collision-query list fixes moving hitboxes incorrectly stopping on contact; see [Neji evidence](../evidence/characters/neji/README.md). The shared interrupted-super deadlock fix is retained as an explicit Flash deviation. Hinata is deferred; full audiovisual/browser/AI acceptance remains pending.

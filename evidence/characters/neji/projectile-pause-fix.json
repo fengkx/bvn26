@@ -1,0 +1,57 @@
+{
+  "source_path": "scripts/fighter/neji.json:DefineSprite_535/frame_391/PlaceObject2_250_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+  "invariant": "A ClipAction without hitTest must continue local movement through contact; only the authored global pause guard may suppress it.",
+  "original_trace_sha256": "8e0529326b2abdedf158f055cdf4526b52993175b5029ff75c3099be2dc62c38",
+  "red_native_trace_sha256": "e82bbc962ed1fcef760704f7580412587ad2e453db038483be9275f628c11083",
+  "red_different_states": 563,
+  "first_difference": {
+    "tick": 38,
+    "slot": "p2",
+    "fields": {
+      "frame": {
+        "original": 742.0,
+        "native": 738
+      },
+      "x": {
+        "original": 464.0,
+        "native": 462.0
+      },
+      "hstm": {
+        "original": 2.0,
+        "native": 1.0
+      }
+    }
+  },
+  "fixed_status": "matched",
+  "fixed_states": 1202,
+  "fixed_trace_sha256": "5ab664753b6ca7a01dc09ddb1c5db9c2f0ba88299098a9d81c4b8e07a467521d",
+  "read_only_observer_preserves_all_states": true,
+  "source_hit_test_observations": [
+    {
+      "callback_fight_tick": 33,
+      "receiver": "_level0.game.p2.mc.bdmn",
+      "attack_local_x": 155.4,
+      "hit_test_result": true,
+      "bounds_xmin": 412.55,
+      "bounds_xmax": 464.35
+    },
+    {
+      "callback_fight_tick": 37,
+      "receiver": "_level0.game.p2.mc.bdmn",
+      "attack_local_x": 235.4,
+      "hit_test_result": false,
+      "bounds_xmin": 481.3,
+      "bounds_xmax": 533.1
+    },
+    {
+      "callback_fight_tick": 38,
+      "receiver": "_level0.game.p2.mc.bdmn",
+      "attack_local_x": 255.4,
+      "hit_test_result": false,
+      "bounds_xmin": 498.45,
+      "bounds_xmax": 550.25
+    }
+  ],
+  "timing_note": "Hit-test observations occur inside the receiver callback; the regular root snapshots reflect the following receiver result. These are not interchangeable observation phases.",
+  "fix": "Compile collision_queries=[] for movement-only ClipActions, and interpret this before the runtime legacy settled-contact cache. No character-specific branch, hitbox adjustment or damage change."
+}

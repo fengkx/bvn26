@@ -26,6 +26,7 @@ class NejiImportTests(unittest.TestCase):
         self.assertEqual((projectile["instance_name"], projectile["start_frame"],
                           projectile["end_frame"], projectile["local_x_delta"]),
                          ("zh1atm", 391, 404, 20))
+        self.assertEqual(projectile["collision_queries"], [])
         warp, = model["body_warps"]
         self.assertEqual(warp["frame"], 478)
         self.assertEqual(warp["xscale_gt_0"], {"x_pixels": -30})

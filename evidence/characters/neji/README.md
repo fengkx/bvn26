@@ -35,12 +35,24 @@ Hinata (`zhitian`) remains out of scope; existing selectable assists are retaine
    chip damage, guard break and reaction labels. No boxes or thresholds are tuned.
 5. Fixed-input fixtures in `cases/` cover combo, interruption, giving/receiving
    guard, projectile in both facings, teleport and three supers including the
-   long hit/guard ultimate. Original-player and Godot results are recorded in
-   `checks.json` when complete; source extraction alone is not parity evidence.
+   long hit/guard ultimate, plus projectile pause/resume. Original-player and Godot results are recorded in
+   `checks.json`; source extraction alone is not parity evidence.
 
 ## Validation and limits
 
-Validation is in progress. Full audiovisual/browser/AI acceptance is not claimed.
+All 12 focused original-player comparisons match all 1,202 fighter states each
+(14,424 total), across the 14 compared fields, on the final runtime/data. The
+moving-hitbox pause case exposed and fixed a missing source distinction:
+`collision_queries=[]` must bypass the legacy contact cache so an unconditional
+movement clip keeps moving through contact. See `projectile-pause-fix.json` for
+the red trace, original callback geometry and successful corrected comparison.
+No hitbox, damage or timing threshold was tuned.
+
+Python: 276 tests, two skipped. All 11 selected Godot smokes pass, including the
+single natural-intro / super-pause rollback / round-reset check. Shared PvP and
+training-timer references match 602 actor states each. Online-manifest tests (7),
+matchmaking typecheck/tests (31), source integrity and handoff checks pass.
+Full audiovisual/browser/AI acceptance is not claimed.
 The role remains partial in the global coverage table. The online Worker must be
 redeployed: `services/matchmaking/src/catalog.json` validates selected fighters.
 
@@ -63,3 +75,28 @@ Reference player: `/Users/fengkx/me/code/flash-player/Flash Player.app` (Adobe
 fixtures, then `capture_native_player.py` (windowed `open -g`, `tools/probes/mm.cfg`).
 The account-wide native capture lock must serialize concurrent ports. Temporary
 builds and raw captures belong under `/tmp/neji-*`, not the locked source tree.
+
+## Moving hitbox source gate
+
+`DefineSprite_535/frame_391/PlaceObject2_250_28` contains only the global pause
+guard and `_X = _X + 20`; there is no `hitTest`, hit-state branch or stop-on-contact
+assignment. The new Sprite 250 placement lasts through frame 404 (removed at
+405), with no intervening MOVE; its one-frame child contains two Sprite 249
+placements. Leaving this interval removes the moving hitbox. This answers the
+frame/placement/exit questions without guessing new behavior.
+
+The retained `projectile-pause` input produces the same first hit in Flash and
+Godot at tick 34, but the old model/runtime incorrectly stops the hitbox after
+contact and hits again at tick 38. Flash continues its +20 local-X callbacks and
+ends at 960 HP; the old port ends at 920 HP. The fix compiles an explicit
+empty collision-query list and interprets it before the legacy settled-hit cache.
+Only source-authored collision branches may stop projectile movement. Original
+trace: `/tmp/neji-original-pause-final/neji-projectile-pause/events.jsonl`; the
+red native trace is retained at `/tmp/neji-native-pause/neji-projectile-pause.json`.
+The invariant is continued movement through contact, subject only to the source
+pause guard, not a hardcoded Neji exception or a change in damage/hitbox size.
+
+Final native traces: `/tmp/neji-native-final`. Accepted originals are under
+`/tmp/neji-original-focused-r3`, `/tmp/neji-original-final` and
+`/tmp/neji-original-pause-final`; `checks.json` binds each exact path and hash.
+Capture lock/queue failures remain recorded and are excluded from parity.
