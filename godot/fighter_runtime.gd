@@ -1648,6 +1648,10 @@ func _clip_past_hit(instance_name: String, projectile: Dictionary) -> bool:
 
 
 func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> bool:
+	# Movement-only ClipActions have no source collision branch. Settling their
+	# hit packet must not invent a stop-on-contact rule for their local motion.
+	if projectile.has("collision_queries") and projectile["collision_queries"].is_empty():
+		return false
 	# A settled contact owns this child instance until its source placement
 	# expires.  Collision queries describe how the contact was discovered; they
 	# must not erase the one-shot hit state after the child has moved away.
