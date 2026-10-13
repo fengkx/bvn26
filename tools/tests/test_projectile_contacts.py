@@ -2,14 +2,55 @@
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/importer"))
 from build_combat_model import parse_projectile_motion, parse_projectile_initialization
+sys.path.insert(0, str(ROOT / "tools/probes"))
+from compare_projectile_reference import compare as compare_projectiles
 
 
 class ProjectileContactTests(unittest.TestCase):
+    def test_saved_flash_child_states_reject_post_hit_flight_and_wrong_frame(self):
+        base = ROOT / "evidence/combat/projectile-contact-fix/projectile-states"
+        for role in ("minren", "rifagu"):
+            source = base / role / "events.jsonl.gz"
+            native = base / role / "native.projectiles.json"
+            self.assertEqual(compare_projectiles(source, native)["status"], "matched")
+            for field in ("x", "frame", "movspeed"):
+                rows = json.loads(native.read_text())
+                row = next(row for row in rows if row["played"] == 1)
+                row[field] += 1
+                with self.subTest(role=role, field=field), tempfile.TemporaryDirectory() as directory:
+                    changed = Path(directory) / "native.json"
+                    changed.write_text(json.dumps(rows))
+                    result = compare_projectiles(source, changed)
+                    self.assertEqual(result["status"], "different")
+                    self.assertEqual(len(result["differences"]), 1)
+
+    def test_naruto_hitsugaya_contact_locals_and_action_artifacts(self):
+        for role, speed_factor in [("minren", 2.0), ("rifagu", 1.0)]:
+            combat = json.loads((ROOT / f"godot/generated/fighters/{role}/combat.json").read_text())
+            actions = json.loads((ROOT / f"data/actions/{role}-base.json").read_text())
+            self.assertEqual(combat["projectiles"], actions["projectiles"])
+            self.assertEqual(len(combat["projectiles"]), 1)
+            projectile = combat["projectiles"][0]
+            self.assertEqual(projectile["initial_variables"], {"played": 0})
+            self.assertEqual(projectile["initial_speed_field"], "speed")
+            self.assertEqual(projectile["initial_speed_factor"], speed_factor)
+            event, = projectile["on_hit_events"]
+            self.assertEqual(event["op"], "local_write_group")
+            self.assertEqual(event["conditions"], [{"field": "played", "operator": "==", "value": 0}])
+            self.assertEqual(event["writes"], [{"field": "played", "value": 1}, {"field": "movspeed", "value": 0}])
+            self.assertEqual(event["goto_frame"], 5)
+            self.assertTrue(projectile["on_hit_goto_grouped"])
+        actions = json.loads((ROOT / "data/actions/Kakashi-base.json").read_text())
+        combat = json.loads((ROOT / "godot/generated/fighters/kakashi/combat.json").read_text())
+        self.assertEqual(len(actions["motion_windows"]), 12)
+        self.assertEqual(actions["motion_windows"], combat["motion_windows"])
+
     def test_implicit_and_explicit_self_hit_test_have_the_same_receiver(self):
         bundle = json.loads((ROOT / "scripts/fighter/Kakashi.json").read_text())
         source = next(row["source"] for row in bundle["scripts"]
@@ -42,17 +83,20 @@ class ProjectileContactTests(unittest.TestCase):
                         for key, value in (initial or {}).items():
                             self.assertEqual(hook["projectile"][key], value)
 
-    def test_all_shipped_collision_queries_match_their_source(self):
+    def test_all_shipped_projectile_fields_match_their_source(self):
         sources = {}
         for path in (ROOT / "scripts/fighter").glob("*.json"):
             bundle = json.loads(path.read_text())
             sources[Path(bundle["game_file"]).stem.lower()] = {
                 row["path"]: row["source"] for row in bundle["scripts"]}
-        for path in (ROOT / "godot/generated/fighters").rglob("*.json"):
+        paths = list((ROOT / "godot/generated/fighters").rglob("*.json"))
+        paths += list((ROOT / "data/actions").glob("*-base.json"))
+        for path in paths:
             text = path.read_text()
             if '"collision_queries"' not in text:
                 continue
-            role = path.relative_to(ROOT / "godot/generated/fighters").parts[0]
+            role = (path.stem.removesuffix("-base").lower() if path.parent.name == "actions"
+                    else path.relative_to(ROOT / "godot/generated/fighters").parts[0])
 
             def check(node, source_path=""):
                 if isinstance(node, dict):
@@ -60,7 +104,10 @@ class ProjectileContactTests(unittest.TestCase):
                     if "collision_queries" in node:
                         compiled = parse_projectile_motion(sources[role][source_path])
                         with self.subTest(file=str(path.relative_to(ROOT)), source=source_path):
-                            self.assertEqual(node["collision_queries"], compiled["collision_queries"])
+                            load_path = source_path.replace("onClipEvent(enterFrame)", "onClipEvent(load)")
+                            initial = parse_projectile_initialization(sources[role].get(load_path, ""))
+                            for key, value in {**compiled, **(initial or {})}.items():
+                                self.assertEqual(node.get(key), value, key)
                     for value in node.values():
                         check(value, source_path)
                 elif isinstance(node, list):

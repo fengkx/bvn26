@@ -1540,7 +1540,7 @@
           }
         ],
         "initial_speed_field": "speed",
-        "initial_speed_factor": 2,
+        "initial_speed_factor": 2.0,
         "initial_played": 0,
         "initial_motion_source": {
           "source_path": "DefineSprite_764/frame_382/PlaceObject2_260_28/CLIPACTIONRECORD onClipEvent(load).as",
@@ -1569,7 +1569,37 @@
             "receiver": "self",
             "target": "abcd"
           }
-        ]
+        ],
+        "on_hit_goto_grouped": true,
+        "on_hit_events": [
+          {
+            "op": "local_write_group",
+            "conditions": [
+              {
+                "field": "played",
+                "operator": "==",
+                "value": 0
+              }
+            ],
+            "source_scope": [
+              367
+            ],
+            "writes": [
+              {
+                "field": "played",
+                "value": 1
+              },
+              {
+                "field": "movspeed",
+                "value": 0
+              }
+            ],
+            "goto_frame": 5
+          }
+        ],
+        "initial_variables": {
+          "played": 0
+        }
       }
     },
     {

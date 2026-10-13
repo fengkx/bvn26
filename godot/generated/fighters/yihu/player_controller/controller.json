@@ -1351,6 +1351,33 @@
             "receiver": "self",
             "target": "abcd"
           }
+        ],
+        "on_hit_goto_grouped": true,
+        "on_hit_events": [
+          {
+            "op": "local_write_group",
+            "conditions": [
+              {
+                "field": "played",
+                "operator": "==",
+                "value": 0
+              }
+            ],
+            "source_scope": [
+              367
+            ],
+            "writes": [
+              {
+                "field": "played",
+                "value": 1
+              },
+              {
+                "field": "movspeed",
+                "value": 0
+              }
+            ],
+            "goto_frame": 5
+          }
         ]
       }
     },
@@ -1433,6 +1460,33 @@
             "receiver": "self",
             "target": "abcd"
           }
+        ],
+        "on_hit_goto_grouped": true,
+        "on_hit_events": [
+          {
+            "op": "local_write_group",
+            "conditions": [
+              {
+                "field": "played",
+                "operator": "==",
+                "value": 0
+              }
+            ],
+            "source_scope": [
+              373
+            ],
+            "writes": [
+              {
+                "field": "played",
+                "value": 1
+              },
+              {
+                "field": "movspeed",
+                "value": 0
+              }
+            ],
+            "goto_frame": 5
+          }
         ]
       }
     },
@@ -1508,6 +1562,33 @@
           {
             "receiver": "self",
             "target": "abcd"
+          }
+        ],
+        "on_hit_goto_grouped": true,
+        "on_hit_events": [
+          {
+            "op": "local_write_group",
+            "conditions": [
+              {
+                "field": "played",
+                "operator": "==",
+                "value": 0
+              }
+            ],
+            "source_scope": [
+              367
+            ],
+            "writes": [
+              {
+                "field": "played",
+                "value": 1
+              },
+              {
+                "field": "movspeed",
+                "value": 0
+              }
+            ],
+            "goto_frame": 5
           }
         ]
       }

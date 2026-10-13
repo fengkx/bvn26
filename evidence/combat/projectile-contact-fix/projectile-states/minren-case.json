@@ -1,0 +1,42 @@
+{
+  "id": "minren-375-magichit1-neutral",
+  "fighter": "minren",
+  "slot": "p1",
+  "label": "招1",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "ranged"
+      ],
+      "start": 10,
+      "end": 13
+    }
+  ],
+  "target_frames": [
+    375,
+    411
+  ],
+  "source_dispatch": [
+    "doAllAction",
+    "doStand"
+  ],
+  "status": "not_run",
+  "projectile_probe": {
+    "p1": {
+      "zh1atm": 28
+    }
+  }
+}

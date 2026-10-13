@@ -13,6 +13,8 @@ func _run() -> void:
 	naruto.fighter_directory = "res://generated/fighters/minren"
 	root.add_child(naruto)
 	await process_frame
+	# The standalone fixture must run the source load before child load callbacks.
+	naruto.ai_source_state.apply_load()
 	assert(naruto.energy == 0.0)
 	assert(naruto.has_command("砍1"))
 	assert(naruto.has_command("万解"))

@@ -235,6 +235,24 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
     bootstrap = bootstrap.replace("__GAME_URI__", game.as_uri())
     bootstrap = bootstrap.replace('p1selt = "鸣人";', 'p1selt = ' + quoted(p1_character) + ';')
     bootstrap = bootstrap.replace('p2selt = "一护";', 'p2selt = ' + quoted(p2_character) + ';')
+    projectile_probe = case.get("projectile_probe", {}) if move_case else {}
+    if projectile_probe:
+        calls = []
+        for slot, names in projectile_probe.items():
+            if slot not in ("p1", "p2") or not isinstance(names, dict):
+                raise ValueError("Invalid projectile observation slots")
+            for name, depth in names.items():
+                if not re.fullmatch(r"[A-Za-z_]\w*", name) or not isinstance(depth, int):
+                    raise ValueError("Invalid projectile instance name")
+                calls.append('      aiProjectileState(' + quoted(slot) + ',' + quoted(name) + ',' + str(depth) + ');')
+        bootstrap = '''function aiProjectileState(slot, name, depth)
+{
+   var clip = _root.game[slot].mc.getInstanceAtDepth(depth - 16384);
+   if(clip == undefined || clip.played == undefined) return;
+   aiEvent("projectile_state", slot + "," + name + "," + clip._currentframe + "," + aiNumber(clip._x) + "," + aiNumber(clip._y) + "," + aiNumber(clip.played) + "," + aiNumber(clip.movspeed));
+}
+''' + bootstrap
+        bootstrap = bootstrap.replace('      aiState("p2");', '      aiState("p2");\n' + '\n'.join(calls))
     if effect_phase_probe:
         bootstrap = effect_phase_observer_source() + bootstrap
         bootstrap = bootstrap.replace('      aiState("p2");', '      aiState("p2");\n      aiEffectState();')
@@ -645,6 +663,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "shadow_probe": shadow_probe,
         "effect_phase_probe": effect_phase_probe,
         "hit_receive_probe": hit_receive_probe,
+        "projectile_probe": projectile_probe,
         "hit_receive_event_schema": observer_schema() if hit_receive_probe else None,
         "p1_helper": helper_selections["p1"]["character_id"] if helper_selections["p1"] else None,
         "p2_helper": helper_selections["p2"]["character_id"] if helper_selections["p2"] else None,

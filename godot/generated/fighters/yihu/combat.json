@@ -3532,7 +3532,6 @@
       "speed_factor": 1.0,
       "local_x_factor": 1.0,
       "local_y_factor": 1.0,
-      "on_hit_goto_frame": 5,
       "collision_queries": [
         {
           "receiver": "self",
@@ -3553,6 +3552,34 @@
         {
           "receiver": "self",
           "target": "abcd"
+        }
+      ],
+      "on_hit_goto_frame": 5,
+      "on_hit_goto_grouped": true,
+      "on_hit_events": [
+        {
+          "op": "local_write_group",
+          "conditions": [
+            {
+              "field": "played",
+              "operator": "==",
+              "value": 0
+            }
+          ],
+          "source_scope": [
+            367
+          ],
+          "writes": [
+            {
+              "field": "played",
+              "value": 1
+            },
+            {
+              "field": "movspeed",
+              "value": 0
+            }
+          ],
+          "goto_frame": 5
         }
       ],
       "character_id": 99,
@@ -3599,7 +3626,6 @@
       "end_frame": 341,
       "speed_factor": 1.0,
       "local_x_factor": 1.0,
-      "on_hit_goto_frame": 5,
       "collision_queries": [
         {
           "receiver": "self",
@@ -3620,6 +3646,34 @@
         {
           "receiver": "self",
           "target": "abcd"
+        }
+      ],
+      "on_hit_goto_frame": 5,
+      "on_hit_goto_grouped": true,
+      "on_hit_events": [
+        {
+          "op": "local_write_group",
+          "conditions": [
+            {
+              "field": "played",
+              "operator": "==",
+              "value": 0
+            }
+          ],
+          "source_scope": [
+            373
+          ],
+          "writes": [
+            {
+              "field": "played",
+              "value": 1
+            },
+            {
+              "field": "movspeed",
+              "value": 0
+            }
+          ],
+          "goto_frame": 5
         }
       ],
       "character_id": 99,
@@ -3667,7 +3721,6 @@
       "speed_factor": 1.0,
       "local_x_factor": 1.0,
       "local_y_factor": -1.0,
-      "on_hit_goto_frame": 5,
       "collision_queries": [
         {
           "receiver": "self",
@@ -3688,6 +3741,34 @@
         {
           "receiver": "self",
           "target": "abcd"
+        }
+      ],
+      "on_hit_goto_frame": 5,
+      "on_hit_goto_grouped": true,
+      "on_hit_events": [
+        {
+          "op": "local_write_group",
+          "conditions": [
+            {
+              "field": "played",
+              "operator": "==",
+              "value": 0
+            }
+          ],
+          "source_scope": [
+            367
+          ],
+          "writes": [
+            {
+              "field": "played",
+              "value": 1
+            },
+            {
+              "field": "movspeed",
+              "value": 0
+            }
+          ],
+          "goto_frame": 5
         }
       ],
       "character_id": 99,

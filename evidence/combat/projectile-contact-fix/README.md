@@ -45,7 +45,8 @@ and [machine-readable regression results](regressions.json).
   2 historical differences). Five additional saved cases cover Sasuke/Renji
   overlap, Rukia defence and Lee's clean kill/dead timer branches.
 - Combined corpus: **58/58 cases, 40,476/40,476 states, zero differences**,
-  covering all **14 playable fighters**. The 19 cases affected by the remaining
+  covering **13 primary fighter roles**. Renji appears only as the opponent in
+  two Sasuke overlap cases; this is not independent acceptance of all 14 roles. The 19 cases affected by the remaining
   implicit-receiver metadata refresh are rerun after that refresh.
 - Roster rollback: **14 fighters × 8 checkpoints = 112 exact restores**, plus
   dedicated Neji, Chad and Yin rollback checks and round-reset smoke.
@@ -96,3 +97,39 @@ python3 tools/build_online_manifest.py --check
 Fresh Sakura capture provenance, instrumentation diff, tapes and compressed
 original events are in `fresh-sakura/`. Its observation-only instrumentation did
 not change any of the 602 saved fighter states. No credentials or login was used.
+
+
+## PR #10 review follow-up
+
+The earlier receiver-only refresh missed Naruto/Hitsugaya load locals and the
+Naruto/Hitsugaya/Ichigo guarded contact writes. Recompile all five affected
+projectiles with the existing compiler, synchronizing `data/actions`, runtime
+combat data and controller hooks. Byakuya's AI hook also now retains its source
+load locals. Source-driven guards set played=1 and movspeed=0 together with the
+child goto; contact loss cannot restart flight. The all-artifact Python check
+now verifies every compiled motion/initialization field, not only query lists.
+Kakashi action data now preserves the same 12 motion windows as runtime combat.
+
+Fresh Flash Debugger comparisons cover Naruto neutral ranged and Hitsugaya
+**guarded** air ranged: **22/22 + 27/27 child states**, with **18 post-contact
+observations each**, and **1,204/1,204 fighter states**. The ordinary Hitsugaya
+neutral/air-target fixtures deal damage without taking the child's hitTest
+branch, so they are insufficient to prove contact stopping. The new fixture
+retains the saved guard case's inputs and setup and adds read-only observation.
+
+The review rerun has **23/23 affected/target cases, 13,846/13,846 fighter states,
+zero differences**, including guard, attack/trade, air target, mirror, wall and
+dash cases. This is distinct from the historical 58-case corpus above.
+**50 Python tests** and **3 Godot checks** pass (contact-history: six casts,
+instance locals, combat). The isolated combat fixture now executes source load
+before child callbacks, as the production controller already does. These checks
+retain existing Godot shutdown resource-leak diagnostics; no SCRIPT ERROR or
+assertion failure remains. Production runtime, locked inputs and tolerances are
+unchanged. Full milestones stay pending.
+
+See [review results](review.json) and [child-state evidence](projectile-states/README.md).
+Replay the two new captures, including both fighter and child state checks:
+
+```sh
+python3 tools/test_projectile_contact_references.py --projectile-states --godot /path/to/Godot --output /tmp/bvn-projectile-states
+```
