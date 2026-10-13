@@ -788,3 +788,18 @@ smoke covers 21 casts across five fighters, including all three Ichigo placement
 See [source gate](../evidence/combat/projectile-contact-fix/source-first.md) and
 [child captures](../evidence/combat/projectile-contact-fix/projectile-states/README.md).
 Full role, audiovisual/Web and milestone acceptance remain pending.
+
+### PR #10 rebase onto Ikkaku master (2026-10-13)
+
+Rebased onto `162398fc`; runtime behavior is byte-identical to reviewed
+`bc9ebdee`. Ikkaku action/combat data and both controllers regenerate identically.
+Both Kakashi/Sakura targets match 602/602 states each. The prior focused baseline
+remains 22/22 cases and 13,604/13,604 states; the expanded saved Flash replay is
+70/70 cases and 46,260/46,260 states including all 12 Ikkaku cases. Three child
+contact cases match 70/70 child states and 1,806/1,806 fighter states. Contact
+history covers 21 casts; Ikkaku rollback/late input/round reset passes. Python
+reports 290 discovered / 288 passed / 2 skipped, plus 7/7 online-manifest tests.
+Generated compatibility fingerprints retain all 15 fighters. No source inputs,
+expectations, tolerances or interrupt/guard scheduling changed. See
+[post-rebase evidence](../evidence/combat/projectile-contact-fix/rebase-validation.json).
+Full role/audiovisual/browser acceptance remains pending; no milestone is closed.
