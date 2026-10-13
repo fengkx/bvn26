@@ -312,10 +312,6 @@ def _signed_pixel(match: re.Match[str], op_key: str, num_key: str) -> float:
     return -extra if match[op_key] == "-" else extra
 
 
-def _xscale_facing(scale: str) -> int:
-    return 1 if float(scale) > 0 else -1
-
-
 def _warp_x_fields(source: str) -> dict[str, Any] | None:
     match = PARENT_WARP_X.search(source)
     if match is None:
@@ -356,8 +352,8 @@ def parse_body_warp(source: str) -> dict[str, Any] | None:
         else_x = _warp_x_fields(facing["else_x"])
         if then_x is None or else_x is None:
             return None
-        then_branch = {"set_facing": _xscale_facing(facing["then_scale"]), **then_x}
-        else_branch = {"set_facing": _xscale_facing(facing["else_scale"]), **else_x}
+        then_branch = {"set_xscale": float(facing["then_scale"]), **then_x}
+        else_branch = {"set_xscale": float(facing["else_scale"]), **else_x}
         result: dict[str, Any] = {
             "op": "warp_to_opponent",
             "place_x": True,
@@ -1837,6 +1833,8 @@ def build_model(
             continue
         if summon_function is None:
             raise ValueError("doZhaoHuan is missing its source function")
+        if script["source"].strip() != "doZhaoHuan();":
+            raise ValueError("Summon frame needs explicit statement ordering: " + script["path"])
         summon_events.append(
             {
                 "action": script["action"],

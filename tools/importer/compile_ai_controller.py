@@ -78,11 +78,11 @@ CALLS = {
     '_parent.updateDirect()': 'adapter.effect("updateDirect")',
     '_root.jumpxg(_parent._parent)': 'adapter.effect("jumpxg")',
     '_root.luodixg(_parent._parent)': 'adapter.effect("luodixg")',
-    # These are source root effects used by a placed guard/effect clip.  They
-    # are dispatched through the same service ABI as the other source effects;
-    # silently dropping the callback would change the blocked-hit timeline.
-    'bdfyxg()': 'adapter.effect("bdfyxg")',
-    'bdfyxg2()': 'adapter.effect("bdfyxg2")',
+    # Root bdfyxg(selfmc)/bdfyxg2(selfmc) require an explicit receiver. The
+    # argument-less child calls cannot read selfmc.bdzl and take no switch arm.
+    # They must not borrow the fighter's stale blocked-hit strength.
+    'bdfyxg()': 'pass # Source guard-effect call has no receiver argument.',
+    'bdfyxg2()': 'pass # Source guard-effect call has no receiver argument.',
 }
 def source_expression(source: str, locals_: set[str], scope_fields: set[str], call_aliases=None) -> str:
     for field in sorted(scope_fields, key=len, reverse=True):

@@ -1157,7 +1157,7 @@ func _ko_service(operation: String, args: Array) -> Variant:
 				return null
 			assert(args[0] == "_root.ready")
 			battle_intro.clips.ready.visible = true
-			battle_intro.playing.ready = bool(args[1])
+			battle_intro.set_clip_playing("ready", bool(args[1]), _source_nextfight_goto_phase)
 			battle_intro.active = true
 			battle_intro.polling = false
 			battle_intro.focus = "all"

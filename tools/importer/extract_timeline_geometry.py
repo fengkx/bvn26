@@ -248,9 +248,9 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             polygon = bitmap_shape_polygon(tag)
             if polygon is not None:
                 definition["bitmap_clip_polygon"] = polygon
-            elif len(bitmap_fills) > 1:
+            else:
                 fill_polygons = bitmap_shape_fill_polygons(tag)
-                if fill_polygons is not None:
+                if fill_polygons is not None and (len(bitmap_fills) > 1 or fill_polygons == [[]]):
                     definition["bitmap_clip_polygons"] = fill_polygons
         if solid_fills:
             definition["solid_fills"] = solid_fills

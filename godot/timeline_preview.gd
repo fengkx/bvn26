@@ -788,9 +788,13 @@ func _render_placement(
 		var fill_masks: Array = []
 		if compiled_fill_masks.size() == fills.size():
 			fill_masks = compiled_fill_masks[fill_index]
+			# An explicit empty mask paints nothing; only absent masks may fall back.
+			if fill_masks.is_empty():
+				continue
 		elif fills.size() == 1 and definition.has("bitmap_clip_polygon"):
 			fill_masks = [definition["bitmap_clip_polygon"]]
-		if not fill_masks.is_empty():
+		var full_bitmap := _mask_is_full_bitmap(fill_masks, bitmap_transform, source_texture)
+		if not fill_masks.is_empty() and not full_bitmap:
 			var inverse_bitmap := bitmap_transform.affine_inverse()
 			for contour: Array in fill_masks:
 				var polygon := Polygon2D.new()
@@ -815,7 +819,7 @@ func _render_placement(
 		sprite.z_index = depth
 		var draw_transform := bitmap_transform
 		var texture_region := _shape_texture_region(definition, bitmap_transform, source_texture)
-		if texture_region.has_area():
+		if not full_bitmap and texture_region.has_area():
 			var atlas := AtlasTexture.new()
 			atlas.atlas = source_texture
 			atlas.region = texture_region
@@ -829,6 +833,29 @@ func _render_placement(
 	if not usable_fills.is_empty():
 		return
 	_render_solid_fills(definition, placement_transform, depth, rgb_mul, rgb_add, alpha)
+
+
+func _mask_is_full_bitmap(masks: Array, bitmap_transform: Transform2D, texture: Texture2D) -> bool:
+	if masks.size() != 1 or masks[0].size() != 4 or bitmap_transform.determinant() == 0.0:
+		return false
+	var inverse := bitmap_transform.affine_inverse()
+	var size := texture.get_size()
+	var corners := [Vector2.ZERO, Vector2(size.x, 0), size, Vector2(0, size.y)]
+	var indices: Array[int] = []
+	for point: Array in masks[0]:
+		var uv := inverse * Vector2(float(point[0]), float(point[1]))
+		var corner_index := -1
+		for index in corners.size():
+			if uv.distance_to(corners[index]) < 0.0001:
+				corner_index = index
+		if corner_index < 0 or corner_index in indices:
+			return false
+		indices.append(corner_index)
+	# Only a perimeter walk covers the rectangle; reject crossing diagonals.
+	for index in indices.size():
+		if absi(indices[index] - indices[(index + 1) % 4]) == 2:
+			return false
+	return true
 
 
 func _render_solid_fills(

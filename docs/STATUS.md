@@ -13,6 +13,9 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
 
 ## 已完成的资料与已实现的开发切片
 
+- 2026-10-13 PR #11：修复共享容器缩放与逻辑朝向混用、无接收参数的防御特效调用、被 goto 覆盖的已排队援助调用，以及 Ready 外部 play 的首帧推进。原 13 项差异全部消除；136 例 / 94,232 状态及上游 58 例 / 40,476 状态精确一致。296 项 Python（2 跳过）、17 项 Godot 专项、15 项回滚和 7 项在线清单测试通过；5 项既有广泛冒烟失败未变化。合并 #7/#8/#10 后补刷新一角遮罩；无角色专属运行时补丁，里程碑不升级。见[源码与验证证据](../evidence/characters/yin/shared-source-parity/README.md)。
+
+- 2026-10-13: Shared bitmap-mask compiler now preserves empty placeholder/unused fills; the renderer skips them and retains Sprite2D for full-bitmap rectangles. Refreshed 14 base-fighter timelines and the retained Hitsugaya form-2 slice without changing scheduling. Gin U/up+U input replays and screenshots show one body plus blade; full visual parity remains pending. See [mask fix evidence](../evidence/visual-audio/bitmap-placeholder-mask/README.md).
 - 2026-10-13 PR #10 复核补齐鸣人、日番谷和一护共 5 个投射物的源码局部变量／命中事件，动作数据、combat 与控制器同步，卡卡西动作数据恢复 12 个移动窗口。23 项受影响回放共 13,846 状态零差异；鸣人／日番谷新增原版投射物对照为 22/22、27/27（各 18 个命中后状态），角色状态 1,204/1,204。50 项 Python 测试和 3 项 Godot 检查通过；不提升完整角色／里程碑验收。见[复核证据](../evidence/combat/projectile-contact-fix/review.json)。
 
 - 2026-10-13 修复卡卡西地面远程与樱招1的历史命中次数差异：弹体源码 hitTest 不再被受击结算缓存替代，省略 this 的查询正确编译为 self。两项目标各 602/602 状态一致；覆盖 13 个主测角色（恋次仅作重叠案例对手）的 58 项保存回归、40,476 个状态零差异，角色回滚 112 个检查点及三项专用回滚通过。完整里程碑验收保持 pending，见[源码与回归证据](../evidence/combat/projectile-contact-fix/README.md)。

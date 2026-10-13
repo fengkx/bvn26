@@ -897,8 +897,8 @@ func _run() -> void:
 			"op": "warp_to_opponent",
 			"place_x": true,
 			"place_y": true,
-			"xscale_gt_0": {"set_facing": -1, "x_pixels": 100.0},
-			"xscale_lt_0": {"set_facing": 1, "x_pixels": -100.0},
+			"xscale_gt_0": {"set_xscale": -100.0, "x_pixels": 100.0},
+			"xscale_lt_0": {"set_xscale": 100.0, "x_pixels": -100.0},
 		},
 		{
 			"action": "上必杀",
@@ -906,8 +906,8 @@ func _run() -> void:
 			"op": "warp_to_opponent",
 			"place_x": true,
 			"place_y": true,
-			"xscale_gt_0": {"set_facing": -1, "x_bdmn_width": -0.7},
-			"xscale_lt_0": {"set_facing": 1, "x_bdmn_width": 0.7},
+			"xscale_gt_0": {"set_xscale": -100.0, "x_bdmn_width": -0.7},
+			"xscale_lt_0": {"set_xscale": 100.0, "x_bdmn_width": 0.7},
 			"y_bdmn_height": 0.5,
 		},
 	]
@@ -922,7 +922,7 @@ func _run() -> void:
 	assert(ichigo.current_source_frame() == 442)
 	ichigo.root_zhanting = true
 	ichigo.enter_frame({})
-	assert(ichigo.facing == -1)
+	assert(ichigo.facing == 1 and ichigo.scale.x == -1.0)
 	assert(is_equal_approx(ichigo.position.x, 500.0))
 	assert(is_equal_approx(ichigo.position.y, 0.0))
 	ichigo.set_facing(-1)
@@ -935,8 +935,12 @@ func _run() -> void:
 		ichigo.advance_timeline()
 	ichigo.root_zhanting = true
 	ichigo.enter_frame({})
-	assert(ichigo.facing == 1)
+	assert(ichigo.facing == -1 and ichigo.scale.x == 1.0)
 	assert(is_equal_approx(ichigo.position.x, 300.0))
+	# Repeating the warp branches on MovieClip._xscale, not unchanged scale_X.
+	ichigo._apply_body_warp_event(warp_combat["body_warps"][0], 1001)
+	assert(ichigo.facing == -1 and ichigo.scale.x == -1.0)
+	assert(is_equal_approx(ichigo.position.x, 500.0))
 	ichigo.root_zhanting = false
 	var stand_body := naruto.instance_global_bounds("bdmn")
 	assert(stand_body.has_area())
@@ -949,7 +953,7 @@ func _run() -> void:
 	ichigo.root_zhanting = true
 	ichigo.enter_frame({})
 	var stand_body_local := naruto.instance_local_bounds("bdmn")
-	assert(ichigo.facing == -1)
+	assert(ichigo.facing == 1 and ichigo.scale.x == -1.0)
 	# Source MATRIX uses the raw local bounds, then Flash rounds the written coordinates to twips.
 	var expected_warp_x := roundf((naruto.position.x - stand_body_local.size.x * 0.7) * 20.0) / 20.0
 	var expected_warp_y := roundf((naruto.position.y + stand_body_local.size.y * 0.5) * 20.0) / 20.0

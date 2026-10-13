@@ -72,6 +72,12 @@ func _run() -> void:
 		check(not intro.active, "qjxg 40 must unlock")
 	game._enter_current_fight(4)
 	check(intro.active and intro.states == [0, 0], "Re-entry must reset intro state in training")
+	# Flash nextfight resumes ready at frame 1 after the display advance.
+	intro.set_clip_playing("ready", true, true)
+	intro.tick(1.0 / 30.0)
+	check(intro.clips.ready.current_source_frame() == 1, "External play must retain the stopped frame on its delivery display")
+	intro.tick(1.0 / 30.0)
+	check(intro.clips.ready.current_source_frame() == 2, "External play must advance on the following display")
 	game._goto_menu()
 	check(not intro.active and not intro.clips["ready"].visible, "Returning to menu leaked opening")
 	for node in game.find_children("*", "AudioStreamPlayer", true, false):

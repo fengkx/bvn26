@@ -1,0 +1,215 @@
+{
+  "status": "passed_with_unchanged_baseline_failures",
+  "source_parity": {
+    "cases": 136,
+    "matched": 136,
+    "source_states": 94232,
+    "original_failures_resolved": 13
+  },
+  "upstream_regressions": {
+    "cases": 58,
+    "matched": 58,
+    "source_states": 40476
+  },
+  "projectile_state_references": {
+    "cases": 3,
+    "matched": 3,
+    "source_states": 1806,
+    "projectile_states": 70
+  },
+  "python": {
+    "tests": 296,
+    "skipped": 2,
+    "status": "passed"
+  },
+  "godot_smokes": [
+    {
+      "test": "combat_smoke",
+      "passed": true,
+      "errors": [
+        "ERROR: 3 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "test": "intro_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "intro_poll_replay_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "vs_com_intro_poll_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "intro_queued_goto_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "round_reset_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "online_timer_round_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "source_effect_placement_phase_smoke",
+      "passed": true,
+      "errors": [
+        "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "test": "source_health_rules_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "source_repeat_contact_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "bitmap_placeholder_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "source_queued_summon_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "projectile_contact_history_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "ikkaku_rollback_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "yin_rollback_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "chad_rollback_smoke",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "test": "neji_rollback_smoke",
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "rollback": {
+    "status": "passed",
+    "scope": "native offline battle rollback; synthetic external timer envelopes; not Chrome or online acceptance",
+    "checks": [
+      {
+        "test": "battle_checkpoint_smoke",
+        "passed": true,
+        "audio_shutdown_warning": true
+      },
+      {
+        "test": "rollback_battle_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "rollback_roster_smoke",
+        "passed": true,
+        "audio_shutdown_warning": true
+      },
+      {
+        "test": "rollback_round_smoke",
+        "passed": true,
+        "audio_shutdown_warning": true
+      },
+      {
+        "test": "controller_checkpoint_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "timeout_checkpoint_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "ai_projectile_driver_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "rollback_services_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "manual_match_step_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "source_callback_registry_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "ai_random_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "hit_effect_clock_smoke",
+        "passed": true,
+        "audio_shutdown_warning": true
+      },
+      {
+        "test": "hit_effect_random_smoke",
+        "passed": true,
+        "audio_shutdown_warning": true
+      },
+      {
+        "test": "ai_timeouts_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      },
+      {
+        "test": "match_input_scene_smoke",
+        "passed": true,
+        "audio_shutdown_warning": false
+      }
+    ],
+    "retry_note": "The concurrent roster run hit its existing 180-second timeout under eight other engine processes; the unchanged full command passed in isolation."
+  },
+  "online_tests": {
+    "tests": 7,
+    "status": "passed"
+  },
+  "known_failures": "known-failures.json",
+  "limitations": [
+    "Five broad Godot smoke failures reproduce stored baseline errors and are not passes.",
+    "Selected combat/effect checks retain shutdown resource warnings, with no new script errors.",
+    "No full Web, AI, visual or milestone acceptance is claimed."
+  ],
+  "repository_checks": {
+    "tools/verify.py": "passed",
+    "tools/check_handoff.py": "passed",
+    "tools/validate_contracts.py": "passed",
+    "tools/build_online_manifest.py --check": "passed",
+    "git diff --check": "passed"
+  }
+}
