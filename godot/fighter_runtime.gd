@@ -1128,6 +1128,12 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 					if hits == 0:
 						last_combo_board = 0
 		_apply_hit_settlement_frame(pending)
+		# A retained DoAction still runs when a newer callback has changed the
+		# playhead. Source doZhaoHuan frames contain only this call.
+		for summon: Dictionary in _combat.get("summon_events", []):
+			if int(summon["frame"]) == pending and str(summon.get("call_kind", "doZhaoHuan")) == "doZhaoHuan":
+				_summon_applied = true
+				_execute_summon_event(summon)
 		_ai_state_frame_applied = pending
 		source_frame_script_boundary.emit(pending, false)
 
@@ -1798,23 +1804,29 @@ func _apply_summon_event() -> void:
 	if _summon_applied:
 		return
 	for event: Dictionary in _combat.get("summon_events", []):
+		if str(event.get("call_kind", "doZhaoHuan")) == "doZhaoHuan":
+			continue
 		if event["action"] != action or int(event["frame"]) != current_source_frame():
 			continue
 		_summon_applied = true
-		if event.has("skip_if_truthy") and _ai_hit_transfer.truth(
-			ai_source_state.read_field(str(event["skip_if_truthy"]))
-		):
-			return
-		if event.has("energy_delta"):
-			change_energy(float(event["energy_delta"]))
-		helper_spawn = _yfgj_spawn(event)
-		helper_spawn_requested.emit()
-		if event.get("set_bs") != null:
-			bs = int(event["set_bs"])
-		last_event = "summon_%s" % event.get("helper_id", "helper")
-		if RollbackPresentation.should_emit_combat_console_event(self):
-			print("COMBAT_EVENT ", JSON.stringify(snapshot()))
+		_execute_summon_event(event)
 		return
+
+
+func _execute_summon_event(event: Dictionary) -> void:
+	if event.has("skip_if_truthy") and _ai_hit_transfer.truth(
+		ai_source_state.read_field(str(event["skip_if_truthy"]))
+	):
+		return
+	if event.get("set_bs") != null:
+		bs = int(event["set_bs"])
+	if event.has("energy_delta"):
+		change_energy(float(event["energy_delta"]))
+	helper_spawn = _yfgj_spawn(event)
+	helper_spawn_requested.emit()
+	last_event = "summon_%s" % event.get("helper_id", "helper")
+	if RollbackPresentation.should_emit_combat_console_event(self):
+		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
 
 
 func _apply_presentation_events() -> void:
@@ -1899,9 +1911,11 @@ func _apply_body_warp_event(event: Dictionary, invocation_serial: int = -1) -> v
 		return
 	var branch: Dictionary = warp
 	if warp.has("xscale_gt_0"):
-		branch = warp["xscale_gt_0"] if facing > 0 else warp["xscale_lt_0"]
-	if branch.has("set_facing"):
-		set_facing(int(branch["set_facing"]))
+		branch = warp["xscale_gt_0"] if scale.x > 0 else warp["xscale_lt_0"]
+	if branch.has("set_xscale"):
+		# A container _xscale write does not assign the source scale_X variable.
+		# BODY pressure keeps using scale_X until updateDirect explicitly changes it.
+		scale.x = float(branch["set_xscale"]) / 100.0
 	# Source `_x = opponent._x - opponent.mc.bdmn._width * 1.7`
 	# reads the clip's local width. Global bounds include the scene scale and
 	# would shrink the source-authored container warp before applying it to

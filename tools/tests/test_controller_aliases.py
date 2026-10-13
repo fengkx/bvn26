@@ -1,5 +1,6 @@
 """Source-identical controller aliases keep their independent placements."""
 import json
+import re
 from pathlib import Path
 import sys
 import unittest
@@ -11,6 +12,19 @@ from compile_ai_predicates import controller_script
 
 
 class ControllerAliasTests(unittest.TestCase):
+    def test_argumentless_guard_effect_has_no_source_receiver(self):
+        root = json.loads((ROOT / "scripts/main.json").read_text())
+        source = next(item["source"] for item in root["scripts"]
+                      if item["path"] == "frame_8/DoAction.as")
+        for name in ("bdfyxg", "bdfyxg2"):
+            self.assertRegex(source, rf"function {name}\(selfmc\)\s*\{{\s*switch\(selfmc.bdzl\)")
+            # A fighter-local override would invalidate the root ABI inference.
+            for path in (ROOT / "scripts/fighter").glob("*.json"):
+                bundle = json.loads(path.read_text())
+                for item in bundle["scripts"]:
+                    self.assertIsNone(re.search(rf"function {name}\s*\(|\b{name}\s*=\s*function", item["source"]),
+                                      f"{path.name}: {item['path']}")
+
     def test_byakuya_base_controller_uses_frame_one_alias(self):
         bundle = json.loads((ROOT / "scripts/fighter/Byakuya.json").read_text())
         self.assertEqual(controller_script(bundle, 631)["path"], "DefineSprite_16/frame_1/DoAction.as")
@@ -27,7 +41,8 @@ class ControllerAliasTests(unittest.TestCase):
                 paths,
             )
         self.assertIn("DefineSprite_631/frame_852/PlaceObject2_572_28/CLIPACTIONRECORD onClipEvent(enterFrame).as", paths)
-        self.assertIn('adapter.effect("bdfyxg")', native)
+        self.assertNotIn('adapter.effect("bdfyxg")', native)
+        self.assertIn("pass # Source guard-effect call has no receiver argument.", native)
         self.assertIn("func child_69_magichit1", native)
         self.assertIn("child_69_bisha()", native)
 

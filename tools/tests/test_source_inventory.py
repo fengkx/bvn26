@@ -350,6 +350,16 @@ class TimelineGeometryTests(unittest.TestCase):
 
 
 class CombatModelTests(unittest.TestCase):
+    def test_container_warp_preserves_separate_body_direction(self):
+        bundle = json.loads((ROOT / "scripts/fighter/yin.json").read_text())
+        source = next(item["source"] for item in bundle["scripts"]
+                      if item["path"] == "DefineSprite_435/frame_407/DoAction.as")
+        self.assertIn("_parent._xscale", source)
+        self.assertNotIn("scale_X", source)
+        warp = combat_model.parse_body_warp(source)
+        self.assertEqual(warp["xscale_gt_0"], {"set_xscale": -100.0, "x_pixels": 50.0})
+        self.assertEqual(warp["xscale_lt_0"], {"set_xscale": 100.0, "x_pixels": -50.0})
+
     def test_summon_guard_is_retained_for_all_source_fighters(self):
         bundles = list((ROOT / "scripts/fighter").glob("*.json"))
         self.assertEqual(len(bundles), 35)
@@ -539,8 +549,8 @@ class CombatModelTests(unittest.TestCase):
             {
                 "op": "warp_to_opponent",
                 "place_x": True,
-                "xscale_gt_0": {"set_facing": -1, "x_pixels": 100.0},
-                "xscale_lt_0": {"set_facing": 1, "x_pixels": -100.0},
+                "xscale_gt_0": {"set_xscale": -100.0, "x_pixels": 100.0},
+                "xscale_lt_0": {"set_xscale": 100.0, "x_pixels": -100.0},
                 "place_y": True,
             },
         )
@@ -559,8 +569,8 @@ class CombatModelTests(unittest.TestCase):
             {
                 "op": "warp_to_opponent",
                 "place_x": True,
-                "xscale_gt_0": {"set_facing": -1, "x_bdmn_width": -0.7},
-                "xscale_lt_0": {"set_facing": 1, "x_bdmn_width": 0.7},
+                "xscale_gt_0": {"set_xscale": -100.0, "x_bdmn_width": -0.7},
+                "xscale_lt_0": {"set_xscale": 100.0, "x_bdmn_width": 0.7},
                 "place_y": True,
                 "y_bdmn_height": 0.5,
             },
@@ -577,8 +587,8 @@ class CombatModelTests(unittest.TestCase):
             {
                 "op": "warp_to_opponent",
                 "place_x": True,
-                "xscale_gt_0": {"set_facing": 1, "x_bdmn_width": -1.0},
-                "xscale_lt_0": {"set_facing": -1, "x_bdmn_width": 1.0},
+                "xscale_gt_0": {"set_xscale": 100.0, "x_bdmn_width": -1.0},
+                "xscale_lt_0": {"set_xscale": -100.0, "x_bdmn_width": 1.0},
             },
         )
         self.assertEqual(ichigo["body_warps"], [])

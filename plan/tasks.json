@@ -272,14 +272,19 @@
         "data/unresolved-events.json"
       ],
       "acceptance": "数值、时序、区域、取消和 hook 均可定位来源；未知项不写默认值，发布数据编译严格失败。",
-      "evidence": [],
+      "evidence": [
+        "evidence/characters/yin/shared-source-parity/README.md"
+      ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "已有动作、判定和共用受击编译数据；未知事件与全形态完整性未验收。",
+      "progress_note": "已有动作、判定和共用受击编译数据；未知事件与全形态完整性未验收。 2026-10-13 PR #11 shared source-event fixes: 13 original divergences resolved; 136 cases / 94,232 states and 58 upstream cases / 40,476 states match. Python 296 (2 skipped), 17 Godot checks, 15 rollback checks and 7 online tests pass; five unchanged baseline smoke failures remain. Full acceptance stays pending; actual person-days were not measured.",
       "current_artifacts": [
         "data/actions/minren-base.json",
         "data/actions/yihu-base.json",
-        "data/actions/hit_receive.json"
+        "data/actions/hit_receive.json",
+        "evidence/characters/yin/shared-source-parity/comparison.json",
+        "evidence/characters/yin/shared-source-parity/checks.json",
+        "tools/test_source_parity_suite.py"
       ]
     },
     {
@@ -334,15 +339,19 @@
       ],
       "acceptance": "按已验证 ExecutionProfile 推进；stop/play/暂停/恢复/创建删除与原版案例一致。",
       "evidence": [
-        "spec/execution-profile.json"
+        "spec/execution-profile.json",
+        "evidence/characters/yin/shared-source-parity/README.md"
       ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "切片固定步进及冻结已实现；ExecutionProfile 未定稿。",
+      "progress_note": "切片固定步进及冻结已实现；ExecutionProfile 未定稿。 2026-10-13 PR #11 shared source-event fixes: 13 original divergences resolved; 136 cases / 94,232 states and 58 upstream cases / 40,476 states match. Python 296 (2 skipped), 17 Godot checks, 15 rollback checks and 7 online tests pass; five unchanged baseline smoke failures remain. Full acceptance stays pending; actual person-days were not measured.",
       "current_artifacts": [
         "godot/fighter_runtime.gd",
         "godot/super_runtime.gd",
-        "spec/execution-profile.json"
+        "spec/execution-profile.json",
+        "evidence/characters/yin/shared-source-parity/comparison.json",
+        "evidence/characters/yin/shared-source-parity/checks.json",
+        "tools/test_source_parity_suite.py"
       ]
     },
     {

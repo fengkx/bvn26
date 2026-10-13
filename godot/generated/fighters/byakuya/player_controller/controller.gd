@@ -651,5 +651,5 @@ func child_frame_293_depth_34_controller_69() -> Variant:
 	return null
 
 func child_frame_852_depth_28_controller_572() -> Variant:
-	adapter.effect("bdfyxg")
+	pass # Source guard-effect call has no receiver argument.
 	return null

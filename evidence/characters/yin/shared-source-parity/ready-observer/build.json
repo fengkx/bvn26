@@ -1,0 +1,186 @@
+{
+  "run_id": "moves-yin-round-p1-5b38673695",
+  "status": "built_not_run",
+  "frames_after_ready": 900,
+  "configuration": {
+    "modo": 3,
+    "p1": "银",
+    "p2": "一护",
+    "p2cpu": false,
+    "AI": 5,
+    "stage": "现世",
+    "p1sf": "我爱罗",
+    "p2sf": "魂"
+  },
+  "sources_sha256": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "game/fighter/yin.swf": "3f67d6828bf5d865819d049e30a59c4c607ccddbc7859eba62642676c07f75d2",
+    "scripts/fighter/yin.json": "b3c7b084a0cec6750edfce234bf472bfda32301ad1a403ed38dd64284d104c6a",
+    "game/fighter/yihu.swf": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+    "scripts/fighter/yihu.json": "5c4996b3767c2e31810595604c5b869c511c9c4f1cd8c123e059212294fc5d5b",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+    "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46"
+  },
+  "ffdec_sha256": "090ab695053ad94cba6408574c7d7eea20ec60b6ae789ee6056a23f45106762f",
+  "outputs_sha256": {
+    "game/main.swf": "e28b09ac78e4090da84219c1ff512befb1b80d49d1ddd3a6c69b885a2e670c39",
+    "game/fighter/yin.swf": "417315d278bd055b54c1fc10b077d4cde024b5b2d356bae5cb969305bd45ec28",
+    "game/fighter/yihu.swf": "e70b55801d6d55491d9fd23626e11a8db2a5aa282f6ecb3ff3e1f76ffe596dc4",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+  },
+  "instrumentation_sha256": "f1aab3879d61a4ad0637e201d872e23be5881cf6a650a52d07812c81c02a2ce1",
+  "frame_order_probe": false,
+  "body_boundaries": false,
+  "body_callback_observer": false,
+  "recovery_order_probe": false,
+  "recovery_walk_first": false,
+  "match_flow": false,
+  "helper_probe": null,
+  "dash_probe": null,
+  "dash_trigger_frame": null,
+  "dash_duration": 36,
+  "timeout_probe": null,
+  "ghost_probe": null,
+  "mode_probe": 3,
+  "move_case": {
+    "id": "yin-round-p1",
+    "fighter": "yin",
+    "slot": "p1",
+    "label": "砍1",
+    "scenario": "round",
+    "frames": 900,
+    "setup": {
+      "p1": {
+        "x": 300,
+        "energy": 300
+      },
+      "p2": {
+        "x": 350,
+        "energy": 300
+      }
+    },
+    "inputs": [
+      {
+        "slot": "p2",
+        "keys": [
+          "attack"
+        ],
+        "start": 10,
+        "end": 100
+      },
+      {
+        "slot": "p1",
+        "keys": [
+          "attack"
+        ],
+        "start": 650,
+        "end": 720
+      }
+    ],
+    "target_frames": [
+      1,
+      1212
+    ],
+    "has_source_timeline": true,
+    "fighters": {
+      "p1": "yin",
+      "p2": "yihu"
+    },
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂",
+    "source_state_preconditions": {
+      "p1": {
+        "health": 10
+      }
+    },
+    "drive_source_timers": true,
+    "source_timer_required": true,
+    "timer_input_provenance": {
+      "route": "fixed-30Hz-source-clock",
+      "note": "Flash uses native wall clock; report timer boundary differences explicitly."
+    }
+  },
+  "dynamic_move_case": true,
+  "fixture_url": "file:///tmp/gin-parity/probe-intro/case.txt",
+  "player_display": "windowed_showAll",
+  "presentation_probe": false,
+  "root_write_observer": false,
+  "body_call_scope_probe": false,
+  "schedule_probe": false,
+  "hurt_summon_probe": false,
+  "shadow_probe": false,
+  "effect_phase_probe": false,
+  "hit_receive_probe": false,
+  "hit_receive_event_schema": null,
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "helper_sources": {
+    "p1": {
+      "character_id": "我爱罗",
+      "asset": "woailuo",
+      "url": "woailuo.swf"
+    },
+    "p2": {
+      "character_id": "魂",
+      "asset": "kon",
+      "url": "kon.swf"
+    }
+  },
+  "input_injection": "body_kis_alias_with_per_read_trace",
+  "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
+  "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
+  "pr5_shape_observer": {
+    "coordinate_space": "_root",
+    "names": {
+      "p1": [
+        "bdmn",
+        "bsatm",
+        "cbs1atm",
+        "cbsatm",
+        "k1atm",
+        "k2atm",
+        "k3atm",
+        "k4atm",
+        "k5atm",
+        "kj1atm",
+        "kj21atm",
+        "kj2atm",
+        "sbs1atm",
+        "sbsatm",
+        "tkatm",
+        "tzatm",
+        "zh12atm",
+        "zh1atm",
+        "zh2atm",
+        "zh31atm",
+        "zh3atm"
+      ],
+      "p2": [
+        "bdmn",
+        "bsatm",
+        "cbsatm",
+        "k1atm",
+        "k2atm",
+        "k3atm",
+        "kj1atm",
+        "kj21atm",
+        "kj2atm",
+        "sbsatm",
+        "tkatm",
+        "zh1atm",
+        "zh20atm",
+        "zh2atm"
+      ]
+    },
+    "mutates_gameplay": false
+  },
+  "pr5_round_timer_observer": true,
+  "pr5_local_coordinate_observer": true,
+  "source_start_fight_observer": true,
+  "ready_frame_observer": true,
+  "fixture_sha256": "dd112075e5011595e27a31d9f8a2cdc36eb1a136d9ec15e33eadb47141e0fb68"
+}

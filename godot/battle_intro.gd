@@ -26,6 +26,7 @@ var hud_playing: bool = false
 var hud_stop_frames: PackedInt32Array
 var _defer_frame_actions: bool = false
 var _pending_frame_actions: Array = []
+var _deferred_play_advances: Dictionary = {}
 
 
 func _ready() -> void:
@@ -46,6 +47,7 @@ func _ready() -> void:
 
 func cancel() -> void:
 	_pending_frame_actions.clear()
+	_deferred_play_advances.clear()
 	_defer_frame_actions = false
 	active = false
 	hud_playing = false
@@ -85,12 +87,22 @@ func begin(players: Array[FighterRuntime], recorded: bool = false, loaded: bool 
 
 
 func _goto(name: String, frame: int, play: bool) -> void:
+	_deferred_play_advances.erase(name)
 	playing[name] = play
 	clips[name].play_source_frame(frame)
 	if _defer_frame_actions:
 		_pending_frame_actions.append([name, frame])
 	else:
 		_apply_event(name, frame)
+
+
+func set_clip_playing(name: String, play: bool, defer_first_advance: bool = false) -> void:
+	playing[name] = play
+	_deferred_play_advances.erase(name)
+	if play and defer_first_advance:
+		# An external interval resumes the stopped clip after that display's
+		# timeline advance. Its first new frame belongs to the next display.
+		_deferred_play_advances[name] = true
 
 
 func tick(delta: float, skip: bool = false, defer_frame_actions: bool = false) -> void:
@@ -104,6 +116,8 @@ func tick(delta: float, skip: bool = false, defer_frame_actions: bool = false) -
 			hud_playing = false
 	for name: String in clips:
 		if playing[name]:
+			if _deferred_play_advances.erase(name):
+				continue
 			var next: int = clips[name].current_source_frame() + 1
 			if next > int(spec["clips"][name]["frame_count"]):
 				next = 1
