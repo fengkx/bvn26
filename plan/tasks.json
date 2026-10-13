@@ -238,15 +238,18 @@
       ],
       "acceptance": "鸣人、一护和现世的矩阵/注册点/帧标签/遮罩/声音事件可复现导出；重复导入输出一致。",
       "evidence": [
-        "evidence/fighter-slice.md"
+        "evidence/fighter-slice.md",
+        "evidence/visual-audio/bitmap-placeholder-mask/README.md"
       ],
       "estimated_person_days": null,
       "actual_person_days": null,
-      "progress_note": "切片与十图转换已有产物；完整语义、滤镜和原版视觉验收未完成。",
+      "progress_note": "切片与十图转换已有产物；完整语义、滤镜和原版视觉验收未完成。 2026-10-13: Fixed shared bitmap placeholder/edgeless fill clipping; refreshed 29 mask-only timeline artifacts across 14 base fighters plus the retained Hitsugaya form-2 slice. Gin U/up+U production-input screenshots and corpus rendering checks pass; full native pixel parity remains pending. Measured validation-session time is recorded in the linked checks.json; person-days are not inferred.",
       "current_artifacts": [
         "evidence/fighter-slice.md",
         "godot/generated/fighters/minren/assets.json",
-        "godot/generated/stages/catalog/catalog.json"
+        "godot/generated/stages/catalog/catalog.json",
+        "tools/importer/refresh_bitmap_masks.py",
+        "godot/tests/bitmap_placeholder_smoke.gd"
       ]
     },
     {

@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/importer'))
 from bitmap_shape_polygon import bitmap_shape_polygon
 from bitmap_shape_polygon import bitmap_shape_fill_polygons
+from extract_timeline_geometry import referenced_definitions
 
 
 class BitmapShapePolygonTests(unittest.TestCase):
@@ -58,6 +59,49 @@ class BitmapShapePolygonTests(unittest.TestCase):
         records = open_shape.findall('./shapes/shapeRecords/item')
         open_shape.find('./shapes/shapeRecords').remove(records[-2])
         self.assertIsNone(bitmap_shape_fill_polygons(open_shape))
+
+    def test_gin_placeholder_keeps_blade_masks_aligned(self):
+        for shape_id, count in [(180, 3), (182, 5), (224, 3), (226, 6)]:
+            shape = ET.parse(
+                ROOT / f'evidence/visual-audio/bitmap-placeholder-mask/yin-shape{shape_id}.xml'
+            ).getroot()
+            polygons = bitmap_shape_fill_polygons(shape)
+            self.assertEqual(len(polygons), count)
+            self.assertEqual(polygons[0], [])
+            self.assertTrue(all(polygons[1:]))
+            for path in ['data/slices/yin-base.timeline.json', 'godot/generated/fighters/yin/timeline.json']:
+                definitions = json.loads((ROOT / path).read_text())['definitions']
+                compiled = next(d for d in definitions if d['character_id'] == shape_id)
+                self.assertEqual(compiled['bitmap_clip_polygons'], polygons)
+
+    def test_unused_real_bitmap_fill_also_paints_nothing(self):
+        shape = ET.parse(
+            ROOT / 'evidence/visual-audio/bitmap-placeholder-mask/yin-shape180.xml'
+        ).getroot()
+        shape.find('./shapes/fillStyles/fillStyles/item').set('bitmapId', '123')
+        polygons = bitmap_shape_fill_polygons(shape)
+        self.assertEqual(polygons[0], [])
+        self.assertEqual(len(polygons), 3)
+
+    def test_single_unused_fill_is_emitted_as_an_explicit_empty_mask(self):
+        # A declared fill alone does not paint; source edges must use it.
+        root = ET.fromstring('''<swf><tags>
+          <item type="DefineShapeTag" shapeId="1"><shapes>
+            <fillStyles><fillStyles><item bitmapId="123" fillStyleType="65"/></fillStyles></fillStyles>
+            <shapeRecords><item type="EndShapeRecord"/></shapeRecords>
+          </shapes></item>
+        </tags></swf>''')
+        definitions = referenced_definitions(root, [{'display_list': [{'character_id': 1}]}])
+        self.assertEqual(definitions[0]['bitmap_clip_polygons'], [[]])
+
+    def test_empty_fill_does_not_hide_open_nonempty_contours(self):
+        shape = ET.parse(
+            ROOT / 'evidence/visual-audio/bitmap-placeholder-mask/yin-shape180.xml'
+        ).getroot()
+        records = shape.find('./shapes/shapeRecords')
+        edge = next(r for r in records if r.get('type') == 'StraightEdgeRecord')
+        records.remove(edge)
+        self.assertIsNone(bitmap_shape_fill_polygons(shape))
 
 
 if __name__ == '__main__':

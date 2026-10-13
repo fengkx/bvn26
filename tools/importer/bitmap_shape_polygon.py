@@ -16,8 +16,11 @@ def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]
     """
     style_items = shape.findall('.//fillStyles/item')
     bitmap_style_indices: dict[int, int] = {}
+    placeholder_indices: set[int] = set()
     for style_index, item in enumerate(style_items, 1):
         if 'bitmapId' in item.attrib:
+            if int(item.attrib['bitmapId']) == 65535:
+                placeholder_indices.add(len(bitmap_style_indices))
             bitmap_style_indices[style_index] = len(bitmap_style_indices)
     if not bitmap_style_indices:
         return None
@@ -102,7 +105,12 @@ def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]
         x, y = nx, ny
 
     output: list[list[list[list[float]]]] = []
-    for fill_edges in edges:
+    for fill_index, fill_edges in enumerate(edges):
+        # SWF's no-bitmap sentinel and unused styles paint nothing. Preserve
+        # their slots so later masks still address the original fill table.
+        if fill_index in placeholder_indices or not fill_edges:
+            output.append([])
+            continue
         contours: list[list[tuple[int, int]]] = []
         unused = list(fill_edges)
         while unused:
@@ -124,8 +132,6 @@ def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]
             if len(set(contour)) != len(contour):
                 return None
             contours.append(contour)
-        if not contours:
-            return None
         # Polygon2D can draw disjoint contours, but not holes. Refuse nested
         # contours until a fill-rule-aware tessellator is available.
         for i, contour in enumerate(contours):

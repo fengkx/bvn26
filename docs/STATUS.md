@@ -13,6 +13,8 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
 
 ## 已完成的资料与已实现的开发切片
 
+- 2026-10-13: Shared bitmap-mask compiler now preserves empty placeholder/unused fills; the renderer skips them and retains Sprite2D for full-bitmap rectangles. Refreshed 14 base-fighter timelines and the retained Hitsugaya form-2 slice without changing scheduling. Gin U/up+U input replays and screenshots show one body plus blade; full visual parity remains pending. See [mask fix evidence](../evidence/visual-audio/bitmap-placeholder-mask/README.md).
+
 - 2026-10-13 市丸银基础形态接入本地/联机选人、原卡片和开场；复用现有编译器与共享受击链。
   七项出招/打断/防御原版同输入对照均为 482/482 状态一致，超必杀暂停回滚和回合恢复检查通过。
   按用户决定保留共享必杀准备被打断后的防死锁修复，作为明确的 Flash 偏差；剑八援助留待后续。
