@@ -989,7 +989,7 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
         # An explicit empty list preserves movement-only ClipActions. Omitting
         # it would enable the runtime's legacy stop-on-body-contact fallback.
         motion["collision_queries"] = [
-            {"receiver": "self" if receiver in (None, "this") else receiver, "target": target}
+            {"receiver": "self" if receiver in ("", "this") else receiver, "target": target}
             for receiver, target in queries
         ]
     hit_branch = PROJECTILE_HIT_IF.search(source)
@@ -1302,8 +1302,10 @@ def parse_clip_timeline(
         if motion_init is not None:
             if frame != 1:
                 raise ValueError("Projectile initialization outside frame 1: " + script["path"])
-            initial_motion = {"initial_speed": float(motion_init[1]), "initial_played": 0,
-                              "initial_motion_source": record}
+            initial_motion = {
+                "initial_variables": {"movspeed": float(motion_init[1]), "played": 0},
+                "initial_motion_source": record,
+            }
         rename = CLIP_RENAME.search(script["source"])
         if rename is not None:
             rename_frames.append({**record, "instance_name": rename["name"]})

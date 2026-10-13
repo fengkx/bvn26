@@ -189,6 +189,14 @@ func _external(name: String, args: Array) -> Variant:
 
 func _frame_service(event: Dictionary) -> void:
 	match event["op"]:
+		"wrapper_move":
+			# Wrapper moveY adds Y, unlike the child controller's upward moveY.
+			if event["axis"] == "moveX":
+				fighter.source_x += float(event["pixels"]) * fighter.facing
+			else:
+				assert(event["axis"] == "moveY")
+				fighter.source_y += float(event["pixels"])
+			return
 		"root_position", "frame_child_effect":
 			_external(event["op"], [event])
 			return

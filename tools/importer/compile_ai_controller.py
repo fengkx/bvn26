@@ -368,7 +368,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         # the same source predicate ABI and retain its independent lifetime.
         body = script['source'].replace('\r\n', '\n')
         if (body.startswith('onClipEvent(enterFrame){\n') and body.endswith('}\n')
-                and (re.search(r'\b(?:gameRunning|magichit\d?|bisha|nornalhit|skill\d?|bdfyxg2?)\s*\(', body)
+                and (re.search(r'\b(?:gameRunning|magichit\d?|bisha|nornalhit|skill\d?|bdfyxg2?|moveX|moveY)\s*\(', body)
                      or '_parent._parent._x' in body
                      or '_parent._parent._y' in body)):
             frame, character, depth = map(int, match.groups())
@@ -429,7 +429,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
             raise ValueError('Uncompiled child callback: ' + script['path'])
         frame, character, depth = map(int, match.groups())
         clip = parse_clip_timeline(bundle, character, frame_counts)
-        if 'initial_speed' not in clip:
+        if 'initial_variables' not in clip:
             load_path = script['path'].replace('onClipEvent(enterFrame)', 'onClipEvent(load)')
             load = next((s['source'] for s in bundle['scripts'] if s['path'] == load_path), '')
             initial = parse_projectile_initialization(load)

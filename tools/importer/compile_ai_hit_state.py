@@ -62,6 +62,10 @@ def compile_transfer(bundle: dict) -> tuple[str, dict]:
             placed = {str(p.get('character_id')) for frame in timeline.get('frames', [])
                       for p in frame.get('display_list', [])}
         candidates = [s for s in candidates if re.match(r'DefineSprite_(\d+)/', s['path'])[1] in placed]
+    # One form can place several byte-identical receiver symbols. They share
+    # the packet-transfer implementation; distinct sources must still fail.
+    if candidates and len({s['source'] for s in candidates}) == 1:
+        candidates = candidates[:1]
     if len(candidates) != 1:
         raise ValueError(f'Expected one source receiver implementation for base timeline, found {len(candidates)}')
     receiver_script = candidates[0]

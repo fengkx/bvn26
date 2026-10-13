@@ -1,0 +1,161 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "minren-projectile-review-r2",
+  "input_delivery": {
+    "status": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "w": "87",
+      "a": "65",
+      "l": "76",
+      "上箭": "38",
+      "下箭": "40",
+      "左箭": "37",
+      "右箭": "39",
+      "N1": "97",
+      "N2": "98",
+      "N3": "99",
+      "N4": "100",
+      "N5": "101",
+      "N6": "102",
+      "right": "68",
+      "attack": "74",
+      "down": "83",
+      "ranged": "85",
+      "jump": "75",
+      "special": "73",
+      "summon": "79"
+    },
+    "reads": 9472,
+    "pressed_reads": {
+      "_level0.game.p1.mc:85": 1
+    }
+  },
+  "events": 12086,
+  "post_done_events": 4,
+  "counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "initCtrl": 6,
+    "input_next_display": 766,
+    "frame_state_enter": 99,
+    "intro_body_enter": 198,
+    "intro_body_exit": 198,
+    "frame_state_exit": 99,
+    "random": 2,
+    "intro_poll": 22,
+    "intro_poll_state": 22,
+    "state": 1170,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "key_read": 9472,
+    "projectile_state": 22,
+    "done": 1
+  },
+  "frames_after_ready": 300,
+  "termination_policy": "unique_done_same_frame_tail",
+  "ready": {
+    "run_id": "minren-projectile-review-r2",
+    "sequence": 1443,
+    "time_ms": 27450,
+    "display_tick": 466,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "minren-projectile-review-r2",
+      "sequence": 3,
+      "time_ms": 11986,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "minren-projectile-review-r2",
+      "sequence": 7,
+      "time_ms": 12050,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "minren-projectile-review-r2",
+      "sequence": 17,
+      "time_ms": 12184,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "minren-projectile-review-r2",
+      "sequence": 18,
+      "time_ms": 12184,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "minren-projectile-review-r2",
+      "sequence": 19,
+      "time_ms": 12185,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "minren-projectile-review-r2",
+      "sequence": 20,
+      "time_ms": 12185,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": null,
+  "samples_before_ready": 0,
+  "sample_intervals_ms": {},
+  "last_states": [
+    {
+      "run_id": "minren-projectile-review-r2",
+      "sequence": 12084,
+      "time_ms": 37456,
+      "display_tick": 766,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p1,5,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "minren-projectile-review-r2",
+      "sequence": 12085,
+      "time_ms": 37456,
+      "display_tick": 766,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p2,1,f:1:8:101187584:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:124518400:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "e93939e6b5f852464fa4012f206f17b9bd55d03d36e6beb99547b91e34899186",
+  "retained_sha256": {
+    "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "post-done-events.jsonl": "7cf1ec58915b94510b9bfe91c06ca986eb37a53487b7ec619946421a6a9d0c04",
+    "instrumentation.diff": "b7f84f7e433a0e5ee3826b59605d8843c9c93aa5ab8ef8ec8fbdb0a6e1fccaaa",
+    "events.jsonl": "4a3424e5ed5c9a32528a022d656d226e5e7af7e14f9b4a0d0e7063b75734c555",
+    "random-tape.json": "89c21844eba80f2ed531cf74a480426722222fe14922b569fbabb75e3b3cf5b1",
+    "build.json": "bdc73a9061ac03912cdab6a873aa0d4adc4b0fae4b0475708a4e754b7a42fa8a"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

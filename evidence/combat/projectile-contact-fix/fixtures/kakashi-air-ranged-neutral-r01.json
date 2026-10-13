@@ -1,0 +1,51 @@
+{
+  "scenario": "native_targeted_projectile_regression",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "fighters": {
+    "p1": "kakashi",
+    "p2": "yihu"
+  },
+  "p1_helper": "you",
+  "p2_helper": "kon",
+  "status": "not_run",
+  "id": "kakashi-air-ranged-neutral-r01",
+  "fighter": "kakashi",
+  "slot": "p1",
+  "label": "跳招",
+  "target_frames": [
+    156,
+    192
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "onJumping"
+  ],
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "ranged"
+      ],
+      "start": 20,
+      "end": 23
+    }
+  ]
+}

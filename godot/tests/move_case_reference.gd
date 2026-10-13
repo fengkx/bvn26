@@ -8,6 +8,7 @@ var helper_rows: Array = []
 var presentation_rows: Array = []
 var geometry_rows: Array = []
 var contact_rows: Array = []
+var projectile_rows: Array = []
 var recovery_events: Dictionary = {}
 var intervention_rows: Array = []
 var applied_interventions: Dictionary = {}
@@ -40,6 +41,7 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 	presentation_rows = []
 	geometry_rows = []
 	contact_rows = []
+	projectile_rows = []
 	recovery_events = {}
 	intervention_rows = []
 	applied_interventions = {}
@@ -138,6 +140,8 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		FileAccess.open(output_path + ".geometry.json", FileAccess.WRITE).store_string(JSON.stringify(geometry_rows, "", true, true))
 	if not contact_rows.is_empty():
 		FileAccess.open(output_path + ".contacts.json", FileAccess.WRITE).store_string(JSON.stringify(contact_rows, "", true, true))
+	if fixture.has("projectile_probe"):
+		FileAccess.open(output_path + ".projectiles.json", FileAccess.WRITE).store_string(JSON.stringify(projectile_rows, "", true, true))
 	FileAccess.open(output_path + ".interventions.json", FileAccess.WRITE).store_string(JSON.stringify(intervention_rows, "", true, true))
 	game._goto_menu()
 	game.queue_free()
@@ -269,6 +273,24 @@ func _observe(tick: int) -> void:
 			"paused": actor.root_zhanting, "hstm": actor.ai_source_state.read_field("hstm"),
 			"hurtSkling": actor.ai_source_state.read_field("hurtSkling")})
 	_capture_geometry(tick)
+	for actor: FighterRuntime in [game.naruto, game.ichigo]:
+		for instance_name: String in fixture.get("projectile_probe", {}).get(actor.player_slot, []):
+			var origin := actor.named_instance_origin(instance_name)
+			if not origin.is_finite():
+				continue
+			var offset := actor.instance_local_offset(instance_name)
+			var variables := actor.instance_source_variables(instance_name)
+			# Read authored twips directly; Vector2 origins lose source precision.
+			var matrix: Dictionary = {}
+			for placement: Dictionary in actor._frames[actor.current_source_frame()]["display_list"]:
+				if str(placement.get("name", "")) == instance_name:
+					matrix = placement.get("matrix", {})
+					break
+			projectile_rows.append({"tick": tick, "slot": actor.player_slot, "name": instance_name,
+				"frame": actor.instance_clip_frame(instance_name),
+				"x": float(matrix.get("translateX", 0)) / 20.0 + offset.x,
+				"y": float(matrix.get("translateY", 0)) / 20.0 + offset.y,
+				"played": variables.get("played"), "movspeed": variables.get("movspeed")})
 	for helper in [game.naruto_helper, game.ichigo_helper]:
 		helper_rows.append({"tick": tick, "slot": "p1" if helper == game.naruto_helper else "p2",
 			"frame": helper.current_source_frame(), "x": helper.position.x, "y": helper.position.y,

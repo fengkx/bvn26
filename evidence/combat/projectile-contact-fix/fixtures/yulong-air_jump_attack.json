@@ -1,0 +1,60 @@
+{
+  "id": "yulong-air_jump_attack",
+  "fighter": "yulong",
+  "slot": "p1",
+  "label": "跳砍",
+  "scenario": "air_jump_attack",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 500,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 20,
+      "end": 23
+    }
+  ],
+  "target_frames": [
+    127,
+    152
+  ],
+  "has_source_timeline": true,
+  "source_dispatch": [
+    "onJumping"
+  ],
+  "status": "native_selection_explicit_capture_pending",
+  "fighters": {
+    "p1": "yulong",
+    "p2": "yihu"
+  },
+  "catalog_purpose": "Verify source airborne attack path and tkatm placement/lifetime.",
+  "source_contract": {
+    "command_slot": "airhit",
+    "contexts": [
+      "air"
+    ],
+    "energy_min": 0,
+    "implementation": "wired"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂"
+}
