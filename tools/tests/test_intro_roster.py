@@ -26,6 +26,7 @@ class IntroRosterTests(unittest.TestCase):
             "byakuya": (958, 1034),
             "lee": (1158, 1237),
             "yin": (1072, 1151),
+            "chad": (898, 974),
         }
         self.assertEqual(set(spec["fighters"]), set(expected))
         for name, (start, end) in expected.items():
@@ -42,7 +43,7 @@ class IntroRosterTests(unittest.TestCase):
             (ROOT / "godot/generated/main/character_selection/available.json").read_text()
         )
         intro = json.loads((ROOT / "godot/generated/main/intro/intro.json").read_text())
-        for name in ("sakura", "rukia", "yulong", "byakuya", "lee", "yin"):
+        for name in ("sakura", "rukia", "yulong", "byakuya", "lee", "yin", "chad"):
             self.assertIn(name, intro["fighters"])
             self.assertIn(name, available["fighters"].values())
         self.assertIn("jinye", available["helpers"].values())
