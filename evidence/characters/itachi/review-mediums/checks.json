@@ -1,0 +1,67 @@
+{
+  "base_commit": "f8d22f3a",
+  "runtime_sha256": "8203c7624de47750ade9dd5543a6edfc68ef40f15735b385468260b4ac124ba2",
+  "scope": "PR #12 medium review: 22 calibrated windows, focused interrupts/guard/helper/spacing, one-shot placement and all 16 implemented fighters; no full-role audiovisual claim",
+  "new_flash": {
+    "cases": 35,
+    "states": 21070,
+    "all_matched": true,
+    "windows": 22,
+    "callback_paths": 9,
+    "predicates": 13,
+    "report": "new-comparisons.json",
+    "targeted_cases": 29,
+    "retained_diagnostic_cases": 6
+  },
+  "saved_flash": {
+    "cases": 103,
+    "states": 65726,
+    "all_matched": true,
+    "fighters": 16,
+    "report": "regressions.json"
+  },
+  "godot": {
+    "checks": 10,
+    "all_passed": true,
+    "placement": "placement/checks.json",
+    "other": "godot-checks.json"
+  },
+  "python": {
+    "run": 301,
+    "passed": 299,
+    "skipped": 2,
+    "log_sha256": "3e90bea2c0cc157e8df7cc6dc61122b3d639998bdc954effe26eff8895eaf04a"
+  },
+  "shared_modes": {
+    "pvp_states": 602,
+    "training_timer_states": 602,
+    "all_matched": true,
+    "output": "SHARED_MODE_MATCH pvp: 602 actor states\nSHARED_MODE_MATCH training-timer: 602 actor states"
+  },
+  "integrity": {
+    "verify": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}",
+    "handoff": "{\"status\": \"passed\", \"documents\": 18, \"local_links\": 230, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}",
+    "contracts": "{\"status\": \"passed\", \"schemas\": 6, \"examples\": 6, \"gameplay_tested\": false, \"production_ready_data\": false}",
+    "online": "ONLINE_MANIFEST_OK fighters=16 helpers=4 stages=10 build=489784f15b0ae600e069ce4a6a26cc8b1151ed7769a0e75a3b5ef23c75eeb86b content=92908f196728bd4beb15f99badcb50455b2c3a31e758ddb2e95e0b31408e996e"
+  },
+  "environment": {
+    "system": "macOS-26.7-arm64-arm-64bit",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "32.0.0.465",
+    "python": "3.11.15"
+  },
+  "actual_effort": {
+    "elapsed_wall_seconds": 1903.8,
+    "validation_subprocess_seconds": 5697.6,
+    "note": "Measured from review workspace creation through evidence assembly, including capture-lock waits; excludes initial reading and Git publication. Subprocess durations overlap; no inferred person-days."
+  },
+  "differences": [],
+  "retained_deviation": "_clear_interrupted_super_preparation intentionally recovers the original Flash pre-super interruption deadlock.",
+  "limits": [
+    "One calibrated input per window, not four-edge exhaustive boundary coverage.",
+    "Five diagnostic fixtures did not trigger their originally named interruption/guard-break/knockdown conditions; retained and matched. Active attack/guard-break and helper-after-hit captures establish the required triggers.",
+    "The first ground-crossing fixture pushed the opponent without changing sides. The final jump-crossing fixture verifies both facings on the same fighter instance.",
+    "Full audiovisual/browser/AI and unported fighters remain pending.",
+    "Five historical Godot failures documented in parent evidence are outside this focused suite."
+  ]
+}

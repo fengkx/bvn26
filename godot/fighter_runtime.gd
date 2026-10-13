@@ -1980,8 +1980,6 @@ func _apply_root_opponent_warp(event: Dictionary, invocation_serial: int = -1) -
 
 func _apply_clip_placements() -> void:
 	_expire_clip_placements()
-	if opponent == null or not is_instance_valid(opponent):
-		return
 	for event: Dictionary in _combat.get("clip_placements", []):
 		if str(event.get("action", "")) != action:
 			continue
@@ -1993,19 +1991,23 @@ func _apply_clip_placements() -> void:
 func _apply_clip_placement(event: Dictionary) -> void:
 	if str(event.get("op", "")) not in ["place_at_opponent", "clip_placement"]:
 		return
-	if opponent == null or not is_instance_valid(opponent):
-		return
 	var instance_name := str(event.get("instance_name", ""))
 	if instance_name == "":
+		return
+	var placement_frame := int(event.get("frame", current_source_frame()))
+	var event_key := "%s:%d:%s" % [str(event.get("action", action)), placement_frame, instance_name]
+	if _clip_placements_applied.has(event_key):
+		return
+	# DoAction/load runs once even when a referenced MovieClip is undefined.
+	# Record the attempt before lookup so a stopped frame cannot retry later.
+	# This dictionary is captured by BattleCheckpoint and reset on action entry.
+	_clip_placements_applied[event_key] = true
+	if opponent == null or not is_instance_valid(opponent):
 		return
 	# A root _name replacement makes the old AS2 variable undefined.  Keep
 	# the authored display object for rendering, but do not replay a later
 	# source write through its stale name.
 	if not _source_name_is_live(instance_name):
-		return
-	var placement_frame := int(event.get("frame", current_source_frame()))
-	var event_key := "%s:%d:%s" % [str(event.get("action", action)), placement_frame, instance_name]
-	if _clip_placements_applied.has(event_key):
 		return
 	var origin := named_instance_origin(instance_name)
 	if origin == Vector2.INF:
@@ -2015,7 +2017,6 @@ func _apply_clip_placement(event: Dictionary) -> void:
 	# xscale > 0: _x = opponent._x - parent._x
 	# else:       _x = parent._x - opponent._x
 	if bool(event.get("front_only", false)) and (opponent.source_x - source_x) * facing < 0:
-		_clip_placements_applied[event_key] = true
 		return
 	var reference_position := Vector2((opponent.source_x - source_x) * facing,
 		opponent.source_y - source_y)
@@ -2035,7 +2036,6 @@ func _apply_clip_placement(event: Dictionary) -> void:
 		offset.y = local_y - origin.y
 	set_instance_local_offset(instance_name, offset)
 	_placement_owned[instance_name] = true
-	_clip_placements_applied[event_key] = true
 	refresh_display()
 
 

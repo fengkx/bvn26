@@ -1,0 +1,95 @@
+{
+  "id": "itachi-window-12-at_start",
+  "fighter": "itachi",
+  "slot": "p1",
+  "label": "砍3",
+  "scenario": "cancel_at_start",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "attack"
+      ],
+      "start": 10,
+      "end": 73
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "special"
+      ],
+      "start": 73,
+      "end": 74
+    }
+  ],
+  "target_frames": [
+    256,
+    299
+  ],
+  "has_source_timeline": true,
+  "fighters": {
+    "p1": "itachi",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "window_boundary": {
+    "id": "itachi-window-12-at_start",
+    "window_index": 12,
+    "edge": "at_start",
+    "source_frame": 270,
+    "input_tick": 73,
+    "window": {
+      "from": "砍3",
+      "to": "上必杀",
+      "predicate": "bishaUP",
+      "combo": false,
+      "start_frame": 270,
+      "kind": "input",
+      "dispatch_order": 0,
+      "implementation": "wired",
+      "source_path": "DefineSprite_294/frame_270/PlaceObject2_11_38/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "2997d984ee99e04db4a3b7822485c8b07ed5621c79d8a890fd03ffcf08b347e7",
+      "end_frame": 277
+    },
+    "source_action_frames": [
+      256,
+      299
+    ],
+    "source_action": "砍3",
+    "destination_frames": [
+      578,
+      648
+    ]
+  },
+  "source_dispatch": [],
+  "source_target": {
+    "label": "砍3",
+    "start_frame": 256,
+    "end_frame": 299,
+    "implementation": "wired",
+    "has_timeline": true,
+    "source_dispatch": [],
+    "contexts": [
+      "timeline"
+    ],
+    "energy_min": 0
+  },
+  "calibration": {
+    "case_id": "itachi-combo",
+    "events_sha256": "690bd1d36b9c6f114f2819daed568715a5a30541a736333c0395c6f3381c036b",
+    "observer_phase": "root state before input publication"
+  }
+}

@@ -837,3 +837,36 @@ inherited pre-super anti-deadlock deviation remain unaccepted. Coverage stays
 partial and M6 remains pending. No original inputs, comparison fields, tapes or
 tolerances were changed. Online manifests/catalogs include 16 fighters; no
 production deployment or merge is included.
+
+
+## 2026-10-13 — Itachi PR #12 medium-review follow-up
+
+On `fix/itachi-review-mediums`, missing clip-placement receivers/references now
+consume the source execution before lookup, including `origin == INF`. The
+existing consumption dictionary is retained in rollback snapshots and cleared
+on source action re-entry. A native AVM1 stopped-frame probe and a red/green
+checkpoint/re-entry regression establish the once-only invariant. No compiler,
+cancel, hitbox, oracle, comparison-field or tolerance change was needed.
+
+All **22 compiled cancel windows** have a calibrated original-player input and
+observed destination, spanning nine callback paths and 13 predicates. **35 fresh
+Flash fixtures match 21,070/21,070 states** over the existing 14 exact fields,
+including the retained calibration diagnostics. Actual active-attack interrupt,
+guard break, helper interruption after a confirmed hit/cancel, changed spacing,
+and three casts with a jump across the opponent are identified separately from
+unexercised diagnostic intentions. All **103 saved fixtures across all 16
+implemented fighters match 65,726/65,726 states**. The Sasuke/Renji fixture group
+covers two fighters; fighter coverage is counted from fixture identities.
+
+Ten focused Godot checks pass, including all 16 roster rollback markers,
+round reset, counter/ultimate rollback and missing-placement checkpoints.
+Python: 301 run, 299 passed, two skipped. PvP and training references each match
+602 states. The five historical Godot failures listed in the parent evidence
+were not part of this focused rerun and remain unresolved.
+
+[Review evidence and reproduction](../evidence/characters/itachi/review-mediums/README.md)
+and [exact results/timings](../evidence/characters/itachi/review-mediums/checks.json)
+retain all captures, retries, fixtures, hashes and comparisons. The unchanged
+`_clear_interrupted_super_preparation` remains an intentional Flash deviation.
+Four-edge exhaustive windows, whole-role audiovisual/browser/AI acceptance and
+unported fighters remain pending. M6 stays pending/partial; no deployment.
