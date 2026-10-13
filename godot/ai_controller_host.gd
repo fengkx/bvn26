@@ -16,11 +16,12 @@ var _hooks: Array
 class Receiver extends RefCounted:
 	var host_ref: WeakRef
 	var source_method: String
+	var counter_label: String
 
 	func receive() -> void:
 		var host: AiControllerHost = host_ref.get_ref()
 		assert(host.effects.is_valid())
-		host.effects.call("receive:" + source_method)
+		host.effects.call("counter:" + counter_label if source_method == "checkHit" else "receive:" + source_method)
 		host.synchronize(host.display_tick)
 
 
@@ -243,6 +244,7 @@ func _create_instance(hook: Dictionary, generation: int) -> RefCounted:
 		var receiver := Receiver.new()
 		receiver.host_ref = weakref(self)
 		receiver.source_method = hook["receiver"]
+		receiver.counter_label = str(hook.get("counter_label", ""))
 		return receiver
 	var adapter := Adapter.new()
 	adapter.host_ref = weakref(self)

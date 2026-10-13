@@ -200,6 +200,9 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             wanted.add(dependency)
             pending.append(dependency)
 
+    mask_ids = {int(tag.attrib['characterId']) for tag in root.iter('item')
+                if tag.attrib.get('placeFlagHasClipDepth') == 'true'
+                and 'characterId' in tag.attrib and int(tag.attrib.get('clipDepth', 0)) > 0}
     definitions = []
     sound_frame_groups = [frames]
     for item_id in sorted(wanted):
@@ -254,6 +257,17 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
                     definition["bitmap_clip_polygons"] = fill_polygons
         if solid_fills:
             definition["solid_fills"] = solid_fills
+        if item_id in mask_ids and tag.attrib['type'].startswith('DefineShape'):
+            # Mask geometry uses the same directed fill edges, irrespective of
+            # paint color. A temporary bitmap style lets the contour compiler
+            # reuse its checked edge stitching without approximating the AABB.
+            mask_shape = copy.deepcopy(tag)
+            for fill in mask_shape.findall('.//fillStyles/item'):
+                fill.set('bitmapId', '0')
+            contours = bitmap_shape_fill_polygons(mask_shape)
+            if contours is None or len(contours) != 1 or len(contours[0]) != 1:
+                raise ValueError(f'Unsupported clipDepth mask geometry: {item_id}')
+            definition['mask_polygon'] = contours[0][0]
         dependencies = definition_dependencies(tag)
         if dependencies:
             definition["referenced_character_ids"] = sorted(dependencies)

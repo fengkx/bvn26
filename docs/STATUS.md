@@ -806,3 +806,34 @@ Generated compatibility fingerprints retain all 15 fighters. No source inputs,
 expectations, tolerances or interrupt/guard scheduling changed. See
 [post-rebase evidence](../evidence/combat/projectile-contact-fix/rebase-validation.json).
 Full role/audiovisual/browser acceptance remains pending; no milestone is closed.
+
+## 2026-10-13 — Itachi base fighter
+
+Itachi (`itachi`, 鼬) is selectable alongside the independent `you` assist.
+Locked Sprite 294 supplies all moves, source controllers/receivers, placement
+lifetimes, combat packets, opening, visual assets and sound segments. Generic
+source compilation/runtime support adds target-relative loads and clip copies,
+fractional projectile movement, the checkHit-only counter (including checkpoint
+restore), nested sound envelopes and source-contour bitmap clipDepth masks.
+A native Flash probe also corrects dense-array hit-candidate enumeration to
+reverse source insertion order; overlapping up-U projectiles exposed the error.
+
+Final focused original comparisons match **32/32 cases, 19,264/19,264 states**
+over 14 exact fields. All prior 15 fighters' saved Flash regressions match
+**71/71 cases, 46,462/46,462 states**. One level-5 AI tape matches 1,704 states
+and 1,704 geometry observations, with all 288 random and four clock samples
+consumed. Python: 301 run, 299 passed, two skipped. The 15 rollback foundation
+checks pass, including 16 actual roster cases; the roster script's final
+`fighters=11` text is stale, so the per-case markers determine the count.
+Itachi selection/natural intro/attack/assist, ultimate late-input/reset and
+counter checkpoint/reset checks pass. Dummy-audio shutdown diagnostics remain
+separate from assertion results. Five pre-existing Godot failures reproduce on
+`84d567fe`; the complete Godot suite is therefore not green.
+
+See [source gate, evidence and limits](../evidence/characters/itachi/README.md)
+and [validation results](../evidence/characters/itachi/checks.json). Full original
+pixel/audio/browser, exhaustive cancellation/spacing/helper/AI coverage and the
+inherited pre-super anti-deadlock deviation remain unaccepted. Coverage stays
+partial and M6 remains pending. No original inputs, comparison fields, tapes or
+tolerances were changed. Online manifests/catalogs include 16 fighters; no
+production deployment or merge is included.

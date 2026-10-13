@@ -780,7 +780,11 @@ func _ordered_attack_instances() -> PackedStringArray:
 			if current_name != null and str(current_name).ends_with("atm"):
 				visible[str(current_name)] = true
 	var ordered := PackedStringArray()
-	for instance_name in _combat.get("hit_priority", {}).get("instances", []):
+	# Native AVM1 enumerates this dense source Array from the last key to the
+	# first. Overlapping later suffixes (e.g. zh32) must win over zh3/zh31.
+	var source_priority: Array = _combat.get("hit_priority", {}).get("instances", []).duplicate()
+	source_priority.reverse()
+	for instance_name in source_priority:
 		var name := str(instance_name)
 		if visible.erase(name):
 			ordered.append(name)
@@ -2010,12 +2014,23 @@ func _apply_clip_placement(event: Dictionary) -> void:
 	# so the Godot offset subtracts the remaining matrix origin.
 	# xscale > 0: _x = opponent._x - parent._x
 	# else:       _x = parent._x - opponent._x
+	if bool(event.get("front_only", false)) and (opponent.source_x - source_x) * facing < 0:
+		_clip_placements_applied[event_key] = true
+		return
+	var reference_position := Vector2((opponent.source_x - source_x) * facing,
+		opponent.source_y - source_y)
+	var reference_name := str(event.get("reference_instance", ""))
+	if not reference_name.is_empty():
+		reference_position = named_instance_origin(reference_name)
+		if reference_position == Vector2.INF:
+			return
+		reference_position += instance_local_offset(reference_name)
 	var offset := instance_local_offset(instance_name)
 	if bool(event.get("place_x", true)):
-		var local_x := (opponent.position.x - position.x) * float(facing)
+		var local_x := reference_position.x + float(event.get("x_facing_pixels", 0.0)) * facing
 		offset.x = local_x - origin.x
 	if bool(event.get("place_y", false)):
-		var local_y := opponent.position.y - position.y
+		var local_y := reference_position.y
 		local_y += float(event.get("y_pixels", 0.0))
 		offset.y = local_y - origin.y
 	set_instance_local_offset(instance_name, offset)

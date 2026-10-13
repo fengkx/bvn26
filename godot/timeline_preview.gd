@@ -37,6 +37,7 @@ var _nested_sound_container_states: Dictionary = {}
 var _nested_sound_placement_generations: Dictionary = {}
 var _source_entry_serial: int = 0
 var _sound_segments: Dictionary = {}
+var _nested_sound_segments: Dictionary = {}
 # Shader programs are immutable render caches shared by all previews. Their
 # lazy creation must not become per-instance rollback state.
 static var _cxform_shader: Shader
@@ -359,6 +360,7 @@ func _load_data() -> void:
 		assert(segments["source_swf"] == _timeline["source_swf"])
 		assert(segments["envelope_baked"])
 		_sound_segments = segments["frames"]
+		_nested_sound_segments = segments.get("nested_frames", {})
 	var fighter_path := "%s/fighter.json" % fighter_directory
 	if FileAccess.file_exists(fighter_path):
 		_fighter = _read_json(fighter_path)
@@ -440,8 +442,8 @@ func materialize_display() -> void:
 		return
 	var frame: Dictionary = _frames[_current_frame]
 	var wrapper := _wrapper_transform()
-	for placement: Dictionary in frame["display_list"]:
-		_render_placement(placement, wrapper, 1.0, int(placement["depth"]) if preserve_root_depths else 0, _current_frame, 0, _source_color_mul, _source_color_add)
+	_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
+		0, _source_color_mul, _source_color_add, [], true)
 	queue_redraw()
 
 
@@ -642,7 +644,13 @@ func _play_nested_source_sound(
 ) -> bool:
 	var sound_id := int(event.get("sound_id", -1))
 	var sound_file := str(_assets.get(sound_id, ""))
-	var supported_sound_info := _nested_sound_info_supported(event)
+	var baked := false
+	for segment: Dictionary in _nested_sound_segments.get("%d:%d" % [sprite_id, frame], []):
+		if segment["source_event"] == event:
+			sound_file = str(segment["stream"])
+			baked = true
+			break
+	var supported_sound_info := baked or _nested_sound_info_supported(event)
 	if not supported_sound_info:
 		push_error(
 			"Unsupported nested StartSound SOUNDINFO: sprite %d frame %d sound %d fields=%s"
@@ -653,7 +661,7 @@ func _play_nested_source_sound(
 	var started := (
 		supported_sound_info
 		and not sound_file.is_empty()
-		and _start_sound_player(event, sound_file, true, "%s:%d:%d" % [instance_id, sprite_id, frame])
+		and _start_sound_player(event, sound_file, not baked, "%s:%d:%d" % [instance_id, sprite_id, frame])
 	)
 	last_nested_sound_events.append({
 		"instance_id": instance_id,
@@ -711,6 +719,57 @@ func _sound_volume_db(event: Dictionary) -> float:
 	return linear_to_db(level / SOUND_ENVELOPE_MAX)
 
 
+func _render_display_list(placements: Array, parent_transform: Transform2D,
+		alpha: float, depth: int, frame: int, age: int, rgb_mul: Color,
+		rgb_add: Color, inherited_masks: Array, root_list: bool = false) -> void:
+	var active: Array = []
+	for placement: Dictionary in placements:
+		var local_depth := int(placement["depth"])
+		active = active.filter(func(mask: Dictionary) -> bool: return local_depth <= int(mask.end))
+		var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
+		if placement.has("clip_depth") and definition.has("mask_polygon"):
+			var polygon := PackedVector2Array()
+			var transform := parent_transform * _placement_transform(placement)
+			for point: Array in definition["mask_polygon"]:
+				polygon.append(transform * Vector2(float(point[0]), float(point[1])))
+			active.append({"end": int(placement["clip_depth"]), "polygon": polygon})
+			continue
+		var masks := inherited_masks.duplicate()
+		for mask: Dictionary in active:
+			masks.append(mask.polygon)
+		_render_placement(placement, parent_transform, alpha,
+			local_depth if root_list and preserve_root_depths else depth,
+			frame, age, rgb_mul, rgb_add, masks)
+
+
+func _clip_bitmap_masks(fill_masks: Array, bitmap_transform: Transform2D,
+		placement_transform: Transform2D, texture: Texture2D, masks: Array) -> Array:
+	var contours: Array = []
+	if fill_masks.is_empty():
+		var size := texture.get_size()
+		contours.append(bitmap_transform * PackedVector2Array([
+			Vector2.ZERO, Vector2(size.x, 0), size, Vector2(0, size.y)]))
+	else:
+		for contour: Array in fill_masks:
+			var polygon := PackedVector2Array()
+			for point: Array in contour:
+				polygon.append(Vector2(float(point[0]), float(point[1])))
+			contours.append(polygon)
+	var inverse := placement_transform.affine_inverse()
+	for mask: PackedVector2Array in masks:
+		var clipped: Array = []
+		for contour: PackedVector2Array in contours:
+			clipped.append_array(Geometry2D.intersect_polygons(contour, inverse * mask))
+		contours = clipped
+	var result: Array = []
+	for contour: PackedVector2Array in contours:
+		var points: Array = []
+		for point: Vector2 in contour:
+			points.append([point.x, point.y])
+		result.append(points)
+	return result
+
+
 func _render_placement(
 	placement: Dictionary,
 	parent_transform: Transform2D,
@@ -719,7 +778,8 @@ func _render_placement(
 	timeline_frame: int,
 	clip_age: int = 0,
 	parent_rgb_mul: Color = Color(1, 1, 1, 1),
-	parent_rgb_add: Color = Color(0, 0, 0, 0)
+	parent_rgb_add: Color = Color(0, 0, 0, 0),
+	clip_masks: Array = []
 ) -> void:
 	if bool(placement.get("replaced_by_external_movie", false)):
 		return
@@ -759,17 +819,8 @@ func _render_placement(
 			if not sprite_frames.is_empty()
 			else definition.get("first_frame_display_list", [])
 		)
-		for child: Dictionary in children:
-			_render_placement(
-				child,
-				placement_transform,
-				alpha,
-				depth,
-				local_frame,
-				child_age,
-				rgb_mul,
-				rgb_add
-			)
+		_render_display_list(children, placement_transform, alpha, depth,
+			local_frame, child_age, rgb_mul, rgb_add, clip_masks)
 		return
 	var fills: Array = definition.get("bitmap_fills", [])
 	if not definition["type"].begins_with("DefineShape"):
@@ -793,6 +844,11 @@ func _render_placement(
 				continue
 		elif fills.size() == 1 and definition.has("bitmap_clip_polygon"):
 			fill_masks = [definition["bitmap_clip_polygon"]]
+		if not clip_masks.is_empty():
+			fill_masks = _clip_bitmap_masks(fill_masks, bitmap_transform,
+				placement_transform, source_texture, clip_masks)
+			if fill_masks.is_empty():
+				continue
 		var full_bitmap := _mask_is_full_bitmap(fill_masks, bitmap_transform, source_texture)
 		if not fill_masks.is_empty() and not full_bitmap:
 			var inverse_bitmap := bitmap_transform.affine_inverse()

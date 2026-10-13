@@ -137,6 +137,7 @@ static func prepare(host: AiControllerHost, snapshot: Variant) -> Dictionary:
 			target = AiControllerHost.Receiver.new()
 			target.host_ref = weakref(host)
 			target.source_method = state.source_method
+			target.counter_label = str(hook.get("counter_label", ""))
 		else:
 			if entry.get("kind") != "controller":
 				return {"error": "Invalid controller type"}

@@ -25,6 +25,18 @@ static func resolve_incoming(defender: FighterRuntime, attacker: FighterRuntime,
 			return true
 	return false
 
+
+static func has_incoming(defender: FighterRuntime, attacker: FighterRuntime,
+		helper: HelperRuntime, stages: StageHitRegistry, stage_order: Array) -> bool:
+	# checkHit alone queries the packet without running beida/fangyu's writes.
+	if not defender.allows_source_hit():
+		return false
+	if not attacker.attack_contact(defender, true).is_empty():
+		return true
+	if helper != null and helper.attacking and not helper.attack_contact(defender).is_empty():
+		return true
+	return stages != null and not stages.first_contact(defender, stage_order).is_empty()
+
 # Source checkHit()/getHitObj() lives on the defender's body clip and looks up
 # currently placed opponent clips named {key}atm. Sampling both sides first keeps
 # simultaneous hits independent of player iteration order.

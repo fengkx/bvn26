@@ -167,6 +167,8 @@ func _scope_value(key: String) -> Variant:
 func _controller_effect(name: String) -> void:
 	if name.begins_with("receive:"):
 		_external("receive", [name.trim_prefix("receive:")])
+	elif name.begins_with("counter:"):
+		_external("counter", [name.trim_prefix("counter:")])
 	elif name == "updateDirect":
 		body.updateDirect()
 	elif name == "bdfyxg":

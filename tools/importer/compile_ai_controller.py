@@ -339,7 +339,10 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         if not match:
             continue
         callback = RECEIVER_CALLBACK.fullmatch(script['source'])
-        if callback is None:
+        counter = re.fullmatch(
+            r'onClipEvent\(enterFrame\)\{\s*if\(checkHit\(\)\)\s*\{\s*'
+            r'_parent\.gotoAndPlay\("([^"\n]+)"\);\s*\}\s*\}\s*', script['source'])
+        if callback is None and counter is None:
             continue
         frame, symbol_id, depth = map(int, match.groups())
         source_info = receiver_source(bundle, symbol_id)
@@ -352,7 +355,9 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         if not members:
             raise ValueError('Receiver placement missing: ' + script['path'])
         receiver_hooks.append({'path': script['path'], 'method': 'receive',
-                               'receiver': callback[1], 'placement_frame': frame,
+                               'receiver': callback[1] if callback else 'checkHit',
+                               **({'counter_label': counter[1]} if counter else {}),
+                               'placement_frame': frame,
                                'receiver_symbol_id': symbol_id,
                                'receiver_source_path': source_info['script_path'],
                                'receiver_source_sha256': source_info['script_sha256'],

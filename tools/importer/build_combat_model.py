@@ -142,8 +142,8 @@ ON_JUMPING = re.compile(r"onJumping\s*\(\s*(?P<step>\d+)\s*\)")
 PROJECTILE_SPEED = re.compile(
     r"movspeed\s*=\s*_parent\.speed\s*\*\s*(?P<factor>\d+(?:\.\d+)?)"
 )
-PROJECTILE_X = re.compile(r"_X\s*=\s*_X\s*(?P<op>\+|-)\s*movspeed")
-PROJECTILE_Y = re.compile(r"_Y\s*=\s*_Y\s*(?P<op>\+|-)\s*movspeed")
+PROJECTILE_X = re.compile(r"_X\s*=\s*_X\s*(?P<op>\+|-)\s*movspeed(?:\s*(?P<scale_op>[*/])\s*(?P<scale>\d+(?:\.\d+)?))?\s*;")
+PROJECTILE_Y = re.compile(r"_Y\s*=\s*_Y\s*(?P<op>\+|-)\s*movspeed(?:\s*(?P<scale_op>[*/])\s*(?P<scale>\d+(?:\.\d+)?))?\s*;")
 PROJECTILE_LITERAL_DELTA = re.compile(
     r"_(?P<axis>X|Y)\s*=\s*_(?P=axis)\s*(?P<op>\+|-)\s*"
     r"(?P<value>\d+(?:\.\d+)?)"
@@ -958,11 +958,19 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
         return None
     motion: dict[str, Any] = {}
     x_move = PROJECTILE_X.search(source)
-    if x_move is not None:
-        motion["local_x_factor"] = 1.0 if x_move["op"] == "+" else -1.0
     y_move = PROJECTILE_Y.search(source)
-    if y_move is not None:
-        motion["local_y_factor"] = 1.0 if y_move["op"] == "+" else -1.0
+    for axis, move in (("x", x_move), ("y", y_move)):
+        if move is None:
+            if re.search(rf"_{axis.upper()}\s*=\s*_{axis.upper()}[^;]*movspeed", source):
+                raise ValueError("Unsupported projectile movspeed expression")
+            continue
+        factor = 1.0 if move["op"] == "+" else -1.0
+        if move["scale"]:
+            scale = float(move["scale"])
+            if move["scale_op"] == "/" and scale == 0:
+                raise ValueError("Projectile movement divides by zero")
+            factor = factor * scale if move["scale_op"] == "*" else factor / scale
+        motion[f"local_{axis}_factor"] = factor
     literal_moves = list(PROJECTILE_LITERAL_DELTA.finditer(source))
     axes = [match["axis"] for match in literal_moves]
     if len(axes) != len(set(axes)):
@@ -1766,6 +1774,36 @@ def build_model(
             )
 
     clip_placements = []
+    # Placement-load writes use local coordinates and run only on a new instance.
+    for script in scripts:
+        load = re.fullmatch(r"DefineSprite_\d+/frame_(\d+)/PlaceObject[23]_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(load\).as", script["path"])
+        if load is None:
+            continue
+        compact = re.sub(r"\s+", "", script["source"])
+        target = '_root.game["p"+_parent.pn]'
+        owner = '_parent._parent'
+        guard_left = f'if({target}._x>{owner}._x){{returnundefined;}}'
+        guard_right = f'if({target}._x<{owner}._x){{returnundefined;}}'
+        guarded = guard_left in compact and guard_right in compact
+        normalized = compact.replace(guard_left, '').replace(guard_right, '')
+        expected = (f'onClipEvent(load){{if({owner}._xscale<0){{'
+                    f'_X=-({target}._x-{owner}._x);}}else{{'
+                    f'_X={target}._x-{owner}._x;}}')
+        if not normalized.startswith(expected):
+            continue
+        tail = normalized[len(expected):]
+        y = re.fullmatch(re.escape(f'_Y={target}._y-{owner}._y') + r'(-\d+(?:\.\d+)?)?;}', tail)
+        if tail != '}' and y is None:
+            raise ValueError('Unsupported placement load: ' + script['path'])
+        frame, cid, depth = map(int, load.groups())
+        placement = next(p for f in timeline['frames'] if f['frame'] == frame
+                         for p in f['display_list'] if p['depth'] == depth and p.get('character_id') == cid)
+        clip_placements.append({'action': script['action'], 'frame': frame,
+            'op': 'place_at_opponent', 'instance_name': placement['name'],
+            'place_x': True, 'place_y': y is not None,
+            'y_pixels': float(y[1] or 0) if y else 0,
+            'front_only': guarded, 'line': 0,
+            'source_path': script['path'], 'source_sha256': script['source_sha256']})
     body_warps = []
     for script in scripts:
         if script["kind"] != "frame_action":
@@ -1781,6 +1819,17 @@ def build_model(
                     "source_sha256": script["source_sha256"],
                 }
             )
+            continue
+        copies = re.fullmatch(
+            r'(\w+)\._x = (\w+)\._x(?: \+ (\d+) \* \(_parent\._xscale <= 0 \? -1 : 1\))?;\s*'
+            r'(?:\1\._y = \2\._y - (\d+);\s*)?', script['source'].strip())
+        if copies:
+            clip_placements.append({'action': script['action'], 'frame': script['frame'],
+                'op': 'place_at_opponent', 'instance_name': copies[1],
+                'reference_instance': copies[2], 'x_facing_pixels': float(copies[3] or 0),
+                'place_x': True, 'place_y': copies[4] is not None,
+                'y_pixels': -float(copies[4] or 0), 'line': 1,
+                'source_path': script['path'], 'source_sha256': script['source_sha256']})
             continue
         placement = parse_place_at_opponent(script["source"])
         if placement is None:
