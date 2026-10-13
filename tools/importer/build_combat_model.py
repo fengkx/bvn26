@@ -989,7 +989,7 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
         # An explicit empty list preserves movement-only ClipActions. Omitting
         # it would enable the runtime's legacy stop-on-body-contact fallback.
         motion["collision_queries"] = [
-            {"receiver": "self" if receiver in (None, "this") else receiver, "target": target}
+            {"receiver": "self" if receiver in ("", "this") else receiver, "target": target}
             for receiver, target in queries
         ]
     hit_branch = PROJECTILE_HIT_IF.search(source)

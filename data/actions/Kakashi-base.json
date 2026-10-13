@@ -3486,29 +3486,16 @@
       "speed_factor": 2.5,
       "local_x_factor": 1.0,
       "local_y_factor": 1.0,
-      "character_id": 74,
-      "frame_count": 1,
+      "collision_queries": [],
+      "initial_speed_field": "speed",
+      "initial_speed_factor": 2.5,
+      "initial_motion_source": {
+        "source_path": "DefineSprite_710/frame_162/PlaceObject2_74_28/CLIPACTIONRECORD onClipEvent(load).as",
+        "source_sha256": "650e61241b4f48a84bfe9ee1e40a238253094dd853fa2f9a0fcfcc53ebb8695b"
+      },
       "source_path": "DefineSprite_710/frame_162/PlaceObject2_74_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
       "source_sha256": "39e90ad63b16813322b75dfe566eb78cce224d4a6d3f8f5565f23d754221e256",
       "action_bytes_sha256": "a9167217d856cbdd6301db635f5d31c8006c7e4b56456d3513e925baec84455b"
-    },
-    {
-      "action": "砍技2",
-      "instance_name": "",
-      "start_frame": 359,
-      "end_frame": 364,
-      "speed_factor": 1.0,
-      "collision_queries": [
-        {
-          "receiver": "kj20atm",
-          "target": "bdmn"
-        }
-      ],
-      "character_id": 9,
-      "frame_count": 1,
-      "source_path": "DefineSprite_710/frame_359/PlaceObject2_9_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
-      "source_sha256": "f08fa553411c94c6f63fa31ac05f94b7f122c8d3496ff9065793406fdfad2e0e",
-      "action_bytes_sha256": "cca8ae5ce051e5aee213e6a230704760690dfdf7a305c78a900b9e6682f84d67"
     },
     {
       "action": "招1",
@@ -3517,29 +3504,65 @@
       "end_frame": 437,
       "speed_factor": 2.0,
       "local_x_factor": 1.0,
-      "on_hit_goto_frame": 3,
       "collision_queries": [
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "bdmn"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh1atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh2atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh3atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "abcd"
         }
       ],
+      "on_hit_goto_frame": 3,
+      "on_hit_goto_grouped": true,
+      "on_hit_events": [
+        {
+          "op": "local_write_group",
+          "conditions": [
+            {
+              "field": "played",
+              "operator": "==",
+              "value": 0
+            }
+          ],
+          "source_scope": [
+            367
+          ],
+          "writes": [
+            {
+              "field": "played",
+              "value": 1
+            },
+            {
+              "field": "movspeed",
+              "value": 0
+            }
+          ],
+          "goto_frame": 3
+        }
+      ],
+      "initial_variables": {
+        "played": 0
+      },
+      "initial_speed_field": "speed",
+      "initial_speed_factor": 2.0,
+      "initial_motion_source": {
+        "source_path": "DefineSprite_710/frame_425/PlaceObject2_244_32/CLIPACTIONRECORD onClipEvent(load).as",
+        "source_sha256": "b8506922c32e566cf194c77a7f80900c335d63cf795d2ae516f022434b2ee8eb"
+      },
       "character_id": 244,
       "frame_count": 9,
       "stop_frames": [
@@ -3577,29 +3600,65 @@
       "end_frame": 444,
       "speed_factor": 2.0,
       "local_x_factor": 1.0,
-      "on_hit_goto_frame": 3,
       "collision_queries": [
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "bdmn"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh1atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh2atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh3atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "abcd"
         }
       ],
+      "on_hit_goto_frame": 3,
+      "on_hit_goto_grouped": true,
+      "on_hit_events": [
+        {
+          "op": "local_write_group",
+          "conditions": [
+            {
+              "field": "played",
+              "operator": "==",
+              "value": 0
+            }
+          ],
+          "source_scope": [
+            367
+          ],
+          "writes": [
+            {
+              "field": "played",
+              "value": 1
+            },
+            {
+              "field": "movspeed",
+              "value": 0
+            }
+          ],
+          "goto_frame": 3
+        }
+      ],
+      "initial_variables": {
+        "played": 0
+      },
+      "initial_speed_field": "speed",
+      "initial_speed_factor": 2.0,
+      "initial_motion_source": {
+        "source_path": "DefineSprite_710/frame_431/PlaceObject2_244_30/CLIPACTIONRECORD onClipEvent(load).as",
+        "source_sha256": "b8506922c32e566cf194c77a7f80900c335d63cf795d2ae516f022434b2ee8eb"
+      },
       "character_id": 244,
       "frame_count": 9,
       "stop_frames": [
@@ -3637,29 +3696,65 @@
       "end_frame": 449,
       "speed_factor": 2.0,
       "local_x_factor": 1.0,
-      "on_hit_goto_frame": 3,
       "collision_queries": [
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "bdmn"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh1atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh2atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh3atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "abcd"
         }
       ],
+      "on_hit_goto_frame": 3,
+      "on_hit_goto_grouped": true,
+      "on_hit_events": [
+        {
+          "op": "local_write_group",
+          "conditions": [
+            {
+              "field": "played",
+              "operator": "==",
+              "value": 0
+            }
+          ],
+          "source_scope": [
+            367
+          ],
+          "writes": [
+            {
+              "field": "played",
+              "value": 1
+            },
+            {
+              "field": "movspeed",
+              "value": 0
+            }
+          ],
+          "goto_frame": 3
+        }
+      ],
+      "initial_variables": {
+        "played": 0
+      },
+      "initial_speed_field": "speed",
+      "initial_speed_factor": 2.0,
+      "initial_motion_source": {
+        "source_path": "DefineSprite_710/frame_437/PlaceObject2_244_27/CLIPACTIONRECORD onClipEvent(load).as",
+        "source_sha256": "b8506922c32e566cf194c77a7f80900c335d63cf795d2ae516f022434b2ee8eb"
+      },
       "character_id": 244,
       "frame_count": 9,
       "stop_frames": [
@@ -3697,29 +3792,65 @@
       "end_frame": 454,
       "speed_factor": 2.0,
       "local_x_factor": 1.0,
-      "on_hit_goto_frame": 3,
       "collision_queries": [
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "bdmn"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh1atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh2atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh3atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "abcd"
         }
       ],
+      "on_hit_goto_frame": 3,
+      "on_hit_goto_grouped": true,
+      "on_hit_events": [
+        {
+          "op": "local_write_group",
+          "conditions": [
+            {
+              "field": "played",
+              "operator": "==",
+              "value": 0
+            }
+          ],
+          "source_scope": [
+            367
+          ],
+          "writes": [
+            {
+              "field": "played",
+              "value": 1
+            },
+            {
+              "field": "movspeed",
+              "value": 0
+            }
+          ],
+          "goto_frame": 3
+        }
+      ],
+      "initial_variables": {
+        "played": 0
+      },
+      "initial_speed_field": "speed",
+      "initial_speed_factor": 2.0,
+      "initial_motion_source": {
+        "source_path": "DefineSprite_710/frame_443/PlaceObject2_244_32/CLIPACTIONRECORD onClipEvent(load).as",
+        "source_sha256": "b8506922c32e566cf194c77a7f80900c335d63cf795d2ae516f022434b2ee8eb"
+      },
       "character_id": 244,
       "frame_count": 9,
       "stop_frames": [
@@ -3751,24 +3882,6 @@
       "action_bytes_sha256": "31109b42e27c74c8e7eb658e248b967d65c1c044d4972577b2d194c463a1ac21"
     },
     {
-      "action": "招2",
-      "instance_name": "",
-      "start_frame": 483,
-      "end_frame": 498,
-      "speed_factor": 1.0,
-      "collision_queries": [
-        {
-          "receiver": "zh20atm",
-          "target": "bdmn"
-        }
-      ],
-      "character_id": 9,
-      "frame_count": 1,
-      "source_path": "DefineSprite_710/frame_483/PlaceObject2_9_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
-      "source_sha256": "3be84e35d0ccdc6d3f69546fb094c92783665b67b21dc35252e171c7379310b2",
-      "action_bytes_sha256": "f6feddb1b216912f7e9e4e9b370e3ba9a4e87e35649fc2019b7ca3bf56e87d6d"
-    },
-    {
       "action": "超必杀",
       "instance_name": "cbs1atm",
       "start_frame": 887,
@@ -3795,33 +3908,9 @@
           "play": true
         }
       ],
-      "character_id": 499,
-      "frame_count": 16,
       "source_path": "DefineSprite_710/frame_887/PlaceObject2_499_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
       "source_sha256": "a02bd245b08c93e32749cab06f5da40f3ba254319344de5b4768d3c015c9f59f",
       "action_bytes_sha256": "1362dc83c1552a65683aa6df4b31260cba3b74d7beffcc0c968f36212cb841df"
-    },
-    {
-      "action": "超必杀2",
-      "instance_name": "",
-      "start_frame": 959,
-      "end_frame": 982,
-      "speed_factor": 1.0,
-      "collision_queries": [
-        {
-          "receiver": "cbs0atm",
-          "target": "bdmn"
-        },
-        {
-          "receiver": "cbs0atm",
-          "target": "bdmn"
-        }
-      ],
-      "character_id": 9,
-      "frame_count": 1,
-      "source_path": "DefineSprite_710/frame_959/PlaceObject2_9_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
-      "source_sha256": "c05398ccdb1cec2859356f73055c101b64eb2951657731c4d95c02f8a9fc4bc0",
-      "action_bytes_sha256": "cfebff8d02b20d27e46b8f2f39c0369ccd7829ed830abc02adde03c68eea0245"
     }
   ],
   "summon_events": [],

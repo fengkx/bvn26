@@ -174,8 +174,21 @@ func _run() -> void:
 	var projectile_offset := naruto.instance_local_offset("zh1atm")
 	naruto.mark_attack_hit("zh1atm")
 	naruto.enter_frame({})
+	# Receiver settlement alone cannot satisfy the child's source hitTest.
+	assert(naruto.instance_local_offset("zh1atm").x == projectile_offset.x + 16.0)
+	assert(naruto.instance_clip_frame("zh1atm") == 3)
+	var projectile_target: FighterRuntime = fighter_script.new()
+	projectile_target.fighter_directory = "res://generated/fighters/yihu"
+	root.add_child(projectile_target)
+	await process_frame
+	naruto.opponent = projectile_target
+	projectile_target.position += naruto.instance_global_bounds("zh1atm").get_center() - projectile_target.instance_global_bounds("bdmn").get_center()
+	projectile_offset = naruto.instance_local_offset("zh1atm")
+	naruto.enter_frame({})
 	assert(naruto.instance_local_offset("zh1atm") == projectile_offset)
 	assert(naruto.instance_clip_frame("zh1atm") == 5)
+	naruto.opponent = null
+	projectile_target.queue_free()
 	naruto.start_action("站立")
 	var rasengan_ground := naruto.position.y
 	naruto.configure_stage(rasengan_ground, [])

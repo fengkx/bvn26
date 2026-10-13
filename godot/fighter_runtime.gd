@@ -1648,15 +1648,9 @@ func _clip_past_hit(instance_name: String, projectile: Dictionary) -> bool:
 
 
 func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> bool:
-	# Movement-only ClipActions have no source collision branch. Settling their
-	# hit packet must not invent a stop-on-contact rule for their local motion.
-	if projectile.has("collision_queries") and projectile["collision_queries"].is_empty():
-		return false
-	# A settled contact owns this child instance until its source placement
-	# expires.  Collision queries describe how the contact was discovered; they
-	# must not erase the one-shot hit state after the child has moved away.
-	if _hit_instances.has(instance_name):
-		return true
+	# getHitObj runs in the receiver, independently of this child's hitTest.
+	# Its settled-hit cache cannot stand in for the callback's current geometry
+	# (including a temporarily absent bdmn or a new same-name placement).
 	if projectile.has("collision_queries"):
 		if opponent == null or not is_instance_valid(opponent):
 			return false
@@ -1666,6 +1660,8 @@ func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> 
 			if bounds.has_area() and target.has_area() and SourceHitTest.intersects(bounds, target):
 				return true
 		return false
+	if _hit_instances.has(instance_name):
+		return true
 	if opponent == null or not is_instance_valid(opponent):
 		return false
 	var body := opponent.instance_global_bounds("bdmn")
