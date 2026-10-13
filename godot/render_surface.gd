@@ -11,10 +11,13 @@ var game: Control
 var online_lobby: OnlineLobby
 var sample_grid: int = 4
 var texture_limit: int = 0
+var held_keys: Dictionary = {}
 var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/config/config.json")).rendering
 
 
 func _ready() -> void:
+	# Web keyup is canvas-scoped; moving focus to the toolbar can lose it.
+	get_window().focus_exited.connect(_release_held_keys)
 	if OS.has_feature("web"):
 		texture_limit = int(JavaScriptBridge.eval("(() => { const gl = document.getElementById('canvas').getContext('webgl2'); const viewport = gl.getParameter(gl.MAX_VIEWPORT_DIMS); return Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), gl.getParameter(gl.MAX_RENDERBUFFER_SIZE), viewport[0], viewport[1]); })()"))
 		assert(texture_limit > 0, "WebGL render limits unavailable")
@@ -92,9 +95,25 @@ func _resize_surface() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		var code: int = event.physical_keycode if event.physical_keycode != KEY_NONE else event.keycode
+		if event.pressed:
+			held_keys[code] = event.duplicate()
+		else:
+			held_keys.erase(code)
 	if source_viewport != null:
 		if online_lobby != null and online_lobby.blocks_game_input(event):
 			return
 		# Events already use the root's logical canvas coordinates. The child
 		# viewport exposes the same coordinates regardless of raster resolution.
 		source_viewport.push_input(event, true)
+
+
+func _release_held_keys() -> void:
+	var releases := held_keys.values()
+	held_keys.clear()
+	for event: InputEventKey in releases:
+		event.pressed = false
+		event.echo = false
+		Input.parse_input_event(event)
+	Input.flush_buffered_events()
