@@ -644,10 +644,13 @@
   ],
   "validation": {
     "python": {
-      "tests": 276,
+      "tests": 279,
       "skipped": 2,
+      "failures": 0,
+      "errors": 0,
       "status": "passed",
-      "log_sha256": "ef32dbccfd319066d528ecfb7c6cd1e5e656abddd762ee97aba8768049fe5722"
+      "scope": "post-rebase macOS rerun; supersedes original unqualified claim",
+      "log_sha256": "81e7595b9937e280a8ce3164626af6d7b56a6db9af9205ca285b7797d2ae2ef5"
     },
     "godot": [
       {
@@ -712,7 +715,6 @@
       "status": "passed",
       "log_sha256": "acbd9ed3e61a0fb972898da6838d367e45043cc228f0226667f43d54b256f13c"
     },
-    "master_failures_relied_on": [],
     "source_integrity": {
       "status": "passed",
       "swfs": 62,
@@ -726,10 +728,18 @@
     },
     "online_manifest_check": {
       "status": "passed",
-      "fighters": 13,
+      "fighters": 14,
       "helpers": 4,
       "stages": 10
-    }
+    },
+    "known_master_failures": [
+      "ai_colors",
+      "ai_context",
+      "ai_host",
+      "title_menu_source",
+      "ai_hit_gate"
+    ],
+    "premerge_review": "evidence/characters/neji/premerge-review.json"
   },
   "capture_notes": [
     "Initial 240/600 frame fixture metadata mismatch was rejected before launch. All retained fixtures use 600 frames.",

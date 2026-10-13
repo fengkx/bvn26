@@ -48,10 +48,32 @@ movement clip keeps moving through contact. See `projectile-pause-fix.json` for
 the red trace, original callback geometry and successful corrected comparison.
 No hitbox, damage or timing threshold was tuned.
 
-Python: 276 tests, two skipped. All 11 selected Godot smokes pass, including the
-single natural-intro / super-pause rollback / round-reset check. Shared PvP and
-training-timer references match 602 actor states each. Online-manifest tests (7),
-matchmaking typecheck/tests (31), source integrity and handoff checks pass.
+Post-rebase review against master `fecb7630`: Python ran **279 tests, zero
+failures/errors, two skipped** on this macOS worktree (master: 276, zero
+failures/errors, two skipped). The reviewer's earlier environment reported
+274 run, one pre-existing `test_sasuke_compilers` setup error and three skipped:
+the test requests lowercase `sasuke-base.timeline.json`, while Git tracks
+`Sasuke-base.timeline.json`; this case-insensitive filesystem resolves it.
+The original unqualified test-count/pass claim is superseded by these results.
+
+All 14 selected Godot smokes pass, including the three character rollback/reset
+checks and the complete 14-fighter roster rollback (eight checkpoints each).
+Five additional known smokes fail identically on master and this branch:
+`ai_colors`, `ai_context`, `ai_host`, `title_menu_source`, `ai_hit_gate`.
+`ai_host` prints an OK marker but also SCRIPT ERROR and is counted as failed.
+Shared PvP/training-timer references match 602 actor states each. Online-manifest
+checks (7), matchmaking tests/typecheck (31), contracts, integrity and handoff pass.
+
+The shared-change regression rerun covers 53 saved Flash cases / 37,066 fighter
+states: 51 cases match exactly. Sakura's neutral ground ranged case (492 different
+states, first tick 54) and Kakashi's ground ranged case (262, first tick 33) retain
+historical Flash differences; both rerun to **identical native states on master**.
+No new regression was found in the tested scope. The compiler-rule delta was
+also applied to Kakashi's pure-motion air callback in an isolated in-memory test:
+its 602 states still match Flash; shipped Kakashi data was not changed.
+Full per-character counts, source/fixture/native hashes, first differences,
+master comparisons and limitations are in [pre-merge review](premerge-review.json).
+
 Full audiovisual/browser/AI acceptance is not claimed.
 The role remains partial in the global coverage table. The online Worker must be
 redeployed: `services/matchmaking/src/catalog.json` validates selected fighters.

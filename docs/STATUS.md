@@ -730,3 +730,15 @@ acceptance remains pending; no deployment, merge, or milestone completion.
 ### Neji import (2026-10-13)
 
 Neji base form is source-imported in an isolated worktree and wired into local/online selection. Twelve focused original-player move/interrupt/guard/pause comparisons match all 1,202 states each; rollback and existing suites pass. A source-derived empty collision-query list fixes moving hitboxes incorrectly stopping on contact; see [Neji evidence](../evidence/characters/neji/README.md). The shared interrupted-super deadlock fix is retained as an explicit Flash deviation. Hinata is deferred; full audiovisual/browser/AI acceptance remains pending.
+
+### Neji PR #7 pre-merge regression review (2026-10-13)
+
+Rebased onto Chad master `fecb7630`, preserving both roster/portrait/footer/intro
+entries and regenerating online fingerprints/catalog. The 53 saved-Flash replay
+reruns have no new regression versus master: 51 exact, two historical differences
+(Sakura ground ranged and Kakashi ground ranged) with identical native traces on
+master. All 14 roster rollback cases and the Chad/Gin/Neji dedicated rollback/reset
+checks pass. Python is 279 run / 0 failures / 0 errors / 2 skipped locally; master
+is 276 / 0 / 0 / 2. Five known Godot failures reproduce with identical errors and
+locations on master. See [review evidence](../evidence/characters/neji/premerge-review.json).
+This does not close full Flash/audiovisual parity, change M6 status, deploy or merge.
