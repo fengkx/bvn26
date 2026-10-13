@@ -92,8 +92,10 @@ three-frame delayed guard input, counter receiver restoration and round reset.
 The following remain **unaccepted**, so `coverage.json` remains `partial` and
 M6 remains pending:
 
-- Exhaustive cancellation boundaries (22 compiled windows), all opponent/helper
-  combinations, repeated casts, KO/match transitions and every spacing edge.
+- Exhaustive four-edge cancellation boundaries, all opponent/helper combinations,
+  KO/match transitions and every spacing edge. The [medium-review follow-up](review-mediums/README.md)
+  verifies one native input for each of the 22 windows, focused interrupts/guard,
+  a helper/spacing variant and repeated casts with changed position/facing.
 - Whole-fight Flash/Godot pixel and audio waveform/timing comparison, and browser
   parity. Source assets, event dispatch, PCM baking and selected rendered frames
   do not establish whole-role audiovisual identity.
@@ -124,3 +126,13 @@ Run `python3 -m unittest discover -s tools/tests`,
 machine or an increased process timeout; an earlier concurrent run exceeded the
 wrapper's 180-second limit and is not counted as a pass. No test assertions or
 comparison tolerances were relaxed.
+
+
+## PR #12 medium-review follow-up
+
+The [follow-up evidence](review-mediums/README.md) records the shared one-shot
+placement fix, native Flash proof, rollback red/green test, 22-window matrix,
+35 new fixed-input captures and 103 saved comparisons across all 16 implemented
+fighters. All recorded actor-state comparisons match without changing an oracle
+or tolerance. Calibration diagnostics are labeled separately from required
+trigger coverage. The inherited anti-deadlock deviation is preserved.

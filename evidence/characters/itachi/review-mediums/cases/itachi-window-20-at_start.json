@@ -1,0 +1,102 @@
+{
+  "id": "itachi-window-20-at_start",
+  "fighter": "itachi",
+  "slot": "p1",
+  "label": "防住",
+  "scenario": "cancel_at_start",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "down"
+      ],
+      "start": 10,
+      "end": 28
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "attack"
+      ],
+      "start": 18,
+      "end": 21
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "down"
+      ],
+      "start": 28,
+      "end": 29
+    }
+  ],
+  "target_frames": [
+    997,
+    1008
+  ],
+  "has_source_timeline": true,
+  "fighters": {
+    "p1": "itachi",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "window_boundary": {
+    "id": "itachi-window-20-at_start",
+    "window_index": 20,
+    "edge": "at_start",
+    "source_frame": 1002,
+    "input_tick": 28,
+    "window": {
+      "from": "防住",
+      "to": "防御2",
+      "predicate": "defence",
+      "combo": false,
+      "start_frame": 1002,
+      "kind": "input",
+      "dispatch_order": 0,
+      "implementation": "handled_elsewhere",
+      "source_path": "DefineSprite_294/frame_1002/PlaceObject2_11_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f8c45bc590e3677cdd9c881a4d2e0f08a7474a26feb01f17db38df2769a701f6",
+      "end_frame": 1008
+    },
+    "source_action_frames": [
+      997,
+      1008
+    ],
+    "source_action": "防住",
+    "destination_frames": [
+      986,
+      996
+    ]
+  },
+  "source_dispatch": [],
+  "source_target": {
+    "label": "防住",
+    "start_frame": 997,
+    "end_frame": 1008,
+    "implementation": "wired",
+    "has_timeline": true,
+    "source_dispatch": [],
+    "contexts": [
+      "guard"
+    ],
+    "energy_min": 0
+  },
+  "calibration": {
+    "case_id": "itachi-guard-incoming",
+    "events_sha256": "112c37f0f5d5db0e8469d62052543017e1862bd28fa1b46d4814e8a0d6fe68e6",
+    "observer_phase": "root state before input publication"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "scope": "synthetic native AVM1 semantic probe; controlled Godot missing-instance checkpoint/re-entry regression, not a whole-fight oracle",
+  "baseline": "f8d22f3a",
+  "results": {
+    "red": {
+      "sha256": "332fa5c25ca32170b87960da51379b9fb0a4d7d152f9681d45edc5785ca947b9",
+      "assertions": [
+        "SCRIPT ERROR: Assertion failed: An undefined source write must not retry when its name appears"
+      ],
+      "markers": []
+    },
+    "green": {
+      "sha256": "955cb86a2e4ea1ffee65c6b48eb97d748624b401295281f87755e56b70d6cf62",
+      "assertions": [],
+      "markers": [
+        "CLIP_PLACEMENT_ONCE_SMOKE_OK missing_target=true missing_reference=true rollback=true reentry=true"
+      ]
+    }
+  }
+}
