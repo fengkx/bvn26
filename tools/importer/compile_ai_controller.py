@@ -429,7 +429,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
             raise ValueError('Uncompiled child callback: ' + script['path'])
         frame, character, depth = map(int, match.groups())
         clip = parse_clip_timeline(bundle, character, frame_counts)
-        if 'initial_speed' not in clip:
+        if 'initial_variables' not in clip:
             load_path = script['path'].replace('onClipEvent(enterFrame)', 'onClipEvent(load)')
             load = next((s['source'] for s in bundle['scripts'] if s['path'] == load_path), '')
             initial = parse_projectile_initialization(load)

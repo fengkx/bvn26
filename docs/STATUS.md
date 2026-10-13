@@ -13,6 +13,10 @@ B-01～B-03、M1-01 已完成，M0-01 进行中；其余任务维持 pending（�
 
 ## 已完成的资料与已实现的开发切片
 
+- 2026-10-13 PR #10 复核补齐鸣人、日番谷和一护共 5 个投射物的源码局部变量／命中事件，动作数据、combat 与控制器同步，卡卡西动作数据恢复 12 个移动窗口。23 项受影响回放共 13,846 状态零差异；鸣人／日番谷新增原版投射物对照为 22/22、27/27（各 18 个命中后状态），角色状态 1,204/1,204。50 项 Python 测试和 3 项 Godot 检查通过；不提升完整角色／里程碑验收。见[复核证据](../evidence/combat/projectile-contact-fix/review.json)。
+
+- 2026-10-13 修复卡卡西地面远程与樱招1的历史命中次数差异：弹体源码 hitTest 不再被受击结算缓存替代，省略 this 的查询正确编译为 self。两项目标各 602/602 状态一致；覆盖 13 个主测角色（恋次仅作重叠案例对手）的 58 项保存回归、40,476 个状态零差异，角色回滚 112 个检查点及三项专用回滚通过。完整里程碑验收保持 pending，见[源码与回归证据](../evidence/combat/projectile-contact-fix/README.md)。
+
 - 2026-10-13 市丸银基础形态接入本地/联机选人、原卡片和开场；复用现有编译器与共享受击链。
   七项出招/打断/防御原版同输入对照均为 482/482 状态一致，超必杀暂停回滚和回合恢复检查通过。
   按用户决定保留共享必杀准备被打断后的防死锁修复，作为明确的 Flash 偏差；剑八援助留待后续。
@@ -771,3 +775,31 @@ locations on master. Combat/stage_sound assertion markers pass with separately
 recorded dummy-audio shutdown diagnostics. Online manifest/catalog regenerated;
 no Worker deployment. See [review evidence](../evidence/characters/ikkaku/rebase-review.json).
 Full role acceptance remains pending; M6 is not marked complete.
+
+### PR #10 Ichigo projectile initialization re-review (2026-10-13)
+
+The frame-1 declarations in Ichigo Sprite 99 now compile to `initial_variables`
+for all three base projectiles and both controller modes. Runtime hit/guard and
+interrupt scheduling is unchanged. Redundant legacy `initial_played` fields
+are removed where source locals already exist. Fresh Flash guard contact matches
+21 child states (12 after contact) and 602 fighter states; the preliminary neutral
+capture is retained but does not qualify as contact coverage. Extended contact
+smoke covers 21 casts across five fighters, including all three Ichigo placements.
+See [source gate](../evidence/combat/projectile-contact-fix/source-first.md) and
+[child captures](../evidence/combat/projectile-contact-fix/projectile-states/README.md).
+Full role, audiovisual/Web and milestone acceptance remain pending.
+
+### PR #10 rebase onto Ikkaku master (2026-10-13)
+
+Rebased onto `162398fc`; runtime behavior is byte-identical to reviewed
+`bc9ebdee`. Ikkaku action/combat data and both controllers regenerate identically.
+Both Kakashi/Sakura targets match 602/602 states each. The prior focused baseline
+remains 22/22 cases and 13,604/13,604 states; the expanded saved Flash replay is
+70/70 cases and 46,260/46,260 states including all 12 Ikkaku cases. Three child
+contact cases match 70/70 child states and 1,806/1,806 fighter states. Contact
+history covers 21 casts; Ikkaku rollback/late input/round reset passes. Python
+reports 290 discovered / 288 passed / 2 skipped, plus 7/7 online-manifest tests.
+Generated compatibility fingerprints retain all 15 fighters. No source inputs,
+expectations, tolerances or interrupt/guard scheduling changed. See
+[post-rebase evidence](../evidence/combat/projectile-contact-fix/rebase-validation.json).
+Full role/audiovisual/browser acceptance remains pending; no milestone is closed.

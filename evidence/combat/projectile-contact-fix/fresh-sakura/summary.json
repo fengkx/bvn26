@@ -1,0 +1,165 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "sakura-hitfix-source-r2",
+  "input_delivery": {
+    "status": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "w": "87",
+      "a": "65",
+      "l": "76",
+      "上箭": "38",
+      "下箭": "40",
+      "左箭": "37",
+      "右箭": "39",
+      "N1": "97",
+      "N2": "98",
+      "N3": "99",
+      "N4": "100",
+      "N5": "101",
+      "N6": "102",
+      "right": "68",
+      "attack": "74",
+      "down": "83",
+      "ranged": "85",
+      "jump": "75",
+      "special": "73",
+      "summon": "79"
+    },
+    "reads": 8147,
+    "pressed_reads": {
+      "_level0.game.p1.mc:85": 1
+    }
+  },
+  "events": 14162,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "initCtrl": 6,
+    "input_next_display": 758,
+    "helper_load": 2,
+    "frame_state_enter": 93,
+    "intro_body_enter": 184,
+    "intro_body_exit": 184,
+    "frame_state_exit": 93,
+    "random": 6,
+    "intro_poll": 21,
+    "intro_poll_state": 21,
+    "state": 1154,
+    "helper_state": 1154,
+    "helper_clip_state": 1154,
+    "helper_lifecycle": 1154,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "key_read": 8147,
+    "source_hit_test": 17,
+    "source_hit_packet": 4,
+    "done": 1
+  },
+  "frames_after_ready": 300,
+  "termination_policy": "first_done_with_retained_async_tail",
+  "ready": {
+    "run_id": "sakura-hitfix-source-r2",
+    "sequence": 3074,
+    "time_ms": 28915,
+    "display_tick": 458,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "sakura-hitfix-source-r2",
+      "sequence": 3,
+      "time_ms": 13709,
+      "display_tick": 0,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "sakura-hitfix-source-r2",
+      "sequence": 8,
+      "time_ms": 13745,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "sakura-hitfix-source-r2",
+      "sequence": 20,
+      "time_ms": 13923,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "sakura-hitfix-source-r2",
+      "sequence": 21,
+      "time_ms": 13924,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "sakura-hitfix-source-r2",
+      "sequence": 22,
+      "time_ms": 13924,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "sakura-hitfix-source-r2",
+      "sequence": 23,
+      "time_ms": 13924,
+      "display_tick": 7,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": null,
+  "samples_before_ready": 0,
+  "sample_intervals_ms": {},
+  "last_states": [
+    {
+      "run_id": "sakura-hitfix-source-r2",
+      "sequence": 14154,
+      "time_ms": 38927,
+      "display_tick": 758,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p1,2,f:1:7:122683392:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "sakura-hitfix-source-r2",
+      "sequence": 14158,
+      "time_ms": 38928,
+      "display_tick": 758,
+      "fight_tick": 300,
+      "kind": "state",
+      "value": "p2,3,f:1:8:106692608:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:117964800:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "27cf90a884c96e985e1821a1d0bf89eb440f18cf66b57274eeefd958fb7a8e67",
+  "retained_sha256": {
+    "clock-tape.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "instrumentation.diff": "227b309521be5f79acc29137eca30fbe78e43907c46d7f6dec9c65bc92760d38",
+    "events.jsonl": "9c79c59ebeb76a2a4b83d850f816a1ebb616a07b9bab1f3be684b0458b46e2da",
+    "random-tape.json": "c470557721de2d5998c7371a8d50d4d4fe9fbfa3a443a4f90daace854f28713d",
+    "build.json": "5085a268b278518074bc5ed7b984439690bfc5aa883cc7c8a76b60d20a3220cd"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}

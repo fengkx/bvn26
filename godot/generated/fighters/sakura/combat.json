@@ -3346,34 +3346,28 @@
       "local_x_factor": 1.0,
       "collision_queries": [
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "bdmn"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh1atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh2atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh3atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "abcd"
         }
       ],
       "on_hit_goto_frame": 5,
-      "on_hit_goto_conditions": [
-        {
-          "field": "played",
-          "operator": "==",
-          "value": 0
-        }
-      ],
+      "on_hit_goto_grouped": true,
       "on_hit_events": [
         {
           "op": "local_write_group",
@@ -3384,6 +3378,9 @@
               "value": 0
             }
           ],
+          "source_scope": [
+            367
+          ],
           "writes": [
             {
               "field": "played",
@@ -3393,12 +3390,15 @@
               "field": "movspeed",
               "value": 0
             }
-          ]
+          ],
+          "goto_frame": 5
         }
       ],
+      "initial_variables": {
+        "played": 0
+      },
       "initial_speed_field": "speed",
       "initial_speed_factor": 2.0,
-      "initial_played": 0,
       "initial_motion_source": {
         "source_path": "DefineSprite_630/frame_442/PlaceObject2_275_28/CLIPACTIONRECORD onClipEvent(load).as",
         "source_sha256": "b8506922c32e566cf194c77a7f80900c335d63cf795d2ae516f022434b2ee8eb"
@@ -3443,34 +3443,28 @@
       "local_y_factor": -1.0,
       "collision_queries": [
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "bdmn"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh1atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh2atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "zh3atm"
         },
         {
-          "receiver": "",
+          "receiver": "self",
           "target": "abcd"
         }
       ],
       "on_hit_goto_frame": 5,
-      "on_hit_goto_conditions": [
-        {
-          "field": "played",
-          "operator": "==",
-          "value": 0
-        }
-      ],
+      "on_hit_goto_grouped": true,
       "on_hit_events": [
         {
           "op": "local_write_group",
@@ -3481,6 +3475,9 @@
               "value": 0
             }
           ],
+          "source_scope": [
+            367
+          ],
           "writes": [
             {
               "field": "played",
@@ -3490,12 +3487,15 @@
               "field": "movspeed",
               "value": 0
             }
-          ]
+          ],
+          "goto_frame": 5
         }
       ],
+      "initial_variables": {
+        "played": 0
+      },
       "initial_speed_field": "speed",
       "initial_speed_factor": 2.0,
-      "initial_played": 0,
       "initial_motion_source": {
         "source_path": "DefineSprite_630/frame_528/PlaceObject2_332_28/CLIPACTIONRECORD onClipEvent(load).as",
         "source_sha256": "b8506922c32e566cf194c77a7f80900c335d63cf795d2ae516f022434b2ee8eb"
