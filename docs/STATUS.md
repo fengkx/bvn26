@@ -712,17 +712,6 @@ replay/fixture disposal regressions are covered. Detailed baseline comparisons:
 [evidence](../evidence/online/netcode-step1-review-2026-10-12.json). Full paired Web
 acceptance remains pending; no deployment, merge, or milestone completion.
 
+### Neji import (2026-10-13)
 
-### 2026-10-13 — Chad source port
-
-茶渡基础形态已从锁定 `chad.swf` 编译：Sprite 607 的 1,136 帧、接触冲刺分支、
-取消窗口、原判定框、受击／防御、三类必杀、声音与开场数据均进入原生素材和控制器。
-原版头像／姓名条、本地选人及在线目录已接入；织姬援助不在范围内。
-[角色证据](../evidence/characters/chad/README.md)与 `checks.json` 分开记录源码依据、
-固定输入 Flash 对照和轻量回滚结果。未修改共享运行时；保留用户要求的
-`_clear_interrupted_super_preparation` 防死锁偏差。完整视听、浏览器、AI 与穷举取消边界
-仍待验收，不提升 M6。匹配 Worker 需后续重新部署目录，本次不部署。
-
-茶渡本轮结果：10 条原生 Flash 同输入案例均 482/482 状态、14 字段精确匹配；
-轻量必杀暂停回滚／回合重置、9 项现有 Godot smoke、31 项匹配服务及 7 项在线 manifest
-测试通过。Python 共 276 项、2 跳过，新断言拼写修正后 3 项定向复跑通过。
+Neji base form is source-imported in an isolated worktree and wired into local/online selection. Focused original-player move/interrupt/guard comparisons and rollback validation are in progress; see [Neji evidence](../evidence/characters/neji/README.md). The shared interrupted-super deadlock fix is retained as an explicit Flash deviation. Hinata is deferred; full audiovisual/browser/AI acceptance remains pending.

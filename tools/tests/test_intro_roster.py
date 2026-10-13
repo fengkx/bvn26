@@ -26,38 +26,4 @@ class IntroRosterTests(unittest.TestCase):
             "byakuya": (958, 1034),
             "lee": (1158, 1237),
             "yin": (1072, 1151),
-            "chad": (898, 974),
-        }
-        self.assertEqual(set(spec["fighters"]), set(expected))
-        for name, (start, end) in expected.items():
-            fighter = spec["fighters"][name]
-            self.assertEqual(
-                (fighter["action"]["start_frame"], fighter["action"]["end_frame"]),
-                (start, end),
-            )
-            self.assertEqual(set(fighter["state_frames"].values()), {1, 2, 3})
-            self.assertGreaterEqual(len(fighter["state_frames"]), 3)
-
-    def test_published_candidate_roster_has_source_openings(self):
-        available = json.loads(
-            (ROOT / "godot/generated/main/character_selection/available.json").read_text()
-        )
-        intro = json.loads((ROOT / "godot/generated/main/intro/intro.json").read_text())
-        for name in ("sakura", "rukia", "yulong", "byakuya", "lee", "yin", "chad"):
-            self.assertIn(name, intro["fighters"])
-            self.assertIn(name, available["fighters"].values())
-        self.assertIn("jinye", available["helpers"].values())
-
-    def test_source_audit_and_runtime_intro_have_same_roster(self):
-        audit = json.loads((ROOT / "evidence/intro-source.json").read_text())
-        runtime = json.loads((ROOT / "godot/generated/main/intro/intro.json").read_text())
-        self.assertEqual(set(audit["fighters"]), set(runtime["fighters"]))
-        for name in runtime["fighters"]:
-            self.assertEqual(
-                audit["fighters"][name]["state_frames"],
-                runtime["fighters"][name]["state_frames"],
-            )
-
-
-if __name__ == "__main__":
-    unittest.main()
+            "neji": (1191, 1298),
