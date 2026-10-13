@@ -29,6 +29,7 @@ class IntroRosterTests(unittest.TestCase):
             "chad": (898, 974),
             "neji": (1191, 1298),
             "yijiao": (917, 981),
+            "itachi": (1094, 1173),
         }
         self.assertEqual(set(spec["fighters"]), set(expected))
         for name, (start, end) in expected.items():

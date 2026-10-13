@@ -169,6 +169,10 @@ func _initialize() -> void:
 	_run.call_deferred()
 
 
+func reference_fighter_ids() -> Array:
+	return ["一护", "白哉"]
+
+
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
 	assert(args.size() in [2, 3], "Pass events, report and optional combat mode")
@@ -220,7 +224,7 @@ func _run() -> void:
 	game._load_selected_stage("现世")
 	game.character_selection.available.fighters["白哉"] = "byakuya"
 	game.character_selection.available.helpers["魂"] = "kon"
-	game._on_characters_confirmed(["一护", "白哉"], ["魂", "魂"])
+	game._on_characters_confirmed(reference_fighter_ids(), ["魂", "魂"])
 	game._enter_current_fight(2)
 	game.ichigo.ai_random_clock.cancel()
 	var fighters: Array[FighterRuntime] = [game.naruto, game.ichigo]

@@ -1,0 +1,44 @@
+{
+  "id": "yihu-143-airMagichit-neutral",
+  "fighter": "yihu",
+  "slot": "p2",
+  "label": "跳招",
+  "scenario": "neutral",
+  "frames": 300,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p2",
+      "keys": [
+        "jump"
+      ],
+      "start": 5,
+      "end": 6
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "ranged"
+      ],
+      "start": 20,
+      "end": 23
+    }
+  ],
+  "target_frames": [
+    143,
+    172
+  ],
+  "source_dispatch": [
+    "onJumping"
+  ],
+  "status": "not_run"
+}

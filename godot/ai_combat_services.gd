@@ -15,14 +15,21 @@ func invoke(name: String, args: Array) -> Variant:
 	match name:
 		"frame_super":
 			_apply_super(args[0])
-		"receive":
-			assert(args[0] in ["beida", "fangyu"])
-			fighter.guarding = args[0] == "fangyu"
+		"receive", "counter":
+			if name == "receive":
+				assert(args[0] in ["beida", "fangyu"])
+				fighter.guarding = args[0] == "fangyu"
 			var opponent_helper: HelperRuntime = null
 			for helper: HelperRuntime in helpers:
 				if helper.owner_fighter == fighter.opponent:
 					opponent_helper = helper
 					break
+			if name == "counter":
+				if CombatResolver.has_incoming(fighter, fighter.opponent,
+						opponent_helper, stage_registry, stage_lookup_order):
+					fighter.source_goto_label(str(args[0]), true)
+					return true
+				return false
 			return CombatResolver.resolve_incoming(fighter, fighter.opponent,
 				opponent_helper, stage_registry, stage_lookup_order)
 		"bsd":

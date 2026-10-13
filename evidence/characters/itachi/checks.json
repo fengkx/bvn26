@@ -1,0 +1,85 @@
+{
+  "base_commit": "84d567fe",
+  "status": "focused_port_verified_full_acceptance_pending",
+  "full_one_to_one_verified": false,
+  "tools": {
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "32.0.0.465",
+    "python": "/tmp/netcode-venv/bin/python",
+    "ffdec_sha256": "23c1e70ff2b08388e35de10afd97a2875386cbfdc2ef99c8176d40b4f8a3ada9"
+  },
+  "moves": {
+    "cases": 32,
+    "states": 19264,
+    "all_matched": true,
+    "fields": [
+      "frame",
+      "x",
+      "y",
+      "xscale",
+      "action",
+      "hp",
+      "ql",
+      "sw",
+      "touch",
+      "touchFloor",
+      "hits",
+      "paused",
+      "hstm",
+      "hurtSkling"
+    ],
+    "report": "move-comparisons.json"
+  },
+  "regressions": {
+    "cases": 71,
+    "states": 46462,
+    "all_matched": true,
+    "report": "regressions.json"
+  },
+  "python": {
+    "run": 301,
+    "passed": 299,
+    "skipped": 2,
+    "failures": 0,
+    "console_sha256": "a6eccf877672566266394285e092c01c065cc42d2e7d7592f4a4891894d56e40"
+  },
+  "godot": {
+    "checks": 36,
+    "passed": 31,
+    "failed": [
+      "ai_colors_smoke",
+      "ai_context_smoke",
+      "ai_host_smoke",
+      "title_menu_source_smoke",
+      "ai_hit_gate_smoke"
+    ],
+    "report": "godot-checks.json"
+  },
+  "ai": {
+    "status": "segment_observed_fields_match",
+    "report": "ai-comparison.json",
+    "scope": "one level-5 original RNG/clock tape from partial standing checkpoint; not exhaustive AI acceptance",
+    "states": 1704,
+    "geometry_observations": 1704,
+    "random_samples": 288,
+    "clock_samples": 4
+  },
+  "actual_effort": {
+    "final_move_validation_subprocess_seconds": 1324.3,
+    "final_godot_validation_subprocess_seconds": 494.4,
+    "note": "Measured subprocess wall durations; parallel durations are summed, not person-days. Earlier diagnosis/capture work is not included."
+  },
+  "limits": "README.md lists unaccepted audiovisual/browser/exhaustive boundaries, inherited anti-deadlock deviation and baseline Godot failures.",
+  "rollback": {
+    "foundation_checks": 15,
+    "all_passed": true,
+    "roster_fighters": 16,
+    "note": "Count actual ROLLBACK_ROSTER_CASE_OK markers; the final legacy summary text says fighters=11."
+  },
+  "integrity_checks": {
+    "verify": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}",
+    "handoff": "{\"status\": \"passed\", \"documents\": 18, \"local_links\": 228, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}",
+    "contracts": "{\"status\": \"passed\", \"schemas\": 6, \"examples\": 6, \"gameplay_tested\": false, \"production_ready_data\": false}",
+    "online": "ONLINE_MANIFEST_OK fighters=16 helpers=4 stages=10 build=b167642c233d9277e15227de5db8c7fd71dd6074415797cbc7047dd6fb80578f content=92908f196728bd4beb15f99badcb50455b2c3a31e758ddb2e95e0b31408e996e"
+  }
+}

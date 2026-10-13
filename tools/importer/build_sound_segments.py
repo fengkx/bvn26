@@ -84,11 +84,17 @@ def build(directory, wavs, ffmpeg):
     frames = {}
     outputs = directory / 'sound_segments'
     outputs.mkdir(exist_ok=True)
-    for frame in timeline['frames']:
+    source_frames = list(timeline['frames'])
+    for definition in timeline.get('definitions', []):
+        for frame, events in enumerate(definition.get('display_list_frame_events', []), 1):
+            source_frames.append({'frame': f"{definition['character_id']}:{frame}", 'events': events})
+    for frame in source_frames:
         records = []
         for event in frame.get('events', []):
             if event.get('type') != 'start_sound':
                 continue
+            if isinstance(frame['frame'], str) and event.get('sync_no_multiple'):
+                raise ValueError('Nested no-multiple sounds require separate lifecycle handling')
             sound_id = int(event['sound_id'])
             source = wavs / f'{sound_id}.wav'
             if sound_id not in decoded:
@@ -118,7 +124,9 @@ def build(directory, wavs, ffmpeg):
                             'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
         if records: frames[str(frame['frame'])] = records
     result = {'format': 'bvn26-sound-segments-v1', 'sample_rate': 44100,
-              'envelope_baked': True, 'source_swf': timeline['source_swf'], 'frames': frames,
+              'envelope_baked': True, 'source_swf': timeline['source_swf'],
+              'frames': {k: v for k, v in frames.items() if ':' not in k},
+              'nested_frames': {k: v for k, v in frames.items() if ':' in k},
               'decoder': 'Pinned JPEXS WAV export; ffmpeg PCM resampling',
               'ffmpeg_version': subprocess.run([str(ffmpeg), '-version'], capture_output=True, text=True, check=True).stdout.splitlines()[0]}
     (directory / 'sound_segments.json').write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
