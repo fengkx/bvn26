@@ -1546,6 +1546,11 @@ test("owner leave stops the room alarm, stores a closed marker, and drops revoke
     type: "reinvite",
     inviteToken: token(),
   });
+  const beforeClose = await request(server, "/_test/alarm", {
+    id: room.roomId,
+    kind: "inspect",
+  });
+  const previous = JSON.parse(beforeClose.rows[0].value);
   assert.equal((await op(server, room, 0, { type: "leave" })).status, 200);
   const raw = await request(server, "/_test/alarm", {
     id: room.roomId,
@@ -1553,9 +1558,39 @@ test("owner leave stops the room alarm, stores a closed marker, and drops revoke
   });
   assert.equal(raw.nextAlarm, null);
   const stored = JSON.parse(raw.rows[0].value);
-  assert.equal(stored.phase, "closed");
-  assert.equal(stored.inviteHash, "");
-  assert.equal(stored.members[0].credential, "");
+  assert.deepEqual(stored, {
+    schema: 1,
+    id: previous.id,
+    creationHash: previous.creationHash,
+    inviteHash: "",
+    shortInviteHash: null,
+    compatibility: previous.compatibility,
+    revision: previous.revision + 1,
+    setupRevision: previous.setupRevision + 1,
+    members: [
+      {
+        credential: "",
+        nickname: "",
+        choice: null,
+        ready: false,
+        profile: null,
+        seq: 0,
+        lastCommand: null,
+        lastReply: null,
+        connection: null,
+      },
+      null,
+    ],
+    stage: previous.stage,
+    rules: previous.rules,
+    phase: "closed",
+    match: null,
+    lastResult: null,
+    negotiation: null,
+    lastActivity: 0,
+    leaseUntil: 0,
+    createdAt: previous.createdAt,
+  });
   const joinByCode = (code) =>
     request(server, "/v1/rooms/join-by-code", {
       code,
