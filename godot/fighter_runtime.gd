@@ -4,6 +4,7 @@ extends TimelinePreview
 # Development availability policy; isolated source probes keep the full timeline.
 var disabled_actions: PackedStringArray = []
 
+const FighterHitEffectLookup = preload("res://fighter_hit_effect_lookup.gd")
 const SourceCoordinateStore = preload("res://source_coordinate.gd")
 const SourceSweepGeometry = preload("res://source_sweep_geometry.gd")
 const RollbackPresentation = preload("res://rollback_presentation.gd")
@@ -609,20 +610,17 @@ func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
 
 
 func _normalized_impact_strength(strength: int) -> int:
-	# beida()/fangyu() remove the >10 guard-break marker before bdxg().
-	return strength - 10 if strength > 10 else strength
+	return FighterHitEffectLookup.normalized_impact_strength(strength)
 
 
 func _hit_fx_table(name: String) -> Dictionary:
 	var hit_fx: Dictionary = _combat.get("hit_fx", {})
-	if hit_fx.has(name):
-		return hit_fx[name]
-	return {}
+	return FighterHitEffectLookup.hit_fx_table(hit_fx, name)
 
 
 func _clip_for_strength(table_name: String, strength: int) -> String:
 	var table := _hit_fx_table(table_name)
-	return str(table.get(str(_normalized_impact_strength(strength)), ""))
+	return FighterHitEffectLookup.clip_for_strength(table, strength)
 
 
 func _hit_effect_for_strength(strength: int) -> String:
