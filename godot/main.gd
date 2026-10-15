@@ -801,11 +801,7 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if super_presentation != null:
 		super_presentation.tick()
 	physics_tick += 1
-	for fighter: FighterRuntime in [naruto, ichigo]:
-		fighter.diagnostic_tick = physics_tick
-	for helper: HelperRuntime in [naruto_helper, ichigo_helper]:
-		if helper != null:
-			helper.diagnostic_tick = physics_tick
+	_assign_diagnostic_ticks()
 	if tick_label.is_visible_in_tree():
 		tick_label.text = "Fixed simulation tick: %d" % physics_tick
 	assert(opponent_driver != null and player_body_driver != null and source_callbacks != null)
@@ -965,6 +961,14 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if super_presentation != null:
 		_sync_super_stage()
 	_refresh_fight_labels()
+
+
+func _assign_diagnostic_ticks() -> void:
+	for fighter: FighterRuntime in [naruto, ichigo]:
+		fighter.diagnostic_tick = physics_tick
+	for helper: HelperRuntime in [naruto_helper, ichigo_helper]:
+		if helper != null:
+			helper.diagnostic_tick = physics_tick
 
 
 func _recorded_events_for_phase(recorded_events: Array, phase: String, event_supplier: Callable) -> Array:
