@@ -12,6 +12,7 @@ signal diagnostic_abort(report: Dictionary)
 signal room_match_aborted(report: Dictionary)
 signal page_visibility_changed(visible: bool)
 
+const Values = preload("res://online_match_values.gd")
 const State = preload("res://simulation_state.gd")
 const Battle = preload("res://rollback_battle.gd")
 const Rollback = preload("res://rollback_session.gd")
@@ -995,19 +996,7 @@ func _normalize_profile(value: Variant) -> Dictionary:
 
 
 func _wire_integer(value: Variant, minimum: int, maximum: int) -> Variant:
-	if value is bool:
-		return null
-	var normalized: int
-	if value is int:
-		normalized = value
-	elif value is float and is_finite(value) and value == floor(value) \
-		and absf(value) <= 9_007_199_254_740_991.0:
-		normalized = int(value)
-	else:
-		return null
-	if normalized < minimum or normalized > maximum:
-		return null
-	return normalized
+	return Values.wire_integer(value, minimum, maximum)
 
 
 func _valid_profile(value: Dictionary) -> bool:
@@ -1589,13 +1578,7 @@ func _integral_number(value: Variant) -> bool:
 
 
 func _is_digest(value: String) -> bool:
-	if value.length() != 64 or value != value.to_lower():
-		return false
-	for index in range(value.length()):
-		var codepoint := value.unicode_at(index)
-		if not ((codepoint >= 48 and codepoint <= 57) or (codepoint >= 97 and codepoint <= 102)):
-			return false
-	return true
+	return Values.is_digest(value)
 
 
 func _schedule_intro_skip(frame: int) -> String:
