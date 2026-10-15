@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 import subprocess
 
+if __package__:
+    from .godot_result import process_succeeded
+else:
+    from godot_result import process_succeeded
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -75,7 +80,7 @@ def execute(godot, case_path, output):
     (output/(case_path.stem+'.log')).write_text(log)
     rows=json.loads(target.read_text()) if target.exists() else []
     complete=len(rows)==2*(case['frames']+1)
-    executed=run.returncode==0 and 'SCRIPT ERROR' not in log and 'MOVE_CASE_REFERENCE_OK' in log and complete
+    executed = process_succeeded(run.returncode, log, required_marker='MOVE_CASE_REFERENCE_OK') and complete
     seen = target_seen(case, rows)
     return {'id':case['id'],'executed':executed,'states':len(rows),'target_seen':seen,
             'status':'native_only_not_parity' if executed else 'failed'}
@@ -96,7 +101,7 @@ def execute_batch(godot, paths, output):
     try:
         run = subprocess.run(command, capture_output=True, text=True, timeout=60 + len(paths) * 10)
         log = run.stdout + run.stderr
-        clean = run.returncode == 0 and 'SCRIPT ERROR' not in log and 'MOVE_CASE_BATCH_OK' in log
+        clean = process_succeeded(run.returncode, log, required_marker='MOVE_CASE_BATCH_OK')
     except subprocess.TimeoutExpired as error:
         log = str(error)
         clean = False
