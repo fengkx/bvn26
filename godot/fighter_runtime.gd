@@ -2358,10 +2358,3 @@ func _emit_diagnostic(event_type: String, payload: Dictionary) -> void:
 		event_payload = payload.duplicate(true)
 		event_payload["replay"] = true
 	diagnostic_runtime.call("push_event", event_type, event_payload, diagnostic_tick)
-
-
-func _frame_in(window: Dictionary) -> bool:
-	return (
-		current_source_frame() >= int(window["start_frame"])
-		and current_source_frame() <= int(window["end_frame"])
-	)
