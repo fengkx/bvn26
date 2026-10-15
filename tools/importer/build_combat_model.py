@@ -1252,6 +1252,48 @@ def resolve_special_cost(
     return matches[0]
 
 
+def compile_combo_transitions(
+    combo_ranges: dict[str, dict[str, int]],
+    scripts: list[dict[str, Any]],
+    frames_by_number: dict[int, dict[str, Any]],
+) -> tuple[list[str], list[dict[str, Any]]]:
+    combo_labels = list(combo_ranges)
+    combo_transitions = []
+    for index, label in enumerate(combo_labels[:-1]):
+        next_label = combo_labels[index + 1]
+        candidates = [
+            script
+            for script in scripts
+            if script["action"] == label
+            and script["kind"] == "clip_action"
+            and re.search(r"\bnornalhit\((?:true)?\)", script["source"])
+            and any(match["label"] == next_label for match in GOTO.finditer(script["source"]))
+        ]
+        if len(candidates) != 1:
+            raise ValueError(f"Expected one {label} -> {next_label} transition, got {len(candidates)}")
+        candidate = candidates[0]
+        path_tail = SCRIPT_PATH.match(candidate["path"])["kind"]
+        placement_match = PLACEMENT_PATH.match(path_tail)
+        if placement_match is None:
+            raise ValueError(f"Cannot locate placement depth for {candidate['path']}")
+        end_frame, bytecode_hash = clip_lifetime(
+            frames_by_number, candidate["frame"], int(placement_match["depth"])
+        )
+        combo_transitions.append(
+            {
+                "from": label,
+                "to": next_label,
+                "start_frame": candidate["frame"],
+                "end_frame": end_frame,
+                "condition": "normal_attack_held",
+                "source_path": candidate["path"],
+                "source_sha256": candidate["source_sha256"],
+                "action_bytes_sha256": bytecode_hash,
+            }
+        )
+    return combo_labels, combo_transitions
+
+
 def build_model(
     fighter_path: Path, timeline_path: Path, scripts_path: Path
 ) -> dict[str, Any]:
@@ -1312,40 +1354,9 @@ def build_model(
     )
     _merge_root_atm_windows(hitbox_windows, ranges, frames_by_number, scripts)
 
-    combo_labels = list(fighter["actions"]["ground_combo"])
-    combo_transitions = []
-    for index, label in enumerate(combo_labels[:-1]):
-        next_label = combo_labels[index + 1]
-        candidates = [
-            script
-            for script in scripts
-            if script["action"] == label
-            and script["kind"] == "clip_action"
-            and re.search(r"\bnornalhit\((?:true)?\)", script["source"])
-            and any(match["label"] == next_label for match in GOTO.finditer(script["source"]))
-        ]
-        if len(candidates) != 1:
-            raise ValueError(f"Expected one {label} -> {next_label} transition, got {len(candidates)}")
-        candidate = candidates[0]
-        path_tail = SCRIPT_PATH.match(candidate["path"])["kind"]
-        placement_match = PLACEMENT_PATH.match(path_tail)
-        if placement_match is None:
-            raise ValueError(f"Cannot locate placement depth for {candidate['path']}")
-        end_frame, bytecode_hash = clip_lifetime(
-            frames_by_number, candidate["frame"], int(placement_match["depth"])
-        )
-        combo_transitions.append(
-            {
-                "from": label,
-                "to": next_label,
-                "start_frame": candidate["frame"],
-                "end_frame": end_frame,
-                "condition": "normal_attack_held",
-                "source_path": candidate["path"],
-                "source_sha256": candidate["source_sha256"],
-                "action_bytes_sha256": bytecode_hash,
-            }
-        )
+    combo_labels, combo_transitions = compile_combo_transitions(
+        fighter["actions"]["ground_combo"], scripts, frames_by_number
+    )
 
     timeline_fallthroughs = compile_timeline_fallthroughs(ranges, scripts)
     exits = {}
