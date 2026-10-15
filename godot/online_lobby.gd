@@ -7,6 +7,7 @@ const LOBBY_KEEPALIVE_SECONDS := 900.0
 const LOBBY_RECONNECT_BASE_SECONDS := 1.0
 const LOBBY_RECONNECT_MAX_SECONDS := 30.0
 const LOBBY_STATUS_REFRESH_SECONDS := 30.0
+const WIDGETS := preload("res://online_lobby_widgets.gd")
 const CLIENT := preload("res://online_room_client.gd")
 const ROOM_CONNECTION := preload("res://online_lobby_connection.gd")
 const ONLINE_USER_TEXT_FONT := preload("res://online_user_text_font.gd")
@@ -4436,34 +4437,19 @@ func _option() -> OptionButton:
 
 
 func _label(value: String) -> Label:
-	var label := Label.new()
-	label.text = value
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	return label
+	return WIDGETS.label(value)
 
 
 func _line_edit(value: String, placeholder: String) -> LineEdit:
-	var edit := LineEdit.new()
-	edit.text = value
-	edit.placeholder_text = placeholder
-	edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	edit.focus_entered.connect(_on_online_edit_focus_entered.bind(edit))
-	edit.focus_exited.connect(_on_online_edit_focus_exited.bind(edit))
-	return edit
+	return WIDGETS.line_edit(value, placeholder, _on_online_edit_focus_entered, _on_online_edit_focus_exited)
 
 
 func _row(label: String, input: Control) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.add_child(_label(label))
-	row.add_child(input)
-	return row
+	return WIDGETS.row(label, input, _label)
 
 
 func _button(text: String, callback: Callable) -> Button:
-	var button := Button.new()
-	button.text = text
-	button.pressed.connect(callback)
-	return button
+	return WIDGETS.button(text, callback)
 
 
 func _format_result(result: Dictionary) -> String:
