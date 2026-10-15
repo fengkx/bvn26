@@ -8,15 +8,16 @@ from __future__ import annotations
 
 import argparse
 import difflib
-import hashlib
 import json
 from pathlib import Path
 import re
 import subprocess
 
 try:
+    from .probe_reference_helpers import quoted, sha
     from .shadow_instrumentation import instrument as instrument_shadow
 except ImportError:
+    from probe_reference_helpers import quoted, sha
     from shadow_instrumentation import instrument as instrument_shadow
 
 
@@ -29,10 +30,6 @@ PREDICATES = {
     "hurtSkill", "dash", "wankai",
 }
 FUNCTION = re.compile(r"^function (\w+)\([^\n]*\)\r?\n\{\r?\n.*?^\}", re.M | re.S)
-
-
-def sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def resolve_helper_selection(catalog: dict, selection: str) -> dict:
@@ -100,10 +97,6 @@ _root.aiHelperState = function(player)
    _root.aiEvent("helper_clip_state", player + "," + m._currentframe''' + dynamic_value + ''');
 };
 '''
-
-
-def quoted(value: str) -> str:
-    return json.dumps(value, ensure_ascii=False)
 
 
 def instrument(source: str, origin: str, fighter: bool) -> str:
