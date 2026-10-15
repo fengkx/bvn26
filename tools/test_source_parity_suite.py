@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools/probes'))
 from compare_mode_reference import compare, validate_probe_provenance
 from test_move_cases import validate_timer_contract
+from godot_result import process_succeeded
 
 
 def unpack(suite, output):
@@ -84,8 +85,8 @@ def main():
             run = subprocess.run(command, capture_output=True, text=True, timeout=3600)
             log = run.stdout + run.stderr
             (output / f'batch-{number}.log').write_text(log)
-            return {'batch': number, 'cases': len(batch), 'passed': run.returncode == 0
-                    and 'MOVE_CASE_BATCH_OK' in log and 'SCRIPT ERROR' not in log}
+            return {'batch': number, 'cases': len(batch),
+                    'passed': process_succeeded(run.returncode, log, required_marker='MOVE_CASE_BATCH_OK')}
 
         with ThreadPoolExecutor(max_workers=args.jobs) as pool:
             execution = list(pool.map(execute, enumerate(batches)))
