@@ -8,16 +8,17 @@ from __future__ import annotations
 
 import argparse
 import difflib
-import hashlib
 import json
 from pathlib import Path
 import re
 import subprocess
 
 try:
+    from .probe_reference_helpers import quoted, sha
     from .shadow_instrumentation import instrument as instrument_shadow
     from .hit_receive_observer import instrument_hit_receive, observer_schema
 except ImportError:
+    from probe_reference_helpers import quoted, sha
     from shadow_instrumentation import instrument as instrument_shadow
     from hit_receive_observer import instrument_hit_receive, observer_schema
 
@@ -31,10 +32,6 @@ PREDICATES = {
     "hurtSkill", "dash", "wankai",
 }
 FUNCTION = re.compile(r"^function (\w+)\([^\n]*\)\r?\n\{\r?\n.*?^\}", re.M | re.S)
-
-
-def sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def resolve_helper_selection(catalog: dict, selection: str) -> dict:
@@ -104,10 +101,6 @@ _root.aiHelperState = function(player)
    _root.aiEvent("helper_lifecycle", player + "," + m._currentframe + "," + f._visible + "," + _root.zhanting + "," + (parent == undefined ? undefined : parent._currentframe) + "," + _root.aiHelperClipFrame(f,"atm1") + "," + _root.aiHelperClipFrame(f,"atm2") + "," + _root.aiHelperClipFrame(f,"atm3"));
 };
 '''
-
-
-def quoted(value: str) -> str:
-    return json.dumps(value, ensure_ascii=False)
 
 
 def effect_phase_observer_source() -> str:
