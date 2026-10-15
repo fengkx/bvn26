@@ -53,8 +53,8 @@ GDScript is excluded from handwritten-code size rankings.
 | Rollback | `godot/battle_checkpoint.gd`: 643 lines; `_encode` spans 152 lines. Reflection captures script variables and shared container identity. | Main fields are explicitly classified; other script owners are traversed. A new helper object can silently change graph shape, callable binding and lifetime. |
 | Online | `godot/online_lobby.gd`: 4,553 lines; `online_match.gd`: 2,378; `online_room_client.gd`: 1,104. UI construction, async room operations and session ownership share files. | Keep generation/epoch guards, immutable timer envelopes and confirmation barriers with their existing owners. |
 | Compiler | `tools/importer/build_combat_model.py`: 2,152 lines; `build_model` is 594 lines; `_merge_root_atm_windows` 180 and `parse_projectile_motion` 173. | Separate source parsing from assembly, retaining source paths, hashes, statement position and fail-closed behaviour. |
-| Probe builders | `build_ai_reference.py`: 720 lines / 500-line `build`; `build_ai_reference_vscom_tmp.py`: 658 / 460. Overlapping instrumentation helpers and launch workflows. | Diagnostic interventions and clean parity captures must remain distinguishable. The `_tmp` file is loaded by `build_ai_reference_vscom_natural_tmp.py`; it is not proven dead. |
-| Harnesses | 53 Python test files; `test_source_inventory.py` is 1,225 lines, spanning SWF inspection through combat compilation. `godot/tests/combat_smoke.gd` is 1,784 lines. | Tests assert source behaviour. Splitting must preserve test IDs/counts or document exact ID mapping, setup isolation and every assertion. |
+| Probe builders | `tools/probes/build_ai_reference.py`: 720 lines / 500-line `build`; `tools/probes/build_ai_reference_vscom_tmp.py`: 658 / 460. Overlapping instrumentation helpers and launch workflows. | Diagnostic interventions and clean parity captures must remain distinguishable. The `_tmp` file is loaded by `build_ai_reference_vscom_natural_tmp.py`; it is not proven dead. |
+| Harnesses | 53 Python test files; `tools/tests/test_source_inventory.py` is 1,225 lines, spanning SWF inspection through combat compilation. `godot/tests/combat_smoke.gd` is 1,784 lines. | Tests assert source behaviour. Splitting must preserve test IDs/counts or document exact ID mapping, setup isolation and every assertion. |
 | Check policy | `run_godot_checked.py`, `test_move_cases.py`, `test_source_parity_suite.py` and `test_rollback_foundations.py` each inspect process output differently. | Exit zero alone is not success; markers, trace completeness and script errors are separate. Audio-only shutdown exceptions must remain narrow. |
 | Evidence/docs | STATUS is 874 lines and tasks.json 1,105; dated narrative, partial acceptance, fixtures and historical runs are interleaved. OPERATIONS still describes earlier slice limitations. | Historical evidence is immutable; current navigation should link it, not rewrite history or turn partial into complete. |
 | Repository tooling | `justfile` is a command index, Python uses `requirements-dev.txt`; `services/matchmaking` is a separate npm package with its own lockfile. | No repository-wide package migration is justified. Worker protocol/catalogs and Godot compatibility manifests cross the package boundary. |
@@ -81,7 +81,7 @@ behaviour, not permission to do so.
 | P0 / R02: one log-classification seam | `tools/test_move_cases.py`, `tools/test_source_parity_suite.py`, new `tools/godot_result.py`, relevant `tools/tests` only. Extract their common exit/script-error/marker predicate with explicit per-caller options. | Prevent drift without replacing every runner at once. Do not migrate `run_godot_checked.py` or rollback policy in this PR. | Medium; G plus small captured-log cases for missing marker, exit zero + SCRIPT ERROR, timeout and clean run. Prove old/new classifications equal; changing exception policy is out of scope. |
 | P1 / R03: projectile parser extraction | `tools/importer/build_combat_model.py`, new `combat_projectile_parser.py`; move `projectile_local_scope`, `parse_projectile_motion`, `parse_projectile_initialization` and their exclusive constants. Keep imported names available from old module. | Isolates a 173-line parser and its lexical-scope rules from model assembly. | Medium; G+C for all implemented fighters, existing projectile/contact/compiler tests. Preserve regex order and unknown-input rejection; do not replace parsing strategy. |
 | P1 / R04: bounded model assembly | `tools/importer/build_combat_model.py` only. Extract the existing combo-transition assembly block from `build_model` into a pure helper with explicit ranges/scripts/frame inputs. | Reduces the 594-line assembler by one coherent block without a new intermediate schema. | Medium; G+C, existing combo lifetime and command catalog assertions. Preserve first-match selection, errors and provenance bytes. |
-| P1 / R05: move one Python test class | `tools/tests/test_source_inventory.py`, new `test_timeline_geometry.py`; move only `TimelineGeometryTests` and its required fixtures/imports. | Separate XML/display-list tests from combat-model tests without duplicating shared fixture construction. | Low; G, compare discovered test count and old→new IDs; no new behavioural assertions. Do not also split the 266-line combat test. |
+| P1 / R05: move one Python test class | `tools/tests/test_source_inventory.py`, new `test_timeline_geometry.py`; move only `TimelineGeometryTests` and its required fixtures/imports. | Separate XML/display-list tests from combat-model tests without duplicating shared fixture construction. | Low; G, compare discovered test count and old→new IDs; no new behavioural assertions. Do not also split `CombatModelTests` (lines 352–983, approximately 632 lines); its `test_attack_and_hurt_frames_come_from_display_and_as2` method alone spans 266 lines. |
 | P1 / R06: pure fighter geometry helper | `godot/fighter_runtime.gd`, new `source_sweep_geometry.gd`; move only `_horizontal_sweep_fraction`, retaining the method wrapper. | A small stateless mathematical boundary avoids relocating projectile or fighter state. | Medium; G; existing projectile contact and mirrored/air contact checks. Preserve comparison order, edge inclusion and all float operations exactly. No clamp/epsilon changes. |
 | P1 / R07: proven unused method removal | `godot/fighter_runtime.gd` only: candidate `_frame_in` (final five lines). | Repository GDScript/Python search currently finds the definition only. | Low only after whole-tree textual/string-call, scene/resource, inherited and generated-call audit; G. If a dynamic caller is found, drop the PR. Do not remove `_physics_process: pass`: it overrides inherited processing. |
 | P1 / R08: matrix construction boundary | `godot/timeline_preview.gd`, new `source_matrix_transform.gd`; extract `_matrix_transform` only, keeping its forwarding method. | Makes the Flash/JPEXS column mapping reviewable apart from rendering. | Medium; G plus existing rotated-hitbox/bitmap-mask checks. Keep `rotateSkew0/1`, twip division and `basis_scale` exactly; no unification with source scalar arithmetic. |
@@ -90,7 +90,7 @@ behaviour, not permission to do so.
 | P2 / R11: checkpoint policy constants | `godot/battle_checkpoint.gd`, new `battle_checkpoint_fields.gd`; move only immutable/external/Main field-name arrays, keep aliases in checkpoint. | Makes ownership policy inspectable without rewriting graph serialization. | High; G and existing checkpoint invalid-state/COW/identity assertions. Compare field classifications and snapshot digests on base/head; no new exclusions, reordering, snapshot version or lifetime changes. |
 | P2 / R12: one Godot smoke group | `godot/tests/combat_smoke.gd`, new test-support script; extract only a contiguous hit-effect assertion group, keeping original entry point, invocation order and completion marker. | Reduces the large harness without creating another parallel battle implementation. | Medium; G, compare assertion/group execution counts and source-linked expected values. Keep scene cleanup and RNG/timer setup at the same boundaries. |
 | P2 / R13: probe pure helper deduplication | `tools/probes/build_ai_reference.py`, `build_ai_reference_vscom_tmp.py`, new probe helper module; share only byte-identical hashing/AS2 JSON-string quoting helpers confirmed by diff. | Removes low-risk duplication without merging two 500-line instrumentation workflows. | Low–medium; G plus existing probe-builder/capture provenance tests; compare generated instrumentation text/bytes for each existing mode. Leave capture ordering and activation behaviour untouched. |
-| P2 / R14: capture process lookup reuse | `tools/probes/freeze_capture_native.py`, `capture_native_player.py`; share only exact movie/binary PID matching after confirming equivalent argument handling. | Two capture flows maintain overlapping process-discovery logic. | Medium; G plus existing capture serialization tests and mocked process-list cases. Keep account-wide lock held across launch/capture/snapshot/owned-process cleanup; no live Flash batch just to test this helper. |
+| Deferred / R14: capture process lookup reuse | `tools/probes/freeze_capture_native.py::owned_pids` and `capture_native_player.py::matching_players`; no extraction authorized by this plan. | Audit shows **different semantics**: freeze uses substring matches for binary/movie and skips invalid PIDs; normal capture requires an exact command match and converts its PID directly. | Do not mechanically unify these functions. Choosing one matching policy changes process ownership/cleanup behaviour and needs a separate user decision. A policy-preserving low-level seam can be proposed later, but is not this queued PR. |
 | P2 / R15: lobby widget factories | `godot/online_lobby.gd`, new `online_lobby_widgets.gd`; move only `_label`, `_line_edit`, `_row`, `_button` factories, retaining wrappers. | Starts shrinking the largest runtime file at a presentation-only boundary. | Medium; G plus existing lobby UI smoke and one local UI inspection. Preserve signal connections, focus, names and sizes; do not move room/startup state or async callbacks. |
 | P3 / R16: online validation helpers | `godot/online_match.gd`, new `online_match_values.gd`; extract only `_wire_integer` and `_is_digest` with wrappers. | Separates leaf validation from transport/recovery orchestration. | Medium; G plus existing online protocol/review regressions. Preserve accepted wire types/ranges and failure behaviour; no protocol version or normalization changes. |
 | P3 / R17: Worker response projection | `services/matchmaking/src/room.ts`, one helper module, existing `test/server.test.mjs`; extract only closed-room state projection from `closedMarker`, leaving persistence/alarm calls in Room. | Room combines HTTP, socket and alarm lifecycle; a pure projection is safer than extracting `fetch` wholesale. | Medium; G plus `npm --prefix services/matchmaking test` and `npm --prefix services/matchmaking run format:check`. Preserve state shape, timestamps and socket ownership. No deployment, dependency or catalog changes. |
@@ -162,17 +162,21 @@ changes are not planned; if one becomes necessary, separate it and also run
 
 The current 103-case corpus is a report plus individual fixtures/traces, **not**
 the older `references.tar.gz` format expected by `test_source_parity_suite.py`.
-This copy-paste command uses the existing executor and exact comparator. It
+This copy-paste command uses the existing Godot reference script and exact comparator.
+It deliberately does not call `test_move_cases.execute`, whose 45-second timeout
+is too short for 32 retained cases (historical maximum 76.7 seconds). Each case
+has a 600-second infrastructure deadline; input frames, markers, completeness
+and parity assertions remain unchanged. A timeout still fails the gate. It
 validates the retained hashes and writes fresh results outside the repository;
 it does not change source-build provenance or recapture Flash.
 
 ```sh
 python3 - <<'PY'
-import gzip, hashlib, json, os, sys, time
+import gzip, hashlib, json, os, subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 sys.path[:0] = ['tools', 'tools/probes']
-from test_move_cases import execute
+from test_move_cases import validate_timer_contract, target_seen
 from compare_mode_reference import compare
 root = Path.cwd()
 out = Path(os.environ['BVN_CHECK_DIR']) / 'flash-replay'
@@ -189,8 +193,27 @@ def replay(case):
     folder.mkdir()
     fixture = (root / case['fixture']).resolve()
     started = time.monotonic()
-    execution = execute(godot, fixture, folder)
+    case_data = json.loads(fixture.read_text())
+    validate_timer_contract(case_data)
     native = folder / (fixture.stem + '.json')
+    command = [str(godot), '--headless', '--path', str(root / 'godot'),
+               '--log-file', str(folder / 'engine.log'),
+               '-s', 'res://tests/move_case_reference.gd', '--quit-after', '1200',
+               '--', str(fixture), str(native)]
+    timed_out = False
+    try:
+        run = subprocess.run(command, capture_output=True, text=True, timeout=600)
+        log, code = run.stdout + run.stderr, run.returncode
+    except subprocess.TimeoutExpired as exc:
+        def text(value):
+            return value.decode(errors='replace') if isinstance(value, bytes) else (value or '')
+        log, code, timed_out = text(exc.stdout) + text(exc.stderr), -1, True
+    (folder / 'process.log').write_text(log)
+    rows = json.loads(native.read_text()) if native.exists() and not timed_out else []
+    complete = len(rows) == 2 * (case_data['frames'] + 1)
+    executed = code == 0 and 'MOVE_CASE_REFERENCE_OK' in log and 'SCRIPT ERROR' not in log and complete
+    execution = {'executed': executed, 'exit': code, 'timed_out': timed_out,
+                 'states': len(rows), 'target_seen': target_seen(case_data, rows)}
     comparison = compare(root / case['source'], native) if execution['executed'] else None
     return {'id': case['id'], 'execution': execution, 'comparison': comparison,
             'seconds': time.monotonic() - started}
@@ -214,8 +237,10 @@ parity verdict. Do not drop diagnostic fixtures that intentionally miss a target
 Run the existing 36-check selection from the Itachi acceptance report, plus the
 placement regression. It includes **all 15 rollback foundation checks**, so do
 not run those twice. The code below uses explicit timeouts and retains raw logs;
-it applies the existing narrow audio-shutdown allowance. Historical failures
-are reported for signature review, not converted into passes.
+it applies the existing narrow audio-shutdown allowance for successful tests.
+Known failures require the retained exit code and exact ordered errors/markers;
+extra errors, missing markers, and timeouts fail closed. Historical failures
+remain failures in the report, with a separate `baseline_match` classification.
 
 ```sh
 python3 - <<'PY'
@@ -225,20 +250,32 @@ out = Path(os.environ['BVN_CHECK_DIR']) / 'godot'
 out.mkdir()
 selected = json.loads(Path('evidence/characters/itachi/godot-checks.json').read_text())
 names = [r['name'] for r in selected] + ['clip_placement_once_smoke']
-known = {n + '_smoke' for n in ['ai_colors', 'ai_context', 'ai_host', 'title_menu_source', 'ai_hit_gate']}
+baseline = json.loads(Path('evidence/characters/itachi/baseline-godot-failures.json').read_text())
+known = {r['name'] + '_smoke': r for r in baseline['checks']}
+assert set(known) == {n + '_smoke' for n in
+    ['ai_colors', 'ai_context', 'ai_host', 'title_menu_source', 'ai_hit_gate']}
+
+def failure_signature(log):
+    lines = log.splitlines()
+    return {'errors': [line for line in lines if line.startswith(('SCRIPT ERROR:', 'ERROR:'))
+                       and 'Condition "ret != noErr"' not in line],
+            'markers': [line for line in lines if '_SMOKE_OK' in line or line == 'stage_sound_smoke ok']}
+
 results = []
 for name in names:
     started = time.monotonic()
     command = [os.environ['BVN_GODOT'], '--headless', '--verbose', '--path', 'godot',
                '--log-file', str(out / (name + '.engine.log')), '--quit-after', '5000',
                '-s', 'res://tests/' + name + '.gd']
+    timed_out = False
     try:
         run = subprocess.run(command, capture_output=True, text=True, timeout=600)
         log, code = run.stdout + run.stderr, run.returncode
     except subprocess.TimeoutExpired as exc:
-        log = (exc.stdout or b'') + (exc.stderr or b'')
-        log = log.decode(errors='replace') if isinstance(log, bytes) else log
-        code = -1
+        def text(value):
+            return value.decode(errors='replace') if isinstance(value, bytes) else (value or '')
+        log = text(exc.stdout) + text(exc.stderr)
+        code, timed_out = -1, True
     (out / (name + '.log')).write_text(log)
     leaks = [line for line in log.splitlines() if line.startswith('Leaked instance:')]
     audio = bool(leaks) and all(line.startswith(tuple('Leaked instance: ' + kind + ':' for kind in
@@ -252,19 +289,26 @@ for name in names:
         token in log for token in ['SCRIPT ERROR', 'Parse Error', 'Assertion failed'])
     if name == 'rollback_roster_smoke':
         passed = passed and log.count('ROLLBACK_ROSTER_CASE_OK') == 16
-    results.append({'name': name, 'passed': passed, 'exit': code,
-                    'known_baseline_failure': name in known, 'seconds': time.monotonic() - started})
+    signature = failure_signature(log)
+    expected = known.get(name)
+    baseline_match = bool(expected) and not timed_out and code == expected['exit'] and signature == {
+        'errors': expected['errors'], 'markers': expected['markers']}
+    results.append({'name': name, 'passed': passed, 'exit': code, 'timed_out': timed_out,
+                    'signature': signature, 'baseline_match': baseline_match,
+                    'seconds': time.monotonic() - started})
 (out / 'report.json').write_text(json.dumps(results, indent=2))
 for row in results:
     print(row)
-assert all(r['passed'] or r['name'] in known for r in results)
-print('Review known failure logs against baseline-godot-failures.json before accepting.')
+assert all(r['passed'] or r['baseline_match'] for r in results)
+print('GODOT_GATE_OK passed=', sum(r['passed'] for r in results),
+      'matched_baseline_failures=', sum(not r['passed'] and r['baseline_match'] for r in results))
 PY
 ```
 
-Compare retained failures with
-`evidence/characters/itachi/baseline-godot-failures.json` and, if a signature
-changes, the same command on `3423be31`. A timeout, missing resource or new parse
+The driver compares complete ordered error/marker lists and exit codes with
+`evidence/characters/itachi/baseline-godot-failures.json` and rejects signature drift. If a signature
+changes, investigate against the same command on the PR base before accepting;
+do not replace the retained baseline to make the check green. A timeout, missing resource or new parse
 error is not the inherited assertion. The old roster summary says `fighters=11`;
 the 16 `ROLLBACK_ROSTER_CASE_OK` records are the coverage check. For a rollback-only
 iteration, the existing command is
