@@ -1,4 +1,5 @@
 import { DurableObject } from "cloudflare:workers";
+import { closedRoomState } from "./closed_room_state";
 import type { Env } from "./index";
 import {
   body,
@@ -145,26 +146,7 @@ export class Room extends DurableObject<Env> {
     await this.ctx.storage.setAlarm(deadline);
   }
   private closedMarker(state: State): State {
-    return {
-      schema: 1,
-      id: state.id,
-      creationHash: state.creationHash,
-      inviteHash: "",
-      shortInviteHash: null,
-      compatibility: state.compatibility,
-      revision: state.revision,
-      setupRevision: state.setupRevision,
-      members: [member("", ""), null],
-      stage: state.stage,
-      rules: state.rules,
-      phase: "closed",
-      match: null,
-      lastResult: null,
-      negotiation: null,
-      lastActivity: 0,
-      leaseUntil: 0,
-      createdAt: state.createdAt,
-    };
+    return closedRoomState(state);
   }
   private async shutdown(state: State): Promise<void> {
     if (state.phase !== "closed") {
