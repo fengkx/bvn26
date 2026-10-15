@@ -102,17 +102,21 @@ changes, also run
 
 The current 103-case corpus is a report plus individual fixtures/traces, **not**
 the older `references.tar.gz` format expected by `test_source_parity_suite.py`.
-This copy-paste command uses the existing executor and exact comparator. It
+This copy-paste command uses the existing Godot reference script and exact comparator.
+It deliberately does not call `test_move_cases.execute`, whose 45-second timeout
+is too short for 32 retained cases (historical maximum 76.7 seconds). Each case
+has a 600-second infrastructure deadline; input frames, markers, completeness
+and parity assertions remain unchanged. A timeout still fails the gate. It
 validates the retained hashes and writes fresh results outside the repository;
 it does not change source-build provenance or recapture Flash.
 
 ```sh
 python3 - <<'PY'
-import gzip, hashlib, json, os, sys, time
+import gzip, hashlib, json, os, subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 sys.path[:0] = ['tools', 'tools/probes']
-from test_move_cases import execute
+from test_move_cases import validate_timer_contract, target_seen
 from compare_mode_reference import compare
 root = Path.cwd()
 out = Path(os.environ['BVN_CHECK_DIR']) / 'flash-replay'
@@ -129,8 +133,27 @@ def replay(case):
     folder.mkdir()
     fixture = (root / case['fixture']).resolve()
     started = time.monotonic()
-    execution = execute(godot, fixture, folder)
+    case_data = json.loads(fixture.read_text())
+    validate_timer_contract(case_data)
     native = folder / (fixture.stem + '.json')
+    command = [str(godot), '--headless', '--path', str(root / 'godot'),
+               '--log-file', str(folder / 'engine.log'),
+               '-s', 'res://tests/move_case_reference.gd', '--quit-after', '1200',
+               '--', str(fixture), str(native)]
+    timed_out = False
+    try:
+        run = subprocess.run(command, capture_output=True, text=True, timeout=600)
+        log, code = run.stdout + run.stderr, run.returncode
+    except subprocess.TimeoutExpired as exc:
+        def text(value):
+            return value.decode(errors='replace') if isinstance(value, bytes) else (value or '')
+        log, code, timed_out = text(exc.stdout) + text(exc.stderr), -1, True
+    (folder / 'process.log').write_text(log)
+    rows = json.loads(native.read_text()) if native.exists() and not timed_out else []
+    complete = len(rows) == 2 * (case_data['frames'] + 1)
+    executed = code == 0 and 'MOVE_CASE_REFERENCE_OK' in log and 'SCRIPT ERROR' not in log and complete
+    execution = {'executed': executed, 'exit': code, 'timed_out': timed_out,
+                 'states': len(rows), 'target_seen': target_seen(case_data, rows)}
     comparison = compare(root / case['source'], native) if execution['executed'] else None
     return {'id': case['id'], 'execution': execution, 'comparison': comparison,
             'seconds': time.monotonic() - started}
@@ -154,8 +177,10 @@ parity verdict. Do not drop diagnostic fixtures that intentionally miss a target
 Run the existing 36-check selection from the Itachi acceptance report, plus the
 placement regression. It includes **all 15 rollback foundation checks**, so do
 not run those twice. The code below uses explicit timeouts and retains raw logs;
-it applies the existing narrow audio-shutdown allowance. Historical failures
-are reported for signature review, not converted into passes.
+it applies the existing narrow audio-shutdown allowance for successful tests.
+Known failures require the retained exit code and exact ordered errors/markers;
+extra errors, missing markers, and timeouts fail closed. Historical failures
+remain failures in the report, with a separate `baseline_match` classification.
 
 ```sh
 python3 - <<'PY'
@@ -165,20 +190,32 @@ out = Path(os.environ['BVN_CHECK_DIR']) / 'godot'
 out.mkdir()
 selected = json.loads(Path('evidence/characters/itachi/godot-checks.json').read_text())
 names = [r['name'] for r in selected] + ['clip_placement_once_smoke']
-known = {n + '_smoke' for n in ['ai_colors', 'ai_context', 'ai_host', 'title_menu_source', 'ai_hit_gate']}
+baseline = json.loads(Path('evidence/characters/itachi/baseline-godot-failures.json').read_text())
+known = {r['name'] + '_smoke': r for r in baseline['checks']}
+assert set(known) == {n + '_smoke' for n in
+    ['ai_colors', 'ai_context', 'ai_host', 'title_menu_source', 'ai_hit_gate']}
+
+def failure_signature(log):
+    lines = log.splitlines()
+    return {'errors': [line for line in lines if line.startswith(('SCRIPT ERROR:', 'ERROR:'))
+                       and 'Condition "ret != noErr"' not in line],
+            'markers': [line for line in lines if '_SMOKE_OK' in line or line == 'stage_sound_smoke ok']}
+
 results = []
 for name in names:
     started = time.monotonic()
     command = [os.environ['BVN_GODOT'], '--headless', '--verbose', '--path', 'godot',
                '--log-file', str(out / (name + '.engine.log')), '--quit-after', '5000',
                '-s', 'res://tests/' + name + '.gd']
+    timed_out = False
     try:
         run = subprocess.run(command, capture_output=True, text=True, timeout=600)
         log, code = run.stdout + run.stderr, run.returncode
     except subprocess.TimeoutExpired as exc:
-        log = (exc.stdout or b'') + (exc.stderr or b'')
-        log = log.decode(errors='replace') if isinstance(log, bytes) else log
-        code = -1
+        def text(value):
+            return value.decode(errors='replace') if isinstance(value, bytes) else (value or '')
+        log = text(exc.stdout) + text(exc.stderr)
+        code, timed_out = -1, True
     (out / (name + '.log')).write_text(log)
     leaks = [line for line in log.splitlines() if line.startswith('Leaked instance:')]
     audio = bool(leaks) and all(line.startswith(tuple('Leaked instance: ' + kind + ':' for kind in
@@ -192,19 +229,26 @@ for name in names:
         token in log for token in ['SCRIPT ERROR', 'Parse Error', 'Assertion failed'])
     if name == 'rollback_roster_smoke':
         passed = passed and log.count('ROLLBACK_ROSTER_CASE_OK') == 16
-    results.append({'name': name, 'passed': passed, 'exit': code,
-                    'known_baseline_failure': name in known, 'seconds': time.monotonic() - started})
+    signature = failure_signature(log)
+    expected = known.get(name)
+    baseline_match = bool(expected) and not timed_out and code == expected['exit'] and signature == {
+        'errors': expected['errors'], 'markers': expected['markers']}
+    results.append({'name': name, 'passed': passed, 'exit': code, 'timed_out': timed_out,
+                    'signature': signature, 'baseline_match': baseline_match,
+                    'seconds': time.monotonic() - started})
 (out / 'report.json').write_text(json.dumps(results, indent=2))
 for row in results:
     print(row)
-assert all(r['passed'] or r['name'] in known for r in results)
-print('Review known failure logs against baseline-godot-failures.json before accepting.')
+assert all(r['passed'] or r['baseline_match'] for r in results)
+print('GODOT_GATE_OK passed=', sum(r['passed'] for r in results),
+      'matched_baseline_failures=', sum(not r['passed'] and r['baseline_match'] for r in results))
 PY
 ```
 
-Compare retained failures with
-`evidence/characters/itachi/baseline-godot-failures.json` and, if a signature
-changes, the same command on `3423be31`. A timeout, missing resource or new parse
+The driver compares complete ordered error/marker lists and exit codes with
+`evidence/characters/itachi/baseline-godot-failures.json` and rejects signature drift. If a signature
+changes, investigate against the same command on the PR base before accepting;
+do not replace the retained baseline to make the check green. A timeout, missing resource or new parse
 error is not the inherited assertion. The old roster summary says `fighters=11`;
 the 16 `ROLLBACK_ROSTER_CASE_OK` records are the coverage check. For a rollback-only
 iteration, the existing command is
