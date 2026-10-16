@@ -26,7 +26,8 @@ Known Godot smoke failures (`ai_colors`, `ai_context`, `ai_host`,
   validates commit, completes, and replies with `recovery_commit_ack`. P1
   completes only on that ack. Add a regression that holds the commit/ack so P1
   cannot simulate early.
-- **Status:** Fixed in this branch.
+- **Status:** Fixed in this branch (`recovery_commit_ack`; `commit_pending`
+  set before send so re-entrant FakeHub/WebRTC delivery cannot race).
 
 ### H2 — WebRTC data-channel loss has no match-time renegotiation
 
