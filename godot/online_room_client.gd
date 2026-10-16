@@ -679,6 +679,9 @@ func _handle_socket_packet(packet: PackedByteArray) -> void:
 
 func _accept_state(state: Dictionary) -> void:
 	if not _validate_room_state(state, _room_id, _slot, true):
+		# WebSocket ingress validates before calling here; HTTP/command refresh
+		# paths must not leave a stale projection without a client error.
+		error.emit("invalid_room_state")
 		return
 	var revision := int(state["revision"])
 	if revision < _last_room_revision:

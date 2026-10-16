@@ -261,6 +261,17 @@ func _check_match_input() -> bool:
 	return false
 
 
+func _fail_if_streams_diverged() -> bool:
+	# Recorded/online paths must stop on tape mismatch; live RNG leaves failure empty.
+	if source_random.failure.is_empty() and source_clock.failure.is_empty():
+		return true
+	if not source_random.failure.is_empty():
+		match_input.error = "Random stream failed: " + source_random.failure
+	else:
+		match_input.error = "Clock stream failed: " + source_clock.failure
+	return _check_match_input()
+
+
 func arm_input_recording(path: String) -> String:
 	if physics_tick != 0 or session.root_label == "游戏场景" or match_input.playback or path.is_empty():
 		return "Recording must be armed before a fresh match, with an output path"
@@ -871,7 +882,13 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	opponent_driver.controller.context.helper_action = naruto_helper.source_action if naruto_helper != null else null
 	opponent_driver.initial_frame_count = int(initial_frame_counts[ichigo])
 	player_body_driver.prepare_frame_actions(int(initial_frame_counts[naruto]))
+	# Drop cancel contact that was not applied on the previous display tick before
+	# new callbacks run. Same-tick receive / deferred frame scripts still see it.
+	for fighter in fighters:
+		fighter.discard_unused_stashed_attack()
 	source_callbacks.dispatch(physics_tick)
+	if not _fail_if_streams_diverged():
+		return
 	if ko_terminal_pending:
 		if not has_meta("rollback_terminal_barrier"):
 			_ko_return_to_fixed_selection()
@@ -961,6 +978,7 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	if super_presentation != null:
 		_sync_super_stage()
 	_refresh_fight_labels()
+	_fail_if_streams_diverged()
 
 
 func _assign_diagnostic_ticks() -> void:

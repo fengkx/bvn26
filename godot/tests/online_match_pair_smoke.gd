@@ -108,6 +108,25 @@ func _run() -> void:
 		await process_frame
 	assert(start_results.get("p1_done", false), "P1 did not complete the start barrier")
 	assert(start_results.get("p2_done", false), "P2 did not complete the start barrier")
+	if OS.get_cmdline_user_args().has("--mixed-saves"):
+		# Divergent sparse/stride must fail closed at match_ready, not mid-match.
+		assert(not str(start_results.p1).is_empty() or not str(start_results.p2).is_empty() \
+			or first_match.error == "checkpoint_policy_mismatch" \
+			or second_match.error == "checkpoint_policy_mismatch",
+			"mixed saves must abort at the start barrier")
+		assert(first_match.error == "checkpoint_policy_mismatch" \
+			or second_match.error == "checkpoint_policy_mismatch" \
+			or "checkpoint_policy_mismatch" in str(start_results.p1) \
+			or "checkpoint_policy_mismatch" in str(start_results.p2),
+			"mixed saves abort reason: p1=%s p2=%s err=%s/%s" % [
+				start_results.p1, start_results.p2, first_match.error, second_match.error])
+		print("ONLINE_MATCH_PAIR_MIXED_SAVES_REJECTED_OK")
+		first_match.close()
+		second_match.close()
+		first.queue_free()
+		second.queue_free()
+		quit()
+		return
 	assert(str(start_results.p1).is_empty(), "P1 start failed: " + str(start_results.p1))
 	assert(str(start_results.p2).is_empty(), "P2 start failed: " + str(start_results.p2))
 	assert(first_match.running and second_match.running, "Both coordinators must pass match_ready")
