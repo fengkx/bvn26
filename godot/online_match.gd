@@ -272,7 +272,12 @@ func _run_startup(match_epoch: String, normalized_profile: Dictionary, authority
 	if not problem.is_empty():
 		return await _abort_start_for_generation(startup_generation, "rollback_setup", {"error": problem})
 	rollback = match_state
-	if not _send_peer("match_ready", {"epoch": epoch, "initialHash": initial_hash}):
+	if not _send_peer("match_ready", {
+		"epoch": epoch,
+		"initialHash": initial_hash,
+		"sparseSaves": sparse_saves,
+		"checkpointStride": checkpoint_stride,
+	}):
 		return await _abort_start_for_generation(startup_generation, "peer_ready_send", {"error": "reliable_channel_not_open"})
 	var ready_deadline := Time.get_ticks_msec() + 30_000
 	var startup_client := room_client
@@ -568,7 +573,8 @@ func _drain_early_epoch_messages() -> void:
 
 func _dispatch_peer_message(channel: String, type: String, payload: Dictionary) -> void:
 	# Input packets may accumulate; control/recovery messages read final history.
-	if type in ["control", "recovery_sync", "recovery_compare_request", "recovery_compare", "recovery_commit"]:
+	if type in ["control", "recovery_sync", "recovery_compare_request", "recovery_compare",
+			"recovery_commit", "recovery_commit_ack"]:
 		if not _reconcile_inputs(): return
 	if _performance.active:
 		_tick_remote_message_count += 1
@@ -584,6 +590,7 @@ func _dispatch_peer_message(channel: String, type: String, payload: Dictionary) 
 		"recovery_compare_request": _receive_recovery_compare_request(payload)
 		"recovery_compare": _receive_recovery_compare(payload)
 		"recovery_commit": _receive_recovery_commit(payload)
+		"recovery_commit_ack": _receive_recovery_commit_ack(payload)
 		"match_abort": _abort_local("peer_abort", payload, false)
 		_: _abort_local("peer_protocol", {"type": type})
 
@@ -1268,8 +1275,10 @@ func _send_input_packet() -> void:
 	for frame in frames.slice(0, INPUT_REDUNDANCY):
 		inputs.append({"frame": frame, "held": _unacked_inputs[frame]})
 	# Loss is recovered by the next bounded packet, including while lockstep waits.
-	peer_transport.send_peer_message("input", "input_batch", {
-		"epoch": epoch, "ack": maxi(_remote_input_ack, int(profile.get("inputDelay", 0))), "inputs": inputs})
+	if not peer_transport.send_peer_message("input", "input_batch", {
+		"epoch": epoch, "ack": maxi(_remote_input_ack, int(profile.get("inputDelay", 0))), "inputs": inputs}):
+		if not recovering:
+			_begin_recovery("input_send_failed", _process_now_ms)
 
 
 func _receive_input_packet(payload: Dictionary) -> void:
@@ -1367,8 +1376,10 @@ func _send_recovery_sync(now_ms: int) -> void:
 	var resend_limit := remote_frontier + maxi(32, int(profile.predictionWindow) + int(profile.inputDelay) + 8)
 	for frame in _local_inputs.keys():
 		if int(frame) > remote_oldest and int(frame) <= resend_limit:
-			peer_transport.send_peer_message("input", "input_batch", {"epoch": epoch, "ack": maxi(_remote_input_ack, int(profile.get("inputDelay", 0))),
-				"inputs": [{"frame": int(frame), "held": _local_inputs[frame]}]})
+			if not peer_transport.send_peer_message("input", "input_batch", {"epoch": epoch, "ack": maxi(_remote_input_ack, int(profile.get("inputDelay", 0))),
+				"inputs": [{"frame": int(frame), "held": _local_inputs[frame]}]}):
+				# Already recovering; keep trying on the next sync pulse.
+				return
 	if local_slot == "p1" and _recovery_state.has("remote_sync"):
 		_propose_recovery_comparison()
 
@@ -1479,8 +1490,11 @@ func _receive_recovery_compare(payload: Dictionary) -> void:
 		_abort_local("recovery_state_mismatch", {"frame": frame, "local_hash": _recovery_state.get("local_hash", ""), "remote_hash": digest})
 		return
 	var commit := {"epoch": epoch, "recovery_id": _recovery_id, "frame": frame, "hash": digest}
-	if _send_peer("recovery_commit", commit):
-		_complete_recovery("reconciled")
+	# Mark pending before send: FakeHub/WebRTC can deliver the guest ack
+	# re-entrantly inside _send_peer, before this frame returns.
+	_recovery_state.commit_pending = true
+	if not _send_peer("recovery_commit", commit):
+		_recovery_state.erase("commit_pending")
 
 
 func _receive_recovery_commit(payload: Dictionary) -> void:
@@ -1494,6 +1508,28 @@ func _receive_recovery_commit(payload: Dictionary) -> void:
 	var snapshot: Dictionary = rollback.state_at(frame)
 	if frame % HASH_INTERVAL != 0 or snapshot.is_empty() or State.fingerprint(snapshot) != str(payload.get("hash", "")):
 		_abort_local("recovery_commit_mismatch", {"frame": frame})
+		return
+	var ack := {"epoch": epoch, "recovery_id": _recovery_id, "frame": frame, "hash": str(payload.get("hash", ""))}
+	if not _send_peer("recovery_commit_ack", ack):
+		return
+	_complete_recovery("reconciled")
+
+
+func _receive_recovery_commit_ack(payload: Dictionary) -> void:
+	if _is_completed_recovery_id(str(payload.get("recovery_id", ""))):
+		return
+	var frame_value: Variant = payload.get("frame")
+	var digest := str(payload.get("hash", ""))
+	if local_slot != "p1" or payload.get("epoch") != epoch or payload.get("recovery_id") != _recovery_id \
+		or not _integral_number(frame_value) or not _is_digest(digest):
+		_abort_local("invalid_recovery_commit_ack", payload)
+		return
+	if not bool(_recovery_state.get("commit_pending", false)):
+		_abort_local("unexpected_recovery_commit_ack", payload)
+		return
+	var frame := int(frame_value)
+	if frame != int(_recovery_state.get("requested_frame", -1)) or digest != str(_recovery_state.get("local_hash", "")):
+		_abort_local("recovery_commit_ack_mismatch", {"frame": frame})
 		return
 	_complete_recovery("reconciled")
 
@@ -2263,6 +2299,15 @@ func _receive_match_ready(payload: Dictionary) -> void:
 	if payload.get("epoch") != epoch or payload.get("initialHash") != _start_hash(save_state()):
 		_abort_local("peer_start_hash", payload)
 		return
+	# URL/CLI checkpoint overrides are local. Divergent peers must fail closed
+	# at the start barrier instead of desyncing mid-match.
+	if payload.has("sparseSaves") and payload.has("checkpointStride"):
+		if typeof(payload["sparseSaves"]) != TYPE_BOOL \
+			or not _integral_number(payload["checkpointStride"]) \
+			or bool(payload["sparseSaves"]) != sparse_saves \
+			or int(payload["checkpointStride"]) != checkpoint_stride:
+			_abort_local("checkpoint_policy_mismatch", payload)
+			return
 	_peer_ready = true
 
 

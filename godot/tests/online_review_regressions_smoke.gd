@@ -19,14 +19,22 @@ func _initialize() -> void:
 	_test_startup_queue()
 	_test_deadline()
 	_test_backpressure()
+	_test_recovery_commit_barrier()
 	_test_lockstep_recovery()
 	_test_diagnostic_cleanup.call_deferred()
 
 func _test_startup_queue() -> void:
 	for kind in ["match_ready", "match_abort"]:
 		var peer := ReviewPeer.new()
+		peer.sparse_saves = true
+		peer.checkpoint_stride = 2
 		peer.receive_peer_message("reliable", "match_abort", {"epoch": "retired"}, 1)
-		peer.receive_peer_message("reliable", kind, {"epoch": "current", "initialHash": "a".repeat(64)}, 1)
+		peer.receive_peer_message("reliable", kind, {
+			"epoch": "current",
+			"initialHash": "a".repeat(64),
+			"sparseSaves": true,
+			"checkpointStride": 2,
+		}, 1)
 		assert(peer._received_sequences.is_empty() and peer.error.is_empty())
 		peer.epoch = "current"
 		peer._drain_early_epoch_messages()
@@ -34,6 +42,18 @@ func _test_startup_queue() -> void:
 		if kind == "match_ready": assert(peer._peer_ready and peer.error.is_empty())
 		else: assert(peer.error == "peer_abort")
 		peer.close()
+	var mismatch := ReviewPeer.new()
+	mismatch.sparse_saves = true
+	mismatch.checkpoint_stride = 2
+	mismatch.epoch = "current"
+	mismatch._receive_match_ready({
+		"epoch": "current",
+		"initialHash": "a".repeat(64),
+		"sparseSaves": false,
+		"checkpointStride": 1,
+	})
+	assert(mismatch.error == "checkpoint_policy_mismatch")
+	mismatch.close()
 
 func _test_deadline() -> void:
 	var peer := ReviewPeer.new()
@@ -71,6 +91,35 @@ func _test_backpressure() -> void:
 	assert(peer.process_tick(133, held).is_empty())
 	assert(peer.rollback.frontier == 65 and peer._unacked_inputs.size() == 1)
 	peer.close()
+
+class ReentrantCommitPeer extends ReviewPeer:
+	func _send_peer(kind: String, payload: Dictionary) -> bool:
+		sent.append({"type": kind, "payload": payload.duplicate(true)})
+		if kind == "recovery_commit":
+			assert(bool(_recovery_state.get("commit_pending", false)),
+				"commit_pending must be set before recovery_commit leaves the host")
+			_receive_recovery_commit_ack({
+				"epoch": epoch, "recovery_id": _recovery_id, "frame": int(payload.frame),
+				"hash": str(payload.hash),
+			})
+		return true
+
+
+func _test_recovery_commit_barrier() -> void:
+	var host := ReentrantCommitPeer.new()
+	host.epoch = "test"
+	host.local_slot = "p1"
+	host.remote_slot = "p2"
+	host.recovering = true
+	host._recovery_id = "test:1"
+	host._recovery_state = {"requested_frame": 30, "local_hash": "b".repeat(64)}
+	host._receive_recovery_compare({
+		"epoch": "test", "recovery_id": "test:1", "frame": 30, "hash": "b".repeat(64),
+	})
+	assert(not host.recovering and host.error.is_empty())
+	assert(host._last_completed_recovery_id == "test:1")
+	host.close()
+
 
 func _test_lockstep_recovery() -> void:
 	for delay in [0, 4]:
