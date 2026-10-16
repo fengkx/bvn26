@@ -162,7 +162,9 @@ var diagnostic_tick: int = -1
 var diagnostic_helper: HelperRuntime
 var pending_hit_diagnostic: Dictionary = {}
 # Same-tick cancel must not drop a sourced hit: start_action clears
-# _hit_instances and the display list before main.gd resolve_pair.
+# _hit_instances and the display list before the defender checkHit callback.
+# Production resolve_incoming polls with source_receiver=true; stash must serve
+# that path. Unused stash is discarded after source_callbacks.dispatch.
 var _stashed_attack: Dictionary = {}
 
 
@@ -727,7 +729,7 @@ func resolve_body_collision(other: FighterRuntime) -> void:
 func attack_contact(defender: FighterRuntime, source_receiver: bool = false) -> Dictionary:
 	if not defender.allows_source_hit():
 		return {}
-	if not source_receiver and not _stashed_attack.is_empty() and defender == opponent:
+	if not _stashed_attack.is_empty() and defender == opponent:
 		return _stashed_attack.duplicate()
 	_expire_absent_hit_instances()
 	var body := defender.instance_global_bounds("bdmn")
@@ -1175,12 +1177,17 @@ func _dispatch_cancels(input_state: Dictionary) -> bool:
 
 
 func _stash_current_attack() -> void:
+	# Clear first so attack_contact samples the live display list, not an older stash.
 	_stashed_attack = {}
 	if opponent == null or not is_instance_valid(opponent):
 		return
 	var contact := attack_contact(opponent)
 	if not contact.is_empty():
 		_stashed_attack = contact
+
+
+func discard_unused_stashed_attack() -> void:
+	_stashed_attack = {}
 
 
 func _dispatch_catalog(context: String, input_state: Dictionary) -> bool:
