@@ -179,8 +179,19 @@ def extract_slice(root: Path, fighter_key: str, *, allow_forms: bool = False) ->
     all_spans = action_spans(timeline["labels"], timeline["declared_frames"])
     selected_spans = {}
     selected_ranges = []
+    combo_end = max(
+        (all_spans[label]["end_frame"] for label in COMMON_ACTION_GROUPS["ground_combo"]
+         if label in all_spans), default=0
+    )
     action_groups = {
         **COMMON_ACTION_GROUPS,
+        # Authored intermediate normals (such as 砍11) belong to the combo;
+        # numeric suffixes are names, not an assumed 1 -> 2 -> 3 sequence.
+        # Later normals remain in extended_actions under the slice contract.
+        "ground_combo": [
+            label for label, span in all_spans.items()
+            if re.fullmatch(r"砍\d+", label) and span["end_frame"] <= combo_end
+        ],
         "special": FIGHTER_SPECIAL_LABELS.get(fighter_key, ["必杀"]),
     }
     for group, labels in action_groups.items():

@@ -1,0 +1,176 @@
+{
+  "base_commit": "786c058d",
+  "coverage": "partial",
+  "production_runtime_changed": false,
+  "compiler_change": "Generic slice classification includes authored intermediate numbered normals; all 16 earlier fighter action classifications unchanged.",
+  "focused": {
+    "cases": 8,
+    "matched": 8,
+    "states": 3856,
+    "report": "evidence/characters/orochimaru/comparisons.json"
+  },
+  "saved_roster_replay": {
+    "status": "passed",
+    "cases": 103,
+    "fighters": 16,
+    "states": 65726,
+    "seconds": 528.978869625018,
+    "report": "evidence/characters/orochimaru/regressions.json"
+  },
+  "suites": {
+    "python": {
+      "run": 309,
+      "passed": 307,
+      "skipped": 2,
+      "status": "passed"
+    },
+    "godot": [
+      {
+        "name": "player_controller_smoke",
+        "exit": 0,
+        "seconds": 3.7124567499849945,
+        "markers": [
+          "PLAYER_CONTROLLER_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "player_visual_smoke",
+        "exit": 0,
+        "seconds": 9.40430912503507,
+        "markers": [
+          "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+          "PLAYER_VISUAL_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "combat_smoke",
+        "exit": 0,
+        "seconds": 10.212854958022945,
+        "markers": [
+          "COMBAT_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "menu_smoke",
+        "exit": 0,
+        "seconds": 1.6125544999958947,
+        "markers": [
+          "MENU_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "stage_sound_smoke",
+        "exit": 0,
+        "seconds": 0.7447965419851243,
+        "markers": [
+          "stage_sound_smoke ok"
+        ],
+        "errors": [
+          "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+        ]
+      },
+      {
+        "name": "character_selection_smoke",
+        "exit": 0,
+        "seconds": 6.678266791044734,
+        "markers": [
+          "CHARACTER_SELECTION_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "hit_settlement_frame_smoke",
+        "exit": 0,
+        "seconds": 1.8327338340459391,
+        "markers": [
+          "HIT_SETTLEMENT_FRAME_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "source_hit_test_smoke",
+        "exit": 0,
+        "seconds": 0.803833750076592,
+        "markers": [
+          "SOURCE_HIT_TEST_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "interrupted_super_lock_smoke",
+        "exit": 0,
+        "seconds": 1.878631625091657,
+        "markers": [
+          "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+        ],
+        "errors": []
+      }
+    ],
+    "rollback": {
+      "status": "passed",
+      "marker": "OROCHIMARU_ROLLBACK_SMOKE_OK intro=natural super=ultimate guard=true round_reset=true late_input=true",
+      "log_sha256": "4fb51390a3e8315454adb3658faa8b40b46d101f50fa3835a91367a0bb496e98"
+    },
+    "matchmaking": {
+      "node": "24.18.0",
+      "tests": 31,
+      "passed": 31,
+      "typecheck": "passed",
+      "deployment": false
+    },
+    "known_master_failures": "Five unrelated historical AI/title failures were not rerun or waived; no production runtime changes.",
+    "verify": "passed",
+    "handoff": "passed",
+    "online_manifest": "passed; 17 fighters, 4 helpers, 10 stages",
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6
+    }
+  },
+  "deviations": [
+    "Retained existing shared _clear_interrupted_super_preparation anti-deadlock fix, unchanged; not introduced by this PR."
+  ],
+  "limitations": [
+    "Full audiovisual/browser/AI/exhaustive move boundary acceptance remains pending.",
+    "Default assist acceptance is outside scope; existing four helpers unchanged.",
+    "Worker catalog redeployment deferred."
+  ],
+  "harness_notes": [
+    "Initial native batch lacked player_controller/body artifacts; corrected by running the existing body compiler into that directory before acceptance.",
+    "Initial rollback harness ended before long source opening plus 300 fight ticks; extended harness deadline, without altering source timing. Final checkpoint, late-input and round reset checks pass.",
+    "Full intro importer hits existing HUD mask-1751 limitation; unchanged per-fighter compilation block used, existing HUD/intro assets preserved.",
+    "Initial Python run exposed four stale roster expectations and an overly broad normal classification; updated authorized roster assertions and preserved the established combo-slice boundary. Final suite passes.",
+    "Wrangler sandbox local registry restriction was resolved through normal escalation; no login/deployment.",
+    "Original traces were collected with native player open -g and the account-wide capture lock.",
+    "Existing headless stage_sound smoke emits one audio resource still in use at shutdown; documented dummy audio allowance, no SCRIPT ERROR.",
+    "Regenerating the online manifest also refreshes stale inherited master fingerprints; production runtime files themselves are unchanged."
+  ],
+  "source_swf_sha256": "cde82387dc86458addeda5ec63232018122514bd795d0bd802613db36b47b8ad",
+  "source_scripts_sha256": "7e926c8b6e175cb476058cef5aed73a37fd76b18ec167bf0baf64de85fa39f51",
+  "source_frames": 1364,
+  "indexed_body_scripts": 141,
+  "original_player": {
+    "version": "32.0.0.465",
+    "app": "/Users/fengkx/me/code/flash-player/Flash Player.app",
+    "executable_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "jpexs": "26.2.1"
+  },
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "runtime_sha256": {
+    "fighter_runtime.gd": "451a5fc02f7bb5c9790a4011084693431221f517855629090c0935c3d72945bb",
+    "main.gd": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f",
+    "ai_cpu_driver.gd": "1b9f3d7345d4ba76fcacae645acd84842d6a8b6b13aee58becc9fc4619c1ca2a",
+    "player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea"
+  },
+  "instrumentation": {
+    "path": "evidence/characters/orochimaru/source-builds/instrumentation.diff.gz",
+    "decompressed_sha256": "70c3d4ebd018e9836ac8e6e812429a758628129746f42788dd28c3e029c7034e"
+  },
+  "measured_goal_session_elapsed_seconds": 812,
+  "elapsed_note": "Wall time through validation/evidence, including native capture lock waits. No person-day estimate inferred."
+}
