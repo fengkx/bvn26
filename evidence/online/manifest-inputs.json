@@ -17,6 +17,7 @@
         "lee",
         "minren",
         "neji",
+        "orochimaru",
         "renji",
         "rifagu",
         "rukia",
@@ -49,8 +50,8 @@
   },
   "compatibility": {
     "protocol": 1,
-    "build": "489784f15b0ae600e069ce4a6a26cc8b1151ed7769a0e75a3b5ef23c75eeb86b",
-    "content": "92908f196728bd4beb15f99badcb50455b2c3a31e758ddb2e95e0b31408e996e"
+    "build": "f4123352868250c75602cdb3d75e809f787bd1a943458f577773f1b15b9eb5b4",
+    "content": "172c2b0c7f8cd5915bf697e7b82f14659595d0602e66c3e13aaf6eea1cfe3093"
   },
   "inputs": {
     "build": [
@@ -111,8 +112,13 @@
       },
       {
         "path": "godot/battle_checkpoint.gd",
-        "sha256": "41f9bf76a7a65318cdf56b7333cfc95f1c87a431c8c0f393928ee6ec9cb9ed31",
-        "size": 27947
+        "sha256": "e4f8ef75d5a12e30cd33af57d9a0a2718f1fa3f46b2cf11c602eedd53fc54529",
+        "size": 26097
+      },
+      {
+        "path": "godot/battle_checkpoint_fields.gd",
+        "sha256": "7937417606a526c377010bb117a40a59e282fd61687b86c1d83b909cc8bbfe9a",
+        "size": 2098
       },
       {
         "path": "godot/battle_intro.gd",
@@ -165,9 +171,14 @@
         "size": 685
       },
       {
+        "path": "godot/fighter_hit_effect_lookup.gd",
+        "sha256": "20ca171728c2c32bbb60d80bc0e7e565ce5eb2e81f14771026aac31a01eac337",
+        "size": 483
+      },
+      {
         "path": "godot/fighter_runtime.gd",
-        "sha256": "8203c7624de47750ade9dd5543a6edfc68ef40f15735b385468260b4ac124ba2",
-        "size": 88479
+        "sha256": "451a5fc02f7bb5c9790a4011084693431221f517855629090c0935c3d72945bb",
+        "size": 88260
       },
       {
         "path": "godot/game_session.gd",
@@ -451,6 +462,46 @@
       },
       {
         "path": "godot/generated/fighters/neji/player_controller/predicates.gd",
+        "sha256": "21fe573f1f2b3d3922f038150fc96c045689ad5f5d454576137c2bbd18666e82",
+        "size": 16688
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/body.gd",
+        "sha256": "0bf6f5ae9c7f5316cddb9f43504e1a76917995655c58df536173df52cde26e68",
+        "size": 12259
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/controller.gd",
+        "sha256": "9512521fb514c6870d9a747f8884328e888a6b064680d72ccba5ef2446855626",
+        "size": 16747
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/predicates.gd",
+        "sha256": "5cc4aac856e6e2d5e9966f4e47d6dcc0720556a97a350d172d6c5d670d1f743b",
+        "size": 14325
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_hit_state.gd",
+        "sha256": "4210e54514b7e55c0c95a3e305b8fa4a7da3e086a999d0fea6a65feafb25094b",
+        "size": 3152
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_body/body.gd",
+        "sha256": "2ba7e48ea0447b00024d18a242b90c1133d03dc7bede9c07a86d6ecc95508712",
+        "size": 12864
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/body.gd",
+        "sha256": "2ba7e48ea0447b00024d18a242b90c1133d03dc7bede9c07a86d6ecc95508712",
+        "size": 12864
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/controller.gd",
+        "sha256": "9512521fb514c6870d9a747f8884328e888a6b064680d72ccba5ef2446855626",
+        "size": 16747
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/predicates.gd",
         "sha256": "21fe573f1f2b3d3922f038150fc96c045689ad5f5d454576137c2bbd18666e82",
         "size": 16688
       },
@@ -866,8 +917,8 @@
       },
       {
         "path": "godot/main.gd",
-        "sha256": "41b67b94e75f3da23cadb895d821c89c97bb674871e31d81dd7f83104a352776",
-        "size": 68845
+        "sha256": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f",
+        "size": 69652
       },
       {
         "path": "godot/main.tscn",
@@ -901,13 +952,18 @@
       },
       {
         "path": "godot/online_lobby.gd",
-        "sha256": "6d33239477433646ada708edcd3270c0c8dd304ff422f3a192da4e1fa343082d",
-        "size": 178431
+        "sha256": "fbee19a781adc10f53e6bd62d74688cf0b120bc51a7bcafeb5ea1d8298b2d908",
+        "size": 178109
       },
       {
         "path": "godot/online_lobby_connection.gd",
         "sha256": "821cbfe74c35f22806328fdb77574d7d46f7c549152c31d076a4c4b9827f5537",
         "size": 29897
+      },
+      {
+        "path": "godot/online_lobby_widgets.gd",
+        "sha256": "0010da11506314072ef2195a408c08775067ef8b6073c214ee95250bf83489cf",
+        "size": 921
       },
       {
         "path": "godot/online_map_selection.gd",
@@ -916,8 +972,13 @@
       },
       {
         "path": "godot/online_match.gd",
-        "sha256": "b6eda6553c8b29a616835cedee9a5244f71ff1e8d68f0b6fb086371246e073fa",
-        "size": 103616
+        "sha256": "9a03c47aeb1c10ee38628941889a89fb31ed95de5cbe46b88b3c1cdba4be8f33",
+        "size": 105175
+      },
+      {
+        "path": "godot/online_match_values.gd",
+        "sha256": "a0a63f46e851a8ba3cb9b3b9cf47547ee0b6808c2cc6251b1da63be5e5ef2c7e",
+        "size": 760
       },
       {
         "path": "godot/online_peer_transport.gd",
@@ -931,8 +992,8 @@
       },
       {
         "path": "godot/online_room_client.gd",
-        "sha256": "0d614d18833729542d0c4781aa085b04f192dbaf296563b2c4a8d673bcda66d1",
-        "size": 39571
+        "sha256": "dc7ccfd15581de7f4bfe7f1108ef5fc732aa84747a5d98c61983fa935b6efb94",
+        "size": 39748
       },
       {
         "path": "godot/online_session_state.gd",
@@ -971,8 +1032,8 @@
       },
       {
         "path": "godot/render_surface.gd",
-        "sha256": "b07b0c5ad0cecbf754e6522dba4d77b6df94c659d189f9f01df077eb7b1d2a55",
-        "size": 4370
+        "sha256": "1d5bd0255b72cec102f123ae70a871f89548dd8a026842e8061e0a8f8bc64893",
+        "size": 4986
       },
       {
         "path": "godot/render_surface.tscn",
@@ -1065,9 +1126,19 @@
         "size": 3535
       },
       {
+        "path": "godot/source_matrix_transform.gd",
+        "sha256": "cc388e1fe5f8020aed68dd7da406a63f6e62a04885d65b1ba900dfd6df663f84",
+        "size": 750
+      },
+      {
         "path": "godot/source_random.gd",
         "sha256": "fb4be5de29b293a8a632b2fec4acc287615d427fa00c40be71f1c266bd21560d",
         "size": 5156
+      },
+      {
+        "path": "godot/source_sweep_geometry.gd",
+        "sha256": "16a2d4b4c71c0665684505aa388f8965dbb9ae992f0f7a40f7696fc5437f5ada",
+        "size": 625
       },
       {
         "path": "godot/stage_hit_registry.gd",
@@ -1096,8 +1167,8 @@
       },
       {
         "path": "godot/timeline_preview.gd",
-        "sha256": "ce2f4b84eb49799134037d4ecca2c1c2dd2b1c1ed8b4ccd29141a8ca1af31c27",
-        "size": 49366
+        "sha256": "2945a5db6483b0101bcf62a0c1eaf9f3c17d0142b851f92a0e8132c8060ae70f",
+        "size": 48864
       },
       {
         "path": "godot/title_menu.gd",
@@ -26175,6 +26246,3081 @@
         "path": "godot/generated/fighters/neji/timeline.json",
         "sha256": "dfd2de5e63641f641944e8c0466f2ab2d39a9a13218a3107e30c3267e8a439b0",
         "size": 5128613
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/10.png",
+        "sha256": "c4a0264088d86c07ac9e123b957f9bb706b18e6aa76a97ca8250f359f8027150",
+        "size": 4413
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/10.png.import",
+        "sha256": "7177b302bdf491389fe2da1706432b2f95dff57a33423dcacc320c690c21d70f",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/100.png",
+        "sha256": "e36ce0abf9e5281b52ef4c2b10370454bb14f2b9df63f3679b6327c593211bfe",
+        "size": 4825
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/100.png.import",
+        "sha256": "171f965b6599154c3c74efb0db7fc314351ec6a26204999785155620afeebfd0",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/102.png",
+        "sha256": "5173cf35a7f3fdd256a7d7e0b11ac3ba552dc743daedfecabe87b882f92eb692",
+        "size": 1388
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/102.png.import",
+        "sha256": "f270a8950c8fcec402995abf5551d1e7770aece3509ef7d1cd8a10d06cded148",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/104.png",
+        "sha256": "bd91522416c3a568f462fb437edce045be3a5d69f7c07d82afbc173559d3d907",
+        "size": 880
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/104.png.import",
+        "sha256": "e166e6c4f901289a973d021fff1601e7a95c78b67492698dcc2ff34decebf8b7",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/106.png",
+        "sha256": "820e3c70fe1d08f4c62cde70ab1256fbd2ba599d772b7b9346a5eaefcc22272a",
+        "size": 470
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/106.png.import",
+        "sha256": "b90a017dde8bf5ef159c11e7d27fe7f84ad53f4b242842951c952347ab67c734",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/108.png",
+        "sha256": "3b6262365fe7b2835455495ea3e1d79451624015a19ce6a643e55e7941796d61",
+        "size": 4092
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/108.png.import",
+        "sha256": "601caa62a5927060451aafb66e026179821047edd49aad8dd1a1fa1ba2483581",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/110.png",
+        "sha256": "42a6918e0d6e57e5a01826b3b8c1687f06f1669614846db2e3cc284add655654",
+        "size": 3808
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/110.png.import",
+        "sha256": "725140f0501235e4ee70f86731d6a922d4c569b952e6764dc8d6954146115a15",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/112.png",
+        "sha256": "41a6100a5a61ca1ebebde5c1df44b3b1259b8b86b8f19c258f568d0e392e5cb4",
+        "size": 3827
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/112.png.import",
+        "sha256": "0fb8cc72c1465890b1ac6221412072d4c09f54cf8a87d3779e4f68c97fadcf63",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/114.png",
+        "sha256": "0f558c3e104cf0f62f581a9bb765740207a58e4212980310623ec884e40c7d85",
+        "size": 4750
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/114.png.import",
+        "sha256": "1192368abc30d58feb549ba04a4fda49a5f0aeba08a63c624f7ba1d9064a6856",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/116.png",
+        "sha256": "7963104cf73be0ad4563265595bf400186a801b2eed52e1d52eb33bb3f2f7e6b",
+        "size": 5901
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/116.png.import",
+        "sha256": "d28c11e9280aea238edaeaf79a672949525b4837ad5e4aa6cc8d41201ba241bb",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/118.png",
+        "sha256": "6da1732e023a8432ad36bbfb66960fef560e6430132f819d663bca8fcedbda86",
+        "size": 5559
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/118.png.import",
+        "sha256": "6c0e65147711d14c3724d2d5d7b4e7a4b307763c6ef357e82e4c74bc1d7372e4",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/12.png",
+        "sha256": "86fe547fc5e2ba1a1cf37d5b67470c7f21d69fffe76970c8f45305a5023f142e",
+        "size": 4387
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/12.png.import",
+        "sha256": "9254d2685de0e05baa6832a6fc1265c093eedfaec2e24e69c4000423b58074ca",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/120.png",
+        "sha256": "63677767f3d92719814c2cfc17155eb4fc5dba365a2f21f75babcc67ddf78969",
+        "size": 4922
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/120.png.import",
+        "sha256": "3580796710030fb28b2a4144986ed3c57a531055da3418c8b0e11431e5b623a2",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/122.png",
+        "sha256": "8d856485c0d0b75b674d10b6604f1c20ab4c13184510ee8c8130ae6c8a81d5a9",
+        "size": 5463
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/122.png.import",
+        "sha256": "1ccef8bbb014e0ee427d3e6291593ff00f242746cf30d6fb31a8563b5924752b",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/124.png",
+        "sha256": "c5af5301e4f68531905e17eb6db6251d886c9d1c4bff5c1050f4b467d778c2b2",
+        "size": 4646
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/124.png.import",
+        "sha256": "17f19a3b9813db31200df55f5ce6a2d3bc276353637c3331df6d6c3b97c8e8b7",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/126.png",
+        "sha256": "6b9d7174e4d1759661e3a384ec8697f95582160f14db9b92f258529f3dee74c0",
+        "size": 4866
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/126.png.import",
+        "sha256": "4a9e438d157648997ad764dcfeccd7f53551e439bf254f3f2d4ccb49bbc126c1",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/128.png",
+        "sha256": "2c60aa56fb0a97555d4ae35a1bfe9952aec6e47c26ab273a758a1d1ffa7b346b",
+        "size": 5227
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/128.png.import",
+        "sha256": "bc364796c3cd7dfdf39fb9005a443ec53b32910fa3d690c5848d15aadcf3bbef",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/130.png",
+        "sha256": "b08eedbfeeebf7371c829e19961267020d99d0bce0acbef6c43b1f9ba6b75c07",
+        "size": 4954
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/130.png.import",
+        "sha256": "6c5f4b520e295084d88a2b5f0224ec8e4e9a028efc884af113530ac6ffef37a3",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/132.mp3",
+        "sha256": "7cd49bbe2033e5275544ef0d01353f5942b9e3fdfa16f06e06e35772cc57f21b",
+        "size": 1352
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/132.mp3.import",
+        "sha256": "a7eeba3bddd13094a3b5e1f5766fba963bd2911041227f177b58af5782218a6d",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/133.png",
+        "sha256": "bca045c5ef016e81e5ae1c810413131d82b96ccb34dd51ced0ec8b92523bd844",
+        "size": 7092
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/133.png.import",
+        "sha256": "27a50eb68931d0f7fc4576b89fd9b292e829e73ad76e61edcbb311d6def4625b",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/135.png",
+        "sha256": "c2ee7c030f52fe0421321a61815899725b18b7225ad586ad45fae0ba7f7a55e8",
+        "size": 4534
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/135.png.import",
+        "sha256": "c0c58280d4b96006d4d4ef0d8796d8c27d4b05c688d2c62853b4b11d253c190c",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/137.png",
+        "sha256": "4f49d40abf032f9c135f0dd836fe8944df1e2466f9fc9af2b986939b0ab50bc2",
+        "size": 3892
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/137.png.import",
+        "sha256": "48d99617b47e571b6de679bb95c384413f8055e1a109f0c52601cccc1bae28f4",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/139.png",
+        "sha256": "98c95ca92f2247d3a5fa779724685a6632a7465d7e0dfb1f21487cbae04cd558",
+        "size": 4090
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/139.png.import",
+        "sha256": "3a15e1a7f52fa12c06063b537761d2732aceb6ccd0be2afa9267092e9d7aa9cd",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/141.png",
+        "sha256": "e0967657bbe7aa0d50c5db74a922acf6aac539471495b07a3ec669ec86b902ec",
+        "size": 4927
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/141.png.import",
+        "sha256": "cce4e623bf23600d55a359cda24df01b9cf68e41d9916197a91c33d3c6e6f820",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/143.png",
+        "sha256": "3466f9be3d8f1f644141d7ce2ce446196b351531a62e5df85ded650d073c1283",
+        "size": 7069
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/143.png.import",
+        "sha256": "dd1d4350e5e652c8adc62facc61daae9837a2b8a052000df00563f3ecf5783c4",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/145.png",
+        "sha256": "fef9b6b5869603bf1d924388215ac1d75c9b2ed28cc1348616eebf1c3c8a5861",
+        "size": 6366
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/145.png.import",
+        "sha256": "03b9a839605d86b1da4e1db3128d4cdf02dce9d94afc47ea25d8c01354c82996",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/147.png",
+        "sha256": "adc70b59a0437b0500c97735e365f96c783bd094f67e393a117220afcf94e40e",
+        "size": 5408
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/147.png.import",
+        "sha256": "f9ce051771ee830e3ebd908d06531e16b19d420f8c00206297a03e0f9051c2b7",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/149.png",
+        "sha256": "c69a779a5c6b8cb91f99d01911361fcca9d0b3e0e75a5cc8ed600b7807c9950a",
+        "size": 5141
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/149.png.import",
+        "sha256": "c52391467f3ca172803c1e0417672e74c171a297481d78e879f116b395530847",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/151.png",
+        "sha256": "c5c76a51474787ab6e63b1d54cc206614a8d16b7d3ed778a59cb8a58caa2a547",
+        "size": 4999
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/151.png.import",
+        "sha256": "8997f5ccbfba3bb04dedce5f7d635c15ecca02e58437bfdf9a511ed36e382d9d",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/153.png",
+        "sha256": "f239e682f94504cbb485bb8091fe6347125b9f112b44ad3b01939b28d42f690e",
+        "size": 4293
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/153.png.import",
+        "sha256": "41226626a734b49fca9739475db9e244f98c65b1ecb5c93795554c70be6a2cde",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/155.mp3",
+        "sha256": "f17aa4d3a29036d44907765300e771c2f1780901ad72005319c23f1651ba4bd6",
+        "size": 1768
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/155.mp3.import",
+        "sha256": "739f2c2f6845368c5094d67792998e63a7cfc1e58421c00f704bb1befdcc0afd",
+        "size": 367
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/156.png",
+        "sha256": "95932233b8dc0346dfccf49a4576a3223191ea91288c933a684bc893aeba3486",
+        "size": 6453
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/156.png.import",
+        "sha256": "5825e753bf4ea989aa62aa97a673253f76cb773f5f8bbbd53f421e1662582366",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/158.png",
+        "sha256": "4f31109641ab9ec70ecb0a641752c1d3b10b47e7a3c88941aad57f6642a3b02e",
+        "size": 660
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/158.png.import",
+        "sha256": "1f37ae41349d067eb1582b37a2123a50d6bee44f10d7f6cf6701e818f0c0d587",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/160.png",
+        "sha256": "270f090fcd51947b18b49121947bcc138d571d51c717ebb91ad055070f201a22",
+        "size": 1213
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/160.png.import",
+        "sha256": "0e91ba1d692d6ac6897310e6d2458f3bfc0c0d68e8d7165e8ef83c26bcd1c882",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/162.png",
+        "sha256": "8d97bdf75247587bdc81b6f26ca9de575fca31e9d62da0b35973757dabac1478",
+        "size": 6953
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/162.png.import",
+        "sha256": "a755e6c52cc70e925af14b774d42ba044fe6e384596c9c717c4c289e048b9555",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/164.png",
+        "sha256": "87980d19440a7267876bb9a24da5fa6cbc8bf408fda8b9858744bfdc6fa84129",
+        "size": 1645
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/164.png.import",
+        "sha256": "43eacfd1300094d49b600e0407e865f50493a2ba0f463b9e3dd8d59f300d0811",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/166.png",
+        "sha256": "253740f9f5c9b1fc7844dad2a9694490dc32beb8f82b75f9f8cf6b3aec9eb3f3",
+        "size": 1397
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/166.png.import",
+        "sha256": "83347c588d786e3c716d8c66add6959b19fde8ec70ef381e3e47a0cf91ee0019",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/168.png",
+        "sha256": "668ebdbaa48b564e46595dba56d8eade6a8e16edd3c4fefac2ae1bf034950258",
+        "size": 6742
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/168.png.import",
+        "sha256": "e1232bd559a4ca9609a5f29fcffff53997ddbea718b741217b0fd49369cd4c09",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/17.png",
+        "sha256": "108ea5b48ecb0da3b174287f45e93443f67822096c0d994469978e092ebeb6e8",
+        "size": 4559
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/17.png.import",
+        "sha256": "9f2be0f4e666ea899682a40fc295441ae6cb036848e547e189c419765666e6c0",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/170.png",
+        "sha256": "f091ab3bdf1074318a3efed98f7dbaaa98a8847cd61603a2a964bd031c1d052a",
+        "size": 1106
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/170.png.import",
+        "sha256": "6da1cc8f7e183f6bdd8f7a5c14626521f2a48fc1399b50c42a329ff1050f44e6",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/172.png",
+        "sha256": "cb24a638a5a9b658249afd07c9a2824339cf8bd32b3b9ae569750118c65a2d98",
+        "size": 733
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/172.png.import",
+        "sha256": "f8b875ce30c6fd5765ae5de3a00816f373f1f5c4f39a440b341de080ff771e20",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/174.png",
+        "sha256": "a486e6f1e7cfc8195384a67fc53981948b379a55ae4b79039eb7175fe17fa756",
+        "size": 5264
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/174.png.import",
+        "sha256": "31b21b50d290b27e829313d24ed4a40369c2f9a2f486cf360e55e2ac2512c51a",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/176.png",
+        "sha256": "0600a4974091d46db096b5e1402e3ae9d6865dff98293506882abbd3621cc367",
+        "size": 667
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/176.png.import",
+        "sha256": "1aec7615932d8841423fd8a9af83f686006128cb132ad500271cd2004c99a5a7",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/178.png",
+        "sha256": "1abb07542253757e69bc22584cb20066f2540b451f5902e8abbaa663299bd942",
+        "size": 906
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/178.png.import",
+        "sha256": "e093ab705f4f3f13b0939779d743716579f8ffc22340458626a947828fa8ba61",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/180.png",
+        "sha256": "486311d9d50c93406e81d0cf8b85521ab2e904c92e52d4430b0477389f52ea07",
+        "size": 4257
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/180.png.import",
+        "sha256": "c33c0f35d3b125f66bffce318d7fb3a5f1c3307e28ce67cff666620aafe5e91f",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/182.png",
+        "sha256": "a0e2a65bfacfd90b5d109ade559744610f78502bc811af733d162061120f07a4",
+        "size": 1247
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/182.png.import",
+        "sha256": "435f6856351bb0ca1cd1965097475acf1220540c9bafa623f25c77eeec452299",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/184.png",
+        "sha256": "6d2a571c18353e5e278bdc2279313e4bf4bf76b2560c523d902b77aa45346eac",
+        "size": 1520
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/184.png.import",
+        "sha256": "2f166d4fe96dcbdc527ba04a37871e147b9aef2ce4b53fd5af6d50eaa678cebd",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/186.png",
+        "sha256": "fe4943d2a5300ebedf310c01e2e1cc240ea1ef4dbc3aad2f9fdd343e5fd825c5",
+        "size": 1118
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/186.png.import",
+        "sha256": "17b00bcdd42161c28bd0cb8d79fe57b112a529aa07333c536126fa61e27cb4f5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/188.png",
+        "sha256": "e9b34d8b90de049e7d25171f8a87f9150993b62f548041a581ca340daed35d85",
+        "size": 922
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/188.png.import",
+        "sha256": "a34bae60b6217cc1ace8636726d6498108e74d56bbc667b705948e49461cac2c",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/19.png",
+        "sha256": "2ba26c2a1831ec7c95272b288602f10c67ff00b19bc5a90c7820a2f9bf34efcc",
+        "size": 4617
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/19.png.import",
+        "sha256": "ed2bde99cc8c64b90a9d6bc11ff146e6bce175860616252d4fd95438f63e2bf5",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/190.png",
+        "sha256": "2d4c8a973a6678b2321bb5d827f2747ab36554165586b1affd48d2e121c66f4f",
+        "size": 564
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/190.png.import",
+        "sha256": "b794cf1b53d8cbcbcd4b95b567b92c80fea05dd7167faa66f62651a4c8e88416",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/192.png",
+        "sha256": "7fc895d307f73467e5063ef4f8acb8479b650fa49abaaca8463591790b47cb25",
+        "size": 5155
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/192.png.import",
+        "sha256": "27b6791acc718a605ab7204cff181fe55cf3f5d1e915640f2badf603770de3cb",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/194.png",
+        "sha256": "00801c43e23455983f87de067c7c689346d9ace2e3818bec5dd7d0243ed3e08b",
+        "size": 6041
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/194.png.import",
+        "sha256": "59534cad950ea3e1de0927e743f33c42cdb64379d6ef43036647ee33e7d75800",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/196.png",
+        "sha256": "a0c7d131ecf153abee2e44995b21e0b420dda8e00385c92551b33322dadd0960",
+        "size": 6266
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/196.png.import",
+        "sha256": "16f1a0b2952abef9d60764ff3b9e87295e5b3b66b6223408ab37f7db7aeac357",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/198.png",
+        "sha256": "00e477d5e9e91d2a7fae836707f27275c2418c62cb63e3331827349a186cec82",
+        "size": 7414
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/198.png.import",
+        "sha256": "dd41b96a0fecd884e8707ebf4927494b42234d08abd99a5023d4dfdd5c5b5558",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/200.png",
+        "sha256": "f0df563986c255a1cbb7060f3c84162b5dfffcf962cfe8b36f289b20d73aaffd",
+        "size": 7399
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/200.png.import",
+        "sha256": "ea2a69182f43a557273bf892c90c7e9aa87d7bdc65c4a949195c5bbbf974fe3e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/202.png",
+        "sha256": "c1969e8354b1555ea5b6d29201d8b22e2ac6bfe0fe5bb8676802a04cb92c934d",
+        "size": 5157
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/202.png.import",
+        "sha256": "4561e7048dc84438c79a1edb94982bf1949750aae8ae59c17427cfde1d2920db",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/204.png",
+        "sha256": "21b6aafab359b0dec311e48eac5880e1224f7685351ac7f8731d8df76597b969",
+        "size": 949
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/204.png.import",
+        "sha256": "71e856f3039eb5c6ad5dc6b2cf82444c03cce45a5b1f0910480a62ea9d7f7efc",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/206.png",
+        "sha256": "2a8227cdf3e40e35e78e6e88b0d39070a45e0402f206855c19a7956a07d7636d",
+        "size": 918
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/206.png.import",
+        "sha256": "0a25cbb759ae84746209dd065cb553abc255922b3c92649e1ba2b0d846e955f3",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/208.png",
+        "sha256": "188819981ed3651c53e55d7732e09de7273e8c7892380c863888c273406632dc",
+        "size": 899
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/208.png.import",
+        "sha256": "30f925893e3ea27772027d1d7e8ceef5a62d252050d8f586234370cbca7953ff",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/21.png",
+        "sha256": "b66a5e8ab980e795e0a5b7055b5bd31f4458544ddbcda611cc61ac96df7b25b6",
+        "size": 4226
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/21.png.import",
+        "sha256": "294b2fbb99e40c3112dd9e278c5cb031d252287fcd37f8bc2e8f9d8c365b8856",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/210.png",
+        "sha256": "20d6d87fc3c01c5b397ef56bedf26ce761ad62026e45364d10b33d5fcf4d6cf9",
+        "size": 958
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/210.png.import",
+        "sha256": "782e203a88ce94cbb2dc1cd2317b4e1f53a985e6832dba6ecacc7147521d5afa",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/212.png",
+        "sha256": "0f4e72024f24e4aefb3595205203b0653293e50a01c361fd22ecb091825bd651",
+        "size": 1007
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/212.png.import",
+        "sha256": "8ac36f78ecadd6390f291959fca7c2375e922a52cc944e9dba57bf0ee0a6fe21",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/214.png",
+        "sha256": "052edca2614eed87c557485ecb918cfa938ebb033e9294a906d3855c600a052f",
+        "size": 967
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/214.png.import",
+        "sha256": "b2a5e968561d37c56de76e7a15f032b01822da36905d8db30247c25bf7846b2e",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/217.png",
+        "sha256": "d19b634e0dcd7be0c0799bb41a6550b811bc29aad4fb8f7e70ce2696d5101d7e",
+        "size": 1154
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/217.png.import",
+        "sha256": "706123f046ddffdf57b6700137e12e8e3db45b7b2a92a99829454e3b3bf8b560",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/219.png",
+        "sha256": "f7a25b57c3c3065475a7a20ecad91ff9f1b30a4bba45142a745b379b534b3562",
+        "size": 4294
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/219.png.import",
+        "sha256": "50bad8c6db724a4d18fe7cfe3f6af9c435917f1c8c4674b214c0f017b632116b",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/221.mp3",
+        "sha256": "f2bc31bd32c07fb793681796b384d14ad354f383abcd930f6074030a03df8202",
+        "size": 3224
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/221.mp3.import",
+        "sha256": "c12e0f8399317ff12c52030a058d752375534dc56ef187536c585082d1bbc4f3",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/222.png",
+        "sha256": "f1ffabe8f795948e0d11f29bb817f9727ceba4513ca2c77b5e0d0bac683ca298",
+        "size": 4779
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/222.png.import",
+        "sha256": "e39aa354f0e307369832cfb887ade6a16168cfd81197a1e6e6aadfc40a770422",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/224.png",
+        "sha256": "f590662f9624ac47bd1ce762bb6ec76330a8ea67620c3d486d1b4caef4edc235",
+        "size": 5177
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/224.png.import",
+        "sha256": "ca50c0fe9e1f63fff98c45a50fce0accb4760bd8ab1fb1a612d184232ba6a818",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/226.png",
+        "sha256": "ff6a1877176a520b2ed834fb87ab315532da4775cafc4eb138ce6d1717255516",
+        "size": 3845
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/226.png.import",
+        "sha256": "f76f140ba877721721eac0aefbbdfe6df54031dcd51da1f7d44f14fce8d82b06",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/228.mp3",
+        "sha256": "107268610542bd2868a2d64a7de60c0aedb29d240503b725958a07b6ff20194d",
+        "size": 4888
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/228.mp3.import",
+        "sha256": "c6dda9b70f75a2e81bb33d9d52322d09ce39d3ce8d0005a67ab328248a3c4485",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/229.png",
+        "sha256": "bb21add15fa164137e36fc324284b4f46bba887382d4e3f71664ee76656583b1",
+        "size": 5429
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/229.png.import",
+        "sha256": "70693354ddb6e25e0447422bbacae6e38160f2c979a7f8cd882522c9725fa4e5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/23.png",
+        "sha256": "4fa7ba68c2313c5cace4e56015a8f6f1dfdc6027823e56afe905dd252ee95ed1",
+        "size": 4622
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/23.png.import",
+        "sha256": "9d85cfb8286111d1899316540188c5de3c8ca5ddef38dc72a8fd9b5f2c81d776",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/231.png",
+        "sha256": "6c52a56790077dbfe38d8ca1a8762fdbaff8256a79c10086862565d3334c6d55",
+        "size": 4748
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/231.png.import",
+        "sha256": "3806b95d8a77c04bf85f728d22b9c6c064c970735cab997b33917aaba5e33c9c",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/233.png",
+        "sha256": "3a79266408187b3cd23bf4542fe3d92e1b55c3a0f96672a0aa300588ab2a61fa",
+        "size": 5475
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/233.png.import",
+        "sha256": "ad35476871dbdfbb8b54eef00af9fcd87e78f0b481efbac60cbcf9222a2eb2cf",
+        "size": 941
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/235.png",
+        "sha256": "697ccae17f5c2585b7624d307cb6ac39c2df19c3982c9585e029f44b6c1595c5",
+        "size": 5467
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/235.png.import",
+        "sha256": "83c42f470297b439547da64940aa7a50ce9735545b2f01820a79a0a3bbf6d814",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/237.png",
+        "sha256": "74a98c6ee81926228d51ef6ed1b8d8d00088b644c05127140a98fd783939637f",
+        "size": 5409
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/237.png.import",
+        "sha256": "bacf718769778bc81e39fd25338cea914cd508682443f31038329227a9c2dcff",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/239.png",
+        "sha256": "b9e0bc34f1d45514d8570cd500ed5eb89a079f6b94658db6f9444e37b87201a5",
+        "size": 5687
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/239.png.import",
+        "sha256": "427978bd17676eb6e4fb800f6e6b8d668e11e1056f0226913339314160abcf1d",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/241.png",
+        "sha256": "3a79266408187b3cd23bf4542fe3d92e1b55c3a0f96672a0aa300588ab2a61fa",
+        "size": 5475
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/241.png.import",
+        "sha256": "1b9a22195bd390f56abe65bbfca61476a2558599b09ebf02ed6e8b48f9f60030",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/243.png",
+        "sha256": "cfd1c6a71270d4e0e74e90710a097a3324365eaac5e40b394a3f88fe2007571a",
+        "size": 5080
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/243.png.import",
+        "sha256": "8dddd6cafcc88c5a7258123b4f27a0fea20ae51aca78b2106c7ed1ea17546f56",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/245.png",
+        "sha256": "2a1dfd6fc6ba3cddd64f6302a82891495a29a352301a823293efbc4646b4666d",
+        "size": 4516
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/245.png.import",
+        "sha256": "c0e425262589e489492e6ef63d13b3452a66e9675e5930795141c0929f19c2ef",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/247.png",
+        "sha256": "28a6bf06aa9bb73c017efffd53d309c066001219191f68574bb91e56d43ce327",
+        "size": 3884
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/247.png.import",
+        "sha256": "11752fb40aa72e3255665586dd14bdc36133092c3fb85e6a6cd934b44a5f617c",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/249.png",
+        "sha256": "c8bdcc2d9f4728619439fda36b7636fbbfa0e41727412eb9fda6b3cc43ba78f8",
+        "size": 1754
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/249.png.import",
+        "sha256": "506f6ca3514fa545ce4f88ef5dc959fc92ca5598316b4e6b39e7339509e96b6a",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/25.png",
+        "sha256": "6f69a06f49ab20a62ff2594680571501f4302d0a1bd3184875a30c6e9ca07271",
+        "size": 4218
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/25.png.import",
+        "sha256": "741911159af2b1f0ba09b6bd4c18a8a40c1592ad5c401a9062ee1bcd7211e7a5",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/251.png",
+        "sha256": "e1b4a2b379e3ab8db62ee01ddd7302c172847f809640ce4daecb2657f5ace77c",
+        "size": 4713
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/251.png.import",
+        "sha256": "2e4225d4a01d8ea84418e05b7944b11fc1a98f6884b0e18630f5a0fe5fabc494",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/253.mp3",
+        "sha256": "f4e42e5ea1d911c24a91d1d63b697d2c5a56de1f63c52cba52fd7e17b79e1fd6",
+        "size": 3120
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/253.mp3.import",
+        "sha256": "294d21d740bebb861e9d0cf04659872847d3ed79a334c600718c3bc9ea06f18c",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/254.png",
+        "sha256": "c5658ce6e50c16889ee806a0433a6030f8e13e65efcd2da658fef3597246cde5",
+        "size": 4934
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/254.png.import",
+        "sha256": "d5f0e7390e549f8ff2ac3a483a35c91535ef8a45c607c10772bf0ceeaebd9817",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/256.png",
+        "sha256": "1265e663e4101051a1f755253ba39ed6b3604aa66ec866f55cc0c846bb2fe2f1",
+        "size": 4699
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/256.png.import",
+        "sha256": "70465bcf827349d8d1ae314b901952b3ca5588b1b063b6b3d060bd3748bea436",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/258.png",
+        "sha256": "21b943195e06cbe2eb57b8d0bb6f8356cc02f5aecb125a73011d7363ff441c5e",
+        "size": 66292
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/258.png.import",
+        "sha256": "ddbe0f2bcf88380774747302e797edb3cadae622bf19f690570a63cbac3d3d1f",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/266.mp3",
+        "sha256": "f06b8d112d96c544b09bf2bbf898832592630e6529b800a33a2efa87a24b38a7",
+        "size": 1775
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/266.mp3.import",
+        "sha256": "963dd859dee3f3b6c10084a3bc77dffefa8fae7f2088fd9f12476f84a5ff6d4d",
+        "size": 367
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/268.png",
+        "sha256": "8fdbc242c78c54491c1cbfb63aee326807b53336f804955a042f9b23dbd2f3e1",
+        "size": 4560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/268.png.import",
+        "sha256": "5680df44f4915e9b5f170732cb1e9c04df198fa7e4380ee2932390801950a1ce",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/27.png",
+        "sha256": "776bce0ff5745c186082b92f11639ce3677f90e698e586c2da8f621ef20e2570",
+        "size": 4377
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/27.png.import",
+        "sha256": "7b0fea9fa3f778f1c6698a32a47cda02cc2974882aa74d19a647b0738a71b032",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/270.png",
+        "sha256": "0eb020a31bfd3e3a4f08d2f8ba88e674599ce7e738032f666de4b05482795437",
+        "size": 4572
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/270.png.import",
+        "sha256": "58506edb61133f0e0c6d6ef9c0c80964e321e3a5bacf5de1a742e85885d82dee",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/272.mp3",
+        "sha256": "66ae08ce6fcd1ff165722299ca371177f9760f9c625966a2f241a5bc7f664666",
+        "size": 3328
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/272.mp3.import",
+        "sha256": "bcda0c7866c8220ec9cbf16d54d6ab1a502fbc0500170203151d80a73732ca73",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/273.png",
+        "sha256": "01d2ba0f127f746f809eb0c89c1e1935cfeddaf22bab176afbb5e8da4221dc6f",
+        "size": 4598
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/273.png.import",
+        "sha256": "e822c696151804723e315b63a1ac6152f89e834fbaed781013733c7724efbb68",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/275.png",
+        "sha256": "dee8743b4f8a5fc2d43378b6b24e45d56d1f600da5bfb17a970e6d7ce3b514f2",
+        "size": 4593
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/275.png.import",
+        "sha256": "af629ae2de624fd29c76cfeec564a6845fe1bbf7060498efb8ac6097155c7898",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/277.png",
+        "sha256": "87b2f74338c7c573f823f2fd937ba1fd9d364175fc7db2153bc88af0aabf8192",
+        "size": 4440
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/277.png.import",
+        "sha256": "b6a3d27f4fb8d6a207b4b187da35e6f0262b7f3f1526abeedfc99b524dca037a",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/279.png",
+        "sha256": "13d8293b49288cd903f9c1a7e8d6d556be79d24128b2161201ad825befc72a20",
+        "size": 4666
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/279.png.import",
+        "sha256": "02df50c76f8c0802b0c034ec48d20b65f751015c24149cdd77c6d6431bfba694",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/282.png",
+        "sha256": "44ddd2a76b63365a1c9b51d951bbe1f9ea3c3d55385f737a6d60c15edad1949f",
+        "size": 27308
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/282.png.import",
+        "sha256": "d43b9ca7c3203424b72ab09853358892ee909158f2ecd5d6b067b756f7c00d50",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/284.png",
+        "sha256": "b0d60162846a8cc3d14df3365f96cb55dcb05954693366625e8ac91c8ec43257",
+        "size": 5833
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/284.png.import",
+        "sha256": "2d45f1574252aace44aee1db7aa07a95467de9bd89f1332d2c64ae240dadc08b",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/286.png",
+        "sha256": "1e03d25a7a733fa0df32498acd2c56667cce8354514d3ef9f1f4335ce3706d8d",
+        "size": 1301
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/286.png.import",
+        "sha256": "c0c050d0367c0a4157302477a015f454685e35cb61526e263eaf4fb2bf879275",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/288.png",
+        "sha256": "96a2913fa2f38b3b13a9a49ec0192ce44fdb1a16ce25bf0f5b49983145b16dda",
+        "size": 4595
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/288.png.import",
+        "sha256": "4dffc8a9c38a043cb4dee951db475c0b617a386017487816281fb815cf77e4f7",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/290.png",
+        "sha256": "22aff4c7305b2ca8ca5c4640060c4b137c8f280df8d9bbbc82599f7626fbb545",
+        "size": 2197
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/290.png.import",
+        "sha256": "843499685730ac88149a03cee67e771f7146440261789f3c0e2e44eb5ac71ede",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/292.mp3",
+        "sha256": "796c095379dd2ae4f538ee123423e7cac15056b5977bf65b41ae43bd8747e5f4",
+        "size": 3900
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/292.mp3.import",
+        "sha256": "f7321249eda518a11ebb0fa12c6338c3035eb9e68ae0dc66877d4975e8acf7e0",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/293.png",
+        "sha256": "09c5a38055bb9502a66e45e03c379e08a5ab31dd197ec2c77c15e0e1bb20f67f",
+        "size": 2359
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/293.png.import",
+        "sha256": "f99f242632cceb704ffa2d2ee0d0442062d25c3b90f55e0c09f7de4f86cb50c2",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/295.png",
+        "sha256": "a84482ef4ce6dd54359974d4115a7c3aa190a156d387ce92a643d5d6d0de9ade",
+        "size": 2845
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/295.png.import",
+        "sha256": "d9fd981e4bcd345d47844c7f067dc2b4df5b12adb1c3e241d4723049839fc65b",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/297.png",
+        "sha256": "4dc9d681b495ac1c7c48527b0a8f0f01946afc5ec4222070bb4e318213efbf5f",
+        "size": 3466
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/297.png.import",
+        "sha256": "a9a01604f97b0bdf005ad7b36fcef397023fa56aa7d7fdd470811c0cf1213973",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/299.png",
+        "sha256": "7f78240cd8764bd718bef9ab870cea25fdd9be1cf868a91e180e8444b527516a",
+        "size": 4168
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/299.png.import",
+        "sha256": "84c66b27409277b633bf8e09d1a47827d914c74b09ef06a128e5334ab4fa7d76",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/30.png",
+        "sha256": "3a176607978ea94cc93e33583cfce7c226ebb0c89f55dca21f46824a128a2725",
+        "size": 4072
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/30.png.import",
+        "sha256": "b8b70aa04db83e5e9b19db11e0d50f34b5660e7cc8194661227ba8ee4707bc06",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/301.png",
+        "sha256": "3eed97a79f6f423ded92a36696151394f903174b5d76d463f03f9fafc48a32d0",
+        "size": 4182
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/301.png.import",
+        "sha256": "4ba645de62360feb99672689ff5ad0fae8572c9eb0d46bb9d7e377aee86ad4a3",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/303.png",
+        "sha256": "368262e322080adf74de0ed8e69d97731b47c630ffe8b00f420f47bc3004ffe9",
+        "size": 3214
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/303.png.import",
+        "sha256": "244ce0b931a79ed515807f6c6a46f3d8e5bc985b02161fc18eed03d567706387",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/305.png",
+        "sha256": "333b747615a526e8aa958af2c91466ec8ac0e67136ca5b46bfd3e8fd57859bfd",
+        "size": 4570
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/305.png.import",
+        "sha256": "31823cf98372387996320507d4aa405ed7489f4ee5127adf79b377ab109a8466",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/307.png",
+        "sha256": "a2fcf89cbc5e9025aae27fdec6aba1bd8a8ffa61cd8307dee4cf7c42df190412",
+        "size": 2488
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/307.png.import",
+        "sha256": "312a4fd00dd57ccea0e5969f0a8d4a0c8a24eba7ef95dd18fa8f2523abebeecd",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/309.png",
+        "sha256": "4c5c0ea5598b1a52eb7074a32d90b424e2768c285ad916814da5dbd1a5c8f829",
+        "size": 4565
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/309.png.import",
+        "sha256": "06bd91139e2d8ea4160165a69e857f87adda93f9d270ab31017e2be932f9c127",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/311.png",
+        "sha256": "32a6362ac81f956a9032fda5536824751817cf44997d30408332965b5034ceaa",
+        "size": 2754
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/311.png.import",
+        "sha256": "d34555f4480f0fe8d728e895f9881c2534d75045784c9aa671b6288d06d693a2",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/313.png",
+        "sha256": "2474ccbe0caa29cb0728f6a348f40e680b4c35defdc42352dcca9004665a47f0",
+        "size": 4316
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/313.png.import",
+        "sha256": "f9873ed74a1be0310d76ca02f0c9de87d7e6250a47144eab1421f399ca7ccb5e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/315.png",
+        "sha256": "dc8f19b54744f8975bfc6d6d3693e5cab623042d6cdf38291d297e1bdae2f5ec",
+        "size": 32123
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/315.png.import",
+        "sha256": "fd28b4fe1407a82ea48cb7d7437627668838b5c9a7737beb39641f006cb9f8b3",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/317.mp3",
+        "sha256": "bdcdc40f9a4a667ef4985c65a4e4cbf4a4ca862f7b79c5761888d771fdc0c20b",
+        "size": 4992
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/317.mp3.import",
+        "sha256": "3d84c405d1bfedfe8777d126a03e2b99e0c6513ca9a5fdba0472efab80050a24",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/318.png",
+        "sha256": "1c25226d0341a42a00716c8b100d498c0ec14114988695ed8d229cb2fd97ff92",
+        "size": 29909
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/318.png.import",
+        "sha256": "4dfd925fe27c51eaaa87c65eafd511e4262e5578db508cee390ccc1e7be7f037",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/32.png",
+        "sha256": "e4fddd9b576b1e08800fe466c535429bc642f6e25f1f1772cf65e875de514558",
+        "size": 4735
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/32.png.import",
+        "sha256": "830cca6d978dfe2f965bc7f22410cd71add372072e8a714c1501ecb93b2f52f6",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/320.png",
+        "sha256": "6bb6a487659630c3bacf738f0ca4401a91673b5a2405cd96799d8a44a9e6b941",
+        "size": 618
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/320.png.import",
+        "sha256": "2531dde7cf5ba24ee92ac02a4201b22708192115c3348421d37857db397496ce",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/322.mp3",
+        "sha256": "277ef6d164ee3315c53180b4e90201b710dcb505173d4413cb6aeea06590458c",
+        "size": 4472
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/322.mp3.import",
+        "sha256": "b34693251c667919b9feb677b7b28750dfd36b291bb53cc7592af28681f13179",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/323.png",
+        "sha256": "3b01f4cd2c38fdb9add1f5a466f453582040ff4e7852846b9c4845a2ab077a59",
+        "size": 1274
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/323.png.import",
+        "sha256": "333d798b3ef45bf2d1bee2e7989c333a713d666916b3ae1213b092568022913d",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/325.png",
+        "sha256": "b173331b7b73cf2706153c56b421106573097c7853a160508dfc3f5518166fcf",
+        "size": 2014
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/325.png.import",
+        "sha256": "0ed72d395fc41c38985bfa613ad38437efb7fa049db39392cd3308608f2af37f",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/327.png",
+        "sha256": "939e999a63980b64c9be026d27817ceb85c9e7a6ca9d1e001225adbcb0470b43",
+        "size": 2157
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/327.png.import",
+        "sha256": "41df7a3051d2533969270b19ad8d60cc7781f0b1fc0144300344cb4884b1ff64",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/329.png",
+        "sha256": "f2574963bee4bdd4adcad29ec3f33e5555ffd0d335d8b01d79ea3cd0c45817c2",
+        "size": 2607
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/329.png.import",
+        "sha256": "bf29b86e68ed35d7ca0f064d505c4e472f606defc4bf7c81f0d75a51300c9707",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/331.png",
+        "sha256": "cc73a54b17645697d27ac0d3cde8a8d943f5f27a7a34d8817f7383f53e0f716d",
+        "size": 2462
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/331.png.import",
+        "sha256": "0257d649abdb848a63b62fd35da6fd1c4be1343d6be85d3895e209b6bdb8e0d0",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/333.png",
+        "sha256": "7a9b0f9098ab413c5911195b4184fdd2d312828f283c2a34347e09972a411ede",
+        "size": 1807
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/333.png.import",
+        "sha256": "600e12e3793dfb1ec05a59a745c9f12d3b3b3ed9fe46baa25cdb809363cf1ef2",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/335.png",
+        "sha256": "f3eb51f822743c1bb17483aea65be5960f59700caba209ad3d1734f92702eef7",
+        "size": 1063
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/335.png.import",
+        "sha256": "01154807e79201938ed549e98fdbb450cd65787bb3eab95bb600c8085470ed11",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/337.png",
+        "sha256": "a6809ebcd7293bf6471527fd8ea3e1bd4baea26098b744f016f99438abdfb4e9",
+        "size": 521
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/337.png.import",
+        "sha256": "97f58b1e1145800b0bfde54811b35a066e0b1b18995573a584b1b3e9c5920512",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/339.mp3",
+        "sha256": "1444ec857e87964b2ec744f55c85a301d56f57bcecdc13e8b2f1fd229d4d5e33",
+        "size": 4680
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/339.mp3.import",
+        "sha256": "662daaa4e42fa434d62cf00403cb1c4958982f07ddfcc0055b05fc853033d768",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/34.mp3",
+        "sha256": "55a1a086b0289c2dae66749411e14c1e44fe39d1ac577bbf963aa9660db5e00d",
+        "size": 1463
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/34.mp3.import",
+        "sha256": "707f97dcf3a1537f11edfd2f9098007bbdf2eef462df8e5722007aae2f2ed2de",
+        "size": 365
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/340.png",
+        "sha256": "e161df6757492685eb4538d9d23b5fb330be486f523c504098466f12a3ab931e",
+        "size": 76885
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/340.png.import",
+        "sha256": "0b2decbc7b2d7f459f860ce293cd0d8d050d7564d0c4ea389fd7d8f673d08ffb",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/343.png",
+        "sha256": "a68671fbbb92fdaa7a3e458b28e687e5a0873dc7c7630728e33d9c7e3f0ef486",
+        "size": 773
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/343.png.import",
+        "sha256": "f412b200aeea08e444652b92011380a295e43a3e44b99c0b69f1395659636090",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/345.png",
+        "sha256": "a3c48348dffab40f8153807e81e960b87a89ec51c83b5736671d879593370a94",
+        "size": 2386
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/345.png.import",
+        "sha256": "265b0a307faf45addbed8e1241f7eadab140d9a2c178cef6def63a6206ae8fce",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/347.png",
+        "sha256": "7d3809fda3c8a0d01395070741942573e80804f30ac3c7cd40a960a6c38b0cc8",
+        "size": 4254
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/347.png.import",
+        "sha256": "a8bbb835a2aa64647d202488d2a06bf2fafdb589f5301cf13f6942345f47f94c",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/349.png",
+        "sha256": "d31d5479e50b007927ec9ba63aa8bea95dcba9bd11fdd6eaea0ab01a5702fe3a",
+        "size": 6054
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/349.png.import",
+        "sha256": "d6a5e6c53a98e4e7cfba06dc66548c7a4b5c772325a82febff23b00f4b0ce1a0",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/35.png",
+        "sha256": "def0f9214a5faeab811ec4137291dc54d02b95097778b8bdb09dc56f12688033",
+        "size": 4560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/35.png.import",
+        "sha256": "4620f8ec05ec3b4436003e52a0d8018d91b53b315216f6f9ed4e986186c6c4dc",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/351.png",
+        "sha256": "13e68ef84f9f60bf6c2c5133141900e6d22c97dc39f503660c607c01c04e1f75",
+        "size": 4122
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/351.png.import",
+        "sha256": "8dba4e3eac4409de666b97abde4b2971e24fd1dc0d603d20db44cbf492f8972b",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/353.png",
+        "sha256": "f5c13d12e9de3e33508f46c8cb9f264e509d70f87d2bfc0260861df179184520",
+        "size": 4607
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/353.png.import",
+        "sha256": "c55a8d05decdcc48c32d0b97170a4cabd5bc8e60e9c32467fab5f610b823b008",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/359.png",
+        "sha256": "663b29bf1609e35648c2abd49587ba8f469636b28584209526e6e86c8db8f079",
+        "size": 4366
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/359.png.import",
+        "sha256": "4dadd85069a7bbf7bfc758f5fb5bf3453fcf755edd263f0094b912dd7c61d8ae",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/361.png",
+        "sha256": "7921d3480c21a8aa9a05e62ceb09963db576b8b67d11b4a0e749a1574924073e",
+        "size": 4363
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/361.png.import",
+        "sha256": "3f762e06aac1ca7d4b08b55c10ab12d74537e70d343f6d8f33cf5d0e25f4ac25",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/363.png",
+        "sha256": "14e58bd67214b6d9838ca3b004128366530a720b2b390c1095d8ee86d46cfc8a",
+        "size": 4458
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/363.png.import",
+        "sha256": "1933b654dd16e66d3087df4bb35b03c32076f4402506314c8504a0d08136ac7d",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/365.png",
+        "sha256": "9ca6b46f789fd9ce5e89f9af0ecaccee1fceea43e09d171cbe21aad56c87e54b",
+        "size": 4782
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/365.png.import",
+        "sha256": "7d73c0a6f37e1a2a45fd1805064a4bb16f4e7f6851bf67e47b1b1d61b8d88df9",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/367.png",
+        "sha256": "38f81dc8f11fc9b537c0e36aefea0d72516b6ee911e49a2e28b6b93a5c1b0c1a",
+        "size": 4868
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/367.png.import",
+        "sha256": "2d8cb32692353a4ddb113c6156ff59b4441b230a3ec868b97f3653a6f1531c48",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/369.png",
+        "sha256": "5d0d4bdc9493a1893b59b964e11095aed15bbc8e2e435641a6598e07789728b6",
+        "size": 746
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/369.png.import",
+        "sha256": "4c0209644ae568c324a5f441a422498c64c9f6b551f300e17b160d31d88d026c",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/37.png",
+        "sha256": "b35a9ad65dbf7bda1481b24b0f905129a5ebf2c6ece4131a16104dedbb2981da",
+        "size": 4645
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/37.png.import",
+        "sha256": "c36092dec9fb84d82d6423c7b6f8c911df2d4899506b8a31f719dd7d0392ef73",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/371.png",
+        "sha256": "dedfce587970752348a52b699ee66c0226e197adb9c6a6d3ceacd5871d50b03a",
+        "size": 4926
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/371.png.import",
+        "sha256": "0174fe5cf35a07486330b0e1865585df273d408a9427846a632dc82ecf363b90",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/373.png",
+        "sha256": "b82a5d663c5fdaaaeb132f8d705c35e9b0b402beb50435c9273292608c5ae731",
+        "size": 4826
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/373.png.import",
+        "sha256": "342342851d3248f090512ead7eaeb3cc823653ab0fc1c237dd5df1f0a8fe8ae3",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/375.png",
+        "sha256": "ed29cfb6a24c3659d3018ad99f368ae5c2726458ba745f41c51b83903e879ff8",
+        "size": 4812
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/375.png.import",
+        "sha256": "135d1144826652b16ddb3bfd429d3a8e96e04f3da329b1c19f00a4fb56af2c2c",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/377.png",
+        "sha256": "38f81dc8f11fc9b537c0e36aefea0d72516b6ee911e49a2e28b6b93a5c1b0c1a",
+        "size": 4868
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/377.png.import",
+        "sha256": "b93033ac4e99f25d4305ea797747614a1c8012ec6a29cf0fd79209df2b255480",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/379.png",
+        "sha256": "9ca6b46f789fd9ce5e89f9af0ecaccee1fceea43e09d171cbe21aad56c87e54b",
+        "size": 4782
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/379.png.import",
+        "sha256": "7efc262ec0a6a6627e01ace5f03f9cfd901019dadd5b653f49d48e3ca8adc11b",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/381.png",
+        "sha256": "14e58bd67214b6d9838ca3b004128366530a720b2b390c1095d8ee86d46cfc8a",
+        "size": 4458
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/381.png.import",
+        "sha256": "879683917ed176cecd3aa52ccd937727dcbdb0725b6971227a48b0cd6c8e96e2",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/383.png",
+        "sha256": "7921d3480c21a8aa9a05e62ceb09963db576b8b67d11b4a0e749a1574924073e",
+        "size": 4363
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/383.png.import",
+        "sha256": "a9ec9aff2a22bccb827d816d28931fef8d5cb98042fceb2feab1308398137368",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/385.png",
+        "sha256": "bea7fdd9b2f9ce710535f6ac0ce3ddc86a1ca1d68be9d0a0bc8022fcc6db46e3",
+        "size": 4127
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/385.png.import",
+        "sha256": "a98c4959af3ef60c01e812e9691f8f6be83ce8ba269d8842d0708e095ef63b97",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/387.mp3",
+        "sha256": "7e27cd2b43d821d9294a8f5eefb911b04ca3bc2d14ed97f29ac8700c170acc7e",
+        "size": 6032
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/387.mp3.import",
+        "sha256": "bdb2108652432cfdc4448de4d1844efe09a171e243dc583e191cadf50f75cec3",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/388.png",
+        "sha256": "13cb011553a57edb2484891bd4b26b5b48bced066539102aad12e2ca3770c66d",
+        "size": 4237
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/388.png.import",
+        "sha256": "126e88d20eb3c1b249955df036e564957d9ea278384a49916c1ed5e0e3530ef6",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/39.png",
+        "sha256": "550b52ceed7c117ce73159e2668bb2969692168ec4acf6504180ecdfc56cc25a",
+        "size": 4636
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/39.png.import",
+        "sha256": "3f4ceaf9129128fd70b4654bb61c1b5a64b7fb49a46c5c383fb5bd2d23027788",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/390.png",
+        "sha256": "b4ff6352c9559821b40bc40860b210eb58a754951b60dd698da230186ad5a04c",
+        "size": 885
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/390.png.import",
+        "sha256": "ae8a99693e351c4005dfba3c11d86ad0dea2ea2e4442c5c25ac6060edc6a9cd5",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/392.png",
+        "sha256": "2eb6c22070a221bcd14ccc741376737861276d27ab00c709b835a4e7900f2935",
+        "size": 971
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/392.png.import",
+        "sha256": "cc5b5c1c7a2f1da3cf91e12c2e70e915830cb85fd01b962828dcfe111604c90c",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/396.png",
+        "sha256": "6d548dfedb74190c9d9d54d2b1ffcfbc8860d50ecf34a3acc4bfaa4bc8642bc7",
+        "size": 1967
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/396.png.import",
+        "sha256": "0754530b276e1f1979a4e1a3b259b5a8e430b3411523c31a9387334466d84248",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/398.png",
+        "sha256": "ae9f97810925a18f4f4ff74bd1c725942c9f8b5c259a232529e7ebcb8438292e",
+        "size": 4753
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/398.png.import",
+        "sha256": "e02be6a68124e858cd14d30ed18adbe0ea882a33ad8f12080a9ced88678411a8",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/400.png",
+        "sha256": "6868bbd54481cc71f2271dacaec643acbeb00c375e79d239f0c312b1a2d0fb1d",
+        "size": 1161
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/400.png.import",
+        "sha256": "40e02ab6b1eac80753a0abc1e66b8195af645ebc50f5e4a9d417348810639b68",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/402.png",
+        "sha256": "5be6432d2bc3a9e15d06143f60a50c3e124697a9e6f95508bb4e523c86c2cc08",
+        "size": 1910
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/402.png.import",
+        "sha256": "7886e4713bec17f1efa4eabc122279b2506149f558291099bccdc16fa4040147",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/404.png",
+        "sha256": "da08479a3c9e01db222bbfdb10743efa2344a635420703043cb7d58e63206678",
+        "size": 2773
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/404.png.import",
+        "sha256": "c4ff249311d1b0f09e80ed3d78566f425f8ce84ce650f86c68f316cb060b8eeb",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/406.png",
+        "sha256": "31021b41e366c5eb4d38243443c6fddc8218d032adcc2c9f5bbf70b5e138445f",
+        "size": 4510
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/406.png.import",
+        "sha256": "3e427e3882b4f40cad47dd6b789f6d40ebd5ff1da7ff4e7384a8c8ca8fdcc3e7",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/408.png",
+        "sha256": "73059f10659aa000dc15a48bdfbfefcdaec005e3e573bc04ca13dc963f310f21",
+        "size": 2002
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/408.png.import",
+        "sha256": "4d049135b2b903966cb5b193553f3e35b6e115e05d7befd085c4c74b85f23162",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/41.mp3",
+        "sha256": "d585e51aa1f54eea0a0f57414835697e29fc83d5a3c3bb2d15f404cf03f0a4fb",
+        "size": 1437
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/41.mp3.import",
+        "sha256": "8bcf0d6e6a37bab09ae36f385216609b16f2b0d9ddbedb64565d3ca78531f0e7",
+        "size": 365
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/410.png",
+        "sha256": "d212cf9bcb67de3caace619a7a09836c469c5d281ec4daec67c974f3f20f8ad1",
+        "size": 1518
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/410.png.import",
+        "sha256": "0466e997a214a89baee60cc7f22204a0e639ff04d8bd4d889d52a8ad6c502f8e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/412.png",
+        "sha256": "40affd334d7fff9d45a0dfb0615486369aaddb1784c57b539821916aab455001",
+        "size": 2480
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/412.png.import",
+        "sha256": "c3e5d815e0bb383dec94255d2e602651c29a0f2ba79d9f892320b757544e031f",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/414.png",
+        "sha256": "271247bd68d321b013420390f8916e5fe0f08bd865fbc3566b494ccb91fa9c91",
+        "size": 1162
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/414.png.import",
+        "sha256": "cebedf3ded9086a696e3797382215939401a199ffdd4bfa218fa3935baadc8a5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/416.png",
+        "sha256": "655fcef629c7211fc85f0b67557c7c29aff8c439954ddc2eb2e79559658e7417",
+        "size": 1080
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/416.png.import",
+        "sha256": "eb7fad1b044770139db0864648ad70d899820ec7739ca7e4e98bfbcbafc5f2ba",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/418.png",
+        "sha256": "39a1e72826631eeae03daaee7548b0bf94d2dbd8bac9d50c083cbb9d490e4eac",
+        "size": 860
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/418.png.import",
+        "sha256": "8e8c6731d183293d399afff816cb08ddefc39518284f2df53f25f1baad47c37e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/42.png",
+        "sha256": "066cb1f8ec7685da209d657e6eed6c90662872e60ac488916bbdd7f9120427b4",
+        "size": 3333
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/42.png.import",
+        "sha256": "93ea66a60d01f616677de82b1cfcd105052b0f65b06e274fdbadab0b5de597ed",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/420.png",
+        "sha256": "3d4d53fe15b9bbaa2379dc35d46d4444fe30002e0884c4f03ef3a448e313b25a",
+        "size": 691
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/420.png.import",
+        "sha256": "f04e8220dd009ca6c7c7adc4c2c2f57e46a2bf2a513555c4c8979047a3c8316e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/422.png",
+        "sha256": "e36a8a3aa65f917c142f35d29c47bc1e38cd83360d34b69f39c6c5f2f336ec59",
+        "size": 607
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/422.png.import",
+        "sha256": "17a00ec8457c4615a9e11e63ddf9c297d14794e89caf0aa6b062f686c7580a90",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/424.png",
+        "sha256": "02b46527911c86cd4ed151bfb4870209fe53f36e2c41dcec5e804d791b35e747",
+        "size": 503
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/424.png.import",
+        "sha256": "46cbe60d8e4c6fd67fff5597cbd493be03e0618ef09199bb027b1c5e5e294cfa",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/426.png",
+        "sha256": "d7cd30c76d1a74fb41b87b24e0b241dc10fe30bcb358426a126bbe07644a76ae",
+        "size": 430
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/426.png.import",
+        "sha256": "b5a69ac9341354846ed39dd206a8ed294fabaa6d9324197fb561f3af5aa991b6",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/428.png",
+        "sha256": "53613dbf575cb4f9691b00ba298ccfc0d8402f407c5cfba4297238da4e48ad1b",
+        "size": 385
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/428.png.import",
+        "sha256": "4e6e8578ebff7d9094ba1f7b866d1669c90dc4a66f105a078d42a04c9ee4114e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/430.png",
+        "sha256": "7c2a265d43118aeb1dacfe48b293478e7b6fcfe5fcaa8b6affe068336540cba2",
+        "size": 4510
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/430.png.import",
+        "sha256": "34e0f219805c4cf03152cfcdf86dc39696de34047de87c9894e2e531c77a4e15",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/432.png",
+        "sha256": "f1f138900e2a38f098895a018e6a00063762e4d473cdffa223a0507ce466365d",
+        "size": 4823
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/432.png.import",
+        "sha256": "9f01c11d783c78e8df733112729ead28f476aa5f20241dc103511cf89c130323",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/434.png",
+        "sha256": "0ea111625ee70d8957b4aaf7450b8929e49beee5a65b73b0e7b646ddf8d0c48e",
+        "size": 3249
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/434.png.import",
+        "sha256": "953169537987b3ad3330f802a274c68a3c87aad697bf814e4fcff3d61818762e",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/436.png",
+        "sha256": "35cf870cdd31227a071bb67ff689ea6bbde00219e10607806f73f93b5bd3f4ed",
+        "size": 4349
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/436.png.import",
+        "sha256": "23660091c25dd723a0ca5915160220067f3c093d3c3174392afd9d8c73667b6c",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/439.png",
+        "sha256": "c2666c4091292d4b247e9dddae595c550b9f96b04c7ed8b033bcc50de0820ab6",
+        "size": 4064
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/439.png.import",
+        "sha256": "0049bd2fe3a06f1e7e3fdfa76cff28520ed239ded72c5a4f5755382bf3e43eb5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/44.png",
+        "sha256": "0d2b3ae40bd616f8a30ed2e9242cad6e0364b4fcf5b52c48b37e9555f845c3d8",
+        "size": 4563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/44.png.import",
+        "sha256": "e7473180b0469cb940b95cb71624d53bc204fb7a741565e9e8b30e52a31559cd",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/441.png",
+        "sha256": "45681c309fc1576807c95f219c13df7e833cf1b2e045d161090c21e03f2cadb0",
+        "size": 4662
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/441.png.import",
+        "sha256": "79ccf10b1012692bd6bf92c7e65746c69ac0f9dddbc0081f7335b6c9cc184374",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/443.png",
+        "sha256": "456d7122fdad270e63be82ccb45cd7f3eb5d1052ef5a92bcd5ea3117738fcbbc",
+        "size": 5903
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/443.png.import",
+        "sha256": "5cf665ef57da0da60651b05727f8b2083077fa3f1b64fc368ad636a50d1f17a5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/445.png",
+        "sha256": "6d39a31108017483fc32494289c8d3251508e1ea3a073e88aa309b3207ff9fce",
+        "size": 4313
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/445.png.import",
+        "sha256": "66afb1a3e8ce3564cedd285d9db5239471ea270ad7affd9e406789d63b0e1dd5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/449.png",
+        "sha256": "00dc86a73f0aa062faff8bc50a9d1e444a4ad97faeb8965a5015383dcbbb7c59",
+        "size": 5376
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/449.png.import",
+        "sha256": "d65912577e3ef50c5c31161feadf92f6df05ca2a29b4568b92939ff96b3c88a5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/451.png",
+        "sha256": "c906c5934ff77289d0583b51c4eddf210ba2281af555855e66d4315fa8b848e8",
+        "size": 4294
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/451.png.import",
+        "sha256": "f86cdf3c9e4d8a883bb0fd94d8069e15d97986d7579a8e94d3146e0e7f857f9a",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/453.mp3",
+        "sha256": "4922fc5ab10dee76e5903583bea6bdec80619dd059172da029c5a38319076938",
+        "size": 7592
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/453.mp3.import",
+        "sha256": "c307942430664e359c88db7cffc19032877391c0b2c871e5d8429f4a875078d7",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/454.png",
+        "sha256": "300e408bc111d81ce6af06541bf8420f82c45c9e1a848755968cc414eb83a4b1",
+        "size": 5198
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/454.png.import",
+        "sha256": "573db740d9bfa3a965235bec40c1c3599d03389c6561894f95b5cefaf961afb8",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/456.png",
+        "sha256": "464c3f68694fac1c3d0cd821e724fa0e449526eccb8bcdb9584b8d47fc7d9474",
+        "size": 5453
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/456.png.import",
+        "sha256": "b33b3f7fd52d02cef448af8035b41ed73af820b32e56aed81f1fd10dbcaeca2e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/458.png",
+        "sha256": "fb9e73e45f224964a89f62d00f413f6976d579970767afab6de03326c671e586",
+        "size": 4059
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/458.png.import",
+        "sha256": "e0615a2d6b6039de72c239ee12dea76f8199c82cb7cf0d5c57ca1e56307f5ddd",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/46.png",
+        "sha256": "5663fa1dd1c5452a0c8210603d5268c326e8848283741fa4e29589a5655a3afa",
+        "size": 5299
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/46.png.import",
+        "sha256": "3fa458370d36e936a58b769998f2dcdbd2c44ecdfe6231feb55d6075fdb983ec",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/460.png",
+        "sha256": "1975de1e529dd9816b4db6d510471ab81cd578a143f1247db6548079daed871b",
+        "size": 5031
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/460.png.import",
+        "sha256": "1c3058bdb1620564d75e843c54d6939d7ba3797e4a3af7394c9b630c8dabf51a",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/462.png",
+        "sha256": "239e58ebf833597b3de857e1b6245b5eebc63973b5bcda83dfb6120481630fe0",
+        "size": 3925
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/462.png.import",
+        "sha256": "6f170c197e62f3a5438c05c53cfd5046a2bc0ecd99659e6fe01ffa93015ca89a",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/465.png",
+        "sha256": "ba2ca10f15e7021126bc20b64e347429146967c7cb33c269b047db716df3bbea",
+        "size": 4375
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/465.png.import",
+        "sha256": "d01b9e527cfcd3ff34013de7dde85cb6d813bec89172afa7d66e955eea5d1021",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/467.mp3",
+        "sha256": "76c6685562324fd678d0d3c4877bf663493af417497b8a19468254fed4a3d095",
+        "size": 1976
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/467.mp3.import",
+        "sha256": "a5fdef0803fcba724323e5d5e5271c1393e7fdfa530605d8e6d771ded7c2e1b0",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/468.png",
+        "sha256": "795b3658cab8883b43f394dd961cd7d4face642e834869f1fc579ebb995b9b0d",
+        "size": 4713
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/468.png.import",
+        "sha256": "39a365bafae10b0a3f3140a26fa07f46fa70f2fe05d5c140c2ba3d3651e6ba8d",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/470.png",
+        "sha256": "55cd37ec511cce892a8aa04f86bd65f003105ffebe3d71549d8074fc397fa947",
+        "size": 4939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/470.png.import",
+        "sha256": "4f9ad2a4a4e47ac7cdf9ab8add6ec15b6eecfab282e3e6a60e3cf227d1286c8e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/472.png",
+        "sha256": "5dc6b25f60b98067e97b8254070cca85af3d556744589173cab1490cf9cdd986",
+        "size": 4463
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/472.png.import",
+        "sha256": "ff2dd78587c5f78c0ed4029401082d2fc51fb9a1749e3bec5c48239259255545",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/474.png",
+        "sha256": "10f75150ef0450de8f2a4e93522035efccf31dd76f8e13b9d71698344dd209f3",
+        "size": 5834
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/474.png.import",
+        "sha256": "e39361a1028b37be8fda393deb2a8de5f52cceeeef60df5aed7590b5e02ed2cb",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/476.png",
+        "sha256": "2ea5427281fdc8d2b6b6900931f16f047b132369eff60b4f0cf50d3979fc2826",
+        "size": 5705
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/476.png.import",
+        "sha256": "021235d263f406fd6fa2b7c1e4b96755da5b328750d492ceb64bf1fea7e0378b",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/478.png",
+        "sha256": "3384b2c5d06d80a9ef7262cf448a104c299864e5f2d262f81de492ed10f324c9",
+        "size": 4699
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/478.png.import",
+        "sha256": "5a193bb175f06fc5f5607ff4f7f658032c0bc6ab20ee9b740aa0a6aaa1c653c5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/48.png",
+        "sha256": "f0947956e3bd2b98972ebdc3fb1b18e353b660c4193ae559a02e0ed30e8dba1a",
+        "size": 231
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/48.png.import",
+        "sha256": "1f1108d3dac8f78e3736e5f99f9507d95475dbef6c6376211ee5036ac6510489",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/480.png",
+        "sha256": "7e2234eb0769f99b258eabdf223e39f78cd477454fb5439207bf415feccda3b9",
+        "size": 4557
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/480.png.import",
+        "sha256": "c0793d386e2065753c3baff8e93c3ecacd2c643a2f0d5c19362dc2eb871655cd",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/482.png",
+        "sha256": "c8bdd9e8c82f30806c96842e9779b70db91319b7eb35aa3b84822db92aa1f4b4",
+        "size": 4446
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/482.png.import",
+        "sha256": "24559f00feac494a3cb9a0778420a52b31963b0eeb9bc3c8985388a8f616f986",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/484.png",
+        "sha256": "f53612c8c46a2c99271d0697e74a84e9ace09e62260b7943a12eaeba698c5bbb",
+        "size": 4460
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/484.png.import",
+        "sha256": "39feea99f2de9b3ed6ed0c1a9d40be31345957535706c3ddd086e9aeeed23609",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/486.png",
+        "sha256": "d745ad3b937df215dc413c67aaf80e18ff0094f215319893db82ed068cce09c6",
+        "size": 4541
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/486.png.import",
+        "sha256": "241cda943843613a588d3f963c412540cb706df1ad996c078c8e1f41576b4827",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/488.png",
+        "sha256": "8fdbc242c78c54491c1cbfb63aee326807b53336f804955a042f9b23dbd2f3e1",
+        "size": 4560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/488.png.import",
+        "sha256": "0bd28aa3af294ccaf5cf61b26bbf50d311f59c701222d5e72f2cfeabf761fd54",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/490.png",
+        "sha256": "be25354af8c9b2f0d93350e0d8c18b3c4cfbe269a0d0f1d5dcf96490f6eba46f",
+        "size": 4631
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/490.png.import",
+        "sha256": "46cb7a0a860ebe0664cd491c22599f9bcf8995d7da2d747d9ff12c4cdfdcd002",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/492.png",
+        "sha256": "d72e9ca036126b335a55bafba4a61b01777cbdd37a6de9bc8709eb3803cfda4d",
+        "size": 4557
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/492.png.import",
+        "sha256": "e80d689552816c0631b7fa40a485947d8599f3bca40c8d4268b4c7365be88dbb",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/494.png",
+        "sha256": "246e8cb4d57e20d3d90a565a07cec9db2f94cf7d5cc6d8f5456914741a109ea4",
+        "size": 4464
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/494.png.import",
+        "sha256": "667846f2106e00b12bef005d9ba88078e1f62fcc0a0f76f4b3a60461065fdd19",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/496.png",
+        "sha256": "f3401e2b74b5c7c7455ccd948e452b9684b630c566979930ca7d56491a76a9ef",
+        "size": 4191
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/496.png.import",
+        "sha256": "6996aa315b8c58e5d1259e662e91683811c2156bb51b6f32708d8bad98ff6840",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/498.png",
+        "sha256": "6608da7e736b47995bae3764dc18189cd3be5d498e0b8a99a3b5b75facc75e50",
+        "size": 4467
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/498.png.import",
+        "sha256": "9a651beea5be8ec11645a2f4c98082fb3dbd17cdc1fece896ef4f4d0e34bf1a0",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/50.mp3",
+        "sha256": "369de2228ca3bf2d5f1da9b046b106a1f4e994dd9a0e7f69eb4846995b720826",
+        "size": 2926
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/50.mp3.import",
+        "sha256": "7cbcba5c0480efb9f9f67bf52d12b5b3a4383433e5aad7e8de4b7e1fe848d3fe",
+        "size": 365
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/500.png",
+        "sha256": "c3f97fc474c90488b59929e83934e21f1569f59d01160850fa58b6131615a069",
+        "size": 4501
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/500.png.import",
+        "sha256": "fc6f750550a61209ccbf1f337b22a62bfc1e6e58d01a2c87b3551c3cf1ab8f20",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/502.png",
+        "sha256": "7020e4a54b2666df8e7697d960e76e34c90be69c080603005c31a096135ba641",
+        "size": 4635
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/502.png.import",
+        "sha256": "dd341273a398dcd23037b3023d19f7f6b19edee31de9ee54252dbdaf5a8060fa",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/504.png",
+        "sha256": "ab218846ead7e5641b095452b3ab35985ccc514cea6d9deee2fded654a145900",
+        "size": 4314
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/504.png.import",
+        "sha256": "1019a36fd1f13731ed82b7289093b617a654c7f58f8c30cc8a7c3dabb3baa009",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/506.png",
+        "sha256": "5790a43ad8b31352704c781252050349ebd1d63ac4b99a36cb090e2361ad87eb",
+        "size": 4731
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/506.png.import",
+        "sha256": "d2a4f5b9f7f2ac9c85cbbae7dcd42af6a3ef2e7a8bf96e45f44745bac475126d",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/508.png",
+        "sha256": "2c9fff4393e5686d998de3f818c9b6eb0409241288742d3fc1d64e1d244d0582",
+        "size": 4135
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/508.png.import",
+        "sha256": "0b3d285a1aa84e5b86aa2dc6390e0bf6273b86f55db5fb045d7419de4b56506a",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/51.png",
+        "sha256": "465063fb1a4b925a38645de2b926be7437779d13b72e2ad4153e70ea1e5d7c29",
+        "size": 320
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/51.png.import",
+        "sha256": "3114b23a6b23ae400e4ff9863c1a0835060041001afe18f9c6ea4e2159114e58",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/510.png",
+        "sha256": "306ae2f5b20a320aad9d917867e901ee1c033c6e96a2c9e7aa04d16b0052deda",
+        "size": 4552
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/510.png.import",
+        "sha256": "c0e83a288e52344808538e7ea06fa962c5f0c235ad976fdfffacb47009e6ae2d",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/512.png",
+        "sha256": "121ab24f3b2e69fa3d756c9f91baa257e9cf35a9feff3140c1d4f42da4db8048",
+        "size": 4392
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/512.png.import",
+        "sha256": "81c90d9d36ec85390bdf2526c31d323d46c76206e451bff2843d2da0cd65ae1f",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/514.mp3",
+        "sha256": "27de5b33646136f40482cbdddb2b919009822468f06158b2f40d1a956b84aa73",
+        "size": 1456
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/514.mp3.import",
+        "sha256": "b259696a082d9b03348b59ef2128da4c6db87478843347844fcce378207048df",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/515.png",
+        "sha256": "acd1c65ea5e1e24430bfbaf0f9c089a98159bd1381c046e90bc3da0ef15ff6bb",
+        "size": 3386
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/515.png.import",
+        "sha256": "d3057d09730697d6ed05bc000b55e5a1eed1392b77449f9837ed82644e3c8f6b",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/517.png",
+        "sha256": "958a52b3de124807c510eb80f96269f36202be1a72abe67140206a9cec1e21bd",
+        "size": 2947
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/517.png.import",
+        "sha256": "d670d280028641641c058d58649f9b609614956e2327851204a243413fa8c536",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/519.png",
+        "sha256": "dcd48f0dd51b7a11ccc3e7223d2b52113728a974fbc0ae76d5bf9dac7c67e9df",
+        "size": 2820
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/519.png.import",
+        "sha256": "99d9f8484f6c77490dbcf3958013e598b5e34b3aa8b608d83b32626146a080c5",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/521.png",
+        "sha256": "483d388fd83546a342be3c1aca0a26c3cf90099157b57d4e84fff09ae97d7db1",
+        "size": 3378
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/521.png.import",
+        "sha256": "cf142de47a7e50aa6ea32563640db5e4982e698914f856c275fc1ffeec539839",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/523.png",
+        "sha256": "197446f13e73513892ad3507722c5ae33a078fe50c384aa6cd338c371273433e",
+        "size": 4344
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/523.png.import",
+        "sha256": "3494ebd716547f3bbd0467dd840a3f0c6caa4fc87ef96708a618b6ecf062336e",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/525.png",
+        "sha256": "f17e027484749b9e2099fd563e7e6daa02bd97dfa2c3a483b1640d0fcba97dd3",
+        "size": 4209
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/525.png.import",
+        "sha256": "b89580cf48a3a705671508dac809c3c8ca0d95c360b94a1bb39728215fc5f25e",
+        "size": 942
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/527.png",
+        "sha256": "3a176607978ea94cc93e33583cfce7c226ebb0c89f55dca21f46824a128a2725",
+        "size": 4072
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/527.png.import",
+        "sha256": "dbee5e77f3368c2a3472c577f43dddcbe1bec70b695f0904394fdba20b6cf4f1",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/529.png",
+        "sha256": "1a442113438c4b3a0e887352281bc1e83c97204db876aec8e3b4f4e656ad029a",
+        "size": 4923
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/529.png.import",
+        "sha256": "18b8497ccddd5a199766432616e0b9c4c3a67e9ca662b007e2962b9b3045685d",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/53.png",
+        "sha256": "53a6792a37a675541009d1e9541af5fcd8b51fdaec83eae61c5d2896d159f121",
+        "size": 197
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/53.png.import",
+        "sha256": "dc21eff97373e91b6058368ee0b0bf79331572fb5813088a2226fc7931fa5b05",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/531.png",
+        "sha256": "072c92413a4e0fc1c7eaf271fefa8a177c8b1bca49cf84d83d23ec915946a257",
+        "size": 4921
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/531.png.import",
+        "sha256": "4a3dab9d6cbd91a91e5d4a84c034b8b5860506991726799c7c4d5282458e1840",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/533.mp3",
+        "sha256": "63571a9a2ae47d6691aa73ca0f4904b102f03b08e87ecd1aa29540e98d4daa23",
+        "size": 7072
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/533.mp3.import",
+        "sha256": "f2f62a5949f169153bbb07d22b4937b1c66bf188ebbdafc767b47f298e75d404",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/534.png",
+        "sha256": "175b3c2d647dcb05d8b1d9062f33a4087d594b7eee6395cca615392c41ac6fb2",
+        "size": 4885
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/534.png.import",
+        "sha256": "07cb28bbcff7aea108261599ccbbd2f25676d91fb72df45d1f7e1aac8ce361ce",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/536.png",
+        "sha256": "a8b4125d0b9adacf58d2bc433a261ca3637d08c64c41b3ba7d3f87c3c90de85f",
+        "size": 4904
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/536.png.import",
+        "sha256": "8f4ed5afbc26fb8fccab81c4ffaac62cf9f644bbb41ec0d2f8ef734b4aea7d75",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/538.mp3",
+        "sha256": "d8d443bc629327e07e48d00bee1674f63eeaa42958d05f520b5cc4c2b2358604",
+        "size": 7072
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/538.mp3.import",
+        "sha256": "36979de4140f4f76cea862b7d4cac0d54a9ccb503af2c8fc917c68c607e93739",
+        "size": 368
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/539.png",
+        "sha256": "7ae6f862e0c131796e337bd206e93459751550386533c64d4e56db3b469c4137",
+        "size": 4700
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/539.png.import",
+        "sha256": "fdca4cc54f5bd16b37e19b916557314cfcaf1175a553530de94e068b3b1628d0",
+        "size": 943
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/55.png",
+        "sha256": "78668589eefa8b31ca2422645e416fb67f85e468fc9a042de318d0a8432ace5f",
+        "size": 4612
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/55.png.import",
+        "sha256": "ced738326782c393517192409c0ba4afed178ef276e865291e5fdf833f4c82a9",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/57.png",
+        "sha256": "eda3d3a085fe9b4848d5401997aaa5a85de78657fb5483bbac7a18d211dd6341",
+        "size": 285
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/57.png.import",
+        "sha256": "0d8fc9eb3bdb04d4d3f7812e4ff4b5cb7dc9eca76ef64f3433982d346d38d9ef",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/59.png",
+        "sha256": "a15b22ef909c9873022e638b028882050cddcc1a1743caa0610b43ac1775d3c9",
+        "size": 244
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/59.png.import",
+        "sha256": "9016610641e49f64dd6c6604f540c2fe01f35683e9794191644e29070c97ede5",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/6.png",
+        "sha256": "b1ce26b14455f3d489af9e5044f66343944d0615c0216523ca79d5377b2fd709",
+        "size": 4519
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/6.png.import",
+        "sha256": "615faac59f50e5af6fb90c1f14bbc70e16ffea39e2cd7cafd3a658ec544d99ec",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/61.png",
+        "sha256": "d3ba9ac571f2191061111790f33eda345aaf84c4113cee5709218ee6c05725d0",
+        "size": 5181
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/61.png.import",
+        "sha256": "3d27b12f109969abeee80418d2d23772e648cb7802dc4659f4ba843f14df22a7",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/63.png",
+        "sha256": "1f20d81b87d81e276f43fce2c80e5d79d947579d685aa15aab4e83950360d9ec",
+        "size": 4347
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/63.png.import",
+        "sha256": "0f3568052eafc6f88f50fcb38e2806e2470dabf9f651cee116dc8c35d751ce32",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/65.png",
+        "sha256": "ce61835da6feaf760b0032d55d1ad22da09e30fc07322f5a7c8731dc1ee4ca86",
+        "size": 4262
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/65.png.import",
+        "sha256": "d4c8c282a0035dddbdef9f1b08ef46bea2162ccbb0bafeb6e35f5fc76e03812c",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/67.mp3",
+        "sha256": "6b36cdabb2664402f7bca84f0adb39cb2569e7e401564fe39b3e55aa8af6e219",
+        "size": 1560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/67.mp3.import",
+        "sha256": "1a9ddd8e357f268cd609e6238f7cb59bd9fb8adc5d74c20a48068a51063e572f",
+        "size": 365
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/68.png",
+        "sha256": "766fe98cb55d5c1ff62341684b4d170a7d290439d8b2e8b95fdd3f628ee602d4",
+        "size": 6207
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/68.png.import",
+        "sha256": "2b9855e030e9ad7ae1575de09153a6084ed9042fb2372a7e81cc235e7c78846b",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/70.mp3",
+        "sha256": "0bffe0e20e2d9b789cfe6ebccd79d307f5369b3a277c8c4f5e2a90afe15d8b5d",
+        "size": 1976
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/70.mp3.import",
+        "sha256": "4906b7fa3ed6ee17966143593bb416e22470a4cb2209db4bedb76f4a28c09a61",
+        "size": 365
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/71.png",
+        "sha256": "f84c89de16120417e44125f598c701bb1021007dd885dc6f00b7cbde46f2a9be",
+        "size": 8831
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/71.png.import",
+        "sha256": "d1ec3e2bd76c461dac5149f7807d725e4d029452d354003be72123370865a3c4",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/73.png",
+        "sha256": "f36b0d75bb52458a8ac5990c84c49a75d66ea370352717a6d40ebf9c085cf1b0",
+        "size": 5726
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/73.png.import",
+        "sha256": "065cbda2e468b9273faa6e4459daff637aae8bc09b9d52264d3f70efe8c3f930",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/75.png",
+        "sha256": "8fea471c37d66febac2d134153a9aa4cd9eb3c9e99654407b9e90299b33c19a5",
+        "size": 4830
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/75.png.import",
+        "sha256": "e2c7f849197be8b8ea07c09e863364e12c6b6d0d6d8a8b93f9700c814df5fb9f",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/77.png",
+        "sha256": "75a6f6a4a973c5b11e307bb59f0f640ffff7f26c3712a95dd525c2749997a242",
+        "size": 4467
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/77.png.import",
+        "sha256": "d08500dd7e770d8a0e4a69bb75bac94a3ac47d94e8026463d8c97b5ce2753fb3",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/79.png",
+        "sha256": "7e1db56a60188b1d34ad689603cda1f5adfcf08c95fa0f32c1f8c9d209cbe064",
+        "size": 4520
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/79.png.import",
+        "sha256": "21e9750c14cf8181dea5bae3ef684e257df2a47037adfbc17ffc7bfbbb0aa354",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/8.png",
+        "sha256": "d682a365f631663a6990e538d3d48d973e194e534aa7d5647b214eec4dfa7bde",
+        "size": 4470
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/8.png.import",
+        "sha256": "1c1d1532b1dd9390ef3c19b73eee88953e507df63d899a59eba4be9eaed19f68",
+        "size": 936
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/81.mp3",
+        "sha256": "3e8fb3275a10ae2c21a37b70f8bd23aa6d00fc8735e7aec37163317b520eb658",
+        "size": 2288
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/81.mp3.import",
+        "sha256": "019b58fbeb8dd3ab25d73d7f45236de659d37720b8995957274bd8a2e00f355b",
+        "size": 365
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/82.png",
+        "sha256": "b3649d325422c988206803a9bdc541087e47558d8954f491e442adaf0e3dd2a3",
+        "size": 4985
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/82.png.import",
+        "sha256": "ed7887c4b8973eb3e09ba7cd0745db30b0277e9269c02324698df0741e661c0b",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/84.png",
+        "sha256": "eb25f032a8f593a2315b620a3c55da2d72141bf19b942eb4746cf7f29117de12",
+        "size": 5842
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/84.png.import",
+        "sha256": "244cd75100b3947f9edefb788a01bd4d41d1ec7015db22a40fd5ee74cb2d5889",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/86.png",
+        "sha256": "75fc0c3f85ea50a7d5d3f435a92f7b2bd8a93de5be4b83c58447667e80325b1b",
+        "size": 7153
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/86.png.import",
+        "sha256": "26e67d281168209ed23df8a307735db17a83dc838917dbebcc08181c46dcebf7",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/88.png",
+        "sha256": "1f59af8e668b9c0d22ce55df039af4e4d68e919a45a9904ace5c900992412f4f",
+        "size": 1852
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/88.png.import",
+        "sha256": "30c909c6c3f48aece844f2782c58a5ee15e5fd7c96b8af84ae2023010b154edd",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/90.png",
+        "sha256": "a97cfc78bc73296523839333a490e52bbb1a72879426e90500a0c125a1b3bed4",
+        "size": 1766
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/90.png.import",
+        "sha256": "8c6d85949d436d1f9253a292cbbef9289edd8cfc8d79f6fb0b18a2827c73cb9a",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/92.png",
+        "sha256": "bce2dd84dc96153cfb26415e5837c6c09df72d77847f8efa26617b85f899059d",
+        "size": 6761
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/92.png.import",
+        "sha256": "443bda9e82a5881c302c2e3209b20646588c62b896ded9c9a1dd60ed2a454ece",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/94.png",
+        "sha256": "5adb968d395875dd71fc2b32acbcc9fd0aafc149e292cda7a24626fe41728efc",
+        "size": 1840
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/94.png.import",
+        "sha256": "193a721905447d1ba4f1c66ca354908b63d7c2dfa9de0feef2569f29316e4242",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/96.png",
+        "sha256": "f19ae9cd6cff9b013bbc78be226c8fb036e7f45cc870f2cb0a46d2a763556023",
+        "size": 1892
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/96.png.import",
+        "sha256": "9534570d6adba92eff4bdb71444263d8082402054ab8ce741073b99046788253",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/98.png",
+        "sha256": "2c7cdfbebf77c27c96903156f8725ea9d9efc9b402ef96b6b3aad08161a26ac5",
+        "size": 1710
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/98.png.import",
+        "sha256": "26f94072d9597e174fe4cd0e64905d25226c5f211ec215017abdbe612f8dc772",
+        "size": 940
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai.json",
+        "sha256": "1df58e4ea5432b730e2090d537bc25ddef3dd2b4cf3bcae65a3eccd1ccff7b10",
+        "size": 41061
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/body.gd",
+        "sha256": "0bf6f5ae9c7f5316cddb9f43504e1a76917995655c58df536173df52cde26e68",
+        "size": 12259
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/body.gd.uid",
+        "sha256": "7fa2e428bb6f1c3ad755d20fdbabbe79cf8ac4fc8f6f9141f626f165b8d6864b",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/body.json",
+        "sha256": "0b844ce7357cbf68023db3e806ca5260e271547f6d7be50e9f5f83ca7c06f180",
+        "size": 1505
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/controller.gd",
+        "sha256": "9512521fb514c6870d9a747f8884328e888a6b064680d72ccba5ef2446855626",
+        "size": 16747
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/controller.gd.uid",
+        "sha256": "17c4692f0da1e5a85085001496814009dd8be821102171f59d38ddee561d1f9a",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/controller.json",
+        "sha256": "cea32d1cd0f97b6ba1aa6e55709412d54981f1b2c8a0007098f6095e95fa4309",
+        "size": 28140
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/predicates.gd",
+        "sha256": "5cc4aac856e6e2d5e9966f4e47d6dcc0720556a97a350d172d6c5d670d1f743b",
+        "size": 14325
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_controller/predicates.gd.uid",
+        "sha256": "0485360d83de4a29cb8530eb16f1c715c844ef226d0ef6d9e09019e8844bbbd1",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_hit_state.gd",
+        "sha256": "4210e54514b7e55c0c95a3e305b8fa4a7da3e086a999d0fea6a65feafb25094b",
+        "size": 3152
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_hit_state.gd.uid",
+        "sha256": "2f0b0f1881a6f395c18b50fbcc76bb2b3a147ac0744bdcfea3ad2f11437185db",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/ai_hit_state.json",
+        "sha256": "8d761975b1c009b75140298b8d21667f4a1751626f85520dff18f91e0ee651e5",
+        "size": 439
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/assets.json",
+        "sha256": "54826a3cbb8acf2b112e18b51afb5a5fcf5ff0276a8b54c4bc72817c88178b02",
+        "size": 76993
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/combat.json",
+        "sha256": "6989505b3d9040a439728230076c5874b6147208b5f77142e6da0f2bb01001a2",
+        "size": 174517
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/fighter.json",
+        "sha256": "7e645d75e1b5fabf1434665bd4257c02b34e02172d9e3b2f2254c1908e2a6353",
+        "size": 99200
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/hurt_voice.json",
+        "sha256": "341357682e30a9a5c5a19316a922a153c11fe89d58f181ae4fafa9a319f51f2d",
+        "size": 8051
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/intro.json",
+        "sha256": "3469de24be13787343695d9a43576424fa64da027e66f9cdba359235c73cc58b",
+        "size": 1190
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_body/body.gd",
+        "sha256": "2ba7e48ea0447b00024d18a242b90c1133d03dc7bede9c07a86d6ecc95508712",
+        "size": 12864
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_body/body.gd.uid",
+        "sha256": "1cbceb4b653c4914e27dc4aecb946350d6ebff67d7b6c5ef11831d4f72177902",
+        "size": 19
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_body/body.json",
+        "sha256": "1067e422363144032ed075f54efc7ac742bd3c095c9cd3c710ab7ddf9eabb7bf",
+        "size": 2526
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/body.gd",
+        "sha256": "2ba7e48ea0447b00024d18a242b90c1133d03dc7bede9c07a86d6ecc95508712",
+        "size": 12864
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/body.json",
+        "sha256": "1067e422363144032ed075f54efc7ac742bd3c095c9cd3c710ab7ddf9eabb7bf",
+        "size": 2526
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/controller.gd",
+        "sha256": "9512521fb514c6870d9a747f8884328e888a6b064680d72ccba5ef2446855626",
+        "size": 16747
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/controller.gd.uid",
+        "sha256": "fc7eb78e354c3ed0c23f70d157921c5a897730673f9d296c217b516e0aee74bc",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/controller.json",
+        "sha256": "f11a8a0edc74a7ffeaf636c5da6a95f0d73a32081cb7d149ce5ba3c420d981e6",
+        "size": 28143
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/predicates.gd",
+        "sha256": "21fe573f1f2b3d3922f038150fc96c045689ad5f5d454576137c2bbd18666e82",
+        "size": 16688
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/player_controller/predicates.gd.uid",
+        "sha256": "103e34305c486f16ef2704712e0545cef41fa5ad9e7e456ba7e3d6a1ba2da67b",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments.json",
+        "sha256": "d6c71616374da411fa7ac8c6c5c13eb8b0d8eefbc6fc957dcc54344022cdcf70",
+        "size": 28750
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/132-be4e817f47cd279b.wav",
+        "sha256": "0c03234a996425fb16c032f2463a511c5267fbbd16d779d149fe7bf2aad37b09",
+        "size": 46884
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/132-be4e817f47cd279b.wav.import",
+        "sha256": "ae69c9ce7c9b2d330488a361e568cc48cf7758180d234de9755913450528f491",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/155-648c7f09d8a734b4.wav",
+        "sha256": "599b2ca1b812a00645a5ba8a488392c0926890f34bc4eddc316215d5767be0c6",
+        "size": 65316
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/155-648c7f09d8a734b4.wav.import",
+        "sha256": "716c18bedb1fba480dc31d13e62dde38ca872f2fabafc698f479e783b8e102c6",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/221-0f9a6bb26303861a.wav",
+        "sha256": "81054e7274321d83ab30b165f4f98967734cda4a397fba048ce1cfb250dcb67d",
+        "size": 129828
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/221-0f9a6bb26303861a.wav.import",
+        "sha256": "b6cf321933941ed310b090ae9e1ad2ebf6d8240bfb035df1324d124ff80f736e",
+        "size": 562
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/228-4361a83848b1fe23.wav",
+        "sha256": "e7bf12e74d5a476898972360fdce30d3903a339d3064eeb46a1527dbabc7422a",
+        "size": 203556
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/228-4361a83848b1fe23.wav.import",
+        "sha256": "dcab0f7cb08a6296c2efcb96145b7ef27dac5083aef4d94285454fdf9480ab1e",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/253-e46abf71a95674de.wav",
+        "sha256": "5d28ed859e0a171076b35087d69a0195bb3ad532590fb07cd2f3402e854d5f02",
+        "size": 125220
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/253-e46abf71a95674de.wav.import",
+        "sha256": "f6f0656d8007bc12a0e8ec0622035f1f234c92e8e0a6d6276e6bcf9aaa60d36e",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/266-cd61ef09b6086962.wav",
+        "sha256": "fb6428b8943be50db60d2951bb67d304b59ef0ce08b97c0460ed856804ddac4e",
+        "size": 147500
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/266-cd61ef09b6086962.wav.import",
+        "sha256": "b8c9741834b2fd5803e0db176c889d45f19197a2c62b919488f399a0a26e61e0",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/272-eeb7e4be48c1c6c3.wav",
+        "sha256": "adc0d0ce15eba5bc0900a05200357f2e756ede293cc168d54b31c28b89baac8a",
+        "size": 134436
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/272-eeb7e4be48c1c6c3.wav.import",
+        "sha256": "86b076687162ad122341de458467f5e55b0fecc0a2d9cff352d9297e03e0aee9",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/292-77baab1bd3361955.wav",
+        "sha256": "e5f74a78f09d70ea953e410a970c4161bca7d185bbf79524f0e412134145141c",
+        "size": 250396
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/292-77baab1bd3361955.wav.import",
+        "sha256": "65ff5ae3cca5573f17bca7cd65d40c53d385aeab784584ae5354b159d968da4f",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/317-f399082573691ed5.wav",
+        "sha256": "ba3fcc1216832c2c205a515d8fb6cc8ad9af15c32679c708f8e87185c14147e2",
+        "size": 208164
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/317-f399082573691ed5.wav.import",
+        "sha256": "c4dc0b19b210869329ab392d4882e8a3b144ccbbcad575189e7542fa737b9721",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/322-d9ceebfeab9012b4.wav",
+        "sha256": "2020d4494b027e19e2a4067cee5a029866dca972b1c8a637cfa372cd0d568814",
+        "size": 185124
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/322-d9ceebfeab9012b4.wav.import",
+        "sha256": "54713135d00a3251440f38c3af641cdedb652f6bedeb6d1e74f7e7b935b82638",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/339-02c29e09079fc510.wav",
+        "sha256": "da23d6984d49888197bca47f1a1d7aeb380c1c3f779f70505d23747beb5e3f30",
+        "size": 194340
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/339-02c29e09079fc510.wav.import",
+        "sha256": "7b42e05b07d8bd8bdc95f39d36e589b59debef42cba12a86f038da08d7cea3ae",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/34-09ab691a3199dad1.wav",
+        "sha256": "05f31280bf172219e6c5650a346bc7dd262233d959f99e00984cea55d0869406",
+        "size": 119852
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/34-09ab691a3199dad1.wav.import",
+        "sha256": "69193d832ee0ed01b152a11ae1e53f2fec68ebafc730e7029c9e5678f0f9552f",
+        "size": 560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/387-a116034e82c89fd1.wav",
+        "sha256": "5e0f5b38ed4d529f7490fd1123f52591c18c621a7f07781234892600dfabcdcb",
+        "size": 254244
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/387-a116034e82c89fd1.wav.import",
+        "sha256": "24308b601dceec469d7f6876f366e407e49ed91b9f54edbe00c48875ef422d1a",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/41-65ac40552bc475e8.wav",
+        "sha256": "e76e55e3881d20572e0904f350ff83b9e9d6974c86e9c6ced15b34175ad7a268",
+        "size": 37644
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/41-65ac40552bc475e8.wav.import",
+        "sha256": "7ca53137758fefb50601f43d52b220fb8e3e36891075f1051f1788d24cf10fe5",
+        "size": 560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/453-0e72182772314981.wav",
+        "sha256": "be833cca5e53aa993db63af0daa820a73d067311460e6834f3e47a31ec9502c2",
+        "size": 323364
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/453-0e72182772314981.wav.import",
+        "sha256": "375e219340a3f10b3e4b05f095ca4b0e37e8f0f50693e72e1c4741a1a575253b",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/467-d94a3b991fd46fe0.wav",
+        "sha256": "09bbfb39535624cd92b99b4e4fe1dbdaed1d4039f48c17152fd6b13cddd5f6bb",
+        "size": 74532
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/467-d94a3b991fd46fe0.wav.import",
+        "sha256": "e93f4f00565b0e8791aa8d0df0755cd524a1c2ffdc7783ef7bfc8f0de7fa5563",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/50-590f97fbbbc11129.wav",
+        "sha256": "f03b6c18f64d872bd5f8611977391e460f0c1c95a96d1d8ff720634dbd47c367",
+        "size": 252524
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/50-590f97fbbbc11129.wav.import",
+        "sha256": "0d819b2b2b607958367311bf6544e852c5862522dae7137614a8f276e792c07e",
+        "size": 560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/50-b115d03d573ef06f.wav",
+        "sha256": "6e8c35a8ebda2802cb87d274dcdffd00ac06d5c6074a4fc60388d7395d506f39",
+        "size": 27692
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/50-b115d03d573ef06f.wav.import",
+        "sha256": "c0b07d5e30a6356bc9c5c42faab3c4ec45e8a7ee824af88a3344283a53a408f7",
+        "size": 559
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/50-cb60c239ae69476f.wav",
+        "sha256": "5bb893ac269f97353470e2d3e06534daf145819e6993218d4182227376303916",
+        "size": 21188
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/50-cb60c239ae69476f.wav.import",
+        "sha256": "04baacf0538ed7b44d6fb3159b270dd4ab6ba885e563b6ccf5d5472081a75a83",
+        "size": 560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/514-4333426ff0f0c621.wav",
+        "sha256": "ddb73713b34118d9ef2d4387a30b57cb23901b2cd2a47e7b1627a444a2e3c35e",
+        "size": 51492
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/514-4333426ff0f0c621.wav.import",
+        "sha256": "53334712017ea30aa26a254df7a132f8e77fb80618c8aae7c040911de851fc12",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/533-42d954dc46dec475.wav",
+        "sha256": "a75d0708c33e1b93c8edfa7c235006b5324a32557d99e9930df860817eee4e3b",
+        "size": 300324
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/533-42d954dc46dec475.wav.import",
+        "sha256": "32d52bcc83ab9312b96f3352a1ff6028419598a4774f9e3167e941d091a8bcb0",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/538-c334b3dd81efab20.wav",
+        "sha256": "bd28f560a3612092d3c91f28a12a6a2b8282be6bbda2ad663a94bd17c40cc130",
+        "size": 300324
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/538-c334b3dd81efab20.wav.import",
+        "sha256": "e9f490aa67e671aff27a43a518023948ba51c3e186592b099edaea411068687f",
+        "size": 563
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/67-739d33a2728526cc.wav",
+        "sha256": "0eb7419a327fdae0a557f73930f4d20b4121bb3193befc39f60fada0e900409c",
+        "size": 56100
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/67-739d33a2728526cc.wav.import",
+        "sha256": "df7ebfa9bbf29b99a4ae7871afc409831cec5ad33b1baa4c5249266f58320c20",
+        "size": 560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/70-a2740833b0709395.wav",
+        "sha256": "c39c94579065416e3c88fbb8c7a168f70d6ef9ae9e1bcdbb7a67d2c7c5726fed",
+        "size": 74532
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/70-a2740833b0709395.wav.import",
+        "sha256": "120aa01ee3da5081d047892334c4af64636abeeaf4b0c363e85788cb44315999",
+        "size": 560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/70-a93abe83c6a6807b.wav",
+        "sha256": "303bd6063ef19f13dcaf25198111603c7d6598c74fee385f09b9aafead0550bc",
+        "size": 74532
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/70-a93abe83c6a6807b.wav.import",
+        "sha256": "9a1f4547d88a6827e649c200fdc5a7bb83c05b060ff9998c2fd757276ac0cd38",
+        "size": 559
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/81-bc6a063c377f99a0.wav",
+        "sha256": "1ba37fc10481d86efeeb5422b73a5a123ea706ca652bc9643d9b9aa49b0d7167",
+        "size": 88356
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/sound_segments/81-bc6a063c377f99a0.wav.import",
+        "sha256": "6d96141e914d44d6a639ab1d3a454713bf2a5909dc49ceb1adfaeed577131355",
+        "size": 560
+      },
+      {
+        "path": "godot/generated/fighters/orochimaru/timeline.json",
+        "sha256": "f5ca9f409c2474129516d5f8874db0f5f5243b88b73664d84893f898e65d51a0",
+        "size": 5251359
       },
       {
         "path": "godot/generated/fighters/renji/10.png",
@@ -55058,8 +58204,8 @@
       },
       {
         "path": "godot/generated/main/character_selection/available.json",
-        "sha256": "1ae092b61aa4179ee976c3c6e3c99cb8e37f60e6104a7492cf9392cf1faa4a2d",
-        "size": 501
+        "sha256": "59a53efb6f49b57eb407b787740a2b742657639a0c9dbd8b82761f3e46fed3b3",
+        "size": 532
       },
       {
         "path": "godot/generated/main/character_selection/card/1349.png",
@@ -55842,6 +58988,11 @@
         "size": 987
       },
       {
+        "path": "godot/generated/main/character_selection/footer-name-orochimaru.png",
+        "sha256": "27adcd996d7c0f60f60abd2fa7aed210dc76a79316123f4ecdbe6de87d5f3520",
+        "size": 1305
+      },
+      {
         "path": "godot/generated/main/character_selection/footer-name-yijiao.png",
         "sha256": "46a5105f6433fb58b1ca4420f70a05c60618e47d809fb47cabb4671086b3a320",
         "size": 1296
@@ -55863,8 +59014,8 @@
       },
       {
         "path": "godot/generated/main/character_selection/footer.json",
-        "sha256": "0af4070ceac4910345a246e0429631ddf4a3196e209b693724e78a0fe543023a",
-        "size": 1614
+        "sha256": "b5d4df72c57b3dcdf33fed3f92337a89233d5bbfe53f16c0ff171d1794c9fc9a",
+        "size": 1705
       },
       {
         "path": "godot/generated/main/character_selection/player1/1470.png",
@@ -56607,6 +59758,31 @@
         "size": 984
       },
       {
+        "path": "godot/generated/main/character_selection/portrait-orochimaru-1.png",
+        "sha256": "80eca0bf184166e761dcb7571b1999045b05d48aa1ef860d05b98110d5c35f8e",
+        "size": 67530
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-orochimaru-2.png",
+        "sha256": "ba1c12383e553c227cd7149a6c87c35937eed67db0214e0781b90591736c7860",
+        "size": 70564
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-orochimaru-3.png",
+        "sha256": "2a938e7d324b13cf2c0a425d6e06465ce40f3683217f7b0141aa9adfab4ffb32",
+        "size": 72305
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-orochimaru-4.png",
+        "sha256": "648195dd39a4d5256ce4eecb69d2aa1ff8813934d3d503d756754ad21a9d0e57",
+        "size": 72855
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-orochimaru-5.png",
+        "sha256": "648195dd39a4d5256ce4eecb69d2aa1ff8813934d3d503d756754ad21a9d0e57",
+        "size": 72855
+      },
+      {
         "path": "godot/generated/main/character_selection/portrait-yijiao-1.png",
         "sha256": "80e6216cbe48b65abfa0df9754a921b091829e1fd5af280f43236975ba86e57f",
         "size": 74760
@@ -56708,8 +59884,8 @@
       },
       {
         "path": "godot/generated/main/character_selection/portraits.json",
-        "sha256": "9b9b28ebaf010b9c9ee2f8c54123d352b3165a4547f0c4bee044a0d038cb2251",
-        "size": 5294
+        "sha256": "f7302a8970741f8e549920954391ce4519f2edf1cabbd496581a6f314ede9d81",
+        "size": 5667
       },
       {
         "path": "godot/generated/main/character_selection/selection.json",
@@ -60993,8 +64169,8 @@
       },
       {
         "path": "godot/generated/main/intro/intro.json",
-        "sha256": "fcd1907af4d82ef2b8cc2641a3ec7502ec45d2d7dc65620d7c9f0fbac5f081f8",
-        "size": 11082
+        "sha256": "e139eb27e3181fbd4448b7d13c7370f9949f384321df249580041a1b69bf208a",
+        "size": 11279
       },
       {
         "path": "godot/generated/main/intro/qjxg/assets.json",
@@ -65548,8 +68724,8 @@
       },
       {
         "path": "services/matchmaking/src/catalog.json",
-        "sha256": "d9461d897aa2c0898ced0de48b45f7dc028ab9de85129e65713497682d6e5781",
-        "size": 472
+        "sha256": "80439e45f7cdc75b3b1887ddd8987c1447773b1096f820ae7becbf783cc01747",
+        "size": 490
       }
     ]
   }

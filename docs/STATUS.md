@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-18：大蛇丸基础形态已接入本地/联机角色目录、原版头像/底部名称与自然开场。八组原生 Flash 同输入对照共 3,856 状态一致；必杀暂停恢复、迟到输入纠正与回合重置通过。通用抽取器保留原版 `砍11` 中间连招，生产运行时与现有防死锁偏差未变。完整视听/浏览器/AI 验收仍待完成，覆盖率 partial，Worker 未部署。见[大蛇丸证据](../evidence/characters/orochimaru/README.md)与[检查记录](../evidence/characters/orochimaru/checks.json)。
+
 状态同步日期：2026-09-20。按当前工作树与已有证据核对；本次检查范围见 [同步记录](../evidence/status-sync-2026-09-08.md)。
 
 2026-10-13 训练 P2 输入修复：已在生产无头 Chromium 复现按住 NumPad3 后转焦工具栏、在那里松键导致持续瞬步。共用 RenderSurface 在失焦时补发释放事件，保留原版训练的 P2 键盘控制；未改角色或 AI。原生 Flash Naruto/Itachi 对照 602/602 状态一致，详情与验收边界见[调查记录](../evidence/combat/training-p2-investigation/README.md)。全新无输入未复现，完整跨浏览器验收仍 pending。
