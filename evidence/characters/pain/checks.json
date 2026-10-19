@@ -1,0 +1,189 @@
+{
+  "base_commit": "aed7c7e4f0800dd1f6a1bcf769cd5e8dbe478aca",
+  "coverage": "partial",
+  "production_runtime_changed": true,
+  "shared_compiler_changed": true,
+  "focused": {
+    "cases": 10,
+    "matched": 10,
+    "failed": 0,
+    "states": 4820,
+    "fields": 14,
+    "report": "evidence/characters/pain/comparisons.json"
+  },
+  "saved_roster_replay": {
+    "cases": 121,
+    "fighters": 18,
+    "matched": 121,
+    "failed": 0,
+    "states": 74402,
+    "report": "evidence/characters/pain/regressions.json"
+  },
+  "suites": {
+    "python": {
+      "run": 315,
+      "passed": 313,
+      "skipped": 2,
+      "status": "passed"
+    },
+    "godot_final_related": [
+      {
+        "name": "player_controller_smoke",
+        "exit": 0,
+        "seconds": 7.315019500092603,
+        "markers": [
+          "PLAYER_CONTROLLER_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "player_visual_smoke",
+        "exit": 0,
+        "seconds": 18.599838917027228,
+        "markers": [
+          "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+          "PLAYER_VISUAL_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "combat_smoke",
+        "exit": 0,
+        "seconds": 16.60913087509107,
+        "markers": [
+          "COMBAT_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "menu_smoke",
+        "exit": 0,
+        "seconds": 3.3355758329853415,
+        "markers": [
+          "MENU_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "stage_sound_smoke",
+        "exit": 0,
+        "seconds": 2.8470188330393285,
+        "markers": [
+          "stage_sound_smoke ok"
+        ],
+        "errors": [
+          "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+        ]
+      },
+      {
+        "name": "character_selection_smoke",
+        "exit": 0,
+        "seconds": 7.766136958962306,
+        "markers": [
+          "CHARACTER_SELECTION_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "hit_settlement_frame_smoke",
+        "exit": 0,
+        "seconds": 2.9892255420563743,
+        "markers": [
+          "HIT_SETTLEMENT_FRAME_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "source_hit_test_smoke",
+        "exit": 0,
+        "seconds": 0.9442064999602735,
+        "markers": [
+          "SOURCE_HIT_TEST_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "interrupted_super_lock_smoke",
+        "exit": 0,
+        "seconds": 3.455370374955237,
+        "markers": [
+          "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "pain_rollback_smoke",
+        "exit": 0,
+        "seconds": 90.74756775004789,
+        "markers": [
+          "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+          "PAIN_ROLLBACK_SMOKE_OK intro=natural super=ultimate guard=true round_reset=true late_input=true"
+        ],
+        "errors": []
+      }
+    ],
+    "broader_godot": {
+      "passed": 33,
+      "unchanged_baseline_failures": 5,
+      "report": "evidence/characters/pain/godot-checks.json"
+    },
+    "shared_modes": {
+      "pvp_states": 602,
+      "training_timer_states": 602,
+      "status": "matched"
+    },
+    "matchmaking": {
+      "node": "24.18.0",
+      "typecheck": "passed",
+      "tests": 31,
+      "passed": 31,
+      "deployment": false
+    },
+    "verify": "passed",
+    "handoff": "passed",
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6
+    },
+    "online_manifest": "passed; 19 fighters, four helpers, ten stages",
+    "web": {
+      "status": "built locally",
+      "metadata": "evidence/characters/pain/web-build.json",
+      "deployed": false,
+      "browser_validation": "blocked: Computer Use was not approved to use Google Chrome"
+    }
+  },
+  "anti_deadlock_sha256": "d39b2b50d96d37ac717e1d1e8e9ccd711a67f6bbadcee6afc30593d6e0caa91e",
+  "deviations": [
+    "Retained shared _clear_interrupted_super_preparation anti-deadlock fix unchanged."
+  ],
+  "source_swf_sha256": "bb66f940d2e83ec0d141d3a8d8150ec197ae0a3f83d3f77651555f676029e4cd",
+  "source_scripts_sha256": "30be96d89f074c6254f03e6f42f08b87f5fdbc674728ae68f8d31566438a40bb",
+  "source_frames": 1416,
+  "indexed_body_scripts": 138,
+  "runtime_sha256": {
+    "fighter_runtime.gd": "83e9db9f2eee7f9ff0edbb4b98518e55cc6c5eec32fe9383ac1edef2d85530a5",
+    "ai_predicate_context.gd": "a9ffff1349cb6c36dd293d7684df9b6fee0a5821f2fc32fdeef411ceac90c441",
+    "main.gd": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f",
+    "ai_cpu_driver.gd": "1b9f3d7345d4ba76fcacae645acd84842d6a8b6b13aee58becc9fc4619c1ca2a",
+    "player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea"
+  },
+  "original_player": {
+    "version": "32.0.0.465",
+    "app": "/Users/fengkx/me/code/flash-player/Flash Player.app",
+    "executable_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "jpexs": "26.2.1"
+  },
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "limitations": [
+    "Full audiovisual/browser/AI and exhaustive move/cancel-boundary acceptance remains pending.",
+    "Five documented broad Godot baseline failures remain unchanged; they are not passes.",
+    "No Worker deployment or merge."
+  ],
+  "new_blockers": [
+    "Computer Use was not approved to use Google Chrome"
+  ],
+  "measured_goal_session_elapsed_seconds": 1483,
+  "elapsed_note": "Wall time includes cold imports, source capture, regression and build waits. No person-day estimate inferred."
+}
