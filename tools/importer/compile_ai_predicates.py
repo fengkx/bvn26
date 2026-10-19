@@ -33,6 +33,7 @@ FIELDS = {
     '_root.game["p" + _parent.pn + "fz"].动作': 'opponent_helper_action',
     OPPONENT + '.mc.sw': 'opponent_sw',
     OPPONENT + '._x': 'opponent_x', OPPONENT + '._y': 'opponent_y',
+    OPPONENT + '._visible': 'opponent_visible',
     '_parent._parent._x': 'x', '_parent._parent._y': 'y',
     '_parent._parent.scale_X': 'scale_X', '_parent._parent._xscale': 'xscale',
     '_root.zhanting': 'root_paused',

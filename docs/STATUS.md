@@ -905,3 +905,5 @@ Evidence, source-first answers, retained traces and reproduction commands:
 Accepted 44-case replay elapsed 182.728 seconds; measured work through evidence
 packaging was 601 seconds, without inferring person-days. M3/M6 acceptance
 remains pending. No merge or Worker/Vercel deployment.
+
+- 2026-10-19：带土基础形态已按源编译并接入本地／联机目录；12 例原生 Flash 对照匹配 5,784 条状态。延迟碰撞结果与对手可见性由共用字段解释；准备帧无受击框的负例及 PR #37 恢复保护保持原样。全角色保存轨迹回放 143/143 例、85,006 条状态匹配；检查和实测耗时见 [带土证据](../evidence/characters/daitu/README.md) 与 [检查记录](../evidence/characters/daitu/checks.json)。coverage 保持 partial，完整视听／浏览器／AI 验收待完成；不含援助，未部署或合并。

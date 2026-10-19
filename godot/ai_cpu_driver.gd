@@ -206,6 +206,12 @@ func _frame_service(event: Dictionary) -> void:
 			for call in event["calls"]:
 				_frame_service(call)
 			return
+		"frame_hit_test":
+			fighter.ai_source_state.values[event["field_name"]] = fighter.ai_predicate_context.body_hit(event["instance"])
+			return
+		"opponent_visibility":
+			fighter.ai_predicate_context.write_field("opponent_visible", event["value"])
+			return
 		"frame_field":
 			var key: String = event["field_name"]
 			var value: Variant = event["value"]
