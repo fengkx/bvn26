@@ -5,6 +5,10 @@ Survey date: 2026-10-15. Baseline: `origin/master` at `3423be31`, branch
 are **not started**; this survey does not close implementation milestones or
 change `plan/tasks.json` acceptance status.
 
+The user-authorized 2026-10-19 [prep-counter-super stability fix](../evidence/combat/prep-counter-super-unfreeze/README.md)
+extends the protected helper. Preservation below now means that updated helper
+and both cleanup call sites; the historical survey was not its authorization.
+
 ## Non-negotiable boundaries
 
 Read [SOURCE_FIRST](SOURCE_FIRST.md) first, then [HIT_RECEIVE_SOP](HIT_RECEIVE_SOP.md),
@@ -324,10 +328,10 @@ python3 - <<'PY'
 import hashlib
 from pathlib import Path
 raw = Path('godot/fighter_runtime.gd').read_bytes()
-start = raw.index(b'func _clear_interrupted_super_preparation()')
+start = raw.index(b'func _clear_interrupted_super_preparation(')
 end = raw.index(b'\n\n', start) + 2
-assert end - start == 544
-assert hashlib.sha256(raw[start:end]).hexdigest() == 'd39b2b50d96d37ac717e1d1e8e9ccd711a67f6bbadcee6afc30593d6e0caa91e'
+assert end - start == 1086
+assert hashlib.sha256(raw[start:end]).hexdigest() == '9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed'
 print('PROTECTED_FUNCTION_OK')
 PY
 ```
@@ -376,7 +380,9 @@ On this docs-only branch, `tools/verify.py`, `tools/check_handoff.py` and
 `git diff --check` passed. All 103 retained fixture and decompressed original
 trace hashes were checked against the review index. Embedded Python command
 blocks were syntax-checked and smoke completion markers checked against source.
-The protected function still has 544 bytes and the recorded SHA-256 above.
+At the survey date, the protected function had 544 bytes and SHA-256
+`d39b2b50d96d37ac717e1d1e8e9ccd711a67f6bbadcee6afc30593d6e0caa91e`.
+The executable check above now pins the separately authorized stability fix.
 No runtime, compiler, test, generated content, source input or manifest was
 modified. This new document is not an existing manifest-covered file. Gameplay
 suites were deliberately not executed for a documentation-only survey; runtime

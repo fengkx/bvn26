@@ -880,3 +880,26 @@ retain all captures, retries, fixtures, hashes and comparisons. The unchanged
 `_clear_interrupted_super_preparation` remains an intentional Flash deviation.
 Four-edge exhaustive windows, whole-role audiovisual/browser/AI acceptance and
 unported fighters remain pending. M6 stays pending/partial; no deployment.
+
+
+## 2026-10-19 — prep-counter-super intentional anti-deadlock deviation
+
+Extended the Gin-class `_clear_interrupted_super_preparation` fix to cover a
+real hit before the preparation frame's queued `bs = 1` write. The original
+energy write still runs. **Flash still freezes; Godot intentionally recovers.**
+This is an authorized stability deviation, not a Flash parity correction.
+
+The unchanged 40-case audit now yields 38 exact 14-field matches and two
+explicit recovery deviations (Orochimaru/Pain). Both diverge first only in
+pause release at tick 38; normal hit freeze finishes at tick 57 and play
+continues through tick 240. Four extra slot-swapped/one-tick-later sequences
+recover, and all 13 Jiraiya cases remain exact, including its protected
+preparation negative. Eight focused Godot checks (including Gin and all three
+audited fighters' rollback tests), 313 Python tests with two skips, and both
+602-state shared-mode comparisons pass. Locked-input and handoff checks pass.
+
+Evidence, source-first answers, retained traces and reproduction commands:
+[evidence/combat/prep-counter-super-unfreeze/](../evidence/combat/prep-counter-super-unfreeze/README.md).
+Accepted 44-case replay elapsed 182.728 seconds; measured work through evidence
+packaging was 601 seconds, without inferring person-days. M3/M6 acceptance
+remains pending. No merge or Worker/Vercel deployment.
