@@ -16,6 +16,7 @@ class IntroRosterTests(unittest.TestCase):
         expected = {
             "orochimaru": (1186, 1293),
             "jiraiya": (1118, 1220),
+            "pain": (1266, 1326),
             "minren": (1099, 1178),
             "yihu": (822, 901),
             "rifagu": (983, 1062),

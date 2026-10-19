@@ -14,7 +14,7 @@ import re
 
 from compile_ai_predicates import (
     ROOT, NAMES, DISPATCH_NAMES, FIELDS, FUNCTION, expression, compile_source, controller_script,
-    controller_aliases,
+    controller_aliases, OPPONENT,
 )
 from compile_ai_context import controller_scope_fields
 from build_combat_model import (
@@ -106,6 +106,10 @@ def compile_body(
     params_list = [x.strip() for x in params.split(',') if x.strip()]
     locals_ = LOCALS | set(params_list)
     source_fields = scope_fields or set()
+    # Resolve bounded container aliases offline. They denote stable fighter
+    # wrappers throughout one callback; only mapped scalar members are emitted.
+    container_aliases = {}
+
     output = ['', 'func ' + name + '(' + ', '.join(p + ': Variant = null' for p in params_list) + ') -> Variant:']
     depth = 1
     for raw in body.splitlines():
@@ -120,6 +124,16 @@ def compile_body(
             if depth < 1:
                 raise ValueError(f'Unbalanced {name}')
             continue
+        alias = re.fullmatch(r'var (\w+) = (.+);', line)
+        if alias and alias[2] in (OPPONENT, '_parent._parent'):
+            if alias[1] in locals_ or alias[1] in container_aliases:
+                raise ValueError('Container alias redeclared: ' + alias[1])
+            container_aliases[alias[1]] = alias[2]
+            continue
+        for local, container in container_aliases.items():
+            if re.match(rf'(?:var )?{re.escape(local)}\s*=', line):
+                raise ValueError('Container alias reassigned: ' + local)
+            line = re.sub(rf'(?<![.\w]){re.escape(local)}(?=\.)', lambda _: container, line)
         indent = '\t' * depth
         translated = []
         if line.startswith('if(') and line.endswith(')'):

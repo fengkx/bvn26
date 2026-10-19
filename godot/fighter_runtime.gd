@@ -1939,6 +1939,8 @@ func _apply_body_warp_event(event: Dictionary, invocation_serial: int = -1) -> v
 			+ float(branch.get("x_pixels", 0.0))
 			+ source_body_size.x * float(branch.get("x_bdmn_width", 0.0))
 		)
+	if branch.has("set_scale_x"):
+		facing = int(branch["set_scale_x"])
 	if (not y_reads_body_height or body_exists) and bool(warp.get("place_y", false)):
 		source_y = (
 			opponent.source_y

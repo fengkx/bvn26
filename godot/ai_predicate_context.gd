@@ -45,6 +45,8 @@ func write_field(key: String, value: Variant) -> void:
 	match key:
 		"x": fighter.source_x = float(value)
 		"y": fighter.source_y = float(value)
+		"opponent_x": fighter.opponent.source_x = float(value)
+		"opponent_y": fighter.opponent.source_y = float(value)
 		"scale_X": fighter.facing = int(value)
 		"xscale": fighter.scale.x = float(value) / 100.0
 		"jumped", "fall", "khit", "touch": fighter.ai_source_state.values[key] = value
