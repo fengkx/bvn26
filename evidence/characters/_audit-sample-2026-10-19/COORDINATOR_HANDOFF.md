@@ -3,7 +3,9 @@
 Runtime tip SHA: `2d3336bf039e7ad0ac92c22423273f664b432225`.
 Branch/worktree: `audit/sample-new-chars` at
 `/Users/fengkx/me/agent-code/bvn2_6-sample-new`.
-PR: pending creation after evidence validation.
+PR: https://github.com/fengkx/bvn2_6/pull/36 (open, not merged).
+Audit evidence tip before this handoff-link commit: `7e7d949ac13de1733a8262404ba0f0d2991864b7`.
+The follow-up commit updates handoff metadata only; runtime remains at the audited SHA.
 
 | Fighter | Existing + adversarial cases | States | 14-field parity | First divergence |
 | --- | ---: | ---: | --- | --- |
