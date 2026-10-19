@@ -18,7 +18,7 @@ are unchanged.
 | [36 Godot check results](../evidence/characters/itachi/godot-checks.json) | Machine-readable test names and actual markers; includes all 15 rollback foundation checks. Do not run those 15 twice in the final gate. |
 | [Later focused Godot checks](../evidence/characters/itachi/review-mediums/godot-checks.json) | Additional placement/rollback review context and timings. The roster's old summary says 11, but 16 per-fighter success records establish executed coverage. |
 | [Five historical failures](../evidence/characters/itachi/baseline-godot-failures.json) | Records failures on `84d567fe`; these are inherited reference signatures, not a fresh result on the current candidate. |
-| [Protected-function record](../evidence/characters/itachi/review-mediums/preservation.json) | `_clear_interrupted_super_preparation`: 544 bytes, SHA-256 `d39b2b50d96d37ac717e1d1e8e9ccd711a67f6bbadcee6afc30593d6e0caa91e`. Keep its bytes, call position and conditions unchanged. The anti-deadlock deviation is intentional. |
+| [Current protected-function baseline](../evidence/combat/prep-counter-super-unfreeze/README.md) | `_clear_interrupted_super_preparation`: 1086 bytes, SHA-256 `9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed`. Current preservation baseline after the authorized 2026-10-19 queued-preparation fix; preserve both call sites and conditions during refactors. The anti-deadlock deviation is intentional. |
 
 “All-character” means the 16 implemented fighters listed in the replay index:
 `byakuya`, `chad`, `itachi`, `kakashi`, `lee`, `minren`, `neji`, `renji`, `rifagu`,
@@ -257,17 +257,21 @@ its per-process timeout is 180 seconds, whereas a retained loaded-host roster
 run took 403.6 seconds. Use the 600-second driver above for the final gate;
 a timeout is an infrastructure result to investigate, never a gameplay pass.
 
-Verify the protected function on every implementation candidate:
+The original 544-byte helper is preserved in historical evidence. The user-authorized
+[prep-counter-super fix](../evidence/combat/prep-counter-super-unfreeze/README.md)
+supersedes that byte baseline and adds a deferred cleanup call. Its 40-case
+runner expects 38 exact matches and two intentional Flash recovery deviations.
+Verify the updated protected function on every implementation candidate:
 
 ```sh
 python3 - <<'PY'
 import hashlib
 from pathlib import Path
 raw = Path('godot/fighter_runtime.gd').read_bytes()
-start = raw.index(b'func _clear_interrupted_super_preparation()')
+start = raw.index(b'func _clear_interrupted_super_preparation(')
 end = raw.index(b'\n\n', start) + 2
-assert end - start == 544
-assert hashlib.sha256(raw[start:end]).hexdigest() == 'd39b2b50d96d37ac717e1d1e8e9ccd711a67f6bbadcee6afc30593d6e0caa91e'
+assert end - start == 1086
+assert hashlib.sha256(raw[start:end]).hexdigest() == '9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed'
 print('PROTECTED_FUNCTION_OK')
 PY
 ```

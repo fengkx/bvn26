@@ -145,3 +145,11 @@ for the batch. The first eight-case native attempt exceeded the helper script's
 This changes harness time only, not fight ticks, traces, inputs or thresholds.
 Temporary SWFs, engine caches, downloaded PCK and raw workspaces stay in `/tmp`.
 Only compact audit evidence is retained here.
+
+## Subsequent intentional deviation
+
+The [prep-counter-super stability fix](../../combat/prep-counter-super-unfreeze/README.md)
+changes the current Godot expectation for the two counter-super deadlocks to
+recovery. This audit remains historical: Flash still freezes, and its original
+40/40 result and traces are unchanged. Use `tools/test_prep_counter_super.py`
+for the updated runtime; this directory's `recheck.py` pins the historical runtime.

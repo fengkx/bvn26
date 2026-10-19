@@ -524,13 +524,24 @@ func receive_attack(attack: Dictionary, attacker_facing: int, source_context: Di
 		"before": before, "after": _diagnostic_state(), "attack": source_context})
 
 
-func _clear_interrupted_super_preparation() -> void:
-	if guarding or bs != 1:
+func _clear_interrupted_super_preparation(mark_pending: bool = true) -> void:
+	if guarding:
 		return
 	var shared_super: SuperRuntime = _ensure_super_runtime()
 	if shared_super.zhanting or shared_super.game_paused or not _game_running():
 		return
-	# Intentional fix for a source deadlock: source sets bs before entering bsd.
+	# A receiver can interrupt before this entry's queued DoAction sets bs.
+	# Preserve its other writes (including energy), then clear the orphaned lock.
+	if mark_pending:
+		for pending: Dictionary in _ai_pending_frames:
+			if int(pending.get("serial", 0)) != _source_frame_execution_serial:
+				continue
+			for write: Dictionary in ai_source_state.spec["frame_writes"].get(str(pending["frame"]), []):
+				if write.get("field") == "bs" and write.get("value") == 1:
+					pending["interrupted_super_preparation"] = true
+	if bs != 1:
+		return
+	# Intentional Flash deviation: source sets bs before entering bsd.
 	# If a real hit replaces that preparation action, it may not reach the
 	# frame-1 initializer before the next super pause; retaining bs can strand
 	# that later bsw behind an orphaned lock.
@@ -1139,6 +1150,8 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 			if int(summon["frame"]) == pending and str(summon.get("call_kind", "doZhaoHuan")) == "doZhaoHuan":
 				_summon_applied = true
 				_execute_summon_event(summon)
+		if pending_entry.get("interrupted_super_preparation", false):
+			_clear_interrupted_super_preparation(false)
 		_ai_state_frame_applied = pending
 		source_frame_script_boundary.emit(pending, false)
 

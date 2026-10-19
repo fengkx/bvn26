@@ -63,6 +63,27 @@ func _run() -> void:
 	assert(minren.action == "被打")
 	assert(minren.bs == 0 and minren.ai_source_state.read_field("bs") == 0)
 
+	# Source preparation writes are queued after receiver callbacks. A hit on
+	# that same tick must preserve the energy cost without resurrecting bs.
+	for id in ["orochimaru", "pain"]:
+		var prepared := await _fighter(id, "p1")
+		prepared.super_runtime = shared
+		prepared.opponent = yulong
+		prepared.run_frame_actions()
+		prepared.ai_timeline_controlled = true
+		prepared.energy = 300
+		prepared.goto_ai_label("必杀", true)
+		prepared._apply_ai_source_frame()
+		prepared.advance_ai_timeline()
+		assert(prepared.current_source_frame() == (535 if id == "orochimaru" else 601))
+		assert(prepared.bs == 0)
+		prepared.receive_attack(_attack(), 1)
+		prepared._apply_ai_source_frame(false, 1)
+		assert(prepared.energy == 200, "Interrupted queued preparation still spends source energy")
+		assert(prepared.bs == 0 and prepared.ai_source_state.read_field("bs") == 0)
+		assert(not shared.zhanting)
+		prepared.queue_free()
+
 	print("INTERRUPTED_SUPER_LOCK_SMOKE_OK")
 	for fighter in [sasuke, yulong, minren]:
 		fighter.queue_free()
