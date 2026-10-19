@@ -23,6 +23,7 @@ func read_field(key: String) -> Variant:
 		"gravity": return gravity
 		"opponent_x": return fighter.opponent.source_x if fighter.opponent != null else null
 		"opponent_y": return fighter.opponent.source_y if fighter.opponent != null else null
+		"opponent_visible": return fighter.opponent.visible if fighter.opponent != null else null
 		"opponent_hp": return fighter.opponent.health if fighter.opponent != null else null
 		"opponent_action":
 			return fighter.opponent.ai_source_state.read_field("动作") if fighter.opponent != null else null
@@ -47,6 +48,7 @@ func write_field(key: String, value: Variant) -> void:
 		"y": fighter.source_y = float(value)
 		"opponent_x": fighter.opponent.source_x = float(value)
 		"opponent_y": fighter.opponent.source_y = float(value)
+		"opponent_visible": fighter.opponent.visible = bool(value)
 		"scale_X": fighter.facing = int(value)
 		"xscale": fighter.scale.x = float(value) / 100.0
 		"jumped", "fall", "khit", "touch": fighter.ai_source_state.values[key] = value

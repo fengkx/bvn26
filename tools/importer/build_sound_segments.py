@@ -28,9 +28,9 @@ def segment(samples, channels, event):
     # The SWF SOUNDENVELOPE positions are always expressed in 44.1 kHz
     # samples. ``build`` normalizes decoded PCM to this rate before here.
     envelope = sorted(event.get('envelope', []), key=lambda item: int(item['pos44']))
+    # Coincident points encode an instantaneous step: interpolate into the
+    # first point, then use the last point at that sample and afterward.
     positions = [int(item['pos44']) for item in envelope]
-    if len(positions) != len(set(positions)):
-        raise ValueError('SOUNDINFO envelope positions must be unique')
     if any(position < 0 for position in positions):
         raise ValueError('SOUNDINFO envelope positions must be non-negative')
     start = int(event.get('in_point', 0))
@@ -41,7 +41,7 @@ def segment(samples, channels, event):
     for index in range(start, end):
         if not envelope:
             left_level = right_level = 32768
-        elif index <= positions[0]:
+        elif index < positions[0]:
             left_level = envelope[0]['left_level']
             right_level = envelope[0]['right_level']
         elif index >= positions[-1]:
@@ -49,7 +49,7 @@ def segment(samples, channels, event):
             right_level = envelope[-1]['right_level']
         else:
             right = next(cursor for cursor, position in enumerate(positions[1:], 1)
-                         if index <= position)
+                         if index < position)
             left = right - 1
             span = positions[right] - positions[left]
             fraction = (index - positions[left]) / span

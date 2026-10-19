@@ -18,6 +18,7 @@ class IntroRosterTests(unittest.TestCase):
             "jiraiya": (1118, 1220),
             "pain": (1266, 1326),
             "konan": (1161, 1240),
+            "daitu": (1148, 1208),
             "minren": (1099, 1178),
             "yihu": (822, 901),
             "rifagu": (983, 1062),

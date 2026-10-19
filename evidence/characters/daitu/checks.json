@@ -1,0 +1,320 @@
+{
+  "status": "targeted_validation_passed_full_acceptance_pending",
+  "base": "8fc5c5e458938f39cc1f5f20162eab17bdcde23f",
+  "branch": "feat/daitu",
+  "native_flash_parity": {
+    "passed": 12,
+    "cases": 12,
+    "source_states": 5784,
+    "native_states": 5784,
+    "fields": 14,
+    "report": "comparisons.json"
+  },
+  "shared_runtime_changed": true,
+  "shared_runtime_files": [
+    "godot/ai_cpu_driver.gd",
+    "godot/ai_predicate_context.gd"
+  ],
+  "protected_function": {
+    "status": "PROTECTED_FUNCTION_OK",
+    "bytes": 1086,
+    "sha256": "9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed"
+  },
+  "godot": [
+    {
+      "name": "player_controller_smoke",
+      "exit": 0,
+      "seconds": 4.531374417012557,
+      "markers": [
+        "PLAYER_CONTROLLER_SMOKE_OK"
+      ],
+      "errors": []
+    },
+    {
+      "name": "player_visual_smoke",
+      "exit": 0,
+      "seconds": 11.873239708016627,
+      "markers": [
+        "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+        "PLAYER_VISUAL_SMOKE_OK"
+      ],
+      "errors": []
+    },
+    {
+      "name": "combat_smoke",
+      "exit": 0,
+      "seconds": 13.52427220903337,
+      "markers": [
+        "COMBAT_SMOKE_OK"
+      ],
+      "errors": []
+    },
+    {
+      "name": "menu_smoke",
+      "exit": 0,
+      "seconds": 1.8202228749869391,
+      "markers": [
+        "MENU_SMOKE_OK"
+      ],
+      "errors": []
+    },
+    {
+      "name": "stage_sound_smoke",
+      "exit": 0,
+      "seconds": 0.6563244999852031,
+      "markers": [
+        "stage_sound_smoke ok"
+      ],
+      "errors": [
+        "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    {
+      "name": "character_selection_smoke",
+      "exit": 0,
+      "seconds": 6.63050725008361,
+      "markers": [
+        "CHARACTER_SELECTION_SMOKE_OK"
+      ],
+      "errors": []
+    },
+    {
+      "name": "hit_settlement_frame_smoke",
+      "exit": 0,
+      "seconds": 2.497716416954063,
+      "markers": [
+        "HIT_SETTLEMENT_FRAME_SMOKE_OK"
+      ],
+      "errors": []
+    },
+    {
+      "name": "source_hit_test_smoke",
+      "exit": 0,
+      "seconds": 0.9009464579867199,
+      "markers": [
+        "SOURCE_HIT_TEST_SMOKE_OK"
+      ],
+      "errors": []
+    },
+    {
+      "name": "interrupted_super_lock_smoke",
+      "exit": 0,
+      "seconds": 3.4834293329622597,
+      "markers": [
+        "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+      ],
+      "errors": []
+    },
+    {
+      "name": "daitu_rollback_smoke",
+      "exit": 0,
+      "seconds": 81.76903358392883,
+      "markers": [
+        "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+        "DAITU_ROLLBACK_SMOKE_OK intro=natural super=upper guard=true round_reset=true late_input=true"
+      ],
+      "errors": []
+    },
+    {
+      "name": "online_character_selection_smoke",
+      "exit": 0,
+      "seconds": 4.668241749983281,
+      "markers": [
+        "ONLINE_CHARACTER_SELECTION_SMOKE_OK local_slots=true phase_barrier=true helper_phase=true choice_freeze=true buffered_phase_validation=true service_ids=true offline_chain_isolated=true",
+        "ONLINE_CHARACTER_SELECTION_RESELECT_SMOKE_OK stale_session_rejected=true cancel_keeps_choice=true",
+        "ONLINE_CHARACTER_SELECTION_LIFECYCLE_SMOKE_OK pending_timer_stopped=true teardown_rejects_late_snapshot=true reentry=true",
+        "ONLINE_CHARACTER_SELECTION_SOURCE_RULE_SMOKE_OK same_fighter_helper_rejected=true invalid_old_helper_not_restored=true"
+      ],
+      "errors": []
+    }
+  ],
+  "compiler_impact": [
+    {
+      "fighter": "rifagu",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "renji",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "rukia",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "yihu",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "minren",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "sakura",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "sasuke",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "kakashi",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "byakuya",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "chad",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "lee",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "neji",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "yulong",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "yin",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "itachi",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "orochimaru",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "jiraiya",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "konan",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "pain",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    },
+    {
+      "fighter": "yijiao",
+      "context_unchanged": true,
+      "receiver_unchanged": true
+    }
+  ],
+  "environment": {
+    "os": "macOS-26.7-arm64-arm-64bit",
+    "python": "3.11.15",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "Adobe Flash Player Debugger 32.0.0.465"
+  },
+  "deviations": [
+    "Retained PR #37 direct and queued interrupted-super preparation recovery unchanged."
+  ],
+  "limitations": [
+    "Preparation interruption is source-protected: no bdmn at the super preparation frames. The targeted attempt is a negative case; positive queued recovery is covered by the shared smoke.",
+    "Full audiovisual/cross-browser/AI and exhaustive boundaries remain pending.",
+    "Coincident SOUNDINFO envelope points are preserved as a step in the baked PCM; native audio waveform parity has not been measured.",
+    "No assist, Worker/Vercel deployment or merge.",
+    "Saved roster corpus has no Renji-primary replay; Renji is present as opponent only."
+  ],
+  "measured_elapsed_seconds": 2948,
+  "runtime_sha256": {
+    "fighter_runtime.gd": "848224f1624992c14a0cd27cda67cbf144df003809a7a0869b4f852ea01e4a1f",
+    "ai_predicate_context.gd": "8a2689acec22aefd729bd86ba1b36910a5c65b5c18b5ab5b4df4e631e55d64c9",
+    "main.gd": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f",
+    "player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea",
+    "ai_cpu_driver.gd": "5a7676502b306dd86eb0bb1138d58ff291e6283753927514ccc7b3195cc9da50"
+  },
+  "roster_replay": {
+    "cases": 143,
+    "matched": 143,
+    "failed": 0,
+    "states": 85006,
+    "fields": 14,
+    "primary_fighters": 19,
+    "prior_catalog_slots": 20,
+    "coverage_note": "Prior 131-case / 79,222-state baseline plus Konan 12 cases / 5,784 states. Renji appears as opponent only; no Renji-primary saved replay.",
+    "runtime_sha256": {
+      "fighter_runtime.gd": "848224f1624992c14a0cd27cda67cbf144df003809a7a0869b4f852ea01e4a1f",
+      "ai_predicate_context.gd": "8a2689acec22aefd729bd86ba1b36910a5c65b5c18b5ab5b4df4e631e55d64c9",
+      "main.gd": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f",
+      "player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea",
+      "ai_cpu_driver.gd": "5a7676502b306dd86eb0bb1138d58ff291e6283753927514ccc7b3195cc9da50"
+    },
+    "source_indexes": [
+      "evidence/characters/itachi/review-mediums/regressions.json",
+      "evidence/characters/orochimaru/comparisons.json",
+      "evidence/characters/jiraiya/comparisons.json",
+      "evidence/characters/pain/comparisons.json",
+      "evidence/characters/konan/comparisons.json"
+    ],
+    "seconds": 2376.9494307499845,
+    "report": "regressions.json"
+  },
+  "validation": {
+    "python": {
+      "run": 322,
+      "passed": 320,
+      "skipped": 2
+    },
+    "matchmaking": {
+      "passed": 31,
+      "typecheck": "passed",
+      "node": "24.18.0"
+    },
+    "contracts": {
+      "schemas": 6,
+      "examples": 6,
+      "status": "passed"
+    },
+    "verify": "passed",
+    "handoff": "passed",
+    "online_manifest": "passed: 21 fighters, 4 helpers, 10 maps",
+    "shared_modes": {
+      "pvp_states": 602,
+      "training_timer_states": 602,
+      "status": "matched"
+    },
+    "web": {
+      "status": "built locally; lobby runner and metadata checks passed",
+      "metadata": "web-build.json",
+      "browser": "browser-check.json",
+      "deployed": false
+    }
+  },
+  "stage_sound_rerun": {
+    "status": "passed",
+    "log": "logs/stage-sound-verbose.log.gz",
+    "note": "Verbose rerun has no resource-in-use error; initial successful assertion plus exit warning remains in original report/log."
+  },
+  "elapsed_note": "Wall time since fixture pipeline start, including original captures, failures, tests, imports and local builds; excludes initial reading. No person-days inferred."
+}

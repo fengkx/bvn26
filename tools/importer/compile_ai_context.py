@@ -212,13 +212,15 @@ def controller_scope_fields(bundle: dict, sprite: int) -> set[str]:
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
     # Admit the complete source block, not a guessed label/frame exception.
     match = re.fullmatch(
-        r'if\(_root\.game\["p" \+ pn\]\.mc\.hp > (-?\d+) && '
+        r'if\((?:(\w+) && )?_root\.game\["p" \+ pn\]\.mc\.hp > (-?\d+) && '
         r'_root\.game\["p" \+ pn\]\.mc\.动作 == (-?\d+)\)\s*'
         r'\{\s*gotoAnd(Play|Stop)\("([^"\n]+)"\);\s*play\(\);\s*\}\s*', text)
     if match:
-        conditions = [{'field': 'opponent_hp', 'operator': 'gt', 'value': int(match[1])},
-                      {'field': 'opponent_action', 'operator': 'eq', 'value': int(match[2])}]
-        calls = [{'op': 'timeline_goto', 'label': match[4], 'play': match[3] == 'Play'},
+        conditions = [{'field': 'opponent_hp', 'operator': 'gt', 'value': int(match[2])},
+                      {'field': 'opponent_action', 'operator': 'eq', 'value': int(match[3])}]
+        if match[1]:
+            conditions.insert(0, {'field': match[1], 'operator': 'eq', 'value': True})
+        calls = [{'op': 'timeline_goto', 'label': match[5], 'play': match[4] == 'Play'},
                  {'op': 'timeline_play'}]
     else:
         state = re.fullmatch(
@@ -334,7 +336,12 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                    {'field': '_lastX', 'value': int(initial[1])}],
         'limits': ['This projects scalar state only; pn binding, doWanKai and updateDirect remain host-owned.'],
     }
-    scoped_fields = controller_scope_fields(bundle, sprite)
+    hit_test_pattern = re.compile(
+        r'^(\w+) = (\w+)\.hitTest\(_root\.game\["p" \+ pn\]\.mc\.bdmn\);$', re.M)
+    hit_fields = {match[1] for path, text in scripts.items()
+                  if path.startswith(f'DefineSprite_{sprite}/') and path.endswith('/DoAction.as')
+                  for match in hit_test_pattern.finditer(text.replace('\r\n', '\n'))}
+    scoped_fields = controller_scope_fields(bundle, sprite) | hit_fields
     state_fields = FIELDS | scoped_fields
     declarations=[
         m[1] for line in root.splitlines()
@@ -349,11 +356,20 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
     for frame in timeline['frames']:
         path=f'DefineSprite_{sprite}/frame_{frame["frame"]}/DoAction.as'
         text=root if frame['frame']==1 else scripts.get(path,'')
-        events=writes(text,path,controller_scope_fields=scoped_fields)
+        scalar_text = hit_test_pattern.sub(lambda match: ' ' * len(match[0]), text.replace('\r\n', '\n'))
+        events=writes(scalar_text,path,controller_scope_fields=scoped_fields)
         if frame['frame'] == 1 and any(event['field'] in ('inited', '_lastX') for event in events):
             raise ValueError('First-init projection conflicts with unconditional frame state writes')
         if events:frame_writes[str(frame['frame'])]=events
         calls=conditional_frame_calls(text, path, frame["frame"])
+        for match in hit_test_pattern.finditer(text.replace('\r\n', '\n')):
+            calls.append({'op': 'frame_hit_test', 'field_name': match[1],
+                          'instance': match[2], 'path': path, 'frame': frame['frame'],
+                          'line': text.replace('\r\n', '\n')[:match.start()].count('\n') + 1})
+        reveal = re.fullmatch(r'_root\.game\["p" \+ pn\]\._visible = (true|false);\s*', text)
+        if reveal:
+            calls.append({'op': 'opponent_visibility', 'value': reveal[1] == 'true',
+                          'path': path, 'frame': frame['frame'], 'line': 1})
         if frame['frame'] != 1 and re.search(r'\bif\(', text) and 'gotoAnd' in text and not calls:
             raise ValueError('Uncompiled conditional frame jump: ' + path)
         # Root display-list identity changes are source events.  They must be

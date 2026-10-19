@@ -192,6 +192,14 @@ immediately and appends its target to the current frame-action queue. Draining
 the queue must preserve source writes and commands appended during execution.
 Conditional commands and uncompiled BODY calls remain outside this extraction.
 
+`frame_calls` additionally admits `frame_hit_test` (`field_name`, `instance`),
+which saves the named body hit-test result when that source DoAction executes,
+and `opponent_visibility` (`value`), which writes the opponent wrapper's visible
+property. A later `conditional_frame` can read the saved boolean alongside
+opponent HP/action; it must not recompute the collision at branch time.
+Controller scalar writes expose `opponent_visible` through the same adapter as
+opponent X/Y. Visibility is included in native checkpoint state.
+
 ### AI effect wrapper linkage
 
 `generated/main/ai_visual_services.json` retains source wrapper names, clip

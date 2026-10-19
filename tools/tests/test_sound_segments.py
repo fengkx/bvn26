@@ -44,12 +44,16 @@ class SoundSegmentTests(unittest.TestCase):
         })
         self.assertEqual(list(result), [50, 25, 50, 25, 50, 25, 75, 38, 100, 50])
 
-    def test_duplicate_envelope_positions_are_rejected(self):
-        with self.assertRaisesRegex(ValueError, 'positions must be unique'):
-            segment(array('h', [100]), 1, {'envelope': [
-                {'pos44': 0, 'left_level': 1, 'right_level': 1},
-                {'pos44': 0, 'left_level': 2, 'right_level': 2},
-            ]})
+    def test_authored_coincident_points_preserve_incoming_ramp_and_outgoing_level(self):
+        timeline = json.loads((ROOT / 'godot/generated/fighters/daitu/timeline.json').read_text())
+        event = next(event for frame in timeline['frames'] for event in frame.get('events', [])
+                     if event.get('type') == 'start_sound' and event['sound_id'] == 282)
+        self.assertEqual(event['envelope'][-2:], [
+            {'pos44': 23100, 'left_level': 0, 'right_level': 32768},
+            {'pos44': 23100, 'left_level': 0, 'right_level': 0},
+        ])
+        result, _, _ = segment(array('h', [1000]) * 23102, 1, event)
+        self.assertEqual(list(result[23099 * 2:23102 * 2]), [2, 1000, 0, 0, 0, 0])
 
     def test_original_renji_frame_21_sound_38_dynamic_envelope(self):
         timeline = json.loads(

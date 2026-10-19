@@ -61,6 +61,24 @@ def compile_transfer(bundle: dict) -> tuple[str, dict]:
             timeline = json.loads(timeline_path.read_text())
             placed = {str(p.get('character_id')) for frame in timeline.get('frames', [])
                       for p in frame.get('display_list', [])}
+            sprite = timeline['sprite_id']
+            callbacks = {match[1] for script in bundle['scripts']
+                         if (match := re.fullmatch(
+                             rf'DefineSprite_{sprite}/frame_\d+/PlaceObject2_(\d+)_\d+/CLIPACTIONRECORD onClipEvent\(enterFrame\).as',
+                             script['path']))
+                         and re.search(r'\b(?:beida|fangyu)\(\);', script['source'])}
+            placed_candidates = [s for s in candidates
+                                 if re.match(r'DefineSprite_(\d+)/', s['path'])[1] in placed]
+            # A decompiler may number an otherwise identical loop iterator
+            # differently. Preserve every other source token, including all
+            # packet writes, before selecting the invoked receiver symbol.
+            def receiver_contract(source):
+                match = re.search(r'for\(var (_loc\d+_) in array\)', source)
+                if match:
+                    source = re.sub(r'\b' + re.escape(match[1]) + r'\b', '_receiver_index_', source)
+                return source
+            if len({receiver_contract(s['source']) for s in placed_candidates}) == 1:
+                placed &= callbacks
         candidates = [s for s in candidates if re.match(r'DefineSprite_(\d+)/', s['path'])[1] in placed]
     # One form can place several byte-identical receiver symbols. They share
     # the packet-transfer implementation; distinct sources must still fail.
