@@ -1,0 +1,127 @@
+{
+  "audited_commit": "2d3336bf039e7ad0ac92c22423273f664b432225",
+  "status": "sampled_state_parity_matched_with_original_freeze_observed",
+  "fields": 14,
+  "cases": 40,
+  "states": 19280,
+  "per_character": {
+    "orochimaru": {
+      "cases": 12,
+      "existing_cases": 8,
+      "adversarial_cases": 4,
+      "states": 5784,
+      "matched": 12,
+      "first_divergence": null
+    },
+    "jiraiya": {
+      "cases": 13,
+      "existing_cases": 10,
+      "adversarial_cases": 3,
+      "states": 6266,
+      "matched": 13,
+      "first_divergence": null
+    },
+    "pain": {
+      "cases": 15,
+      "existing_cases": 10,
+      "adversarial_cases": 5,
+      "states": 7230,
+      "matched": 15,
+      "first_divergence": null
+    }
+  },
+  "all_28_prior_fixtures_and_source_state_sequences_unchanged": true,
+  "source_shared_freezes": [
+    {
+      "id": "orochimaru-prep-counter-super",
+      "source_and_godot_freeze": true,
+      "observation_end_tick": 240,
+      "final_p1_frame": 1108.0,
+      "final_p2_frame": 463.0,
+      "paused_states_per_fighter": 216
+    },
+    {
+      "id": "pain-prep-counter-super",
+      "source_and_godot_freeze": true,
+      "observation_end_tick": 240,
+      "final_p1_frame": 1187.0,
+      "final_p2_frame": 463.0,
+      "paused_states_per_fighter": 216
+    }
+  ],
+  "negative_coverage": {
+    "jiraiya-super-prep-interrupt": "Source removes receiver at super entry; attack does not interrupt. Super recovers normally.",
+    "pain-cancel-super-mirror": "First-normal callback does not accept ordinary super; retained negative. Positive cancellation uses skill-cancel-super-mirror."
+  },
+  "production_runtime_or_data_changed": false,
+  "retained_anti_deadlock_sha256": "d39b2b50d96d37ac717e1d1e8e9ccd711a67f6bbadcee6afc30593d6e0caa91e",
+  "live_fighter_json_files_matched": 42,
+  "live_imported_master_content_fingerprint_matched": true,
+  "godot_smokes": [
+    {
+      "name": "interrupted_super_lock_smoke",
+      "exit": 0,
+      "elapsed_seconds": 2.28751802444458,
+      "passed": true,
+      "markers": [
+        "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+      ]
+    },
+    {
+      "name": "player_visual_smoke",
+      "exit": 0,
+      "elapsed_seconds": 4.9386351108551025,
+      "passed": true,
+      "markers": [
+        "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+        "PLAYER_VISUAL_SMOKE_OK"
+      ]
+    },
+    {
+      "name": "player_controller_smoke",
+      "exit": 0,
+      "elapsed_seconds": 1.4178681373596191,
+      "passed": true,
+      "markers": [
+        "PLAYER_CONTROLLER_SMOKE_OK"
+      ]
+    }
+  ],
+  "measured_session_wall_seconds_through_packaging": 1644,
+  "measured_at_utc": "2026-10-19T02:39:23.357519+00:00",
+  "limitations": [
+    "14 fields are fighter combat state, not pixel/audio/AI/full browser parity.",
+    "Both engines freeze in the two immediate counter-super cases; state equality is not absence of gameplay deadlocks.",
+    "Live build fingerprint was not independently reproduced; the actual PCK, embedded metadata, 42 fighter JSON files and content fingerprint were checked.",
+    "No merge or deployment."
+  ],
+  "final_validation": {
+    "recheck": {
+      "retained_evidence_only": true,
+      "cases": 40,
+      "counts": {
+        "orochimaru": 12,
+        "jiraiya": 13,
+        "pain": 15
+      },
+      "failures": []
+    },
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 21,
+      "local_links": 263,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    }
+  }
+}
