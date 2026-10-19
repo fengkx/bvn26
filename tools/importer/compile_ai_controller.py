@@ -207,7 +207,9 @@ def renamed_timeline_hooks(bundle: dict, sprite: int, timeline: dict, existing: 
         placement = members[0][1]
         character = placement['character_id']
         clip = parse_clip_timeline(bundle, character, frame_counts)
-        if not any(r['instance_name'].endswith('atm') for r in clip.get('rename_frames', [])):
+        renames = clip.get('rename_frames', [])
+        if not renames or not (placement['name'].endswith('atm') or any(
+                r['instance_name'].endswith('atm') for r in renames)):
             continue
         clip['frame_count'] = definitions[character]['frame_count']
         timeline_events = []
