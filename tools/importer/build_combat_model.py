@@ -1517,6 +1517,21 @@ def build_model(
         guard_right = f'if({target}._x<{owner}._x){{returnundefined;}}'
         guarded = guard_left in compact and guard_right in compact
         normalized = compact.replace(guard_left, '').replace(guard_right, '')
+        # Some load callbacks convert opponent coordinates into the scaled mc
+        # space. Preserve the authored divisor instead of dropping the callback.
+        scaled = (f'_X=(-({target}._x-{owner}._x))/(_parent._xscale/100);'
+                  in normalized)
+        if scaled:
+            normalized = normalized.replace(
+                f'_X=(-({target}._x-{owner}._x))/(_parent._xscale/100);',
+                f'_X=-({target}._x-{owner}._x);').replace(
+                f'_X=({target}._x-{owner}._x)/(_parent._xscale/100);',
+                f'_X={target}._x-{owner}._x;')
+        scaled_y = f'_Y=({target}._y-{owner}._y)/(_parent._yscale/100);' in normalized
+        if scaled_y:
+            normalized = normalized.replace(
+                f'_Y=({target}._y-{owner}._y)/(_parent._yscale/100);',
+                f'_Y={target}._y-{owner}._y;')
         expected = (f'onClipEvent(load){{if({owner}._xscale<0){{'
                     f'_X=-({target}._x-{owner}._x);}}else{{'
                     f'_X={target}._x-{owner}._x;}}')
@@ -1534,6 +1549,8 @@ def build_model(
             'place_x': True, 'place_y': y is not None,
             'y_pixels': float(y[1] or 0) if y else 0,
             'front_only': guarded, 'line': 0,
+            **({'divide_parent_scale_x': True} if scaled else {}),
+            **({'divide_parent_scale_y': True} if scaled_y else {}),
             'source_path': script['path'], 'source_sha256': script['source_sha256']})
     body_warps = []
     for script in scripts:

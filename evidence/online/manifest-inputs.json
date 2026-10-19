@@ -15,6 +15,7 @@
         "itachi",
         "jiraiya",
         "kakashi",
+        "konan",
         "lee",
         "minren",
         "neji",
@@ -52,8 +53,8 @@
   },
   "compatibility": {
     "protocol": 1,
-    "build": "2efb8420d27301c580f2a6bf95a9da0369a67f23444f712ecf80fe00113a2304",
-    "content": "94aa780572668a69fcbf71aeea05c868f39b9342b72c16396ffff37da51becd7"
+    "build": "6db0d79fb835029d69312e63c3d869fd3943fc3e3d316d044cc5b43239b980a3",
+    "content": "65418e79d549ac8adb944e4d42a5177e8a11db7fe6e8c5fafc26ea001634bac2"
   },
   "inputs": {
     "build": [
@@ -179,8 +180,8 @@
       },
       {
         "path": "godot/fighter_runtime.gd",
-        "sha256": "83e9db9f2eee7f9ff0edbb4b98518e55cc6c5eec32fe9383ac1edef2d85530a5",
-        "size": 88329
+        "sha256": "848224f1624992c14a0cd27cda67cbf144df003809a7a0869b4f852ea01e4a1f",
+        "size": 89242
       },
       {
         "path": "godot/game_session.gd",
@@ -399,6 +400,46 @@
       },
       {
         "path": "godot/generated/fighters/kakashi/player_controller/predicates.gd",
+        "sha256": "21fe573f1f2b3d3922f038150fc96c045689ad5f5d454576137c2bbd18666e82",
+        "size": 16688
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/body.gd",
+        "sha256": "0bf6f5ae9c7f5316cddb9f43504e1a76917995655c58df536173df52cde26e68",
+        "size": 12259
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/controller.gd",
+        "sha256": "8d124fc50e2fc208f212c7413934914770ab94e7b154ce39e02b4a3545d7a05d",
+        "size": 16380
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/predicates.gd",
+        "sha256": "5cc4aac856e6e2d5e9966f4e47d6dcc0720556a97a350d172d6c5d670d1f743b",
+        "size": 14325
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_hit_state.gd",
+        "sha256": "4210e54514b7e55c0c95a3e305b8fa4a7da3e086a999d0fea6a65feafb25094b",
+        "size": 3152
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_body/body.gd",
+        "sha256": "2ba7e48ea0447b00024d18a242b90c1133d03dc7bede9c07a86d6ecc95508712",
+        "size": 12864
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/body.gd",
+        "sha256": "2ba7e48ea0447b00024d18a242b90c1133d03dc7bede9c07a86d6ecc95508712",
+        "size": 12864
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/controller.gd",
+        "sha256": "8d124fc50e2fc208f212c7413934914770ab94e7b154ce39e02b4a3545d7a05d",
+        "size": 16380
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/predicates.gd",
         "sha256": "21fe573f1f2b3d3922f038150fc96c045689ad5f5d454576137c2bbd18666e82",
         "size": 16688
       },
@@ -18648,6 +18689,3156 @@
         "path": "godot/generated/fighters/kakashi/timeline.json",
         "sha256": "3a47a7a9541e8c370b9a0c2db61598b9af926ab780b0e1cb18da6b2df4e72226",
         "size": 5118006
+      },
+      {
+        "path": "godot/generated/fighters/konan/10.png",
+        "sha256": "5c83d24cb2831e4ebb73dea8afad0e2b08d4a84b139390756a9d008923517dfe",
+        "size": 954
+      },
+      {
+        "path": "godot/generated/fighters/konan/10.png.import",
+        "sha256": "586c093e90710627b205fe4feefad20f306df975de67fd952a42b702ea87a4ff",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/100.mp3",
+        "sha256": "e412c80636e4e23c2b4ae6c2a5e45707bc1ba6c1e45f1bbf210412cf958bbeca",
+        "size": 5720
+      },
+      {
+        "path": "godot/generated/fighters/konan/100.mp3.import",
+        "sha256": "5ff165ab1181a3da29d503fc2d15f144691dfb1d84aeee282fdf0113747a677b",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/101.png",
+        "sha256": "3bb63d28efeee7ed85a264227ebb4704158a48a6aab5e08e6ea4ff1fa31c7481",
+        "size": 5713
+      },
+      {
+        "path": "godot/generated/fighters/konan/101.png.import",
+        "sha256": "13c72454c5f7b559a8f65e1ad5d6708bf1215b91f627bb8a2e5d9b2b35fd405b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/103.png",
+        "sha256": "1431f8274cedca468aeeeaae7107d97dc8a28d0763bef424b55b78bcb638bef4",
+        "size": 329
+      },
+      {
+        "path": "godot/generated/fighters/konan/103.png.import",
+        "sha256": "593d52d4057de727cf2dc2912683ce99be68c48f5b6047b412af9bfe415f7ac7",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/105.png",
+        "sha256": "95b6594e038c51859e553550e2136fc9b471159ff305e3fd6f342a32235591f1",
+        "size": 8865
+      },
+      {
+        "path": "godot/generated/fighters/konan/105.png.import",
+        "sha256": "9c50b6e107cea67adad8707b32a686f98e6a5798f7f1a7cd62dd6040496cfd8e",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/107.png",
+        "sha256": "8624f5671546b85aa7d27e09a8360aaa25ad117fbb323222eafe1de5d023c5ce",
+        "size": 8780
+      },
+      {
+        "path": "godot/generated/fighters/konan/107.png.import",
+        "sha256": "18850ad0c8de2934339beeb3cf38b8b400ceebcd2c157300fe4426b0cc0246fa",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/109.png",
+        "sha256": "aab2b7d4f431e940cfe57c356cda7c35e52e258b61f423fde5f55e3950d3fd01",
+        "size": 7238
+      },
+      {
+        "path": "godot/generated/fighters/konan/109.png.import",
+        "sha256": "e7e4706eb36eca1ab607eb6980a09c26e5166879aad9815baf24de7a04c93a32",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/111.png",
+        "sha256": "c23aedb319a5cb1c9f7cc36d0a3c6d909d53262ce02f90f2753052cfbb34e52e",
+        "size": 5531
+      },
+      {
+        "path": "godot/generated/fighters/konan/111.png.import",
+        "sha256": "0dd44929276347d99a3a8dd640019a1bf387f462dc996d63da193993d88a386f",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/113.png",
+        "sha256": "c52c02ce7d27274b292c05571bb87679f2876b865f05fb99aedb176d22978aa9",
+        "size": 1002
+      },
+      {
+        "path": "godot/generated/fighters/konan/113.png.import",
+        "sha256": "734eaf29f35e14678dc2e57841e591ec3893eb9f5c7adbcde70c450bcac2ddca",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/115.png",
+        "sha256": "7e133dd4159a07681e8da6642608504476c07b687be36b10be2f1515329f9494",
+        "size": 845
+      },
+      {
+        "path": "godot/generated/fighters/konan/115.png.import",
+        "sha256": "7644109e034325e2e89c852ab52013a158c987fbf467e9c6acfe142beb9e90b2",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/117.mp3",
+        "sha256": "1c0b563df93789997aebb9984a38745bb958d10bb6e37b57c543378e7061526f",
+        "size": 1352
+      },
+      {
+        "path": "godot/generated/fighters/konan/117.mp3.import",
+        "sha256": "5eecc6fa61608a388d520e8445b5d2fb41b5d61768758af24d643d431aa7f839",
+        "size": 362
+      },
+      {
+        "path": "godot/generated/fighters/konan/118.png",
+        "sha256": "b5b774d0a0102c8133b20042c45e935aec00ae591c4df406a88e619923aed66a",
+        "size": 1082
+      },
+      {
+        "path": "godot/generated/fighters/konan/118.png.import",
+        "sha256": "f9dcb2057e111f89bf246c97fddfedd3804e8c407f3dc0448f3680f08032cec8",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/12.png",
+        "sha256": "826f967f7b5cc25fa247622f81a76fc2997f80ced4ada612e97dac8892576ac1",
+        "size": 953
+      },
+      {
+        "path": "godot/generated/fighters/konan/12.png.import",
+        "sha256": "037d4e0d6ee2bff7022d5dea61bf7cd056ad41dca07980545a39bf412949b5d1",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/122.png",
+        "sha256": "4bf35d6817e8221b5bd8b63c5e598c564d137c7d61f87f38cd41c5cf7775c0c2",
+        "size": 939
+      },
+      {
+        "path": "godot/generated/fighters/konan/122.png.import",
+        "sha256": "02e64b89a3912d5709e4b09aa1397cb5dd39723ccbbc74523f729e3983926fbb",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/124.png",
+        "sha256": "734e3cdd7706b0dd81e084587b6d4e5e71f1fec2dceda42b3a77652cf962ed3a",
+        "size": 1016
+      },
+      {
+        "path": "godot/generated/fighters/konan/124.png.import",
+        "sha256": "d388e13a0e453f6a7ceaf462b1b0716fb2029cb94847116a56908ad7a05505c6",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/126.png",
+        "sha256": "8b6047716cffefb5fec033a362183cd2062ee6ce392fa97c65a4e479117a6b16",
+        "size": 196
+      },
+      {
+        "path": "godot/generated/fighters/konan/126.png.import",
+        "sha256": "bc323902776775e456ec1036974c222dd2a87e413331cc7471f6515911a4a462",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/128.png",
+        "sha256": "4a1e091bf0aa55d7b1223d6ce2dd2d8b83d740fca9e4fe74e85b4fb195f6a0ac",
+        "size": 1036
+      },
+      {
+        "path": "godot/generated/fighters/konan/128.png.import",
+        "sha256": "91f62f83ff1d92a84d648167b2524ebaa6c55f445bd6be2f012d78dd2e4bd454",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/130.png",
+        "sha256": "7804dfccb30d3ac5a7c05f6b24c425046bc61aa46b4652de725ac634dc08cb72",
+        "size": 202
+      },
+      {
+        "path": "godot/generated/fighters/konan/130.png.import",
+        "sha256": "2fe908aeca3782e0381d622a2ee595f6769fbe1d5a55422aa6939879ed566a9b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/132.png",
+        "sha256": "c23aedb319a5cb1c9f7cc36d0a3c6d909d53262ce02f90f2753052cfbb34e52e",
+        "size": 5531
+      },
+      {
+        "path": "godot/generated/fighters/konan/132.png.import",
+        "sha256": "18edd766e285dbc048452a9906c0bd6b09a577412d08c7db73320457a27b6702",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/134.png",
+        "sha256": "3bb63d28efeee7ed85a264227ebb4704158a48a6aab5e08e6ea4ff1fa31c7481",
+        "size": 5713
+      },
+      {
+        "path": "godot/generated/fighters/konan/134.png.import",
+        "sha256": "24815fef29ddc06fbc424337db59af7f7a45256979972ea0e5f78ab66096e792",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/136.png",
+        "sha256": "cde224e6fe255de40a5a6a6b8e5c1c484214e64f52e5e3e7bce2d3c0c45d9f4f",
+        "size": 5636
+      },
+      {
+        "path": "godot/generated/fighters/konan/136.png.import",
+        "sha256": "460fb89ded9d992d5dd452040ecac0bc8bbc0f3569f1ba43e808131634bb08a3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/138.png",
+        "sha256": "6e530406ef5e926b81d9c0d53616ce8bdf0c262b218367e2dd48faa55916d025",
+        "size": 6203
+      },
+      {
+        "path": "godot/generated/fighters/konan/138.png.import",
+        "sha256": "af760791585e4290e9f7d54296f3354fe0d552d464af6bf6472c1baac79f22ab",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/140.png",
+        "sha256": "3508db74f66f3e8f2f006eb2b8e0fb5adfdbc9090bf84b32fface50882105371",
+        "size": 550
+      },
+      {
+        "path": "godot/generated/fighters/konan/140.png.import",
+        "sha256": "d0fbd9fe9341bd8cbbc2f0f58f7a1a5c96c6702e4fc8bf9d89189341de431824",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/142.mp3",
+        "sha256": "0bffe0e20e2d9b789cfe6ebccd79d307f5369b3a277c8c4f5e2a90afe15d8b5d",
+        "size": 1976
+      },
+      {
+        "path": "godot/generated/fighters/konan/142.mp3.import",
+        "sha256": "813264fdc5474e7b6dd47ab776761f9ddfc9179f5951cb14df56431ece48c6fc",
+        "size": 362
+      },
+      {
+        "path": "godot/generated/fighters/konan/143.png",
+        "sha256": "483fb9538a30e016f83511ab53512e4420014af2d4baf72e78012a4d2aa36a63",
+        "size": 5833
+      },
+      {
+        "path": "godot/generated/fighters/konan/143.png.import",
+        "sha256": "a0d96cde0baabb3a27fef2593db71f0fa1860f8923e98d0d79ef37277de34ee2",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/145.png",
+        "sha256": "3f278dbaf16891765fac9aa563d289408bf4799f88015d71ea2c4a1c4913fe21",
+        "size": 682
+      },
+      {
+        "path": "godot/generated/fighters/konan/145.png.import",
+        "sha256": "b97c5558bb6d2e5309fb61220ad088962f5726d4e822824692e820f781f634c2",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/147.png",
+        "sha256": "3f97c15836c241f4c1edd4eb633ba800ad11066cdcfdfe77fcae390222db60bd",
+        "size": 5336
+      },
+      {
+        "path": "godot/generated/fighters/konan/147.png.import",
+        "sha256": "7d3194d08e3239a3122afbd45918d624eccad976dd213d274b91e49f3efb4799",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/149.png",
+        "sha256": "a384d85ac87c8a3d2e89e4d60e029b9a6277a0f87a5d4948d4bd0ceefc8b1cc0",
+        "size": 4919
+      },
+      {
+        "path": "godot/generated/fighters/konan/149.png.import",
+        "sha256": "d9b33d3f0d282ed706adf0561b43a57ec1328a22423267d4a1d83b8378601c3b",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/151.png",
+        "sha256": "bda092eab6c78f7c69d65760f79c004b19b5150c2592496b25472261a7ee144e",
+        "size": 1108
+      },
+      {
+        "path": "godot/generated/fighters/konan/151.png.import",
+        "sha256": "2e6bb2a22a8d09f38e6f8ebb3103437618ce57c6b89666b0f5245610c0dc12e4",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/153.png",
+        "sha256": "934c62596bcf32bbdbefd58fdb9fdbef197552dfbd240a0b270d5093b522e9fb",
+        "size": 1235
+      },
+      {
+        "path": "godot/generated/fighters/konan/153.png.import",
+        "sha256": "9b742ad71386178884becaeac234476c362421e56011e19d642166726dd3f772",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/155.png",
+        "sha256": "75b8151fb164c86f112ed9b0c2bf6b3bbe101fb35e0a8a4532469635d46243ad",
+        "size": 1834
+      },
+      {
+        "path": "godot/generated/fighters/konan/155.png.import",
+        "sha256": "9c9e2b100a00f553d5f16b124f7a2364685e69847b177db7a64aaffeb1e2b782",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/157.png",
+        "sha256": "476f88cae8e80a29d47b5e48265214cd937868444033132fc8656c3de78e08da",
+        "size": 1707
+      },
+      {
+        "path": "godot/generated/fighters/konan/157.png.import",
+        "sha256": "9ae5e66e14294b503584e633ede77875b375042e83e45894e175ff4986e6db52",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/159.png",
+        "sha256": "14dca21546a44d6f4913461731b9d05106eaa51021d58868ae22a7ebe3b11491",
+        "size": 1462
+      },
+      {
+        "path": "godot/generated/fighters/konan/159.png.import",
+        "sha256": "ac60c70f0dd7221fac7faba2443466526a4b3a165e3657a86023394e1120ff81",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/161.png",
+        "sha256": "5739940ebff749063662719e4fb07bb4c1514a040c228de7443ceec8cf3f5083",
+        "size": 1311
+      },
+      {
+        "path": "godot/generated/fighters/konan/161.png.import",
+        "sha256": "48ee1724590261ce8e6a5c96abbeae823e9515dd2aefe6a6ca457c791b13dd3f",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/163.png",
+        "sha256": "84e557389eca71a28473cc55b0ba4cbb17c9a94c8d33bc69edfe2637ec13b697",
+        "size": 1024
+      },
+      {
+        "path": "godot/generated/fighters/konan/163.png.import",
+        "sha256": "1f9114dcdcec071c81935a7e0e2938f8c73899b7d5d6125b8c3c5a08dd215d89",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/165.png",
+        "sha256": "7b2a7e28a0a5f152801824f7ecdb05cffd16e19c84698a9f2f44348d1699bec3",
+        "size": 1051
+      },
+      {
+        "path": "godot/generated/fighters/konan/165.png.import",
+        "sha256": "89cdce0f5be9a1bf8361405b63f6f4cb6c07d6c677aa9b80385a751eb04917f6",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/167.mp3",
+        "sha256": "5697ad6a8d39d6e484e99882dc3c5dcc1f1c4d6d82364f7e308c9da70dc97891",
+        "size": 1872
+      },
+      {
+        "path": "godot/generated/fighters/konan/167.mp3.import",
+        "sha256": "31026965b04d9e9680f06658bce6687110c4a0483f1cff143509f9faa7404e01",
+        "size": 362
+      },
+      {
+        "path": "godot/generated/fighters/konan/168.png",
+        "sha256": "c378864cc566d8fd3a6049824ba6c5d91381ca94352328ab8a98a9aee49280e8",
+        "size": 354
+      },
+      {
+        "path": "godot/generated/fighters/konan/168.png.import",
+        "sha256": "7226c86f9d421db76e23c51fe670b2640e54bf85bf3f288224ded4607e67bf81",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/17.png",
+        "sha256": "a0d35b7c969417d96108c3aa427e0356aee91440f5689497d02c3031f26c3325",
+        "size": 1037
+      },
+      {
+        "path": "godot/generated/fighters/konan/17.png.import",
+        "sha256": "4600561e46d528ee180641ffc89704e52d4d81c903b1e5be5dace4f309707386",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/170.mp3",
+        "sha256": "c1b70e84cf46c830f0cba84f51ce1082017989f17c0f60d10cb824c4b3041767",
+        "size": 5408
+      },
+      {
+        "path": "godot/generated/fighters/konan/170.mp3.import",
+        "sha256": "e5f048c133f82776412cf4856360e2058168231d12a6f5528b1009505f0f3121",
+        "size": 362
+      },
+      {
+        "path": "godot/generated/fighters/konan/171.png",
+        "sha256": "329dc971de954d21ff8541cd85df42267dc28aa7ef7a6c7647ee51400cfbf188",
+        "size": 814
+      },
+      {
+        "path": "godot/generated/fighters/konan/171.png.import",
+        "sha256": "f1ec4d8c8ef09ea155d124438bf9832a0edc6f570a16f07c6f95db156bbdbc3b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/173.png",
+        "sha256": "8c9daf555e7e9d43680dba4015fc253b9fe5775488bf449cc1767db853ffd8f2",
+        "size": 1428
+      },
+      {
+        "path": "godot/generated/fighters/konan/173.png.import",
+        "sha256": "cd7ad35ce8c4a9bc6356cc5a81a970c6ca064e428b2570510c71888b42fe2296",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/175.png",
+        "sha256": "3f0997bc0361c67553d25a7fd482a5ea4ea77781fd2cdaf08b3aedd02d81a5e2",
+        "size": 2228
+      },
+      {
+        "path": "godot/generated/fighters/konan/175.png.import",
+        "sha256": "d1b8745c6d9ca5d34f1f3d9a1ad63e580eb11b124401f64bf80d6ddd14cb8354",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/177.png",
+        "sha256": "cf6e25163eb831cd89af30dae3045052413df89ad7148f96d1cbb87e4bb14ae1",
+        "size": 3228
+      },
+      {
+        "path": "godot/generated/fighters/konan/177.png.import",
+        "sha256": "10020190aeeeb9034d6301e28bfa4941bb4ee56d380f8bc9cf28a163c6237ef2",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/179.png",
+        "sha256": "a2c846de19e54e669988c32390ed00b3d226971512a9695e57adf1e8a3af075c",
+        "size": 3691
+      },
+      {
+        "path": "godot/generated/fighters/konan/179.png.import",
+        "sha256": "d60b1110d31016441a954d19487e977a7ac31b67ef7c50e2a7ce11acf10f2dc8",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/181.png",
+        "sha256": "f3925ead30ffa2dc43b8d2c3b6f49a15dc4a51beb6804c29d2fbddcfd67b5ed2",
+        "size": 3277
+      },
+      {
+        "path": "godot/generated/fighters/konan/181.png.import",
+        "sha256": "c5dd4aa687d1d5be06cc23fd2c8b0efa9851b94ecf870e36fa05f54cc401df93",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/183.png",
+        "sha256": "24c5ff654cf8dffcbca53da995f56a568f397552ac7dd5f487494b12acb3b9b3",
+        "size": 2534
+      },
+      {
+        "path": "godot/generated/fighters/konan/183.png.import",
+        "sha256": "34098916f9254611881d3e8ef751e3d39d11a918b375fcbaf1d3fbfcfeb273a7",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/185.png",
+        "sha256": "ab6e20bd2498b5011c9f63a5f7048fcd8c55722e2fff2c405b8bb48e19afb1e3",
+        "size": 2322
+      },
+      {
+        "path": "godot/generated/fighters/konan/185.png.import",
+        "sha256": "ab74816d422bc0f4a3a12f393d7e69194fe78138ff73725e8e9ee9ca2624dc8b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/187.png",
+        "sha256": "5fc4029b66753171ed603445487337c06a6997cd78349df8409ef32e2e07541f",
+        "size": 2465
+      },
+      {
+        "path": "godot/generated/fighters/konan/187.png.import",
+        "sha256": "bc52f027715743518d014026e4dfd5adc2d4e150ea177ecee3ea61d0cf6e108a",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/189.png",
+        "sha256": "fbacf591ddf7a88ea8faa1ffbff8568f9ef853385c369cb78a96461ecd2ee28f",
+        "size": 2360
+      },
+      {
+        "path": "godot/generated/fighters/konan/189.png.import",
+        "sha256": "6f432d1ef6a3fc34304b30841e535b716372af3b519e6d84327786f5fe713fb0",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/19.png",
+        "sha256": "eb2181daceb25c754d84e904e4acf168065cde3aa4b213412d24187fd9f92b59",
+        "size": 691
+      },
+      {
+        "path": "godot/generated/fighters/konan/19.png.import",
+        "sha256": "b429da37eb692007c1b5188a3e65277d621487634a560026319bcb3f75cbea43",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/191.png",
+        "sha256": "a055dea5222d74c497489257c1993cef274b9ff38e7058f02bbb76c36afbb2f9",
+        "size": 1568
+      },
+      {
+        "path": "godot/generated/fighters/konan/191.png.import",
+        "sha256": "c23da98de21eaf8032848449f9292246805803a4f54cc4d59faa1789b53f9284",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/193.png",
+        "sha256": "042c1b6d160f99247aff96cecdea47390501a00733186c707a6939652a031b8a",
+        "size": 856
+      },
+      {
+        "path": "godot/generated/fighters/konan/193.png.import",
+        "sha256": "300f1db26d29276f9472879824fe66b9a66afb44a6aaf3c4f4a878420a35f99a",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/195.png",
+        "sha256": "ca1efba471fdbf60f13d03de43544d4cd67e47bd64ecd2a2616bee1f8f984024",
+        "size": 482
+      },
+      {
+        "path": "godot/generated/fighters/konan/195.png.import",
+        "sha256": "a48847218bc42ed3c8b51ecaf44221afbad03622050045fc76fd74f46fdc0fb3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/197.png",
+        "sha256": "a9a9b6ec51af7182f653c8ad121e04249e6a7c541abaec8f0aad90834e046b23",
+        "size": 1285
+      },
+      {
+        "path": "godot/generated/fighters/konan/197.png.import",
+        "sha256": "960b05e9fcc06744b27a94ae7fffdaf9c96fcd0be913091fa75cd4dc67740041",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/199.png",
+        "sha256": "a141f3c57cfff61d4557510df7c6ea8c3066a0ef28c188318bb65b6fe8fc3b90",
+        "size": 1658
+      },
+      {
+        "path": "godot/generated/fighters/konan/199.png.import",
+        "sha256": "85e5efcd34aae790b6bcaaef3f9b119e2c723113f429b5616cb9443ab0d0aa8c",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/201.mp3",
+        "sha256": "d29b14aaf922d9fa64379b7b7ee33e0ab53802d691c3be37909b358a2f617010",
+        "size": 2496
+      },
+      {
+        "path": "godot/generated/fighters/konan/201.mp3.import",
+        "sha256": "4acac3c2c116a44018388bcd9810662252cf18f0b58be47e24fa5d66f068c8c2",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/202.png",
+        "sha256": "02e46322e92844749e8fe7d0367df809579fb4372ea2bc07de7475180dad9fb0",
+        "size": 1634
+      },
+      {
+        "path": "godot/generated/fighters/konan/202.png.import",
+        "sha256": "7377382ef8cbd91c7db95aef2d3d5c84087e18c81f788533af4f810344ea398c",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/204.png",
+        "sha256": "752b124eaea3a1cb10239812c4ed15a6547bd035e7bf6b4ede398218c1d4ca4f",
+        "size": 1095
+      },
+      {
+        "path": "godot/generated/fighters/konan/204.png.import",
+        "sha256": "4c2f9737e42f1978a52accfdacf45b9d2520067d1f44acfbc2f016f6247a212d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/206.png",
+        "sha256": "b3ef56c0c43b34f09f60bad06a3fc309da9684e4931c9af15796ffef660657e0",
+        "size": 1988
+      },
+      {
+        "path": "godot/generated/fighters/konan/206.png.import",
+        "sha256": "4372f86e0e71de1ff9c9f65f6fdb23712c6c78249f9b1337e7755aa0b6a8734d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/208.png",
+        "sha256": "056eb56fff05d7be512f6f53b008813b013f342fb7bacfd18ad234f246212e4b",
+        "size": 1928
+      },
+      {
+        "path": "godot/generated/fighters/konan/208.png.import",
+        "sha256": "511bca2ec5d4ee755c9f7d661b79eca416e0345689e73f52668efe29d9188c6d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/21.png",
+        "sha256": "eb2181daceb25c754d84e904e4acf168065cde3aa4b213412d24187fd9f92b59",
+        "size": 691
+      },
+      {
+        "path": "godot/generated/fighters/konan/21.png.import",
+        "sha256": "fcfa367d8b7b93391b01187a3d889aa7650230bc808fd3feaf6c13c060080bcf",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/210.png",
+        "sha256": "3341bb495df18bb69b53fb7da6fe755281d0018bc0696c2f8add8694d5d866c4",
+        "size": 1931
+      },
+      {
+        "path": "godot/generated/fighters/konan/210.png.import",
+        "sha256": "80b95af85e60e987a0629eebb2d0c85035aacb1b95dda03f2c2d0e3170f8e70a",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/212.png",
+        "sha256": "ccdd517c09cf441bd4f7d85bd24af5a35ffaac3d8539ec0cc150ed143bba07d1",
+        "size": 1931
+      },
+      {
+        "path": "godot/generated/fighters/konan/212.png.import",
+        "sha256": "535c574d1cc04ceacb084cf61c8ee94b045e6b8d3cdeb05d8253d3f90362b356",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/214.png",
+        "sha256": "fc178a84da14aa3920d202f264db7a0e8fc7971547507df2a9948d78a9b0bf8c",
+        "size": 2053
+      },
+      {
+        "path": "godot/generated/fighters/konan/214.png.import",
+        "sha256": "a64f3f7ec78866296628e908ee9fc9f0797d6dac9204575c757a034bb1044f67",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/216.png",
+        "sha256": "061aec739c4e4b8b06fd854838cf31ab7ac23229cdca681b5694f38d6398cf6c",
+        "size": 2053
+      },
+      {
+        "path": "godot/generated/fighters/konan/216.png.import",
+        "sha256": "d0d43ae5294c0b1d9391a54b5105274c243f8afd6e96bae8a9d977c14caf0e5b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/218.png",
+        "sha256": "c1f25e78f0151ccb866a19e8afb8ad3f40d3940f8e07f9e1ccd9098fd09e4119",
+        "size": 2054
+      },
+      {
+        "path": "godot/generated/fighters/konan/218.png.import",
+        "sha256": "3dafb356e7cdd18dcc8f6b73b53a4097a4729bbad37f095722cd96e57acf29fa",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/220.png",
+        "sha256": "b6f9059292704dd920fff7280fc02be6472e10722d0b4f2ee47263a9cdcf4d78",
+        "size": 2132
+      },
+      {
+        "path": "godot/generated/fighters/konan/220.png.import",
+        "sha256": "b82fdcffea6c6955c6cddb99503ae90d2356ab7a483c92cdb8770947608cd670",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/222.png",
+        "sha256": "1cb9af05a4858f9be087e348a5e1edd541b4f741d3e422c2cd5f5a189a0473e3",
+        "size": 2002
+      },
+      {
+        "path": "godot/generated/fighters/konan/222.png.import",
+        "sha256": "d7c332efd547c5721f329f7a66c65bcd64fff89c74c88d87d850b48b627588ae",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/224.png",
+        "sha256": "1cb9af05a4858f9be087e348a5e1edd541b4f741d3e422c2cd5f5a189a0473e3",
+        "size": 2002
+      },
+      {
+        "path": "godot/generated/fighters/konan/224.png.import",
+        "sha256": "40ba24cf2c7d8e4b494096ac36865999d02d0459b0aab35f94fa2a3e219cbf90",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/226.png",
+        "sha256": "53902823ad238be830498e6350233e909219dc83f56982efdc341646b056be0b",
+        "size": 1527
+      },
+      {
+        "path": "godot/generated/fighters/konan/226.png.import",
+        "sha256": "e4cd64628db46a8d264463ed53e835c0aeca66f3592e2d3fcf9e4658003bbd5c",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/228.png",
+        "sha256": "38983decc2eed37b929cf57eb8ccc9cd59b0b4689a727c78157d08619f18954f",
+        "size": 1440
+      },
+      {
+        "path": "godot/generated/fighters/konan/228.png.import",
+        "sha256": "d0873a6dab14494ef68ba2f7979e29ffb36dc3412c75fef6f3f603dd1bdc782c",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/23.png",
+        "sha256": "592c6124d66b643cfa457714cb274a8df9b4da6729437099b52f9a45918fe6f5",
+        "size": 671
+      },
+      {
+        "path": "godot/generated/fighters/konan/23.png.import",
+        "sha256": "57304a3b212e94a7afe31b55a06158a717ab25de7ad038a36234adf7894ec0ee",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/230.png",
+        "sha256": "38983decc2eed37b929cf57eb8ccc9cd59b0b4689a727c78157d08619f18954f",
+        "size": 1440
+      },
+      {
+        "path": "godot/generated/fighters/konan/230.png.import",
+        "sha256": "04ccbc6840d05823f6c6f0f5e9b71c99f319f0690bc488e57d6a3718591455ee",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/232.png",
+        "sha256": "38983decc2eed37b929cf57eb8ccc9cd59b0b4689a727c78157d08619f18954f",
+        "size": 1440
+      },
+      {
+        "path": "godot/generated/fighters/konan/232.png.import",
+        "sha256": "b22167dc1386c64d7d9954692e7293ee8b8f426bd85de48cf6cb95d0d36cc605",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/234.png",
+        "sha256": "744856935004b00b24992bb922392c33eecc6309b44eec2e8ab17679cad01224",
+        "size": 904
+      },
+      {
+        "path": "godot/generated/fighters/konan/234.png.import",
+        "sha256": "71a907005c3627b8da9cef6e51bae22650147ca65cd0d49c6658b6c6e4d8f427",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/236.png",
+        "sha256": "744856935004b00b24992bb922392c33eecc6309b44eec2e8ab17679cad01224",
+        "size": 904
+      },
+      {
+        "path": "godot/generated/fighters/konan/236.png.import",
+        "sha256": "7f6c8abbf0434d57776177bd6bc7d22306a1f000837b4af5e5ee61542e79f669",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/238.png",
+        "sha256": "744856935004b00b24992bb922392c33eecc6309b44eec2e8ab17679cad01224",
+        "size": 904
+      },
+      {
+        "path": "godot/generated/fighters/konan/238.png.import",
+        "sha256": "1cb0041f6b8ef3090f8091a6a7d9007d1f13f7a4445da48cf44d482d06a9c27a",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/240.png",
+        "sha256": "4b445d37c656e52d337f0937b3c2c76e972195fe112152cce58e3f1db1716f41",
+        "size": 690
+      },
+      {
+        "path": "godot/generated/fighters/konan/240.png.import",
+        "sha256": "eaff34819fbc7b58bd9c51443382654f31f182d0ca449e6139d0d8626d0f8367",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/242.png",
+        "sha256": "4b445d37c656e52d337f0937b3c2c76e972195fe112152cce58e3f1db1716f41",
+        "size": 690
+      },
+      {
+        "path": "godot/generated/fighters/konan/242.png.import",
+        "sha256": "2c062048f2405276e88e4cb70b3374fb145d1eca6642420b0a4e715a07533308",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/244.png",
+        "sha256": "4b445d37c656e52d337f0937b3c2c76e972195fe112152cce58e3f1db1716f41",
+        "size": 690
+      },
+      {
+        "path": "godot/generated/fighters/konan/244.png.import",
+        "sha256": "fba313098380e3f159a904392c63964b56c5ba308f86150ae71fc8881e3ac0f9",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/246.png",
+        "sha256": "4b445d37c656e52d337f0937b3c2c76e972195fe112152cce58e3f1db1716f41",
+        "size": 690
+      },
+      {
+        "path": "godot/generated/fighters/konan/246.png.import",
+        "sha256": "a2c0536d97f5c96efc7877bc96be75f7dcc4e78e7c8245660d44c2e0bc4eab28",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/248.png",
+        "sha256": "ed17415598615710deefeb5c5a5e2da763ffe55ab03bc3425df3e3115f784070",
+        "size": 511
+      },
+      {
+        "path": "godot/generated/fighters/konan/248.png.import",
+        "sha256": "cc4a9503d353d50670c0cd35a435830a6dbc05b004e823ea44b924f7256c5589",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/25.png",
+        "sha256": "05ae7719790d37949255599a5f8266a4511b379cff03e73210889a78c6a3447c",
+        "size": 1053
+      },
+      {
+        "path": "godot/generated/fighters/konan/25.png.import",
+        "sha256": "17035973770456ab66387b208b41914196edb3d026f27882552b5d24bbf4df3f",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/250.png",
+        "sha256": "ed17415598615710deefeb5c5a5e2da763ffe55ab03bc3425df3e3115f784070",
+        "size": 511
+      },
+      {
+        "path": "godot/generated/fighters/konan/250.png.import",
+        "sha256": "d0f1b95c00e3e677a2c54bc06832bc44aa653857edeeec098f32b38c455177d8",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/252.png",
+        "sha256": "ed17415598615710deefeb5c5a5e2da763ffe55ab03bc3425df3e3115f784070",
+        "size": 511
+      },
+      {
+        "path": "godot/generated/fighters/konan/252.png.import",
+        "sha256": "2823577dec95515893c9b889f1e4d75d52eaae7a96d1e9b1540f58ee5831f92d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/254.png",
+        "sha256": "ed17415598615710deefeb5c5a5e2da763ffe55ab03bc3425df3e3115f784070",
+        "size": 511
+      },
+      {
+        "path": "godot/generated/fighters/konan/254.png.import",
+        "sha256": "3ba8ba45210c6446f3299e7efdaa4c6a4c1178fc4f7169b544fa31beecc732e8",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/256.png",
+        "sha256": "52381f39755638970d3a05538059716605cf551c5fe41a9262249e94e2291fef",
+        "size": 4862
+      },
+      {
+        "path": "godot/generated/fighters/konan/256.png.import",
+        "sha256": "7ebe9b9909ff6779e7614a670d1e7af4feb78eace3164ecbfdcebe6d62b14549",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/258.png",
+        "sha256": "a59bde35b1b3c56c19a3de159eab48effd9da7cd129a345531e1e9257e817ed2",
+        "size": 5400
+      },
+      {
+        "path": "godot/generated/fighters/konan/258.png.import",
+        "sha256": "0163a1b0feb1110be56c18a021e7a3d256d2980bdebbc04afc86411beef96cb3",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/260.png",
+        "sha256": "ffc4c908e4a72b87ab441a61b2f212d48278a9ee37628e9ade902ea28586e70d",
+        "size": 6217
+      },
+      {
+        "path": "godot/generated/fighters/konan/260.png.import",
+        "sha256": "b84e20dd179c6aa6221e24d74ad29ae1f410f871a3b9bc6cdb2078eedfdfc758",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/262.png",
+        "sha256": "65522ea7d00e3d6567536d3cd2f7d0054bb610ff02b941a462b44524dd2d59d0",
+        "size": 6070
+      },
+      {
+        "path": "godot/generated/fighters/konan/262.png.import",
+        "sha256": "6dc4af75a65000ed6bc867d00f2b0fa217d024aa78f9a9758380d16739ee1388",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/264.png",
+        "sha256": "198c3629e9ab875ef4b05369347261732e43cee4ce8e22ecd0e510a6076acf26",
+        "size": 534
+      },
+      {
+        "path": "godot/generated/fighters/konan/264.png.import",
+        "sha256": "faa250f8a7e3fa68a608f8cd4523481f18d6588b74db6bfa0463f4d4117b1f1d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/266.png",
+        "sha256": "58d5f81568b2bbbb8d595a174104eb79846a92acceaf6c9c4fc79872ecd6e495",
+        "size": 970
+      },
+      {
+        "path": "godot/generated/fighters/konan/266.png.import",
+        "sha256": "2ecdad47359e0752d7ea7764c615a9fbf4122bd42f6403964b5359149d72756b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/268.png",
+        "sha256": "623563754ce5e6721241b7331f1b8710a7fefd23648127924f1a2aea46f211f0",
+        "size": 1734
+      },
+      {
+        "path": "godot/generated/fighters/konan/268.png.import",
+        "sha256": "4373886cce998053267c019948865a6c41bfef0b9df56f86a4fa703c32ba5f53",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/27.png",
+        "sha256": "56c781f168d785708baf9857c18445a82dece7da1b43a2b66aafd73c5ab4a8a3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/27.png.import",
+        "sha256": "49eebac9d66a364db132ec000a10949e53aae600291898746b415199eca487ff",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/270.png",
+        "sha256": "3b60896cae19511301d105d72fe175a36565b6df58dc23a0d393c4a1c9d18a08",
+        "size": 1082
+      },
+      {
+        "path": "godot/generated/fighters/konan/270.png.import",
+        "sha256": "33671c4788a8f6ed3865de368f55d51c28595f4b7c232b175c485ec03774ef0d",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/272.png",
+        "sha256": "e664627c248b9d0603dad02788f80a311814f5d7db5133b184e3fa4c5e4048f7",
+        "size": 1667
+      },
+      {
+        "path": "godot/generated/fighters/konan/272.png.import",
+        "sha256": "211fed64ddfacee5f96e67cadd8b8ccca9a145874ed62fedfc40c94add8798bd",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/274.png",
+        "sha256": "50b98ebc7e019aafa93b26b34dc370b84cc20afc63274cd78d079949241a2091",
+        "size": 1883
+      },
+      {
+        "path": "godot/generated/fighters/konan/274.png.import",
+        "sha256": "f56880ebd1c9882ec9369d210dea748a46435bb90a85e55e514d3fefba43875b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/276.png",
+        "sha256": "022895dfa84b8dfaadd19b85046fe32fc08dd5c0e8afc11599a9874be5e17717",
+        "size": 998
+      },
+      {
+        "path": "godot/generated/fighters/konan/276.png.import",
+        "sha256": "a70301ba7fbf1f57e1d46d3e34e4f9f2ef53ddc2dc88a22f835dc6b99c0b6109",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/278.png",
+        "sha256": "4ce1cb25f8566ced30b556322c8669bde49021a116109d6c8c627a06981065fb",
+        "size": 1790
+      },
+      {
+        "path": "godot/generated/fighters/konan/278.png.import",
+        "sha256": "14fa1e8e5be4440e9a6aa9f62c7eac2766580812df4decc1796f0479657b99cf",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/280.png",
+        "sha256": "bd1b5ef47994bdafd27ce51d61c34f8e4544dc176675cec7891665f873dae8d7",
+        "size": 894
+      },
+      {
+        "path": "godot/generated/fighters/konan/280.png.import",
+        "sha256": "290a36bb4edff8bb89463b70f44bfc4f80aa75604a838693b778e1d6a138510d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/282.png",
+        "sha256": "20b42593611af99944a1ac3cec1ffdb25309282624e3ac8ab8f770694c7c6ffb",
+        "size": 931
+      },
+      {
+        "path": "godot/generated/fighters/konan/282.png.import",
+        "sha256": "ac2c94f1882cf9b22629f0a602eef6f2d2b638457dd1db1b5bc67d6db08d94da",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/285.mp3",
+        "sha256": "277ef6d164ee3315c53180b4e90201b710dcb505173d4413cb6aeea06590458c",
+        "size": 4472
+      },
+      {
+        "path": "godot/generated/fighters/konan/285.mp3.import",
+        "sha256": "5b5f354a1633cccc9bc8371b7af05cbe5ffc0e4e9462e94bbe0c0d9c70a7ed9f",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/286.png",
+        "sha256": "5177fef65053120f83f885e368348c19f517e646c5ce2d6f3c0f93aab29c7fee",
+        "size": 1019
+      },
+      {
+        "path": "godot/generated/fighters/konan/286.png.import",
+        "sha256": "d9e2e971fdd7a74534025c01d14e17d3f797c6901e78cc8b233ec9ccf7c3451e",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/288.png",
+        "sha256": "23706884c6bdf3e9458af0c75b9f30113af968fed0cd93f6084e1e3b6cc0376b",
+        "size": 1049
+      },
+      {
+        "path": "godot/generated/fighters/konan/288.png.import",
+        "sha256": "320df4888c80ded6638db3709f440dc48439a9efd3d5369f7b1f859b290af5e3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/29.png",
+        "sha256": "a0d35b7c969417d96108c3aa427e0356aee91440f5689497d02c3031f26c3325",
+        "size": 1037
+      },
+      {
+        "path": "godot/generated/fighters/konan/29.png.import",
+        "sha256": "be4f848d989f7dd30ae8eb3593f775c098c141d48058dee9dd5afa8fd7bc18f4",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/290.png",
+        "sha256": "f74225de18261dbfc3f8c15f850ebb57ed468952b722a08c25947b85c21f8dbd",
+        "size": 675
+      },
+      {
+        "path": "godot/generated/fighters/konan/290.png.import",
+        "sha256": "aa139c2fd3bb6c805c5d18fbf0a3f319795eff0313775503aa8b9c84830e28d3",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/293.png",
+        "sha256": "9c2399b4f9ed7eaf21daf83220e5f3830c291aa8de24b9fff537cde4a2284598",
+        "size": 1381
+      },
+      {
+        "path": "godot/generated/fighters/konan/293.png.import",
+        "sha256": "770f340b2bf243f798c4f86eabeda99f141be2ad9eba333834af328a8c9e613a",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/295.mp3",
+        "sha256": "22deba13a285fdd6082a219f72268fa846fb39ae4244358324812b3860764750",
+        "size": 6240
+      },
+      {
+        "path": "godot/generated/fighters/konan/295.mp3.import",
+        "sha256": "616a4a3e26a0fbb4fe2521012588b510f329b8c3848fc8298a3a51d539003db9",
+        "size": 362
+      },
+      {
+        "path": "godot/generated/fighters/konan/296.png",
+        "sha256": "aa9e36f90936af774c14018bbccab3eed88cda846d5626108a88cd44e2086bac",
+        "size": 1651
+      },
+      {
+        "path": "godot/generated/fighters/konan/296.png.import",
+        "sha256": "ec9c9a6204d9eb1a275e0be3e965704dd8f63a58d6a6419c44885befc5252eb5",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/298.png",
+        "sha256": "7326b182853f5b40da7e11af06a1967e912f937be40b2a86bf8f10d6ebc3d446",
+        "size": 3199
+      },
+      {
+        "path": "godot/generated/fighters/konan/298.png.import",
+        "sha256": "b7454733d8f82186e7f945401b4e04930d54a2f96650f92cc5dcfae8b9986930",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/300.png",
+        "sha256": "a2112ab32190353c0b164c55d34fbe0f574ef95e4bb1024bb0af9b6df6c2fa41",
+        "size": 3980
+      },
+      {
+        "path": "godot/generated/fighters/konan/300.png.import",
+        "sha256": "e8a6c4bccbba089730e9c34f86e4b6a4788670cb7fb49c39fbdc5ed13c515b63",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/302.png",
+        "sha256": "a7228c5d81fba4bb204baa031777c5162f8a6fe21392452cab200289f9958e6d",
+        "size": 4211
+      },
+      {
+        "path": "godot/generated/fighters/konan/302.png.import",
+        "sha256": "41ece647758778341032bf180acc2fa2c5f7216a6acf920e23a045196fe7917e",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/304.png",
+        "sha256": "b9de597204e156beac0426670066e9f3ba038eb71b988c0a8dccab417f3becb8",
+        "size": 5057
+      },
+      {
+        "path": "godot/generated/fighters/konan/304.png.import",
+        "sha256": "fdb07448ba39855e66d0386f9017592f779111ff42d5a64898a021dc9e908481",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/306.png",
+        "sha256": "e1d1b4047b131e6f65075a880b8d641da22aaf444af6b764b672d1296e26d435",
+        "size": 5642
+      },
+      {
+        "path": "godot/generated/fighters/konan/306.png.import",
+        "sha256": "a1cda01cfef8d81da5166220df3df92df7399a795cd0f10e0496fa5c03d4c8c9",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/308.png",
+        "sha256": "7e79ef6f5b1312034f3cfdf6db0d9eb59ff0603bcd0a7e8d4bb49f45235353dc",
+        "size": 6407
+      },
+      {
+        "path": "godot/generated/fighters/konan/308.png.import",
+        "sha256": "1fe6dbd719635ee6f64492ff5e8d2f51c1b3bb9578bfebd2c271da4c47351382",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/31.png",
+        "sha256": "0f9c9c2acabb7bf98dbb7daefbe92f125e0c55f54983767875c15128745b3eab",
+        "size": 985
+      },
+      {
+        "path": "godot/generated/fighters/konan/31.png.import",
+        "sha256": "429a24676d2f453234edd9d4f2c63fa29a7f2e0daa70feae44d8e42baa6db914",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/310.png",
+        "sha256": "ea9ebead4d4b8cbf03d536752d8cfb807741f62dbca5215941425ccb106e5b10",
+        "size": 7399
+      },
+      {
+        "path": "godot/generated/fighters/konan/310.png.import",
+        "sha256": "980dd532bbc2a6af6712886626d7193ac76fb2deaf87b13e5dbe5a959ad6dc90",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/312.png",
+        "sha256": "c6698422b0ea8c6e73e0706a821f0081a220ddaa218124cee7ce53a6ffd4baaa",
+        "size": 7808
+      },
+      {
+        "path": "godot/generated/fighters/konan/312.png.import",
+        "sha256": "1e5a1abbb0007be13ba131cf264087e1c8e26c6c1e7aad2225874d0de9394d2a",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/314.png",
+        "sha256": "cb62372da9c4f63b0e0a90152736a1cb55b16d5218ccc809f95f6404047cacac",
+        "size": 8326
+      },
+      {
+        "path": "godot/generated/fighters/konan/314.png.import",
+        "sha256": "0c90749bb0b792dcefde9ff0d27b27ffc35e12a02216b15e38cf9082231aa371",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/316.png",
+        "sha256": "e178534e6fde439711b4418893ae58feba1c156c64e18f71e64167f7327e5dd6",
+        "size": 7848
+      },
+      {
+        "path": "godot/generated/fighters/konan/316.png.import",
+        "sha256": "0d0a7f817efe3286cd60a696c8b3470129e9b482ce5de58af2613ae4ff054984",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/318.png",
+        "sha256": "175b78f2712a63e17ab0e5edd9f51f55ea0fe3c83fb5ce83114e519268feceda",
+        "size": 7253
+      },
+      {
+        "path": "godot/generated/fighters/konan/318.png.import",
+        "sha256": "e8a73af4faa90292cbdc20130b23e335787def0e0056842076958f80fdf40d34",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/320.png",
+        "sha256": "0dacc47bcd75fc083d18435f0b31751609cc45445bf99fc7a72cef655d26b419",
+        "size": 6481
+      },
+      {
+        "path": "godot/generated/fighters/konan/320.png.import",
+        "sha256": "9f7849657f18e815f8d287e37b59502b3ca5bb80c78d6cfd34acb6fffc33eb3d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/322.png",
+        "sha256": "792b83348b1486a53bb412e74bd0e9e74614a32cedfc382955a2659d23cf1ba9",
+        "size": 5655
+      },
+      {
+        "path": "godot/generated/fighters/konan/322.png.import",
+        "sha256": "bd7fd0aa501d924d7a7ac7c546561eb0ade7ebff7ea3baf42331225b08c3ac5c",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/324.png",
+        "sha256": "2fabdcd9c076a29a0d09dbe719ad7e31783481b9eb754028de0935a2b63eeb3e",
+        "size": 4897
+      },
+      {
+        "path": "godot/generated/fighters/konan/324.png.import",
+        "sha256": "0a8740c2c3f31896819e955ca87df74801944e18dda858efc258af113083b2d1",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/326.png",
+        "sha256": "58c9e7182603a343360cce4a4bfdbb0a8ddc9fbd031a0238f15fe698844c1a04",
+        "size": 4671
+      },
+      {
+        "path": "godot/generated/fighters/konan/326.png.import",
+        "sha256": "c3883936646272f1d10858620f193e87abeca14d73e7dde025c66ca30c488df8",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/328.png",
+        "sha256": "efbae7faf6803b4b5f23715298edd7c8b01b7e5d9f95270f3247661085a77b96",
+        "size": 4158
+      },
+      {
+        "path": "godot/generated/fighters/konan/328.png.import",
+        "sha256": "5f01b168e4daea6444f3937bf3151de01ba6535b6d5f2c1dd52b991b6a048f24",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/33.png",
+        "sha256": "8e4bce586b5b7fb3006240ca2920f14c7e8a046fcca5315e00d70853ade25a3f",
+        "size": 1092
+      },
+      {
+        "path": "godot/generated/fighters/konan/33.png.import",
+        "sha256": "851dba876bcb9085c3da2c22baefae800defdd123504198d4811b540a4c99227",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/330.png",
+        "sha256": "6a6a9d66499d732a32371522e48fd979859c6fc7c33edb3d4b0a54ef276bbee0",
+        "size": 3806
+      },
+      {
+        "path": "godot/generated/fighters/konan/330.png.import",
+        "sha256": "f9d30d1b25d16843977a3a87a31ec8eeb740d27236b7996180021aed9d2c2f9b",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/332.png",
+        "sha256": "85c54fb5a9fde5738aa780e8fc2f91359e2004ca125b881988c3daf240621932",
+        "size": 3401
+      },
+      {
+        "path": "godot/generated/fighters/konan/332.png.import",
+        "sha256": "776b339d7ad363d9b15c8851dc00bc9ef8d7e47e4f6e0a403dec744b326a653b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/334.png",
+        "sha256": "cd9a8c9b7ead4691331520ec679c95783eb85287cd646310a62560e3212f9dfc",
+        "size": 2782
+      },
+      {
+        "path": "godot/generated/fighters/konan/334.png.import",
+        "sha256": "09e11d6dea5d299e5ade9d244a0d432e4036a1cfc801a7c3271038b2f505f6e6",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/336.png",
+        "sha256": "6019e275f907bff7627146e2704bbd555a053cb4df02cd3f57c1cb59caf4c5d9",
+        "size": 2140
+      },
+      {
+        "path": "godot/generated/fighters/konan/336.png.import",
+        "sha256": "63c01f28ac5f0bc922bcb2c14aa3313314284fe6d9ef4d0935b062bd1b500119",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/338.png",
+        "sha256": "83300a6df44d21c69541fe6b03f60ddc363ef36d7014d965b076f39d48a61c00",
+        "size": 1774
+      },
+      {
+        "path": "godot/generated/fighters/konan/338.png.import",
+        "sha256": "77d721aaa845771e7d7187f7af288c7dd155ad6c1931137db8234088eb80cee7",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/340.png",
+        "sha256": "7d81e7e011d2ae87f456ae2f03ad11da7ab047a00fc05a30fbe7f7b34e4f8f7b",
+        "size": 1179
+      },
+      {
+        "path": "godot/generated/fighters/konan/340.png.import",
+        "sha256": "e4a76944eec5ec5221fa5ecb55535e1e7c9ac857e0d4c084fee480bab4018df6",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/342.png",
+        "sha256": "94f8c2ddd3259be0bdfda8baf7563717391dec272fa7020744c7c9d0a3093e25",
+        "size": 1164
+      },
+      {
+        "path": "godot/generated/fighters/konan/342.png.import",
+        "sha256": "96d3205623e49793fd680b4d0fe09200300fe0a34ffcc9d0299e2af98bba7a6d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/345.png",
+        "sha256": "a7d880678f0797da86d91ce0c01e34f7b1bd55a950d9e0f26f767fd15252b3cf",
+        "size": 1117
+      },
+      {
+        "path": "godot/generated/fighters/konan/345.png.import",
+        "sha256": "065c26b120cf46bea1284bf8529eb163a52f0567c02404a96ad2cb1301c688fc",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/347.png",
+        "sha256": "d6fdc24abb7a5efa9901de19fbec6268293ffb7fe32fc8b261d8d12dafdb6a32",
+        "size": 1156
+      },
+      {
+        "path": "godot/generated/fighters/konan/347.png.import",
+        "sha256": "28a83b326f698e3509d666604aa97f8c21c5b80b45277a58010077cdca971949",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/349.png",
+        "sha256": "c7e3c28de16be4a19e7f0c5d85f80a801b3d348107129851579e792b60623ff0",
+        "size": 1147
+      },
+      {
+        "path": "godot/generated/fighters/konan/349.png.import",
+        "sha256": "a334d1df41aad6a3d8293a55db930c5e1e4a8ff75b39b3f6cb78e3d27cc30d30",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/35.png",
+        "sha256": "aa62505d6250347bec9d3a60f274a79628bde1d9f3c41219ab9b7683d535d043",
+        "size": 1076
+      },
+      {
+        "path": "godot/generated/fighters/konan/35.png.import",
+        "sha256": "e57cd77fd8802e5249a266f741409c8d3d475c3c947577e24f342223b5fb9894",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/351.png",
+        "sha256": "c7e3c28de16be4a19e7f0c5d85f80a801b3d348107129851579e792b60623ff0",
+        "size": 1147
+      },
+      {
+        "path": "godot/generated/fighters/konan/351.png.import",
+        "sha256": "96227bf4ff8e6ce5de8cd496db11671263f275e1b0c564ef21f3e41db7c93e84",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/353.png",
+        "sha256": "c4a9d9322c5e4d560ed5a6d561bf1784a90f6ed75e150f7b4cf0fc3b0e47f92e",
+        "size": 1336
+      },
+      {
+        "path": "godot/generated/fighters/konan/353.png.import",
+        "sha256": "043a0d790a0b28a877801bb31026d40006f7bd8b0eebe519f70f23d2c3dcd394",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/355.png",
+        "sha256": "9f0615127ae17958475e61a7a797d2bd29e317bdd380ea3538f296219ff263e1",
+        "size": 2817
+      },
+      {
+        "path": "godot/generated/fighters/konan/355.png.import",
+        "sha256": "ad760f65f1512fad056633691ab4f15e896bfd7da677204e4a418f93241bd4d9",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/357.png",
+        "sha256": "9e90347ef27e8a81f90557d799df8698278efedbf687deccd948d2a97db7ef7d",
+        "size": 2646
+      },
+      {
+        "path": "godot/generated/fighters/konan/357.png.import",
+        "sha256": "5c3620f90bd32745436ad81c3df7e1c34369730ccd6fb647026414b2d8272f52",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/359.mp3",
+        "sha256": "e9733b77125b9950b99dea9638a8723e3598fb314b73511d2e271b4cae01cb7b",
+        "size": 5928
+      },
+      {
+        "path": "godot/generated/fighters/konan/359.mp3.import",
+        "sha256": "5357724b90fb3ab437cc20f0542cbe6a295704a0f02b1cf38772daf15619bb53",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/360.png",
+        "sha256": "d38e0deae7a5cd3d902efa10170c0f483703493e8df785028bf61e19d1644b73",
+        "size": 2905
+      },
+      {
+        "path": "godot/generated/fighters/konan/360.png.import",
+        "sha256": "764859b8edd5012efa250fac9722cf076421da80531c13c6043cc0325a09c9ad",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/362.png",
+        "sha256": "752b124eaea3a1cb10239812c4ed15a6547bd035e7bf6b4ede398218c1d4ca4f",
+        "size": 1095
+      },
+      {
+        "path": "godot/generated/fighters/konan/362.png.import",
+        "sha256": "30bfc56cc0489fd33431cfa1b4e1dc1ecdf3fbd32727d096ab1510c42cd50f08",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/364.png",
+        "sha256": "6aa0dfcc58d64056e8021d95a5d762f6da28c72f9e0f54ff516bdfbbcc2a2785",
+        "size": 3495
+      },
+      {
+        "path": "godot/generated/fighters/konan/364.png.import",
+        "sha256": "e8ab29085b9b26645dfd3a40e51a8afe01d10898af6e5939bb845e851bcdebc3",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/366.png",
+        "sha256": "e7603c0779d76d26e0d57c2aa0f7ce9dca9100a0a038798ac101a6940a159bf7",
+        "size": 3952
+      },
+      {
+        "path": "godot/generated/fighters/konan/366.png.import",
+        "sha256": "49ed5776ad2146433834970dbb8a1e73bd9827fe5e99d289e2808ca06f7c01ea",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/368.png",
+        "sha256": "bcc08ac9f1480a9f2f46918167822ddad1799e0aba7b227560a5a0980ba22735",
+        "size": 3850
+      },
+      {
+        "path": "godot/generated/fighters/konan/368.png.import",
+        "sha256": "f826634a8c2c7205511e20860016b3f37005e17c31176d2594c0f58cfeb20382",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/37.png",
+        "sha256": "882775ca46d881fa0208d7b00b5a58d32c4ac0240f9ccfaabe22d8ea3b8f2ced",
+        "size": 1052
+      },
+      {
+        "path": "godot/generated/fighters/konan/37.png.import",
+        "sha256": "25ef33449185da4a6ef49e63c7659510deb159d763e18553991076131c3390d9",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/370.png",
+        "sha256": "c591bf6085f9da582a5bb95a5589baba3449c2cd252f6e1e99377b8076dc14b2",
+        "size": 3753
+      },
+      {
+        "path": "godot/generated/fighters/konan/370.png.import",
+        "sha256": "c1b5f2b6ee212cbb6598fd72c7d4120d579e38f3d9a481b1c286766651da9ed4",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/372.png",
+        "sha256": "189a34218f0cd6d88c25df5e7c038ab20517f135637c2361cd3f9bc75f15a985",
+        "size": 2666
+      },
+      {
+        "path": "godot/generated/fighters/konan/372.png.import",
+        "sha256": "c3a766fdf4176625402b3f3b3e7199a6cce943f0e595bf7efde4d6b1d15c274b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/374.png",
+        "sha256": "9c57a68545fce83b3eac2818d2051fd08f75fa38b1c334e8518cf90226ab2b25",
+        "size": 1983
+      },
+      {
+        "path": "godot/generated/fighters/konan/374.png.import",
+        "sha256": "55e8d0cb30d3cd9392abb4bd3c322c05d6b3597589ae1baac3c6e39b328b8213",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/376.png",
+        "sha256": "da822f62aa5096192220cb9845fead589bdd5282a2a358e654295239559d90e4",
+        "size": 1320
+      },
+      {
+        "path": "godot/generated/fighters/konan/376.png.import",
+        "sha256": "bb10af9e06fb34e4cfcb63d7c5f8397d48733f5789add05ca39c19428cc69e75",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/378.png",
+        "sha256": "5177fef65053120f83f885e368348c19f517e646c5ce2d6f3c0f93aab29c7fee",
+        "size": 1019
+      },
+      {
+        "path": "godot/generated/fighters/konan/378.png.import",
+        "sha256": "46850e491e72676a0ba1ad08b51707062c7b0c3fd7ef58c5d539bf40c1bd8fc0",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/380.png",
+        "sha256": "23706884c6bdf3e9458af0c75b9f30113af968fed0cd93f6084e1e3b6cc0376b",
+        "size": 1049
+      },
+      {
+        "path": "godot/generated/fighters/konan/380.png.import",
+        "sha256": "d9bdd7e768a275adc9738f3c67ee395604e4e06f1a9597048af8a56b29985f87",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/382.png",
+        "sha256": "a7d880678f0797da86d91ce0c01e34f7b1bd55a950d9e0f26f767fd15252b3cf",
+        "size": 1117
+      },
+      {
+        "path": "godot/generated/fighters/konan/382.png.import",
+        "sha256": "3a7b1381aa09e88829053ba6e3f9655fe46e4e9a21b0c63e8f0cba712754940f",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/384.png",
+        "sha256": "4332b3f5f2c8137f71c8407afe425d13a3a30e5d81d9339feb985e91d2e82230",
+        "size": 2699
+      },
+      {
+        "path": "godot/generated/fighters/konan/384.png.import",
+        "sha256": "02beb3fcf86726027949199876846bcd5b3f409a9e19aa4d56c79407b1144d05",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/386.png",
+        "sha256": "e0fb0fa1e0b1ef308f3b65563dc7f41613dcc88457c5802f8e18e504e3d6ce57",
+        "size": 2545
+      },
+      {
+        "path": "godot/generated/fighters/konan/386.png.import",
+        "sha256": "cb75e065d93be4a27171697d74670b86d96d027e1f8c79f9647db8480919d050",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/388.png",
+        "sha256": "1306efa4ac2713244dc2e399bceadcdff92ce29151b56e3d49ae12a2b7da4819",
+        "size": 2365
+      },
+      {
+        "path": "godot/generated/fighters/konan/388.png.import",
+        "sha256": "35d9e95fdee0b60cf1601ccc9fd320e0fd2ff2ff4f9f5095cf0f0ed953854428",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/39.png",
+        "sha256": "68286f7d33454bda56924cb37c8eefd0bd5dfc7aa3f5b35da5529adc6bf4a2df",
+        "size": 1086
+      },
+      {
+        "path": "godot/generated/fighters/konan/39.png.import",
+        "sha256": "202d6893f02989497476baadbdedc99b6972990a70e0ae6f81b4feda7e065feb",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/390.png",
+        "sha256": "edb538ceb14da464800f16f063687a2cbd0486d58de02b19cea9a6deacdfc1f3",
+        "size": 2256
+      },
+      {
+        "path": "godot/generated/fighters/konan/390.png.import",
+        "sha256": "2a8c5547d2a857095ae0c55a1cb1fbdcc040ea5ae58c2ec4212675d7095adcb1",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/392.png",
+        "sha256": "60498558c72b93e514e561313fcc049b61080a2b0813681345ce900d317578bf",
+        "size": 1853
+      },
+      {
+        "path": "godot/generated/fighters/konan/392.png.import",
+        "sha256": "ff6c8b0fca766922ffaa3ab9386544829a130202a9b333ffa03935f06044210e",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/394.png",
+        "sha256": "1bbe4da9c9e4bfaa2f7b9737777966a109c1ca9e9da5d5c04fb4aef26da045b0",
+        "size": 1432
+      },
+      {
+        "path": "godot/generated/fighters/konan/394.png.import",
+        "sha256": "0e20de3895f6db75270a6526d8efc12c6f9fbdadfbf843ab900cfc97c70747a3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/396.png",
+        "sha256": "b339d34d847ded0afaa2a26a075a1b3ae5e3e3ee6d0edf92bc760d8752aa41f4",
+        "size": 617
+      },
+      {
+        "path": "godot/generated/fighters/konan/396.png.import",
+        "sha256": "12960f9e3b4589f05644d5aa4362abd50bba477fa95603f700045c4b7f46871a",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/400.png",
+        "sha256": "6fccdd18d296459fef844224a873d1014606359c83ca1435cb10f6a953dfcccf",
+        "size": 13933
+      },
+      {
+        "path": "godot/generated/fighters/konan/400.png.import",
+        "sha256": "348d4af551b1e0373c199677e60d965fb2cf46790e12072dd614370a8c1edba5",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/402.png",
+        "sha256": "0ccba2ee638f33d40793c241c66ea436c9f9b239e6adb73d2e45fef4d9953e0f",
+        "size": 6297
+      },
+      {
+        "path": "godot/generated/fighters/konan/402.png.import",
+        "sha256": "141d1066d49c8e7778fdfc8fabf5b76fe4ef7f91e2e8749ed0d0b747eceac4b6",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/404.png",
+        "sha256": "66fabb782991ad60adb49ec2a2695f0439841a784b1cb8a07d92f72adcd64e77",
+        "size": 7747
+      },
+      {
+        "path": "godot/generated/fighters/konan/404.png.import",
+        "sha256": "4866fa4eab4c8ac6554610a5240e026a89db14378453998e34fb2d113646c1be",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/406.png",
+        "sha256": "3742591f946dadfff794c12b8fe34439a2b461aa15cc1bb230428561b5cfb1d8",
+        "size": 9159
+      },
+      {
+        "path": "godot/generated/fighters/konan/406.png.import",
+        "sha256": "eb8be6c0ce890f271373a5822fc02ce42d8e6d628f8f216c7944d453339107ce",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/408.png",
+        "sha256": "b5bb3e3eccaffe1df83c53813e47baa4ae6185f9fa967e0418498a9d9846c434",
+        "size": 10777
+      },
+      {
+        "path": "godot/generated/fighters/konan/408.png.import",
+        "sha256": "0e3ca664e6ff627ab2ac0b7d5c8991455ec264f59e7fd5fd0df47557a5b09c00",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/41.png",
+        "sha256": "0b942a1c4cc67e6159ec0d21beefef1cdcd9a90986ed2ad4caa52f703650304b",
+        "size": 878
+      },
+      {
+        "path": "godot/generated/fighters/konan/41.png.import",
+        "sha256": "7cb3f0213600ea110e9c0a021cc6ce1dee4f06da6e365f9672574423cf7f184b",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/410.png",
+        "sha256": "c4681074882bf406bdf8dae349717506d81e19e71b21f129a8bff6bcf901d08a",
+        "size": 13235
+      },
+      {
+        "path": "godot/generated/fighters/konan/410.png.import",
+        "sha256": "be5cfa2a83871fcc398bfad0aebdfab7337496e2b17a403368aaa80b9765c8af",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/412.mp3",
+        "sha256": "11b006dd8baaec231f54f107993e4b1dad0100ece53c978ccf5d595aaea0b936",
+        "size": 3536
+      },
+      {
+        "path": "godot/generated/fighters/konan/412.mp3.import",
+        "sha256": "72547f928e2823100d159e670fedf315bf376273f1d84bf3260acb97419622d4",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/413.png",
+        "sha256": "f3079722a19c82c821f531815df8a98d11b8734ee5e721e230a421403e1f5f58",
+        "size": 14415
+      },
+      {
+        "path": "godot/generated/fighters/konan/413.png.import",
+        "sha256": "4cce6dc81f26821a0f07dfb8e7daa5f969cc0cf44424bb792ffe1c087ea8f52a",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/415.png",
+        "sha256": "14fd38ade9f11479b264f7a449bfa54f5e8a74913c1acdb0746794f696b1c164",
+        "size": 407
+      },
+      {
+        "path": "godot/generated/fighters/konan/415.png.import",
+        "sha256": "f303b255644879d522c20cc3af71969d398fd7f10c684803eb148671af56961c",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/417.png",
+        "sha256": "91a51d831af15e07929e2346fff8d389c618acef623bf10174a3298e411dfd45",
+        "size": 14876
+      },
+      {
+        "path": "godot/generated/fighters/konan/417.png.import",
+        "sha256": "c267ecdef389c0ea2f63250464cdd3e2e809701f42f6f42f9dd42a41832516c9",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/419.png",
+        "sha256": "fd898b1680b683b2f6abaa55dadf3394d8e54490362b99d61495b7ee45841e2f",
+        "size": 716
+      },
+      {
+        "path": "godot/generated/fighters/konan/419.png.import",
+        "sha256": "34ebf20778353e9a82e04e1670c8cb0340f54bdef611add18d8cb123dfdbac5f",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/421.png",
+        "sha256": "da9c4f5b18496d0599b5b4f91a0ec403359c8c371e77f747f220ecf1f5f1e7ec",
+        "size": 729
+      },
+      {
+        "path": "godot/generated/fighters/konan/421.png.import",
+        "sha256": "88433f34a70fb72ee679d3aec28c700075bda4e5646df2866b2b143be76a2f27",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/423.png",
+        "sha256": "c5420f2852c108f7281e5b03c80e416a38bd23ae8546be4371f7889c3c97105a",
+        "size": 1016
+      },
+      {
+        "path": "godot/generated/fighters/konan/423.png.import",
+        "sha256": "e387eb15e2bb9fd0c551d96a996af53c2ae20eff8275fadc1feb8be53876972f",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/425.png",
+        "sha256": "7874137c9ec281fd4f01b0a06a2e204a044180ae1e50f7a1866841a2e37ed338",
+        "size": 1108
+      },
+      {
+        "path": "godot/generated/fighters/konan/425.png.import",
+        "sha256": "bee901efd14b3ffa0f13b08bc7a01975022dd3f0d70d613b4049bf09ffb951df",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/427.png",
+        "sha256": "6b99d2cc7389ea016f8d1c42761bb79b276e59ee9e1f83f52a0b4354de803737",
+        "size": 1297
+      },
+      {
+        "path": "godot/generated/fighters/konan/427.png.import",
+        "sha256": "f7e6301b63a2ab608174b6e858544173d0f111ccde96d2ce0bb717c814e3f436",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/429.png",
+        "sha256": "affe25f32fa36d44c23c32b9fee50429b597f35c1d369b5eb2d3db43d756d538",
+        "size": 1387
+      },
+      {
+        "path": "godot/generated/fighters/konan/429.png.import",
+        "sha256": "fd792ecb9a69854003e4960ff950e61eff7c79db56723aa6ed7c99f08d09671d",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/431.png",
+        "sha256": "9414c9d49679d1b6273b3ebd9ba10d38d1b50f454ee00ae95f68af1f9e543612",
+        "size": 1394
+      },
+      {
+        "path": "godot/generated/fighters/konan/431.png.import",
+        "sha256": "c8d295f1ec54e3d3a6fa8c9563f58e9cc67e3b492ab91b454fa7a5ab4b94f357",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/433.png",
+        "sha256": "c218b0dc786cdcd472e4898985f89806c956ede29a0f7d7d72e4fa823554007c",
+        "size": 1515
+      },
+      {
+        "path": "godot/generated/fighters/konan/433.png.import",
+        "sha256": "5846c076ef1c129b3cbb9530d7b0002da8a7a2016f3fa6c6649731a89e6c622e",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/435.png",
+        "sha256": "5ed7b3397b887db663a489d2d2a6e1edf8e8c08c8905f5eb9a5d9912cd2ded0b",
+        "size": 1215
+      },
+      {
+        "path": "godot/generated/fighters/konan/435.png.import",
+        "sha256": "0221947648a22e676026959b760247d7f30578e5a5224e728b0f295533669855",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/437.png",
+        "sha256": "ae0e5750c705b5989b32deecb713f2f0edbc8e02a0cce7f7f559bad355020557",
+        "size": 921
+      },
+      {
+        "path": "godot/generated/fighters/konan/437.png.import",
+        "sha256": "5839ef4ca3cdef1ad064669e9df5966c9d463a0a24c4dcf8f5fc7de0a084c4ef",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/439.png",
+        "sha256": "04b6dbe96b3d3428529f53f2461fcf6f4cca993cc8df5199d5a284c6a39e7f75",
+        "size": 694
+      },
+      {
+        "path": "godot/generated/fighters/konan/439.png.import",
+        "sha256": "a89ebdcc54612b0c4c3e8672826a2d08476f5ffeeee0e84e835a5a29bb00c23f",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/44.png",
+        "sha256": "f24cdadd0e47f02b3afd0d5aae521e69d645be809811a9e351f3bcddf88b7ea6",
+        "size": 1059
+      },
+      {
+        "path": "godot/generated/fighters/konan/44.png.import",
+        "sha256": "d99ec3432b4b189a65620eadb67994356382f808dccde92e52dbd318cf57eb4d",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/441.png",
+        "sha256": "c9581299d099d1808a9be445db2d45cf1266e9938424421de600dc4abe54191f",
+        "size": 420
+      },
+      {
+        "path": "godot/generated/fighters/konan/441.png.import",
+        "sha256": "3b53490e515d4341f62bc4c614d5e19ccf07eb3c159e4b03ad4cef62ad84fd05",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/443.png",
+        "sha256": "aacb22bc9aae8eb24ff2a14e8600b60283ede4cc6b220e11a1391de581b4e5c7",
+        "size": 386
+      },
+      {
+        "path": "godot/generated/fighters/konan/443.png.import",
+        "sha256": "11bd3e93a5c97f4391035f34a7a1cee033d34236ab43d0e9f808fca691f997fa",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/445.png",
+        "sha256": "d8a77a58196c9254fcc233f753a4374b0522f8b9aca9b28ab281b6ef14645e32",
+        "size": 339
+      },
+      {
+        "path": "godot/generated/fighters/konan/445.png.import",
+        "sha256": "4f851392cf3914d12ff0e6201220dbf00ebefd6c9bec4f5e90e9b3b9ff2be01b",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/447.png",
+        "sha256": "c6fd6d2ad3cbf4dc36626f2612befab287dffb71c2e22e64867d5468f464055c",
+        "size": 304
+      },
+      {
+        "path": "godot/generated/fighters/konan/447.png.import",
+        "sha256": "1b1557bff9072acab4bdacbccdbb33232cb7ed434b5f618e4f6f073c699124df",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/449.png",
+        "sha256": "2c10fd6598565ed6b07d3925f67d70ed6ff3d8cb0cd25441f87250ca2fa85ca5",
+        "size": 263
+      },
+      {
+        "path": "godot/generated/fighters/konan/449.png.import",
+        "sha256": "337fb09529e5c143e020ac0d9312df4fd1e4b117eee4cec874c4728ec67b4897",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/451.png",
+        "sha256": "4893350fffd731d60cbbf83db4ae69314ac058cd33a2142571c955902c66a434",
+        "size": 3949
+      },
+      {
+        "path": "godot/generated/fighters/konan/451.png.import",
+        "sha256": "f406ab913dd2cc74d10b1e9d58ba438fab7e54ede7083c8d8af4f21448eb9b6e",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/453.png",
+        "sha256": "540a08780021c5e75339e0373254add09049abd64fb6f4a1a61d42119a1eea6f",
+        "size": 4035
+      },
+      {
+        "path": "godot/generated/fighters/konan/453.png.import",
+        "sha256": "f90418ed6cab502bf24f44247e407aae9afa68acc35884f59a235874b3f7f8da",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/455.png",
+        "sha256": "470b9b9403934f48c341c291f1fb2c466ea9e824a35b14c1a6a6aa8be110db5b",
+        "size": 3820
+      },
+      {
+        "path": "godot/generated/fighters/konan/455.png.import",
+        "sha256": "ddcdda2594e519e9cbc5a992c8b7b1828d4def550459450887e90f659dbcba22",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/457.png",
+        "sha256": "e95cb40a97aa582f612f8d9c829fc31c45fb4d2d918e74436f179fc6f44b58fd",
+        "size": 4045
+      },
+      {
+        "path": "godot/generated/fighters/konan/457.png.import",
+        "sha256": "558069788356bb9683962a1e69364c07d76fa3243513a6e4f72a0af1814c333f",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/459.png",
+        "sha256": "276f53381c06817e5a15a9f98e9ce0a0ea0c78a27b2833c9f0462f42d7d376d5",
+        "size": 4188
+      },
+      {
+        "path": "godot/generated/fighters/konan/459.png.import",
+        "sha256": "12bbfb8c27af0c506874dd491581048607352f6d9e9948f0732ea92879b2f488",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/46.png",
+        "sha256": "4aa5bdb9645d6fb17b681dea262ec93686a15647cd85b037b6c4b1e2bbdd2cb7",
+        "size": 1121
+      },
+      {
+        "path": "godot/generated/fighters/konan/46.png.import",
+        "sha256": "8db13d960aae5114e58c18f05e9da4d479d03b2d617f8097f50e1c7355cfadc8",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/461.png",
+        "sha256": "32eb75e0f49cf1a45cc688708889df19d42e45503b8cf26759906180468de455",
+        "size": 4324
+      },
+      {
+        "path": "godot/generated/fighters/konan/461.png.import",
+        "sha256": "5b51ef06ef94362b5c53b0f11482e85b8a8e23c0737e3bb21853cae3872484a8",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/463.png",
+        "sha256": "85a1bfee04d959cf7acf67f0f98f28993d316f69c31effcd3140c221c7922b1e",
+        "size": 4332
+      },
+      {
+        "path": "godot/generated/fighters/konan/463.png.import",
+        "sha256": "3ad637b58ddfc4cc2619cb93e42492937e4eb08501aa82c6e64dc2b1bae32dc3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/465.png",
+        "sha256": "c443520368856e11a79cd97adfa7c3e667c65ec0115ee556c56cafe3cee21d05",
+        "size": 4060
+      },
+      {
+        "path": "godot/generated/fighters/konan/465.png.import",
+        "sha256": "ec5373635e1154897e375bfd217efd90b5036752732a76fe77d70e036dee46a6",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/467.png",
+        "sha256": "ec50adbdcbb56e2aea9f4e98b7c67d5ee7ebfbb7cea608c13629e56985c3db0f",
+        "size": 4202
+      },
+      {
+        "path": "godot/generated/fighters/konan/467.png.import",
+        "sha256": "9810e5b1d6ee115e83d1b3996931d88b8cff8d4c7af83215a14c81e8b4ccc29a",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/469.png",
+        "sha256": "907184f29584d791fd7c702ba8dc49d910d5ce1cdc107fc5058c0048ec7ee017",
+        "size": 4245
+      },
+      {
+        "path": "godot/generated/fighters/konan/469.png.import",
+        "sha256": "6892fec8a96be47734b80a836f2930f951ea181bc6add104cf6c1663bb78cd18",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/472.png",
+        "sha256": "41fc5e9a4880973c8606ca33353bf52d8721a94308b403afac322b400aa49e77",
+        "size": 9676
+      },
+      {
+        "path": "godot/generated/fighters/konan/472.png.import",
+        "sha256": "8f900e4026023951c0ec0b6e9db0cd026f01179ba9829340b87c057b12b85f86",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/474.png",
+        "sha256": "d952af39e940fdf0112dac8b648ae09ffa7b194b4afceb17b434e441658bf392",
+        "size": 3039
+      },
+      {
+        "path": "godot/generated/fighters/konan/474.png.import",
+        "sha256": "3da3831b56f16196fa122144718ae5620c9a1114ca249788ac1651df4f07defd",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/476.png",
+        "sha256": "3369b80b509a7a067a9c63e82b183c607074abf50b00ab14b20a903b2cbea3b6",
+        "size": 4033
+      },
+      {
+        "path": "godot/generated/fighters/konan/476.png.import",
+        "sha256": "16e89324fc01ed15fbfb92c9487ec50750ad373980eb65c0d99a5cb1b532547e",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/478.mp3",
+        "sha256": "3e8600990911abc14232efe6e3e11ff567c6f1c7013826d881d4880aa7e52a5e",
+        "size": 6448
+      },
+      {
+        "path": "godot/generated/fighters/konan/478.mp3.import",
+        "sha256": "7aa56923d853bebfab281634fc40da0f09a2e31bdc9ab3a29c553bebce68cbc9",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/479.png",
+        "sha256": "72ca8a9ca22fca60073c2da2adbe86c2cf6200fbb83e8c2151484f8d4966a779",
+        "size": 4867
+      },
+      {
+        "path": "godot/generated/fighters/konan/479.png.import",
+        "sha256": "ef725f0b6c96ddb1628b7421a02f9290ee5795f3a03e0a5cf47046aacbca33a7",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/48.mp3",
+        "sha256": "54dbe2ffe5d4edde88dc870f72bfdbb0d47bd95a693c35b0d377d734f9962b2f",
+        "size": 3744
+      },
+      {
+        "path": "godot/generated/fighters/konan/48.mp3.import",
+        "sha256": "0083e25490229379300ad052f45f446f58e2d360cf01a66643573a498cccaa1a",
+        "size": 359
+      },
+      {
+        "path": "godot/generated/fighters/konan/481.png",
+        "sha256": "82755ed8531ad240bb3aa139671f897b2369a0a5abec6287da514538f2118ffd",
+        "size": 5974
+      },
+      {
+        "path": "godot/generated/fighters/konan/481.png.import",
+        "sha256": "fb5116b17154ef60a64f2d86b3ccf1ce04482991a42697159de32eb83f54d729",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/483.png",
+        "sha256": "1f976c8b8e9d38bf06806fc69fd0f16eae3d6fddccff05e48f5cc4e1e9b07cf3",
+        "size": 7090
+      },
+      {
+        "path": "godot/generated/fighters/konan/483.png.import",
+        "sha256": "7c306f1fadc39d4618413d54aa3f05fe0887e8b43d02704ef83c78c2338ae7ab",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/485.png",
+        "sha256": "8a044c925132d11500cc06eef46bd082c418aeae427a8352a4e2346bb99e8f21",
+        "size": 7528
+      },
+      {
+        "path": "godot/generated/fighters/konan/485.png.import",
+        "sha256": "5234f04696201839885002b64a17112aad75f5d471646bf80e18a8786a555e6a",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/487.png",
+        "sha256": "e92d20589acc0326b8368deae1ebf1060e735c168d53e8e5b13a2e7a8d717b0b",
+        "size": 7639
+      },
+      {
+        "path": "godot/generated/fighters/konan/487.png.import",
+        "sha256": "036f258e1210a37c738b9e4acf7e9fa658a2487d2a9db1c9c50387114def4f12",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/489.png",
+        "sha256": "e28a36da64db1f00cab19acb59f07d46a6e4915450ec6963ee57830949187d1b",
+        "size": 7410
+      },
+      {
+        "path": "godot/generated/fighters/konan/489.png.import",
+        "sha256": "372aa41161f68d51c4bec3e712d25602beb871ba5d6865c0fcd2a249ed7bd17e",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/49.png",
+        "sha256": "228ed78e2fe74842d87e64bf52de82e8b914e6f4cb9766f4edf722a10abbe7ab",
+        "size": 824
+      },
+      {
+        "path": "godot/generated/fighters/konan/49.png.import",
+        "sha256": "c4a83e24f2e84c45f4c71df248dd4253aebaa04185c7f909b93fee9a5fc835cb",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/491.png",
+        "sha256": "3dd7610a9956fc032a769d9c33b3d305f0a0c9b25dd46274e1aea6b541dcc749",
+        "size": 5937
+      },
+      {
+        "path": "godot/generated/fighters/konan/491.png.import",
+        "sha256": "e442d48b13f972432b4aa2a5ed524ad1d2f1292ff2068574e11de274a7b0ae8f",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/493.png",
+        "sha256": "4d49b50a3ba787c2875c2fbee17dbedcc7a5ef5c2c1893c75938acdc961e600f",
+        "size": 4053
+      },
+      {
+        "path": "godot/generated/fighters/konan/493.png.import",
+        "sha256": "dff9a28ca5d6634b0f122ac045d378bce99106cc9ed78a3764768afcf2a21ad3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/495.png",
+        "sha256": "236164951c8cf3900c47d6063e1e0a5e3ad285f77790058a1b576db0b6dfb731",
+        "size": 7017
+      },
+      {
+        "path": "godot/generated/fighters/konan/495.png.import",
+        "sha256": "c473b61caa9a5ca409475e342f75cda5ef66478b717455f7bb3a011bc06c4df4",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/497.png",
+        "sha256": "279311b4531b2d9b2ec345879de9cf3347d951c24f28ffa07c0c2cac113adde2",
+        "size": 2844
+      },
+      {
+        "path": "godot/generated/fighters/konan/497.png.import",
+        "sha256": "0140e63742c8668ad2e0d38a481775722223da1195e747443c5bc7a657796706",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/499.png",
+        "sha256": "c2e5c2f50bf873dc354617190ae016d50d3acde649b9e17f85f2a53e30706e08",
+        "size": 1737
+      },
+      {
+        "path": "godot/generated/fighters/konan/499.png.import",
+        "sha256": "f9ad0b855378cb4c2eb16cce7f68e8f047a50287126eda6219452f4ace438ac0",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/501.png",
+        "sha256": "5c8d13d242c2e288996a55311b9f33b745a76547398a8eed061a53e0e2e468c9",
+        "size": 1127
+      },
+      {
+        "path": "godot/generated/fighters/konan/501.png.import",
+        "sha256": "de5a8185e5f9aee545d7735b4e59eda322a779a3ba094cce532d00e7615a14f2",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/503.png",
+        "sha256": "dbe39ec3145779292c1960811104fe7bf0f9b29f1807b0169c44035703cca068",
+        "size": 690
+      },
+      {
+        "path": "godot/generated/fighters/konan/503.png.import",
+        "sha256": "4194a3ad346c37bc863e26e7d9d72d94d226e638a1d69aa185e690a902795108",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/505.png",
+        "sha256": "0821c55d9760c54fc3a91739b34f9bccd01c34f23760629fe37ec53c8a561f4b",
+        "size": 4857
+      },
+      {
+        "path": "godot/generated/fighters/konan/505.png.import",
+        "sha256": "038f97fb0c4acc0f3201754e99ae58be8a83c3574281b1e18510ba32315533bd",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/507.png",
+        "sha256": "03a89c10474876362259d0ee3f16578d1b174a43d8f40738e0448c019e366ae3",
+        "size": 4490
+      },
+      {
+        "path": "godot/generated/fighters/konan/507.png.import",
+        "sha256": "0d98a9e88b7acd70fe00e08d29e0cc506e60280df54ff4477302036172703f7e",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/509.png",
+        "sha256": "144f2b706f3cba80dffedfeee266e4b02fc8124210d75d1475bf3be73f6c8a5e",
+        "size": 157
+      },
+      {
+        "path": "godot/generated/fighters/konan/509.png.import",
+        "sha256": "c3f903bf4f7b90ccf55aed4601b115906d26db2c6540bc6f4c5c24ac887c6250",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/51.png",
+        "sha256": "972390709ea5c3747b035cf04a288031ce1e3c50cdb1e4a88377efbc9ea218e8",
+        "size": 430
+      },
+      {
+        "path": "godot/generated/fighters/konan/51.png.import",
+        "sha256": "fb517f4135661d49c4bf1c5ccc501b41b451155dd3b2cf7c1b113a8c62598d39",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/511.png",
+        "sha256": "7e6d7d78e3ce32861b2eb9ecf316e6ed8ae1c672ac9db123eb65a736504220be",
+        "size": 126
+      },
+      {
+        "path": "godot/generated/fighters/konan/511.png.import",
+        "sha256": "f86e6b128503d3de9157a627c16fc91793bb628b9b9adeedb60aa329eb46aee3",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/513.png",
+        "sha256": "d3211cf6d530743b360740b1e07cf4e55268adfe684debc412824d0d8f8fa1aa",
+        "size": 122
+      },
+      {
+        "path": "godot/generated/fighters/konan/513.png.import",
+        "sha256": "96ee6d5590a63bb2eca7f3aaeaed78174a39af6de86ba8e34983a3b95ef87b79",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/515.png",
+        "sha256": "0821c55d9760c54fc3a91739b34f9bccd01c34f23760629fe37ec53c8a561f4b",
+        "size": 4857
+      },
+      {
+        "path": "godot/generated/fighters/konan/515.png.import",
+        "sha256": "4d14a34f71f8b7d5093de215b2f31e00e4798a7267da924aab024777cf81ef87",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/517.png",
+        "sha256": "12db05805153b873eabb5500252b0ba79e4d7f4399769dc1f6a19a0442085ab2",
+        "size": 5807
+      },
+      {
+        "path": "godot/generated/fighters/konan/517.png.import",
+        "sha256": "d73df740266325ce9f1415cdfa5ab7260716015a322baa5e67252bf64104ebad",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/519.png",
+        "sha256": "05a2d8e78cb5dde35aa9b7c19155e39e9b1c1480a6ea000f51c11556b7e6925c",
+        "size": 1090
+      },
+      {
+        "path": "godot/generated/fighters/konan/519.png.import",
+        "sha256": "573767aacc7e94906570f795bc00a00b6176a6fe51f6dbb430e08e265e475a7a",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/521.png",
+        "sha256": "02c2b602d3633a06868b0a75f836790baf5534b32731bf8421c9b948fbba2e68",
+        "size": 1129
+      },
+      {
+        "path": "godot/generated/fighters/konan/521.png.import",
+        "sha256": "df6a181242b97ca3bff6d2b5b6faebe9f374c72eca74e4b99bf27494faa88f4c",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/523.png",
+        "sha256": "2cb4764aab1a9e77020a403842e755b728bd65181331e8d4588ec0a6ad69cbc3",
+        "size": 1046
+      },
+      {
+        "path": "godot/generated/fighters/konan/523.png.import",
+        "sha256": "03b60c12a865d44d0ff7d8e9206bfd47d4ca0bbc431631e2c1e21748389e3305",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/525.png",
+        "sha256": "100aaff8f4f2e66cc214aa3ca5b0027d1c40d7a24cd216621281e1db40076877",
+        "size": 1057
+      },
+      {
+        "path": "godot/generated/fighters/konan/525.png.import",
+        "sha256": "9716026ba8d2de8e8ed4651864860dc24a9482f2a57eddae9f8b2dc5b0b9b0c4",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/528.mp3",
+        "sha256": "0c3aa40034db0805127204d72576e0a1baf04656eb9680c9701be3eec933979a",
+        "size": 2808
+      },
+      {
+        "path": "godot/generated/fighters/konan/528.mp3.import",
+        "sha256": "21f38f33c19965974d646834a0318387574af320d98ae86a89c7b5ab53dab6d9",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/529.png",
+        "sha256": "e553efc37fc8a34b7edcc7fb2f9defd8941ef12b58731d0cd8f93f23b8a0de46",
+        "size": 917
+      },
+      {
+        "path": "godot/generated/fighters/konan/529.png.import",
+        "sha256": "a7683de16b537625adeaaaf6ece88e4cb9e1f1b52fd3aace052d13d148d314b3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/53.png",
+        "sha256": "de5ff969917158a7621384776e7ebcae4f428dd5919dd6e490024e4f5dfa4ae7",
+        "size": 289
+      },
+      {
+        "path": "godot/generated/fighters/konan/53.png.import",
+        "sha256": "b143fb0ed64d55049e73b9df172e23cf293555bc19533f19e30a505f0e75ed59",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/531.png",
+        "sha256": "4cc10a59192857a024449010469b0e12cba3e336a9f69e089e7df294567d6d00",
+        "size": 1004
+      },
+      {
+        "path": "godot/generated/fighters/konan/531.png.import",
+        "sha256": "7d0f109f101442c753be88fe27b4fe3ca6ce2d1e51eeba5d328f5795362fde28",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/533.png",
+        "sha256": "0cf90eeb873f60ae03d8943f80d5b5af98caa5f6e4b287672b50993e36397d6b",
+        "size": 986
+      },
+      {
+        "path": "godot/generated/fighters/konan/533.png.import",
+        "sha256": "2152492aeb2d3fbf1c581105a9a0c7eafddc147aa04cf6707a64e4c8d295dd67",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/535.png",
+        "sha256": "0b241dc606d2efd3d5457c77d19d51b7168defde249136cd7ba0fb75edc7d219",
+        "size": 1095
+      },
+      {
+        "path": "godot/generated/fighters/konan/535.png.import",
+        "sha256": "06d4858f46e135b70f41a173f4c0044693089df50d7b1d417ca2e024274b0a18",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/537.png",
+        "sha256": "21dfe3bcb6bfd971faec9492a15c3f78a60e78ff5fb5c71245a46bafb262cd9a",
+        "size": 993
+      },
+      {
+        "path": "godot/generated/fighters/konan/537.png.import",
+        "sha256": "18eb7a665ac5f75e9988c9d798168ce9aaff18875ec53586c32a9caf2b94d261",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/539.png",
+        "sha256": "4583ce00f59890cdca40eee19dc9a042e61dc7a522d86b3c61e495267658fb21",
+        "size": 907
+      },
+      {
+        "path": "godot/generated/fighters/konan/539.png.import",
+        "sha256": "18139d0158ae1d4641db7e6508a4c8d830048d92878defdff53293cb2aa7b38d",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/541.png",
+        "sha256": "4583ce00f59890cdca40eee19dc9a042e61dc7a522d86b3c61e495267658fb21",
+        "size": 907
+      },
+      {
+        "path": "godot/generated/fighters/konan/541.png.import",
+        "sha256": "0c7344d4d2b65ce7e296ef675f977426f5441affd5128aa1b3cc6d6c26e148e0",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/543.png",
+        "sha256": "0752f03bcebbb2089bfb13df3d565d394fd9f4a63819849549eb82b845a8cb13",
+        "size": 947
+      },
+      {
+        "path": "godot/generated/fighters/konan/543.png.import",
+        "sha256": "2ac95ceb8b8a84057b11a8785ef0bff7ddd295dd737ca5793e8724da61df8e79",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/545.mp3",
+        "sha256": "6ee432d858bbfe081eea4303580aa3f47e22ac0fd5239838b1047c6ea7a145c6",
+        "size": 4160
+      },
+      {
+        "path": "godot/generated/fighters/konan/545.mp3.import",
+        "sha256": "8e4a3e1f953d32c5dbaa164cd7666efec1c3b10621cd50f9a06cca97f3b5b8d2",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/546.mp3",
+        "sha256": "2e1cbaa1c5124fd435c06e5c21500230a0302ed31406574fc5a499b24607775e",
+        "size": 9776
+      },
+      {
+        "path": "godot/generated/fighters/konan/546.mp3.import",
+        "sha256": "cf225a6bad56aad306350104637ad22c7964206a2f67a3676c31a7b9464e9787",
+        "size": 363
+      },
+      {
+        "path": "godot/generated/fighters/konan/547.png",
+        "sha256": "f24cdadd0e47f02b3afd0d5aae521e69d645be809811a9e351f3bcddf88b7ea6",
+        "size": 1059
+      },
+      {
+        "path": "godot/generated/fighters/konan/547.png.import",
+        "sha256": "4f537e642c0f583fc0001bf91ca5864bc94b1b3d700742d6af496b6f6e102049",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/549.png",
+        "sha256": "0752f03bcebbb2089bfb13df3d565d394fd9f4a63819849549eb82b845a8cb13",
+        "size": 947
+      },
+      {
+        "path": "godot/generated/fighters/konan/549.png.import",
+        "sha256": "28339e8971816df26ace2f385ae57e2680e1158236111ad7eaa3f209ebcfab22",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/55.png",
+        "sha256": "40767434abe1ab1e6dc001b68ed4e06c0f752080ccb983c73a8a0fd80db367d5",
+        "size": 1019
+      },
+      {
+        "path": "godot/generated/fighters/konan/55.png.import",
+        "sha256": "069048cd802128a15130e3b434f6b953d4735b9bf94f67e10a849195ac4719b7",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/551.png",
+        "sha256": "4aa5bdb9645d6fb17b681dea262ec93686a15647cd85b037b6c4b1e2bbdd2cb7",
+        "size": 1121
+      },
+      {
+        "path": "godot/generated/fighters/konan/551.png.import",
+        "sha256": "d6cac4ff889993332a641a88a01be0402d983cfc0c9f90e44b1fc071960672c3",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/553.png",
+        "sha256": "40767434abe1ab1e6dc001b68ed4e06c0f752080ccb983c73a8a0fd80db367d5",
+        "size": 1019
+      },
+      {
+        "path": "godot/generated/fighters/konan/553.png.import",
+        "sha256": "88f9c5c5c100af51616ed1cadab1d495a91a5ad85ef74b8998ea1aa7e62d99ad",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/555.png",
+        "sha256": "228ed78e2fe74842d87e64bf52de82e8b914e6f4cb9766f4edf722a10abbe7ab",
+        "size": 824
+      },
+      {
+        "path": "godot/generated/fighters/konan/555.png.import",
+        "sha256": "8d3817d124d90e45123a217fcdb5499b8ef3cf3fc24f0649b89cde4dd95c7329",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/557.png",
+        "sha256": "972390709ea5c3747b035cf04a288031ce1e3c50cdb1e4a88377efbc9ea218e8",
+        "size": 430
+      },
+      {
+        "path": "godot/generated/fighters/konan/557.png.import",
+        "sha256": "8b6f33088a3ad9aa38e833b6bf81b51062d64a7ac3266a177e8a9fa7ddfe81e0",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/559.png",
+        "sha256": "de5ff969917158a7621384776e7ebcae4f428dd5919dd6e490024e4f5dfa4ae7",
+        "size": 289
+      },
+      {
+        "path": "godot/generated/fighters/konan/559.png.import",
+        "sha256": "a1804ac887ad1b331d9c33318284abdbdf1b7e7779c2ef8f638e7c33abf9da50",
+        "size": 938
+      },
+      {
+        "path": "godot/generated/fighters/konan/561.png",
+        "sha256": "de5ff969917158a7621384776e7ebcae4f428dd5919dd6e490024e4f5dfa4ae7",
+        "size": 289
+      },
+      {
+        "path": "godot/generated/fighters/konan/561.png.import",
+        "sha256": "eaa43ea68c0f16594dac7dc594d6b6a5d68343151fe5cce69542d92f3870e5e3",
+        "size": 937
+      },
+      {
+        "path": "godot/generated/fighters/konan/57.png",
+        "sha256": "f24cdadd0e47f02b3afd0d5aae521e69d645be809811a9e351f3bcddf88b7ea6",
+        "size": 1059
+      },
+      {
+        "path": "godot/generated/fighters/konan/57.png.import",
+        "sha256": "6d398f7fb5c191b83c5f10d3af28d0f4003c2df32e372a1453028f2994ef87d3",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/59.png",
+        "sha256": "76857b1a5f685e38b864f13df55a503aecd8796c7aadaa4c3786c54c8db155a0",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/59.png.import",
+        "sha256": "d6a1ad673d356b8dcdf230f1bb550dd73ef3328979100f3536be9ea295be63f0",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/6.png",
+        "sha256": "be458fe7fabfdfb4ba6df2f85d3674f9275ee91c9cab4fa0685658f52b468e61",
+        "size": 975
+      },
+      {
+        "path": "godot/generated/fighters/konan/6.png.import",
+        "sha256": "9940dcf8f491a2a807d1941ad09e0b62cb9d8366227ded30fe16a95c3df30c55",
+        "size": 931
+      },
+      {
+        "path": "godot/generated/fighters/konan/61.png",
+        "sha256": "de7fd34cc69855cd529b77a400ec6aab59ad053021e55536d3aedb4b186a3ae2",
+        "size": 1026
+      },
+      {
+        "path": "godot/generated/fighters/konan/61.png.import",
+        "sha256": "8553e3b5b363692f529e8ef3736b0cd9453e36898447fc714b1a4c1470b267d4",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/63.mp3",
+        "sha256": "55a1a086b0289c2dae66749411e14c1e44fe39d1ac577bbf963aa9660db5e00d",
+        "size": 1463
+      },
+      {
+        "path": "godot/generated/fighters/konan/63.mp3.import",
+        "sha256": "5ed0e61fb202177a4edb3bace43b127fcc993d10bea2acf6437ab62490737ead",
+        "size": 360
+      },
+      {
+        "path": "godot/generated/fighters/konan/64.png",
+        "sha256": "ca192de2f4e4e1aa848c3de1f50d847c5e88dc0361033454d59c8f0c7c5745dd",
+        "size": 1239
+      },
+      {
+        "path": "godot/generated/fighters/konan/64.png.import",
+        "sha256": "67db70fac13057911407d6bb0c36d2fcb52d29b77be333af15502ab43dbe8884",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/66.png",
+        "sha256": "1ce7dc0a699d141540abb7439b4e814af3f9ed2363241bd7afecc832b3df5ecf",
+        "size": 1134
+      },
+      {
+        "path": "godot/generated/fighters/konan/66.png.import",
+        "sha256": "32ba4c03fc17cb460c4bf5b84c8e5a5fd13ad35850868f9c74bbbf6ee119b872",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/68.png",
+        "sha256": "d1dca2dba0ff3367921323485b3d5e9b12f61211f69b8b82ca87a6002035586c",
+        "size": 1115
+      },
+      {
+        "path": "godot/generated/fighters/konan/68.png.import",
+        "sha256": "b26c55e5bb7144ea4fc1818d073c9303debdb371e0b9387735c1305bd9cb8332",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/70.png",
+        "sha256": "d23057707b3b3cf3a55847a164ff8cc012e9d3f2e9c62675a04b2726aed3b644",
+        "size": 1069
+      },
+      {
+        "path": "godot/generated/fighters/konan/70.png.import",
+        "sha256": "7242468e2167a6d8d413201d8d6a0c697f168cf989bc455696d4703ad1bbf356",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/72.mp3",
+        "sha256": "369de2228ca3bf2d5f1da9b046b106a1f4e994dd9a0e7f69eb4846995b720826",
+        "size": 2926
+      },
+      {
+        "path": "godot/generated/fighters/konan/72.mp3.import",
+        "sha256": "ff13ea1a9b183def5a77ac143e578c582ad257f20c9422d26a4bdc014b96f796",
+        "size": 360
+      },
+      {
+        "path": "godot/generated/fighters/konan/73.png",
+        "sha256": "cb40e6e494a6547f2c9bc0b4ac6aa136ee49420da8bfc94ebc1b70f2e332221b",
+        "size": 1242
+      },
+      {
+        "path": "godot/generated/fighters/konan/73.png.import",
+        "sha256": "834806e761ba676b65b12ea530e3758ea364ee940914d169a5611783019a9c81",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/75.png",
+        "sha256": "ac739b546d6a9f4c3acb478ac218eafc5e136f11f4f561399f2da04c70cd3c34",
+        "size": 1717
+      },
+      {
+        "path": "godot/generated/fighters/konan/75.png.import",
+        "sha256": "3b33c2aac004e34073eb7144c608466221596f8f5e676b24eef1eda3ccf68664",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/77.png",
+        "sha256": "40cdb83b2b85152e231fc84c0d22cb15713b0a974317aa6bf10eb4f2fb089878",
+        "size": 2246
+      },
+      {
+        "path": "godot/generated/fighters/konan/77.png.import",
+        "sha256": "9e79a554e03542b0d57455f3325f50ef8b69b14aac51f2b0c906e56c1376ce2c",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/79.png",
+        "sha256": "8a9494a120f7c8ad45e65ac3fe5531a3c80c4f2b50f2c2168a7ee9ac43721298",
+        "size": 1918
+      },
+      {
+        "path": "godot/generated/fighters/konan/79.png.import",
+        "sha256": "29ee5f25f2b002a8578d1a90f3300d338c808f8de0657d6827455566e8122515",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/8.png",
+        "sha256": "1f96a7c2fba402b6c66efd0e66b5b11dd0ee91298ffd6764476fcdbf071c88cf",
+        "size": 976
+      },
+      {
+        "path": "godot/generated/fighters/konan/8.png.import",
+        "sha256": "e74aebfc37766a0b66398a7ad803e3eb4a77cf83d776d400c7fbdd6263f372f2",
+        "size": 932
+      },
+      {
+        "path": "godot/generated/fighters/konan/81.png",
+        "sha256": "b3e62b9c2f5973d0a8e7b1c5e0fa4d5072e7ba7bf1673ad091fc857beb65ae78",
+        "size": 1578
+      },
+      {
+        "path": "godot/generated/fighters/konan/81.png.import",
+        "sha256": "103c0d9eb7f3b82c209d513f25efd9ca44fb8cd389e8ecbf947721fe8fda289f",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/83.png",
+        "sha256": "ff608ffd14cb701293202216f8bff79aaa739f01011c9d4a43fce91e0b87a80e",
+        "size": 1378
+      },
+      {
+        "path": "godot/generated/fighters/konan/83.png.import",
+        "sha256": "17235ed7674968b20a319eb9c886dfa3320eee3f2d459c80ff71e06112c5aa35",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/85.png",
+        "sha256": "0d97b6711d0a115259a52ea5ca55a47561ddc927d0a4aa95e5638680e0e17f65",
+        "size": 1158
+      },
+      {
+        "path": "godot/generated/fighters/konan/85.png.import",
+        "sha256": "2d404030d04ad409e35e02c997cbc238778394284bbfafc2eeb657eeb69369d3",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/87.png",
+        "sha256": "487cc570513568d1ce3bcf5011472073511ef92ce07524eccd8391c13941e7f7",
+        "size": 980
+      },
+      {
+        "path": "godot/generated/fighters/konan/87.png.import",
+        "sha256": "c4afbdc0cc85e9a295f5d861a9d9d0bb96503135f0429d4ed92d8053638deea7",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/89.png",
+        "sha256": "c23aedb319a5cb1c9f7cc36d0a3c6d909d53262ce02f90f2753052cfbb34e52e",
+        "size": 5531
+      },
+      {
+        "path": "godot/generated/fighters/konan/89.png.import",
+        "sha256": "cd43222a299bc1c3827218e0844214030e6f898e929df0581c2fc6155ff032d9",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/91.png",
+        "sha256": "3bb63d28efeee7ed85a264227ebb4704158a48a6aab5e08e6ea4ff1fa31c7481",
+        "size": 5713
+      },
+      {
+        "path": "godot/generated/fighters/konan/91.png.import",
+        "sha256": "be90ce882f2d003f2ea5c47f983a2189334c2a37148bc8caa2ce11b8785dce4a",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/93.mp3",
+        "sha256": "ef2805468ffb1ca0b5b50525ba1a934004f8eeca5fbef9b1bac28ee8752707ea",
+        "size": 1768
+      },
+      {
+        "path": "godot/generated/fighters/konan/93.mp3.import",
+        "sha256": "73c6737d6f818bfb589e41cf0efe3ae690e8ce9abd6ec9e9bae17a055db98bfa",
+        "size": 360
+      },
+      {
+        "path": "godot/generated/fighters/konan/94.png",
+        "sha256": "77605909e0ad8ea02f819db2ed5059e2a2befd5547b2884adba418f62f9339f2",
+        "size": 7054
+      },
+      {
+        "path": "godot/generated/fighters/konan/94.png.import",
+        "sha256": "24b5ccc163f8e4347f00594411560013389ddaf2e951042dde7c62a1850b1180",
+        "size": 934
+      },
+      {
+        "path": "godot/generated/fighters/konan/96.png",
+        "sha256": "daaf5b3f040069ca224d6c4df612936f6b82cc4fb8de86443ef6cdee9e42dc91",
+        "size": 1566
+      },
+      {
+        "path": "godot/generated/fighters/konan/96.png.import",
+        "sha256": "8bb70e5ddecbaa822ca37af7bbb17ec29836362f828a3653cba242da72afb12b",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/98.png",
+        "sha256": "090a07fcee3700ecfdfff52dbca3416fa09dcbad08e6de0b7b17192d25b12455",
+        "size": 1579
+      },
+      {
+        "path": "godot/generated/fighters/konan/98.png.import",
+        "sha256": "d1dffd27e05217de99a21c5a4c2f70c4eca3615ca80069635328aeb3899da9a5",
+        "size": 935
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai.json",
+        "sha256": "2c884d1bc0baeff46d033fcc7920fb7d31f3da9bbbb7179a96a4495866239dfb",
+        "size": 42201
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/body.gd",
+        "sha256": "0bf6f5ae9c7f5316cddb9f43504e1a76917995655c58df536173df52cde26e68",
+        "size": 12259
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/body.gd.uid",
+        "sha256": "ef1eff9b4a1da0609e500c01b2e9b1bd052a134b2b490a50bae57e61cbf0d45a",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/body.json",
+        "sha256": "da9bb7c48056919c1e1e60c11cd7ecc71f570adde75ce664b51c5061d5125658",
+        "size": 1500
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/controller.gd",
+        "sha256": "8d124fc50e2fc208f212c7413934914770ab94e7b154ce39e02b4a3545d7a05d",
+        "size": 16380
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/controller.gd.uid",
+        "sha256": "f81fbe2e369846d97b63b0956631326692fc39ea8703661a14477d4fb4184c64",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/controller.json",
+        "sha256": "6d88b0fbdebfa10e69861ca59dc7160d6c7347e05ab3aa147b6e894f160e2e21",
+        "size": 34244
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/predicates.gd",
+        "sha256": "5cc4aac856e6e2d5e9966f4e47d6dcc0720556a97a350d172d6c5d670d1f743b",
+        "size": 14325
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_controller/predicates.gd.uid",
+        "sha256": "6d8b4ef31bca7169c44c52a3dece61c356ff5d6f03ad64e9d27ab62a1500179a",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_hit_state.gd",
+        "sha256": "4210e54514b7e55c0c95a3e305b8fa4a7da3e086a999d0fea6a65feafb25094b",
+        "size": 3152
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_hit_state.gd.uid",
+        "sha256": "0edce65007f8a04cc39e586cac0854c041b804a6016dd33bc3d00dc3928631b9",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/konan/ai_hit_state.json",
+        "sha256": "8d5f8c080b450b8e5f50fdf1bc51db29e6129121c85d0315a3b409153c689b05",
+        "size": 434
+      },
+      {
+        "path": "godot/generated/fighters/konan/assets.json",
+        "sha256": "a46b39bcf44d4e845d1ad057d9c8a7b660f0f28b12a1c1ace68f09694ad094de",
+        "size": 79382
+      },
+      {
+        "path": "godot/generated/fighters/konan/combat.json",
+        "sha256": "d3363c1ab1bcab7da8c016628444ec51bfa377fa84b68966c3341b5f3867dfa3",
+        "size": 170975
+      },
+      {
+        "path": "godot/generated/fighters/konan/fighter.json",
+        "sha256": "f4d842231208f9cbcaed1a904f4c9bc76e1d8f901a5e2c0edcfc2d6b6f454be3",
+        "size": 98582
+      },
+      {
+        "path": "godot/generated/fighters/konan/hurt_voice.json",
+        "sha256": "489d91f8f362e4a377b366e7303ef398c6775cfe2a624ba99a42a203e63bbf9b",
+        "size": 8026
+      },
+      {
+        "path": "godot/generated/fighters/konan/intro.json",
+        "sha256": "602e226f9aa17bc1ddce450953a96ee94cdead977657a408877b09c1b685351f",
+        "size": 1178
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_body/body.gd",
+        "sha256": "2ba7e48ea0447b00024d18a242b90c1133d03dc7bede9c07a86d6ecc95508712",
+        "size": 12864
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_body/body.gd.uid",
+        "sha256": "506497a0f7dfdcf1846d3be5b140b9ac9e1dff93ae4126fb1c22414fcb15ddb7",
+        "size": 19
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_body/body.json",
+        "sha256": "d704913ae55e65b2fa808035883be75a6e8d33bf7a6e0e04f8e46e90427a43fc",
+        "size": 2521
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/body.gd",
+        "sha256": "2ba7e48ea0447b00024d18a242b90c1133d03dc7bede9c07a86d6ecc95508712",
+        "size": 12864
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/body.gd.uid",
+        "sha256": "166180caa13b840c10c02c29092386335ef794a99ed5e33d399d41fe9a207db6",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/body.json",
+        "sha256": "d704913ae55e65b2fa808035883be75a6e8d33bf7a6e0e04f8e46e90427a43fc",
+        "size": 2521
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/controller.gd",
+        "sha256": "8d124fc50e2fc208f212c7413934914770ab94e7b154ce39e02b4a3545d7a05d",
+        "size": 16380
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/controller.gd.uid",
+        "sha256": "7614bf0fd54fdc9b1ba31ec5b0990cb7d298bdcd359da2cf0991cfd690d7b5ae",
+        "size": 19
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/controller.json",
+        "sha256": "9316a9c3ec093655c652fb272e9450228aad7b25e5a115b6d3d354ebc4d7e54e",
+        "size": 34247
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/predicates.gd",
+        "sha256": "21fe573f1f2b3d3922f038150fc96c045689ad5f5d454576137c2bbd18666e82",
+        "size": 16688
+      },
+      {
+        "path": "godot/generated/fighters/konan/player_controller/predicates.gd.uid",
+        "sha256": "2f283d8d08d52d17de861a442d4bc109f31d57f1aff52a6c27f3a222828ac9e9",
+        "size": 20
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments.json",
+        "sha256": "2aae626d4b263020baaa07cd8f305218573027dda8168ec7421c86611127eb84",
+        "size": 20439
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/100-30e4f6f7cbbe8c30.wav",
+        "sha256": "d28a5dff8630afb9afcbd9fb3d9a1d798b4e5d2f7d339f71c1954c7bff32d110",
+        "size": 240420
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/100-30e4f6f7cbbe8c30.wav.import",
+        "sha256": "dd5a084bc34d2ca7bc145b32f0e104d00d59b9bb1b4706a374ab8233a305a3a1",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/117-a6099a3b2f300a27.wav",
+        "sha256": "01f13bae8d5d386ded59625725deb176937c1109674be04f84d64d816f4c4114",
+        "size": 46884
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/117-a6099a3b2f300a27.wav.import",
+        "sha256": "0df42917b5f7034bb9b3d7219302ce16d1e7875200277d332da748cd749015e7",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/142-3a69490aabfebe2b.wav",
+        "sha256": "c39c94579065416e3c88fbb8c7a168f70d6ef9ae9e1bcdbb7a67d2c7c5726fed",
+        "size": 74532
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/142-3a69490aabfebe2b.wav.import",
+        "sha256": "768c9d216ba08dea6e8387e876f4d115f0246aa10cd11229e0666748c4eca1a4",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/167-b6a46f7fe917b913.wav",
+        "sha256": "9f26a4570d321fd3b057938fb189ab31bcf12f57c17833de4571fd2f6eb513f8",
+        "size": 69636
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/167-b6a46f7fe917b913.wav.import",
+        "sha256": "e83313fcf18aa146b9d7364e54a3f8fe008ea7f1732fb87ebfa62562e0035ebe",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/170-21c229916b204628.wav",
+        "sha256": "5a7df2e1782784c5f561f00a9831d45dc43e158497987f19225ca2d3e1f2134e",
+        "size": 226596
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/170-21c229916b204628.wav.import",
+        "sha256": "7e62321fd245cb3623b662964eeabbce62f180e38937840774902d463210a279",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/201-dc1318981d9bc24f.wav",
+        "sha256": "611ea05b72a03d8261045058b4e97cc8d8e9c1088bcfb963944eed2d73331cb5",
+        "size": 97284
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/201-dc1318981d9bc24f.wav.import",
+        "sha256": "9f605869fa5d90f6924fef9021e08414fa35157c98626b0befe8574f97112066",
+        "size": 557
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/285-0adcef1ed1274acc.wav",
+        "sha256": "b42362b4d5c782e646fdb4f33cc337a11c94c892426698aa8f0fb3a5fdddbe1a",
+        "size": 173076
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/285-0adcef1ed1274acc.wav.import",
+        "sha256": "f61b9ac4e1282d77d1d0666949630af8a0ed3ad63af7b8c34253f83d13958f09",
+        "size": 557
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/285-e564ba94d20ead50.wav",
+        "sha256": "2020d4494b027e19e2a4067cee5a029866dca972b1c8a637cfa372cd0d568814",
+        "size": 185124
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/285-e564ba94d20ead50.wav.import",
+        "sha256": "10495d778efe47272f07dc5d97c06fb2799acceb13e9c3aaf9c34b5beb6e7d13",
+        "size": 557
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/295-189f889c9f79e3b6.wav",
+        "sha256": "c1e19be2b9b1f0eaa5a5c2ab4d1637892849317e93d7b684adb423b7963e0262",
+        "size": 263460
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/295-189f889c9f79e3b6.wav.import",
+        "sha256": "21dc1087a65fc3d971bc8715b75cef041a05ffca3788eea499a5ac81908da2a5",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/359-b9510bda6d36816d.wav",
+        "sha256": "b62c9a4f0ab4e555c57f1cb45e4613b34a527b6676c7681ce44213583ccd1f61",
+        "size": 249348
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/359-b9510bda6d36816d.wav.import",
+        "sha256": "e8bee0a053ffa2ee949d040c0826d3e515120193bba57351b64df7e3d61748cb",
+        "size": 557
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/412-cdcbd3e5f6bb071d.wav",
+        "sha256": "64a573b7c5cb146afaa17a674a0d5f5c7378d6ac0478b97530e20d9215fd5c77",
+        "size": 143364
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/412-cdcbd3e5f6bb071d.wav.import",
+        "sha256": "feee919797b56ccd18d5479a5bed96dadc57ae6c2920f5737a73729eddad0ebf",
+        "size": 557
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/478-76a1efda81a522f4.wav",
+        "sha256": "3ee04080ab675addb35916a48a6d14a580feb7b01366f8bfebc6f57b0b3c0586",
+        "size": 272676
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/478-76a1efda81a522f4.wav.import",
+        "sha256": "af12ff5edd3ba56b9471e01cda39e788442d1f4fc49961e79d0fd899455f04e9",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/48-d545ce7578b639eb.wav",
+        "sha256": "852551304a1fd51d2769f5d2d87f300bcb97802ca519f4573ded6420e964e4b4",
+        "size": 152580
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/48-d545ce7578b639eb.wav.import",
+        "sha256": "28bbe0e637daba8d86a23f9e9ec32f730a1f8397a53e26a5606b4500ceffd4e1",
+        "size": 555
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/528-07819d7354133abf.wav",
+        "sha256": "4e91e25d2e89103dd997a58d44170a31bd5be1ba3184b3a17a09fce4bf674112",
+        "size": 111108
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/528-07819d7354133abf.wav.import",
+        "sha256": "81aadc3da18d831347945de7177cc2ef3df531f2d22d6daef646e9cd84c78856",
+        "size": 557
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/545-f391fb2723fe83a9.wav",
+        "sha256": "2da5a202e91baec1e1892483d39a1490c432e49fe78536b7d96f1aba8eee59db",
+        "size": 171012
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/545-f391fb2723fe83a9.wav.import",
+        "sha256": "f13fb13bd3aa0268fad9d24a8a5854101d98342ef629da3671135143a2435668",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/546-289b1ffeffb8b315.wav",
+        "sha256": "ab617557dc7d5cfbd06e17473b3f3dfa650ce450a56a77a405f2ea98aca2af4b",
+        "size": 419844
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/546-289b1ffeffb8b315.wav.import",
+        "sha256": "b7ed8ebb8f2687449dccf601935f36e4437d6323a8194727fbe20bead7744b20",
+        "size": 558
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/63-65507b59f8154866.wav",
+        "sha256": "05f31280bf172219e6c5650a346bc7dd262233d959f99e00984cea55d0869406",
+        "size": 119852
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/63-65507b59f8154866.wav.import",
+        "sha256": "299fe163016b619587b8c99d87b04edf509cb8d74f4bf68315ee739150d097a3",
+        "size": 555
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/72-ffebc74a6809d6e2.wav",
+        "sha256": "6e8c35a8ebda2802cb87d274dcdffd00ac06d5c6074a4fc60388d7395d506f39",
+        "size": 27692
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/72-ffebc74a6809d6e2.wav.import",
+        "sha256": "bbfddbf7d0c28a6b12d6ddcc14b87e5c116368e882bfa8e906336cd0e0e1dfde",
+        "size": 555
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/93-4adfc1b7b39cd858.wav",
+        "sha256": "28c19d5d1d3af57ae772b2f406af558f0b04ae0a591be99db656a74eefcd8b5e",
+        "size": 65028
+      },
+      {
+        "path": "godot/generated/fighters/konan/sound_segments/93-4adfc1b7b39cd858.wav.import",
+        "sha256": "1c2d4e85fc172b83dc4e8067bdb8ad27f55b107e3ce828eded7fe3195ba3c15f",
+        "size": 555
+      },
+      {
+        "path": "godot/generated/fighters/konan/timeline.json",
+        "sha256": "594d00435a48dbd821cae9837499a1747aa1a3772cd602543aacd7899d28dce6",
+        "size": 5358360
       },
       {
         "path": "godot/generated/fighters/lee/10.png",
@@ -63546,8 +66737,8 @@
       },
       {
         "path": "godot/generated/main/character_selection/available.json",
-        "sha256": "ccd8aa13e946896b56fd0ebf8f3cea072dfeb87284c3816a7542d1a9855d0be3",
-        "size": 582
+        "sha256": "0feee6f9d1fccfd9c7d9ee7b3863ecbbf5ab27c1930165ed7744fc805fc364c2",
+        "size": 605
       },
       {
         "path": "godot/generated/main/character_selection/card/1349.png",
@@ -64330,6 +67521,16 @@
         "size": 995
       },
       {
+        "path": "godot/generated/main/character_selection/footer-name-konan.png",
+        "sha256": "201f5cd18a17091610cd35ee242c140d2c0c119127a582e2d61e9bd861c27b82",
+        "size": 870
+      },
+      {
+        "path": "godot/generated/main/character_selection/footer-name-konan.png.import",
+        "sha256": "4c4b90f5c2e2b1ef6a1797053a4979b253257e7f0df699b84133047ae4a71570",
+        "size": 990
+      },
+      {
         "path": "godot/generated/main/character_selection/footer-name-neji.png",
         "sha256": "930db6c1a82e0776aa9f9666677a4a42ea2f320490b7963acd98a608a7148490",
         "size": 1323
@@ -64381,8 +67582,8 @@
       },
       {
         "path": "godot/generated/main/character_selection/footer.json",
-        "sha256": "8a1ade1297768a33774f401a01056730b739dd535aeb8d325dd4891f3fc7cf3f",
-        "size": 1872
+        "sha256": "3d520f34410bdb214e6067ec5b63c400f3b4cab2760857d9c3cb0220ce8032fd",
+        "size": 1952
       },
       {
         "path": "godot/generated/main/character_selection/player1/1470.png",
@@ -65125,6 +68326,56 @@
         "size": 993
       },
       {
+        "path": "godot/generated/main/character_selection/portrait-konan-1.png",
+        "sha256": "90ab52ee3e02ca014706d20986ba7abb3c2944fe42d684f80b148828806f2ad2",
+        "size": 48155
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-1.png.import",
+        "sha256": "0460036119b56f4123e6cccf51cad732fd8b53fb3ab39872cc43e15d267190e8",
+        "size": 987
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-2.png",
+        "sha256": "5c5db375cd33f2b5189bdadee4f0f68da9294424e44235acfb80d014ae45f4cd",
+        "size": 50187
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-2.png.import",
+        "sha256": "56fab424335646266b4a01775085bfd85b90a813719ca3ac0335b72a2e48550d",
+        "size": 986
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-3.png",
+        "sha256": "4d7ad476763a4f2bce2b3cc4fda473950ded2a394171204ac868c961196d5f11",
+        "size": 51364
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-3.png.import",
+        "sha256": "43a14df4f99d54d20e126c2f2b4671e037f306720622d5bdaa8d2de484ce8dc1",
+        "size": 987
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-4.png",
+        "sha256": "84b48f2886bc79efbfdd24d98041887da4da5b6b9fd499949cc93d83af35fa46",
+        "size": 52013
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-4.png.import",
+        "sha256": "f680ed06ca16868c7b0a31c66a5475478aa67d44a8fca910507522ecc3c8c8d5",
+        "size": 987
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-5.png",
+        "sha256": "84b48f2886bc79efbfdd24d98041887da4da5b6b9fd499949cc93d83af35fa46",
+        "size": 52013
+      },
+      {
+        "path": "godot/generated/main/character_selection/portrait-konan-5.png.import",
+        "sha256": "0fcdf69fa2bb95443502abd22874574e3df1cbb1897b31c8dbf9dc14c7a1e096",
+        "size": 987
+      },
+      {
         "path": "godot/generated/main/character_selection/portrait-neji-1.png",
         "sha256": "9e9515c498c548feb907b1db060bfcc91c48078692d589d0047b56426de9a34f",
         "size": 15623
@@ -65376,8 +68627,8 @@
       },
       {
         "path": "godot/generated/main/character_selection/portraits.json",
-        "sha256": "5fb8c46bb88f4b77422b83c58eb4c68a9dd1576cb68e618cdd44995918517b8c",
-        "size": 6366
+        "sha256": "994e223e8dafcbde1ffaba6999bc306d921d67560790eb08c9d57b8a4e3a2659",
+        "size": 6711
       },
       {
         "path": "godot/generated/main/character_selection/selection.json",
@@ -69661,8 +72912,8 @@
       },
       {
         "path": "godot/generated/main/intro/intro.json",
-        "sha256": "fadf048b7e7c810ba1dbe62257d4dce95e17bcb3f92eea537e90e9abf44965a6",
-        "size": 11664
+        "sha256": "15bf94af54e43007377a2b9dcf36ceec1c1238dd04119551369be7cbbbe7b923",
+        "size": 11856
       },
       {
         "path": "godot/generated/main/intro/qjxg/assets.json",
@@ -74216,8 +77467,8 @@
       },
       {
         "path": "services/matchmaking/src/catalog.json",
-        "sha256": "bc8ab598de8936cd09947c1ccc9e38e9199b86d4d12c57275553e84c92fa5a88",
-        "size": 517
+        "sha256": "0202e31ec15b9090f0fbe99233508bf8bd9ad6e809c6b306603ae418a2e7cf19",
+        "size": 530
       }
     ]
   }

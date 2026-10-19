@@ -2027,6 +2027,11 @@ func _apply_clip_placement(event: Dictionary) -> void:
 		return
 	var reference_position := Vector2((opponent.source_x - source_x) * facing,
 		opponent.source_y - source_y)
+	var parent_transform := _wrapper_transform()
+	if bool(event.get("divide_parent_scale_x", false)):
+		reference_position.x /= parent_transform.x.length()
+	if bool(event.get("divide_parent_scale_y", false)):
+		reference_position.y /= parent_transform.y.length()
 	var reference_name := str(event.get("reference_instance", ""))
 	if not reference_name.is_empty():
 		reference_position = named_instance_origin(reference_name)

@@ -28,7 +28,11 @@ class RenamedAttackClipTests(unittest.TestCase):
         self.assertEqual(definition['display_list_frames'][36], [])
         self.assertEqual([(e['frame'], e['op']) for e in clip['frame_events']],
                          [(30, 'screen_flash')])
-        self.assertEqual(renamed_timeline_hooks(self.bundle, 764, self.timeline, [hook]), [])
+        remaining = renamed_timeline_hooks(self.bundle, 764, self.timeline, [hook])
+        self.assertNotIn(hook, remaining)
+        # Sprite 260 starts as zh1atm and releases that name at local frame 5.
+        self.assertEqual([h['projectile']['character_id'] for h in remaining], [260])
+        self.assertEqual(renamed_timeline_hooks(self.bundle, 764, self.timeline, hooks), [])
 
     def test_replacement_does_not_share_the_old_playhead(self):
         placement = {'character_id': 489, 'depth': 7, 'name': 'future_attack', 'placed_frame': 20}

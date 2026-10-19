@@ -1,0 +1,221 @@
+{
+  "base_commit": "79ef536759cbd94db336f98b0fa87500d9d07a7b",
+  "coverage": "partial",
+  "production_runtime_changed": true,
+  "shared_compiler_changed": true,
+  "focused": {
+    "cases": 12,
+    "matched": 12,
+    "failed": 0,
+    "states": 5784,
+    "fields": 14,
+    "report": "evidence/characters/konan/comparisons.json"
+  },
+  "saved_roster_replay": {
+    "cases": 131,
+    "matched": 131,
+    "failed": 0,
+    "states": 79222,
+    "fields": 14,
+    "primary_fighters": 18,
+    "prior_catalog_slots": 19,
+    "coverage_note": "18 primary fighters; Renji appears only as opponent in two assist-overlap cases, with no Renji-primary saved replay."
+  },
+  "compiler_impact": {
+    "prior_fighters_unchanged": 19,
+    "changed_fighter": "konan",
+    "report": "evidence/characters/konan/compiler-impact.json"
+  },
+  "suites": {
+    "python": {
+      "run": 319,
+      "passed": 317,
+      "skipped": 2,
+      "status": "passed"
+    },
+    "godot": [
+      {
+        "name": "player_controller_smoke",
+        "exit": 0,
+        "seconds": 11.026571540976875,
+        "markers": [
+          "PLAYER_CONTROLLER_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "player_visual_smoke",
+        "exit": 0,
+        "seconds": 22.980422457912937,
+        "markers": [
+          "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+          "PLAYER_VISUAL_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "combat_smoke",
+        "exit": 0,
+        "seconds": 21.503430333919823,
+        "markers": [
+          "COMBAT_SMOKE_OK"
+        ],
+        "errors": [
+          "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+        ]
+      },
+      {
+        "name": "menu_smoke",
+        "exit": 0,
+        "seconds": 3.7498152919579297,
+        "markers": [
+          "MENU_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "stage_sound_smoke",
+        "exit": 0,
+        "seconds": 1.6972011670004576,
+        "markers": [
+          "stage_sound_smoke ok"
+        ],
+        "errors": [
+          "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+        ]
+      },
+      {
+        "name": "character_selection_smoke",
+        "exit": 0,
+        "seconds": 8.686108499998227,
+        "markers": [
+          "CHARACTER_SELECTION_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "hit_settlement_frame_smoke",
+        "exit": 0,
+        "seconds": 3.6373492080019787,
+        "markers": [
+          "HIT_SETTLEMENT_FRAME_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "source_hit_test_smoke",
+        "exit": 0,
+        "seconds": 1.2711412919452414,
+        "markers": [
+          "SOURCE_HIT_TEST_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "interrupted_super_lock_smoke",
+        "exit": 0,
+        "seconds": 4.718059499980882,
+        "markers": [
+          "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+        ],
+        "errors": []
+      },
+      {
+        "name": "konan_rollback_smoke",
+        "exit": 0,
+        "seconds": 68.39100291696377,
+        "markers": [
+          "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+          "KONAN_ROLLBACK_SMOKE_OK intro=natural super=ultimate guard=true round_reset=true late_input=true"
+        ],
+        "errors": []
+      },
+      {
+        "name": "online_character_selection_smoke",
+        "exit": 0,
+        "seconds": 4.208845124929212,
+        "markers": [
+          "ONLINE_CHARACTER_SELECTION_SMOKE_OK local_slots=true phase_barrier=true helper_phase=true choice_freeze=true buffered_phase_validation=true service_ids=true offline_chain_isolated=true",
+          "ONLINE_CHARACTER_SELECTION_RESELECT_SMOKE_OK stale_session_rejected=true cancel_keeps_choice=true",
+          "ONLINE_CHARACTER_SELECTION_LIFECYCLE_SMOKE_OK pending_timer_stopped=true teardown_rejects_late_snapshot=true reentry=true",
+          "ONLINE_CHARACTER_SELECTION_SOURCE_RULE_SMOKE_OK same_fighter_helper_rejected=true invalid_old_helper_not_restored=true"
+        ],
+        "errors": []
+      }
+    ],
+    "shared_modes": {
+      "pvp_states": 602,
+      "training_timer_states": 602,
+      "status": "matched"
+    },
+    "matchmaking": {
+      "node": "24.18.0",
+      "typecheck": "passed",
+      "tests": 31,
+      "passed": 31,
+      "deployment": false
+    },
+    "verify": "passed",
+    "handoff": "passed",
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6
+    },
+    "online_manifest": "passed; 20 fighters, four helpers, ten stages",
+    "web": {
+      "status": "built locally",
+      "metadata": "evidence/characters/konan/web-build.json",
+      "deployed": false,
+      "browser": {
+        "status": "passed limited local Chrome smoke",
+        "url": "http://127.0.0.1:8067/",
+        "buildID": "a48e1a6a7e50f116ddc4f988f9e36781c1d7ea20bcd42bde8b96424d3deb5029",
+        "pckSha256": "4457189ddc2ea15b91862b8658d61ca596ad8bdb75b626ab252c251fb4d4d757",
+        "method": "Native Chrome UI through cua_repl; observations displayed in session, no pixel comparison.",
+        "observed": [
+          "Final export title screen loaded",
+          "Vs Human selection shows Konan original portrait and 小南 footer",
+          "Both fighters confirmed; existing Kon/Gaara helper slots confirmed",
+          "Map flow completed; natural opening progressed into Konan versus Naruto fight",
+          "Timer progressed; right movement and normal attack input accepted; opponent health bar decreased"
+        ],
+        "limitations": [
+          "No exhaustive browser move matrix, audio comparison, pixel comparison or cross-browser acceptance."
+        ],
+        "earlier_tool_error": "Sky Computer Use service startup request failed",
+        "tool_error_resolved": true
+      }
+    }
+  },
+  "runtime_sha256": {
+    "fighter_runtime.gd": "848224f1624992c14a0cd27cda67cbf144df003809a7a0869b4f852ea01e4a1f",
+    "ai_predicate_context.gd": "a9ffff1349cb6c36dd293d7684df9b6fee0a5821f2fc32fdeef411ceac90c441",
+    "main.gd": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f",
+    "player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea",
+    "ai_cpu_driver.gd": "1b9f3d7345d4ba76fcacae645acd84842d6a8b6b13aee58becc9fc4619c1ca2a"
+  },
+  "source_swf_sha256": "42e1f5b86ec7f08f29d5027af99c5f049bf1f7a9db9bd2a3e4fa1d771d2471b6",
+  "source_scripts_sha256": "f807ff8c5017594fe680d46a7207c746304e5734dbf28570f9fcbc7a3ffe6f3c",
+  "source_frames": 1359,
+  "indexed_body_scripts": 134,
+  "original_player": {
+    "version": "32.0.0.465",
+    "app": "/Users/fengkx/me/code/flash-player/Flash Player.app",
+    "executable_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "jpexs": "26.2.1"
+  },
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "anti_deadlock_sha256": "4eb7a77f734c95b7427cfa67b244a73972c3f2c71b06754cdd74203ff8293c44",
+  "anti_deadlock_section_bytes": 1087,
+  "deviations": [
+    "Retained PR #37 _clear_interrupted_super_preparation including interrupted queued preparation recovery unchanged."
+  ],
+  "limitations": [
+    "Full audiovisual/cross-browser/AI and exhaustive move/cancel-boundary acceptance remains pending.",
+    "Saved roster corpus has no Renji-primary replay; Renji occurs as opponent only.",
+    "No Worker or Vercel deployment; no merge."
+  ],
+  "measured_pipeline_elapsed_seconds": 3061,
+  "elapsed_note": "Measured wall time since first SWF export, including captures, harness failures, resource import, tests and builds. No person-day estimate inferred."
+}
