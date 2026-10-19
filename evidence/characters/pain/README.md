@@ -113,7 +113,9 @@ using the player at `/Users/fengkx/me/code/flash-player/Flash Player.app` and
 are never accepted as Godot output. Temporary builds/logs stay in `/tmp/pain-*`.
 
 Shared compiler/runtime changes require the `docs/REGRESSION_INDEX.md` corpus
-plus the saved Orochimaru/Jiraiya cases: 121 cases across 18 earlier fighters.
+plus the saved Orochimaru/Jiraiya cases: 121 cases across 17 primary fighters.
+Renji appears only in two Sasuke/You assist-overlap cases; there is no
+Renji-primary replay. The catalog has 18 prior slots.
 The 14-field comparison covers fighter states, not every helper or render field.
 Run the shared modes check and `pain_rollback_smoke.gd` for natural opening,
 checkpoint replay through ultimate pause, delayed input and next-round reset.
@@ -157,7 +159,8 @@ No browser screenshot or keyboard-flow pass is claimed.
 
 ## Final validation
 
-- Saved Flash replay: **121/121 cases**, 18 prior fighters,
+- Saved Flash replay: **121/121 cases**, 17 primary fighters plus Renji in two
+  assist-overlap cases only (no Renji-primary replay; catalog: 18 prior slots),
   **74,402/74,402 states** on 14 fields. The 43 cases already started before
   the final warp rule were rerun, and their newer results replace the earlier
   ones in `regressions.json`.
