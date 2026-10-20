@@ -19,6 +19,7 @@ from compile_ai_predicates import (
 from compile_ai_context import controller_scope_fields
 from build_combat_model import (
     parse_clip_timeline,
+    parse_child_stop_frames,
     parse_projectile_initialization,
     parse_projectile_motion,
     source_frame_counts,
@@ -450,6 +451,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
             raise ValueError('Uncompiled child callback: ' + script['path'])
         frame, character, depth = map(int, match.groups())
         clip = parse_clip_timeline(bundle, character, frame_counts)
+        clip.update(parse_child_stop_frames(bundle, timeline, character))
         if 'initial_variables' not in clip:
             load_path = script['path'].replace('onClipEvent(enterFrame)', 'onClipEvent(load)')
             load = next((s['source'] for s in bundle['scripts'] if s['path'] == load_path), '')

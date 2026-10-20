@@ -180,6 +180,16 @@ share lifetime tracking with controller/receiver hooks. Their playheads advance
 in a separate pre-callback phase; repeated synchronization is not another
 playhead advance. A new placement resets offset and frame-1 initialization.
 
+`projectiles[].child_stop_frames` optionally maps immediate child sprite IDs
+to source stop frames, compiled only when those child frame scripts consist
+solely of `stop()`. Only child IDs explicitly listed in this table opt into
+placement clocks; legacy compiled assets retain their existing playback.
+Instance records retain `child_clocks`, keyed by depth with
+character/placement-frame identity and elapsed age. A new placement resets that
+age even after a delayed parent goto; MOVE retains it. These records and the
+compiled stop table share the existing checkpointed local-playhead state.
+See [Deidara's repeated projectile evidence](../evidence/characters/didala/README.md).
+
 `ai.json.frame_calls` retains top-level super/presentation calls with source
 `path`, `line` and `frame`. The AI host merges calls and `frame_writes` by line
 number, preserving assignment/call interleaving. Separate bsd and showFace

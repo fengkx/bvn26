@@ -996,6 +996,28 @@ def placement_character_id(
     return None
 
 
+def parse_child_stop_frames(
+    script_bundle: dict[str, Any], timeline: dict[str, Any], character_id: int | None,
+) -> dict[str, Any]:
+    definition = next(
+        (item for item in timeline.get("definitions", [])
+         if item.get("character_id") == character_id), {}
+    )
+    child_stops = {}
+    for child_id in definition.get("referenced_character_ids", []):
+        child_scripts = [
+            item for item in script_bundle["scripts"]
+            if item["path"].startswith(f"DefineSprite_{child_id}/frame_")
+            and "CLIPACTIONRECORD" not in item["path"]
+        ]
+        if not child_scripts or any(item["source"].strip() != "stop();" for item in child_scripts):
+            continue
+        controls = parse_clip_timeline(script_bundle, child_id)
+        if controls.get("stop_frames"):
+            child_stops[str(child_id)] = controls["stop_frames"]
+    return {"child_stop_frames": child_stops} if child_stops else {}
+
+
 def parse_clip_timeline(
     script_bundle: dict[str, Any], character_id: int,
     frame_counts: dict[int, int] | None = None,
@@ -1685,6 +1707,7 @@ def build_model(
                 if character_id is not None and character_id in scripted_sprite_ids
                 else {}
             )
+            clip_timeline.update(parse_child_stop_frames(script_bundle, timeline, character_id))
             load_path = script["path"].replace(
                 "onClipEvent(enterFrame)", "onClipEvent(load)"
             )

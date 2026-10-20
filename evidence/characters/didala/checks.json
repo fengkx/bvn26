@@ -1,0 +1,119 @@
+{
+  "status": "targeted_validation_passed_full_acceptance_pending",
+  "base": "b45e00b8c847582e30914bffe56f6e9dbc7e52d3",
+  "branch": "feat/didala",
+  "native_flash_parity": {
+    "passed": 12,
+    "cases": 12,
+    "source_states": 5784,
+    "native_states": 5784,
+    "fields": 14,
+    "report": "comparisons.json"
+  },
+  "shared_runtime_changed": true,
+  "shared_runtime_files": [
+    "godot/timeline_preview.gd",
+    "godot/fighter_runtime.gd"
+  ],
+  "protected_function": {
+    "status": "PROTECTED_FUNCTION_OK",
+    "bytes": 1086,
+    "sha256": "9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed"
+  },
+  "environment": {
+    "os": "macOS-26.7-arm64-arm-64bit",
+    "python": "3.11.15",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "Adobe Flash Player Debugger 32.0.0.465",
+    "player_app": "/Users/fengkx/me/code/flash-player/Flash Player.app",
+    "player_executable_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be"
+  },
+  "runtime_sha256": {
+    "fighter_runtime.gd": "0220f9a81c6209d1637e47bc511792e7462e9d8242a826bc6e6ff33b01876f25",
+    "timeline_preview.gd": "575d52cebe468a9ea5859712ffb856a371427d15552e6b8632eb8ac65dad6158",
+    "ai_predicate_context.gd": "8a2689acec22aefd729bd86ba1b36910a5c65b5c18b5ab5b4df4e631e55d64c9",
+    "main.gd": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f",
+    "player_body_driver.gd": "3063e8c9a16d949920b639a513488d8f931d588f3afad853732f1742d2ef47ea",
+    "ai_cpu_driver.gd": "5a7676502b306dd86eb0bb1138d58ff291e6283753927514ccc7b3195cc9da50"
+  },
+  "deviations": [
+    "Retained PR #37 direct and queued interrupted-super preparation recovery unchanged."
+  ],
+  "limitations": [
+    "Coverage remains partial; full audiovisual/browser/AI and exhaustive boundaries remain pending.",
+    "Air-ranged and upper-ranged fixtures may be source whiffs; actual target/HP observations are retained separately from parity.",
+    "No assist, deployment or merge.",
+    "Prior roster includes Renji only as opponent, not as primary fighter."
+  ],
+  "measured_elapsed_seconds": 2533,
+  "elapsed_note": "Wall time since explicit goal activation; includes investigation, capture waits, failures and checks. No person-days inferred.",
+  "compiler_sha256": {
+    "build_combat_model.py": "b2cd393e7662af7ccb354269c53db5fb8470d7ed80e26bf92fb0078bcc0d2669",
+    "compile_ai_controller.py": "2649f9ded74f08b33a7c747c05be067b9ef876dcec85142edd04a22dd32e13ce"
+  },
+  "compiler_audit": {
+    "prior_fighters": 21,
+    "combat_unchanged": true,
+    "player_and_ai_controllers_unchanged": true,
+    "reports": [
+      "compiler-impact.json",
+      "controller-compiler-impact.json"
+    ]
+  },
+  "saved_roster": {
+    "cases": 155,
+    "matched": 155,
+    "states": 90790,
+    "fields": 14,
+    "primary_fighters": 20,
+    "report": "regressions.json"
+  },
+  "godot_gate": {
+    "checks": 40,
+    "passed": 35,
+    "matched_known_failures": 5,
+    "report": "godot-checks.json",
+    "rollback_roster_success_records": 22,
+    "note": "The inherited runner expected 16 roster records; the final runner derives 22 from the current catalog. The existing test summary still says 11. All 22 individual records pass. The initial count-only rejection is retained in diagnostics."
+  },
+  "validation": {
+    "python": {
+      "run": 325,
+      "passed": 323,
+      "skipped": 2
+    },
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6,
+      "gameplay_tested": false,
+      "production_ready_data": false
+    },
+    "matchmaking": "31 tests and TypeScript passed",
+    "online_manifest": "7 tests and current manifest check passed",
+    "shared_modes": {
+      "pvp_states": 602,
+      "training_timer_states": 602,
+      "status": "matched"
+    },
+    "web": "local export and Chromium boot passed",
+    "screenshots": "two native Godot captures copied byte-for-byte to local Web output",
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 21,
+      "local_links": 273,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    }
+  }
+}
