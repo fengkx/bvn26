@@ -205,6 +205,18 @@ for path in output.iterdir():
         path.unlink()
 PY
 cp -a "$EXPORT_STAGE/." "$ROOT_DIR/dist/web/"
+python3 - "$ROOT_DIR/evidence/characters" "$ROOT_DIR/dist/web/evidence/characters" <<'PY'
+import shutil
+import sys
+from pathlib import Path
+
+# Publish retained visual evidence without shipping analysis SWFs or trace logs.
+source, output = map(Path, sys.argv[1:])
+for screenshot in sorted(source.glob("*/screenshots/*.png")):
+    destination = output / screenshot.relative_to(source)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(screenshot, destination)
+PY
 cp "$STAGED_SIDECAR" "$ROOT_DIR/dist/web/build-metadata.json"
 
 python3 - "$ROOT_DIR/dist/web/build-metadata.json" "$ROOT_DIR/dist/web/index.pck" <<'PY'

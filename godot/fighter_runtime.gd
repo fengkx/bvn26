@@ -1590,6 +1590,7 @@ func _start_clip_playhead(instance_name: String, projectile: Dictionary) -> void
 	if projectile.has("initial_speed_field"):
 		variables["movspeed"] = float(ai_source_state.read_field(str(projectile["initial_speed_field"]))) * float(projectile.get("initial_speed_factor", 1.0))
 	record["source_variables"] = variables
+	record["child_stop_frames"] = projectile.get("child_stop_frames", {}).duplicate(true)
 	_instance_local_frames[instance_name] = record
 
 

@@ -280,7 +280,41 @@ func set_instance_clip_frame(
 		"age": int(previous.get("age", 0)) if age < 0 else age,
 		"source_variables": previous.get("source_variables", {}).duplicate(true),
 		"source_timeline_event_driver": bool(previous.get("source_timeline_event_driver", false)),
+		"child_stop_frames": previous.get("child_stop_frames", {}).duplicate(true),
 	}
+	_update_child_clocks(instance_name, previous)
+
+
+func _instance_children(instance_name: String, local_frame: int) -> Array:
+	for placement: Dictionary in _frames.get(_current_frame, {}).get("display_list", []):
+		if str(placement.get("name", "")) != instance_name:
+			continue
+		var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
+		var frames: Array = definition.get("display_list_frames", [])
+		if local_frame > 0 and local_frame <= frames.size():
+			return frames[local_frame - 1]
+	return []
+
+
+func _update_child_clocks(instance_name: String, previous: Dictionary) -> void:
+	var record: Dictionary = _instance_local_frames[instance_name]
+	var elapsed := maxi(0, int(record["age"]) - int(previous.get("age", 0)))
+	var old_clocks: Dictionary = previous.get("child_clocks", {})
+	var clocks := {}
+	for child: Dictionary in _instance_children(instance_name, int(record["local_start"])):
+		# Only compiled child timelines opt into placement clocks; legacy
+		# assets retain their recorded playback semantics until revalidated.
+		if not record["child_stop_frames"].has(str(int(child["character_id"]))):
+			continue
+		var depth := int(child["depth"])
+		var identity := [int(child["character_id"]), int(child.get("placed_frame", 1))]
+		var old: Dictionary = old_clocks.get(depth, {})
+		# A goto can replace a child after an arbitrary flight duration. Only
+		# retained placements inherit their age; the new explosion starts at 1.
+		clocks[depth] = {"identity": identity,
+			"age": int(old.get("age", 0)) + elapsed if old.get("identity") == identity else 0}
+	record["child_clocks"] = clocks
+	_instance_local_frames[instance_name] = record
 
 
 func mark_source_timeline_event_driver(instance_name: String) -> void:
@@ -1309,6 +1343,18 @@ func _nested_frame(
 		return maxi(1, int(_instance_local_frames[instance_name]["local_start"]))
 	if frame_count <= 1:
 		return 1
+	for parent_name: String in _instance_local_frames:
+		var parent: Dictionary = _instance_local_frames[parent_name]
+		for child: Dictionary in _instance_children(parent_name, int(parent["local_start"])):
+			if not is_same(child, placement):
+				continue
+			var clock: Dictionary = parent.get("child_clocks", {}).get(int(child["depth"]), {})
+			if not clock.is_empty():
+				var elapsed_frame := int(clock["age"]) + 1
+				for stop_frame in parent.get("child_stop_frames", {}).get(str(int(child["character_id"])), []):
+					if elapsed_frame >= int(stop_frame):
+						return int(stop_frame)
+				return posmod(elapsed_frame - 1, frame_count) + 1
 	if independent_visual_clock and instance_name == "":
 		var retained: Dictionary = _retained_visual_clips.get(int(placement["depth"]), {})
 		if is_same(retained.get("placement"), placement):

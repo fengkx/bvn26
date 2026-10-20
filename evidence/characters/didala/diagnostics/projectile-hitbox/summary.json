@@ -1,0 +1,167 @@
+{
+  "status": "original_capture_completed_not_port_parity",
+  "run_id": "didala-projectile",
+  "input_delivery": {
+    "status": "source_key_reads_match_recorded_intent",
+    "bindings": {
+      "w": "87",
+      "a": "65",
+      "l": "76",
+      "上箭": "38",
+      "下箭": "40",
+      "左箭": "37",
+      "右箭": "39",
+      "N1": "97",
+      "N2": "98",
+      "N3": "99",
+      "N4": "100",
+      "N5": "101",
+      "N6": "102",
+      "right": "68",
+      "attack": "74",
+      "down": "83",
+      "ranged": "85",
+      "jump": "75",
+      "special": "73",
+      "summon": "79"
+    },
+    "reads": 4838,
+    "pressed_reads": {
+      "_level0.game.p1.mc:85": 2
+    }
+  },
+  "events": 10561,
+  "post_done_events": 0,
+  "counts": {
+    "boot": 1,
+    "input_bindings": 1,
+    "input_next_display": 728,
+    "initCtrl": 6,
+    "helper_load": 2,
+    "frame_state_enter": 80,
+    "intro_body_enter": 157,
+    "intro_body_exit": 157,
+    "frame_state_exit": 80,
+    "random": 5,
+    "intro_poll": 23,
+    "intro_poll_state": 23,
+    "state": 1094,
+    "helper_state": 1094,
+    "helper_clip_state": 1094,
+    "helper_lifecycle": 1094,
+    "intro_step": 4,
+    "intro_goto_before": 1,
+    "intro_goto_return": 1,
+    "ready": 1,
+    "key_read": 4838,
+    "projectile_state": 70,
+    "source_hit_test": 2,
+    "source_hit_packet": 2,
+    "clock": 2,
+    "done": 1
+  },
+  "frames_after_ready": 240,
+  "termination_policy": "first_done_with_retained_async_tail",
+  "ready": {
+    "run_id": "didala-projectile",
+    "sequence": 3372,
+    "time_ms": 24900,
+    "display_tick": 488,
+    "fight_tick": 0,
+    "kind": "ready",
+    "value": ""
+  },
+  "init_events": [
+    {
+      "run_id": "didala-projectile",
+      "sequence": 4,
+      "time_ms": 8748,
+      "display_tick": 1,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "didala-projectile",
+      "sequence": 9,
+      "time_ms": 8788,
+      "display_tick": 2,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    },
+    {
+      "run_id": "didala-projectile",
+      "sequence": 21,
+      "time_ms": 8932,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1"
+    },
+    {
+      "run_id": "didala-projectile",
+      "sequence": 22,
+      "time_ms": 8932,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p1.mc"
+    },
+    {
+      "run_id": "didala-projectile",
+      "sequence": 23,
+      "time_ms": 8932,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2"
+    },
+    {
+      "run_id": "didala-projectile",
+      "sequence": 24,
+      "time_ms": 8932,
+      "display_tick": 8,
+      "fight_tick": -1,
+      "kind": "initCtrl",
+      "value": "_level0.game.p2.mc"
+    }
+  ],
+  "first_sample": null,
+  "samples_before_ready": 0,
+  "sample_intervals_ms": {},
+  "last_states": [
+    {
+      "run_id": "didala-projectile",
+      "sequence": 10553,
+      "time_ms": 33143,
+      "display_tick": 728,
+      "fight_tick": 240,
+      "kind": "state",
+      "value": "p1,7,f:1:8:78643200:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    },
+    {
+      "run_id": "didala-projectile",
+      "sequence": 10557,
+      "time_ms": 33144,
+      "display_tick": 728,
+      "fight_tick": 240,
+      "kind": "state",
+      "value": "p2,3,f:1:9:92536832:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:104857600:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+    }
+  ],
+  "raw_capture_sha256": "e3f0115e4cbe9bb6332b1ba31b892fc278604a43224a8f3efb94ae8b8c06ab59",
+  "retained_sha256": {
+    "clock-tape.json": "596c030f6f53deeb389bdae6fab657a86f322be407604048fe6b50c748e98af5",
+    "instrumentation.diff": "71bbf78dc86e4adb9f3b9a90476c940b8b611b4f681544e4afa5787fbeeecad9",
+    "events.jsonl": "50b604e76b594e1cf484354f34c8b08917a1035ad8ddf73d4199a9edc20c2370",
+    "random-tape.json": "19f37f70865200d6ea6151917988155099d0a4eaeeedd76a35ebd1b5f1918036",
+    "build.json": "73a91d7b5146187d035cf68d2c4bb99d754c88055564409dd2f55a9f08e404cb"
+  },
+  "limits": [
+    "Trace instrumentation adds execution overhead.",
+    "Math.random capture covers selected bundles; random(n) is not intercepted.",
+    "Full per-read sensing is not logged; body DoAction boundaries require the body_boundaries build option.",
+    "No Godot fight replay has been compared with this capture."
+  ]
+}
