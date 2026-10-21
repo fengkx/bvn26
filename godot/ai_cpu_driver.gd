@@ -189,18 +189,42 @@ func _external(name: String, args: Array) -> Variant:
 	return services.call(name, args)
 
 
+func _movement_operand(expression: Dictionary) -> float:
+	match expression["op"]:
+		"constant":
+			return float(expression["value"])
+		"read":
+			var value: Variant = fighter.ai_source_state.read_field(expression["field_name"])
+			return NAN if value == null else float(value)
+		"negate":
+			return -_movement_operand(expression["operand"])
+		"positive":
+			return _movement_operand(expression["operand"])
+		"add":
+			return _movement_operand(expression["left"]) + _movement_operand(expression["right"])
+		"subtract":
+			return _movement_operand(expression["left"]) - _movement_operand(expression["right"])
+		"multiply":
+			return _movement_operand(expression["left"]) * _movement_operand(expression["right"])
+		"divide":
+			return _movement_operand(expression["left"]) / _movement_operand(expression["right"])
+	assert(false, "Unknown compiled movement operand: " + str(expression))
+	return NAN
+
+
 func _frame_service(event: Dictionary) -> void:
 	match event["op"]:
 		"update_direct":
 			body.updateDirect()
 			return
 		"wrapper_move":
+			var pixels := _movement_operand(event["pixels_expression"]) if event.has("pixels_expression") else float(event["pixels"])
 			# Wrapper moveY adds Y, unlike the child controller's upward moveY.
 			if event["axis"] == "moveX":
-				fighter.source_x += float(event["pixels"]) * fighter.facing
+				fighter.source_x += pixels * fighter.facing
 			else:
 				assert(event["axis"] == "moveY")
-				fighter.source_y += float(event["pixels"])
+				fighter.source_y += pixels
 			return
 		"root_position", "frame_child_effect":
 			_external(event["op"], [event])

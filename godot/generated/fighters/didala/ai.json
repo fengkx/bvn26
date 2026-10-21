@@ -692,6 +692,26 @@
         "frame": 16
       }
     ],
+    "34": [
+      {
+        "op": "wrapper_move",
+        "axis": "moveX",
+        "pixels_expression": {
+          "op": "multiply",
+          "left": {
+            "op": "read",
+            "field_name": "speed"
+          },
+          "right": {
+            "op": "constant",
+            "value": 18
+          }
+        },
+        "path": "DefineSprite_542/frame_34/DoAction.as",
+        "line": 1,
+        "frame": 34
+      }
+    ],
     "44": [
       {
         "op": "timeline_goto",
@@ -1320,6 +1340,29 @@
         "operator": "=",
         "pixels": 0.0,
         "line": 1
+      }
+    ],
+    "970": [
+      {
+        "op": "wrapper_move",
+        "axis": "moveX",
+        "pixels_expression": {
+          "op": "multiply",
+          "left": {
+            "op": "negate",
+            "operand": {
+              "op": "read",
+              "field_name": "speed"
+            }
+          },
+          "right": {
+            "op": "constant",
+            "value": 6
+          }
+        },
+        "path": "DefineSprite_542/frame_970/DoAction.as",
+        "line": 1,
+        "frame": 970
       }
     ],
     "978": [
