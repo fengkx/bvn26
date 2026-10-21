@@ -19,7 +19,7 @@ PROJECTILE_LOCAL_CONDITION = re.compile(
     r"(?P<value>true|false|-?\d+(?:\.\d+)?)"
 )
 PROJECTILE_PARENT_WRITE = re.compile(
-    r"_parent\.(?P<field>[A-Za-z_]\w*)\s*=\s*"
+    r"(?<![\w.])_parent\.(?P<field>[A-Za-z_]\w*)\s*=\s*"
     r"(?P<value>true|false|-?\d+(?:\.\d+)?)\s*;"
 )
 PROJECTILE_HIT_IF = re.compile(

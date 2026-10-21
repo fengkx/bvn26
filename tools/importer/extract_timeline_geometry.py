@@ -264,6 +264,10 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             mask_shape = copy.deepcopy(tag)
             for fill in mask_shape.findall('.//fillStyles/item'):
                 fill.set('bitmapId', '0')
+            # Flash masks use fills only; authored strokes do not expand the mask.
+            for record in mask_shape.findall('./shapes/shapeRecords/item'):
+                if record.get('type') == 'StyleChangeRecord':
+                    record.set('stateLineStyle', 'false')
             contours = bitmap_shape_fill_polygons(mask_shape)
             if contours is None or len(contours) != 1 or len(contours[0]) != 1:
                 raise ValueError(f'Unsupported clipDepth mask geometry: {item_id}')

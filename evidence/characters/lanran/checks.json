@@ -1,0 +1,116 @@
+{
+  "status": "native_flash_capture_pending",
+  "base": "04244fae5bef827b8c67d8eb1efe0ae333a5eca7",
+  "branch": "feat/lanran",
+  "native_flash_parity": {
+    "status": "not_run",
+    "cases": 0,
+    "matched": 0,
+    "states": 0,
+    "reason": "Capture requires permission for possible window activation despite background launch."
+  },
+  "godot_execution": {
+    "passed": 12,
+    "cases": 12,
+    "states": 5944,
+    "report": "godot-execution.json",
+    "scope": "Execution and target reach only; not Flash parity."
+  },
+  "shared_runtime_changed": false,
+  "shared_compiler_changed": true,
+  "shared_compiler_files": [
+    "tools/importer/build_combat_model.py",
+    "tools/importer/combat_projectile_parser.py",
+    "tools/importer/extract_timeline_geometry.py"
+  ],
+  "compiler_audit": {
+    "prior_fighters": 22,
+    "combat_unchanged": true,
+    "report": "compiler-impact.json"
+  },
+  "saved_roster": {
+    "status": "matched",
+    "cases": 167,
+    "matched": 167,
+    "states": 96574,
+    "fields": 14,
+    "primary_fighters": 21,
+    "note": "Renji appears only as opponent in saved corpus.",
+    "report": "regressions.json"
+  },
+  "protected_function": {
+    "status": "PROTECTED_FUNCTION_OK",
+    "bytes": 1086,
+    "sha256": "9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed",
+    "recovery_smoke": "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+  },
+  "rollback_smoke": {
+    "status": "LANRAN_ROLLBACK_SMOKE_OK",
+    "scope": "Natural intro, ultimate pause checkpoint/replay, delayed guard input through production rollback, next-round reset; not a live Internet match."
+  },
+  "validation": {
+    "python": {
+      "run": 330,
+      "passed": 328,
+      "skipped": 2
+    },
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6,
+      "gameplay_tested": false
+    },
+    "matchmaking": {
+      "passed": 31,
+      "typecheck": "passed",
+      "note": "30 passed initially; Wrangler local-server test initially blocked by sandbox registry access, then passed separately."
+    },
+    "online_manifest_tests": {
+      "passed": 7
+    },
+    "screenshots": [
+      "screenshots/selection.png",
+      "screenshots/in-fight.png"
+    ],
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 21,
+      "local_links": 274,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    },
+    "online_manifest_check": "ONLINE_MANIFEST_OK fighters=23 helpers=4 stages=10 build=113b58d5351040f40788b5436e8189b9d4065bc061ec06fdc6bcd40a139d299f content=df7ffd6ac17b402f10e487ba5b745c6cc60f7e1b006ff64a3236923c4f20e82a"
+  },
+  "deviations": [
+    "Retained PR #37 direct and queued interrupted-super preparation recovery unchanged."
+  ],
+  "limitations": [
+    "Native Flash parity remains unmeasured.",
+    "Coverage remains partial; full audiovisual/browser/AI and exhaustive boundaries remain pending.",
+    "No character-specific assist exists in the source catalog.",
+    "No deployment or merge."
+  ],
+  "runtime_sha256": {
+    "fighter_runtime.gd": "0220f9a81c6209d1637e47bc511792e7462e9d8242a826bc6e6ff33b01876f25",
+    "timeline_preview.gd": "575d52cebe468a9ea5859712ffb856a371427d15552e6b8632eb8ac65dad6158",
+    "ai_predicate_context.gd": "8a2689acec22aefd729bd86ba1b36910a5c65b5c18b5ab5b4df4e631e55d64c9",
+    "main.gd": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f"
+  },
+  "measured_elapsed_seconds": 952,
+  "elapsed_note": "Measured wall time since goal activation; includes investigation, check execution and waiting for background-capture clarification.",
+  "compiler_sha256": {
+    "tools/importer/build_combat_model.py": "78ffd09d8d35c65a118cc3d7401d6dc689c0b921adbaa4a3f411d3f3e272ce4b",
+    "tools/importer/combat_projectile_parser.py": "24e05b93c86f2aa3f73057dee45c08cc7ce5ad4a824063e9946d194b87f90883",
+    "tools/importer/extract_timeline_geometry.py": "d5fce6f7577f1cdd99dbdb045f4c746d2887b24f11bf0d2250af27772c517a65"
+  }
+}
