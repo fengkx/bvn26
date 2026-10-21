@@ -52,6 +52,7 @@ def placement_delta(tag: ET.Element) -> dict[str, Any]:
         "name": "name",
         "ratio": "ratio",
         "clipDepth": "clip_depth",
+        "blendMode": "blend_mode",
     }
     for source, target in optional_attributes.items():
         if source in tag.attrib:
@@ -285,6 +286,11 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             definition["display_list_frames"] = [
                 frame["display_list"] for frame in sprite_frames
             ]
+            labels = {
+                label: frame["frame"] for frame in sprite_frames for label in frame["labels"]
+            }
+            if labels:
+                definition["frame_labels"] = labels
             definition["display_list_frame_events"] = [
                 frame["events"] for frame in sprite_frames
             ]
@@ -294,6 +300,41 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
     definitions.extend(sound_definitions(root, sound_frame_groups))
     definitions.sort(key=lambda item: item["character_id"])
     return definitions
+
+
+def visual_control_actions(encoded: str) -> list[dict[str, Any]]:
+    """Compile self-contained timeline controls; never interpret gameplay bytecode.
+
+    Reject the entire block when it contains expressions, branches or calls: a
+    stop hidden inside a conditional must not become an unconditional stop.
+    """
+    data = bytes.fromhex(encoded)
+    result = []
+    offset = 0
+    while offset < len(data):
+        opcode = data[offset]
+        offset += 1
+        if opcode == 0:
+            break
+        payload = b""
+        if opcode >= 0x80:
+            if offset + 2 > len(data):
+                raise ValueError("Truncated action length")
+            size = int.from_bytes(data[offset:offset + 2], "little")
+            offset += 2
+            payload = data[offset:offset + size]
+            offset += size
+            if len(payload) != size:
+                raise ValueError("Truncated action payload")
+        if opcode in (0x06, 0x07):
+            result.append({"op": "play" if opcode == 0x06 else "stop"})
+        elif opcode == 0x81 and len(payload) == 2:
+            result.append({"op": "goto", "frame": int.from_bytes(payload, "little") + 1})
+        elif opcode == 0x8c and payload.endswith(b"\0"):
+            result.append({"op": "goto", "label": payload[:-1].decode("utf-8")})
+        else:
+            return []
+    return result
 
 
 def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
@@ -340,6 +381,8 @@ def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
                 {
                     "type": "action_bytecode",
                     "sha256": sha256_text(tag.attrib["actionBytes"]),
+                    **({"visual_controls": controls} if (controls := visual_control_actions(
+                        tag.attrib["actionBytes"])) else {}),
                 }
             )
         elif tag_type == "ShowFrameTag":
@@ -383,8 +426,9 @@ def extract_wrapper_placement(
             "root_frame": frame,
             "depth": int(delta["depth"]),
         }
-        if "matrix" in delta:
-            wrapper["matrix"] = delta["matrix"]
+        for key in ("matrix", "blend_mode"):
+            if key in delta:
+                wrapper[key] = delta[key]
         return wrapper
     return None
 

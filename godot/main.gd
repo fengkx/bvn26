@@ -767,7 +767,7 @@ func _initialize_fight() -> void:
 	naruto.sync_body_collision_position()
 	ichigo.sync_body_collision_position()
 	game_world.focus = "all"
-	game_world.snap(naruto, ichigo)
+	game_world.reset_source_transform()
 	_reset_super()
 
 

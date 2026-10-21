@@ -448,3 +448,22 @@ Natural frame events run at the child's registration; callback-generated goto
 scripts remain deferred. Receiver queries use the current source instance name
 and current child frame bounds, including an empty terminal frame. Unknown frame
 scripts fail compilation instead of being silently treated as a linear clip.
+
+## Compiled visual timeline metadata (2026-10-21)
+
+Generated `timeline.json` placements and wrappers may retain the SWF integer
+`blend_mode`. MOVE retains the previous value; a replacement starts with its own
+placement state. Mode 4 is Screen, applied to the composed clip with parent alpha
+once. Children render into that clip before the outer blend is evaluated.
+
+A sprite definition may contain `frame_labels` (label → one-based frame) and
+`display_list_frame_events[*][*].visual_controls`, a list of `stop`, `play`, or
+`goto` operations. `goto` has either a one-based `frame` or a `label`. The importer
+only emits these for self-contained straight-line control blocks. Conditional,
+expression and gameplay blocks remain under the existing source compiler;
+runtime does not execute AS2 bytecode. Named gameplay-owned playheads remain
+authoritative. Other named and anonymous instances retain independent visual
+playheads by parent instance, depth and placement lifetime, including while the
+parent is paused. Removal/replacement discards the clock; MOVE retains it.
+
+See [native evidence and regression coverage](../evidence/characters/pain/visual-parity/README.md).

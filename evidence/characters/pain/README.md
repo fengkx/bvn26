@@ -1,5 +1,6 @@
 # Pain / 佩恩 (pain), 2026-10-19
 
+2026-10-21：上 I 的 Screen、子剪辑停止及摄像机精度修复见[逐帧与前后图片证据](visual-parity/README.md)。
 Base: `aed7c7e4`, branch `feat/pain`. Coverage remains **partial**.
 The base form is source-compiled for local and online selection. The locked
 `game/fighter/pain.swf` is 1,073,884 bytes; its body is Sprite 573 (1,416 frames,

@@ -15,7 +15,7 @@ func _nested_frame(placement: Dictionary, timeline_frame: int, frame_count: int,
 
 
 func _render_solid_fills(definition: Dictionary, placement_transform: Transform2D,
-	depth: int, rgb_mul: Color, rgb_add: Color, alpha: float) -> void:
+	depth: int, rgb_mul: Color, rgb_add: Color, alpha: float, blend: int = 1) -> void:
 	# Export the actual vector outline, including numeral gradients; its AABB
 	# is only the registration rectangle, never a replacement filled polygon.
 	var texture: Texture2D = load("%s/shape-%s.png" % [fighter_directory, int(definition["character_id"])])
@@ -30,6 +30,7 @@ func _render_solid_fills(definition: Dictionary, placement_transform: Transform2
 	local.y.y = float(bounds["Ymax"] - bounds["Ymin"]) / 20.0 / texture.get_height()
 	sprite.transform = placement_transform * local
 	_apply_cxform(sprite, rgb_mul, rgb_add, alpha)
+	_apply_blend(sprite, blend)
 	add_child(sprite)
 
 
