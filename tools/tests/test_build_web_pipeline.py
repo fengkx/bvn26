@@ -15,6 +15,41 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class WebBuildPipelineTests(unittest.TestCase):
+    def test_vercel_upload_keeps_build_dependencies(self) -> None:
+        required = [
+            "tools/build_web.sh",
+            "tools/bind_web_export_template.py",
+            "tools/build_web_diagnostics_metadata.py",
+            "tools/run_godot_checked.py",
+            "tools/build_online_manifest.py",
+            "tools/test_online_manifest.py",
+            "tools/test_online_lobby_ui.py",
+            "tools/tests/test_web_diagnostics_metadata.py",
+            "tools/importer/visual_blend_modes.py",
+            "services/matchmaking/src/protocol.ts",
+            "services/matchmaking/src/catalog.json",
+            "godot/project.godot",
+        ]
+        with tempfile.TemporaryDirectory() as temporary:
+            upload = Path(temporary)
+            subprocess.run(["git", "init", "--quiet", str(upload)], check=True)
+            # Vercel uses gitignore-style rules. Check the upload boundary,
+            # before the build script copies files into its isolated stage.
+            shutil.copy2(ROOT / ".vercelignore", upload / ".gitignore")
+            result = subprocess.run(
+                ["git", "check-ignore", "--no-index", "--stdin"],
+                cwd=upload, input="\n".join(required) + "\n",
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertEqual(result.stdout, "")
+            excluded = subprocess.run(
+                ["git", "check-ignore", "--no-index", "--stdin"],
+                cwd=upload, input="tools/importer/extract_timeline_geometry.py\n",
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(excluded.returncode, 0, excluded.stderr)
+
     def test_failed_preflight_removes_stale_sidecar_and_cleans_stage(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             sandbox = Path(temporary)
