@@ -59,10 +59,20 @@ class Projectile extends RefCounted:
 		for rename: Dictionary in model.get("rename_frames", []):
 			if int(rename["frame"]) == frame:
 				instance_name = rename["instance_name"]
+				if rename.get("random_suffix", false):
+					var host: AiControllerHost = host_ref.get_ref()
+					instance_name += str(host.fighter.source_random.next_value(str(rename["random_site"])))
 		for event: Dictionary in model.get("frame_events", []):
 			if int(event["frame"]) == frame:
-				assert(event["op"] == "screen_flash")
-				host_ref.get_ref().fighter.screen_flash_requested.emit(int(event["color_rgb24"]))
+				var host: AiControllerHost = host_ref.get_ref()
+				match event["op"]:
+					"screen_flash":
+						host.fighter.screen_flash_requested.emit(int(event["color_rgb24"]))
+					"opponent_action_goto":
+						if host.context.read_field("opponent_action") == event["action"]:
+							host.goto_label(event["label"], true)
+							if current_source_name() != null and event.get("stop_child", false):
+								host.fighter.set_instance_clip_frame(model["instance_name"], frame, false)
 		for event: Dictionary in model.get("timeline_events", []):
 			if int(event["frame"]) != frame:
 				continue
@@ -116,6 +126,33 @@ class Projectile extends RefCounted:
 		pending_natural_frames.clear()
 
 
+class SourceChild extends RefCounted:
+	var host_ref: WeakRef
+	var model: Dictionary
+
+	func enter_frame() -> void:
+		var host: AiControllerHost = host_ref.get_ref()
+		var fighter := host.fighter
+		if fighter.root_zhanting or fighter.opponent == null:
+			return
+		var frame := fighter.current_source_frame()
+		for placement: Dictionary in fighter._frames[frame]["display_list"]:
+			if int(placement["depth"]) != int(model["depth"]) or int(placement["placed_frame"]) != int(model["placement_frame"]) or int(placement["character_id"]) != int(model["controller_id"]):
+				continue
+			match model["source_child_operation"]:
+				"self_contact_goto":
+					var own := fighter.source_placement_global_bounds(placement, frame)
+					var target := fighter.opponent.instance_global_bounds("bdmn")
+					if own.has_area() and target.has_area() and SourceHitTest.intersects(own, target):
+						host.goto_label(model["target_label"], true)
+				"opponent_follow":
+					if not fighter.opponent.sw:
+						var matrix: Dictionary = placement["matrix"]
+						fighter.opponent.source_x = fighter.source_x + float(matrix.get("translateX", 0)) / 20.0 * fighter.scale.x
+						fighter.opponent.source_y = fighter.source_y + float(matrix.get("translateY", 0)) / 20.0
+			return
+
+
 class Adapter extends RefCounted:
 	var host_ref: WeakRef
 	var path: String
@@ -140,8 +177,8 @@ class Adapter extends RefCounted:
 	func sensor_hit(key: String) -> Variant:
 		return host_ref.get_ref().context.sensor_hit(key)
 
-	func body_hit(key: String) -> Variant:
-		return host_ref.get_ref().context.body_hit(key)
+	func body_hit(key: String, target: String = "bdmn") -> Variant:
+		return host_ref.get_ref().context.body_hit(key, target)
 
 	func power_field(key: String) -> Variant:
 		return host_ref.get_ref().context.power_field(key)
@@ -224,6 +261,11 @@ func goto_label(label: String, play: bool) -> void:
 
 
 func _create_instance(hook: Dictionary, generation: int) -> RefCounted:
+	if hook.has("source_child_operation"):
+		var child := SourceChild.new()
+		child.host_ref = weakref(self)
+		child.model = hook
+		return child
 	if hook.has("projectile"):
 		var projectile := Projectile.new()
 		projectile.host_ref = weakref(self)

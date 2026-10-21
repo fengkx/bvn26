@@ -125,8 +125,10 @@ class ProjectileContactTests(unittest.TestCase):
 
     def test_all_shipped_projectile_fields_match_their_source(self):
         sources = {}
+        bundles = {}
         for path in (ROOT / "scripts/fighter").glob("*.json"):
             bundle = json.loads(path.read_text())
+            bundles[Path(bundle["game_file"]).stem.lower()] = bundle
             sources[Path(bundle["game_file"]).stem.lower()] = {
                 row["path"]: row["source"] for row in bundle["scripts"]}
         paths = list((ROOT / "godot/generated/fighters").rglob("*.json"))
@@ -148,7 +150,7 @@ class ProjectileContactTests(unittest.TestCase):
                             initial = parse_projectile_initialization(sources[role].get(load_path, ""))
                             frame_initial = {}
                             if node.get("character_id"):
-                                bundle = {"scripts": [{"path": p, "source": s} for p, s in sources[role].items()]}
+                                bundle = bundles[role]
                                 frame_initial = parse_clip_timeline(bundle, node["character_id"])
                             for key, value in {**compiled, **(initial or {}), **frame_initial}.items():
                                 self.assertEqual(node.get(key), value, key)

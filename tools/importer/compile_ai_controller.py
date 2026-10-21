@@ -12,6 +12,8 @@ import json
 from pathlib import Path
 import re
 
+from source_instance_key import instance_key
+
 from compile_ai_predicates import (
     ROOT, NAMES, DISPATCH_NAMES, FIELDS, FUNCTION, expression, compile_source, controller_script,
     controller_aliases, OPPONENT,
@@ -65,8 +67,8 @@ func write_value(key: String, v: Variant) -> void:
 func sensor(key: String) -> Variant:
 \treturn adapter.sensor_hit(key)
 
-func body_hit(key: String) -> Variant:
-\treturn adapter.body_hit(key)
+func body_hit(key: String, target: String = "bdmn") -> Variant:
+\treturn adapter.body_hit(key, target)
 
 func source_key(key: String) -> Variant:
 \treturn adapter.source_key(key)
@@ -232,6 +234,14 @@ def renamed_timeline_hooks(bundle: dict, sprite: int, timeline: dict, existing: 
                 events.append({'frame': int(match[1]), 'op': 'screen_flash',
                                'color_rgb24': 0xFFFFFF, 'source_path': script['path'],
                                'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest()})
+            elif branch := re.fullmatch(
+                r'(?:this\.)?_name = "[^"\n]+";\s*'
+                r'if\(_root\.game\["p" \+ _parent\.pn\]\.mc\.动作 == (-?\d+)\)\s*\{\s*'
+                r'_parent\.gotoAndPlay\("([^"\n]+)"\);\s*stop\(\);\s*\}', source):
+                events.append({'frame': int(match[1]), 'op': 'opponent_action_goto',
+                               'action': int(branch[1]), 'label': branch[2],
+                               'stop_child': True, 'source_path': script['path'],
+                               'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest()})
             elif source != 'stop();' and not re.fullmatch(r'(?:this\.)?_name = "[^"]+";', source):
                 raise ValueError('Uncompiled renamed attack timeline: ' + script['path'])
         result.append({'path': f'DefineSprite_{sprite}/frame_{placed_frame}/PlaceObject2_{character}_{depth}',
@@ -385,6 +395,29 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
         if not match or int(match[2]) in (receiver_ids | controller_ids):
             continue
+        body = script['source']
+        self_contact = re.fullmatch(
+            r'onClipEvent\(enterFrame\)\{\s*if\(_root\.zhanting == false\)\s*\{\s*'
+            r'if\(hitTest\(_root\.game\["p" \+ _parent\.pn\]\.mc\.bdmn\)\)\s*\{\s*'
+            r'_parent\.gotoAndPlay\("([^"\n]+)"\);\s*\}\s*\}\s*\}\s*', body)
+        follow = re.fullmatch(
+            r'onClipEvent\(enterFrame\)\{\s*var pp = _root\.game\["p" \+ _parent\.pn\];\s*'
+            r'var self = _parent\._parent;\s*if\(_root\.zhanting == false && pp\.mc\.sw == false\)\s*\{\s*'
+            r'pp\._x = self\._x \+ _X \* \(self\._xscale / 100\);\s*'
+            r'pp\._y = self\._y \+ _Y;\s*\}\s*\}\s*', body)
+        if self_contact or follow:
+            frame, character, depth = map(int, match.groups())
+            members = [f['frame'] for f in timeline['frames'] if any(
+                p.get('character_id') == character and p['depth'] == depth
+                and p['placed_frame'] == frame for p in f['display_list'])]
+            if not members:
+                raise ValueError('Missing source child placement: ' + script['path'])
+            hooks.append({'method': 'enter_frame', 'path': script['path'],
+                          'controller_id': character, 'placement_frame': frame,
+                          'depth': depth, 'member_frames': members,
+                          'source_child_operation': 'self_contact_goto' if self_contact else 'opponent_follow',
+                          'target_label': self_contact[1] if self_contact else ''})
+            continue
         # A placed child can own a source controller callback without being
         # the fighter's root input controller. Compile its callback against
         # the same source predicate ABI and retain its independent lifetime.
@@ -476,7 +509,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         projectile_hooks.append({'path': script['path'], 'method': 'enter_frame',
                                  'depth': depth, 'placement_frame': frame,
                                  'member_frames': [f for f, _ in placements],
-                                 'projectile': {'instance_name': placements[0][1]['name'], **clip, **motion}})
+                                 'projectile': {'instance_name': instance_key(placements[0][1]), **clip, **motion}})
     projectile_hooks.extend(renamed_timeline_hooks(bundle, sprite, timeline, projectile_hooks))
     return text,{'status':'compiled_not_integrated','sprite_id':sprite,'hooks':hooks,
                  'excluded_controller_aliases': excluded_controller_aliases,
