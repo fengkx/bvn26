@@ -8,9 +8,11 @@ import re
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from compile_ai_predicates import controller_script
 from compile_hit_receive import root_position_writes
 from build_combat_model import parse_body_warp
+from inspect_swf import inspect
 
 ROOT=Path(__file__).resolve().parents[2]
 FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitBan',
@@ -35,6 +37,10 @@ def root_opponent_warp(text: str, path: str, frame: int) -> list[dict]:
     reveal frame.  It is distinct from `_parent` body warps: the target is
     the other fighter container and both coordinates are copied verbatim.
     """
+    single = re.fullmatch(r'_root\.game\["p" \+ pn\]\._([xy]) = _parent\._\1;\s*', text)
+    if single:
+        return [{'op': 'root_opponent_warp', 'copy_x': single[1] == 'x',
+                 'copy_y': single[1] == 'y', 'path': path, 'line': 1, 'frame': frame}]
     lines = [line.strip() for line in text.replace('\r\n', '\n').splitlines()]
     if lines != [
         '_root.game["p" + pn]._visible = true;',
@@ -210,6 +216,28 @@ def controller_scope_fields(bundle: dict, sprite: int) -> set[str]:
 
 
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
+    visibility = re.fullmatch(
+        r'if\(_root\.game\["p" \+ pn\]\.mc\.hp > (-?\d+) && '
+        r'_root\.game\["p" \+ pn\]\.mc\.动作 == (-?\d+)\)\s*'
+        r'\{\s*_root\.game\["p" \+ pn\]\._visible = (true|false);\s*\}'
+        r'(?:\s*else\s*\{\s*gotoAnd(Play|Stop)\("([^"\n]+)"\);\s*play\(\);\s*\})?\s*', text)
+    if visibility:
+        event = {'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': 'opponent_hp', 'operator': 'gt', 'value': int(visibility[1])},
+                                {'field': 'opponent_action', 'operator': 'eq', 'value': int(visibility[2])}],
+                 'calls': [{'op': 'opponent_visibility', 'value': visibility[3] == 'true'}]}
+        if visibility[4]:
+            event['else_calls'] = [{'op': 'timeline_goto', 'label': visibility[5],
+                                    'play': visibility[4] == 'Play'}, {'op': 'timeline_play'}]
+        return [event]
+    visible_jump = re.fullmatch(
+        r'if\(_root\.game\["p" \+ pn\]\._visible == (true|false)\)\s*'
+        r'\{\s*gotoAnd(Play|Stop)\("([^"\n]+)"\);\s*play\(\);\s*\}\s*', text)
+    if visible_jump:
+        return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': 'opponent_visible', 'operator': 'eq', 'value': visible_jump[1] == 'true'}],
+                 'calls': [{'op': 'timeline_goto', 'label': visible_jump[3], 'play': visible_jump[2] == 'Play'},
+                           {'op': 'timeline_play'}]}]
     # Admit the complete source block, not a guessed label/frame exception.
     contact = re.fullmatch(
         r'if\(_root\.game\["p" \+ pn\]\.mc\.hp <= (-?\d+)\)\s*'
@@ -364,6 +392,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         and m[1] in state_fields
         and not INITIALIZED_DECLARE.fullmatch(line)
     ]
+    child_labels = None
     frame_writes={}
     frame_calls={}
     frames_by_number = {int(item['frame']): item for item in timeline['frames']}
@@ -453,6 +482,33 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif line in ('play();','stop();'):
                 calls.append({'op':'timeline_play' if line=='play();' else 'timeline_stop',
                               'path':path,'line':number,'frame':frame['frame']})
+            elif follow := re.fullmatch(r'followMc\((\w+),(true|false),(true|false),(true|false)\);', line):
+                # The optional flags have meaning only for this verified shared source body.
+                if hashlib.sha256(functions['followMc'].encode()).hexdigest() != '1f4dfc7ebc190914ee78d796cde1c64abfb1ab0871670ff8c78959fc0929d612':
+                    raise ValueError('Unsupported followMc implementation: ' + first_path)
+                calls.append({'op': 'follow_clip', 'instance': follow[1],
+                              'place_x': follow[2] == 'true', 'place_y': follow[3] == 'true',
+                              'front_only': follow[4] == 'true', 'path': path, 'line': number,
+                              'frame': frame['frame'],
+                              'function_sha256': hashlib.sha256(functions['followMc'].encode()).hexdigest()})
+            elif child_jump := re.fullmatch(r'(\w+)\.gotoAnd(Play|Stop)\("([^"\n]+)"\);', line):
+                if child_labels is None:
+                    child_labels = {int(t['name'].removeprefix('sprite_')): {l['label']: l['frame'] for l in t['labels']}
+                                    for t in inspect(ROOT / bundle['game_file'])['timelines'] if t['name'].startswith('sprite_')}
+                targets = []
+                for placement in frame['display_list']:
+                    cid = int(placement.get('character_id', 0) or 0)
+                    aliases = {placement.get('name')}
+                    aliases.update(m[1] for p, body in scripts.items() if p.startswith(f'DefineSprite_{cid}/')
+                                   for m in re.finditer(r'_name = "([^"\n]+)";', body))
+                    if child_jump[1] in aliases and child_jump[3] in child_labels.get(cid, {}):
+                        targets.append({'authored_name': placement['name'], 'character_id': cid,
+                                        'target_frame': child_labels[cid][child_jump[3]]})
+                if len(targets) != 1:
+                    raise ValueError('Ambiguous child timeline jump: ' + path)
+                calls.append({'op': 'child_timeline_goto', 'instance': child_jump[1],
+                              'play': child_jump[2] == 'Play', **targets[0],
+                              'path': path, 'line': number, 'frame': frame['frame']})
             elif line == 'resColor();':
                 calls.append({'op':'color_reset','path':path,'line':number,'frame':frame['frame']})
             elif line == 'updateDirect();':
