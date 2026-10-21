@@ -134,6 +134,17 @@ doZhaoHuan 的 bs 赋值；不是运行时按角色补的默认值。以上仍�
 `read_field`（当前用于 `speed = spd`），不能提前折叠为常数。
 `base_power_fields` 只表示当前基础形态的 `gjl1.*zl`，不能用于其他形态。
 
+Frame-level `wrapper_move` calls retain `axis` (`moveX` or `moveY`), source
+frame/path/line, and either literal `pixels` or `pixels_expression`. The latter
+is a compiled arithmetic tree: `constant(value)`, `read(field_name)`, unary
+`negate/positive(operand)`, or binary `add/subtract/multiply/divide(left,right)`.
+Only known timeline fields are admitted; unsupported operands or controlled
+movement statements fail compilation instead of disappearing. Field reads occur
+when the ordered frame event executes. Wrapper `moveX` multiplies the result by
+the current facing; wrapper `moveY` adds it directly to Y. Neither operand is
+precomputed from a fighter's initial speed. This is a bounded movement-data
+contract, not an ActionScript evaluator.
+
 生成的 `ai_controller/controller.json` 保留原始 hook 路径、放置帧、深度和
 `member_frames`。Godot 读取 JSON 后须把帧号转换为整数；数组的 Variant 类型比较
 不能直接用于浮点 JSON 帧号与整数播放头的身份匹配。回调宿主负责提供执行顺序，

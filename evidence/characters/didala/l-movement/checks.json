@@ -1,0 +1,97 @@
+{
+  "status": "passed_targeted_movement_full_character_acceptance_pending",
+  "base": "875506cff435a30e016c316afbd4641fb492dba4",
+  "branch": "fix/didala-l-movex",
+  "runtime_sha256": {
+    "godot/ai_cpu_driver.gd": "5c4045c5c89b5179c4fdf893057ca519a7a9992699154862faaeba86cb1635f0",
+    "godot/fighter_runtime.gd": "0220f9a81c6209d1637e47bc511792e7462e9d8242a826bc6e6ff33b01876f25",
+    "godot/generated/fighters/didala/ai.json": "9a1973035f507d55eda8b9caec53c79254a1dba389df03629b90ca4bd0d00a29",
+    "godot/generated/fighters/didala/combat.json": "fca15ce1e70fc64a8133bd47ae333237a36c6e9d0ea47543bd9f76d4f8e3132d",
+    "godot/generated/fighters/didala/player_body/body.gd": "1bd901dabc6e94bd144189461043c7eb5893743cf905689dfdd0bb26f85f1b19",
+    "godot/generated/fighters/didala/player_controller/controller.gd": "afc121b15f730a16e90a314db741d44ca6d345cecdad7b34b93257ce80f07fc2",
+    "tools/importer/compile_ai_context.py": "67278bda7982b8821e99b229338bb99eba23eba02e6f6295172de58718f7c079"
+  },
+  "environment": {
+    "os": "macOS-26.7-arm64-arm-64bit",
+    "python": "3.11.15",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "Adobe Flash Player Debugger 32.0.0.465",
+    "player_app": "/Users/fengkx/me/code/flash-player/Flash Player.app",
+    "player_executable_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be"
+  },
+  "fresh_native_l": {
+    "cases": 10,
+    "passed": 10,
+    "states": 2420,
+    "fields": 14,
+    "before_different_cases": 6,
+    "report": "comparisons.json"
+  },
+  "fresh_native_recovery": {
+    "cases": 1,
+    "passed": 1,
+    "states": 242,
+    "frame": 970,
+    "tick": 55,
+    "x_before": 252,
+    "x_after": 192,
+    "report": "recovery-comparison.json"
+  },
+  "existing_didala_parity": {
+    "cases": 12,
+    "passed": 12,
+    "states": 5784
+  },
+  "whole_roster": {
+    "cases": 216,
+    "passed": 216,
+    "states": 127672,
+    "seconds": 1451.6979642082006,
+    "report": "regressions.json.gz"
+  },
+  "compiler_impact": {
+    "fighters": 26,
+    "changed": [
+      "didala"
+    ],
+    "changed_frames": [
+      34,
+      970
+    ],
+    "other_changed_fighters": [],
+    "report": "compiler-impact.json"
+  },
+  "protected_function": {
+    "status": "PROTECTED_FUNCTION_OK",
+    "bytes": 1086,
+    "sha256": "9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed",
+    "fighter_runtime_unchanged": true
+  },
+  "python": {
+    "tests": 346,
+    "skipped": 2,
+    "status": "passed"
+  },
+  "godot_smoke": {
+    "frame_movement": "passed",
+    "player_controller": "passed",
+    "player_visual": "passed",
+    "interrupted_super_lock": "passed"
+  },
+  "contracts": "passed",
+  "online_manifest_tests": {
+    "tests": 7,
+    "status": "passed"
+  },
+  "scope": {
+    "merged": false,
+    "deployed": false,
+    "web_browser_retested": false,
+    "full_character_acceptance": "partial"
+  },
+  "elapsed_wall_seconds_since_initial_protected_gate": 1608.2057304382324,
+  "finished_at_utc": "2026-10-21T14:22:12.954141+00:00",
+  "verify": "passed",
+  "handoff": "passed",
+  "diff_check": "passed"
+}

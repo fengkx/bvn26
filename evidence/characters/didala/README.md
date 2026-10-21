@@ -5,6 +5,16 @@ Coverage remains **partial**. Assist, deployment and merge are out of scope.
 Final execution results, counts, hashes and elapsed time are in `checks.json`;
 individual exact comparisons are in `comparisons.json`.
 
+## L movement follow-up
+
+The original port's 12 cases did not cover ordinary L. The generic frame
+movement compiler now retains expression operands, restoring source-frame-34
+`speed * 18` displacement and frame-970 `(-speed) * 6` recovery movement.
+Fresh original captures, failing before traces, the ten L variants, recovery,
+compiler impact and current-roster regression are retained in
+[l-movement/README.md](l-movement/README.md). Historical port results below remain
+unchanged; the follow-up has its own hashes and checks.
+
 ## Source-first answers
 
 1. The locked `game/fighter/didala.swf` is 1,390,254 bytes, SHA-256

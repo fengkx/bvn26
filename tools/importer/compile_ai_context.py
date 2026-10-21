@@ -1,6 +1,7 @@
 """Compile source state writes and the base-form AI sensor instance graph."""
 from __future__ import annotations
 import argparse
+import ast
 import hashlib
 import json
 from pathlib import Path
@@ -28,6 +29,29 @@ POST_INCREMENT=re.compile(r'^(\w+)\+\+;$')
 ROOT_CLIP_RENAME = re.compile(
     r'(?P<object>[A-Za-z_]\w*)\._name\s*=\s*"(?P<name>[^"]+)"\s*;'
 )
+
+
+def movement_expression(source: str, fields: set[str]) -> dict:
+    """Compile arithmetic over current timeline fields, never source code to eval."""
+    operators = {ast.Add: 'add', ast.Sub: 'subtract', ast.Mult: 'multiply', ast.Div: 'divide'}
+
+    def compile_node(node: ast.AST) -> dict:
+        if isinstance(node, ast.Constant) and type(node.value) in (int, float):
+            return {'op': 'constant', 'value': node.value}
+        if isinstance(node, ast.Name) and node.id in fields:
+            return {'op': 'read', 'field_name': node.id}
+        if isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.USub, ast.UAdd)):
+            return {'op': 'negate' if isinstance(node.op, ast.USub) else 'positive',
+                    'operand': compile_node(node.operand)}
+        if isinstance(node, ast.BinOp) and type(node.op) in operators:
+            return {'op': operators[type(node.op)], 'left': compile_node(node.left),
+                    'right': compile_node(node.right)}
+        raise ValueError('Unsupported wrapper movement expression: ' + source)
+
+    try:
+        return compile_node(ast.parse(source, mode='eval').body)
+    except SyntaxError as error:
+        raise ValueError('Unsupported wrapper movement expression: ' + source) from error
 
 
 def root_opponent_warp(text: str, path: str, frame: int) -> list[dict]:
@@ -446,7 +470,9 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             face=re.fullmatch(r'_root\.showFace\(pn,"([^"]+)"\);',line)
             jump=re.fullmatch(r'gotoAnd(Play|Stop)\("([^"]+)"\);',line)
             energy=re.fullmatch(r'ql ([+-])= (\d+(?:\.\d+)?);',line)
-            movement=re.fullmatch(r'_parent\.(moveX|moveY)\((-?\d+(?:\.\d+)?)\);',line)
+            movement=re.fullmatch(r'_parent\.(moveX|moveY)\((.+)\);',line)
+            if re.search(r'_parent\.(?:moveX|moveY)\(', line) and not movement:
+                raise ValueError(f'Uncompiled wrapper movement: {path}:{number}: {line}')
             if line == 'wankai_start();':
                 calls.append({'op': 'inline_frame', 'path': path, 'line': number,
                               'frame': frame['frame'], 'calls': inline_frame_function(
@@ -464,9 +490,13 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                             else 'function moveY(spd){_Y=_Y+spd;}')
                 if re.sub(r'\s+', '', wrapper) != re.sub(r'\s+', '', expected):
                     raise ValueError('Unsupported wrapper movement implementation: ' + movement[1])
-                calls.append({'op': 'wrapper_move', 'axis': movement[1],
-                              'pixels': float(movement[2]), 'path': path,
-                              'line': number, 'frame': frame['frame']})
+                # Preserve literal events; expression operands read state when
+                # the ordered frame event executes, not at import time.
+                operand = ({'pixels': float(movement[2])}
+                           if re.fullmatch(r'-?\d+(?:\.\d+)?', movement[2])
+                           else {'pixels_expression': movement_expression(movement[2], FIELDS | scoped_fields)})
+                calls.append({'op': 'wrapper_move', 'axis': movement[1], **operand,
+                              'path': path, 'line': number, 'frame': frame['frame']})
             elif energy:
                 calls.append({'op':'energy_delta','delta':float(energy[2]) * (1 if energy[1]=='+' else -1),
                               'path':path,'line':number,'frame':frame['frame']})
