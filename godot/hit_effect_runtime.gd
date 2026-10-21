@@ -69,6 +69,7 @@ func configure(effect_name: String, source_position: Vector2, source_facing: int
 	_preview.fighter_directory = _directory
 	_preview.initial_frame = 1
 	_preview.autoplay = false
+	_preview.independent_visual_clock = true
 	# The effect's source-frame scheduler owns sound playback, including frame 1.
 	_preview.play_timeline_sounds = false
 	_preview.show_collision_shapes = false
@@ -96,6 +97,7 @@ func advance_effect() -> void:
 	if _preview == null or is_queued_for_deletion():
 		return
 	run_initial_frame()
+	_preview.advance_retained_visual_clips()
 	effect_frame += 1
 	if effect_frame > _frame_count:
 		preload("res://rollback_lifetime.gd").retire(self)

@@ -45,10 +45,12 @@ var _source_color_mul := Color(1, 1, 1, 1)
 var _source_color_add := Color(0, 0, 0, 0)
 var _source_color_matrix: Array = []
 static var _source_filter_shader: Shader
+static var _blend_shaders: Dictionary = {}
 
 const SourceBoundsMath = preload("res://source_matrix_bounds.gd")
 const SourceMatrixTransform = preload("res://source_matrix_transform.gd")
 const TWIPS_PER_PIXEL := 20.0
+const BlendGroupScript = preload("res://blend_group.gd")
 
 const SOURCE_FILTER_SHADER := """
 shader_type canvas_item;
@@ -425,26 +427,73 @@ func advance_retained_visual_clips() -> void:
 	independent_visual_clock = true
 	_sync_retained_visual_clips()
 	for clip: Dictionary in _retained_visual_clips.values():
-		clip["age"] += 1
+		_advance_visual_clip(clip)
+
+
+func _advance_visual_clip(clip: Dictionary) -> void:
+	for child: Dictionary in clip.get("children", {}).values():
+		_advance_visual_clip(child)
+	var definition: Dictionary = _definitions[int(clip.placement.character_id)]
+	var source := _visual_source_record(clip.placement)
+	if not source.is_empty():
+		clip.age = int(source.get("age", 0))
+		clip.frame = int(source.local_start)
+	else:
+		VisualPlayhead.advance(clip, definition)
+	_sync_visual_children(clip, definition)
+
+
+func _visual_source_record(placement: Dictionary) -> Dictionary:
+	var name := str(placement.get("name", ""))
+	if not _instance_local_frames.has(name):
+		return {}
+	for root_placement: Dictionary in _frames.get(_current_frame, {}).get("display_list", []):
+		if is_same(placement, root_placement):
+			return _instance_local_frames[name]
+	return {}
+
+
+func _sync_visual_children(clip: Dictionary, definition: Dictionary) -> void:
+	var frames: Array = definition.get("display_list_frames", [])
+	if not frames.is_empty():
+		clip.children = _sync_visual_list(frames[clampi(int(clip.frame), 1, frames.size()) - 1], clip.children)
+
+
+func _sync_visual_list(placements: Array, previous_clips: Dictionary) -> Dictionary:
+	var retained := {}
+	for placement: Dictionary in placements:
+		var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
+		if definition.get("type") != "DefineSpriteTag":
+			continue
+		var depth := int(placement["depth"])
+		var identity := [placement["character_id"], placement.get("placed_frame", 1)]
+		var previous: Dictionary = previous_clips.get(depth, {})
+		var clip: Dictionary = previous if previous.get("identity") == identity else VisualPlayhead.create(definition)
+		clip.identity = identity
+		clip.placement = placement
+		var source := _visual_source_record(placement)
+		if not source.is_empty():
+			clip.frame = int(source.local_start)
+		_sync_visual_children(clip, definition)
+		retained[depth] = clip
+	return retained
 
 
 func _sync_retained_visual_clips() -> void:
-	if not independent_visual_clock or not _frames.has(_current_frame):
-		return
-	var retained := {}
-	for placement: Dictionary in _frames[_current_frame]["display_list"]:
-		if str(placement.get("name", "")) != "":
-			continue
-		var depth := int(placement["depth"])
-		var identity := [placement["character_id"], placement.get("placed_frame", _current_frame)]
-		var previous: Dictionary = _retained_visual_clips.get(depth, {})
-		# A goto inside the same placement span retains the child playhead.
-		# Removing/replacing the placement starts a new child at frame one.
-		retained[depth] = {
-			"identity": identity, "placement": placement,
-			"age": previous.get("age", 0) if previous.get("identity") == identity else 0,
-		}
-	_retained_visual_clips = retained
+	if independent_visual_clock and _frames.has(_current_frame):
+		_retained_visual_clips = _sync_visual_list(_frames[_current_frame]["display_list"], _retained_visual_clips)
+
+
+func _visual_clip_at(placement: Dictionary, clips: Dictionary) -> Dictionary:
+	var clip: Dictionary = clips.get(int(placement.get("depth", -1)), {})
+	return clip if is_same(clip.get("placement"), placement) else {}
+
+
+func _visual_clip_for_path(placement: Dictionary, ancestors: Array[Dictionary]) -> Dictionary:
+	var clips := _retained_visual_clips
+	for ancestor: Dictionary in ancestors:
+		clips = _visual_clip_at(ancestor, clips).get("children", {})
+	return _visual_clip_at(placement, clips)
 
 
 func refresh_checkpoint_display() -> void:
@@ -477,8 +526,13 @@ func materialize_display() -> void:
 		return
 	var frame: Dictionary = _frames[_current_frame]
 	var wrapper := _wrapper_transform()
+	var wrapper_blend := int(_timeline.get("wrapper", {}).get("blend_mode", 1))
+	var first_child := get_child_count()
 	_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
-		0, _source_color_mul, _source_color_add, [], true)
+		0, _source_color_mul, _source_color_add, [], true,
+		1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips)
+	if wrapper_blend not in [0, 1]:
+		_compose_blend_group(first_child, 1.0, 0, wrapper_blend)
 	queue_redraw()
 
 
@@ -573,7 +627,8 @@ func _play_nested_start_sounds() -> void:
 			"root",
 			active_instances,
 			active_placements,
-			_source_entry_serial
+			_source_entry_serial,
+			_visual_clip_at(placement, _retained_visual_clips)
 		)
 	for instance_id in _nested_sound_instance_frames.keys():
 		if not active_instances.has(instance_id):
@@ -591,7 +646,8 @@ func _collect_nested_start_sounds(
 	parent_instance_id: String,
 	active_instances: Dictionary,
 	active_placements: Dictionary,
-	parent_entry_serial: int
+	parent_entry_serial: int,
+	visual_clip: Dictionary = {}
 ) -> void:
 	var character_id := int(placement.get("character_id", -1))
 	if not _definitions.has(character_id):
@@ -619,7 +675,7 @@ func _collect_nested_start_sounds(
 		_nested_sound_placement_generations[placement_id] = generation
 	var instance_id := "%s#%d" % [placement_id, int(generation["generation"])]
 	active_instances[instance_id] = true
-	var local_frame := _nested_frame(placement, timeline_frame, sprite_frames.size(), clip_age)
+	var local_frame := _visual_nested_frame(placement, timeline_frame, sprite_frames.size(), clip_age, visual_clip)
 	var container_state: Dictionary = _nested_sound_container_states.get(
 		instance_id, {"frame": -1, "entry_serial": 0}
 	)
@@ -650,7 +706,8 @@ func _collect_nested_start_sounds(
 			instance_id,
 			active_instances,
 			active_placements,
-			int(container_state["entry_serial"])
+			int(container_state["entry_serial"]),
+			_visual_clip_at(child, visual_clip.get("children", {}))
 		)
 
 
@@ -756,7 +813,7 @@ func _sound_volume_db(event: Dictionary) -> float:
 
 func _render_display_list(placements: Array, parent_transform: Transform2D,
 		alpha: float, depth: int, frame: int, age: int, rgb_mul: Color,
-		rgb_add: Color, inherited_masks: Array, root_list: bool = false) -> void:
+		rgb_add: Color, inherited_masks: Array, root_list: bool = false, inherited_blend: int = 1, visual_clips: Dictionary = {}) -> void:
 	var active: Array = []
 	for placement: Dictionary in placements:
 		var local_depth := int(placement["depth"])
@@ -774,7 +831,7 @@ func _render_display_list(placements: Array, parent_transform: Transform2D,
 			masks.append(mask.polygon)
 		_render_placement(placement, parent_transform, alpha,
 			local_depth if root_list and preserve_root_depths else depth,
-			frame, age, rgb_mul, rgb_add, masks)
+			frame, age, rgb_mul, rgb_add, masks, inherited_blend, visual_clips.get(local_depth, {}))
 
 
 func _clip_bitmap_masks(fill_masks: Array, bitmap_transform: Transform2D,
@@ -814,7 +871,9 @@ func _render_placement(
 	clip_age: int = 0,
 	parent_rgb_mul: Color = Color(1, 1, 1, 1),
 	parent_rgb_add: Color = Color(0, 0, 0, 0),
-	clip_masks: Array = []
+	clip_masks: Array = [],
+	inherited_blend: int = 1,
+	visual_clip: Dictionary = {}
 ) -> void:
 	if bool(placement.get("replaced_by_external_movie", false)):
 		return
@@ -824,6 +883,7 @@ func _render_placement(
 	var definition: Dictionary = _definitions[character_id]
 	if not bool(definition.get("initial_visible", true)):
 		return
+	var blend := int(placement.get("blend_mode", inherited_blend))
 	var placement_transform := parent_transform * _placement_transform(placement)
 	var color_transform: Dictionary = placement.get("color_transform", {})
 	var placement_mul := _cxform_mul(color_transform)
@@ -846,6 +906,8 @@ func _render_placement(
 		var local_frame := _nested_frame(
 			placement, timeline_frame, sprite_frames.size(), clip_age
 		)
+		if not visual_clip.is_empty():
+			local_frame = int(visual_clip.frame)
 		var child_age := clip_age
 		if instance_name != "" and _instance_local_frames.has(instance_name):
 			child_age = int(_instance_local_frames[instance_name].get("age", 0))
@@ -854,8 +916,12 @@ func _render_placement(
 			if not sprite_frames.is_empty()
 			else definition.get("first_frame_display_list", [])
 		)
-		_render_display_list(children, placement_transform, alpha, depth,
-			local_frame, child_age, rgb_mul, rgb_add, clip_masks)
+		var first_child := get_child_count()
+		_render_display_list(children, placement_transform, 1.0 if blend not in [0, 1] else alpha, depth,
+			local_frame, child_age, rgb_mul, rgb_add, clip_masks, false,
+			1 if blend not in [0, 1] else blend, visual_clip.get("children", {}))
+		if blend not in [0, 1]:
+			_compose_blend_group(first_child, alpha, depth, blend)
 		return
 	var fills: Array = definition.get("bitmap_fills", [])
 	if not definition["type"].begins_with("DefineShape"):
@@ -902,6 +968,7 @@ func _render_placement(
 				polygon.transform = placement_transform
 				polygon.z_index = depth
 				_apply_cxform(polygon, rgb_mul, rgb_add, alpha)
+				_apply_blend(polygon, blend)
 				add_child(polygon)
 			continue
 		var sprite := Sprite2D.new()
@@ -920,10 +987,11 @@ func _render_placement(
 			sprite.texture = source_texture
 		sprite.transform = placement_transform * draw_transform
 		_apply_cxform(sprite, rgb_mul, rgb_add, alpha)
+		_apply_blend(sprite, blend)
 		add_child(sprite)
 	if not usable_fills.is_empty():
 		return
-	_render_solid_fills(definition, placement_transform, depth, rgb_mul, rgb_add, alpha)
+	_render_solid_fills(definition, placement_transform, depth, rgb_mul, rgb_add, alpha, blend)
 
 
 func _mask_is_full_bitmap(masks: Array, bitmap_transform: Transform2D, texture: Texture2D) -> bool:
@@ -955,7 +1023,8 @@ func _render_solid_fills(
 	depth: int,
 	rgb_mul: Color,
 	rgb_add: Color,
-	alpha: float
+	alpha: float,
+	blend: int = 1
 ) -> void:
 	# fillStyleType 0. blackMu frame 2 is one black rectangle; render the
 	# compiled shape AABB rather than a homemade full-viewport overlay.
@@ -990,6 +1059,7 @@ func _render_solid_fills(
 		poly.color = fill_color
 		poly.z_index = depth
 		poly.transform = placement_transform
+		_apply_blend(poly, blend)
 		add_child(poly)
 
 
@@ -1071,6 +1141,94 @@ func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: fl
 	sprite.material = material
 
 
+func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: int) -> void:
+	var items := get_children().slice(first_child)
+	if items.is_empty():
+		return
+	# A single leaf already is a composed object; retain its original raster
+	# sampling, and insert the background copy before it in draw order.
+	if items.size() == 1 and (items[0] is Sprite2D or items[0] is Polygon2D):
+		var item: CanvasItem = items[0]
+		remove_child(item)
+		item.modulate.a *= opacity
+		_apply_blend(item, blend)
+		add_child(item)
+		return
+	for item: Node in items:
+		remove_child(item)
+	var group := BlendGroupScript.new()
+	group.z_index = depth
+	var composite: Sprite2D = group.setup(items, opacity)
+	# Viewport textures hold premultiplied RGB. Decode once before blending;
+	# the blend_mix pipeline then applies source alpha exactly once.
+	var material := ShaderMaterial.new()
+	var shader := Shader.new()
+	shader.code = "shader_type canvas_item; void fragment() { vec4 pixel = texture(TEXTURE, UV); if (pixel.a > 0.0) { pixel.rgb /= pixel.a; } COLOR = pixel; }"
+	material.shader = shader
+	composite.material = material
+	_apply_blend(composite, blend, group)
+	group.add_child(composite)
+	add_child(group)
+
+
+func _apply_blend(item: CanvasItem, blend: int, copy_parent: Node = null) -> void:
+	assert(blend in [0, 1, 2, 3, 4, 5, 6, 8, 9, 14], "Unsupported Flash blend mode: %d" % blend)
+	if blend in [0, 1]:
+		return
+	# Copy at each object's depth, so earlier blended siblings are included.
+	var copy := BackBufferCopy.new()
+	copy.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
+	copy.z_index = item.z_index
+	if copy_parent == null:
+		copy_parent = self
+	copy_parent.add_child(copy)
+	var material := item.material as ShaderMaterial
+	var opacity := item.modulate.a if material != null else 1.0
+	var original := material.shader.code if material != null else "shader_type canvas_item;\nvoid fragment() { }"
+	var arithmetic := blend in [8, 9]
+	var shader_key := original + ("|arithmetic" if arithmetic else "|over")
+	if not _blend_shaders.has(shader_key):
+		var shader := Shader.new()
+		var code := original.replace("shader_type canvas_item;", "shader_type canvas_item;\nrender_mode blend_mix;\nuniform sampler2D blend_background : hint_screen_texture, repeat_disable, filter_nearest;\nuniform float blend_opacity = 1.0;\nuniform int flash_blend_mode = 1;")
+		if arithmetic:
+			code = code.replace("render_mode blend_mix;", "render_mode blend_disabled;")
+		var end := code.rfind("}")
+		# The backbuffer is premultiplied when its viewport is transparent.
+		# Blend only the overlap; uncovered source retains its original color.
+		code = code.insert(end, """
+vec4 backdrop = textureLod(blend_background, SCREEN_UV, 0.0);
+vec3 cb = backdrop.a > 0.0 ? backdrop.rgb / backdrop.a : vec3(0.0);
+vec3 cs = clamp(COLOR.rgb, vec3(0.0), vec3(1.0));
+vec3 mixed = cs;
+if (flash_blend_mode == 3) { mixed = cb * cs; }
+else if (flash_blend_mode == 4) { mixed = 1.0 - (1.0 - cb) * (1.0 - cs); }
+else if (flash_blend_mode == 5) { mixed = max(cb, cs); }
+else if (flash_blend_mode == 6) { mixed = min(cb, cs); }
+else if (flash_blend_mode == 8) { mixed = min(vec3(1.0), cb + cs); }
+else if (flash_blend_mode == 9) { mixed = max(vec3(0.0), cb - cs); }
+else if (flash_blend_mode == 14) {
+    mixed = mix(2.0 * cb * cs, 1.0 - 2.0 * (1.0 - cb) * (1.0 - cs), step(vec3(0.5), cs));
+}
+COLOR.rgb = mix(cs, mixed, backdrop.a);
+COLOR.a = clamp(COLOR.a * blend_opacity, 0.0, 1.0);
+if (flash_blend_mode == 8 || flash_blend_mode == 9) {
+    vec3 source_premultiplied = cs * COLOR.a;
+    vec3 result = flash_blend_mode == 8 ? backdrop.rgb + source_premultiplied : backdrop.rgb - source_premultiplied;
+    COLOR = vec4(clamp(result, vec3(0.0), vec3(1.0)), min(1.0, backdrop.a + COLOR.a));
+}
+""")
+		shader.code = code
+		_blend_shaders[shader_key] = shader
+	if material == null:
+		material = ShaderMaterial.new()
+	else:
+		material = material.duplicate()
+	material.shader = _blend_shaders[shader_key]
+	material.set_shader_parameter("blend_opacity", opacity)
+	material.set_shader_parameter("flash_blend_mode", blend)
+	item.material = material
+
+
 func _shape_texture_region(
 	definition: Dictionary,
 	bitmap_transform: Transform2D,
@@ -1138,11 +1296,12 @@ func _rooted_placement_bounds(placement: Dictionary, timeline_frame: int = _curr
 	return _transform_rect(_wrapper_transform(), local_bounds)
 
 
-func _placement_bounds(placement: Dictionary, timeline_frame: int = _current_frame) -> Rect2:
+func _placement_bounds(placement: Dictionary, timeline_frame: int = _current_frame, visual_clip: Dictionary = {}) -> Rect2:
 	var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
 	if definition.is_empty():
 		return Rect2()
-	var local_bounds := _definition_bounds(definition, placement, timeline_frame)
+	var clock := visual_clip if not visual_clip.is_empty() else _visual_clip_at(placement, _retained_visual_clips)
+	var local_bounds := _definition_bounds(definition, placement, timeline_frame, clock)
 	if not local_bounds.has_area():
 		return Rect2()
 	return _transform_rect(_placement_transform(placement), local_bounds)
@@ -1164,7 +1323,8 @@ func _source_placement_bounds(
 		matrices,
 		0,
 		include_wrapper,
-		include_node_transforms
+		include_node_transforms,
+		_visual_clip_for_path(placement, ancestor_placements)
 	)
 	if bounds_twips.size.x <= 0 or bounds_twips.size.y <= 0:
 		return Rect2()
@@ -1180,7 +1340,8 @@ func _collect_source_bounds(
 	ancestor_matrices: Array[Dictionary],
 	clip_age: int,
 	include_wrapper: bool,
-	include_node_transforms: bool
+	include_node_transforms: bool,
+	visual_clip: Dictionary = {}
 ) -> Rect2i:
 	var matrices := ancestor_matrices.duplicate()
 	matrices.append(_source_placement_matrix(placement))
@@ -1210,7 +1371,7 @@ func _collect_source_bounds(
 	if str(definition.get("type", "")) != "DefineSpriteTag":
 		return Rect2i()
 	var sprite_frames: Array = definition.get("display_list_frames", [])
-	var local_frame := _nested_frame(placement, timeline_frame, sprite_frames.size(), clip_age)
+	var local_frame := _visual_nested_frame(placement, timeline_frame, sprite_frames.size(), clip_age, visual_clip)
 	var children: Array = (
 		sprite_frames[local_frame - 1]
 		if not sprite_frames.is_empty()
@@ -1229,7 +1390,8 @@ func _collect_source_bounds(
 			matrices,
 			child_clip_age,
 			include_wrapper,
-			include_node_transforms
+			include_node_transforms,
+			_visual_clip_at(child, visual_clip.get("children", {}))
 		)
 		if child_bounds.size.x <= 0 or child_bounds.size.y <= 0:
 			continue
@@ -1261,7 +1423,7 @@ func _source_node_matrix(node: Node2D) -> Dictionary:
 	var skew_x := float(transform_2d.y.x)
 	var scale_y := float(transform_2d.y.y)
 	if _has_property(node, "game_scale"):
-		var game_scale := float(node.get("game_scale"))
+		var game_scale := GameWorld.store_scale(float(node.get("game_scale")))
 		scale_x = game_scale
 		scale_y = game_scale
 	var translation_x := _node_translation_twips(node, "source_x", "game_x", node.position.x)
@@ -1303,7 +1465,8 @@ func _has_property(object: Object, property_name: String) -> bool:
 func _definition_bounds(
 	definition: Dictionary,
 	placement: Dictionary,
-	timeline_frame: int
+	timeline_frame: int,
+	visual_clip: Dictionary = {}
 ) -> Rect2:
 	if definition.has("shape_bounds_twips"):
 		var bounds: Dictionary = definition["shape_bounds_twips"]
@@ -1317,7 +1480,7 @@ func _definition_bounds(
 	if definition["type"] != "DefineSpriteTag":
 		return Rect2()
 	var sprite_frames: Array = definition.get("display_list_frames", [])
-	var local_frame := _nested_frame(placement, timeline_frame, sprite_frames.size())
+	var local_frame := _visual_nested_frame(placement, timeline_frame, sprite_frames.size(), 0, visual_clip)
 	var children: Array = (
 		sprite_frames[local_frame - 1]
 		if not sprite_frames.is_empty()
@@ -1325,11 +1488,18 @@ func _definition_bounds(
 	)
 	var result := Rect2()
 	for child: Dictionary in children:
-		var child_bounds := _placement_bounds(child, local_frame)
+		var child_bounds := _placement_bounds(child, local_frame, _visual_clip_at(child, visual_clip.get("children", {})))
 		if not child_bounds.has_area():
 			continue
 		result = child_bounds if not result.has_area() else result.merge(child_bounds)
 	return result
+
+
+func _visual_nested_frame(placement: Dictionary, timeline_frame: int,
+		frame_count: int, clip_age: int, visual_clip: Dictionary) -> int:
+	if not visual_clip.is_empty():
+		return int(visual_clip.frame)
+	return _nested_frame(placement, timeline_frame, frame_count, clip_age)
 
 
 func _nested_frame(
@@ -1355,10 +1525,10 @@ func _nested_frame(
 					if elapsed_frame >= int(stop_frame):
 						return int(stop_frame)
 				return posmod(elapsed_frame - 1, frame_count) + 1
-	if independent_visual_clock and instance_name == "":
-		var retained: Dictionary = _retained_visual_clips.get(int(placement["depth"]), {})
-		if is_same(retained.get("placement"), placement):
-			return posmod(int(retained["age"]), frame_count) + 1
+	if independent_visual_clock:
+		var retained := _visual_clip_at(placement, _retained_visual_clips)
+		if not retained.is_empty():
+			return int(retained.frame)
 	# Unnamed clips inside a projectile playhead keep that clip's age so they
 	# do not follow the fighter timeline. Root unnamed clips (walk body, etc.)
 	# have clip_age 0 and must sync from placed_frame, otherwise they stay

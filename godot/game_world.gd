@@ -22,7 +22,15 @@ var lock_min: float = 0.0
 var lock_max: float = 0.0
 var game_x: float = 0.0
 var game_y: float = VIEW_Y_FLOOR
-var game_scale: float = 1.0
+var _game_scale_percent: float = 100.0
+var game_scale: float:
+	get:
+		return _game_scale_percent / 100.0
+	set(value):
+		# Checkpoint restore also writes this derived property. Preserve the
+		# exact percentage when its projection already matches the restored value.
+		if value != _game_scale_percent / 100.0:
+			_game_scale_percent = value * 100.0
 
 
 static func get_center(first: float, second: float) -> float:
@@ -37,26 +45,30 @@ static func compute_target(
 	focus_mode: String,
 	map_width: float = MAP_SIZE_X
 ) -> Dictionary:
+	var p1_x := SourceCoordinate.from_projection(p1.x)
+	var p1_y := SourceCoordinate.from_projection(p1.y)
+	var p2_x := SourceCoordinate.from_projection(p2.x)
+	var p2_y := SourceCoordinate.from_projection(p2.y)
 	var center_x := 0.0
 	var center_y := 0.0
 	var scale := CLOSE_SCALE
 	match focus_mode:
 		"all":
-			center_x = get_center(p1.x, p2.x)
-			center_y = get_center(p1.y, p2.y)
-			var span := maxf(absf(p1.x - p2.x), absf(p1.y - p2.y))
+			center_x = get_center(p1_x, p2_x)
+			center_y = get_center(p1_y, p2_y)
+			var span := maxf(absf(p1_x - p2_x), absf(p1_y - p2_y))
 			var remain := SCALE_REFERENCE - span
 			if remain <= 0.0:
 				scale = FAR_SCALE
 			else:
 				scale = CLOSE_SCALE * (remain / SCALE_REFERENCE)
 		"p1":
-			center_x = p1.x
-			center_y = p1.y
+			center_x = p1_x
+			center_y = p1_y
 			scale = CLOSE_SCALE
 		"p2":
-			center_x = p2.x
-			center_y = p2.y
+			center_x = p2_x
+			center_y = p2_y
 			scale = CLOSE_SCALE
 	if scale < SCALE_MIN:
 		scale = SCALE_MIN
@@ -72,14 +84,22 @@ static func compute_target(
 	return {"x": target_x, "y": target_y, "scale": scale}
 
 
+func reset_source_transform() -> void:
+	# Main SWF root PlaceObject2: game, depth 13, translation (-4100, 6376).
+	game_x = -205.0
+	game_y = 318.8
+	game_scale = 1.0
+	_apply()
+
+
 func wall_max() -> float:
 	return map_size_x - WALL_RIGHT_INSET
 
 
 func snap(p1: Node2D, p2: Node2D) -> Dictionary:
 	var target := compute_target(p1.position, p2.position, focus, map_size_x)
-	game_x = float(target["x"])
-	game_y = float(target["y"])
+	game_x = SourceCoordinate.store(float(target["x"]))
+	game_y = SourceCoordinate.store(float(target["y"]))
 	game_scale = float(target["scale"])
 	_apply()
 	return target
@@ -89,9 +109,9 @@ func enter_frame(p1: Node2D, p2: Node2D, extras: Array = []) -> Dictionary:
 	_clamp_walls([p1, p2] + extras)
 	_update_distance_lock(p1, p2)
 	var target := compute_target(p1.position, p2.position, focus, map_size_x)
-	game_x += (float(target["x"]) - game_x) * TWEEN
-	game_y += (float(target["y"]) - game_y) * TWEEN
-	game_scale += (float(target["scale"]) - game_scale) * TWEEN
+	game_x = SourceCoordinate.store(game_x + (float(target["x"]) - game_x) * TWEEN)
+	game_y = SourceCoordinate.store(game_y + (float(target["y"]) - game_y) * TWEEN)
+	_game_scale_percent += (float(target["scale"]) * 100.0 - _game_scale_percent) * TWEEN
 	_apply()
 	return {
 		"target": target,
@@ -103,9 +123,15 @@ func enter_frame(p1: Node2D, p2: Node2D, extras: Array = []) -> Dictionary:
 	}
 
 
+static func store_scale(value: float) -> float:
+	# The matrix is 16.16; the native _xscale getter retains the assigned
+	# percentage. Only translation quantization feeds back into the next tween.
+	return float(int(value * 65536.0)) / 65536.0
+
+
 func _apply() -> void:
 	position = Vector2(game_x, game_y)
-	scale = Vector2(game_scale, game_scale)
+	scale = Vector2(store_scale(game_scale), store_scale(game_scale))
 
 
 func _clamp_walls(bodies: Array) -> void:

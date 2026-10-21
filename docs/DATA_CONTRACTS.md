@@ -448,3 +448,30 @@ Natural frame events run at the child's registration; callback-generated goto
 scripts remain deferred. Receiver queries use the current source instance name
 and current child frame bounds, including an empty terminal frame. Unknown frame
 scripts fail compilation instead of being silently treated as a linear clip.
+
+## Compiled visual timeline metadata (2026-10-21)
+
+Generated `timeline.json` placements and wrappers may retain the SWF integer
+`blend_mode`. MOVE retains the previous value; a replacement starts with its own
+placement state. Supported modes are 0/1 (normal), 2 (layer), 3 (multiply),
+4 (screen), 5 (lighten), 6 (darken), 8 (add), 9 (subtract), and 14 (hardlight).
+All other modes fail import and the Web build's manifest generation. Non-normal
+modes compose the clip's children before applying parent alpha and the outer
+blend, including nested blend groups. Add/subtract use native premultiplied
+arithmetic with capped additive alpha; the other modes blend the alpha overlap.
+
+A sprite definition may contain `frame_labels` (label → one-based frame) and
+`display_list_frame_events[*][*].visual_controls`, a list of `stop`, `play`, or
+`goto` operations. `goto` has either a one-based `frame` or a `label`. The importer
+only emits these for self-contained straight-line control blocks, including
+blocks with plain variable initialization or function declarations. Conditional
+control flow, calls and gameplay expressions remain under the source compiler;
+runtime does not execute AS2 bytecode. Named gameplay-owned playheads remain
+authoritative. Other named and anonymous instances retain independent visual
+playheads by parent instance, depth and placement lifetime, including while the
+parent is paused. Removal/replacement discards the clock; MOVE retains it.
+Fighters, helpers, stage hits and hit effects use the same retained clock.
+
+See [native evidence and regression coverage](../evidence/characters/pain/visual-parity/README.md).
+The [review follow-up](../evidence/characters/pain/visual-parity/review/README.md)
+records the roster-wide native component comparisons and blend fixtures.

@@ -11,6 +11,8 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
+from importer.visual_blend_modes import validate_timeline_blends
+
 
 ROOT = Path(__file__).resolve().parents[1]
 GODOT = ROOT / "godot"
@@ -155,6 +157,8 @@ def content_inputs() -> tuple[list[Path], dict[str, list[str]]]:
 
 
 def make_documents() -> tuple[dict[str, object], dict[str, object]]:
+    for timeline in (GODOT / "generated").rglob("timeline.json"):
+        validate_timeline_blends(load_json(timeline), relative(timeline))
     protocol_text = MATCHMAKING_PROTOCOL.read_text(encoding="utf-8")
     protocol_match = re.search(r"export\s+const\s+VERSION\s*=\s*(\d+)", protocol_text)
     if not protocol_match:
