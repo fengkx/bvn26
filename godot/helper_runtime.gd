@@ -59,6 +59,7 @@ func _exit_tree() -> void:
 
 func _ready() -> void:
 	autoplay = false
+	independent_visual_clock = true
 	if fighter_directory == "" and helper_directory != "":
 		fighter_directory = helper_directory
 	super._ready()
@@ -127,7 +128,9 @@ func deactivate(clear_source_action: bool = true) -> void:
 
 
 func advance_timeline() -> void:
+	advance_retained_visual_clips()
 	if not attacking or not timeline_playing:
+		refresh_display()
 		return
 	var end_frame := int(_combat.get("end_frame", current_source_frame()))
 	if current_source_frame() >= end_frame:
@@ -249,15 +252,6 @@ func attack_contact(defender: FighterRuntime) -> Dictionary:
 			attack["instance_name"] = instance_name
 			return attack
 	return {}
-
-
-func _nested_frame(placement: Dictionary, timeline_frame: int, frame_count: int, clip_age: int = 0) -> int:
-	# A terminal stop belongs to the child timeline, even while its parent plays.
-	for event: Dictionary in _combat.get("nested_stops", []):
-		if int(event["sprite_id"]) == int(placement["character_id"]):
-			var age := maxi(0, timeline_frame - int(placement.get("placed_frame", timeline_frame)))
-			return mini(age + 1, int(event["frame"]))
-	return super._nested_frame(placement, timeline_frame, frame_count, clip_age)
 
 
 func set_facing(value: int) -> void:

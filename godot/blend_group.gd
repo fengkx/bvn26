@@ -10,7 +10,7 @@ func setup(items: Array, opacity: float) -> Sprite2D:
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	add_child(viewport)
 	for item: CanvasItem in items:
-		item.set_meta("screen_source_transform", item.transform)
+		item.set_meta("blend_source_transform", item.transform)
 		item.z_index = 0
 		viewport.add_child(item)
 	var composite := Sprite2D.new()
@@ -49,7 +49,7 @@ func source_bounds() -> Rect2:
 			bounds = item.source_bounds()
 		if not bounds.has_area():
 			continue
-		var transform: Transform2D = item.get_meta("screen_source_transform")
+		var transform: Transform2D = item.get_meta("blend_source_transform")
 		bounds = transform * bounds
 		result = result.merge(bounds) if found else bounds
 		found = true
@@ -66,5 +66,5 @@ func _update_buffer() -> void:
 	$Contents.size = Vector2i(extent)
 	var shift := Transform2D(0.0, -origin)
 	for item in $Contents.get_children():
-		item.transform = shift * transform * Transform2D(item.get_meta("screen_source_transform"))
+		item.transform = shift * transform * Transform2D(item.get_meta("blend_source_transform"))
 	$Composite.transform = transform.affine_inverse() * Transform2D(0.0, origin)

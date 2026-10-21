@@ -1,0 +1,11 @@
+stop();var seq=0;var tick=0;var cases=[{id:"fighters-juggo-clock-3",samples:[0,3],scale:0.6544170464112661,x:50.066306957797934,y:253.054261527621},{id:"fighters-juggo-clock-175",samples:[0,10,11,14],scale:1,x:250.0,y:150.0},{id:"fighters-juggo-clock-177",samples:[0,10,11,14],scale:1,x:304.1,y:156.0},{id:"fighters-juggo-clock-181",samples:[0,10,11,14],scale:1,x:304.1,y:156.0},{id:"fighters-juggo-clock-220",samples:[0,24,25,28,44,45,48],scale:1,x:300.25,y:183.5},{id:"fighters-juggo-clock-226",samples:[0,10,11,14],scale:1,x:305.1,y:155.275},{id:"fighters-juggo-clock-286",samples:[0,13,14,17],scale:1,x:309.8,y:167.35},{id:"fighters-juggo-clock-288",samples:[0,10,11,14],scale:1,x:314.625,y:155.875},{id:"fighters-juggo-clock-358",samples:[0,13,14,17],scale:1,x:309.5,y:166.45},{id:"fighters-juggo-clock-359",samples:[0,10,11,14],scale:1,x:289.05,y:155.825},{id:"fighters-juggo-clock-427",samples:[0,6,7,10],scale:1,x:300.0,y:200.0},{id:"fighters-juggo-blend-517-28-358-773-5",samples:[0,7,14,17],scale:1,x:360.4129574,y:211.4}];
+function emit(k,v){trace("AIREF|component-juggo-e068fa73|"+(seq++)+"|0|"+tick+"|0|"+k+"|"+v);}
+function clocks(mc,path){emit("clock",path+","+mc._currentframe);for(var k in mc){var c=mc[k];if(typeof(c)=="movieclip" && c._parent==mc){var depth=c.getDepth();if(depth<0)depth+=16384;clocks(c,path+"/"+depth);}}}
+function capture(mc,item){
+ var b=new flash.display.BitmapData(600,400,false,6316128);var m=new flash.geom.Matrix(item.scale,0,0,item.scale,item.x,item.y);b.draw(mc,m);
+ for(var y=0;y<400;y++){var row="";var last=b.getPixel(0,y);var count=1;for(var x=1;x<=600;x++){var pixel=x<600?b.getPixel(x,y):-1;if(pixel==last)count++;else{row+=count.toString(16)+":"+last.toString(16)+",";count=1;last=pixel;}}emit("pixels",item.id+","+y+","+row);}b.dispose();
+}
+function observe(){for(var i=0;i<cases.length;i++){var mc=_root["case"+i];clocks(mc,cases[i].id);for(var j=0;j<cases[i].samples.length;j++)if(cases[i].samples[j]==tick)capture(mc,cases[i]);}}
+for(var i=0;i<cases.length;i++){var mc=_root.attachMovie("case"+i,"case"+i,i+1);mc.gotoAndStop(1);}
+observe();
+_root.onEnterFrame=function(){tick++;if(tick==10 || tick==20){for(var i=0;i<cases.length;i++)_root["case"+i].gotoAndStop(tick==10?2:1);}observe();if(tick>=100){emit("done","ok");fscommand("quit");}};

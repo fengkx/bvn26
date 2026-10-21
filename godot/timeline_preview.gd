@@ -45,12 +45,12 @@ var _source_color_mul := Color(1, 1, 1, 1)
 var _source_color_add := Color(0, 0, 0, 0)
 var _source_color_matrix: Array = []
 static var _source_filter_shader: Shader
-static var _screen_shaders: Dictionary = {}
+static var _blend_shaders: Dictionary = {}
 
 const SourceBoundsMath = preload("res://source_matrix_bounds.gd")
 const SourceMatrixTransform = preload("res://source_matrix_transform.gd")
 const TWIPS_PER_PIXEL := 20.0
-const ScreenBlendGroupScript = preload("res://screen_blend_group.gd")
+const BlendGroupScript = preload("res://blend_group.gd")
 
 const SOURCE_FILTER_SHADER := """
 shader_type canvas_item;
@@ -530,9 +530,9 @@ func materialize_display() -> void:
 	var first_child := get_child_count()
 	_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
 		0, _source_color_mul, _source_color_add, [], true,
-		1 if wrapper_blend == 4 else wrapper_blend, _retained_visual_clips)
-	if wrapper_blend == 4:
-		_compose_screen_group(first_child, 1.0, 0)
+		1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips)
+	if wrapper_blend not in [0, 1]:
+		_compose_blend_group(first_child, 1.0, 0, wrapper_blend)
 	queue_redraw()
 
 
@@ -917,11 +917,11 @@ func _render_placement(
 			else definition.get("first_frame_display_list", [])
 		)
 		var first_child := get_child_count()
-		_render_display_list(children, placement_transform, 1.0 if blend == 4 else alpha, depth,
+		_render_display_list(children, placement_transform, 1.0 if blend not in [0, 1] else alpha, depth,
 			local_frame, child_age, rgb_mul, rgb_add, clip_masks, false,
-			1 if blend == 4 else blend, visual_clip.get("children", {}))
-		if blend == 4:
-			_compose_screen_group(first_child, alpha, depth)
+			1 if blend not in [0, 1] else blend, visual_clip.get("children", {}))
+		if blend not in [0, 1]:
+			_compose_blend_group(first_child, alpha, depth, blend)
 		return
 	var fills: Array = definition.get("bitmap_fills", [])
 	if not definition["type"].begins_with("DefineShape"):
@@ -1141,7 +1141,7 @@ func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: fl
 	sprite.material = material
 
 
-func _compose_screen_group(first_child: int, opacity: float, depth: int) -> void:
+func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: int) -> void:
 	var items := get_children().slice(first_child)
 	if items.is_empty():
 		return
@@ -1151,31 +1151,31 @@ func _compose_screen_group(first_child: int, opacity: float, depth: int) -> void
 		var item: CanvasItem = items[0]
 		remove_child(item)
 		item.modulate.a *= opacity
-		_apply_blend(item, 4)
+		_apply_blend(item, blend)
 		add_child(item)
 		return
 	for item: Node in items:
 		remove_child(item)
-	var group := ScreenBlendGroupScript.new()
+	var group := BlendGroupScript.new()
 	group.z_index = depth
 	var composite: Sprite2D = group.setup(items, opacity)
-	# Viewport textures hold premultiplied RGB. Decode once before Screen;
+	# Viewport textures hold premultiplied RGB. Decode once before blending;
 	# the blend_mix pipeline then applies source alpha exactly once.
 	var material := ShaderMaterial.new()
 	var shader := Shader.new()
 	shader.code = "shader_type canvas_item; void fragment() { vec4 pixel = texture(TEXTURE, UV); if (pixel.a > 0.0) { pixel.rgb /= pixel.a; } COLOR = pixel; }"
 	material.shader = shader
 	composite.material = material
-	_apply_blend(composite, 4, group)
+	_apply_blend(composite, blend, group)
 	group.add_child(composite)
 	add_child(group)
 
 
 func _apply_blend(item: CanvasItem, blend: int, copy_parent: Node = null) -> void:
-	if blend != 4:
+	assert(blend in [0, 1, 2, 3, 4, 5, 6, 8, 9, 14], "Unsupported Flash blend mode: %d" % blend)
+	if blend in [0, 1]:
 		return
-	# A fresh copy at this depth includes earlier siblings, including other
-	# Screen clips. Godot's implicit first-use copy would leave stale pixels.
+	# Copy at each object's depth, so earlier blended siblings are included.
 	var copy := BackBufferCopy.new()
 	copy.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
 	copy.z_index = item.z_index
@@ -1185,21 +1185,47 @@ func _apply_blend(item: CanvasItem, blend: int, copy_parent: Node = null) -> voi
 	var material := item.material as ShaderMaterial
 	var opacity := item.modulate.a if material != null else 1.0
 	var original := material.shader.code if material != null else "shader_type canvas_item;\nvoid fragment() { }"
-	if not _screen_shaders.has(original):
+	var arithmetic := blend in [8, 9]
+	var shader_key := original + ("|arithmetic" if arithmetic else "|over")
+	if not _blend_shaders.has(shader_key):
 		var shader := Shader.new()
-		var code := original.replace("shader_type canvas_item;", "shader_type canvas_item;\nrender_mode blend_mix;\nuniform sampler2D screen_background : hint_screen_texture, repeat_disable, filter_nearest;\nuniform float screen_opacity = 1.0;")
+		var code := original.replace("shader_type canvas_item;", "shader_type canvas_item;\nrender_mode blend_mix;\nuniform sampler2D blend_background : hint_screen_texture, repeat_disable, filter_nearest;\nuniform float blend_opacity = 1.0;\nuniform int flash_blend_mode = 1;")
+		if arithmetic:
+			code = code.replace("render_mode blend_mix;", "render_mode blend_disabled;")
 		var end := code.rfind("}")
-		# Screen(Cb, Cs) = 1 - (1-Cb)*(1-Cs). Source alpha is applied by
-		# blend_mix; black is neutral and white saturates, unlike additive blend.
-		code = code.insert(end, "\nvec3 background = textureLod(screen_background, SCREEN_UV, 0.0).rgb;\nCOLOR.rgb = 1.0 - (1.0 - background) * (1.0 - COLOR.rgb);\nCOLOR.a *= screen_opacity;\n")
+		# The backbuffer is premultiplied when its viewport is transparent.
+		# Blend only the overlap; uncovered source retains its original color.
+		code = code.insert(end, """
+vec4 backdrop = textureLod(blend_background, SCREEN_UV, 0.0);
+vec3 cb = backdrop.a > 0.0 ? backdrop.rgb / backdrop.a : vec3(0.0);
+vec3 cs = clamp(COLOR.rgb, vec3(0.0), vec3(1.0));
+vec3 mixed = cs;
+if (flash_blend_mode == 3) { mixed = cb * cs; }
+else if (flash_blend_mode == 4) { mixed = 1.0 - (1.0 - cb) * (1.0 - cs); }
+else if (flash_blend_mode == 5) { mixed = max(cb, cs); }
+else if (flash_blend_mode == 6) { mixed = min(cb, cs); }
+else if (flash_blend_mode == 8) { mixed = min(vec3(1.0), cb + cs); }
+else if (flash_blend_mode == 9) { mixed = max(vec3(0.0), cb - cs); }
+else if (flash_blend_mode == 14) {
+    mixed = mix(2.0 * cb * cs, 1.0 - 2.0 * (1.0 - cb) * (1.0 - cs), step(vec3(0.5), cs));
+}
+COLOR.rgb = mix(cs, mixed, backdrop.a);
+COLOR.a = clamp(COLOR.a * blend_opacity, 0.0, 1.0);
+if (flash_blend_mode == 8 || flash_blend_mode == 9) {
+    vec3 source_premultiplied = cs * COLOR.a;
+    vec3 result = flash_blend_mode == 8 ? backdrop.rgb + source_premultiplied : backdrop.rgb - source_premultiplied;
+    COLOR = vec4(clamp(result, vec3(0.0), vec3(1.0)), min(1.0, backdrop.a + COLOR.a));
+}
+""")
 		shader.code = code
-		_screen_shaders[original] = shader
+		_blend_shaders[shader_key] = shader
 	if material == null:
 		material = ShaderMaterial.new()
 	else:
 		material = material.duplicate()
-	material.shader = _screen_shaders[original]
-	material.set_shader_parameter("screen_opacity", opacity)
+	material.shader = _blend_shaders[shader_key]
+	material.set_shader_parameter("blend_opacity", opacity)
+	material.set_shader_parameter("flash_blend_mode", blend)
 	item.material = material
 
 

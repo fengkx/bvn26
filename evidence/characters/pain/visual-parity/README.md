@@ -1,5 +1,7 @@
 # Pain 上 I：通用视觉与摄像机精度修复
 
+PR #46 的后续评审修复、全量子剪辑原生对照和其他混合模式见 [review/README.md](review/README.md)。
+
 基线：`875506cf`；最终实现变基到 `3a3bafd8`（PR #45）后重新验证。
 原始 `game/`、`scripts/` 未修改。运行时没有 Pain／Sprite 405 专用分支。
 

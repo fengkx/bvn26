@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
+from visual_blend_modes import validate_blend_mode
 from bitmap_shape_polygon import bitmap_shape_fill_polygons, bitmap_shape_polygon
 
 
@@ -54,6 +55,8 @@ def placement_delta(tag: ET.Element) -> dict[str, Any]:
         "clipDepth": "clip_depth",
         "blendMode": "blend_mode",
     }
+    if "blendMode" in tag.attrib:
+        validate_blend_mode(int(tag.attrib["blendMode"]), tag.get("type", "placement"))
     for source, target in optional_attributes.items():
         if source in tag.attrib:
             result[target] = scalar(tag.attrib[source])
@@ -305,8 +308,9 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
 def visual_control_actions(encoded: str) -> list[dict[str, Any]]:
     """Compile self-contained timeline controls; never interpret gameplay bytecode.
 
-    Reject the entire block when it contains expressions, branches or calls: a
-    stop hidden inside a conditional must not become an unconditional stop.
+    Plain variable initialization and function declarations do not change a
+    playhead. Reject branches and calls: a conditional stop must never become
+    unconditional, and a called function may change the same timeline.
     """
     data = bytes.fromhex(encoded)
     result = []
@@ -332,6 +336,11 @@ def visual_control_actions(encoded: str) -> list[dict[str, Any]]:
             result.append({"op": "goto", "frame": int.from_bytes(payload, "little") + 1})
         elif opcode == 0x8c and payload.endswith(b"\0"):
             result.append({"op": "goto", "label": payload[:-1].decode("utf-8")})
+        elif opcode in {0x17, 0x1c, 0x1d, 0x3c, 0x41, 0x4c, 0x4d, 0x4e,
+                        0x4f, 0x87, 0x88, 0x8e, 0x96, 0x9b}:
+            # These are stack/local/property operations or declarations. Function
+            # bodies are contained inside this action's payload, not executed.
+            continue
         else:
             return []
     return result

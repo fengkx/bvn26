@@ -144,6 +144,8 @@ echo "Staged Godot source snapshot at $SNAPSHOT_TIME: $PROJECT_STAGE"
 for tool in build_online_manifest.py test_online_manifest.py test_online_lobby_ui.py; do
   cp "$ROOT_DIR/tools/$tool" "$STAGING_REPO/tools/$tool"
 done
+mkdir -p "$STAGING_REPO/tools/importer"
+cp "$ROOT_DIR/tools/importer/visual_blend_modes.py" "$STAGING_REPO/tools/importer/visual_blend_modes.py"
 cp "$ROOT_DIR/services/matchmaking/src/protocol.ts" "$STAGING_REPO/services/matchmaking/src/protocol.ts"
 cp "$ROOT_DIR/services/matchmaking/src/catalog.json" "$STAGING_REPO/services/matchmaking/src/catalog.json"
 

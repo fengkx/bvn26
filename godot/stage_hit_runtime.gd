@@ -15,6 +15,7 @@ func configure(directory: String, owner_fighter: FighterRuntime, hit: Dictionary
 	position = caster.position
 	scale.x = caster.scale.x
 	autoplay = false
+	independent_visual_clock = true
 	_spec = _read_json(directory.path_join("stage_hit.json"))
 	assert(_spec["format"] == "bvn26-stage-hit-v1")
 
@@ -22,6 +23,7 @@ func configure(directory: String, owner_fighter: FighterRuntime, hit: Dictionary
 func advance_timeline() -> void:
 	if expired:
 		return
+	advance_retained_visual_clips()
 	play_source_frame(current_source_frame() + 1)
 
 

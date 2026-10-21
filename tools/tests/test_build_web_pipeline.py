@@ -255,6 +255,11 @@ class WebBuildPipelineTests(unittest.TestCase):
                 "test_online_lobby_ui.py",
             ):
                 shutil.copy2(ROOT / "tools" / name, tools / name)
+            (tools / "importer").mkdir()
+            shutil.copy2(
+                ROOT / "tools/importer/visual_blend_modes.py",
+                tools / "importer/visual_blend_modes.py",
+            )
             shutil.copy2(
                 ROOT / "tools/tests/test_web_diagnostics_metadata.py",
                 test_tools / "test_web_diagnostics_metadata.py",
