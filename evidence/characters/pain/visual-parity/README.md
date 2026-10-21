@@ -55,7 +55,7 @@ I 其他有效窗口保持不变：地面 I `bs1atm` 644–681、`bsatm` 685–6
 
 ## 回归证据与范围
 
-变基后的最终保存回放 **216/216（127,672 状态）**，另加主线 PR #45 的 **11/11（2,662 状态）**，合计 **227/227、130,334 状态** 全部匹配。其他角色在既有比较字段上无最终输出差异；额外鼬原生复采亦通过。Python 349 项通过、2 项跳过；`PROTECTED_FUNCTION_OK`（1086 bytes）保持原 SHA-256。详见 [checks.json](checks.json) 与 [完整回放结果](roster-comparisons.json)。测试秒数逐项保留，不推算人天。
+变基后的最终保存回放 **216/216（127,672 状态）**，另加主线 PR #45 的 **11/11（2,662 状态）**，合计 **227/227、130,334 状态** 全部匹配。其他角色在既有比较字段上无最终输出差异；额外鼬原生复采亦通过。Python 共 349 项（2 项跳过，其余通过）；`PROTECTED_FUNCTION_OK`（1086 bytes）保持原 SHA-256。详见 [checks.json](checks.json) 与 [完整回放结果](roster-comparisons.json)。测试秒数逐项保留，不推算人天。
 
 - [pain-comparisons.json](pain-comparisons.json)：12 案例、7,224 状态，既有 14 字段逐帧精确匹配。
 - [bounds-comparison.json](bounds-comparison.json)：214 个整数 twip 全局矩形精确匹配；Godot 的 float32 JSON 投影只还原回整数 twip，不加容差。
