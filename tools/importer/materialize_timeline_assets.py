@@ -8,6 +8,8 @@ import json
 import shutil
 from pathlib import Path
 
+from source_instance_key import instance_key
+
 
 def _timeline_start_sound_ids(timeline: dict) -> set[int]:
     sound_ids = {
@@ -59,7 +61,16 @@ def materialize(
             if previous_name.name != asset["path"]:
                 raise ValueError(f"Unsafe generated asset path: {asset['path']}")
             (output_dir / previous_name).unlink(missing_ok=True)
-    shutil.copyfile(timeline_path, output_dir / "timeline.json")
+    runtime_timeline = json.loads(json.dumps(timeline))
+    if combat_model_path is not None:
+        combat = json.loads(combat_model_path.read_text())
+        handles = {p['instance_name'] for p in combat.get('projectiles', [])}
+        for frame in runtime_timeline['frames']:
+            for placement in frame['display_list']:
+                if not placement.get('name') and instance_key(placement) in handles:
+                    placement['name'] = instance_key(placement)
+                    placement['runtime_only_name'] = True
+    (output_dir / "timeline.json").write_text(json.dumps(runtime_timeline, ensure_ascii=False, indent=2) + "\n")
     if fighter_slice_path is not None:
         shutil.copyfile(fighter_slice_path, output_dir / "fighter.json")
     if combat_model_path is not None:

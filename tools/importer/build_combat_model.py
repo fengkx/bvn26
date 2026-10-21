@@ -14,6 +14,7 @@ _IMPORTER_DIR = Path(__file__).resolve().parent
 if str(_IMPORTER_DIR) not in sys.path:
     sys.path.insert(0, str(_IMPORTER_DIR))
 from command_catalog import build_command_catalog  # noqa: E402
+from source_instance_key import instance_key  # noqa: E402
 # Preserve the existing compiler import surface for parser consumers.
 from combat_projectile_parser import (  # noqa: E402
     PROJECTILE_HIT_GOTO,
@@ -976,14 +977,14 @@ def compile_yfgj_function(main_bundle: dict[str, Any]) -> dict[str, str]:
 
 
 def placement_name(
-    frames_by_number: dict[int, dict[str, Any]], frame: int, depth: int
+    frames_by_number: dict[int, dict[str, Any]], frame: int, depth: int, *, internal: bool = False
 ) -> str:
     current = frames_by_number.get(frame)
     if current is None:
         return ""
     for placement in current["display_list"]:
         if int(placement["depth"]) == depth:
-            return str(placement.get("name", ""))
+            return instance_key(placement) if internal else str(placement.get("name", ""))
     return ""
 
 
@@ -1057,7 +1058,12 @@ def parse_clip_timeline(
             }
         rename = CLIP_RENAME.search(script["source"])
         if rename is not None:
-            rename_frames.append({**record, "instance_name": rename["name"]})
+            random_suffix = re.fullmatch(r'(?:this\.)?_name\s*=\s*"[^"\n]+"\s*\+\s*Math\.random\(\);\s*', source)
+            event = {**record, "instance_name": rename["name"]}
+            if random_suffix:
+                fighter = Path(script_bundle["game_file"]).stem
+                event.update(random_suffix=True, random_site=f"fighter/{fighter}#{script['path']}:1")
+            rename_frames.append(event)
     stop_frames.sort(key=lambda item: item["frame"])
     rename_frames.sort(key=lambda item: item["frame"])
     timeline: dict[str, Any] = {"character_id": character_id, **initial_motion}
@@ -1700,7 +1706,7 @@ def build_model(
                 frames_by_number, script["frame"], depth
             )
             instance_name = placement_name(
-                frames_by_number, script["frame"], depth
+                frames_by_number, script["frame"], depth, internal=True
             )
             character_id = placement_character_id(
                 frames_by_number, script["frame"], depth

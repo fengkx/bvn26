@@ -107,6 +107,8 @@ def normalize(expr: str) -> str:
                   lambda m: f'sensor("{m[1]}")', expr)
     expr = re.sub(r'_parent\.(\w+)\.hitTest\(' + re.escape(OPPONENT + '.mc.bdmn') + r'\)',
                   lambda m: f'body_hit("{m[1]}")', expr)
+    expr = re.sub(r'_parent\.(\w+)\.hitTest\(' + re.escape(OPPONENT + '.mc.jiao') + r'\)',
+                  lambda m: f'body_hit("{m[1]}", "jiao")', expr)
     expr = expr.replace('_parent._parent._curGJL[name + "zl"]', 'power(name + "zl")')
     for source, target in sorted(FIELDS.items(), key=lambda item: -len(item[0])):
         expr = expr.replace(source, f'value("{target}")')

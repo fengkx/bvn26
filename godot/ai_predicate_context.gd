@@ -61,11 +61,11 @@ func sensor_hit(key: String) -> Variant:
 	return fighter.ai_senses.hit(key, fighter.opponent)
 
 
-func body_hit(key: String) -> Variant:
+func body_hit(key: String, target_name: String = "bdmn") -> Variant:
 	if fighter.opponent == null:
 		return null
 	var own := fighter.instance_global_bounds(key)
-	var target := fighter.opponent.instance_global_bounds("bdmn")
+	var target := fighter.opponent.instance_global_bounds(target_name)
 	if not own.has_area() or not target.has_area():
 		return null
 	return SourceHitTest.intersects(own, target)

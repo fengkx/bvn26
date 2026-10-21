@@ -1,0 +1,293 @@
+{
+  "status": "targeted_validation_passed_full_acceptance_pending",
+  "base": "782c2cfb9247e262d177bd952eaa1a99389ff06f",
+  "branch": "feat/juggo",
+  "native_flash_parity": {
+    "status": "matched",
+    "cases": 12,
+    "passed": 12,
+    "source_states": 8664,
+    "native_states": 8664,
+    "fields": 14,
+    "report": "comparisons.json",
+    "scope": "Twelve fighter fixtures, ticks 0-360 for both actors. No independent Juugo assist exists. Actor-state parity; not pixel/audio equality."
+  },
+  "observed": {
+    "air-ranged": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 4.0
+      },
+      "p2": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 4.0
+      }
+    },
+    "cancel-super": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 6.0
+      },
+      "p2": {
+        "hp_loss": 380.0,
+        "max_hits": 4.0,
+        "final_frame": 1.0
+      }
+    },
+    "combo": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 6.0
+      },
+      "p2": {
+        "hp_loss": 360.0,
+        "max_hits": 3.0,
+        "final_frame": 1.0
+      }
+    },
+    "guard": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 6.0
+      },
+      "p2": {
+        "hp_loss": 4.0,
+        "max_hits": 0.0,
+        "final_frame": 2.0
+      }
+    },
+    "interrupt": {
+      "p1": {
+        "hp_loss": 40.0,
+        "max_hits": 1.0,
+        "final_frame": 1.0
+      },
+      "p2": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 2.0
+      }
+    },
+    "ranged": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 4.0
+      },
+      "p2": {
+        "hp_loss": 350.0,
+        "max_hits": 5.0,
+        "final_frame": 1.0
+      }
+    },
+    "receive-guard": {
+      "p1": {
+        "hp_loss": 84.0,
+        "max_hits": 1.0,
+        "final_frame": 4.0
+      },
+      "p2": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 2.0
+      }
+    },
+    "repeat-upper-super": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 9.0
+      },
+      "p2": {
+        "hp_loss": 300.0,
+        "max_hits": 2.0,
+        "final_frame": 5.0
+      }
+    },
+    "super-guard": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 10.0
+      },
+      "p2": {
+        "hp_loss": 30.0,
+        "max_hits": 0.0,
+        "final_frame": 2.0
+      }
+    },
+    "ultimate": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 7.0
+      },
+      "p2": {
+        "hp_loss": 450.0,
+        "max_hits": 7.0,
+        "final_frame": 1.0
+      }
+    },
+    "upper-attack": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 3.0
+      },
+      "p2": {
+        "hp_loss": 70.0,
+        "max_hits": 2.0,
+        "final_frame": 4.0
+      }
+    },
+    "upper-super": {
+      "p1": {
+        "hp_loss": 0.0,
+        "max_hits": 0.0,
+        "final_frame": 3.0
+      },
+      "p2": {
+        "hp_loss": 300.0,
+        "max_hits": 2.0,
+        "final_frame": 6.0
+      }
+    }
+  },
+  "coverage_notes": [
+    "Cancel enters source frame 570 on tick 28 from source frame 200 at tick 27; initial wrong timing remains diagnostic only.",
+    "Ranged sequence reaches low-ranged 420 at tick 143, continuation 480 at tick 181 and low attack 248 at tick 263.",
+    "Repeated upper super enters 717 at ticks 11 and 181. Second cast whiffs; total damage remains 300, not 600.",
+    "Air ranged reaches its source action but whiffs at the selected separation."
+  ],
+  "shared_runtime_changed": true,
+  "shared_runtime_files": [
+    "godot/ai_controller_host.gd",
+    "godot/ai_predicate_context.gd"
+  ],
+  "shared_compiler_changed": true,
+  "shared_compiler_files": [
+    "tools/importer/build_combat_model.py",
+    "tools/importer/compile_ai_controller.py",
+    "tools/importer/compile_ai_predicates.py",
+    "tools/importer/materialize_timeline_assets.py",
+    "tools/importer/source_instance_key.py"
+  ],
+  "protected_function": {
+    "status": "PROTECTED_FUNCTION_OK",
+    "bytes": 1086,
+    "sha256": "9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed",
+    "recovery_smoke": "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+  },
+  "rollback_smoke": {
+    "status": "JUGGO_ROLLBACK_SMOKE_OK",
+    "scope": "Natural intro, ultimate pause checkpoint/replay, delayed guard inputs through production rollback and next-round reset. Local simulation, not a live Internet match."
+  },
+  "validation": {
+    "python": {
+      "run": 343,
+      "passed": 341,
+      "skipped": 2
+    },
+    "focused_python": {
+      "passed": 21
+    },
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6,
+      "gameplay_tested": false,
+      "production_ready_data": false
+    },
+    "matchmaking": {
+      "passed": 31,
+      "typecheck": "passed",
+      "note": "30 passed in sandbox; the local Wrangler registry write was denied there. The same remaining test passed separately outside sandbox, without deployment."
+    },
+    "online_manifest_tests": {
+      "passed": 7
+    },
+    "online_manifest_check": "ONLINE_MANIFEST_OK fighters=26 helpers=5 stages=10 build=fe80d9f639c4da23b0609ffc937e8c9539b4e431ba24024628e448ec0ba7b108 content=5c6b48110455427ad6e31c709043c28309daa46adf6f5f378594cb75a8fe8aca",
+    "godot": {
+      "passed": 4,
+      "report": "godot-checks.json"
+    },
+    "shared_modes": {
+      "status": "matched",
+      "pvp_states": 602,
+      "training_timer_states": 602
+    },
+    "screenshots": [
+      "screenshots/selection.png",
+      "screenshots/in-fight.png"
+    ],
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 21,
+      "local_links": 277,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    }
+  },
+  "deviations": [
+    "Retained PR #37 direct and queued interrupted-super preparation recovery unchanged; Flash may freeze where Godot intentionally recovers. No new intentional gameplay deviation."
+  ],
+  "limitations": [
+    "Coverage remains partial; full audiovisual/browser/AI and exhaustive boundaries remain pending.",
+    "Screenshots are native Godot visual inspection, not Flash pixel parity.",
+    "No merge or deployment."
+  ],
+  "runtime_sha256": {
+    "godot/ai_controller_host.gd": "05040bf8e205d5f0a9a7211b3f7557eb5217baae6ae0a77a4bf873d86b51a4d0",
+    "godot/ai_predicate_context.gd": "2ff05f4b3e1b16dae100b4ac4505f3a78c7f10375fae9f2e91ace1b5b96c989f",
+    "godot/fighter_runtime.gd": "0220f9a81c6209d1637e47bc511792e7462e9d8242a826bc6e6ff33b01876f25",
+    "godot/timeline_preview.gd": "575d52cebe468a9ea5859712ffb856a371427d15552e6b8632eb8ac65dad6158"
+  },
+  "compiler_sha256": {
+    "tools/importer/build_combat_model.py": "218ce0cb48cc2dfa7b167aa29671cb42b2b35e1d51ca6b9cdc8906f372150414",
+    "tools/importer/compile_ai_controller.py": "93c8c744595be7f38055d674ececb4b0130a305d26ad97a8aa84c30627c58d7f",
+    "tools/importer/compile_ai_predicates.py": "c1a4315936dfa5297726f12960f5ef8e39b147b8f74900d1b797fc6153e1ace6",
+    "tools/importer/materialize_timeline_assets.py": "70372519966842bbd5ebbf66905a39a4f5ee3d8af4927416d150a4e205ef29b1",
+    "tools/importer/source_instance_key.py": "7a701947b67cb4ad50e743b225505c79445bd83256c2b73c65deb83e878dfa45"
+  },
+  "environment": {
+    "os": "macOS-26.7-arm64-arm-64bit",
+    "python": "3.11.15",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "Adobe Flash Player Debugger 32.0.0.465",
+    "capture": "Automated capture_native_player.py --allow-window-activation, no manual clicks."
+  },
+  "measured_elapsed_seconds": 1263,
+  "elapsed_note": "Wall time from goal creation through evidence packaging, including native captures and initial asset import; no person-days inferred.",
+  "compiler_audit": {
+    "prior_fighters": 25,
+    "combat_unchanged": true,
+    "report": "compiler-impact.json",
+    "scope": "Base/current combat compilation on identical retained inputs."
+  },
+  "saved_roster": {
+    "status": "matched",
+    "cases": 204,
+    "matched": 204,
+    "states": 119008,
+    "fields": 14,
+    "primary_fighters": 24,
+    "report": "regressions.json",
+    "seconds": 631.3928783750162,
+    "scope": "All saved prior-port fixtures, including Gaara; Renji also appears as opponent."
+  }
+}
