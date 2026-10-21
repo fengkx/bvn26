@@ -20,6 +20,7 @@ class IntroRosterTests(unittest.TestCase):
             "konan": (1161, 1240),
             "daitu": (1148, 1208),
             "didala": (988, 1088),
+            "lanran": (1617, 1693),
             "minren": (1099, 1178),
             "yihu": (822, 901),
             "rifagu": (983, 1062),

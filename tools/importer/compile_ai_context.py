@@ -440,6 +440,8 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                               'path':path,'line':number,'frame':frame['frame']})
             elif line == 'resColor();':
                 calls.append({'op':'color_reset','path':path,'line':number,'frame':frame['frame']})
+            elif line == 'updateDirect();':
+                calls.append({'op':'update_direct','path':path,'line':number,'frame':frame['frame']})
             elif color_write := re.fullmatch(r'var (_cgap|_csn) = (\d+);',line):
                 calls.append({'op':'color_write','field_name':color_write[1],
                               'value':int(color_write[2]),'path':path,'line':number,'frame':frame['frame']})

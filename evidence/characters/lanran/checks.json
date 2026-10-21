@@ -1,0 +1,143 @@
+{
+  "status": "targeted_validation_passed_full_acceptance_pending",
+  "base": "04244fae5bef827b8c67d8eb1efe0ae333a5eca7",
+  "branch": "feat/lanran",
+  "native_flash_parity": {
+    "status": "matched",
+    "passed": 12,
+    "cases": 12,
+    "source_states": 5944,
+    "native_states": 5944,
+    "fields": 14,
+    "report": "comparisons.json"
+  },
+  "godot_execution": {
+    "passed": 12,
+    "cases": 12,
+    "states": 5944,
+    "report": "comparisons.json",
+    "scope": "All source ticks and slots match on 14 exact fields; source target/HP observations recorded per case."
+  },
+  "shared_runtime_changed": true,
+  "shared_compiler_changed": true,
+  "shared_compiler_files": [
+    "tools/importer/build_combat_model.py",
+    "tools/importer/combat_projectile_parser.py",
+    "tools/importer/extract_timeline_geometry.py",
+    "tools/importer/compile_ai_context.py"
+  ],
+  "compiler_audit": {
+    "prior_fighters": 22,
+    "combat_unchanged": true,
+    "report": "compiler-impact.json",
+    "scope": "Combat exports only; new update_direct context events are emitted on rebuild. Prior contexts were not rewritten."
+  },
+  "saved_roster": {
+    "status": "matched",
+    "cases": 167,
+    "matched": 167,
+    "states": 96574,
+    "fields": 14,
+    "primary_fighters": 21,
+    "note": "Renji appears only as opponent in saved corpus.",
+    "report": "regressions.json",
+    "seconds": 513.8249802910723
+  },
+  "protected_function": {
+    "status": "PROTECTED_FUNCTION_OK",
+    "bytes": 1086,
+    "sha256": "9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed",
+    "recovery_smoke": "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+  },
+  "rollback_smoke": {
+    "status": "LANRAN_ROLLBACK_SMOKE_OK",
+    "scope": "Natural intro, ultimate pause checkpoint/replay, delayed guard input through production rollback, next-round reset; not a live Internet match."
+  },
+  "validation": {
+    "python": {
+      "run": 331,
+      "passed": 329,
+      "skipped": 2
+    },
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6,
+      "gameplay_tested": false
+    },
+    "matchmaking": {
+      "passed": 31,
+      "typecheck": "passed",
+      "note": "30 passed initially; Wrangler local-server test initially blocked by sandbox registry access, then passed separately."
+    },
+    "online_manifest_tests": {
+      "passed": 7
+    },
+    "screenshots": [
+      "screenshots/selection.png",
+      "screenshots/in-fight.png"
+    ],
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 21,
+      "local_links": 274,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    },
+    "online_manifest_check": "ONLINE_MANIFEST_OK fighters=23 helpers=4 stages=10 build=8ccff224691a5ff9d86f7cf91a2f9303c27e3f4521522b9a896d8f0f235df945 content=e5e652f8809fe80f7d0f5c0b8c968cab76ef1ebed751b1b18f051520d929a8fb",
+    "shared_modes": {
+      "status": "matched",
+      "pvp_states": 602,
+      "training_timer_states": 602
+    },
+    "godot": {
+      "passed": 4,
+      "report": "godot-checks.json"
+    }
+  },
+  "deviations": [
+    "Retained PR #37 direct and queued interrupted-super preparation recovery unchanged."
+  ],
+  "limitations": [
+    "Coverage remains partial; full audiovisual/browser/AI and exhaustive boundaries remain pending.",
+    "No character-specific assist exists in the source catalog.",
+    "No deployment or merge."
+  ],
+  "runtime_sha256": {
+    "fighter_runtime.gd": "0220f9a81c6209d1637e47bc511792e7462e9d8242a826bc6e6ff33b01876f25",
+    "timeline_preview.gd": "575d52cebe468a9ea5859712ffb856a371427d15552e6b8632eb8ac65dad6158",
+    "ai_predicate_context.gd": "8a2689acec22aefd729bd86ba1b36910a5c65b5c18b5ab5b4df4e631e55d64c9",
+    "main.gd": "56481760eb791a66a058a4b4e3caae2daa95b9c2256c2935fb49dce3805fba9f",
+    "ai_cpu_driver.gd": "7b2fb3840858d3f871130fd3af5bceea0975ebf7a1c8ab5e4938e062c6c241e1"
+  },
+  "measured_elapsed_seconds": 4088,
+  "elapsed_note": "Wall time since initial goal activation, including time waiting for user approval. Individual execution durations are recorded separately; no person-day estimate inferred.",
+  "compiler_sha256": {
+    "tools/importer/build_combat_model.py": "78ffd09d8d35c65a118cc3d7401d6dc689c0b921adbaa4a3f411d3f3e272ce4b",
+    "tools/importer/combat_projectile_parser.py": "24e05b93c86f2aa3f73057dee45c08cc7ce5ad4a824063e9946d194b87f90883",
+    "tools/importer/extract_timeline_geometry.py": "d5fce6f7577f1cdd99dbdb045f4c746d2887b24f11bf0d2250af27772c517a65",
+    "tools/importer/compile_ai_context.py": "95274d01a4b87289dc45c17621cf28109ddb3765cd7eea3107105eba734f6e2a"
+  },
+  "shared_runtime_files": [
+    "godot/ai_cpu_driver.gd"
+  ],
+  "environment": {
+    "os": "macOS-26.7-arm64-arm-64bit",
+    "python": "3.11.15",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "Adobe Flash Player Debugger 32.0.0.465",
+    "player_app": "/Users/fengkx/me/code/flash-player/Flash Player.app",
+    "player_executable_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "capture": "Non-interactive open -g via capture_native_player.py with explicitly authorized --allow-window-activation; no manual clicks."
+  }
+}

@@ -191,6 +191,9 @@ func _external(name: String, args: Array) -> Variant:
 
 func _frame_service(event: Dictionary) -> void:
 	match event["op"]:
+		"update_direct":
+			body.updateDirect()
+			return
 		"wrapper_move":
 			# Wrapper moveY adds Y, unlike the child controller's upward moveY.
 			if event["axis"] == "moveX":
