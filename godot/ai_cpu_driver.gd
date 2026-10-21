@@ -232,13 +232,14 @@ func _frame_service(event: Dictionary) -> void:
 			return
 		"conditional_frame":
 			for condition in event["conditions"]:
-				var value: Variant = fighter.ai_predicate_context.read_field(condition["field"])
-				match condition["operator"]:
-					"gt":
-						if value == null or not value > condition["value"]: return
-					"eq":
-						if value != condition["value"]: return
-					_: assert(false, "Uncompiled frame condition")
+				if not _frame_condition(condition): return
+			if event.has("alternatives"):
+				var matched := false
+				for condition in event["alternatives"]:
+					if _frame_condition(condition):
+						matched = true
+						break
+				if not matched: return
 			for call in event["calls"]:
 				_frame_service(call)
 			return
@@ -263,3 +264,13 @@ func _frame_service(event: Dictionary) -> void:
 	_external("frame_super", [event])
 	fighter.last_super = event.duplicate()
 	fighter.super_event_applied.emit(fighter.last_super)
+
+
+func _frame_condition(condition: Dictionary) -> bool:
+	var context := fighter.ai_predicate_context
+	var value: Variant = context.body_hit(condition["instance"]) if condition.has("instance") else context.read_field(condition["field"])
+	match condition["operator"]:
+		"gt": return value != null and value > condition["value"]
+		"eq": return value == condition["value"]
+		_: assert(false, "Uncompiled frame condition")
+	return false

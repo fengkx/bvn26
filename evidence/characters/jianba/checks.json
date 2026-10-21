@@ -1,0 +1,129 @@
+{
+  "status": "targeted_validation_passed_full_acceptance_pending",
+  "base": "078ebdd0d2c8555a87a577ca11920ec8a75c85e7",
+  "branch": "feat/jianba",
+  "native_flash_parity": {
+    "status": "matched",
+    "passed": 13,
+    "cases": 13,
+    "fighter_cases": 12,
+    "assist_cases": 1,
+    "source_states": 7826,
+    "native_states": 7826,
+    "fields": 14,
+    "report": "comparisons.json",
+    "scope": "Twelve fighter cases plus one assist case; actor-state parity only. Assist internal-state parity is not claimed. Ultimate horizon ends at frame 952; recovery is checked separately by rollback smoke."
+  },
+  "shared_runtime_changed": true,
+  "shared_runtime_files": [
+    "godot/ai_cpu_driver.gd"
+  ],
+  "shared_compiler_changed": true,
+  "shared_compiler_files": [
+    "tools/importer/compile_ai_context.py"
+  ],
+  "compiler_audit": {
+    "prior_fighters": 23,
+    "context_unchanged": true,
+    "report": "compiler-impact.json",
+    "scope": "Base/current context compiler outputs on identical inputs; prior generated files not rewritten."
+  },
+  "saved_roster": {
+    "status": "matched",
+    "cases": 179,
+    "matched": 179,
+    "states": 102518,
+    "fields": 14,
+    "primary_fighters": 22,
+    "note": "Renji appears as opponent in the saved corpus.",
+    "report": "regressions.json",
+    "seconds": 568.7115890409332
+  },
+  "protected_function": {
+    "status": "PROTECTED_FUNCTION_OK",
+    "bytes": 1086,
+    "sha256": "9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed",
+    "recovery_smoke": "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+  },
+  "rollback_smoke": {
+    "status": "JIANBA_ROLLBACK_SMOKE_OK",
+    "scope": "Natural intro, ultimate pause checkpoint/replay and recovery, delayed guard input through production rollback and next-round reset; not a live Internet match."
+  },
+  "validation": {
+    "python": {
+      "run": 335,
+      "passed": 333,
+      "skipped": 2
+    },
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6,
+      "gameplay_tested": false
+    },
+    "matchmaking": {
+      "passed": 31,
+      "typecheck": "passed",
+      "note": "30 passed initially; Wrangler local-server registry access was sandbox-restricted, then its one test passed separately."
+    },
+    "online_manifest_tests": {
+      "passed": 7
+    },
+    "online_manifest_check": "ONLINE_MANIFEST_OK fighters=24 helpers=5 stages=10 build=f88a61d30a1d4b45546e2dbe0e60a65e05a5c5156c964c4b6ea89944fe29da47 content=e75281562ddc5a9033fa5b1ba4170207d98e46d4070c5733dff4a781a7ce70c1",
+    "screenshots": [
+      "screenshots/selection.png",
+      "screenshots/in-fight.png"
+    ],
+    "shared_modes": {
+      "status": "matched",
+      "pvp_states": 602,
+      "training_timer_states": 602
+    },
+    "godot": {
+      "passed": 5,
+      "report": "godot-checks.json"
+    },
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 21,
+      "local_links": 275,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    }
+  },
+  "deviations": [
+    "Retained PR #37 direct and queued interrupted-super preparation recovery unchanged; original Flash may freeze while Godot intentionally recovers."
+  ],
+  "limitations": [
+    "Coverage remains partial; full audiovisual/browser/AI and exhaustive boundaries remain pending.",
+    "Native screenshots are visual inspection, not Flash pixel parity.",
+    "No merge or deployment."
+  ],
+  "runtime_sha256": {
+    "fighter_runtime.gd": "0220f9a81c6209d1637e47bc511792e7462e9d8242a826bc6e6ff33b01876f25",
+    "timeline_preview.gd": "575d52cebe468a9ea5859712ffb856a371427d15552e6b8632eb8ac65dad6158",
+    "ai_cpu_driver.gd": "71fa18386a499ee2dcc9885a7d9f527cad7ce2f967268bceaa9deb1a910b12d7"
+  },
+  "compiler_sha256": {
+    "tools/importer/compile_ai_context.py": "1a00fe9304d50d6e345db6b678db036c1b3099bc09e93395028786899b50147f"
+  },
+  "environment": {
+    "os": "macOS-26.7-arm64-arm-64bit",
+    "python": "3.11.15",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "Adobe Flash Player Debugger 32.0.0.465",
+    "capture": "Non-interactive capture_native_player.py with explicitly authorized --allow-window-activation; no manual clicks."
+  },
+  "measured_elapsed_seconds": 1113,
+  "elapsed_note": "Wall time from goal creation through evidence packaging, including native capture and roster replay; no person-day estimate inferred."
+}
