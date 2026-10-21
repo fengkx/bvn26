@@ -1,0 +1,117 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "剑八",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/jianba.swf",
+    "swf_sha256": "8f5a7b1d6a5ef3f0c38d669f1311cd668f06e8847eaaaad0719d513b97272db0",
+    "script_bundle": "scripts/fighter/fz/jianba.json",
+    "header_fps": 30.0,
+    "root_frames": 104
+  },
+  "start_frame": 2,
+  "end_frame": 104,
+  "hide_frames": [],
+  "hide_frame_events": [],
+  "nested_stops": [],
+  "action_events": [
+    {
+      "frame": 13,
+      "value": 1,
+      "source_path": "frame_13/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "frame": 81,
+      "value": 0,
+      "source_path": "frame_81/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [],
+  "contact_gotos": [],
+  "attacks": {
+    "atm1": {
+      "damage": 200,
+      "impact_strength": 15,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 15,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 16,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_16/DoAction.as"
+    },
+    {
+      "frame": 61,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_61/DoAction.as"
+    },
+    {
+      "frame": 104,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_104/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_62/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "d6c6d7c2450389126b5fc3fbf4108d606063eb676efc2a2a5a23f04fbfba391b",
+      "frame": 1
+    },
+    {
+      "path": "frame_104/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 104
+    },
+    {
+      "path": "frame_13/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "frame": 13
+    },
+    {
+      "path": "frame_16/DoAction.as",
+      "source_sha256": "2941da485f7ab205ab1ca30eb889e0fea9a5095b07c828aaecea42c92a911eb3",
+      "frame": 16
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_61/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 61
+    },
+    {
+      "path": "frame_81/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 81
+    }
+  ]
+}

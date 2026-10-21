@@ -211,6 +211,21 @@ def controller_scope_fields(bundle: dict, sprite: int) -> set[str]:
 
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
     # Admit the complete source block, not a guessed label/frame exception.
+    contact = re.fullmatch(
+        r'if\(_root\.game\["p" \+ pn\]\.mc\.hp <= (-?\d+)\)\s*'
+        r'\{\s*return undefined;\s*\}\s*'
+        r'if\(_root\.game\["p" \+ pn\]\.mc\.动作 == (-?\d+)\)\s*'
+        r'\{\s*gotoAnd(Play|Stop)\("([^"\n]+)"\);\s*play\(\);\s*return undefined;\s*\}\s*'
+        r'if\((\w+)\.hitTest\(_root\.game\["p" \+ pn\]\.mc\.bdmn\)\)\s*'
+        r'\{\s*gotoAnd\3\("\4"\);\s*play\(\);\s*\}\s*', text)
+    if contact:
+        return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': 'opponent_hp', 'operator': 'gt', 'value': int(contact[1])}],
+                 'alternatives': [
+                     {'field': 'opponent_action', 'operator': 'eq', 'value': int(contact[2])},
+                     {'instance': contact[5], 'operator': 'eq', 'value': True}],
+                 'calls': [{'op': 'timeline_goto', 'label': contact[4], 'play': contact[3] == 'Play'},
+                           {'op': 'timeline_play'}]}]
     match = re.fullmatch(
         r'if\((?:(\w+) && )?_root\.game\["p" \+ pn\]\.mc\.hp > (-?\d+) && '
         r'_root\.game\["p" \+ pn\]\.mc\.动作 == (-?\d+)\)\s*'

@@ -20,9 +20,9 @@ class SelectionRegistryTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(
             set(first["fighters"]),
-            {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次", "樱", "露其雅", "石田", "白哉", "小李", "银", "茶渡", "宁次", "一角", "鼬", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染"},
+            {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次", "樱", "露其雅", "石田", "白哉", "小李", "银", "茶渡", "宁次", "一角", "鼬", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染", "剑八"},
         )
-        self.assertEqual(set(first["helpers"]), {"我爱罗", "魂", "鼬", "松本"})
+        self.assertEqual(set(first["helpers"]), {"我爱罗", "魂", "鼬", "松本", "剑八"})
 
         published = json.loads(
             (ROOT / "godot/generated/main/character_selection/available.json").read_text()
@@ -59,13 +59,13 @@ class SelectionRegistryTests(unittest.TestCase):
         fighter_cards = {card["id"]: card for card in selection["phases"][0]["cards"]}
         self.assertEqual(
             set(portraits),
-            {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次", "樱", "露其雅", "石田", "白哉", "小李", "银", "茶渡", "宁次", "一角", "鼬", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染"},
+            {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次", "樱", "露其雅", "石田", "白哉", "小李", "银", "茶渡", "宁次", "一角", "鼬", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染", "剑八"},
         )
         self.assertEqual(
             set(footer),
             {
                 "鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次",
-                "樱", "露其雅", "石田", "白哉", "小李", "银", "茶渡", "宁次", "一角", "魂", "我爱罗", "鼬", "松本", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染",
+                "樱", "露其雅", "石田", "白哉", "小李", "银", "茶渡", "宁次", "一角", "魂", "我爱罗", "鼬", "松本", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染", "剑八",
             },
         )
         for entry in portraits.values():
@@ -73,7 +73,7 @@ class SelectionRegistryTests(unittest.TestCase):
                 self.assertTrue((directory / texture).is_file(), texture)
         for entry in footer.values():
             self.assertTrue((directory / entry["texture"]).is_file(), entry["texture"])
-        for name in ("白哉", "小李", "银", "茶渡", "宁次", "一角", "鼬", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染"):
+        for name in ("白哉", "小李", "银", "茶渡", "宁次", "一角", "鼬", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染", "剑八"):
             card = fighter_cards[name]
             # This frame belongs to the card's namemc clip; the baked portrait
             # is selected by its independent Sprite_1346 source label frame.
