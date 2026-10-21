@@ -1,8 +1,8 @@
 # Aizen / 蓝染 base-form port
 
 Base: `04244fae5bef827b8c67d8eb1efe0ae333a5eca7`, branch `feat/lanran`.
-Coverage remains **partial**. Native Flash comparison is pending; Godot-only
-execution must not be described as Flash parity. No merge or deployment.
+Coverage remains **partial**. Twelve fresh native Flash comparisons match all
+5,944 actor states on 14 fields. No merge or deployment.
 
 ## Source-first answers
 
@@ -32,13 +32,14 @@ execution must not be described as Flash parity. No merge or deployment.
    scope of controller container assignments and mask fill edges. HIT_RECEIVE
    A–D reuses the 35-fighter shared chain, assist-without-receiver audit, Aizen
    `gjl1`, source face labels and generic consumers. No damage, hitbox or
-   comparison threshold is adjusted. Step E awaits fresh original captures.
-5. Twelve fixtures are prepared for Adobe Flash Player Debugger 32.0.0.465
+   comparison threshold is adjusted. Step E records fresh original captures in `comparisons.json`.
+5. Twelve fixtures were captured with Adobe Flash Player Debugger 32.0.0.465
    through `tools/probes/capture_native_player.py`. They use AI off, current
    world, Aizen versus Ichigo and explicit Gaara/Kon helpers, with no helper
    input. The capture tool requires `--allow-window-activation` because Flash
-   can raise its window despite `open -g`; the user's background-only constraint
-   is awaiting clarification. Instrumented SWFs remain in scratch directories.
+   can raise its window despite `open -g`; the user explicitly authorized this
+   flag. Capture was non-interactive, with no manual clicks. Instrumented SWFs
+   remain in scratch directories; build identities and input tapes are retained.
 
 ## Focused cases and scope
 
@@ -46,8 +47,12 @@ The 12 fixtures cover normals, normal-to-super cancellation, normal interruption
 outgoing normal chip, incoming guard/guard break, super chip, ultimate,
 upper-super repeated warps, air ranged, air super, counter and upper attack.
 Ten run for 240 ticks; upper-super and ultimate run for 280 so recovery fits.
-Godot execution produces 5,944 fighter states in total, but no Flash match count
-is claimed until the original captures have been compared.
+All 12 original/native pairs match: ten have 482 states each and two have 562,
+for 5,944 total. `comparisons.json` records target reach and actual HP/hit results.
+Normal guard chips 3 HP and super guard chips 34 HP without incrementing hits;
+incoming guard/break reaches 916 HP. Normal interruption reaches 960 HP.
+The ultimate deals 700 HP across a maximum 34 hits; upper-super deals 430 HP
+across 9 hits. Cancel enters super frame 804 from frame 265 at tick 54.
 
 The established comparator checks 14 fields: frame, x, y, xscale, action, hp,
 ql, sw, touch, touchFloor, hits, paused, hstm and hurtSkling, plus complete
@@ -56,7 +61,7 @@ from mere fixture execution. This does not establish pixel/audio equality,
 exhaustive cancel boundaries or full AI/browser acceptance. The source references
 missing `absmian`; it remains an original no-op. The catalog has no Aizen assist.
 
-## Shared compiler corrections
+## Shared compiler and runtime corrections
 
 - `combat_projectile_parser.py` now anchors `_parent` to its actual scope.
   `_parent._parent.scale_X` in Aizen controller callbacks is not a write to the
@@ -69,9 +74,17 @@ missing `absmian`; it remains an original no-op. The catalog has no Aizen assist
   its stroked bounds must not expand the mask. Flash ignores line styles in mask
   layers: [Adobe Flash CS3 User Guide](https://www.adobe.com/support/documentation/archived_content/en/flash/cs3/flash_cs3_help.pdf).
 
-`compiler-impact.json` compares serialized base/current compiler outputs on
-identical inputs for all 22 prior fighters; all are unchanged. No production
-GDScript runtime file is changed. The full saved-roster replay matches **167/167 cases, 96,574 states** on all
+`compile_ai_context.py` now emits source `updateDirect()` frame calls and
+`ai_cpu_driver.gd` executes them in order. Original captures exposed missing
+facing updates at frames 292 and 1154; the latter follows the opponent-relative
+warp. Recompiling the context also synchronizes counter warps at 513/1853.
+The three failing before-traces remain under `diagnostics/`; these corrections
+restore Flash behavior and introduce no character-specific runtime branch.
+
+`compiler-impact.json` compares serialized base/current **combat** compiler
+outputs on identical inputs for all 22 prior fighters; all are unchanged.
+This audit does not claim unchanged context compiler output: the new source
+operation is emitted when contexts are rebuilt; prior contexts were not rewritten. The full saved-roster replay matches **167/167 cases, 96,574 states** on all
 14 compared fields (21 prior primary fighters; Renji appears only as opponent).
 `checks.json` and `regressions.json` retain the actual execution results.
 
@@ -107,8 +120,13 @@ before running Godot checks and regenerate the online manifest afterward.
 
 Build `tools/probes/build_ai_reference.py` with `--dynamic-move-case`, explicit
 characters/helpers above, and 240 or 280 frames matching each fixture. Capture
-with `tools/test_move_references.py --capture-only` and the native capture runner;
+with `tools/test_move_references.py --capture-only --allow-window-activation` and the native capture runner;
 replay independently with `res://tests/move_case_reference.gd`, then compare using
 `tools/probes/compare_mode_reference.py`. Capture-only placeholder traces must
 never be counted as Godot results. `replay_saved_roster.py` uses `BVN_GODOT` and
 `BVN_CHECK_DIR` from the repository root.
+
+Source `build.json` files retain immutable build-time `built_not_run` status.
+The adjacent capture environment, summary and tapes record the subsequent actual
+runs; `comparisons.json` is the final execution and parity authority. The two
+`template-*` folders describe probe templates, not additional test cases.

@@ -910,4 +910,4 @@ remains pending. No merge or Worker/Vercel deployment.
 
 - 2026-10-21：迪达拉基础形态已按源编译并接入本地／联机目录；12 例原生 Flash 对照匹配 5,784 条状态。通用嵌套投射物实例时钟与源 stop 编译修复了重复施放时的三帧命中差异；PR #37 直接／排队准备恢复保持原样。全角色保存回放 155/155 例、90,790 条状态匹配；检查、截图和实测耗时见 [迪达拉证据](../evidence/characters/didala/README.md) 与 [检查记录](../evidence/characters/didala/checks.json)。coverage 保持 partial，完整视听／浏览器／AI 验收待完成；不含援助，未部署或合并。
 
-- 2026-10-21：蓝染基础形态已按源编译并接入本地／联机目录，真实选人和实战截图已保存。12 个 Godot 案例运行 5,944 条状态，回滚冒烟通过；原生 Flash 对照仍等待后台采样可能抢焦点的澄清，不能称原版一致。共用编译修正保持 22 个旧角色输出不变，全角色回放进度和实测耗时见[蓝染检查记录](../evidence/characters/lanran/checks.json)。PR #37 恢复不变，coverage 保持 partial，未合并或部署。
+- 2026-10-21：蓝染基础形态已按源编译并接入本地／联机目录，真实选人和实战截图已保存。12 个原生 Flash 案例的 5,944 条状态在 14 个字段上全部匹配，回滚冒烟通过；采样使用明确授权的窗口激活参数，无手动点击。共用运行时按源执行 updateDirect 帧调用，22 个旧角色的战斗编译输出不变，全角色回放结果和实测耗时见[蓝染检查记录](../evidence/characters/lanran/checks.json)。PR #37 恢复不变，coverage 保持 partial，未合并或部署。

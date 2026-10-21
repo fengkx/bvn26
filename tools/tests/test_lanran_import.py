@@ -58,3 +58,9 @@ class LanranImportTests(unittest.TestCase):
         self.assertEqual([(e['frame'], e['flying']) for e in model['on_be_hit_frames']], [(1533, False), (1546, True)])
         self.assertEqual([(e['frame'], e['xgtype']) for e in model['on_defence_frames']], [(1521, 1), (1801, 1)])
         self.assertEqual(model['action_exits']['被打']['frame'], 1542)
+
+    def test_air_super_updates_facing_after_source_warp(self):
+        context = read('godot/generated/fighters/lanran/ai.json')
+        calls = context['frame_calls']['1154']
+        self.assertEqual([event['op'] for event in calls], ['body_warp', 'update_direct'])
+        self.assertLess(calls[0]['line'], calls[1]['line'])
