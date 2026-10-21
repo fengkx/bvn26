@@ -212,6 +212,38 @@ func _frame_service(event: Dictionary) -> void:
 		"frame_hit_test":
 			fighter.ai_source_state.values[event["field_name"]] = fighter.ai_predicate_context.body_hit(event["instance"])
 			return
+		"follow_clip":
+			var target := str(event["instance"])
+			for authored: String in fighter.source_projectiles:
+				var clip: RefCounted = fighter.source_projectiles[authored].get_ref()
+				if clip != null and clip.current_source_name() == target:
+					target = authored
+					break
+			if fighter.opponent == null:
+				return
+			var origin := fighter.named_instance_origin(target)
+			if origin == Vector2.INF:
+				return
+			var offset := fighter.instance_local_offset(target)
+			var direction := 1.0 if fighter.scale.x > 0 else -1.0
+			var relative_x: float = (fighter.opponent.source_x - fighter.source_x) * direction
+			if bool(event["place_x"]) and (not bool(event["front_only"]) or relative_x > 0):
+				offset.x = relative_x - origin.x
+			if bool(event["place_y"]):
+				offset.y = fighter.opponent.source_y - fighter.source_y - origin.y
+			fighter.set_instance_local_offset(target, offset)
+			fighter._placement_owned[target] = true
+			fighter.refresh_display()
+			return
+		"child_timeline_goto":
+			var authored: String = event["authored_name"]
+			if fighter.source_projectiles.has(authored):
+				var clip: RefCounted = fighter.source_projectiles[authored].get_ref()
+				if clip != null and clip.current_source_name() == event["instance"]:
+					fighter.set_instance_clip_frame(authored, int(event["target_frame"]), bool(event["play"]))
+					clip.queue_frame_script(int(event["target_frame"]))
+					fighter.refresh_display()
+			return
 		"opponent_visibility":
 			fighter.ai_predicate_context.write_field("opponent_visible", event["value"])
 			return
@@ -232,7 +264,10 @@ func _frame_service(event: Dictionary) -> void:
 			return
 		"conditional_frame":
 			for condition in event["conditions"]:
-				if not _frame_condition(condition): return
+				if not _frame_condition(condition):
+					for call in event.get("else_calls", []):
+						_frame_service(call)
+					return
 			if event.has("alternatives"):
 				var matched := false
 				for condition in event["alternatives"]:

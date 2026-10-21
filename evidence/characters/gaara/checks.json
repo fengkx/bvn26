@@ -1,0 +1,165 @@
+{
+  "status": "targeted_validation_passed_full_acceptance_pending",
+  "base": "aaec012d5be3f7d3adeebc3bb54721c033719609",
+  "branch": "feat/gaara",
+  "native_flash_parity": {
+    "status": "matched",
+    "passed": 12,
+    "cases": 12,
+    "fighter_cases": 12,
+    "assist_cases": 0,
+    "source_states": 8664,
+    "native_states": 8664,
+    "fields": 14,
+    "report": "comparisons.json",
+    "scope": "Twelve fighter cases; actor-state parity only. Both actors recover within the 360-tick horizon. Existing woailuo assist unchanged, not newly sampled."
+  },
+  "observed": {
+    "normal_guard": {
+      "hp_loss": 3,
+      "max_hits": 0
+    },
+    "super_guard": {
+      "hp_loss": 4,
+      "max_hits": 0
+    },
+    "incoming_guard_break": {
+      "min_hp": 916,
+      "max_hits": 1
+    },
+    "interrupt": {
+      "min_hp": 960,
+      "max_hits": 1
+    },
+    "ultimate": {
+      "hp_loss": 540,
+      "max_hits": 23,
+      "recovered": true
+    },
+    "upper_super": {
+      "hp_loss": 350,
+      "max_hits": 7,
+      "recovered": true
+    },
+    "repeated_sand": {
+      "total_hp_loss": 180,
+      "max_simultaneous_hits": 1
+    }
+  },
+  "shared_runtime_changed": true,
+  "shared_runtime_files": [
+    "godot/ai_cpu_driver.gd"
+  ],
+  "shared_compiler_changed": true,
+  "shared_compiler_files": [
+    "tools/importer/compile_ai_context.py"
+  ],
+  "compiler_audit": {
+    "prior_fighters": 24,
+    "context_unchanged": true,
+    "report": "compiler-impact.json",
+    "scope": "Base/current context compilation on identical inputs; prior contexts not rewritten."
+  },
+  "protected_function": {
+    "status": "PROTECTED_FUNCTION_OK",
+    "bytes": 1086,
+    "sha256": "9da62022432d7093b22b265b9e411db392ede4cbb1656fec21fe244f93f274ed",
+    "recovery_smoke": "INTERRUPTED_SUPER_LOCK_SMOKE_OK"
+  },
+  "rollback_smoke": {
+    "status": "GAARA_ROLLBACK_SMOKE_OK",
+    "scope": "Natural intro, ultimate pause checkpoint/replay and recovery, delayed guard input through production rollback and next-round reset; not a live Internet match."
+  },
+  "validation": {
+    "python": {
+      "run": 339,
+      "passed": 337,
+      "skipped": 2
+    },
+    "focused_python": {
+      "passed": 14
+    },
+    "contracts": {
+      "status": "passed",
+      "schemas": 6,
+      "examples": 6,
+      "gameplay_tested": false,
+      "production_ready_data": false
+    },
+    "matchmaking": {
+      "passed": 31,
+      "typecheck": "passed",
+      "note": "30 passed initially; sandbox-restricted Wrangler local-server test passed separately."
+    },
+    "online_manifest_tests": {
+      "passed": 7
+    },
+    "online_manifest_check": "ONLINE_MANIFEST_OK fighters=25 helpers=5 stages=10 build=42fbf9d147d8d523cadd4feb29d9b0939fb8a6adc15bcfc1e8120f0afa705759 content=5bccf64a61a80ad59fcd3f223c7ac7f0744254015c829074dfe246494c69558d",
+    "screenshots": [
+      "screenshots/selection.png",
+      "screenshots/in-fight.png"
+    ],
+    "shared_modes": {
+      "status": "matched",
+      "pvp_states": 602,
+      "training_timer_states": 602
+    },
+    "godot": {
+      "passed": 5,
+      "report": "godot-checks.json"
+    },
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 21,
+      "local_links": 276,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    }
+  },
+  "deviations": [
+    "Retained PR #37 direct and queued interrupted-super preparation recovery unchanged; original Flash may freeze while Godot intentionally recovers."
+  ],
+  "limitations": [
+    "Coverage remains partial; full audiovisual/browser/AI and exhaustive boundaries remain pending.",
+    "Native screenshots are visual inspection, not Flash pixel parity.",
+    "No merge or deployment."
+  ],
+  "runtime_sha256": {
+    "fighter_runtime.gd": "0220f9a81c6209d1637e47bc511792e7462e9d8242a826bc6e6ff33b01876f25",
+    "timeline_preview.gd": "575d52cebe468a9ea5859712ffb856a371427d15552e6b8632eb8ac65dad6158",
+    "ai_cpu_driver.gd": "f2300a95feb0f2bd0c8643d60214bd99b19a96f2d2a0cc9cad24c551e197417c"
+  },
+  "compiler_sha256": {
+    "tools/importer/compile_ai_context.py": "0e6262d30f2040457f948c241efbc054839d998da837f7f462b645e94f6ac7f7"
+  },
+  "environment": {
+    "os": "macOS-26.7-arm64-arm-64bit",
+    "python": "3.11.15",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "flash": "Adobe Flash Player Debugger 32.0.0.465",
+    "capture": "Non-interactive capture_native_player.py with explicitly authorized --allow-window-activation; no manual clicks."
+  },
+  "measured_elapsed_seconds": 1246,
+  "elapsed_note": "Wall time from goal creation through evidence packaging, including capture and replay; no person-day estimate inferred.",
+  "saved_roster": {
+    "status": "matched",
+    "cases": 192,
+    "matched": 192,
+    "states": 110344,
+    "fields": 14,
+    "primary_fighters": 23,
+    "note": "Renji appears as opponent. All 192 executions and comparisons pass. The copied runner initially retained its predecessor 102518-state aggregate assertion; the final report is independently verified as 110344 states and the reproduction script now asserts that exact total. The runner was corrected on disk during execution: its already-loaded bytecode still asserted 102518, while Python rendered the updated 110344 source line in the traceback. logs/roster-summary.log.gz records independent verification of all rows and the correct exact total.",
+    "report": "regressions.json",
+    "seconds": 602.5048929168843
+  }
+}

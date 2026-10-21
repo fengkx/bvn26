@@ -21,6 +21,7 @@ class IntroRosterTests(unittest.TestCase):
             "daitu": (1148, 1208),
             "didala": (988, 1088),
             "lanran": (1617, 1693),
+            "gaara": (1176, 1283),
             "jianba": (1132, 1188),
             "minren": (1099, 1178),
             "yihu": (822, 901),
