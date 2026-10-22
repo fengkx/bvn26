@@ -51,6 +51,7 @@ const SourceBoundsMath = preload("res://source_matrix_bounds.gd")
 const SourceMatrixTransform = preload("res://source_matrix_transform.gd")
 const TWIPS_PER_PIXEL := 20.0
 const BlendGroupScript = preload("res://blend_group.gd")
+const FilterGroupScript = preload("res://filter_group.gd")
 
 const SOURCE_FILTER_SHADER := """
 shader_type canvas_item;
@@ -880,6 +881,23 @@ func _render_placement(
 	var character_id := int(placement.get("character_id", -1))
 	if not _definitions.has(character_id):
 		return
+	var filters: Array = placement.get("filters", [])
+	if not filters.is_empty() or bool(placement.get("cache_as_bitmap", false)):
+		var unfiltered := placement.duplicate()
+		unfiltered.erase("filters")
+		unfiltered.erase("cache_as_bitmap")
+		unfiltered["blend_mode"] = 1
+		var filter_cx: Dictionary = placement.get("color_transform", {})
+		var filter_alpha := parent_alpha * _cxform_mul(filter_cx).a
+		if not filter_cx.is_empty():
+			unfiltered["color_transform"] = filter_cx.duplicate()
+			unfiltered["color_transform"]["alphaMultTerm"] = 256
+		var first_child := get_child_count()
+		_render_placement(unfiltered, parent_transform, 1.0, parent_depth,
+			timeline_frame, clip_age, parent_rgb_mul, parent_rgb_add, clip_masks, 1, visual_clip)
+		_compose_blend_group(first_child, filter_alpha, parent_depth,
+			int(placement.get("blend_mode", inherited_blend)), filters, true)
+		return
 	var definition: Dictionary = _definitions[character_id]
 	if not bool(definition.get("initial_visible", true)):
 		return
@@ -1141,13 +1159,13 @@ func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: fl
 	sprite.material = material
 
 
-func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: int) -> void:
+func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: int, filters: Array = [], isolate: bool = false) -> void:
 	var items := get_children().slice(first_child)
 	if items.is_empty():
 		return
 	# A single leaf already is a composed object; retain its original raster
 	# sampling, and insert the background copy before it in draw order.
-	if items.size() == 1 and (items[0] is Sprite2D or items[0] is Polygon2D):
+	if not isolate and filters.is_empty() and items.size() == 1 and (items[0] is Sprite2D or items[0] is Polygon2D):
 		var item: CanvasItem = items[0]
 		remove_child(item)
 		item.modulate.a *= opacity
@@ -1156,15 +1174,19 @@ func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: i
 		return
 	for item: Node in items:
 		remove_child(item)
-	var group := BlendGroupScript.new()
+	var group = BlendGroupScript.new() if filters.is_empty() else FilterGroupScript.new()
+	if not filters.is_empty():
+		group.set_meta("flash_filters", filters.duplicate(true))
 	group.z_index = depth
 	var composite: Sprite2D = group.setup(items, opacity)
 	# Viewport textures hold premultiplied RGB. Decode once before blending;
 	# the blend_mix pipeline then applies source alpha exactly once.
 	var material := ShaderMaterial.new()
 	var shader := Shader.new()
-	shader.code = "shader_type canvas_item; void fragment() { vec4 pixel = texture(TEXTURE, UV); if (pixel.a > 0.0) { pixel.rgb /= pixel.a; } COLOR = pixel; }"
+	shader.code = "shader_type canvas_item; uniform float group_opacity = 1.0; void fragment() { vec4 pixel = texture(TEXTURE, UV); if (pixel.a > 0.0) { pixel.rgb /= pixel.a; } pixel.a *= group_opacity; COLOR = pixel; }"
 	material.shader = shader
+	material.set_shader_parameter("group_opacity", opacity)
+	composite.modulate.a = 1.0
 	composite.material = material
 	_apply_blend(composite, blend, group)
 	group.add_child(composite)

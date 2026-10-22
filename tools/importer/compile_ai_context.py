@@ -14,6 +14,7 @@ from compile_ai_predicates import controller_script
 from compile_hit_receive import root_position_writes
 from build_combat_model import parse_body_warp
 from inspect_swf import inspect
+from import_guards import allowed_frame_source, finite_numbers
 
 ROOT=Path(__file__).resolve().parents[2]
 FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitBan',
@@ -37,6 +38,7 @@ def movement_expression(source: str, fields: set[str]) -> dict:
 
     def compile_node(node: ast.AST) -> dict:
         if isinstance(node, ast.Constant) and type(node.value) in (int, float):
+            finite_numbers(node.value, 'wrapper movement expression: ' + source)
             return {'op': 'constant', 'value': node.value}
         if isinstance(node, ast.Name) and node.id in fields:
             return {'op': 'read', 'field_name': node.id}
@@ -466,13 +468,14 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                 calls.append({'op': 'body_warp', 'warp': warp, 'path': path,
                               'line': warp_line, 'frame': frame['frame']})
         for number,line in enumerate(text.replace('\r\n','\n').splitlines(),1):
+            before = len(calls)
             match=re.fullmatch(r'_root\.(bsd|cbsd|bsw|cbsw)\(pn\);',line)
             face=re.fullmatch(r'_root\.showFace\(pn,"([^"]+)"\);',line)
             jump=re.fullmatch(r'gotoAnd(Play|Stop)\("([^"]+)"\);',line)
             energy=re.fullmatch(r'ql ([+-])= (\d+(?:\.\d+)?);',line)
             movement=re.fullmatch(r'_parent\.(moveX|moveY)\((.+)\);',line)
-            if re.search(r'_parent\.(?:moveX|moveY)\(', line) and not movement:
-                raise ValueError(f'Uncompiled wrapper movement: {path}:{number}: {line}')
+            if re.search(r'_parent\.(?:moveX|moveY)\s*\(', line) and not movement:
+                raise ValueError(f"Uncompiled wrapper movement: {bundle['game_file']}:{path}:{number}: {line}")
             if line == 'wankai_start();':
                 calls.append({'op': 'inline_frame', 'path': path, 'line': number,
                               'frame': frame['frame'], 'calls': inline_frame_function(
@@ -546,6 +549,14 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif color_write := re.fullmatch(r'var (_cgap|_csn) = (\d+);',line):
                 calls.append({'op':'color_write','field_name':color_write[1],
                               'value':int(color_write[2]),'path':path,'line':number,'frame':frame['frame']})
+            owned = re.match(
+                r'^(?:_parent\.(?:moveX|moveY)|_root\.(?:bsd|cbsd|bsw|cbsw|showFace|touchFloorEffect)|'
+                r'followMc|resColor|updateDirect|wankai_start)\s*\(', line.lstrip())
+            if frame['frame'] != 1 and owned and len(calls) == before and not allowed_frame_source(
+                    bundle, path, text, form_frame):
+                # Whole-block conditional compilation already owns its calls.
+                if not any(event.get('op') == 'conditional_frame' for event in calls):
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled frame call: {line}")
         if calls:
             frame_calls[str(frame['frame'])]=calls
     hit=functions['onBeHit0']

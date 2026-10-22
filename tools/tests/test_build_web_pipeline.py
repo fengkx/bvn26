@@ -391,9 +391,18 @@ class WebBuildPipelineTests(unittest.TestCase):
             ):
                 shutil.copy2(ROOT / "tools" / name, tools / name)
             (tools / "importer").mkdir()
+            shutil.copy2(ROOT / "tools/importer/placement_requirements.json", tools / "importer/placement_requirements.json")
+            shutil.copy2(ROOT / "tools/importer/placement_build_guard.py", tools / "importer/placement_build_guard.py")
+            shutil.copy2(ROOT / "tools/importer/visual_control_owners.json", tools / "importer/visual_control_owners.json")
+            shutil.copy2(ROOT / "tools/importer/visual_control_requirements.json", tools / "importer/visual_control_requirements.json")
+            shutil.copy2(ROOT / "tools/importer/visual_control_guard.py", tools / "importer/visual_control_guard.py")
             shutil.copy2(
                 ROOT / "tools/importer/visual_blend_modes.py",
                 tools / "importer/visual_blend_modes.py",
+            )
+            shutil.copy2(
+                ROOT / "tools/importer/import_guards.py",
+                tools / "importer/import_guards.py",
             )
             shutil.copy2(
                 ROOT / "tools/tests/test_web_diagnostics_metadata.py",

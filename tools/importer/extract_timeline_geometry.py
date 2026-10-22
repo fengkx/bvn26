@@ -11,6 +11,9 @@ from pathlib import Path
 from typing import Any
 
 from visual_blend_modes import validate_blend_mode
+from visual_filters import compile_filters
+from import_guards import finite_numbers, validate_placement
+from visual_control_guard import ROOT, validate_nested_controls
 from bitmap_shape_polygon import bitmap_shape_fill_polygons, bitmap_shape_polygon
 
 
@@ -43,7 +46,8 @@ def attributes(element: ET.Element) -> dict[str, int | float | str]:
     return {key: scalar(value) for key, value in sorted(element.attrib.items())}
 
 
-def placement_delta(tag: ET.Element) -> dict[str, Any]:
+def placement_delta(tag: ET.Element, source: str = "placement") -> dict[str, Any]:
+    validate_placement(tag, source)
     result: dict[str, Any] = {
         "depth": int(tag.attrib["depth"]),
         "move": tag.attrib.get("placeFlagMove") == "true",
@@ -67,6 +71,11 @@ def placement_delta(tag: ET.Element) -> dict[str, Any]:
         child = tag.find(child_name)
         if child is not None:
             result[target] = attributes(child)
+    if "bitmapCache" in tag.attrib:
+        result["cache_as_bitmap"] = tag.attrib["bitmapCache"] == "1"
+    filters = tag.find("surfaceFilterList")
+    if filters is not None:
+        result["filters"] = compile_filters(filters, source)
     clip_actions = tag.find("clipActions")
     if clip_actions is not None:
         records = []
@@ -346,7 +355,7 @@ def visual_control_actions(encoded: str) -> list[dict[str, Any]]:
     return result
 
 
-def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
+def build_frames(tags: list[ET.Element], source: str = "timeline") -> list[dict[str, Any]]:
     display_list: dict[int, dict[str, Any]] = {}
     pending_changes: list[dict[str, Any]] = []
     pending_events: list[dict[str, Any]] = []
@@ -355,7 +364,7 @@ def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
     for tag in tags:
         tag_type = tag.attrib.get("type", "")
         if tag_type in ("PlaceObject2Tag", "PlaceObject3Tag"):
-            delta = placement_delta(tag)
+            delta = placement_delta(tag, f"{source}/frame_{len(frames) + 1}/depth_{tag.get('depth')}")
             depth = delta["depth"]
             if delta["move"]:
                 if depth not in display_list:
@@ -452,7 +461,7 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
         raise ValueError(f"Unsupported JPEXS XML export version: {xml_version}")
 
     if sprite_id is None:
-        frames = build_frames(root.findall("./tags/item"))
+        frames = build_frames(root.findall("./tags/item"), str(xml_path))
         declared_frames = int(root.attrib.get("frameCount", 0)) or len(frames)
         result_sprite_id = 0
     else:
@@ -467,7 +476,7 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
         )
         if sprite is None:
             raise ValueError(f"Sprite {sprite_id} not found in {xml_path}")
-        frames = build_frames(sprite.findall("./subTags/item"))
+        frames = build_frames(sprite.findall("./subTags/item"), f"{xml_path}/DefineSprite_{sprite_id}")
         declared_frames = int(sprite.attrib["frameCount"])
         result_sprite_id = sprite_id
 
@@ -488,6 +497,7 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
         if wrapper is not None:
             result["wrapper"] = wrapper
     result["definitions"] = referenced_definitions(root, frames)
+    finite_numbers(result, str(xml_path))
     return result
 
 
@@ -519,6 +529,9 @@ def main() -> None:
             "path": args.source_swf.as_posix(),
             "sha256": file_sha256(args.source_swf),
         }
+    if args.source_swf:
+        bundle_path = ROOT / args.source_swf.as_posix().replace("game/", "scripts/").replace(".swf", ".json")
+        validate_nested_controls(result, json.loads(bundle_path.read_text()))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"sprite_id": result["sprite_id"], "frames": len(result["frames"])}))

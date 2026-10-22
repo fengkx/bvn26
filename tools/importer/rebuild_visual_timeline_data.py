@@ -38,8 +38,9 @@ def update_frames(frames, source_frames):
                 for field in ['depth', 'character_id', 'placed_frame', 'matrix', 'color_transform', 'name']:
                     if field in old and field in new:
                         assert old[field] == new[field], (frame['frame'], field, old[field], new[field])
-                if 'blend_mode' in new:
-                    old['blend_mode'] = new['blend_mode']
+                for field in ('blend_mode', 'filters', 'cache_as_bitmap'):
+                    if field in new:
+                        old[field] = new[field]
         frame['events'] = merge_controls(frame.get('events', []), source['events'])
 
 
