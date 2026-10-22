@@ -8,7 +8,17 @@ The fix opens only `tools/importer/visual_blend_modes.py`, retaining the exclusi
 
 Validation: seven build-pipeline tests pass. A real Godot 4.7.2 Web build from 10,813 filtered files passes import, online checks, export and final manifest validation. The local sidecar identifies tested code commit `fd89611e0f371d4cf061ac49598ecf219f3bac2d`; its PCK SHA-256 was independently checked. Generated artifacts remain under `/tmp/bvn-vercel-investigation/upload/dist/web/`, not in source control. The evidence-only follow-up commit does not change build inputs. `PROTECTED_FUNCTION_OK`, source integrity and handoff checks pass; no gameplay/compiler/rendering code changed.
 
-Remote evidence limitation: GitHub reports deployment `dpl_ARUdjWwfs1HreRi9ZiiuJNdFpVSN` failed, and the production metadata still identifies `3a3bafd816039d62b557950e56c79c1436405ad7`. This environment has no Vercel CLI credentials; `inspect --logs` requests login and the unauthenticated events API returns 403. The missing input is reproduced locally, but the original remote log's first error has not been observed. Do not describe the remote logs as inspected successfully. Login or the original failed-log excerpt is still needed to confirm that first error.
+Remote failure confirmed by the user-provided log excerpt for deployment `dpl_ARUdjWwfs1HreRi9ZiiuJNdFpVSN` at master `a232e08a`:
+
+```text
+Staged Godot source snapshot at 2026-10-21T16:50:35Z: /tmp/bvn26-web-build.3V0dq0/repo/godot
+cp: cannot stat '/vercel/path0/tools/importer/visual_blend_modes.py': No such file or directory
+Error: [BUILD_UTILS_SPAWN_1] Command "bash tools/build_web.sh" exited with 1
+```
+
+Earlier provenance, 11 tests and template binding passed. The file is tracked at the correct path in master; `.vercelignore`, not an uncommitted file or a path typo, removes it from the deployment input. The local regression now also checks that every listed dependency exists and is tracked, in addition to checking upload exclusions. Run it locally or in CI before deployment using the command below.
+
+GitHub's Vercel status for PR #47 commit `592b2bbc26e8b835942e6eb119e951d02dbf1bf5` is SUCCESS (2026-10-21T17:25:08Z): https://vercel.com/vito-leungs-projects/bvn2-6/FQyBvnELGJnJkwWrwCjBubaUVfFq . This confirms the fixed upload builds on Vercel. The follow-up only strengthens local tests and records the supplied log; it changes no uploaded build input. Direct CLI log access remains unauthenticated; the original failure excerpt above came from the user.
 
 This is a code-fix PR, not an infrastructure retry. No production redeploy or merge was performed. Production acceptance remains pending merge and a successful deployment whose `build-metadata.json.gitCommit` equals the resulting master commit.
 

@@ -30,6 +30,13 @@ class WebBuildPipelineTests(unittest.TestCase):
             "services/matchmaking/src/catalog.json",
             "godot/project.godot",
         ]
+        tracked = set(subprocess.check_output(
+            ["git", "ls-files", "-z"], cwd=ROOT, text=True,
+        ).split("\0"))
+        for relative in required:
+            with self.subTest(build_input=relative):
+                self.assertIn(relative, tracked, "Build input must be committed")
+                self.assertTrue((ROOT / relative).is_file(), "Build input is missing")
         with tempfile.TemporaryDirectory() as temporary:
             upload = Path(temporary)
             subprocess.run(["git", "init", "--quiet", str(upload)], check=True)
