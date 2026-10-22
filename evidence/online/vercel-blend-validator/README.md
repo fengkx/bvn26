@@ -32,3 +32,9 @@ python3 tools/check_handoff.py
 ```
 
 For the real build, select tracked files using `.vercelignore` rules into a temporary directory without `.git`, set `VERCEL_GIT_COMMIT_SHA` to the tested commit, and run `bash tools/build_web.sh` there. On macOS set `GODOT_BIN` and `TEMPLATE_DIR` to the installed Godot 4.7.2 editor and Web templates. The upload count, build log, sidecar and checks are preserved beside this report.
+
+## Automatic upload dependency guard
+
+The review follow-up replaces the manually maintained tool list with a scan starting at `tools/build_web.sh`: literal live/staged paths and shell for-list copy sites seed a recursive Python AST import closure, including relative imports and package initializers. Literal Python script references are also followed. The only explicit supplement is `godot/project.godot`; generated output and optional evidence publishing paths are excluded. Unresolved shell input substitutions fail with an actionable assertion instead of silently disappearing from the required set. This is a static guard for the pipeline's literal-path conventions, not a general Bash or Python interpreter.
+
+The discovered closure also includes `tools/importer/__init__.py`, now allowed through the upload filter. A synthetic regression adds new run/copy inputs and transitive/relative imports without editing any dependency list, and demonstrates that an excluded transitive module is detected. Eight pipeline tests, the protected gate, source integrity and handoff checks pass.
