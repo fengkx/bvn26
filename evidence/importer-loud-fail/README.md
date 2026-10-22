@@ -17,9 +17,21 @@ work before the remaining weekly quota is exhausted.
 The 64x64 native Flash blur fixture matches Godot exactly for 16 cases and 2,560
 sampled alpha values (blur widths 0, 1, 2, 3, 5, 10, 15, 20; qualities 1 and 3).
 The smaller 8x8 fixture exposes an unresolved difference for large kernels.
-Glow/color-matrix probes have remaining color-rounding differences; the latest
-opacity-order/compositor fix has not yet been rerun. Render scripts currently
-produce measurements, not complete regression assertions.
+The latest opacity-order/compositor fix has now been rerun: maximum absolute
+premultiplied RGBA differences are 2/1 for glow at 100%/50% opacity, 2/1 for
+color matrix, and 3 for the combined chain. These differences remain unresolved;
+no tolerance was introduced to declare parity.
+
+The blur render test now exits nonzero on any mismatch against the captured
+native reference, and passes on the latest code (see blur-reference.log):
+
+```sh
+Godot --path godot --rendering-method gl_compatibility \
+  --script res://tests/flash_filters_render.gd
+```
+
+The color render script still produces measurements rather than regression
+assertions. Raw native logs and capture metadata are attached.
 
 Before the renderer changes, the existing whole-roster replay passed 227/227
 cases, 130,334 matched samples. This is NOT final-change replay acceptance.

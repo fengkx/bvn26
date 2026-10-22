@@ -39,5 +39,29 @@ func _run() -> void:
 	var args := OS.get_cmdline_user_args()
 	if not args.is_empty():
 		FileAccess.open(args[0], FileAccess.WRITE).store_string(JSON.stringify(samples))
-	print("FLASH_FILTERS_RENDER_OK ", samples.size())
+	var reference_path := ProjectSettings.globalize_path("res://").path_join("../evidence/importer-loud-fail/native-filter-rows.json")
+	var reference = JSON.parse_string(FileAccess.get_file_as_string(reference_path))
+	if not reference is Array or reference.size() != samples.size():
+		push_error("Missing or incomplete native Flash blur reference: " + reference_path)
+		quit(1)
+		return
+	for index in samples.size():
+		var actual: Dictionary = samples[index]
+		var expected: Dictionary = reference[index]
+		if not _matches_reference(actual, expected):
+			push_error("Native blur mismatch: size=%s passes=%s" % [actual.size, actual.passes])
+			quit(1)
+			return
+	print("FLASH_FILTERS_REFERENCE_OK cases=16 alpha_samples=2560")
 	quit()
+
+func _matches_reference(actual: Dictionary, expected: Dictionary) -> bool:
+	if actual["size"] != expected.get("size") or actual["passes"] != expected.get("passes"):
+		return false
+	var expected_alpha = expected.get("alpha")
+	if not expected_alpha is Array or expected_alpha.size() != actual.alpha.size():
+		return false
+	for x in actual.alpha.size():
+		if actual.alpha[x] != expected_alpha[x]:
+			return false
+	return true
