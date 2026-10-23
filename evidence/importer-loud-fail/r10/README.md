@@ -112,8 +112,20 @@ pixel mismatches remain open.
 
 ## Acceptance
 
-The final roster rerun after the live-method fix is still running at this checkpoint.
-Other final logs and acceptance-summary.json record the completed checks.
+The final roster rerun after the live-method fix passed **227/227**, **130,334
+states** against unchanged baselines. Final logs and acceptance-summary.json record
+all checks:
+
+- Python **398 run,396 passed,2 skipped**.
+- GPU **7/7**, Blur **242/242 /37,280 alphas**, blend **38/38** under its existing contract.
+- Standard Godot smoke **4/4**, additional references/rollback **8/9 strict passes**.
+  battle_checkpoint prints success/exit0 but reports3 leaked instances/1 resource
+  at shutdown; its strict result is failed and the raw log is retained.
+- Callback native comparison **4/4,48/48**.
+- PROTECTED_FUNCTION_OK; reviewed-hash integrity, handoff and contracts **pass**.
+- Cache **19/26**, target contexts **2/4**, build/fingerprint **FAIL**.
+- Placement closures **89/89**, source placement errors **34**.
+
 Full merge acceptance is **FAIL**. Color comparisons remain3/5 exact and order2/4
 exact, maximum difference1; no tolerance was added. Real shipped component/XG_rush
 pixel captures were not rerun. Placement closures use the pinned r06 62-SWF
