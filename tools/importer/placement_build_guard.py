@@ -34,7 +34,7 @@ def validate_build_placements(timeline: dict, source: str) -> None:
     for record in catalog[digest]['records']:
         if record['sprite'] in nested or (record['sprite'] == timeline['sprite_id'] and
                                            record['frame'] in root_frames):
-            raise ValueError(f"{source}: {record['error']}")
+            raise ValueError(f"{source}: {record['source']}: {record['error']}")
 
     definitions = {d['character_id']: d for d in timeline['definitions']}
     frames = {f['frame']: f['display_list'] for f in timeline['frames']}
@@ -50,6 +50,9 @@ def validate_build_placements(timeline: dict, source: str) -> None:
                 placements = display_frames[frame - 1]
             elif frame == 1:
                 placements = definition.get('first_frame_display_list', [])
+            if placements is None:
+                raise ValueError(f"{source}: missing source timeline frame: {catalog[digest]['swf']} "
+                                 f"sprite {sprite} frame {frame} depth {obligation['depth']}")
         if placements is None:
             continue
         placement = next((p for p in placements if p['depth'] == obligation['depth']), None)

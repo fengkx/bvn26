@@ -5,6 +5,17 @@ from xml.etree.ElementTree import Element
 
 
 def compile_filters(filters: Element, source: str) -> list[dict]:
+    try:
+        return _compile_filters(filters, source)
+    except (ValueError, KeyError, TypeError) as error:
+        if str(error).startswith(source + ':'):
+            raise
+        raise ValueError(f'{source}: malformed Flash filter: {error}') from error
+
+
+def _compile_filters(filters: Element, source: str) -> list[dict]:
+    if filters.attrib:
+        raise ValueError(f'{source}: unsupported filter list fields: {sorted(filters.attrib)}')
     result = []
     for item in filters:
         kind = item.get('type')
@@ -15,8 +26,13 @@ def compile_filters(filters: Element, source: str) -> list[dict]:
                                     'knockout', 'compositeSource'},
             'COLORMATRIXFILTER': common,
         }
-        if kind not in allowed or set(item.attrib) - allowed[kind]:
+        if item.tag != 'item' or kind not in allowed or set(item.attrib) - allowed[kind]:
             raise ValueError(f'{source}: unsupported Flash filter {kind}: {sorted(item.attrib)}')
+        expected_id = {'BLURFILTER': '1', 'GLOWFILTER': '2', 'COLORMATRIXFILTER': '6'}[kind]
+        if item.get('id', expected_id) != expected_id:
+            raise ValueError(f'{source}: inconsistent {kind} id')
+        if item.get('reserved', '0') != '0':
+            raise ValueError(f'{source}: unsupported {kind} reserved bits')
         record = {'type': kind}
         if kind in ('BLURFILTER', 'GLOWFILTER'):
             for field in ('blurX', 'blurY', 'passes'):
@@ -35,18 +51,28 @@ def compile_filters(filters: Element, source: str) -> list[dict]:
             color = item.find('glowColor')
             if color is None:
                 raise ValueError(f'{source}: GLOWFILTER requires glowColor')
-            record['color'] = [int(color.attrib[k]) / 255 for k in ('red', 'green', 'blue', 'alpha')]
+            if (set(color.attrib) - {'type', 'red', 'green', 'blue', 'alpha'}
+                    or color.get('type', 'RGBA') != 'RGBA' or len(color)):
+                raise ValueError(f'{source}: unsupported GLOWFILTER.glowColor fields')
+            channels = [int(color.attrib[k]) for k in ('red', 'green', 'blue', 'alpha')]
+            if not all(0 <= channel <= 255 for channel in channels):
+                raise ValueError(f'{source}: invalid GLOWFILTER.glowColor channel')
+            record['color'] = [channel / 255 for channel in channels]
             record['strength'] = float(item.attrib['strength'])
             if not math.isfinite(record['strength']) or not 0 <= record['strength'] <= 255:
                 raise ValueError(f'{source}: invalid glow strength')
         if kind == 'COLORMATRIXFILTER':
+            matrix = item.find('matrix')
+            if matrix is None or matrix.attrib or any(
+                    v.tag != 'item' or v.attrib or len(v) for v in matrix):
+                raise ValueError(f'{source}: unsupported ColorMatrixFilter matrix fields')
             values = [float(v.text) for v in item.findall('./matrix/item')]
             if len(values) != 20 or not all(math.isfinite(v) for v in values):
                 raise ValueError(f'{source}: ColorMatrixFilter requires 20 finite values')
             record['matrix'] = values
         expected_children = {'BLURFILTER': set(), 'GLOWFILTER': {'glowColor'},
                              'COLORMATRIXFILTER': {'matrix'}}[kind]
-        if {child.tag for child in item} != expected_children:
+        if {child.tag for child in item} != expected_children or len(item) != len(expected_children):
             raise ValueError(f'{source}: unexpected {kind} child fields')
         result.append(record)
     return result

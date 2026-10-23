@@ -60,10 +60,10 @@ def placement_delta(tag: ET.Element, source: str = "placement") -> dict[str, Any
         "blendMode": "blend_mode",
     }
     if "blendMode" in tag.attrib:
-        validate_blend_mode(int(tag.attrib["blendMode"]), tag.get("type", "placement"))
-    for source, target in optional_attributes.items():
-        if source in tag.attrib:
-            result[target] = scalar(tag.attrib[source])
+        validate_blend_mode(int(tag.attrib["blendMode"]), source)
+    for attribute, target in optional_attributes.items():
+        if attribute in tag.attrib:
+            result[target] = scalar(tag.attrib[attribute])
     for child_name, target in (
         ("matrix", "matrix"),
         ("colorTransform", "color_transform"),

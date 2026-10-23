@@ -7,7 +7,16 @@ func _initialize() -> void:
 	_run.call_deferred()
 
 func _run() -> void:
-	var matrix: Array = JSON.parse_string(FileAccess.get_file_as_string(OS.get_cmdline_user_args()[1]))
+	var args := OS.get_cmdline_user_args()
+	var matrix_path := ProjectSettings.globalize_path("res://").path_join("../tools/probes/flash_filters/color-matrix.json")
+	if args.size() > 1:
+		matrix_path = args[1]
+	var parsed = JSON.parse_string(FileAccess.get_file_as_string(matrix_path))
+	if not parsed is Array or parsed.size() != 20:
+		push_error("Missing or invalid 20-value filter matrix: " + matrix_path)
+		quit(1)
+		return
+	var matrix: Array = parsed
 	for type in ["glow", "matrix", "chain"]:
 		for opacity in ([100] if type == "chain" else [100, 50]):
 			var view := SubViewport.new()
@@ -44,7 +53,6 @@ func _run() -> void:
 			var c := image.get_pixel(x, 70)
 			pixels.append([roundi(c.r*255),roundi(c.g*255),roundi(c.b*255),roundi(c.a*255)])
 		samples[index]["pixels"] = pixels
-	var args := OS.get_cmdline_user_args()
 	if not args.is_empty():
 		FileAccess.open(args[0], FileAccess.WRITE).store_string(JSON.stringify(samples))
 	print("FLASH_FILTERS_RENDER_OK ", samples.size())

@@ -32,3 +32,15 @@ built in a temporary/output directory and are not production dependencies.
   have not yet been normalized into an oracle replay.
 - Ruffle is not used for scheduling conclusions because the full game did not provide a
   stable reference run there.
+
+## Filter probes, 2026-10-23
+
+The packaged filter probes were rebuilt with JPEXS 26.2.1 and recaptured with
+Adobe Flash Player Debugger 32.0.0.465 through Rosetta. The executable and JPEXS
+hashes match the locked values above. Probe programs, reproducible commands,
+raw traces and per-run metadata are recorded in
+[filter probe instructions](../tools/probes/flash_filters/README.md) and
+[filter r02 evidence](importer-loud-fail/r02/README.md).
+Godot 4.7.2 Compatibility ran on Apple M2/OpenGL Metal; a fresh signed official
+app was used because the older scratch app failed signature verification.
+No source file under game/ or scripts/ was changed.
