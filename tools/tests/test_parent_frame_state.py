@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/importer'))
@@ -11,6 +12,13 @@ from frame_call_guard import validate_cached_frame_calls
 
 
 class ParentFrameStateTests(unittest.TestCase):
+    def test_admitted_byakuya_graph_compiles_without_legacy_exception(self):
+        bundle = json.loads((ROOT / 'scripts/fighter/Byakuya.json').read_text())
+        timeline = json.loads((ROOT / 'godot/generated/fighters/byakuya/timeline.json').read_text())
+        with patch('compile_ai_context.allowed_frame_source', return_value=False):
+            compiled = compile_context(bundle, timeline, form_replacement=True)
+        self.assertEqual(compiled['frame_calls']['985'][0]['op'], 'parent_conditional_frame')
+
     def test_source_blocks_keep_condition_and_call_before_write(self):
         for name, sprite, frame in [('minren', 1293, 996), ('Sasuke', 1019, 1024)]:
             bundle = json.loads((ROOT / f'scripts/fighter/{name}.json').read_text())
@@ -33,7 +41,7 @@ class ParentFrameStateTests(unittest.TestCase):
         directory = ROOT / 'godot/generated/fighters/byakuya'
         timeline = json.loads((directory / 'timeline.json').read_text())
         cached = json.loads((directory / 'ai.json').read_text())
-        # Test initializer validation independently of the now-rejected wankai call.
+        # Isolate initializer validation from complete graph validation.
         cached['frame_calls'] = {}
         key = f"{timeline['source_swf']['sha256']}:{timeline['sprite_id']}"
         catalog = {key: {'source': timeline['source_swf']['path'], 'frames': {},
@@ -79,5 +87,9 @@ class ParentFrameStateTests(unittest.TestCase):
             directory = ROOT / f'godot/generated/fighters/{name}'
             timeline = json.loads((directory / 'timeline.json').read_text())
             cached = json.loads((directory / 'ai.json').read_text())
-            with self.assertRaisesRegex(ValueError, rf'frame_{frame}.*uncompiled form replacement call'):
+            with self.assertRaisesRegex(ValueError, 'missing form package location'):
                 validate_cached_frame_calls(timeline, cached)
+            validate_cached_frame_calls(timeline, cached, directory=directory)
+            cached['frame_calls'].pop(str(frame))
+            with self.assertRaisesRegex(ValueError, rf'frame_{frame}.*dropped/changed cached frame calls'):
+                validate_cached_frame_calls(timeline, cached, directory=directory)

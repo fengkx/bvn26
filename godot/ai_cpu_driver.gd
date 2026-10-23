@@ -405,6 +405,8 @@ func configure_forms(profiles: Dictionary, intervals: SourceRootIntervals,
 		assert(entry.get("load_declarations") is Array)
 		prepared[str(frame)] = {"profile": profile, "load_declarations": entry.load_declarations}
 	source_form_profiles = prepared
+	assert(fighter.ai_source_state.spec.get("form_initialization", {}).get("bind_opponent_slot") == true, "Missing source initial wrapper slot binding")
+	fighter.ai_source_state.values["pn"] = 2 if fighter.player_slot == "p1" else 1
 	fighter.source_parent_frame = parent_frame
 	source_form_context = SourceFormContext.new(fighter, intervals, root_values, fighter.player_slot, _form_effect)
 	body_context.form_context = source_form_context
@@ -500,15 +502,6 @@ func _refresh_form_power(target: FighterRuntime) -> void:
 	target.ai_source_state.values["fzpw"] = source_form_context.root_values[helper_key]
 
 
-class SlotHealthCallback extends RefCounted:
-	var target: WeakRef
-	var root_values: Dictionary
-	func deliver() -> void:
-		var current: FighterRuntime = target.get_ref()
-		if current != null and current.source_body_available and current.source_health_defined and not current.root_zhanting and current.health > float(root_values["maxhp"]) / 5.0:
-			current.health -= 10.0
-
-
 func _prepare_form_slot(event: Dictionary) -> void:
 	assert(source_form_context != null and event.callback == "slot_health")
 	if fighter.ai_source_state.read_field("pn") != event.pn:
@@ -519,7 +512,7 @@ func _prepare_form_slot(event: Dictionary) -> void:
 	source_form_context.transfer["hp"] = fighter.health
 	var target := fighter if fighter.player_slot == event.slot else fighter.opponent
 	assert(target != null and target.player_slot == event.slot)
-	var closure := SlotHealthCallback.new()
+	var closure := preload("res://source_slot_health_callback.gd").new()
 	closure.target = weakref(target)
 	assert(source_form_context.root_values.has("maxhp"), "Missing root maxhp binding")
 	closure.root_values = source_form_context.root_values

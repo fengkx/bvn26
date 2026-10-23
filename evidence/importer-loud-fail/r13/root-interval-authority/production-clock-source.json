@@ -1,0 +1,95 @@
+{
+  "path": "godot/online_match.gd",
+  "sha256": "9a03c47aeb1c10ee38628941889a89fb31ed95de5cbe46b88b3c1cdba4be8f33",
+  "lines": [
+    {
+      "line": 748,
+      "text": "\tvar value: Variant = battle.call(\"profile_counters\")"
+    },
+    {
+      "line": 749,
+      "text": "\treturn value if value is Dictionary else {}"
+    },
+    {
+      "line": 750,
+      "text": ""
+    },
+    {
+      "line": 751,
+      "text": ""
+    },
+    {
+      "line": 752,
+      "text": "func advance(frame: int, players: Dictionary) -> String:"
+    },
+    {
+      "line": 753,
+      "text": "\t# Negotiated build policy: simulation time, independent of peer wall clocks."
+    },
+    {
+      "line": 754,
+      "text": "\t# Pauses/recovery do not advance frames; rollback derives identical samples."
+    },
+    {
+      "line": 755,
+      "text": "\tvar elapsed_ms := (frame * 1000) / 30"
+    },
+    {
+      "line": 756,
+      "text": "\tvar problem: String = timers.set_time(elapsed_ms)"
+    },
+    {
+      "line": 757,
+      "text": "\tif not problem.is_empty(): return problem"
+    },
+    {
+      "line": 758,
+      "text": "\tproblem = battle.set_frame_clock(frame, elapsed_ms)"
+    },
+    {
+      "line": 759,
+      "text": "\tif not problem.is_empty(): return problem"
+    },
+    {
+      "line": 760,
+      "text": "\tif _intro_skip_frames.has(frame):"
+    },
+    {
+      "line": 761,
+      "text": "\t\tproblem = battle.set_intro_skip(frame)"
+    },
+    {
+      "line": 762,
+      "text": "\t\tif not problem.is_empty(): return problem"
+    },
+    {
+      "line": 763,
+      "text": "\tproblem = battle.advance(frame, players)"
+    },
+    {
+      "line": 764,
+      "text": "\ttimers.finish_frame()"
+    },
+    {
+      "line": 765,
+      "text": "\tif not timers.error.is_empty(): return timers.error"
+    },
+    {
+      "line": 766,
+      "text": "\treturn problem"
+    },
+    {
+      "line": 767,
+      "text": ""
+    },
+    {
+      "line": 768,
+      "text": ""
+    },
+    {
+      "line": 769,
+      "text": "func confirm_through(frame: int) -> void:"
+    }
+  ],
+  "conclusion": "Existing production online coordinator derives milliseconds from simulation frame; authority irregular-sample tests are not native wall-clock parity."
+}

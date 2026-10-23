@@ -14,6 +14,8 @@ var intro_sequence := 0
 var nextfight_sequence := -1
 var nextfight_due_ms := -1
 var body_due_ms := {"p1": {}, "p2": {}}
+var root_due_ms := {}
+var _root_owner: WeakRef
 var error := ""
 var delivery_policy := "at-most-once-per-sample-per-interval; due callbacks run at their audited Main phase"
 
@@ -32,7 +34,10 @@ func configure(scene: Node, initial_time_ms: int) -> String:
 	nextfight_sequence = int(game.ko_interval_sequence)
 	nextfight_due_ms = -1
 	body_due_ms = {"p1": {}, "p2": {}}
-	return ""
+	root_due_ms = {}
+	_root_owner = null
+	_sync_root_intervals()
+	return error
 
 
 func set_time(value: int) -> String:
@@ -79,6 +84,17 @@ func _after_actor_events(frame: int) -> Array:
 			var id := int(raw_id)
 			if int(body_due_ms[slot][raw_id]) <= time_ms:
 				events.append(_event("body_timeout", "after_actor_advance", frame, {"slot": slot, "id": id, "due_ms": int(body_due_ms[slot][raw_id])}))
+	_sync_root_intervals()
+	if not error.is_empty():
+		return []
+	if game.source_root_intervals != null:
+		for raw_id in root_due_ms:
+			if int(root_due_ms[raw_id]) <= time_ms:
+				var id := int(raw_id)
+				events.append(_event("root_interval", "after_actor_advance", frame, {"id": id, "due_ms": int(root_due_ms[raw_id])}))
+				# Keep the registration ID and captured function alive. As with
+				# countdown/nextfight, resume emits once rather than catching up.
+				root_due_ms[raw_id] = time_ms + int(game.source_root_intervals._pending[id].delay_ms)
 	events.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
 		if int(left.due_ms) != int(right.due_ms): return int(left.due_ms) < int(right.due_ms)
 		var left_rank := _kind_rank(str(left.kind))
@@ -86,6 +102,7 @@ func _after_actor_events(frame: int) -> Array:
 		if left_rank != right_rank: return left_rank < right_rank
 		if left.kind == "body_timeout" and left.slot != right.slot: return left.slot == "p1"
 		if left.kind == "body_timeout" and int(left.id) != int(right.id): return int(left.id) < int(right.id)
+		if left.kind == "root_interval" and int(left.id) != int(right.id): return int(left.id) < int(right.id)
 		return int(left.get("sequence", 0)) < int(right.get("sequence", 0))
 	)
 	return events
@@ -131,6 +148,7 @@ func finish_frame() -> void:
 		return
 	_sync_source_timers()
 	_sync_body_timeouts()
+	_sync_root_intervals()
 	var timer: Timer = game.ko_nextfight_timer
 	if timer == null:
 		nextfight_sequence = int(game.ko_interval_sequence)
@@ -138,6 +156,31 @@ func finish_frame() -> void:
 	elif int(game.ko_interval_sequence) != nextfight_sequence:
 		nextfight_sequence = int(game.ko_interval_sequence)
 		nextfight_due_ms = time_ms + int(round(timer.wait_time * 1000.0))
+
+
+func _sync_root_intervals() -> void:
+	var owner: SourceRootIntervals = game.source_root_intervals
+	if owner == null:
+		root_due_ms.clear()
+		_root_owner = null
+		return
+	# Match teardown creates a fresh queue whose numeric IDs start again at one.
+	# Those registrations must not inherit the retired queue's deadlines.
+	if _root_owner == null or _root_owner.get_ref() != owner:
+		root_due_ms.clear()
+		_root_owner = weakref(owner)
+	if not owner.recorded:
+		error = "Online root intervals require recorded delivery mode"
+		return
+	for raw_id in root_due_ms.keys():
+		if not owner._pending.has(int(raw_id)):
+			root_due_ms.erase(raw_id)
+	for id: int in owner._pending:
+		if not owner._pending[id].repeating:
+			error = "Online root registration is not an interval: " + str(id)
+			return
+		if not root_due_ms.has(str(id)):
+			root_due_ms[str(id)] = time_ms + int(owner._pending[id].delay_ms)
 
 
 func _sync_source_timers() -> void:
@@ -154,14 +197,15 @@ func _sync_source_timers() -> void:
 
 
 func save_state(frame: int) -> Dictionary:
-	return {"version": 1, "frame": frame, "time_ms": time_ms,
+	return {"version": 2, "frame": frame, "time_ms": time_ms,
 		"countdown_due_ms": countdown_due_ms, "intro_due_ms": intro_due_ms,
 		"intro_sequence": intro_sequence, "nextfight_sequence": nextfight_sequence,
-		"nextfight_due_ms": nextfight_due_ms, "body_due_ms": State.canonical(body_due_ms)}
+		"nextfight_due_ms": nextfight_due_ms, "body_due_ms": State.canonical(body_due_ms),
+		"root_due_ms": State.canonical(root_due_ms)}
 
 
 func validate_state(snapshot: Variant, frame: int) -> String:
-	if not snapshot is Dictionary or snapshot.get("version") != 1 or snapshot.get("frame") != frame:
+	if not snapshot is Dictionary or snapshot.get("version") != 2 or snapshot.get("frame") != frame:
 		return "Invalid online timer state envelope"
 	for field in ["time_ms", "countdown_due_ms", "intro_due_ms", "intro_sequence", "nextfight_sequence", "nextfight_due_ms"]:
 		if not snapshot.get(field) is int:
@@ -176,6 +220,11 @@ func validate_state(snapshot: Variant, frame: int) -> String:
 		for id in snapshot.body_due_ms[slot]:
 			if not str(id).is_valid_int() or int(id) <= 0 or not snapshot.body_due_ms[slot][id] is int:
 				return "Invalid BODY deadline"
+	if not snapshot.get("root_due_ms") is Dictionary:
+		return "Missing root interval deadlines"
+	for id in snapshot.root_due_ms:
+		if not id is String or not id.is_valid_int() or int(id) <= 0 or str(int(id)) != id or not snapshot.root_due_ms[id] is int or snapshot.root_due_ms[id] < 0:
+			return "Invalid root interval deadline"
 	return State.validate_value(snapshot)
 
 
@@ -189,6 +238,8 @@ func load_state(snapshot: Dictionary) -> String:
 	nextfight_sequence = snapshot.nextfight_sequence
 	nextfight_due_ms = snapshot.nextfight_due_ms
 	body_due_ms = snapshot.body_due_ms.duplicate(true)
+	root_due_ms = snapshot.root_due_ms.duplicate(true)
+	_root_owner = weakref(game.source_root_intervals) if game != null and game.source_root_intervals != null else null
 	error = ""
 	return ""
 
@@ -209,5 +260,6 @@ func _kind_rank(kind: String) -> int:
 		"countdown": return 0
 		"intro_poll": return 1
 		"body_timeout": return 2
-		"nextfight": return 3
-		_: return 4
+		"root_interval": return 3
+		"nextfight": return 4
+		_: return 5

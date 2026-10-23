@@ -5,6 +5,8 @@ func _initialize() -> void:
 
 func _check_fighters(game: Node) -> void:
 	for fighter: FighterRuntime in [game.naruto, game.ichigo]:
+		assert(not FileAccess.file_exists(fighter.fighter_directory.path_join("form_profiles.json")),
+			"Gate fixture must exercise an unaccepted profile graph")
 		fighter.energy = 300
 		fighter.goto_ai_label("站立", false)
 		var frame := fighter.current_source_frame()
@@ -20,9 +22,12 @@ func _run() -> void:
 	root.add_child(game)
 	game.set_physics_process(false)
 	_check_fighters(game)
-	game._replace_selected_actors(["日番谷", "鸣人"], ["我爱罗", "魂"])
+	game._replace_selected_actors(["一护", "鸣人"], ["我爱罗", "魂"])
 	_check_fighters(game)
+	for audio: AudioStreamPlayer in game.find_children("*", "AudioStreamPlayer", true, false):
+		audio.stop()
+		audio.stream = null
 	game.queue_free()
 	await process_frame
-	print("TRANSFORMATION_GATE_SMOKE_OK")
+	print("TRANSFORMATION_GATE_SMOKE_OK unaccepted_graphs_initial_and_reselected")
 	quit()

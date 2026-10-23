@@ -23,14 +23,23 @@ func write_value(key: String, v: Variant) -> void:
 func sensor(key: String) -> Variant:
 	return adapter.sensor_hit(key)
 
-func body_hit(key: String) -> Variant:
-	return adapter.body_hit(key)
+func body_hit(key: String, target: String = "bdmn") -> Variant:
+	return adapter.body_hit(key, target)
+
+func source_key(key: String) -> Variant:
+	return adapter.source_key(key)
 
 func power(key: String) -> Variant:
 	return adapter.power_field(key)
 
-func source_key(key: String) -> Variant:
-	return adapter.source_key(key)
+func source_less2(a: Variant, b: Variant) -> Variant:
+	if a is String and b is String:
+		return a < b
+	var left := number(a)
+	var right := number(b)
+	if is_nan(left) or is_nan(right):
+		return null
+	return left < right
 
 func doAllAction(special: Variant = null) -> Variant:
 	if truth((equal(special, null))):
@@ -286,7 +295,7 @@ func frame_109_depth_36() -> Variant:
 func frame_122_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
 		if truth((equal(value("opponent_sw"), false))):
-			if truth(((number(value("xscale")) < number(0)))):
+			if truth((source_less2(value("xscale"), 0))):
 				write_value("x", (number(value("x")) - number((number(value("speed")) * number(1.5)))))
 			else:
 				write_value("x", (number(value("x")) + number((number(value("speed")) * number(1.5)))))
@@ -303,7 +312,7 @@ func frame_127_depth_36() -> Variant:
 func frame_144_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
 		if truth((equal(value("opponent_sw"), false))):
-			if truth(((number(value("xscale")) > number(0)))):
+			if truth((source_less2(0, value("xscale")))):
 				write_value("x", (number(value("x")) - number(1)))
 			else:
 				write_value("x", (number(value("x")) + number(1)))
@@ -312,7 +321,7 @@ func frame_144_depth_36() -> Variant:
 
 func frame_188_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(3))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(3))))))
@@ -337,7 +346,7 @@ func frame_194_depth_36() -> Variant:
 func frame_21_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
 		if truth((equal(value("opponent_sw"), false))):
-			if truth(((number(value("xscale")) < number(0)))):
+			if truth((source_less2(value("xscale"), 0))):
 				write_value("x", (number(value("x")) - number((number(value("speed")) * number(2.3)))))
 			else:
 				write_value("x", (number(value("x")) + number((number(value("speed")) * number(2.3)))))
@@ -349,7 +358,7 @@ func frame_21_depth_36() -> Variant:
 				adapter.goto_label("超必杀", true)
 				if not adapter.controller_alive():
 					return null
-			if truth(((number(value("ql")) >= number(100)))):
+			if truth(((not truth(source_less2(value("ql"), 100))))):
 				if truth(source_key("必杀")):
 					adapter.goto_label("必杀", true)
 					if not adapter.controller_alive():
@@ -358,7 +367,7 @@ func frame_21_depth_36() -> Variant:
 
 func frame_210_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round(value("speed")))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round(value("speed")))))
@@ -382,7 +391,7 @@ func frame_214_depth_36() -> Variant:
 
 func frame_228_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(2))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(2))))))
@@ -410,7 +419,7 @@ func frame_234_depth_36() -> Variant:
 
 func frame_288_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) * number(2.5))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) * number(2.5))))))
@@ -426,7 +435,7 @@ func frame_295_depth_36() -> Variant:
 
 func frame_315_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) * number(2.5))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) * number(2.5))))))
@@ -434,7 +443,7 @@ func frame_315_depth_36() -> Variant:
 
 func frame_352_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) * number(2))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) * number(2))))))
@@ -456,7 +465,7 @@ func frame_42_depth_36() -> Variant:
 
 func frame_473_depth_36() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) * number(1.5))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) * number(1.5))))))
@@ -550,7 +559,7 @@ func frame_924_depth_29() -> Variant:
 
 func frame_965_depth_28() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) < number(0)))):
+		if truth((source_less2(value("xscale"), 0))):
 			write_value("x", (number(value("x")) + number((number(value("speed")) * number(0.8)))))
 		else:
 			write_value("x", (number(value("x")) - number((number(value("speed")) * number(0.8)))))

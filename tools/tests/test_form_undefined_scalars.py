@@ -62,6 +62,22 @@ class FormUndefinedScalarTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Unsupported AI expression'):
             source_expression('_parent.scalar >= 1', set(), set())
 
+    def test_form_scope_preserves_live_energy_owner(self):
+        bundle = json.loads((ROOT / 'scripts/fighter/Sasuke.json').read_text())
+        timeline = json.loads((ROOT / 'godot/generated/fighters/Sasuke/timeline.json').read_text())
+        context = compile_context(bundle, timeline, form_replacement=True)
+        self.assertNotIn('ql', context['controller_scope_fields'])
+        self.assertNotIn('ql', context['undefined_declarations'])
+        self.assertEqual(context['frame_calls']['312'][0]['op'], 'energy_delta')
+        self.assertEqual(context['frame_calls']['312'][0]['delta'], 10.0)
+
+    def test_host_fields_are_not_undefined_callback_properties(self):
+        bundle = {'scripts': [{
+            'path': 'DefineSprite_1/frame_2/PlaceObject2_3_4/CLIPACTIONRECORD onClipEvent(enterFrame).as',
+            'source': 'if(_parent.hp > 0 && _parent.ql >= 100 && _parent.attran < 20 && _parent.absent < 1) {}',
+        }]}
+        self.assertEqual(implicit_controller_fields(bundle, 1), {'absent'})
+
     def test_candidate_relations_keep_less2_unordered_value_and_not_lowering(self):
         self.assertIn('source_less2(value("nn"), 1)',
                       source_expression('_parent.nn >= 1', set(), {'nn'}, avm1_comparisons=True))

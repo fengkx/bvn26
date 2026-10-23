@@ -48,6 +48,15 @@ class FormFrameTests(unittest.TestCase):
             self.assertEqual({e['slot'] for e in events[:2]}, {'p1', 'p2'})
             self.assertEqual(events[-1]['delay_ms'], 1000)
 
+    def test_interval_block_retains_trailing_parent_flag_in_order(self):
+        for name, sprite, frame in [('minren', 764, 1381), ('Sasuke', 603, 1230)]:
+            bundle = self.bundle(name)
+            path = f'DefineSprite_{sprite}/frame_{frame}/DoAction.as'
+            source = next(s['source'] for s in bundle['scripts'] if s['path'] == path)
+            events = compile_form_frame(bundle, source, path, frame, 1)
+            self.assertEqual([e['op'] for e in events], ['form_start_interval', 'parent_frame_field'])
+            self.assertEqual((events[1]['field_name'], events[1]['value']), ('万解', True))
+
     def test_extra_statement_or_expression_is_never_stripped(self):
         bundle = self.bundle('daitu')
         for source in ['wankai(); unknown();', '_parent.gotoAndStop(1 + 1);',

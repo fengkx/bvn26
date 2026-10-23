@@ -42,6 +42,18 @@ def form_calls(calls):
             yield from form_calls(call.get(field, []))
 
 
+def validate_effect_dependencies(calls: list[dict], source: str, root: Path) -> None:
+    for call in calls:
+        if call.get('op') == 'frame_child_effect':
+            clip = call.get('clip')
+            effects = (root / 'godot/generated/effects').resolve()
+            if (not isinstance(clip, str) or not clip or Path(clip).name != clip
+                    or not (effects / clip / 'effect.json').is_file()):
+                raise ValueError(f'{source}: missing compiled child effect {clip}')
+        for field in ('calls', 'else_calls'):
+            validate_effect_dependencies(call.get(field, []), source, root)
+
+
 def inspect_form_manifest(directory: Path, root: Path = ROOT) -> tuple[dict, dict]:
     """Check package boundaries and files before either source audit or build."""
     directory = directory.resolve()
@@ -79,6 +91,9 @@ def inspect_form_manifest(directory: Path, root: Path = ROOT) -> tuple[dict, dic
         timeline, context = read_json(target / 'timeline.json'), read_json(target / 'ai.json')
         if not isinstance(context.get('frame_calls'), dict):
             raise ValueError(f'{target}: missing compiled form frame calls')
+        for source_frame, calls in context['frame_calls'].items():
+            validate_effect_dependencies(calls,
+                f"{timeline.get('source_swf', {}).get('path')}:DefineSprite_{node['sprite_id']}/frame_{source_frame}", root)
         source = manifest.get('source_swf_sha256')
         if (timeline.get('sprite_id') != node['sprite_id'] or context.get('sprite_id') != node['sprite_id']
                 or timeline.get('source_swf', {}).get('sha256') != source

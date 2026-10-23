@@ -15,6 +15,8 @@ func _run() -> void:
 	var main = load("res://main.gd").new()
 	main.naruto = FighterRuntime.new()
 	main.ichigo = FighterRuntime.new()
+	main.naruto.fighter_name = "佐助"
+	main.ichigo.fighter_name = "一护"
 	main.naruto_helper = HelperRuntime.new()
 	main.naruto_helper._combat = JSON.parse_string(FileAccess.get_file_as_string("res://generated/helpers/jinye/combat.json"))
 	main.ichigo_helper = HelperRuntime.new()
@@ -27,6 +29,7 @@ func _run() -> void:
 	var owner: SourceRootIntervals = main.source_root_intervals
 	assert(owner.get_parent() == main and owner.recorded)
 	assert(main.source_form_root_values.difficulty == 3)
+	assert(main.source_form_root_values.p1bs == "佐助" and main.source_form_root_values.p2bs == "一护")
 	assert(main.source_form_root_values.root_y == 17)
 	assert(main.source_form_root_values["key:j"] == 86)
 	assert(main.source_form_root_values["helper_power:p1"].atm1pw == 60)

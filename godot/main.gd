@@ -109,7 +109,7 @@ void fragment() {
 
 
 func _ready() -> void:
-	# Form replacement is incomplete; keep transformation out of playable matches.
+	# Keep transformation blocked until a complete source-bound profile graph is configured.
 	naruto.disabled_actions = ["万解"]
 	ichigo.disabled_actions = ["万解"]
 	cpu_profile = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/execution_profile.json"))
@@ -854,6 +854,14 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 			assert(ko_recorded_timers and countdown != null)
 			countdown.fire()
 			continue
+		if event.get("kind") == "root_interval":
+			var fired: bool = source_root_intervals != null and source_root_intervals.recorded and source_root_intervals.fire_recorded(int(event.id))
+			if not fired and event_supplier.is_valid():
+				continue
+			if not fired:
+				match_input.error = "Rejected recorded root interval"
+				return
+			continue
 		if event.get("kind") == "body_timeout":
 			var driver: Node = player_body_driver._driver if event.slot == "p1" else opponent_driver
 			var fired: bool = driver.timeouts.recorded and driver.timeouts.fire_recorded(int(event.id))
@@ -1387,6 +1395,8 @@ func _prepare_form_root_owner() -> void:
 	source_root_intervals.recorded = recorded_form_timers
 	add_child(source_root_intervals)
 	source_form_root_values = {"difficulty": session.ai_level, "root_y": position.y, "maxhp": session.maxhp,
+		# main frame_8 initFight copies selected source names into root form slots.
+		"p1bs": naruto.fighter_name, "p2bs": ichigo.fighter_name,
 		"helper_power:p1": _helper_source_power(naruto_helper),
 		"helper_power:p2": _helper_source_power(ichigo_helper),
 		"body_paths": {"/game/p1/mc": weakref(naruto), "/game/p2/mc": weakref(ichigo)}}
@@ -1410,6 +1420,8 @@ func _configure_fighter_forms(fighter: FighterRuntime, driver: Node) -> void:
 	# configure_forms preflights actual profiles/assets and required BODY
 	# functions. A manifest is an activation contract, not an unchecked switch.
 	driver.configure_forms(manifest.profiles, source_root_intervals, source_form_root_values, 1)
+	# Only a validated, executable profile graph can enter the source form action.
+	fighter.disabled_actions.erase("万解")
 
 
 func _stop_form_root_intervals() -> void:

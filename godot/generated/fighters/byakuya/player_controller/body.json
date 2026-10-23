@@ -11,7 +11,13 @@
     "on_enterframe",
     "initWudi",
     "isHitBan",
-    "doHurtSkill"
+    "doHurtSkill",
+    "loseHp",
+    "feixue",
+    "wankai",
+    "doWanKai",
+    "initCtrl",
+    "randAI"
   ],
   "host_services": [
     "applyColors"
@@ -83,5 +89,129 @@
   "path": "DefineSprite_631/frame_1/DoAction.as",
   "source_swf": "game/fighter/Byakuya.swf",
   "swf_sha256": "c590f9ca2aea152d26aea8d6a10c4ee31a2019d9798c637820f145feef13b52f",
-  "source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df"
+  "source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
+  "input_mode": "source_player_branches_preserved",
+  "hurt_hooks": [
+    {
+      "path": "DefineSprite_631/frame_171/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "method": "enter_frame",
+      "depth": 34,
+      "placement_frame": 171,
+      "member_frames": [
+        171,
+        172,
+        173,
+        174
+      ],
+      "body_method": "placement_frame_171_depth_34",
+      "body_args": [],
+      "scope_binding": "controller_parent_is_body",
+      "source_sha256": "84c7df01901ae6ecf8044a4ad61f008822d724586f9700fa5d682c70917b27a6"
+    },
+    {
+      "path": "DefineSprite_631/frame_188/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "method": "enter_frame",
+      "depth": 34,
+      "placement_frame": 188,
+      "member_frames": [
+        188,
+        189,
+        190,
+        191,
+        192,
+        193
+      ],
+      "body_method": "placement_frame_188_depth_34",
+      "body_args": [],
+      "scope_binding": "controller_parent_is_body",
+      "source_sha256": "636b08621c56d907a277d86f94d4928f3131671dbd6180f3d6d9c08a50792ad5"
+    },
+    {
+      "path": "DefineSprite_631/frame_209/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "method": "enter_frame",
+      "depth": 34,
+      "placement_frame": 209,
+      "member_frames": [
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215
+      ],
+      "body_method": "placement_frame_209_depth_34",
+      "body_args": [],
+      "scope_binding": "controller_parent_is_body",
+      "source_sha256": "84c7df01901ae6ecf8044a4ad61f008822d724586f9700fa5d682c70917b27a6"
+    },
+    {
+      "path": "DefineSprite_631/frame_275/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "method": "enter_frame",
+      "depth": 34,
+      "placement_frame": 275,
+      "member_frames": [
+        275,
+        276,
+        277
+      ],
+      "body_method": "placement_frame_275_depth_34",
+      "body_args": [],
+      "scope_binding": "controller_parent_is_body",
+      "source_sha256": "4b5b0b8cd00a1a07a11bc12b23d5897342e71260c34faee7ee1bf40ff81b5043"
+    },
+    {
+      "path": "DefineSprite_631/frame_284/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "method": "enter_frame",
+      "depth": 34,
+      "placement_frame": 284,
+      "member_frames": [
+        284,
+        285,
+        286
+      ],
+      "body_method": "placement_frame_284_depth_34",
+      "body_args": [],
+      "scope_binding": "controller_parent_is_body",
+      "source_sha256": "84c7df01901ae6ecf8044a4ad61f008822d724586f9700fa5d682c70917b27a6"
+    },
+    {
+      "path": "DefineSprite_631/frame_875/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "method": "enter_frame",
+      "depth": 30,
+      "placement_frame": 875,
+      "member_frames": [
+        875,
+        876,
+        877,
+        878,
+        879,
+        880,
+        881,
+        882
+      ],
+      "flying": false,
+      "source_sha256": "820f6d41d52a2df712ecc60a0f87a933ebe00f55e376951756a9d91d3940bb36"
+    },
+    {
+      "path": "DefineSprite_631/frame_888/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "method": "enter_frame",
+      "depth": 29,
+      "placement_frame": 888,
+      "member_frames": [
+        888,
+        889,
+        890,
+        891,
+        892,
+        893,
+        894,
+        895,
+        896,
+        897
+      ],
+      "flying": true,
+      "source_sha256": "9848c11dc3a3e4b1cf1933b347f15901bef201cb0b702c273e2bb5d21f44d90b"
+    }
+  ]
 }

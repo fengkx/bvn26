@@ -158,6 +158,10 @@ func deliver_recorded_poll(sequence: int, time_ms: int) -> bool:
 
 
 func observe_fighter_frames() -> void:
+	# main DefineSprite_1991/frame_1 goStep(4) clears kcint. Later
+	# body replacements have their own opening labels, not a new match intro.
+	if not active:
+		return
 	# Sample before FighterRuntime applies the same frame's goto back to stand.
 	for i in fighters.size():
 		var fighter := fighters[i]

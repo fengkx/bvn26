@@ -104,6 +104,15 @@
       "This projects scalar state only; pn binding, doWanKai and updateDirect remain host-owned."
     ]
   },
+  "form_initialization": {
+    "wrapper_scale_from_xscale": true,
+    "wrapper_visible": true,
+    "body_visible": true,
+    "bind_opponent_slot": true,
+    "call_doWanKai": true,
+    "update_direct_unless_transformed": true,
+    "source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df"
+  },
   "main_floor_contact": {
     "comparison": "equal",
     "path": "DefineSprite_631/frame_1/DoAction.as#on_enterframe",
@@ -120,19 +129,19 @@
     ]
   },
   "undefined_declarations": [
+    "_initwudi",
+    "_lastX",
+    "dashX",
+    "dashY",
+    "dashing",
+    "hitBan",
+    "inited",
     "sw",
     "touch",
     "touchFloor",
-    "wudi",
     "wdFrame",
     "wdFrameX",
-    "inited",
-    "_initwudi",
-    "_lastX",
-    "hitBan",
-    "dashing",
-    "dashX",
-    "dashY"
+    "wudi"
   ],
   "controller_scope_fields": [],
   "frame_writes": {
@@ -1586,7 +1595,118 @@
         "line": 2,
         "frame": 1107
       }
+    ],
+    "1110": [
+      {
+        "path": "DefineSprite_631/frame_1110/DoAction.as",
+        "frame": 1110,
+        "line": 1,
+        "source_sha256": "5bfd9ad4d193695032067801ead5a30760b36da065b4740288ecaf2e41e19f36",
+        "op": "body_form_call",
+        "method": "wankai",
+        "replacement": {
+          "target_parent_frame": 2,
+          "target_body_sprite": 1052,
+          "target_depth": 1,
+          "load_path": "frame_2/PlaceObject2_1052_1/CLIPACTIONRECORD onClipEvent(load).as",
+          "load_sha256": "7fe0d1376a0d1c9863fa04e2685f1aa11f61afc387da39ced5380c3e0ab5f5e4",
+          "load_declarations": [
+            {
+              "field": "kcplayed",
+              "value": 0,
+              "line": 2
+            },
+            {
+              "field": "movspeed",
+              "value": 0,
+              "line": 3
+            },
+            {
+              "field": "fall",
+              "value": false,
+              "line": 4
+            },
+            {
+              "field": "touch",
+              "value": true,
+              "line": 5
+            },
+            {
+              "field": "sw",
+              "value": false,
+              "line": 6
+            },
+            {
+              "field": "jump",
+              "value": 0,
+              "line": 7
+            },
+            {
+              "field": "khit",
+              "value": 0,
+              "line": 8
+            },
+            {
+              "field": "fan",
+              "value": 0,
+              "line": 9
+            },
+            {
+              "field": "jumped",
+              "value": 1,
+              "line": 10
+            },
+            {
+              "field": "bisha",
+              "value": 0,
+              "line": 11
+            },
+            {
+              "field": "played",
+              "value": 0,
+              "line": 12
+            },
+            {
+              "field": "jhp",
+              "value": 0,
+              "line": 13
+            },
+            {
+              "field": "ql",
+              "value": 0,
+              "line": 14
+            },
+            {
+              "field": "speed",
+              "value": 0,
+              "line": 15
+            },
+            {
+              "field": "kis",
+              "binding": "Key.isDown",
+              "line": 16
+            },
+            {
+              "field": "spd",
+              "value": 16,
+              "line": 17
+            },
+            {
+              "field": "jumpPower",
+              "value": 18,
+              "line": 18
+            }
+          ],
+          "body_init_path": "DefineSprite_1052/frame_1/DoAction.as",
+          "body_init_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
+          "source_swf_sha256": "c590f9ca2aea152d26aea8d6a10c4ee31a2019d9798c637820f145feef13b52f",
+          "status": "requires_replacement_runtime_and_assets"
+        }
+      }
     ]
+  },
+  "parent_initial_values": {
+    "万解": false
   },
   "function_writes": {
     "onBeHit0": [
@@ -1976,8 +2096,5 @@
     "Conditional body-state writers still require the body runtime adapter.",
     "Controller-scope increment events require runtime source-state support before integration.",
     "Undefined declarations initialize new instances only; revisiting frame 1 preserves existing values."
-  ],
-  "parent_initial_values": {
-    "万解": false
-  }
+  ]
 }

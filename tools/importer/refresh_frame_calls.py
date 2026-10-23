@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from compile_ai_context import compile_context
+from audit_form_profiles import audit_form_manifest
 from frame_call_guard import validate_cached_frame_calls
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -20,7 +21,12 @@ def refresh(write: bool = False) -> list[dict]:
         previous = json.loads(path.read_text())
         row = {'source': source, 'path': str(path.relative_to(ROOT))}
         try:
-            compiled = compile_context(bundle, timeline)
+            has_forms = path.with_name('form_profiles.json').is_file()
+            if has_forms:
+                # A form graph cannot be refreshed one context at a time. The
+                # complete source audit must already agree with its package.
+                audit_form_manifest(path.parent, bundle)
+            compiled = compile_context(bundle, timeline, form_replacement=has_forms)
             if any(previous.get(k) != compiled[k] for k in ('source_swf', 'sprite_id')):
                 raise ValueError(f'{source}: cached context source identity mismatch')
             updated = {**previous, 'frame_calls': compiled['frame_calls']}
@@ -28,7 +34,7 @@ def refresh(write: bool = False) -> list[dict]:
                 updated['parent_initial_values'] = compiled['parent_initial_values']
             else:
                 updated.pop('parent_initial_values', None)
-            validate_cached_frame_calls(timeline, updated)
+            validate_cached_frame_calls(timeline, updated, directory=path.parent)
             row.update(status='passed', changed=updated != previous,
                        deferred_fields=[k for k in compiled if k not in ('frame_calls', 'parent_initial_values') and compiled[k] != previous.get(k)])
             if write and updated != previous:

@@ -1268,23 +1268,49 @@ def resolve_special_cost(
             re.search(r"\b(?:gotoAnd(?:Stop|Play)|stop)\s*\(", script["source"])
             for script in scripts if script["action"] == first_special
         )
-        direct_path = f"DefineSprite_{sprite_id}/frame_{boundary_frame}/DoAction.as"
-        if allowed:
-            for raw in script_bundle["scripts"]:
-                path_match = SCRIPT_PATH.match(raw["path"])
-                if path_match is None or int(path_match["sprite"]) != sprite_id:
-                    continue
-                if int(path_match["frame"]) != boundary_frame or raw["path"] != direct_path:
-                    continue
-                for match in ENERGY_COST.finditer(raw["source"]):
-                    matches.append((
-                        {"action": first_special, "frame": boundary_frame,
-                         "kind": "fallthrough_frame_action", "path": raw["path"],
-                         "source_sha256": text_sha256(raw["source"]), "source": raw["source"]},
-                        match,
-                    ))
+        frames = {int(frame["frame"]): frame for frame in timeline["frames"]}
+        # A label is not a branch: an empty frame keeps playing into the next
+        # label. Only traverse frames whose absence of executable source is
+        # corroborated by the extracted timeline; never search ahead for a cost.
+        while allowed and boundary_frame in frames:
+            prefix = f"DefineSprite_{sprite_id}/frame_{boundary_frame}/"
+            frame_scripts = [raw for raw in script_bundle["scripts"]
+                             if raw["path"].startswith(prefix)]
+            direct_path = prefix + "DoAction.as"
+            if frame_scripts:
+                direct = [raw for raw in frame_scripts if raw["path"] == direct_path]
+                if len(direct) != 1 or len(frame_scripts) != 1:
+                    break
+                raw = direct[0]
+                # The donor must execute unconditionally. Unknown calls,
+                # branches, and control changes remain import errors.
+                statements = [part.strip() for part in raw["source"].split(";") if part.strip()]
+                straight_line = all(re.fullmatch(
+                    r"(?:[^\W\d]\w*\s*=\s*-?\d+(?:\.\d+)?|ql\s*-=\s*\d+)", statement
+                ) for statement in statements)
+                if straight_line:
+                    for match in ENERGY_COST.finditer(raw["source"]):
+                        matches.append((
+                            {"action": first_special, "frame": boundary_frame,
+                             "kind": "fallthrough_frame_action", "path": raw["path"],
+                             "source_sha256": text_sha256(raw["source"]), "source": raw["source"]},
+                            match,
+                        ))
+                break
+            frame = frames[boundary_frame]
+            if any(event.get("type") == "action_bytecode" for event in frame.get("events", [])):
+                break
+            if any(change.get("clip_actions") for change in frame.get("changes", [])):
+                break
+            boundary_frame += 1
     if len(matches) != 1:
-        raise ValueError(f"Expected one energy cost for {first_special}, got {len(matches)}")
+        span = fighter["actions"]["special"][first_special]
+        source = timeline.get("source_swf", {}).get("path", "unknown SWF")
+        raise ValueError(
+            f"Expected one energy cost for {first_special}, got {len(matches)} "
+            f"({source}, DefineSprite_{sprite_id}/frame_{span['start_frame']}; "
+            "no proven unconditional source fallthrough cost)"
+        )
     return matches[0]
 
 

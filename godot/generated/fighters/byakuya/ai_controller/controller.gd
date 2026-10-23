@@ -23,14 +23,23 @@ func write_value(key: String, v: Variant) -> void:
 func sensor(key: String) -> Variant:
 	return adapter.sensor_hit(key)
 
-func body_hit(key: String) -> Variant:
-	return adapter.body_hit(key)
+func body_hit(key: String, target: String = "bdmn") -> Variant:
+	return adapter.body_hit(key, target)
 
 func source_key(key: String) -> Variant:
 	return adapter.source_key(key)
 
 func power(key: String) -> Variant:
 	return adapter.power_field(key)
+
+func source_less2(a: Variant, b: Variant) -> Variant:
+	if a is String and b is String:
+		return a < b
+	var left := number(a)
+	var right := number(b)
+	if is_nan(left) or is_nan(right):
+		return null
+	return left < right
 
 func doAllAction(special: Variant = null) -> Variant:
 	if truth((equal(special, null))):
@@ -286,7 +295,7 @@ func frame_112_depth_34() -> Variant:
 func frame_128_depth_34() -> Variant:
 	if truth((equal(value("root_paused"), false))):
 		if truth((equal(value("opponent_sw"), false))):
-			if truth(((number(value("xscale")) > number(0)))):
+			if truth((source_less2(0, value("xscale")))):
 				write_value("x", (number(value("x")) - number(2)))
 			else:
 				write_value("x", (number(value("x")) + number(2)))
@@ -295,7 +304,7 @@ func frame_128_depth_34() -> Variant:
 
 func frame_171_depth_34() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(4))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(4))))))
@@ -319,7 +328,7 @@ func frame_175_depth_34() -> Variant:
 
 func frame_188_depth_34() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(3))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(3))))))
@@ -343,7 +352,7 @@ func frame_194_depth_34() -> Variant:
 
 func frame_209_depth_34() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(4))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(4))))))
@@ -351,7 +360,7 @@ func frame_209_depth_34() -> Variant:
 
 func frame_21_depth_34() -> Variant:
 	if truth(gameRunning()):
-		if truth(((number(value("xscale")) < number(0)))):
+		if truth((source_less2(value("xscale"), 0))):
 			write_value("x", (number(value("x")) - number((number(value("speed")) * number(3)))))
 		else:
 			write_value("x", (number(value("x")) + number((number(value("speed")) * number(3)))))
@@ -395,7 +404,7 @@ func frame_238_depth_34() -> Variant:
 
 func frame_275_depth_34() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(2))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(2))))))
@@ -403,7 +412,7 @@ func frame_275_depth_34() -> Variant:
 
 func frame_284_depth_34() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(4))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(4))))))
@@ -425,7 +434,7 @@ func frame_38_depth_34() -> Variant:
 
 func frame_425_depth_30() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) < number(0)))):
+		if truth((source_less2(value("xscale"), 0))):
 			write_value("x", (number(value("x")) - number((number(value("speed")) * number(1)))))
 		else:
 			write_value("x", (number(value("x")) + number((number(value("speed")) * number(1)))))
@@ -468,7 +477,7 @@ func frame_68_depth_34() -> Variant:
 
 func frame_721_depth_30() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			if truth(body_hit("bs10atm")):
 				adapter.goto_label("超必杀1", true)
 				if not adapter.controller_alive():
@@ -555,7 +564,7 @@ func frame_898_depth_29() -> Variant:
 
 func frame_936_depth_28() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) < number(0)))):
+		if truth((source_less2(value("xscale"), 0))):
 			write_value("x", (number(value("x")) + number((number(value("speed")) * number(0.8)))))
 		else:
 			write_value("x", (number(value("x")) - number((number(value("speed")) * number(0.8)))))
@@ -569,10 +578,10 @@ func child_69_magichit1() -> Variant:
 	if truth((not truth(value("useAI")))):
 		return source_key("招")
 	if truth(sensor("zh1mian")):
-		if truth(((number(value("opponent_action")) < number(2)))):
-			return ((number(value("attran")) < number(60)))
+		if truth((source_less2(value("opponent_action"), 2))):
+			return (source_less2(value("attran"), 60))
 		if truth((equal(value("opponent_action"), 2))):
-			return (truth(((number(value("attran")) > number(200)))) and truth(((number(value("attran")) < number(300)))))
+			return (truth((source_less2(200, value("attran")))) and truth((source_less2(value("attran"), 300))))
 	return false
 	return null
 
@@ -587,7 +596,7 @@ func child_frame_134_depth_34_controller_69() -> Variant:
 func child_frame_139_depth_34_controller_69() -> Variant:
 	if truth((equal(value("root_paused"), false))):
 		if truth((equal(value("opponent_sw"), false))):
-			if truth(((number(value("xscale")) > number(0)))):
+			if truth((source_less2(0, value("xscale")))):
 				write_value("x", (number(value("x")) - number(0)))
 			else:
 				write_value("x", (number(value("x")) + number(0)))
@@ -596,31 +605,31 @@ func child_frame_139_depth_34_controller_69() -> Variant:
 
 func child_frame_229_depth_34_controller_69() -> Variant:
 	if truth((equal(value("root_paused"), false))):
-		if truth(((number(value("xscale")) > number(0)))):
+		if truth((source_less2(0, value("xscale")))):
 			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) * number(1.5))))))
 		else:
 			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) * number(1.5))))))
 	return null
 
 func child_69_bisha() -> Variant:
-	if truth(((number(value("ql")) < number(100)))):
+	if truth((source_less2(value("ql"), 100))):
 		return false
 	if truth((not truth(value("useAI")))):
 		return source_key("必杀")
 	if truth(sensor("bsmian")):
 		if truth(child_69_isPoFangAct("bs")):
-			return ((number(value("bisharan")) < number(60)))
+			return (source_less2(value("bisharan"), 60))
 		if truth((equal(value("opponent_action"), (-number(1))))):
-			return ((number(value("bisharan")) < number(80)))
-		if truth(((number(value("opponent_action")) < number(2)))):
-			return ((number(value("bisharan")) > number(95)))
+			return (source_less2(value("bisharan"), 80))
+		if truth((source_less2(value("opponent_action"), 2))):
+			return (source_less2(95, value("bisharan")))
 		if truth((equal(value("opponent_action"), 2))):
-			return (truth(((number(value("bisharan")) > number(200)))) and truth(((number(value("bisharan")) < number(250)))))
+			return (truth((source_less2(200, value("bisharan")))) and truth((source_less2(value("bisharan"), 250))))
 	return false
 	return null
 
 func child_69_isPoFangAct(name: Variant = null) -> Variant:
-	return ((number(power((name + "zl"))) > number(10)))
+	return (source_less2(10, power((name + "zl"))))
 	return null
 
 func child_69_magichit3() -> Variant:
@@ -628,13 +637,13 @@ func child_69_magichit3() -> Variant:
 		return (truth(source_key("上")) and truth(source_key("招")))
 	if truth(sensor("zh3mian")):
 		if truth(child_69_isPoFangAct("zh3")):
-			return ((number(value("attran")) < number(60)))
+			return (source_less2(value("attran"), 60))
 		if truth((equal(value("opponent_action"), (-number(1))))):
-			return ((number(value("attran")) < number(80)))
-		if truth(((number(value("opponent_action")) < number(2)))):
-			return ((number(value("attran")) < number(50)))
+			return (source_less2(value("attran"), 80))
+		if truth((source_less2(value("opponent_action"), 2))):
+			return (source_less2(value("attran"), 50))
 		if truth((equal(value("opponent_action"), 2))):
-			return (truth(((number(value("attran")) > number(200)))) and truth(((number(value("attran")) < number(300)))))
+			return (truth((source_less2(200, value("attran")))) and truth((source_less2(value("attran"), 300))))
 	return false
 	return null
 

@@ -155,7 +155,7 @@ def compile_body(
             local, initial = match.groups()
             locals_.add(local)
             translated = [f'var {local}: Variant = ' + (translate(initial,locals_,source_fields, call_aliases) if initial else 'null')]
-        elif match := re.fullmatch(r'(.+?) (\+=|-=|=) (.+);', line):
+        elif match := re.fullmatch(r'(.+?) (\+=|-=|\*=|=) (.+);', line):
             target, op, rhs = match.groups()
             value = translate(rhs,locals_,source_fields, call_aliases)
             if op != '=':

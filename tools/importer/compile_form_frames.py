@@ -39,7 +39,8 @@ def compile_form_frame(bundle: dict, text: str, path: str, frame: int, parent_fr
                  'slot': 'p' + slot, 'selection': selection, 'callback': 'slot_health'}]
     if compact == ('if(zn==1){_root.feiint=setInterval(feixue,1000);}'
                    'else{_root.feiint2=setInterval(feixue,1000);}_parent.万解=true;'):
-        return [{**common, 'op': 'form_start_interval', 'selector_field': 'zn', 'delay_ms': 1000}]
+        return [{**common, 'op': 'form_start_interval', 'selector_field': 'zn', 'delay_ms': 1000},
+                {**common, 'op': 'parent_frame_field', 'field_name': '万解', 'value': True}]
     if re.search(r'\bwankai\s*\(|_parent\.中转\b|\bsetInterval\s*\(|_parent.gotoAnd', text):
         raise ValueError(f'{location}: unsupported complete form frame block')
     return None

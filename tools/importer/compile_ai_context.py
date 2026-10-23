@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from compile_ai_predicates import controller_script
+from compile_ai_predicates import controller_script, FIELDS as PREDICATE_FIELDS
 from compile_hit_receive import root_position_writes
 from build_combat_model import parse_body_warp
 from inspect_swf import inspect
@@ -23,6 +23,13 @@ FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitB
         'wudi','beida','hited','hits','time','bs','airBody','speed','spd','jumpPower','fall',
         'htx','yup','tdtime','hitNear','_lastX','_initwudi','jhp','bdzl','inited','_lastvoice','_dievoicen',
         'Cbshit'}
+# Existing adapter bindings are live owner state, not missing timeline slots.
+# In particular, allocating ql here would shadow energy writes and initialize
+# a real fighter property to undefined when a form is activated.
+HOST_FIELDS = {'hp'} | {
+    expression.removeprefix('_parent.') for expression in PREDICATE_FIELDS
+    if re.fullmatch(r'_parent\.\w+', expression)
+}
 FUNCTION=re.compile(r'^function (\w+)\([^\n]*\)\r?\n\{.*?^\}',re.M|re.S)
 ASSIGN=re.compile(r'^(?:var )?(\w+) = (-?\d+(?:\.\d+)?|true|false);$')
 DECLARE=re.compile(r'^var (\w+);$')
@@ -251,7 +258,7 @@ def implicit_controller_fields(bundle: dict, sprite: int) -> set[str]:
         r'CLIPACTIONRECORD onClipEvent\(enterFrame\)\.as')
     numeric_read = re.compile(r'(?<![.\w])_parent\.([^\W\d_]\w*)\s*(?:<=|>=|<|>)\s*-?\d+(?:\.\d+)?(?![\w.])')
     return {match[1] for item in bundle['scripts'] if placement.fullmatch(item['path'])
-            for match in numeric_read.finditer(item['source'])} - FIELDS
+            for match in numeric_read.finditer(item['source'])} - FIELDS - HOST_FIELDS
 
 
 

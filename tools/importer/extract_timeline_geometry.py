@@ -282,9 +282,13 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
                 if record.get('type') == 'StyleChangeRecord':
                     record.set('stateLineStyle', 'false')
             contours = bitmap_shape_fill_polygons(mask_shape)
-            if contours is None or len(contours) != 1 or len(contours[0]) != 1:
+            # Unused fill-table slots do not draw a contour. Keep requiring
+            # exactly one actual boundary; multiple contours still need a
+            # renderer that preserves union/hole semantics.
+            boundaries = [contour for fill in contours for contour in fill] if contours is not None else []
+            if len(boundaries) != 1:
                 raise ValueError(f'Unsupported clipDepth mask geometry: {item_id}')
-            definition['mask_polygon'] = contours[0][0]
+            definition['mask_polygon'] = boundaries[0]
         dependencies = definition_dependencies(tag)
         if dependencies:
             definition["referenced_character_ids"] = sorted(dependencies)

@@ -72,6 +72,23 @@ class FormProfileGuardTests(unittest.TestCase):
         (self.base / 'script.gd.uid').write_text('generated')
         self.assertEqual(package_hashes(self.base), hashes)
 
+    def test_reviewed_target_still_requires_shared_child_effect(self):
+        path = self.target / 'ai.json'
+        data = json.loads(path.read_text())
+        calls = [{'op': 'conditional_frame', 'calls': [
+            {'op': 'frame_child_effect', 'clip': 'XG_rush'}]}]
+        data['frame_calls']['21'] = calls
+        path.write_text(json.dumps(data))
+        self.nodes['2']['frames']['21'] = digest(calls)
+        self.manifest['profiles']['2']['files'] = package_hashes(self.target)
+        self.write_manifest()
+        with self.assertRaisesRegex(ValueError, 'DefineSprite_22/frame_21: missing compiled child effect XG_rush'):
+            validate_form_manifest(self.base, self.contract, self.root)
+        effect = self.root / 'godot/generated/effects/XG_rush/effect.json'
+        effect.parent.mkdir(parents=True)
+        effect.write_text('{}')
+        validate_form_manifest(self.base, self.contract, self.root)
+
     def test_changed_asset_and_unreviewed_manifest_fail(self):
         (self.target / 'image.png').write_text('changed')
         with self.assertRaisesRegex(ValueError, 'changed/missing form package files'):

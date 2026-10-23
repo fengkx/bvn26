@@ -161,3 +161,36 @@ the flag false reaches 2/2. The production consumer, Main activation and rollbac
 checks are documented in [r12 forms](importer-loud-fail/r12/forms/README.md);
 [capture environment](importer-loud-fail/r12/forms/native-daitu/capture-environment.json)
 records the native run. This is lifecycle/state evidence, not pixel parity.
+
+## Special aliases and additional form helpers, r13 (2026-10-23)
+
+The same Adobe Flash Player Debugger 32.0.0.465 under Rosetta and pinned JPEXS
+binary captured eight fresh root-only probes; nested definitions and root
+non-action placement tags remain unchanged. Per-capture player, source, probe
+and build hashes are saved with the native logs.
+
+- [Special cost](importer-loud-fail/r13/special-cost/README.md): Yihu third-form
+  537→538→539 and Rifagu second-form566→567→568 preserve ql234 until their
+  original unconditional subtraction of100. Two captures, eight observations,
+  ten events. Playback is forced at the source label and movement is paused.
+- [Replacement helpers](importer-loud-fail/r13/form-helpers/README.md): original
+  Byakuya, Rifagu and Rukia wankai reach parent/body2/1046,2/1204 and2/1122 at
+  the next observation, with original transfer and key binding. Three captures,
+  fifteen observations, eighteen events; useAI is undefined, movement paused.
+- [Yihu graph](importer-loud-fail/r13/yihu-graph/README.md): first and second
+  wankai edges reach2/872 and3/1004. An isolated original frame390 callback,
+  with a true hitTest diagnostic and body enterFrame no-op, changes xscale75
+  to-75 before reaching frame399. Three captures, ten observations, thirteen
+  events. Body replacement/rollback checks pass, but exact root displacement
+  remains native12 versus Godot17 at the first replacement: original nested
+  sprite1027/frame1 subtracts5 from `_root._y`. The strict diagnostic fails;
+  Yihu candidates remain unpublished. These captures do not certify pixel
+  parity or full combat behavior.
+
+### r13 Sasuke root-slot callback observations
+
+Adobe Flash Player Debugger32, Rosetta, same player application and capture tool as the r12 form observations. Two root-observer probes retain the original child action/definition bytes and PlaceObject tags; explicit pn seeds select each original slot branch. `game.p1/p2` alias the diagnostic wrapper, so these are focused source ownership observations, not full-match equivalence claims. Captures use the standard windowed LaunchServices launch via `tools/probes/capture_native_player.py`.
+
+- [Slot1 capture](importer-loud-fail/r13/forms/native-sasuke-slot1/capture-environment.json): 13 events, complete.
+- [Slot2 capture](importer-loud-fail/r13/forms/native-sasuke-slot2/capture-environment.json): 13 events, complete.
+- [Source bounds and reproduction](importer-loud-fail/r13/forms/source-first.md): parent2/body1017 after initialized replacement, root slot selection and transfer671/234, live reference rebinding, captured direct-health callback ignores wudi, uses root maxhp1500 threshold, and obeys pause. The probe clears the real interval then explicitly invokes the captured original function to isolate callback semantics; it does not measure interval wall-clock phase.

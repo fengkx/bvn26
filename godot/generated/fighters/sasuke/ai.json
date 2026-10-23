@@ -109,6 +109,15 @@
       "This projects scalar state only; pn binding, doWanKai and updateDirect remain host-owned."
     ]
   },
+  "form_initialization": {
+    "wrapper_scale_from_xscale": true,
+    "wrapper_visible": true,
+    "body_visible": true,
+    "bind_opponent_slot": true,
+    "call_doWanKai": true,
+    "update_direct_unless_transformed": true,
+    "source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df"
+  },
   "main_floor_contact": {
     "comparison": "equal",
     "path": "DefineSprite_603/frame_1/DoAction.as#on_enterframe",
@@ -125,20 +134,21 @@
     ]
   },
   "undefined_declarations": [
+    "_initwudi",
+    "_lastX",
+    "dashX",
+    "dashY",
+    "dashing",
+    "hitBan",
+    "inited",
     "sw",
     "touch",
     "touchFloor",
-    "wudi",
     "wdFrame",
     "wdFrameX",
-    "inited",
-    "_initwudi",
-    "_lastX",
-    "hitBan",
-    "dashing",
-    "dashX",
-    "dashY"
+    "wudi"
   ],
+  "controller_scope_fields": [],
   "frame_writes": {
     "1": [
       {
@@ -732,6 +742,19 @@
         "frame": 13
       }
     ],
+    "20": [
+      {
+        "op": "frame_child_effect",
+        "clip": "XG_rush",
+        "offset_y": 0,
+        "offset_x": 0,
+        "wrapper_path": "scripts/main.json#frame_8/DoAction.as#shunbuxg",
+        "wrapper_sha256": "5eae16c52a3f2826da28105f074e43503ceb215530e313795e3b491a68be2ad1",
+        "path": "DefineSprite_603/frame_20/DoAction.as",
+        "line": 1,
+        "frame": 20
+      }
+    ],
     "35": [
       {
         "op": "timeline_goto",
@@ -956,6 +979,15 @@
         "frame": 312
       }
     ],
+    "321": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_321/DoAction.as",
+        "line": 1,
+        "frame": 321
+      }
+    ],
     "342": [
       {
         "op": "timeline_goto",
@@ -979,6 +1011,15 @@
         "path": "DefineSprite_603/frame_349/DoAction.as",
         "line": 2,
         "frame": 349
+      }
+    ],
+    "382": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_382/DoAction.as",
+        "line": 1,
+        "frame": 382
       }
     ],
     "398": [
@@ -1047,6 +1088,15 @@
         "path": "DefineSprite_603/frame_459/DoAction.as",
         "line": 2,
         "frame": 459
+      }
+    ],
+    "474": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_474/DoAction.as",
+        "line": 1,
+        "frame": 474
       }
     ],
     "484": [
@@ -1124,6 +1174,15 @@
         "frame": 550
       }
     ],
+    "564": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_564/DoAction.as",
+        "line": 1,
+        "frame": 564
+      }
+    ],
     "587": [
       {
         "op": "timeline_goto",
@@ -1183,6 +1242,15 @@
         "frame": 614
       }
     ],
+    "615": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_615/DoAction.as",
+        "line": 1,
+        "frame": 615
+      }
+    ],
     "638": [
       {
         "op": "timeline_goto",
@@ -1197,6 +1265,15 @@
         "path": "DefineSprite_603/frame_638/DoAction.as",
         "line": 2,
         "frame": 638
+      }
+    ],
+    "640": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_640/DoAction.as",
+        "line": 1,
+        "frame": 640
       }
     ],
     "641": [
@@ -1231,6 +1308,15 @@
         "path": "DefineSprite_603/frame_652/DoAction.as",
         "line": 1,
         "frame": 652
+      }
+    ],
+    "655": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_655/DoAction.as",
+        "line": 1,
+        "frame": 655
       }
     ],
     "659": [
@@ -1296,6 +1382,42 @@
         "path": "DefineSprite_603/frame_676/DoAction.as",
         "line": 1,
         "frame": 676
+      }
+    ],
+    "678": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_678/DoAction.as",
+        "line": 1,
+        "frame": 678
+      }
+    ],
+    "688": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_688/DoAction.as",
+        "line": 1,
+        "frame": 688
+      }
+    ],
+    "698": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 648163,
+        "path": "DefineSprite_603/frame_698/DoAction.as",
+        "line": 1,
+        "frame": 698
+      }
+    ],
+    "712": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 16711680,
+        "path": "DefineSprite_603/frame_712/DoAction.as",
+        "line": 1,
+        "frame": 712
       }
     ],
     "716": [
@@ -1440,6 +1562,26 @@
         "frame": 886
       }
     ],
+    "900": [
+      {
+        "op": "conditional_frame",
+        "path": "DefineSprite_603/frame_900/DoAction.as",
+        "line": 1,
+        "frame": 900,
+        "conditions": [
+          {
+            "field": "sw",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "calls": [
+          {
+            "op": "timeline_stop"
+          }
+        ]
+      }
+    ],
     "916": [
       {
         "op": "timeline_goto",
@@ -1576,6 +1718,15 @@
         "frame": 1091
       }
     ],
+    "1117": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 7870688,
+        "path": "DefineSprite_603/frame_1117/DoAction.as",
+        "line": 1,
+        "frame": 1117
+      }
+    ],
     "1176": [
       {
         "op": "screen_flash",
@@ -1584,7 +1735,176 @@
         "line": 1,
         "frame": 1176
       }
+    ],
+    "1190": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 7870688,
+        "path": "DefineSprite_603/frame_1190/DoAction.as",
+        "line": 1,
+        "frame": 1190
+      }
+    ],
+    "1228": [
+      {
+        "path": "DefineSprite_603/frame_1228/DoAction.as",
+        "frame": 1228,
+        "line": 1,
+        "source_sha256": "5f74bafa66954c256c1c54ace1370616be2aeaba81835c2cf3261fd25e5ee841",
+        "op": "form_prepare_slot",
+        "pn": 2,
+        "zn": 1,
+        "slot": "p1",
+        "selection": "佐助咒怨",
+        "callback": "slot_health"
+      }
+    ],
+    "1229": [
+      {
+        "path": "DefineSprite_603/frame_1229/DoAction.as",
+        "frame": 1229,
+        "line": 1,
+        "source_sha256": "fb33d50b3bbd49a29741639b6ec7751df8d16f8c6becf87e8a1afe73f75f0b3b",
+        "op": "form_prepare_slot",
+        "pn": 1,
+        "zn": 2,
+        "slot": "p2",
+        "selection": "佐助咒怨",
+        "callback": "slot_health"
+      }
+    ],
+    "1230": [
+      {
+        "path": "DefineSprite_603/frame_1230/DoAction.as",
+        "frame": 1230,
+        "line": 1,
+        "source_sha256": "d6c0dbc6261f8861f667a31e2a69016acb17d2d98891342ce09114b042ac9578",
+        "op": "form_start_interval",
+        "selector_field": "zn",
+        "delay_ms": 1000
+      },
+      {
+        "path": "DefineSprite_603/frame_1230/DoAction.as",
+        "frame": 1230,
+        "line": 1,
+        "source_sha256": "d6c0dbc6261f8861f667a31e2a69016acb17d2d98891342ce09114b042ac9578",
+        "op": "parent_frame_field",
+        "field_name": "万解",
+        "value": true
+      }
+    ],
+    "1232": [
+      {
+        "path": "DefineSprite_603/frame_1232/DoAction.as",
+        "frame": 1232,
+        "line": 1,
+        "source_sha256": "cec97a876ae222f598bab97d7829af7ee183b61e1accb10afcc3f1e2e0d03171",
+        "op": "parent_form_goto",
+        "target_frame": 2,
+        "play": false,
+        "replacement": {
+          "target_parent_frame": 2,
+          "target_body_sprite": 1019,
+          "target_depth": 1,
+          "load_path": "frame_2/PlaceObject2_1019_1/CLIPACTIONRECORD onClipEvent(load).as",
+          "load_sha256": "0fcabc164a5d54aa7e103881b5138febeac149fc0158ae55b03a3fe13a75fc26",
+          "load_declarations": [
+            {
+              "field": "kcplayed",
+              "value": 0,
+              "line": 2
+            },
+            {
+              "field": "movspeed",
+              "value": 0,
+              "line": 3
+            },
+            {
+              "field": "fall",
+              "value": false,
+              "line": 4
+            },
+            {
+              "field": "touch",
+              "value": true,
+              "line": 5
+            },
+            {
+              "field": "sw",
+              "value": false,
+              "line": 6
+            },
+            {
+              "field": "jump",
+              "value": 0,
+              "line": 7
+            },
+            {
+              "field": "khit",
+              "value": 0,
+              "line": 8
+            },
+            {
+              "field": "fan",
+              "value": 0,
+              "line": 9
+            },
+            {
+              "field": "jumped",
+              "value": 1,
+              "line": 10
+            },
+            {
+              "field": "bisha",
+              "value": 0,
+              "line": 11
+            },
+            {
+              "field": "played",
+              "value": 0,
+              "line": 12
+            },
+            {
+              "field": "jhp",
+              "value": 0,
+              "line": 13
+            },
+            {
+              "field": "ql",
+              "value": 0,
+              "line": 14
+            },
+            {
+              "field": "speed",
+              "value": 0,
+              "line": 15
+            },
+            {
+              "field": "kis",
+              "binding": "Key.isDown",
+              "line": 16
+            },
+            {
+              "field": "spd",
+              "value": 10,
+              "line": 17
+            },
+            {
+              "field": "jumpPower",
+              "value": 15,
+              "line": 18
+            }
+          ],
+          "body_init_path": "DefineSprite_1019/frame_1/DoAction.as",
+          "body_init_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
+          "source_swf_sha256": "c413d7c4d840d99deedc22778ee9a6383263b8ecd2e77a6c0712ca2a166c73f6",
+          "status": "requires_replacement_runtime_and_assets"
+        }
+      }
     ]
+  },
+  "parent_initial_values": {
+    "万解": false
   },
   "function_writes": {
     "onBeHit0": [
@@ -1964,6 +2284,7 @@
   },
   "limits": [
     "Conditional body-state writers still require the body runtime adapter.",
+    "Controller-scope increment events require runtime source-state support before integration.",
     "Undefined declarations initialize new instances only; revisiting frame 1 preserves existing values."
   ]
 }

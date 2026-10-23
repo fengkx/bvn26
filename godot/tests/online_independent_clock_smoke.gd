@@ -36,6 +36,13 @@ func _run() -> void:
 		assert(peers[1].advance(frame, {"p1": held, "p2": held}).is_empty())
 	peers[1].end_replay()
 	assert(State.first_difference(final, peers[1].save_state()).is_empty())
+	# The accelerated fixtures can quit while intro MP3 playbacks are active.
+	for fixture in fixtures:
+		for player in fixture.game.find_children("*", "AudioStreamPlayer", true, false):
+			player.stop()
+			player.stream = null
+	await process_frame
 	for fixture in fixtures: Fixture.dispose(fixture.game, fixture.battle)
+	await process_frame
 	print("ONLINE_INDEPENDENT_CLOCK_SMOKE_OK no_packets=true skewed_wall_clock=true replay_equal=true")
 	quit()
