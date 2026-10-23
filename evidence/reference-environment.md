@@ -73,3 +73,13 @@ Godot 4.7.2 matches all 31 sampled playheads across the original 141→130 loop.
 This is a paused-movement playhead experiment, not whole-combat equivalence.
 Build hashes, source, raw trace and capture environment are in
 [r06 evidence](importer-loud-fail/r06/README.md).
+
+## Parent form replacement, r07 (2026-10-23)
+
+Four original fighter SWFs were captured with the same Flash Debugger 32/Rosetta
+and JPEXS 26.2.1 through capture_native_player.py. The root probe initializes the
+required pause flag before original startup and then forces the original body
+frame containing the parent goto. All non-DoAction root tags and original nested
+definitions are byte-identical. The captures record native behavior only; there
+is no matching Godot form-switch consumer yet. See
+[r07 evidence](importer-loud-fail/r07/README.md) for raw traces and environment hashes.

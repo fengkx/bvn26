@@ -1,7 +1,7 @@
 # Importer loud-fail (Draft PR #48)
 
 The PR is not merge-ready. Current progress and evidence are in
-[r06](r06/README.md); probe reproduction is documented in
+[r07](r07/README.md); probe reproduction is documented in
 [the fixture instructions](../../tools/probes/flash_filters/README.md).
 
 Implemented: placement/finite-number/selected call guards, source-pinned nested
@@ -32,3 +32,9 @@ parent/form switching, XG_rush pixels, complete AS/clip-action ownership, deferr
 context-field differences and complete shipped import acceptance. The original
 game/ and scripts/ inputs remain unchanged. No new intentional stability deviation
 was introduced; new character ports remain paused. See r06 for current acceptance.
+
+The r07 parent-replacement probes record native field reset and observable old
+MovieClip-reference equality for all four sources. Target compilation exposes
+additional parent-scoped 万解 condition blocks at minren 1293/996 and Sasuke
+1019/1024. Strict load-dependency records and precise errors are implemented;
+the runtime consumers are not. Cache acceptance remains 22/26, build remains red.

@@ -15,6 +15,7 @@ from compile_hit_receive import root_position_writes
 from build_combat_model import parse_body_warp
 from inspect_swf import inspect
 from import_guards import allowed_frame_source, finite_numbers
+from parent_form_requirements import parent_form_requirement
 
 ROOT=Path(__file__).resolve().parents[2]
 FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitBan',
@@ -519,6 +520,13 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif face:
                 calls.append({'op':'show_face','face_label':face[1],
                               'path':path,'line':number,'frame':frame['frame']})
+            elif parent_jump := re.fullmatch(r'_parent.gotoAnd(Play|Stop)\((\d+)\);', line):
+                location = f"{bundle['game_file']}:{path}:{number}"
+                requirement = parent_form_requirement(bundle, int(parent_jump[2]), location)
+                raise ValueError(f"{location}: uncompiled frame call: {line} "
+                                 f"requires parent frame {requirement['target_parent_frame']} replacement "
+                                 f"body {requirement['target_body_sprite']} at depth {requirement['target_depth']}; "
+                                 f"load {requirement['load_path']}; missing replacement runtime/assets")
             elif numeric_jump := re.fullmatch(r'gotoAnd(Play|Stop)\((\d+)\);', line):
                 target = int(numeric_jump[2])
                 if target not in frames_by_number:
