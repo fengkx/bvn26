@@ -1,7 +1,7 @@
 # Importer loud-fail (Draft PR #48)
 
 The PR is not merge-ready. Current progress and evidence are in
-[r10](r10/README.md); probe reproduction is documented in
+[r11](r11/README.md); probe reproduction is documented in
 [the fixture instructions](../../tools/probes/flash_filters/README.md).
 
 Implemented: placement/finite-number/selected call guards, source-pinned nested

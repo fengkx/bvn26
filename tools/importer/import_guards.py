@@ -8,6 +8,11 @@ import re
 from pathlib import Path
 from xml.etree.ElementTree import Element
 
+if __package__:
+    from .clip_action_fields import validate_clip_actions
+else:
+    from clip_action_fields import validate_clip_actions
+
 
 # These flags only affect SWF serialization or select an absent optional field.
 # Active semantic flags must have an implementation below, never a default.
@@ -73,6 +78,9 @@ def validate_placement(tag: Element, source: str) -> None:
             raise ValueError(f'{source}: unsupported PlaceObject child {child.tag}')
         if len(tag.findall(child.tag)) != 1:
             raise ValueError(f'{source}: duplicate PlaceObject child {child.tag}')
+    clip_actions = tag.find('clipActions')
+    if clip_actions is not None:
+        validate_clip_actions(clip_actions, source)
     for child_name, selectors in {
         'matrix': {'hasScale': ('scaleX', 'scaleY'),
                    'hasRotate': ('rotateSkew0', 'rotateSkew1')},

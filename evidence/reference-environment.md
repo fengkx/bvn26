@@ -114,3 +114,24 @@ are unchanged. Saved functions resolve the replacement's current loseHp method.
 Programs,56 observations and per-capture environments are in
 [r10 evidence](importer-loud-fail/r10/README.md). Godot matches48 callback results,
 not full transformation, MovieClip identity or timer phase/cadence parity.
+
+## BODY form transfer helpers, r11 (2026-10-23)
+
+The same Flash Debugger32/Rosetta and JPEXS binaries captured seven original
+fighter movies using `build_form_helper_probe.py`. Root-only instrumentation
+invokes original BODY wankai with movement paused and useAI undefined; original
+nested definitions and non-action root tags remain unchanged. All seven expose
+immediate old-function retirement at parent.nextFrame; the trailing root_y write
+does not run. Captures, hashes and environment records are under
+[r11 form helpers](importer-loud-fail/r11/form-helpers/README.md). Godot compares
+28 helper observation groups across seven cases, not full form replacement or
+target frame coordinate/callback phase parity.
+
+## ColorMatrix scalar arithmetic, r11 (2026-10-23)
+
+The same Debugger32/Rosetta and JPEXS binaries captured the packaged
+`color-arithmetic.as` fixture: 24 isolated coefficient/combined-row cases and a
+completion event. Godot Compatibility matches20/24 cases exactly; four channels
+still differ by1. Capture metadata, binary/probe hashes and the strict failing
+comparison are in [r11 pixels](importer-loud-fail/r11/pixels/README.md). This is a
+filter arithmetic diagnostic, not a fresh full shipped-component parity capture.

@@ -28,6 +28,7 @@ def audit_xml(root: ET.Element, source: str) -> dict:
     counts = Counter()
     action_inventory = []
     obligations = []
+    clip_obligations = []
     definitions = {int(t.get('spriteId')): t for t in root.findall('./tags/item')
                    if t.get('type') == 'DefineSpriteTag'}
     all_definitions = {}
@@ -42,10 +43,23 @@ def audit_xml(root: ET.Element, source: str) -> dict:
         frame = 1
         display = {}
         field_state = {}
+        clip_state = {}
+        last_clip_ranges = {}
         for tag in tags:
             kind = tag.get('type')
             location = f'{source}/{owner}/frame_{frame}'
             if kind == 'ShowFrameTag':
+                for depth, actions in clip_state.items():
+                    previous = last_clip_ranges.get(depth)
+                    if (previous is not None and previous['last_frame'] == frame - 1
+                            and previous['clip_actions'] == actions):
+                        previous['last_frame'] = frame
+                    else:
+                        interval = {'sprite': 0 if owner == 'root' else int(owner.split('_')[1]),
+                                    'first_frame': frame, 'last_frame': frame, 'depth': int(depth),
+                                    'clip_actions': actions}
+                        clip_obligations.append(interval)
+                        last_clip_ranges[depth] = interval
                 for depth, fields in field_state.items():
                     if fields:
                         obligations.append({'sprite': 0 if owner == 'root' else int(owner.split('_')[1]),
@@ -53,6 +67,7 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                 frame += 1
             elif kind in ('RemoveObjectTag', 'RemoveObject2Tag'):
                 field_state.pop(tag.get('depth'), None)
+                clip_state.pop(tag.get('depth'), None)
                 display.pop(tag.get('depth'), None)
             elif kind in ('PlaceObject2Tag', 'PlaceObject3Tag'):
                 counts['placements'] += 1
@@ -60,10 +75,16 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                     delta = placement_delta(tag, location)
                     depth = tag.get('depth')
                     previous = field_state.get(depth, {}) if delta['move'] else {}
+                    if not delta['move']:
+                        clip_state.pop(depth, None)
+                    if 'clip_actions' in delta:
+                        clip_state[depth] = delta['clip_actions']
                     field_state[depth] = {**previous, **{key: delta[key] for key in
                         ('filters', 'cache_as_bitmap', 'blend_mode', 'color_transform') if key in delta}}
                 except ValueError as error:
-                    failures.append({'source': location, 'construct': kind, 'error': str(error)})
+                    failures.append({'source': location, 'construct': kind, 'error': str(error),
+                                     'depth': int(tag.get('depth')),
+                                     'placement_xml': ET.tostring(tag, encoding='unicode').strip()})
                 depth = tag.get('depth')
                 if tag.get('characterId'):
                     display[depth] = int(tag.get('characterId'))
@@ -91,7 +112,8 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                 except ValueError as error:
                     failures.append({'source': location, 'construct': kind, 'error': str(error)})
     return {'source_swf': source, 'counts': dict(sorted(counts.items())),
-            'failures': failures, 'placement_obligations': obligations, 'nonvisual_action_blocks': action_inventory}
+            'failures': failures, 'placement_obligations': obligations,
+            'clip_action_obligations': clip_obligations, 'nonvisual_action_blocks': action_inventory}
 
 
 def skip_sites() -> list[dict]:

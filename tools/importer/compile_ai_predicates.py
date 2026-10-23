@@ -111,7 +111,8 @@ def normalize(expr: str) -> str:
                   lambda m: f'body_hit("{m[1]}", "jiao")', expr)
     expr = expr.replace('_parent._parent._curGJL[name + "zl"]', 'power(name + "zl")')
     for source, target in sorted(FIELDS.items(), key=lambda item: -len(item[0])):
-        expr = expr.replace(source, f'value("{target}")')
+        expr = re.sub(r'"[^"\\]*(?:\\.[^"\\]*)*"|(?<![\w.])' + re.escape(source) + r'(?!\w)',
+                      lambda match: match[0] if match[0].startswith('"') else f'value("{target}")', expr)
     expr = expr.replace('Math.abs', 'abs').replace('Math.round', 'source_round').replace('isNaN', 'is_nan')
     # The only strict comparison in these functions is combo === true.
     expr = expr.replace('combo === true', 'strict(combo, True)')

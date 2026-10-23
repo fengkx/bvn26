@@ -13,6 +13,7 @@ var floor_y: float
 var _scalar_fields: PackedStringArray
 var timeout_scheduler: AiSourceTimeouts
 var body_target: WeakRef
+var form_context: SourceFormContext
 
 
 func configure(host: AiControllerHost, metadata: Dictionary, platforms: Dictionary) -> void:
@@ -161,3 +162,38 @@ func call_live_body_function(method: StringName, arguments: Array) -> Variant:
 	var current: RefCounted = fighter.source_body
 	assert(current != null and current.has_method(method), "Uncompiled live BODY function: " + str(method))
 	return current.callv(method, arguments)
+
+
+func form_read(key: String) -> Variant:
+	assert(form_context != null, "Unconnected form context")
+	return form_context.read_field(key)
+
+
+func form_write(key: String, value: Variant) -> void:
+	assert(form_context != null, "Unconnected form context")
+	form_context.write_field(key, value)
+
+
+func form_effect(operation: String) -> void:
+	assert(form_context != null, "Unconnected form context")
+	form_context.effect(operation)
+
+
+func form_interval(slot: String, callback: Callable, delay: int) -> void:
+	assert(form_context != null, "Unconnected root interval owner")
+	form_context.root_intervals.assign_interval(slot, callback, delay)
+
+
+func form_clear_interval(slot: String) -> void:
+	assert(form_context != null, "Unconnected root interval owner")
+	form_context.root_intervals.clear_interval(slot)
+
+
+func form_random(site: String) -> Variant:
+	assert(fighter.source_random != null, "Unconnected form random tape")
+	return fighter.source_random.next_value(site)
+
+
+func form_next_frame() -> bool:
+	assert(form_context != null, "Unconnected parent frame consumer")
+	return form_context.next_frame()

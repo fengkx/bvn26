@@ -155,7 +155,10 @@ def script_record(script: dict[str, str]) -> dict[str, Any]:
     }
 
 
-def extract_slice(root: Path, fighter_key: str, *, allow_forms: bool = False) -> dict[str, Any]:
+def extract_slice(
+    root: Path, fighter_key: str, *, allow_forms: bool = False,
+    parent_frame: int | None = None,
+) -> dict[str, Any]:
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     fighter = manifest["fighter_catalog"][fighter_key]
     if "WKframe" in fighter and not allow_forms:
@@ -166,7 +169,9 @@ def extract_slice(root: Path, fighter_key: str, *, allow_forms: bool = False) ->
     script_bundle = json.loads(script_path.read_text(encoding="utf-8"))
     scripts = script_bundle["scripts"]
 
-    form_frame = int(fighter.get("WKframe", 1))
+    if parent_frame is not None and (not allow_forms or type(parent_frame) is not int or parent_frame < 1):
+        raise ValueError("Explicit parent frame requires allow_forms and a positive integer")
+    form_frame = parent_frame if parent_frame is not None else int(fighter.get("WKframe", 1))
     base_placements = [item for item in root_placements(swf_path) if item["frame"] == form_frame]
     if len(base_placements) != 1:
         raise ValueError(f"Expected one base-form placement in {swf_path}, got {base_placements}")

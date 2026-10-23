@@ -151,7 +151,8 @@ def compile_function(name: str, params: str, body: str, extra_calls: frozenset[s
     return '\n'.join(output) + '\n'
 
 
-def compile_body(bundle: dict, sprite: int, *, player: bool = False, form_callbacks: bool = False) -> tuple[str, dict]:
+def compile_body(bundle: dict, sprite: int, *, player: bool = False, form_callbacks: bool = False, form_helpers: bool = False) -> tuple[str, dict]:
+    form_callbacks = form_callbacks or form_helpers
     path = f'DefineSprite_{sprite}/frame_1/DoAction.as'
     if hashlib.sha256((ROOT / bundle['game_file']).read_bytes()).hexdigest() != bundle['swf_sha256']:
         raise ValueError('Retained BODY source hash mismatch')
@@ -203,9 +204,19 @@ def compile_body(bundle: dict, sprite: int, *, player: bool = False, form_callba
             text += compile_function('loseHp', *functions['loseHp'], player=player)
             text += compile_function('feixue', '', callback_body,
                                      frozenset({'live_lose_hp', 'maximum_health'}), player=player)
-        except (ValueError, SyntaxError) as error:
+        except (ValueError, SyntaxError, KeyError) as error:
             raise ValueError(f"{bundle['game_file']}:{path}#feixue/loseHp: {error}") from error
         compiled_names += ['loseHp', 'feixue']
+    if form_helpers:
+        from compile_form_helpers import compile_helpers, NAMES as FORM_NAMES
+        try:
+            random_sites = {m[1]: bundle['game_file'].removeprefix('game/').removesuffix('.swf') + '#' + path + ':' + str(line)
+                            for line, text_line in enumerate(functions['randAI'][1].splitlines(), 1)
+                            if (m := re.fullmatch(r'\s*(attran|defran|goran|jumpran|bisharan) = Math.random\(\) \* _loc\d+_;', text_line))}
+            text += compile_helpers(functions, compile_function, random_sites=random_sites)
+        except (ValueError, SyntaxError, KeyError) as error:
+            raise ValueError(f"{bundle['game_file']}:{path}#form_helpers: {error}") from error
+        compiled_names += list(FORM_NAMES)
     return text, {'status': 'compiled_not_integrated', 'functions': compiled_names,
                   'host_services': sorted(HOST_CALLS), 'callbacks': list(callbacks),
                   'scalar_fields': sorted(FIELDS), 'external_fields': sorted(set(REFS.values())), 'path': path,
@@ -219,10 +230,11 @@ def main() -> None:
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--player', action='store_true')
     parser.add_argument('--form-callbacks', action='store_true')
+    parser.add_argument('--form-helpers', action='store_true')
     args = parser.parse_args()
     bundle = json.loads((ROOT / f'scripts/fighter/{args.fighter}.json').read_text())
     timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())
-    code, metadata = compile_body(bundle, timeline['sprite_id'], player=args.player, form_callbacks=args.form_callbacks)
+    code, metadata = compile_body(bundle, timeline['sprite_id'], player=args.player, form_callbacks=args.form_callbacks, form_helpers=args.form_helpers)
     if args.player:
         metadata['input_mode'] = 'source_player_branches_preserved'
         timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())

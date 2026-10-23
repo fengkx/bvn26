@@ -1,0 +1,27 @@
+{
+  "engine": "Godot 4.7.2 stable Compatibility",
+  "commands": [
+    "\"$GODOT\" --path godot --rendering-method gl_compatibility --script res://tests/flash_filters_render.gd -- \"$OUT/large.json\" large",
+    "\"$GODOT\" --path godot --rendering-method gl_compatibility --script res://tests/flash_filters_render.gd -- \"$OUT/small.json\" small",
+    "\"$GODOT\" --path godot --rendering-method gl_compatibility --script res://tests/flash_filters_render.gd -- \"$OUT/bounds.json\" bounds",
+    "\"$GODOT\" --path godot --rendering-method gl_compatibility --script res://tests/flash_filter_colors_render.gd -- \"$OUT/colors.json\"",
+    "\"$GODOT\" --path godot --rendering-method gl_compatibility --script res://tests/flash_filter_colors_render.gd -- \"$OUT/order.json\" \"$PWD/tools/probes/flash_filters/color-matrix.json\" order",
+    "\"$GODOT\" --path godot --rendering-method gl_compatibility --script res://tests/flash_filter_raster_render.gd",
+    "\"$GODOT\" --path godot --rendering-method gl_compatibility --script res://tests/flash_blend_modes_render.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/player_controller_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/player_visual_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/retained_effect_clocks_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/clip_placement_once_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/parent_frame_state_reference.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/parent_state_checkpoint.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/numeric_goto_reference.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/form_callback_reference.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/repeating_timeouts_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/ai_timeouts_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/timeout_checkpoint_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/controller_checkpoint_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/battle_checkpoint_smoke.gd",
+    "\"$GODOT\" --headless --path godot --script res://tests/form_helpers_smoke.gd"
+  ],
+  "strict_log_policy": "Require exit0 and no ERROR; measurement markers are not exact pixel comparison."
+}

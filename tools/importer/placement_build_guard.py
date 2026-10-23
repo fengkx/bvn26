@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 import re
 
+if __package__:
+    from .import_guards import finite_numbers
+else:
+    from import_guards import finite_numbers
+
 
 def placement_requirements(reports: list[dict]) -> dict:
     catalog = {}
@@ -17,7 +22,8 @@ def placement_requirements(reports: list[dict]) -> dict:
             if not failure['construct'].startswith('PlaceObject') and failure['construct'] != 'morph ratio':
                 continue
             records.append({'sprite': int(match[2] or 0), 'frame': int(match[3]), **failure})
-        catalog[report['sha256']] = {'swf': report['source_swf'], 'records': records, 'obligations': report.get('placement_obligations', [])}
+        catalog[report['sha256']] = {'swf': report['source_swf'], 'records': records, 'obligations': report.get('placement_obligations', []),
+                                  'clip_action_obligations': report.get('clip_action_obligations', [])}
     return catalog
 
 
@@ -59,5 +65,29 @@ def validate_build_placements(timeline: dict, source: str) -> None:
         if placement is None:
             raise ValueError(f"{source}: missing source placement {catalog[digest]['swf']} sprite {sprite} frame {frame} depth {obligation['depth']}")
         for field, expected in obligation['fields'].items():
-            if placement.get(field) != expected:
+            # Python considers True == 1; the renderer does not treat a numeric
+            # bitmap-cache flag as an authored boolean. Preserve JSON types.
+            finite_numbers(placement.get(field), f"{source}: {catalog[digest]['swf']} sprite {sprite} frame {frame} depth {obligation['depth']} {field}")
+            actual = json.dumps(placement.get(field), sort_keys=True, allow_nan=False)
+            wanted = json.dumps(expected, sort_keys=True, allow_nan=False)
+            if actual != wanted:
                 raise ValueError(f"{source}: dropped/changed {field}: {catalog[digest]['swf']} sprite {sprite} frame {frame} depth {obligation['depth']}")
+
+    for obligation in catalog[digest].get('clip_action_obligations', []):
+        sprite = obligation['sprite']
+        if sprite != timeline['sprite_id'] and sprite not in nested:
+            continue
+        for frame in range(obligation['first_frame'], obligation['last_frame'] + 1):
+            if sprite == timeline['sprite_id']:
+                if frame not in frames:
+                    continue
+                placements = frames[frame]
+            else:
+                definition = definitions[sprite]
+                display_frames = definition.get('display_list_frames', [])
+                placements = (display_frames[frame - 1] if frame <= len(display_frames)
+                              else definition.get('first_frame_display_list', []) if frame == 1 else [])
+            placement = next((p for p in placements if p['depth'] == obligation['depth']), None)
+            if placement is None or placement.get('clip_actions') != obligation['clip_actions']:
+                raise ValueError(f"{source}: dropped/changed clip_actions: {catalog[digest]['swf']} "
+                                 f"sprite {sprite} frame {frame} depth {obligation['depth']}")

@@ -68,7 +68,8 @@ def materialize(
     runtime_timeline = json.loads(json.dumps(timeline))
     if combat_model_path is not None:
         combat = json.loads(combat_model_path.read_text())
-        handles = {p['instance_name'] for p in combat.get('projectiles', [])}
+        handles = {p['instance_name'] for field in ('projectiles', 'clip_placements')
+                   for p in combat.get(field, [])}
         for frame in runtime_timeline['frames']:
             for placement in frame['display_list']:
                 if not placement.get('name') and instance_key(placement) in handles:

@@ -96,3 +96,14 @@ Reproduce the unchanged native gameplay trace comparisons separately:
 ```sh
 python3 tools/test_importer_roster.py --godot "$GODOT" --output "$PROBE_OUTPUT/roster"
 ```
+
+## Scalar ColorMatrix arithmetic
+
+`color-arithmetic` isolates each RGB coefficient and complete row of the shipped
+matrix at opaque and 80% fill alpha. Pair it with
+`godot/tests/flash_filter_arithmetic_render.gd` (one absolute output JSON argument)
+and `tools/probes/compare_flash_color_arithmetic.py --native-log LOG
+--godot-rows JSON --output REPORT`. The strict comparator currently fails:
+20/24 cases and 92/96 channels are exact. The render script only measures; its
+successful exit does not assert parity. Reproduction commands and the four
+remaining scalar differences are in `evidence/importer-loud-fail/r11/pixels/README.md`.

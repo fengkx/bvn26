@@ -1576,7 +1576,7 @@ def build_model(
         placement = next(p for f in timeline['frames'] if f['frame'] == frame
                          for p in f['display_list'] if p['depth'] == depth and p.get('character_id') == cid)
         clip_placements.append({'action': script['action'], 'frame': frame,
-            'op': 'place_at_opponent', 'instance_name': placement['name'],
+            'op': 'place_at_opponent', 'instance_name': instance_key(placement),
             'place_x': True, 'place_y': y is not None,
             'y_pixels': float(y[1] or 0) if y else 0,
             'front_only': guarded, 'line': 0,
