@@ -212,6 +212,10 @@ class MoveCasesTest(unittest.TestCase):
         root = PROBES.parents[1]
         bundle = json.loads((root / 'scripts/fighter/minren.json').read_text())
         timeline = json.loads((root / 'data/slices/minren-base.timeline.json').read_text())
+        with self.assertRaisesRegex(ValueError, r'minren.swf.*frame_1382.*uncompiled frame call'):
+            compiler.compile_context(bundle, timeline)
+        # This unit checks frame 538, not the unsupported parent transformation.
+        timeline = {**timeline, 'frames': [f for f in timeline['frames'] if f['frame'] in (1, 538)]}
         compiled = compiler.compile_context(bundle, timeline)
         event = compiled['frame_calls']['538'][0]
         self.assertEqual(event['conditions'], [
@@ -231,6 +235,10 @@ class MoveCasesTest(unittest.TestCase):
         spec.loader.exec_module(compiler)
         bundle = json.loads((PROBES.parents[1] / 'scripts/fighter/yihu.json').read_text())
         timeline = json.loads((PROBES.parents[1] / 'data/slices/yihu-base.timeline.json').read_text())
+        with self.assertRaisesRegex(ValueError, r'yihu.swf.*frame_1055.*uncompiled frame call'):
+            compiler.compile_context(bundle, timeline)
+        # Keep the preparation FIFO unit separate from the rejected form switch.
+        timeline = {**timeline, 'frames': [f for f in timeline['frames'] if f['frame'] in (1, 967)]}
         frame = compiler.compile_context(bundle, timeline)['frame_calls']['967']
         calls = frame[0]['calls']
         self.assertEqual([(c['field_name'], c['operator'], c['value']) for c in calls[:4]],

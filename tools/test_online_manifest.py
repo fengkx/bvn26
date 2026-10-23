@@ -83,6 +83,7 @@ class OnlineManifestTests(unittest.TestCase):
 
             with (
                 patch.object(manifest_tool, "MATCHMAKING_PROTOCOL", protocol_file),
+                patch.object(manifest_tool, "GODOT", root),
                 patch.object(manifest_tool, "build_inputs", return_value=[build_file]),
                 patch.object(manifest_tool, "content_inputs", return_value=([content_file], roster)),
                 patch.object(manifest_tool, "records", side_effect=local_records),

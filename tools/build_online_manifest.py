@@ -15,6 +15,7 @@ from importer.visual_blend_modes import validate_timeline_blends
 from importer.import_guards import finite_numbers
 from importer.visual_control_guard import validate_build_controls
 from importer.placement_build_guard import validate_build_placements
+from importer.frame_call_guard import validate_cached_frame_calls
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -167,6 +168,8 @@ def make_documents() -> tuple[dict[str, object], dict[str, object]]:
         validate_timeline_blends(data, relative(timeline))
         validate_build_controls(data, relative(timeline))
         validate_build_placements(data, relative(timeline))
+        if timeline.parent.parent == GODOT / "generated/fighters":
+            validate_cached_frame_calls(data, load_json(timeline.with_name('ai.json')))
     protocol_text = MATCHMAKING_PROTOCOL.read_text(encoding="utf-8")
     protocol_match = re.search(r"export\s+const\s+VERSION\s*=\s*(\d+)", protocol_text)
     if not protocol_match:

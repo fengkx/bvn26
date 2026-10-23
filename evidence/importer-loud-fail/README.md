@@ -1,7 +1,7 @@
 # Importer loud-fail (Draft PR #48)
 
 The PR is not merge-ready. Current progress and evidence are in
-[r03](r03/README.md); probe reproduction is documented in
+[r04](r04/README.md); probe reproduction is documented in
 [the fixture instructions](../../tools/probes/flash_filters/README.md).
 
 Implemented: placement/finite-number/selected call guards, source-pinned nested
@@ -19,6 +19,12 @@ The only harmless allowlist entry is still Byakuya sprite 631 frame 985 in base
 form: exact source/SWF hashes and form scope pin the transformation-disabled
 case. Juggo child controls and main KO controls have separate source-pinned
 records delegating to existing native consumers. No new exception was added.
+
+r04 adds source-verified shunbuxg/colored shine and conditional stop/play compilation,
+plus build-time cached frame-call obligations. Five numeric/parent-goto contexts
+are rejected and 21 compilable contexts have stale calls: **0/26 caches pass**.
+Fingerprint/build acceptance now fails loudly. No new generated gameplay data
+was installed.
 
 Remaining blockers include color/filter-order and real component parity, numeric
 gotoAndPlay(130), shunbuxg, complete AS/clip-action ownership, nine existing

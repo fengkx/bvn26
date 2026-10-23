@@ -242,6 +242,13 @@ def controller_scope_fields(bundle: dict, sprite: int) -> set[str]:
 
 
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
+    control = re.fullmatch(
+        r'if\((\w+) == (true|false|-?\d+)\)\s*\{\s*(stop|play)\(\);\s*\}\s*', text)
+    if control and control[1] in FIELDS:
+        return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': control[1], 'operator': 'eq',
+                                 'value': json.loads(control[2])}],
+                 'calls': [{'op': 'timeline_' + control[3]}]}]
     visibility = re.fullmatch(
         r'if\(_root\.game\["p" \+ pn\]\.mc\.hp > (-?\d+) && '
         r'_root\.game\["p" \+ pn\]\.mc\.动作 == (-?\d+)\)\s*'
@@ -480,11 +487,14 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                 calls.append({'op': 'inline_frame', 'path': path, 'line': number,
                               'frame': frame['frame'], 'calls': inline_frame_function(
                                   functions['wankai_start'], first_path + '#wankai_start', frame['frame'])})
-            elif line == '_root.touchFloorEffect(_parent);':
-                calls.append({**root_child_effect('touchFloorEffect'), 'path': path,
+            elif child_effect := re.fullmatch(r'_root\.(touchFloorEffect|shunbuxg)\(_parent\);', line):
+                calls.append({**root_child_effect(child_effect[1]), 'path': path,
                               'line': number, 'frame': frame['frame']})
-            elif re.fullmatch(r'_root\.shine\(\);', line):
-                calls.append({'op': 'screen_flash', 'color_rgb24': 0xFFFFFF,
+            elif flash := re.fullmatch(r'_root\.shine\((\d*)\);', line):
+                color = int(flash[1]) if flash[1] else 0xFFFFFF
+                if not 0 <= color <= 0xFFFFFF:
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: unsupported shine color {color}")
+                calls.append({'op': 'screen_flash', 'color_rgb24': color,
                               'path': path, 'line': number, 'frame': frame['frame']})
             elif movement:
                 wrapper = next((m[0] for m in FUNCTION.finditer(scripts['frame_1/DoAction.as'])
@@ -551,6 +561,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                               'value':int(color_write[2]),'path':path,'line':number,'frame':frame['frame']})
             owned = re.match(
                 r'^(?:_parent\.(?:moveX|moveY)|_root\.(?:bsd|cbsd|bsw|cbsw|showFace|touchFloorEffect)|'
+                r'_root\.(?:shine|shunbuxg)|(?:\w+\.)?(?:gotoAndPlay|gotoAndStop|play|stop)|'
                 r'followMc|resColor|updateDirect|wankai_start)\s*\(', line.lstrip())
             if frame['frame'] != 1 and owned and len(calls) == before and not allowed_frame_source(
                     bundle, path, text, form_frame):

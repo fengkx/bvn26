@@ -149,6 +149,8 @@ cp "$ROOT_DIR/tools/importer/visual_blend_modes.py" "$STAGING_REPO/tools/importe
 cp "$ROOT_DIR/tools/importer/import_guards.py" "$STAGING_REPO/tools/importer/import_guards.py"
 cp "$ROOT_DIR/tools/importer/placement_requirements.json" "$STAGING_REPO/tools/importer/placement_requirements.json"
 cp "$ROOT_DIR/tools/importer/placement_build_guard.py" "$STAGING_REPO/tools/importer/placement_build_guard.py"
+cp "$ROOT_DIR/tools/importer/frame_call_guard.py" "$STAGING_REPO/tools/importer/frame_call_guard.py"
+cp "$ROOT_DIR/tools/importer/frame_call_requirements.json" "$STAGING_REPO/tools/importer/frame_call_requirements.json"
 cp "$ROOT_DIR/tools/importer/visual_control_owners.json" "$STAGING_REPO/tools/importer/visual_control_owners.json"
 cp "$ROOT_DIR/tools/importer/visual_control_requirements.json" "$STAGING_REPO/tools/importer/visual_control_requirements.json"
 cp "$ROOT_DIR/tools/importer/visual_control_guard.py" "$STAGING_REPO/tools/importer/visual_control_guard.py"

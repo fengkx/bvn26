@@ -85,13 +85,61 @@ class ImportGuardsTests(unittest.TestCase):
         timeline = json.loads((ROOT / 'data/slices/didala-base.timeline.json').read_text())
         for call in ('_root.bsd();', '_root.bsd(other);', '_root.showFace(pn, name);',
                      'followMc(target);', 'updateDirect(1);', 'resColor(1);',
-                     '_root.touchFloorEffect(other);', '_root.bsd(pn); extra();'):
+                     '_root.touchFloorEffect(other);', '_root.bsd(pn); extra();',
+                     'gotoAndPlay(130);', 'gotoAndStop(frame + 1);', 'stop(1);',
+                     'child.gotoAndPlay(130);', 'child.stop();', 'child.play();',
+                     '_root.shunbuxg(other);', '_root.shine(color);'):
             bundle = json.loads((ROOT / 'scripts/fighter/didala.json').read_text())
             next(s for s in bundle['scripts'] if s['path'] ==
                  'DefineSprite_542/frame_34/DoAction.as')['source'] = call
             with self.subTest(call=call), self.assertRaisesRegex(
                     ValueError, r'didala.swf.*frame_34.*uncompiled frame call'):
                 compile_context(bundle, timeline)
+
+    def test_shared_rush_wrapper_and_literal_flash_are_compiled(self):
+        bundle = json.loads((ROOT / 'scripts/fighter/didala.json').read_text())
+        timeline = json.loads((ROOT / 'data/slices/didala-base.timeline.json').read_text())
+        next(s for s in bundle['scripts'] if s['path'] ==
+             'DefineSprite_542/frame_34/DoAction.as')['source'] = (
+                 '_root.shunbuxg(_parent);\n_root.shine(303095);')
+        calls = compile_context(bundle, timeline)['frame_calls']['34']
+        self.assertEqual(calls[0]['op'], 'frame_child_effect')
+        self.assertEqual(calls[0]['clip'], 'XG_rush')
+        self.assertEqual((calls[0]['offset_x'], calls[0]['offset_y']), (0, 0))
+        self.assertTrue(calls[0]['wrapper_sha256'])
+        self.assertEqual(calls[1]['color_rgb24'], 303095)
+        next(s for s in bundle['scripts'] if s['path'] ==
+             'DefineSprite_542/frame_34/DoAction.as')['source'] = '_root.shine(16777216);'
+        with self.assertRaisesRegex(ValueError, r'didala.swf.*frame_34.*unsupported shine color'):
+            compile_context(bundle, timeline)
+
+    def test_conditional_stop_is_owned_and_cached_calls_cannot_disappear(self):
+        from frame_call_guard import calls_digest, validate_cached_frame_calls
+        bundle = json.loads((ROOT / 'scripts/fighter/didala.json').read_text())
+        timeline = json.loads((ROOT / 'data/slices/didala-base.timeline.json').read_text())
+        cached = compile_context(bundle, timeline)
+        call = cached['frame_calls']['942'][0]
+        self.assertEqual(call['conditions'], [{'field': 'sw', 'operator': 'eq', 'value': True}])
+        self.assertEqual(call['calls'], [{'op': 'timeline_stop'}])
+        catalog = {f"{bundle['swf_sha256']}:{timeline['sprite_id']}": {
+            'source': bundle['game_file'], 'frames': {f: calls_digest(c) for f, c in cached['frame_calls'].items()}}}
+        validate_cached_frame_calls(timeline, cached, catalog)
+        with self.assertRaisesRegex(ValueError, 'missing reviewed frame-call requirements'):
+            validate_cached_frame_calls(timeline, cached, {})
+        key = next(iter(catalog))
+        with self.assertRaisesRegex(ValueError, 'fixture.swf.*unsupported goto'):
+            validate_cached_frame_calls(timeline, cached, {key: {
+                'source': 'fixture.swf', 'error': 'fixture.swf/frame_9: unsupported goto'}})
+        with self.assertRaisesRegex(ValueError, 'source identity mismatch'):
+            validate_cached_frame_calls(timeline, {**cached, 'sprite_id': 999}, catalog)
+        effect = {'op': 'frame_child_effect', 'clip': 'missing_effect_fixture'}
+        cached['frame_calls']['942'].append(effect)
+        catalog[key]['frames']['942'] = calls_digest(cached['frame_calls']['942'])
+        with self.assertRaisesRegex(ValueError, r'didala.swf.*frame_942.*missing compiled child effect'):
+            validate_cached_frame_calls(timeline, cached, catalog)
+        del cached['frame_calls']['942']
+        with self.assertRaisesRegex(ValueError, r'didala.swf.*frame_942.*cached frame calls'):
+            validate_cached_frame_calls(timeline, cached, catalog)
 
     def test_movement_with_space_cannot_bypass_guard(self):
         bundle = json.loads((ROOT / 'scripts/fighter/didala.json').read_text())
