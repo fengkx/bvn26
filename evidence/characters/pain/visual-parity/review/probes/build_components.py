@@ -138,6 +138,7 @@ for src, tests in groups.items():
         for code, data, _ in original
         if code == 39
     }
+    sprites[0] = original
     defs = b"".join(
         raw
         for code, data, raw in original

@@ -41,12 +41,23 @@ class FlashFilterProbeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'sample counts'):
             compare(small, large, 'blur')
 
-    def test_color_reference_conversion_does_not_allow_error(self):
-        native = [{'type': 'glow', 'opacity': 50, 'pixels': [0x80ff0000]}]
+    def test_direct_color_reference_does_not_allow_error(self):
+        native = [{'type': 'glow', 'opacity': 50, 'pixels': [0x80ff0000], 'premultiplied': [[128, 0, 0, 128]]}]
         actual = [{'type': 'glow', 'opacity': 50, 'pixels': [[128, 0, 0, 128]]}]
         self.assertTrue(compare(native, actual, 'color')['passed'])
         actual[0]['pixels'][0][0] -= 1
         self.assertFalse(compare(native, actual, 'color')['passed'])
+
+    def test_color_capture_requires_direct_black_readback(self):
+        log = (EVIDENCE / 'r03/colors/native.log').read_text()
+        rows = native_rows(log, 'color')
+        self.assertEqual(rows, json.loads((EVIDENCE / 'r03/native-color-rows.json').read_text()))
+        without_black = '\n'.join(line for line in log.splitlines() if '|black|' not in line)
+        with self.assertRaisesRegex(ValueError, 'black-background'):
+            native_rows(without_black, 'color')
+        del rows[0]['premultiplied']
+        with self.assertRaisesRegex(ValueError, 'black-background'):
+            compare(rows, [{'type': 'glow', 'opacity': 100}] * len(rows), 'color')
 
 
 if __name__ == '__main__':

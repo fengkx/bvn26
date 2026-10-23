@@ -47,7 +47,7 @@ def build(case: str, output: Path, ffdec: Path) -> dict:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--case', choices=['blur-large', 'blur-small', 'blur-bounds', 'colors'], required=True)
+    parser.add_argument('--case', choices=sorted(p.stem for p in FIXTURES.glob('*.as')), required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--ffdec', type=Path, required=True)
     args = parser.parse_args()

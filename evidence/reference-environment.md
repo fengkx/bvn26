@@ -44,3 +44,13 @@ raw traces and per-run metadata are recorded in
 Godot 4.7.2 Compatibility ran on Apple M2/OpenGL Metal; a fresh signed official
 app was used because the older scratch app failed signature verification.
 No source file under game/ or scripts/ was changed.
+
+## Filter color and shipped components, r03 (2026-10-23)
+
+The same locked Flash Debugger/JPEXS executables and Godot 4.7.2 Compatibility
+environment captured the color/opacity/order diagnostics and 21 shipped filter
+or cache placements. Raw captures, source hashes and per-run metadata are in
+[the r03 evidence](importer-loud-fail/r03/README.md). Native capture used
+tools/probes/capture_native_player.py (component harness delegates to it).
+Direct black-background RGB avoids lossy getPixel32 premultiplication recovery.
+45/54 real component images still differ; these captures do not certify parity.

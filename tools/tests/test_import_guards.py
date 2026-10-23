@@ -53,9 +53,23 @@ class ImportGuardsTests(unittest.TestCase):
             with self.subTest(child=child), self.assertRaisesRegex(ValueError, expected):
                 placement_delta(ET.fromstring(f'<item depth="1">{child}</item>'))
 
+    def test_unknown_duplicate_and_incomplete_transform_fields_fail(self):
+        cases = [('<matrix futureNumeric="1"/>', 'unsupported matrix'),
+                 ('<matrix/><matrix/>', 'duplicate PlaceObject child matrix'),
+                 ('<matrix type="MATRIX" translateX="0"/>', 'requires translateY'),
+                 ('<matrix type="MATRIX" translateY="0"/>', 'requires translateX'),
+                 ('<colorTransform type="CXFORMWITHALPHA" hasMultTerms="true" redMultTerm="256" greenMultTerm="256" blueMultTerm="256"/>', 'requires alphaMultTerm'),
+                 ('<colorTransform type="CXFORMWITHALPHA" hasAddTerms="true" redAddTerm="0" greenAddTerm="0" blueAddTerm="0"/>', 'requires alphaAddTerm')]
+        for fields, error in cases:
+            with self.subTest(fields=fields), self.assertRaisesRegex(ValueError, 'fixture.swf/frame_9:.*' + error):
+                placement_delta(ET.fromstring('<item depth="1">' + fields + '</item>'), 'fixture.swf/frame_9')
+        for fields in ('depth="NaN"', 'depth="1" ratio="undefined"', 'depth="1" reserved="1"'):
+            with self.subTest(fields=fields), self.assertRaisesRegex(ValueError, 'fixture.swf/frame_9:'):
+                placement_delta(ET.fromstring('<item ' + fields + '/>'), 'fixture.swf/frame_9')
+
     def test_serialization_metadata_is_not_a_numeric_operand(self):
         placement = placement_delta(ET.fromstring('''<item depth="1" forceWriteAsLong="true">
-            <matrix type="MATRIX" hasScale="false" translateX="20"/>
+            <matrix type="MATRIX" hasScale="false" translateX="20" translateY="0"/>
             <colorTransform type="CXFORMWITHALPHA" hasMultTerms="false"/>
             </item>'''))
         self.assertEqual(placement['matrix']['translateX'], 20)

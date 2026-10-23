@@ -9,6 +9,9 @@ from pathlib import Path
 
 def native_rows(log: str, kind: str) -> list[dict]:
     rows = []
+    color_kind = kind in ('color', 'color-order')
+    event_kind = 'color' if color_kind else kind
+    black_rows = []
     run_ids = set()
     done = False
     for line in log.splitlines():
@@ -20,7 +23,11 @@ def native_rows(log: str, kind: str) -> list[dict]:
         run_ids.add(parts[1])
         if parts[6] == 'done' and parts[7] == 'ok':
             done = True
-        elif parts[6] == kind:
+        elif color_kind and parts[6] == 'black':
+            name, opacity, *pixels = parts[7].split(',')
+            black_rows.append({'type': name, 'opacity': int(opacity),
+                               'pixels': [int(p) & 0xffffffff for p in pixels]})
+        elif parts[6] == event_kind:
             values = parts[7].split(',')
             if kind == 'bounds':
                 width, first, second, *pixels = values
@@ -39,6 +46,8 @@ def native_rows(log: str, kind: str) -> list[dict]:
     expected_keys = ([(size, passes) for size in (0, 1, 2, 3, 5, 10, 15, 20)
                       for passes in (1, 3)] if kind == 'blur' else
                      [('glow', 100), ('glow', 50), ('matrix', 100), ('matrix', 50), ('chain', 100)])
+    if kind == 'color-order':
+        expected_keys = expected_keys[:4]
     if kind == 'bounds':
         expected_keys = [(w, n, q) for w in (1, 2, 4, 8, 12, 16, 32)
                          for n in (6, 7, 8, 9, 10, 11, 15, 20, 21, 30) for q in (1, 2, 3)]
@@ -47,6 +56,15 @@ def native_rows(log: str, kind: str) -> list[dict]:
         keys = [(r['size'], r['passes']) if kind == 'blur' else (r['type'], r['opacity']) for r in rows]
     if keys != expected_keys:
         raise ValueError('Missing, duplicated or reordered native cases')
+    if color_kind:
+        if [(r['type'], r['opacity']) for r in black_rows] != expected_keys:
+            raise ValueError('Missing, duplicated or reordered native black-background cases')
+        for row, black in zip(rows, black_rows):
+            if len(row['pixels']) != len(black['pixels']) or any(p >> 24 != 255 for p in black['pixels']):
+                raise ValueError('Invalid native black-background samples')
+            row['premultiplied'] = [[(p >> shift) & 255 for shift in (16, 8, 0)]
+                                    + [(alpha >> 24) & 255]
+                                    for p, alpha in zip(black['pixels'], row['pixels'])]
     return rows
 
 
@@ -64,13 +82,11 @@ def compare(native: list[dict], actual: list[dict], kind: str) -> dict:
         if kind in ('blur', 'bounds'):
             reference, observed = expected['alpha'], measured['alpha']
         else:
-            reference = []
-            for pixel in expected['pixels']:
-                alpha = (pixel >> 24) & 255
-                # Flash getPixel32 returns straight ARGB; Godot's transparent
-                # viewport readback is premultiplied RGBA. No error is forgiven.
-                reference.extend([round(((pixel >> shift) & 255) * alpha / 255)
-                                  for shift in (16, 8, 0)] + [alpha])
+            # Reconstructing premultiplied channels from getPixel32 loses bits.
+            # Use the separately captured native black-background RGB instead.
+            if 'premultiplied' not in expected:
+                raise ValueError('Color comparison requires native black-background samples')
+            reference = [channel for pixel in expected['premultiplied'] for channel in pixel]
             observed = [channel for pixel in measured['pixels'] for channel in pixel]
         if not reference or len(reference) != len(observed):
             raise ValueError(f'Native/Godot sample counts differ: {case}')
@@ -84,7 +100,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--native-log', type=Path, required=True)
     parser.add_argument('--godot-rows', type=Path, required=True)
-    parser.add_argument('--kind', choices=['blur', 'bounds', 'color'], required=True)
+    parser.add_argument('--kind', choices=['blur', 'bounds', 'color', 'color-order'], required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     result = compare(native_rows(args.native_log.read_text(), args.kind),

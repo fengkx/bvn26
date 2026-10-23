@@ -46,6 +46,8 @@ var _source_color_add := Color(0, 0, 0, 0)
 var _source_color_matrix: Array = []
 static var _source_filter_shader: Shader
 static var _blend_shaders: Dictionary = {}
+static var _filter_input_shaders: Dictionary = {}
+var _filter_input_depth := 0
 
 const SourceBoundsMath = preload("res://source_matrix_bounds.gd")
 const SourceMatrixTransform = preload("res://source_matrix_transform.gd")
@@ -888,15 +890,20 @@ func _render_placement(
 		unfiltered.erase("cache_as_bitmap")
 		unfiltered["blend_mode"] = 1
 		var filter_cx: Dictionary = placement.get("color_transform", {})
-		var filter_alpha := parent_alpha * _cxform_mul(filter_cx).a
-		if not filter_cx.is_empty():
-			unfiltered["color_transform"] = filter_cx.duplicate()
-			unfiltered["color_transform"]["alphaMultTerm"] = 256
+		var filter_mul := _cxform_mul(filter_cx)
+		var filter_add := _cxform_add(filter_cx)
+		var filter_alpha := parent_alpha * filter_mul.a
+		# The display-object CXFORM operates on the filtered cache.
+		unfiltered.erase("color_transform")
 		var first_child := get_child_count()
+		_filter_input_depth += 1
 		_render_placement(unfiltered, parent_transform, 1.0, parent_depth,
-			timeline_frame, clip_age, parent_rgb_mul, parent_rgb_add, clip_masks, 1, visual_clip)
+			timeline_frame, clip_age, Color.WHITE, Color(0, 0, 0, 0), clip_masks, 1, visual_clip)
+		_filter_input_depth -= 1
 		_compose_blend_group(first_child, filter_alpha, parent_depth,
-			int(placement.get("blend_mode", inherited_blend)), filters, true)
+			int(placement.get("blend_mode", inherited_blend)), filters, true,
+			_cxform_combine_mul(parent_rgb_mul, filter_mul),
+			_cxform_combine_add(parent_rgb_mul, parent_rgb_add, filter_mul, filter_add))
 		return
 	var definition: Dictionary = _definitions[character_id]
 	if not bool(definition.get("initial_visible", true)):
@@ -1159,7 +1166,11 @@ func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: fl
 	sprite.material = material
 
 
-func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: int, filters: Array = [], isolate: bool = false) -> void:
+func _compose_blend_group(
+	first_child: int, opacity: float, depth: int, blend: int,
+	filters: Array = [], isolate: bool = false,
+	post_mul: Color = Color.WHITE, post_add: Color = Color(0, 0, 0, 0)
+) -> void:
 	var items := get_children().slice(first_child)
 	if items.is_empty():
 		return
@@ -1183,9 +1194,30 @@ func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: i
 	# the blend_mix pipeline then applies source alpha exactly once.
 	var material := ShaderMaterial.new()
 	var shader := Shader.new()
-	shader.code = "shader_type canvas_item; uniform float group_opacity = 1.0; void fragment() { vec4 pixel = texture(TEXTURE, UV); if (pixel.a > 0.0) { pixel.rgb /= pixel.a; } pixel.a *= group_opacity; COLOR = pixel; }"
+	shader.code = """
+shader_type canvas_item;
+uniform float group_opacity = 1.0;
+uniform bool cached_opacity = false;
+uniform vec3 post_mul = vec3(1.0);
+uniform vec3 post_add = vec3(0.0);
+void fragment() {
+	vec4 pixel = texture(TEXTURE, UV);
+	if (pixel.a > 0.0) {
+		pixel.rgb = clamp(pixel.rgb / pixel.a * post_mul + post_add, vec3(0.0), vec3(1.0)) * pixel.a;
+	}
+	if (cached_opacity) {
+		pixel = floor(pixel * 255.0 * group_opacity + 0.0001) / 255.0;
+	}
+	if (pixel.a > 0.0) { pixel.rgb /= pixel.a; }
+	if (!cached_opacity) { pixel.a *= group_opacity; }
+	COLOR = pixel;
+}
+"""
 	material.shader = shader
 	material.set_shader_parameter("group_opacity", opacity)
+	material.set_shader_parameter("cached_opacity", isolate)
+	material.set_shader_parameter("post_mul", Vector3(post_mul.r, post_mul.g, post_mul.b))
+	material.set_shader_parameter("post_add", Vector3(post_add.r, post_add.g, post_add.b))
 	composite.modulate.a = 1.0
 	composite.material = material
 	_apply_blend(composite, blend, group)
@@ -1193,7 +1225,35 @@ func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: i
 	add_child(group)
 
 
+func _quantize_filter_input(item: CanvasItem) -> void:
+	if item.has_meta("flash_filter_input"):
+		return
+	item.set_meta("flash_filter_input", true)
+	var material := item.material as ShaderMaterial
+	var original := material.shader.code if material != null else "shader_type canvas_item; void fragment() { }"
+	var opacity := item.modulate.a if material != null else 1.0
+	if not _filter_input_shaders.has(original):
+		var shader := Shader.new()
+		var code := original.replace("shader_type canvas_item;", "shader_type canvas_item; uniform float filter_input_opacity = 1.0;")
+		code = code.insert(code.rfind("}"), """
+float input_alpha = floor(clamp(COLOR.a * filter_input_opacity, 0.0, 1.0) * 255.0 + 0.5);
+vec3 input_rgb = floor(clamp(COLOR.rgb, vec3(0.0), vec3(1.0)) * 255.0 + 0.5);
+// Flash's cached raster uses the integer multiply (channel * (alpha + 1)) >> 8.
+vec3 premultiplied = floor(input_rgb * (input_alpha + 1.0) / 256.0);
+COLOR = vec4(input_alpha > 0.0 ? premultiplied / input_alpha : vec3(0.0), input_alpha / 255.0);
+""")
+		shader.code = code
+		_filter_input_shaders[original] = shader
+	material = material.duplicate() if material != null else ShaderMaterial.new()
+	material.shader = _filter_input_shaders[original]
+	material.set_shader_parameter("filter_input_opacity", opacity)
+	item.modulate.a = 1.0 if opacity != 1.0 else item.modulate.a
+	item.material = material
+
+
 func _apply_blend(item: CanvasItem, blend: int, copy_parent: Node = null) -> void:
+	if _filter_input_depth > 0 and copy_parent == null:
+		_quantize_filter_input(item)
 	assert(blend in [0, 1, 2, 3, 4, 5, 6, 8, 9, 14], "Unsupported Flash blend mode: %d" % blend)
 	if blend in [0, 1]:
 		return

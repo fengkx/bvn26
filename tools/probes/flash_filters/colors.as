@@ -1,5 +1,5 @@
 stop();var seq=0;
-function emit(k,v){trace("AIREF|filter-colors-r01|"+(seq++)+"|0|0|0|"+k+"|"+v);}
+function emit(k,v){trace("AIREF|filter-colors-r03|"+(seq++)+"|0|0|0|"+k+"|"+v);}
 var types=["glow","glow","matrix","matrix","chain"];var alphas=[100,50,100,50,100];
 for(var i=0;i<types.length;i++){
  var wrap=_root.createEmptyMovieClip("wrap",1);var m=wrap.createEmptyMovieClip("m",1);
@@ -9,5 +9,8 @@ for(var i=0;i<types.length;i++){
  if(types[i]=="glow")m.filters=[glow];else if(types[i]=="matrix")m.filters=[color];else m.filters=[glow,color];
  var b=new flash.display.BitmapData(160,160,true,0);b.draw(wrap);
  var row="";for(var x=0;x<160;x++)row+=","+b.getPixel32(x,70);
- emit("color",types[i]+","+alphas[i]+row);b.dispose();wrap.removeMovieClip();
+ emit("color",types[i]+","+alphas[i]+row);
+ var black=new flash.display.BitmapData(160,160,false,0);black.draw(b);
+ row="";for(var x=0;x<160;x++)row+=","+black.getPixel32(x,70);
+ emit("black",types[i]+","+alphas[i]+row);black.dispose();b.dispose();wrap.removeMovieClip();
 }emit("done","ok");fscommand("quit");

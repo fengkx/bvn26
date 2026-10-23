@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 from xml.etree.ElementTree import Element
 
@@ -56,6 +57,11 @@ def validate_placement(tag: Element, source: str) -> None:
             raise ValueError(f'{source}: unsupported PlaceObject field {name}={value}')
         if name.startswith('placeFlag') and value not in ('true', 'false'):
             raise ValueError(f'{source}: invalid PlaceObject flag {name}={value}')
+        if name in ('depth', 'characterId', 'ratio', 'clipDepth', 'blendMode'):
+            if not re.fullmatch(r'\d+', value):
+                raise ValueError(f'{source}: invalid integer PlaceObject field {name}={value}')
+        if name == 'reserved' and value not in ('0', 'false'):
+            raise ValueError(f'{source}: unsupported PlaceObject reserved bits {value}')
     for flag, attribute in REQUIRED_ATTRIBUTES.items():
         if tag.get(flag) == 'true' and attribute not in tag.attrib:
             raise ValueError(f'{source}: {flag} requires {attribute}')
@@ -65,6 +71,8 @@ def validate_placement(tag: Element, source: str) -> None:
     for child in tag:
         if child.tag not in REQUIRED_CHILDREN.values():
             raise ValueError(f'{source}: unsupported PlaceObject child {child.tag}')
+        if len(tag.findall(child.tag)) != 1:
+            raise ValueError(f'{source}: duplicate PlaceObject child {child.tag}')
     for child_name, selectors in {
         'matrix': {'hasScale': ('scaleX', 'scaleY'),
                    'hasRotate': ('rotateSkew0', 'rotateSkew1')},
@@ -74,6 +82,22 @@ def validate_placement(tag: Element, source: str) -> None:
         child = tag.find(child_name)
         if child is None:
             continue
+        fields = ({'type', 'hasScale', 'scaleX', 'scaleY', 'nScaleBits', 'hasRotate',
+                   'rotateSkew0', 'rotateSkew1', 'nRotateBits', 'nTranslateBits', 'translateX', 'translateY'}
+                  if child_name == 'matrix' else
+                  {'type', 'hasMultTerms', 'hasAddTerms', 'nbits', 'nBits',
+                   'redMultTerm', 'greenMultTerm', 'blueMultTerm', 'alphaMultTerm',
+                   'redAddTerm', 'greenAddTerm', 'blueAddTerm', 'alphaAddTerm'})
+        unknown = set(child.attrib) - fields
+        if unknown or len(child):
+            raise ValueError(f'{source}: unsupported {child_name} fields {sorted(unknown)} or child elements')
+        if child.get('type') == 'MATRIX':
+            for field in ('translateX', 'translateY'):
+                if field not in child.attrib:
+                    raise ValueError(f'{source}: matrix requires {field}')
+        if child.get('type') == 'CXFORMWITHALPHA':
+            selectors = {**selectors, 'hasMultTerms': (*selectors['hasMultTerms'], 'alphaMultTerm'),
+                         'hasAddTerms': (*selectors['hasAddTerms'], 'alphaAddTerm')}
         for flag, fields in selectors.items():
             if child.get(flag) == 'true':
                 for field in fields:

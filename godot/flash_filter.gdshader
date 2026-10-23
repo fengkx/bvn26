@@ -30,10 +30,11 @@ void fragment() {
         }
         pixel = floor(clamp(sum / max(1.0, blur_size), vec4(0.0), vec4(1.0)) * 255.0 + 0.0001) / 255.0;
     } else if (operation == 1) {
-        vec4 base = texture(original_texture, UV);
+        vec4 base = floor(texture(original_texture, UV) * 255.0 + 0.5);
         float alpha = clamp(pixel.a * glow_strength, 0.0, 1.0) * glow_color.a;
-        vec4 glow = vec4(glow_color.rgb * alpha, alpha);
-        pixel = base + glow * (1.0 - base.a);
+        vec4 glow = floor(vec4(glow_color.rgb * alpha, alpha) * 255.0 + 0.5);
+        // The source is composited over the glow in Flash's 8-bit cache.
+        pixel = (base + floor(glow * (256.0 - base.a) / 256.0)) / 255.0;
     } else if (operation == 2) {
         vec4 straight = pixel.a > 0.0 ? vec4(pixel.rgb / pixel.a, pixel.a) : vec4(0.0);
         pixel = clamp(vec4(dot(row_r, straight), dot(row_g, straight), dot(row_b, straight), dot(row_a, straight)) + offsets, vec4(0.0), vec4(1.0));

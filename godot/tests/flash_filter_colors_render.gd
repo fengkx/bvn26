@@ -17,7 +17,8 @@ func _run() -> void:
 		quit(1)
 		return
 	var matrix: Array = parsed
-	for type in ["glow", "matrix", "chain"]:
+	var order_test := args.size() > 2 and args[2] == "order"
+	for type in (["glow", "matrix"] if order_test else ["glow", "matrix", "chain"]):
 		for opacity in ([100] if type == "chain" else [100, 50]):
 			var view := SubViewport.new()
 			view.size = Vector2i(160, 160)
@@ -34,8 +35,12 @@ func _run() -> void:
 					"color": [81.0/255,211.0/255,239.0/255,1.0], "strength": 1.0})
 			if type in ["matrix", "chain"]:
 				filters.append({"type": "COLORMATRIXFILTER", "matrix": matrix})
+			var cx := {"hasMultTerms": "true", "alphaMultTerm": opacity * 256 / 100}
+			if order_test:
+				cx.merge({"hasAddTerms": "true", "redMultTerm": 0, "greenMultTerm": 0,
+					"blueMultTerm": 0, "redAddTerm": 57, "greenAddTerm": 148, "blueAddTerm": 230})
 			renderer._render_placement({"depth": 1, "character_id": 1, "filters": filters,
-				"color_transform": {"hasMultTerms": "true", "alphaMultTerm": opacity * 256 / 100}},
+				"color_transform": cx},
 				Transform2D.IDENTITY, 1.0, 0, 1)
 			for item in renderer.get_children():
 				renderer.remove_child(item)
@@ -55,5 +60,25 @@ func _run() -> void:
 		samples[index]["pixels"] = pixels
 	if not args.is_empty():
 		FileAccess.open(args[0], FileAccess.WRITE).store_string(JSON.stringify(samples))
+	var reference_path := ProjectSettings.globalize_path("res://").path_join("../evidence/importer-loud-fail/r03/" + ("native-order-rows.json" if order_test else "native-color-rows.json"))
+	var reference = JSON.parse_string(FileAccess.get_file_as_string(reference_path))
+	if not reference is Array or reference.size() != samples.size():
+		push_error("Missing native color reference: " + reference_path)
+		quit(1)
+		return
+	for index in (range(2, 4) if order_test else range(2)):
+		var expected: Dictionary = reference[index]
+		var actual: Dictionary = samples[index]
+		if expected.type != actual.type or expected.opacity != actual.opacity:
+			push_error("Mismatched native GlowFilter case identity")
+			quit(1)
+			return
+		for x in actual.pixels.size():
+			for channel in 4:
+				if actual.pixels[x][channel] != expected.premultiplied[x][channel]:
+					push_error("Native filter mismatch: opacity=%s x=%s channel=%s" % [actual.opacity, x, channel])
+					quit(1)
+					return
+	print("FLASH_MATRIX_CXFORM_REFERENCE_OK cases=2 channel_samples=1280" if order_test else "FLASH_GLOW_REFERENCE_OK cases=2 channel_samples=1280")
 	print("FLASH_FILTERS_RENDER_OK ", samples.size())
 	quit()
