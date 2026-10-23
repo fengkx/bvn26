@@ -1,7 +1,7 @@
 # Importer loud-fail (Draft PR #48)
 
 The PR is not merge-ready. Current progress and evidence are in
-[r08](r08/README.md); probe reproduction is documented in
+[r09](r09/README.md); probe reproduction is documented in
 [the fixture instructions](../../tools/probes/flash_filters/README.md).
 
 Implemented: placement/finite-number/selected call guards, source-pinned nested
@@ -44,3 +44,9 @@ blocks, matching 2/2 native source cases and 6/6 observations, with rollback cov
 Target contexts improve to 3/4; minren's frame timers and subsequent parent-frame-3
 replacement remain errors. Full replacement consumers are still missing: 22/26
 caches and failing build/fingerprint. See r08 for the precise scope and diagnostics.
+
+The r09 audit rejects previously dropped wankai calls and wrapper transfer writes.
+Seven source contexts are now correctly blocked (19/26 cache acceptance). Native
+probes establish live old-reference reads/writes and retirement of an installed
+old callback; full body replacement is still unimplemented. See r09 for exact
+source sites, the newly exposed three fighters, and acceptance failures.

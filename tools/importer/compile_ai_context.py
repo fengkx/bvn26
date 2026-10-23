@@ -458,6 +458,14 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         text=root if frame['frame']==1 else scripts.get(path,'')
         if frame['frame'] != 1:
             for number, statement in enumerate(text.splitlines(), 1):
+                if re.search(r'\bwankai\s*\(', statement):
+                    definition = functions.get('wankai', '')
+                    digest = hashlib.sha256(definition.encode()).hexdigest()
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled form replacement call: "
+                                     f"{statement.strip()}; definition {first_path}#wankai sha256={digest}; "
+                                     "requires wrapper transfer, interval lifetime and parent replacement consumer")
+                if re.search(r'_parent\.中转\b', statement):
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled wrapper transfer: {statement.strip()}")
                 if re.match(r'\s*_parent\.万解\s*[+*/-]?=', statement) and not re.fullmatch(
                         r'_parent\.万解 = (true|false);', statement):
                     raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled parent boolean write: {statement.strip()}")

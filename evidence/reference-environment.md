@@ -93,3 +93,13 @@ actions and non-DoAction root tags remain byte-identical. Godot 4.7.2 matches bo
 conditional cases (six observations); this is not complete form-switch parity.
 Actual programs, native logs and environment hashes are in
 [r08 evidence](importer-loud-fail/r08/README.md).
+
+## Parent live references, r09 (2026-10-23)
+
+The same Flash Debugger 32/Rosetta and JPEXS binaries captured four isolated
+fighter movies with `build_parent_goto_probe.py --live-references`. Only root
+DoAction instrumentation changes; definition and non-action tag hashes remain
+identical. Old-reference writes reach the replacement body, while old fields,
+methods and the installed old enterFrame callback disappear. These are native
+observations, not a Godot replacement parity claim. Programs, hashes and capture
+environments: [r09 evidence](importer-loud-fail/r09/README.md).

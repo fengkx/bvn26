@@ -34,7 +34,9 @@ def non_action_tags(path: Path) -> bytes:
     return b''.join(records)
 
 
-def build(fighter: str, ffdec: Path, output: Path, conditional_frame: int = 0) -> None:
+def build(fighter: str, ffdec: Path, output: Path, conditional_frame: int = 0, live_references: bool = False) -> None:
+    if conditional_frame and live_references:
+        raise ValueError('Conditional and live-reference probes must run separately')
     timeline = json.loads((ROOT / f'godot/generated/fighters/{fighter}/timeline.json').read_text())
     source = ROOT / timeline['source_swf']['path']
     bundle = json.loads((ROOT / str(source.relative_to(ROOT)).replace('game/', 'scripts/', 1).replace('.swf', '.json')).read_text())
@@ -81,6 +83,30 @@ onEnterFrame=function(){
 };
 '''
         frame = conditional_frame
+    if live_references:
+        code = '_root.zhanting=true;\n' + scripts['frame_1/DoAction.as'] + '''
+var __seq=0;var __tick=0;var __old;var __fn;
+function __emit(k,v){trace("AIREF|RUN_ID|"+(__seq++)+"|0|"+__tick+"|0|"+k+"|"+v);}
+onEnterFrame=function(){
+ __tick++;
+ if(__tick==1){
+  __old=mc;mc.__sentinel=73;
+  mc.__probe=function(){return this.__sentinel;};__fn=mc.__probe;
+  mc.onEnterFrame=function(){_root.__emit("old_callback",this.__sentinel);};
+  __emit("before",__fn.call(__old));
+ }else if(__tick==2){
+  mc.gotoAndPlay(SOURCE_FRAME);
+ }else if(__tick==3){
+  __emit("equal",mc===__old);
+  __emit("old_sentinel",__old.__sentinel);
+  __emit("old_method",typeof __old.__probe);
+  __emit("saved_function",__fn.call(__old));
+  __old.khit=37;__emit("write_through_old",mc.khit);
+  mc.khit=41;__emit("read_through_old",__old.khit);
+  mc.onEnterFrame=function(){_root.__emit("new_callback",this.khit);};
+ }else if(__tick>=5){delete onEnterFrame;__emit("done","ok");fscommand("quit");}
+};
+'''
     code = code.replace('RUN_ID', run_id).replace('SOURCE_FRAME', str(frame))
     output.mkdir(parents=True, exist_ok=False)
     patch = output / 'scripts/frame_1/DoAction.as'
@@ -103,6 +129,7 @@ onEnterFrame=function(){
                 'ffdec_sha256': hashlib.sha256(ffdec.read_bytes()).hexdigest(),
                 'probe_source_sha256': hashlib.sha256(code.encode()).hexdigest(),
                 'outputs_sha256': {'game/main.swf': hashlib.sha256(movie.read_bytes()).hexdigest()},
+                'probe_kind': 'live_references' if live_references else 'conditional' if conditional_frame else 'parent_goto',
                 'scope': 'Original root placements and child actions; root observer forces source goto frame with movement paused.'}
     (output / 'build.json').write_text(json.dumps(metadata, indent=2) + '\n')
 
@@ -113,5 +140,6 @@ if __name__ == '__main__':
     parser.add_argument('--ffdec', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--conditional-frame', type=int, default=0)
+    parser.add_argument('--live-references', action='store_true')
     args = parser.parse_args()
-    build(args.fighter, args.ffdec, args.output, args.conditional_frame)
+    build(args.fighter, args.ffdec, args.output, args.conditional_frame, args.live_references)

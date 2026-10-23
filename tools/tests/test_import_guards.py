@@ -99,6 +99,8 @@ class ImportGuardsTests(unittest.TestCase):
     def test_numeric_goto_keeps_absolute_destination_and_rejects_missing_frame(self):
         bundle = json.loads((ROOT / 'scripts/fighter/rukia.json').read_text())
         timeline = json.loads((ROOT / 'godot/generated/fighters/rukia/timeline.json').read_text())
+        # Keep the numeric-goto fixture independent of later form replacement.
+        timeline['frames'] = [f for f in timeline['frames'] if f['frame'] <= 150]
         event = compile_context(bundle, timeline)['frame_calls']['141'][0]
         self.assertEqual((event['op'], event['target_frame'], event['play']),
                          ('timeline_goto_frame', 130, True))
