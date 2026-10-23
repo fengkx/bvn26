@@ -159,6 +159,9 @@ def content_inputs() -> tuple[list[Path], dict[str, list[str]]]:
     # stage source directories; hash the shipped copies as well.
     for shared in (GODOT / "generated/music", GODOT / "generated/stages/current_world"):
         paths.extend(files_under(shared))
+    forms = GODOT / 'generated/forms'
+    if forms.is_dir():
+        paths.extend(files_under(forms))
     return paths, names
 
 
@@ -169,7 +172,7 @@ def make_documents() -> tuple[dict[str, object], dict[str, object]]:
         validate_build_controls(data, relative(timeline))
         validate_build_placements(data, relative(timeline))
         if timeline.parent.parent == GODOT / "generated/fighters":
-            validate_cached_frame_calls(data, load_json(timeline.with_name('ai.json')))
+            validate_cached_frame_calls(data, load_json(timeline.with_name('ai.json')), directory=timeline.parent)
     protocol_text = MATCHMAKING_PROTOCOL.read_text(encoding="utf-8")
     protocol_match = re.search(r"export\s+const\s+VERSION\s*=\s*(\d+)", protocol_text)
     if not protocol_match:

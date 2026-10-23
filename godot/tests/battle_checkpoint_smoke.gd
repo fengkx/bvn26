@@ -89,6 +89,11 @@ func _run() -> void:
 	assert(not battle.checkpoint._snapshots.has(expired_key), "Expired node retention was not released")
 	assert(not battle.checkpoint._snapshot_graphs.has(expired_key), "Expired graph retention was not released")
 	assert(not battle.load_state(initial).is_empty(), "Expired checkpoint was accepted")
+	# Release the two deliberately started MP3 playbacks before quitting the fixture.
+	for player in game.find_children("*", "AudioStreamPlayer", true, false):
+		player.stop()
+		player.stream = null
+	await process_frame
 	Fixture.dispose(game, battle)
 	await process_frame
 	print("BATTLE_CHECKPOINT_SMOKE_OK rejects=frame_build_graph_byte_graph_length_graph_type_version_foreign_expired cow=true raw_bytes=true")

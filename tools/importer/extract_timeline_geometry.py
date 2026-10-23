@@ -12,7 +12,7 @@ from typing import Any
 
 from visual_blend_modes import validate_blend_mode
 from visual_filters import compile_filters
-from import_guards import finite_numbers, validate_placement
+from import_guards import finite_numbers, validate_placement, validate_wrapper_fields
 from visual_control_guard import ROOT, validate_nested_controls
 from bitmap_shape_polygon import bitmap_shape_fill_polygons, bitmap_shape_polygon
 
@@ -363,7 +363,7 @@ def build_frames(tags: list[ET.Element], source: str = "timeline") -> list[dict[
     frames: list[dict[str, Any]] = []
     for tag in tags:
         tag_type = tag.attrib.get("type", "")
-        if tag_type in ("PlaceObject2Tag", "PlaceObject3Tag"):
+        if tag_type.startswith("PlaceObject"):
             delta = placement_delta(tag, f"{source}/frame_{len(frames) + 1}/depth_{tag.get('depth')}")
             depth = delta["depth"]
             if delta["move"]:
@@ -420,7 +420,7 @@ def build_frames(tags: list[ET.Element], source: str = "timeline") -> list[dict[
 
 
 def extract_wrapper_placement(
-    root: ET.Element, sprite_id: int
+    root: ET.Element, sprite_id: int, source: str = "timeline"
 ) -> dict[str, Any] | None:
     """Root PlaceObject that mounts the extracted sprite, usually named `mc`.
 
@@ -433,18 +433,24 @@ def extract_wrapper_placement(
         if tag_type == "ShowFrameTag":
             frame += 1
             continue
-        if tag_type not in ("PlaceObject2Tag", "PlaceObject3Tag"):
+        if not tag_type.startswith("PlaceObject"):
             continue
+        location = f"{source}/root/frame_{frame}/depth_{tag.get('depth')}"
+        if tag_type not in ("PlaceObject2Tag", "PlaceObject3Tag"):
+            validate_placement(tag, location)
         if int(tag.attrib.get("characterId", -1)) != sprite_id:
             continue
-        delta = placement_delta(tag)
+        delta = placement_delta(tag, location)
+        validate_wrapper_fields(delta, location)
         wrapper: dict[str, Any] = {
             "name": str(delta.get("name", "")),
             "character_id": sprite_id,
             "root_frame": frame,
             "depth": int(delta["depth"]),
         }
-        for key in ("matrix", "blend_mode"):
+        # The selected wrapper mounts a DefineSprite, so ratio is metadata,
+        # not a request to interpolate a morph shape. Preserve it for auditing.
+        for key in ("matrix", "blend_mode", "ratio"):
             if key in delta:
                 wrapper[key] = delta[key]
         return wrapper
@@ -493,7 +499,7 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
     if sprite_id is None:
         result["timeline"] = "root"
     else:
-        wrapper = extract_wrapper_placement(root, sprite_id)
+        wrapper = extract_wrapper_placement(root, sprite_id, str(xml_path))
         if wrapper is not None:
             result["wrapper"] = wrapper
     result["definitions"] = referenced_definitions(root, frames)

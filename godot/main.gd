@@ -86,6 +86,9 @@ var source_child_frames: Array[Dictionary] = []
 var player_body_services: AiCombatServices
 var training_timer: Timer
 var recorded_training_timers := false
+var recorded_form_timers := false
+var source_root_intervals: SourceRootIntervals
+var source_form_root_values: Dictionary = {}
 
 # main.swf DefineSprite 1745 frames 2-9 after shinemc.cmc.gotoAndPlay(2).
 const SHINE_ALPHA_TERMS: PackedInt32Array = [114, 100, 85, 71, 57, 43, 28, 14]
@@ -1234,14 +1237,19 @@ func _ko_clear_interval(interval_name: String) -> void:
 		"timeset":
 			if countdown != null: countdown.stop()
 		"airanset":
+			if source_root_intervals != null:
+				source_root_intervals.clear_interval("airanset")
 			if opponent_driver != null:
 				ichigo.ai_random_clock.cancel()
+		"feiint", "feiint2":
+			if source_root_intervals != null:
+				source_root_intervals.clear_interval(interval_name)
 		"kcint":
 			if battle_intro != null:
 				battle_intro.polling = false
 		_:
 			# These source intervals have no native registrations in this slice.
-			assert(interval_name in ["timeset", "xtset", "scrnset", "feiint", "feiint2"])
+			assert(interval_name in ["timeset", "xtset", "scrnset"])
 
 
 func _ko_nextfight() -> void:
@@ -1329,6 +1337,7 @@ func _start_combat_drivers() -> void:
 	add_child(player_body_driver)
 	player_body_driver.configure(naruto, naruto.fighter_directory + "/player_controller", platforms,
 		naruto._ground_y, game_world.map_size_x, player_body_services.invoke, source_callbacks)
+	_configure_fighter_forms(naruto, player_body_driver)
 	opponent_driver = AiCpuDriver.new()
 	add_child(opponent_driver)
 	opponent_input_context = null
@@ -1341,6 +1350,7 @@ func _start_combat_drivers() -> void:
 	opponent_driver.controller.context.use_ai = session.p2cpu
 	if opponent_input_context != null:
 		opponent_driver.controller.key_reader = opponent_input_context.source_key
+	_configure_fighter_forms(ichigo, opponent_driver)
 	opponent_driver.body.updateDirect()
 	opponent_driver.begin_display_tick(physics_tick)
 	# Loaded helper timelines retain their place between the fighter bodies
@@ -1351,6 +1361,63 @@ func _start_combat_drivers() -> void:
 	if session.p2cpu:
 		opponent_driver.start_random(source_random, session.ai_level)
 
+
+
+func _helper_source_power(helper: HelperRuntime) -> Variant:
+	if helper == null:
+		return null
+	assert(helper._combat.get("attacks") is Dictionary, "Missing compiled helper gjl")
+	var power := {}
+	var fields := {"damage": "pw", "impact_strength": "zl", "vertical_impulse": "up",
+		"horizontal_impulse": "x", "hitstun_ms": "tm", "reaction_label": "dz"}
+	# These are the source gjl suffixes consumed by updateGJL(). Preserve only
+	# authored properties; an absent optional property stays undefined.
+	for attack: String in helper._combat.attacks:
+		var record: Dictionary = helper._combat.attacks[attack]
+		for field: String in fields:
+			if record.has(field):
+				power[attack + fields[field]] = record[field]
+	return power
+
+
+func _prepare_form_root_owner() -> void:
+	if source_root_intervals != null:
+		return
+	source_root_intervals = SourceRootIntervals.new()
+	source_root_intervals.recorded = recorded_form_timers
+	add_child(source_root_intervals)
+	source_form_root_values = {"difficulty": session.ai_level, "root_y": position.y, "maxhp": session.maxhp,
+		"helper_power:p1": _helper_source_power(naruto_helper),
+		"helper_power:p2": _helper_source_power(ichigo_helper),
+		"body_paths": {"/game/p1/mc": weakref(naruto), "/game/p2/mc": weakref(ichigo)}}
+	for key: String in GameSession.P1_SLOTS + GameSession.P2_SLOTS:
+		assert(session.codes.has(key), "Missing source key binding: " + key)
+		source_form_root_values["key:" + key] = session.codes[key]
+
+
+func _configure_fighter_forms(fighter: FighterRuntime, driver: Node) -> void:
+	var path := fighter.fighter_directory.path_join("form_profiles.json")
+	if not FileAccess.file_exists(path):
+		return
+	var manifest: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	assert(manifest is Dictionary and manifest.get("format") == "bvn26-form-profiles-v1",
+		"Malformed form profile manifest: " + path)
+	assert(manifest.get("source_swf_sha256") == fighter.ai_source_state.spec.source_swf.sha256,
+		"Form profile source mismatch: " + path)
+	assert(manifest.get("parent_frame") == 1 and manifest.get("profiles") is Dictionary
+		and not manifest.profiles.is_empty(), "Missing compiled form profiles: " + path)
+	_prepare_form_root_owner()
+	# configure_forms preflights actual profiles/assets and required BODY
+	# functions. A manifest is an activation contract, not an unchecked switch.
+	driver.configure_forms(manifest.profiles, source_root_intervals, source_form_root_values, 1)
+
+
+func _stop_form_root_intervals() -> void:
+	if source_root_intervals != null:
+		source_root_intervals.clear()
+		source_root_intervals.queue_free()
+		source_root_intervals = null
+	source_form_root_values.clear()
 
 
 func _next_source_frame_sequence() -> int:
@@ -1386,6 +1453,7 @@ func _on_helper_spawn_requested(fighter: FighterRuntime) -> void:
 
 func _stop_combat_drivers() -> void:
 	_stop_training_recovery()
+	_stop_form_root_intervals()
 	for helper in [naruto_helper, ichigo_helper]:
 		if is_instance_valid(helper):
 			if helper.source_child_frame_requested.is_connected(_queue_source_child_frame):
@@ -1708,6 +1776,8 @@ func _apply_root_position(axis: String, operator: String, pixels: float) -> void
 		"+=": position[index] += pixels
 		"-=": position[index] -= pixels
 		_: assert(false, "Uncompiled root position assignment")
+	if axis == "y" and not source_form_root_values.is_empty():
+		source_form_root_values["root_y"] = position.y
 
 
 func _setup_screen_flash() -> void:

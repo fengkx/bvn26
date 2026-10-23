@@ -224,6 +224,46 @@ def compile_body(bundle: dict, sprite: int, *, player: bool = False, form_callba
                   'source_sha256': hashlib.sha256(source.encode()).hexdigest()}
 
 
+def compile_player_body(bundle: dict, sprite: int, timeline: dict, *,
+                        form_callbacks: bool = False, form_helpers: bool = False) -> tuple[str, dict]:
+    code, metadata = compile_body(bundle, sprite, player=True,
+                                  form_callbacks=form_callbacks, form_helpers=form_helpers)
+    metadata['input_mode'] = 'source_player_branches_preserved'
+    hooks = []
+    for script in bundle['scripts']:
+        if not script['path'].startswith(f'DefineSprite_{timeline["sprite_id"]}/'):
+            continue
+        compact = re.sub(r'\s+', '', script['source'])
+        motion = re.fullmatch(
+            r'onClipEvent\(enterFrame\)\{if\(_root\.zhanting==false\)\{'
+            r'if\(_parent\._parent\._xscale>0\)\{_parent\._parent\._x\+=Math\.round\(_parent\.speed/(\d+)\);\}'
+            r'else\{_parent\._parent\._x-=Math\.round\(_parent\.speed/\1\);\}\}\}', compact)
+        if '_parent.beidax(' not in script['source'] and not motion:
+            continue
+        match = re.fullmatch(r'onClipEvent\(enterFrame\)\{\s*_parent.beidax\((true)?\);\s*\}\s*', script['source'])
+        placement = re.fullmatch(r'DefineSprite_\d+/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
+        if (not match and not motion) or not placement:
+            raise ValueError('Unsupported player hurt callback: ' + script['path'])
+        frame, controller_id, depth = map(int, placement.groups())
+        members = [item['frame'] for item in timeline['frames'] if any(
+            p.get('character_id') == controller_id and p['depth'] == depth and p['placed_frame'] == frame
+            for p in item['display_list'])]
+        if not members:
+            raise ValueError('Missing player hurt placement: ' + script['path'])
+        operation = {'flying': bool(match[1])} if match else {}
+        if motion:
+            method = f'placement_frame_{frame}_depth_{depth}'
+            callback = script['source'].replace('\r\n', '\n').split('\n', 1)[1].rsplit('}', 1)[0]
+            callback = callback.replace('_parent._parent.', '_parent.').replace('_parent.speed', 'value("speed")')
+            code += compile_function(method, '', callback, player=True)
+            operation = {'body_method': method, 'body_args': [], 'scope_binding': 'controller_parent_is_body'}
+        hooks.append({'path': script['path'], 'method': 'enter_frame', 'depth': depth,
+                      'placement_frame': frame, 'member_frames': members,
+                      **operation, 'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest()})
+    metadata['hurt_hooks'] = hooks
+    return code, metadata
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--fighter', default='yihu')
@@ -236,40 +276,8 @@ def main() -> None:
     timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())
     code, metadata = compile_body(bundle, timeline['sprite_id'], player=args.player, form_callbacks=args.form_callbacks, form_helpers=args.form_helpers)
     if args.player:
-        metadata['input_mode'] = 'source_player_branches_preserved'
-        timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())
-        hooks = []
-        for script in bundle['scripts']:
-            if not script['path'].startswith(f'DefineSprite_{timeline["sprite_id"]}/'):
-                continue
-            compact = re.sub(r'\s+', '', script['source'])
-            motion = re.fullmatch(
-                r'onClipEvent\(enterFrame\)\{if\(_root\.zhanting==false\)\{'
-                r'if\(_parent\._parent\._xscale>0\)\{_parent\._parent\._x\+=Math\.round\(_parent\.speed/(\d+)\);\}'
-                r'else\{_parent\._parent\._x-=Math\.round\(_parent\.speed/\1\);\}\}\}', compact)
-            if '_parent.beidax(' not in script['source'] and not motion:
-                continue
-            match = re.fullmatch(r'onClipEvent\(enterFrame\)\{\s*_parent.beidax\((true)?\);\s*\}\s*', script['source'])
-            placement = re.fullmatch(r'DefineSprite_\d+/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
-            if (not match and not motion) or not placement:
-                raise ValueError('Unsupported player hurt callback: ' + script['path'])
-            frame, controller_id, depth = map(int, placement.groups())
-            members = [item['frame'] for item in timeline['frames'] if any(
-                p.get('character_id') == controller_id and p['depth'] == depth and p['placed_frame'] == frame
-                for p in item['display_list'])]
-            if not members:
-                raise ValueError('Missing player hurt placement: ' + script['path'])
-            operation = {'flying': bool(match[1])} if match else {}
-            if motion:
-                method = f'placement_frame_{frame}_depth_{depth}'
-                callback = script['source'].replace('\r\n', '\n').split('\n', 1)[1].rsplit('}', 1)[0]
-                callback = callback.replace('_parent._parent.', '_parent.').replace('_parent.speed', 'value("speed")')
-                code += compile_function(method, '', callback, player=True)
-                operation = {'body_method': method, 'body_args': [], 'scope_binding': 'controller_parent_is_body'}
-            hooks.append({'path': script['path'], 'method': 'enter_frame', 'depth': depth,
-                          'placement_frame': frame, 'member_frames': members,
-                          **operation, 'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest()})
-        metadata['hurt_hooks'] = hooks
+        code, metadata = compile_player_body(bundle, timeline['sprite_id'], timeline,
+                                            form_callbacks=args.form_callbacks, form_helpers=args.form_helpers)
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output / 'body.gd').write_text(code)
     (args.output / 'body.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')

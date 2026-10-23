@@ -53,6 +53,9 @@ def finite_numbers(value, source: str) -> None:
 
 
 def validate_placement(tag: Element, source: str) -> None:
+    kind = tag.get('type')
+    if kind is not None and kind not in ('PlaceObject2Tag', 'PlaceObject3Tag'):
+        raise ValueError(f'{source}: unsupported placement tag {kind}')
     if tag.get('bitmapCache', '0') not in ('0', '1'):
         raise ValueError(f'{source}: unsupported bitmapCache={tag.get("bitmapCache")}')
     for name, value in tag.attrib.items():
@@ -125,6 +128,14 @@ def validate_placement(tag: Element, source: str) -> None:
                 except ValueError as error:
                     raise ValueError(f'{source}: invalid numeric {child_name}.{field}={value}') from error
                 finite_numbers(number, f'{source}/{child_name}/{field}')
+
+
+def validate_wrapper_fields(placement: dict, source: str) -> None:
+    # TimelinePreview consumes the wrapper matrix and blend group only. These
+    # fields have child-placement implementations, but no wrapper consumer.
+    for field in ('filters', 'color_transform', 'cache_as_bitmap', 'clip_depth'):
+        if field in placement:
+            raise ValueError(f'{source}: unsupported wrapper placement field {field}')
 
 
 def allowed_frame_source(bundle: dict, path: str, source: str, form_frame: int) -> bool:

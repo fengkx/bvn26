@@ -40,6 +40,6 @@ const MAIN_EXTERNAL := [
 	"_diagnostic_watchdog_elapsed_ms",
 	"_diagnostic_stall_reported",
 	"diagnostic_input_provider",
-	"recorded_training_timers",
+	"recorded_training_timers", "recorded_form_timers", "source_root_intervals", "source_form_root_values",
 ]
 const EXTERNAL_FIELDS := ["diagnostics", "diagnostic_runtime"]

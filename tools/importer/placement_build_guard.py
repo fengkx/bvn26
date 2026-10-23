@@ -6,9 +6,9 @@ from pathlib import Path
 import re
 
 if __package__:
-    from .import_guards import finite_numbers
+    from .import_guards import finite_numbers, validate_wrapper_fields
 else:
-    from import_guards import finite_numbers
+    from import_guards import finite_numbers, validate_wrapper_fields
 
 
 def placement_requirements(reports: list[dict]) -> dict:
@@ -23,7 +23,8 @@ def placement_requirements(reports: list[dict]) -> dict:
                 continue
             records.append({'sprite': int(match[2] or 0), 'frame': int(match[3]), **failure})
         catalog[report['sha256']] = {'swf': report['source_swf'], 'records': records, 'obligations': report.get('placement_obligations', []),
-                                  'clip_action_obligations': report.get('clip_action_obligations', [])}
+                                  'clip_action_obligations': report.get('clip_action_obligations', []),
+                                  'wrapper_obligations': report.get('wrapper_obligations', [])}
     return catalog
 
 
@@ -35,6 +36,19 @@ def validate_build_placements(timeline: dict, source: str) -> None:
         digest = visual['_xml_sources'].get(timeline.get('source_xml', {}).get('sha256'))
     if digest not in catalog:
         raise ValueError(f'{source}: missing placement audit for source SWF {digest}')
+    for obligation in catalog[digest].get('wrapper_obligations', []):
+        if obligation['character_id'] == timeline['sprite_id']:
+            validate_wrapper_fields(obligation['fields'],
+                f"{source}: {catalog[digest]['swf']}/root/frame_{obligation['frame']}/depth_{obligation['depth']}")
+    wrapper = timeline.get('wrapper')
+    if wrapper:
+        wrapper_source = (f"{source}: {catalog[digest]['swf']}/root/"
+                          f"frame_{wrapper['root_frame']}/depth_{wrapper['depth']}")
+        validate_wrapper_fields(wrapper, wrapper_source)
+        for obligation in catalog[digest].get('obligations', []):
+            if (obligation['sprite'] == 0 and obligation['frame'] == wrapper['root_frame']
+                    and obligation['depth'] == wrapper['depth']):
+                validate_wrapper_fields(obligation['fields'], wrapper_source)
     root_frames = {frame['frame'] for frame in timeline['frames']}
     nested = {d['character_id'] for d in timeline['definitions'] if d['type'] == 'DefineSpriteTag'}
     for record in catalog[digest]['records']:

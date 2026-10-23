@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 
 from compile_ai_context import compile_context
+from audit_form_profiles import audit_form_manifest
 from frame_call_guard import calls_digest, validate_cached_frame_calls
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -38,9 +39,14 @@ def audit() -> dict:
         row = {'source': source, 'timeline': str(path.relative_to(ROOT))}
         key = f"{bundle['swf_sha256']}:{timeline['sprite_id']}"
         try:
-            compiled = compile_context(bundle, timeline)
+            form_contract = None
+            if path.with_name('form_profiles.json').is_file():
+                form_contract = audit_form_manifest(path.parent, bundle)
+            compiled = compile_context(bundle, timeline, form_replacement=form_contract is not None)
             requirements[key] = {'source': source, 'frames': {frame: calls_digest(calls)
                                  for frame, calls in compiled['frame_calls'].items()}}
+            if form_contract is not None:
+                requirements[key]['form_profile_contract'] = form_contract
             if compiled.get('parent_initial_values'):
                 requirements[key]['parent_initial_values'] = compiled['parent_initial_values']
             row['compile_status'] = 'passed'
@@ -50,7 +56,7 @@ def audit() -> dict:
                 for frame in sorted(set(compiled['frame_calls']) | set(cached.get('frame_calls', {})), key=int)
                 if compiled['frame_calls'].get(frame, []) != cached.get('frame_calls', {}).get(frame, [])]
             try:
-                validate_cached_frame_calls(timeline, cached, requirements)
+                validate_cached_frame_calls(timeline, cached, requirements, directory=path.parent)
                 row['cache_status'] = 'passed'
             except ValueError as error:
                 row.update(cache_status='failed', cache_error=str(error))

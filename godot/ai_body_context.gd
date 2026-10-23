@@ -32,7 +32,8 @@ func configure_source(metadata: Dictionary, platforms: Dictionary) -> void:
 
 func read_field(key: String) -> Variant:
 	match key:
-		"hp": return fighter.health
+		"hp": return fighter.health if fighter.source_body_available and fighter.source_health_defined else null
+		"ql": return fighter.energy if fighter.source_body_available else null
 		"vecx": return fighter.body_forward_velocity
 		"heavy": return fighter.body_heavy
 		"depth": return fighter.display_depth
@@ -48,13 +49,15 @@ func read_field(key: String) -> Variant:
 		"mapSizeX": return map_size_x
 		"floorY": return floor_y
 	if key in _scalar_fields and key != "ql":
-		return fighter.ai_source_state.read_field(key)
+		return fighter.ai_source_state.read_field(key) if fighter.source_body_available else null
 	return super.read_field(key)
 
 
 func write_field(key: String, value: Variant) -> void:
 	match key:
-		"hp": fighter.health = float(value)
+		"hp":
+			fighter.health = float(value)
+			fighter.source_health_defined = true
 		"ql": fighter.energy = float(value)
 		"vecx": fighter.body_forward_velocity = float(value)
 		"opponent_x": fighter.opponent.source_x = float(value)
@@ -153,12 +156,17 @@ func _external(name: String, args: Array) -> Variant:
 
 
 func maximum_health() -> float:
+	if form_context != null:
+		assert(form_context.root_values.has("maxhp"), "Missing root maxhp binding")
+		return float(form_context.root_values["maxhp"])
 	return fighter.max_health
 
 
 func call_live_body_function(method: StringName, arguments: Array) -> Variant:
 	# Saved source closures keep their code, but an unqualified method lookup
 	# resolves against the body currently occupying the wrapper's mc path.
+	if form_context != null:
+		return form_context.body_reference.call_current(method, arguments)
 	var current: RefCounted = fighter.source_body
 	assert(current != null and current.has_method(method), "Uncompiled live BODY function: " + str(method))
 	return current.callv(method, arguments)

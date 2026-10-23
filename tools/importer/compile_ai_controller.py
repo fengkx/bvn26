@@ -16,7 +16,7 @@ from source_instance_key import instance_key
 
 from compile_ai_predicates import (
     ROOT, NAMES, DISPATCH_NAMES, FIELDS, FUNCTION, expression, compile_source, controller_script,
-    controller_aliases, OPPONENT,
+    controller_aliases, OPPONENT, AVM1_RELATIONAL,
 )
 from compile_ai_context import controller_scope_fields
 from build_combat_model import (
@@ -87,14 +87,14 @@ CALLS = {
     'bdfyxg()': 'pass # Source guard-effect call has no receiver argument.',
     'bdfyxg2()': 'pass # Source guard-effect call has no receiver argument.',
 }
-def source_expression(source: str, locals_: set[str], scope_fields: set[str], call_aliases=None) -> str:
+def source_expression(source: str, locals_: set[str], scope_fields: set[str], call_aliases=None, *, avm1_comparisons: bool = False) -> str:
     for field in sorted(scope_fields, key=len, reverse=True):
         source = re.sub(
             rf'(?<![.\w])_parent\.{re.escape(field)}\b',
             f'value({json.dumps(field)})',
             source,
         )
-    return expression(source, locals_, call_aliases)
+    return expression(source, locals_, call_aliases, avm1_comparisons=avm1_comparisons)
 
 
 def compile_body(
@@ -105,7 +105,11 @@ def compile_body(
     unbound_calls=(),
     scope_fields: set[str] | None = None,
     call_aliases=None,
+    avm1_comparisons: bool = False,
 ) -> str:
+    def translate(source, locals_, fields, aliases):
+        return source_expression(source, locals_, fields, aliases, avm1_comparisons=avm1_comparisons)
+
     params_list = [x.strip() for x in params.split(',') if x.strip()]
     locals_ = LOCALS | set(params_list)
     source_fields = scope_fields or set()
@@ -140,22 +144,22 @@ def compile_body(
         indent = '\t' * depth
         translated = []
         if line.startswith('if(') and line.endswith(')'):
-            translated = ['if truth(' + source_expression(line[3:-1], locals_, source_fields, call_aliases) + '):']
+            translated = ['if truth(' + translate(line[3:-1], locals_, source_fields, call_aliases) + '):']
         elif line.startswith('else if(') and line.endswith(')'):
-            translated = ['elif truth(' + source_expression(line[8:-1], locals_, source_fields, call_aliases) + '):']
+            translated = ['elif truth(' + translate(line[8:-1], locals_, source_fields, call_aliases) + '):']
         elif line == 'else':
             translated = ['else:']
         elif line.startswith('return ') and line.endswith(';'):
-            translated = ['return ' + source_expression(line[7:-1], locals_, source_fields, call_aliases)]
+            translated = ['return ' + translate(line[7:-1], locals_, source_fields, call_aliases)]
         elif match := re.fullmatch(r'var (\w+)(?: = (.+))?;', line):
             local, initial = match.groups()
             locals_.add(local)
-            translated = [f'var {local}: Variant = ' + (source_expression(initial,locals_,source_fields, call_aliases) if initial else 'null')]
+            translated = [f'var {local}: Variant = ' + (translate(initial,locals_,source_fields, call_aliases) if initial else 'null')]
         elif match := re.fullmatch(r'(.+?) (\+=|-=|=) (.+);', line):
             target, op, rhs = match.groups()
-            value = source_expression(rhs,locals_,source_fields, call_aliases)
+            value = translate(rhs,locals_,source_fields, call_aliases)
             if op != '=':
-                value = f'(number({source_expression(target,locals_,source_fields, call_aliases)}) {op[0]} number({value}))'
+                value = f'(number({translate(target,locals_,source_fields, call_aliases)}) {op[0]} number({value}))'
             if target in locals_:
                 translated = [f'{target} = {value}']
             elif target in FIELDS:
@@ -164,14 +168,14 @@ def compile_body(
                 raise ValueError(f'Unsupported assignment in {name}: {line}')
         elif match := re.fullmatch(r'_parent.gotoAnd(Play|Stop)\((.+)\);', line):
             mode, destination = match.groups()
-            translated = ['adapter.goto_label(' + source_expression(destination,locals_,source_fields, call_aliases) + ', ' + str(mode=='Play').lower() + ')',
+            translated = ['adapter.goto_label(' + translate(destination,locals_,source_fields, call_aliases) + ', ' + str(mode=='Play').lower() + ')',
                           'if not adapter.controller_alive():', '\treturn null']
         elif line[:-1] in CALLS and line.endswith(';'):
             translated = [CALLS[line[:-1]]]
         elif match := re.fullmatch(r'_parent\._parent\.(moveX|moveY)\((.+)\);', line):
-            translated = [f'adapter.move_axis("{match[1]}", ' + source_expression(match[2],locals_,source_fields, call_aliases) + ')']
+            translated = [f'adapter.move_axis("{match[1]}", ' + translate(match[2],locals_,source_fields, call_aliases) + ')']
         elif match := re.fullmatch(r'_parent\.(fangyux|beidax)\((.*)\);', line):
-            args = source_expression(match[2],locals_,source_fields, call_aliases) if match[2] else ''
+            args = translate(match[2],locals_,source_fields, call_aliases) if match[2] else ''
             translated = [f'adapter.body_call("{match[1]}", [{args}])',
                           'if not adapter.controller_alive():', '\treturn null']
         elif match := re.fullmatch(r'(fangyux|beidax)\((.*)\);', line):
@@ -182,7 +186,7 @@ def compile_body(
         elif match := re.fullmatch(r'(\w+)\((.*)\);',line):
             if match[1] not in {*NAMES,*DISPATCH_NAMES}:
                 raise ValueError(f'Unsupported call in {name}: {line}')
-            translated = [source_expression(line[:-1],locals_,source_fields, call_aliases)]
+            translated = [translate(line[:-1],locals_,source_fields, call_aliases)]
             if match[1] in DISPATCH_NAMES:
                 translated += ['if not adapter.controller_alive():','\treturn null']
         else:
@@ -290,7 +294,7 @@ def nested_controller_source(bundle: dict, symbol: int) -> tuple[dict, dict[str,
     return script, {m[1]: (m[2], m[3]) for m in FUNCTION.finditer(source)}
 
 
-def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: bool = False) -> tuple[str,dict]:
+def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: bool = False, form_replacement: bool = False) -> tuple[str,dict]:
     swf = ROOT / bundle['game_file']
     if hashlib.sha256(swf.read_bytes()).hexdigest() != bundle['swf_sha256']:
         raise ValueError('Retained source SWF hash mismatch')
@@ -298,12 +302,12 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         raise ValueError('Controller and timeline do not share the retained source')
     def compile_at(path, name, *args, **kwargs):
         try:
-            return compile_body(name, *args, **kwargs)
+            return compile_body(name, *args, avm1_comparisons=form_replacement, **kwargs)
         except (ValueError, SyntaxError) as error:
             raise ValueError(f"{bundle['game_file']}:{path}#{name}: {error}") from error
 
     controller = controller_script(bundle, sprite)
-    scope_fields = controller_scope_fields(bundle, sprite)
+    scope_fields = controller_scope_fields(bundle, sprite, form_replacement=form_replacement)
     canonical_hash = hashlib.sha256(controller['source'].encode()).hexdigest()
     # Later placements may host a different controller for another source
     # state. They are retained in the source timeline, but this compiled base
@@ -326,6 +330,8 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
     source = controller['source']
     funcs = {m[1]:(m[2],m[3]) for m in FUNCTION.finditer(source.replace('\r\n','\n'))}
     text = '# Generated by tools/importer/compile_ai_controller.py; do not edit.\n' + HEADER
+    if form_replacement:
+        text += AVM1_RELATIONAL
     for name in DISPATCH_NAMES:
         text += compile_at(controller['path'], name,*funcs[name], scope_fields=scope_fields)
     hooks = []

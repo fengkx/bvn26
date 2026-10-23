@@ -29,6 +29,8 @@ def audit_xml(root: ET.Element, source: str) -> dict:
     action_inventory = []
     obligations = []
     clip_obligations = []
+    wrapper_obligations = []
+    wrapper_characters = set()
     definitions = {int(t.get('spriteId')): t for t in root.findall('./tags/item')
                    if t.get('type') == 'DefineSpriteTag'}
     all_definitions = {}
@@ -69,11 +71,20 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                 field_state.pop(tag.get('depth'), None)
                 clip_state.pop(tag.get('depth'), None)
                 display.pop(tag.get('depth'), None)
-            elif kind in ('PlaceObject2Tag', 'PlaceObject3Tag'):
+            elif kind and kind.startswith('PlaceObject'):
                 counts['placements'] += 1
+                counts[f'placement_tag:{kind}'] += 1
                 try:
                     delta = placement_delta(tag, location)
                     depth = tag.get('depth')
+                    character = delta.get('character_id')
+                    if owner == 'root' and character is not None and character not in wrapper_characters:
+                        wrapper_characters.add(character)
+                        fields = {key: delta[key] for key in
+                                  ('filters', 'color_transform', 'cache_as_bitmap', 'clip_depth', 'ratio') if key in delta}
+                        if fields:
+                            wrapper_obligations.append({'character_id': character, 'frame': frame,
+                                                        'depth': int(depth), 'fields': fields})
                     previous = field_state.get(depth, {}) if delta['move'] else {}
                     if not delta['move']:
                         clip_state.pop(depth, None)
@@ -113,7 +124,8 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                     failures.append({'source': location, 'construct': kind, 'error': str(error)})
     return {'source_swf': source, 'counts': dict(sorted(counts.items())),
             'failures': failures, 'placement_obligations': obligations,
-            'clip_action_obligations': clip_obligations, 'nonvisual_action_blocks': action_inventory}
+            'clip_action_obligations': clip_obligations, 'wrapper_obligations': wrapper_obligations,
+            'nonvisual_action_blocks': action_inventory}
 
 
 def skip_sites() -> list[dict]:

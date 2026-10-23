@@ -107,3 +107,10 @@ and `tools/probes/compare_flash_color_arithmetic.py --native-log LOG
 20/24 cases and 92/96 channels are exact. The render script only measures; its
 successful exit does not assert parity. Reproduction commands and the four
 remaining scalar differences are in `evidence/importer-loud-fail/r11/pixels/README.md`.
+
+`color-arithmetic-ramp` extends the scalar diagnostic with 256 source-channel
+values across four matrix configurations at two fill alphas (2,048 native
+samples). `tools/probes/analyze_flash_color_ramp.py --native-log LOG --output JSON`
+validates capture coverage and reports differences from an ideal opaque float
+model. This analysis is not a Godot parity assertion or a proven native rounding
+rule; see `evidence/importer-loud-fail/r12/pixels/README.md`.

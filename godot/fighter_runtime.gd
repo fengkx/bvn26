@@ -62,6 +62,11 @@ signal source_child_frame_requested(operation: Callable)
 # Wrapper fields survive body-state replacement and belong in rollback snapshots.
 var source_parent_values: Dictionary = {}
 var source_body: RefCounted
+var source_body_epoch: int = 0
+var source_body_available: bool = true
+var source_health_defined: bool = true
+var source_parent_frame: int = 1
+var source_power_fields: Dictionary = {}
 var source_projectiles: Dictionary = {}
 
 @export var display_depth: int = 1
@@ -1093,6 +1098,7 @@ func start_action(label: String, reason: String = "runtime_transition") -> void:
 
 
 func _queue_source_frame(frame: int, defer_until_next_tick: bool = false) -> void:
+	assert(source_body_available, "Cannot queue a frame on a retired body")
 	_reconcile_source_name_bindings()
 	_source_frame_execution_serial += 1
 	var entry := {"frame": frame,
@@ -1105,6 +1111,9 @@ func _queue_source_frame(frame: int, defer_until_next_tick: bool = false) -> voi
 
 
 func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) -> void:
+	if not source_body_available:
+		return
+	var body_epoch := source_body_epoch
 	var frame := current_source_frame()
 	if _ai_pending_frames.is_empty() and frame != _ai_state_frame_applied:
 		_queue_source_frame(frame)
@@ -1135,6 +1144,8 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 			events.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
 				return int(left["line"]) < int(right["line"]))
 			for event: Dictionary in events:
+				if body_epoch != source_body_epoch:
+					return
 				if event.has("field"):
 					ai_source_state.apply_write(event)
 					var field := str(event["field"])
@@ -1168,6 +1179,8 @@ func _apply_ai_source_frame(drain_nested: bool = true, initial_limit: int = -1) 
 					hits = int(ai_source_state.read_field("hits"))
 					if hits == 0:
 						last_combo_board = 0
+		if body_epoch != source_body_epoch:
+			return
 		_apply_hit_settlement_frame(pending)
 		# A retained DoAction still runs when a newer callback has changed the
 		# playhead. Source doZhaoHuan frames contain only this call.
@@ -2409,3 +2422,100 @@ func _emit_diagnostic(event_type: String, payload: Dictionary) -> void:
 		event_payload = payload.duplicate(true)
 		event_payload["replay"] = true
 	diagnostic_runtime.call("push_event", event_type, event_payload, diagnostic_tick)
+
+
+func retire_source_body() -> void:
+	# The wrapper survives, but its mc path is vacant until the load/frame phase.
+	# Epoch checks also retire a currently executing old frame's remaining calls.
+	source_body_epoch += 1
+	source_body_available = false
+	source_health_defined = false
+	source_body = null
+	_ai_pending_frames.clear()
+	_source_goto_pending_frames.clear()
+	_source_goto_defer_advance_once = false
+	_ai_state_frame_applied = -1
+	_hit_instances.clear()
+	_stashed_attack.clear()
+	source_projectiles.clear()
+	_source_name_bindings.clear()
+	_instance_local_frames.clear()
+	_instance_local_offsets.clear()
+	_retained_visual_clips.clear()
+	_frames = {}
+	materialize_display()
+
+
+func install_source_profile(profile: Dictionary, load_declarations: Array) -> void:
+	assert(not source_body_available and source_body == null)
+	fighter_directory = profile.directory
+	_timeline = profile.timeline
+	_fighter = profile.fighter
+	_combat = profile.combat
+	_definitions = {}
+	_assets = {}
+	_frames = {}
+	for definition: Dictionary in _timeline.definitions:
+		_definitions[int(definition.character_id)] = definition
+	for asset: Dictionary in profile.assets.assets:
+		_assets[int(asset.character_id)] = asset.path
+	for frame: Dictionary in _timeline.frames:
+		_frames[int(frame.frame)] = frame
+	_sound_segments = profile.sound_segments.frames
+	_nested_sound_segments = profile.sound_segments.get("nested_frames", {})
+	_sound_played_frame = -1
+	_nested_sound_observation_frame = -1
+	_nested_sound_instance_frames.clear()
+	_nested_sound_container_states.clear()
+	_nested_sound_placement_generations.clear()
+	last_sound_ids.clear()
+	last_nested_sound_ids.clear()
+	last_nested_sound_events.clear()
+	hidden_instance_names.clear()
+	_health_events_applied.clear()
+	_presentation_events_applied.clear()
+	_super_events_applied.clear()
+	_clip_placements_applied.clear()
+	_body_warps_applied.clear()
+	_placement_owned.clear()
+	ai_source_state = AiSourceState.new()
+	ai_source_state.spec = profile.ai
+	for field: String in profile.ai.undefined_declarations:
+		ai_source_state.values[field] = null
+	# New PlaceObject load declarations precede this instance's initial frame.
+	for declaration: Dictionary in load_declarations:
+		if declaration.has("binding"):
+			assert(declaration.binding == "Key.isDown" and declaration.field == "kis")
+		else:
+			ai_source_state.values[declaration.field] = declaration.value
+			if declaration.field == "ql":
+				energy = float(declaration.value)
+	ai_source_state.apply_frame(1)
+	# The compiled initial frame assigns scale_X without changing _xscale.
+	assert(profile.ai.form_initialization.wrapper_scale_from_xscale)
+	facing = -1 if scale.x <= 0 else 1
+	assert(profile.ai.form_initialization.wrapper_visible and profile.ai.form_initialization.body_visible)
+	visible = true
+	ai_source_state.values["pn"] = 2 if player_slot == "p1" else 1
+	_ai_hit_transfer = profile.hit_state_script.new(ai_source_state.values)
+	hurt_voice.spec = profile.hurt_voice
+	ai_senses = AiSenses.new()
+	ai_senses.configure(self, profile.ai)
+	_commands = CommandCatalog.new()
+	_commands.load_combat(_combat)
+	source_power_fields = profile.ai.base_power_fields
+	ai_color_state = AiColorState.new()
+	ai_color_state.reset_color()
+	_source_color_mul = Color(1, 1, 1, 1)
+	_source_color_add = Color(0, 0, 0, 0)
+	_source_color_matrix.clear()
+	for field in ["bs", "hited", "beida", "sw", "hits"]:
+		if ai_source_state.values.get(field) != null:
+			set(field, ai_source_state.values[field])
+	source_body_available = true
+	timeline_playing = true
+	_current_frame = 1
+	_ai_state_frame_applied = 1
+	for label: String in _frames[1].labels:
+		_set_ai_action_label(label)
+	play_source_frame(1)

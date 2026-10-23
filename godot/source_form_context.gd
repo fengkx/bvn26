@@ -7,10 +7,15 @@ var root_values: Dictionary
 var transfer: Dictionary = {}
 var wrapper_name: String
 var dispatch: Callable
+var body_reference: SourceBodyReference
 
 
-func _init(owner_fighter: FighterRuntime, intervals: SourceRootIntervals,
-		shared_root_values: Dictionary, source_name: String, effects: Callable) -> void:
+func _init(owner_fighter: FighterRuntime = null, intervals: SourceRootIntervals = null,
+		shared_root_values: Dictionary = {}, source_name: String = "", effects: Callable = Callable()) -> void:
+	if owner_fighter == null:
+		# Rollback allocates the object graph before reconnecting its fields.
+		assert(intervals == null and shared_root_values.is_empty() and source_name.is_empty() and not effects.is_valid())
+		return
 	assert(intervals != null and effects.is_valid())
 	assert(source_name in ["p1", "p2"])
 	fighter = owner_fighter
@@ -18,6 +23,11 @@ func _init(owner_fighter: FighterRuntime, intervals: SourceRootIntervals,
 	root_values = shared_root_values
 	wrapper_name = source_name
 	dispatch = effects
+	if not root_values.has("body_paths"):
+		root_values["body_paths"] = {}
+	var path := "/game/" + source_name + "/mc"
+	root_values.body_paths[path] = weakref(fighter)
+	body_reference = SourceBodyReference.new(root_values.body_paths, path)
 
 
 func read_field(key: String) -> Variant:

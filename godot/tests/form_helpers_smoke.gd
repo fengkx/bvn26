@@ -42,7 +42,7 @@ func _run() -> void:
 		var intervals := SourceRootIntervals.new()
 		intervals.recorded = true
 		root.add_child(intervals)
-		var root_values := {"root_y": 17, "difficulty": 3}
+		var root_values := {"root_y": 17, "maxhp": 1000, "difficulty": 3}
 		var root_keys := ["w", "s", "a", "d", "j", "k", "l", "u", "i", "o", "上箭", "下箭", "左箭", "右箭", "N1", "N2", "N3", "N4", "N5", "N6"]
 		for index in root_keys.size():
 			root_values["key:" + root_keys[index]] = 91 + index

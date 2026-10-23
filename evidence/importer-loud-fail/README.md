@@ -1,7 +1,7 @@
 # Importer loud-fail (Draft PR #48)
 
 The PR is not merge-ready. Current progress and evidence are in
-[r11](r11/README.md); probe reproduction is documented in
+[r12](r12/README.md); probe reproduction is documented in
 [the fixture instructions](../../tools/probes/flash_filters/README.md).
 
 Implemented: placement/finite-number/selected call guards, source-pinned nested
@@ -13,7 +13,7 @@ regressions. Two canonical color groups and two order groups still differ by
 one level; real components match 9/54 images and 4,242/4,242 clocks.
 
 The latest scan lists 34 rejected placements across all 62 locked SWFs, including
-unsupported blend IDs 7/13 and a DropShadowFilter. See r06/locked-swf-audit.json
+unsupported blend IDs 7/13 and a DropShadowFilter. See r12/placements/locked-swf-inventory.json
 for every source and frame. Shipped filter sites are in shipped-filters.json.
 The only harmless allowlist entry is still Byakuya sprite 631 frame 985 in base
 form: exact source/SWF hashes and form scope pin the transformation-disabled
@@ -24,14 +24,16 @@ Source-verified shunbuxg/colored shine and conditional stop/play compilation now
 feed build-time cached frame-call obligations. r05 refreshed 21 valid caches and
 imported XG_rush. r06 implements retained, same-label numeric goto and refreshes
 Rukia: **22/26 caches pass**. Its original 141→130 loop matches 31/31 native
-playhead samples. Four parent/form goto errors continue to block build/fingerprint.
+playhead samples. The stricter r09 audit later exposed three additional wankai paths. r12 wires the
+complete Daitu replacement graph, so current cache acceptance is **20/26**; the
+remaining six form graphs still block build/fingerprint.
 Expression, missing-target and cross-label numeric jumps remain hard errors.
 
 Remaining blockers include color/filter-order and real component parity,
 parent/form switching, XG_rush pixels, complete AS/clip-action ownership, deferred
 context-field differences and complete shipped import acceptance. The original
 game/ and scripts/ inputs remain unchanged. No new intentional stability deviation
-was introduced; new character ports remain paused. See r06 for current acceptance.
+was introduced; new character ports remain paused. See r12 for current acceptance.
 
 The r07 parent-replacement probes record native field reset and observable old
 MovieClip-reference equality for all four sources. Target compilation exposes

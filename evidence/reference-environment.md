@@ -135,3 +135,29 @@ completion event. Godot Compatibility matches20/24 cases exactly; four channels
 still differ by1. Capture metadata, binary/probe hashes and the strict failing
 comparison are in [r11 pixels](importer-loud-fail/r11/pixels/README.md). This is a
 filter arithmetic diagnostic, not a fresh full shipped-component parity capture.
+
+## Replacement lifecycle and absent scalar fields, r12 (2026-10-23)
+
+The same Flash Player Debugger 32 under Rosetta and JPEXS binaries were used
+for fresh original-body replacement observations and the packaged
+`build_missing_form_fields_probe.py`. Five missing-field captures contain 26
+observations and five completion events. Original Sasuke 1019/128 increments
+absent khitn to NaN; its original 135 callback does not jump until khitn is
+explicitly seeded to zero. Original Yihu 1180/143 uses Less2 followed by Not:
+absent nn satisfies the compiled >= branch and the original callback reaches
+frame 151. The captures preserve original nested scripts and placement tags;
+root instrumentation and paused/controlled inputs are recorded in
+[r12 missing fields](importer-loud-fail/r12/missing-fields/README.md).
+
+The additional packaged ColorMatrix arithmetic ramp recorded 2,048 channel
+samples (17 events). It narrows the rounding investigation but does not establish
+a replacement shader algorithm or close the remaining pixel differences; see
+[r12 pixel measurements](importer-loud-fail/r12/pixels/README.md). No parity
+tolerance was changed.
+
+Fresh Daitu `--observe-frames` sampling establishes the two distinct replacement
+paths: real wankai reaches parent/body 2/1292, while the direct parent goto with
+the flag false reaches 2/2. The production consumer, Main activation and rollback
+checks are documented in [r12 forms](importer-loud-fail/r12/forms/README.md);
+[capture environment](importer-loud-fail/r12/forms/native-daitu/capture-environment.json)
+records the native run. This is lifecycle/state evidence, not pixel parity.
