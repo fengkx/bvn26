@@ -59,6 +59,8 @@ signal source_frame_changed(frame: int)
 signal source_frame_script_boundary(frame: int, entering: bool)
 signal source_child_frame_requested(operation: Callable)
 
+# Wrapper fields survive body-state replacement and belong in rollback snapshots.
+var source_parent_values: Dictionary = {}
 var source_body: RefCounted
 var source_projectiles: Dictionary = {}
 
@@ -174,6 +176,7 @@ func _ready() -> void:
 	_combat = _read_json("%s/combat.json" % fighter_directory)
 	hurt_voice.spec = _read_json("%s/hurt_voice.json" % fighter_directory)
 	var ai_model := _read_json("%s/ai.json" % fighter_directory)
+	source_parent_values = ai_model.get("parent_initial_values", {}).duplicate(true)
 	ai_source_state.configure(ai_model)
 	_ai_hit_transfer = load("%s/ai_hit_state.gd" % fighter_directory).new(ai_source_state.values)
 	ai_senses.configure(self, ai_model)
@@ -269,6 +272,16 @@ func goto_ai_label(label: String, play: bool) -> void:
 	_queue_source_frame(_action_start)
 	_expire_absent_hit_instances()
 	last_event = "action_%s" % label
+
+
+func read_parent_field(key: String) -> Variant:
+	assert(source_parent_values.has(key), "Uncompiled parent field: " + key)
+	return source_parent_values[key]
+
+
+func write_parent_field(key: String, value: Variant) -> void:
+	assert(source_parent_values.has(key) and value is bool, "Uncompiled parent field write: " + key)
+	source_parent_values[key] = value
 
 
 func source_goto_frame(frame: int, play: bool) -> void:

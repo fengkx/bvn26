@@ -23,6 +23,8 @@ def validate_cached_frame_calls(timeline: dict, cached: dict, catalog: dict | No
         raise ValueError(expected['error'])
     if cached.get('source_swf') != timeline['source_swf'] or cached.get('sprite_id') != timeline['sprite_id']:
         raise ValueError(f'{source}: cached frame-call source identity mismatch')
+    if calls_digest([cached.get('parent_initial_values', {})]) != calls_digest([expected.get('parent_initial_values', {})]):
+        raise ValueError(f'{source}:frame_1/DoAction.as: dropped/changed parent initial values')
     actual_calls = cached.get('frame_calls', {})
     for frame in sorted(set(actual_calls) | set(expected['frames']), key=int):
         wanted = expected['frames'].get(frame, calls_digest([]))

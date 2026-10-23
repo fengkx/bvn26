@@ -212,7 +212,7 @@ class MoveCasesTest(unittest.TestCase):
         root = PROBES.parents[1]
         bundle = json.loads((root / 'scripts/fighter/minren.json').read_text())
         timeline = json.loads((root / 'data/slices/minren-base.timeline.json').read_text())
-        with self.assertRaisesRegex(ValueError, r'minren.swf.*frame_1382.*uncompiled frame call'):
+        with self.assertRaisesRegex(ValueError, r'minren.swf.*frame_1381.*uncompiled frame timer'):
             compiler.compile_context(bundle, timeline)
         # This unit checks frame 538, not the unsupported parent transformation.
         timeline = {**timeline, 'frames': [f for f in timeline['frames'] if f['frame'] in (1, 538)]}

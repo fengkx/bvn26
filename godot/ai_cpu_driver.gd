@@ -271,6 +271,14 @@ func _frame_service(event: Dictionary) -> void:
 		"opponent_visibility":
 			fighter.ai_predicate_context.write_field("opponent_visible", event["value"])
 			return
+		"parent_frame_field":
+			fighter.write_parent_field(event["field_name"], event["value"])
+			return
+		"parent_conditional_frame":
+			if fighter.read_parent_field(event["field_name"]) == event["value"]:
+				for call in event["calls"]:
+					_frame_service(call)
+			return
 		"frame_field":
 			var key: String = event["field_name"]
 			var value: Variant = event["value"]

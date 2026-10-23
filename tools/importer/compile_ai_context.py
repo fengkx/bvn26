@@ -243,6 +243,14 @@ def controller_scope_fields(bundle: dict, sprite: int) -> set[str]:
 
 
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
+    parent = re.fullmatch(
+        r'if\(_parent\.(\w+) == (true|false)\)\s*\{\s*'
+        r'_root\.(cbsw|bsw)\(pn\);\s*bs = 0;\s*\}\s*', text)
+    if parent:
+        return [{'op': 'parent_conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'field_name': parent[1], 'value': json.loads(parent[2]),
+                 'calls': [{'op': 'super_end', 'kind': parent[3]},
+                           {'op': 'frame_field', 'field_name': 'bs', 'operator': '=', 'value': 0}]}]
     control = re.fullmatch(
         r'if\((\w+) == (true|false|-?\d+)\)\s*\{\s*(stop|play)\(\);\s*\}\s*', text)
     if control and control[1] in FIELDS:
@@ -353,6 +361,20 @@ def root_child_effect(name: str) -> dict:
             'wrapper_sha256': hashlib.sha256(source.encode()).hexdigest()}
 
 
+def parent_initial_values(bundle: dict, frame_calls: dict) -> dict:
+    scripts = {item['path']: item['source'] for item in bundle['scripts']}
+    parent_fields = {event['field_name'] for calls in frame_calls.values() for event in calls
+                     if event['op'] in ('parent_frame_field', 'parent_conditional_frame')}
+    parent_state = {}
+    for field in sorted(parent_fields):
+        declaration = re.findall(rf'^var {re.escape(field)} = (true|false);$',
+                                 scripts['frame_1/DoAction.as'].replace('\r\n', '\n'), re.M)
+        if len(declaration) != 1:
+            raise ValueError(f"{bundle['game_file']}:frame_1/DoAction.as: missing/ambiguous parent boolean initializer: {field}")
+        parent_state[field] = json.loads(declaration[0])
+    return parent_state
+
+
 def compile_context(bundle: dict,timeline: dict) -> dict:
     if hashlib.sha256((ROOT/bundle['game_file']).read_bytes()).hexdigest()!=bundle['swf_sha256']:
         raise ValueError('Retained source hash mismatch')
@@ -434,6 +456,13 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
     for frame in timeline['frames']:
         path=f'DefineSprite_{sprite}/frame_{frame["frame"]}/DoAction.as'
         text=root if frame['frame']==1 else scripts.get(path,'')
+        if frame['frame'] != 1:
+            for number, statement in enumerate(text.splitlines(), 1):
+                if re.match(r'\s*_parent\.万解\s*[+*/-]?=', statement) and not re.fullmatch(
+                        r'_parent\.万解 = (true|false);', statement):
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled parent boolean write: {statement.strip()}")
+                if re.search(r'\bsetInterval\s*\(', statement):
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled frame timer: {statement.strip()}")
         scalar_text = hit_test_pattern.sub(lambda match: ' ' * len(match[0]), text.replace('\r\n', '\n'))
         events=writes(scalar_text,path,controller_scope_fields=scoped_fields)
         if frame['frame'] == 1 and any(event['field'] in ('inited', '_lastX') for event in events):
@@ -520,6 +549,10 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif face:
                 calls.append({'op':'show_face','face_label':face[1],
                               'path':path,'line':number,'frame':frame['frame']})
+            elif parent_write := re.fullmatch(r'_parent\.(万解) = (true|false);', line):
+                calls.append({'op': 'parent_frame_field', 'field_name': parent_write[1],
+                              'value': json.loads(parent_write[2]), 'path': path,
+                              'line': number, 'frame': frame['frame']})
             elif parent_jump := re.fullmatch(r'_parent.gotoAnd(Play|Stop)\((\d+)\);', line):
                 location = f"{bundle['game_file']}:{path}:{number}"
                 requirement = parent_form_requirement(bundle, int(parent_jump[2]), location)
@@ -588,10 +621,11 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             if frame['frame'] != 1 and owned and len(calls) == before and not allowed_frame_source(
                     bundle, path, text, form_frame):
                 # Whole-block conditional compilation already owns its calls.
-                if not any(event.get('op') == 'conditional_frame' for event in calls):
+                if not any(event.get('op') in ('conditional_frame', 'parent_conditional_frame') for event in calls):
                     raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled frame call: {line}")
         if calls:
             frame_calls[str(frame['frame'])]=calls
+    parent_state = parent_initial_values(bundle, frame_calls)
     hit=functions['onBeHit0']
     if re.search(r'\b(if|else|while|for)\b',hit):
         raise ValueError('onBeHit0 is no longer unconditional')
@@ -618,6 +652,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             'undefined_declarations':declarations,'controller_scope_fields':sorted(scoped_fields),
             'frame_writes':frame_writes,
             'frame_calls':frame_calls,
+            **({'parent_initial_values': parent_state} if parent_state else {}),
             'function_writes':{'onBeHit0':hit_writes},
             'random_refresh':{'interval_ms':int(interval[1]),'difficulty_multiplier':int(multiplier[2]),
                               'assignments':random_writes,'init_path':first_path+'#initCtrl',

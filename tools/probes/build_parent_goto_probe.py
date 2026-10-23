@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 import struct
@@ -33,7 +34,7 @@ def non_action_tags(path: Path) -> bytes:
     return b''.join(records)
 
 
-def build(fighter: str, ffdec: Path, output: Path) -> None:
+def build(fighter: str, ffdec: Path, output: Path, conditional_frame: int = 0) -> None:
     timeline = json.loads((ROOT / f'godot/generated/fighters/{fighter}/timeline.json').read_text())
     source = ROOT / timeline['source_swf']['path']
     bundle = json.loads((ROOT / str(source.relative_to(ROOT)).replace('game/', 'scripts/', 1).replace('.swf', '.json')).read_text())
@@ -58,6 +59,28 @@ onEnterFrame=function(){
  if(__tick>=4){delete onEnterFrame;__emit("done","ok");fscommand("quit");}
 };
 '''
+    if conditional_frame:
+        loads = [re.fullmatch(r'frame_2/PlaceObject[23]_(\d+)_1/CLIPACTIONRECORD onClipEvent\(load\)\.as', p) for p in scripts]
+        targets = [int(m[1]) for m in loads if m]
+        if len(targets) != 1:
+            raise ValueError('Expected one source parent-frame-2 body')
+        target_path = f'DefineSprite_{targets[0]}/frame_{conditional_frame}/DoAction.as'
+        expected = 'if(_parent.万解==true){_root.cbsw(pn);bs=0;}'
+        if re.sub(r'\s+', '', scripts.get(target_path, '')) != expected:
+            raise ValueError('Not the reviewed parent conditional: ' + target_path)
+        code = '_root.zhanting=true;\n' + scripts['frame_1/DoAction.as'] + '''
+var __seq=0;var __tick=0;
+function __emit(k,v){trace("AIREF|RUN_ID|"+(__seq++)+"|0|"+__tick+"|0|"+k+"|"+v);}
+cbsw=function(pn){__emit("super_end",mc.bs);};
+onEnterFrame=function(){
+ __tick++;
+ if(__tick==1){gotoAndStop(2);}
+ if(__tick==2){万解=false;mc.bs=91;mc.gotoAndPlay(SOURCE_FRAME);}
+ if(__tick==3){__emit("false_result",mc.bs);万解=true;mc.bs=91;mc.gotoAndPlay(SOURCE_FRAME);}
+ if(__tick==4){__emit("true_result",mc.bs);delete onEnterFrame;__emit("done","ok");fscommand("quit");}
+};
+'''
+        frame = conditional_frame
     code = code.replace('RUN_ID', run_id).replace('SOURCE_FRAME', str(frame))
     output.mkdir(parents=True, exist_ok=False)
     patch = output / 'scripts/frame_1/DoAction.as'
@@ -74,7 +97,8 @@ onEnterFrame=function(){
         raise ValueError('Native probe changed original non-action root tags')
     metadata = {'non_action_tags_sha256': hashlib.sha256(non_action_tags(source)).hexdigest(), 'run_id': run_id, 'source': str(source.relative_to(ROOT)),
                 'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
-                'source_call_path': sites[0][0], 'source_call': sites[0][1],
+                'source_call_path': target_path if conditional_frame else sites[0][0],
+                'source_call': scripts[target_path] if conditional_frame else sites[0][1],
                 'definitions_sha256': hashlib.sha256(original).hexdigest(),
                 'ffdec_sha256': hashlib.sha256(ffdec.read_bytes()).hexdigest(),
                 'probe_source_sha256': hashlib.sha256(code.encode()).hexdigest(),
@@ -88,5 +112,6 @@ if __name__ == '__main__':
     parser.add_argument('--fighter', required=True, choices=['daitu', 'minren', 'sasuke', 'yihu'])
     parser.add_argument('--ffdec', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--conditional-frame', type=int, default=0)
     args = parser.parse_args()
-    build(args.fighter, args.ffdec, args.output)
+    build(args.fighter, args.ffdec, args.output, args.conditional_frame)

@@ -41,6 +41,8 @@ def audit() -> dict:
             compiled = compile_context(bundle, timeline)
             requirements[key] = {'source': source, 'frames': {frame: calls_digest(calls)
                                  for frame, calls in compiled['frame_calls'].items()}}
+            if compiled.get('parent_initial_values'):
+                requirements[key]['parent_initial_values'] = compiled['parent_initial_values']
             row['compile_status'] = 'passed'
             row['changed_frame_calls'] = [
                 {'frame': frame, 'expected': compiled['frame_calls'].get(frame, []),

@@ -1,0 +1,92 @@
+[
+  {
+    "source": "game/fighter/minren.swf",
+    "swf_sha256": "3640d0ea2355cc07b648b75c4f6022cb1c4477748ea0b719307d8072a32f4c2d",
+    "path": "DefineSprite_1293/frame_996/DoAction.as",
+    "source_text": "if(_parent.万解 == true)\r\n{\r\n   _root.cbsw(pn);\r\n   bs = 0;\r\n}\r\n",
+    "calls": [
+      {
+        "op": "parent_conditional_frame",
+        "path": "DefineSprite_1293/frame_996/DoAction.as",
+        "line": 1,
+        "frame": 996,
+        "field_name": "万解",
+        "value": true,
+        "calls": [
+          {
+            "op": "super_end",
+            "kind": "cbsw"
+          },
+          {
+            "op": "frame_field",
+            "field_name": "bs",
+            "operator": "=",
+            "value": 0
+          }
+        ]
+      }
+    ],
+    "parent_initial_values": {
+      "万解": false
+    },
+    "expected": [
+      {
+        "event": "false_result",
+        "bs": 91
+      },
+      {
+        "event": "super_end",
+        "bs": 91
+      },
+      {
+        "event": "true_result",
+        "bs": 0
+      }
+    ]
+  },
+  {
+    "source": "game/fighter/Sasuke.swf",
+    "swf_sha256": "c413d7c4d840d99deedc22778ee9a6383263b8ecd2e77a6c0712ca2a166c73f6",
+    "path": "DefineSprite_1019/frame_1024/DoAction.as",
+    "source_text": "if(_parent.万解 == true)\r\n{\r\n   _root.cbsw(pn);\r\n   bs = 0;\r\n}\r\n",
+    "calls": [
+      {
+        "op": "parent_conditional_frame",
+        "path": "DefineSprite_1019/frame_1024/DoAction.as",
+        "line": 1,
+        "frame": 1024,
+        "field_name": "万解",
+        "value": true,
+        "calls": [
+          {
+            "op": "super_end",
+            "kind": "cbsw"
+          },
+          {
+            "op": "frame_field",
+            "field_name": "bs",
+            "operator": "=",
+            "value": 0
+          }
+        ]
+      }
+    ],
+    "parent_initial_values": {
+      "万解": false
+    },
+    "expected": [
+      {
+        "event": "false_result",
+        "bs": 91
+      },
+      {
+        "event": "super_end",
+        "bs": 91
+      },
+      {
+        "event": "true_result",
+        "bs": 0
+      }
+    ]
+  }
+]

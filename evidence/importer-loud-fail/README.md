@@ -1,7 +1,7 @@
 # Importer loud-fail (Draft PR #48)
 
 The PR is not merge-ready. Current progress and evidence are in
-[r07](r07/README.md); probe reproduction is documented in
+[r08](r08/README.md); probe reproduction is documented in
 [the fixture instructions](../../tools/probes/flash_filters/README.md).
 
 Implemented: placement/finite-number/selected call guards, source-pinned nested
@@ -38,3 +38,9 @@ MovieClip-reference equality for all four sources. Target compilation exposes
 additional parent-scoped 万解 condition blocks at minren 1293/996 and Sasuke
 1019/1024. Strict load-dependency records and precise errors are implemented;
 the runtime consumers are not. Cache acceptance remains 22/26, build remains red.
+
+The r08 parent-flag owner now executes the reviewed conditional super-end/body-write
+blocks, matching 2/2 native source cases and 6/6 observations, with rollback coverage.
+Target contexts improve to 3/4; minren's frame timers and subsequent parent-frame-3
+replacement remain errors. Full replacement consumers are still missing: 22/26
+caches and failing build/fingerprint. See r08 for the precise scope and diagnostics.

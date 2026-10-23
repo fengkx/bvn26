@@ -83,3 +83,13 @@ frame containing the parent goto. All non-DoAction root tags and original nested
 definitions are byte-identical. The captures record native behavior only; there
 is no matching Godot form-switch consumer yet. See
 [r07 evidence](importer-loud-fail/r07/README.md) for raw traces and environment hashes.
+
+## Parent conditional owner, r08 (2026-10-23)
+
+The same Flash Debugger 32/Rosetta and JPEXS 26.2.1 captured the original minren
+1293/996 and Sasuke 1019/1024 parent-flag conditional blocks. Root instrumentation
+sets the parent flag and intercepts cbsw to record pre-write bs; original nested
+actions and non-DoAction root tags remain byte-identical. Godot 4.7.2 matches both
+conditional cases (six observations); this is not complete form-switch parity.
+Actual programs, native logs and environment hashes are in
+[r08 evidence](importer-loud-fail/r08/README.md).

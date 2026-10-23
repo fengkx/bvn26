@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh only audited frame calls; preserve separately owned cached fields."""
+"""Refresh audited frame calls and their parent initial values; preserve other cached fields."""
 import argparse
 import json
 from pathlib import Path
@@ -24,9 +24,13 @@ def refresh(write: bool = False) -> list[dict]:
             if any(previous.get(k) != compiled[k] for k in ('source_swf', 'sprite_id')):
                 raise ValueError(f'{source}: cached context source identity mismatch')
             updated = {**previous, 'frame_calls': compiled['frame_calls']}
+            if compiled.get('parent_initial_values'):
+                updated['parent_initial_values'] = compiled['parent_initial_values']
+            else:
+                updated.pop('parent_initial_values', None)
             validate_cached_frame_calls(timeline, updated)
             row.update(status='passed', changed=updated != previous,
-                       deferred_fields=[k for k in compiled if k != 'frame_calls' and compiled[k] != previous.get(k)])
+                       deferred_fields=[k for k in compiled if k not in ('frame_calls', 'parent_initial_values') and compiled[k] != previous.get(k)])
             if write and updated != previous:
                 path.write_text(json.dumps(updated, ensure_ascii=False, indent=2) + '\n')
         except ValueError as error:
