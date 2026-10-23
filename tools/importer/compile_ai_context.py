@@ -519,6 +519,20 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif face:
                 calls.append({'op':'show_face','face_label':face[1],
                               'path':path,'line':number,'frame':frame['frame']})
+            elif numeric_jump := re.fullmatch(r'gotoAnd(Play|Stop)\((\d+)\);', line):
+                target = int(numeric_jump[2])
+                if target not in frames_by_number:
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: numeric goto target {target} is not retained")
+                # Cross-label numeric jumps need the destination action metadata
+                # consumer as well as a playhead change. Reject until verified.
+                label_starts = sorted(int(f['frame']) for f in timeline['frames'] if f.get('labels'))
+                source_span = max((n for n in label_starts if n <= frame['frame']), default=1)
+                target_span = max((n for n in label_starts if n <= target), default=1)
+                if source_span != target_span:
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: numeric goto across label spans is unimplemented: {target}")
+                calls.append({'op': 'timeline_goto_frame', 'target_frame': target,
+                              'play': numeric_jump[1] == 'Play',
+                              'path': path, 'line': number, 'frame': frame['frame']})
             elif jump:
                 calls.append({'op':'timeline_goto','label':jump[2],'play':jump[1]=='Play',
                               'path':path,'line':number,'frame':frame['frame']})

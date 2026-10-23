@@ -64,3 +64,12 @@ player executable hash and capture metadata are in
 [r05 evidence](importer-loud-fail/r05/README.md). Godot 4.7.2 Compatibility
 matches 21 entered source frames, but sampled RGB still differs. The timer-based
 phase experiment is explicitly not used as the native frame oracle.
+
+## Rukia numeric goto, r06 (2026-10-23)
+
+The locked Flash Player Debugger 32.0.0.465/Rosetta and JPEXS 26.2.1 captured
+an isolated Rukia body with its original definition tags and frame actions.
+Godot 4.7.2 matches all 31 sampled playheads across the original 141→130 loop.
+This is a paused-movement playhead experiment, not whole-combat equivalence.
+Build hashes, source, raw trace and capture environment are in
+[r06 evidence](importer-loud-fail/r06/README.md).

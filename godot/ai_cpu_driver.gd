@@ -311,6 +311,9 @@ func _frame_service(event: Dictionary) -> void:
 				"_cgap": fighter.ai_color_state.gap = int(event["value"])
 				_: assert(false, "Uncompiled color field")
 			return
+		"timeline_goto_frame":
+			controller.goto_frame(int(event["target_frame"]), bool(event["play"]))
+			return
 		"timeline_goto":
 			controller.goto_label(event["label"], event["play"])
 			return

@@ -271,6 +271,18 @@ func goto_ai_label(label: String, play: bool) -> void:
 	last_event = "action_%s" % label
 
 
+func source_goto_frame(frame: int, play: bool) -> void:
+	assert(_frames.has(frame), "Uncompiled numeric source frame: %d" % frame)
+	timeline_playing = play
+	if current_source_frame() == frame:
+		return
+	# Numeric jumps enter the exact source frame, without replaying the label
+	# prefix or resetting gameplay fields owned by skipped frame scripts.
+	play_source_frame(frame)
+	_queue_source_frame(frame)
+	_expire_absent_hit_instances()
+
+
 func source_goto_label(label: String, play: bool, defer_frame_script: bool = false) -> void:
 	# Controller MovieClip.gotoAndStop/gotoAndPlay changes the playhead and
 	# queues the destination frame script. It does not synthesize a fighter

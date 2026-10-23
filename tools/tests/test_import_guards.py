@@ -86,7 +86,7 @@ class ImportGuardsTests(unittest.TestCase):
         for call in ('_root.bsd();', '_root.bsd(other);', '_root.showFace(pn, name);',
                      'followMc(target);', 'updateDirect(1);', 'resColor(1);',
                      '_root.touchFloorEffect(other);', '_root.bsd(pn); extra();',
-                     'gotoAndPlay(130);', 'gotoAndStop(frame + 1);', 'stop(1);',
+                     'gotoAndPlay(speed * 18);', 'gotoAndStop(frame + 1);', 'stop(1);',
                      'child.gotoAndPlay(130);', 'child.stop();', 'child.play();',
                      '_root.shunbuxg(other);', '_root.shine(color);'):
             bundle = json.loads((ROOT / 'scripts/fighter/didala.json').read_text())
@@ -95,6 +95,22 @@ class ImportGuardsTests(unittest.TestCase):
             with self.subTest(call=call), self.assertRaisesRegex(
                     ValueError, r'didala.swf.*frame_34.*uncompiled frame call'):
                 compile_context(bundle, timeline)
+
+    def test_numeric_goto_keeps_absolute_destination_and_rejects_missing_frame(self):
+        bundle = json.loads((ROOT / 'scripts/fighter/rukia.json').read_text())
+        timeline = json.loads((ROOT / 'godot/generated/fighters/rukia/timeline.json').read_text())
+        event = compile_context(bundle, timeline)['frame_calls']['141'][0]
+        self.assertEqual((event['op'], event['target_frame'], event['play']),
+                         ('timeline_goto_frame', 130, True))
+        source = next(s for s in bundle['scripts'] if s['path'] == 'DefineSprite_533/frame_141/DoAction.as')
+        original = source['source']
+        source['source'] = 'gotoAndPlay(145);'
+        with self.assertRaisesRegex(ValueError, r'rukia.swf.*frame_141.*across label spans'):
+            compile_context(bundle, timeline)
+        source['source'] = original
+        timeline['frames'] = [f for f in timeline['frames'] if f['frame'] != 130]
+        with self.assertRaisesRegex(ValueError, r'rukia.swf.*frame_141.*numeric goto target 130 is not retained'):
+            compile_context(bundle, timeline)
 
     def test_shared_rush_wrapper_and_literal_flash_are_compiled(self):
         bundle = json.loads((ROOT / 'scripts/fighter/didala.json').read_text())
