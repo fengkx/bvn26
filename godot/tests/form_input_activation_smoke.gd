@@ -9,10 +9,10 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	for profile: Dictionary in [{"id": "daitu", "name": "带土"}, {"id": "sasuke", "name": "佐助"}, {"id": "rukia", "name": "露其雅"}, {"id": "byakuya", "name": "白哉"}, {"id": "rifagu", "name": "日番谷"}]:
+	for profile: Dictionary in [{"id": "minren", "name": "鸣人"}, {"id": "daitu", "name": "带土"}, {"id": "sasuke", "name": "佐助"}, {"id": "rukia", "name": "露其雅"}, {"id": "byakuya", "name": "白哉"}, {"id": "rifagu", "name": "日番谷"}]:
 		await _case(profile)
-	assert(passed == 5)
-	print("FORM_INPUT_ACTIVATION_OK 5/5 accepted graphs; source_attack_jump energy300 natural_intro real_form_action_and_replacement")
+	assert(passed == 6)
+	print("FORM_INPUT_ACTIVATION_OK 6/6 accepted graphs; source_attack_jump energy300 natural_intro real_form_action_and_replacement")
 	quit()
 
 

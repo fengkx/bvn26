@@ -131,9 +131,9 @@ def validate_placement(tag: Element, source: str) -> None:
 
 
 def validate_wrapper_fields(placement: dict, source: str) -> None:
-    # TimelinePreview consumes the wrapper matrix and blend group only. These
-    # fields have child-placement implementations, but no wrapper consumer.
-    for field in ('filters', 'color_transform', 'cache_as_bitmap', 'clip_depth'):
+    # TimelinePreview consumes wrapper matrix, blend and filters. The remaining
+    # fields still have no wrapper consumer.
+    for field in ('color_transform', 'cache_as_bitmap', 'clip_depth'):
         if field in placement:
             raise ValueError(f'{source}: unsupported wrapper placement field {field}')
 

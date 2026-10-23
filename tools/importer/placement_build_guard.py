@@ -38,6 +38,8 @@ def validate_build_placements(timeline: dict, source: str) -> None:
         raise ValueError(f'{source}: missing placement audit for source SWF {digest}')
     for obligation in catalog[digest].get('wrapper_obligations', []):
         if obligation['character_id'] == timeline['sprite_id']:
+            if 'filters' in obligation['fields'] and timeline.get('wrapper', {}).get('filters') != obligation['fields']['filters']:
+                raise ValueError(f"{source}: dropped/changed wrapper filters: {catalog[digest]['swf']}/root/frame_{obligation['frame']}/depth_{obligation['depth']}")
             validate_wrapper_fields(obligation['fields'],
                 f"{source}: {catalog[digest]['swf']}/root/frame_{obligation['frame']}/depth_{obligation['depth']}")
     wrapper = timeline.get('wrapper')

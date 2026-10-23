@@ -39,9 +39,16 @@ func _run() -> void:
 			if order_test:
 				cx.merge({"hasAddTerms": "true", "redMultTerm": 0, "greenMultTerm": 0,
 					"blueMultTerm": 0, "redAddTerm": 57, "greenAddTerm": 148, "blueAddTerm": 230})
-			renderer._render_placement({"depth": 1, "character_id": 1, "filters": filters,
-				"color_transform": cx},
-				Transform2D.IDENTITY, 1.0, 0, 1)
+			if args.size() > 2 and args[2] == "wrapper":
+				renderer._timeline = {"wrapper": {"filters": filters}}
+				renderer._current_frame = 1
+				renderer._frames = {1: {"display_list": [{"depth": 1, "character_id": 1}]}}
+				renderer._source_color_mul.a = float(opacity) / 100.0
+				renderer.materialize_display()
+			else:
+				renderer._render_placement({"depth": 1, "character_id": 1, "filters": filters,
+					"color_transform": cx},
+					Transform2D.IDENTITY, 1.0, 0, 1)
 			for item in renderer.get_children():
 				renderer.remove_child(item)
 				view.add_child(item)

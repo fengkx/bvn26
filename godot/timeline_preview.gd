@@ -44,6 +44,7 @@ static var _cxform_shader: Shader
 var _source_color_mul := Color(1, 1, 1, 1)
 var _source_color_add := Color(0, 0, 0, 0)
 var _source_color_matrix: Array = []
+var _source_placement_filters_cleared := false
 static var _source_filter_shader: Shader
 static var _blend_shaders: Dictionary = {}
 static var _filter_input_shaders: Dictionary = {}
@@ -530,12 +531,23 @@ func materialize_display() -> void:
 	var frame: Dictionary = _frames[_current_frame]
 	var wrapper := _wrapper_transform()
 	var wrapper_blend := int(_timeline.get("wrapper", {}).get("blend_mode", 1))
+	var filters: Array = [] if _source_placement_filters_cleared else _timeline.get("wrapper", {}).get("filters", [])
 	var first_child := get_child_count()
-	_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
-		0, _source_color_mul, _source_color_add, [], true,
-		1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips)
-	if wrapper_blend not in [0, 1]:
-		_compose_blend_group(first_child, 1.0, 0, wrapper_blend)
+	if not filters.is_empty():
+		# Filter the body cache before its source color transform, like a child
+		# placement. resColor() can retire the authored filter at initialization.
+		_filter_input_depth += 1
+		_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
+			0, Color.WHITE, Color(0, 0, 0, 0), [], true, 1, _retained_visual_clips)
+		_filter_input_depth -= 1
+		_compose_blend_group(first_child, _source_color_mul.a, 0, wrapper_blend,
+			filters, true, _source_color_mul, _source_color_add)
+	else:
+		_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
+			0, _source_color_mul, _source_color_add, [], true,
+			1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips)
+		if wrapper_blend not in [0, 1]:
+			_compose_blend_group(first_child, 1.0, 0, wrapper_blend)
 	queue_redraw()
 
 

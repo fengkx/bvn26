@@ -676,6 +676,7 @@ func apply_ai_colors() -> void:
 
 
 func reset_ai_colors() -> void:
+	_source_placement_filters_cleared = true
 	ai_color_state.reset_color()
 	set_source_color(ai_color_state.transform, ai_color_state.matrix)
 
@@ -2504,6 +2505,7 @@ func install_source_profile(profile: Dictionary, load_declarations: Array) -> vo
 	_commands = CommandCatalog.new()
 	_commands.load_combat(_combat)
 	source_power_fields = profile.ai.base_power_fields
+	_source_placement_filters_cleared = bool(profile.ai.form_initialization.get("clear_placement_filters", false))
 	ai_color_state = AiColorState.new()
 	ai_color_state.reset_color()
 	_source_color_mul = Color(1, 1, 1, 1)

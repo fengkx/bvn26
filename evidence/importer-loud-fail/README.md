@@ -1,7 +1,7 @@
 # Importer loud-fail (Draft PR #48)
 
 The PR is not merge-ready. Current progress and evidence are in
-[r13](r13/README.md); probe reproduction is documented in
+[r14](r14/README.md); probe reproduction is documented in
 [the fixture instructions](../../tools/probes/flash_filters/README.md).
 
 Implemented: placement/finite-number/selected call guards, source-pinned nested
@@ -24,7 +24,7 @@ Source-verified shunbuxg/colored shine and conditional stop/play compilation now
 feed build-time cached frame-call obligations. r05 refreshed 21 valid caches and
 imported XG_rush. r06 implements retained, same-label numeric goto and refreshes
 Rukia: **22/26 caches pass**. Its original 141→130 loop matches 31/31 native
-playhead samples. The stricter r09 audit later exposed three additional wankai paths. r12 wires Daitu; r13 adds Sasuke, Byakuya, rifagu and rukia. Current cache acceptance is **24/26**; Minren and Yihu still block build/fingerprint.
+playhead samples. The stricter r09 audit later exposed three additional wankai paths. r12 wires Daitu; r13 adds Sasuke, Byakuya, rifagu and rukia. r14 adds the complete Minren graph, including authored initial filter clearing. Current cache acceptance is **25/26**; Yihu still blocks build/fingerprint.
 Expression, missing-target and cross-label numeric jumps remain hard errors.
 
 Remaining blockers include color/filter-order and real component parity,

@@ -110,6 +110,15 @@
       "This projects scalar state only; pn binding, doWanKai and updateDirect remain host-owned."
     ]
   },
+  "form_initialization": {
+    "wrapper_scale_from_xscale": true,
+    "wrapper_visible": true,
+    "body_visible": true,
+    "bind_opponent_slot": true,
+    "call_doWanKai": true,
+    "update_direct_unless_transformed": true,
+    "source_sha256": "67ef57fda43786d357ad6f039a63e3ef029de4d6c2eb36e4ce4b147010ed71cf"
+  },
   "main_floor_contact": {
     "comparison": "equal",
     "path": "DefineSprite_764/frame_1/DoAction.as#on_enterframe",
@@ -126,20 +135,21 @@
     ]
   },
   "undefined_declarations": [
+    "_initwudi",
+    "_lastX",
+    "dashX",
+    "dashY",
+    "dashing",
+    "hitBan",
+    "inited",
     "sw",
     "touch",
     "touchFloor",
-    "wudi",
     "wdFrame",
     "wdFrameX",
-    "inited",
-    "_initwudi",
-    "_lastX",
-    "hitBan",
-    "dashing",
-    "dashX",
-    "dashY"
+    "wudi"
   ],
+  "controller_scope_fields": [],
   "frame_writes": {
     "1": [
       {
@@ -723,6 +733,19 @@
         "frame": 13
       }
     ],
+    "21": [
+      {
+        "op": "frame_child_effect",
+        "clip": "XG_rush",
+        "offset_y": 0,
+        "offset_x": 0,
+        "wrapper_path": "scripts/main.json#frame_8/DoAction.as#shunbuxg",
+        "wrapper_sha256": "5eae16c52a3f2826da28105f074e43503ceb215530e313795e3b491a68be2ad1",
+        "path": "DefineSprite_764/frame_21/DoAction.as",
+        "line": 1,
+        "frame": 21
+      }
+    ],
     "35": [
       {
         "op": "timeline_goto",
@@ -906,6 +929,15 @@
         "path": "DefineSprite_764/frame_261/DoAction.as",
         "line": 2,
         "frame": 261
+      }
+    ],
+    "292": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 1403539,
+        "path": "DefineSprite_764/frame_292/DoAction.as",
+        "line": 1,
+        "frame": 292
       }
     ],
     "313": [
@@ -1104,6 +1136,15 @@
         "frame": 542
       }
     ],
+    "545": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 303095,
+        "path": "DefineSprite_764/frame_545/DoAction.as",
+        "line": 1,
+        "frame": 545
+      }
+    ],
     "572": [
       {
         "op": "screen_flash",
@@ -1240,6 +1281,13 @@
         "color_rgb24": 16777215,
         "path": "DefineSprite_764/frame_881/DoAction.as",
         "line": 1,
+        "frame": 881
+      },
+      {
+        "op": "screen_flash",
+        "color_rgb24": 303095,
+        "path": "DefineSprite_764/frame_881/DoAction.as",
+        "line": 2,
         "frame": 881
       }
     ],
@@ -1469,6 +1517,26 @@
         "frame": 1039
       }
     ],
+    "1053": [
+      {
+        "op": "conditional_frame",
+        "path": "DefineSprite_764/frame_1053/DoAction.as",
+        "line": 1,
+        "frame": 1053,
+        "conditions": [
+          {
+            "field": "sw",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "calls": [
+          {
+            "op": "timeline_stop"
+          }
+        ]
+      }
+    ],
     "1069": [
       {
         "op": "timeline_goto",
@@ -1568,7 +1636,167 @@
         "line": 2,
         "frame": 1245
       }
+    ],
+    "1379": [
+      {
+        "path": "DefineSprite_764/frame_1379/DoAction.as",
+        "frame": 1379,
+        "line": 1,
+        "source_sha256": "a6e1b2ef05496363e4632b569c1705af39cdcffd8dd32dd0b24d67498aa89601",
+        "op": "form_prepare_slot",
+        "pn": 2,
+        "zn": 1,
+        "slot": "p1",
+        "selection": "鸣人九尾",
+        "callback": "slot_health"
+      }
+    ],
+    "1380": [
+      {
+        "path": "DefineSprite_764/frame_1380/DoAction.as",
+        "frame": 1380,
+        "line": 1,
+        "source_sha256": "ab6039d82e3ced4a73a67337721e472dc906ef1e3ff7582979c622a5de28a96a",
+        "op": "form_prepare_slot",
+        "pn": 1,
+        "zn": 2,
+        "slot": "p2",
+        "selection": "鸣人九尾",
+        "callback": "slot_health"
+      }
+    ],
+    "1381": [
+      {
+        "path": "DefineSprite_764/frame_1381/DoAction.as",
+        "frame": 1381,
+        "line": 1,
+        "source_sha256": "d6c0dbc6261f8861f667a31e2a69016acb17d2d98891342ce09114b042ac9578",
+        "op": "form_start_interval",
+        "selector_field": "zn",
+        "delay_ms": 1000
+      },
+      {
+        "path": "DefineSprite_764/frame_1381/DoAction.as",
+        "frame": 1381,
+        "line": 1,
+        "source_sha256": "d6c0dbc6261f8861f667a31e2a69016acb17d2d98891342ce09114b042ac9578",
+        "op": "parent_frame_field",
+        "field_name": "万解",
+        "value": true
+      }
+    ],
+    "1382": [
+      {
+        "path": "DefineSprite_764/frame_1382/DoAction.as",
+        "frame": 1382,
+        "line": 1,
+        "source_sha256": "cec97a876ae222f598bab97d7829af7ee183b61e1accb10afcc3f1e2e0d03171",
+        "op": "parent_form_goto",
+        "target_frame": 2,
+        "play": false,
+        "replacement": {
+          "target_parent_frame": 2,
+          "target_body_sprite": 1293,
+          "target_depth": 1,
+          "load_path": "frame_2/PlaceObject2_1293_1/CLIPACTIONRECORD onClipEvent(load).as",
+          "load_sha256": "4960998638bd17ecd4b906571014d6ab33c71c0e9d8ff8875af08db20de2c4d0",
+          "load_declarations": [
+            {
+              "field": "kcplayed",
+              "value": 0,
+              "line": 2
+            },
+            {
+              "field": "movspeed",
+              "value": 0,
+              "line": 3
+            },
+            {
+              "field": "fall",
+              "value": false,
+              "line": 4
+            },
+            {
+              "field": "touch",
+              "value": true,
+              "line": 5
+            },
+            {
+              "field": "sw",
+              "value": false,
+              "line": 6
+            },
+            {
+              "field": "jump",
+              "value": 0,
+              "line": 7
+            },
+            {
+              "field": "khit",
+              "value": 0,
+              "line": 8
+            },
+            {
+              "field": "fan",
+              "value": 0,
+              "line": 9
+            },
+            {
+              "field": "jumped",
+              "value": 1,
+              "line": 10
+            },
+            {
+              "field": "bisha",
+              "value": 0,
+              "line": 11
+            },
+            {
+              "field": "played",
+              "value": 0,
+              "line": 12
+            },
+            {
+              "field": "jhp",
+              "value": 0,
+              "line": 13
+            },
+            {
+              "field": "ql",
+              "value": 0,
+              "line": 14
+            },
+            {
+              "field": "speed",
+              "value": 0,
+              "line": 15
+            },
+            {
+              "field": "kis",
+              "binding": "Key.isDown",
+              "line": 16
+            },
+            {
+              "field": "spd",
+              "value": 8,
+              "line": 17
+            },
+            {
+              "field": "jumpPower",
+              "value": 15,
+              "line": 18
+            }
+          ],
+          "body_init_path": "DefineSprite_1293/frame_1/DoAction.as",
+          "body_init_sha256": "67ef57fda43786d357ad6f039a63e3ef029de4d6c2eb36e4ce4b147010ed71cf",
+          "source_swf_sha256": "3640d0ea2355cc07b648b75c4f6022cb1c4477748ea0b719307d8072a32f4c2d",
+          "status": "requires_replacement_runtime_and_assets"
+        }
+      }
     ]
+  },
+  "parent_initial_values": {
+    "万解": false
   },
   "function_writes": {
     "onBeHit0": [
@@ -1939,6 +2167,7 @@
   },
   "limits": [
     "Conditional body-state writers still require the body runtime adapter.",
+    "Controller-scope increment events require runtime source-state support before integration.",
     "Undefined declarations initialize new instances only; revisiting frame 1 preserves existing values."
   ]
 }

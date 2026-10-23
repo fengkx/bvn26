@@ -454,7 +454,7 @@ def extract_wrapper_placement(
         }
         # The selected wrapper mounts a DefineSprite, so ratio is metadata,
         # not a request to interpolate a morph shape. Preserve it for auditing.
-        for key in ("matrix", "blend_mode", "ratio"):
+        for key in ("matrix", "blend_mode", "ratio", "filters"):
             if key in delta:
                 wrapper[key] = delta[key]
         return wrapper

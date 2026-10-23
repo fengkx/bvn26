@@ -194,3 +194,7 @@ Adobe Flash Player Debugger32, Rosetta, same player application and capture tool
 - [Slot1 capture](importer-loud-fail/r13/forms/native-sasuke-slot1/capture-environment.json): 13 events, complete.
 - [Slot2 capture](importer-loud-fail/r13/forms/native-sasuke-slot2/capture-environment.json): 13 events, complete.
 - [Source bounds and reproduction](importer-loud-fail/r13/forms/source-first.md): parent2/body1017 after initialized replacement, root slot selection and transfer671/234, live reference rebinding, captured direct-health callback ignores wudi, uses root maxhp1500 threshold, and obeys pause. The probe clears the real interval then explicitly invokes the captured original function to isolate callback semantics; it does not measure interval wall-clock phase.
+
+## r14 Minren transfer and initial filter retirement
+
+Native Flash Player Debugger32 (Rosetta), source minren.swf unchanged; root-only probes for both player slots. Capture environment/player hashes are retained in `importer-loud-fail/r14/native-slot1/` and `native-slot2/`. Capture used `tools/probes/capture_native_player.py --allow-window-activation`; reproduce via `tools/probes/build_minren_form_probe.py`. Wrapper GPU comparison used Godot4.7.2 OpenGL/Metal on Apple M2; the exact1,280-channel Glow check is in r14/wrapper.log. No native wall-clock timing claim or new stability deviation.

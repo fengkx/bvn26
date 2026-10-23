@@ -398,7 +398,7 @@ def parent_initial_values(bundle: dict, frame_calls: dict, *, form_replacement: 
     return parent_state
 
 
-def form_initialization(source: str, location: str) -> dict:
+def form_initialization(source: str, location: str, *, placement_filters: bool = False) -> dict:
     top_level = FUNCTION.sub('', source)
     compact = re.sub(r'"(?:\\.|[^"\\])*"|\s+',
                      lambda match: match[0] if match[0].startswith('"') else '', top_level)
@@ -407,9 +407,23 @@ def form_initialization(source: str, location: str) -> dict:
                   'if(!inited){trace("inited");inited=true;_lastX=0;'
                   'pn=_parent._name!="p1"?1:2;doWanKai();'
                   'if(!_parent.万解){updateDirect();}}')
-    if compact.count(statements) != 1:
+    prefix = compact.split(statements, 1)[0]
+    prefix_code = re.sub(r'"(?:\\.|[^"\\])*"', '""', prefix)
+    if (compact.count(statements) != 1 or
+            prefix_code.count('{') != prefix_code.count('}') or
+            (prefix_code and prefix_code[-1] not in ';}')):
         raise ValueError(f'{location}: unsupported replacement initialization/order')
-    return {'wrapper_scale_from_xscale': True, 'wrapper_visible': True,
+    filter_reset = {}
+    if placement_filters:
+        reset = next((m[0] for m in FUNCTION.finditer(source) if m[1] == 'resColor'), '')
+        expected = ('functionresColor(){colors=null;_cgap=1;'
+                    'setColor({ra:100,rb:0,ga:100,gb:0,ba:100,bb:0,aa:100,ab:0});'
+                    '_this.filters=[];}')
+        if re.sub(r'\s+', '', reset) != expected:
+            raise ValueError(f'{location}#resColor: uncompiled placement-filter initialization')
+        filter_reset = {'clear_placement_filters': True,
+                        'filter_reset_source_sha256': hashlib.sha256(reset.encode()).hexdigest()}
+    return {**filter_reset, 'wrapper_scale_from_xscale': True, 'wrapper_visible': True,
             'body_visible': True, 'bind_opponent_slot': True, 'call_doWanKai': True,
             'update_direct_unless_transformed': True,
             'source_sha256': hashlib.sha256(source.encode()).hexdigest()}
@@ -710,7 +724,8 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
             'load_writes':load_writes,'base_power_fields':powers,
             'initialization_state':initialization_state,
             **({'form_initialization': form_initialization(scripts[first_path],
-                 f"{bundle['game_file']}:{first_path}")} if form_replacement else {}),
+                 f"{bundle['game_file']}:{first_path}",
+                 placement_filters=bool(timeline.get("wrapper", {}).get("filters")))} if form_replacement else {}),
             'main_floor_contact':floor_contact,
             'undefined_declarations':declarations,'controller_scope_fields':sorted(scoped_fields),
             'frame_writes':frame_writes,

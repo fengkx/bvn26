@@ -21,8 +21,9 @@ func _run() -> void:
 	var game = load("res://main.tscn").instantiate()
 	root.add_child(game)
 	game.set_physics_process(false)
+	game._replace_selected_actors(["一护", "一护"], ["鼬", "魂"])
 	_check_fighters(game)
-	game._replace_selected_actors(["一护", "鸣人"], ["我爱罗", "魂"])
+	game._replace_selected_actors(["一护", "一护"], ["我爱罗", "魂"])
 	_check_fighters(game)
 	for audio: AudioStreamPlayer in game.find_children("*", "AudioStreamPlayer", true, false):
 		audio.stop()

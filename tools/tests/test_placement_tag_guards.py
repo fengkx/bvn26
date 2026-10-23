@@ -44,10 +44,8 @@ class PlacementTagGuardsTests(unittest.TestCase):
             <surfaceFilterList><item type="BLURFILTER" blurX="0" blurY="0" passes="1"/></surfaceFilterList>
             </item></tags></swf>''')
         self.assertEqual(audit_xml(root, 'fixture.swf')['wrapper_obligations'][0]['character_id'], 345)
-        # A zero-radius filter still implies a cached raster boundary. The
-        # child's filter consumer does not establish wrapper equivalence.
-        with self.assertRaisesRegex(ValueError, 'fixture.swf/root/frame_1/depth_1: unsupported wrapper placement field filters'):
-            extract_wrapper_placement(root, 345, 'fixture.swf')
+        self.assertEqual(extract_wrapper_placement(root, 345, 'fixture.swf')['filters'],
+                         [{'type': 'BLURFILTER', 'blurX': 0.0, 'blurY': 0.0, 'passes': 1}])
 
     def test_cached_wrapper_cannot_bypass_source_filter(self):
         import json
@@ -60,10 +58,10 @@ class PlacementTagGuardsTests(unittest.TestCase):
         timeline = {'source_swf': {'sha256': 'abc'}, 'sprite_id': 345, 'frames': [],
                     'definitions': [], 'wrapper': {'root_frame': 1, 'depth': 1}}
         with patch('placement_build_guard.Path.read_text', return_value=json.dumps(catalog)):
-            with self.assertRaisesRegex(ValueError, 'fixture.swf/root/frame_1/depth_1: unsupported wrapper placement field filters'):
+            with self.assertRaisesRegex(ValueError, 'dropped/changed wrapper filters: fixture.swf/root/frame_1/depth_1'):
                 validate_build_placements(timeline, 'cache.json')
             del timeline['wrapper']
-            with self.assertRaisesRegex(ValueError, 'unsupported wrapper placement field filters'):
+            with self.assertRaisesRegex(ValueError, 'dropped/changed wrapper filters'):
                 validate_build_placements(timeline, 'cache.json')
 
     def test_wrapper_field_error_keeps_root_location(self):
