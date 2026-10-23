@@ -149,3 +149,15 @@ func trace_init(mode: Variant, use_cpu: Variant) -> void:
 func _external(name: String, args: Array) -> Variant:
 	assert(external_call.is_valid(), "Unconnected BODY service: " + name)
 	return external_call.call(name, args)
+
+
+func maximum_health() -> float:
+	return fighter.max_health
+
+
+func call_live_body_function(method: StringName, arguments: Array) -> Variant:
+	# Saved source closures keep their code, but an unqualified method lookup
+	# resolves against the body currently occupying the wrapper's mc path.
+	var current: RefCounted = fighter.source_body
+	assert(current != null and current.has_method(method), "Uncompiled live BODY function: " + str(method))
+	return current.callv(method, arguments)

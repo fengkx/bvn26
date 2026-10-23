@@ -103,3 +103,14 @@ identical. Old-reference writes reach the replacement body, while old fields,
 methods and the installed old enterFrame callback disappear. These are native
 observations, not a Godot replacement parity claim. Programs, hashes and capture
 environments: [r09 evidence](importer-loud-fail/r09/README.md).
+
+## Saved form callbacks, r10 (2026-10-23)
+
+The same Debugger32/Rosetta and JPEXS binaries captured the original initial
+feixue function before/after parent replacement in four fighter movies. Root
+instrumentation controls pause/HP/wudi, temporarily rebinds loseHp, and registers
+a diagnostic repeating delivery wrapper; original definitions/non-action tags
+are unchanged. Saved functions resolve the replacement's current loseHp method.
+Programs,56 observations and per-capture environments are in
+[r10 evidence](importer-loud-fail/r10/README.md). Godot matches48 callback results,
+not full transformation, MovieClip identity or timer phase/cadence parity.

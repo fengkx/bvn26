@@ -151,7 +151,7 @@ def compile_function(name: str, params: str, body: str, extra_calls: frozenset[s
     return '\n'.join(output) + '\n'
 
 
-def compile_body(bundle: dict, sprite: int, *, player: bool = False) -> tuple[str, dict]:
+def compile_body(bundle: dict, sprite: int, *, player: bool = False, form_callbacks: bool = False) -> tuple[str, dict]:
     path = f'DefineSprite_{sprite}/frame_1/DoAction.as'
     if hashlib.sha256((ROOT / bundle['game_file']).read_bytes()).hexdigest() != bundle['swf_sha256']:
         raise ValueError('Retained BODY source hash mismatch')
@@ -184,7 +184,29 @@ def compile_body(bundle: dict, sprite: int, *, player: bool = False) -> tuple[st
         header += '\nfunc source_key(key: String) -> Variant:\n\treturn adapter.source_key(key)\n'
     text = header + ''.join(compile_function(name, *functions[name], extra_calls, player=player) for name in NAMES)
     text += ''.join(compile_function(name, *signature, extra_calls, player=player) for name, signature in callbacks.items())
-    return text, {'status': 'compiled_not_integrated', 'functions': list(NAMES),
+    compiled_names = list(NAMES)
+    if form_callbacks:
+        found = list(re.finditer(r'^feixue = function\(\)\n\{\n(.*?)^\};',
+                             source.replace('\r\n', '\n'), re.M | re.S))
+        callback = found[0] if len(found) == 1 else None
+        root_source = FUNCTION.sub('', source.replace('\r\n', '\n'))
+        receiver_writes = re.findall(r'(?m)^\s*(?:var\s+)?_this\s*=\s*([^;]+);', root_source)
+        if receiver_writes != ['this']:
+            raise ValueError(f"{bundle['game_file']}:{path}: uncompiled callback receiver binding")
+        if callback is None or 'loseHp' not in functions:
+            raise ValueError(f"{bundle['game_file']}:{path}: missing form callback/loseHp implementation")
+        callback_body = callback[1].replace('_this.hp', 'hp').replace('_root.maxhp', 'maximum_health()')
+        callback_body = re.sub(r'\bloseHp\(', 'live_lose_hp(', callback_body)
+        try:
+            text += '\nfunc maximum_health() -> Variant:\n\treturn adapter.maximum_health()\n'
+            text += '\nfunc live_lose_hp(amount: Variant) -> Variant:\n\treturn adapter.call_live_body_function("loseHp", [amount])\n'
+            text += compile_function('loseHp', *functions['loseHp'], player=player)
+            text += compile_function('feixue', '', callback_body,
+                                     frozenset({'live_lose_hp', 'maximum_health'}), player=player)
+        except (ValueError, SyntaxError) as error:
+            raise ValueError(f"{bundle['game_file']}:{path}#feixue/loseHp: {error}") from error
+        compiled_names += ['loseHp', 'feixue']
+    return text, {'status': 'compiled_not_integrated', 'functions': compiled_names,
                   'host_services': sorted(HOST_CALLS), 'callbacks': list(callbacks),
                   'scalar_fields': sorted(FIELDS), 'external_fields': sorted(set(REFS.values())), 'path': path,
                   'source_swf': bundle['game_file'], 'swf_sha256': bundle['swf_sha256'],
@@ -196,10 +218,11 @@ def main() -> None:
     parser.add_argument('--fighter', default='yihu')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--player', action='store_true')
+    parser.add_argument('--form-callbacks', action='store_true')
     args = parser.parse_args()
     bundle = json.loads((ROOT / f'scripts/fighter/{args.fighter}.json').read_text())
     timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())
-    code, metadata = compile_body(bundle, timeline['sprite_id'], player=args.player)
+    code, metadata = compile_body(bundle, timeline['sprite_id'], player=args.player, form_callbacks=args.form_callbacks)
     if args.player:
         metadata['input_mode'] = 'source_player_branches_preserved'
         timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())

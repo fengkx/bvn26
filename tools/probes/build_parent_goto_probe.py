@@ -34,9 +34,9 @@ def non_action_tags(path: Path) -> bytes:
     return b''.join(records)
 
 
-def build(fighter: str, ffdec: Path, output: Path, conditional_frame: int = 0, live_references: bool = False) -> None:
-    if conditional_frame and live_references:
-        raise ValueError('Conditional and live-reference probes must run separately')
+def build(fighter: str, ffdec: Path, output: Path, conditional_frame: int = 0, live_references: bool = False, body_callback: bool = False) -> None:
+    if sum(bool(mode) for mode in (conditional_frame, live_references, body_callback)) > 1:
+        raise ValueError('Parent probe modes must run separately')
     timeline = json.loads((ROOT / f'godot/generated/fighters/{fighter}/timeline.json').read_text())
     source = ROOT / timeline['source_swf']['path']
     bundle = json.loads((ROOT / str(source.relative_to(ROOT)).replace('game/', 'scripts/', 1).replace('.swf', '.json')).read_text())
@@ -107,6 +107,44 @@ onEnterFrame=function(){
  }else if(__tick>=5){delete onEnterFrame;__emit("done","ok");fscommand("quit");}
 };
 '''
+    if body_callback:
+        code = '_root.zhanting=true;\n' + scripts['frame_1/DoAction.as'] + '''
+var __seq=0;var __tick=0;var __fn;var __old;var __interval;var __deliveries=0;
+maxhp=1000;
+function __emit(k,v){trace("AIREF|RUN_ID|"+(__seq++)+"|0|"+__tick+"|0|"+k+"|"+v);}
+function __deliver(tag,health,paused,invulnerable){
+ mc.hp=health;mc.wudi=invulnerable;zhanting=paused;
+ __fn();zhanting=true;__emit(tag,mc.hp);
+}
+onEnterFrame=function(){
+ __tick++;
+ if(__tick==1){
+  __old=mc;__fn=mc.feixue;
+  __interval=setInterval(function(){
+   zhanting=false;__fn();zhanting=true;
+   __emit("interval",mc.hp);
+   if(++__deliveries==2){clearInterval(__interval);delete onEnterFrame;__emit("done","ok");fscommand("quit");}
+  },1000);
+  __deliver("before",500,false,false);
+  __deliver("paused",500,true,false);
+  __deliver("threshold",200,false,false);
+  __deliver("above_threshold",201,false,false);
+  __deliver("invulnerable",500,false,true);
+ }else if(__tick==2){mc.gotoAndPlay(SOURCE_FRAME);
+ }else if(__tick==3){
+  __emit("replaced",mc===__old);
+  __deliver("after",600,false,false);
+  __deliver("after_paused",600,true,false);
+  __deliver("after_threshold",200,false,false);
+  __deliver("after_invulnerable",600,false,true);
+  var __newLoseHp=mc.loseHp;
+  mc.loseHp=function(v){_root.mc.hp-=v*2;};
+  __deliver("rebound_method",600,false,false);
+  mc.loseHp=__newLoseHp;
+  mc.hp=600;mc.wudi=false;
+ }
+};
+'''
     code = code.replace('RUN_ID', run_id).replace('SOURCE_FRAME', str(frame))
     output.mkdir(parents=True, exist_ok=False)
     patch = output / 'scripts/frame_1/DoAction.as'
@@ -129,7 +167,7 @@ onEnterFrame=function(){
                 'ffdec_sha256': hashlib.sha256(ffdec.read_bytes()).hexdigest(),
                 'probe_source_sha256': hashlib.sha256(code.encode()).hexdigest(),
                 'outputs_sha256': {'game/main.swf': hashlib.sha256(movie.read_bytes()).hexdigest()},
-                'probe_kind': 'live_references' if live_references else 'conditional' if conditional_frame else 'parent_goto',
+                'probe_kind': 'body_callback' if body_callback else 'live_references' if live_references else 'conditional' if conditional_frame else 'parent_goto',
                 'scope': 'Original root placements and child actions; root observer forces source goto frame with movement paused.'}
     (output / 'build.json').write_text(json.dumps(metadata, indent=2) + '\n')
 
@@ -141,5 +179,6 @@ if __name__ == '__main__':
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--conditional-frame', type=int, default=0)
     parser.add_argument('--live-references', action='store_true')
+    parser.add_argument('--body-callback', action='store_true')
     args = parser.parse_args()
-    build(args.fighter, args.ffdec, args.output, args.conditional_frame, args.live_references)
+    build(args.fighter, args.ffdec, args.output, args.conditional_frame, args.live_references, args.body_callback)

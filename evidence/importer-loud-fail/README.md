@@ -1,7 +1,7 @@
 # Importer loud-fail (Draft PR #48)
 
 The PR is not merge-ready. Current progress and evidence are in
-[r09](r09/README.md); probe reproduction is documented in
+[r10](r10/README.md); probe reproduction is documented in
 [the fixture instructions](../../tools/probes/flash_filters/README.md).
 
 Implemented: placement/finite-number/selected call guards, source-pinned nested
@@ -50,3 +50,9 @@ Seven source contexts are now correctly blocked (19/26 cache acceptance). Native
 probes establish live old-reference reads/writes and retirement of an installed
 old callback; full body replacement is still unimplemented. See r09 for exact
 source sites, the newly exposed three fighters, and acceptance failures.
+
+The r10 compiled initial feixue callback resolves current body state and methods;
+48/48 native callback observations match across four sources. Repeating timers
+retain captured functions and support strict rollback. This is a component, not
+full form replacement: seven caches remain blocked, root interval ownership and
+target profiles remain unfinished. See r10 for exact scope and acceptance.
