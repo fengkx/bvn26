@@ -54,3 +54,13 @@ or cache placements. Raw captures, source hashes and per-run metadata are in
 tools/probes/capture_native_player.py (component harness delegates to it).
 Direct black-background RGB avoids lossy getPixel32 premultiplication recovery.
 45/54 real component images still differ; these captures do not certify parity.
+
+## XG_rush asset probe, r05 (2026-10-23)
+
+The same Flash Player Debugger 32.0.0.465/Rosetta and JPEXS 26.2.1 captured the
+original XG_rush definition tags through capture_native_player.py. No original
+definition bytes changed during probe import. Native logs, actual probe scripts,
+player executable hash and capture metadata are in
+[r05 evidence](importer-loud-fail/r05/README.md). Godot 4.7.2 Compatibility
+matches 21 entered source frames, but sampled RGB still differs. The timer-based
+phase experiment is explicitly not used as the native frame oracle.

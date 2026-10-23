@@ -649,6 +649,19 @@
         "frame": 13
       }
     ],
+    "21": [
+      {
+        "op": "frame_child_effect",
+        "clip": "XG_rush",
+        "offset_y": 0,
+        "offset_x": 0,
+        "wrapper_path": "scripts/main.json#frame_8/DoAction.as#shunbuxg",
+        "wrapper_sha256": "5eae16c52a3f2826da28105f074e43503ceb215530e313795e3b491a68be2ad1",
+        "path": "DefineSprite_345/frame_21/DoAction.as",
+        "line": 1,
+        "frame": 21
+      }
+    ],
     "35": [
       {
         "op": "timeline_goto",
@@ -802,6 +815,18 @@
         "frame": 241
       }
     ],
+    "250": [
+      {
+        "op": "body_warp",
+        "warp": {
+          "op": "offset_parent_x_by_xscale",
+          "xscale_factor": -1.0
+        },
+        "path": "DefineSprite_345/frame_250/DoAction.as",
+        "line": 1,
+        "frame": 250
+      }
+    ],
     "261": [
       {
         "op": "timeline_goto",
@@ -825,6 +850,15 @@
         "path": "DefineSprite_345/frame_278/DoAction.as",
         "line": 2,
         "frame": 278
+      }
+    ],
+    "288": [
+      {
+        "op": "screen_flash",
+        "color_rgb24": 11382189,
+        "path": "DefineSprite_345/frame_288/DoAction.as",
+        "line": 1,
+        "frame": 288
       }
     ],
     "312": [
@@ -1256,6 +1290,26 @@
         "path": "DefineSprite_345/frame_1074/DoAction.as",
         "line": 1,
         "frame": 1074
+      }
+    ],
+    "1088": [
+      {
+        "op": "conditional_frame",
+        "path": "DefineSprite_345/frame_1088/DoAction.as",
+        "line": 1,
+        "frame": 1088,
+        "conditions": [
+          {
+            "field": "sw",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "calls": [
+          {
+            "op": "timeline_stop"
+          }
+        ]
       }
     ],
     "1104": [
