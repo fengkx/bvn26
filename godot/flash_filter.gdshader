@@ -6,6 +6,7 @@ uniform float blur_size = 1.0;
 uniform sampler2D original_texture : filter_nearest, repeat_disable;
 uniform vec4 glow_color = vec4(1.0);
 uniform float glow_strength = 1.0;
+uniform vec2 shadow_offset = vec2(0.0);
 uniform vec4 row_r = vec4(1.0, 0.0, 0.0, 0.0);
 uniform vec4 row_g = vec4(0.0, 1.0, 0.0, 0.0);
 uniform vec4 row_b = vec4(0.0, 0.0, 1.0, 0.0);
@@ -31,7 +32,17 @@ void fragment() {
         pixel = floor(clamp(sum / max(1.0, blur_size), vec4(0.0), vec4(1.0)) * 255.0 + 0.0001) / 255.0;
     } else if (operation == 1) {
         vec4 base = floor(texture(original_texture, UV) * 255.0 + 0.5);
-        float alpha = clamp(pixel.a * glow_strength, 0.0, 1.0) * glow_color.a;
+        // Native offsets use an 8-bit subpixel phase before bilinear weights.
+        vec2 offset = sign(shadow_offset) * floor(abs(shadow_offset) * 256.0 + 0.5) / 256.0;
+        vec2 fraction = fract(offset);
+        vec3 weights = floor(vec3((1.0-fraction.x)*(1.0-fraction.y), fraction.x*(1.0-fraction.y), (1.0-fraction.x)*fraction.y) * 256.0);
+        float last_weight = 256.0 - weights.x - weights.y - weights.z;
+        vec2 uv = UV - floor(offset) * TEXTURE_PIXEL_SIZE;
+        vec2 dx = vec2(TEXTURE_PIXEL_SIZE.x, 0.0);
+        vec2 dy = vec2(0.0, TEXTURE_PIXEL_SIZE.y);
+        vec4 samples = floor(vec4(sample_zero(TEXTURE, uv).a, sample_zero(TEXTURE, uv-dx).a, sample_zero(TEXTURE, uv-dy).a, sample_zero(TEXTURE, uv-dx-dy).a) * 255.0 + 0.5);
+        float shadow_alpha = floor(dot(samples, vec4(weights, last_weight)) / 256.0) / 255.0;
+        float alpha = clamp(shadow_alpha * glow_strength, 0.0, 1.0) * glow_color.a;
         vec4 glow = floor(vec4(glow_color.rgb * alpha, alpha) * 255.0 + 0.5);
         // The source is composited over the glow in Flash's 8-bit cache.
         pixel = (base + floor(glow * (256.0 - base.a) / 256.0)) / 255.0;

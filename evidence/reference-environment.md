@@ -237,3 +237,8 @@ Godot4.7.2 Compatibility matches all admitted difference/overlay samples exactly
 The expanded shadow candidate remains unadmitted at232/256. Raw captures, build
 hashes and launch metadata are in [r19 evidence](importer-loud-fail/r19/README.md).
 No reference environment change or production Flash dependency.
+
+## r20 DropShadow phase capture
+
+Native Flash Player Debugger32.0.0.465 (Rosetta), same player/FFDec/Godot binaries and hashes as r19/reference-tools.json. Fresh windowed captures: shadow-phase (48 cases) and shadow-phase-sweep (520 cases); run IDs, SWF hashes and launch metadata are in importer-loud-fail/r20/. GPU uses Godot4.7.2 Compatibility on Apple M2.
+Additional r20 captures: shadow-phase-ties (48 impulses) and drop-shadow-ties (256 full images), with the same binaries and capture settings. Raw captures are retained beside the phase sweep.

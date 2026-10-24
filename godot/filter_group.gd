@@ -15,7 +15,7 @@ func _ready() -> void:
 	for filter_index in filters.size():
 		var filter: Dictionary = filters[filter_index]
 		var original := texture
-		if filter.type in ["BLURFILTER", "GLOWFILTER"]:
+		if filter.type in ["BLURFILTER", "GLOWFILTER", "DROPSHADOWFILTER"]:
 			for pass_index in int(filter.passes):
 				for axis in 2:
 					var amount := float(filter.blurX if axis == 0 else filter.blurY)
@@ -23,11 +23,12 @@ func _ready() -> void:
 						continue
 					texture = _filter_pass(texture, {"operation": 0, "blur_size": amount,
 						"direction": Vector2.RIGHT if axis == 0 else Vector2.DOWN}, filter_index, axis)
-		if filter.type == "GLOWFILTER":
+		if filter.type in ["GLOWFILTER", "DROPSHADOWFILTER"]:
 			var color: Array = filter.color
 			texture = _filter_pass(texture, {"operation": 1, "original_texture": original,
 				"glow_color": Vector4(color[0], color[1], color[2], color[3]),
-				"glow_strength": float(filter.strength)})
+				"glow_strength": float(filter.strength),
+				"shadow_offset": Vector2(cos(float(filter.get("angle", 0))), sin(float(filter.get("angle", 0)))) * float(filter.get("distance", 0))})
 		elif filter.type == "COLORMATRIXFILTER":
 			var values: Array = filter.matrix
 			var uniforms := {"operation": 2,
@@ -66,9 +67,11 @@ func _filter_pass(input: Texture2D, uniforms: Dictionary, filter_index: int = -1
 func buffer_padding() -> Vector2:
 	var padding := Vector2.ZERO
 	for filter: Dictionary in get_meta("flash_filters", []):
-		if filter.type in ["BLURFILTER", "GLOWFILTER"]:
+		if filter.type in ["BLURFILTER", "GLOWFILTER", "DROPSHADOWFILTER"]:
 			padding += Vector2(ceilf(maxf(0.0, (float(filter.blurX) - 1.0) / 2.0)),
 				ceilf(maxf(0.0, (float(filter.blurY) - 1.0) / 2.0))) * int(filter.passes)
+		if filter.type == "DROPSHADOWFILTER":
+			padding += Vector2.ONE * ceilf(absf(float(filter.distance)))
 	return padding
 
 
@@ -79,7 +82,7 @@ func _update_buffer() -> void:
 	var kernels: Array[Vector2] = []
 	for filter: Dictionary in get_meta("flash_filters", []):
 		var kernel := Vector2.ZERO
-		if filter.type in ["BLURFILTER", "GLOWFILTER"]:
+		if filter.type in ["BLURFILTER", "GLOWFILTER", "DROPSHADOWFILTER"]:
 			kernel = Vector2(float(filter.blurX), float(filter.blurY))
 			# Native Flash clamps the kernel to half the padded filter bitmap
 			# plus half a pixel. See the 210-case blur-bounds native probe.
