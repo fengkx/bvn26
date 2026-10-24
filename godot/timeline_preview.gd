@@ -47,7 +47,7 @@ var _source_color_matrix: Array = []
 var _source_placement_filters_cleared := false
 static var _source_filter_shader: Shader
 static var _blend_shaders: Dictionary = {}
-static var _filter_input_shaders: Dictionary = {}
+static var _raster_input_shaders: Dictionary = {}
 var _filter_input_depth := 0
 
 const SourceBoundsMath = preload("res://source_matrix_bounds.gd")
@@ -1190,9 +1190,9 @@ func _compose_blend_group(
 	var items := get_children().slice(first_child)
 	if items.is_empty():
 		return
-	# A single leaf already is a composed object; retain its original raster
-	# sampling, and insert the background copy before it in draw order.
-	if not isolate and filters.is_empty() and items.size() == 1 and (items[0] is Sprite2D or items[0] is Polygon2D):
+	# Non-normal blends cache their input before applying group opacity, even
+	# for a single leaf. Distributing opacity into that leaf quantizes too early.
+	if blend in [0, 1] and not isolate and filters.is_empty() and items.size() == 1 and (items[0] is Sprite2D or items[0] is Polygon2D):
 		var item: CanvasItem = items[0]
 		remove_child(item)
 		item.modulate.a *= opacity
@@ -1241,14 +1241,14 @@ void fragment() {
 	add_child(group)
 
 
-func _quantize_filter_input(item: CanvasItem) -> void:
-	if item.has_meta("flash_filter_input"):
+func _quantize_raster_input(item: CanvasItem) -> void:
+	if item.has_meta("flash_raster_input"):
 		return
-	item.set_meta("flash_filter_input", true)
+	item.set_meta("flash_raster_input", true)
 	var material := item.material as ShaderMaterial
 	var original := material.shader.code if material != null else "shader_type canvas_item; void fragment() { }"
 	var opacity := item.modulate.a if material != null else 1.0
-	if not _filter_input_shaders.has(original):
+	if not _raster_input_shaders.has(original):
 		var shader := Shader.new()
 		var code := original.replace("shader_type canvas_item;", "shader_type canvas_item; uniform float filter_input_opacity = 1.0;")
 		code = code.insert(code.rfind("}"), """
@@ -1259,18 +1259,20 @@ vec3 premultiplied = floor(input_rgb * (input_alpha + 1.0) / 256.0);
 COLOR = vec4(input_alpha > 0.0 ? premultiplied / input_alpha : vec3(0.0), input_alpha / 255.0);
 """)
 		shader.code = code
-		_filter_input_shaders[original] = shader
+		_raster_input_shaders[original] = shader
 	material = material.duplicate() if material != null else ShaderMaterial.new()
-	material.shader = _filter_input_shaders[original]
+	material.shader = _raster_input_shaders[original]
 	material.set_shader_parameter("filter_input_opacity", opacity)
 	item.modulate.a = 1.0 if opacity != 1.0 else item.modulate.a
 	item.material = material
 
 
 func _apply_blend(item: CanvasItem, blend: int, copy_parent: Node = null) -> void:
-	if _filter_input_depth > 0 and copy_parent == null:
-		_quantize_filter_input(item)
-	assert(blend in [0, 1, 2, 3, 4, 5, 6, 8, 9, 14], "Unsupported Flash blend mode: %d" % blend)
+	# Blends sample the already-composited backdrop. Preserve Flash byte inputs
+	# for ordinary leaves too; their rounded GPU colors cannot be recovered later.
+	if copy_parent == null:
+		_quantize_raster_input(item)
+	assert(blend in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14], "Unsupported Flash blend mode: %d" % blend)
 	if blend in [0, 1]:
 		return
 	# Copy at each object's depth, so earlier blended siblings are included.
@@ -1283,7 +1285,7 @@ func _apply_blend(item: CanvasItem, blend: int, copy_parent: Node = null) -> voi
 	var material := item.material as ShaderMaterial
 	var opacity := item.modulate.a if material != null else 1.0
 	var original := material.shader.code if material != null else "shader_type canvas_item;\nvoid fragment() { }"
-	var arithmetic := blend in [8, 9]
+	var arithmetic := blend in [7, 8, 9, 13]
 	var shader_key := original + ("|arithmetic" if arithmetic else "|over")
 	if not _blend_shaders.has(shader_key):
 		var shader := Shader.new()
@@ -1309,6 +1311,24 @@ else if (flash_blend_mode == 14) {
 }
 COLOR.rgb = mix(cs, mixed, backdrop.a);
 COLOR.a = clamp(COLOR.a * blend_opacity, 0.0, 1.0);
+// Keep all products in byte units and truncate only the final quotient.
+if (flash_blend_mode == 7 || flash_blend_mode == 13) {
+    float sa = floor(COLOR.a * 255.0 + 0.0001);
+    float ba = floor(backdrop.a * 255.0 + 0.5);
+    vec3 sp = floor(cs * COLOR.a * 255.0 + 0.0001);
+    vec3 bp = floor(backdrop.rgb * 255.0 + 0.5);
+    vec3 numerator = (bp + sp) * 255.0 - 2.0 * min(bp * sa, sp * ba);
+    if (flash_blend_mode == 13) {
+        vec3 base = (bp + sp) * 255.0 - bp * sa - sp * ba;
+        vec3 low = base + 2.0 * bp * sp;
+        vec3 high = base + sa * ba - 2.0 * (ba - bp) * (sa - sp);
+        // Native overlay high branch is an open upper bound at integer results.
+        if (sa > 0.0 && ba > 0.0) { high -= 1.0; }
+        numerator = mix(low, high, step(vec3(ba + 1.0), 2.0 * bp));
+    }
+    COLOR = vec4(floor(numerator / 255.0) / 255.0, floor(((sa + ba) * 255.0 - sa * ba) / 255.0) / 255.0);
+}
+
 if (flash_blend_mode == 8 || flash_blend_mode == 9) {
     vec3 source_premultiplied = cs * COLOR.a;
     vec3 result = flash_blend_mode == 8 ? backdrop.rgb + source_premultiplied : backdrop.rgb - source_premultiplied;

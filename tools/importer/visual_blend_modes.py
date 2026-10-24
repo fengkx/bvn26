@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-SUPPORTED_BLEND_MODES = frozenset({0, 1, 2, 3, 4, 5, 6, 8, 9, 14})
+SUPPORTED_BLEND_MODES = frozenset({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14})
 
 
 def validate_blend_mode(mode: int, source: str = "placement") -> int:

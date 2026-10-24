@@ -129,11 +129,11 @@ class ClipActionFieldsTests(unittest.TestCase):
                 validate_build_placements(timeline, 'cache.json')
 
     def test_failure_inventory_includes_exact_placement(self):
-        root = ET.fromstring('<swf><tags><item type="PlaceObject3Tag" depth="8" blendMode="13"/></tags></swf>')
+        root = ET.fromstring('<swf><tags><item type="PlaceObject3Tag" depth="8" blendMode="10"/></tags></swf>')
         failure = audit_xml(root, 'fixture.swf')['failures'][0]
         self.assertEqual(failure['source'], 'fixture.swf/root/frame_1')
         self.assertEqual(failure['depth'], 8)
-        self.assertIn('blendMode="13"', failure['placement_xml'])
+        self.assertIn('blendMode="10"', failure['placement_xml'])
 
 
 if __name__ == '__main__':

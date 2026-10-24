@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-24（r19）：共享预乘字节合成接通 difference/overlay，原生严格对照30/30、alpha扫描3072/3072、半alpha边界336/336、多层背景192/192，不透明overlay网格65536/65536保持精确。62SWF重扫清除33/34放置错误，缓存26/26、当前切片98/98；唯一剩余为main1504/frame1/depth6 DropShadow。该候选原参数12/12已精确，但扩展负偏移测试仅232/256，保持硬拒绝；无白名单或放宽阈值。[r19证据](../evidence/importer-loud-fail/r19/README.md)。
+
 - 2026-10-24（r18）：确认 overlay 不透明整数公式，原生/GPU 全灰阶65,536像素、262,144通道精确；混合透明度候选仅18/30，仍未合入运行时。新增 DropShadow 隐藏源图形/零模糊探针，确认分数位移本身仍差1 alpha；34条守卫保持（difference1、overlay32、DropShadow1）。修复探针输入颜色被原生读回覆盖的复现问题；原生输出未变。见[r18证据](../evidence/importer-loud-fail/r18/README.md)。
 
 - 2026-10-24（r17）：34条源放置错误分为difference 1、overlay 32、DropShadow 1；原生候选仍有差异，未解除任何守卫、未合入候选渲染代码。补齐失败放置字段的存活区间，使从后续帧开始的缓存切片也硬失败；同一放置的独立字段错误全部记录。全源审计改用形态感知缓存契约。详细原生差异、34个位置和本轮验收见 [r17证据](../evidence/importer-loud-fail/r17/README.md)。PR仍Draft，未新增白名单、容差、移植或部署。

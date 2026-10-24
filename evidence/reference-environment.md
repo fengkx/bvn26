@@ -226,3 +226,14 @@ opaque integer blend parity from unresolved alpha compositing/fractional
 sampling. Godot4.7.2 Compatibility matches all262,144 opaque-grid channels
 in an isolated candidate; the candidate still fails12/30 mixed-opacity cases
 and is not admitted to production. No reference environment change.
+
+## r19 integer blends and fractional shadow impulses
+
+The same Flash Player Debugger32.0.0.465/Rosetta and JPEXS26.2.1 captured
+3,072 alpha-ramp cases,336 half-alpha boundary cases,192 layered compositions,136 impulses and256 expanded
+DropShadow cases. Pre-blend alpha and premultiplied RGB are measured directly;
+GPU inputs use observed byte alpha rather than the requested beginFill percentage.
+Godot4.7.2 Compatibility matches all admitted difference/overlay samples exactly.
+The expanded shadow candidate remains unadmitted at232/256. Raw captures, build
+hashes and launch metadata are in [r19 evidence](importer-loud-fail/r19/README.md).
+No reference environment change or production Flash dependency.

@@ -12,8 +12,8 @@ func _run() -> void:
 		view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 		root.add_child(view)
 		var renderer := TimelinePreview.new()
-		renderer._definitions = {1: {"type": "DefineShape3Tag", "shape_bounds_twips": {"Xmin": 160, "Ymin": 160, "Xmax": 320, "Ymax": 320}, "solid_fills": [{"red": 255, "green": 255, "blue": 255, "alpha": 255}]}}
-		renderer._render_placement({"depth": 1, "character_id": 1, "filters": [{"type": "DROPSHADOWFILTER", "blurX": 3, "blurY": 3, "passes": 1, "color": [0,0,0,1], "strength": 3, "angle": c.angle, "distance": c.distance}]}, Transform2D.IDENTITY, 1.0, 0, 1)
+		renderer._definitions = {1: {"type": "DefineShape3Tag", "shape_bounds_twips": {"Xmin": 160, "Ymin": 160, "Xmax": 320, "Ymax": 320}, "solid_fills": [{"red": 255, "green": 255, "blue": 255, "alpha": int(c.get("source_alpha", 255))}]}}
+		renderer._render_placement({"depth": 1, "character_id": 1, "filters": [{"type": "DROPSHADOWFILTER", "blurX": c.get("blur", 3), "blurY": c.get("blur", 3), "passes": 1, "color": c.get("color", [0,0,0,1]), "strength": c.get("strength", 3), "angle": c.angle, "distance": c.distance}]}, Transform2D.IDENTITY, 1.0, 0, 1)
 		for item in renderer.get_children():
 			renderer.remove_child(item)
 			view.add_child(item)

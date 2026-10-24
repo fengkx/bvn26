@@ -18,7 +18,11 @@ func _run() -> void:
 		root.add_child(view)
 		var renderer := TimelinePreview.new()
 		renderer._definitions = {1: _shape(int(c.back), int(c.back_alpha)), 2: _shape(int(c.front), int(c.front_alpha)), 3: {"type": "DefineSpriteTag", "display_list_frames": [[{"depth": 1, "character_id": 2}]]}}
-		renderer._render_display_list([{"depth": 1, "character_id": 1}, {"depth": 2, "character_id": 3, "blend_mode": int(c.mode), "color_transform": {"hasMultTerms": "true", "alphaMultTerm": int(c.opacity) * 256 / 100}}], Transform2D.IDENTITY, 1.0, 0, 1, 0, Color.WHITE, Color(0,0,0,0), [])
+		var placements: Array = [{"depth": 1, "character_id": 1}, {"depth": 2, "character_id": 3, "blend_mode": int(c.mode), "color_transform": {"hasMultTerms": "true", "alphaMultTerm": int(c.opacity) * 256 / 100}}]
+		if c.has("under"):
+			renderer._definitions[4] = _shape(int(c.under), 255)
+			placements.push_front({"depth": 0, "character_id": 4})
+		renderer._render_display_list(placements, Transform2D.IDENTITY, 1.0, 0, 1, 0, Color.WHITE, Color(0,0,0,0), [])
 		for item in renderer.get_children():
 			renderer.remove_child(item)
 			view.add_child(item)

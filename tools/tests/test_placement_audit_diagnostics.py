@@ -11,7 +11,7 @@ from audit_importer import audit_xml, audit_shipped_contexts
 class PlacementAuditDiagnosticsTests(unittest.TestCase):
     def test_bad_blend_cannot_hide_bad_filter_or_field(self):
         root = ET.fromstring('''<swf><tags><item type="PlaceObject3Tag" depth="7"
-            characterId="9" blendMode="13" unexpected="true">
+            characterId="9" blendMode="10" unexpected="true">
             <surfaceFilterList><item type="DROPSHADOWFILTER"/></surfaceFilterList>
             </item></tags></swf>''')
         row = audit_xml(root, 'fixture.swf')['failures'][0]
@@ -25,7 +25,7 @@ class PlacementAuditDiagnosticsTests(unittest.TestCase):
         root = ET.fromstring('''<swf><tags>
             <item type="PlaceObject2Tag" depth="7" characterId="9"/>
             <item type="ShowFrameTag"/>
-            <item type="PlaceObject3Tag" depth="7" placeFlagMove="true" blendMode="7"/>
+            <item type="PlaceObject3Tag" depth="7" placeFlagMove="true" blendMode="10"/>
             </tags></swf>''')
         row = audit_xml(root, 'fixture.swf')['failures'][0]
         self.assertEqual(row['character_id'], 9)
@@ -37,7 +37,7 @@ class PlacementAuditDiagnosticsTests(unittest.TestCase):
         from unittest.mock import patch
         import json
         root = ET.fromstring('''<swf><tags>
-            <item type="PlaceObject3Tag" depth="7" characterId="9" blendMode="13"/>
+            <item type="PlaceObject3Tag" depth="7" characterId="9" blendMode="10"/>
             <item type="ShowFrameTag"/>
             <item type="PlaceObject2Tag" depth="7" placeFlagMove="true"/>
             <item type="ShowFrameTag"/>
@@ -61,7 +61,7 @@ class PlacementAuditDiagnosticsTests(unittest.TestCase):
 
     def test_new_failed_move_still_replaces_its_explicit_old_fields(self):
         root = ET.fromstring('''<swf><tags>
-            <item type="PlaceObject3Tag" depth="7" characterId="9" blendMode="13"/>
+            <item type="PlaceObject3Tag" depth="7" characterId="9" blendMode="10"/>
             <item type="ShowFrameTag"/>
             <item type="PlaceObject3Tag" depth="7" placeFlagMove="true" blendMode="1">
               <surfaceFilterList><item type="DROPSHADOWFILTER"/></surfaceFilterList>
@@ -76,7 +76,7 @@ class PlacementAuditDiagnosticsTests(unittest.TestCase):
     def test_remove_or_new_placement_ends_rejected_field_lifetime(self):
         for replacement in ('<item type="RemoveObject2Tag" depth="7"/>',
                             '<item type="PlaceObject2Tag" depth="7" characterId="10"/>'):
-            root = ET.fromstring('<swf><tags><item type="PlaceObject3Tag" depth="7" characterId="9" blendMode="7"/>'
+            root = ET.fromstring('<swf><tags><item type="PlaceObject3Tag" depth="7" characterId="9" blendMode="10"/>'
                                  '<item type="ShowFrameTag"/>' + replacement +
                                  '<item type="ShowFrameTag"/></tags></swf>')
             with self.subTest(replacement=replacement):

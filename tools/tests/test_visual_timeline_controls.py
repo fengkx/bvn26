@@ -29,7 +29,7 @@ class VisualTimelineControlsTest(unittest.TestCase):
 
     def test_unsupported_blend_fails_at_import_and_build(self):
         from visual_blend_modes import validate_timeline_blends
-        for mode in [7, 10, 11, 12, 13, 99]:
+        for mode in [10, 11, 12, 99]:
             tag = ET.fromstring(f'<item type="PlaceObject3Tag" depth="1" characterId="7" blendMode="{mode}"/>')
             with self.assertRaisesRegex(ValueError, "Unsupported Flash blend mode"):
                 build_frames([tag])
@@ -42,11 +42,11 @@ class VisualTimelineControlsTest(unittest.TestCase):
             root = Path(directory)
             timeline = root / "godot/generated/fighters/fixture/timeline.json"
             timeline.parent.mkdir(parents=True)
-            timeline.write_text('{"definitions": [{"blend_mode": 13}]}')
+            timeline.write_text('{"definitions": [{"blend_mode": 10}]}')
             with patch.object(build_online_manifest, "ROOT", root), \
                     patch.object(build_online_manifest, "GODOT", root / "godot"), \
                     patch.object(build_online_manifest, "relative", side_effect=lambda path: str(path)):
-                with self.assertRaisesRegex(ValueError, "Unsupported Flash blend mode 13"):
+                with self.assertRaisesRegex(ValueError, "Unsupported Flash blend mode 10"):
                     build_online_manifest.make_documents()
 
     def test_move_retains_blend_and_new_placement_resets_it(self):

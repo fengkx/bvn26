@@ -66,7 +66,7 @@ class PlacementTagGuardsTests(unittest.TestCase):
 
     def test_wrapper_field_error_keeps_root_location(self):
         root = ET.fromstring('''<swf><tags><item type="ShowFrameTag"/>
-            <item type="PlaceObject3Tag" depth="5" characterId="7" blendMode="13"/>
+            <item type="PlaceObject3Tag" depth="5" characterId="7" blendMode="10"/>
             </tags></swf>''')
         with self.assertRaisesRegex(ValueError, 'fixture.swf/root/frame_2/depth_5'):
             extract_wrapper_placement(root, 7, 'fixture.swf')
