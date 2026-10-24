@@ -1,0 +1,54 @@
+{
+  "wrapper_diagnostic": {
+    "images_exact": 4,
+    "images": 4,
+    "pixels_exact": 960000,
+    "rgb_channels_exact": 2880000,
+    "max_delta": 0,
+    "native_target": "opaque RGB; alpha checked as 255"
+  },
+  "leaf_regression": {
+    "images_exact": 6,
+    "images": 6,
+    "rgba_pixels_exact": 69120
+  },
+  "gpu_sampler_regression": {
+    "exact": 71824,
+    "samples": 71824
+  },
+  "cpu_sampler_regressions": "all exact; see checks/cpu.json",
+  "python": {
+    "run": 560,
+    "passed": 558,
+    "skipped": 2,
+    "failed": 0
+  },
+  "fighter_caches": {
+    "passed": 26,
+    "total": 26
+  },
+  "fingerprint": {
+    "passed": 8,
+    "total": 8
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "integrity": "passed",
+  "handoff": "passed",
+  "contracts": "passed",
+  "production_admitted": false,
+  "production_runtime_changed": false,
+  "production_components": {
+    "exact": 9,
+    "images": 54,
+    "measurement": "historical r32; not rerun; diagnostic results must not be mixed in"
+  },
+  "not_rerun": [
+    "full roster replay",
+    "other production GPU/Godot suites",
+    "build_web export",
+    "54 production component suite",
+    "color/order/matrix/rush",
+    "full AS ownership audit"
+  ],
+  "merge_ready": false
+}

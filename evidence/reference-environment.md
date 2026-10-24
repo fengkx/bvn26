@@ -322,3 +322,7 @@ New transparent BitmapData capture uses the same Flash Player Debugger32.0.0.465
 ### r33 source-bound bitmap leaf
 
 Reused Adobe Flash Player Debugger 32.0.0.465 under Rosetta and Godot 4.7.2 Compatibility on Apple M2/OpenGL 4.1 Metal 90.5. The new source-tag leaf capture is pinned in `importer-loud-fail/r33/native/capture-environment.json`; GPU command, executable/source/readback hashes are in `importer-loud-fail/r33/render/provenance.json`. No player configuration change.
+
+### r34 complete Yulong wrapper diagnostic
+
+Reused the pinned r03/r21 Flash Player Debugger 32 native component references without recapture. Actual GPU rendering remains Godot 4.7.2 Compatibility on Apple M2/OpenGL 4.1 Metal 90.5; command, executable/source hashes and output evidence are in `importer-loud-fail/r34/wrapper/`. No Flash player or environment configuration changes.
