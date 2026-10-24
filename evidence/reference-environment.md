@@ -318,3 +318,7 @@ Flash Player Debugger 32.0.0.465 under Rosetta, same player/capture tool as r30.
 ## r32 Godot sampler diagnostic and native RGBA (2026-10-24)
 
 New transparent BitmapData capture uses the same Flash Player Debugger32.0.0.465/Rosetta; environment and hashes are in `importer-loud-fail/r32/rgba/`. GPU diagnostic runs Godot4.7.2 Compatibility on Apple M2/OpenGL4.1 Metal90.5; `r32/gpu.log` and `r32/provenance.json` pin engine/source/input/readback.54 production components were freshly rendered against unchanged r03 native references. No native production baseline was rewritten.
+
+### r33 source-bound bitmap leaf
+
+Reused Adobe Flash Player Debugger 32.0.0.465 under Rosetta and Godot 4.7.2 Compatibility on Apple M2/OpenGL 4.1 Metal 90.5. The new source-tag leaf capture is pinned in `importer-loud-fail/r33/native/capture-environment.json`; GPU command, executable/source/readback hashes are in `importer-loud-fail/r33/render/provenance.json`. No player configuration change.
