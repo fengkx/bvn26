@@ -418,3 +418,7 @@ Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,do
 ## r64 explicit filter materialization
 
 Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,done=true. applyFilter uses explicit generateFilterRect-sized bitmap and point(3,3); paired transparent/black readbacks precede and follow draw ColorTransform. Same pinned player binary as r63. No new GPU run; unchanged r62 readbacks match the explicit native path while implicit native comparison still rejects.
+
+## r65 explicit transparent border controls
+
+Fresh Flash Player Debugger32 capture via capture_native_player.py:1121 events,done=true. Actual BitmapData dimensions and Matrix translations are read back; paired transparent/black rows retain premultiplied bytes. copyPixels adds declared transparent borders without transforming visible bytes. Same pinned player binary as r64. No new GPU run or changed reference.
