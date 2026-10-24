@@ -306,3 +306,7 @@ The signed-byte hypothesis is diagnostic only; no environment/runtime change.
 ## r29 repeat affine controls (2026-10-24)
 
 Flash Player Debugger 32.0.0.465 under Rosetta, same native capture tool and player as r28. Three unmodified raw captures and individual environment records are under `importer-loud-fail/r29/{coefficients,step,negative}/`. Fixtures use separate integer draw translations and destination-pixel movement, plus negative off-grid scale controls. No old reference was regenerated.
+
+## r30 repeat rounding and spans (2026-10-24)
+
+Flash Player Debugger 32.0.0.465 under Rosetta, same capture tool/player as r29. Original traces, source/SWF hashes and environment records: `importer-loud-fail/r30/{rounding,half,spans}/`. Captures separate source width, draw origin, target pixel and clip length. Old references are unchanged.
