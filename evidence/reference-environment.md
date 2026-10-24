@@ -262,3 +262,12 @@ bitmap-size(240), bitmap-row(6048). Ordered raw captures, source/SWF hashes
 and launch metadata are under importer-loud-fail/r23/. Reused r22 phase captures
 are unchanged. These compare a diagnostic CPU model, not Godot pixels; remaining
 channel differences reject production admission. No reference-environment change.
+
+## r24 bitmap span and single-pixel clip captures
+
+Same Flash Player Debugger32.0.0.465/Rosetta and FFDec environment as r23.
+Fresh native bitmap-spans (96 rows), bitmap-scalar-clipped (1008 points),
+bitmap-scalar-repeat (1008 points) captures retain build hashes and launch
+metadata under importer-loud-fail/r24/. Only destination width/clip context
+changes in the span controls. CPU hypotheses remain rejected; no runtime
+Flash dependency or reference-environment change.
