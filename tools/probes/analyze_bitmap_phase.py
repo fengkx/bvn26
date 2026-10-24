@@ -10,11 +10,17 @@ import math
 from pathlib import Path
 
 
-def candidate(alpha, scale, phase, extended):
+def candidate_coordinates(scale, phase, px, py, extended=True):
     tx = math.trunc(phase / 256 * 4) / 4
     ty = math.trunc(-phase / 512 * 4) / 4 if extended else 0
-    x = (math.floor(scale) + .5 - tx) / scale - .5
-    y = (math.floor(scale) + .5 - ty) / scale - .5
+    # r23 distance captures distinguish nearest from floor for the inverse.
+    # This remains diagnostic: scanline and repeat cases reject the full model.
+    inverse = math.floor(65536 / scale + .5) / 65536
+    return (px + .5 - tx) * inverse - .5, (py + .5 - ty) * inverse - .5
+
+
+def candidate(alpha, scale, phase, extended):
+    x, y = candidate_coordinates(scale, phase, math.floor(scale), math.floor(scale), extended)
     x = math.floor(x * 256) / 256
     y = math.floor(y * 256) / 256
     weights = [math.floor(value * 256) for value in

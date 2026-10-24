@@ -13,15 +13,15 @@ class BitmapPhaseAnalysisTests(unittest.TestCase):
         name = 'bitmap-phase-extended' if extended else 'bitmap-phase'
         return (ROOT / 'evidence/importer-loud-fail/r22' / name / 'native.log').read_text()
 
-    def test_candidate_is_exact_only_on_calibration_not_admitted(self):
+    def test_quantized_inverse_closes_r22_suites_but_is_not_admitted(self):
         calibration = MODULE.analyze(self.trace())
         self.assertEqual((calibration['samples'], calibration['exact']), (1536, 1536))
         self.assertTrue(calibration['passed'])
         self.assertFalse(calibration['production_admitted'])
         extended = MODULE.analyze(self.trace(True), extended=True)
         self.assertEqual(extended['samples'], 4096)
-        self.assertLess(extended['exact'], extended['samples'])
-        self.assertFalse(extended['passed'])
+        self.assertEqual(extended['exact'], 4096)
+        self.assertTrue(extended['passed'])
         self.assertFalse(extended['production_admitted'])
 
     def test_missing_duplicate_wrong_case_and_mixed_runs_are_rejected(self):
