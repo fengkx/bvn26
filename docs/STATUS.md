@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r76）：独立原生多遍Glow／零偏移DropShadow各34560/34560支持分组顺序；输入与独立Blur各69120/69120。交替顺序每族339个反例，生产未改。[r76证据](../evidence/importer-loud-fail/r76/README.md)。
+
 - 2026-10-25（r75）：实际多遍Blur节点分组顺序诊断输入／滤镜／最终字节复制各165888/165888；核／尺寸／纹理依赖全断言。仍未改生产，待Glow/DropShadow独立验证。[r75证据](../evidence/importer-loud-fail/r75/README.md)。
 
 - 2026-10-25（r74）：实际GPU整数模糊诊断清除r70差异，输入／滤镜／最终各115840/115840；旧合成、Yulong、采样图形门禁复跑精确。仅单遍有界诊断，生产未启用。[r74证据](../evidence/importer-loud-fail/r74/README.md)。

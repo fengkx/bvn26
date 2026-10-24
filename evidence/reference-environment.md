@@ -462,3 +462,7 @@ No new Flash capture; unchanged r62/r66/r68/r69 native rows reused. Godot4.7.2 C
 ## r75 actual grouped multi-pass Blur GPU diagnostic
 
 No new Flash capture; unchanged r73 native rows reused. Godot4.7.2 Compatibility / OpenGL4.1 Metal90.5 on AppleM2. Twenty-seven sequential batches use real production-created FilterGroup buffers with diagnostic integer shader and grouped texture dependencies. Source is explicit premultiplied RGBA8, final stage raw byte copy; PNG/general affine/ordinary composition are not inferred. Executable/source/native hashes in r75/render/provenance.json. Production unchanged.
+
+## r76 native multi-pass Glow and zero-offset DropShadow
+
+Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; verified unchanged player SHA256 8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be. 540 explicit BitmapData.applyFilter cases, original source plus separate Blur and family outputs, paired transparent/black rows and columns. Source/build/capture environment pinned under r76. No new GPU render or production change.
