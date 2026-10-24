@@ -326,3 +326,7 @@ Reused Adobe Flash Player Debugger 32.0.0.465 under Rosetta and Godot 4.7.2 Comp
 ### r34 complete Yulong wrapper diagnostic
 
 Reused the pinned r03/r21 Flash Player Debugger 32 native component references without recapture. Actual GPU rendering remains Godot 4.7.2 Compatibility on Apple M2/OpenGL 4.1 Metal 90.5; command, executable/source hashes and output evidence are in `importer-loud-fail/r34/wrapper/`. No Flash player or environment configuration changes.
+
+### r35 production-path wrapper diagnostic
+
+Reused pinned native Flash component images without recapture. Godot 4.7.2 Compatibility / Apple M2 / OpenGL 4.1 Metal 90.5 ran the production texture loader and filter/composite code through an opt-in test subclass. The actual PNG import configuration is archived at `importer-loud-fail/r35/production-path/texture-import.txt`, with executable/source/asset hashes in `provenance.json`. No import or player configuration was changed.
