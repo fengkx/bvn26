@@ -1,0 +1,38 @@
+{
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "targeted_tests": {
+    "passed": 8,
+    "failed": 0
+  },
+  "unchanged_full_python": "../r51/acceptance.json",
+  "unchanged_cache_fingerprint_protected": "../r49/acceptance.json",
+  "unchanged_rendering_checks": "../r48/acceptance.json",
+  "production_admitted": false,
+  "not_rerun": [
+    "full Python",
+    "caches/fingerprint/protected",
+    "rendering gates",
+    "full roster/Web build",
+    "54 components"
+  ]
+}
