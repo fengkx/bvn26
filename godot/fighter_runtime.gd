@@ -117,6 +117,7 @@ var ai_predicate_context: AiPredicateContext
 var _ai_hit_transfer: RefCounted
 var _ai_state_frame_applied: int = -1
 var _ai_pending_frames: Array[Dictionary] = []
+var _nested_stage_actions: Array[Dictionary] = []
 var frame_script_sequence: Callable
 # Root timeline names are source identities, while TimelinePreview keeps the
 # authored display-list name for rendering.  Keys include depth and the
@@ -469,16 +470,36 @@ func enter_frame(input_state: Dictionary) -> void:
 		start_action("走")
 
 
+func _queue_visual_frame(frame: int, sprite: int) -> void:
+	var record: Dictionary = ai_source_state.spec.get("nested_stage_frames", {}).get(str(sprite), {}).get(str(frame), {})
+	for event: Dictionary in record.get("events", []):
+		_nested_stage_actions.append(event)
+
+
+func _run_nested_stage_actions() -> void:
+	while not _nested_stage_actions.is_empty():
+		var event: Dictionary = _nested_stage_actions.pop_front()
+		if event.op == "screen_flash":
+			screen_flash_requested.emit(int(event.color_rgb24))
+		else:
+			assert(event.op == "root_position" and not ai_frame_service_requested.get_connections().is_empty())
+			ai_frame_service_requested.emit(event)
+
+
 func run_frame_actions(drain_nested: bool = true, initial_limit: int = -1) -> void:
+	_run_nested_stage_actions()
 	_apply_ai_source_frame(drain_nested, initial_limit)
+	_run_nested_stage_actions()
 	_run_frame_actions()
 	# A goto made by a frame script queues another target script in this
 	# display tick. Retained-then-removed targets must not lose their writes.
 	if drain_nested:
 		_apply_ai_source_frame()
+		_run_nested_stage_actions()
 
 func flush_queued_frame_scripts(limit: int = -1) -> void:
 	_apply_ai_source_frame(false, limit)
+	_run_nested_stage_actions()
 
 
 func _run_frame_actions() -> void:
@@ -2443,6 +2464,7 @@ func retire_source_body() -> void:
 	_instance_local_frames.clear()
 	_instance_local_offsets.clear()
 	_retained_visual_clips.clear()
+	_nested_stage_actions.clear()
 	_frames = {}
 	materialize_display()
 

@@ -177,9 +177,9 @@ func stop() -> void:
 	services = Callable()
 	_scope.clear()
 	_ordered_paths.clear()
-	source_form_profiles.clear()
+	source_form_profiles = {}
 	source_form_context = null
-	_pending_form.clear()
+	_pending_form = {}
 	_form_current_callback = Callable()
 	_form_callback_owner = null
 
@@ -404,6 +404,11 @@ func configure_forms(profiles: Dictionary, intervals: SourceRootIntervals,
 		assert(not profile.has("error"), str(profile.get("error", "")))
 		assert(entry.get("load_declarations") is Array)
 		prepared[str(frame)] = {"profile": profile, "load_declarations": entry.load_declarations}
+	# These source packages are immutable rollback configuration; pending
+	# replacement selects an entry, never edits it. Teardown drops references.
+	for entry: Dictionary in prepared.values():
+		entry.make_read_only()
+	prepared.make_read_only()
 	source_form_profiles = prepared
 	assert(fighter.ai_source_state.spec.get("form_initialization", {}).get("bind_opponent_slot") == true, "Missing source initial wrapper slot binding")
 	fighter.ai_source_state.values["pn"] = 2 if fighter.player_slot == "p1" else 1
@@ -440,6 +445,7 @@ func _install_pending_form() -> void:
 	var old_key_reader := controller.key_reader
 	var old_use_ai: Variant = body_context.use_ai
 	var platforms := body_context.source_platforms
+	fighter.independent_visual_clock = true
 	fighter.install_source_profile(pending.profile, pending.load_declarations)
 	_controller_directory = pending.profile.controller_directory
 	controller.configure(fighter, _controller_directory)
@@ -460,6 +466,9 @@ func _install_pending_form() -> void:
 	body.doWanKai()
 	if not fighter.read_parent_field("万解"):
 		body.updateDirect()
+	# doWanKai places the target subtree before this display advance. Its
+	# child timelines advance with the new body (native Yihu stage trace).
+	fighter.advance_retained_visual_clips()
 	# The new instance enters its second source frame before the next observer,
 	# but its enterFrame registration cannot run in this placement tick.
 	fighter.advance_ai_timeline()

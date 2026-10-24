@@ -5,9 +5,9 @@ import hashlib
 import json
 
 if __package__:
-    from .form_profile_guard import form_calls, validate_form_manifest
+    from .form_profile_guard import form_calls, validate_form_manifest, validate_nested_stage_frames
 else:
-    from form_profile_guard import form_calls, validate_form_manifest
+    from form_profile_guard import form_calls, validate_form_manifest, validate_nested_stage_frames
 from pathlib import Path
 
 
@@ -30,6 +30,7 @@ def validate_cached_frame_calls(timeline: dict, cached: dict, catalog: dict | No
         raise ValueError(f'{source}: cached frame-call source identity mismatch')
     if calls_digest([cached.get('parent_initial_values', {})]) != calls_digest([expected.get('parent_initial_values', {})]):
         raise ValueError(f'{source}:frame_1/DoAction.as: dropped/changed parent initial values')
+    validate_nested_stage_frames(cached, expected, source)
     actual_calls = cached.get('frame_calls', {})
     form_contract = expected.get('form_profile_contract')
     if form_contract:

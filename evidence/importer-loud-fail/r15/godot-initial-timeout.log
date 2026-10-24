@@ -1,0 +1,37 @@
+{'test': 'blur-large', 'exit': 0, 'passed': True}
+{'test': 'blur-small', 'exit': 0, 'passed': True}
+{'test': 'blur-bounds', 'exit': 0, 'passed': True}
+{'test': 'colors', 'exit': 0, 'passed': True}
+{'test': 'order', 'exit': 0, 'passed': True}
+{'test': 'raster', 'exit': 0, 'passed': True}
+{'test': 'blend', 'exit': 0, 'passed': True}
+{'test': 'player_controller', 'exit': 0, 'passed': True}
+{'test': 'player_visual', 'exit': 0, 'passed': True}
+{'test': 'retained_effect_clocks', 'exit': 0, 'passed': True}
+{'test': 'clip_placement_once', 'exit': 0, 'passed': True}
+{'test': 'parent_frame_state_reference', 'exit': 0, 'passed': True}
+{'test': 'parent_state_checkpoint', 'exit': 0, 'passed': True}
+{'test': 'numeric_goto_reference', 'exit': 0, 'passed': True}
+{'test': 'form_callback_reference', 'exit': 0, 'passed': True}
+{'test': 'repeating_timeouts_smoke', 'exit': 0, 'passed': True}
+{'test': 'ai_timeouts_smoke', 'exit': 0, 'passed': True}
+{'test': 'timeout_checkpoint_smoke', 'exit': 0, 'passed': True}
+{'test': 'controller_checkpoint_smoke', 'exit': 0, 'passed': True}
+Traceback (most recent call last):
+  File "/tmp/bvn-yihu-r15/run_godot.py", line 21, in <module>
+    result=subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,timeout=180)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/subprocess.py", line 2141, in _communicate
+    self.wait(timeout=self._remaining_time(endtime))
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/subprocess.py", line 2045, in _wait
+    raise TimeoutExpired(self.args, timeout)
+subprocess.TimeoutExpired: Command '['/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot', '--path', 'godot', '--headless', '--script', 'res://tests/battle_checkpoint_smoke.gd', '--quit-after', '1200', '--log-file', '/tmp/bvn-yihu-r15/godot/battle_checkpoint_smoke-engine.log']' timed out after 179.99997349991463 seconds

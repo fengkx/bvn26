@@ -5,8 +5,11 @@ func _initialize() -> void:
 
 func _check_fighters(game: Node) -> void:
 	for fighter: FighterRuntime in [game.naruto, game.ichigo]:
-		assert(not FileAccess.file_exists(fighter.fighter_directory.path_join("form_profiles.json")),
-			"Gate fixture must exercise an unaccepted profile graph")
+		assert(FileAccess.file_exists(fighter.fighter_directory.path_join("form_profiles.json")),
+			"All shipped form graphs are now accepted")
+		assert("万解" in fighter.disabled_actions)
+		# Selection alone must not activate a graph: the source runtime has
+		# not yet preflighted/configured its consumers.
 		fighter.energy = 300
 		fighter.goto_ai_label("站立", false)
 		var frame := fighter.current_source_frame()
@@ -30,5 +33,5 @@ func _run() -> void:
 		audio.stream = null
 	game.queue_free()
 	await process_frame
-	print("TRANSFORMATION_GATE_SMOKE_OK unaccepted_graphs_initial_and_reselected")
+	print("TRANSFORMATION_GATE_SMOKE_OK awaiting_runtime_configuration_initial_and_reselected")
 	quit()

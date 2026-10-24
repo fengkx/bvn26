@@ -11,6 +11,16 @@ METHODS = {'wankai', 'doWanKai', 'initCtrl', 'randAI', 'feixue', 'loseHp'}
 FORM_OPS = {'body_form_call', 'parent_form_goto', 'form_prepare_slot', 'form_start_interval'}
 
 
+def validate_nested_stage_frames(context: dict, expected: dict, source: str) -> None:
+    actual = context.get('nested_stage_frames', {})
+    required = expected.get('nested_stage_frames', {})
+    for sprite in sorted(set(actual) | set(required)):
+        for frame in sorted(set(actual.get(sprite, {})) | set(required.get(sprite, {}))):
+            if actual.get(sprite, {}).get(frame) != required.get(sprite, {}).get(frame):
+                raise ValueError(f'{source}:DefineSprite_{sprite}/frame_{frame}/DoAction.as: '
+                                 'dropped/changed nested stage frame actions')
+
+
 def digest(value) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
@@ -139,6 +149,7 @@ def validate_form_manifest(directory: Path, contract: dict, root: Path = ROOT) -
         context = node['context']
         if digest([context.get('parent_initial_values', {})]) != expected['parent_initial_values_digest']:
             raise ValueError(f'{source}: changed form parent initialization')
+        validate_nested_stage_frames(context, expected, node['timeline']['source_swf']['path'])
         calls = context.get('frame_calls', {})
         if {key: digest(value) for key, value in calls.items()} != expected['frames']:
             raise ValueError(f'{source}: changed source-compiled form frame calls')

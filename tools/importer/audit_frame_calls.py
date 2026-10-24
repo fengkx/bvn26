@@ -45,6 +45,8 @@ def audit() -> dict:
             compiled = compile_context(bundle, timeline, form_replacement=form_contract is not None)
             requirements[key] = {'source': source, 'frames': {frame: calls_digest(calls)
                                  for frame, calls in compiled['frame_calls'].items()}}
+            if compiled.get('nested_stage_frames'):
+                requirements[key]['nested_stage_frames'] = compiled['nested_stage_frames']
             if form_contract is not None:
                 requirements[key]['form_profile_contract'] = form_contract
             if compiled.get('parent_initial_values'):

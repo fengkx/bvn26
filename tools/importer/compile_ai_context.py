@@ -429,6 +429,41 @@ def form_initialization(source: str, location: str, *, placement_filters: bool =
             'source_sha256': hashlib.sha256(source.encode()).hexdigest()}
 
 
+def nested_stage_frames(bundle: dict, timeline: dict) -> dict:
+    """Own complete, unconditional stage-effect scripts on retained child clocks."""
+    definitions = {int(d['character_id']) for d in timeline['definitions']}
+    scripts = []
+    for script in bundle['scripts']:
+        match = re.fullmatch(r'DefineSprite_(\d+)/frame_(\d+)/DoAction.as', script['path'])
+        if match and int(match[1]) in definitions:
+            scripts.append((int(match[1]), int(match[2]), script))
+    owners = {sprite for sprite, _, script in scripts
+              if re.search(r'_root\._[xy]\b', script['source'])}
+    result = {}
+    for sprite, frame, script in scripts:
+        if sprite not in owners:
+            continue
+        events = []
+        for number, line in enumerate(script['source'].splitlines(), 1):
+            line = line.strip()
+            if not line or line in ('stop();', 'play();'):
+                # The source-pinned visual playhead guard owns these controls.
+                continue
+            if re.fullmatch(r'_root\._[xy]\s*(?:=|\+=|-=)\s*(?:_root\._[xy]\s*=\s*)?-?\d+(?:\.\d+)?;', line):
+                events.extend({**write, 'op': 'root_position', 'line': number}
+                              for write in root_position_writes(line))
+            elif re.fullmatch(r'_root\.shine\(\);', line):
+                events.append({'op': 'screen_flash', 'color_rgb24': 0xffffff, 'line': number})
+            else:
+                raise ValueError(f"{bundle['game_file']}:{script['path']}:{number}: unsupported nested stage action: {line}")
+        if events:
+            finite_numbers(events, f"{bundle['game_file']}:{script['path']}")
+            result.setdefault(str(sprite), {})[str(frame)] = {
+                'path': script['path'], 'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest(),
+                'events': events}
+    return result
+
+
 def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = False) -> dict:
     if hashlib.sha256((ROOT/bundle['game_file']).read_bytes()).hexdigest()!=bundle['swf_sha256']:
         raise ValueError('Retained source hash mismatch')
@@ -730,6 +765,7 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
             'undefined_declarations':declarations,'controller_scope_fields':sorted(scoped_fields),
             'frame_writes':frame_writes,
             'frame_calls':frame_calls,
+            **({'nested_stage_frames': nested} if (nested := nested_stage_frames(bundle, timeline)) else {}),
             **({'parent_initial_values': parent_state} if parent_state else {}),
             'function_writes':{'onBeHit0':hit_writes},
             'random_refresh':{'interval_ms':int(interval[1]),'difficulty_multiplier':int(multiplier[2]),

@@ -198,3 +198,12 @@ Adobe Flash Player Debugger32, Rosetta, same player application and capture tool
 ## r14 Minren transfer and initial filter retirement
 
 Native Flash Player Debugger32 (Rosetta), source minren.swf unchanged; root-only probes for both player slots. Capture environment/player hashes are retained in `importer-loud-fail/r14/native-slot1/` and `native-slot2/`. Capture used `tools/probes/capture_native_player.py --allow-window-activation`; reproduce via `tools/probes/build_minren_form_probe.py`. Wrapper GPU comparison used Godot4.7.2 OpenGL/Metal on Apple M2; the exact1,280-channel Glow check is in r14/wrapper.log. No native wall-clock timing claim or new stability deviation.
+
+## 2026-10-24 Yihu nested stage reference (PR48 r15)
+
+The same Adobe Flash Player Debugger32.0.0.465/Rosetta and JPEXS26.2.1
+executed the original Yihu wankai helper with unchanged child definitions and
+placement tags. The extended root observer records23 consecutive post-replacement
+body/root-position samples, including the16-frame nested loop. Build hashes,
+launch environment and raw trace are in `importer-loud-fail/r15/native-stage/`.
+The probe is isolated, not a complete transformed combat/image parity claim.

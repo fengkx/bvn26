@@ -1,6 +1,6 @@
 extends RefCounted
 
-const IMMUTABLE := ["_timeline", "_fighter", "_definitions", "_assets", "_frames",
+const IMMUTABLE := ["source_form_profiles", "_pending_form", "_timeline", "_fighter", "_definitions", "_assets", "_frames",
 	"_combat", "spec", "_spec", "_hooks", "clips_metadata",
 	"cpu_visual_spec", "cpu_profile", "ko_metadata", "_sound_assets", "_sound_segments",
 	"_events", "_sound_events", "_manifest", "_scalar_fields", "_data", "_entries_by_label", "ai_color_operations", "training_spec", "_source_spec", "_helper_spec"]

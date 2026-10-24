@@ -38,6 +38,7 @@ def audit_form_manifest(directory: Path, bundle: dict, root: Path = ROOT) -> dic
                 raise ValueError(f'{target}: {name} differs from freshly compiled source')
         contract['nodes'][frame] = {'sprite_id': sprite, 'requirement': requirement,
                                   'frames': {key: digest(value) for key, value in compiled['frame_calls'].items()},
+                                  'nested_stage_frames': compiled.get('nested_stage_frames', {}),
                                   'parent_initial_values_digest': digest([compiled.get('parent_initial_values', {})])}
     validate_form_manifest(directory, contract, root)
     return contract

@@ -443,8 +443,12 @@ func _advance_visual_clip(clip: Dictionary) -> void:
 		clip.age = int(source.get("age", 0))
 		clip.frame = int(source.local_start)
 	else:
-		VisualPlayhead.advance(clip, definition)
+		VisualPlayhead.advance(clip, definition, _queue_visual_frame.bind(int(clip.placement.character_id)))
 	_sync_visual_children(clip, definition)
+
+
+func _queue_visual_frame(_frame: int, _sprite: int) -> void:
+	pass
 
 
 func _visual_source_record(placement: Dictionary) -> Dictionary:
@@ -472,7 +476,7 @@ func _sync_visual_list(placements: Array, previous_clips: Dictionary) -> Diction
 		var depth := int(placement["depth"])
 		var identity := [placement["character_id"], placement.get("placed_frame", 1)]
 		var previous: Dictionary = previous_clips.get(depth, {})
-		var clip: Dictionary = previous if previous.get("identity") == identity else VisualPlayhead.create(definition)
+		var clip: Dictionary = previous if previous.get("identity") == identity else VisualPlayhead.create(definition, _queue_visual_frame.bind(int(placement.character_id)))
 		clip.identity = identity
 		clip.placement = placement
 		var source := _visual_source_record(placement)

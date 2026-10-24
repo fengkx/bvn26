@@ -9,7 +9,7 @@ import uuid
 from build_parent_goto_probe import ROOT, non_action_tags, source_definitions
 
 
-def build(fighter, ffdec, output, observe_frames=False):
+def build(fighter, ffdec, output, observe_frames=False, observe_stage=False):
     timeline = json.loads((ROOT / f'godot/generated/fighters/{fighter}/timeline.json').read_text())
     source = ROOT / timeline['source_swf']['path']
     bundle = json.loads((ROOT / str(source.relative_to(ROOT)).replace('game/', 'scripts/', 1).replace('.swf', '.json')).read_text())
@@ -35,6 +35,13 @@ onEnterFrame=function(){
  }
 };
 '''
+    if observe_stage:
+        if fighter != 'yihu':
+            raise ValueError('Stage observation currently has a Yihu native input fixture')
+        code = code.replace('}else if(__tick==2){', '}else if(__tick>=2){')
+        code = code.replace('delete onEnterFrame;__emit("done","ok");fscommand("quit");',
+                            'if(__tick==24){delete onEnterFrame;__emit("done","ok");fscommand("quit");}')
+        observe_frames = True
     if observe_frames:
         code = code.replace('__observe("after_replace");', '__observe("after_replace");__emit("frames",_currentframe+","+mc._currentframe);')
     code = code.replace('RUN_ID', run_id)
@@ -56,16 +63,17 @@ onEnterFrame=function(){
                 'ffdec_sha256': hashlib.sha256(ffdec.read_bytes()).hexdigest(),
                 'probe_source_sha256': hashlib.sha256(code.encode()).hexdigest(),
                 'outputs_sha256': {'game/main.swf': hashlib.sha256(movie.read_bytes()).hexdigest()},
-                'probe_kind': 'form_helper_transfer_frames' if observe_frames else 'form_helper_transfer',
+                'probe_kind': 'form_helper_nested_stage' if observe_stage else ('form_helper_transfer_frames' if observe_frames else 'form_helper_transfer'),
                 'scope': 'Original wankai/doWanKai and nested definitions/placements unchanged; root observer invokes original helper with useAI undefined, wudi=true and paused movement. Not full combat/form replay.'}
     (output / 'build.json').write_text(json.dumps(metadata, indent=2) + '\n')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--observe-stage', action='store_true')
     parser.add_argument('--observe-frames', action='store_true')
     parser.add_argument('--fighter', required=True, choices=['daitu', 'minren', 'sasuke', 'yihu', 'byakuya', 'rifagu', 'rukia'])
     parser.add_argument('--ffdec', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    build(args.fighter, args.ffdec, args.output, args.observe_frames)
+    build(args.fighter, args.ffdec, args.output, args.observe_frames, args.observe_stage)
