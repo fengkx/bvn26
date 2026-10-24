@@ -402,3 +402,7 @@ No new Flash capture or rewritten reference. Pinned r38 native buffers reused. G
 ## r60 broad GPU arithmetic controls
 
 No new native capture. All old/signed inputs and outputs are reused with unchanged consumed operand rules. Godot4.7.2, OpenGL4.1 Metal90.5, AppleM2, same executable as r59. RGBAF/RF upload bytes are asserted equal on readback; output RGBA8 is compared exactly. Shared shader helper unchanged from r59. Production remains disabled.
+
+## r61 native filter rectangle capture and color-order diagnostic
+
+Fresh Flash Player Debugger32 capture via capture_native_player.py/LaunchServices:65 events, done=true; launch metadata in r61/native/capture-environment.json; binary/OS hashes in player-environment.json and source hashes in build.json. The original r03 color-order pixel reference is unchanged. Godot4.7.2 OpenGL4.1 Metal90.5 on AppleM2. Logical diagnostic span metadata uses independent API rectangles; production buffers remain unchanged.
