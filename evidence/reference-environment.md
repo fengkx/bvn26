@@ -414,3 +414,7 @@ Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,do
 ## r63 explicit bitmap/vector native comparison
 
 Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,done=true. Bitmap input is materialized from the original vector under exact integer translation, then attached without smoothing. Paired transparent/black stage readbacks preserve premultiplied bytes. Same pinned player binary as r62; no new GPU run or reference rewrite. Existing r62 GPU readbacks retain the eight failures.
+
+## r64 explicit filter materialization
+
+Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,done=true. applyFilter uses explicit generateFilterRect-sized bitmap and point(3,3); paired transparent/black readbacks precede and follow draw ColorTransform. Same pinned player binary as r63. No new GPU run; unchanged r62 readbacks match the explicit native path while implicit native comparison still rejects.
