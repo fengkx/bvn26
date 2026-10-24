@@ -310,3 +310,7 @@ Flash Player Debugger 32.0.0.465 under Rosetta, same native capture tool and pla
 ## r30 repeat rounding and spans (2026-10-24)
 
 Flash Player Debugger 32.0.0.465 under Rosetta, same capture tool/player as r29. Original traces, source/SWF hashes and environment records: `importer-loud-fail/r30/{rounding,half,spans}/`. Captures separate source width, draw origin, target pixel and clip length. Old references are unchanged.
+
+## r31 repeat span intervals and chunks (2026-10-24)
+
+Flash Player Debugger 32.0.0.465 under Rosetta, same player/capture tool as r30. Raw traces and individual capture records: `importer-loud-fail/r31/{intervals,chunks}/`. Probes independently vary clip length and start, with four impulses and two ramps. Old references and production rendering remain unchanged.
