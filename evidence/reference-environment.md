@@ -334,3 +334,7 @@ Reused pinned native Flash component images without recapture. Godot 4.7.2 Compa
 ### r36 ordinary composition controls
 
 New bitmap and vector captures use Adobe Flash Player Debugger 32.0.0.465 under Rosetta, unchanged from r33. Original traces, build/source/SWF hashes and environment records are under `importer-loud-fail/r36/{bitmap,vector}/`. Each capture has 2016 observations plus an explicit completion event. Godot 4.7.2 Compatibility / Apple M2 / OpenGL 4.1 Metal 90.5 runs the shared integer shader and the production-path wrapper diagnostic. Commands, source/engine/native/readback hashes are in `r36/composition/provenance.json`. The r03/r21 native component images are reused unchanged. No player/import configuration change.
+
+### r37 explicit nested materialization
+
+Adobe Flash Player Debugger32.0.0.465 under Rosetta explicitly allocated and drew nested BitmapData sources. The final capture includes source-input readbacks and all child/parent/final pixels: `importer-loud-fail/r37/native/` contains source/SWF hashes, original trace and capture environment. Godot4.7.2 Compatibility / Apple M2 / OpenGL4.1 Metal90.5 ran actual production BlendGroup nodes, with correct and deliberately stale destination-copy ordering. Commands, source/engine/native/readback hashes are in `r37/{fresh,stale}/provenance.json`. No player settings, old references or import settings changed.
