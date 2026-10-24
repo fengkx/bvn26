@@ -410,3 +410,7 @@ Fresh Flash Player Debugger32 capture via capture_native_player.py/LaunchService
 ## r62 actual allocation and native stage rows
 
 Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,done=true. Paired transparent/black readbacks retain actual premultiplied bytes. Source/launch metadata in r62/native; player hash remains the r61 binary fingerprint. The preliminary transparent-only scratch capture was insufficient for premultiplied comparison and is not used. Godot4.7.2 OpenGL4.1 Metal90.5 on AppleM2. Production unchanged; extended final-row gate exits1.
+
+## r63 explicit bitmap/vector native comparison
+
+Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,done=true. Bitmap input is materialized from the original vector under exact integer translation, then attached without smoothing. Paired transparent/black stage readbacks preserve premultiplied bytes. Same pinned player binary as r62; no new GPU run or reference rewrite. Existing r62 GPU readbacks retain the eight failures.
