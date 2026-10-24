@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r79）：原生API相位差异独立验证：applyFilter ties-even、显示对象ties-away各288/288；旧616控制保留，r78单位参数23040/23040。增益仍待测，生产未改。[r79证据](../evidence/importer-loud-fail/r79/README.md)。
+
 - 2026-10-25（r78）：阴影偏移／alpha／强度交叉原生输入与Blur各207360/207360；合成190396/207360拒绝，最大差3。旧616相位控制保持精确，新路径未启用。[r78证据](../evidence/importer-loud-fail/r78/README.md)。
 
 - 2026-10-25（r77）：实际GPU多遍Glow／零偏移DropShadow四层各69120/69120精确；保留原始源纹理和真实滤镜链，生产未改／关闭。[r77证据](../evidence/importer-loud-fail/r77/README.md)。

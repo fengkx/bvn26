@@ -474,3 +474,7 @@ No new Flash capture; unchanged r76 native controls reused. Godot4.7.2 Compatibi
 ## r78 native crossed shadow parameters
 
 Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; unchanged executable SHA256 8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be verified. 1620 explicit DropShadow cases retain requested/observed properties and source/independent Blur/final paired readbacks. Source/build/capture hashes under r78. Non-unit alpha getters differ from requested values; negative half-phase and gain counterexamples remain. No new GPU render or production change.
+
+## r79 native shadow API-path controls
+
+Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; unchanged player SHA256 8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be verified. 288 paired applyFilter/bitmap-display/vector-display impulses with exact input readbacks, signed/reversed-angle equivalence and two origins. Separate decimal trace serialization retained. Source/build/native hashes under r79; no production/GPU change.

@@ -1,0 +1,63 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "input_exact": 28224,
+  "apply_even_images": 288,
+  "bitmap_display_away_images": 288,
+  "vector_display_away_images": 288,
+  "old_phase_exact": 616,
+  "heldout_r78_unit_exact": 23040,
+  "api_specific_phase_passed": true,
+  "production_admitted": false,
+  "prior_exact_rendering": [
+    "../r74/acceptance.json",
+    "../r75/acceptance.json",
+    "../r77/acceptance.json"
+  ],
+  "not_rerun": [
+    "full roster/Web export (production unchanged)",
+    "54 components",
+    "older graphical gates (pinned readbacks rechecked by Python)"
+  ],
+  "python": {
+    "total": 697,
+    "passed": 695,
+    "skipped": 2,
+    "exit": 0
+  }
+}
