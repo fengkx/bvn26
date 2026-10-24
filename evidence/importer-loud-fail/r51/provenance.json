@@ -1,0 +1,24 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "tools.probes.analyze_cxform_offset_normalization",
+    "--output",
+    "evidence/importer-loud-fail/r51/analysis.json.gz"
+  ],
+  "expected_exit": 1,
+  "source_sha256": {
+    "tools/probes/analyze_cxform_offset_normalization.py": "1a4a373f9632f33f9eab03692819dfe38924248de531faae92bead212c09e6d4",
+    "tools/tests/test_cxform_offset_normalization.py": "863b35383957f1386c09846b2c8a5e64f325de1fed55706aa60a0f33c2a610b0"
+  },
+  "reference_sha256": {
+    "evidence/importer-loud-fail/r48/analysis.json.gz": "67e4bf6ded057caa9e19b6d599143c800717e4fa39561cbeb4e675662c002da7",
+    "evidence/importer-loud-fail/r47/signed/native.log.gz": "3d25284448e4f3316bf485f485f9d4188c1df3c6df589a72090d07fe567e6023",
+    "evidence/importer-loud-fail/r42/zero/native.log.gz": "d392163865ddb1389f24fe114083b3358540042ec8ef43d9dff05104458c7ea0",
+    "evidence/importer-loud-fail/r41/reciprocal.txt": "342aea51e861921dae56a8910f057a8ba08725c0f456887236b0d9543a8119b8"
+  },
+  "output_sha256": {
+    "analysis.json.gz": "fdb422611b33c89fb80a7f5553400ac5da6cd9b60e965d102646fcf2ad8c6da2",
+    "summary.json": "dbc122d8024b465104c0cbcb14dfee97593122e8dc41a0c7963a03117cdeee4b"
+  }
+}
