@@ -434,3 +434,7 @@ Three fresh Flash Player Debugger32 captures via capture_native_player.py:157/13
 ## r68 conservative extent fractional-kernel controls
 
 Fresh Flash Player Debugger32 capture via capture_native_player.py:1441 events,done=true. Retained blurX, public rectangles and actual conservative bitmap dimensions/placements are emitted. Paired transparent/black stages preserve bytes. Same pinned binary as r67; no new GPU run or changed reference.
+
+## r69 bounded integer-consumption geometry
+
+Fresh Flash Player Debugger32 capture via capture_native_player.py:1153 events,done=true. Source fill alpha53%, integer origins, retained small/fractional kernels and actual explicit extents are recorded with paired transparent/black stages. Same pinned player binary as r68. No new GPU run or changed reference; bounded pass does not enable production.
