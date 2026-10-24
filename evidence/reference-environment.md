@@ -302,3 +302,7 @@ Fresh bitmap-repeat-matrices:2940 single-pixel corner responses across draw/fill
 translation routes. Original trace, source/SWF hashes and launch metadata are in
 importer-loud-fail/r28/matrices/. Reused reference hashes are in comparison.json.
 The signed-byte hypothesis is diagnostic only; no environment/runtime change.
+
+## r29 repeat affine controls (2026-10-24)
+
+Flash Player Debugger 32.0.0.465 under Rosetta, same native capture tool and player as r28. Three unmodified raw captures and individual environment records are under `importer-loud-fail/r29/{coefficients,step,negative}/`. Fixtures use separate integer draw translations and destination-pixel movement, plus negative off-grid scale controls. No old reference was regenerated.
