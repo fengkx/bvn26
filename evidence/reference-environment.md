@@ -285,3 +285,12 @@ Same Flash Player Debugger32.0.0.465/Rosetta and FFDec environment as r25.
 Fresh bitmap-axis-ramps (1728 rows/8064 samples) and bitmap-weight-impulses
 (864 rows/2880 samples) captures, source/SWF hashes and launch metadata are in
 importer-loud-fail/r26/. No environment change or production Flash dependency.
+
+## r27 source boundaries and independent origins
+
+Same Flash Player Debugger32.0.0.465/Rosetta and FFDec environment as r26.
+Fresh bitmap-boundary-spans (1344 rows/4032 samples) and bitmap-origin-sweep
+(1632 rows/samples) captures retain source/SWF hashes and launch metadata under
+importer-loud-fail/r27/. Older r22–r26 captures are reused unchanged and hashed in
+comparison.json. CPU clipped candidate is exact on listed suites; repeat still
+rejects production admission. No environment or production runtime change.
