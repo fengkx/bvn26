@@ -358,3 +358,7 @@ Flash Player Debugger32.0.0.465 under Rosetta captured2760 completed32-pixel row
 ### r42 channel identity and explicit materialization
 
 Flash Player Debugger32.0.0.465 under Rosetta captured green identity/adjacent multipliers, five explicitly materialized stages, and zero-green offset isolation. Source/SWF hashes, complete lossless traces and environment records are in `importer-loud-fail/r42/{native,stages,zero}/`. Independent coefficient measurements from r41 are reused unchanged and hash-checked; no inference about Flash instruction selection. Godot4.7.2 Compatibility regression environment remains unchanged. No production/GPU code, earlier native references, player settings or texture imports changed.
+
+### r43 amplified reciprocal controls
+
+Flash Player Debugger32.0.0.465 under Rosetta captured324 width32 rows with explicit source/output readbacks. Source/SWF hashes, complete lossless trace and environment are in `importer-loud-fail/r43/native/`. r41 independent coefficient measurements and r42 bounds are reused unchanged and hash-checked. Existing Godot4.7.2 Compatibility regressions use the unchanged environment. No instruction/SIMD inference, production/GPU change, earlier-reference rewrite or texture-import change.
