@@ -1,0 +1,35 @@
+--- a/godot/filter_group.gd
++++ b/godot/filter_group.gd
+@@ -18 +18 @@
+-		if filter.type in ["BLURFILTER", "GLOWFILTER"]:
++		if filter.type in ["BLURFILTER", "GLOWFILTER", "DROPSHADOWFILTER"]:
+@@ -26 +26 @@
+-		if filter.type == "GLOWFILTER":
++		if filter.type in ["GLOWFILTER", "DROPSHADOWFILTER"]:
+@@ -30 +30,2 @@
+-				"glow_strength": float(filter.strength)})
++				"glow_strength": float(filter.strength),
++				"shadow_offset": Vector2(cos(float(filter.get("angle", 0))), sin(float(filter.get("angle", 0)))) * float(filter.get("distance", 0))})
+@@ -69 +70 @@
+-		if filter.type in ["BLURFILTER", "GLOWFILTER"]:
++		if filter.type in ["BLURFILTER", "GLOWFILTER", "DROPSHADOWFILTER"]:
+@@ -71,0 +73,2 @@
++		if filter.type == "DROPSHADOWFILTER":
++			padding += Vector2.ONE * ceilf(absf(float(filter.distance)))
+@@ -82 +85 @@
+-		if filter.type in ["BLURFILTER", "GLOWFILTER"]:
++		if filter.type in ["BLURFILTER", "GLOWFILTER", "DROPSHADOWFILTER"]:
+--- a/godot/flash_filter.gdshader
++++ b/godot/flash_filter.gdshader
+@@ -8,0 +9 @@
++uniform vec2 shadow_offset = vec2(0.0);
+@@ -34 +35,8 @@
+-        float alpha = clamp(pixel.a * glow_strength, 0.0, 1.0) * glow_color.a;
++        vec2 shifted = UV / TEXTURE_PIXEL_SIZE - vec2(0.5) - shadow_offset;
++        vec2 origin = floor(shifted);
++        vec2 fraction = fract(shifted);
++        vec2 uv = (origin + vec2(0.5)) * TEXTURE_PIXEL_SIZE;
++        float top = mix(sample_zero(TEXTURE, uv).a, sample_zero(TEXTURE, uv + vec2(TEXTURE_PIXEL_SIZE.x, 0.0)).a, fraction.x);
++        float bottom = mix(sample_zero(TEXTURE, uv + vec2(0.0, TEXTURE_PIXEL_SIZE.y)).a, sample_zero(TEXTURE, uv + TEXTURE_PIXEL_SIZE).a, fraction.x);
++        float shadow_alpha = floor(mix(top, bottom, fraction.y) * 255.0 + 0.0001) / 255.0;
++        float alpha = clamp(shadow_alpha * glow_strength, 0.0, 1.0) * glow_color.a;

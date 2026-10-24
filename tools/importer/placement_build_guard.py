@@ -55,7 +55,8 @@ def validate_build_placements(timeline: dict, source: str) -> None:
     nested = {d['character_id'] for d in timeline['definitions'] if d['type'] == 'DefineSpriteTag'}
     for record in catalog[digest]['records']:
         if record['sprite'] in nested or (record['sprite'] == timeline['sprite_id'] and
-                                           record['frame'] in root_frames):
+                                           any(record['frame'] <= frame <= record.get('last_frame', record['frame'])
+                                               for frame in root_frames)):
             raise ValueError(f"{source}: {record['source']}: {record['error']}")
 
     definitions = {d['character_id']: d for d in timeline['definitions']}

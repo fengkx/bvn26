@@ -16,11 +16,38 @@ import tempfile
 import xml.etree.ElementTree as ET
 
 from extract_timeline_geometry import placement_delta, visual_control_actions
-from compile_ai_context import compile_context
+from audit_frame_calls import audit as audit_frame_calls
+from import_guards import validate_placement
+from visual_blend_modes import validate_blend_mode
+from visual_filters import compile_filters
 from visual_control_guard import validate_build_controls
 from placement_build_guard import placement_requirements
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+
+def placement_diagnostics(tag: ET.Element, location: str) -> list[dict]:
+    """A failed blend must not conceal an independent filter/field failure."""
+    checks = [('fields', lambda: validate_placement(tag, location))]
+    if tag.get('blendMode', '').isdigit():
+        checks.append(('blend_mode', lambda: validate_blend_mode(int(tag.get('blendMode')), location)))
+    filters = tag.find('surfaceFilterList')
+    if filters is not None:
+        checks.append(('filters', lambda: compile_filters(filters, location)))
+    diagnostics = []
+    for field, check in checks:
+        try:
+            check()
+        except ValueError as error:
+            diagnostics.append({'field': field, 'error': str(error)})
+    return diagnostics
+
+
+def audit_shipped_contexts() -> list[dict]:
+    # Use the same fresh, form-aware contracts as the build-cache audit.
+    return [{**row, 'status': 'passed' if row['cache_status'] == 'passed' else 'failed'}
+            for row in audit_frame_calls()['shipped_contexts']]
 
 
 def audit_xml(root: ET.Element, source: str) -> dict:
@@ -47,10 +74,14 @@ def audit_xml(root: ET.Element, source: str) -> dict:
         field_state = {}
         clip_state = {}
         last_clip_ranges = {}
+        rejected_placements = {}
         for tag in tags:
             kind = tag.get('type')
             location = f'{source}/{owner}/frame_{frame}'
             if kind == 'ShowFrameTag':
+                for records in rejected_placements.values():
+                    for record in records:
+                        record['last_frame'] = frame
                 for depth, actions in clip_state.items():
                     previous = last_clip_ranges.get(depth)
                     if (previous is not None and previous['last_frame'] == frame - 1
@@ -71,12 +102,26 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                 field_state.pop(tag.get('depth'), None)
                 clip_state.pop(tag.get('depth'), None)
                 display.pop(tag.get('depth'), None)
+                rejected_placements.pop(tag.get('depth'), None)
             elif kind and kind.startswith('PlaceObject'):
                 counts['placements'] += 1
                 counts[f'placement_tag:{kind}'] += 1
+                depth = tag.get('depth')
+                if tag.get('placeFlagMove') != 'true':
+                    rejected_placements.pop(depth, None)
+                # Each authored field replaces its prior value even if another
+                # field in this MOVE is unsupported and gets a new rejection.
+                overwritten = set()
+                if 'blendMode' in tag.attrib:
+                    overwritten.add('blend_mode')
+                if tag.find('surfaceFilterList') is not None:
+                    overwritten.add('filters')
+                for previous in rejected_placements.get(depth, []):
+                    previous['_pending_fields'] = sorted(set(previous['_pending_fields']) - overwritten)
+                rejected_placements[depth] = [r for r in rejected_placements.get(depth, [])
+                                              if r['_pending_fields']]
                 try:
-                    delta = placement_delta(tag, location)
-                    depth = tag.get('depth')
+                    delta = placement_delta(tag, f"{location}/depth_{tag.get('depth')}")
                     character = delta.get('character_id')
                     if owner == 'root' and character is not None and character not in wrapper_characters:
                         wrapper_characters.add(character)
@@ -93,9 +138,17 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                     field_state[depth] = {**previous, **{key: delta[key] for key in
                         ('filters', 'cache_as_bitmap', 'blend_mode', 'color_transform') if key in delta}}
                 except ValueError as error:
-                    failures.append({'source': location, 'construct': kind, 'error': str(error),
+                    diagnostics = placement_diagnostics(tag, f"{location}/depth_{depth}")
+                    record = {'source': location, 'construct': kind, 'error': str(error),
+                                     'last_frame': frame,
+                                     '_pending_fields': sorted({d['field'] for d in diagnostics} or {'fields'}),
                                      'depth': int(tag.get('depth')),
-                                     'placement_xml': ET.tostring(tag, encoding='unicode').strip()})
+                                     'character_id': int(tag.get('characterId')) if tag.get('characterId') else display.get(tag.get('depth')),
+                                     'move': tag.get('placeFlagMove') == 'true',
+                                     'diagnostics': diagnostics,
+                                     'placement_xml': ET.tostring(tag, encoding='unicode').strip()}
+                    failures.append(record)
+                    rejected_placements.setdefault(depth, []).append(record)
                 depth = tag.get('depth')
                 if tag.get('characterId'):
                     display[depth] = int(tag.get('characterId'))
@@ -122,6 +175,8 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                             'status': 'requires_nonvisual_owner_review'})
                 except ValueError as error:
                     failures.append({'source': location, 'construct': kind, 'error': str(error)})
+    for failure in failures:
+        failure.pop('_pending_fields', None)
     return {'source_swf': source, 'counts': dict(sorted(counts.items())),
             'failures': failures, 'placement_obligations': obligations,
             'clip_action_obligations': clip_obligations, 'wrapper_obligations': wrapper_obligations,
@@ -170,19 +225,7 @@ def main():
     if args.write_placement_requirements:
         args.write_placement_requirements.write_text(
             json.dumps(placement_requirements(reports), ensure_ascii=False, indent=2) + '\n')
-    shipped = []
-    for path in sorted((ROOT / 'godot/generated/fighters').glob('*/timeline.json')):
-        timeline = json.loads(path.read_text())
-        source = timeline['source_swf']['path']
-        bundle = json.loads((ROOT / source.replace('game/', 'scripts/').replace('.swf', '.json')).read_text())
-        row = {'timeline': str(path.relative_to(ROOT)), 'source_swf': source}
-        try:
-            context = compile_context(bundle, timeline)
-            previous = json.loads((path.parent / 'ai.json').read_text())
-            row.update(status='passed', unchanged=context == previous)
-        except (ValueError, OSError) as error:
-            row.update(status='failed', error=str(error))
-        shipped.append(row)
+    shipped = audit_shipped_contexts()
     visual_checks = []
     for path in sorted((ROOT / 'godot/generated').rglob('timeline.json')):
         try:

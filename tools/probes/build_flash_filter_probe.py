@@ -7,9 +7,9 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import shutil
 import struct
 import subprocess
+import uuid
 
 from build_minimal_swf import rect, tag
 
@@ -24,11 +24,13 @@ def build(case: str, output: Path, ffdec: Path) -> dict:
             raise ValueError(f'Probe output cannot overwrite locked input: {output}')
     source = FIXTURES / f'{case}.as'
     text = source.read_text()
-    run_id = re.search(r'AIREF\|([^|]+)\|', text)[1]
+    base_run_id = re.search(r'AIREF\|([^|]+)\|', text)[1]
+    run_id = base_run_id + '-' + uuid.uuid4().hex[:12]
+    instrumented = text.replace('AIREF|' + base_run_id + '|', 'AIREF|' + run_id + '|')
     extent = 70 if case == 'blur-small' else 160
     (output / 'scripts/frame_1').mkdir(parents=True, exist_ok=True)
     (output / 'game').mkdir(exist_ok=True)
-    shutil.copy2(source, output / 'scripts/frame_1/DoAction.as')
+    (output / 'scripts/frame_1/DoAction.as').write_text(instrumented)
     body = (rect(0, extent * 20, 0, extent * 20)
             + struct.pack('<HH', 30 * 256, 1) + tag(12, b'\0') + tag(1) + tag(0))
     (output / 'base.swf').write_bytes(b'FWS' + bytes([8]) + struct.pack('<I', len(body) + 8) + body)
@@ -38,6 +40,7 @@ def build(case: str, output: Path, ffdec: Path) -> dict:
     report = {'run_id': run_id, 'case': case,
               'source': str(source.relative_to(ROOT)),
               'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
+              'instrumented_sha256': hashlib.sha256(instrumented.encode()).hexdigest(),
               'ffdec_sha256': hashlib.sha256(ffdec.read_bytes()).hexdigest(),
               'outputs_sha256': {'game/main.swf': hashlib.sha256(
                   (output / 'game/main.swf').read_bytes()).hexdigest()}}

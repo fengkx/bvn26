@@ -1,0 +1,8 @@
+--- a/godot/timeline_preview.gd
++++ b/godot/timeline_preview.gd
+@@ -1273 +1273 @@
+-	assert(blend in [0, 1, 2, 3, 4, 5, 6, 8, 9, 14], "Unsupported Flash blend mode: %d" % blend)
++	assert(blend in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14], "Unsupported Flash blend mode: %d" % blend)
+@@ -1304,0 +1305,2 @@
++else if (flash_blend_mode == 7) { mixed = abs(cb - cs); }
++else if (flash_blend_mode == 13) { mixed = mix(2.0 * cb * cs, 1.0 - 2.0 * (1.0 - cb) * (1.0 - cs), step(vec3(0.5), cb)); }

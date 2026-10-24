@@ -211,3 +211,7 @@ The probe is isolated, not a complete transformed combat/image parity claim.
 ## r16 Yulong wrapper initialization probe
 
 The same Adobe Flash Player Debugger32.0.0.465 (Rosetta) and JPEXS26.2.1 were used via `tools/probes/capture_native_player.py` with window activation authorized. Root-only instrumentation preserves original child definitions and non-action root tags. Evidence: [r16 native log](importer-loud-fail/r16/native.log) and [build hashes](importer-loud-fail/r16/native-build.json). This adds bounded filter lifecycle observations, not full-game pixel parity.
+
+## r17 placement candidate probes
+
+The same Flash Player Debugger32.0.0.465 under Rosetta and JPEXS26.2.1 captured30 difference/overlay cases and12 DropShadow cases. Blend input and output pixels are recorded separately; premultiplied RGB comes from drawing the captured BitmapData onto opaque black, not reconstructing lossy straight-alpha values. Shadow probes sample the entire32×32 image. Both candidates fail exact parity and remain outside production. [r17 evidence](importer-loud-fail/r17/README.md) retains captures, build hashes and rejected patches.
