@@ -1,0 +1,23 @@
+{
+  "compile": [
+    "clang",
+    "-arch",
+    "x86_64",
+    "-O2",
+    "-ffp-contract=off",
+    "tools/probes/cxform_input_normalization.c",
+    "-o",
+    "/tmp/bvn-r44/normalization"
+  ],
+  "run": [
+    "arch",
+    "-x86_64",
+    "/tmp/bvn-r44/normalization"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "host": "Darwin VtiodeMacBook-Air.local 25.6.0 Darwin Kernel Version 25.6.0: Tue Aug 18 17:51:32 PDT 2026; root:xnu-12377.161.15.700.19~2/RELEASE_ARM64_T8112 arm64\n",
+  "source_sha256": "81d40e5a6f26e38ad080edeec64bf195c7beb8640aedcbbde1c1670dea0c2a2d",
+  "executable_sha256": "4db4eaa6f9be777711ed6815eb7c35ba5db3d3630bb079c72b3c9d1eb2b42d8d",
+  "output_sha256": "58f0819336843678da9569359bf6c80463944eed7c418ca4142ef7099d3b26d2",
+  "instruction_inference": false
+}

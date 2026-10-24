@@ -362,3 +362,7 @@ Flash Player Debugger32.0.0.465 under Rosetta captured green identity/adjacent m
 ### r43 amplified reciprocal controls
 
 Flash Player Debugger32.0.0.465 under Rosetta captured324 width32 rows with explicit source/output readbacks. Source/SWF hashes, complete lossless trace and environment are in `importer-loud-fail/r43/native/`. r41 independent coefficient measurements and r42 bounds are reused unchanged and hash-checked. Existing Godot4.7.2 Compatibility regressions use the unchanged environment. No instruction/SIMD inference, production/GPU change, earlier-reference rewrite or texture-import change.
+
+### r44 held-out amplified alpha and normalization controls
+
+Flash Player Debugger32.0.0.465 under Rosetta captured4131 width32 rows with explicit source/output readbacks. Source/SWF hashes, full lossless trace and environment are in `importer-loud-fail/r44/native/`. Independent x86_64 input-normalization/reciprocal measurements use Apple clang with contraction disabled; commands and source/executable/output hashes are in `r44/normalization-environment.json`. No native pixels enter that helper and no Flash instruction/SIMD inference is made. Existing references and Godot4.7.2 Compatibility regressions remain unchanged; no production/GPU or texture-import change.
