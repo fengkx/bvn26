@@ -382,3 +382,7 @@ Flash Player Debugger32.0.0.465 under Rosetta captured624 fixed-source fine-mult
 ## r48 signed constraint analysis
 
 Reused the pinned r47 Flash Player Debugger 32/Rosetta source readbacks and signed controls; no new native capture or environment change. Direction-correct CPU interval analysis does not infer an ISA implementation. The existing Godot diagnostic composition, nested, leaf, Glow and sampler regressions were rerun with unchanged native references. See importer-loud-fail/r48/provenance.json and acceptance.json.
+
+## r52 independent rounding-mode experiment
+
+No new Flash capture. The checked-in x86_64 SSE intrinsic probe ran under Rosetta with explicit MXCSR nearest/down/up/toward-zero readbacks for each input. Source/executable/input/output hashes and compiler/host details are in importer-loud-fail/r52/environment.json. This measures independent constructions and does not infer Flash instructions. All native references and production rendering remain unchanged.
