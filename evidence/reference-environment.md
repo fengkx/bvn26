@@ -466,3 +466,7 @@ No new Flash capture; unchanged r73 native rows reused. Godot4.7.2 Compatibility
 ## r76 native multi-pass Glow and zero-offset DropShadow
 
 Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; verified unchanged player SHA256 8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be. 540 explicit BitmapData.applyFilter cases, original source plus separate Blur and family outputs, paired transparent/black rows and columns. Source/build/capture environment pinned under r76. No new GPU render or production change.
+
+## r77 actual multi-pass Glow/Shadow GPU diagnostic
+
+No new Flash capture; unchanged r76 native controls reused. Godot4.7.2 Compatibility / OpenGL4.1 Metal90.5 on AppleM2. Twelve sequential batches retain actual production-created blur/composition buffers with diagnostic integer blur and grouped dependencies. Source/reference texture identity and allocation asserted; four stages read back exactly. Zero shadow distance, unit filter alpha/strength only. Executable/source/native hashes in r77/render/provenance.json. Production unchanged.
