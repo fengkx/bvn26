@@ -450,3 +450,7 @@ Fresh Adobe Flash Player Debugger32 capture through LaunchServices/Rosetta; play
 ## r72 fractional BlurFilter axis capture
 
 Fresh Adobe Flash Player Debugger32 capture through LaunchServices/Rosetta; player SHA256 verified unchanged (8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be). Source, instrumented build, capture environment and native log are pinned under r72. 1134 explicit BitmapData.applyFilter cases, paired transparent/black source/output rows and columns; fine kernel properties retained. No production or graphical Godot change.
+
+## r73 fractional BlurFilter axis capture
+
+Fresh Adobe Flash Player Debugger32 capture through LaunchServices/Rosetta; player SHA256 verified unchanged (8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be). Source, instrumented build, capture environment and native log are pinned under r73. 1296 explicit BitmapData.applyFilter cases, paired transparent/black source/output rows and columns; quality1/2/3 and kernel exponent controls retained. Grouped horizontal-then-vertical order exact; alternating order rejects. No production or graphical Godot change.
