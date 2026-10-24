@@ -1,0 +1,27 @@
+{
+  "compile": [
+    "clang",
+    "-arch",
+    "x86_64",
+    "-O2",
+    "tools/probes/cxform_reciprocal.c",
+    "-o",
+    "/tmp/bvn-r39/reciprocal"
+  ],
+  "run": [
+    "arch",
+    "-x86_64",
+    "/tmp/bvn-r39/reciprocal"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "host": "Darwin VtiodeMacBook-Air.local 25.6.0 Darwin Kernel Version 25.6.0: Tue Aug 18 17:51:32 PDT 2026; root:xnu-12377.161.15.700.19~2/RELEASE_ARM64_T8112 arm64\n",
+  "source_sha256": {
+    "tools/probes/cxform_reciprocal.c": "15b193ad3c644d10e128a367f0bdb089200fe151400e7047418ceea2f904e677",
+    "tools/probes/analyze_cxform_rows.py": "dfbb3175024576d957a55172e36c95a00f144bedad8335bdef4b60be3dc7d289",
+    "tools/probes/flash_filters/cxform-row-controls.as": "66289ce0a70ce082a9ebaa15bbd282406301a4405f06462bbfca315dff7f3f77"
+  },
+  "executable_sha256": "8dca8c157988f1a5f772c13d3fe0437ad78ee0260b253669b27cc142d2ce004a",
+  "output_sha256": "57513028dbf45c19034251978fd4594dfbb77ebc58bbf463525fd5508b1174b7",
+  "instruction_inference": false,
+  "production_admitted": false
+}

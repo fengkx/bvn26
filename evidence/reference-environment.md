@@ -342,3 +342,7 @@ Adobe Flash Player Debugger32.0.0.465 under Rosetta explicitly allocated and dre
 ### r38 nested filter and materialized CXFORM controls
 
 Reused Flash Player Debugger32.0.0.465 under Rosetta. New original traces/source/SWF hashes/environment records are under `importer-loud-fail/r38/{native,cx,dense,spans,varied}/`. Native explicitly allocates BitmapData and applies filters; no cache flag inference. Godot4.7.2 Compatibility / AppleM2 / OpenGL4.1 Metal90.5 runs actual FilterGroup allocation/passes through opt-in diagnostics. The initial and fixed-candidate source/readback provenance are in `r38/{render,integer}/`; baseline shader snapshot preserves the initial code. No old references, player settings or PNG imports changed.
+
+### r39 independent long-row CXFORM controls
+
+Flash Player Debugger32.0.0.465 under Rosetta captured810 completed row controls; original trace, source/SWF hashes and capture environment are in `importer-loud-fail/r39/native/`. Apple clang21.0.0 compiled an independent x86_64 reciprocal-estimate helper, executed under Rosetta; source/executable/output hashes and command are in `r39/reciprocal-environment.json`. Agreement is not evidence of Flash instruction selection. No player settings, references, GPU shaders or production runtime changed. Existing Godot diagnostic regressions use the same4.7.2 Compatibility environment.
