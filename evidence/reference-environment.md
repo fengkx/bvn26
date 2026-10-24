@@ -438,3 +438,7 @@ Fresh Flash Player Debugger32 capture via capture_native_player.py:1441 events,d
 ## r69 bounded integer-consumption geometry
 
 Fresh Flash Player Debugger32 capture via capture_native_player.py:1153 events,done=true. Source fill alpha53%, integer origins, retained small/fractional kernels and actual explicit extents are recorded with paired transparent/black stages. Same pinned player binary as r68. No new GPU run or changed reference; bounded pass does not enable production.
+
+## r70 actual bounded GPU allocation
+
+No new Flash capture. Native r62/r66/r68/r69 stages reused unchanged. Godot4.7.2, OpenGL4.1 Metal90.5, AppleM2; executable hash/commands in r70/render/provenance.json. Twelve sequential GPU batches validate724 actual source/filter/composite groups with pinned source/readback hashes. Near-integer pre-CXFORM filter differences remain hard failures. Production unchanged.
