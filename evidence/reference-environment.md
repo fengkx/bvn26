@@ -271,3 +271,10 @@ bitmap-scalar-repeat (1008 points) captures retain build hashes and launch
 metadata under importer-loud-fail/r24/. Only destination width/clip context
 changes in the span controls. CPU hypotheses remain rejected; no runtime
 Flash dependency or reference-environment change.
+
+## r25 short-span captures
+
+Same Flash Player Debugger32.0.0.465/Rosetta and FFDec environment as r24.
+Fresh bitmap-short-spans fixture:1896 ordered rows,4248 RGB samples, source/SWF
+hashes and launch metadata in importer-loud-fail/r25/short/. No environment or
+production runtime change; the CPU hypotheses remain diagnostic and rejected.
