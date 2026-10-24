@@ -1,0 +1,25 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "tools.probes.analyze_cxform_alpha",
+    "--root",
+    "evidence/importer-loud-fail/r40",
+    "--output",
+    "evidence/importer-loud-fail/r40/analysis.json.gz"
+  ],
+  "expected_exit": 1,
+  "production_admitted": false,
+  "source_sha256": {
+    "tools/probes/analyze_cxform_alpha.py": "a3f634dd2bbc765f366c83a8657d02c3e873a4d9158dbf795c3b5774e309e2f5",
+    "tools/probes/cxform_reciprocal_precision.c": "f9112c26a2402c05fd90587f6b35c18426fb0a54cb600aa068040acc56b3a82d",
+    "tools/probes/flash_filters/cxform-alpha-rows.as": "b5505b7dac26d95abed494a63b63ea2b7e7b542b3e671ecc666e051e64d89c1d",
+    "tools/probes/flash_filters/cxform-alpha-opacity.as": "e5eccaf37122deedeab29e1ee8412bdd18c8ebdcf59b9a570dc11c117ebf5147",
+    "tools/probes/flash_filters/cxform-row-extents.as": "46ce815562c1bffa2dec2e926b1f3fe575aa7261268853c748e8b2a3ba540336"
+  },
+  "output_sha256": {
+    "analysis.json.gz": "e0000c67a3a45fa2264d69150e602361974862ca0cd996d174793b83fdd3a634",
+    "summary.json": "fdd34b2c52ed50ecddee5e8cbbb7e4c5b0f6490be5392094a54630c0db8269b1",
+    "reciprocal.txt": "02fda367c3e25120ee54b86abf74813bb724f01337580c3cdbc10d1f97199594"
+  }
+}

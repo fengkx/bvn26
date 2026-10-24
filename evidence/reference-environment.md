@@ -346,3 +346,7 @@ Reused Flash Player Debugger32.0.0.465 under Rosetta. New original traces/source
 ### r39 independent long-row CXFORM controls
 
 Flash Player Debugger32.0.0.465 under Rosetta captured810 completed row controls; original trace, source/SWF hashes and capture environment are in `importer-loud-fail/r39/native/`. Apple clang21.0.0 compiled an independent x86_64 reciprocal-estimate helper, executed under Rosetta; source/executable/output hashes and command are in `r39/reciprocal-environment.json`. Agreement is not evidence of Flash instruction selection. No player settings, references, GPU shaders or production runtime changed. Existing Godot diagnostic regressions use the same4.7.2 Compatibility environment.
+
+### r40 all-alpha CXFORM / source-intersection controls
+
+Flash Player Debugger32.0.0.465 under Rosetta captured all-alpha rows, nonbinary-opacity rows and long/source-boundary rows. Source/SWF hashes, completion records and losslessly compressed original traces are in `importer-loud-fail/r40/{alpha,opacity,extents}/`; raw/compressed hashes are recorded separately. Apple clang21.0.0 with `-arch x86_64 -O2 -ffp-contract=off` built the independent reciprocal-precision comparator, run under Rosetta. Commands and source/executable/output hashes are in `r40/reciprocal-environment.json`; no inference about Flash instruction selection. Existing Godot4.7.2 Compatibility regression environment is unchanged. No player settings, GPU shaders, production runtime, pinned references or texture imports changed.

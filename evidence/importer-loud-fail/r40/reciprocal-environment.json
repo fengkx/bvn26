@@ -1,0 +1,24 @@
+{
+  "compile": [
+    "clang",
+    "-arch",
+    "x86_64",
+    "-O2",
+    "-ffp-contract=off",
+    "tools/probes/cxform_reciprocal_precision.c",
+    "-o",
+    "/tmp/bvn-r40/reciprocal"
+  ],
+  "run": [
+    "arch",
+    "-x86_64",
+    "/tmp/bvn-r40/reciprocal"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "host": "Darwin VtiodeMacBook-Air.local 25.6.0 Darwin Kernel Version 25.6.0: Tue Aug 18 17:51:32 PDT 2026; root:xnu-12377.161.15.700.19~2/RELEASE_ARM64_T8112 arm64\n",
+  "source_sha256": "f9112c26a2402c05fd90587f6b35c18426fb0a54cb600aa068040acc56b3a82d",
+  "executable_sha256": "e331c36f3e1e61778a68ad66d551b9fbbe37fc6f22f4b5f417f938248876bc14",
+  "output_sha256": "02fda367c3e25120ee54b86abf74813bb724f01337580c3cdbc10d1f97199594",
+  "instruction_inference": false,
+  "production_admitted": false
+}
