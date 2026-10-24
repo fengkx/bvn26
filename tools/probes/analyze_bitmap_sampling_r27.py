@@ -19,11 +19,11 @@ from tools.probes.bitmap_sampling_candidate import coordinates, interpolate, sam
 ROOT = Path(__file__).resolve().parents[2] / 'evidence/importer-loud-fail'
 
 
-def events(text, name, identities, count, kind):
+def events(text, name, identities, count, kind, *, revision='r27'):
     parsed = [line.split('|') for line in text.splitlines() if line.startswith('AIREF|')]
     if (len(parsed) != len(identities)+1 or any(len(e) != 8 for e in parsed)
             or len({e[1] for e in parsed}) != 1
-            or not parsed[0][1].startswith(f'filter-{name}-r27-')
+            or not parsed[0][1].startswith(f'filter-{name}-{revision}-')
             or [int(e[2]) for e in parsed] != list(range(len(parsed)))
             or parsed[-1][6:] != ['done', 'ok']):
         raise ValueError('Incomplete, mixed or duplicate r27 capture')

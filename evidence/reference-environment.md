@@ -294,3 +294,11 @@ Fresh bitmap-boundary-spans (1344 rows/4032 samples) and bitmap-origin-sweep
 importer-loud-fail/r27/. Older r22–r26 captures are reused unchanged and hashed in
 comparison.json. CPU clipped candidate is exact on listed suites; repeat still
 rejects production admission. No environment or production runtime change.
+
+## r28 repeated bitmap matrix routing
+
+Same Flash Player Debugger32.0.0.465/Rosetta and FFDec environment as r27.
+Fresh bitmap-repeat-matrices:2940 single-pixel corner responses across draw/fill
+translation routes. Original trace, source/SWF hashes and launch metadata are in
+importer-loud-fail/r28/matrices/. Reused reference hashes are in comparison.json.
+The signed-byte hypothesis is diagnostic only; no environment/runtime change.
