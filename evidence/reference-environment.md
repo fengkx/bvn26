@@ -314,3 +314,7 @@ Flash Player Debugger 32.0.0.465 under Rosetta, same capture tool/player as r29.
 ## r31 repeat span intervals and chunks (2026-10-24)
 
 Flash Player Debugger 32.0.0.465 under Rosetta, same player/capture tool as r30. Raw traces and individual capture records: `importer-loud-fail/r31/{intervals,chunks}/`. Probes independently vary clip length and start, with four impulses and two ramps. Old references and production rendering remain unchanged.
+
+## r32 Godot sampler diagnostic and native RGBA (2026-10-24)
+
+New transparent BitmapData capture uses the same Flash Player Debugger32.0.0.465/Rosetta; environment and hashes are in `importer-loud-fail/r32/rgba/`. GPU diagnostic runs Godot4.7.2 Compatibility on Apple M2/OpenGL4.1 Metal90.5; `r32/gpu.log` and `r32/provenance.json` pin engine/source/input/readback.54 production components were freshly rendered against unchanged r03 native references. No native production baseline was rewritten.
