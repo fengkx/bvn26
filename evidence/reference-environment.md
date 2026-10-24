@@ -470,3 +470,7 @@ Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; verified unc
 ## r77 actual multi-pass Glow/Shadow GPU diagnostic
 
 No new Flash capture; unchanged r76 native controls reused. Godot4.7.2 Compatibility / OpenGL4.1 Metal90.5 on AppleM2. Twelve sequential batches retain actual production-created blur/composition buffers with diagnostic integer blur and grouped dependencies. Source/reference texture identity and allocation asserted; four stages read back exactly. Zero shadow distance, unit filter alpha/strength only. Executable/source/native hashes in r77/render/provenance.json. Production unchanged.
+
+## r78 native crossed shadow parameters
+
+Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; unchanged executable SHA256 8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be verified. 1620 explicit DropShadow cases retain requested/observed properties and source/independent Blur/final paired readbacks. Source/build/capture hashes under r78. Non-unit alpha getters differ from requested values; negative half-phase and gain counterexamples remain. No new GPU render or production change.
