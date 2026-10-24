@@ -370,3 +370,7 @@ Flash Player Debugger32.0.0.465 under Rosetta captured4131 width32 rows with exp
 ### r45 adjacent source-byte and alpha controls
 
 Flash Player Debugger32.0.0.465 under Rosetta captured459 width32 rows, independently varying one requested source green byte and input alpha at three fixed r44 transforms. Complete source/output readbacks, lossless trace, build hashes and player environment are in `importer-loud-fail/r45/native/`. Independent r44 normalization measurements and prior bounds are reused unchanged and hash-checked. Existing Godot4.7.2 Compatibility regressions are unchanged. No instruction/SIMD inference, production/GPU change, native-reference rewrite or texture-import change.
+
+### r46 fixed-source transform brackets and signed offsets
+
+Flash Player Debugger32.0.0.465 under Rosetta captured1200 fixed-source multiplier/offset bracket rows plus75 independent signed fractional-offset rows with ColorTransform property readback. Complete readbacks, lossless traces, source/SWF hashes and environment are in `importer-loud-fail/r46/{native,offset}/`. r44 independent normalization measurements and old bounds are reused unchanged and hash-checked. Existing Godot4.7.2 Compatibility regression environment is unchanged. No instruction/SIMD inference, production/GPU change, old-reference rewrite or texture-import change.
