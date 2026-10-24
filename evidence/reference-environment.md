@@ -278,3 +278,10 @@ Same Flash Player Debugger32.0.0.465/Rosetta and FFDec environment as r24.
 Fresh bitmap-short-spans fixture:1896 ordered rows,4248 RGB samples, source/SWF
 hashes and launch metadata in importer-loud-fail/r25/short/. No environment or
 production runtime change; the CPU hypotheses remain diagnostic and rejected.
+
+## r26 isolated axes and corner impulses
+
+Same Flash Player Debugger32.0.0.465/Rosetta and FFDec environment as r25.
+Fresh bitmap-axis-ramps (1728 rows/8064 samples) and bitmap-weight-impulses
+(864 rows/2880 samples) captures, source/SWF hashes and launch metadata are in
+importer-loud-fail/r26/. No environment change or production Flash dependency.
