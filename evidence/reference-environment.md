@@ -406,3 +406,7 @@ No new native capture. All old/signed inputs and outputs are reused with unchang
 ## r61 native filter rectangle capture and color-order diagnostic
 
 Fresh Flash Player Debugger32 capture via capture_native_player.py/LaunchServices:65 events, done=true; launch metadata in r61/native/capture-environment.json; binary/OS hashes in player-environment.json and source hashes in build.json. The original r03 color-order pixel reference is unchanged. Godot4.7.2 OpenGL4.1 Metal90.5 on AppleM2. Logical diagnostic span metadata uses independent API rectangles; production buffers remain unchanged.
+
+## r62 actual allocation and native stage rows
+
+Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,done=true. Paired transparent/black readbacks retain actual premultiplied bytes. Source/launch metadata in r62/native; player hash remains the r61 binary fingerprint. The preliminary transparent-only scratch capture was insufficient for premultiplied comparison and is not used. Godot4.7.2 OpenGL4.1 Metal90.5 on AppleM2. Production unchanged; extended final-row gate exits1.

@@ -1,0 +1,75 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "color_order_diagnostic": {
+    "exact_groups": 4,
+    "groups": 4,
+    "exact_channels": 2560,
+    "channels": 2560
+  },
+  "native_stages": {
+    "input": [
+      6400,
+      6400
+    ],
+    "filtered": [
+      6400,
+      6400
+    ],
+    "final": [
+      6392,
+      6400
+    ]
+  },
+  "strict_extent_gate_exit": 1,
+  "production_admitted": false,
+  "prior_exact_rendering": [
+    "../r59/acceptance.json",
+    "../r60/acceptance.json"
+  ],
+  "not_rerun": [
+    "full roster/Web export (production runtime unchanged)",
+    "54 components",
+    "unchanged r59 graphical regressions (pinned readbacks checked by Python)"
+  ],
+  "python": {
+    "tests": 659,
+    "passed": 657,
+    "skipped": 2
+  }
+}
