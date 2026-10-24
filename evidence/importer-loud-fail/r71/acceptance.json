@@ -1,0 +1,58 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "input_exact": 10080,
+  "all_five_models_rejected": true,
+  "production_admitted": false,
+  "not_rerun": [
+    "full roster/Web export (production unchanged)",
+    "54 components",
+    "unchanged GPU gates (pinned readbacks checked by Python)"
+  ],
+  "python": {
+    "total": 678,
+    "passed": 676,
+    "skipped": 2,
+    "exit": 0
+  },
+  "targeted_after_decode_strengthening": {
+    "total": 2,
+    "passed": 2,
+    "exit": 0
+  }
+}

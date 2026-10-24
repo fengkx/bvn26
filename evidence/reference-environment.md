@@ -442,3 +442,7 @@ Fresh Flash Player Debugger32 capture via capture_native_player.py:1153 events,d
 ## r70 actual bounded GPU allocation
 
 No new Flash capture. Native r62/r66/r68/r69 stages reused unchanged. Godot4.7.2, OpenGL4.1 Metal90.5, AppleM2; executable hash/commands in r70/render/provenance.json. Twelve sequential GPU batches validate724 actual source/filter/composite groups with pinned source/readback hashes. Near-integer pre-CXFORM filter differences remain hard failures. Production unchanged.
+
+## r71 fractional BlurFilter axis capture
+
+Fresh Adobe Flash Player Debugger32 capture through LaunchServices/Rosetta; player SHA256 verified unchanged (8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be). Source, instrumented build, capture environment and native log are pinned under r71. 315 explicit BitmapData.applyFilter cases, paired transparent/black source/output rows. No production or graphical Godot change.
