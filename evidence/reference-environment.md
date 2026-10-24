@@ -430,3 +430,7 @@ Fresh Flash Player Debugger32 capture via capture_native_player.py:1513 events,d
 ## r67 public filter property and rectangle precision
 
 Three fresh Flash Player Debugger32 captures via capture_native_player.py:157/133/133 events,all done=true. Requested/retained property strings and public rectangles are logged at integer/half-integer transitions down to2^-26 spacing. Same pinned player binary as r66. No new GPU run, changed pixel reference or internal ISA/allocation claim.
+
+## r68 conservative extent fractional-kernel controls
+
+Fresh Flash Player Debugger32 capture via capture_native_player.py:1441 events,done=true. Retained blurX, public rectangles and actual conservative bitmap dimensions/placements are emitted. Paired transparent/black stages preserve bytes. Same pinned binary as r67; no new GPU run or changed reference.
