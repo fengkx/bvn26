@@ -398,3 +398,7 @@ No new Flash capture. The current installed Flash Player Debugger32 Mach-O was r
 ## r59 actual FilterGroup GPU diagnostic
 
 No new Flash capture or rewritten reference. Pinned r38 native buffers reused. Godot4.7.2, OpenGL4.1 Metal90.5 on AppleM2; executable hash and commands in r59/render/provenance.json. RF reciprocal upload is checked byte-for-byte. Production remains disabled. The r58 uninterruptible helper PID24123 was still in U state at this round; its output is not used.
+
+## r60 broad GPU arithmetic controls
+
+No new native capture. All old/signed inputs and outputs are reused with unchanged consumed operand rules. Godot4.7.2, OpenGL4.1 Metal90.5, AppleM2, same executable as r59. RGBAF/RF upload bytes are asserted equal on readback; output RGBA8 is compared exactly. Shared shader helper unchanged from r59. Production remains disabled.
