@@ -354,3 +354,7 @@ Flash Player Debugger32.0.0.465 under Rosetta captured all-alpha rows, nonbinary
 ### r41 residual CXFORM coefficient intervals
 
 Flash Player Debugger32.0.0.465 under Rosetta captured2760 completed32-pixel rows, including exact premultiplied residual inputs. Source/SWF hashes, lossless raw trace archive and completion environment are in `importer-loud-fail/r41/native/`. Apple clang21.0.0 (`-arch x86_64 -O2 -ffp-contract=off`) built seven independent reciprocal constructions; source/executable/output hashes and commands are in `r41/reciprocal-environment.json`. Measurements do not imply Flash instruction selection or SIMD. Prior native references and Godot4.7.2 Compatibility regression environment are unchanged; no player settings, production/GPU code or texture imports changed.
+
+### r42 channel identity and explicit materialization
+
+Flash Player Debugger32.0.0.465 under Rosetta captured green identity/adjacent multipliers, five explicitly materialized stages, and zero-green offset isolation. Source/SWF hashes, complete lossless traces and environment records are in `importer-loud-fail/r42/{native,stages,zero}/`. Independent coefficient measurements from r41 are reused unchanged and hash-checked; no inference about Flash instruction selection. Godot4.7.2 Compatibility regression environment remains unchanged. No production/GPU code, earlier native references, player settings or texture imports changed.

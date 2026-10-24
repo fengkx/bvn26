@@ -1,0 +1,27 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "tools.probes.analyze_cxform_identity",
+    "--root",
+    "evidence/importer-loud-fail/r42",
+    "--output",
+    "evidence/importer-loud-fail/r42/analysis.json.gz"
+  ],
+  "expected_exit": 1,
+  "production_admitted": false,
+  "source_sha256": {
+    "tools/probes/analyze_cxform_identity.py": "d2841f4cbbcee486857aaecd510e344d0c4d12db3573f96725ce50015078fb7e",
+    "tools/probes/flash_filters/cxform-zero-green-offset.as": "8b14272aa937da372a6341ea4d997fb530e6edd48f81e09c6a5378ea5256dcca",
+    "tools/probes/flash_filters/cxform-materialized-stages.as": "c7e1fe176fa46676c080fa9324364f9dd51c48bacc824b4ed9af35b620743fb9",
+    "tools/probes/flash_filters/cxform-green-identity.as": "dbda23526010cd4e493a784a72e510b394ad18cd21a33bc8a58fefc47952eb2e"
+  },
+  "output_sha256": {
+    "analysis.json.gz": "fe0ab4c4eaba909f03af1771b02a6e63a038b91ffe6262e0328938aa96c0a13d",
+    "summary.json": "ad03bf2a91873f3c37ce217597da3c7fc19752430d4402e19af88e1b86cd346a"
+  },
+  "reference_sha256": {
+    "evidence/importer-loud-fail/r41/intervals.json.gz": "c4b0d3ade909f298fe600f7508a6df6a9cbcae978645e0e318a440fbde713fff",
+    "evidence/importer-loud-fail/r41/reciprocal.txt": "342aea51e861921dae56a8910f057a8ba08725c0f456887236b0d9543a8119b8"
+  }
+}
