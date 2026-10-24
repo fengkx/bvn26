@@ -394,3 +394,7 @@ No Flash capture or rendering change. An independent x86_64/Rosetta intrinsic pr
 ## r58 static native-byte candidate and bounded CPU gate
 
 No new Flash capture. The current installed Flash Player Debugger32 Mach-O was read only; its hash, constant addresses and instruction-span bytes are pinned in importer-loud-fail/r58/static-binary.json. Static inspection is not execution evidence. LLDB/Rosetta startup did not yield a verified breakpoint hit; logs and process cleanup limitations are recorded in r58/debugger/status.json. An uninterruptible new C helper produced no output and is not used. Successful arithmetic reproduction uses Python float32 operations and previously hashed r56/r57 hardware image measurements. No fitted coefficient or changed native reference.
+
+## r59 actual FilterGroup GPU diagnostic
+
+No new Flash capture or rewritten reference. Pinned r38 native buffers reused. Godot4.7.2, OpenGL4.1 Metal90.5 on AppleM2; executable hash and commands in r59/render/provenance.json. RF reciprocal upload is checked byte-for-byte. Production remains disabled. The r58 uninterruptible helper PID24123 was still in U state at this round; its output is not used.
