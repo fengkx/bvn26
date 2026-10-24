@@ -422,3 +422,7 @@ Fresh Flash Player Debugger32 capture via capture_native_player.py:161 events,do
 ## r65 explicit transparent border controls
 
 Fresh Flash Player Debugger32 capture via capture_native_player.py:1121 events,done=true. Actual BitmapData dimensions and Matrix translations are read back; paired transparent/black rows retain premultiplied bytes. copyPixels adds declared transparent borders without transforming visible bytes. Same pinned player binary as r64. No new GPU run or changed reference.
+
+## r66 held-out filter kernels and dimensions
+
+Fresh Flash Player Debugger32 capture via capture_native_player.py:1513 events,done=true. Same pinned player binary as r65. Source and all implicit/explicit stages use paired transparent/black readbacks; actual padded dimensions and public filter rectangles are recorded. No GPU run or changed reference.
