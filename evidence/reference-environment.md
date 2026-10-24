@@ -458,3 +458,7 @@ Fresh Adobe Flash Player Debugger32 capture through LaunchServices/Rosetta; play
 ## r74 integer blur GPU diagnostic
 
 No new Flash capture; unchanged r62/r66/r68/r69 native rows reused. Godot4.7.2 Compatibility / OpenGL4.1 Metal90.5 on AppleM2. Final twelve batches pin executable/source hashes and read back consumed kernels/directions. Integer blur has no epsilon. Independent old normal/nested/Yulong/leaf/Glow/GPU+CPU sampler gates freshly rerun; complete logs/readbacks archived under r74. Production unchanged.
+
+## r75 actual grouped multi-pass Blur GPU diagnostic
+
+No new Flash capture; unchanged r73 native rows reused. Godot4.7.2 Compatibility / OpenGL4.1 Metal90.5 on AppleM2. Twenty-seven sequential batches use real production-created FilterGroup buffers with diagnostic integer shader and grouped texture dependencies. Source is explicit premultiplied RGBA8, final stage raw byte copy; PNG/general affine/ordinary composition are not inferred. Executable/source/native hashes in r75/render/provenance.json. Production unchanged.
