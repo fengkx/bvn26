@@ -378,3 +378,7 @@ Flash Player Debugger32.0.0.465 under Rosetta captured1200 fixed-source multipli
 ### r47 fine multiplier and signed consumption controls
 
 Flash Player Debugger32.0.0.465 under Rosetta captured624 fixed-source fine-multiplier rows plus195 independent signed/zero-centered rows, with explicit ColorTransform multiplier property readbacks. Complete lossless traces, source/SWF hashes and environment are in `importer-loud-fail/r47/{native,signed}/`. Independent normalization measurements and old bounds are reused unchanged and hash-checked. Godot4.7.2 Compatibility regressions use the unchanged environment. No instruction/SIMD inference, production/GPU change, old-reference rewrite or texture-import change.
+
+## r48 signed constraint analysis
+
+Reused the pinned r47 Flash Player Debugger 32/Rosetta source readbacks and signed controls; no new native capture or environment change. Direction-correct CPU interval analysis does not infer an ISA implementation. The existing Godot diagnostic composition, nested, leaf, Glow and sampler regressions were rerun with unchanged native references. See importer-loud-fail/r48/provenance.json and acceptance.json.

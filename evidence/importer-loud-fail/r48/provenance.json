@@ -1,0 +1,25 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "tools.probes.analyze_cxform_signed_bounds",
+    "--output",
+    "evidence/importer-loud-fail/r48/analysis.json.gz"
+  ],
+  "expected_exit": 1,
+  "source_sha256": {
+    "tools/probes/cxform_signed_bounds.py": "76d363e4633bad2f32b4ae6ec14a865222ee2df9c4de25beb922cc950dce6035",
+    "tools/probes/analyze_cxform_signed_bounds.py": "3649c0d8f67cc7a2e54dd4193e6a229a75f852b7a7cea3617690f0ddcdcb02db",
+    "tools/tests/test_cxform_signed_bounds.py": "78b9c040d36787f2c868b9c15a6d3b66620d74daf52184d9dd5e70df4b6a4e66"
+  },
+  "reference_sha256": {
+    "evidence/importer-loud-fail/r47/analysis.json.gz": "abd60ed755ebc1cf29b74f437b9edbe55a94ede114c95225794deaf0b7da8477",
+    "evidence/importer-loud-fail/r47/signed/native.log.gz": "3d25284448e4f3316bf485f485f9d4188c1df3c6df589a72090d07fe567e6023",
+    "evidence/importer-loud-fail/r44/normalization.txt": "58f0819336843678da9569359bf6c80463944eed7c418ca4142ef7099d3b26d2",
+    "evidence/importer-loud-fail/r41/reciprocal.txt": "342aea51e861921dae56a8910f057a8ba08725c0f456887236b0d9543a8119b8"
+  },
+  "output_sha256": {
+    "analysis.json.gz": "67e4bf6ded057caa9e19b6d599143c800717e4fa39561cbeb4e675662c002da7",
+    "summary.json": "2a20a6326683a6341e074006b96652b574150633353a9ef2801941167093df17"
+  }
+}
