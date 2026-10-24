@@ -1,0 +1,23 @@
+{
+  "compile": [
+    "clang",
+    "-arch",
+    "x86_64",
+    "-O2",
+    "-ffp-contract=off",
+    "tools/probes/cxform_reciprocal_image.c",
+    "-o",
+    "/tmp/bvn-r56/image"
+  ],
+  "run": [
+    "arch",
+    "-x86_64",
+    "/tmp/bvn-r56/image"
+  ],
+  "host": "macOS-26.7-arm64-arm-64bit",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "source_sha256": "1a4ca507fc2d446b398a454035b91d2d481cff5170028b157473b7609bb705ed",
+  "executable_sha256": "ee21d3e73e59f81e477db6ffec7bc8762237a6d7749bf839045da7ea56de826c",
+  "output_sha256": "d321370bdedc15b6edd9a93aeade78b517175c5ee5ba65876aa0996842a94829",
+  "instruction_inference": false
+}

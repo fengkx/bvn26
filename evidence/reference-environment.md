@@ -386,3 +386,7 @@ Reused the pinned r47 Flash Player Debugger 32/Rosetta source readbacks and sign
 ## r52 independent rounding-mode experiment
 
 No new Flash capture. The checked-in x86_64 SSE intrinsic probe ran under Rosetta with explicit MXCSR nearest/down/up/toward-zero readbacks for each input. Source/executable/input/output hashes and compiler/host details are in importer-loud-fail/r52/environment.json. This measures independent constructions and does not infer Flash instructions. All native references and production rendering remain unchanged.
+
+## r56 exhaustive reciprocal output image
+
+No Flash capture or rendering change. An independent x86_64/Rosetta intrinsic probe enumerated every float32 input in the fixed normalized-byte domain [1/256,1], recording nearest-mode CSR and contiguous output runs. Compiler/host/source/executable/output hashes are in importer-loud-fail/r56/environment.json. This is a bounded hardware image, not an inference about Flash instructions or a fitted reciprocal table.
