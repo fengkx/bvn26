@@ -446,3 +446,7 @@ No new Flash capture. Native r62/r66/r68/r69 stages reused unchanged. Godot4.7.2
 ## r71 fractional BlurFilter axis capture
 
 Fresh Adobe Flash Player Debugger32 capture through LaunchServices/Rosetta; player SHA256 verified unchanged (8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be). Source, instrumented build, capture environment and native log are pinned under r71. 315 explicit BitmapData.applyFilter cases, paired transparent/black source/output rows. No production or graphical Godot change.
+
+## r72 fractional BlurFilter axis capture
+
+Fresh Adobe Flash Player Debugger32 capture through LaunchServices/Rosetta; player SHA256 verified unchanged (8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be). Source, instrumented build, capture environment and native log are pinned under r72. 1134 explicit BitmapData.applyFilter cases, paired transparent/black source/output rows and columns; fine kernel properties retained. No production or graphical Godot change.
