@@ -1,0 +1,30 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "tools.probes.analyze_cxform_native_candidate",
+    "--output",
+    "evidence/importer-loud-fail/r58/analysis.json.gz"
+  ],
+  "expected_exit": 0,
+  "source_sha256": {
+    "tools/probes/extract_cxform_binary_constants.py": "aa6b635163af5980cf1b3dc54a6e30f2e17be3f1e8bab192b62ffac939fd0a62",
+    "tools/probes/native_cxform_candidate.py": "e737513ff1218e71b3975838e397975c85d59893f16e8f4dd4f0647ee32e59f2",
+    "tools/probes/analyze_cxform_native_candidate.py": "85d31bfd28be18b831ac902aec2fcb9b1480f7b892d772952a66e0612e902488",
+    "tools/probes/cxform_trace_callback.py": "80464846c7c274c4a8b62d1d971e6ce69f64591c8ab3a5c3c91887d46a89ba3f",
+    "tools/probes/write_cxform_trace.py": "4d198c9aa975e24c3d9ef7deb3aa7065a45a322df395941275578896467a49a1",
+    "tools/tests/test_native_cxform_candidate.py": "22d01091bdc22c8134b594eb1e86cd7b0a07a701d10d67c826ccf5577bd2a3d4"
+  },
+  "reference_sha256": {
+    "evidence/importer-loud-fail/r56/hardware.txt.gz": "12ff7e7a54ae9a88fb0ca14db762e1c75f9b206abdf195b62b9ccb5a6abce461",
+    "evidence/importer-loud-fail/r57/hardware-0.txt.gz": "66c8c9e7932ac5789d76af08d356d63494aa2aecd6755fbc8b627190b662e3b1",
+    "evidence/importer-loud-fail/r48/analysis.json.gz": "67e4bf6ded057caa9e19b6d599143c800717e4fa39561cbeb4e675662c002da7",
+    "evidence/importer-loud-fail/r47/signed/native.log.gz": "3d25284448e4f3316bf485f485f9d4188c1df3c6df589a72090d07fe567e6023",
+    "evidence/importer-loud-fail/r38/native/native.log": "b969847b14c5018d88ac7f1eed16d9e81dbcf72b74a2e3c3593820a518d7106e"
+  },
+  "output_sha256": {
+    "analysis.json.gz": "4bdb6a8cec72e8b4738eb3913d734710ad05d5294995192de19b62c79499c8bc",
+    "summary.json": "6450bde8d5dae96a9ff77e8cb76baf4b2f3f81a1985b76cf6dcc7fe569852bab",
+    "static-binary.json": "2e4e061c4900ddcb462d1a04f0d3e9e2f42617838f30f53c0dc829a37c57aa3b"
+  }
+}

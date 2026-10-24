@@ -1,0 +1,11 @@
+(lldb) command source -s 0 '/tmp/bvn-r58/trace.lldb'
+Executing commands in '/tmp/bvn-r58/trace.lldb'.
+(lldb) settings set target.disable-aslr false
+(lldb) target create --arch x86_64 "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) settings set target.run-args /tmp/bvn-r47/signed/game/main.swf
+(lldb) command script import /tmp/bvn-r58/trace.py
+(lldb) breakpoint set --address 0x1001fc529
+Breakpoint 1: address = 0x00000001001fc529
+(lldb) breakpoint command add -F trace.stop 1
+(lldb) run

@@ -390,3 +390,7 @@ No new Flash capture. The checked-in x86_64 SSE intrinsic probe ran under Rosett
 ## r56 exhaustive reciprocal output image
 
 No Flash capture or rendering change. An independent x86_64/Rosetta intrinsic probe enumerated every float32 input in the fixed normalized-byte domain [1/256,1], recording nearest-mode CSR and contiguous output runs. Compiler/host/source/executable/output hashes are in importer-loud-fail/r56/environment.json. This is a bounded hardware image, not an inference about Flash instructions or a fitted reciprocal table.
+
+## r58 static native-byte candidate and bounded CPU gate
+
+No new Flash capture. The current installed Flash Player Debugger32 Mach-O was read only; its hash, constant addresses and instruction-span bytes are pinned in importer-loud-fail/r58/static-binary.json. Static inspection is not execution evidence. LLDB/Rosetta startup did not yield a verified breakpoint hit; logs and process cleanup limitations are recorded in r58/debugger/status.json. An uninterruptible new C helper produced no output and is not used. Successful arithmetic reproduction uses Python float32 operations and previously hashed r56/r57 hardware image measurements. No fitted coefficient or changed native reference.
