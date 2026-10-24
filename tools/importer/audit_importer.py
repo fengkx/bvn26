@@ -1,7 +1,7 @@
 """Audit locked SWFs without retaining large XML exports or changing game output.
 
 Every failure retains its source location. This is an inventory, not proof that
-all AS semantics have a native consumer. Exit nonzero when a guard rejects input.
+all AS semantics have a native consumer. Rejections and incomplete ownership exit nonzero.
 """
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ import ast
 from collections import Counter
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -169,10 +170,11 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                 encoded = tag.get('actionBytes', '')
                 try:
                     controls = visual_control_actions(encoded)
-                    if not controls:
-                        action_inventory.append({'source': location,
-                            'sha256': hashlib.sha256(encoded.encode('ascii')).hexdigest(),
-                            'status': 'requires_nonvisual_owner_review'})
+                    # A recognized stop/goto does not own the rest of the block.
+                    action_inventory.append({'source': location,
+                        'sha256': hashlib.sha256(encoded.encode('ascii')).hexdigest(),
+                        'visual_control_count': len(controls),
+                        'status': 'requires_complete_owner_review'})
                 except ValueError as error:
                     failures.append({'source': location, 'construct': kind, 'error': str(error)})
     for failure in failures:
@@ -201,6 +203,45 @@ def skip_sites() -> list[dict]:
                 sites.append({'path': str(path.relative_to(ROOT)), 'line': node.lineno,
                               'construct': reason, 'status': 'requires_review'})
     return sites
+
+
+def source_script_inventory() -> list[dict]:
+    """List every locked script requiring a complete semantic ownership proof.
+
+    A successful selected-function/cache compile is not evidence that every
+    statement in the containing script has a consumer. Do not infer ownership
+    from matching names, hashes, event metadata, or a recognized visual control.
+    """
+    rows = []
+    for path in sorted((ROOT / 'scripts').rglob('*.json')):
+        bundle = json.loads(path.read_text())
+        if 'game_file' not in bundle or 'scripts' not in bundle:
+            continue
+        for script in bundle['scripts']:
+            source = script['source']
+            rows.append({'swf': bundle['game_file'], 'swf_sha256': bundle['swf_sha256'],
+                         'bundle': str(path.relative_to(ROOT)), 'path': script['path'],
+                         'source_sha256': hashlib.sha256(source.encode()).hexdigest(),
+                         'lines': len(source.splitlines()),
+                         'event_handlers': [{'line': number, 'event': match[1]}
+                             for number, line in enumerate(source.splitlines(), 1)
+                             if (match := re.match(r'\s*onClipEvent\s*\(([^)]+)\)', line))],
+                         'status': 'requires_complete_owner_review'})
+    return rows
+
+
+def audit_exit_code(result: dict) -> int:
+    """Never report a complete audit while any scope is failed or unreviewed."""
+    if result.get('status') != 'passed':
+        return 1
+    if any(row.get('failures') for row in result['swfs']):
+        return 1
+    for key in ('shipped_contexts', 'visual_checks'):
+        if any(row.get('status') != 'passed' for row in result[key]):
+            return 1
+    if result.get('skip_sites') or result.get('source_scripts'):
+        return 1
+    return 0
 
 
 def main():
@@ -234,11 +275,15 @@ def main():
         except ValueError as error:
             visual_checks.append({'path': str(path.relative_to(ROOT)), 'status': 'failed', 'error': str(error)})
     result = {'visual_checks': visual_checks, 'status': 'incomplete_semantic_audit', 'swfs': reports,
-              'shipped_contexts': shipped, 'skip_sites': skip_sites()}
+              'shipped_contexts': shipped, 'skip_sites': skip_sites(),
+              'source_scripts': source_script_inventory()}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
-    raise SystemExit(1 if any(r['failures'] for r in reports) or
-                     any(r['status'] == 'failed' for r in shipped) else 0)
+    print(json.dumps({'status': result['status'],
+                      'source_scripts_requiring_review': len(result['source_scripts']),
+                      'importer_skip_sites_requiring_review': len(result['skip_sites']),
+                      'exit_code': audit_exit_code(result)}), flush=True)
+    raise SystemExit(audit_exit_code(result))
 
 
 if __name__ == '__main__':
