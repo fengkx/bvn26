@@ -215,3 +215,14 @@ The same Adobe Flash Player Debugger32.0.0.465 (Rosetta) and JPEXS26.2.1 were us
 ## r17 placement candidate probes
 
 The same Flash Player Debugger32.0.0.465 under Rosetta and JPEXS26.2.1 captured30 difference/overlay cases and12 DropShadow cases. Blend input and output pixels are recorded separately; premultiplied RGB comes from drawing the captured BitmapData onto opaque black, not reconstructing lossy straight-alpha values. Shadow probes sample the entire32×32 image. Both candidates fail exact parity and remain outside production. [r17 evidence](importer-loud-fail/r17/README.md) retains captures, build hashes and rejected patches.
+
+## r18 placement arithmetic isolation
+
+The same Flash Player Debugger32.0.0.465 under Rosetta and JPEXS26.2.1
+captured a complete256×256 opaque overlay grayscale grid and two12-case
+DropShadow mask probes (strength1, hidden source, blur3 or blur0).
+[Captures and build hashes](importer-loud-fail/r18/README.md) distinguish
+opaque integer blend parity from unresolved alpha compositing/fractional
+sampling. Godot4.7.2 Compatibility matches all262,144 opaque-grid channels
+in an isolated candidate; the candidate still fails12/30 mixed-opacity cases
+and is not admitted to production. No reference environment change.
