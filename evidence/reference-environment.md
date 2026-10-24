@@ -338,3 +338,7 @@ New bitmap and vector captures use Adobe Flash Player Debugger 32.0.0.465 under 
 ### r37 explicit nested materialization
 
 Adobe Flash Player Debugger32.0.0.465 under Rosetta explicitly allocated and drew nested BitmapData sources. The final capture includes source-input readbacks and all child/parent/final pixels: `importer-loud-fail/r37/native/` contains source/SWF hashes, original trace and capture environment. Godot4.7.2 Compatibility / Apple M2 / OpenGL4.1 Metal90.5 ran actual production BlendGroup nodes, with correct and deliberately stale destination-copy ordering. Commands, source/engine/native/readback hashes are in `r37/{fresh,stale}/provenance.json`. No player settings, old references or import settings changed.
+
+### r38 nested filter and materialized CXFORM controls
+
+Reused Flash Player Debugger32.0.0.465 under Rosetta. New original traces/source/SWF hashes/environment records are under `importer-loud-fail/r38/{native,cx,dense,spans,varied}/`. Native explicitly allocates BitmapData and applies filters; no cache flag inference. Godot4.7.2 Compatibility / AppleM2 / OpenGL4.1 Metal90.5 runs actual FilterGroup allocation/passes through opt-in diagnostics. The initial and fixed-candidate source/readback provenance are in `r38/{render,integer}/`; baseline shader snapshot preserves the initial code. No old references, player settings or PNG imports changed.
