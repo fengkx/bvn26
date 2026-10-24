@@ -184,6 +184,8 @@ func _ready() -> void:
 	var ai_model := _read_json("%s/ai.json" % fighter_directory)
 	source_parent_values = ai_model.get("parent_initial_values", {}).duplicate(true)
 	ai_source_state.configure(ai_model)
+	if ai_model.get("placement_filter_initialization", ai_model.get("form_initialization", {})).get("clear_placement_filters", false):
+		reset_ai_colors()
 	_ai_hit_transfer = load("%s/ai_hit_state.gd" % fighter_directory).new(ai_source_state.values)
 	ai_senses.configure(self, ai_model)
 	ai_predicate_context = AiPredicateContext.new(self)

@@ -207,3 +207,7 @@ placement tags. The extended root observer records23 consecutive post-replacemen
 body/root-position samples, including the16-frame nested loop. Build hashes,
 launch environment and raw trace are in `importer-loud-fail/r15/native-stage/`.
 The probe is isolated, not a complete transformed combat/image parity claim.
+
+## r16 Yulong wrapper initialization probe
+
+The same Adobe Flash Player Debugger32.0.0.465 (Rosetta) and JPEXS26.2.1 were used via `tools/probes/capture_native_player.py` with window activation authorized. Root-only instrumentation preserves original child definitions and non-action root tags. Evidence: [r16 native log](importer-loud-fail/r16/native.log) and [build hashes](importer-loud-fail/r16/native-build.json). This adds bounded filter lifecycle observations, not full-game pixel parity.

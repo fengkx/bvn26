@@ -31,6 +31,9 @@ def validate_cached_frame_calls(timeline: dict, cached: dict, catalog: dict | No
     if calls_digest([cached.get('parent_initial_values', {})]) != calls_digest([expected.get('parent_initial_values', {})]):
         raise ValueError(f'{source}:frame_1/DoAction.as: dropped/changed parent initial values')
     validate_nested_stage_frames(cached, expected, source)
+    if calls_digest([cached.get('placement_filter_initialization')]) != calls_digest([expected.get('placement_filter_initialization')]):
+        raise ValueError(f"{source}:DefineSprite_{timeline['sprite_id']}/frame_1/DoAction.as: "
+                         'dropped/changed placement-filter initialization')
     actual_calls = cached.get('frame_calls', {})
     form_contract = expected.get('form_profile_contract')
     if form_contract:

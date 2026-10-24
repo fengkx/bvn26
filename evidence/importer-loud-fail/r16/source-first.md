@@ -1,0 +1,9 @@
+# Yulong wrapper filter source-first review
+
+1. `scripts/fighter/yulong.json#DefineSprite_345/frame_1/DoAction.as` unconditionally calls `resColor()` before the `inited` guard. Its exact function resets Color transform and assigns `_this.filters=[]`. Subsequent body frames 2/3 do not reapply the placement filter. Existing action/clock behavior is unchanged.
+2. Root frame 1 newly places `mc` (sprite345, depth1); the authored filter is **BLURFILTER blurX=0, blurY=0, passes=1**, not the separate inner Glow mentioned in the wider inventory. Fresh XML extraction matches the pinned wrapper obligation. The original placement and source bytes are preserved.
+3. Initialization proceeds into the existing standing timeline; this change adds no goto, stop, label boundary or callback timing. The initial clear occurs before the first initialized display, exactly as the native observations show.
+4. The source invariant is one filter before BODY initialization and zero after it. The cache must retain the filter even though its radii are zero. Missing/changed cached initialization, conditional calls, changed reset bodies, and missing wrapper filters are hard errors.
+5. `tools/probes/build_wrapper_filter_probe.py` appends an observer to the original root script, preserving every child definition and non-action tag byte. Native Flash Debugger32 observes root frame1/body1/filter1/0x0, then body2/filter0 and body3/filter0. Godot checks both production player slots and rollback of the clear state. This is lifecycle parity, not a claim that unresolved inner Glow/component pixels are exact.
+
+No stability deviation or allowlist. The existing source-checked form initialization recognizer is reused for the base-body reset proof; only the filter-reset fields are emitted for base bodies. Existing replacement initialization remains unchanged.

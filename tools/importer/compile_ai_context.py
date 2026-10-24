@@ -429,6 +429,12 @@ def form_initialization(source: str, location: str, *, placement_filters: bool =
             'source_sha256': hashlib.sha256(source.encode()).hexdigest()}
 
 
+def placement_filter_initialization(source: str, location: str) -> dict:
+    proof = form_initialization(source, location, placement_filters=True)
+    return {key: proof[key] for key in ("clear_placement_filters",
+            "filter_reset_source_sha256", "source_sha256")}
+
+
 def nested_stage_frames(bundle: dict, timeline: dict) -> dict:
     """Own complete, unconditional stage-effect scripts on retained child clocks."""
     definitions = {int(d['character_id']) for d in timeline['definitions']}
@@ -758,6 +764,9 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
             'source_swf':timeline['source_swf'],'sprite_id':sprite,
             'load_writes':load_writes,'base_power_fields':powers,
             'initialization_state':initialization_state,
+            **({'placement_filter_initialization': placement_filter_initialization(scripts[first_path],
+                 f"{bundle['game_file']}:{first_path}")}
+               if not form_replacement and timeline.get('wrapper', {}).get('filters') else {}),
             **({'form_initialization': form_initialization(scripts[first_path],
                  f"{bundle['game_file']}:{first_path}",
                  placement_filters=bool(timeline.get("wrapper", {}).get("filters")))} if form_replacement else {}),
