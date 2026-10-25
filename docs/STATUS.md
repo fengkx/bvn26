@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r141）：蓝染9帧原生动画时钟24/24一致，缓存到Blur及原始完整图各960000像素精确；源输入仍待验证。[r141证据](../evidence/importer-loud-fail/r141/README.md)。
+
 - 2026-10-25（r140）：雨龙旋转源经实际FilterGroup实时GPU路径，原始完整图2/2精确；已有源驱动实时诊断累计8图，生产准入关闭。[r140证据](../evidence/importer-loud-fail/r140/README.md)。
 
 - 2026-10-25（r139）：四分之一覆盖独立输入163840像素精确，其中边缘26880；全局生产准入关闭。[r139证据](../evidence/importer-loud-fail/r139/README.md)。
