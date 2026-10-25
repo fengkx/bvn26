@@ -1,5 +1,9 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r87）：独立混合alpha PNG四绘制路径各4096/4096；外部PNG规则保持，内部解码归因与SWF位图关系未证明。生产关闭。[r87证据](../evidence/importer-loud-fail/r87/README.md)。
+
+- 2026-10-25（r86）：外部PNG全alpha／颜色196608控制拒绝旧构造；不透明恒等、其余乘积/256候选全等，但加载与绘制边界尚待拆分，候选及生产未准入。[r86证据](../evidence/importer-loud-fail/r86/README.md)。
+
 - 2026-10-25（r85）：实际滤镜／BlendGroup双层GPU七阶段各46080/46080；提前复制背景使父层与最终各0/46080，负对照拒绝。生产关闭。[r85证据](../evidence/importer-loud-fail/r85/README.md)。
 
 - 2026-10-25（r84）：显式阴影位图双层opacity与透明目标七阶段各46080/46080；合并边界反例7826个，保留独立量化。生产关闭。[r84证据](../evidence/importer-loud-fail/r84/README.md)。

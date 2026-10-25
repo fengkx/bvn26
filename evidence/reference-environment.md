@@ -502,3 +502,11 @@ Fresh Flash Player Debugger32 LaunchServices/Rosetta capture with unchanged pinn
 ## r85 actual shadow/opacity GPU boundaries
 
 Godot4.7.2 Compatibility on AppleM2 OpenGL4.1 Metal90.5,15 batches each fresh/stale destination-copy order. Actual FilterGroup/BlendGroup allocation and texture dependencies checked. Fresh seven stages46080/46080; stale parent/final0/46080 and expected gate exit1. No production change.
+
+## r86 external PNG native controls
+
+Fresh Flash Player Debugger32 LaunchServices/Rosetta capture; unchanged pinned player hash. MovieClipLoader reads retained no-profile RGBA PNG, then identity BitmapData.draw with paired black readbacks.196608 original pixels/native alphas verified. Exploratory opaque-identity/partial-alpha integer-product candidate exact, boundary attribution not admitted.
+
+## r87 independent PNG draw paths
+
+Fresh Flash Player Debugger32 LaunchServices/Rosetta capture with unchanged pinned player hash. Independent64x64 PNG varies RGBA across both axes; full/direct-black/single-pixel-clip/redraw each4096/4096. Downstream readback/clip-length explanations rejected in the bounded identity domain; no production change.
