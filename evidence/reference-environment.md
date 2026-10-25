@@ -602,3 +602,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Read-only static affine 
 ## r111 native cache profiling
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh paired60000-iteration cache/uncached native captures with start-marker-aligned /usr/bin/sample. Installed binary unchanged. Four cache-profile return PCs map to pinned static calls; exact normalization branch remains unverified. Reports include Rosetta unknown frames and are not pixel references. No production change.
+
+## r112 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. No fresh native capture. Read-only pinned matrix-field setup and device constant0x3d4ccccd; existing r101/r103/r104 controls exact under common device-origin hypothesis, r102/r109 still reject. Specific branch execution unverified; no GPU or production advance. No production change.
