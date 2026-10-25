@@ -670,3 +670,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Godot4.7.2 Compati
 ## r128 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta Yijiao static component: cache/clear720000/720000 and cache-to-authored Blur720000/720000 exact. No production change.
+
+## r129 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. No new native capture; source-preserved cyclic rectangle cache/authored Blur720000/720000 each and pinned final480000/480000 exact. No production change.
