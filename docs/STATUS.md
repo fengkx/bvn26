@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r196）：ColorMatrix8种相同缓存读回对应不同输出；逐像素候选全拒绝，待显式物化输入；不启用生产。[r196证据](../evidence/importer-loud-fail/r196/README.md)。
+
 - 2026-10-25（r195）：main家族GPU10/12精确，恒等后置变换暴露2953个ColorMatrix像素差异；严格拒绝；不启用生产。[r195证据](../evidence/importer-loud-fail/r195/README.md)。
 
 - 2026-10-25（r194）：main真实FilterGroup包装层GPU4/4精确，alpha边界326472精确；中间RGB与生产仍关闭；不启用生产。[r194证据](../evidence/importer-loud-fail/r194/README.md)。
