@@ -542,3 +542,7 @@ Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchang
 ## r96 independent clipped half-step controls
 
 Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchanged player hash. Independent540 controls with outer horizontal scales0.5/1/1.5/2/3 and signed origins;480 source pixels read back. One-frame initial incomplete capture rejected; batched full capture1629 events. Nearest scaled-child translation83423/83423, old26538 retained; ties not yet distinguished. Production unchanged.
+
+## r97 independent clipped half-step controls
+
+Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchanged player hash. Independent720 signed half-quarter/neighbor controls;180 exact ties,480 source texels verified. Ties-even86749/86749; other tie rules rejected. Old83423 and26538 retained; no production changes. Production unchanged.
