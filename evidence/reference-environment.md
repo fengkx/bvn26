@@ -906,3 +906,7 @@ Godot4.7.2 Compatibility/OpenGL4.1 AppleM2 Metal90.5; same pinned r179 Flash Deb
 ## r190 affine cache support
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh affine cache support/filter-property capture; explicit27621 source texels and all matrix readbacks retained. No production rendering change.
+
+## r191 affine cache coordinates
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh affine cache coordinates/filter-property capture; explicit27621 source texels and all matrix readbacks retained. No production rendering change.
