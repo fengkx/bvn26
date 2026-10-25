@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r90）：独立60×58脉冲41760输入全等；旧模型9045/9360，105组固定坐标不兼容，含单像素裁剪，否定仅改分段。下一步独立测半步取整。[r90证据](../evidence/importer-loud-fail/r90/README.md)。
+
 - 2026-10-25（r89）：真实Jiraiya274/273原始标签分数变换，分离fill平移后5/6整图精确，余3个内部像素差1；透明边缘不证明覆盖。生产关闭。[r89证据](../evidence/importer-loud-fail/r89/README.md)。
 
 - 2026-10-25（r88）：54组件引用21张无损位图1031306纹素PNG往返全等，源alpha仅0/255；Jinye55／Orochimaru340 JPEG3待测。转查真实分数覆盖，生产关闭。[r88证据](../evidence/importer-loud-fail/r88/README.md)。

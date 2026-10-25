@@ -514,3 +514,7 @@ Fresh Flash Player Debugger32 LaunchServices/Rosetta capture with unchanged pinn
 ## r89 native source-backed Jiraiya bitmap binding
 
 Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player hash. Original shape274/bitmap273 tags preserved before/after probe compilation; six paired-RGBA fractional transform images. Separate fill translation5/6 exact, three near-right interior byte counterexamples retained. No GPU/production change.
+
+## r90 independent Jiraiya-footprint span controls
+
+Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player hash.252 four-corner/ramp controls,41760 verified source pixels; variable clips and single-pixel draws at fixed anisotropic transforms.105 response groups reject all current fixed-coordinate interpolation modes, including scalar clips. No sampler/GPU/production changes.
