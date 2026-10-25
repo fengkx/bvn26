@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r213）：JPEG独立分量颜色转换6144/6144精确；降采样插值与原始图仍待证明；生产关闭。[证据](../evidence/importer-loud-fail/r213/README.md)。
+
 - 2026-10-26（r212）：JPEG灰度整数IDCT4096/4096精确；独立恒色块证明颜色转换差1；色度边界另有差异；生产关闭。[证据](../evidence/importer-loud-fail/r212/README.md)。
 
 - 2026-10-26（r211）：JPEG六种全图IDCT/色度上采样组合均被原始字节拒绝；继续分离解码阶段；生产关闭。[证据](../evidence/importer-loud-fail/r211/README.md)。
