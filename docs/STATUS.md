@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r211）：JPEG六种全图IDCT/色度上采样组合均被原始字节拒绝；继续分离解码阶段；生产关闭。[证据](../evidence/importer-loud-fail/r211/README.md)。
+
 - 2026-10-26（r210）：大蛇丸原始JPEG3默认解码37022/70308精确，最大RGB差19；alpha全部精确；拒绝生产准入。[证据](../evidence/importer-loud-fail/r210/README.md)。
 
 - 2026-10-26（r209）：源绑定完整组件诊断36/54；剩余金夜4/大蛇丸10/一角4；锁定大蛇丸JPEG3解码缺口。Python963通过、2跳过；生产仍关闭。[证据](../evidence/importer-loud-fail/r209/README.md)。
