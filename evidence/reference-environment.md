@@ -654,3 +654,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Godot4.7.2 Compati
 ## r124 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta original second Jiraiya component capture; cache-to-vertical-Blur720000/720000 and pinned composition480000/480000 exact. No GPU advance. No production change.
+
+## r125 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta primitive depth identity with independent dynamic MovieClip control; authored raw SWF tags and XML retained. No GPU advance. No production change.
