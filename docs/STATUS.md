@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r207）：矩阵GPU字节行401784/401784 RGBA精确；尚未绑定实际FilterGroup；保持失败闭合；不启用生产。[r207证据](../evidence/importer-loud-fail/r207/README.md)。
+
 - 2026-10-26（r206）：旧标量24/24与斜坡2048/2048精确且原输出未变；仅允许诊断GPU继续；保持失败闭合；不启用生产。[r206证据](../evidence/importer-loud-fail/r206/README.md)。
 
 - 2026-10-26（r205）：全部alpha独立矩阵控制55296/55296 RGBA精确；生产准入仍关闭；保持失败闭合；不启用生产。[r205证据](../evidence/importer-loud-fail/r205/README.md)。
