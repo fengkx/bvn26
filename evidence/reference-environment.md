@@ -486,3 +486,7 @@ Fresh Flash Player Debugger32 LaunchServices/Rosetta captures; player SHA256 unc
 ## r81 integer shadow GPU controls
 
 Godot4.7.2 Compatibility on AppleM2 OpenGL4.1 Metal90.5;37 clean batches with actual production-created filter buffers. Exact r78/r80 native readbacks retained, no new native capture. All four stages241152/241152; raw final copy only. Independent graphical regressions rerun. Production unchanged.
+
+## r82 native non-white shadow controls
+
+Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, same pinned player SHA256 as r80.576 source-authored non-white controls; original/display source, separate Blur, applyFilter and display output readbacks retained. Both API outputs73728/73728 predicted without changing their phase rules. Production unchanged.
