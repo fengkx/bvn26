@@ -634,3 +634,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh960 native cases;96
 ## r119 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. No new native capture; all retained cache-origin families436116/436116 exact with unchanged readbacks. No production change.
+
+## r120 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. No new native capture; source-derived Jiraiya cache720000/720000 and authored Blur720000/720000 exact against pinned references. No production change.
