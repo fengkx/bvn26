@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r145）：独立编码干预保留2275像素及其他646标签；仅format3改5即匹配AS，原索引色采样尚未实现。[r145证据](../evidence/importer-loud-fail/r145/README.md)。
+
 - 2026-10-25（r144）：同2275源字节和矩阵的SWF标签与AS填充不同；CPU精确匹配AS，原标签缓存662像素仍不同，下一步隔离位图编码。[r144证据](../evidence/importer-loud-fail/r144/README.md)。
 
 - 2026-10-25（r143）：独立填充平移标量1152样本三候选均精确，尚无法区分顺序，不据此准入。[r143证据](../evidence/importer-loud-fail/r143/README.md)。
