@@ -998,3 +998,7 @@ Same pinned Flash Player32/Rosetta, unchanged source bitmap55 JPEG3 and cached s
 ## r221 isolated Jinye smooth affine leaves
 
 Same pinned Flash Player32/Rosetta. Original raw bitmap55/shape56/57 tags preserved, source frame1/10 depth1 matrices and outer transform read back, cached and uncached captures separate. Exact decoder retained; unadmitted CPU interpolation baseline uses source-only pixels.
+
+## r222 independent Drawing API affine controls
+
+Same pinned Flash Player32/Rosetta. Six independent opaque ramps/impulses, explicit22080source pixels, three draw scales and cached/uncached surfaces. This is beginBitmapFill(false,true), not proof of preserved DefineShape-tag API equivalence. No GPU or production admission.
