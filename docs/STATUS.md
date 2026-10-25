@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r102）：扩大缓存控制反证三种原点，未缓存240900全等；缓存缩放7最大差10，另有小差1，继续硬拒绝。[r102证据](../evidence/importer-loud-fail/r102/README.md)。
+
 - 2026-10-25（r101）：独立缓存37842全等，必须保留分数draw相位；三种几何整数原点仍等价，生产禁用。[r101证据](../evidence/importer-loud-fail/r101/README.md)。
 
 - 2026-10-25（r100）：实际cache与零Blur输出一致；整数Blur作用于该边界后原始过滤图720000全等，源缓存初始化仍待证明。[r100证据](../evidence/importer-loud-fail/r100/README.md)。

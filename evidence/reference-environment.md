@@ -562,3 +562,7 @@ Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchang
 ## r101 independent clipped half-step controls
 
 Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchanged player hash. Independent378 cached/uncached bitmap controls vary fill minima, scale and child/outer translations;480 source texels and bounds read back. Local integer-origin raster retaining full fractional phase37842/37842, three geometric origin constructions still equivalent. No production admission. Production unchanged.
+
+## r102 independent clipped half-step controls
+
+Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchanged player hash. Independent1152 fractional-bound/cache controls,480 source texels and actual bounds read back. Uncached240900/240900; three cache origins210078/210084/210086 exact only, max channel delta10. Old controls retained; no origin selected or production change. Production unchanged.
