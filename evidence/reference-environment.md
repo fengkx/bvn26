@@ -810,3 +810,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/R
 ## r163 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta independent axis-scale and signed-shear source controls; all16384 texels and effective transforms retained; no production rendering change; full source/property readbacks retained. No production change.
+
+## r164 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta independent bitmap-size and authored-mask-size controls; all16384 texels and effective transforms retained; no production rendering change; full source/property readbacks retained. No production change.
