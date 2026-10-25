@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r181）：原生位图/矢量覆盖80675像素一致，简单4×4模型仍有2838反例；不启用生产。[r181证据](../evidence/importer-loud-fail/r181/README.md)。
+
 - 2026-10-25（r180）：原始main纹理绑定GPU后52921内部像素精确，15边缘继续拒绝；不启用生产。[r180证据](../evidence/importer-loud-fail/r180/README.md)。
 
 - 2026-10-25（r179）：原始main叶片两种存储各52921内部像素精确，15个非透明边缘仍待证明；不启用生产。[r179证据](../evidence/importer-loud-fail/r179/README.md)。
