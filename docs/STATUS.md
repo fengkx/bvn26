@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r157）：ColorMatrix原生八图与原参考精确；保留仿射/CXFORM/混合及缓存差异，运行时未准入。[r157证据](../evidence/importer-loud-fail/r157/README.md)。
+
 - 2026-10-25（r156）：主场景及一角移除/Stop诊断404时钟精确，填充65/67保留，完整AS归属仍未完成。[r156证据](../evidence/importer-loud-fail/r156/README.md)。
 
 - 2026-10-25（r155）：雨龙五个源放置10图精确，普通合成4032及包装4图重跑通过；生产仍关闭。[r155证据](../evidence/importer-loud-fail/r155/README.md)。

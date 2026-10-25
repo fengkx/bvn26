@@ -782,3 +782,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh FFDEC source owner
 ## r156 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh FFDEC main/Yijiao source graph exports; pinned original native animation clocks unchanged; full source/property readbacks retained. No production change.
+
+## r157 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta original main/Yijiao ColorMatrix boundary captures with coefficient, clock and direct gray-stage readbacks; full source/property readbacks retained. No production change.
