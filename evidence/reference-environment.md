@@ -950,3 +950,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix coeffi
 ## r203 ColorMatrix independent output offsets
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix independent output offsets/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
+
+## r205 ColorMatrix all-alpha paired and remainder controls
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix all-alpha paired and remainder controls/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
