@@ -994,3 +994,7 @@ Same pinned Flash Player32/Rosetta; five unchanged source placements, explicit a
 ## r220 Jinye cache and original bitmap55
 
 Same pinned Flash Player32/Rosetta, unchanged source bitmap55 JPEG3 and cached sprite58. Explicit authored/clear/cache/stage readbacks retain original clocks and restore cache properties. Source-only scaled-plane decoder uses the same libjpeg helper as r218/r219. No runtime/production admission.
+
+## r221 isolated Jinye smooth affine leaves
+
+Same pinned Flash Player32/Rosetta. Original raw bitmap55/shape56/57 tags preserved, source frame1/10 depth1 matrices and outer transform read back, cached and uncached captures separate. Exact decoder retained; unadmitted CPU interpolation baseline uses source-only pixels.
