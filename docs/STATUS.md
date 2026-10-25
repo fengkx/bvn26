@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r217）：JPEG原始系数宽度实验定位不足8像素行尾；完整184/192宽全部精确；待独立路由验证。[证据](../evidence/importer-loud-fail/r217/README.md)。
+
 - 2026-10-26（r216）：JPEG低亮度独立控制114688/114688精确；排除低Y特判；继续定位原始四个边缘残差。[证据](../evidence/importer-loud-fail/r216/README.md)。
 
 - 2026-10-26（r215）：JPEG系数域色度重建12288/12288控制精确；原始70304/70308，四点差1继续拒绝准入。[证据](../evidence/importer-loud-fail/r215/README.md)。

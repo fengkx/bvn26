@@ -978,3 +978,7 @@ Same pinned native Flash Player32/Rosetta. Sixteen independently encoded JPEG co
 ## r216 low-luma JPEG controls
 
 Same pinned Flash Player32/Rosetta.448 independent YCbCr controls,114688 native RGB pixels. Source properties and decoded component byte identities retained. Production remains disabled.
+
+## r217 JPEG SOF width controls
+
+Same pinned Flash Player32/Rosetta. Original unchanged JPEG3 plus six JPEG2 width controls; only SOF width bytes differ, MCU count/entropy unchanged. All native pixels retained.
