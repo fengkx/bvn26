@@ -1,0 +1,77 @@
+{
+  "commands": [
+    {
+      "command": [
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/godot",
+        "--rendering-method",
+        "gl_compatibility",
+        "--quit-after",
+        "600",
+        "-s",
+        "res://tests/half_even_bitmap_leaf.gd",
+        "--",
+        "/private/tmp/bvn-r121/leaf.json",
+        "/private/tmp/bvn-r121"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/godot",
+        "--rendering-method",
+        "gl_compatibility",
+        "--quit-after",
+        "600",
+        "-s",
+        "res://tests/source_cache_filter.gd",
+        "--",
+        "/private/tmp/bvn-r121/filter.json",
+        "/private/tmp/bvn-r121"
+      ],
+      "exit": 0
+    }
+  ],
+  "source_sha256": {
+    "tools/probes/run_jiraiya_source_cache_gpu.py": "ac7846f3dcd104a5f7c4d60e58fd9acf4ff1eb3da1528f2a197857843880e08f",
+    "tools/probes/analyze_jiraiya_source_cache.py": "b9547b3fca4f93763371ac55061c81d644d277a86163d68f7ac3dfce8bfb885b",
+    "tools/probes/analyze_bitmap_cache_support_grid.py": "65c2f67fa4e1e1ec0995ef99c4c74d617bec3922bdd90f2d09bbd69240f56859",
+    "tools/probes/analyze_cache_device_origin.py": "74c1f2066ceb8a687dd561af4c8e3badf7835519d0e631e20922f97ec663a929",
+    "godot/tests/half_even_bitmap_leaf.gd": "f48c8f2e85a161635b797167887a96fe547a857f896634770c0afc85f5b2a6b5",
+    "godot/tests/half_even_bitmap_sampler.gd": "712c472e323bf40d068ae84cdccdb28f88bb53859575db737051fd52891c21ff",
+    "godot/tests/half_even_bitmap_sampler.gdshader": "a158f48a718936be9bd1f85f82971d5d90e8a42491055d9f69fe1f9f65e50e12",
+    "godot/tests/source_cache_filter.gd": "ecacdb5b4657ab03ac32f4b7a114664d443c4766192f7e2b8697f5ba0eb4d6fe",
+    "godot/tests/grouped_blur_filter_group.gd": "5000a07d1d547142af7ed4c42e5a911f054875148362c9103f5e72e6df4d11e0",
+    "godot/tests/consumed_extent_filter_group.gd": "ce304585bbc79365963badbd79a84bf42a1bd33eb0e7a9bd29e3f41be10ab8a0",
+    "godot/tests/integer_blur.gdshader": "996e6ba073d6f1a89246288b9e2a53aae7569663a228fd736c99c2434d1477fa",
+    "godot/tests/raw_byte_texture.gdshader": "a1c4b451844a9c66a12f298113d1ea792eea9ae3c0878fcfd7a3f0f55f06fe7d",
+    "godot/filter_group.gd": "a7d2ba5a230115691961f7cca9d80065c072b70f2123fd27d618ae458ffd39fc",
+    "godot/blend_group.gd": "bcff84b2adc0cad5b605da7107b6ebf6a29659e1bafdb3eaf09117c9fe87377a"
+  },
+  "godot_sha256": "c7cccbf8fb143e34e02fd6521e09be2c2b974f0d5db080b19071c9c570718ccf",
+  "readback_sha256": {
+    "case-0.png": "c928d4055bfc57b51efca8e5653bce67d55f0f6dd72af271fc3eb1b5434c8719",
+    "case-1.png": "c928d4055bfc57b51efca8e5653bce67d55f0f6dd72af271fc3eb1b5434c8719",
+    "case-2.png": "c928d4055bfc57b51efca8e5653bce67d55f0f6dd72af271fc3eb1b5434c8719",
+    "filtered-2.png": "e7dd48ed5e1c99b4f049c86b9157ed4f75e95bf4be6f1b31c82d35071b809fdd",
+    "input-2.png": "42f4ccd9e3b7b9e3825fbe48fba8b4c191bf7e446342c1ac1ee2f66a9e1b5adb",
+    "input-0.png": "42f4ccd9e3b7b9e3825fbe48fba8b4c191bf7e446342c1ac1ee2f66a9e1b5adb",
+    "filtered-1.png": "e7dd48ed5e1c99b4f049c86b9157ed4f75e95bf4be6f1b31c82d35071b809fdd",
+    "filtered-0.png": "e7dd48ed5e1c99b4f049c86b9157ed4f75e95bf4be6f1b31c82d35071b809fdd",
+    "input-1.png": "42f4ccd9e3b7b9e3825fbe48fba8b4c191bf7e446342c1ac1ee2f66a9e1b5adb",
+    "final-2.png": "416e1788506ebcbcd38faa0a74f93af6f9e8755b658379869b35e741702cb868",
+    "final-1.png": "a70c587388370325aacae414b19119a9032f41a058f18ae839a3d1313ced0b36",
+    "final-0.png": "da8311b9aec1a2ed1033889fbefe7645863183fd70494825105f69dfad8c0511",
+    "leaf.json": "ebc7fe38f68108026af74061725d1a22ef745d7dec90d256b4db8682dc27cb01",
+    "filter.json": "135dc8aa8c2ae7e1d67a01da5b53541e10a2190f1172ffff598678eca53512ce",
+    "allocations.json": "52561af1cb75571f7dad60d69b02b340488d66e74d4efccbbd3625cd1561871a"
+  },
+  "native_sha256": {
+    "evidence/importer-loud-fail/r100/native/native.log.gz": "0b001a40df98d2e27bd462f11f8ca43b1e93dd40743bbfccc00651e5f9c91aee",
+    "evidence/importer-loud-fail/r89/native/native.log.gz": "61b9bd07b447ea702ff1d4295e7be18a597c6445a4fea13a84d5e8cdb3b8cfc6"
+  },
+  "production_admitted": false
+}

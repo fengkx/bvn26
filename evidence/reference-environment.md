@@ -638,3 +638,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. No new native capture; a
 ## r120 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. No new native capture; source-derived Jiraiya cache720000/720000 and authored Blur720000/720000 exact against pinned references. No production change.
+
+## r121 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Godot4.7.2 Compatibility/AppleM2 GPU cache/filter/transparent final720000/720000 exact; sampler71824/71824 and leaf6/6 fresh exact. No new native capture. No production change.
