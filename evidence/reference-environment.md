@@ -630,3 +630,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh960 native cases,48
 ## r118 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh960 native cases;960 consumed endpoint pairs and480 held-out supports exact,768000 row pixels unchanged. No production change.
+
+## r119 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. No new native capture; all retained cache-origin families436116/436116 exact with unchanged readbacks. No production change.
