@@ -1,0 +1,77 @@
+{
+  "commands": [
+    {
+      "command": [
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--path",
+        "/private/tmp/bvn-r178/regression-sampler/project",
+        "--rendering-method",
+        "gl_compatibility",
+        "--quit-after",
+        "600",
+        "-s",
+        "res://tests/controls.gd",
+        "--",
+        "/private/tmp/bvn-r178/regression-sampler/controls.json",
+        "/private/tmp/bvn-r178/regression-sampler/gpu.json"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--path",
+        "/private/tmp/bvn-r178/regression-sampler/project",
+        "--rendering-method",
+        "gl_compatibility",
+        "--quit-after",
+        "600",
+        "-s",
+        "res://tests/half_even_bitmap_leaf.gd",
+        "--",
+        "/private/tmp/bvn-r178/regression-sampler/leaf.json",
+        "/private/tmp/bvn-r178/regression-sampler"
+      ],
+      "exit": 0
+    }
+  ],
+  "source_sha256": {
+    "godot/tests/half_even_bitmap_sampler.gd": "712c472e323bf40d068ae84cdccdb28f88bb53859575db737051fd52891c21ff",
+    "godot/tests/half_even_bitmap_sampler.gdshader": "a158f48a718936be9bd1f85f82971d5d90e8a42491055d9f69fe1f9f65e50e12",
+    "godot/tests/half_even_bitmap_leaf.gd": "f48c8f2e85a161635b797167887a96fe547a857f896634770c0afc85f5b2a6b5",
+    "godot/tests/bitmap_sampler_diagnostic.gdshader": "5ad65199bee97f8a64ce9ddb78d7272ce6a514b59c2df36b3acfdd310a61bc20",
+    "godot/tests/bitmap_sampler_native_render.gd": "374b1fe2732f4bdd11e4e016f9536c7279134bbc13b78df5099f96e74e103cba",
+    "tools/probes/run_half_even_bitmap.py": "8e36cf1e4ef472ca535ae34bbc8bf5abb1550864e53fc118dda422ce31ab42ab"
+  },
+  "godot_sha256": "c7cccbf8fb143e34e02fd6521e09be2c2b974f0d5db080b19071c9c570718ccf",
+  "reference_sha256": {
+    "r22/bitmap-phase/native.log": "8e9e05a1585265ef97ba249e198f4276ff2a42602d8d245ad6179383d7e45af5",
+    "r22/bitmap-phase-extended/native.log": "608cb8da41b939dfd6454746aa90aeccc6a9556c804a079091a7d62542053f22",
+    "r23/inverse/native.log": "3770210b3b6fd3c556d7da7b7389676b290d9f6fa1ea8781e257264c29d85c88",
+    "r23/inverse-clipped/native.log": "746d34857fe7b33940e765fd17476e5f96a6880b2586ca3e3710ae3894d90cc4",
+    "r23/row/native.log": "a3fd93020a91094a875b874cef8c3a53e20963ee8ac9fc52cb37aeabf95920c9",
+    "r24/scalar-repeat/native.log": "6cd239a73648787503253132f8590c5a6298f13139b651ef5d7ae35622cfa882",
+    "r24/scalar-clipped/native.log": "cae4be4d3272b0efc17cfcb8412ff9fc56e3884dfc9ae3017aa4fe3cf3a21c03",
+    "r30/spans/native.log": "a513714fbfe4dce72593c030646413e7ac0464fb508742c4d8a49604b85b5b2a",
+    "r31/intervals/native.log": "7787a74ca6b8a9f10c3821e3634b800d9ac9ded1b3fab63b6023749102d10103",
+    "r31/chunks/native.log": "ddaeeeaf91a295ad85f9fbd4ff36148692fd1d3e9f96b0f3ccf379e0560b53af",
+    "r32/rgba/native.log": "b9732fe098b17a423867039aed14dfaf817822043d47569badb8b7c769973fc2"
+  },
+  "source_leaf_reference_sha256": {
+    "fixture.json": "9ce7130a3b3ca136a2c205ec2c5269c16398b2b1a5a406cd64749e31cde18a5a",
+    "capture-environment.json": "4a15d65f97b1901ba5ceb51fd7fb86efb23a3fc67751794e302a913c5661eaa4",
+    "shape.xml": "6b7ed7a8875c0ae701f752dea7553f0ca47769984b11b8c37759c050f79e0893",
+    "native.log.gz": "61b9bd07b447ea702ff1d4295e7be18a597c6445a4fea13a84d5e8cdb3b8cfc6",
+    "build.json": "4a94a96d192f056575229444a3b14b7c9763411024b07b5d1c2d8cdb20a3ddd5"
+  },
+  "readback_sha256": {
+    "case-0.png": "6513f5a0d99ddd414844a01eda5910b5c73c4d572f7dee6a462a01dd06b75b9f",
+    "case-1.png": "fc837141e7ba2dc830448f91a07b29ec34d99176920d09ff00d0184e1c1670e5",
+    "case-3.png": "7334a7f2070b967b550347860ed580981a9cc5681221cbe3b9b60852d6f07192",
+    "case-2.png": "d21e1208aec1f37a6165e8406f249f36b2419fb9d82611389dba791647da1376",
+    "case-5.png": "5cb5c0d98fff8410cd15a8abedd60146789b8f14c35639e97e057e0a1e91925f",
+    "gpu.png": "01f6ead492d4b0a7799817c4aafa3f3af23e13f759d22be04883f5a581b2d160",
+    "case-4.png": "2d6aa2a9193af514631f04eca57d6c783cc21c854de9b7f53d38ecaae2af6ab0"
+  },
+  "production_admitted": false
+}

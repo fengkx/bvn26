@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r178）：整数仿射GPU68322观测精确，旧采样71824及包装层回归精确；不启用生产。[r178证据](../evidence/importer-loud-fail/r178/README.md)。
+
 - 2026-10-25（r177）：显式半格1080样本在1440观测中支持统一ties-even，其他舍入有24反例；不启用生产。[r177证据](../evidence/importer-loud-fail/r177/README.md)。
 
 - 2026-10-25（r176）：统一圆整构造66882观测全精确，但半格样本为0；不启用生产。[r176证据](../evidence/importer-loud-fail/r176/README.md)。
