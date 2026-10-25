@@ -870,3 +870,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/R
 ## r178 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta Godot4.7.2 Compatibility AppleM2 OpenGL4.1 Metal90.5; bounded integer affine GPU capture and fresh prior GPU regressions, no new Flash capture; all256 source texels retained; no production rendering change; full source/property readbacks retained. No production change.
+
+## r179 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta Flash Debugger32/Rosetta original main leaf storage and explicit source-byte capture; source tags and binary placement preserved; all256 source texels retained; no production rendering change; full source/property readbacks retained. No production change.
