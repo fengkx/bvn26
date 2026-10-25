@@ -714,3 +714,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Retained r131 native cap
 ## r139 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta quarter-turn native control round139; full source/property readbacks retained. No production change.
+
+## r140 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Godot4.7.2 Compatibility/OpenGL4.1 Metal90.5 AppleM2; source-driven live rotated Yulong buffers and original pinned native references; full source/property readbacks retained. No production change.

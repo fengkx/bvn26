@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r140）：雨龙旋转源经实际FilterGroup实时GPU路径，原始完整图2/2精确；已有源驱动实时诊断累计8图，生产准入关闭。[r140证据](../evidence/importer-loud-fail/r140/README.md)。
+
 - 2026-10-25（r139）：四分之一覆盖独立输入163840像素精确，其中边缘26880；全局生产准入关闭。[r139证据](../evidence/importer-loud-fail/r139/README.md)。
 
 - 2026-10-25（r138）：雨龙真实源旋转输入和Glow各720000精确；覆盖仍待独立验证。[r138证据](../evidence/importer-loud-fail/r138/README.md)。
