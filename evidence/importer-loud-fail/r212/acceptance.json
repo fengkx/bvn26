@@ -1,0 +1,53 @@
+{
+  "production_admitted": false,
+  "full_python": {
+    "passed": 963,
+    "skipped": 2,
+    "failed": 0
+  },
+  "focused_python": {
+    "passed": 1,
+    "failed": 0
+  },
+  "source_backed_diagnostic_exact": 36,
+  "images": 54,
+  "production_suite_rerun": false,
+  "full_as_ownership_proved": false,
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}
