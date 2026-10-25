@@ -482,3 +482,7 @@ Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; unchanged pl
 ## r80 native shadow gain/color controls
 
 Fresh Flash Player Debugger32 LaunchServices/Rosetta captures; player SHA256 unchanged and verified against r79. Explicit byte ramps, hidden/visible source, applyFilter/display paths, followed by independently captured colors/alpha/strength. Source/build/readback hashes under r80; no production change.
+
+## r81 integer shadow GPU controls
+
+Godot4.7.2 Compatibility on AppleM2 OpenGL4.1 Metal90.5;37 clean batches with actual production-created filter buffers. Exact r78/r80 native readbacks retained, no new native capture. All four stages241152/241152; raw final copy only. Independent graphical regressions rerun. Production unchanged.

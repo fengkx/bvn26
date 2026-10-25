@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r81）：实际GPU诊断缓冲输入／模糊／阴影／原样拷贝各241152/241152；保留API相位和增益颜色字节规则，生产未改。[r81证据](../evidence/importer-loud-fail/r81/README.md)。
+
 - 2026-10-25（r80）：阴影增益截字节、颜色先预乘的统一构造通过两API原始／独立颜色各16896/16896；r78交叉207360/207360。生产未改。[r80证据](../evidence/importer-loud-fail/r80/README.md)。
 
 - 2026-10-25（r79）：原生API相位差异独立验证：applyFilter ties-even、显示对象ties-away各288/288；旧616控制保留，r78单位参数23040/23040。增益仍待测，生产未改。[r79证据](../evidence/importer-loud-fail/r79/README.md)。
