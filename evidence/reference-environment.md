@@ -954,3 +954,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix indepe
 ## r205 ColorMatrix all-alpha paired and remainder controls
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix all-alpha paired and remainder controls/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
+
+## r206 ColorMatrix legacy scalar and ramp input readbacks
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix legacy scalar and ramp input readbacks/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
