@@ -766,3 +766,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Reused pinned r141 nativ
 ## r152 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh native twip-grid constant-source rectangle coverage controls; full source/property readbacks retained. No production change.
+
+## r153 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Reused original r141 Lanran native captures, source tags and independent r150/r152 rules; full source/property readbacks retained. No production change.

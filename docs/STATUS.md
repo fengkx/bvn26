@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r153）：蓝染四帧原始CPU缓存/滤镜/最终图各960000精确；实时GPU绑定未验证。[r153证据](../evidence/importer-loud-fail/r153/README.md)。
+
 - 2026-10-25（r152）：独立恒色1/20网格覆盖153600精确；几何量化与理想面积区分，中点及一般仿射未准入。[r152证据](../evidence/importer-loud-fail/r152/README.md)。
 
 - 2026-10-25（r151）：原始蓝染三张CPU图及缓存滤镜精确；第5帧八处非透明分数覆盖继续硬拒绝。[r151证据](../evidence/importer-loud-fail/r151/README.md)。
