@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r194）：main真实FilterGroup包装层GPU4/4精确，alpha边界326472精确；中间RGB与生产仍关闭；不启用生产。[r194证据](../evidence/importer-loud-fail/r194/README.md)。
+
 - 2026-10-25（r193）：缓存局部逆矩阵量化清除main缓存6差异，CPU最终4/4原生图精确；GPU包装层待验证；不启用生产。[r193证据](../evidence/importer-loud-fail/r193/README.md)。
 
 - 2026-10-25（r192）：索引/AS缓存控制1920000像素一致，编码/alpha不是缓存坐标差异来源；不启用生产。[r192证据](../evidence/importer-loud-fail/r192/README.md)。

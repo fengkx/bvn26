@@ -914,3 +914,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh affine cache coord
 ## r192 indexed nearest cache
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh indexed nearest cache/filter-property capture; explicit109600 source texels and all matrix readbacks retained. No production rendering change.
+
+## r194 live nearest matrix wrapper GPU
+
+Godot4.7.2 Compatibility/OpenGL4.1 AppleM2 Metal90.5; same pinned r179 Flash Debugger32/Rosetta native images. Raw source texture, signed fixed indices and CPU-derived geometric coverage in isolated diagnostic only. No production rendering change.
