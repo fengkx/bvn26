@@ -526,3 +526,7 @@ Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player h
 ## r92 independent clipped half-step controls
 
 Godot4.7.2 Compatibility, AppleM2/OpenGL4.1Metal90.5; existing r89/r32 native references unchanged. Isolated GPU71824/71824 and Jiraiya6/6=589824 RGBA exact. No fresh Flash capture; production unchanged.
+
+## r93 independent clipped half-step controls
+
+Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchanged player hash. Five explicit draw boundaries with filter/cache/matrix properties and paired premultiplied RGBA. Pinned authored and r92 direct leaf images retained exactly; parent/direct cleared draw differs1767 pixels. Production unchanged.
