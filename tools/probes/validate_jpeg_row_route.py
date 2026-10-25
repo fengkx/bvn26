@@ -18,12 +18,32 @@ def validate(planes):
     evidence=ROOT/'evidence/importer-loud-fail/r217'
     prior=json.loads(gzip.decompress((evidence/'summary.json.gz').read_bytes()))
     generated=cases();assert [c for c,_,_ in generated]==json.loads((evidence/'native/build.json').read_text())['cases']
-    targets=[]
+    targets=[];finished=False
     for kind,data in events(evidence/'native'):
-        if kind=='case':targets.append([])
-        elif kind=='row':targets[-1].extend(unpack(list(map(int,data.split(',')))[1:]))
+        assert not finished, 'Native readback contains events after done'
+        if kind=='case':
+            if targets:
+                assert len(targets[-1])==generated[len(targets)-1][0]['width']*378, 'Incomplete native case'
+            assert len(targets)<len(generated), 'Unexpected native case'
+            case=generated[len(targets)][0]
+            assert data==f"{case['id']},{case['width']},378,{'true' if case['tag']==35 else 'false'}", 'Native case metadata mismatch'
+            targets.append([])
+        elif kind=='row':
+            assert targets, 'Native row precedes case'
+            width=generated[len(targets)-1][0]['width']
+            values=list(map(int,data.split(',')))
+            assert len(values)==2*width+1, 'Native row width mismatch'
+            assert values[0]==len(targets[-1])//width and values[0]<378, 'Native row order mismatch'
+            targets[-1].extend(unpack(values[1:]))
+        else:
+            assert (kind,data)==('done','ok'), 'Unexpected native event'
+            finished=True
+    assert finished and len(targets)==len(generated), 'Incomplete native readback'
+    assert len(prior['rows'])==len(generated), 'Prior case count mismatch'
+    assert all(len(target)==case['width']*378 for (case,_,_),target in zip(generated,targets)), 'Incomplete native case'
     payload=next(p for c,p,_ in source_tags(ROOT/'game/fighter/orochimaru.swf') if c==35 and struct.unpack_from('<H',p)[0]==340)
     length=struct.unpack_from('<I',payload,2)[0];alpha=zlib.decompress(payload[6+length:])
+    assert len(alpha)==186*378, 'Source alpha length mismatch'
     rows=[]
     for (case,_,_),target,old in zip(generated,targets,prior['rows']):
         folder=planes/f"case{case['id']}"

@@ -1,0 +1,13 @@
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_orochimaru_wrapper.py:131: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'case':spec['folder'],'boundary':name,**measure(list(image.getdata()),target,w)})
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_orochimaru_wrapper.py:142: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'case':spec['folder'],'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**measure(list(image.getdata()),list(native.getdata()),600)})
+.../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_rotated_placement_family.py:45: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  gpu=list(Image.open(image).convert('RGBA').getdata());rows=[]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_rotated_placement_family.py:59: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  native=ROOT/f"evidence/importer-loud-fail/r21/components/yulong/{case['id']}-{tick:03d}.native.png";target=list(Image.open(native).convert('RGBA').getdata())
+...
+----------------------------------------------------------------------
+Ran 6 tests in 13.285s
+
+OK

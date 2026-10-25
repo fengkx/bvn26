@@ -1,0 +1,13 @@
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_half_even_bitmap.py:22: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  failures=[{'x':j%image.width,'y':j//image.width,'actual':list(p),'native':q} for j,(p,q) in enumerate(zip(image.getdata(),target)) if list(p)!=q]
+......./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_matrix_family.py:53: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'state':state,'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**measure(list(actual.getdata()),list(pinned.getdata()),600)})
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_matrix_family.py:54: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  assert decoded[state][1][f'{tick}-stage']==[list(p) for p in pinned.getdata()]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_matrix_family.py:60: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  boundaries.append({'state':state,'tick':tick,'boundary':name,**measure(list(actual.getdata()),target,w)})
+..
+----------------------------------------------------------------------
+Ran 9 tests in 38.496s
+
+OK

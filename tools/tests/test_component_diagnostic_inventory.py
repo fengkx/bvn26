@@ -13,6 +13,13 @@ class ComponentDiagnosticInventoryTests(unittest.TestCase):
         self.assertEqual(result['source_backed_diagnostic_exact'], 36)
         self.assertFalse(result['production_admitted'])
 
+    def test_orochimaru_extends_complete_diagnostics_without_production_admission(self):
+        result = inventory(include_orochimaru=True)
+        self.assertEqual(result, json.loads((ROOT/'evidence/importer-loud-fail/r219/inventory.json').read_text()))
+        self.assertEqual(result['source_backed_diagnostic_exact'], 46)
+        self.assertEqual(result['unbound_images'], 8)
+        self.assertFalse(result['production_admitted'])
+
     def test_original_jpeg3_remains_rejected_by_lossless_binding(self):
         evidence = ROOT / 'evidence/importer-loud-fail/r209'
         result = bitmap_inventory(evidence / 'orochimaru-bounded.xml')

@@ -986,3 +986,7 @@ Same pinned Flash Player32/Rosetta. Original unchanged JPEG3 plus six JPEG2 widt
 ## r218 JPEG row geometry controls
 
 Same pinned Flash Player32/Rosetta.864 independent constant-color JPEG controls with varied widths/subsampling;110592 explicit native pixels. Original source and prior native references unchanged.
+
+## r219 Orochimaru complete wrapper boundaries
+
+Same pinned Flash Player32/Rosetta; five unchanged source placements, explicit authored/clear/cache captures at three horizontal translations. Godot4.7.2 Compatibility AppleM2/OpenGL4.1 Metal90.5 uses source-derived JPEG planes and binary alpha; libjpeg-turbo3.1.4.1 scaled-plane helper hashes retained in GPU provenance. Original native reference PNGs unchanged; production remains disabled.

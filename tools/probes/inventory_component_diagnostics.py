@@ -9,7 +9,7 @@ from tools.probes.build_bound_bitmap_component import ROOT
 from tools.probes.analyze_rotated_placement_family import analyze as rotated_family
 
 
-def inventory():
+def inventory(include_orochimaru=False):
     evidence = ROOT/'evidence/importer-loud-fail'
     baseline = json.loads((evidence/'r21/component-pixels.json').read_text())
     bindings = {}
@@ -35,6 +35,12 @@ def inventory():
         bind(row['case'], row['tick'], evidence/'r154/regression-rotated/final-1.png', 'r155 source-placement equivalence')
     for case in json.loads((evidence/'r208/gpu/fixture.json').read_text())['cases']:
         bind(case['case_id'], case['tick'], evidence/f"r208/gpu/{case['folder']}/final.png", 'r208')
+    if include_orochimaru:
+        report = json.loads((evidence/'r219/gpu/report.json').read_text())
+        assert report['full_wrapper_exact'] and report['boundaries_exact']
+        for row in report['images']:
+            assert row['exact'] == row['samples']
+            bind(row['case'], row['tick'], evidence/f"r219/gpu/{row['case']}/final-0.png", 'r219')
     rows = []
     for old in baseline['rows']:
         case, tick = old['case'], old['tick']
@@ -63,10 +69,10 @@ def inventory():
                 'yijiao': 'Unbound 50-frame smooth affine ColorMatrix graph; outer scale and blendMode5 remain separate from identity matrix.'}
             row.update({'diagnostic_exact': False, 'pending_proof': pending[who]})
         rows.append(row)
-    assert len(rows) == 54 and len(bindings) == 36
+    assert len(rows) == 54 and len(bindings) == (46 if include_orochimaru else 36)
     assert set(bindings) <= {(r['case'],r['tick']) for r in rows}
     remaining = [r for r in rows if not r['diagnostic_bound']]
-    return {'images':54, 'source_backed_diagnostic_exact':36, 'unbound_images':18,
+    return {'images':54, 'source_backed_diagnostic_exact':len(bindings), 'unbound_images':len(remaining),
             'remaining_by_source':dict(sorted(Counter(r['source'] for r in remaining).items())),
             'historical_production_exact':baseline['exact'], 'production_suite_rerun':False,
             'production_admitted':False, 'full_as_ownership_proved':False, 'rows':rows}
@@ -75,6 +81,7 @@ def inventory():
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
-    args=parser.parse_args();result=inventory()
+    parser.add_argument('--include-orochimaru',action='store_true')
+    args=parser.parse_args();result=inventory(args.include_orochimaru)
     args.output.write_text(json.dumps(result,indent=2)+'\n')
     print({k:v for k,v in result.items() if k!='rows'})
