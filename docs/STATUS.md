@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r193）：缓存局部逆矩阵量化清除main缓存6差异，CPU最终4/4原生图精确；GPU包装层待验证；不启用生产。[r193证据](../evidence/importer-loud-fail/r193/README.md)。
+
 - 2026-10-25（r192）：索引/AS缓存控制1920000像素一致，编码/alpha不是缓存坐标差异来源；不启用生产。[r192证据](../evidence/importer-loud-fail/r192/README.md)。
 
 - 2026-10-25（r191）：仿射缓存坐标控制61756精确但两种全局构造仍不可区分，逐项舍入258反例；不启用生产。[r191证据](../evidence/importer-loud-fail/r191/README.md)。
