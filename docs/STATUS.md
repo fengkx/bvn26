@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r190）：独立仿射缓存边界66/66精确，内部坐标及显露颜色仍未证明；不启用生产。[r190证据](../evidence/importer-loud-fail/r190/README.md)。
+
 - 2026-10-25（r189）：main去缓存包装层960000像素精确；缓存仍6差异、带滤镜10差异，严格拒绝；不启用生产。[r189证据](../evidence/importer-loud-fail/r189/README.md)。
 
 - 2026-10-25（r188）：原始main叶片完整GPU480000像素精确，含全部边缘；包装层和生产仍关闭；不启用生产。[r188证据](../evidence/importer-loud-fail/r188/README.md)。
