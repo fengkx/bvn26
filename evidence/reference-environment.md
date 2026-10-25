@@ -794,3 +794,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/R
 ## r159 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta independent nearest affine scalar/short-span clipping controls; no production rendering change; full source/property readbacks retained. No production change.
+
+## r160 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Reused pinned r158/r159 native controls for exact rational rejection intervals; no new capture or production change; no production rendering change; full source/property readbacks retained. No production change.
