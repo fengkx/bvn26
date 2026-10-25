@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r148）：原生loadBitmap宽高为-1，透明控制位图无效；读取前后1152样本不变，下一步仅隔离短/长标签头。[r148证据](../evidence/importer-loud-fail/r148/README.md)。
+
 - 2026-10-25（r147）：透明四角AS576/576精确，索引色采样全透明；未直接回读原生索引色输入前不推断插值。[r147证据](../evidence/importer-loud-fail/r147/README.md)。
 
 - 2026-10-25（r146）：独立全不透明索引色/AS渐变各576标量样本均需8位权重，较低精度候选拒绝；透明源仍待验证。[r146证据](../evidence/importer-loud-fail/r146/README.md)。

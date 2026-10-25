@@ -746,3 +746,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debug
 ## r147 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta binary-alpha indexed/AS scalar controls; native indexed decode still unverified; full source/property readbacks retained. No production change.
+
+## r148 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta native indexed loadBitmap direct readback, invalid bitmap properties retained with before/after display controls; full source/property readbacks retained. No production change.
