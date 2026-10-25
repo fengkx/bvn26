@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r149）：仅短头改长头恢复原生2275像素；有效索引色和AS标量各1152精确，原始连续跨度仍未准入。[r149证据](../evidence/importer-loud-fail/r149/README.md)。
+
 - 2026-10-25（r148）：原生loadBitmap宽高为-1，透明控制位图无效；读取前后1152样本不变，下一步仅隔离短/长标签头。[r148证据](../evidence/importer-loud-fail/r148/README.md)。
 
 - 2026-10-25（r147）：透明四角AS576/576精确，索引色采样全透明；未直接回读原生索引色输入前不推断插值。[r147证据](../evidence/importer-loud-fail/r147/README.md)。
