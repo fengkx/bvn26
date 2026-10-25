@@ -598,3 +598,7 @@ Fresh Flash Player Debugger32/Rosetta; unchanged player hash. 144 cases,128 sour
 ## r110 independent cache width controls
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Read-only static affine inspection of unchanged pinned player; no fresh native capture. Fixed/float candidates regress r104/r109; execution routing unverified. No production change.
+
+## r111 native cache profiling
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh paired60000-iteration cache/uncached native captures with start-marker-aligned /usr/bin/sample. Installed binary unchanged. Four cache-profile return PCs map to pinned static calls; exact normalization branch remains unverified. Reports include Rosetta unknown frames and are not pixel references. No production change.
