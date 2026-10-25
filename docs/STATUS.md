@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r159）：最近邻裁剪23040像素不随跨度变化；单像素仍有初始化反例，保留严格拒绝。[r159证据](../evidence/importer-loud-fail/r159/README.md)。
+
 - 2026-10-25（r158）：最近邻仿射两个共同初始化模型仍有反例，保留22261内域像素和全部坐标差异。[r158证据](../evidence/importer-loud-fail/r158/README.md)。
 
 - 2026-10-25（r157）：ColorMatrix原生八图与原参考精确；保留仿射/CXFORM/混合及缓存差异，运行时未准入。[r157证据](../evidence/importer-loud-fail/r157/README.md)。
