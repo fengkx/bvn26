@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r199）：源/目标起点192组与邻居RGB432组均不改变输出；保持失败闭合；不启用生产。[r199证据](../evidence/importer-loud-fail/r199/README.md)。
+
 - 2026-10-25（r198）：固定目标2048/2048输入一致，92/256组随邻居alpha变化；算术和分区均未准入；不启用生产。[r198证据](../evidence/importer-loud-fail/r198/README.md)。
 
 - 2026-10-25（r197）：显式物化输入及两种原生ColorMatrix API108824像素精确，8种一对多输出保留；不启用生产。[r197证据](../evidence/importer-loud-fail/r197/README.md)。

@@ -930,3 +930,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh materialized Color
 ## r198 ColorMatrix neighbor alpha
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix neighbor alpha/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
+
+## r199 ColorMatrix processed-span origins
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix processed-span origins/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
