@@ -726,3 +726,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debug
 ## r142 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. FFDEC source graph export; reused pinned r141 native clocks/buffers, no fresh native capture; full source/property readbacks retained. No production change.
+
+## r143 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta scalar fill-translation controls with explicit source/matrix readbacks; full source/property readbacks retained. No production change.
