@@ -786,3 +786,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh FFDEC main/Yijiao 
 ## r157 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta original main/Yijiao ColorMatrix boundary captures with coefficient, clock and direct gray-stage readbacks; full source/property readbacks retained. No production change.
+
+## r158 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta independent nearest affine input/matrix controls; no production rendering change; full source/property readbacks retained. No production change.
