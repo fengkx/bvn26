@@ -898,3 +898,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh independent child/
 ## r186 signed edge stepping
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh independent signed long-edge capture; explicit4096 source texels and all matrix readbacks retained. No production rendering change.
+
+## r188 complete nearest leaf GPU
+
+Godot4.7.2 Compatibility/OpenGL4.1 AppleM2 Metal90.5; same pinned r179 Flash Debugger32/Rosetta native images. Raw source texture, signed fixed indices and CPU-derived geometric coverage in isolated diagnostic only. No production rendering change.

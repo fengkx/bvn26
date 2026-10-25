@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r188）：原始main叶片完整GPU480000像素精确，含全部边缘；包装层和生产仍关闭；不启用生产。[r188证据](../evidence/importer-loud-fail/r188/README.md)。
+
 - 2026-10-25（r187）：原始main叶片完整CPU图跨3阶段1440000像素精确，边界clamp负控9差异；未启用生产；不启用生产。[r187证据](../evidence/importer-loud-fail/r187/README.md)。
 
 - 2026-10-25（r186）：独立长正负斜边499792像素精确，保留统一fixed16扫描候选；生产仍关闭；不启用生产。[r186证据](../evidence/importer-loud-fail/r186/README.md)。
