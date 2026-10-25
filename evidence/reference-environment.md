@@ -570,3 +570,7 @@ Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchang
 ## r103 independent cache width controls
 
 Fresh Flash Player Debugger32/Rosetta; unchanged player hash. 384 cases,3056 source texels, explicit bounds readbacks. Width-prefix384 and mode-prefix256 groups unchanged; uncached68544 exact, cache53556 only. No production change.
+
+## r104 independent cache width controls
+
+Fresh Flash Player Debugger32/Rosetta; unchanged player hash. 240 cases,128 source texels; 15 binary matrix intermediates per case. Uncached19980 exact, all four roundtrip sequences16379 only. No production change.
