@@ -738,3 +738,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debug
 ## r145 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta scratch-only lossless encoding3-to5 intervention, identical decoded bytes and646 unchanged tags; full source/property readbacks retained. No production change.
+
+## r146 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta independent opaque indexed/AS scalar ramp controls, original source geometry retained; full source/property readbacks retained. No production change.
