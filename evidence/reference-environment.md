@@ -758,3 +758,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debug
 ## r150 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta valid indexed and AS continuous-span controls with direct texel readback; full source/property readbacks retained. No production change.
+
+## r151 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Reused pinned r141 native images and original source tags for fixed indexed CPU sampling; full source/property readbacks retained. No production change.
