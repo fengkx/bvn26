@@ -922,3 +922,7 @@ Godot4.7.2 Compatibility/OpenGL4.1 AppleM2 Metal90.5; same pinned r179 Flash Deb
 ## r195 live nearest matrix family GPU
 
 Godot4.7.2 Compatibility/OpenGL4.1 AppleM2 Metal90.5; fresh frame2/frame3 Flash Debugger32/Rosetta boundary captures, unchanged pinned stage images. Raw source texture, signed fixed indices and CPU-derived geometric coverage in isolated diagnostic only. No production rendering change.
+
+## r197 materialized ColorMatrix owner
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh materialized ColorMatrix owner/filter-property capture; explicit108824 materialized cache texels and all matrix readbacks retained. No production rendering change.
