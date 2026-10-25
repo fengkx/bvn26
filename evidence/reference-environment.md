@@ -890,3 +890,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/R
 ## r183 authored vertex rounding
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh authored-edge/getBounds and signed-scale capture; all4096 source texels and matrix properties retained. No production rendering change.
+
+## r184 vertex translation
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh independent child/draw translation capture; explicit4096 source texels and all matrix readbacks retained. No production rendering change.

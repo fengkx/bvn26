@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r184）：独立平移控制310232像素精确，先顶点舍入后平移；一般仿射仍拒绝；不启用生产。[r184证据](../evidence/importer-loud-fail/r184/README.md)。
+
 - 2026-10-25（r183）：独立局部边界840一致，顶点quarter ties-even覆盖230416像素精确；一般仿射仍拒绝；不启用生产。[r183证据](../evidence/importer-loud-fail/r183/README.md)。
 
 - 2026-10-25（r182）：统一顶点/扫描线模型将覆盖反例2838减至256，仍拒绝；不启用生产。[r182证据](../evidence/importer-loud-fail/r182/README.md)。
