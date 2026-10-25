@@ -606,3 +606,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh paired60000-iterat
 ## r112 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. No fresh native capture. Read-only pinned matrix-field setup and device constant0x3d4ccccd; existing r101/r103/r104 controls exact under common device-origin hypothesis, r102/r109 still reject. Specific branch execution unverified; no GPU or production advance. No production change.
+
+## r113 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh252 native cases,480 verified source texels. Independent fill/bounds controls: fixed geometry17934 exact; moving geometry16482/17934 both with fixed and moved fills. Existing candidate unchanged; no GPU or production advance. No production change.
