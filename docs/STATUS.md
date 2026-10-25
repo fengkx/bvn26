@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r115）：独立显露滤镜矩形边界，identity102400与内部采样2904全等；源几何分配规则仍待验证。[r115证据](../evidence/importer-loud-fail/r115/README.md)。
+
 - 2026-10-25（r114）：公开像素边界64次不变，root/parent绘制12800全等；隐藏缓存分配仍未证实。[r114证据](../evidence/importer-loud-fail/r114/README.md)。
 
 - 2026-10-25（r113）：填充与边界分离：固定边界非零填充17934全等；移动边界两组均16482/17934，继续拒绝。[r113证据](../evidence/importer-loud-fail/r113/README.md)。

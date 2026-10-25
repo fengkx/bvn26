@@ -614,3 +614,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh252 native cases,48
 ## r114 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh16 native cases,480 source texels;64 public pixel-bound observations invariant,12800 root/parent RGB controls exact. Public negative fractional coordinates truncate and cannot establish hidden cache allocation. No production change.
+
+## r115 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh24 native cases,480 source texels;102400 identity/cache pixels exact and2904 interior samples explained by independently measured alpha-support origins. Source-derived allocation remains unproven. No production change.
