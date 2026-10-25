@@ -1,0 +1,55 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "public_bounds_invariant": 64,
+  "root_parent_rgb_exact": 12800,
+  "hidden_cache_allocation_verified": false,
+  "source_cache_initializer_admitted": false,
+  "production_admitted": false,
+  "not_rerun": [
+    "full roster/Web export (production unchanged)",
+    "54 production component renders",
+    "fresh GPU (prior readbacks retained)"
+  ],
+  "python_focused": {
+    "tests": 2,
+    "passed": 2,
+    "exit": 0
+  },
+  "full_python_prior": "r112:765 passed,2 skipped; production unchanged"
+}

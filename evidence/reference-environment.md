@@ -610,3 +610,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. No fresh native capture.
 ## r113 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh252 native cases,480 verified source texels. Independent fill/bounds controls: fixed geometry17934 exact; moving geometry16482/17934 both with fixed and moved fills. Existing candidate unchanged; no GPU or production advance. No production change.
+
+## r114 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh16 native cases,480 source texels;64 public pixel-bound observations invariant,12800 root/parent RGB controls exact. Public negative fractional coordinates truncate and cannot establish hidden cache allocation. No production change.
