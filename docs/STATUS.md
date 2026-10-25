@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r132）：雨龙两填充槽完整保留；边归属证明仅第二槽参与，90度源矩阵与遮罩一致；像素仍待独立验证。[r132证据](../evidence/importer-loud-fail/r132/README.md)。
+
 - 2026-10-25（r131）：雨龙完整Glow属性回读保留，原生缓存到Glow720000精确；源输入因多填充表和90度矩阵待验证。[r131证据](../evidence/importer-loud-fail/r131/README.md)。
 
 - 2026-10-25（r130）：三个源组件共用实时GPU链，原始固定图6/6、1440000像素精确；下一步完整Glow属性的原生边界。[r130证据](../evidence/importer-loud-fail/r130/README.md)。

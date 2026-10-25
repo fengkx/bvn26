@@ -682,3 +682,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Godot4.7.2 Compati
 ## r131 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta original Yulong Glow with complete color/alpha/gain/mode properties; cache-to-authored720000/720000 and pinned final480000/480000 exact. No production change.
+
+## r132 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. FFDEC source XML exported with pinned jar/source/raw-tag hashes. No fresh player capture in this inspection round. No production change.
