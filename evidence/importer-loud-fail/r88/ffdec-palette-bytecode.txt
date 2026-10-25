@@ -1,0 +1,69 @@
+  public com.jpexs.decompiler.flash.types.ALPHACOLORMAPDATA readALPHACOLORMAPDATA(int, int, int, java.lang.String) throws java.io.IOException;
+    Code:
+         0: new           #1414               // class com/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA
+         3: dup
+         4: invokespecial #1415               // Method com/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA."<init>":()V
+         7: astore        5
+         9: aload_0
+        10: aload         4
+        12: ldc_w         #1416               // String ALPHACOLORMAPDATA
+        15: invokespecial #63                 // Method newDumpLevel:(Ljava/lang/String;Ljava/lang/String;)Lcom/jpexs/decompiler/flash/dumpview/DumpInfo;
+        18: pop
+        19: aload         5
+        21: iload_1
+        22: iconst_1
+        23: iadd
+        24: newarray       int
+        26: putfield      #1417               // Field com/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA.colorTableRGB:[I
+        29: iconst_0
+        30: istore        6
+        32: iload         6
+        34: iload_1
+        35: iconst_1
+        36: iadd
+        37: if_icmpge     61
+        40: aload         5
+        42: getfield      #1417               // Field com/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA.colorTableRGB:[I
+        45: iload         6
+        47: aload_0
+        48: ldc_w         #1393               // String colorTableRGB
+        51: invokevirtual #1418               // Method readRGBAInt:(Ljava/lang/String;)I
+        54: iastore
+        55: iinc          6, 1
+        58: goto          32
+        61: iconst_0
+        62: istore        6
+        64: iconst_0
+        65: istore        7
+        67: iload         7
+        69: iload_3
+        70: if_icmpge     113
+        73: iconst_0
+        74: istore        8
+        76: iload         8
+        78: iload_2
+        79: if_icmpge     91
+        82: iinc          6, 1
+        85: iinc          8, 1
+        88: goto          76
+        91: iload         8
+        93: iconst_4
+        94: irem
+        95: ifeq          107
+        98: iinc          6, 1
+       101: iinc          8, 1
+       104: goto          91
+       107: iinc          7, 1
+       110: goto          67
+       113: aload         5
+       115: aload_0
+       116: iload         6
+       118: i2l
+       119: ldc_w         #1395               // String colorMapPixelData
+       122: invokevirtual #1396               // Method readBytesEx:(JLjava/lang/String;)[B
+       125: putfield      #1419               // Field com/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA.colorMapPixelData:[B
+       128: aload_0
+       129: invokespecial #56                 // Method endDumpLevel:()V
+       132: aload         5
+       134: areturn
+

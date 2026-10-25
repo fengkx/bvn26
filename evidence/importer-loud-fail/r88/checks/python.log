@@ -1,0 +1,40 @@
+..............s...s..................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/inventory_bitmap_roundtrip.py:93: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  png=list(image.getdata())
+..................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/compare_bound_bitmap_component.py:61: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for j, (a, b) in enumerate(zip(native.getdata(), actual.getdata())):
+......................................................................................................................................................................................................................................................................................................................................................................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_native_cxform_controls.py:29: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pixels = list(image.getdata())
+......./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nested_filters.py:94: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pixels = [list(p) for p in image.getdata()]
+....../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/nested_composition.py:147: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pixels = [list(p) for p in image.getdata()]
+...................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/tests/test_normal_composition.py:27: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  self.assertEqual(list(image.getdata()), expected)
+..../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_yulong_wrapper.py:82: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for index, (a, b) in enumerate(zip(native.getdata(), actual.getdata())):
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:33: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  premult = [[*(c*(a+1)//256 for c in (r, g, b)), a] for r, g, b, a in decoded.getdata()]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:57: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  'pixels': 304, 'exact_pixels': sum(a == b for a, b in zip(reference.getdata(), actual.getdata())),
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:62: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  predicted = [tuple(v+96*(256-p[3])//256 for v in p[:3]) for p in glow.getdata()]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:64: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  'exact_pixels': sum(a == b for a, b in zip(predicted, native.crop((281,196,319,204)).getdata()))})
+........................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_png_decode.py:20: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  assert list(image.getdata()) == source
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_png_draw_paths.py:20: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  assert image.size == (64,64) and image.mode == 'RGBA' and not image.info and list(image.getdata()) == pixels()
+................................................................................................................................................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_yulong_wrapper.py:82: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for index, (a, b) in enumerate(zip(native.getdata(), actual.getdata())):
+.....
+----------------------------------------------------------------------
+Ran 716 tests in 139.884s
+
+OK (skipped=2)
+{"events": 0, "done": false, "capture": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpdxg0owtg/capture.log", "launch": "windowed LaunchServices launch (activation possible)", "player_app": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpdxg0owtg/Custom Flash Player.app", "command": ["/usr/bin/open", "-g", "-n", "-W", "-a", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpdxg0owtg/Custom Flash Player.app", "--args", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpdxg0owtg/build/game/main.swf"], "runtime_fighter": null}
+{"events": 0, "done": false, "capture": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpwl4k5b_f/capture.log", "launch": "windowed LaunchServices launch (activation possible)", "player_app": "/Volumes/Flash Player/Flash Player.app", "command": ["/usr/bin/open", "-g", "-n", "-W", "-a", "/Volumes/Flash Player/Flash Player.app", "--args", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpwl4k5b_f/build/game/main.swf"], "runtime_fighter": null}
+{"status": "passed", "cases": 0, "matched": 0, "source_states": 0}
+{"status": "failed", "cases": 0, "matched": 0, "source_states": 0}
+{"status": "failed", "cases": 0, "matched": 0, "source_states": 0}
+{"embedded": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp5mj4v1ka/snapshot/godot/generated/build_metadata.json", "buildID": "475eb0001ff9cb5b34029d3f03af373dc416b33575e271f0e2f402dc8371b233", "gitCommitSource": "vercel", "dirtyCheckAvailable": false, "dirtyPathCount": 0, "dirtyPathSample": [], "dirtyPathSampleTruncated": false}
+{"embedded": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpecbtpl8d/snapshot/godot/generated/build_metadata.json", "buildID": "475eb0001ff9cb5b34029d3f03af373dc416b33575e271f0e2f402dc8371b233", "gitCommitSource": "vercel", "dirtyCheckAvailable": false, "dirtyPathCount": 0, "dirtyPathSample": [], "dirtyPathSampleTruncated": false}
