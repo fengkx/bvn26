@@ -974,3 +974,7 @@ Flash Player Debugger32/Rosetta, same pinned executable SHA8d4c1f5934adae809b5f4
 ## r212 independent JPEG controls
 
 Same pinned native Flash Player32/Rosetta. Sixteen independently encoded JPEG controls; Pillow12.3.0/libjpeg-turbo3.1.4.1; full byte source hashes and native readbacks retained. No production admission.
+
+## r216 low-luma JPEG controls
+
+Same pinned Flash Player32/Rosetta.448 independent YCbCr controls,114688 native RGB pixels. Source properties and decoded component byte identities retained. Production remains disabled.

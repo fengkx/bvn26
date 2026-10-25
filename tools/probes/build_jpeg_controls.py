@@ -37,9 +37,9 @@ def controls():
     return rows
 
 
-def prepare(output,ffdec):
-    report = build('jpeg-decoder-controls',output,ffdec)
-    cases = controls();tags = b'';exports = struct.pack('<H',len(cases))
+def prepare_controls(source,cases,output,ffdec):
+    report = build(source,output,ffdec)
+    tags = b'';exports = struct.pack('<H',len(cases))
     (output/'encoded').mkdir(exist_ok=True)
     for case,jpeg in cases:
         bitmap_id = case['id']+1
@@ -53,6 +53,10 @@ def prepare(output,ffdec):
     report.update({'cases':[c for c,_ in cases],'encoder':{'Pillow':Image.__version__,'libjpeg_turbo':features.version('libjpeg_turbo')},'production_admitted':False})
     report['outputs_sha256']['game/main.swf']=hashlib.sha256(path.read_bytes()).hexdigest()
     (output/'build.json').write_text(json.dumps(report,indent=2)+'\n')
+
+
+def prepare(output,ffdec):
+    prepare_controls('jpeg-decoder-controls',controls(),output,ffdec)
 
 
 if __name__=='__main__':
