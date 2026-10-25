@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r127）：自来也两组件共用实时GPU路径，原始固定图4/4、960000像素精确；下一步一角静态Blur组件。[r127证据](../evidence/importer-loud-fail/r127/README.md)。
+
 - 2026-10-25（r126）：第二组件保留内部变换，源缓存/纵向Blur各720000精确，固定图480000精确；下一步共用GPU链。[r126证据](../evidence/importer-loud-fail/r126/README.md)。
 
 - 2026-10-25（r125）：原生严格身份/路径/深度证明形状查询返回owner别名；原始内部放置和填充矩阵均保留。[r125证据](../evidence/importer-loud-fail/r125/README.md)。
