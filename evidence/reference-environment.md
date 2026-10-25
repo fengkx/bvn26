@@ -926,3 +926,7 @@ Godot4.7.2 Compatibility/OpenGL4.1 AppleM2 Metal90.5; fresh frame2/frame3 Flash 
 ## r197 materialized ColorMatrix owner
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh materialized ColorMatrix owner/filter-property capture; explicit108824 materialized cache texels and all matrix readbacks retained. No production rendering change.
+
+## r198 ColorMatrix neighbor alpha
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix neighbor alpha/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
