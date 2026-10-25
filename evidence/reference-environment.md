@@ -522,3 +522,7 @@ Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player h
 ## r91 independent clipped half-step controls
 
 Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player hash.60 scalar controls,2528 source texels verified;16377/16377 support even rounding. CPU held-out71824/71824, Jiraiya6/6, independent spans9360/9360. Production unchanged.
+
+## r92 independent clipped half-step controls
+
+Godot4.7.2 Compatibility, AppleM2/OpenGL4.1Metal90.5; existing r89/r32 native references unchanged. Isolated GPU71824/71824 and Jiraiya6/6=589824 RGBA exact. No fresh Flash capture; production unchanged.
