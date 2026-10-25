@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r215）：JPEG系数域色度重建12288/12288控制精确；原始70304/70308，四点差1继续拒绝准入。[证据](../evidence/importer-loud-fail/r215/README.md)。
+
 - 2026-10-26（r214）：JPEG六种固定双线性色度构造被拒绝；native振铃指向下一轮系数域重建实验；生产关闭。[证据](../evidence/importer-loud-fail/r214/README.md)。
 
 - 2026-10-26（r213）：JPEG独立分量颜色转换6144/6144精确；降采样插值与原始图仍待证明；生产关闭。[证据](../evidence/importer-loud-fail/r213/README.md)。
