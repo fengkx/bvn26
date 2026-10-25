@@ -722,3 +722,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Godot4.7.2 Compatibility
 ## r141 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta animated Lanran source at original ticks0/4/8/11, original clocks retained; full source/property readbacks retained. No production change.
+
+## r142 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. FFDEC source graph export; reused pinned r141 native clocks/buffers, no fresh native capture; full source/property readbacks retained. No production change.
