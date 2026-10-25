@@ -1,0 +1,7 @@
+.../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_cached_component_boundaries.py:56: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'tick':tick,'cache_vs_clear':comparison(cache,clear),'cache_vs_authored':comparison(cache,authored),'nonzero_cache_pixels':sum(any(p) for p in cache),'normal_composite_vs_stage':comparison(composed,images[f'{tick}-stage']),'pinned':{'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(images[f'{tick}-stage'],list(Image.open(path).convert('RGBA').getdata()))}})
+..
+----------------------------------------------------------------------
+Ran 5 tests in 6.292s
+
+OK

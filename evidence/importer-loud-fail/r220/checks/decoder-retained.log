@@ -1,0 +1,22 @@
+/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/traceback.py:237: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/fengkx/me/agent-code/bvn2_6-loud-fail/evidence/importer-loud-fail/r220/jpeg/analysis/scale2/c2.pgm'>
+  tb.tb_frame.clear()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/traceback.py:237: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/fengkx/me/agent-code/bvn2_6-loud-fail/evidence/importer-loud-fail/r220/jpeg/analysis/scale2/c1.pgm'>
+  tb.tb_frame.clear()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/traceback.py:237: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/fengkx/me/agent-code/bvn2_6-loud-fail/evidence/importer-loud-fail/r220/jpeg/analysis/scale1/c0.pgm'>
+  tb.tb_frame.clear()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/jinye_jpeg_source.py:59: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for i,v in enumerate(zip(*(p.getdata() for p in planes)))]
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/validate_jpeg_row_route.py:54: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  values=zip(*(im.getdata() for im in images));failures=[]
+.../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_orochimaru_wrapper.py:131: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'case':spec['folder'],'boundary':name,**measure(list(image.getdata()),target,w)})
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_orochimaru_wrapper.py:142: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'case':spec['folder'],'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**measure(list(image.getdata()),list(native.getdata()),600)})
+...
+----------------------------------------------------------------------
+Ran 8 tests in 23.857s
+
+OK

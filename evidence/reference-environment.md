@@ -990,3 +990,7 @@ Same pinned Flash Player32/Rosetta.864 independent constant-color JPEG controls 
 ## r219 Orochimaru complete wrapper boundaries
 
 Same pinned Flash Player32/Rosetta; five unchanged source placements, explicit authored/clear/cache captures at three horizontal translations. Godot4.7.2 Compatibility AppleM2/OpenGL4.1 Metal90.5 uses source-derived JPEG planes and binary alpha; libjpeg-turbo3.1.4.1 scaled-plane helper hashes retained in GPU provenance. Original native reference PNGs unchanged; production remains disabled.
+
+## r220 Jinye cache and original bitmap55
+
+Same pinned Flash Player32/Rosetta, unchanged source bitmap55 JPEG3 and cached sprite58. Explicit authored/clear/cache/stage readbacks retain original clocks and restore cache properties. Source-only scaled-plane decoder uses the same libjpeg helper as r218/r219. No runtime/production admission.

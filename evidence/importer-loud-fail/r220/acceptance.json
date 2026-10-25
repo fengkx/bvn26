@@ -1,0 +1,71 @@
+{
+  "production_admitted": false,
+  "source_backed_diagnostic_exact": 46,
+  "images": 54,
+  "full_as_ownership_proved": false,
+  "production_suite_rerun": false,
+  "native_images": {
+    "exact": 4,
+    "total": 4,
+    "pixels": 960000
+  },
+  "decoder_pixels": {
+    "exact": 3680,
+    "total": 3680
+  },
+  "native_clocks": 48,
+  "cache_vs_clear_differing_pixels": 174,
+  "focused_tests": {
+    "graph_boundaries": 5,
+    "decoder_retained": 8,
+    "decoder_final": 2
+  },
+  "retained_full_python": {
+    "passed": 963,
+    "skipped": 2,
+    "failed": 0,
+    "evidence": "../r209/checks/python.log",
+    "rerun_in_r220": false
+  },
+  "not_rerun": [
+    "full roster replay/Web export (production unchanged)",
+    "54 production component renders"
+  ],
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}
