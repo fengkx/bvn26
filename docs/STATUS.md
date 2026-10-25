@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r126）：第二组件保留内部变换，源缓存/纵向Blur各720000精确，固定图480000精确；下一步共用GPU链。[r126证据](../evidence/importer-loud-fail/r126/README.md)。
+
 - 2026-10-25（r125）：原生严格身份/路径/深度证明形状查询返回owner别名；原始内部放置和填充矩阵均保留。[r125证据](../evidence/importer-loud-fail/r125/README.md)。
 
 - 2026-10-25（r124）：第二自来也组件原生缓存到纵向Blur720000全等；形状深度查询疑似返回owner别名，待独立验证。[r124证据](../evidence/importer-loud-fail/r124/README.md)。

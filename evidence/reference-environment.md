@@ -658,3 +658,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debug
 ## r125 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta primitive depth identity with independent dynamic MovieClip control; authored raw SWF tags and XML retained. No GPU advance. No production change.
+
+## r126 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. No new native capture; second source-derived component cache/authored Blur720000/720000 each and pinned final480000/480000 exact. No production change.
