@@ -690,3 +690,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. FFDEC source XML exporte
 ## r133 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta quarter-turn fill versus copyPixels texel permutation; full source/property readbacks retained. No production change.
+
+## r134 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta independent horizontal/vertical quarter-turn ramps; full source/property readbacks retained. No production change.
