@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r210）：大蛇丸原始JPEG3默认解码37022/70308精确，最大RGB差19；alpha全部精确；拒绝生产准入。[证据](../evidence/importer-loud-fail/r210/README.md)。
+
 - 2026-10-26（r209）：源绑定完整组件诊断36/54；剩余金夜4/大蛇丸10/一角4；锁定大蛇丸JPEG3解码缺口。Python963通过、2跳过；生产仍关闭。[证据](../evidence/importer-loud-fail/r209/README.md)。
 
 - 2026-10-26（r208）：main完整现场矩阵家族10→12/12精确；18个中间缓冲区也精确；生产仍关闭；保持失败闭合；不启用生产。[r208证据](../evidence/importer-loud-fail/r208/README.md)。

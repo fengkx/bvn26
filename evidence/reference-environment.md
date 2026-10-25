@@ -966,3 +966,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix packed
 ## r208 ColorMatrix complete live packed matrix family
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix complete live packed matrix family/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
+
+## r210 original JPEG3 readback
+
+Flash Player Debugger32/Rosetta, same pinned executable SHA8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be. Original tag340 exported unchanged;70308 explicit native pixels. Candidate decoder Pillow12.3.0/libjpeg-turbo3.1.4.1.
