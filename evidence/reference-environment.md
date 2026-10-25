@@ -730,3 +730,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. FFDEC source graph expor
 ## r143 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta scalar fill-translation controls with explicit source/matrix readbacks; full source/property readbacks retained. No production change.
+
+## r144 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta original SWF-tag versus AS fill construction with2275 explicit source byte readbacks; full source/property readbacks retained. No production change.
