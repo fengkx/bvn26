@@ -494,3 +494,7 @@ Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, same pinned player
 ## r83 colored shadow GPU controls
 
 Godot4.7.2 Compatibility on AppleM2 OpenGL4.1 Metal90.5;24 clean batches, unchanged r81 integer shadow/filter machinery. Raw source bytes from pinned r82 input rows and authored rectangular coverage. All four stages147456/147456; no PNG/general-composition claim. Production unchanged.
+
+## r84 explicit filtered opacity boundaries
+
+Fresh Flash Player Debugger32 LaunchServices/Rosetta capture with unchanged pinned player hash.360 independently materialized source/filter/child/parent/final controls; seven readback stages46080/46080 each. Non-unit opacity and transparent destinations; no cacheAsBitmap inference or production change.
