@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r176）：统一圆整构造66882观测全精确，但半格样本为0；不启用生产。[r176证据](../evidence/importer-loud-fail/r176/README.md)。
+
 - 2026-10-25（r175）：量化判别边界45观测支持偏移四舍五入，拒绝精确范数5中心；不启用生产。[r175证据](../evidence/importer-loud-fail/r175/README.md)。
 
 - 2026-10-25（r174）：强剪切6192观测支持统一最小分量构造，拒绝对角优先；不启用生产。[r174证据](../evidence/importer-loud-fail/r174/README.md)。

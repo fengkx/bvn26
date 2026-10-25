@@ -858,3 +858,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/R
 ## r175 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta arithmetic-selected integer-boundary controls with neighboring pixels and explicit source bytes; all256 source texels retained; no production rendering change; full source/property readbacks retained. No production change.
+
+## r176 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta no fresh capture; shared rounded footprint evaluated against every pinned affine control; all256 source texels retained; no production rendering change; full source/property readbacks retained. No production change.
