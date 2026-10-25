@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r189）：main去缓存包装层960000像素精确；缓存仍6差异、带滤镜10差异，严格拒绝；不启用生产。[r189证据](../evidence/importer-loud-fail/r189/README.md)。
+
 - 2026-10-25（r188）：原始main叶片完整GPU480000像素精确，含全部边缘；包装层和生产仍关闭；不启用生产。[r188证据](../evidence/importer-loud-fail/r188/README.md)。
 
 - 2026-10-25（r187）：原始main叶片完整CPU图跨3阶段1440000像素精确，边界clamp负控9差异；未启用生产；不启用生产。[r187证据](../evidence/importer-loud-fail/r187/README.md)。
