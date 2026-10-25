@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r180）：原始main纹理绑定GPU后52921内部像素精确，15边缘继续拒绝；不启用生产。[r180证据](../evidence/importer-loud-fail/r180/README.md)。
+
 - 2026-10-25（r179）：原始main叶片两种存储各52921内部像素精确，15个非透明边缘仍待证明；不启用生产。[r179证据](../evidence/importer-loud-fail/r179/README.md)。
 
 - 2026-10-25（r178）：整数仿射GPU68322观测精确，旧采样71824及包装层回归精确；不启用生产。[r178证据](../evidence/importer-loud-fail/r178/README.md)。
