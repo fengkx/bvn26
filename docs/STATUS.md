@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r89）：真实Jiraiya274/273原始标签分数变换，分离fill平移后5/6整图精确，余3个内部像素差1；透明边缘不证明覆盖。生产关闭。[r89证据](../evidence/importer-loud-fail/r89/README.md)。
+
 - 2026-10-25（r88）：54组件引用21张无损位图1031306纹素PNG往返全等，源alpha仅0/255；Jinye55／Orochimaru340 JPEG3待测。转查真实分数覆盖，生产关闭。[r88证据](../evidence/importer-loud-fail/r88/README.md)。
 
 - 2026-10-25（r87）：独立混合alpha PNG四绘制路径各4096/4096；外部PNG规则保持，内部解码归因与SWF位图关系未证明。生产关闭。[r87证据](../evidence/importer-loud-fail/r87/README.md)。

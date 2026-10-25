@@ -510,3 +510,7 @@ Fresh Flash Player Debugger32 LaunchServices/Rosetta capture; unchanged pinned p
 ## r87 independent PNG draw paths
 
 Fresh Flash Player Debugger32 LaunchServices/Rosetta capture with unchanged pinned player hash. Independent64x64 PNG varies RGBA across both axes; full/direct-black/single-pixel-clip/redraw each4096/4096. Downstream readback/clip-length explanations rejected in the bounded identity domain; no production change.
+
+## r89 native source-backed Jiraiya bitmap binding
+
+Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player hash. Original shape274/bitmap273 tags preserved before/after probe compilation; six paired-RGBA fractional transform images. Separate fill translation5/6 exact, three near-right interior byte counterexamples retained. No GPU/production change.
