@@ -702,3 +702,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debug
 ## r136 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta quarter-turn native control round136; full source/property readbacks retained. No production change.
+
+## r137 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta quarter-turn native control round137; full source/property readbacks retained. No production change.
