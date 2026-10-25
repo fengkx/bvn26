@@ -546,3 +546,7 @@ Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchang
 ## r97 independent clipped half-step controls
 
 Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchanged player hash. Independent720 signed half-quarter/neighbor controls;180 exact ties,480 source texels verified. Ties-even86749/86749; other tie rules rejected. Old83423 and26538 retained; no production changes. Production unchanged.
+
+## r98 independent clipped half-step controls
+
+Fresh Flash Player Debugger32/Rosetta native authored placement capture; unchanged player hash. Fresh authored/cleared original wrapper and explicit BitmapData materialization; source bytes unchanged before/after. Native applyFilter and bitmap display Blur each240000/240000 agree with integer arithmetic. Both retain277 differences vs authored implicit boundary; no tolerance or production changes. Production unchanged.
