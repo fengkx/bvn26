@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r128）：一角静态Blur原生缓存/clear720000全等，缓存到滤镜720000全等；下一步保留真实蒙版顺序的源绑定。[r128证据](../evidence/importer-loud-fail/r128/README.md)。
+
 - 2026-10-25（r127）：自来也两组件共用实时GPU路径，原始固定图4/4、960000像素精确；下一步一角静态Blur组件。[r127证据](../evidence/importer-loud-fail/r127/README.md)。
 
 - 2026-10-25（r126）：第二组件保留内部变换，源缓存/纵向Blur各720000精确，固定图480000精确；下一步共用GPU链。[r126证据](../evidence/importer-loud-fail/r126/README.md)。
