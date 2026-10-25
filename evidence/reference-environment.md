@@ -894,3 +894,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh authored-edge/getB
 ## r184 vertex translation
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh independent child/draw translation capture; explicit4096 source texels and all matrix readbacks retained. No production rendering change.
+
+## r186 signed edge stepping
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh independent signed long-edge capture; explicit4096 source texels and all matrix readbacks retained. No production rendering change.
