@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r100）：实际cache与零Blur输出一致；整数Blur作用于该边界后原始过滤图720000全等，源缓存初始化仍待证明。[r100证据](../evidence/importer-loud-fail/r100/README.md)。
+
 - 2026-10-25（r99）：整数平移七组过滤图1680000全等；去滤镜输入差43/56像素且采样模型全部重现，隐式边界独立成立。[r99证据](../evidence/importer-loud-fail/r99/README.md)。
 
 - 2026-10-25（r98）：显式物化输入的两种原生Blur与整数模型均240000全等；原始隐式包装层仍差277像素，最大通道差1。[r98证据](../evidence/importer-loud-fail/r98/README.md)。
