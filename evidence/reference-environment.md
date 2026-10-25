@@ -518,3 +518,7 @@ Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player h
 ## r90 independent Jiraiya-footprint span controls
 
 Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player hash.252 four-corner/ramp controls,41760 verified source pixels; variable clips and single-pixel draws at fixed anisotropic transforms.105 response groups reject all current fixed-coordinate interpolation modes, including scalar clips. No sampler/GPU/production changes.
+
+## r91 independent clipped half-step controls
+
+Fresh Flash Player Debugger32 LaunchServices/Rosetta capture, unchanged player hash.60 scalar controls,2528 source texels verified;16377/16377 support even rounding. CPU held-out71824/71824, Jiraiya6/6, independent spans9360/9360. Production unchanged.
