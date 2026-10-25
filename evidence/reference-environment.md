@@ -618,3 +618,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh16 native cases,480
 ## r115 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh24 native cases,480 source texels;102400 identity/cache pixels exact and2904 interior samples explained by independently measured alpha-support origins. Source-derived allocation remains unproven. No production change.
+
+## r116 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh1296 native cases,480 source texels;648 alpha-paired supports invariant. Separate geometry/translation candidate1296/1296; independent held-out verification required. No production change.
