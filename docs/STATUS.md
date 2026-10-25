@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r124）：第二自来也组件原生缓存到纵向Blur720000全等；形状深度查询疑似返回owner别名，待独立验证。[r124证据](../evidence/importer-loud-fail/r124/README.md)。
+
 - 2026-10-25（r123）：自来也实时GPU缓存纹理直连滤镜，固定参考2/2、480000精确；下一步带内部平移的第二组件。[r123证据](../evidence/importer-loud-fail/r123/README.md)。
 
 - 2026-10-25（r122）：自来也固定背景合成2/2、480000/480000精确；下一步去掉PNG边界，验证实时纹理。[r122证据](../evidence/importer-loud-fail/r122/README.md)。

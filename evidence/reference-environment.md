@@ -650,3 +650,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Godot4.7.2 Compati
 ## r123 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Godot4.7.2 Compatibility/AppleM2 live viewport texture/filter/composite2/2 images480000/480000 exact. No intermediate PNG input. No new native capture. No production change.
+
+## r124 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Player Debugger32/Rosetta original second Jiraiya component capture; cache-to-vertical-Blur720000/720000 and pinned composition480000/480000 exact. No GPU advance. No production change.
