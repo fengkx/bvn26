@@ -882,3 +882,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/R
 ## r181 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta Flash Debugger32/Rosetta constant-source affine bitmap/vector coverage controls; incomplete ROI capture retained as negative control; all256 source texels retained; no production rendering change; full source/property readbacks retained. No production change.
+
+## r182 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta no new capture; fixed rational vertex/scan constructions tested against pinned r181 native controls; all256 source texels retained; no production rendering change; full source/property readbacks retained. No production change.
