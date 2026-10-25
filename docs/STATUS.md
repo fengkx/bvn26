@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r85）：实际滤镜／BlendGroup双层GPU七阶段各46080/46080；提前复制背景使父层与最终各0/46080，负对照拒绝。生产关闭。[r85证据](../evidence/importer-loud-fail/r85/README.md)。
+
 - 2026-10-25（r84）：显式阴影位图双层opacity与透明目标七阶段各46080/46080；合并边界反例7826个，保留独立量化。生产关闭。[r84证据](../evidence/importer-loud-fail/r84/README.md)。
 
 - 2026-10-25（r83）：非白色源GPU输入／模糊RGBA／阴影／原样拷贝各147456/147456；r81着色器未改，生产关闭。[r83证据](../evidence/importer-loud-fail/r83/README.md)。
