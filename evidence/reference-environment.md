@@ -586,3 +586,7 @@ Fresh Flash Player Debugger32/Rosetta; unchanged player hash. 30 groups,128 sour
 ## r107 independent cache width controls
 
 Fresh Flash Player Debugger32/Rosetta; unchanged player hash. 48 cases,128 source texels; independent scale factorization at totals7/8. Child cache24576 exact across factorizations; parent-cache11537/11800 of12288 each. No production change.
+
+## r108 independent cache width controls
+
+Fresh Flash Player Debugger32/Rosetta; unchanged player hash. 48 cases,128 source texels; explicit materialization across scale factors. Prior native73728 exact, integer copies24576 exact each; parent cache23553 only. No production change.
