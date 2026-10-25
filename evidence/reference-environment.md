@@ -982,3 +982,7 @@ Same pinned Flash Player32/Rosetta.448 independent YCbCr controls,114688 native 
 ## r217 JPEG SOF width controls
 
 Same pinned Flash Player32/Rosetta. Original unchanged JPEG3 plus six JPEG2 width controls; only SOF width bytes differ, MCU count/entropy unchanged. All native pixels retained.
+
+## r218 JPEG row geometry controls
+
+Same pinned Flash Player32/Rosetta.864 independent constant-color JPEG controls with varied widths/subsampling;110592 explicit native pixels. Original source and prior native references unchanged.
