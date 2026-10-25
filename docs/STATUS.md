@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-25（r155）：雨龙五个源放置10图精确，普通合成4032及包装4图重跑通过；生产仍关闭。[r155证据](../evidence/importer-loud-fail/r155/README.md)。
+
 - 2026-10-25（r154）：蓝染实时GPU原始四图及12个中间缓冲全部精确；生产仍关闭。[r154证据](../evidence/importer-loud-fail/r154/README.md)。
 
 - 2026-10-25（r153）：蓝染四帧原始CPU缓存/滤镜/最终图各960000精确；实时GPU绑定未验证。[r153证据](../evidence/importer-loud-fail/r153/README.md)。
