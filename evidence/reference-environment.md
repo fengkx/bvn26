@@ -910,3 +910,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh affine cache suppo
 ## r191 affine cache coordinates
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh affine cache coordinates/filter-property capture; explicit27621 source texels and all matrix readbacks retained. No production rendering change.
+
+## r192 indexed nearest cache
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh indexed nearest cache/filter-property capture; explicit109600 source texels and all matrix readbacks retained. No production rendering change.
