@@ -934,3 +934,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix neighb
 ## r199 ColorMatrix processed-span origins
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix processed-span origins/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
+
+## r200 ColorMatrix single-coefficient ramps
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix single-coefficient ramps/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
