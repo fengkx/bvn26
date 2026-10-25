@@ -942,3 +942,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix single
 ## r201 ColorMatrix binary coefficient ramps
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix binary coefficient ramps/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
+
+## r202 ColorMatrix coefficient property brackets
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh ColorMatrix coefficient property brackets/filter-property capture; explicit target/source row readbacks and all matrix readbacks retained. No production rendering change.
