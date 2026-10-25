@@ -478,3 +478,7 @@ Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; unchanged ex
 ## r79 native shadow API-path controls
 
 Fresh Adobe Flash Player Debugger32 LaunchServices/Rosetta capture; unchanged player SHA256 8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be verified. 288 paired applyFilter/bitmap-display/vector-display impulses with exact input readbacks, signed/reversed-angle equivalence and two origins. Separate decimal trace serialization retained. Source/build/native hashes under r79; no production/GPU change.
+
+## r80 native shadow gain/color controls
+
+Fresh Flash Player Debugger32 LaunchServices/Rosetta captures; player SHA256 unchanged and verified against r79. Explicit byte ramps, hidden/visible source, applyFilter/display paths, followed by independently captured colors/alpha/strength. Source/build/readback hashes under r80; no production change.
