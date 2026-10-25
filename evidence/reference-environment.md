@@ -594,3 +594,7 @@ Fresh Flash Player Debugger32/Rosetta; unchanged player hash. 48 cases,128 sourc
 ## r109 independent cache width controls
 
 Fresh Flash Player Debugger32/Rosetta; unchanged player hash. 144 cases,128 source texels; independently extended left bounds. Uncached15048 invariant; cached14404/15048,24 changed groups. No production change.
+
+## r110 independent cache width controls
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Read-only static affine inspection of unchanged pinned player; no fresh native capture. Fixed/float candidates regress r104/r109; execution routing unverified. No production change.
