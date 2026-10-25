@@ -822,3 +822,7 @@ Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/R
 ## r166 device-space cache candidate
 
 Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta signed fractional fill translation consumption controls with declared property readbacks; all16384 texels and effective transforms retained; no production rendering change; full source/property readbacks retained. No production change.
+
+## r167 device-space cache candidate
+
+Flash Player Debugger32/Rosetta; unchanged player hash. Fresh Flash Debugger32/Rosetta compensated fill/child scale controls with complete bounded image readbacks; all256 source texels retained; no production rendering change; full source/property readbacks retained. No production change.
