@@ -1030,3 +1030,7 @@ No new native captures. Reuses r227 source/matrix/amplitude readbacks; exhaustiv
 ## r229 globally fixed HV comparisons
 
 No new capture. Reuses pinned r223/r225/r227 controls and r221 source JPEG leaves with the same r218 decoder helper. Existing independent coordinate constructions only; r228 feasible assignments are not inputs. No production or GPU change.
+
+## r230 fixed-transform native clip controls
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC. Six source-specific SWFs retain raw tags and synthetic input patterns;81696x96draws separately record omitted/full/narrowclip arguments and cache properties.22080source pixels and24matrices verified. All captures preserve build/environment hashes. No production/GPU changes.

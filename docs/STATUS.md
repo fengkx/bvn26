@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r230）：固定源/矩阵仅改clipRect，768对未缓存重叠发生1722个差异（最大Δ2）；缓存组2904对一致，48/48基线精确；未准入生产。[证据](../evidence/importer-loud-fail/r230/README.md)。
+
 - 2026-10-26（r229）：独立坐标统一HV使JPEG叶片2763/2818，shape57未缓存仅余2个Δ1；shape56仍严重不符，六模型均拒绝；继续固定矩阵的clipRect实验，生产关闭。[证据](../evidence/importer-loud-fail/r229/README.md)。
 
 - 2026-10-26（r228）：四角/三幅度共同约束拒绝统一VH（67坐标无解）；HV17640/17640存在解但未选择坐标、未证明初始化；生产关闭。[证据](../evidence/importer-loud-fail/r228/README.md)。
