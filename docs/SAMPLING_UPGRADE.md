@@ -96,3 +96,9 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 樱（sakura）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
 恢复后通过。分批累计 6/26 个角色、1,944/8,424 个案例；剩余 20 个角色
 仍是后续项，未声明原生一致性。见 [s06 证据](../evidence/sampling-upgrade/s06/README.md)。
+
+## s07：银执行证据
+
+银（yin）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
+恢复后通过。分批累计 7/26 个角色、2,268/8,424 个案例；剩余 19 个角色
+仍是后续项，未声明原生一致性。见 [s07 证据](../evidence/sampling-upgrade/s07/README.md)。
