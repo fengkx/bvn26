@@ -8,7 +8,7 @@ import re
 
 ROOT = Path(__file__).resolve().parents[2]
 SELF_CALL = re.compile(r'(?<![\w.])(stop|play|gotoAndPlay|gotoAndStop)\s*\(([^()]*)\)\s*;')
-CONTROL_WORD = re.compile(r'(?<![\w.])(?:stop|play|gotoAndPlay|gotoAndStop)\s*\(')
+CONTROL_WORD = re.compile(r'(?<![\w.])(?:this\s*\.\s*)?(?:stop|play|gotoAndPlay|gotoAndStop)\s*\(')
 
 
 def requirements(bundle: dict) -> dict:
@@ -24,7 +24,11 @@ def requirements(bundle: dict) -> dict:
         expected = []
         error = None
         calls = list(SELF_CALL.finditer(text))
-        if re.search(r'\b(?:if|else|function|while|for|switch)\s*[({]', text):
+        # Explicit self syntax cannot disappear just because the bytecode owner
+        # currently admits only the unqualified playhead form.
+        if any(match[0].startswith('this') for match in CONTROL_WORD.finditer(text)):
+            error = 'unsupported nested playhead explicit self reference needs an owner'
+        elif re.search(r'\b(?:if|else|function|while|for|switch)\s*[({]', text):
             error = 'nested conditional/function playhead control needs an owner'
         elif len(calls) != len(CONTROL_WORD.findall(text)):
             error = 'unsupported nested playhead argument form'

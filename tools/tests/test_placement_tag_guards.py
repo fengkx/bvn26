@@ -58,11 +58,49 @@ class PlacementTagGuardsTests(unittest.TestCase):
         timeline = {'source_swf': {'sha256': 'abc'}, 'sprite_id': 345, 'frames': [],
                     'definitions': [], 'wrapper': {'root_frame': 1, 'depth': 1}}
         with patch('placement_build_guard.Path.read_text', return_value=json.dumps(catalog)):
-            with self.assertRaisesRegex(ValueError, 'dropped/changed wrapper filters: fixture.swf/root/frame_1/depth_1'):
+            with self.assertRaisesRegex(ValueError, 'fixture.swf/root/frame_1/depth_1: dropped/changed wrapper filters'):
                 validate_build_placements(timeline, 'cache.json')
             del timeline['wrapper']
             with self.assertRaisesRegex(ValueError, 'dropped/changed wrapper filters'):
                 validate_build_placements(timeline, 'cache.json')
+
+    def test_cached_wrapper_cannot_change_root_blend_obligation(self):
+        import json
+        from unittest.mock import patch
+        from placement_build_guard import validate_build_placements
+        catalog = {'abc': {'swf': 'fixture.swf', 'records': [], 'obligations': [
+            {'sprite': 0, 'frame': 7, 'depth': 4, 'fields': {'blend_mode': 3}}]}}
+        timeline = {'source_swf': {'sha256': 'abc'}, 'sprite_id': 9, 'frames': [],
+                    'definitions': [], 'wrapper': {'root_frame': 7, 'depth': 4, 'blend_mode': 3}}
+        with patch('placement_build_guard.Path.read_text', return_value=json.dumps(catalog)):
+            validate_build_placements(timeline, 'cache.json')
+            for replacement in (None, 1, 3.0, True):
+                wrapper = timeline['wrapper']
+                if replacement is None:
+                    wrapper.pop('blend_mode', None)
+                else:
+                    wrapper['blend_mode'] = replacement
+                with self.subTest(replacement=replacement), self.assertRaisesRegex(
+                        ValueError, 'fixture.swf/root/frame_7/depth_4: dropped/changed wrapper blend_mode'):
+                    validate_build_placements(timeline, 'cache.json')
+
+    def test_root_blend_audit_rejects_missing_whole_cached_wrapper(self):
+        import json
+        from unittest.mock import patch
+        from placement_build_guard import placement_requirements, validate_build_placements
+        root = ET.fromstring('<swf><tags><item type="ShowFrameTag"/>'
+                            '<item type="PlaceObject3Tag" depth="4" characterId="9" blendMode="3"/>'
+                            '<item type="ShowFrameTag"/></tags></swf>')
+        audit = audit_xml(root, 'fixture.swf')
+        self.assertEqual(audit['wrapper_obligations'], [
+            {'character_id': 9, 'frame': 2, 'depth': 4, 'fields': {'blend_mode': 3}}])
+        catalog = placement_requirements([{**audit, 'sha256': 'abc', 'source_swf': 'fixture.swf'}])
+        timeline = {'source_swf': {'sha256': 'abc'}, 'sprite_id': 9, 'frames': [], 'definitions': []}
+        with patch('placement_build_guard.Path.read_text', return_value=json.dumps(catalog)):
+            with self.assertRaisesRegex(ValueError, 'fixture.swf/root/frame_2/depth_4: dropped/changed wrapper blend_mode'):
+                validate_build_placements(timeline, 'cache.json')
+            timeline['wrapper'] = {'root_frame': 2, 'depth': 4, 'blend_mode': 3}
+            validate_build_placements(timeline, 'cache.json')
 
     def test_wrapper_field_error_keeps_root_location(self):
         root = ET.fromstring('''<swf><tags><item type="ShowFrameTag"/>

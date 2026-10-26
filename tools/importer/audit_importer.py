@@ -127,7 +127,7 @@ def audit_xml(root: ET.Element, source: str) -> dict:
                     if owner == 'root' and character is not None and character not in wrapper_characters:
                         wrapper_characters.add(character)
                         fields = {key: delta[key] for key in
-                                  ('filters', 'color_transform', 'cache_as_bitmap', 'clip_depth', 'ratio') if key in delta}
+                                  ('filters', 'blend_mode', 'color_transform', 'cache_as_bitmap', 'clip_depth', 'ratio') if key in delta}
                         if fields:
                             wrapper_obligations.append({'character_id': character, 'frame': frame,
                                                         'depth': int(depth), 'fields': fields})
