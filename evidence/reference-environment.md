@@ -1022,3 +1022,7 @@ No new native captures. Reuses r225 source/matrix/image readbacks and the unchan
 ## r227 independent red impulse amplitudes
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC as r225. Twelve sequential native SWFs retain original tags/matrices and replace only lossless bitmap55 bytes. Source amplitudes64/128/255, G0/B73/A255;96images and44160source readbacks. Each capture records build and environment hashes. No GPU or production modification.
+
+## r228 joint corner constraint analysis
+
+No new native captures. Reuses r227 source/matrix/amplitude readbacks; exhaustively rejects fixed two-stage families over a predeclared contiguous footprint/fraction domain. No satisfying coordinate is retained or rendered.
