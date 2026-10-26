@@ -14,6 +14,9 @@ class StageCatalogTests(unittest.TestCase):
         catalog = json.loads((directory / "catalog.json").read_text())
         source = json.loads((ROOT / "manifest.json").read_text())["map_catalog"]
         self.assertEqual({stage["id"] for stage in catalog["stages"]}, set(source))
+        self.assertEqual({stage["directory"] for stage in catalog["stages"]}, {"world"})
+        legacy = json.loads((ROOT / "godot/generated/stages/current_world/timeline.json").read_text())
+        self.assertEqual([f["frame"] for f in legacy["frames"]], list(range(1, legacy["frame_count"] + 1)))
         for stage in catalog["stages"]:
             with self.subTest(stage=stage["id"]):
                 folder = directory / stage["directory"]
@@ -25,7 +28,9 @@ class StageCatalogTests(unittest.TestCase):
                 for definition in timeline["definitions"]:
                     if definition["character_id"] == 1690:
                         self.assertFalse(definition["initial_visible"])
-                (frame,) = timeline["frames"]
+                self.assertEqual([f["frame"] for f in timeline["frames"]],
+                                 list(range(1, timeline["frame_count"] + 1)))
+                frame = next(f for f in timeline["frames"] if f["frame"] == stage["frame"])
                 self.assertIn(source[stage["id"]]["frame"], frame["labels"])
                 names = {item.get("name") for item in frame["display_list"]}
                 for item in frame["display_list"]:
