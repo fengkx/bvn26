@@ -1034,3 +1034,7 @@ No new capture. Reuses pinned r223/r225/r227 controls and r221 source JPEG leave
 ## r230 fixed-transform native clip controls
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC. Six source-specific SWFs retain raw tags and synthetic input patterns;81696x96draws separately record omitted/full/narrowclip arguments and cache properties.22080source pixels and24matrices verified. All captures preserve build/environment hashes. No production/GPU changes.
+
+## r231 pinned scalar-width comparisons
+
+No new native capture. Compares r230 scalar-width and omitted baselines on identical authored-geometry coordinates, using the unchanged r229 fixed-HV constructions. No fitted offset, production or GPU change.
