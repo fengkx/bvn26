@@ -1038,3 +1038,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC. Six source-specific SWFs 
 ## r231 pinned scalar-width comparisons
 
 No new native capture. Compares r230 scalar-width and omitted baselines on identical authored-geometry coordinates, using the unchanged r229 fixed-HV constructions. No fitted offset, production or GPU change.
+
+## r232 source-coded nearest countercontrol
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC. Two native fixtures retain original geometry; mode67 changes only each parsed active bitmap55 fill-type byte.64images,7360inputpixels,8matrices; exact tag-diff/build/environment records under r232/native. No native reference used as texture; no production/GPU changes.
