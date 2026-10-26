@@ -232,3 +232,13 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 原生 Flash 一致性、全局判定框、子显示列表、完整镜头、BitmapData 和 DoAction
 仍是明确后续项，不阻塞本执行证据切片的合并；`production_admitted=false`，
 `native_parity_proven=false`。见 [s24 证据](../evidence/sampling-upgrade/s24/README.md)。
+
+## s25：一角执行证据
+
+一角（yijiao）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
+恢复后复查 324/324 通过。分批累计 25/26 个角色、8,100/8,424 个案例，剩余 1 个。
+原生 Flash 一致性、全局判定框、子显示列表、完整镜头、BitmapData 和 DoAction
+仍是明确后续项，不阻塞本执行证据切片的合并；`production_admitted=false`，
+`native_parity_proven=false`。见 [s25 证据](../evidence/sampling-upgrade/s25/README.md)。
+
+剩余角色为 `yulong`。Jinye/Yijiao 采样器残差仍为[已知差异](IMPORTER_KNOWN_GAPS.md)，本轮未解决，也不阻塞本执行证据切片。
