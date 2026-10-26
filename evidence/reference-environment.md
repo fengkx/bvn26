@@ -1062,3 +1062,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC.48images,3680source pixels
 ## r237 conservative ShapeBounds controls
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC.13fixtures/52images;47840source pixels and26matrices strict. Independentbitreview confirms signedRECTfield-only changes with fixedtaglength and unchangedfill/mask. Baselines match r236 raw+black readbacks exactly. Raw and black outputs kept separate. No production changes.
+
+## r238 exact axis factorization
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC.20 images,3680 source pixels,10 actual matrices. Independent FFDEC review checks integer source scaling and exact float32 display division. Both rawRGBA and black planes retained; original raw baselines exact. No production changes.

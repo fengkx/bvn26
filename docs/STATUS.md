@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r238）：轴向倍率拆分24/24整图精确，原有缓存红通道106→108单像素差异保留；下一步有符号轴变换与剪切对照，生产关闭。[证据](../evidence/importer-loud-fail/r238/README.md)。
+
 - 2026-10-26（r237）：仅扩大ShapeBounds的48/48对照整图精确，getBounds均变但固定缓存像素差异未变；不推定其为采样原点，生产关闭。[证据](../evidence/importer-loud-fail/r237/README.md)。
 
 - 2026-10-26（r236）：原始Jinye拆分未缓存40/40整图精确，缓存20/40组出现58像素差异；原始标签/identity基线8/8精确，缓存边界仍待独立验证，生产关闭。[证据](../evidence/importer-loud-fail/r236/README.md)。
