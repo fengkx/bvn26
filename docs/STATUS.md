@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r235）：独立原生矩阵拆分80/80、缓存20/20整图精确（rawRGBA与黑底两路）；仅证明有界dyadic对照，Jinye原始反例仍在，生产关闭。[证据](../evidence/importer-loud-fail/r235/README.md)。
+
 - 2026-10-26（r234）：显示坐标先算采样偏移的统一假设仍拒绝；保留r232/r233全部旧反例，下一步独立矩阵拆分对照，生产关闭。[证据](../evidence/importer-loud-fail/r234/README.md)。
 
 - 2026-10-26（r233）：fill/draw独立位移436000样本均保留，七模型仍拒绝；139520同draw量化像素一致，但102个fill对否定合并量化，生产关闭。[证据](../evidence/importer-loud-fail/r233/README.md)。

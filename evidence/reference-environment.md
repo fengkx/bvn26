@@ -1050,3 +1050,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC. Thirteen raw-tag fixtures
 ## r234 fixed phase-order rejection
 
 No new native capture. Reuses pinned r232/r233 source-byte and matrix readbacks; every unchanged full-phase failure payload reproduces. The projected display-first phase is a rejected global hypothesis. No GPU/production changes.
+
+## r235 exact dyadic source-tag factorization
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC.40nativeimages,3680source pixels,20actual display matrices. Independent FFDEC XML review verifies5raw fill/mask records. Both raw getPixel32 and black-composited planes retained and compared separately; no inferred premultiplied input. Native build/environment/log and independent review archived under r235. No production changes.
