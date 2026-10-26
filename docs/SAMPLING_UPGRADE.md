@@ -83,3 +83,10 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 恢复后通过。分批累计迪达拉、茶渡、恋次 3/26 个角色、972/8,424 个案例；
 剩余 23 个角色继续作为后续项，未声明原生一致性。
 见 [s04 证据](../evidence/sampling-upgrade/s04/README.md)。
+
+## s05：小李和宁次执行证据
+
+小李（lee）、宁次（neji）分别 324/324 通过，各 39,528 条双方状态记录；
+两份缺案例报告均硬失败，恢复后通过。分批累计 5/26 个角色、1,620/8,424 个案例；
+剩余 21 个角色仍是后续项，未声明原生一致性。
+见 [s05 证据](../evidence/sampling-upgrade/s05/README.md)。
