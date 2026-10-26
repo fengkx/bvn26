@@ -1042,3 +1042,7 @@ No new native capture. Compares r230 scalar-width and omitted baselines on ident
 ## r232 source-coded nearest countercontrol
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC. Two native fixtures retain original geometry; mode67 changes only each parsed active bitmap55 fill-type byte.64images,7360inputpixels,8matrices; exact tag-diff/build/environment records under r232/native. No native reference used as texture; no production/GPU changes.
+
+## r233 raw-fill translation controls
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC. Thirteen raw-tag fixtures patch only active fill type and signed translation bits; masks/linear coefficients stay byte-identical.200images,47840source pixels,100display matrices verified. Build/capture environments and source logs archived under r233/native. Parsed raw-fill metadata remains distinct from native property readbacks. No production/GPU changes.

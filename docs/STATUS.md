@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r233）：fill/draw独立位移436000样本均保留，七模型仍拒绝；139520同draw量化像素一致，但102个fill对否定合并量化，生产关闭。[证据](../evidence/importer-loud-fail/r233/README.md)。
+
 - 2026-10-26（r232）：nearest单字节对照18216/18216读出有效纹素码，但六坐标模型仍拒绝；smooth基线73728/73728，shape56缩小偏差已存在于坐标路径，生产关闭。[证据](../evidence/importer-loud-fail/r232/README.md)。
 
 - 2026-10-26（r231）：同坐标单列clip未消除初始化失败（固定HV3944/4320→3923/4320）；shape56缩小偏差持续，改用独立nearest坐标编码对照，生产关闭。[证据](../evidence/importer-loud-fail/r231/README.md)。
