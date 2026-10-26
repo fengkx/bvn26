@@ -23,7 +23,9 @@ class NativeCacheProfileTests(unittest.TestCase):
         p=json.loads((EVIDENCE/'provenance.json').read_text())
         for key,root in [('source_sha256',ROOT),('evidence_sha256',EVIDENCE)]:
             for name,digest in p[key].items():
-                self.assertEqual(hashlib.sha256((root/name).read_bytes()).hexdigest(),digest)
+                snapshot = p.get('source_snapshots', {}).get(name) if key == 'source_sha256' else None
+                source = EVIDENCE/snapshot if snapshot else root/name
+                self.assertEqual(hashlib.sha256(source.read_bytes()).hexdigest(),digest)
         static=json.loads((EVIDENCE/'static-edges.json').read_text())
         for edge in static['call_edges']:
             raw=bytes.fromhex(edge['bytes']);self.assertEqual(raw[0],0xe8)

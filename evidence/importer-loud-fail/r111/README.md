@@ -23,3 +23,7 @@ python3 -m unittest tools.tests.test_native_cache_profile
 Next discriminator: trace the bounds/matrix setup reaching0x10015c080, especially the stored affine fields used before buffer allocation and drawing. Pin the relevant instruction spans and conversion constants independently of RGB. A call graph narrows the search but cannot establish branch values; any derived common construction must still clear r101–r109 and all prior exact sampler controls before GPU binding. Do not infer a route from sampling absence or select constants from pixel agreement.
 
 `specific_normalization_branch_verified=false`, `candidate_admitted=false`, `production_admitted=false`. Components historical9/54; source cache normalization, general affine/coverage and full AS/clip-action ownership remain open. Draft only; no merge/deploy/Worker.
+
+## Historical capture source
+
+The exact capture-time `profile_native_cache.py` is archived in `source/`; its original SHA256 in provenance is unchanged. Commit0581e94f later normalized three input paths in the live helper. The regression resolves the explicit historical snapshot rather than changing the capture hash or native reference bytes.
