@@ -1,0 +1,34 @@
+{
+  "analyzer_sha256": "22a44cc3afb82e800967a2367ae063a3cfb360c6470ef00283c31d2e14a7b278",
+  "equations_reviewed": [
+    "retained a*x+b*y+t",
+    "round65536(exact_b*y+exact_t)+quantized_a*x",
+    "round65536(exact_a*x+exact_t)+quantized_b*y"
+  ],
+  "rounding": "floor(value+1/2), unchanged fixed row coefficients and independently defined minimum footprint phase",
+  "origin_zero_unproved": true,
+  "retained_inventory_guards": "200 case/cache identities; incompatible and sample counts; group coefficients and phase constant",
+  "totals": {
+    "retained_quantized_steps": {
+      "samples": 436000,
+      "exact": 409816,
+      "feasible_phase_groups": 12,
+      "phase_groups": 16
+    },
+    "exact_row_start_quantized_x_step": {
+      "samples": 436000,
+      "exact": 409480,
+      "feasible_phase_groups": 8,
+      "phase_groups": 16
+    },
+    "exact_column_start_quantized_y_step": {
+      "samples": 436000,
+      "exact": 409756,
+      "feasible_phase_groups": 9,
+      "phase_groups": 16
+    }
+  },
+  "tests_passed": 3,
+  "candidate_admitted": false,
+  "production_admitted": false
+}

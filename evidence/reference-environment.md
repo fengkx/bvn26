@@ -1078,3 +1078,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC.140 images,3680 source pix
 ## r241 complete Jinye CPU diagnostic
 
 No new native capture. Reuse pinned r220 complete boundaries, r221 leaves and r233 nearest controls with unchanged source-decoded bitmap55 and r218/r220 plane hashes. CPU candidate writes premultiplied RGBA bytes; native comparison uses black-composited RGB plus raw alpha. No native intermediate or final image is used as source texture. Explicit local/input native boundaries remain unmeasured. All admission flags remain false.
+
+## r242 explicit Jinye source-local materialization
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC.1843 events,7 native images,3680 original source pixels. Both direct rawRGBA/black baselines match r221. Source-derived explicit allocation170x94 at(280,219) uses polygon bounds with padding; it is not inferred native cache allocation and is distinct from original getBounds. Explicit materialization differs from direct rendering. Source-only CPU candidate retains unproved affine sampler; no native output becomes a candidate texture.
