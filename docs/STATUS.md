@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r241）：完整Jinye源图诊断接入11深度/21帧，非空帧0/3精确（仅空帧通过），保持诊断46/54。统一候选与相位/逆平移舍入假设均拒绝；下一步原生显式中间边界，不修改生产。[证据](../evidence/importer-loud-fail/r241/README.md)。
+
 - 2026-10-26（r240）：独立整数相机平移120/120配对、7680000重叠像素精确；20/20旧基线保留，缓存剪切残差不变。转入完整Jinye源图诊断，完整诊断仍46/54。[证据](../evidence/importer-loud-fail/r240/README.md)。
 
 > 准入说明：`production_admitted=false` 是证据状态，不是运行时开关。现有 `FilterGroup` / `BlendGroup` 已通过 `FighterRuntime` 继承 `TimelinePreview` 进入游戏路径；仍需显式运行时准入门或完整生产 54 图证明。本分支相对 master 包含既有运行时改动，近期仅诊断改动不代表整条分支没有运行时改动。

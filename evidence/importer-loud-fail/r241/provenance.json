@@ -1,0 +1,23 @@
+{
+  "commands": [
+    "python3 -m tools.probes.run_jinye_wrapper_cpu --dump /tmp/bvn-r215/jpeg-planes --output /tmp/bvn-r241/wrapper",
+    "python3 -m tools.probes.audit_jinye_source_units --output /tmp/bvn-r241/source-unit-audit.json",
+    "python3 -m tools.probes.analyze_jinye_phase_constraints --output /tmp/bvn-r241/phase-constraints.json",
+    "python3 -m tools.probes.analyze_jinye_inverse_translation_order --output /tmp/bvn-r241/inverse-translation-order.json"
+  ],
+  "wrapper_exit_code": 1,
+  "source_sha256": {
+    "tools/probes/run_jinye_wrapper_cpu.py": "9eba8d726242ca25aa12ce581f50f068d33232ea4aa4c2d5baf745e9606cb2c7",
+    "tools/probes/audit_jinye_source_units.py": "f74913731ab3fbe8cc0d5d3d5313807680890abf418b586166b8797aab40d802",
+    "tools/probes/analyze_jinye_phase_constraints.py": "9a5d94b2afc32b077f90f173c51036b586c6aa6e313155f3740a31cf9a52d713",
+    "tools/probes/analyze_jinye_fixed_hv.py": "d364df1a2b5f227be4b59f5d60fe501a59fcf552d868442e51a1e17beadabd68",
+    "tools/probes/analyze_jinye_translation_controls.py": "a1fbac63021ee967c4ec2667c0b5daf3ea265281cc82fd3578cacee66595e24d",
+    "tools/probes/jinye_jpeg_source.py": "fdbba90f078623b2c87cdbe80adbaa89c512cb0096130be5925324be70c526af",
+    "tools/probes/analyze_jinye_inverse_translation_order.py": "b2e03e884fdde5357ed281e710cf6a0f607e7e29f79dd6d202e83774af3d13e0"
+  },
+  "jpeg_decoder_sha256": "4e7af7f42a3c3df1e8ac34699d8dade8f140f25b47e8bf04de34ef25628e6687",
+  "pixel_encoding": "premultiplied RGBA bytes; PNG containers retain those bytes and are not straight-alpha display previews",
+  "native_references_rewritten": false,
+  "native_pixels_used_as_source": false,
+  "production_admitted": false
+}

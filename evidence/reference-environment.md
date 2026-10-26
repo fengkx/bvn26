@@ -1074,3 +1074,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC.40images,3680source pixels
 ## r240 integer camera translation
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC.140 images,3680 source pixels,70 actual matrix groups. Original raw shape tags retained from r239; 20 zero-offset baselines match exactly. Both rawRGBA and independently black-composited planes archived. Integer source-relative correspondence and outside-overlap emptiness checked. No production runtime changes in this round.
+
+## r241 complete Jinye CPU diagnostic
+
+No new native capture. Reuse pinned r220 complete boundaries, r221 leaves and r233 nearest controls with unchanged source-decoded bitmap55 and r218/r220 plane hashes. CPU candidate writes premultiplied RGBA bytes; native comparison uses black-composited RGB plus raw alpha. No native intermediate or final image is used as source texture. Explicit local/input native boundaries remain unmeasured. All admission flags remain false.
