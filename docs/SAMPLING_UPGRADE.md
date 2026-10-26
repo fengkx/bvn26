@@ -76,3 +76,10 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 的报告仍硬失败，恢复后覆盖检查通过。与 s01 迪达拉合计已证明 2/26 个角色、
 648/8,424 个案例，其余 24 个角色保持后续项；不是原生一致性证明。
 见 [s03 证据](../evidence/sampling-upgrade/s03/README.md)。
+
+## s04：恋次执行证据
+
+恋次（renji）324/324 通过，39,528 条双方状态记录；缺案例报告仍硬失败，
+恢复后通过。分批累计迪达拉、茶渡、恋次 3/26 个角色、972/8,424 个案例；
+剩余 23 个角色继续作为后续项，未声明原生一致性。
+见 [s04 证据](../evidence/sampling-upgrade/s04/README.md)。
