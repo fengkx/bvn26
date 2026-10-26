@@ -10,6 +10,9 @@ from tools.probes.capture_native_player import capture, matching_players, player
 
 
 def profile(build, output, app):
+    build = Path(build).resolve()
+    output = Path(output).resolve()
+    app = Path(app).resolve()
     preflight(app)
     movie = (build/'game/main.swf').resolve()
     binary = player_binary(app)

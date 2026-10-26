@@ -1082,3 +1082,7 @@ No new native capture. Reuse pinned r220 complete boundaries, r221 leaves and r2
 ## r242 explicit Jinye source-local materialization
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC.1843 events,7 native images,3680 original source pixels. Both direct rawRGBA/black baselines match r221. Source-derived explicit allocation170x94 at(280,219) uses polygon bounds with padding; it is not inferred native cache allocation and is distinct from original getBounds. Explicit materialization differs from direct rendering. Source-only CPU candidate retains unproved affine sampler; no native output becomes a candidate texture.
+
+## r243 actual Jinye workload profiles
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC. Four serialized owned-process captures use original Jinye source geometry: direct uncached, cached reuse, requested cache toggle, and explicit local uncached. Each final rawRGBA and premultiplied image matches r242; source readbacks retained. macOS sample observes only the exact movie/executable PID after its run marker. An initial /tmp versus /private/tmp ownership mismatch refused profiling; canonical-path retry retains strict ownership. Profiles are not pixel references or proof of branch operands. No debugger attachment, process injection, signing/security changes or production changes in this round.
