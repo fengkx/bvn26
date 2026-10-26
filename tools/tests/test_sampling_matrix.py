@@ -78,6 +78,40 @@ class SamplingMatrixTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'changed input tape'):
                 load_campaign(path)
 
+    def test_required_native_missing_rejects_run_and_check(self):
+        from unittest.mock import patch
+        from tools.sampling_matrix import run
+        with tempfile.TemporaryDirectory() as temp:
+            campaign = Path(temp) / 'campaign'
+            manifest = generate(campaign, ['didala'], require_native=True)
+            entry = manifest['cases'][0]
+            case = json.loads((campaign / 'cases' / (entry['id'] + '.json')).read_text())
+            self.assertIs(case['require_native'], True)
+            output = Path(temp) / 'output'
+            with patch('tools.sampling_matrix.execute_batch') as engine:
+                with self.assertRaisesRegex(ValueError, entry['id'] + ': missing native evidence'):
+                    run(campaign, output, Path('/unused/godot'), [entry['id']])
+                engine.assert_not_called()
+            with self.assertRaisesRegex(ValueError, 'missing native evidence'):
+                require_full_coverage(campaign, output)
+            self.assertFalse(output.exists())
+
+    def test_native_requirement_cannot_be_stripped_from_tape(self):
+        from tools.sampling_matrix import digest
+        with tempfile.TemporaryDirectory() as temp:
+            campaign = Path(temp) / 'campaign'
+            manifest = generate(campaign, ['didala'], require_native=True)
+            entry = manifest['cases'][0]
+            path = campaign / 'cases' / (entry['id'] + '.json')
+            case = json.loads(path.read_text())
+            del case['require_native']
+            path.write_text(json.dumps(case))
+            # Updating only the tape digest cannot remove the manifest obligation.
+            entry['sha256'] = digest(path)
+            (campaign / 'matrix.json').write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError, 'changed input tape'):
+                load_campaign(campaign)
+
     def test_zero_executions_cannot_pass(self):
         from tools.sampling_matrix import digest
         with tempfile.TemporaryDirectory() as temp:

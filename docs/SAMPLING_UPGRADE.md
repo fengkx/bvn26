@@ -58,3 +58,14 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 这五类证据应分别报告 coverage 和 parity，不能用一个总绿色掩盖未采集项。
 本切片没有 Flash 捕获/像素/DoAction gate，`native_parity_proven` 恒为 false。
 完整输入矩阵、生产 54 图和 AS 所有权仍是后续工作，不回填 PR #48 已知差异。
+
+## s02：原生证据预留门槛
+
+生成时添加 `--require-native`，会把要求同时写进案例和矩阵清单。
+`run` 检查选中的案例，`check` 检查整个矩阵；必需原生证据尚未接入时，
+两者都以案例 ID + `missing native evidence` 硬失败。当前这是明确拒绝的
+接入桩，不支持导入任何成功收据，也不把 Godot 输出当原生证据。
+未加此选项的 s01 案例与执行覆盖规则不变。
+
+这项门槛可独立送审；捕获适配器、原生轨迹验证及像素对比是后续项。
+见 [s02 证据](../evidence/sampling-upgrade/s02/README.md)。

@@ -31,7 +31,7 @@ def cells(fighters):
                                             ('ground', 'air'), DISTANCES)]
 
 
-def fixture(cell):
+def fixture(cell, require_native=False):
     case_id = '__'.join(cell.values())
     inputs = []
     if cell['posture'] == 'air':
@@ -43,10 +43,11 @@ def fixture(cell):
             'p1_helper': '我爱罗', 'p2_helper': '魂', 'stage': '现世',
             'setup': {'p1': {'x': 100, 'energy': 300},
                       'p2': {'x': 100 + DISTANCES[cell['distance']], 'energy': 300}},
-            'inputs': inputs, 'target_frames': [], 'sampling_cell': cell}
+            'inputs': inputs, 'target_frames': [], 'sampling_cell': cell,
+            **({'require_native': True} if require_native else {})}
 
 
-def generate(output, fighters=None):
+def generate(output, fighters=None, require_native=False):
     available = sorted(set(json.loads(CATALOG.read_text())['fighters'].values()))
     fighters = available if fighters is None else sorted(set(fighters))
     if not fighters or set(fighters) - set(available):
@@ -56,10 +57,11 @@ def generate(output, fighters=None):
     cases_dir.mkdir()
     entries = []
     for cell in cells(fighters):
-        case = fixture(cell)
+        case = fixture(cell, require_native)
         path = cases_dir / (case['id'] + '.json')
         path.write_text(json.dumps(case, ensure_ascii=False, indent=2) + '\n')
-        entries.append({'id': case['id'], 'cell': cell, 'sha256': digest(path)})
+        entries.append({'id': case['id'], 'cell': cell, 'sha256': digest(path),
+                        **({'require_native': True} if require_native else {})})
     manifest = {'version': 1, 'catalog_sha256': digest(CATALOG), 'fighters': fighters,
                 'scope': 'full_roster' if fighters == available else 'fighter_subset',
                 'production_admitted': False, 'cases': entries}
@@ -85,7 +87,10 @@ def load_campaign(campaign):
         raise ValueError('matrix coverage missing, duplicated, or reordered')
     for entry in manifest['cases']:
         path = campaign / 'cases' / (entry['id'] + '.json')
-        if digest(path) != entry['sha256'] or json.loads(path.read_text()) != fixture(entry['cell']):
+        required = entry.get('require_native', False)
+        if type(required) is not bool:
+            raise ValueError(f"{entry['id']}: require_native must be boolean")
+        if digest(path) != entry['sha256'] or json.loads(path.read_text()) != fixture(entry['cell'], required):
             raise ValueError(f"{entry['id']}: changed input tape")
     return manifest
 
@@ -114,6 +119,18 @@ def validate_trace(case, rows, camera):
         raise ValueError(f'{case_id}: requested posture not reached before input')
 
 
+def require_native_evidence(entries):
+    """Fail closed until a native capture adapter can validate case-bound evidence.
+
+    Godot traces and hand-written success receipts cannot satisfy this reservation.
+    Keeping the hook rejecting is intentional; it makes no native parity claim.
+    """
+    for entry in entries:
+        if entry.get('require_native', False):
+            raise ValueError(f"{entry['id']}: missing native evidence; "
+                             "native capture adapter is not connected")
+
+
 def run(campaign, output, godot, selected=None):
     manifest = load_campaign(campaign)
     entries = manifest['cases']
@@ -121,6 +138,7 @@ def run(campaign, output, godot, selected=None):
         if not selected or len(set(selected)) != len(selected) or set(selected) - {e['id'] for e in entries}:
             raise ValueError('empty, duplicate, or unknown case selection')
         entries = [e for e in entries if e['id'] in selected]
+    require_native_evidence(entries)
     output.mkdir(parents=True, exist_ok=False)
     paths = [campaign / 'cases' / (entry['id'] + '.json') for entry in entries]
     results = execute_batch(godot.resolve(), paths, output.resolve())
@@ -146,6 +164,7 @@ def run(campaign, output, godot, selected=None):
 
 def require_full_coverage(campaign, output):
     manifest = load_campaign(campaign)
+    require_native_evidence(manifest['cases'])
     report = json.loads((output / 'report.json').read_text())
     if report['matrix_sha256'] != digest(campaign / 'matrix.json'):
         raise ValueError('results belong to another campaign')
@@ -166,6 +185,8 @@ def main():
     gen = sub.add_parser('generate')
     gen.add_argument('--output', type=Path, required=True)
     gen.add_argument('--fighters', nargs='+')
+    gen.add_argument('--require-native', action='store_true',
+                     help='Reserve native evidence for every case; currently rejects until capture is wired')
     execute = sub.add_parser('run')
     execute.add_argument('--campaign', type=Path, required=True)
     execute.add_argument('--output', type=Path, required=True)
@@ -177,7 +198,7 @@ def main():
     args = parser.parse_args()
     try:
         if args.command == 'generate':
-            print('MATRIX_GENERATED', len(generate(args.output, args.fighters)['cases']))
+            print('MATRIX_GENERATED', len(generate(args.output, args.fighters, args.require_native)['cases']))
         elif args.command == 'run':
             report = run(args.campaign.resolve(), args.output.resolve(), args.godot, args.cases)
             print('MATRIX_EXECUTED', report['executed'], 'of', report['planned'], 'native_parity_proven=false')
