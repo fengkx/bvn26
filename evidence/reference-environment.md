@@ -1070,3 +1070,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC.20 images,3680 source pixe
 ## r239 signed factorization controls
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC.40images,3680source pixels,20actual matrices;20rawtags independently reviewed. Ordered vertices and active fill style retained under signed transforms. Both rawRGBA and black outputs preserved, original-tag baselines exact. No production changes.
+
+## r240 integer camera translation
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC.140 images,3680 source pixels,70 actual matrix groups. Original raw shape tags retained from r239; 20 zero-offset baselines match exactly. Both rawRGBA and independently black-composited planes archived. Integer source-relative correspondence and outside-overlap emptiness checked. No production runtime changes in this round.

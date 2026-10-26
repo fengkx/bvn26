@@ -1,0 +1,74 @@
+{
+  "production_admitted": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "coordinate_model_tested": false,
+  "cache_allocation_origin_proved": false,
+  "source_backed_diagnostic_exact": 46,
+  "images": 54,
+  "focused_tests": {
+    "passed": 6,
+    "failed": 0
+  },
+  "native_images": 140,
+  "native_pixels": 9175040,
+  "source_readback_pixels_exact": 3680,
+  "native_matrix_readbacks": 70,
+  "baseline_images_exact": 20,
+  "baseline_pixels_exact": 1310720,
+  "translation_pairs_exact": 120,
+  "translation_pairs": 120,
+  "translation_overlap_pixels_exact": 7680000,
+  "translation_overlap_pixels": 7680000,
+  "translation_deep_pixels_exact": 65460,
+  "outside_overlap_clear": true,
+  "retained_python": {
+    "passed": 1059,
+    "skipped": 2,
+    "failed": 0,
+    "evidence": "../r235/checks/python.log"
+  },
+  "full_as_ownership_proved": false,
+  "production_suite_rerun": false,
+  "not_rerun": [
+    "full roster/Web (production unchanged)",
+    "54 production components"
+  ],
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}
