@@ -100,6 +100,13 @@ class ClipActionFieldsTests(unittest.TestCase):
                                for n in (1, 2)], 'definitions': []}
         with patch('placement_build_guard.Path.read_text', return_value=json.dumps(catalog)):
             validate_build_placements(timeline, 'cache.json')
+            truncated = deepcopy(timeline)
+            del truncated['frames'][1]
+            with self.assertRaisesRegex(ValueError,
+                    'dropped/changed clip_actions: fixture.swf sprite 7 frame 2 depth 2'):
+                validate_build_placements(truncated, 'cache.json')
+            truncated['sprite_id'] = 9
+            validate_build_placements(truncated, 'other-slice.json')
             for field, value in (('events', ['EnterFrame']), ('action_bytes_sha256', 'changed')):
                 changed = deepcopy(timeline)
                 changed['frames'][1]['display_list'][0]['clip_actions'][0][field] = value

@@ -73,9 +73,11 @@ def validate_build_placements(timeline: dict, source: str) -> None:
     frames = {f['frame']: f['display_list'] for f in timeline['frames']}
     for obligation in catalog[digest].get('obligations', []):
         sprite, frame = obligation['sprite'], obligation['frame']
+        if sprite != timeline['sprite_id'] and sprite not in nested:
+            continue
         placements = None
-        if sprite == timeline['sprite_id'] and frame in frames:
-            placements = frames[frame]
+        if sprite == timeline['sprite_id']:
+            placements = frames.get(frame)
         elif sprite in nested:
             definition = definitions[sprite]
             display_frames = definition.get('display_list_frames')
@@ -83,11 +85,9 @@ def validate_build_placements(timeline: dict, source: str) -> None:
                 placements = display_frames[frame - 1]
             elif frame == 1:
                 placements = definition.get('first_frame_display_list', [])
-            if placements is None:
-                raise ValueError(f"{source}: missing source timeline frame: {catalog[digest]['swf']} "
-                                 f"sprite {sprite} frame {frame} depth {obligation['depth']}")
         if placements is None:
-            continue
+            raise ValueError(f"{source}: missing source timeline frame: {catalog[digest]['swf']} "
+                             f"sprite {sprite} frame {frame} depth {obligation['depth']}")
         placement = next((p for p in placements if p['depth'] == obligation['depth']), None)
         if placement is None:
             raise ValueError(f"{source}: missing source placement {catalog[digest]['swf']} sprite {sprite} frame {frame} depth {obligation['depth']}")
@@ -106,9 +106,7 @@ def validate_build_placements(timeline: dict, source: str) -> None:
             continue
         for frame in range(obligation['first_frame'], obligation['last_frame'] + 1):
             if sprite == timeline['sprite_id']:
-                if frame not in frames:
-                    continue
-                placements = frames[frame]
+                placements = frames.get(frame, [])
             else:
                 definition = definitions[sprite]
                 display_frames = definition.get('display_list_frames', [])

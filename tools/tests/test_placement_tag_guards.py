@@ -64,6 +64,30 @@ class PlacementTagGuardsTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'dropped/changed wrapper filters'):
                 validate_build_placements(timeline, 'cache.json')
 
+    def test_cached_root_cannot_drop_obligated_frame(self):
+        import json
+        from copy import deepcopy
+        from unittest.mock import patch
+        from placement_build_guard import validate_build_placements
+        for fields in ({'filters': [{'type': 'BLURFILTER', 'blurX': 2, 'blurY': 2, 'passes': 1}]},
+                       {'color_transform': {'redMultTerm': 128}}):
+            catalog = {'abc': {'swf': 'fixture.swf', 'records': [], 'obligations': [
+                {'sprite': 7, 'frame': 2, 'depth': 4, 'fields': fields}]}}
+            timeline = {'source_swf': {'sha256': 'abc'}, 'sprite_id': 7, 'definitions': [],
+                        'frames': [{'frame': 1, 'display_list': []},
+                                   {'frame': 2, 'display_list': [{'depth': 4, **fields}]},
+                                   {'frame': 3, 'display_list': []}]}
+            with self.subTest(fields=fields), patch(
+                    'placement_build_guard.Path.read_text', return_value=json.dumps(catalog)):
+                validate_build_placements(timeline, 'cache.json')
+                changed = deepcopy(timeline)
+                del changed['frames'][1]
+                with self.assertRaisesRegex(ValueError,
+                        'missing source timeline frame: fixture.swf sprite 7 frame 2 depth 4'):
+                    validate_build_placements(changed, 'cache.json')
+                changed['sprite_id'] = 9
+                validate_build_placements(changed, 'other-slice.json')
+
     def test_cached_wrapper_cannot_change_root_blend_obligation(self):
         import json
         from unittest.mock import patch
