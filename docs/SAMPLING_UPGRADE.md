@@ -120,3 +120,11 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 小南（konan）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
 恢复后通过。分批累计 10/26 个角色、3,240/8,424 个案例；剩余 16 个角色
 仍是后续项，未声明原生一致性。见 [s10 证据](../evidence/sampling-upgrade/s10/README.md)。
+
+## s11：白哉执行证据
+
+白哉（byakuya）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
+恢复后复查 324/324 通过。分批累计 11/26 个角色、3,564/8,424 个案例，剩余 15 个。
+原生 Flash 一致性、全局判定框、子显示列表、完整镜头、BitmapData 和 DoAction
+仍是明确后续项，不阻塞本执行证据切片的合并；`production_admitted=false`。
+见 [s11 证据](../evidence/sampling-upgrade/s11/README.md)。
