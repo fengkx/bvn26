@@ -37,3 +37,7 @@ Selected call/cache gates pass for 26 shipped fighters, but the frame-call audit
 The final focused audit closes two concrete holes: explicit `this.stop/play/goto` can no longer evade nested DoAction requirements; source-pinned first root-wrapper blendMode obligations cannot disappear or change in cached metadata, including whole-wrapper deletion. Selected matching wrapper placements also compare blendMode; later root MOVE/replacement ownership is not universally established by this check. Existing exact hash-scoped exceptions remain reviewable; no new exception was added.
 
 See [review map](PR48_REVIEW.md) for product/runtime diff commands and [merge acceptance](../evidence/importer-loud-fail/merge-review/README.md) for current checks.
+
+## Root-frame review follow-up
+
+The missing-root-frame guard remains strict. Stage packaging now retains the complete23-frame source root in shared `catalog/world` and the legacy `current_world`; catalog-selected frame numbers remain unchanged. Fresh compilation also retains source mask/frame-event metadata missing from old stage caches. Ten selected catalog frames and existing image bytes are preserved; this is not a claim of newly measured native stage pixel parity. See [retention evidence](../evidence/importer-loud-fail/stage-root-retention/README.md).

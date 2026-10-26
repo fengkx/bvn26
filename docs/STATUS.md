@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（根帧审查跟进）：保留Cursor要求的根义务缺帧硬错误；舞台缓存改为共享完整23帧源时间轴，十个地图仍选各自原始帧，默认current_world同步保留完整源。原有选中帧及图片字节核对一致，54项聚焦测试通过，89/89时间轴义务通过（去重前98）。完整生产像素/AS所有权仍为后续项，`production_admitted=false`。[证据](../evidence/importer-loud-fail/stage-root-retention/README.md)。
+
 - 2026-10-26（用户重定合并标准）：PR48先交付实际接入构建并有负向测试的fail-loud安全网；Jinye/Yijiao、完整采样器、生产54图和全AS/clip-action所有权改为明确后续项，不阻塞本次送审。完整诊断46/54，`production_admitted=false`；该标志不是运行时开关，FilterGroup仍可能在游戏中渲染，风险已明确接受。修补显式this播放头与缓存包装层blendMode两处绕过；不新增白名单、不降低像素阈值。[已知差异](IMPORTER_KNOWN_GAPS.md) · [审查路线](PR48_REVIEW.md) · [本次验收](../evidence/importer-loud-fail/merge-review/README.md)。
 
 - 2026-10-26（r250）：冻结r249候选重测真实Jinye，叶片0/4→1/4（另两项小幅回退），完整活动图仍0/3；失败像素129→76、270→11、212→26。默认回放逐项精确，完整诊断仍46/54；后续像素工作按新的合并范围另行跟进。[证据](../evidence/importer-loud-fail/r250/README.md)。

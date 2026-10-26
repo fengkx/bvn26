@@ -9,6 +9,16 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class StageCatalogTests(unittest.TestCase):
+    def test_shared_world_cannot_drop_authored_obligation_frame(self):
+        from tools.importer.placement_build_guard import validate_build_placements
+        path = ROOT / "godot/generated/stages/catalog/world/timeline.json"
+        timeline = json.loads(path.read_text())
+        validate_build_placements(timeline, str(path))
+        timeline["frames"] = [frame for frame in timeline["frames"] if frame["frame"] != 6]
+        with self.assertRaisesRegex(ValueError,
+                r"missing source timeline frame: game/main.swf sprite 1738 frame 6 depth 17"):
+            validate_build_placements(timeline, str(path))
+
     def test_all_source_maps_have_spawn_markers_and_intact_assets(self):
         directory = ROOT / "godot/generated/stages/catalog"
         catalog = json.loads((directory / "catalog.json").read_text())
