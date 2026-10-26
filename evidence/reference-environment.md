@@ -1054,3 +1054,7 @@ No new native capture. Reuses pinned r232/r233 source-byte and matrix readbacks;
 ## r235 exact dyadic source-tag factorization
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC.40nativeimages,3680source pixels,20actual display matrices. Independent FFDEC XML review verifies5raw fill/mask records. Both raw getPixel32 and black-composited planes retained and compared separately; no inferred premultiplied input. Native build/environment/log and independent review archived under r235. No production changes.
+
+## r236 authored source fill factorization
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC.48images,3680source pixels,24native matrix groups;12raw tags independently parsed through FFDEC. Exact float32 roundtrip plus native15sig half-up transport checks retain original trace strings; no numeric tolerance. Both rawRGBA and separate black planes retained. Native environments and independent review archived under r236. No production changes.
