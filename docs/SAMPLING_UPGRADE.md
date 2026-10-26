@@ -69,3 +69,10 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 
 这项门槛可独立送审；捕获适配器、原生轨迹验证及像素对比是后续项。
 见 [s02 证据](../evidence/sampling-upgrade/s02/README.md)。
+
+## s03：额外角色执行证据
+
+茶渡（chad）完整矩阵 324/324 通过，39,528 条双方状态记录；缺一条案例结果
+的报告仍硬失败，恢复后覆盖检查通过。与 s01 迪达拉合计已证明 2/26 个角色、
+648/8,424 个案例，其余 24 个角色保持后续项；不是原生一致性证明。
+见 [s03 证据](../evidence/sampling-upgrade/s03/README.md)。
