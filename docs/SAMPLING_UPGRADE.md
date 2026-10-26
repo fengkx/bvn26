@@ -242,3 +242,16 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 `native_parity_proven=false`。见 [s25 证据](../evidence/sampling-upgrade/s25/README.md)。
 
 剩余角色为 `yulong`。Jinye/Yijiao 采样器残差仍为[已知差异](IMPORTER_KNOWN_GAPS.md)，本轮未解决，也不阻塞本执行证据切片。
+
+## s26：雨龙执行证据与分批矩阵覆盖完成
+
+雨龙（yulong）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
+恢复后复查 324/324 通过。分批累计 **26/26 个角色、8,424/8,424 个案例**，无剩余角色。
+已归档的 26 份报告与现有生成器案例集合核对一致，无缺失或重复；未重跑已证明角色，
+也未在本提交重新验证其全部轨迹。这是分批累计执行覆盖完成，不是同一版本的一次全阵容重跑。
+`full_roster_execution_complete=true` 仅指上述累计执行证据；
+`production_admitted=false`、`native_parity_proven=false` 保持不变。
+
+原生 Flash 一致性、BitmapData、全局判定框、子显示列表、完整镜头和 DoAction，
+以及 Jinye/Yijiao 采样器残差仍是明确后续项，不阻塞本执行证据切片。
+见 [s26 证据](../evidence/sampling-upgrade/s26/README.md)及[已知差异](IMPORTER_KNOWN_GAPS.md)。
