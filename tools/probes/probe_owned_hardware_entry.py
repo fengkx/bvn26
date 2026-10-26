@@ -1,9 +1,11 @@
 """Bounded hardware-only stop at a pinned matrix-composition entry; no renderer admission."""
 import argparse
 import json
+import inspect
 from pathlib import Path
 from tools.probes.audit_affine_static_callers import analyze
 from tools.probes.probe_owned_debugger import probe
+from tools.probes.read_owned_guest_memory import read_guest_entry
 
 ENTRY = 0x10029dad0
 ENTRY_BYTES = '554889e54157415641554154538b4718'
@@ -16,7 +18,7 @@ def script_for_edges(edges):
 
     def factory(pid, binary, result_path):
         setup = f"PID={pid}\nBINARY={str(binary)!r}\nRESULT={str(result_path)!r}\nENTRY={ENTRY}\nENTRY_BYTES={ENTRY_BYTES!r}\nRETURNS={returns!r}\n"
-        return setup + RUNTIME
+        return setup + inspect.getsource(read_guest_entry) + RUNTIME
     return factory
 
 
@@ -25,6 +27,8 @@ import json, struct, time
 from pathlib import Path
 import lldb
 result = {'attached': False, 'detached': None, 'hardware_entry_verified': False,
+          'guest_virtual_entry_bytes_independently_verified': False,
+          'physical_entry_bytes_independently_verified': False,
           'explicit_memory_writes_requested': False, 'pixel_reference': False,
           'operand_semantics_proved': False, 'production_admitted': False}
 process = None
@@ -67,6 +71,9 @@ try:
     result['entry_before_hex'] = read(load, 16).hex()
     if result['entry_before_hex'] != ENTRY_BYTES:
         raise RuntimeError('Entry bytes differ before breakpoint')
+    result['guest_entry_before'] = read_guest_entry(PID, load)
+    if not result['guest_entry_before']['guest_virtual_read_verified'] or result['guest_entry_before'].get('mach_port_deallocate_return') != 0 or result['guest_entry_before']['bytes_hex'] != ENTRY_BYTES:
+        raise RuntimeError('Independent guest virtual entry read denied, incomplete, or mismatched')
     before_ids = {target.GetBreakpointAtIndex(i).GetID() for i in range(target.GetNumBreakpoints())}
     command = lldb.SBCommandReturnObject()
     lldb.debugger.GetCommandInterpreter().HandleCommand('breakpoint set --hardware --address '+hex(load), command)
@@ -118,9 +125,13 @@ try:
     if result['entry_at_stop_hex'] != ENTRY_BYTES:
         raise RuntimeError('Entry byte readback changed')
     # LLDB documents that ReadMemory removes software traps from its returned bytes.
+    result['guest_entry_at_stop'] = read_guest_entry(PID, load)
+    if not result['guest_entry_at_stop']['guest_virtual_read_verified'] or result['guest_entry_at_stop'].get('mach_port_deallocate_return') != 0 or result['guest_entry_at_stop']['bytes_hex'] != ENTRY_BYTES:
+        raise RuntimeError('Independent stopped guest entry read denied, incomplete, or mismatched')
+    result['guest_virtual_entry_bytes_independently_verified'] = True
     result['entry_readback_matches'] = True
     result['physical_entry_bytes_independently_verified'] = False
-    result['entry_readback_caveat'] = 'SBProcess.ReadMemory masks software traps; our sole breakpoint is verified hardware, but raw task memory is not independently read.'
+    result['entry_readback_caveat'] = 'SBProcess.ReadMemory masks software traps; our sole breakpoint is verified hardware, independent Mach reads separately verify guest virtual bytes only, never physical or translated instructions.'
     regs = {}
     for name in ('rip','rsp','rdi','rsi','rdx'):
         value = frame.FindRegister(name)

@@ -1094,3 +1094,7 @@ Same pinned Flash Player Debugger32/Rosetta. Fresh source-bound20s and60s worklo
 ## r245 owned hardware-entry diagnostic
 
 Same pinned Flash Player Debugger32/Rosetta with a fresh60s source workload. A hardware-only breakpoint reported a new stop at file address0x10029dad0; caller0x1005e8dd6 is byte-verified but not one of r243 sampled source callers. Two bounded28-byte generic inputs captured; no authored-fill identity inferred. Breakpoint removed, debugger detached, owned process cleaned. SBProcess.ReadMemory masks software traps, so its matching16-byte instruction readback is not independent raw task-memory evidence. Instrumented output remains sanity evidence only; no explicit software fallback, target expressions, security/signing changes or renderer changes.
+
+## r246 independent guest-virtual memory attempt
+
+Same pinned Flash Player Debugger32/Rosetta. One fresh60s source workload attached successfully; host libSystem task_for_pid returned5 before any breakpoint creation or Mach memory read. No retry/security/signing change or fallback; detach and owned cleanup succeeded. Source3680 and final240000 raw/premultiplied pixels remain exact instrumentation sanity checks. This does not prove independent guest bytes, physical memory, translated instructions or authored-fill operand ownership. Production admission remains false.
