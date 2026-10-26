@@ -1010,3 +1010,7 @@ Same pinned Flash Player32/Rosetta. Six synthetic lossless bitmap55 inputs, orig
 ## r224 affine initializer rejection
 
 No new native capture. Reuses pinned r221/r223 bytes and r218 JPEG decoder environment. CPU-only fixed-model comparison; all eight affine models rejected. Positive-axis regressions exact; no GPU or production admission. See r224/README.md.
+
+## r225 Jinye independent translation controls
+
+Native Flash Player Debugger32/Rosetta, same pinned binary and FFDEC as r223. Two source-specific SWFs preserve original shape56/57 tags and replace bitmap55 with lossless byte ramps. Each cache state reads bounds separately; requested and actual child/draw matrix properties retained. 576 images, 7360 source pixels. Per-capture environment/build hashes in r225/native/source{0,1}. No reference texture upload, GPU or production changes.
