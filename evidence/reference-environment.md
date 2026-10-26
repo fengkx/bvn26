@@ -1090,3 +1090,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC. Four serialized owned-pro
 ## r244 bounded owned-process debugger feasibility
 
 Same pinned Flash Player Debugger32/Rosetta. Fresh source-bound20s and60s workloads retain original tags; initial15s LLDB timeout has unknown attachment/register/detach state, with completed capture and owned-process cleanup. One bounded45s retry attached to its exact newly owned PID, read x86_64 registers and detached successfully. Both final outputs remain exact against r242, as instrumented sanity checks only, never new pixel references. No explicit breakpoint, target expression or target-memory write requested; LLDB internal behavior is not asserted absent. No signing/security changes. Arbitrary interrupted RIP does not establish a matrix-call entry or operand semantics.
+
+## r245 owned hardware-entry diagnostic
+
+Same pinned Flash Player Debugger32/Rosetta with a fresh60s source workload. A hardware-only breakpoint reported a new stop at file address0x10029dad0; caller0x1005e8dd6 is byte-verified but not one of r243 sampled source callers. Two bounded28-byte generic inputs captured; no authored-fill identity inferred. Breakpoint removed, debugger detached, owned process cleaned. SBProcess.ReadMemory masks software traps, so its matching16-byte instruction readback is not independent raw task-memory evidence. Instrumented output remains sanity evidence only; no explicit software fallback, target expressions, security/signing changes or renderer changes.

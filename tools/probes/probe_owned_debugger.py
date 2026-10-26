@@ -54,7 +54,8 @@ def validate_debugger_timeout(value):
     return value
 
 
-def probe(build, output, app, debugger_timeout=15):
+def probe(build, output, app, debugger_timeout=15, *, script_factory=debugger_script,
+          explicit_breakpoints_requested=False):
     debugger_timeout = validate_debugger_timeout(debugger_timeout)
     build,output,app = build.resolve(),output.resolve(),app.resolve()
     if output.exists() and any(output.iterdir()):
@@ -98,7 +99,7 @@ def probe(build, output, app, debugger_timeout=15):
         require_unique_owned(before,matching_players(movie,binary),pid)
         observations.append({'pid':pid,'movie':str(movie),'binary':str(binary),'run_id':metadata['run_id'],'ownership_checked_immediately_before_attach':True})
         script = output/'lldb-readonly.py'
-        script.write_text(debugger_script(pid,binary,output/'debugger-result.json'))
+        script.write_text(script_factory(pid,binary,output/'debugger-result.json'))
         command = ['xcrun','lldb','--batch','-o',f'script exec(compile(open({str(script)!r}).read(), {str(script)!r}, "exec"))']
         try:
             completed = subprocess.run(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=debugger_timeout)
@@ -114,7 +115,7 @@ def probe(build, output, app, debugger_timeout=15):
     final = {'ownership':observations,'debugger':result,'debugger_exit':exit_code,'debugger_timed_out':timed_out,'debugger_timeout_seconds':debugger_timeout,
              'capture_complete':captured,'owned_processes_remaining':sorted(matching_players(movie,binary)),
              'binary_sha256':BINARY_SHA256,'movie_sha256':hashlib.sha256(movie.read_bytes()).hexdigest(),
-             'explicit_breakpoints_requested':False,'target_memory_writes_requested':False,'lldb_internal_memory_writes_verified':False,'pixel_reference':False,
+             'explicit_breakpoints_requested':explicit_breakpoints_requested,'target_memory_writes_requested':False,'lldb_internal_memory_writes_verified':False,'pixel_reference':False,
              'operand_semantics_proved':False,'production_admitted':False}
     (output/'feasibility.json').write_text(json.dumps(final,indent=2)+'\n')
     return final
