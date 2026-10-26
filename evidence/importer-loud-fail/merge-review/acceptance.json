@@ -1,0 +1,91 @@
+{
+  "production_admitted": false,
+  "full_as_ownership": "deferred_incomplete",
+  "diagnostic_images_exact": 46,
+  "diagnostic_images_total": 54,
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "godot": {
+    "passed": 29,
+    "total": 29,
+    "gpu_passed": 7,
+    "gpu_total": 7,
+    "scope": "existing test assertions; colors/order known residuals are not claimed exact"
+  },
+  "focused": {
+    "passed": 50,
+    "total": 50
+  },
+  "source_placement_errors": 0,
+  "shipped_timelines": {
+    "passed": 98,
+    "total": 98
+  },
+  "initial_environment_failures": {
+    "gpu_sandbox_launches": 7,
+    "web_missing_default_template": true,
+    "handoff_readme_not_written_yet": true
+  },
+  "guard_commit": "4f43f3fa",
+  "runtime_changed_in_final_checkpoint": false,
+  "roster": {
+    "exit": 0,
+    "passed": 227,
+    "total": 227,
+    "states": 130334
+  },
+  "build_web": {
+    "exit": 0,
+    "local_export_only": true,
+    "final_fingerprint": "passed",
+    "build_id": "e90249c2839ab435a600a9e5e196c9eb3931c47aa6dadf5f2b5da12704f8225f",
+    "pck_sha256": "8532504ec0a555fe16e866362d7b67ea03fc27e7883aa4326f02f3009ed49d93"
+  },
+  "python": {
+    "full_run_total": 1161,
+    "full_run_passed": 1158,
+    "full_run_failed": 1,
+    "skipped": 2,
+    "failure": "r111 capture-time helper hash compared against r243 path-normalized live helper",
+    "resolution": "archive exact c69642d9 capture source; preserve original SHA256 and native references",
+    "affected_recheck_passed": 6,
+    "affected_recheck_total": 6,
+    "remaining_known_test_failures": 0,
+    "full_suite_rerun_after_fixture_only_fix": false
+  }
+}
