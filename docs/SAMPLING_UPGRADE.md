@@ -90,3 +90,9 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 两份缺案例报告均硬失败，恢复后通过。分批累计 5/26 个角色、1,620/8,424 个案例；
 剩余 21 个角色仍是后续项，未声明原生一致性。
 见 [s05 证据](../evidence/sampling-upgrade/s05/README.md)。
+
+## s06：樱执行证据
+
+樱（sakura）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
+恢复后通过。分批累计 6/26 个角色、1,944/8,424 个案例；剩余 20 个角色
+仍是后续项，未声明原生一致性。见 [s06 证据](../evidence/sampling-upgrade/s06/README.md)。
