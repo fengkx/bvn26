@@ -1058,3 +1058,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC.40nativeimages,3680source 
 ## r236 authored source fill factorization
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC.48images,3680source pixels,24native matrix groups;12raw tags independently parsed through FFDEC. Exact float32 roundtrip plus native15sig half-up transport checks retain original trace strings; no numeric tolerance. Both rawRGBA and separate black planes retained. Native environments and independent review archived under r236. No production changes.
+
+## r237 conservative ShapeBounds controls
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC.13fixtures/52images;47840source pixels and26matrices strict. Independentbitreview confirms signedRECTfield-only changes with fixedtaglength and unchangedfill/mask. Baselines match r236 raw+black readbacks exactly. Raw and black outputs kept separate. No production changes.
