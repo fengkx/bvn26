@@ -108,3 +108,9 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 剑八（jianba）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
 恢复后通过。分批累计 8/26 个角色、2,592/8,424 个案例；剩余 18 个角色
 仍是后续项，未声明原生一致性。见 [s08 证据](../evidence/sampling-upgrade/s08/README.md)。
+
+## s09：重吾执行证据
+
+重吾（juggo）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
+恢复后通过。分批累计 9/26 个角色、2,916/8,424 个案例；剩余 17 个角色
+仍是后续项，未声明原生一致性。见 [s09 证据](../evidence/sampling-upgrade/s09/README.md)。
