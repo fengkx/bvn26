@@ -1026,3 +1026,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC as r225. Twelve sequential
 ## r228 joint corner constraint analysis
 
 No new native captures. Reuses r227 source/matrix/amplitude readbacks; exhaustively rejects fixed two-stage families over a predeclared contiguous footprint/fraction domain. No satisfying coordinate is retained or rendered.
+
+## r229 globally fixed HV comparisons
+
+No new capture. Reuses pinned r223/r225/r227 controls and r221 source JPEG leaves with the same r218 decoder helper. Existing independent coordinate constructions only; r228 feasible assignments are not inputs. No production or GPU change.
