@@ -216,3 +216,11 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 原生 Flash 一致性、全局判定框、子显示列表、完整镜头、BitmapData 和 DoAction
 仍是明确后续项，不阻塞本执行证据切片的合并；`production_admitted=false`，
 `native_parity_proven=false`。见 [s22 证据](../evidence/sampling-upgrade/s22/README.md)。
+
+## s23：佐助执行证据
+
+佐助（sasuke）324/324 通过，39,528 条双方状态记录；缺案例报告硬失败，
+恢复后复查 324/324 通过。分批累计 23/26 个角色、7,452/8,424 个案例，剩余 3 个。
+原生 Flash 一致性、全局判定框、子显示列表、完整镜头、BitmapData 和 DoAction
+仍是明确后续项，不阻塞本执行证据切片的合并；`production_admitted=false`，
+`native_parity_proven=false`。见 [s23 证据](../evidence/sampling-upgrade/s23/README.md)。
