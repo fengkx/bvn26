@@ -1098,3 +1098,7 @@ Same pinned Flash Player Debugger32/Rosetta with a fresh60s source workload. A h
 ## r246 independent guest-virtual memory attempt
 
 Same pinned Flash Player Debugger32/Rosetta. One fresh60s source workload attached successfully; host libSystem task_for_pid returned5 before any breakpoint creation or Mach memory read. No retry/security/signing change or fallback; detach and owned cleanup succeeded. Source3680 and final240000 raw/premultiplied pixels remain exact instrumentation sanity checks. This does not prove independent guest bytes, physical memory, translated instructions or authored-fill operand ownership. Production admission remains false.
+
+## r247 source-profile-selected hardware CALL diagnostic
+
+Same pinned Flash Player Debugger32/Rosetta. One hardware stop at0x1000f28db verifies pre-CALL argument relations and bounded inputs; logical instruction bytes retain raw-memory caveat. Breakpoint removed/detach succeeded, but native run produced43events without finalimage/done; full baseline unavailable. Source3680pixels and matrices remain exact. No ScriptLimits tag or retained error text explains the incomplete run; no cause assumed. No renderer or security changes, all admission flags false.
