@@ -1086,3 +1086,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC.1843 events,7 native image
 ## r243 actual Jinye workload profiles
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC. Four serialized owned-process captures use original Jinye source geometry: direct uncached, cached reuse, requested cache toggle, and explicit local uncached. Each final rawRGBA and premultiplied image matches r242; source readbacks retained. macOS sample observes only the exact movie/executable PID after its run marker. An initial /tmp versus /private/tmp ownership mismatch refused profiling; canonical-path retry retains strict ownership. Profiles are not pixel references or proof of branch operands. No debugger attachment, process injection, signing/security changes or production changes in this round.
+
+## r244 bounded owned-process debugger feasibility
+
+Same pinned Flash Player Debugger32/Rosetta. Fresh source-bound20s and60s workloads retain original tags; initial15s LLDB timeout has unknown attachment/register/detach state, with completed capture and owned-process cleanup. One bounded45s retry attached to its exact newly owned PID, read x86_64 registers and detached successfully. Both final outputs remain exact against r242, as instrumented sanity checks only, never new pixel references. No explicit breakpoint, target expression or target-memory write requested; LLDB internal behavior is not asserted absent. No signing/security changes. Arbitrary interrupted RIP does not establish a matrix-call entry or operand semantics.

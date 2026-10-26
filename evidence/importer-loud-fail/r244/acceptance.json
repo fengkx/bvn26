@@ -1,0 +1,54 @@
+{
+  "owned_debugger_attach": true,
+  "x86_argument_register_readback": true,
+  "debugger_detached": true,
+  "owned_processes_remaining": 0,
+  "initial_attempt_state": "unknown",
+  "source_pixels_exact": 7360,
+  "final_raw_rgba_exact": 480000,
+  "final_premultiplied_rgba_exact": 480000,
+  "tests_passed": 6,
+  "instrumented_pixel_reference": false,
+  "function_entry_capture": false,
+  "operand_semantics_proved": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "production_admitted": false,
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}
