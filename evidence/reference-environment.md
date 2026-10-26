@@ -1106,3 +1106,7 @@ Same pinned Flash Player Debugger32/Rosetta. One hardware stop at0x1000f28db ver
 ## r248 bounded post-detach observer, skipped on native abort
 
 Same pinned Flash Player Debugger32/Rosetta and unchanged source/hardware one-hit workload. OwnedPID70251 exitedSIGABRT before verifiedstop; matchedcrash report archived, causeunproved. Breakpointremoved, detachfailed, observercorrectlyskipped(no ps/sample).43events/no finalimage; CLIexit1/ownedcleanupempty. Host and embeddedLLDB monotonic clocks have distinct observed origins and are not subtracted acrossdomains. No extra capture/trap/security change or renderer update.
+
+## r249 static float display hierarchy
+
+No new native process or capture. Reuse pinnedr233 source-code readbacks andr242 source/local native bytes with unchanged sourceJPEG decoder plane hashes. Independently byte-verified genericfloat composition/deviceconstructor define one globallyfixed candidate; MXCSR/field4/routing remain unproved. Alluncached218000 and local15980percache exact;81cachedcounterexamples remain. No runtime or reference changes.
