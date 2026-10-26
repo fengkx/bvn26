@@ -1046,3 +1046,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC. Two native fixtures retai
 ## r233 raw-fill translation controls
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC. Thirteen raw-tag fixtures patch only active fill type and signed translation bits; masks/linear coefficients stay byte-identical.200images,47840source pixels,100display matrices verified. Build/capture environments and source logs archived under r233/native. Parsed raw-fill metadata remains distinct from native property readbacks. No production/GPU changes.
+
+## r234 fixed phase-order rejection
+
+No new native capture. Reuses pinned r232/r233 source-byte and matrix readbacks; every unchanged full-phase failure payload reproduces. The projected display-first phase is a rejected global hypothesis. No GPU/production changes.
