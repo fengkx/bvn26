@@ -1,0 +1,60 @@
+# 输入采样升级：执行覆盖先行
+
+这是 PR #48 fail-loud 安全网之后的独立工作，不改变该 PR 的送审标准。
+`production_admitted=false`；它仍是证据状态，不是 FilterGroup 的运行时开关。
+
+## 首个切片
+
+`python3 -m tools.sampling_matrix` 从已发布角色目录自动生成确定性输入 tape，
+通过既有 `move_case_reference.gd` 执行，不修改战斗运行时或原生基准。
+
+- 26 名已发布基础角色；未发布原始角色、其他形态不冒充已覆盖。
+- 六个动作键：J/K/L/U/I/O 对应 attack/jump/dash/ranged/special/summon。
+- 九种方向：无方向、四个单方向、四个对角方向。
+- 地面/空中 × 近/中/远；每角色 324 个组合，共 8,424。
+- 方向是绝对键位，不是相对朝向。左右出生点、纯方向无动作键、长按/连按、
+  受击/资源不足/变身等应作为后续显式维度，不能宣称此矩阵穷举全部操作。
+
+测试参数：现世、P1 x=100，P2 与其相距 50/150/300、双方气量 300，
+固定一护对手及我爱罗/魂援助。距离名只是测试分桶，不是原版攻击范围判断。
+每例新战斗观察 0–60 tick；空中例先在 [1,2) 按跳跃，目标按键在 [10,13)。
+第 10 tick 的输入前观察必须实际满足 `touch` 地面/空中条件，否则硬失败，
+不强行改高度，也不把失败准备过程计为空中覆盖。
+
+矩阵清单锁定目录哈希与每条 tape 哈希，读取时重算整个笛卡尔积和 tape 内容。
+执行 gate 核对双方每个 tick 的完整状态字段和镜头，拒绝缺帧、重复、乱序、
+非有限坐标、准备姿态错误、失败进程、漏跑案例及其他 campaign 的报告。
+选跑结果始终显示实际数量；只有 `check` 覆盖整个 campaign 才打印
+`MATRIX_EXECUTION_COVERAGE_OK`。子角色 campaign 明确标记 `fighter_subset`。
+该 gate 不是防伪证明，也不验证 Flash 行为一致。
+
+```sh
+python3 -m tools.sampling_matrix generate --output /tmp/bvn-matrix
+python3 -m tools.sampling_matrix run --campaign /tmp/bvn-matrix \
+  --output /tmp/bvn-matrix-run --godot /path/to/godot
+python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
+  --output /tmp/bvn-matrix-run
+```
+
+首轮证据与局部选跑命令见 [s01](../evidence/sampling-upgrade/s01/README.md)。
+
+## 后续数据链与独立门槛
+
+1. **输入与环境**：相同 tape 接入 native Flash 插桩；同时锁源 SWF、探针、
+   引擎和产物哈希，保存随机/外部 timer 输入。验证每个采样状态的准备条件。
+   目前不自动补 timer 输入、不声明目标招式必然触发。
+2. **逐帧几何**：复用既有 geometry_probe；采集所有活动攻击/受击框的源路径、
+   实例寿命和全局变换。零框是显式空数组，缺采样是错误；不能只抓当前角色局部框。
+3. **子显示列表与镜头**：保留层级、深度、符号、源帧、矩阵、mask/clip、
+   创建/移除及滤镜顺序。现有 presentation 仅有根位置，不等于完整镜头证据。
+4. **BitmapData**：在一致的根观察相位捕获 native 像素与实际 Godot 输出；
+   检查尺寸/颜色与 alpha 语义后逐字节比较。缺帧、缺图和任一通道差异硬失败。
+   Jinye/Yijiao 残差可作为已知负例，不上传原生图作纹理、不重写参考。
+5. **DoAction 执行覆盖**：源清单给每个 action block 稳定身份
+   （SWF 哈希、sprite、frame/tag 位置）；native 探针记录真正执行的 block 及顺序。
+   用执行事件对照计划范围，缺事件/未访问 block 输出精确列表。静态存在、编译成功、
+   父帧访问都不能替代执行证明；clip-action 的事件类型与实例身份另行保留。
+
+这五类证据应分别报告 coverage 和 parity，不能用一个总绿色掩盖未采集项。
+本切片没有 Flash 捕获/像素/DoAction gate，`native_parity_proven` 恒为 false。
+完整输入矩阵、生产 54 图和 AS 所有权仍是后续工作，不回填 PR #48 已知差异。
