@@ -1014,3 +1014,7 @@ No new native capture. Reuses pinned r221/r223 bytes and r218 JPEG decoder envir
 ## r225 Jinye independent translation controls
 
 Native Flash Player Debugger32/Rosetta, same pinned binary and FFDEC as r223. Two source-specific SWFs preserve original shape56/57 tags and replace bitmap55 with lossless byte ramps. Each cache state reads bounds separately; requested and actual child/draw matrix properties retained. 576 images, 7360 source pixels. Per-capture environment/build hashes in r225/native/source{0,1}. No reference texture upload, GPU or production changes.
+
+## r226 pinned deep-interior analysis
+
+No new native captures. Reuses r225 source/matrix/image readbacks and the unchanged full rejection report by SHA. Geometry-only subset and fixed-model differences, no new GPU or production path.
