@@ -55,7 +55,7 @@ def validate_debugger_timeout(value):
 
 
 def probe(build, output, app, debugger_timeout=15, *, script_factory=debugger_script,
-          explicit_breakpoints_requested=False):
+          explicit_breakpoints_requested=False, post_debugger=None):
     debugger_timeout = validate_debugger_timeout(debugger_timeout)
     build,output,app = build.resolve(),output.resolve(),app.resolve()
     if output.exists() and any(output.iterdir()):
@@ -77,7 +77,10 @@ def probe(build, output, app, debugger_timeout=15, *, script_factory=debugger_sc
     if before:
         raise RuntimeError('Refusing a pre-existing player')
     observations = []
+    timings = {}
+    observer_result = None
     with ThreadPoolExecutor(max_workers=1) as executor:
+        timings['capture_submit_monotonic'] = time.monotonic()
         future = executor.submit(capture,build,build/'native.log',90,app)
         deadline = time.monotonic()+20
         pid = None
@@ -101,6 +104,7 @@ def probe(build, output, app, debugger_timeout=15, *, script_factory=debugger_sc
         script = output/'lldb-readonly.py'
         script.write_text(script_factory(pid,binary,output/'debugger-result.json'))
         command = ['xcrun','lldb','--batch','-o',f'script exec(compile(open({str(script)!r}).read(), {str(script)!r}, "exec"))']
+        timings['debugger_start_monotonic'] = time.monotonic()
         try:
             completed = subprocess.run(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=debugger_timeout)
             transcript,exit_code,timed_out = completed.stdout,completed.returncode,False
@@ -108,8 +112,23 @@ def probe(build, output, app, debugger_timeout=15, *, script_factory=debugger_sc
             transcript = error.stdout or b''
             if isinstance(transcript,bytes):transcript=transcript.decode(errors='replace')
             exit_code,timed_out = None,True
+        timings['debugger_end_monotonic'] = time.monotonic()
         (output/'lldb.log').write_text(transcript)
+        if post_debugger is not None:
+            timings['receipt_observed_monotonic'] = time.monotonic()
+            try:
+                receipt_path = output/'debugger-result.json'
+                receipt = json.loads(receipt_path.read_text()) if receipt_path.exists() else {}
+                if receipt.get('detached') is True and exit_code == 0 and not timed_out:
+                    observer_result = post_debugger(pid,movie,binary,metadata['run_id'],output)
+                else:
+                    observer_result = {'skipped':True,'reason':'No successful current detach receipt'}
+            except Exception as error:
+                observer_result = {'error':repr(error)}
+            finally:
+                timings['observer_end_monotonic'] = time.monotonic()
         captured = future.result()
+        timings['capture_result_monotonic'] = time.monotonic()
     result_path = output/'debugger-result.json'
     result = json.loads(result_path.read_text()) if result_path.exists() else {'attached':None,'detached':None,'registers_available':None,'result_missing':True}
     final = {'ownership':observations,'debugger':result,'debugger_exit':exit_code,'debugger_timed_out':timed_out,'debugger_timeout_seconds':debugger_timeout,
@@ -117,6 +136,9 @@ def probe(build, output, app, debugger_timeout=15, *, script_factory=debugger_sc
              'binary_sha256':BINARY_SHA256,'movie_sha256':hashlib.sha256(movie.read_bytes()).hexdigest(),
              'explicit_breakpoints_requested':explicit_breakpoints_requested,'target_memory_writes_requested':False,'lldb_internal_memory_writes_verified':False,'pixel_reference':False,
              'operand_semantics_proved':False,'production_admitted':False}
+    if post_debugger is not None:
+        final['lifecycle_monotonic'] = timings
+        final['post_debugger_observation'] = observer_result
     (output/'feasibility.json').write_text(json.dumps(final,indent=2)+'\n')
     return final
 

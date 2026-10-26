@@ -1102,3 +1102,7 @@ Same pinned Flash Player Debugger32/Rosetta. One fresh60s source workload attach
 ## r247 source-profile-selected hardware CALL diagnostic
 
 Same pinned Flash Player Debugger32/Rosetta. One hardware stop at0x1000f28db verifies pre-CALL argument relations and bounded inputs; logical instruction bytes retain raw-memory caveat. Breakpoint removed/detach succeeded, but native run produced43events without finalimage/done; full baseline unavailable. Source3680pixels and matrices remain exact. No ScriptLimits tag or retained error text explains the incomplete run; no cause assumed. No renderer or security changes, all admission flags false.
+
+## r248 bounded post-detach observer, skipped on native abort
+
+Same pinned Flash Player Debugger32/Rosetta and unchanged source/hardware one-hit workload. OwnedPID70251 exitedSIGABRT before verifiedstop; matchedcrash report archived, causeunproved. Breakpointremoved, detachfailed, observercorrectlyskipped(no ps/sample).43events/no finalimage; CLIexit1/ownedcleanupempty. Host and embeddedLLDB monotonic clocks have distinct observed origins and are not subtracted acrossdomains. No extra capture/trap/security change or renderer update.
