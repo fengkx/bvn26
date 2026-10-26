@@ -45,8 +45,11 @@ def coverage(polygon,x,y):
     return abs(sum(a[0]*b[1]-b[0]*a[1] for a,b in zip(points,points[1:]+points[:1])))/2 if points else Q(0)
 
 
-def render_leaf(source,spec,shape,size):
-    models,_,polygon=models_for(spec,shape);rows=models[MODEL];w,h=size
+def render_leaf(source,spec,shape,size,row_builder=None,model_name=None):
+    models,_,polygon=models_for(spec,shape)
+    rows=models[MODEL] if row_builder is None else row_builder(spec,shape)
+    selected_model=MODEL if model_name is None else model_name
+    w,h=size
     pixels=[[0,0,0,0] for _ in range(w*h)];classes={'interior':0,'edge':0};nonzero={'interior':0,'edge':0}
     box=[max(0,math.floor(min(p[0] for p in polygon))),max(0,math.floor(min(p[1] for p in polygon))),min(w,math.ceil(max(p[0] for p in polygon))),min(h,math.ceil(max(p[1] for p in polygon)))]
     for y in range(box[1],box[3]):
@@ -57,15 +60,15 @@ def render_leaf(source,spec,shape,size):
             kind='interior' if interior else 'edge';classes[kind]+=1
             sampled=sample_hv(source,rows,x,y);weight=math.floor(area*256)
             actual=[value*weight//256 for value in sampled];pixels[y*w+x]=actual;nonzero[kind]+=bool(actual[3])
-    return pixels,{'model':MODEL+'/HV','geometry_samples':classes,'nonzero_samples':nonzero,'polygon':[[str(v) for v in p] for p in polygon],'fixed_rows':rows,'coverage_model':'exact_geometric_area_floor256_unproved','sampler_admitted':False,'coverage_admitted':False}
+    return pixels,{'model':selected_model+'/HV','geometry_samples':classes,'nonzero_samples':nonzero,'polygon':[[str(v) for v in p] for p in polygon],'fixed_rows':rows,'coverage_model':'exact_geometric_area_floor256_unproved','sampler_admitted':False,'coverage_admitted':False}
 
 
-def render_graph(source,placements,shapes,outer,draw,size,origin=(0,0)):
+def render_graph(source,placements,shapes,outer,draw,size,origin=(0,0),row_builder=None,model_name=None):
     buffer=[[0,0,0,0] for _ in range(size[0]*size[1])];leaves=[]
     for placement in sorted(placements,key=lambda p:p['depth']):
         shifted=list(draw);shifted[4]-=origin[0];shifted[5]-=origin[1]
         spec={'matrix':matrix(placement['matrix']),'outer':outer,'draw':shifted}
-        leaf,metadata=render_leaf(source,spec,shapes[placement['character_id']],size)
+        leaf,metadata=render_leaf(source,spec,shapes[placement['character_id']],size,row_builder,model_name)
         buffer=[over(back,front) if front[3] else back for back,front in zip(buffer,leaf)]
         leaves.append({'depth':placement['depth'],'character_id':placement['character_id'],**metadata})
     return buffer,leaves
@@ -83,7 +86,7 @@ def gate(report):
     return all(report.get(key) is True for key in obligations)
 
 
-def run(dump,output):
+def run(dump,output,row_builder=None,model_name=None):
     output.mkdir(parents=True,exist_ok=True)
     retained=json.loads((ROOT/'evidence/importer-loud-fail/r220/inventory.json').read_text())
     source_graph=json.loads(json.dumps(inventory(ROOT/'evidence/importer-loud-fail/r220/jinye-bounded.xml')));assert source_graph==retained
@@ -98,12 +101,12 @@ def run(dump,output):
     for tick in case['samples']:
         frame=1+tick%21;observed=next(c['frame'] for c in clocks if c['tick']==tick and c['path']==case['id']+'/1');assert frame==observed
         placements=source_graph['graph']['frames'][frame-1]['placements'];folder=output/f'tick{tick}';folder.mkdir(exist_ok=True)
-        clear,leaves=render_graph(source,placements,shapes,outer,draw,SIZE)
+        clear,leaves=render_graph(source,placements,shapes,outer,draw,SIZE,row_builder=row_builder,model_name=model_name)
         if leaves:
             allpoints=[list(map(Q,p)) for leaf in leaves for p in leaf['polygon']]
             x=math.floor(min(p[0] for p in allpoints))-1;y=math.floor(min(p[1] for p in allpoints))-1
             w=math.ceil(max(p[0] for p in allpoints))+1-x;h=math.ceil(max(p[1] for p in allpoints))+1-y
-            local,local_leaves=render_graph(source,placements,shapes,outer,draw,(w,h),(x,y));save(folder/'local-cache-candidate.png',local,(w,h))
+            local,local_leaves=render_graph(source,placements,shapes,outer,draw,(w,h),(x,y),row_builder,model_name);save(folder/'local-cache-candidate.png',local,(w,h))
             cached=[[0,0,0,0] for _ in range(600*400)]
             for yy in range(h):
                 for xx in range(w):
@@ -124,10 +127,10 @@ def run(dump,output):
                      'local_input_boundary_status':'unmeasured_no_independent_native_buffers'})
     leaf_fixture,leaf_native,_=decode_leaves(ROOT/'evidence/importer-loud-fail/r221/native');leaf_rows=[]
     for capture in leaf_native:
-        spec=leaf_fixture['cases'][capture['source_case']];pixels,metadata=render_leaf(source,spec,shapes[spec['shape']],SIZE)
+        spec=leaf_fixture['cases'][capture['source_case']];pixels,metadata=render_leaf(source,spec,shapes[spec['shape']],SIZE,row_builder,model_name)
         leaf_rows.append({'case':capture['source_case'],'cached':capture['cached'],**metadata,**measure(pixels,capture['pixels'],600)})
     report={'source':source_graph['source'],'decoder':decoder,'source_events':len(source_graph['graph']['events']),
-            'model':MODEL+'/HV','images':rows,'isolated_leaf_boundaries':leaf_rows,
+            'model':(MODEL if model_name is None else model_name)+'/HV','images':rows,'isolated_leaf_boundaries':leaf_rows,
             'exact_images':sum(not r['stage']['failures'] for r in rows),'exact_active_images':sum(r['active'] and not r['stage']['failures'] for r in rows),
             'complete_wrapper_exact':all(not r[k]['failures'] for r in rows for k in ('uncached','cached','authored','stage')),
             'sampler_admitted':False,'cache_allocation_admitted':False,'coverage_admitted':False,'ratio_consumption_proved':False,

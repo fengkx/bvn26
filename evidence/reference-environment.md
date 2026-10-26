@@ -1110,3 +1110,7 @@ Same pinned Flash Player Debugger32/Rosetta and unchanged source/hardware one-hi
 ## r249 static float display hierarchy
 
 No new native process or capture. Reuse pinnedr233 source-code readbacks andr242 source/local native bytes with unchanged sourceJPEG decoder plane hashes. Independently byte-verified genericfloat composition/deviceconstructor define one globallyfixed candidate; MXCSR/field4/routing remain unproved. Alluncached218000 and local15980percache exact;81cachedcounterexamples remain. No runtime or reference changes.
+
+## r250 frozen candidate on actual Jinye images
+
+No new native capture. Reuse unchangedr221 four actualJPEG leaves andr220/r241 completeJinye images, with source-decoded textures only. Originaldefault renderer exactlyreplays storedmeasurements; onlysamplerrow providerchanges. Leaf0/4→1/4; completeactive0/3 unchanged. Allresiduals/regressions retained; no runtimeadmission or reference rewrite.
