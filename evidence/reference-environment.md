@@ -1006,3 +1006,7 @@ Same pinned Flash Player32/Rosetta. Six independent opaque ramps/impulses, expli
 ## r223 original-tag versus Drawing API controls
 
 Same pinned Flash Player32/Rosetta. Six synthetic lossless bitmap55 inputs, original shape56/57 raw bytes unchanged,36 read-back transform groups and72 RGBA images. Short-image-header fixture rejected on0×0 source readback; long-header captures retained separately. No production admission.
+
+## r224 affine initializer rejection
+
+No new native capture. Reuses pinned r221/r223 bytes and r218 JPEG decoder environment. CPU-only fixed-model comparison; all eight affine models rejected. Positive-axis regressions exact; no GPU or production admission. See r224/README.md.
