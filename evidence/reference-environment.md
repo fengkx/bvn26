@@ -1066,3 +1066,7 @@ Same pinned Flash Player Debugger32/Rosetta and FFDEC.13fixtures/52images;47840s
 ## r238 exact axis factorization
 
 Same pinned Flash Player Debugger32/Rosetta and FFDEC.20 images,3680 source pixels,10 actual matrices. Independent FFDEC review checks integer source scaling and exact float32 display division. Both rawRGBA and black planes retained; original raw baselines exact. No production changes.
+
+## r239 signed factorization controls
+
+Same pinned Flash Player Debugger32/Rosetta and FFDEC.40images,3680source pixels,20actual matrices;20rawtags independently reviewed. Ordered vertices and active fill style retained under signed transforms. Both rawRGBA and black outputs preserved, original-tag baselines exact. No production changes.
