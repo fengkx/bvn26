@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-26（r223）：原始shape56/57标签与Drawing API有限控制域72/72图、663552/663552像素精确；错误短图片头被源读回守卫拒绝；生产关闭。[证据](../evidence/importer-loud-fail/r223/README.md)。
+
 - 2026-10-26（r222）：72张独立平滑仿射控制拒绝两种固定采样基线；Drawing API与原始fill65等价性未证。全量Python984通过/2跳过；周额度余11%，本轮提交后暂停，不启动r223。[证据](../evidence/importer-loud-fail/r222/README.md)。
 
 - 2026-10-26（r221）：Jinye两原始平滑仿射叶片/缓存控制已采样；固定中心双线性基线在224个活跃内部像素全部失败，不能归咎遮罩边缘；继续独立脉冲/色阶验证。[证据](../evidence/importer-loud-fail/r221/README.md)。

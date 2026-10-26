@@ -1002,3 +1002,7 @@ Same pinned Flash Player32/Rosetta. Original raw bitmap55/shape56/57 tags preser
 ## r222 independent Drawing API affine controls
 
 Same pinned Flash Player32/Rosetta. Six independent opaque ramps/impulses, explicit22080source pixels, three draw scales and cached/uncached surfaces. This is beginBitmapFill(false,true), not proof of preserved DefineShape-tag API equivalence. No GPU or production admission.
+
+## r223 original-tag versus Drawing API controls
+
+Same pinned Flash Player32/Rosetta. Six synthetic lossless bitmap55 inputs, original shape56/57 raw bytes unchanged,36 read-back transform groups and72 RGBA images. Short-image-header fixture rejected on0×0 source readback; long-header captures retained separately. No production admission.
