@@ -1,0 +1,121 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "gpu_input": 115840,
+  "gpu_filtered": 115840,
+  "gpu_final": 115840,
+  "gpu_total_per_stage": 115840,
+  "gpu_gate_exit": 0,
+  "production_admitted": false,
+  "regressions": {
+    "r36": {
+      "command": [
+        "tools/probes/run_normal_composition.py",
+        "--godot",
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--native",
+        "evidence/importer-loud-fail/r36",
+        "--output",
+        "/private/tmp/bvn-r74/regressions/r36"
+      ],
+      "exit": 0
+    },
+    "r37": {
+      "command": [
+        "tools/probes/run_nested_composition.py",
+        "--godot",
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--native",
+        "evidence/importer-loud-fail/r37/native",
+        "--output",
+        "/private/tmp/bvn-r74/regressions/r37"
+      ],
+      "exit": 0
+    },
+    "leaf": {
+      "command": [
+        "tools/probes/run_bound_bitmap_component.py",
+        "--build",
+        "evidence/importer-loud-fail/r33/native",
+        "--godot",
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--output",
+        "/private/tmp/bvn-r74/regressions/leaf"
+      ],
+      "exit": 0
+    },
+    "glow": {
+      "command": [
+        "tools/probes/run_yulong_wrapper.py",
+        "--godot",
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--output",
+        "/private/tmp/bvn-r74/regressions/glow"
+      ],
+      "exit": 0
+    },
+    "sampler": {
+      "command": [
+        "tools/probes/run_bitmap_godot_fixture.py",
+        "--godot",
+        "/private/tmp/bvn-loud-fail/r02/engine/Godot.app/Contents/MacOS/Godot",
+        "--output",
+        "/private/tmp/bvn-r74/regressions/sampler"
+      ],
+      "exit": 0
+    },
+    "cpu": {
+      "command": [
+        "tools/probes/analyze_bitmap_repeat_spans.py",
+        "--output",
+        "/private/tmp/bvn-r74/regressions/cpu.json"
+      ],
+      "exit": 0
+    }
+  },
+  "not_rerun": [
+    "full roster/Web export (production unchanged)",
+    "54 components"
+  ],
+  "python": {
+    "total": 686,
+    "passed": 684,
+    "skipped": 2,
+    "exit": 0
+  }
+}

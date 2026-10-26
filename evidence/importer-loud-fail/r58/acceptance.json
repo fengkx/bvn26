@@ -1,0 +1,54 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "python": {
+    "tests": 645,
+    "passed": 643,
+    "skipped": 2
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "cpu_arithmetic_passed": true,
+  "gpu_advance_allowed": true,
+  "production_admitted": false,
+  "execution_routing_verified": false,
+  "unchanged_rendering_checks": "../r48/acceptance.json",
+  "not_rerun": [
+    "GPU rendering gates (next round)",
+    "full roster/Web build",
+    "54 components"
+  ]
+}

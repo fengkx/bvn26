@@ -1,0 +1,66 @@
+{
+  "native_materialized_cases": 432,
+  "native_source_pixels": "2160/2160",
+  "actual_production_buffers": {
+    "child": "27648/27648",
+    "parent": "41472/41472",
+    "final": "55296/55296",
+    "total": "124416/124416",
+    "max_channel_delta": 0,
+    "gate_exit_code": 0
+  },
+  "stale_copy_negative_control": {
+    "child": "27648/27648",
+    "parent": "13824/41472",
+    "final": "33152/55296",
+    "different_pixels": 49792,
+    "max_channel_delta": 128,
+    "engine_errors": 0,
+    "gate_exit_code": 1
+  },
+  "regressions": {
+    "r36_gpu_controls": "4032/4032",
+    "r36_native_vector": "2016/2016",
+    "r36_native_bitmap": "2016/2016",
+    "pinned_yulong_images": "4/4",
+    "leaf_images": "6/6",
+    "leaf_rgba": "69120/69120",
+    "isolated_glow": "4/4",
+    "gpu_sampler": "71824/71824",
+    "cpu_sampler": "all exact"
+  },
+  "python": {
+    "run": 577,
+    "passed": 575,
+    "skipped": 2,
+    "failed": 0
+  },
+  "fighter_caches": {
+    "passed": 26,
+    "total": 26
+  },
+  "fingerprint": {
+    "passed": 8,
+    "total": 8
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "integrity": "passed",
+  "handoff": "passed",
+  "contracts": "passed",
+  "production_runtime_changed": false,
+  "production_admitted": false,
+  "production_components": {
+    "exact": 9,
+    "images": 54,
+    "measurement": "historical r32; not rerun"
+  },
+  "not_rerun": [
+    "full roster replay",
+    "other gameplay GPU/Godot suites",
+    "build_web export",
+    "54 production component suite",
+    "color/order/matrix/rush",
+    "full AS ownership audit"
+  ],
+  "merge_ready": false
+}

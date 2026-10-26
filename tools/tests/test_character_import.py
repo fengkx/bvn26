@@ -75,6 +75,8 @@ class CharacterImportTests(unittest.TestCase):
                          [('y', '=', 0), ('x', '=', 0)])
         bundle = json.loads((ROOT / 'scripts/fighter/rifagu.json').read_text())
         timeline = json.loads((ROOT / 'data/slices/rifagu-base.timeline.json').read_text())
+        # This fixture covers shake frames, not the unimplemented form change.
+        timeline['frames'] = [f for f in timeline['frames'] if f['frame'] <= 300]
         context = compile_context(bundle, timeline)
         for frame, operator in [(254, '-='), (255, '+='), (256, '-='), (257, '+=')]:
             event = context['frame_calls'][str(frame)][0]

@@ -1,0 +1,67 @@
+{
+  "production_admitted": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "source_backed_diagnostic_exact": 46,
+  "images": 54,
+  "focused_tests": 12,
+  "coordinate_models_rejected": 6,
+  "jpeg_leaf_exact": 2763,
+  "jpeg_leaf_samples": 2818,
+  "retained_python": {
+    "passed": 1011,
+    "skipped": 2,
+    "failed": 0,
+    "evidence": "../r227/checks/python.log"
+  },
+  "full_as_ownership_proved": false,
+  "production_suite_rerun": false,
+  "not_rerun": [
+    "full roster/Web (production unchanged)",
+    "54 production components"
+  ],
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "retained_axis": {
+    "scalar_exact": 16377,
+    "sampler_exact": 71824,
+    "jiraiya_images_exact": 6,
+    "span_exact": 9360,
+    "tests_passed": 5
+  }
+}

@@ -58,6 +58,28 @@ class OnlineManifestTests(unittest.TestCase):
             included = {path.relative_to(root).as_posix() for path in manifest_tool.files_under(root)}
             self.assertEqual(included, {"fighter.bin"})
 
+    def test_form_asset_changes_content_fingerprint(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            godot = root / "godot"
+            for name in ("main", "effects", "music", "stages/current_world", "forms/fixture-2"):
+                (godot / "generated" / name).mkdir(parents=True)
+            room, selection, stages = (root / name for name in ("room.json", "selection.json", "stages.json"))
+            room.write_text(json.dumps({"fighters": [], "helpers": [], "stages": []}))
+            selection.write_text(json.dumps({"fighters": {}, "helpers": {}}))
+            stages.write_text(json.dumps({"stages": []}))
+            asset = godot / "generated/forms/fixture-2/shape.png"
+            asset.write_bytes(b"first form image")
+            with patch.multiple(manifest_tool, GODOT=godot, ROOM_CATALOG=room,
+                                SELECTION_CATALOG=selection, STAGE_CATALOG=stages):
+                paths, _ = manifest_tool.content_inputs()
+                self.assertIn(asset, paths)
+                first = manifest_tool.fingerprint(manifest_tool.records(paths, base=root), {})
+                asset.write_bytes(b"changed form image")
+                paths, _ = manifest_tool.content_inputs()
+                second = manifest_tool.fingerprint(manifest_tool.records(paths, base=root), {})
+                self.assertNotEqual(first, second)
+
     def test_manifest_does_not_hash_its_own_output(self) -> None:
         build_paths = {path.resolve() for path in manifest_tool.build_inputs()}
         content_paths, _roster = manifest_tool.content_inputs()
@@ -83,6 +105,7 @@ class OnlineManifestTests(unittest.TestCase):
 
             with (
                 patch.object(manifest_tool, "MATCHMAKING_PROTOCOL", protocol_file),
+                patch.object(manifest_tool, "GODOT", root),
                 patch.object(manifest_tool, "build_inputs", return_value=[build_file]),
                 patch.object(manifest_tool, "content_inputs", return_value=([content_file], roster)),
                 patch.object(manifest_tool, "records", side_effect=local_records),

@@ -10,10 +10,12 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from compile_ai_predicates import controller_script
+from compile_ai_predicates import controller_script, FIELDS as PREDICATE_FIELDS
 from compile_hit_receive import root_position_writes
 from build_combat_model import parse_body_warp
 from inspect_swf import inspect
+from import_guards import allowed_frame_source, finite_numbers
+from parent_form_requirements import parent_form_requirement
 
 ROOT=Path(__file__).resolve().parents[2]
 FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitBan',
@@ -21,6 +23,13 @@ FIELDS={'动作','khit','jump','jumped','canhit','sw','touch','touchFloor','hitB
         'wudi','beida','hited','hits','time','bs','airBody','speed','spd','jumpPower','fall',
         'htx','yup','tdtime','hitNear','_lastX','_initwudi','jhp','bdzl','inited','_lastvoice','_dievoicen',
         'Cbshit'}
+# Existing adapter bindings are live owner state, not missing timeline slots.
+# In particular, allocating ql here would shadow energy writes and initialize
+# a real fighter property to undefined when a form is activated.
+HOST_FIELDS = {'hp'} | {
+    expression.removeprefix('_parent.') for expression in PREDICATE_FIELDS
+    if re.fullmatch(r'_parent\.\w+', expression)
+}
 FUNCTION=re.compile(r'^function (\w+)\([^\n]*\)\r?\n\{.*?^\}',re.M|re.S)
 ASSIGN=re.compile(r'^(?:var )?(\w+) = (-?\d+(?:\.\d+)?|true|false);$')
 DECLARE=re.compile(r'^var (\w+);$')
@@ -37,6 +46,7 @@ def movement_expression(source: str, fields: set[str]) -> dict:
 
     def compile_node(node: ast.AST) -> dict:
         if isinstance(node, ast.Constant) and type(node.value) in (int, float):
+            finite_numbers(node.value, 'wrapper movement expression: ' + source)
             return {'op': 'constant', 'value': node.value}
         if isinstance(node, ast.Name) and node.id in fields:
             return {'op': 'read', 'field_name': node.id}
@@ -217,8 +227,8 @@ def writes(
     return result
 
 
-def controller_scope_fields(bundle: dict, sprite: int) -> set[str]:
-    """Find source-declared timeline fields read through a controller parent."""
+def controller_scope_fields(bundle: dict, sprite: int, *, form_replacement: bool = False) -> set[str]:
+    """Find bounded timeline scalar fields read through a controller parent."""
     path = f'DefineSprite_{sprite}/frame_1/DoAction.as'
     source = next((item['source'] for item in bundle['scripts'] if item['path'] == path), None)
     if source is None:
@@ -235,11 +245,39 @@ def controller_scope_fields(bundle: dict, sprite: int) -> set[str]:
         if item['path'].startswith(f'DefineSprite_{sprite}/')
         for match in re.finditer(r'\b_parent\.(\w+)\b', item['source'])
     }
-    return (declared & referenced) - FIELDS
+    fields = (declared & referenced) - FIELDS
+    if form_replacement:
+        fields |= implicit_controller_fields(bundle, sprite) - declared
+    return fields
+
+
+def implicit_controller_fields(bundle: dict, sprite: int) -> set[str]:
+    """Retain undeclared scalar reads; AVM1 does not synthesize a zero value."""
+    placement = re.compile(
+        rf'DefineSprite_{sprite}/frame_\d+/PlaceObject[23]_\d+_\d+/'
+        r'CLIPACTIONRECORD onClipEvent\(enterFrame\)\.as')
+    numeric_read = re.compile(r'(?<![.\w])_parent\.([^\W\d_]\w*)\s*(?:<=|>=|<|>)\s*-?\d+(?:\.\d+)?(?![\w.])')
+    return {match[1] for item in bundle['scripts'] if placement.fullmatch(item['path'])
+            for match in numeric_read.finditer(item['source'])} - FIELDS - HOST_FIELDS
 
 
 
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
+    parent = re.fullmatch(
+        r'if\(_parent\.(\w+) == (true|false)\)\s*\{\s*'
+        r'_root\.(cbsw|bsw)\(pn\);\s*bs = 0;\s*\}\s*', text)
+    if parent:
+        return [{'op': 'parent_conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'field_name': parent[1], 'value': json.loads(parent[2]),
+                 'calls': [{'op': 'super_end', 'kind': parent[3]},
+                           {'op': 'frame_field', 'field_name': 'bs', 'operator': '=', 'value': 0}]}]
+    control = re.fullmatch(
+        r'if\((\w+) == (true|false|-?\d+)\)\s*\{\s*(stop|play)\(\);\s*\}\s*', text)
+    if control and control[1] in FIELDS:
+        return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': control[1], 'operator': 'eq',
+                                 'value': json.loads(control[2])}],
+                 'calls': [{'op': 'timeline_' + control[3]}]}]
     visibility = re.fullmatch(
         r'if\(_root\.game\["p" \+ pn\]\.mc\.hp > (-?\d+) && '
         r'_root\.game\["p" \+ pn\]\.mc\.动作 == (-?\d+)\)\s*'
@@ -343,7 +381,96 @@ def root_child_effect(name: str) -> dict:
             'wrapper_sha256': hashlib.sha256(source.encode()).hexdigest()}
 
 
-def compile_context(bundle: dict,timeline: dict) -> dict:
+def parent_initial_values(bundle: dict, frame_calls: dict, *, form_replacement: bool = False) -> dict:
+    scripts = {item['path']: item['source'] for item in bundle['scripts']}
+    parent_fields = {event['field_name'] for calls in frame_calls.values() for event in calls
+                     if event['op'] in ('parent_frame_field', 'parent_conditional_frame')}
+    if form_replacement:
+        # BODY form helpers share the wrapper-owned flag declared by the SWF.
+        parent_fields.add("万解")
+    parent_state = {}
+    for field in sorted(parent_fields):
+        declaration = re.findall(rf'^var {re.escape(field)} = (true|false);$',
+                                 scripts['frame_1/DoAction.as'].replace('\r\n', '\n'), re.M)
+        if len(declaration) != 1:
+            raise ValueError(f"{bundle['game_file']}:frame_1/DoAction.as: missing/ambiguous parent boolean initializer: {field}")
+        parent_state[field] = json.loads(declaration[0])
+    return parent_state
+
+
+def form_initialization(source: str, location: str, *, placement_filters: bool = False) -> dict:
+    top_level = FUNCTION.sub('', source)
+    compact = re.sub(r'"(?:\\.|[^"\\])*"|\s+',
+                     lambda match: match[0] if match[0].startswith('"') else '', top_level)
+    statements = ('resColor();_parent.scale_X=_parent._xscale<=0?-1:1;'
+                  '_parent._visible=true;_visible=true;varinited;'
+                  'if(!inited){trace("inited");inited=true;_lastX=0;'
+                  'pn=_parent._name!="p1"?1:2;doWanKai();'
+                  'if(!_parent.万解){updateDirect();}}')
+    prefix = compact.split(statements, 1)[0]
+    prefix_code = re.sub(r'"(?:\\.|[^"\\])*"', '""', prefix)
+    if (compact.count(statements) != 1 or
+            prefix_code.count('{') != prefix_code.count('}') or
+            (prefix_code and prefix_code[-1] not in ';}')):
+        raise ValueError(f'{location}: unsupported replacement initialization/order')
+    filter_reset = {}
+    if placement_filters:
+        reset = next((m[0] for m in FUNCTION.finditer(source) if m[1] == 'resColor'), '')
+        expected = ('functionresColor(){colors=null;_cgap=1;'
+                    'setColor({ra:100,rb:0,ga:100,gb:0,ba:100,bb:0,aa:100,ab:0});'
+                    '_this.filters=[];}')
+        if re.sub(r'\s+', '', reset) != expected:
+            raise ValueError(f'{location}#resColor: uncompiled placement-filter initialization')
+        filter_reset = {'clear_placement_filters': True,
+                        'filter_reset_source_sha256': hashlib.sha256(reset.encode()).hexdigest()}
+    return {**filter_reset, 'wrapper_scale_from_xscale': True, 'wrapper_visible': True,
+            'body_visible': True, 'bind_opponent_slot': True, 'call_doWanKai': True,
+            'update_direct_unless_transformed': True,
+            'source_sha256': hashlib.sha256(source.encode()).hexdigest()}
+
+
+def placement_filter_initialization(source: str, location: str) -> dict:
+    proof = form_initialization(source, location, placement_filters=True)
+    return {key: proof[key] for key in ("clear_placement_filters",
+            "filter_reset_source_sha256", "source_sha256")}
+
+
+def nested_stage_frames(bundle: dict, timeline: dict) -> dict:
+    """Own complete, unconditional stage-effect scripts on retained child clocks."""
+    definitions = {int(d['character_id']) for d in timeline['definitions']}
+    scripts = []
+    for script in bundle['scripts']:
+        match = re.fullmatch(r'DefineSprite_(\d+)/frame_(\d+)/DoAction.as', script['path'])
+        if match and int(match[1]) in definitions:
+            scripts.append((int(match[1]), int(match[2]), script))
+    owners = {sprite for sprite, _, script in scripts
+              if re.search(r'_root\._[xy]\b', script['source'])}
+    result = {}
+    for sprite, frame, script in scripts:
+        if sprite not in owners:
+            continue
+        events = []
+        for number, line in enumerate(script['source'].splitlines(), 1):
+            line = line.strip()
+            if not line or line in ('stop();', 'play();'):
+                # The source-pinned visual playhead guard owns these controls.
+                continue
+            if re.fullmatch(r'_root\._[xy]\s*(?:=|\+=|-=)\s*(?:_root\._[xy]\s*=\s*)?-?\d+(?:\.\d+)?;', line):
+                events.extend({**write, 'op': 'root_position', 'line': number}
+                              for write in root_position_writes(line))
+            elif re.fullmatch(r'_root\.shine\(\);', line):
+                events.append({'op': 'screen_flash', 'color_rgb24': 0xffffff, 'line': number})
+            else:
+                raise ValueError(f"{bundle['game_file']}:{script['path']}:{number}: unsupported nested stage action: {line}")
+        if events:
+            finite_numbers(events, f"{bundle['game_file']}:{script['path']}")
+            result.setdefault(str(sprite), {})[str(frame)] = {
+                'path': script['path'], 'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest(),
+                'events': events}
+    return result
+
+
+def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = False) -> dict:
     if hashlib.sha256((ROOT/bundle['game_file']).read_bytes()).hexdigest()!=bundle['swf_sha256']:
         raise ValueError('Retained source hash mismatch')
     if timeline['source_swf']['sha256']!=bundle['swf_sha256']:
@@ -408,7 +535,7 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
     hit_fields = {match[1] for path, text in scripts.items()
                   if path.startswith(f'DefineSprite_{sprite}/') and path.endswith('/DoAction.as')
                   for match in hit_test_pattern.finditer(text.replace('\r\n', '\n'))}
-    scoped_fields = controller_scope_fields(bundle, sprite) | hit_fields
+    scoped_fields = controller_scope_fields(bundle, sprite, form_replacement=form_replacement) | hit_fields
     state_fields = FIELDS | scoped_fields
     declarations=[
         m[1] for line in root.splitlines()
@@ -416,6 +543,13 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
         and m[1] in state_fields
         and not INITIALIZED_DECLARE.fullmatch(line)
     ]
+    if form_replacement:
+        # A missing property read has an explicit undefined scalar slot. Its
+        # increment and comparison consumers preserve NaN, never default zero.
+        declarations = sorted(set(declarations) | (implicit_controller_fields(bundle, sprite) - {
+            match[1] for line in root.splitlines()
+            if (match := INITIALIZED_DECLARE.fullmatch(line))
+        }))
     child_labels = None
     frame_writes={}
     frame_calls={}
@@ -424,6 +558,27 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
     for frame in timeline['frames']:
         path=f'DefineSprite_{sprite}/frame_{frame["frame"]}/DoAction.as'
         text=root if frame['frame']==1 else scripts.get(path,'')
+        if form_replacement and frame['frame'] != 1:
+            from compile_form_frames import compile_form_frame
+            form_calls = compile_form_frame(bundle, text, path, frame['frame'], form_frame)
+            if form_calls is not None:
+                frame_calls[str(frame['frame'])] = form_calls
+                continue
+        if frame['frame'] != 1:
+            for number, statement in enumerate(text.splitlines(), 1):
+                if re.search(r'\bwankai\s*\(', statement):
+                    definition = functions.get('wankai', '')
+                    digest = hashlib.sha256(definition.encode()).hexdigest()
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled form replacement call: "
+                                     f"{statement.strip()}; definition {first_path}#wankai sha256={digest}; "
+                                     "requires wrapper transfer, interval lifetime and parent replacement consumer")
+                if re.search(r'_parent\.中转\b', statement):
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled wrapper transfer: {statement.strip()}")
+                if re.match(r'\s*_parent\.万解\s*[+*/-]?=', statement) and not re.fullmatch(
+                        r'_parent\.万解 = (true|false);', statement):
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled parent boolean write: {statement.strip()}")
+                if re.search(r'\bsetInterval\s*\(', statement):
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled frame timer: {statement.strip()}")
         scalar_text = hit_test_pattern.sub(lambda match: ' ' * len(match[0]), text.replace('\r\n', '\n'))
         events=writes(scalar_text,path,controller_scope_fields=scoped_fields)
         if frame['frame'] == 1 and any(event['field'] in ('inited', '_lastX') for event in events):
@@ -466,22 +621,26 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
                 calls.append({'op': 'body_warp', 'warp': warp, 'path': path,
                               'line': warp_line, 'frame': frame['frame']})
         for number,line in enumerate(text.replace('\r\n','\n').splitlines(),1):
+            before = len(calls)
             match=re.fullmatch(r'_root\.(bsd|cbsd|bsw|cbsw)\(pn\);',line)
             face=re.fullmatch(r'_root\.showFace\(pn,"([^"]+)"\);',line)
             jump=re.fullmatch(r'gotoAnd(Play|Stop)\("([^"]+)"\);',line)
             energy=re.fullmatch(r'ql ([+-])= (\d+(?:\.\d+)?);',line)
             movement=re.fullmatch(r'_parent\.(moveX|moveY)\((.+)\);',line)
-            if re.search(r'_parent\.(?:moveX|moveY)\(', line) and not movement:
-                raise ValueError(f'Uncompiled wrapper movement: {path}:{number}: {line}')
+            if re.search(r'_parent\.(?:moveX|moveY)\s*\(', line) and not movement:
+                raise ValueError(f"Uncompiled wrapper movement: {bundle['game_file']}:{path}:{number}: {line}")
             if line == 'wankai_start();':
                 calls.append({'op': 'inline_frame', 'path': path, 'line': number,
                               'frame': frame['frame'], 'calls': inline_frame_function(
                                   functions['wankai_start'], first_path + '#wankai_start', frame['frame'])})
-            elif line == '_root.touchFloorEffect(_parent);':
-                calls.append({**root_child_effect('touchFloorEffect'), 'path': path,
+            elif child_effect := re.fullmatch(r'_root\.(touchFloorEffect|shunbuxg)\(_parent\);', line):
+                calls.append({**root_child_effect(child_effect[1]), 'path': path,
                               'line': number, 'frame': frame['frame']})
-            elif re.fullmatch(r'_root\.shine\(\);', line):
-                calls.append({'op': 'screen_flash', 'color_rgb24': 0xFFFFFF,
+            elif flash := re.fullmatch(r'_root\.shine\((\d*)\);', line):
+                color = int(flash[1]) if flash[1] else 0xFFFFFF
+                if not 0 <= color <= 0xFFFFFF:
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: unsupported shine color {color}")
+                calls.append({'op': 'screen_flash', 'color_rgb24': color,
                               'path': path, 'line': number, 'frame': frame['frame']})
             elif movement:
                 wrapper = next((m[0] for m in FUNCTION.finditer(scripts['frame_1/DoAction.as'])
@@ -506,6 +665,31 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif face:
                 calls.append({'op':'show_face','face_label':face[1],
                               'path':path,'line':number,'frame':frame['frame']})
+            elif parent_write := re.fullmatch(r'_parent\.(万解) = (true|false);', line):
+                calls.append({'op': 'parent_frame_field', 'field_name': parent_write[1],
+                              'value': json.loads(parent_write[2]), 'path': path,
+                              'line': number, 'frame': frame['frame']})
+            elif parent_jump := re.fullmatch(r'_parent.gotoAnd(Play|Stop)\((\d+)\);', line):
+                location = f"{bundle['game_file']}:{path}:{number}"
+                requirement = parent_form_requirement(bundle, int(parent_jump[2]), location)
+                raise ValueError(f"{location}: uncompiled frame call: {line} "
+                                 f"requires parent frame {requirement['target_parent_frame']} replacement "
+                                 f"body {requirement['target_body_sprite']} at depth {requirement['target_depth']}; "
+                                 f"load {requirement['load_path']}; missing replacement runtime/assets")
+            elif numeric_jump := re.fullmatch(r'gotoAnd(Play|Stop)\((\d+)\);', line):
+                target = int(numeric_jump[2])
+                if target not in frames_by_number:
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: numeric goto target {target} is not retained")
+                # Cross-label numeric jumps need the destination action metadata
+                # consumer as well as a playhead change. Reject until verified.
+                label_starts = sorted(int(f['frame']) for f in timeline['frames'] if f.get('labels'))
+                source_span = max((n for n in label_starts if n <= frame['frame']), default=1)
+                target_span = max((n for n in label_starts if n <= target), default=1)
+                if source_span != target_span:
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: numeric goto across label spans is unimplemented: {target}")
+                calls.append({'op': 'timeline_goto_frame', 'target_frame': target,
+                              'play': numeric_jump[1] == 'Play',
+                              'path': path, 'line': number, 'frame': frame['frame']})
             elif jump:
                 calls.append({'op':'timeline_goto','label':jump[2],'play':jump[1]=='Play',
                               'path':path,'line':number,'frame':frame['frame']})
@@ -546,8 +730,18 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             elif color_write := re.fullmatch(r'var (_cgap|_csn) = (\d+);',line):
                 calls.append({'op':'color_write','field_name':color_write[1],
                               'value':int(color_write[2]),'path':path,'line':number,'frame':frame['frame']})
+            owned = re.match(
+                r'^(?:_parent\.(?:moveX|moveY)|_root\.(?:bsd|cbsd|bsw|cbsw|showFace|touchFloorEffect)|'
+                r'_root\.(?:shine|shunbuxg)|(?:\w+\.)?(?:gotoAndPlay|gotoAndStop|play|stop)|'
+                r'followMc|resColor|updateDirect|wankai_start)\s*\(', line.lstrip())
+            if frame['frame'] != 1 and owned and len(calls) == before and not allowed_frame_source(
+                    bundle, path, text, form_frame):
+                # Whole-block conditional compilation already owns its calls.
+                if not any(event.get('op') in ('conditional_frame', 'parent_conditional_frame') for event in calls):
+                    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled frame call: {line}")
         if calls:
             frame_calls[str(frame['frame'])]=calls
+    parent_state = parent_initial_values(bundle, frame_calls, form_replacement=form_replacement)
     hit=functions['onBeHit0']
     if re.search(r'\b(if|else|while|for)\b',hit):
         raise ValueError('onBeHit0 is no longer unconditional')
@@ -570,10 +764,18 @@ def compile_context(bundle: dict,timeline: dict) -> dict:
             'source_swf':timeline['source_swf'],'sprite_id':sprite,
             'load_writes':load_writes,'base_power_fields':powers,
             'initialization_state':initialization_state,
+            **({'placement_filter_initialization': placement_filter_initialization(scripts[first_path],
+                 f"{bundle['game_file']}:{first_path}")}
+               if not form_replacement and timeline.get('wrapper', {}).get('filters') else {}),
+            **({'form_initialization': form_initialization(scripts[first_path],
+                 f"{bundle['game_file']}:{first_path}",
+                 placement_filters=bool(timeline.get("wrapper", {}).get("filters")))} if form_replacement else {}),
             'main_floor_contact':floor_contact,
             'undefined_declarations':declarations,'controller_scope_fields':sorted(scoped_fields),
             'frame_writes':frame_writes,
             'frame_calls':frame_calls,
+            **({'nested_stage_frames': nested} if (nested := nested_stage_frames(bundle, timeline)) else {}),
+            **({'parent_initial_values': parent_state} if parent_state else {}),
             'function_writes':{'onBeHit0':hit_writes},
             'random_refresh':{'interval_ms':int(interval[1]),'difficulty_multiplier':int(multiplier[2]),
                               'assignments':random_writes,'init_path':first_path+'#initCtrl',

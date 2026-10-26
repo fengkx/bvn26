@@ -1,0 +1,10013 @@
+{
+  "scores": {
+    "retained_exact_inverse_then_quantize": {
+      "samples": 436000,
+      "exact": 409816,
+      "failures": 26184,
+      "first_failure": {
+        "case": 0,
+        "cached": false,
+        "coordinate": [
+          40,
+          43
+        ],
+        "predicted_cell": [
+          14,
+          16
+        ],
+        "native_cell": [
+          15,
+          17
+        ]
+      }
+    },
+    "quantize_coefficients_then_dot_then_round": {
+      "samples": 436000,
+      "exact": 409798,
+      "failures": 26202,
+      "first_failure": {
+        "case": 0,
+        "cached": false,
+        "coordinate": [
+          40,
+          43
+        ],
+        "predicted_cell": [
+          14,
+          16
+        ],
+        "native_cell": [
+          15,
+          17
+        ]
+      }
+    },
+    "quantize_coefficients_then_round_products_then_sum": {
+      "samples": 436000,
+      "exact": 409802,
+      "failures": 26198,
+      "first_failure": {
+        "case": 0,
+        "cached": false,
+        "coordinate": [
+          40,
+          43
+        ],
+        "predicted_cell": [
+          14,
+          16
+        ],
+        "native_cell": [
+          15,
+          17
+        ]
+      }
+    }
+  },
+  "constraints": [
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 0,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 925,
+      "lower": 187203,
+      "upper": 188030,
+      "lower_witness": {
+        "case": 56,
+        "coordinate": [
+          49,
+          48
+        ],
+        "cell": [
+          52,
+          18
+        ],
+        "base": 3220669,
+        "translation": -14342809
+      },
+      "upper_witness": {
+        "case": 72,
+        "coordinate": [
+          50,
+          48
+        ],
+        "cell": [
+          52,
+          17
+        ],
+        "base": 3285377,
+        "translation": -14418251
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 131622,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 1,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 925,
+      "lower": 76055,
+      "upper": 76140,
+      "lower_witness": {
+        "case": 96,
+        "coordinate": [
+          40,
+          44
+        ],
+        "cell": [
+          18,
+          21
+        ],
+        "base": 1300201,
+        "translation": -4681815
+      },
+      "upper_witness": {
+        "case": 56,
+        "coordinate": [
+          47,
+          48
+        ],
+        "cell": [
+          47,
+          22
+        ],
+        "base": 1431187,
+        "translation": -4652724
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12220,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 0,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 925,
+      "lower": 187202,
+      "upper": 188030,
+      "lower_witness": {
+        "case": 56,
+        "coordinate": [
+          49,
+          48
+        ],
+        "cell": [
+          52,
+          18
+        ],
+        "base": 3220670,
+        "translation": -14342808
+      },
+      "upper_witness": {
+        "case": 72,
+        "coordinate": [
+          50,
+          48
+        ],
+        "cell": [
+          52,
+          17
+        ],
+        "base": 3285377,
+        "translation": -14418251
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 131622,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 1,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 925,
+      "lower": 76038,
+      "upper": 76122,
+      "lower_witness": {
+        "case": 96,
+        "coordinate": [
+          40,
+          44
+        ],
+        "cell": [
+          18,
+          21
+        ],
+        "base": 1300218,
+        "translation": -4681798
+      },
+      "upper_witness": {
+        "case": 56,
+        "coordinate": [
+          47,
+          48
+        ],
+        "cell": [
+          47,
+          22
+        ],
+        "base": 1431205,
+        "translation": -4652706
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12220,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 0,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 925,
+      "lower": 187202,
+      "upper": 188030,
+      "lower_witness": {
+        "case": 56,
+        "coordinate": [
+          49,
+          48
+        ],
+        "cell": [
+          52,
+          18
+        ],
+        "base": 3220670,
+        "translation": -14342808
+      },
+      "upper_witness": {
+        "case": 72,
+        "coordinate": [
+          50,
+          48
+        ],
+        "cell": [
+          52,
+          17
+        ],
+        "base": 3285377,
+        "translation": -14418251
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 131622,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 1,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 925,
+      "lower": 76038,
+      "upper": 76122,
+      "lower_witness": {
+        "case": 96,
+        "coordinate": [
+          40,
+          44
+        ],
+        "cell": [
+          18,
+          21
+        ],
+        "base": 1300218,
+        "translation": -4681798
+      },
+      "upper_witness": {
+        "case": 56,
+        "coordinate": [
+          47,
+          48
+        ],
+        "cell": [
+          47,
+          22
+        ],
+        "base": 1431205,
+        "translation": -4652706
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12220,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 0,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 925,
+      "lower": 187203,
+      "upper": 188030,
+      "lower_witness": {
+        "case": 56,
+        "coordinate": [
+          49,
+          48
+        ],
+        "cell": [
+          52,
+          18
+        ],
+        "base": 3220669,
+        "translation": -14342809
+      },
+      "upper_witness": {
+        "case": 72,
+        "coordinate": [
+          50,
+          48
+        ],
+        "cell": [
+          52,
+          17
+        ],
+        "base": 3285377,
+        "translation": -14418251
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 131622,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 1,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 925,
+      "lower": 76055,
+      "upper": 76140,
+      "lower_witness": {
+        "case": 96,
+        "coordinate": [
+          40,
+          44
+        ],
+        "cell": [
+          18,
+          21
+        ],
+        "base": 1300201,
+        "translation": -4681815
+      },
+      "upper_witness": {
+        "case": 56,
+        "coordinate": [
+          47,
+          48
+        ],
+        "cell": [
+          47,
+          22
+        ],
+        "base": 1431187,
+        "translation": -4652724
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12220,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 0,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 925,
+      "lower": 187202,
+      "upper": 188030,
+      "lower_witness": {
+        "case": 56,
+        "coordinate": [
+          49,
+          48
+        ],
+        "cell": [
+          52,
+          18
+        ],
+        "base": 3220670,
+        "translation": -14342808
+      },
+      "upper_witness": {
+        "case": 72,
+        "coordinate": [
+          50,
+          48
+        ],
+        "cell": [
+          52,
+          17
+        ],
+        "base": 3285377,
+        "translation": -14418251
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 131622,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 1,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 925,
+      "lower": 76038,
+      "upper": 76122,
+      "lower_witness": {
+        "case": 96,
+        "coordinate": [
+          40,
+          44
+        ],
+        "cell": [
+          18,
+          21
+        ],
+        "base": 1300218,
+        "translation": -4681798
+      },
+      "upper_witness": {
+        "case": 56,
+        "coordinate": [
+          47,
+          48
+        ],
+        "cell": [
+          47,
+          22
+        ],
+        "base": 1431205,
+        "translation": -4652706
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12220,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 0,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 925,
+      "lower": 187202,
+      "upper": 188030,
+      "lower_witness": {
+        "case": 56,
+        "coordinate": [
+          49,
+          48
+        ],
+        "cell": [
+          52,
+          18
+        ],
+        "base": 3220670,
+        "translation": -14342808
+      },
+      "upper_witness": {
+        "case": 72,
+        "coordinate": [
+          50,
+          48
+        ],
+        "cell": [
+          52,
+          17
+        ],
+        "base": 3285377,
+        "translation": -14418251
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 131622,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 0,
+      "shape": 56,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 1,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 925,
+      "lower": 76038,
+      "upper": 76122,
+      "lower_witness": {
+        "case": 96,
+        "coordinate": [
+          40,
+          44
+        ],
+        "cell": [
+          18,
+          21
+        ],
+        "base": 1300218,
+        "translation": -4681798
+      },
+      "upper_witness": {
+        "case": 56,
+        "coordinate": [
+          47,
+          48
+        ],
+        "cell": [
+          47,
+          22
+        ],
+        "base": 1431205,
+        "translation": -4652706
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12220,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": false,
+      "axis": 0,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 104125,
+      "lower": 25698,
+      "upper": 25699,
+      "lower_witness": {
+        "case": 19,
+        "coordinate": [
+          93,
+          72
+        ],
+        "cell": [
+          81,
+          20
+        ],
+        "base": 5282718,
+        "translation": -394710
+      },
+      "upper_witness": {
+        "case": 14,
+        "coordinate": [
+          70,
+          50
+        ],
+        "cell": [
+          56,
+          13
+        ],
+        "base": 3709852,
+        "translation": -381028
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 25699,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": false,
+      "axis": 1,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 104125,
+      "lower": 2387,
+      "upper": 2386,
+      "lower_witness": {
+        "case": 73,
+        "coordinate": [
+          55,
+          36
+        ],
+        "cell": [
+          40,
+          9
+        ],
+        "base": 587437,
+        "translation": 203157
+      },
+      "upper_witness": {
+        "case": 69,
+        "coordinate": [
+          78,
+          43
+        ],
+        "cell": [
+          55,
+          4
+        ],
+        "base": 325293,
+        "translation": 181954
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": false,
+      "axis": 0,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 104125,
+      "lower": 25696,
+      "upper": 25696,
+      "lower_witness": {
+        "case": 19,
+        "coordinate": [
+          93,
+          72
+        ],
+        "cell": [
+          81,
+          20
+        ],
+        "base": 5282720,
+        "translation": -394708
+      },
+      "upper_witness": {
+        "case": 97,
+        "coordinate": [
+          43,
+          41
+        ],
+        "cell": [
+          38,
+          16
+        ],
+        "base": 2530207,
+        "translation": -430273
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 25699,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": false,
+      "axis": 1,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 104125,
+      "lower": 2389,
+      "upper": 2388,
+      "lower_witness": {
+        "case": 73,
+        "coordinate": [
+          55,
+          36
+        ],
+        "cell": [
+          40,
+          9
+        ],
+        "base": 587435,
+        "translation": 203155
+      },
+      "upper_witness": {
+        "case": 69,
+        "coordinate": [
+          78,
+          43
+        ],
+        "cell": [
+          55,
+          4
+        ],
+        "base": 325291,
+        "translation": 181952
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": false,
+      "axis": 0,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 104125,
+      "lower": 25696,
+      "upper": 25697,
+      "lower_witness": {
+        "case": 19,
+        "coordinate": [
+          93,
+          72
+        ],
+        "cell": [
+          81,
+          20
+        ],
+        "base": 5282720,
+        "translation": -394708
+      },
+      "upper_witness": {
+        "case": 14,
+        "coordinate": [
+          70,
+          50
+        ],
+        "cell": [
+          56,
+          13
+        ],
+        "base": 3709854,
+        "translation": -381026
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 25699,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": false,
+      "axis": 1,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 104125,
+      "lower": 2389,
+      "upper": 2388,
+      "lower_witness": {
+        "case": 73,
+        "coordinate": [
+          55,
+          36
+        ],
+        "cell": [
+          40,
+          9
+        ],
+        "base": 587435,
+        "translation": 203155
+      },
+      "upper_witness": {
+        "case": 69,
+        "coordinate": [
+          78,
+          43
+        ],
+        "cell": [
+          55,
+          4
+        ],
+        "base": 325291,
+        "translation": 181952
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": true,
+      "axis": 0,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 104125,
+      "lower": 25696,
+      "upper": 25695,
+      "lower_witness": {
+        "case": 14,
+        "coordinate": [
+          86,
+          55
+        ],
+        "cell": [
+          67,
+          10
+        ],
+        "base": 4365216,
+        "translation": -381028
+      },
+      "upper_witness": {
+        "case": 93,
+        "coordinate": [
+          67,
+          45
+        ],
+        "cell": [
+          51,
+          10
+        ],
+        "base": 3382176,
+        "translation": -409072
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 25699,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": true,
+      "axis": 1,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 104125,
+      "lower": 2397,
+      "upper": 2396,
+      "lower_witness": {
+        "case": 14,
+        "coordinate": [
+          6,
+          42
+        ],
+        "cell": [
+          24,
+          32
+        ],
+        "base": 2094755,
+        "translation": 154337
+      },
+      "upper_witness": {
+        "case": 69,
+        "coordinate": [
+          83,
+          85
+        ],
+        "cell": [
+          85,
+          34
+        ],
+        "base": 2291363,
+        "translation": 181954
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": true,
+      "axis": 0,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 104125,
+      "lower": 25694,
+      "upper": 25693,
+      "lower_witness": {
+        "case": 14,
+        "coordinate": [
+          86,
+          55
+        ],
+        "cell": [
+          67,
+          10
+        ],
+        "base": 4365218,
+        "translation": -381026
+      },
+      "upper_witness": {
+        "case": 93,
+        "coordinate": [
+          67,
+          45
+        ],
+        "cell": [
+          51,
+          10
+        ],
+        "base": 3382178,
+        "translation": -409070
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 25699,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": true,
+      "axis": 1,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 104125,
+      "lower": 2399,
+      "upper": 2398,
+      "lower_witness": {
+        "case": 14,
+        "coordinate": [
+          6,
+          42
+        ],
+        "cell": [
+          24,
+          32
+        ],
+        "base": 2094753,
+        "translation": 154335
+      },
+      "upper_witness": {
+        "case": 69,
+        "coordinate": [
+          83,
+          85
+        ],
+        "cell": [
+          85,
+          34
+        ],
+        "base": 2291361,
+        "translation": 181952
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": true,
+      "axis": 0,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 104125,
+      "lower": 25694,
+      "upper": 25693,
+      "lower_witness": {
+        "case": 14,
+        "coordinate": [
+          86,
+          55
+        ],
+        "cell": [
+          67,
+          10
+        ],
+        "base": 4365218,
+        "translation": -381026
+      },
+      "upper_witness": {
+        "case": 93,
+        "coordinate": [
+          67,
+          45
+        ],
+        "cell": [
+          51,
+          10
+        ],
+        "base": 3382178,
+        "translation": -409070
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 25699,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 1,
+      "shape": 56,
+      "scale": 1,
+      "cached": true,
+      "axis": 1,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 104125,
+      "lower": 2399,
+      "upper": 2398,
+      "lower_witness": {
+        "case": 61,
+        "coordinate": [
+          6,
+          13
+        ],
+        "cell": [
+          5,
+          10
+        ],
+        "base": 652961,
+        "translation": 158628
+      },
+      "upper_witness": {
+        "case": 69,
+        "coordinate": [
+          83,
+          85
+        ],
+        "cell": [
+          85,
+          34
+        ],
+        "base": 2291361,
+        "translation": 181952
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 0,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 5575,
+      "lower": 22159,
+      "upper": 22181,
+      "lower_witness": {
+        "case": 62,
+        "coordinate": [
+          53,
+          51
+        ],
+        "cell": [
+          50,
+          22
+        ],
+        "base": 3254641,
+        "translation": 89185
+      },
+      "upper_witness": {
+        "case": 74,
+        "coordinate": [
+          32,
+          40
+        ],
+        "cell": [
+          35,
+          22
+        ],
+        "base": 2337114,
+        "translation": 80290
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 22171,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 1,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 5575,
+      "lower": 12198,
+      "upper": 12222,
+      "lower_witness": {
+        "case": 37,
+        "coordinate": [
+          35,
+          41
+        ],
+        "cell": [
+          37,
+          19
+        ],
+        "base": 1232986,
+        "translation": -4639839
+      },
+      "upper_witness": {
+        "case": 54,
+        "coordinate": [
+          8,
+          26
+        ],
+        "cell": [
+          19,
+          14
+        ],
+        "base": 970817,
+        "translation": -4618397
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12221,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 0,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 5575,
+      "lower": 22161,
+      "upper": 22184,
+      "lower_witness": {
+        "case": 62,
+        "coordinate": [
+          53,
+          51
+        ],
+        "cell": [
+          50,
+          22
+        ],
+        "base": 3254639,
+        "translation": 89183
+      },
+      "upper_witness": {
+        "case": 74,
+        "coordinate": [
+          32,
+          40
+        ],
+        "cell": [
+          35,
+          22
+        ],
+        "base": 2337111,
+        "translation": 80287
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 22171,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 1,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 5575,
+      "lower": 12197,
+      "upper": 12221,
+      "lower_witness": {
+        "case": 37,
+        "coordinate": [
+          35,
+          41
+        ],
+        "cell": [
+          37,
+          19
+        ],
+        "base": 1232987,
+        "translation": -4639838
+      },
+      "upper_witness": {
+        "case": 54,
+        "coordinate": [
+          8,
+          26
+        ],
+        "cell": [
+          19,
+          14
+        ],
+        "base": 970818,
+        "translation": -4618396
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12221,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 0,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 5575,
+      "lower": 22161,
+      "upper": 22184,
+      "lower_witness": {
+        "case": 62,
+        "coordinate": [
+          53,
+          51
+        ],
+        "cell": [
+          50,
+          22
+        ],
+        "base": 3254639,
+        "translation": 89183
+      },
+      "upper_witness": {
+        "case": 74,
+        "coordinate": [
+          32,
+          40
+        ],
+        "cell": [
+          35,
+          22
+        ],
+        "base": 2337111,
+        "translation": 80287
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 22171,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": false,
+      "axis": 1,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 5575,
+      "lower": 12197,
+      "upper": 12221,
+      "lower_witness": {
+        "case": 37,
+        "coordinate": [
+          35,
+          41
+        ],
+        "cell": [
+          37,
+          19
+        ],
+        "base": 1232987,
+        "translation": -4639838
+      },
+      "upper_witness": {
+        "case": 54,
+        "coordinate": [
+          8,
+          26
+        ],
+        "cell": [
+          19,
+          14
+        ],
+        "base": 970818,
+        "translation": -4618396
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12221,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 0,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 5575,
+      "lower": 22159,
+      "upper": 22181,
+      "lower_witness": {
+        "case": 62,
+        "coordinate": [
+          53,
+          51
+        ],
+        "cell": [
+          50,
+          22
+        ],
+        "base": 3254641,
+        "translation": 89185
+      },
+      "upper_witness": {
+        "case": 74,
+        "coordinate": [
+          32,
+          40
+        ],
+        "cell": [
+          35,
+          22
+        ],
+        "base": 2337114,
+        "translation": 80290
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 22171,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 1,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 5575,
+      "lower": 12223,
+      "upper": 12239,
+      "lower_witness": {
+        "case": 54,
+        "coordinate": [
+          8,
+          26
+        ],
+        "cell": [
+          19,
+          15
+        ],
+        "base": 970817,
+        "translation": -4618397
+      },
+      "upper_witness": {
+        "case": 27,
+        "coordinate": [
+          79,
+          63
+        ],
+        "cell": [
+          66,
+          16
+        ],
+        "base": 1101872,
+        "translation": -4608835
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12221,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 0,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 5575,
+      "lower": 22161,
+      "upper": 22184,
+      "lower_witness": {
+        "case": 62,
+        "coordinate": [
+          53,
+          51
+        ],
+        "cell": [
+          50,
+          22
+        ],
+        "base": 3254639,
+        "translation": 89183
+      },
+      "upper_witness": {
+        "case": 74,
+        "coordinate": [
+          32,
+          40
+        ],
+        "cell": [
+          35,
+          22
+        ],
+        "base": 2337111,
+        "translation": 80287
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 22171,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 1,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 5575,
+      "lower": 12222,
+      "upper": 12238,
+      "lower_witness": {
+        "case": 54,
+        "coordinate": [
+          8,
+          26
+        ],
+        "cell": [
+          19,
+          15
+        ],
+        "base": 970818,
+        "translation": -4618396
+      },
+      "upper_witness": {
+        "case": 66,
+        "coordinate": [
+          52,
+          50
+        ],
+        "cell": [
+          49,
+          20
+        ],
+        "base": 1364017,
+        "translation": -4573869
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12221,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 0,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 5575,
+      "lower": 22161,
+      "upper": 22184,
+      "lower_witness": {
+        "case": 62,
+        "coordinate": [
+          53,
+          51
+        ],
+        "cell": [
+          50,
+          22
+        ],
+        "base": 3254639,
+        "translation": 89183
+      },
+      "upper_witness": {
+        "case": 74,
+        "coordinate": [
+          32,
+          40
+        ],
+        "cell": [
+          35,
+          22
+        ],
+        "base": 2337111,
+        "translation": 80287
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 22171,
+          "satisfies_all_constraints": true
+        }
+      ]
+    },
+    {
+      "baseline_id": 2,
+      "shape": 57,
+      "scale": 0.19524852731221515,
+      "cached": true,
+      "axis": 1,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 5575,
+      "lower": 12222,
+      "upper": 12238,
+      "lower_witness": {
+        "case": 54,
+        "coordinate": [
+          8,
+          26
+        ],
+        "cell": [
+          19,
+          15
+        ],
+        "base": 970818,
+        "translation": -4618396
+      },
+      "upper_witness": {
+        "case": 66,
+        "coordinate": [
+          52,
+          50
+        ],
+        "cell": [
+          49,
+          20
+        ],
+        "base": 1364017,
+        "translation": -4573869
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 12221,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": false,
+      "axis": 0,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 107375,
+      "lower": 5482,
+      "upper": 5482,
+      "lower_witness": {
+        "case": 46,
+        "coordinate": [
+          42,
+          24
+        ],
+        "cell": [
+          43,
+          4
+        ],
+        "base": 2812566,
+        "translation": 2443092
+      },
+      "upper_witness": {
+        "case": 51,
+        "coordinate": [
+          5,
+          12
+        ],
+        "cell": [
+          38,
+          9
+        ],
+        "base": 2550421,
+        "translation": 2439428
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 4329,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": false,
+      "axis": 1,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 107375,
+      "lower": -4027,
+      "upper": -4026,
+      "lower_witness": {
+        "case": 55,
+        "coordinate": [
+          2,
+          41
+        ],
+        "cell": [
+          42,
+          32
+        ],
+        "base": 2101179,
+        "translation": 108018
+      },
+      "upper_witness": {
+        "case": 45,
+        "coordinate": [
+          54,
+          51
+        ],
+        "cell": [
+          46,
+          19
+        ],
+        "base": 1314745,
+        "translation": 156838
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": false,
+      "axis": 0,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 107375,
+      "lower": 5490,
+      "upper": 5490,
+      "lower_witness": {
+        "case": 46,
+        "coordinate": [
+          42,
+          24
+        ],
+        "cell": [
+          43,
+          4
+        ],
+        "base": 2812558,
+        "translation": 2443084
+      },
+      "upper_witness": {
+        "case": 51,
+        "coordinate": [
+          5,
+          12
+        ],
+        "cell": [
+          38,
+          9
+        ],
+        "base": 2550413,
+        "translation": 2439420
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 4329,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": false,
+      "axis": 1,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 107375,
+      "lower": -4007,
+      "upper": -4007,
+      "lower_witness": {
+        "case": 83,
+        "coordinate": [
+          84,
+          70
+        ],
+        "cell": [
+          51,
+          23
+        ],
+        "base": 1511335,
+        "translation": 175553
+      },
+      "upper_witness": {
+        "case": 55,
+        "coordinate": [
+          0,
+          15
+        ],
+        "cell": [
+          39,
+          12
+        ],
+        "base": 855974,
+        "translation": 107999
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": false,
+      "axis": 0,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 107375,
+      "lower": 5490,
+      "upper": 5491,
+      "lower_witness": {
+        "case": 46,
+        "coordinate": [
+          42,
+          24
+        ],
+        "cell": [
+          43,
+          4
+        ],
+        "base": 2812558,
+        "translation": 2443084
+      },
+      "upper_witness": {
+        "case": 51,
+        "coordinate": [
+          5,
+          12
+        ],
+        "cell": [
+          38,
+          9
+        ],
+        "base": 2550412,
+        "translation": 2439419
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 4329,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": false,
+      "axis": 1,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 107375,
+      "lower": -4007,
+      "upper": -4007,
+      "lower_witness": {
+        "case": 83,
+        "coordinate": [
+          84,
+          70
+        ],
+        "cell": [
+          51,
+          23
+        ],
+        "base": 1511335,
+        "translation": 175553
+      },
+      "upper_witness": {
+        "case": 55,
+        "coordinate": [
+          0,
+          15
+        ],
+        "cell": [
+          39,
+          12
+        ],
+        "base": 855974,
+        "translation": 107999
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": true,
+      "axis": 0,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 107375,
+      "lower": 5461,
+      "upper": 5460,
+      "lower_witness": {
+        "case": 79,
+        "coordinate": [
+          17,
+          39
+        ],
+        "cell": [
+          43,
+          26
+        ],
+        "base": 2812587,
+        "translation": 2448403
+      },
+      "upper_witness": {
+        "case": 51,
+        "coordinate": [
+          82,
+          53
+        ],
+        "cell": [
+          48,
+          10
+        ],
+        "base": 3205803,
+        "translation": 2439428
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 4329,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": true,
+      "axis": 1,
+      "order": "retained_exact_inverse_then_quantize",
+      "constraints": 107375,
+      "lower": -4039,
+      "upper": -4038,
+      "lower_witness": {
+        "case": 45,
+        "coordinate": [
+          53,
+          61
+        ],
+        "cell": [
+          47,
+          28
+        ],
+        "base": 1839047,
+        "translation": 156838
+      },
+      "upper_witness": {
+        "case": 45,
+        "coordinate": [
+          51,
+          35
+        ],
+        "cell": [
+          44,
+          8
+        ],
+        "base": 593861,
+        "translation": 156838
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": true,
+      "axis": 0,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 107375,
+      "lower": 5469,
+      "upper": 5468,
+      "lower_witness": {
+        "case": 79,
+        "coordinate": [
+          17,
+          39
+        ],
+        "cell": [
+          43,
+          26
+        ],
+        "base": 2812579,
+        "translation": 2448395
+      },
+      "upper_witness": {
+        "case": 51,
+        "coordinate": [
+          82,
+          53
+        ],
+        "cell": [
+          48,
+          10
+        ],
+        "base": 3205795,
+        "translation": 2439420
+      },
+      "constant_phase_feasible": false,
+      "predeclared_phase_results": [
+        {
+          "phase": 4329,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": true,
+      "axis": 1,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "constraints": 107375,
+      "lower": -4019,
+      "upper": -4019,
+      "lower_witness": {
+        "case": 45,
+        "coordinate": [
+          53,
+          61
+        ],
+        "cell": [
+          47,
+          28
+        ],
+        "base": 1839027,
+        "translation": 156818
+      },
+      "upper_witness": {
+        "case": 67,
+        "coordinate": [
+          51,
+          64
+        ],
+        "cell": [
+          48,
+          30
+        ],
+        "base": 2035634,
+        "translation": 152526
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": true,
+      "axis": 0,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 107375,
+      "lower": 5469,
+      "upper": 5469,
+      "lower_witness": {
+        "case": 79,
+        "coordinate": [
+          17,
+          39
+        ],
+        "cell": [
+          43,
+          26
+        ],
+        "base": 2812579,
+        "translation": 2448395
+      },
+      "upper_witness": {
+        "case": 45,
+        "coordinate": [
+          58,
+          68
+        ],
+        "cell": [
+          48,
+          31
+        ],
+        "base": 3205794,
+        "translation": 2440100
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 4329,
+          "satisfies_all_constraints": false
+        }
+      ]
+    },
+    {
+      "baseline_id": 3,
+      "shape": 57,
+      "scale": 1,
+      "cached": true,
+      "axis": 1,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "constraints": 107375,
+      "lower": -4019,
+      "upper": -4019,
+      "lower_witness": {
+        "case": 45,
+        "coordinate": [
+          53,
+          61
+        ],
+        "cell": [
+          47,
+          28
+        ],
+        "base": 1839027,
+        "translation": 156818
+      },
+      "upper_witness": {
+        "case": 67,
+        "coordinate": [
+          51,
+          64
+        ],
+        "cell": [
+          48,
+          30
+        ],
+        "base": 2035634,
+        "translation": 152526
+      },
+      "constant_phase_feasible": true,
+      "predeclared_phase_results": [
+        {
+          "phase": 2386,
+          "satisfies_all_constraints": false
+        }
+      ]
+    }
+  ],
+  "translations": [
+    {
+      "case": 0,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 0,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 0,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 0,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 0,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 0,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 1,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14332919,
+        -4664366
+      ],
+      "new_t": [
+        -14332919,
+        -4664366
+      ]
+    },
+    {
+      "case": 1,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14332919,
+        -4664366
+      ],
+      "new_t": [
+        -14332918,
+        -4664348
+      ]
+    },
+    {
+      "case": 1,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14332919,
+        -4664366
+      ],
+      "new_t": [
+        -14332918,
+        -4664348
+      ]
+    },
+    {
+      "case": 1,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14332919,
+        -4664366
+      ],
+      "new_t": [
+        -14332919,
+        -4664366
+      ]
+    },
+    {
+      "case": 1,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14332919,
+        -4664366
+      ],
+      "new_t": [
+        -14332918,
+        -4664348
+      ]
+    },
+    {
+      "case": 1,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14332919,
+        -4664366
+      ],
+      "new_t": [
+        -14332918,
+        -4664348
+      ]
+    },
+    {
+      "case": 2,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 2,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 2,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 2,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 2,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 2,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 3,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 3,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 3,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 3,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 3,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 3,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 4,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 4,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 4,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 4,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 4,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 4,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 5,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402994,
+        -4598675
+      ]
+    },
+    {
+      "case": 5,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402993,
+        -4598657
+      ]
+    },
+    {
+      "case": 5,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402993,
+        -4598657
+      ]
+    },
+    {
+      "case": 5,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402994,
+        -4598675
+      ]
+    },
+    {
+      "case": 5,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402993,
+        -4598657
+      ]
+    },
+    {
+      "case": 5,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402993,
+        -4598657
+      ]
+    },
+    {
+      "case": 6,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402994,
+        -4598675
+      ]
+    },
+    {
+      "case": 6,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402993,
+        -4598657
+      ]
+    },
+    {
+      "case": 6,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402993,
+        -4598657
+      ]
+    },
+    {
+      "case": 6,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402994,
+        -4598675
+      ]
+    },
+    {
+      "case": 6,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402993,
+        -4598657
+      ]
+    },
+    {
+      "case": 6,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14402994,
+        -4598675
+      ],
+      "new_t": [
+        -14402993,
+        -4598657
+      ]
+    },
+    {
+      "case": 7,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14312248,
+        -4567672
+      ],
+      "new_t": [
+        -14312248,
+        -4567672
+      ]
+    },
+    {
+      "case": 7,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14312248,
+        -4567672
+      ],
+      "new_t": [
+        -14312247,
+        -4567654
+      ]
+    },
+    {
+      "case": 7,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14312248,
+        -4567672
+      ],
+      "new_t": [
+        -14312247,
+        -4567654
+      ]
+    },
+    {
+      "case": 7,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14312248,
+        -4567672
+      ],
+      "new_t": [
+        -14312248,
+        -4567672
+      ]
+    },
+    {
+      "case": 7,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14312248,
+        -4567672
+      ],
+      "new_t": [
+        -14312247,
+        -4567654
+      ]
+    },
+    {
+      "case": 7,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14312248,
+        -4567672
+      ],
+      "new_t": [
+        -14312247,
+        -4567654
+      ]
+    },
+    {
+      "case": 8,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 8,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 8,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 8,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 8,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 8,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 9,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 9,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 9,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 9,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 9,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 9,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 10,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 10,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 10,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 10,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367957,
+        -4631521
+      ]
+    },
+    {
+      "case": 10,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631503
+      ]
+    },
+    {
+      "case": 10,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14367957,
+        -4631521
+      ],
+      "new_t": [
+        -14367956,
+        -4631502
+      ]
+    },
+    {
+      "case": 11,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423666,
+        -4695369
+      ]
+    },
+    {
+      "case": 11,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423665,
+        -4695351
+      ]
+    },
+    {
+      "case": 11,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423665,
+        -4695351
+      ]
+    },
+    {
+      "case": 11,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423666,
+        -4695369
+      ]
+    },
+    {
+      "case": 11,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423665,
+        -4695351
+      ]
+    },
+    {
+      "case": 11,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423665,
+        -4695351
+      ]
+    },
+    {
+      "case": 12,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423666,
+        -4695369
+      ]
+    },
+    {
+      "case": 12,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423665,
+        -4695351
+      ]
+    },
+    {
+      "case": 12,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423665,
+        -4695351
+      ]
+    },
+    {
+      "case": 12,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423666,
+        -4695369
+      ]
+    },
+    {
+      "case": 12,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423665,
+        -4695351
+      ]
+    },
+    {
+      "case": 12,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14423666,
+        -4695369
+      ],
+      "new_t": [
+        -14423665,
+        -4695351
+      ]
+    },
+    {
+      "case": 13,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 13,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 13,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 13,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 13,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 13,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 14,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381028,
+        154337
+      ]
+    },
+    {
+      "case": 14,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381026,
+        154335
+      ]
+    },
+    {
+      "case": 14,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381026,
+        154336
+      ]
+    },
+    {
+      "case": 14,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381028,
+        154337
+      ]
+    },
+    {
+      "case": 14,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381026,
+        154335
+      ]
+    },
+    {
+      "case": 14,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381026,
+        154336
+      ]
+    },
+    {
+      "case": 15,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381028,
+        154337
+      ]
+    },
+    {
+      "case": 15,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381026,
+        154335
+      ]
+    },
+    {
+      "case": 15,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381026,
+        154336
+      ]
+    },
+    {
+      "case": 15,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381028,
+        154337
+      ]
+    },
+    {
+      "case": 15,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381026,
+        154335
+      ]
+    },
+    {
+      "case": 15,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -381028,
+        154337
+      ],
+      "new_t": [
+        -381026,
+        154336
+      ]
+    },
+    {
+      "case": 16,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 16,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 16,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 16,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 16,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 16,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 17,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 17,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 17,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 17,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 17,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 17,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 18,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 18,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 18,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 18,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 18,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 18,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 19,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -394710,
+        167164
+      ],
+      "new_t": [
+        -394710,
+        167164
+      ]
+    },
+    {
+      "case": 19,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -394710,
+        167164
+      ],
+      "new_t": [
+        -394708,
+        167161
+      ]
+    },
+    {
+      "case": 19,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -394710,
+        167164
+      ],
+      "new_t": [
+        -394708,
+        167162
+      ]
+    },
+    {
+      "case": 19,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -394710,
+        167164
+      ],
+      "new_t": [
+        -394710,
+        167164
+      ]
+    },
+    {
+      "case": 19,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -394710,
+        167164
+      ],
+      "new_t": [
+        -394708,
+        167161
+      ]
+    },
+    {
+      "case": 19,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -394710,
+        167164
+      ],
+      "new_t": [
+        -394708,
+        167162
+      ]
+    },
+    {
+      "case": 20,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -376992,
+        173217
+      ],
+      "new_t": [
+        -376992,
+        173217
+      ]
+    },
+    {
+      "case": 20,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -376992,
+        173217
+      ],
+      "new_t": [
+        -376990,
+        173215
+      ]
+    },
+    {
+      "case": 20,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -376992,
+        173217
+      ],
+      "new_t": [
+        -376990,
+        173215
+      ]
+    },
+    {
+      "case": 20,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -376992,
+        173217
+      ],
+      "new_t": [
+        -376992,
+        173217
+      ]
+    },
+    {
+      "case": 20,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -376992,
+        173217
+      ],
+      "new_t": [
+        -376990,
+        173215
+      ]
+    },
+    {
+      "case": 20,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -376992,
+        173217
+      ],
+      "new_t": [
+        -376990,
+        173215
+      ]
+    },
+    {
+      "case": 21,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 21,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 21,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 21,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 21,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 21,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 22,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 22,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 22,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 22,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 22,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 22,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 23,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 23,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 23,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 23,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387869,
+        160751
+      ]
+    },
+    {
+      "case": 23,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160748
+      ]
+    },
+    {
+      "case": 23,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -387869,
+        160751
+      ],
+      "new_t": [
+        -387867,
+        160749
+      ]
+    },
+    {
+      "case": 24,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398746,
+        148284
+      ]
+    },
+    {
+      "case": 24,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398744,
+        148282
+      ]
+    },
+    {
+      "case": 24,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398744,
+        148283
+      ]
+    },
+    {
+      "case": 24,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398746,
+        148284
+      ]
+    },
+    {
+      "case": 24,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398744,
+        148282
+      ]
+    },
+    {
+      "case": 24,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398744,
+        148283
+      ]
+    },
+    {
+      "case": 25,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398746,
+        148284
+      ]
+    },
+    {
+      "case": 25,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398744,
+        148282
+      ]
+    },
+    {
+      "case": 25,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398744,
+        148283
+      ]
+    },
+    {
+      "case": 25,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398746,
+        148284
+      ]
+    },
+    {
+      "case": 25,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398744,
+        148282
+      ]
+    },
+    {
+      "case": 25,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -398746,
+        148284
+      ],
+      "new_t": [
+        -398744,
+        148283
+      ]
+    },
+    {
+      "case": 26,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 26,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 26,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 26,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 26,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 26,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 27,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94663,
+        -4608835
+      ]
+    },
+    {
+      "case": 27,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94661,
+        -4608835
+      ]
+    },
+    {
+      "case": 27,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94661,
+        -4608835
+      ]
+    },
+    {
+      "case": 27,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94663,
+        -4608835
+      ]
+    },
+    {
+      "case": 27,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94661,
+        -4608835
+      ]
+    },
+    {
+      "case": 27,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94661,
+        -4608835
+      ]
+    },
+    {
+      "case": 28,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94663,
+        -4608835
+      ]
+    },
+    {
+      "case": 28,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94661,
+        -4608835
+      ]
+    },
+    {
+      "case": 28,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94661,
+        -4608835
+      ]
+    },
+    {
+      "case": 28,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94663,
+        -4608835
+      ]
+    },
+    {
+      "case": 28,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94661,
+        -4608835
+      ]
+    },
+    {
+      "case": 28,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        94663,
+        -4608835
+      ],
+      "new_t": [
+        94661,
+        -4608835
+      ]
+    },
+    {
+      "case": 29,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 29,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 29,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 29,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 29,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 29,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 30,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 30,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 30,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 30,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 30,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 30,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 31,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 31,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 31,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 31,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 31,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 31,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 32,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        82860,
+        -4543144
+      ],
+      "new_t": [
+        82860,
+        -4543144
+      ]
+    },
+    {
+      "case": 32,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        82860,
+        -4543144
+      ],
+      "new_t": [
+        82857,
+        -4543144
+      ]
+    },
+    {
+      "case": 32,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        82860,
+        -4543144
+      ],
+      "new_t": [
+        82858,
+        -4543144
+      ]
+    },
+    {
+      "case": 32,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        82860,
+        -4543144
+      ],
+      "new_t": [
+        82860,
+        -4543144
+      ]
+    },
+    {
+      "case": 32,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        82860,
+        -4543144
+      ],
+      "new_t": [
+        82857,
+        -4543144
+      ]
+    },
+    {
+      "case": 32,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        82860,
+        -4543144
+      ],
+      "new_t": [
+        82858,
+        -4543144
+      ]
+    },
+    {
+      "case": 33,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        98145,
+        -4512141
+      ],
+      "new_t": [
+        98145,
+        -4512141
+      ]
+    },
+    {
+      "case": 33,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        98145,
+        -4512141
+      ],
+      "new_t": [
+        98143,
+        -4512141
+      ]
+    },
+    {
+      "case": 33,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        98145,
+        -4512141
+      ],
+      "new_t": [
+        98142,
+        -4512140
+      ]
+    },
+    {
+      "case": 33,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        98145,
+        -4512141
+      ],
+      "new_t": [
+        98145,
+        -4512141
+      ]
+    },
+    {
+      "case": 33,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        98145,
+        -4512141
+      ],
+      "new_t": [
+        98143,
+        -4512141
+      ]
+    },
+    {
+      "case": 33,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        98145,
+        -4512141
+      ],
+      "new_t": [
+        98142,
+        -4512140
+      ]
+    },
+    {
+      "case": 34,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 34,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 34,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 34,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 34,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 34,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 35,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 35,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 35,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 35,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 35,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 35,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 36,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 36,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 36,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 36,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88762,
+        -4575990
+      ]
+    },
+    {
+      "case": 36,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 36,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88762,
+        -4575990
+      ],
+      "new_t": [
+        88759,
+        -4575989
+      ]
+    },
+    {
+      "case": 37,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79378,
+        -4639839
+      ]
+    },
+    {
+      "case": 37,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79375,
+        -4639838
+      ]
+    },
+    {
+      "case": 37,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79375,
+        -4639838
+      ]
+    },
+    {
+      "case": 37,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79378,
+        -4639839
+      ]
+    },
+    {
+      "case": 37,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79375,
+        -4639838
+      ]
+    },
+    {
+      "case": 37,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79375,
+        -4639838
+      ]
+    },
+    {
+      "case": 38,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79378,
+        -4639839
+      ]
+    },
+    {
+      "case": 38,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79375,
+        -4639838
+      ]
+    },
+    {
+      "case": 38,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79375,
+        -4639838
+      ]
+    },
+    {
+      "case": 38,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79378,
+        -4639839
+      ]
+    },
+    {
+      "case": 38,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79375,
+        -4639838
+      ]
+    },
+    {
+      "case": 38,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        79378,
+        -4639839
+      ],
+      "new_t": [
+        79375,
+        -4639838
+      ]
+    },
+    {
+      "case": 39,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 39,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 39,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 39,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 39,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 39,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 40,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442413,
+        144012
+      ]
+    },
+    {
+      "case": 40,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442404,
+        143992
+      ]
+    },
+    {
+      "case": 40,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442404,
+        143992
+      ]
+    },
+    {
+      "case": 40,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442413,
+        144012
+      ]
+    },
+    {
+      "case": 40,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442404,
+        143992
+      ]
+    },
+    {
+      "case": 40,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442404,
+        143992
+      ]
+    },
+    {
+      "case": 41,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442413,
+        144012
+      ]
+    },
+    {
+      "case": 41,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442404,
+        143992
+      ]
+    },
+    {
+      "case": 41,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442404,
+        143992
+      ]
+    },
+    {
+      "case": 41,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442413,
+        144012
+      ]
+    },
+    {
+      "case": 41,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442404,
+        143992
+      ]
+    },
+    {
+      "case": 41,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2442413,
+        144012
+      ],
+      "new_t": [
+        2442404,
+        143992
+      ]
+    },
+    {
+      "case": 42,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 42,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 42,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 42,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 42,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 42,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 43,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 43,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 43,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 43,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 43,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 43,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 44,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 44,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 44,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 44,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 44,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 44,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 45,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2440108,
+        156838
+      ],
+      "new_t": [
+        2440108,
+        156838
+      ]
+    },
+    {
+      "case": 45,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2440108,
+        156838
+      ],
+      "new_t": [
+        2440100,
+        156818
+      ]
+    },
+    {
+      "case": 45,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2440108,
+        156838
+      ],
+      "new_t": [
+        2440100,
+        156818
+      ]
+    },
+    {
+      "case": 45,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2440108,
+        156838
+      ],
+      "new_t": [
+        2440108,
+        156838
+      ]
+    },
+    {
+      "case": 45,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2440108,
+        156838
+      ],
+      "new_t": [
+        2440100,
+        156818
+      ]
+    },
+    {
+      "case": 45,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2440108,
+        156838
+      ],
+      "new_t": [
+        2440100,
+        156818
+      ]
+    },
+    {
+      "case": 46,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443092,
+        162891
+      ]
+    },
+    {
+      "case": 46,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443084,
+        162872
+      ]
+    },
+    {
+      "case": 46,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443084,
+        162871
+      ]
+    },
+    {
+      "case": 46,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443092,
+        162891
+      ]
+    },
+    {
+      "case": 46,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443084,
+        162872
+      ]
+    },
+    {
+      "case": 46,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443084,
+        162871
+      ]
+    },
+    {
+      "case": 47,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443092,
+        162891
+      ]
+    },
+    {
+      "case": 47,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443084,
+        162872
+      ]
+    },
+    {
+      "case": 47,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443084,
+        162871
+      ]
+    },
+    {
+      "case": 47,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443092,
+        162891
+      ]
+    },
+    {
+      "case": 47,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443084,
+        162872
+      ]
+    },
+    {
+      "case": 47,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2443092,
+        162891
+      ],
+      "new_t": [
+        2443084,
+        162871
+      ]
+    },
+    {
+      "case": 48,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 48,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 48,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 48,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 48,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 48,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 49,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 49,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 49,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 49,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 49,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 49,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 50,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 50,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 50,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 50,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441260,
+        150425
+      ]
+    },
+    {
+      "case": 50,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 50,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441260,
+        150425
+      ],
+      "new_t": [
+        2441252,
+        150405
+      ]
+    },
+    {
+      "case": 51,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2439428,
+        137959
+      ],
+      "new_t": [
+        2439428,
+        137959
+      ]
+    },
+    {
+      "case": 51,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2439428,
+        137959
+      ],
+      "new_t": [
+        2439420,
+        137939
+      ]
+    },
+    {
+      "case": 51,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2439428,
+        137959
+      ],
+      "new_t": [
+        2439419,
+        137939
+      ]
+    },
+    {
+      "case": 51,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2439428,
+        137959
+      ],
+      "new_t": [
+        2439428,
+        137959
+      ]
+    },
+    {
+      "case": 51,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2439428,
+        137959
+      ],
+      "new_t": [
+        2439420,
+        137939
+      ]
+    },
+    {
+      "case": 51,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2439428,
+        137959
+      ],
+      "new_t": [
+        2439419,
+        137939
+      ]
+    },
+    {
+      "case": 52,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14317662,
+        -4673927
+      ],
+      "new_t": [
+        -14317662,
+        -4673927
+      ]
+    },
+    {
+      "case": 52,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14317662,
+        -4673927
+      ],
+      "new_t": [
+        -14317661,
+        -4673910
+      ]
+    },
+    {
+      "case": 52,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14317662,
+        -4673927
+      ],
+      "new_t": [
+        -14317661,
+        -4673910
+      ]
+    },
+    {
+      "case": 52,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14317662,
+        -4673927
+      ],
+      "new_t": [
+        -14317662,
+        -4673927
+      ]
+    },
+    {
+      "case": 52,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14317662,
+        -4673927
+      ],
+      "new_t": [
+        -14317661,
+        -4673910
+      ]
+    },
+    {
+      "case": 52,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14317662,
+        -4673927
+      ],
+      "new_t": [
+        -14317661,
+        -4673910
+      ]
+    },
+    {
+      "case": 53,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -337574,
+        118344
+      ],
+      "new_t": [
+        -337574,
+        118344
+      ]
+    },
+    {
+      "case": 53,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -337574,
+        118344
+      ],
+      "new_t": [
+        -337572,
+        118342
+      ]
+    },
+    {
+      "case": 53,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -337574,
+        118344
+      ],
+      "new_t": [
+        -337572,
+        118342
+      ]
+    },
+    {
+      "case": 53,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -337574,
+        118344
+      ],
+      "new_t": [
+        -337574,
+        118344
+      ]
+    },
+    {
+      "case": 53,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -337574,
+        118344
+      ],
+      "new_t": [
+        -337572,
+        118342
+      ]
+    },
+    {
+      "case": 53,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -337574,
+        118344
+      ],
+      "new_t": [
+        -337572,
+        118342
+      ]
+    },
+    {
+      "case": 54,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        97233,
+        -4618397
+      ],
+      "new_t": [
+        97233,
+        -4618397
+      ]
+    },
+    {
+      "case": 54,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        97233,
+        -4618397
+      ],
+      "new_t": [
+        97231,
+        -4618396
+      ]
+    },
+    {
+      "case": 54,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        97233,
+        -4618397
+      ],
+      "new_t": [
+        97231,
+        -4618396
+      ]
+    },
+    {
+      "case": 54,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        97233,
+        -4618397
+      ],
+      "new_t": [
+        97233,
+        -4618397
+      ]
+    },
+    {
+      "case": 54,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        97233,
+        -4618397
+      ],
+      "new_t": [
+        97231,
+        -4618396
+      ]
+    },
+    {
+      "case": 54,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        97233,
+        -4618397
+      ],
+      "new_t": [
+        97231,
+        -4618396
+      ]
+    },
+    {
+      "case": 55,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2449732,
+        108018
+      ],
+      "new_t": [
+        2449732,
+        108018
+      ]
+    },
+    {
+      "case": 55,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2449732,
+        108018
+      ],
+      "new_t": [
+        2449723,
+        107999
+      ]
+    },
+    {
+      "case": 55,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2449732,
+        108018
+      ],
+      "new_t": [
+        2449723,
+        107999
+      ]
+    },
+    {
+      "case": 55,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2449732,
+        108018
+      ],
+      "new_t": [
+        2449732,
+        108018
+      ]
+    },
+    {
+      "case": 55,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2449732,
+        108018
+      ],
+      "new_t": [
+        2449723,
+        107999
+      ]
+    },
+    {
+      "case": 55,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2449732,
+        108018
+      ],
+      "new_t": [
+        2449723,
+        107999
+      ]
+    },
+    {
+      "case": 56,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14342809,
+        -4652724
+      ],
+      "new_t": [
+        -14342809,
+        -4652724
+      ]
+    },
+    {
+      "case": 56,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14342809,
+        -4652724
+      ],
+      "new_t": [
+        -14342808,
+        -4652706
+      ]
+    },
+    {
+      "case": 56,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14342809,
+        -4652724
+      ],
+      "new_t": [
+        -14342808,
+        -4652706
+      ]
+    },
+    {
+      "case": 56,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14342809,
+        -4652724
+      ],
+      "new_t": [
+        -14342809,
+        -4652724
+      ]
+    },
+    {
+      "case": 56,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14342809,
+        -4652724
+      ],
+      "new_t": [
+        -14342808,
+        -4652706
+      ]
+    },
+    {
+      "case": 56,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14342809,
+        -4652724
+      ],
+      "new_t": [
+        -14342808,
+        -4652706
+      ]
+    },
+    {
+      "case": 57,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -362721,
+        139547
+      ],
+      "new_t": [
+        -362721,
+        139547
+      ]
+    },
+    {
+      "case": 57,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -362721,
+        139547
+      ],
+      "new_t": [
+        -362720,
+        139545
+      ]
+    },
+    {
+      "case": 57,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -362721,
+        139547
+      ],
+      "new_t": [
+        -362719,
+        139545
+      ]
+    },
+    {
+      "case": 57,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -362721,
+        139547
+      ],
+      "new_t": [
+        -362721,
+        139547
+      ]
+    },
+    {
+      "case": 57,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -362721,
+        139547
+      ],
+      "new_t": [
+        -362720,
+        139545
+      ]
+    },
+    {
+      "case": 57,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -362721,
+        139547
+      ],
+      "new_t": [
+        -362719,
+        139545
+      ]
+    },
+    {
+      "case": 58,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        92998,
+        -4597193
+      ],
+      "new_t": [
+        92998,
+        -4597193
+      ]
+    },
+    {
+      "case": 58,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        92998,
+        -4597193
+      ],
+      "new_t": [
+        92995,
+        -4597193
+      ]
+    },
+    {
+      "case": 58,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        92998,
+        -4597193
+      ],
+      "new_t": [
+        92995,
+        -4597193
+      ]
+    },
+    {
+      "case": 58,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        92998,
+        -4597193
+      ],
+      "new_t": [
+        92998,
+        -4597193
+      ]
+    },
+    {
+      "case": 58,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        92998,
+        -4597193
+      ],
+      "new_t": [
+        92995,
+        -4597193
+      ]
+    },
+    {
+      "case": 58,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        92998,
+        -4597193
+      ],
+      "new_t": [
+        92995,
+        -4597193
+      ]
+    },
+    {
+      "case": 59,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2445496,
+        129222
+      ],
+      "new_t": [
+        2445496,
+        129222
+      ]
+    },
+    {
+      "case": 59,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2445496,
+        129222
+      ],
+      "new_t": [
+        2445487,
+        129202
+      ]
+    },
+    {
+      "case": 59,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2445496,
+        129222
+      ],
+      "new_t": [
+        2445487,
+        129202
+      ]
+    },
+    {
+      "case": 59,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2445496,
+        129222
+      ],
+      "new_t": [
+        2445496,
+        129222
+      ]
+    },
+    {
+      "case": 59,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2445496,
+        129222
+      ],
+      "new_t": [
+        2445487,
+        129202
+      ]
+    },
+    {
+      "case": 59,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2445496,
+        129222
+      ],
+      "new_t": [
+        2445487,
+        129202
+      ]
+    },
+    {
+      "case": 60,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14365442,
+        -4633641
+      ],
+      "new_t": [
+        -14365442,
+        -4633641
+      ]
+    },
+    {
+      "case": 60,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14365442,
+        -4633641
+      ],
+      "new_t": [
+        -14365441,
+        -4633623
+      ]
+    },
+    {
+      "case": 60,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14365442,
+        -4633641
+      ],
+      "new_t": [
+        -14365441,
+        -4633623
+      ]
+    },
+    {
+      "case": 60,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14365442,
+        -4633641
+      ],
+      "new_t": [
+        -14365442,
+        -4633641
+      ]
+    },
+    {
+      "case": 60,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14365442,
+        -4633641
+      ],
+      "new_t": [
+        -14365441,
+        -4633623
+      ]
+    },
+    {
+      "case": 60,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14365442,
+        -4633641
+      ],
+      "new_t": [
+        -14365441,
+        -4633623
+      ]
+    },
+    {
+      "case": 61,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -385354,
+        158630
+      ],
+      "new_t": [
+        -385354,
+        158630
+      ]
+    },
+    {
+      "case": 61,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -385354,
+        158630
+      ],
+      "new_t": [
+        -385352,
+        158628
+      ]
+    },
+    {
+      "case": 61,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -385354,
+        158630
+      ],
+      "new_t": [
+        -385352,
+        158628
+      ]
+    },
+    {
+      "case": 61,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -385354,
+        158630
+      ],
+      "new_t": [
+        -385354,
+        158630
+      ]
+    },
+    {
+      "case": 61,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -385354,
+        158630
+      ],
+      "new_t": [
+        -385352,
+        158628
+      ]
+    },
+    {
+      "case": 61,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -385354,
+        158630
+      ],
+      "new_t": [
+        -385352,
+        158628
+      ]
+    },
+    {
+      "case": 62,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        89185,
+        -4578110
+      ],
+      "new_t": [
+        89185,
+        -4578110
+      ]
+    },
+    {
+      "case": 62,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        89185,
+        -4578110
+      ],
+      "new_t": [
+        89183,
+        -4578110
+      ]
+    },
+    {
+      "case": 62,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        89185,
+        -4578110
+      ],
+      "new_t": [
+        89183,
+        -4578110
+      ]
+    },
+    {
+      "case": 62,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        89185,
+        -4578110
+      ],
+      "new_t": [
+        89185,
+        -4578110
+      ]
+    },
+    {
+      "case": 62,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        89185,
+        -4578110
+      ],
+      "new_t": [
+        89183,
+        -4578110
+      ]
+    },
+    {
+      "case": 62,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        89185,
+        -4578110
+      ],
+      "new_t": [
+        89183,
+        -4578110
+      ]
+    },
+    {
+      "case": 63,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441684,
+        148305
+      ],
+      "new_t": [
+        2441684,
+        148305
+      ]
+    },
+    {
+      "case": 63,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441684,
+        148305
+      ],
+      "new_t": [
+        2441675,
+        148285
+      ]
+    },
+    {
+      "case": 63,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441684,
+        148305
+      ],
+      "new_t": [
+        2441676,
+        148285
+      ]
+    },
+    {
+      "case": 63,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441684,
+        148305
+      ],
+      "new_t": [
+        2441684,
+        148305
+      ]
+    },
+    {
+      "case": 63,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441684,
+        148305
+      ],
+      "new_t": [
+        2441675,
+        148285
+      ]
+    },
+    {
+      "case": 63,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441684,
+        148305
+      ],
+      "new_t": [
+        2441676,
+        148285
+      ]
+    },
+    {
+      "case": 64,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14370471,
+        -4629400
+      ],
+      "new_t": [
+        -14370471,
+        -4629400
+      ]
+    },
+    {
+      "case": 64,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14370471,
+        -4629400
+      ],
+      "new_t": [
+        -14370470,
+        -4629382
+      ]
+    },
+    {
+      "case": 64,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14370471,
+        -4629400
+      ],
+      "new_t": [
+        -14370471,
+        -4629383
+      ]
+    },
+    {
+      "case": 64,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14370471,
+        -4629400
+      ],
+      "new_t": [
+        -14370471,
+        -4629400
+      ]
+    },
+    {
+      "case": 64,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14370471,
+        -4629400
+      ],
+      "new_t": [
+        -14370470,
+        -4629382
+      ]
+    },
+    {
+      "case": 64,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14370471,
+        -4629400
+      ],
+      "new_t": [
+        -14370471,
+        -4629383
+      ]
+    },
+    {
+      "case": 65,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -390383,
+        162871
+      ],
+      "new_t": [
+        -390383,
+        162871
+      ]
+    },
+    {
+      "case": 65,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -390383,
+        162871
+      ],
+      "new_t": [
+        -390382,
+        162869
+      ]
+    },
+    {
+      "case": 65,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -390383,
+        162871
+      ],
+      "new_t": [
+        -390382,
+        162868
+      ]
+    },
+    {
+      "case": 65,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -390383,
+        162871
+      ],
+      "new_t": [
+        -390383,
+        162871
+      ]
+    },
+    {
+      "case": 65,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -390383,
+        162871
+      ],
+      "new_t": [
+        -390382,
+        162869
+      ]
+    },
+    {
+      "case": 65,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -390383,
+        162871
+      ],
+      "new_t": [
+        -390382,
+        162868
+      ]
+    },
+    {
+      "case": 66,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88338,
+        -4573870
+      ],
+      "new_t": [
+        88338,
+        -4573870
+      ]
+    },
+    {
+      "case": 66,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88338,
+        -4573870
+      ],
+      "new_t": [
+        88336,
+        -4573869
+      ]
+    },
+    {
+      "case": 66,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88338,
+        -4573870
+      ],
+      "new_t": [
+        88335,
+        -4573869
+      ]
+    },
+    {
+      "case": 66,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88338,
+        -4573870
+      ],
+      "new_t": [
+        88338,
+        -4573870
+      ]
+    },
+    {
+      "case": 66,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88338,
+        -4573870
+      ],
+      "new_t": [
+        88336,
+        -4573869
+      ]
+    },
+    {
+      "case": 66,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88338,
+        -4573870
+      ],
+      "new_t": [
+        88335,
+        -4573869
+      ]
+    },
+    {
+      "case": 67,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2440837,
+        152545
+      ],
+      "new_t": [
+        2440837,
+        152545
+      ]
+    },
+    {
+      "case": 67,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2440837,
+        152545
+      ],
+      "new_t": [
+        2440828,
+        152526
+      ]
+    },
+    {
+      "case": 67,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2440837,
+        152545
+      ],
+      "new_t": [
+        2440828,
+        152526
+      ]
+    },
+    {
+      "case": 67,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2440837,
+        152545
+      ],
+      "new_t": [
+        2440837,
+        152545
+      ]
+    },
+    {
+      "case": 67,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2440837,
+        152545
+      ],
+      "new_t": [
+        2440828,
+        152526
+      ]
+    },
+    {
+      "case": 67,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2440837,
+        152545
+      ],
+      "new_t": [
+        2440828,
+        152526
+      ]
+    },
+    {
+      "case": 68,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14393104,
+        -4610317
+      ],
+      "new_t": [
+        -14393104,
+        -4610317
+      ]
+    },
+    {
+      "case": 68,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14393104,
+        -4610317
+      ],
+      "new_t": [
+        -14393103,
+        -4610299
+      ]
+    },
+    {
+      "case": 68,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14393104,
+        -4610317
+      ],
+      "new_t": [
+        -14393103,
+        -4610299
+      ]
+    },
+    {
+      "case": 68,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14393104,
+        -4610317
+      ],
+      "new_t": [
+        -14393104,
+        -4610317
+      ]
+    },
+    {
+      "case": 68,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14393104,
+        -4610317
+      ],
+      "new_t": [
+        -14393103,
+        -4610299
+      ]
+    },
+    {
+      "case": 68,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14393104,
+        -4610317
+      ],
+      "new_t": [
+        -14393103,
+        -4610299
+      ]
+    },
+    {
+      "case": 69,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -413016,
+        181954
+      ],
+      "new_t": [
+        -413016,
+        181954
+      ]
+    },
+    {
+      "case": 69,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -413016,
+        181954
+      ],
+      "new_t": [
+        -413014,
+        181952
+      ]
+    },
+    {
+      "case": 69,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -413016,
+        181954
+      ],
+      "new_t": [
+        -413014,
+        181952
+      ]
+    },
+    {
+      "case": 69,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -413016,
+        181954
+      ],
+      "new_t": [
+        -413016,
+        181954
+      ]
+    },
+    {
+      "case": 69,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -413016,
+        181954
+      ],
+      "new_t": [
+        -413014,
+        181952
+      ]
+    },
+    {
+      "case": 69,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -413016,
+        181954
+      ],
+      "new_t": [
+        -413014,
+        181952
+      ]
+    },
+    {
+      "case": 70,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        84526,
+        -4554787
+      ],
+      "new_t": [
+        84526,
+        -4554787
+      ]
+    },
+    {
+      "case": 70,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        84526,
+        -4554787
+      ],
+      "new_t": [
+        84523,
+        -4554786
+      ]
+    },
+    {
+      "case": 70,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        84526,
+        -4554787
+      ],
+      "new_t": [
+        84523,
+        -4554786
+      ]
+    },
+    {
+      "case": 70,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        84526,
+        -4554787
+      ],
+      "new_t": [
+        84526,
+        -4554787
+      ]
+    },
+    {
+      "case": 70,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        84526,
+        -4554787
+      ],
+      "new_t": [
+        84523,
+        -4554786
+      ]
+    },
+    {
+      "case": 70,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        84526,
+        -4554787
+      ],
+      "new_t": [
+        84523,
+        -4554786
+      ]
+    },
+    {
+      "case": 71,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2437024,
+        171628
+      ],
+      "new_t": [
+        2437024,
+        171628
+      ]
+    },
+    {
+      "case": 71,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2437024,
+        171628
+      ],
+      "new_t": [
+        2437016,
+        171609
+      ]
+    },
+    {
+      "case": 71,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2437024,
+        171628
+      ],
+      "new_t": [
+        2437016,
+        171609
+      ]
+    },
+    {
+      "case": 71,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2437024,
+        171628
+      ],
+      "new_t": [
+        2437024,
+        171628
+      ]
+    },
+    {
+      "case": 71,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2437024,
+        171628
+      ],
+      "new_t": [
+        2437016,
+        171609
+      ]
+    },
+    {
+      "case": 71,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2437024,
+        171628
+      ],
+      "new_t": [
+        2437016,
+        171609
+      ]
+    },
+    {
+      "case": 72,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14418251,
+        -4589114
+      ],
+      "new_t": [
+        -14418251,
+        -4589114
+      ]
+    },
+    {
+      "case": 72,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14418251,
+        -4589114
+      ],
+      "new_t": [
+        -14418251,
+        -4589096
+      ]
+    },
+    {
+      "case": 72,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14418251,
+        -4589114
+      ],
+      "new_t": [
+        -14418251,
+        -4589096
+      ]
+    },
+    {
+      "case": 72,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14418251,
+        -4589114
+      ],
+      "new_t": [
+        -14418251,
+        -4589114
+      ]
+    },
+    {
+      "case": 72,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14418251,
+        -4589114
+      ],
+      "new_t": [
+        -14418251,
+        -4589096
+      ]
+    },
+    {
+      "case": 72,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14418251,
+        -4589114
+      ],
+      "new_t": [
+        -14418251,
+        -4589096
+      ]
+    },
+    {
+      "case": 73,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -438164,
+        203157
+      ],
+      "new_t": [
+        -438164,
+        203157
+      ]
+    },
+    {
+      "case": 73,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -438164,
+        203157
+      ],
+      "new_t": [
+        -438162,
+        203155
+      ]
+    },
+    {
+      "case": 73,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -438164,
+        203157
+      ],
+      "new_t": [
+        -438162,
+        203155
+      ]
+    },
+    {
+      "case": 73,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -438164,
+        203157
+      ],
+      "new_t": [
+        -438164,
+        203157
+      ]
+    },
+    {
+      "case": 73,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -438164,
+        203157
+      ],
+      "new_t": [
+        -438162,
+        203155
+      ]
+    },
+    {
+      "case": 73,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -438164,
+        203157
+      ],
+      "new_t": [
+        -438162,
+        203155
+      ]
+    },
+    {
+      "case": 74,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        80290,
+        -4533583
+      ],
+      "new_t": [
+        80290,
+        -4533583
+      ]
+    },
+    {
+      "case": 74,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        80290,
+        -4533583
+      ],
+      "new_t": [
+        80287,
+        -4533583
+      ]
+    },
+    {
+      "case": 74,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        80290,
+        -4533583
+      ],
+      "new_t": [
+        80287,
+        -4533582
+      ]
+    },
+    {
+      "case": 74,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        80290,
+        -4533583
+      ],
+      "new_t": [
+        80290,
+        -4533583
+      ]
+    },
+    {
+      "case": 74,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        80290,
+        -4533583
+      ],
+      "new_t": [
+        80287,
+        -4533583
+      ]
+    },
+    {
+      "case": 74,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        80290,
+        -4533583
+      ],
+      "new_t": [
+        80287,
+        -4533582
+      ]
+    },
+    {
+      "case": 75,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2432788,
+        192832
+      ],
+      "new_t": [
+        2432788,
+        192832
+      ]
+    },
+    {
+      "case": 75,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2432788,
+        192832
+      ],
+      "new_t": [
+        2432780,
+        192812
+      ]
+    },
+    {
+      "case": 75,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2432788,
+        192832
+      ],
+      "new_t": [
+        2432780,
+        192812
+      ]
+    },
+    {
+      "case": 75,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2432788,
+        192832
+      ],
+      "new_t": [
+        2432788,
+        192832
+      ]
+    },
+    {
+      "case": 75,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2432788,
+        192832
+      ],
+      "new_t": [
+        2432780,
+        192812
+      ]
+    },
+    {
+      "case": 75,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2432788,
+        192832
+      ],
+      "new_t": [
+        2432780,
+        192812
+      ]
+    },
+    {
+      "case": 76,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14325550,
+        -4581226
+      ],
+      "new_t": [
+        -14325550,
+        -4581226
+      ]
+    },
+    {
+      "case": 76,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14325550,
+        -4581226
+      ],
+      "new_t": [
+        -14325549,
+        -4581208
+      ]
+    },
+    {
+      "case": 76,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14325550,
+        -4581226
+      ],
+      "new_t": [
+        -14325549,
+        -4581208
+      ]
+    },
+    {
+      "case": 76,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14325550,
+        -4581226
+      ],
+      "new_t": [
+        -14325550,
+        -4581226
+      ]
+    },
+    {
+      "case": 76,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14325550,
+        -4581226
+      ],
+      "new_t": [
+        -14325549,
+        -4581208
+      ]
+    },
+    {
+      "case": 76,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14325550,
+        -4581226
+      ],
+      "new_t": [
+        -14325549,
+        -4581208
+      ]
+    },
+    {
+      "case": 77,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -345462,
+        211045
+      ],
+      "new_t": [
+        -345462,
+        211045
+      ]
+    },
+    {
+      "case": 77,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -345462,
+        211045
+      ],
+      "new_t": [
+        -345461,
+        211043
+      ]
+    },
+    {
+      "case": 77,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -345462,
+        211045
+      ],
+      "new_t": [
+        -345460,
+        211043
+      ]
+    },
+    {
+      "case": 77,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -345462,
+        211045
+      ],
+      "new_t": [
+        -345462,
+        211045
+      ]
+    },
+    {
+      "case": 77,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -345462,
+        211045
+      ],
+      "new_t": [
+        -345461,
+        211043
+      ]
+    },
+    {
+      "case": 77,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -345462,
+        211045
+      ],
+      "new_t": [
+        -345460,
+        211043
+      ]
+    },
+    {
+      "case": 78,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        95905,
+        -4525695
+      ],
+      "new_t": [
+        95905,
+        -4525695
+      ]
+    },
+    {
+      "case": 78,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        95905,
+        -4525695
+      ],
+      "new_t": [
+        95902,
+        -4525694
+      ]
+    },
+    {
+      "case": 78,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        95905,
+        -4525695
+      ],
+      "new_t": [
+        95903,
+        -4525694
+      ]
+    },
+    {
+      "case": 78,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        95905,
+        -4525695
+      ],
+      "new_t": [
+        95905,
+        -4525695
+      ]
+    },
+    {
+      "case": 78,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        95905,
+        -4525695
+      ],
+      "new_t": [
+        95902,
+        -4525694
+      ]
+    },
+    {
+      "case": 78,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        95905,
+        -4525695
+      ],
+      "new_t": [
+        95903,
+        -4525694
+      ]
+    },
+    {
+      "case": 79,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2448403,
+        200720
+      ],
+      "new_t": [
+        2448403,
+        200720
+      ]
+    },
+    {
+      "case": 79,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2448403,
+        200720
+      ],
+      "new_t": [
+        2448395,
+        200700
+      ]
+    },
+    {
+      "case": 79,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2448403,
+        200720
+      ],
+      "new_t": [
+        2448395,
+        200700
+      ]
+    },
+    {
+      "case": 79,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2448403,
+        200720
+      ],
+      "new_t": [
+        2448403,
+        200720
+      ]
+    },
+    {
+      "case": 79,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2448403,
+        200720
+      ],
+      "new_t": [
+        2448395,
+        200700
+      ]
+    },
+    {
+      "case": 79,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2448403,
+        200720
+      ],
+      "new_t": [
+        2448395,
+        200700
+      ]
+    },
+    {
+      "case": 80,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14346753,
+        -4606373
+      ],
+      "new_t": [
+        -14346753,
+        -4606373
+      ]
+    },
+    {
+      "case": 80,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14346753,
+        -4606373
+      ],
+      "new_t": [
+        -14346752,
+        -4606355
+      ]
+    },
+    {
+      "case": 80,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14346753,
+        -4606373
+      ],
+      "new_t": [
+        -14346752,
+        -4606356
+      ]
+    },
+    {
+      "case": 80,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14346753,
+        -4606373
+      ],
+      "new_t": [
+        -14346753,
+        -4606373
+      ]
+    },
+    {
+      "case": 80,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14346753,
+        -4606373
+      ],
+      "new_t": [
+        -14346752,
+        -4606355
+      ]
+    },
+    {
+      "case": 80,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14346753,
+        -4606373
+      ],
+      "new_t": [
+        -14346752,
+        -4606356
+      ]
+    },
+    {
+      "case": 81,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -366665,
+        185898
+      ],
+      "new_t": [
+        -366665,
+        185898
+      ]
+    },
+    {
+      "case": 81,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -366665,
+        185898
+      ],
+      "new_t": [
+        -366664,
+        185896
+      ]
+    },
+    {
+      "case": 81,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -366665,
+        185898
+      ],
+      "new_t": [
+        -366664,
+        185895
+      ]
+    },
+    {
+      "case": 81,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -366665,
+        185898
+      ],
+      "new_t": [
+        -366665,
+        185898
+      ]
+    },
+    {
+      "case": 81,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -366665,
+        185898
+      ],
+      "new_t": [
+        -366664,
+        185896
+      ]
+    },
+    {
+      "case": 81,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -366665,
+        185898
+      ],
+      "new_t": [
+        -366664,
+        185895
+      ]
+    },
+    {
+      "case": 82,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        92333,
+        -4550842
+      ],
+      "new_t": [
+        92333,
+        -4550842
+      ]
+    },
+    {
+      "case": 82,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        92333,
+        -4550842
+      ],
+      "new_t": [
+        92331,
+        -4550842
+      ]
+    },
+    {
+      "case": 82,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        92333,
+        -4550842
+      ],
+      "new_t": [
+        92331,
+        -4550842
+      ]
+    },
+    {
+      "case": 82,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        92333,
+        -4550842
+      ],
+      "new_t": [
+        92333,
+        -4550842
+      ]
+    },
+    {
+      "case": 82,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        92333,
+        -4550842
+      ],
+      "new_t": [
+        92331,
+        -4550842
+      ]
+    },
+    {
+      "case": 82,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        92333,
+        -4550842
+      ],
+      "new_t": [
+        92331,
+        -4550842
+      ]
+    },
+    {
+      "case": 83,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2444832,
+        175573
+      ],
+      "new_t": [
+        2444832,
+        175573
+      ]
+    },
+    {
+      "case": 83,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2444832,
+        175573
+      ],
+      "new_t": [
+        2444824,
+        175553
+      ]
+    },
+    {
+      "case": 83,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2444832,
+        175573
+      ],
+      "new_t": [
+        2444824,
+        175553
+      ]
+    },
+    {
+      "case": 83,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2444832,
+        175573
+      ],
+      "new_t": [
+        2444832,
+        175573
+      ]
+    },
+    {
+      "case": 83,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2444832,
+        175573
+      ],
+      "new_t": [
+        2444824,
+        175553
+      ]
+    },
+    {
+      "case": 83,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2444832,
+        175573
+      ],
+      "new_t": [
+        2444824,
+        175553
+      ]
+    },
+    {
+      "case": 84,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14365836,
+        -4629006
+      ],
+      "new_t": [
+        -14365836,
+        -4629006
+      ]
+    },
+    {
+      "case": 84,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14365836,
+        -4629006
+      ],
+      "new_t": [
+        -14365835,
+        -4628988
+      ]
+    },
+    {
+      "case": 84,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14365836,
+        -4629006
+      ],
+      "new_t": [
+        -14365835,
+        -4628988
+      ]
+    },
+    {
+      "case": 84,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14365836,
+        -4629006
+      ],
+      "new_t": [
+        -14365836,
+        -4629006
+      ]
+    },
+    {
+      "case": 84,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14365836,
+        -4629006
+      ],
+      "new_t": [
+        -14365835,
+        -4628988
+      ]
+    },
+    {
+      "case": 84,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14365836,
+        -4629006
+      ],
+      "new_t": [
+        -14365835,
+        -4628988
+      ]
+    },
+    {
+      "case": 85,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -385748,
+        163265
+      ],
+      "new_t": [
+        -385748,
+        163265
+      ]
+    },
+    {
+      "case": 85,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -385748,
+        163265
+      ],
+      "new_t": [
+        -385747,
+        163263
+      ]
+    },
+    {
+      "case": 85,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -385748,
+        163265
+      ],
+      "new_t": [
+        -385747,
+        163263
+      ]
+    },
+    {
+      "case": 85,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -385748,
+        163265
+      ],
+      "new_t": [
+        -385748,
+        163265
+      ]
+    },
+    {
+      "case": 85,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -385748,
+        163265
+      ],
+      "new_t": [
+        -385747,
+        163263
+      ]
+    },
+    {
+      "case": 85,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -385748,
+        163265
+      ],
+      "new_t": [
+        -385747,
+        163263
+      ]
+    },
+    {
+      "case": 86,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        89119,
+        -4573475
+      ],
+      "new_t": [
+        89119,
+        -4573475
+      ]
+    },
+    {
+      "case": 86,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        89119,
+        -4573475
+      ],
+      "new_t": [
+        89116,
+        -4573475
+      ]
+    },
+    {
+      "case": 86,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        89119,
+        -4573475
+      ],
+      "new_t": [
+        89117,
+        -4573474
+      ]
+    },
+    {
+      "case": 86,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        89119,
+        -4573475
+      ],
+      "new_t": [
+        89119,
+        -4573475
+      ]
+    },
+    {
+      "case": 86,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        89119,
+        -4573475
+      ],
+      "new_t": [
+        89116,
+        -4573475
+      ]
+    },
+    {
+      "case": 86,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        89119,
+        -4573475
+      ],
+      "new_t": [
+        89117,
+        -4573474
+      ]
+    },
+    {
+      "case": 87,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441617,
+        152940
+      ],
+      "new_t": [
+        2441617,
+        152940
+      ]
+    },
+    {
+      "case": 87,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441617,
+        152940
+      ],
+      "new_t": [
+        2441609,
+        152920
+      ]
+    },
+    {
+      "case": 87,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441617,
+        152940
+      ],
+      "new_t": [
+        2441609,
+        152920
+      ]
+    },
+    {
+      "case": 87,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2441617,
+        152940
+      ],
+      "new_t": [
+        2441617,
+        152940
+      ]
+    },
+    {
+      "case": 87,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2441617,
+        152940
+      ],
+      "new_t": [
+        2441609,
+        152920
+      ]
+    },
+    {
+      "case": 87,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2441617,
+        152940
+      ],
+      "new_t": [
+        2441609,
+        152920
+      ]
+    },
+    {
+      "case": 88,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14370077,
+        -4634035
+      ],
+      "new_t": [
+        -14370077,
+        -4634035
+      ]
+    },
+    {
+      "case": 88,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14370077,
+        -4634035
+      ],
+      "new_t": [
+        -14370076,
+        -4634017
+      ]
+    },
+    {
+      "case": 88,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14370077,
+        -4634035
+      ],
+      "new_t": [
+        -14370076,
+        -4634017
+      ]
+    },
+    {
+      "case": 88,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14370077,
+        -4634035
+      ],
+      "new_t": [
+        -14370077,
+        -4634035
+      ]
+    },
+    {
+      "case": 88,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14370077,
+        -4634035
+      ],
+      "new_t": [
+        -14370076,
+        -4634017
+      ]
+    },
+    {
+      "case": 88,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14370077,
+        -4634035
+      ],
+      "new_t": [
+        -14370076,
+        -4634017
+      ]
+    },
+    {
+      "case": 89,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -389989,
+        158236
+      ],
+      "new_t": [
+        -389989,
+        158236
+      ]
+    },
+    {
+      "case": 89,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -389989,
+        158236
+      ],
+      "new_t": [
+        -389987,
+        158234
+      ]
+    },
+    {
+      "case": 89,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -389989,
+        158236
+      ],
+      "new_t": [
+        -389987,
+        158234
+      ]
+    },
+    {
+      "case": 89,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -389989,
+        158236
+      ],
+      "new_t": [
+        -389989,
+        158236
+      ]
+    },
+    {
+      "case": 89,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -389989,
+        158236
+      ],
+      "new_t": [
+        -389987,
+        158234
+      ]
+    },
+    {
+      "case": 89,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -389989,
+        158236
+      ],
+      "new_t": [
+        -389987,
+        158234
+      ]
+    },
+    {
+      "case": 90,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88405,
+        -4578505
+      ],
+      "new_t": [
+        88405,
+        -4578505
+      ]
+    },
+    {
+      "case": 90,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88405,
+        -4578505
+      ],
+      "new_t": [
+        88402,
+        -4578504
+      ]
+    },
+    {
+      "case": 90,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88405,
+        -4578505
+      ],
+      "new_t": [
+        88402,
+        -4578504
+      ]
+    },
+    {
+      "case": 90,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        88405,
+        -4578505
+      ],
+      "new_t": [
+        88405,
+        -4578505
+      ]
+    },
+    {
+      "case": 90,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        88405,
+        -4578505
+      ],
+      "new_t": [
+        88402,
+        -4578504
+      ]
+    },
+    {
+      "case": 90,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        88405,
+        -4578505
+      ],
+      "new_t": [
+        88402,
+        -4578504
+      ]
+    },
+    {
+      "case": 91,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2440903,
+        147910
+      ],
+      "new_t": [
+        2440903,
+        147910
+      ]
+    },
+    {
+      "case": 91,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2440903,
+        147910
+      ],
+      "new_t": [
+        2440895,
+        147891
+      ]
+    },
+    {
+      "case": 91,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2440903,
+        147910
+      ],
+      "new_t": [
+        2440895,
+        147890
+      ]
+    },
+    {
+      "case": 91,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2440903,
+        147910
+      ],
+      "new_t": [
+        2440903,
+        147910
+      ]
+    },
+    {
+      "case": 91,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2440903,
+        147910
+      ],
+      "new_t": [
+        2440895,
+        147891
+      ]
+    },
+    {
+      "case": 91,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2440903,
+        147910
+      ],
+      "new_t": [
+        2440895,
+        147890
+      ]
+    },
+    {
+      "case": 92,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14389160,
+        -4656668
+      ],
+      "new_t": [
+        -14389160,
+        -4656668
+      ]
+    },
+    {
+      "case": 92,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14389160,
+        -4656668
+      ],
+      "new_t": [
+        -14389159,
+        -4656650
+      ]
+    },
+    {
+      "case": 92,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14389160,
+        -4656668
+      ],
+      "new_t": [
+        -14389159,
+        -4656650
+      ]
+    },
+    {
+      "case": 92,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14389160,
+        -4656668
+      ],
+      "new_t": [
+        -14389160,
+        -4656668
+      ]
+    },
+    {
+      "case": 92,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14389160,
+        -4656668
+      ],
+      "new_t": [
+        -14389159,
+        -4656650
+      ]
+    },
+    {
+      "case": 92,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14389160,
+        -4656668
+      ],
+      "new_t": [
+        -14389159,
+        -4656650
+      ]
+    },
+    {
+      "case": 93,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -409072,
+        135603
+      ],
+      "new_t": [
+        -409072,
+        135603
+      ]
+    },
+    {
+      "case": 93,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -409072,
+        135603
+      ],
+      "new_t": [
+        -409070,
+        135601
+      ]
+    },
+    {
+      "case": 93,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -409072,
+        135603
+      ],
+      "new_t": [
+        -409070,
+        135601
+      ]
+    },
+    {
+      "case": 93,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -409072,
+        135603
+      ],
+      "new_t": [
+        -409072,
+        135603
+      ]
+    },
+    {
+      "case": 93,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -409072,
+        135603
+      ],
+      "new_t": [
+        -409070,
+        135601
+      ]
+    },
+    {
+      "case": 93,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -409072,
+        135603
+      ],
+      "new_t": [
+        -409070,
+        135601
+      ]
+    },
+    {
+      "case": 94,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        85190,
+        -4601137
+      ],
+      "new_t": [
+        85190,
+        -4601137
+      ]
+    },
+    {
+      "case": 94,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        85190,
+        -4601137
+      ],
+      "new_t": [
+        85188,
+        -4601137
+      ]
+    },
+    {
+      "case": 94,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        85190,
+        -4601137
+      ],
+      "new_t": [
+        85188,
+        -4601137
+      ]
+    },
+    {
+      "case": 94,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        85190,
+        -4601137
+      ],
+      "new_t": [
+        85190,
+        -4601137
+      ]
+    },
+    {
+      "case": 94,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        85190,
+        -4601137
+      ],
+      "new_t": [
+        85188,
+        -4601137
+      ]
+    },
+    {
+      "case": 94,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        85190,
+        -4601137
+      ],
+      "new_t": [
+        85188,
+        -4601137
+      ]
+    },
+    {
+      "case": 95,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2437689,
+        125278
+      ],
+      "new_t": [
+        2437689,
+        125278
+      ]
+    },
+    {
+      "case": 95,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2437689,
+        125278
+      ],
+      "new_t": [
+        2437680,
+        125258
+      ]
+    },
+    {
+      "case": 95,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2437689,
+        125278
+      ],
+      "new_t": [
+        2437680,
+        125258
+      ]
+    },
+    {
+      "case": 95,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2437689,
+        125278
+      ],
+      "new_t": [
+        2437689,
+        125278
+      ]
+    },
+    {
+      "case": 95,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2437689,
+        125278
+      ],
+      "new_t": [
+        2437680,
+        125258
+      ]
+    },
+    {
+      "case": 95,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2437689,
+        125278
+      ],
+      "new_t": [
+        2437680,
+        125258
+      ]
+    },
+    {
+      "case": 96,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14410363,
+        -4681815
+      ],
+      "new_t": [
+        -14410363,
+        -4681815
+      ]
+    },
+    {
+      "case": 96,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14410363,
+        -4681815
+      ],
+      "new_t": [
+        -14410363,
+        -4681798
+      ]
+    },
+    {
+      "case": 96,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14410363,
+        -4681815
+      ],
+      "new_t": [
+        -14410363,
+        -4681798
+      ]
+    },
+    {
+      "case": 96,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -14410363,
+        -4681815
+      ],
+      "new_t": [
+        -14410363,
+        -4681815
+      ]
+    },
+    {
+      "case": 96,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -14410363,
+        -4681815
+      ],
+      "new_t": [
+        -14410363,
+        -4681798
+      ]
+    },
+    {
+      "case": 96,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -14410363,
+        -4681815
+      ],
+      "new_t": [
+        -14410363,
+        -4681798
+      ]
+    },
+    {
+      "case": 97,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -430276,
+        110456
+      ],
+      "new_t": [
+        -430276,
+        110456
+      ]
+    },
+    {
+      "case": 97,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -430276,
+        110456
+      ],
+      "new_t": [
+        -430273,
+        110454
+      ]
+    },
+    {
+      "case": 97,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -430276,
+        110456
+      ],
+      "new_t": [
+        -430274,
+        110454
+      ]
+    },
+    {
+      "case": 97,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        -430276,
+        110456
+      ],
+      "new_t": [
+        -430276,
+        110456
+      ]
+    },
+    {
+      "case": 97,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        -430276,
+        110456
+      ],
+      "new_t": [
+        -430273,
+        110454
+      ]
+    },
+    {
+      "case": 97,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        -430276,
+        110456
+      ],
+      "new_t": [
+        -430274,
+        110454
+      ]
+    },
+    {
+      "case": 98,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        81619,
+        -4626285
+      ],
+      "new_t": [
+        81619,
+        -4626285
+      ]
+    },
+    {
+      "case": 98,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        81619,
+        -4626285
+      ],
+      "new_t": [
+        81616,
+        -4626284
+      ]
+    },
+    {
+      "case": 98,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        81619,
+        -4626285
+      ],
+      "new_t": [
+        81616,
+        -4626285
+      ]
+    },
+    {
+      "case": 98,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        81619,
+        -4626285
+      ],
+      "new_t": [
+        81619,
+        -4626285
+      ]
+    },
+    {
+      "case": 98,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        81619,
+        -4626285
+      ],
+      "new_t": [
+        81616,
+        -4626284
+      ]
+    },
+    {
+      "case": 98,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        81619,
+        -4626285
+      ],
+      "new_t": [
+        81616,
+        -4626285
+      ]
+    },
+    {
+      "case": 99,
+      "cached": false,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2434117,
+        100130
+      ],
+      "new_t": [
+        2434117,
+        100130
+      ]
+    },
+    {
+      "case": 99,
+      "cached": false,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2434117,
+        100130
+      ],
+      "new_t": [
+        2434108,
+        100111
+      ]
+    },
+    {
+      "case": 99,
+      "cached": false,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2434117,
+        100130
+      ],
+      "new_t": [
+        2434108,
+        100111
+      ]
+    },
+    {
+      "case": 99,
+      "cached": true,
+      "order": "retained_exact_inverse_then_quantize",
+      "old_t": [
+        2434117,
+        100130
+      ],
+      "new_t": [
+        2434117,
+        100130
+      ]
+    },
+    {
+      "case": 99,
+      "cached": true,
+      "order": "quantize_coefficients_then_dot_then_round",
+      "old_t": [
+        2434117,
+        100130
+      ],
+      "new_t": [
+        2434108,
+        100111
+      ]
+    },
+    {
+      "case": 99,
+      "cached": true,
+      "order": "quantize_coefficients_then_round_products_then_sum",
+      "old_t": [
+        2434117,
+        100130
+      ],
+      "new_t": [
+        2434108,
+        100111
+      ]
+    }
+  ],
+  "summary": {
+    "retained_exact_inverse_then_quantize": {
+      "feasible_row_groups": 12,
+      "row_groups": 16
+    },
+    "quantize_coefficients_then_dot_then_round": {
+      "feasible_row_groups": 12,
+      "row_groups": 16
+    },
+    "quantize_coefficients_then_round_products_then_sum": {
+      "feasible_row_groups": 13,
+      "row_groups": 16
+    }
+  },
+  "inputs": [
+    {
+      "path": "evidence/importer-loud-fail/r233/analysis.json.gz",
+      "sha256": "7686ea9568db6458fdf2cb7aa31c246b9d695cc919a8ab03acd406d948238a7e"
+    },
+    {
+      "path": "evidence/importer-loud-fail/r233/native/fixture.json",
+      "sha256": "ca34fadced89b7daa24e5a7d039cc876105bba7218db306411597228716231ee"
+    }
+  ],
+  "old_axis_controls_advanced": false,
+  "reason": "Every alternative is rejected on the retained compound-fill gate before axis admission.",
+  "phase_chosen_from_interval": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "production_admitted": false
+}

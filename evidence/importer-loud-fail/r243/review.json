@@ -1,0 +1,45 @@
+{
+  "source_profiles": [
+    {
+      "workload": "direct_uncached",
+      "swf_sha256": "18da7ceb4d2f684c35e71469bffbb6a0e9b84896099df2c2866980fccf840e9d",
+      "final_pixels_exact": 240000,
+      "iterations": 71000,
+      "cache_regeneration_proved": false
+    },
+    {
+      "workload": "direct_cached_reuse",
+      "swf_sha256": "d669ad1043ac59fcdb5c66530bd8394b9c3ca3039158fe49dd1ae88fc4ac3986",
+      "final_pixels_exact": 240000,
+      "iterations": 69000,
+      "cache_regeneration_proved": false
+    },
+    {
+      "workload": "direct_cached_regenerate",
+      "swf_sha256": "73d5871cb9b5642c2434372fece1c77fb13db7230693b34bec53ae90fd80d5dd",
+      "final_pixels_exact": 240000,
+      "iterations": 64000,
+      "cache_regeneration_proved": false
+    },
+    {
+      "workload": "local_uncached",
+      "swf_sha256": "267df6bcb2dd80cbb4c922fd4367475da86aae3997b39ca8c2bb6efc85dad569",
+      "final_pixels_exact": 15980,
+      "iterations": 59000,
+      "cache_regeneration_proved": false
+    }
+  ],
+  "static_call_audit_review": "Signed E8 rel32 target and pinned Mach-O file byte checks; unique sites; ASLR-relative profile PCs. Inclusive tree observations only, not call counts.",
+  "profile_ownership_review": "Exact executable + resolved movie command, preexisting matching PID rejects, unique owned PID, current run marker before sampling.",
+  "focused_static_tests_passed": 3,
+  "profile_final_pixel_baseline_pending": false,
+  "cache_regeneration_inference_admitted": false,
+  "production_admitted": false,
+  "profile_final_native_baselines_exact": 4,
+  "final_pixels_exact": 735980,
+  "raw_and_premult_rgba_compared": true,
+  "source_readback_per_workload": 3680,
+  "binary_pin_verified": true,
+  "focused_tests_passed": 6,
+  "decoder_reproduced_exact": true
+}

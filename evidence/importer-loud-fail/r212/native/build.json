@@ -1,0 +1,162 @@
+{
+  "run_id": "RUN-036d3ef247ee",
+  "case": "jpeg-decoder-controls",
+  "source": "tools/probes/flash_filters/jpeg-decoder-controls.as",
+  "source_sha256": "3a9d5a87300638000b2374363221ed94a70912127eaad7e01f27a8fa4ad2d183",
+  "instrumented_sha256": "3f911576d04f238fe62470b13fbe2f75a1f60faa38a7819fa5074bd5a3f032a4",
+  "ffdec_sha256": "23c1e70ff2b08388e35de10afd97a2875386cbfdc2ef99c8176d40b4f8a3ada9",
+  "outputs_sha256": {
+    "game/main.swf": "91357053582bd24a713447b88d3226667d41aa30fd1a60eda89b3533ff118b5e"
+  },
+  "cases": [
+    {
+      "id": 0,
+      "pattern": "gray-ramp",
+      "mode": "L",
+      "subsampling": 0,
+      "quality": 75,
+      "input_sha256": "a3cba358ceaef1e88647e355749eab7b664246f98de9138256b8fe2e96a16ce9",
+      "jpeg_sha256": "ac604985ba78fdd724b347b0609025d617d7455739d3658a77f6bd600a0fa4ab"
+    },
+    {
+      "id": 1,
+      "pattern": "gray-ramp",
+      "mode": "L",
+      "subsampling": 0,
+      "quality": 100,
+      "input_sha256": "a3cba358ceaef1e88647e355749eab7b664246f98de9138256b8fe2e96a16ce9",
+      "jpeg_sha256": "5e3dff1d08510c64278cbd2be801607c989847e6aee113938d08a274ec2d31a5"
+    },
+    {
+      "id": 2,
+      "pattern": "gray-impulse",
+      "mode": "L",
+      "subsampling": 0,
+      "quality": 75,
+      "input_sha256": "9d05a1927fcf044f0e3b5afabad0a054d65034ed0048b0dd5dcd56de798a5975",
+      "jpeg_sha256": "2efbd4969e13c4528de7f7e7829349cc332b4a49259aec34afc408a624efb16d"
+    },
+    {
+      "id": 3,
+      "pattern": "gray-impulse",
+      "mode": "L",
+      "subsampling": 0,
+      "quality": 100,
+      "input_sha256": "9d05a1927fcf044f0e3b5afabad0a054d65034ed0048b0dd5dcd56de798a5975",
+      "jpeg_sha256": "8b42863afbbd73f465a9cc59576cd473c2f55ad115849e4e605b8e0bb281c45f"
+    },
+    {
+      "id": 4,
+      "pattern": "constant",
+      "mode": "RGB",
+      "subsampling": 0,
+      "quality": 75,
+      "input_sha256": "9e78be91de5235669b5d280362be1557a669678f612c72c9ee45ebadfb8f3fdc",
+      "jpeg_sha256": "c329f17ec1497b82c88e10afde3a41d778aaed62567a8bf91f17ab04be7e48cb"
+    },
+    {
+      "id": 5,
+      "pattern": "constant",
+      "mode": "RGB",
+      "subsampling": 0,
+      "quality": 100,
+      "input_sha256": "9e78be91de5235669b5d280362be1557a669678f612c72c9ee45ebadfb8f3fdc",
+      "jpeg_sha256": "c7b9774553293eb13fe682f7eff3d5f533f58d983bc37562c71dce9e5a9b7c56"
+    },
+    {
+      "id": 6,
+      "pattern": "constant",
+      "mode": "RGB",
+      "subsampling": 2,
+      "quality": 75,
+      "input_sha256": "9e78be91de5235669b5d280362be1557a669678f612c72c9ee45ebadfb8f3fdc",
+      "jpeg_sha256": "81144181bde48b55e61733fc674dbcd20926052c9044dd81d121823bad314a16"
+    },
+    {
+      "id": 7,
+      "pattern": "constant",
+      "mode": "RGB",
+      "subsampling": 2,
+      "quality": 100,
+      "input_sha256": "9e78be91de5235669b5d280362be1557a669678f612c72c9ee45ebadfb8f3fdc",
+      "jpeg_sha256": "80c05c95d53d3a17860317e1dedaf2c515a183f531a8343c60fd12c214559588"
+    },
+    {
+      "id": 8,
+      "pattern": "chroma-edge",
+      "mode": "RGB",
+      "subsampling": 0,
+      "quality": 75,
+      "input_sha256": "ef7a169c451aec26d777f6c4e3fa1e7adecd4b2d8f1a0e1a70acdfa1ef51421b",
+      "jpeg_sha256": "28c9d05ca345bdeaab2fc526b8c99dcdc5c904450997d8bbfa00b6f554ee8a18"
+    },
+    {
+      "id": 9,
+      "pattern": "chroma-edge",
+      "mode": "RGB",
+      "subsampling": 0,
+      "quality": 100,
+      "input_sha256": "ef7a169c451aec26d777f6c4e3fa1e7adecd4b2d8f1a0e1a70acdfa1ef51421b",
+      "jpeg_sha256": "8d48ec5a265c2b85b411a0e5dcf63366ea8fc1036361c08bccb002546545821b"
+    },
+    {
+      "id": 10,
+      "pattern": "chroma-edge",
+      "mode": "RGB",
+      "subsampling": 2,
+      "quality": 75,
+      "input_sha256": "ef7a169c451aec26d777f6c4e3fa1e7adecd4b2d8f1a0e1a70acdfa1ef51421b",
+      "jpeg_sha256": "a99f8f244bbf0b34747abb2db79d1a3bdd983829ccfad2a58c63303a406135a0"
+    },
+    {
+      "id": 11,
+      "pattern": "chroma-edge",
+      "mode": "RGB",
+      "subsampling": 2,
+      "quality": 100,
+      "input_sha256": "ef7a169c451aec26d777f6c4e3fa1e7adecd4b2d8f1a0e1a70acdfa1ef51421b",
+      "jpeg_sha256": "3ac8faa81ddb2ee3ca77451b90bb877e79c53d57b35d6599121e0bef611dafe2"
+    },
+    {
+      "id": 12,
+      "pattern": "rgb-ramp",
+      "mode": "RGB",
+      "subsampling": 0,
+      "quality": 75,
+      "input_sha256": "566e8e447e05b27ca1d4fde315d7238d953743a03b1daf65d00c0e253c4cacbe",
+      "jpeg_sha256": "e3f36d02d9af1c35db695703a3cce8db2d7b213ceebb3c800bd654c6dbfa302e"
+    },
+    {
+      "id": 13,
+      "pattern": "rgb-ramp",
+      "mode": "RGB",
+      "subsampling": 0,
+      "quality": 100,
+      "input_sha256": "566e8e447e05b27ca1d4fde315d7238d953743a03b1daf65d00c0e253c4cacbe",
+      "jpeg_sha256": "8ca0c925e67aa8833e5674dbb3fdbeb4f382f6fed017ee5019484241143b1ba3"
+    },
+    {
+      "id": 14,
+      "pattern": "rgb-ramp",
+      "mode": "RGB",
+      "subsampling": 2,
+      "quality": 75,
+      "input_sha256": "566e8e447e05b27ca1d4fde315d7238d953743a03b1daf65d00c0e253c4cacbe",
+      "jpeg_sha256": "41cf9cf670085c9462ce3e18893387a08a104ed336da9dfc1c03ada2d353366b"
+    },
+    {
+      "id": 15,
+      "pattern": "rgb-ramp",
+      "mode": "RGB",
+      "subsampling": 2,
+      "quality": 100,
+      "input_sha256": "566e8e447e05b27ca1d4fde315d7238d953743a03b1daf65d00c0e253c4cacbe",
+      "jpeg_sha256": "bbfe85bf81de23915379cba99aca282ffa821a61c2432d900c9fc6b296716c45"
+    }
+  ],
+  "encoder": {
+    "Pillow": "12.3.0",
+    "libjpeg_turbo": "3.1.4.1"
+  },
+  "production_admitted": false
+}

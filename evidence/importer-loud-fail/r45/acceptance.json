@@ -1,0 +1,68 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "regressions": {
+    "r36": 0,
+    "r37": 0,
+    "leaf": 0,
+    "glow": 0,
+    "sampler": 0,
+    "cpu": 0
+  },
+  "production_admitted": false,
+  "python": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/tests"
+    ],
+    "exit": 0,
+    "tests": 610,
+    "passed": 608,
+    "skipped": 2
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "not_rerun": [
+    "full roster replay",
+    "full build_web.sh",
+    "production 54-component images",
+    "r38 GPU nested-filter gate (CPU prerequisites still fail)"
+  ]
+}

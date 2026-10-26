@@ -1,0 +1,19 @@
+F
+======================================================================
+FAIL: test_manifest_imports_from_isolated_build_snapshot (test_web_manifest_staging.WebManifestStagingTests.test_manifest_imports_from_isolated_build_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/tests/test_web_manifest_staging.py", line 39, in test_manifest_imports_from_isolated_build_snapshot
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp611x6p4u/snapshot/tools/build_online_manifest.py", line 15, in <module>
+    from importer.import_guards import finite_numbers
+  File "/private/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp611x6p4u/snapshot/tools/importer/import_guards.py", line 12, in <module>
+    from .clip_action_fields import validate_clip_actions
+ModuleNotFoundError: No module named 'importer.clip_action_fields'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.109s
+
+FAILED (failures=1)

@@ -1,0 +1,116 @@
+..................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_affine_nearest_integer.py:85: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  a=list(actual.getdata());b=list(expected.getdata());rows=[];start=0
+.............................................s...s.../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_animated_component_boundaries.py:59: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'tick':tick,'cache_vs_clear':comparison(cache,images[f'{tick}-clear']),'cache_to_authored':comparison(candidate,images[f'{tick}-authored']),'pinned':{'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(composed,list(Image.open(path).convert('RGBA').getdata()))}})
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_animated_rect_component.py:63: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  row['pinned']={'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(composed,list(Image.open(path).convert('RGBA').getdata()))};rows.append(row)
+......................................................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/inventory_bitmap_roundtrip.py:93: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  png=list(image.getdata())
+..................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/compare_bound_bitmap_component.py:61: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for j, (a, b) in enumerate(zip(native.getdata(), actual.getdata())):
+.............................................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_component_cache_boundaries.py:59: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  target=list(Image.open(path).convert('RGBA').getdata())
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_component_fill_api.py:43: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  prior[kind]=comparison(images['tag-'+kind],list(Image.open(path).convert('RGBA').getdata()))
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_component_fill_api.py:46: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  cpu[label]=comparison(list(Image.open(path).convert('RGBA').getdata()),images[label+'-cache'])
+..../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_component_glow_boundaries.py:38: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pinned.append({'tick':tick,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(actual,list(Image.open(path).convert('RGBA').getdata()))})
+............................................................................................................................................................................./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_half_even_bitmap.py:22: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  failures=[{'x':j%image.width,'y':j//image.width,'actual':list(p),'native':q} for j,(p,q) in enumerate(zip(image.getdata(),target)) if list(p)!=q]
+......................................................./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_indexed_component_cache.py:64: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  row['pinned']={'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(composed,list(Image.open(path).convert('RGBA').getdata()))};rows.append(row)
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_indexed_component_live.py:52: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'tick':tick,'boundary':name,**comparison(list(actual.getdata()),list(target.getdata()))})
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_indexed_component_live.py:55: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pinned.append({'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(list(actual.getdata()),list(target.getdata()))})
+......./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_indexed_twip_component.py:69: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  row['pinned']={'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(composed,list(Image.open(path).convert('RGBA').getdata()))};rows.append(row)
+.................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_jiraiya_cache_boundary.py:45: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  scores[f'{offset}-{k}-pinned']=comparison(images[f'{i}-{k}'],list(Image.open(old_root/name).convert('RGBA').getdata()))
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_jiraiya_filter_boundary.py:67: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  scores={'authored_vs_pinned':comparison(images['authored']['gray'],list(ref.getdata()))}
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_jiraiya_filter_boundary.py:73: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  scores['child_draw_vs_r92_leaf']=comparison(images['child-draw']['rgba'],list(leaf.getdata()))
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_jiraiya_filter_boundary.py:56: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  'different_pixels':sum(x!=y for x,y in zip(a.getdata(),b.getdata()))})
+......./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_jiraiya_pinned_composite.py:20: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  results.append({'tick':tick,'reference':str(reference.relative_to(ROOT)),'reference_sha256':hashlib.sha256(reference.read_bytes()).hexdigest(),**comparison(list(actual.getdata()),list(native.getdata()))})
+.../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_jiraiya_pair_live.py:38: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  results.append({'depth':depth,'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(list(actual.getdata()),list(native.getdata()))})
+....../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_jiraiya_source_cache_gpu.py:29: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  scores[f'{i}-{stage}']=comparison(list(image.getdata()),target)
+............................................./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_matrix_component_boundaries.py:58: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'tick':tick,'cache_vs_clear':comparison(cache,clear),'cache_vs_authored':comparison(cache,authored),'nonzero_cache_pixels':sum(any(p) for p in cache),'normal_composite_vs_stage':comparison(composed,images[f'{tick}-stage']),'pinned':{'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(images[f'{tick}-stage'],list(Image.open(path).convert('RGBA').getdata()))}})
+................................................./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_native_cxform_controls.py:29: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pixels = list(image.getdata())
+......./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nested_filters.py:94: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pixels = [list(p) for p in image.getdata()]
+............./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_nearest_cache_local.py:80: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pinned=[list(p) for p in Image.open(path).convert('RGBA').getdata()]
+..../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_component_coverage.py:67: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for i,(p,q) in enumerate(zip(actual.getdata(),native.getdata())):
+..../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_component_interior.py:63: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pixels=list(a.getdata());native=list(b.getdata());selection=list(mask.getdata());assert set(selection)=={0,255}
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_matrix_component.py:72: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for i,(p,q) in enumerate(zip(actual.getdata(),native.getdata())):
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_matrix_component.py:81: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for i,pixel in enumerate(image.getdata()):
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_matrix_family.py:53: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'state':state,'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**measure(list(actual.getdata()),list(pinned.getdata()),600)})
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_matrix_family.py:54: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  assert decoded[state][1][f'{tick}-stage']==[list(p) for p in pinned.getdata()]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_nearest_matrix_family.py:60: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  boundaries.append({'state':state,'tick':tick,'boundary':name,**measure(list(actual.getdata()),target,w)})
+......./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/nested_composition.py:147: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pixels = [list(p) for p in image.getdata()]
+...................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/tests/test_normal_composition.py:27: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  self.assertEqual(list(image.getdata()), expected)
+..../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_yulong_wrapper.py:82: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for index, (a, b) in enumerate(zip(native.getdata(), actual.getdata())):
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:33: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  premult = [[*(c*(a+1)//256 for c in (r, g, b)), a] for r, g, b, a in decoded.getdata()]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:57: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  'pixels': 304, 'exact_pixels': sum(a == b for a, b in zip(reference.getdata(), actual.getdata())),
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:62: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  predicted = [tuple(v+96*(256-p[3])//256 for v in p[:3]) for p in glow.getdata()]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:64: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  'exact_pixels': sum(a == b for a, b in zip(predicted, native.crop((281,196,319,204)).getdata()))})
+........................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_png_decode.py:20: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  assert list(image.getdata()) == source
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_png_draw_paths.py:20: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  assert image.size == (64,64) and image.mode == 'RGBA' and not image.info and list(image.getdata()) == pixels()
+................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_rect_component_cache.py:75: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  target=list(Image.open(path).convert('RGBA').getdata())
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_rect_components_live.py:34: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  results.append({'case':item['id'],'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(list(actual.getdata()),list(native.getdata()))})
+..................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_rotated_placement_family.py:45: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  gpu=list(Image.open(image).convert('RGBA').getdata());rows=[]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_rotated_placement_family.py:59: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  native=ROOT/f"evidence/importer-loud-fail/r21/components/yulong/{case['id']}-{tick:03d}.native.png";target=list(Image.open(native).convert('RGBA').getdata())
+................................................................................................/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_translated_component_cache.py:73: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  target=list(Image.open(path).convert('RGBA').getdata())
+..................................../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_component_cache_boundaries.py:59: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  target=list(Image.open(path).convert('RGBA').getdata())
+....../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_yulong_rotated_live.py:27: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'case':i,'boundary':name,**comparison(list(actual.getdata()),list(target.getdata()))})
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_yulong_rotated_live.py:30: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'case':i,'boundary':'final-native',**comparison(list(actual.getdata()),target)})
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_yulong_rotated_live.py:34: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pinned.append({'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(list(actual.getdata()),list(Image.open(path).convert('RGBA').getdata()))})
+./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_yulong_rotated_source.py:62: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pinned.append({'tick':tick,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**comparison(composed,list(Image.open(path).convert('RGBA').getdata()))})
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_yulong_wrapper.py:82: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for index, (a, b) in enumerate(zip(native.getdata(), actual.getdata())):
+.....
+----------------------------------------------------------------------
+Ran 946 tests in 506.724s
+
+OK (skipped=2)
+{"events": 0, "done": false, "capture": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp6kdfxz_k/capture.log", "launch": "windowed LaunchServices launch (activation possible)", "player_app": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp6kdfxz_k/Custom Flash Player.app", "command": ["/usr/bin/open", "-g", "-n", "-W", "-a", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp6kdfxz_k/Custom Flash Player.app", "--args", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp6kdfxz_k/build/game/main.swf"], "runtime_fighter": null}
+{"events": 0, "done": false, "capture": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp36r7wiqb/capture.log", "launch": "windowed LaunchServices launch (activation possible)", "player_app": "/Volumes/Flash Player/Flash Player.app", "command": ["/usr/bin/open", "-g", "-n", "-W", "-a", "/Volumes/Flash Player/Flash Player.app", "--args", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp36r7wiqb/build/game/main.swf"], "runtime_fighter": null}
+{"status": "passed", "cases": 0, "matched": 0, "source_states": 0}
+{"status": "failed", "cases": 0, "matched": 0, "source_states": 0}
+{"status": "failed", "cases": 0, "matched": 0, "source_states": 0}
+{"embedded": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpoqq2i5qe/snapshot/godot/generated/build_metadata.json", "buildID": "475eb0001ff9cb5b34029d3f03af373dc416b33575e271f0e2f402dc8371b233", "gitCommitSource": "vercel", "dirtyCheckAvailable": false, "dirtyPathCount": 0, "dirtyPathSample": [], "dirtyPathSampleTruncated": false}
+{"embedded": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpd5z31lsw/snapshot/godot/generated/build_metadata.json", "buildID": "475eb0001ff9cb5b34029d3f03af373dc416b33575e271f0e2f402dc8371b233", "gitCommitSource": "vercel", "dirtyCheckAvailable": false, "dirtyPathCount": 0, "dirtyPathSample": [], "dirtyPathSampleTruncated": false}

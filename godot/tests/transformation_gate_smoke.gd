@@ -5,6 +5,11 @@ func _initialize() -> void:
 
 func _check_fighters(game: Node) -> void:
 	for fighter: FighterRuntime in [game.naruto, game.ichigo]:
+		assert(FileAccess.file_exists(fighter.fighter_directory.path_join("form_profiles.json")),
+			"All shipped form graphs are now accepted")
+		assert("万解" in fighter.disabled_actions)
+		# Selection alone must not activate a graph: the source runtime has
+		# not yet preflighted/configured its consumers.
 		fighter.energy = 300
 		fighter.goto_ai_label("站立", false)
 		var frame := fighter.current_source_frame()
@@ -19,10 +24,14 @@ func _run() -> void:
 	var game = load("res://main.tscn").instantiate()
 	root.add_child(game)
 	game.set_physics_process(false)
+	game._replace_selected_actors(["一护", "一护"], ["鼬", "魂"])
 	_check_fighters(game)
-	game._replace_selected_actors(["日番谷", "鸣人"], ["我爱罗", "魂"])
+	game._replace_selected_actors(["一护", "一护"], ["我爱罗", "魂"])
 	_check_fighters(game)
+	for audio: AudioStreamPlayer in game.find_children("*", "AudioStreamPlayer", true, false):
+		audio.stop()
+		audio.stream = null
 	game.queue_free()
 	await process_frame
-	print("TRANSFORMATION_GATE_SMOKE_OK")
+	print("TRANSFORMATION_GATE_SMOKE_OK awaiting_runtime_configuration_initial_and_reselected")
 	quit()

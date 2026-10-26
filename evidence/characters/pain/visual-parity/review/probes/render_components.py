@@ -38,5 +38,5 @@ for folder in sorted(
         "ok" if "VISUAL_COMPONENT_REFERENCE_OK" in log else log[-2000:],
         flush=True,
     )
-    if p.returncode or "SCRIPT ERROR" in log:
+    if p.returncode or "ERROR" in log or "VISUAL_COMPONENT_REFERENCE_OK" not in log:
         raise SystemExit(1)

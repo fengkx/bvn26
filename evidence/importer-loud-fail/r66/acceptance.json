@@ -1,0 +1,70 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "declared_extent_model": {
+    "exact": 40320,
+    "pixels": 40320
+  },
+  "filtered": {
+    "exact": 40320,
+    "pixels": 40320
+  },
+  "implicit_final": {
+    "exact": 40236,
+    "pixels": 40320
+  },
+  "right_border_hypothesis_passed": false,
+  "implicit_extent_model_admitted": false,
+  "production_admitted": false,
+  "strict_analysis_exit": 1,
+  "prior_exact_rendering": [
+    "../r59/acceptance.json",
+    "../r60/acceptance.json",
+    "../r62/acceptance.json"
+  ],
+  "not_rerun": [
+    "full roster/Web export (production runtime unchanged)",
+    "54 components",
+    "GPU rendering (unchanged pinned readbacks checked by Python)"
+  ],
+  "python": {
+    "tests": 667,
+    "passed": 665,
+    "skipped": 2
+  }
+}

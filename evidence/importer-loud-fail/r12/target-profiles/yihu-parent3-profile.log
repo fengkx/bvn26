@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/importer/compile_ai_controller.py", line 305, in compile_at
+    return compile_body(name, *args, avm1_comparisons=form_replacement, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/importer/compile_ai_controller.py", line 193, in compile_body
+    raise ValueError(f'Unsupported statement in {name}: {line}')
+ValueError: Unsupported statement in frame_390_depth_34: _parent._parent._xscale *= -1;
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/importer/build_form_profile.py", line 96, in <module>
+    build(args.staged, args.base, args.output, args.ffdec, args.ffmpeg)
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/importer/build_form_profile.py", line 84, in build
+    compile_programs(output, bundle, runtime_timeline)
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/importer/build_form_profile.py", line 65, in compile_programs
+    code, meta = compile_controller(bundle, sprite, timeline, player=player, form_replacement=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/importer/compile_ai_controller.py", line 361, in compile_controller
+    text += compile_at(
+            ^^^^^^^^^^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/importer/compile_ai_controller.py", line 307, in compile_at
+    raise ValueError(f"{bundle['game_file']}:{path}#{name}: {error}") from error
+ValueError: game/fighter/yihu.swf:DefineSprite_1672/frame_390/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as#frame_390_depth_34: Unsupported statement in frame_390_depth_34: _parent._parent._xscale *= -1;

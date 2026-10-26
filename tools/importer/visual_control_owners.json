@@ -1,0 +1,18 @@
+[
+  {
+    "swf": "game/fighter/juggo.swf",
+    "swf_sha256": "b33421881ac7ac9fe38f2d6d759bc78e80ef5caf8693ef02d655635c0b86f339",
+    "path": "DefineSprite_220/frame_16/DoAction.as",
+    "source_sha256": "7dc4ae0589a37710b59d789e82eb538df19a606d0621bb8b719281b6e9c4a6aa",
+    "consumer": "combat_projectile_parser.py; fighter_runtime.gd child control events",
+    "reason": "The complete conditional parent-goto/self-stop block is compiled as projectile control, not an unconditional visual stop. Native evidence: evidence/characters/juggo/comparisons.json."
+  },
+  {
+    "swf": "game/main.swf",
+    "swf_sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "path": "DefineSprite_1844/frame_50/DoAction.as",
+    "source_sha256": "08c5efa89575ea3aa920488279d721c7b6f45ee309404610b71abe443b6439e4",
+    "consumer": "compile_ko.py; ko_timeline.gd",
+    "reason": "KO winner branch and self stop are executed by the generated KO controller. Native evidence: evidence/visual-audio/ko-background/. The timeout host shares this KO timeline."
+  }
+]

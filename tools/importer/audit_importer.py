@@ -1,0 +1,290 @@
+"""Audit locked SWFs without retaining large XML exports or changing game output.
+
+Every failure retains its source location. This is an inventory, not proof that
+all AS semantics have a native consumer. Rejections and incomplete ownership exit nonzero.
+"""
+from __future__ import annotations
+
+import argparse
+import ast
+from collections import Counter
+import hashlib
+import json
+import re
+from pathlib import Path
+import subprocess
+import tempfile
+import xml.etree.ElementTree as ET
+
+from extract_timeline_geometry import placement_delta, visual_control_actions
+from audit_frame_calls import audit as audit_frame_calls
+from import_guards import validate_placement
+from visual_blend_modes import validate_blend_mode
+from visual_filters import compile_filters
+from visual_control_guard import validate_build_controls
+from placement_build_guard import placement_requirements
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+
+def placement_diagnostics(tag: ET.Element, location: str) -> list[dict]:
+    """A failed blend must not conceal an independent filter/field failure."""
+    checks = [('fields', lambda: validate_placement(tag, location))]
+    if tag.get('blendMode', '').isdigit():
+        checks.append(('blend_mode', lambda: validate_blend_mode(int(tag.get('blendMode')), location)))
+    filters = tag.find('surfaceFilterList')
+    if filters is not None:
+        checks.append(('filters', lambda: compile_filters(filters, location)))
+    diagnostics = []
+    for field, check in checks:
+        try:
+            check()
+        except ValueError as error:
+            diagnostics.append({'field': field, 'error': str(error)})
+    return diagnostics
+
+
+def audit_shipped_contexts() -> list[dict]:
+    # Use the same fresh, form-aware contracts as the build-cache audit.
+    return [{**row, 'status': 'passed' if row['cache_status'] == 'passed' else 'failed'}
+            for row in audit_frame_calls()['shipped_contexts']]
+
+
+def audit_xml(root: ET.Element, source: str) -> dict:
+    failures = []
+    counts = Counter()
+    action_inventory = []
+    obligations = []
+    clip_obligations = []
+    wrapper_obligations = []
+    wrapper_characters = set()
+    definitions = {int(t.get('spriteId')): t for t in root.findall('./tags/item')
+                   if t.get('type') == 'DefineSpriteTag'}
+    all_definitions = {}
+    for t in root.findall('./tags/item'):
+        for key in ('characterID', 'shapeId', 'spriteId'):
+            if t.get(key) is not None:
+                all_definitions[int(t.get(key))] = t.get('type')
+    timelines = [('root', root.findall('./tags/item'))] + [
+        (f'DefineSprite_{key}', value.findall('./subTags/item'))
+        for key, value in definitions.items()]
+    for owner, tags in timelines:
+        frame = 1
+        display = {}
+        field_state = {}
+        clip_state = {}
+        last_clip_ranges = {}
+        rejected_placements = {}
+        for tag in tags:
+            kind = tag.get('type')
+            location = f'{source}/{owner}/frame_{frame}'
+            if kind == 'ShowFrameTag':
+                for records in rejected_placements.values():
+                    for record in records:
+                        record['last_frame'] = frame
+                for depth, actions in clip_state.items():
+                    previous = last_clip_ranges.get(depth)
+                    if (previous is not None and previous['last_frame'] == frame - 1
+                            and previous['clip_actions'] == actions):
+                        previous['last_frame'] = frame
+                    else:
+                        interval = {'sprite': 0 if owner == 'root' else int(owner.split('_')[1]),
+                                    'first_frame': frame, 'last_frame': frame, 'depth': int(depth),
+                                    'clip_actions': actions}
+                        clip_obligations.append(interval)
+                        last_clip_ranges[depth] = interval
+                for depth, fields in field_state.items():
+                    if fields:
+                        obligations.append({'sprite': 0 if owner == 'root' else int(owner.split('_')[1]),
+                                            'frame': frame, 'depth': int(depth), 'fields': fields.copy()})
+                frame += 1
+            elif kind in ('RemoveObjectTag', 'RemoveObject2Tag'):
+                field_state.pop(tag.get('depth'), None)
+                clip_state.pop(tag.get('depth'), None)
+                display.pop(tag.get('depth'), None)
+                rejected_placements.pop(tag.get('depth'), None)
+            elif kind and kind.startswith('PlaceObject'):
+                counts['placements'] += 1
+                counts[f'placement_tag:{kind}'] += 1
+                depth = tag.get('depth')
+                if tag.get('placeFlagMove') != 'true':
+                    rejected_placements.pop(depth, None)
+                # Each authored field replaces its prior value even if another
+                # field in this MOVE is unsupported and gets a new rejection.
+                overwritten = set()
+                if 'blendMode' in tag.attrib:
+                    overwritten.add('blend_mode')
+                if tag.find('surfaceFilterList') is not None:
+                    overwritten.add('filters')
+                for previous in rejected_placements.get(depth, []):
+                    previous['_pending_fields'] = sorted(set(previous['_pending_fields']) - overwritten)
+                rejected_placements[depth] = [r for r in rejected_placements.get(depth, [])
+                                              if r['_pending_fields']]
+                try:
+                    delta = placement_delta(tag, f"{location}/depth_{tag.get('depth')}")
+                    character = delta.get('character_id')
+                    if owner == 'root' and character is not None and character not in wrapper_characters:
+                        wrapper_characters.add(character)
+                        fields = {key: delta[key] for key in
+                                  ('filters', 'blend_mode', 'color_transform', 'cache_as_bitmap', 'clip_depth', 'ratio') if key in delta}
+                        if fields:
+                            wrapper_obligations.append({'character_id': character, 'frame': frame,
+                                                        'depth': int(depth), 'fields': fields})
+                    previous = field_state.get(depth, {}) if delta['move'] else {}
+                    if not delta['move']:
+                        clip_state.pop(depth, None)
+                    if 'clip_actions' in delta:
+                        clip_state[depth] = delta['clip_actions']
+                    field_state[depth] = {**previous, **{key: delta[key] for key in
+                        ('filters', 'cache_as_bitmap', 'blend_mode', 'color_transform') if key in delta}}
+                except ValueError as error:
+                    diagnostics = placement_diagnostics(tag, f"{location}/depth_{depth}")
+                    record = {'source': location, 'construct': kind, 'error': str(error),
+                                     'last_frame': frame,
+                                     '_pending_fields': sorted({d['field'] for d in diagnostics} or {'fields'}),
+                                     'depth': int(tag.get('depth')),
+                                     'character_id': int(tag.get('characterId')) if tag.get('characterId') else display.get(tag.get('depth')),
+                                     'move': tag.get('placeFlagMove') == 'true',
+                                     'diagnostics': diagnostics,
+                                     'placement_xml': ET.tostring(tag, encoding='unicode').strip()}
+                    failures.append(record)
+                    rejected_placements.setdefault(depth, []).append(record)
+                depth = tag.get('depth')
+                if tag.get('characterId'):
+                    display[depth] = int(tag.get('characterId'))
+                if tag.get('ratio'):
+                    target = all_definitions.get(display.get(depth))
+                    counts[f'ratio_target:{target}'] += 1
+                    if target and target.startswith('DefineMorphShape'):
+                        failures.append({'source': location, 'construct': 'morph ratio',
+                                         'error': 'Morph interpolation has no native renderer'})
+                for record in tag.findall('./clipActions/clipActionRecords/item'):
+                    flags = record.find('eventFlags')
+                    if flags is not None:
+                        for flag, value in flags.attrib.items():
+                            if value == 'true':
+                                counts[f'clip_action:{flag}'] += 1
+            elif kind == 'DoActionTag':
+                counts['action_blocks'] += 1
+                encoded = tag.get('actionBytes', '')
+                try:
+                    controls = visual_control_actions(encoded)
+                    # A recognized stop/goto does not own the rest of the block.
+                    action_inventory.append({'source': location,
+                        'sha256': hashlib.sha256(encoded.encode('ascii')).hexdigest(),
+                        'visual_control_count': len(controls),
+                        'status': 'requires_complete_owner_review'})
+                except ValueError as error:
+                    failures.append({'source': location, 'construct': kind, 'error': str(error)})
+    for failure in failures:
+        failure.pop('_pending_fields', None)
+    return {'source_swf': source, 'counts': dict(sorted(counts.items())),
+            'failures': failures, 'placement_obligations': obligations,
+            'clip_action_obligations': clip_obligations, 'wrapper_obligations': wrapper_obligations,
+            'nonvisual_action_blocks': action_inventory}
+
+
+def skip_sites() -> list[dict]:
+    sites = []
+    for path in sorted((ROOT / 'tools/importer').glob('*.py')):
+        tree = ast.parse(path.read_text())
+        for node in ast.walk(tree):
+            reason = None
+            if isinstance(node, (ast.Continue, ast.Pass)):
+                reason = type(node).__name__
+            elif isinstance(node, ast.Return):
+                if node.value is None or isinstance(node.value, ast.Constant) and node.value.value is None:
+                    reason = 'return None'
+                elif isinstance(node.value, (ast.List, ast.Dict)) and not (
+                    node.value.elts if isinstance(node.value, ast.List) else node.value.keys):
+                    reason = 'return empty'
+            if reason:
+                sites.append({'path': str(path.relative_to(ROOT)), 'line': node.lineno,
+                              'construct': reason, 'status': 'requires_review'})
+    return sites
+
+
+def source_script_inventory() -> list[dict]:
+    """List every locked script requiring a complete semantic ownership proof.
+
+    A successful selected-function/cache compile is not evidence that every
+    statement in the containing script has a consumer. Do not infer ownership
+    from matching names, hashes, event metadata, or a recognized visual control.
+    """
+    rows = []
+    for path in sorted((ROOT / 'scripts').rglob('*.json')):
+        bundle = json.loads(path.read_text())
+        if 'game_file' not in bundle or 'scripts' not in bundle:
+            continue
+        for script in bundle['scripts']:
+            source = script['source']
+            rows.append({'swf': bundle['game_file'], 'swf_sha256': bundle['swf_sha256'],
+                         'bundle': str(path.relative_to(ROOT)), 'path': script['path'],
+                         'source_sha256': hashlib.sha256(source.encode()).hexdigest(),
+                         'lines': len(source.splitlines()),
+                         'event_handlers': [{'line': number, 'event': match[1]}
+                             for number, line in enumerate(source.splitlines(), 1)
+                             if (match := re.match(r'\s*onClipEvent\s*\(([^)]+)\)', line))],
+                         'status': 'requires_complete_owner_review'})
+    return rows
+
+
+def audit_exit_code(result: dict) -> int:
+    """Never report a complete audit while any scope is failed or unreviewed."""
+    if result.get('status') != 'passed':
+        return 1
+    if any(row.get('failures') for row in result['swfs']):
+        return 1
+    for key in ('shipped_contexts', 'visual_checks'):
+        if any(row.get('status') != 'passed' for row in result[key]):
+            return 1
+    if result.get('skip_sites') or result.get('source_scripts'):
+        return 1
+    return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--ffdec', required=True, type=Path)
+    parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--write-placement-requirements', type=Path)
+    args = parser.parse_args()
+    reports = []
+    with tempfile.TemporaryDirectory(prefix='bvn-loud-audit-') as directory:
+        scratch = Path(directory)
+        for swf in sorted((ROOT / 'game').rglob('*.swf')):
+            xml = scratch / 'source.xml'
+            subprocess.run(['java', f'-Duser.home={scratch}', '-Djava.awt.headless=true',
+                            '-jar', str(args.ffdec), '-swf2xml', str(swf), str(xml)],
+                           check=True, stdout=subprocess.DEVNULL)
+            report = audit_xml(ET.parse(xml).getroot(), str(swf.relative_to(ROOT)))
+            report['sha256'] = hashlib.sha256(swf.read_bytes()).hexdigest()
+            reports.append(report)
+            xml.unlink()
+            print(report['source_swf'], len(report['failures']), 'failures', flush=True)
+    if args.write_placement_requirements:
+        args.write_placement_requirements.write_text(
+            json.dumps(placement_requirements(reports), ensure_ascii=False, indent=2) + '\n')
+    shipped = audit_shipped_contexts()
+    visual_checks = []
+    for path in sorted((ROOT / 'godot/generated').rglob('timeline.json')):
+        try:
+            validate_build_controls(json.loads(path.read_text()), str(path.relative_to(ROOT)))
+            visual_checks.append({'path': str(path.relative_to(ROOT)), 'status': 'passed'})
+        except ValueError as error:
+            visual_checks.append({'path': str(path.relative_to(ROOT)), 'status': 'failed', 'error': str(error)})
+    result = {'visual_checks': visual_checks, 'status': 'incomplete_semantic_audit', 'swfs': reports,
+              'shipped_contexts': shipped, 'skip_sites': skip_sites(),
+              'source_scripts': source_script_inventory()}
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+    print(json.dumps({'status': result['status'],
+                      'source_scripts_requiring_review': len(result['source_scripts']),
+                      'importer_skip_sites_requiring_review': len(result['skip_sites']),
+                      'exit_code': audit_exit_code(result)}), flush=True)
+    raise SystemExit(audit_exit_code(result))
+
+
+if __name__ == '__main__':
+    main()

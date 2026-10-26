@@ -71,7 +71,8 @@ func _run() -> void:
 	release.pressed = false
 	Input.parse_input_event(release)
 	Input.flush_buffered_events()
-	# Reverse through the same production keyboard route.
+	# Reverse through the same production keyboard route with a fresh event.
+	key = key.duplicate() as InputEventKey
 	key.keycode = game.session.flash_to_key(int(game.session.codes["a"]))
 	key.physical_keycode = key.keycode
 	Input.parse_input_event(key)
@@ -88,8 +89,14 @@ func _run() -> void:
 	for tick in 4:
 		game._advance_fight()
 	check(game.naruto.action == "站立", "Released movement did not leave run")
+	# Release intro and fighter playbacks before this accelerated fixture exits.
+	for player in game.find_children("*", "AudioStreamPlayer", true, false):
+		player.stop()
+		player.stream = null
+	await process_frame
 	game._goto_menu()
 	game.queue_free()
+	await process_frame
 	await process_frame
 	print("PLAYER_VISUAL_SMOKE_FAILED" if failed else "PLAYER_VISUAL_SMOKE_OK")
 	quit(1 if failed else 0)

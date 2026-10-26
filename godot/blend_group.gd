@@ -56,11 +56,17 @@ func source_bounds() -> Rect2:
 	return result
 
 
+func buffer_padding() -> Vector2:
+	return Vector2.ZERO
+
+
 func _update_buffer() -> void:
 	var transform := global_transform
 	if transform.determinant() == 0.0:
 		return
 	var bounds := transform * source_bounds()
+	var padding := buffer_padding()
+	bounds = bounds.grow_individual(padding.x, padding.y, padding.x, padding.y)
 	var origin := bounds.position.floor()
 	var extent := (bounds.end.ceil() - origin).max(Vector2.ONE)
 	$Contents.size = Vector2i(extent)

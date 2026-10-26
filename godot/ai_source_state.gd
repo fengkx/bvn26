@@ -47,11 +47,13 @@ func _apply(events: Array) -> void:
 				assert(event.has("value") or event.has("read_field"), "Source-state write has no value")
 				values[field] = values.get(event["read_field"]) if event.has("read_field") else event["value"]
 			"increment":
-				assert(values.has(field) and (values[field] is int or values[field] is float),
-					"Source-state increment requires an initialized numeric field: " + field)
+				assert(values.has(field) and (values[field] == null or values[field] is int or values[field] is float),
+					"Source-state increment requires a declared numeric/undefined field: " + field)
 				assert(event.get("delta") is int or event.get("delta") is float,
 					"Source-state increment has a non-numeric delta")
-				values[field] += event["delta"]
+				# AVM1 ToNumber(undefined) is NaN; never coerce an absent
+				# initial value to zero to make the arithmetic continue.
+				values[field] = NAN if values[field] == null else values[field] + event["delta"]
 			_:
 				assert(false, "Unsupported source-state operation: " + operation)
 

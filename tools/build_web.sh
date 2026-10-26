@@ -145,7 +145,18 @@ for tool in build_online_manifest.py test_online_manifest.py test_online_lobby_u
   cp "$ROOT_DIR/tools/$tool" "$STAGING_REPO/tools/$tool"
 done
 mkdir -p "$STAGING_REPO/tools/importer"
+cp "$ROOT_DIR/tools/importer/__init__.py" "$STAGING_REPO/tools/importer/__init__.py"
 cp "$ROOT_DIR/tools/importer/visual_blend_modes.py" "$STAGING_REPO/tools/importer/visual_blend_modes.py"
+cp "$ROOT_DIR/tools/importer/import_guards.py" "$STAGING_REPO/tools/importer/import_guards.py"
+cp "$ROOT_DIR/tools/importer/clip_action_fields.py" "$STAGING_REPO/tools/importer/clip_action_fields.py"
+cp "$ROOT_DIR/tools/importer/placement_requirements.json" "$STAGING_REPO/tools/importer/placement_requirements.json"
+cp "$ROOT_DIR/tools/importer/placement_build_guard.py" "$STAGING_REPO/tools/importer/placement_build_guard.py"
+cp "$ROOT_DIR/tools/importer/frame_call_guard.py" "$STAGING_REPO/tools/importer/frame_call_guard.py"
+cp "$ROOT_DIR/tools/importer/form_profile_guard.py" "$STAGING_REPO/tools/importer/form_profile_guard.py"
+cp "$ROOT_DIR/tools/importer/frame_call_requirements.json" "$STAGING_REPO/tools/importer/frame_call_requirements.json"
+cp "$ROOT_DIR/tools/importer/visual_control_owners.json" "$STAGING_REPO/tools/importer/visual_control_owners.json"
+cp "$ROOT_DIR/tools/importer/visual_control_requirements.json" "$STAGING_REPO/tools/importer/visual_control_requirements.json"
+cp "$ROOT_DIR/tools/importer/visual_control_guard.py" "$STAGING_REPO/tools/importer/visual_control_guard.py"
 cp "$ROOT_DIR/services/matchmaking/src/protocol.ts" "$STAGING_REPO/services/matchmaking/src/protocol.ts"
 cp "$ROOT_DIR/services/matchmaking/src/catalog.json" "$STAGING_REPO/services/matchmaking/src/catalog.json"
 

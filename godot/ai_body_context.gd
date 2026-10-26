@@ -13,6 +13,7 @@ var floor_y: float
 var _scalar_fields: PackedStringArray
 var timeout_scheduler: AiSourceTimeouts
 var body_target: WeakRef
+var form_context: SourceFormContext
 
 
 func configure(host: AiControllerHost, metadata: Dictionary, platforms: Dictionary) -> void:
@@ -31,7 +32,8 @@ func configure_source(metadata: Dictionary, platforms: Dictionary) -> void:
 
 func read_field(key: String) -> Variant:
 	match key:
-		"hp": return fighter.health
+		"hp": return fighter.health if fighter.source_body_available and fighter.source_health_defined else null
+		"ql": return fighter.energy if fighter.source_body_available else null
 		"vecx": return fighter.body_forward_velocity
 		"heavy": return fighter.body_heavy
 		"depth": return fighter.display_depth
@@ -47,13 +49,15 @@ func read_field(key: String) -> Variant:
 		"mapSizeX": return map_size_x
 		"floorY": return floor_y
 	if key in _scalar_fields and key != "ql":
-		return fighter.ai_source_state.read_field(key)
+		return fighter.ai_source_state.read_field(key) if fighter.source_body_available else null
 	return super.read_field(key)
 
 
 func write_field(key: String, value: Variant) -> void:
 	match key:
-		"hp": fighter.health = float(value)
+		"hp":
+			fighter.health = float(value)
+			fighter.source_health_defined = true
 		"ql": fighter.energy = float(value)
 		"vecx": fighter.body_forward_velocity = float(value)
 		"opponent_x": fighter.opponent.source_x = float(value)
@@ -149,3 +153,55 @@ func trace_init(mode: Variant, use_cpu: Variant) -> void:
 func _external(name: String, args: Array) -> Variant:
 	assert(external_call.is_valid(), "Unconnected BODY service: " + name)
 	return external_call.call(name, args)
+
+
+func maximum_health() -> float:
+	if form_context != null:
+		assert(form_context.root_values.has("maxhp"), "Missing root maxhp binding")
+		return float(form_context.root_values["maxhp"])
+	return fighter.max_health
+
+
+func call_live_body_function(method: StringName, arguments: Array) -> Variant:
+	# Saved source closures keep their code, but an unqualified method lookup
+	# resolves against the body currently occupying the wrapper's mc path.
+	if form_context != null:
+		return form_context.body_reference.call_current(method, arguments)
+	var current: RefCounted = fighter.source_body
+	assert(current != null and current.has_method(method), "Uncompiled live BODY function: " + str(method))
+	return current.callv(method, arguments)
+
+
+func form_read(key: String) -> Variant:
+	assert(form_context != null, "Unconnected form context")
+	return form_context.read_field(key)
+
+
+func form_write(key: String, value: Variant) -> void:
+	assert(form_context != null, "Unconnected form context")
+	form_context.write_field(key, value)
+
+
+func form_effect(operation: String) -> void:
+	assert(form_context != null, "Unconnected form context")
+	form_context.effect(operation)
+
+
+func form_interval(slot: String, callback: Callable, delay: int) -> void:
+	assert(form_context != null, "Unconnected root interval owner")
+	form_context.root_intervals.assign_interval(slot, callback, delay)
+
+
+func form_clear_interval(slot: String) -> void:
+	assert(form_context != null, "Unconnected root interval owner")
+	form_context.root_intervals.clear_interval(slot)
+
+
+func form_random(site: String) -> Variant:
+	assert(fighter.source_random != null, "Unconnected form random tape")
+	return fighter.source_random.next_value(site)
+
+
+func form_next_frame() -> bool:
+	assert(form_context != null, "Unconnected parent frame consumer")
+	return form_context.next_frame()

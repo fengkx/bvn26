@@ -1,0 +1,30 @@
+{
+  "run_id": "missing-form-fields-sasuke-734a05a9",
+  "source": "game/fighter/Sasuke.swf",
+  "source_sha256": "c413d7c4d840d99deedc22778ee9a6383263b8ecd2e77a6c0712ca2a166c73f6",
+  "bundle": "scripts/fighter/Sasuke.json",
+  "bundle_sha256": "b0075fdab80fc600cd344d4df5c0ac3727c484f4c6bc4ff6bf198509709cb097",
+  "target_body_sprite": 1019,
+  "field": "khitn",
+  "all_bundle_field_occurrences": [
+    {
+      "path": "DefineSprite_1019/frame_128/DoAction.as",
+      "source": "khit = 1;\r\n动作 = 1;\r\nkhitn++;\r\n",
+      "source_sha256": "861569364754bacb8300bb7d0931b25bf8a08015142bbb6e1a2b98da268d9bab"
+    },
+    {
+      "path": "DefineSprite_1019/frame_135/PlaceObject2_16_36/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(_parent.khitn < 3)\r\n      {\r\n         if(airhit())\r\n         {\r\n            _parent.gotoAndPlay(\"跳砍\");\r\n         }\r\n      }\r\n      if(airMagichit())\r\n      {\r\n         _parent.gotoAndPlay(\"跳招\");\r\n      }\r\n   }\r\n}\r\n",
+      "source_sha256": "2418f18f07b1e792674ca13f782be19987e54ed9b8725048d2e3f48122d3f018"
+    }
+  ],
+  "definitions_sha256": "32f34300585f8d009215fd20e69c72bbe9110af42d3e467cf28c90a71872bbf6",
+  "non_action_tags_sha256": "2a213e711c373e0520481d48c4ead07be3dd1ee2882172e1c5d6b47135700fff",
+  "ffdec_sha256": "23c1e70ff2b08388e35de10afd97a2875386cbfdc2ef99c8176d40b4f8a3ada9",
+  "probe_source_sha256": "af06e8c88359d9b8eb92dc3bea26342eea168e2d9f84986ec04a0d55e172f966",
+  "outputs_sha256": {
+    "game/main.swf": "124a929efc62a1b8c74aefa1e82891c1593621337d1b4888e693888fbf1d540a"
+  },
+  "controller_branch": true,
+  "scope": "Root observer forces parent frame2 and target action; original child definitions/actions unchanged. Original child callback dispatch active with touch=true and body on_enterframe replaced by no-op to isolate it."
+}

@@ -1,0 +1,3 @@
+stop();var seq=0;var caseId=0;
+function emit(k,v){trace("AIREF|RUN|"+(seq++)+"|0|0|0|"+k+"|"+v);}
+_root.onEnterFrame=function(){var image=flash.display.BitmapData.loadBitmap("jpeg_control_"+caseId);if(image==undefined){emit("error","missing control "+caseId);delete _root.onEnterFrame;fscommand("quit");return;}emit("case",[caseId,image.width,image.height,image.transparent].join(","));for(var y=0;y<image.height;y++){var values=[y];for(var x=0;x<image.width;x++)values.push(image.getPixel32(x,y));emit("row",values.join(","));}image.dispose();caseId++;if(caseId==864){delete _root.onEnterFrame;emit("done","ok");fscommand("quit");}};

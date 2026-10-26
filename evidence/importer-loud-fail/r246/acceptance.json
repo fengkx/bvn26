@@ -1,0 +1,60 @@
+{
+  "source_pixels_exact": 3680,
+  "final_raw_rgba_exact": 240000,
+  "final_premultiplied_rgba_exact": 240000,
+  "raw_tags_after_final_import": {
+    "55": "d2d1414e1435389556a5fa41a2bfb8af8472d0be3b8522991aabeb058acb18d4",
+    "56": "7c07dc40b2a4adaa926ab956ba0234702c466950b1fa264ba5a876c112a8fb0b",
+    "57": "b101ca3ccc1ec00e342db2f8c9d21189cddc8add101e755e6d72047b9f190437"
+  },
+  "instrumented_pixel_reference": false,
+  "production_admitted": false,
+  "tests_passed": 15,
+  "task_for_pid_return": 5,
+  "hardware_breakpoint_created": false,
+  "debugger_detached": true,
+  "owned_processes_remaining": 0,
+  "guest_virtual_entry_bytes_independently_verified": false,
+  "physical_entry_bytes_independently_verified": false,
+  "bitmap_fill_route_proved": false,
+  "operand_semantics_proved": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}

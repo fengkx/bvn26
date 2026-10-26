@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/check_jinye_debugger_baseline.py", line 42, in <module>
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--native',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);args=parser.parse_args();args.output.write_text(json.dumps(check(args.native),indent=2)+'\n')
+                                                                                                                                                                                                                                   ^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/check_jinye_debugger_baseline.py", line 23, in check
+    expected=['image']+['row']*40+['matrix','profile','iterations','props','image']+['row']*400+['done'];assert len(events)==len(expected)
+                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

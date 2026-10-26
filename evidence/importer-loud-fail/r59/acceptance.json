@@ -1,0 +1,62 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "gpu_nested": {
+    "exact": 72576,
+    "pixels": 72576
+  },
+  "regressions": {
+    "r36": 0,
+    "r37": 0,
+    "leaf": 0,
+    "glow": 0,
+    "sampler": 0,
+    "cpu": 0
+  },
+  "production_admitted": false,
+  "not_rerun": [
+    "full roster/Web export (production runtime unchanged)",
+    "54 components"
+  ],
+  "next_gate": "Broad signed/amplified GPU arithmetic controls",
+  "python": {
+    "tests": 648,
+    "passed": 646,
+    "skipped": 2
+  }
+}

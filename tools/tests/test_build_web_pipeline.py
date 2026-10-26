@@ -371,7 +371,8 @@ class WebBuildPipelineTests(unittest.TestCase):
                 '{"stages": []}\n', encoding="utf-8"
             )
             (repo / "godot/generated/stages/current_world/timeline.json").write_text(
-                "{}\n", encoding="utf-8"
+                json.dumps({"source_swf": {"sha256": "fixture"}, "sprite_id": 0,
+                            "frames": [], "definitions": []}) + "\n", encoding="utf-8"
             )
             (repo / "godot/generated/music/music.json").write_text("{}\n", encoding="utf-8")
             (repo / "services/matchmaking/src/protocol.ts").write_text(
@@ -391,9 +392,31 @@ class WebBuildPipelineTests(unittest.TestCase):
             ):
                 shutil.copy2(ROOT / "tools" / name, tools / name)
             (tools / "importer").mkdir()
+            shutil.copy2(ROOT / "tools/importer/__init__.py", tools / "importer/__init__.py")
+            shutil.copy2(ROOT / "tools/importer/placement_requirements.json", tools / "importer/placement_requirements.json")
+            shutil.copy2(ROOT / "tools/importer/placement_build_guard.py", tools / "importer/placement_build_guard.py")
+            shutil.copy2(ROOT / "tools/importer/clip_action_fields.py", tools / "importer/clip_action_fields.py")
+            shutil.copy2(ROOT / "tools/importer/frame_call_guard.py", tools / "importer/frame_call_guard.py")
+            shutil.copy2(ROOT / "tools/importer/form_profile_guard.py", tools / "importer/form_profile_guard.py")
+            shutil.copy2(ROOT / "tools/importer/frame_call_requirements.json", tools / "importer/frame_call_requirements.json")
+            shutil.copy2(ROOT / "tools/importer/visual_control_owners.json", tools / "importer/visual_control_owners.json")
+            shutil.copy2(ROOT / "tools/importer/visual_control_requirements.json", tools / "importer/visual_control_requirements.json")
+            shutil.copy2(ROOT / "tools/importer/visual_control_guard.py", tools / "importer/visual_control_guard.py")
+            # This isolated pipeline fixture has no Flash behavior. Its audit
+            # belongs to its own synthetic SWF, not the production source set.
+            (tools / "importer/visual_control_requirements.json").write_text(
+                json.dumps({"fixture": {"game_file": "fixture.swf", "swf_sha256": "fixture", "records": []}}) + "\n"
+            )
+            (tools / "importer/placement_requirements.json").write_text(
+                json.dumps({"fixture": {"swf": "fixture.swf", "records": [], "obligations": []}}) + "\n"
+            )
             shutil.copy2(
                 ROOT / "tools/importer/visual_blend_modes.py",
                 tools / "importer/visual_blend_modes.py",
+            )
+            shutil.copy2(
+                ROOT / "tools/importer/import_guards.py",
+                tools / "importer/import_guards.py",
             )
             shutil.copy2(
                 ROOT / "tools/tests/test_web_diagnostics_metadata.py",

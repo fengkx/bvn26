@@ -1,0 +1,12 @@
+{
+  "roster": "python3 tools/test_importer_roster.py --godot \"$GODOT\" --output \"$OUT/roster\"",
+  "python": "python3 -m unittest discover -s tools/tests",
+  "fingerprint_unit": "python3 tools/test_online_manifest.py",
+  "build": "python3 tools/build_online_manifest.py --check",
+  "cache": "python3 tools/importer/audit_frame_calls.py --output \"$OUT/frame-calls.json\"",
+  "placements": "python3 tools/importer/audit_shipped_placements.py --output \"$OUT/placements.json\"",
+  "locked_swfs": "python3 tools/importer/audit_importer.py --ffdec \"$FFDEC\" --output \"$OUT/locked-swfs-full.json\"",
+  "godot": "\"$GODOT\" --path godot [--headless | --rendering-method gl_compatibility] --script res://tests/<script>.gd --quit-after 1200 --log-file \"$OUT/<script>-engine.log\" [-- <args>]",
+  "color": "python3 tools/probes/compare_flash_filters.py --native-log evidence/importer-loud-fail/r03/colors/native.log --godot-rows \"$OUT/colors.json\" --kind color --output \"$OUT/colors-comparison.json\"",
+  "order": "python3 tools/probes/compare_flash_filters.py --native-log evidence/importer-loud-fail/r03/color-order/native.log --godot-rows \"$OUT/order.json\" --kind color-order --output \"$OUT/order-comparison.json\""
+}

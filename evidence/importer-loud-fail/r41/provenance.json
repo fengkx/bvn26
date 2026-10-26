@@ -1,0 +1,23 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "tools.probes.analyze_cxform_intervals",
+    "--root",
+    "evidence/importer-loud-fail/r41",
+    "--output",
+    "evidence/importer-loud-fail/r41/intervals.json.gz"
+  ],
+  "expected_exit": 1,
+  "production_admitted": false,
+  "source_sha256": {
+    "tools/probes/analyze_cxform_intervals.py": "b807bd301c429b9a1ada113c35b83c268bd3bedf229674004bddc8247d93ebcb",
+    "tools/probes/cxform_reciprocal_constructions.c": "ebc66bd61bc32c50741c97c098ee861419711650faaede594dfa31569fc592b8",
+    "tools/probes/flash_filters/cxform-residual-intervals.as": "edc7b0b2d44012f810cdd3488f9a3687e69d17e9f15d370ed2d6b5929c4f31f1"
+  },
+  "output_sha256": {
+    "intervals.json.gz": "c4b0d3ade909f298fe600f7508a6df6a9cbcae978645e0e318a440fbde713fff",
+    "summary.json": "bd335d1366d9b8e6cbd3b1dde7296f6839ff2cf3e8cf1149ccc3f9fe963a56f9",
+    "reciprocal.txt": "342aea51e861921dae56a8910f057a8ba08725c0f456887236b0d9543a8119b8"
+  }
+}

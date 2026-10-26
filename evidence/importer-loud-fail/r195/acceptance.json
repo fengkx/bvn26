@@ -1,0 +1,66 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "focused_python": {
+    "passed": 2,
+    "failed": 0
+  },
+  "retained_full_python": {
+    "round": "r188",
+    "passed": 926,
+    "skipped": 2
+  },
+  "source_derived_input_verified": false,
+  "production_admitted": false,
+  "not_rerun": [
+    "full roster/Web export (production unchanged)",
+    "54 production component renders"
+  ],
+  "fresh_gpu": {
+    "family_images_exact": 10,
+    "family_images_total": 12,
+    "failed_images": 2,
+    "strict_gate_exit": 1,
+    "exact_raw_input_rgba": 652944,
+    "remaining_identity_pixels": [
+      2423,
+      530
+    ],
+    "max_channel_delta": 1
+  }
+}

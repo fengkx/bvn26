@@ -1,0 +1,32 @@
+ConstantPool "gameRunning", "_parent", "khitn", "airhit", "跳砍", "gotoAndPlay", "airMagichit", "跳招"
+Push 0.0, "gameRunning"
+CallFunction
+Not
+If loc00ce
+Push "_parent"
+GetVariable
+Push "khitn"
+GetMember
+Push 3
+Less2
+Not
+If loc00a5
+Push 0.0, "airhit"
+CallFunction
+Not
+If loc00a5
+Push "跳砍", 1, "_parent"
+GetVariable
+Push "gotoAndPlay"
+CallMethod
+Pop
+loc00a5:Push 0.0, "airMagichit"
+CallFunction
+Not
+If loc00ce
+Push "跳招", 1, "_parent"
+GetVariable
+Push "gotoAndPlay"
+CallMethod
+Pop
+loc00ce:

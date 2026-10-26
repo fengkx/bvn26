@@ -27,6 +27,7 @@ func configure(actor: FighterRuntime, directory: String, platforms: Dictionary,
 	context.use_ai = false
 	_driver = AiCpuDriver.new()
 	add_child(_driver)
+	_driver.body_replaced.connect(_on_body_replaced)
 	_driver.configure(actor, directory, platforms, floor_y, map_width,
 		{"touchFloor": null}, services, false, registry, context)
 	body = _driver.body
@@ -73,3 +74,14 @@ func stop() -> void:
 
 func _exit_tree() -> void:
 	stop()
+
+
+func _on_body_replaced() -> void:
+	body = _driver.body
+	controller = _driver.controller
+	context = _driver.body_context
+
+
+func configure_forms(profiles: Dictionary, intervals: SourceRootIntervals,
+		root_values: Dictionary, parent_frame: int = 1) -> void:
+	_driver.configure_forms(profiles, intervals, root_values, parent_frame)

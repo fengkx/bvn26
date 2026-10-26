@@ -1,0 +1,25 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "tools.probes.analyze_cxform_amplified",
+    "--root",
+    "evidence/importer-loud-fail/r43",
+    "--output",
+    "evidence/importer-loud-fail/r43/analysis.json.gz"
+  ],
+  "expected_exit": 1,
+  "source_sha256": {
+    "tools/probes/analyze_cxform_amplified.py": "29f7c200b3a2bb01c60c3a5c56d24d0eb5fc4788465a381e2f9e4b97e72e8225",
+    "tools/probes/flash_filters/cxform-amplified.as": "502cc1f3cb272e737e898c7f32df37ada498cc2f61b85bc992ee985c0973cde4"
+  },
+  "output_sha256": {
+    "analysis.json.gz": "7f7a96420f55a31cabe5c424c88bee8441afe01ba96f12325f35cb7196404b63",
+    "summary.json": "2346b4e13feb8eda243d3a34869cedb49776fb762edc078b1b16985981253d44"
+  },
+  "reference_sha256": {
+    "evidence/importer-loud-fail/r42/analysis.json.gz": "fe0ab4c4eaba909f03af1771b02a6e63a038b91ffe6262e0328938aa96c0a13d",
+    "evidence/importer-loud-fail/r41/intervals.json.gz": "c4b0d3ade909f298fe600f7508a6df6a9cbcae978645e0e318a440fbde713fff",
+    "evidence/importer-loud-fail/r41/reciprocal.txt": "342aea51e861921dae56a8910f057a8ba08725c0f456887236b0d9543a8119b8"
+  }
+}

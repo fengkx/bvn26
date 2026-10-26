@@ -1,0 +1,58 @@
+{
+  "tests_passed": 23,
+  "native_signal": "SIGABRT",
+  "hardware_callsite_verified": false,
+  "source_pixels_exact": 3680,
+  "capture_complete": false,
+  "capture_events": 43,
+  "final_raw_rgba_exact": null,
+  "final_premultiplied_rgba_exact": null,
+  "native_completion_gate_passed": false,
+  "debugger_detached": false,
+  "post_detach_observer_skipped": true,
+  "owned_processes_remaining": 0,
+  "guest_virtual_entry_bytes_independently_verified": false,
+  "physical_entry_bytes_independently_verified": false,
+  "bitmap_fill_route_proved": false,
+  "operand_semantics_proved": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "production_admitted": false,
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}

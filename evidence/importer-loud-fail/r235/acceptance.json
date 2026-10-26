@@ -1,0 +1,73 @@
+{
+  "production_admitted": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "source_backed_diagnostic_exact": 46,
+  "images": 54,
+  "focused_tests": 7,
+  "native_images": 40,
+  "native_pixels": 1474560,
+  "factorization_pairs_exact": 80,
+  "factorization_pair_pixels_exact": 2949120,
+  "cache_pairs_exact": 20,
+  "cache_pair_pixels_exact": 737280,
+  "raw_and_black_independently_exact": true,
+  "retained_python": {
+    "passed": 1011,
+    "skipped": 2,
+    "failed": 0,
+    "evidence": "../r227/checks/python.log"
+  },
+  "full_as_ownership_proved": false,
+  "production_suite_rerun": false,
+  "not_rerun": [
+    "full roster/Web (production unchanged)",
+    "54 production components"
+  ],
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "python": {
+    "passed": 1059,
+    "skipped": 2,
+    "failed": 0,
+    "total": 1061,
+    "evidence": "checks/python.log",
+    "command": "python3 -m unittest discover -s tools/tests",
+    "note": "Discovery began before final r235 additions; final focused7/7 covers those additions."
+  }
+}

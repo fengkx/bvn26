@@ -1,0 +1,13 @@
+.../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/jinye_jpeg_source.py:61: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  planes.append(list(image.getdata()))
+.../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_orochimaru_wrapper.py:131: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'case':spec['folder'],'boundary':name,**measure(list(image.getdata()),target,w)})
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_orochimaru_wrapper.py:142: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  rows.append({'case':spec['folder'],'tick':tick,'native_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),**measure(list(image.getdata()),list(native.getdata()),600)})
+.../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/validate_jpeg_row_route.py:54: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  values=zip(*(im.getdata() for im in images));failures=[]
+...
+----------------------------------------------------------------------
+Ran 12 tests in 21.700s
+
+OK

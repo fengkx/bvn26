@@ -1,0 +1,62 @@
+{
+  "production_admitted": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "source_backed_diagnostic_exact": 46,
+  "images": 54,
+  "focused_tests": 6,
+  "models_rejected": 6,
+  "native_images": 64,
+  "smooth_baseline_exact": 73728,
+  "nearest_codes_valid": 18216,
+  "nearest_model_exact": 17077,
+  "retained_python": {
+    "passed": 1011,
+    "skipped": 2,
+    "failed": 0,
+    "evidence": "../r227/checks/python.log"
+  },
+  "full_as_ownership_proved": false,
+  "production_suite_rerun": false,
+  "not_rerun": [
+    "full roster/Web (production unchanged)",
+    "54 production components"
+  ],
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}

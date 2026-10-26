@@ -1,0 +1,45 @@
+{
+  "prelaunch_review_passed": true,
+  "tests_passed": 11,
+  "source_sha256": "e06141e1bd7bfc01afb64f0fc902501c649d98b04ac6a07511abb7ff641956bf",
+  "required_guards": [
+    "hardware flag and unique exact resolved location",
+    "new stop ID and exact breakpoint/location stop pair",
+    "exact entry PC and valid RIP register",
+    "pinned logical entry bytes with masking caveat",
+    "independently verified same-module direct caller before28byte input reads",
+    "all created breakpoints cleanup even errors",
+    "stop errors cannot skip detach or receipt"
+  ],
+  "read_scope": "16 entry bytes,8 stack return,28 RDI/RSI raw unclassified input struct bytes; RDX address only",
+  "physical_entry_bytes_independently_verified": false,
+  "bitmap_fill_route_proved": false,
+  "production_admitted": false,
+  "postcapture_review_pending": false,
+  "actual_hardware_entry_verified": true,
+  "caller_static_bytes_independently_verified": true,
+  "aslr_entry_and_return_consistent": true,
+  "caller_site": "0x1005e8dd6",
+  "caller_is_not_bitmap_fill_proof": true,
+  "unclassified_input_bytes": [
+    28,
+    28
+  ],
+  "breakpoint_removed_detached_and_owned_cleanup": true,
+  "baseline": {
+    "source_pixels_exact": 3680,
+    "final_raw_rgba_exact": 240000,
+    "final_premultiplied_rgba_exact": 240000,
+    "raw_tags_after_final_import": {
+      "55": "d2d1414e1435389556a5fa41a2bfb8af8472d0be3b8522991aabeb058acb18d4",
+      "56": "7c07dc40b2a4adaa926ab956ba0234702c466950b1fa264ba5a876c112a8fb0b",
+      "57": "b101ca3ccc1ec00e342db2f8c9d21189cddc8add101e755e6d72047b9f190437"
+    },
+    "instrumented_pixel_reference": false,
+    "production_admitted": false
+  },
+  "test_breakdown": {
+    "owned_debugger": 6,
+    "hardware_entry": 5
+  }
+}

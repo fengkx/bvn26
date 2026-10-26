@@ -112,6 +112,15 @@
       "This projects scalar state only; pn binding, doWanKai and updateDirect remain host-owned."
     ]
   },
+  "form_initialization": {
+    "wrapper_scale_from_xscale": true,
+    "wrapper_visible": true,
+    "body_visible": true,
+    "bind_opponent_slot": true,
+    "call_doWanKai": true,
+    "update_direct_unless_transformed": true,
+    "source_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df"
+  },
   "main_floor_contact": {
     "comparison": "equal",
     "path": "DefineSprite_458/frame_1/DoAction.as#on_enterframe",
@@ -128,19 +137,19 @@
     ]
   },
   "undefined_declarations": [
+    "_initwudi",
+    "_lastX",
+    "dashX",
+    "dashY",
+    "dashing",
+    "hitBan",
+    "inited",
     "sw",
     "touch",
     "touchFloor",
-    "wudi",
     "wdFrame",
     "wdFrameX",
-    "inited",
-    "_initwudi",
-    "_lastX",
-    "hitBan",
-    "dashing",
-    "dashX",
-    "dashY"
+    "wudi"
   ],
   "controller_scope_fields": [
     "kj2hit"
@@ -672,6 +681,19 @@
         "path": "DefineSprite_458/frame_13/DoAction.as",
         "line": 2,
         "frame": 13
+      }
+    ],
+    "21": [
+      {
+        "op": "frame_child_effect",
+        "clip": "XG_rush",
+        "offset_y": 0,
+        "offset_x": 0,
+        "wrapper_path": "scripts/main.json#frame_8/DoAction.as#shunbuxg",
+        "wrapper_sha256": "5eae16c52a3f2826da28105f074e43503ceb215530e313795e3b491a68be2ad1",
+        "path": "DefineSprite_458/frame_21/DoAction.as",
+        "line": 1,
+        "frame": 21
       }
     ],
     "33": [
@@ -1397,6 +1419,26 @@
         "frame": 1088
       }
     ],
+    "1102": [
+      {
+        "op": "conditional_frame",
+        "path": "DefineSprite_458/frame_1102/DoAction.as",
+        "line": 1,
+        "frame": 1102,
+        "conditions": [
+          {
+            "field": "sw",
+            "operator": "eq",
+            "value": true
+          }
+        ],
+        "calls": [
+          {
+            "op": "timeline_stop"
+          }
+        ]
+      }
+    ],
     "1118": [
       {
         "op": "timeline_goto",
@@ -1560,7 +1602,227 @@
           }
         ]
       }
+    ],
+    "1307": [
+      {
+        "path": "DefineSprite_458/frame_1307/DoAction.as",
+        "frame": 1307,
+        "line": 1,
+        "source_sha256": "5bfd9ad4d193695032067801ead5a30760b36da065b4740288ecaf2e41e19f36",
+        "op": "body_form_call",
+        "method": "wankai",
+        "replacement": {
+          "target_parent_frame": 2,
+          "target_body_sprite": 1138,
+          "target_depth": 1,
+          "load_path": "frame_2/PlaceObject2_1138_1/CLIPACTIONRECORD onClipEvent(load).as",
+          "load_sha256": "4e49e524eb7304b2e43ecfe9dc18c5dd64a88525343c4392d94191e970edd006",
+          "load_declarations": [
+            {
+              "field": "kcplayed",
+              "value": 0,
+              "line": 2
+            },
+            {
+              "field": "movspeed",
+              "value": 0,
+              "line": 3
+            },
+            {
+              "field": "fall",
+              "value": false,
+              "line": 4
+            },
+            {
+              "field": "touch",
+              "value": true,
+              "line": 5
+            },
+            {
+              "field": "sw",
+              "value": false,
+              "line": 6
+            },
+            {
+              "field": "jump",
+              "value": 0,
+              "line": 7
+            },
+            {
+              "field": "khit",
+              "value": 0,
+              "line": 8
+            },
+            {
+              "field": "fan",
+              "value": 0,
+              "line": 9
+            },
+            {
+              "field": "jumped",
+              "value": 1,
+              "line": 10
+            },
+            {
+              "field": "bisha",
+              "value": 0,
+              "line": 11
+            },
+            {
+              "field": "played",
+              "value": 0,
+              "line": 12
+            },
+            {
+              "field": "jhp",
+              "value": 0,
+              "line": 13
+            },
+            {
+              "field": "ql",
+              "value": 0,
+              "line": 14
+            },
+            {
+              "field": "speed",
+              "value": 0,
+              "line": 15
+            },
+            {
+              "field": "kis",
+              "binding": "Key.isDown",
+              "line": 16
+            },
+            {
+              "field": "spd",
+              "value": 17,
+              "line": 17
+            },
+            {
+              "field": "jumpPower",
+              "value": 20,
+              "line": 18
+            }
+          ],
+          "body_init_path": "DefineSprite_1138/frame_1/DoAction.as",
+          "body_init_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
+          "source_swf_sha256": "8fb8a5d31142d8a3217964b65cf19e4131bdcea498303504425890daa8a96be8",
+          "status": "requires_replacement_runtime_and_assets"
+        }
+      }
+    ],
+    "1309": [
+      {
+        "path": "DefineSprite_458/frame_1309/DoAction.as",
+        "frame": 1309,
+        "line": 1,
+        "source_sha256": "cec97a876ae222f598bab97d7829af7ee183b61e1accb10afcc3f1e2e0d03171",
+        "op": "parent_form_goto",
+        "target_frame": 2,
+        "play": false,
+        "replacement": {
+          "target_parent_frame": 2,
+          "target_body_sprite": 1138,
+          "target_depth": 1,
+          "load_path": "frame_2/PlaceObject2_1138_1/CLIPACTIONRECORD onClipEvent(load).as",
+          "load_sha256": "4e49e524eb7304b2e43ecfe9dc18c5dd64a88525343c4392d94191e970edd006",
+          "load_declarations": [
+            {
+              "field": "kcplayed",
+              "value": 0,
+              "line": 2
+            },
+            {
+              "field": "movspeed",
+              "value": 0,
+              "line": 3
+            },
+            {
+              "field": "fall",
+              "value": false,
+              "line": 4
+            },
+            {
+              "field": "touch",
+              "value": true,
+              "line": 5
+            },
+            {
+              "field": "sw",
+              "value": false,
+              "line": 6
+            },
+            {
+              "field": "jump",
+              "value": 0,
+              "line": 7
+            },
+            {
+              "field": "khit",
+              "value": 0,
+              "line": 8
+            },
+            {
+              "field": "fan",
+              "value": 0,
+              "line": 9
+            },
+            {
+              "field": "jumped",
+              "value": 1,
+              "line": 10
+            },
+            {
+              "field": "bisha",
+              "value": 0,
+              "line": 11
+            },
+            {
+              "field": "played",
+              "value": 0,
+              "line": 12
+            },
+            {
+              "field": "jhp",
+              "value": 0,
+              "line": 13
+            },
+            {
+              "field": "ql",
+              "value": 0,
+              "line": 14
+            },
+            {
+              "field": "speed",
+              "value": 0,
+              "line": 15
+            },
+            {
+              "field": "kis",
+              "binding": "Key.isDown",
+              "line": 16
+            },
+            {
+              "field": "spd",
+              "value": 17,
+              "line": 17
+            },
+            {
+              "field": "jumpPower",
+              "value": 20,
+              "line": 18
+            }
+          ],
+          "body_init_path": "DefineSprite_1138/frame_1/DoAction.as",
+          "body_init_sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
+          "source_swf_sha256": "8fb8a5d31142d8a3217964b65cf19e4131bdcea498303504425890daa8a96be8",
+          "status": "requires_replacement_runtime_and_assets"
+        }
+      }
     ]
+  },
+  "parent_initial_values": {
+    "万解": false
   },
   "function_writes": {
     "onBeHit0": [

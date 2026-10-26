@@ -1,0 +1,66 @@
+{
+  "attached": true,
+  "detached": true,
+  "hardware_callsite_verified": true,
+  "guest_virtual_entry_bytes_independently_verified": false,
+  "physical_entry_bytes_independently_verified": false,
+  "explicit_memory_writes_requested": false,
+  "pixel_reference": false,
+  "operand_semantics_proved": false,
+  "source_fill_ownership_proved": false,
+  "production_admitted": false,
+  "attach_error": "success",
+  "target_triple": "x86_64-apple-macosx10.6.0",
+  "entry_file_address": "0x1000f28db",
+  "entry_load_address": "0x10298b8db",
+  "entry_before_hex": "e8f0b11a00488bb3d000000031d24883",
+  "setup_before_hex": "488d7b48488d95d0fdffff4c89f6",
+  "hardware_command": {
+    "success": true,
+    "output": "Breakpoint 1: where = Flash Player Debugger`___lldb_unnamed_symbol_1000f2810 + 203, address = 0x000000010298b8db\n",
+    "error": ""
+  },
+  "hardware_requested_and_reported": true,
+  "breakpoint_id": 1,
+  "matching_stopped_threads": 1,
+  "stop_id": 2,
+  "stop_reason": 3,
+  "entry_at_stop_hex": "e8f0b11a00488bb3d000000031d24883",
+  "entry_readback_matches": true,
+  "entry_readback_caveat": "SBProcess.ReadMemory masks software traps; our sole breakpoint is verified hardware, independent raw guest-byte proof remains unmet after the r246 task-port denial.",
+  "entry_registers": {
+    "rip": "0x10298b8db",
+    "rbx": "0x14b89b4911f0",
+    "rbp": "0x30aacb890",
+    "r14": "0x30aacbf10",
+    "rdi": "0x14b89b491238",
+    "rsi": "0x30aacbf10",
+    "rdx": "0x30aacb660"
+  },
+  "pinned_argument_relations": {
+    "rdi_from_rbx_48": true,
+    "rsi_from_r14": true,
+    "rdx_from_rbp_minus_230": true
+  },
+  "verified_direct_call": {
+    "site": "0x1000f28db",
+    "target": "0x10029dad0",
+    "bytes": "e8f0b11a00",
+    "return_pc": "0x1000f28e0",
+    "profile_observations": {}
+  },
+  "anticipated_return_file": "0x1000f28e0",
+  "precall_stack_return_read": false,
+  "input_matrix_bytes": {
+    "rdi": "0000803f00000000000000000000803f000000000000000001000000",
+    "rsi": "96f21f3d000000000000000096f21f3d25040000d502000001000000"
+  },
+  "output_pointer_only": "0x30aacb660",
+  "breakpoint_cleanup": [
+    {
+      "id": 1,
+      "removed": true
+    }
+  ],
+  "detach_error": "success"
+}

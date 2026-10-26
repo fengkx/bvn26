@@ -1,0 +1,13 @@
+(lldb) script exec(compile(open('/private/tmp/bvn-r245/debugger/lldb-readonly.py').read(), '/private/tmp/bvn-r245/debugger/lldb-readonly.py', "exec"))
+warning: libobjc.A.dylib is being read from process memory. This indicates that LLDB could not read from the host's in-memory shared cache. This will likely reduce debugging performance.
+
+Process 59702 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1
+       frame #0: 0x0000000102606ad0 Flash Player Debugger`___lldb_unnamed_symbol_10029dad0
+Flash Player Debugger`___lldb_unnamed_symbol_10029dad0:
+->  0x102606ad0 <+0>: pushq  %rbp
+    0x102606ad1 <+1>: movq   %rsp, %rbp
+    0x102606ad4 <+4>: pushq  %r15
+    0x102606ad6 <+6>: pushq  %r14
+Target 0: (Flash Player Debugger) stopped.
+Process 59702 detached

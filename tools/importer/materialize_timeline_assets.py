@@ -9,6 +9,7 @@ import shutil
 from pathlib import Path
 
 from source_instance_key import instance_key
+from visual_control_guard import ROOT, validate_nested_controls
 
 
 def _timeline_start_sound_ids(timeline: dict) -> set[int]:
@@ -52,6 +53,9 @@ def materialize(
     combat_model_path: Path | None = None,
 ) -> dict[str, object]:
     timeline = json.loads(timeline_path.read_text(encoding="utf-8"))
+    if "source_swf" in timeline:
+        bundle_path = ROOT / timeline["source_swf"]["path"].replace("game/", "scripts/").replace(".swf", ".json")
+        validate_nested_controls(timeline, json.loads(bundle_path.read_text()))
     output_dir.mkdir(parents=True, exist_ok=True)
     previous_manifest = output_dir / "assets.json"
     if previous_manifest.is_file():
@@ -64,7 +68,8 @@ def materialize(
     runtime_timeline = json.loads(json.dumps(timeline))
     if combat_model_path is not None:
         combat = json.loads(combat_model_path.read_text())
-        handles = {p['instance_name'] for p in combat.get('projectiles', [])}
+        handles = {p['instance_name'] for field in ('projectiles', 'clip_placements')
+                   for p in combat.get(field, [])}
         for frame in runtime_timeline['frames']:
             for placement in frame['display_list']:
                 if not placement.get('name') and instance_key(placement) in handles:

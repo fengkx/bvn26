@@ -100,6 +100,18 @@ func source_round(v: Variant) -> float:
 '''
 
 
+AVM1_RELATIONAL = '''
+func source_less2(a: Variant, b: Variant) -> Variant:
+\tif a is String and b is String:
+\t\treturn a < b
+\tvar left := number(a)
+\tvar right := number(b)
+\tif is_nan(left) or is_nan(right):
+\t\treturn null
+\treturn left < right
+'''
+
+
 def normalize(expr: str) -> str:
     expr = re.sub(r'_parent\.kis\(_parent\.(左|右|上|下|斩|跳|冲|招|必杀|换)\)',
                   lambda match: 'source_key(' + json.dumps(match[1], ensure_ascii=False) + ')', expr)
@@ -111,7 +123,8 @@ def normalize(expr: str) -> str:
                   lambda m: f'body_hit("{m[1]}", "jiao")', expr)
     expr = expr.replace('_parent._parent._curGJL[name + "zl"]', 'power(name + "zl")')
     for source, target in sorted(FIELDS.items(), key=lambda item: -len(item[0])):
-        expr = expr.replace(source, f'value("{target}")')
+        expr = re.sub(r'"[^"\\]*(?:\\.[^"\\]*)*"|(?<![\w.])' + re.escape(source) + r'(?!\w)',
+                      lambda match: match[0] if match[0].startswith('"') else f'value("{target}")', expr)
     expr = expr.replace('Math.abs', 'abs').replace('Math.round', 'source_round').replace('isNaN', 'is_nan')
     # The only strict comparison in these functions is combo === true.
     expr = expr.replace('combo === true', 'strict(combo, True)')
@@ -128,7 +141,7 @@ def normalize(expr: str) -> str:
     return expr.strip()
 
 
-def emit(node: ast.AST, locals_: set[str], extra_calls: frozenset[str] = frozenset(), call_aliases: dict[str, str] | None = None) -> str:
+def emit(node: ast.AST, locals_: set[str], extra_calls: frozenset[str] = frozenset(), call_aliases: dict[str, str] | None = None, avm1_comparisons: bool = False) -> str:
     call_aliases = call_aliases or {}
     if isinstance(node, ast.Constant):
         if node.value is None:
@@ -141,53 +154,58 @@ def emit(node: ast.AST, locals_: set[str], extra_calls: frozenset[str] = frozens
     if isinstance(node, ast.Dict) and 'literal_object' in extra_calls:
         if any(not isinstance(key, ast.Constant) or not isinstance(key.value, str) for key in node.keys):
             raise ValueError('Only explicit source object keys are supported')
-        return '{' + ', '.join(emit(key, locals_, extra_calls, call_aliases) + ': ' + emit(value, locals_, extra_calls, call_aliases)
+        return '{' + ', '.join(emit(key, locals_, extra_calls, call_aliases, avm1_comparisons) + ': ' + emit(value, locals_, extra_calls, call_aliases, avm1_comparisons)
                               for key, value in zip(node.keys, node.values)) + '}'
     if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
         name = node.func.id
         if name not in {*NAMES, *DISPATCH_NAMES, *extra_calls, 'source_key', 'value', 'sensor', 'body_hit', 'power', 'strict', 'abs', 'is_nan', 'source_round'} or node.keywords:
             raise ValueError(f'Unsupported call: {ast.dump(node)}')
-        args = [emit(arg, locals_, extra_calls, call_aliases) for arg in node.args]
+        args = [emit(arg, locals_, extra_calls, call_aliases, avm1_comparisons) for arg in node.args]
         if name in {'abs', 'is_nan'}:
             args = ['number(' + arg + ')' for arg in args]
         return call_aliases.get(name, name) + '(' + ', '.join(args) + ')'
     if isinstance(node, ast.UnaryOp):
-        val = emit(node.operand, locals_, extra_calls, call_aliases)
+        val = emit(node.operand, locals_, extra_calls, call_aliases, avm1_comparisons)
         if isinstance(node.op, ast.Not):
             return '(not truth(' + val + '))'
         if isinstance(node.op, ast.USub):
             return '(-number(' + val + '))'
     if isinstance(node, ast.BoolOp):
         op = ' and ' if isinstance(node.op, ast.And) else ' or '
-        return '(' + op.join('truth(' + emit(v, locals_, extra_calls, call_aliases) + ')' for v in node.values) + ')'
+        return '(' + op.join('truth(' + emit(v, locals_, extra_calls, call_aliases, avm1_comparisons) + ')' for v in node.values) + ')'
     if isinstance(node, ast.Compare):
         # AS2 chained comparisons are left-associative, unlike Python chains.
-        left = emit(node.left, locals_, extra_calls, call_aliases)
+        left = emit(node.left, locals_, extra_calls, call_aliases, avm1_comparisons)
         for op, right_node in zip(node.ops, node.comparators):
-            right = emit(right_node, locals_, extra_calls, call_aliases)
+            right = emit(right_node, locals_, extra_calls, call_aliases, avm1_comparisons)
             if isinstance(op, (ast.Eq, ast.NotEq)):
                 left = ('not ' if isinstance(op, ast.NotEq) else '') + f'equal({left}, {right})'
             else:
                 symbol = {ast.Lt: '<', ast.Gt: '>', ast.LtE: '<=', ast.GtE: '>='}.get(type(op))
                 if symbol is None:
                     raise ValueError(f'Unsupported comparison: {ast.dump(node)}')
-                left = f'(number({left}) {symbol} number({right}))'
+                if avm1_comparisons:
+                    first, second = (right, left) if isinstance(op, (ast.Gt, ast.LtE)) else (left, right)
+                    result = f'source_less2({first}, {second})'
+                    left = f'(not truth({result}))' if isinstance(op, (ast.GtE, ast.LtE)) else result
+                else:
+                    left = f'(number({left}) {symbol} number({right}))'
         return '(' + left + ')'
     if isinstance(node, ast.BinOp):
-        a, b = emit(node.left, locals_, extra_calls, call_aliases), emit(node.right, locals_, extra_calls, call_aliases)
+        a, b = emit(node.left, locals_, extra_calls, call_aliases, avm1_comparisons), emit(node.right, locals_, extra_calls, call_aliases, avm1_comparisons)
         if isinstance(node.op, ast.Add) and isinstance(node.right, ast.Constant) and isinstance(node.right.value, str):
             return f'({a} + {b})'
         op = {ast.Add: '+', ast.Sub: '-', ast.Mult: '*', ast.Div: '/'}.get(type(node.op))
         if op:
             return f'(number({a}) {op} number({b}))'
     if isinstance(node, ast.IfExp):
-        return f'({emit(node.body, locals_, extra_calls, call_aliases)} if truth({emit(node.test, locals_, extra_calls, call_aliases)}) else {emit(node.orelse, locals_, extra_calls, call_aliases)})'
+        return f'({emit(node.body, locals_, extra_calls, call_aliases, avm1_comparisons)} if truth({emit(node.test, locals_, extra_calls, call_aliases, avm1_comparisons)}) else {emit(node.orelse, locals_, extra_calls, call_aliases, avm1_comparisons)})'
     raise ValueError(f'Unsupported AI expression: {ast.dump(node)}')
 
 
-def expression(source: str, locals_: set[str], call_aliases: dict[str, str] | None = None) -> str:
+def expression(source: str, locals_: set[str], call_aliases: dict[str, str] | None = None, *, avm1_comparisons: bool = False) -> str:
     aliases = call_aliases or {}
-    return emit(ast.parse(normalize(source), mode='eval').body, locals_, frozenset(aliases), aliases)
+    return emit(ast.parse(normalize(source), mode='eval').body, locals_, frozenset(aliases), aliases, avm1_comparisons)
 
 
 def compile_function(name: str, params: str, body: str, *, player: bool = False) -> str:

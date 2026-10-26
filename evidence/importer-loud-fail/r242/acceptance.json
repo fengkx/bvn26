@@ -1,0 +1,54 @@
+{
+  "tests_passed": 6,
+  "tests_failed": 0,
+  "direct_baseline_images_exact": 2,
+  "direct_baseline_images": 2,
+  "source_readbacks_exact": 3680,
+  "local_pixels_exact_per_cache": 15979,
+  "local_pixels_per_cache": 15980,
+  "local_max_channel_delta": 1,
+  "candidate_exit_code": 1,
+  "runtime_changed": false,
+  "full_acceptance_rerun": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "production_admitted": false,
+  "component_inventory_advanced": false,
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}

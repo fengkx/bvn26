@@ -1,0 +1,21 @@
+{
+  "format": "bvn26-import-allowlist-v1",
+  "entries": [
+    {
+      "swf": "game/fighter/Byakuya.swf",
+      "swf_sha256": "c590f9ca2aea152d26aea8d6a10c4ee31a2019d9798c637820f145feef13b52f",
+      "path": "DefineSprite_631/frame_985/DoAction.as",
+      "source_sha256": "214c6ff7eb50419d5d67e659933dd37a6538c8f6419db519a4ab8e5f8d717116",
+      "form_frame": 1,
+      "construct": "conditional _root.cbsw(pn) during transformation re-entry",
+      "reason": "Legacy base-form-only exception: wrapper 万解 starts false; its original review relied on disabled transformation entry. The admitted r13 graph now compiles this conditional with a parent-state consumer and passes compilation with this exception disabled. Retain the exact historical SWF/source/form scope; it must never admit transformed forms or substitute for the compiled consumer.",
+      "evidence": [
+        "scripts/fighter/Byakuya.json#frame_1/DoAction.as",
+        "scripts/fighter/Byakuya.json#DefineSprite_631/frame_1/DoAction.as#doWanKai",
+        "godot/main.gd",
+        "godot/tests/transformation_gate_smoke.gd",
+        "tools/tests/test_parent_frame_state.py#test_admitted_byakuya_graph_compiles_without_legacy_exception"
+      ]
+    }
+  ]
+}

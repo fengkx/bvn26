@@ -30,7 +30,11 @@ class SasukeCompilerTests(unittest.TestCase):
         })
 
     def test_frame_calls_keep_source_fifo_and_line_for_frame_408_warp(self):
-        context = compile_context(self.bundle, self.timeline)
+        with self.assertRaisesRegex(ValueError, r'Sasuke.swf.*frame_1228.*uncompiled wrapper transfer'):
+            compile_context(self.bundle, self.timeline)
+        # Only the source FIFO at 408 is under test; the full slice must fail.
+        timeline = {**self.timeline, 'frames': [f for f in self.timeline['frames'] if f['frame'] in (1, 408)]}
+        context = compile_context(self.bundle, timeline)
         calls = context["frame_calls"]["408"]
         warp = next(call for call in calls if call["op"] == "body_warp")
         self.assertEqual(warp["frame"], 408)

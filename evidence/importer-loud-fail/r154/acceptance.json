@@ -1,0 +1,68 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "focused_python": {
+    "passed": 2,
+    "failed": 0
+  },
+  "retained_full_python": {
+    "round": "r150",
+    "passed": 846,
+    "skipped": 2
+  },
+  "source_derived_input_verified": false,
+  "production_admitted": false,
+  "not_rerun": [
+    "full roster/Web export (production unchanged)",
+    "54 production component renders"
+  ],
+  "fresh_gpu": {
+    "lanran_images": 4,
+    "prior_rect_images": 6,
+    "rotated_images": 2,
+    "sampler_controls": 71824,
+    "leaf_images": 6,
+    "failed": 0
+  },
+  "full_python": {
+    "total": 856,
+    "passed": 854,
+    "skipped": 2,
+    "failed": 0
+  }
+}

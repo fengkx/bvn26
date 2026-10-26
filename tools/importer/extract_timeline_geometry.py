@@ -11,6 +11,9 @@ from pathlib import Path
 from typing import Any
 
 from visual_blend_modes import validate_blend_mode
+from visual_filters import compile_filters
+from import_guards import finite_numbers, validate_placement, validate_wrapper_fields
+from visual_control_guard import ROOT, validate_nested_controls
 from bitmap_shape_polygon import bitmap_shape_fill_polygons, bitmap_shape_polygon
 
 
@@ -43,7 +46,8 @@ def attributes(element: ET.Element) -> dict[str, int | float | str]:
     return {key: scalar(value) for key, value in sorted(element.attrib.items())}
 
 
-def placement_delta(tag: ET.Element) -> dict[str, Any]:
+def placement_delta(tag: ET.Element, source: str = "placement") -> dict[str, Any]:
+    validate_placement(tag, source)
     result: dict[str, Any] = {
         "depth": int(tag.attrib["depth"]),
         "move": tag.attrib.get("placeFlagMove") == "true",
@@ -56,10 +60,10 @@ def placement_delta(tag: ET.Element) -> dict[str, Any]:
         "blendMode": "blend_mode",
     }
     if "blendMode" in tag.attrib:
-        validate_blend_mode(int(tag.attrib["blendMode"]), tag.get("type", "placement"))
-    for source, target in optional_attributes.items():
-        if source in tag.attrib:
-            result[target] = scalar(tag.attrib[source])
+        validate_blend_mode(int(tag.attrib["blendMode"]), source)
+    for attribute, target in optional_attributes.items():
+        if attribute in tag.attrib:
+            result[target] = scalar(tag.attrib[attribute])
     for child_name, target in (
         ("matrix", "matrix"),
         ("colorTransform", "color_transform"),
@@ -67,6 +71,11 @@ def placement_delta(tag: ET.Element) -> dict[str, Any]:
         child = tag.find(child_name)
         if child is not None:
             result[target] = attributes(child)
+    if "bitmapCache" in tag.attrib:
+        result["cache_as_bitmap"] = tag.attrib["bitmapCache"] == "1"
+    filters = tag.find("surfaceFilterList")
+    if filters is not None:
+        result["filters"] = compile_filters(filters, source)
     clip_actions = tag.find("clipActions")
     if clip_actions is not None:
         records = []
@@ -273,9 +282,13 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
                 if record.get('type') == 'StyleChangeRecord':
                     record.set('stateLineStyle', 'false')
             contours = bitmap_shape_fill_polygons(mask_shape)
-            if contours is None or len(contours) != 1 or len(contours[0]) != 1:
+            # Unused fill-table slots do not draw a contour. Keep requiring
+            # exactly one actual boundary; multiple contours still need a
+            # renderer that preserves union/hole semantics.
+            boundaries = [contour for fill in contours for contour in fill] if contours is not None else []
+            if len(boundaries) != 1:
                 raise ValueError(f'Unsupported clipDepth mask geometry: {item_id}')
-            definition['mask_polygon'] = contours[0][0]
+            definition['mask_polygon'] = boundaries[0]
         dependencies = definition_dependencies(tag)
         if dependencies:
             definition["referenced_character_ids"] = sorted(dependencies)
@@ -346,7 +359,7 @@ def visual_control_actions(encoded: str) -> list[dict[str, Any]]:
     return result
 
 
-def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
+def build_frames(tags: list[ET.Element], source: str = "timeline") -> list[dict[str, Any]]:
     display_list: dict[int, dict[str, Any]] = {}
     pending_changes: list[dict[str, Any]] = []
     pending_events: list[dict[str, Any]] = []
@@ -354,8 +367,8 @@ def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
     frames: list[dict[str, Any]] = []
     for tag in tags:
         tag_type = tag.attrib.get("type", "")
-        if tag_type in ("PlaceObject2Tag", "PlaceObject3Tag"):
-            delta = placement_delta(tag)
+        if tag_type.startswith("PlaceObject"):
+            delta = placement_delta(tag, f"{source}/frame_{len(frames) + 1}/depth_{tag.get('depth')}")
             depth = delta["depth"]
             if delta["move"]:
                 if depth not in display_list:
@@ -411,7 +424,7 @@ def build_frames(tags: list[ET.Element]) -> list[dict[str, Any]]:
 
 
 def extract_wrapper_placement(
-    root: ET.Element, sprite_id: int
+    root: ET.Element, sprite_id: int, source: str = "timeline"
 ) -> dict[str, Any] | None:
     """Root PlaceObject that mounts the extracted sprite, usually named `mc`.
 
@@ -424,18 +437,24 @@ def extract_wrapper_placement(
         if tag_type == "ShowFrameTag":
             frame += 1
             continue
-        if tag_type not in ("PlaceObject2Tag", "PlaceObject3Tag"):
+        if not tag_type.startswith("PlaceObject"):
             continue
+        location = f"{source}/root/frame_{frame}/depth_{tag.get('depth')}"
+        if tag_type not in ("PlaceObject2Tag", "PlaceObject3Tag"):
+            validate_placement(tag, location)
         if int(tag.attrib.get("characterId", -1)) != sprite_id:
             continue
-        delta = placement_delta(tag)
+        delta = placement_delta(tag, location)
+        validate_wrapper_fields(delta, location)
         wrapper: dict[str, Any] = {
             "name": str(delta.get("name", "")),
             "character_id": sprite_id,
             "root_frame": frame,
             "depth": int(delta["depth"]),
         }
-        for key in ("matrix", "blend_mode"):
+        # The selected wrapper mounts a DefineSprite, so ratio is metadata,
+        # not a request to interpolate a morph shape. Preserve it for auditing.
+        for key in ("matrix", "blend_mode", "ratio", "filters"):
             if key in delta:
                 wrapper[key] = delta[key]
         return wrapper
@@ -452,7 +471,7 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
         raise ValueError(f"Unsupported JPEXS XML export version: {xml_version}")
 
     if sprite_id is None:
-        frames = build_frames(root.findall("./tags/item"))
+        frames = build_frames(root.findall("./tags/item"), str(xml_path))
         declared_frames = int(root.attrib.get("frameCount", 0)) or len(frames)
         result_sprite_id = 0
     else:
@@ -467,7 +486,7 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
         )
         if sprite is None:
             raise ValueError(f"Sprite {sprite_id} not found in {xml_path}")
-        frames = build_frames(sprite.findall("./subTags/item"))
+        frames = build_frames(sprite.findall("./subTags/item"), f"{xml_path}/DefineSprite_{sprite_id}")
         declared_frames = int(sprite.attrib["frameCount"])
         result_sprite_id = sprite_id
 
@@ -484,10 +503,11 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
     if sprite_id is None:
         result["timeline"] = "root"
     else:
-        wrapper = extract_wrapper_placement(root, sprite_id)
+        wrapper = extract_wrapper_placement(root, sprite_id, str(xml_path))
         if wrapper is not None:
             result["wrapper"] = wrapper
     result["definitions"] = referenced_definitions(root, frames)
+    finite_numbers(result, str(xml_path))
     return result
 
 
@@ -519,6 +539,9 @@ def main() -> None:
             "path": args.source_swf.as_posix(),
             "sha256": file_sha256(args.source_swf),
         }
+    if args.source_swf:
+        bundle_path = ROOT / args.source_swf.as_posix().replace("game/", "scripts/").replace(".swf", ".json")
+        validate_nested_controls(result, json.loads(bundle_path.read_text()))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"sprite_id": result["sprite_id"], "frames": len(result["frames"])}))

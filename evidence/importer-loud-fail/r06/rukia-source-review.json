@@ -1,0 +1,1144 @@
+{
+  "source": "game/fighter/rukia.swf",
+  "swf_sha256": "c48d47a817dbf1b4fff9b333bb35d89debb64d0635e8d88b4a7d1228208194eb",
+  "frames": [
+    {
+      "frame": 127,
+      "labels": [
+        "跳砍"
+      ],
+      "changes": [
+        {
+          "type": "place",
+          "depth": 27,
+          "move": true,
+          "character_id": 55,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0,
+            "nScaleBits": 0,
+            "nTranslateBits": 11,
+            "translateX": -637,
+            "translateY": -579,
+            "type": "MATRIX"
+          }
+        }
+      ],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 55,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        }
+      ]
+    },
+    {
+      "frame": 128,
+      "labels": [],
+      "changes": [
+        {
+          "type": "place",
+          "depth": 27,
+          "move": true,
+          "character_id": 57
+        },
+        {
+          "type": "place",
+          "depth": 28,
+          "move": false,
+          "character_id": 2,
+          "name": "tkatm",
+          "ratio": 127,
+          "matrix": {
+            "hasRotate": "true",
+            "hasScale": "true",
+            "nRotateBits": 16,
+            "nScaleBits": 18,
+            "nTranslateBits": 11,
+            "rotateSkew0": -0.056610107,
+            "rotateSkew1": 0.26490784,
+            "scaleX": 0.34991455,
+            "scaleY": 1.6376343,
+            "translateX": -265,
+            "translateY": -633,
+            "type": "MATRIX"
+          }
+        },
+        {
+          "type": "place",
+          "depth": 30,
+          "move": false,
+          "character_id": 74,
+          "ratio": 127,
+          "matrix": {
+            "hasRotate": "true",
+            "hasScale": "true",
+            "nRotateBits": 17,
+            "nScaleBits": 15,
+            "nTranslateBits": 12,
+            "rotateSkew0": 0.7357788,
+            "rotateSkew1": -0.35357666,
+            "scaleX": 0.15245056,
+            "scaleY": 0.07330322,
+            "translateX": 177,
+            "translateY": -1182,
+            "type": "MATRIX"
+          },
+          "color_transform": {
+            "alphaAddTerm": 0,
+            "alphaMultTerm": 210,
+            "blueAddTerm": 255,
+            "blueMultTerm": 256,
+            "greenAddTerm": 168,
+            "greenMultTerm": 256,
+            "hasAddTerms": "true",
+            "hasMultTerms": "true",
+            "nbits": 10,
+            "redAddTerm": 0,
+            "redMultTerm": 256,
+            "type": "CXFORMWITHALPHA"
+          }
+        },
+        {
+          "type": "place",
+          "depth": 34,
+          "move": false,
+          "character_id": 16,
+          "ratio": 127,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0,
+            "nScaleBits": 0,
+            "nTranslateBits": 11,
+            "translateX": -537,
+            "translateY": 553,
+            "type": "MATRIX"
+          },
+          "color_transform": {
+            "alphaMultTerm": 0,
+            "blueMultTerm": 256,
+            "greenMultTerm": 256,
+            "hasAddTerms": "false",
+            "hasMultTerms": "true",
+            "nbits": 10,
+            "redMultTerm": 256,
+            "type": "CXFORMWITHALPHA"
+          },
+          "clip_actions": [
+            {
+              "events": [
+                "EnterFrame"
+              ],
+              "action_bytes_sha256": "de4b971986fba240414a873dca8b8461aa45b03934369b56b89104ba0b8d4404"
+            }
+          ]
+        }
+      ],
+      "scripts": [
+        {
+          "path": "DefineSprite_533/frame_128/DoAction.as",
+          "source": "khit = 1;\r\n动作 = 1;\r\n"
+        },
+        {
+          "path": "DefineSprite_533/frame_128/PlaceObject2_16_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_parent._parent._xscale > 0)\r\n      {\r\n         _parent._parent._x += _parent.speed;\r\n      }\r\n      else\r\n      {\r\n         _parent._parent._x -= _parent.speed;\r\n      }\r\n      _parent._parent._y += _parent.speed * 2;\r\n      if(_parent.touch == true)\r\n      {\r\n         _parent.gotoAndPlay(\"跳砍2\");\r\n      }\r\n   }\r\n}\r\n"
+        }
+      ],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 129,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 130,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 131,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 132,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 133,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 134,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 135,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 136,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 137,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 138,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 139,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 140,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 141,
+      "labels": [],
+      "changes": [],
+      "scripts": [
+        {
+          "path": "DefineSprite_533/frame_141/DoAction.as",
+          "source": "gotoAndPlay(130);\r\n"
+        }
+      ],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 28,
+          "character_id": 2,
+          "name": "tkatm",
+          "placed_frame": 128
+        },
+        {
+          "depth": 30,
+          "character_id": 74,
+          "name": null,
+          "placed_frame": 128
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        },
+        {
+          "depth": 34,
+          "character_id": 16,
+          "name": null,
+          "placed_frame": 128
+        }
+      ]
+    },
+    {
+      "frame": 142,
+      "labels": [],
+      "changes": [
+        {
+          "type": "remove",
+          "depth": 28
+        },
+        {
+          "type": "remove",
+          "depth": 30
+        },
+        {
+          "type": "remove",
+          "depth": 34
+        }
+      ],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        }
+      ]
+    },
+    {
+      "frame": 143,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        }
+      ]
+    },
+    {
+      "frame": 144,
+      "labels": [],
+      "changes": [],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 57,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        }
+      ]
+    },
+    {
+      "frame": 145,
+      "labels": [
+        "跳砍2"
+      ],
+      "changes": [
+        {
+          "type": "place",
+          "depth": 27,
+          "move": true,
+          "character_id": 48,
+          "matrix": {
+            "hasRotate": "false",
+            "hasScale": "false",
+            "nRotateBits": 0,
+            "nScaleBits": 0,
+            "nTranslateBits": 12,
+            "translateX": -610,
+            "translateY": -1142,
+            "type": "MATRIX"
+          }
+        }
+      ],
+      "scripts": [],
+      "placements": [
+        {
+          "depth": 1,
+          "character_id": 3,
+          "name": "AImain",
+          "placed_frame": 1
+        },
+        {
+          "depth": 23,
+          "character_id": 2,
+          "name": "mian",
+          "placed_frame": 1
+        },
+        {
+          "depth": 25,
+          "character_id": 5,
+          "name": "jiao",
+          "placed_frame": 1
+        },
+        {
+          "depth": 27,
+          "character_id": 48,
+          "name": null,
+          "placed_frame": 20
+        },
+        {
+          "depth": 32,
+          "character_id": 2,
+          "name": "bdmn",
+          "placed_frame": 30
+        }
+      ]
+    }
+  ]
+}

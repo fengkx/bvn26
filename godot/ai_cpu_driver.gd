@@ -15,6 +15,15 @@ var _ordered_paths: Array = []
 var callback_registry: SourceCallbackRegistry
 var _body_registration: int = 0
 var initial_frame_count: int = -1
+var source_form_profiles: Dictionary = {}
+var source_form_context: SourceFormContext
+var _pending_form: Dictionary = {}
+var _pending_form_tick: int = -1
+var _controller_directory: String
+var _form_current_callback: Callable
+var _form_callback_owner: RefCounted
+signal body_replaced
+
 
 
 func configure(owner_fighter: FighterRuntime, directory: String, platforms: Dictionary,
@@ -23,6 +32,7 @@ func configure(owner_fighter: FighterRuntime, directory: String, platforms: Dict
 		context_override: AiBodyContext = null) -> void:
 	assert(not _active and external_services.is_valid())
 	fighter = owner_fighter
+	_controller_directory = directory
 	_tick = 0
 	services = external_services
 	_scope = scope.duplicate()
@@ -63,6 +73,8 @@ func start_random(random: SourceRandom, difficulty: int, recorded: bool = false)
 func begin_display_tick(tick: int) -> void:
 	assert(_active and tick >= _tick)
 	_tick = tick
+	if not fighter.source_body_available:
+		return
 	controller.synchronize(tick)
 	controller.instances.advance_children(tick)
 
@@ -74,11 +86,17 @@ func prepare_display_tick(tick: int) -> void:
 
 
 func _observe_frame(_frame: int) -> void:
-	controller.synchronize(_tick)
+	if fighter.source_body_available and _pending_form.is_empty():
+		controller.synchronize(_tick)
 
 
 func advance_timeline() -> void:
 	assert(_active)
+	if not _pending_form.is_empty():
+		if _tick <= _pending_form_tick:
+			return
+		_install_pending_form()
+		return
 	fighter.advance_retained_visual_clips()
 	if fighter.timeline_playing:
 		fighter.advance_ai_timeline()
@@ -93,7 +111,12 @@ func run_controllers(ordered_paths: Array) -> void:
 
 func run_body() -> void:
 	assert(_active)
+	if not fighter.source_body_available:
+		return
+	var epoch := fighter.source_body_epoch
 	body.on_enterframe()
+	if epoch != fighter.source_body_epoch:
+		return
 	controller.synchronize(_tick)
 	if initial_frame_count >= 0:
 		run_target_frames(false, initial_frame_count)
@@ -112,7 +135,8 @@ func run_enter_frame(profile: Dictionary) -> void:
 func run_target_frames(drain_nested: bool = true, initial_limit: int = -1) -> void:
 	assert(_active)
 	fighter.run_frame_actions(drain_nested, initial_limit)
-	controller.synchronize(_tick)
+	if fighter.source_body_available:
+		controller.synchronize(_tick)
 
 
 func stop() -> void:
@@ -153,6 +177,11 @@ func stop() -> void:
 	services = Callable()
 	_scope.clear()
 	_ordered_paths.clear()
+	source_form_profiles = {}
+	source_form_context = null
+	_pending_form = {}
+	_form_current_callback = Callable()
+	_form_callback_owner = null
 
 
 func _exit_tree() -> void:
@@ -214,6 +243,22 @@ func _movement_operand(expression: Dictionary) -> float:
 
 func _frame_service(event: Dictionary) -> void:
 	match event["op"]:
+		"body_form_call":
+			assert(source_form_context != null and str(event.method) == "wankai")
+			body.wankai()
+			return
+		"parent_form_goto":
+			assert(not event.get("play", false), "Parent gotoAndPlay requires a parent timeline clock")
+			request_parent_frame(int(event.target_frame))
+			return
+		"form_prepare_slot":
+			_prepare_form_slot(event)
+			return
+		"form_start_interval":
+			assert(source_form_context != null and _form_current_callback.is_valid())
+			var slot := "feiint" if fighter.ai_source_state.read_field(str(event.selector_field)) == 1 else "feiint2"
+			source_form_context.root_intervals.assign_interval(slot, _form_current_callback, int(event.delay_ms))
+			return
 		"update_direct":
 			body.updateDirect()
 			return
@@ -230,8 +275,11 @@ func _frame_service(event: Dictionary) -> void:
 			_external(event["op"], [event])
 			return
 		"inline_frame":
+			var epoch := fighter.source_body_epoch
 			for call in event["calls"]:
 				_frame_service(call)
+				if epoch != fighter.source_body_epoch:
+					return
 			return
 		"frame_hit_test":
 			fighter.ai_source_state.values[event["field_name"]] = fighter.ai_predicate_context.body_hit(event["instance"])
@@ -270,6 +318,14 @@ func _frame_service(event: Dictionary) -> void:
 			return
 		"opponent_visibility":
 			fighter.ai_predicate_context.write_field("opponent_visible", event["value"])
+			return
+		"parent_frame_field":
+			fighter.write_parent_field(event["field_name"], event["value"])
+			return
+		"parent_conditional_frame":
+			if fighter.read_parent_field(event["field_name"]) == event["value"]:
+				for call in event["calls"]:
+					_frame_service(call)
 			return
 		"frame_field":
 			var key: String = event["field_name"]
@@ -311,6 +367,9 @@ func _frame_service(event: Dictionary) -> void:
 				"_cgap": fighter.ai_color_state.gap = int(event["value"])
 				_: assert(false, "Uncompiled color field")
 			return
+		"timeline_goto_frame":
+			controller.goto_frame(int(event["target_frame"]), bool(event["play"]))
+			return
 		"timeline_goto":
 			controller.goto_label(event["label"], event["play"])
 			return
@@ -333,3 +392,138 @@ func _frame_condition(condition: Dictionary) -> bool:
 		"eq": return value == condition["value"]
 		_: assert(false, "Uncompiled frame condition")
 	return false
+
+
+func configure_forms(profiles: Dictionary, intervals: SourceRootIntervals,
+		root_values: Dictionary, parent_frame: int = 1) -> void:
+	assert(_active and source_form_context == null and fighter.player_slot in ["p1", "p2"])
+	var prepared := {}
+	for frame in profiles:
+		var entry: Dictionary = profiles[frame]
+		var profile := SourceFormProfile.prepare(entry.directory, str(fighter.ai_source_state.spec.source_swf.sha256))
+		assert(not profile.has("error"), str(profile.get("error", "")))
+		assert(entry.get("load_declarations") is Array)
+		prepared[str(frame)] = {"profile": profile, "load_declarations": entry.load_declarations}
+	# These source packages are immutable rollback configuration; pending
+	# replacement selects an entry, never edits it. Teardown drops references.
+	for entry: Dictionary in prepared.values():
+		entry.make_read_only()
+	prepared.make_read_only()
+	source_form_profiles = prepared
+	assert(fighter.ai_source_state.spec.get("form_initialization", {}).get("bind_opponent_slot") == true, "Missing source initial wrapper slot binding")
+	fighter.ai_source_state.values["pn"] = 2 if fighter.player_slot == "p1" else 1
+	fighter.source_parent_frame = parent_frame
+	source_form_context = SourceFormContext.new(fighter, intervals, root_values, fighter.player_slot, _form_effect)
+	body_context.form_context = source_form_context
+	assert(body.has_method("wankai") and body.has_method("doWanKai"), "Base BODY lacks compiled form functions")
+	_form_callback_owner = null
+	_form_current_callback = Callable(body, "feixue")
+
+
+func request_parent_frame(frame: int) -> bool:
+	assert(source_form_context != null, "Parent replacement has no root owner")
+	if frame == fighter.source_parent_frame:
+		return true
+	assert(source_form_profiles.has(str(frame)), "Uncompiled parent frame %d for %s" % [frame, fighter.fighter_directory])
+	assert(_pending_form.is_empty(), "Cannot replace an uninitialized replacement body")
+	_pending_form = source_form_profiles[str(frame)]
+	_pending_form_tick = _tick
+	fighter.source_parent_frame = frame
+	controller.instances.clear()
+	if callback_registry != null:
+		callback_registry.unregister(_body_registration)
+		_body_registration = 0
+	initial_frame_count = -1
+	fighter.retire_source_body()
+	body = null
+	# Root intervals and captured body timeouts deliberately survive this step.
+	return false
+
+
+func _install_pending_form() -> void:
+	var pending := _pending_form
+	var old_key_reader := controller.key_reader
+	var old_use_ai: Variant = body_context.use_ai
+	var platforms := body_context.source_platforms
+	fighter.independent_visual_clock = true
+	fighter.install_source_profile(pending.profile, pending.load_declarations)
+	_controller_directory = pending.profile.controller_directory
+	controller.configure(fighter, _controller_directory)
+	controller.context.use_ai = old_use_ai
+	controller.key_reader = old_key_reader
+	body_context.configure(controller, pending.profile.body_metadata, platforms)
+	body = pending.profile.body_script.new({})
+	body.adapter = body_context
+	body_context.body_target = weakref(body)
+	fighter.source_body = body
+	_form_callback_owner = null
+	_form_current_callback = Callable(body, "feixue")
+	_ordered_paths = controller.paths_by_descending_depth()
+	_pending_form = {}
+	_pending_form_tick = -1
+	if callback_registry != null:
+		_body_registration = callback_registry.register(self, "run_body", _tick)
+	body.doWanKai()
+	if not fighter.read_parent_field("万解"):
+		body.updateDirect()
+	# doWanKai places the target subtree before this display advance. Its
+	# child timelines advance with the new body (native Yihu stage trace).
+	fighter.advance_retained_visual_clips()
+	# The new instance enters its second source frame before the next observer,
+	# but its enterFrame registration cannot run in this placement tick.
+	fighter.advance_ai_timeline()
+	controller.synchronize(_tick)
+	body_replaced.emit()
+
+
+func _form_effect(operation: String, arguments: Array) -> Variant:
+	match operation:
+		"_parent.nextFrame()":
+			return request_parent_frame(fighter.source_parent_frame + 1)
+		"trace":
+			print(str(arguments[0]))
+		"root_y":
+			_external("root_position", [{"axis": "y", "operator": "=", "pixels": arguments[0]}])
+		"_parent.updateGJL()":
+			_refresh_form_power(fighter)
+		"_root.game[\"p\" + pn].updateGJL()":
+			assert(fighter.opponent != null)
+			_refresh_form_power(fighter.opponent)
+		"AImain.gotoAndStop(1)":
+			fighter.ai_senses.sensors = {}
+		"AImain.unloadMovie()":
+			fighter.ai_senses.sensors = {}
+		"AImain.gotoAndStop(2)":
+			fighter.ai_senses = AiSenses.new()
+			fighter.ai_senses.configure(fighter, fighter.ai_source_state.spec)
+		_:
+			assert(false, "Uncompiled form effect: " + operation)
+	return null
+
+
+func _refresh_form_power(target: FighterRuntime) -> void:
+	target.source_power_fields = target.ai_source_state.spec.base_power_fields
+	if target.opponent != null:
+		target.ai_source_state.values["pw"] = target.opponent.ai_source_state.spec.base_power_fields
+	assert(target.opponent != null)
+	var helper_key := "helper_power:" + target.opponent.player_slot
+	assert(source_form_context.root_values.has(helper_key), "Missing root helper power binding: " + helper_key)
+	target.ai_source_state.values["fzpw"] = source_form_context.root_values[helper_key]
+
+
+func _prepare_form_slot(event: Dictionary) -> void:
+	assert(source_form_context != null and event.callback == "slot_health")
+	if fighter.ai_source_state.read_field("pn") != event.pn:
+		return
+	fighter.ai_source_state.values["zn"] = event.zn
+	source_form_context.root_values[str(event.slot) + "bs"] = event.selection
+	source_form_context.transfer["ql"] = fighter.energy
+	source_form_context.transfer["hp"] = fighter.health
+	var target := fighter if fighter.player_slot == event.slot else fighter.opponent
+	assert(target != null and target.player_slot == event.slot)
+	var closure := preload("res://source_slot_health_callback.gd").new()
+	closure.target = weakref(target)
+	assert(source_form_context.root_values.has("maxhp"), "Missing root maxhp binding")
+	closure.root_values = source_form_context.root_values
+	_form_callback_owner = closure
+	_form_current_callback = Callable(closure, "deliver")

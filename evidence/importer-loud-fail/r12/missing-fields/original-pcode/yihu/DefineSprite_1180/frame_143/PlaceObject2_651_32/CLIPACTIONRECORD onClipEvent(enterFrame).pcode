@@ -1,0 +1,45 @@
+ConstantPool "_root", "zhanting", "_parent", "_y", "nn", "touch", "跳招2", "gotoAndPlay"
+Push "_root"
+GetVariable
+Push "zhanting"
+GetMember
+Push false
+Equals2
+Not
+If loc00c6
+Push "_parent"
+GetVariable
+Push "_parent"
+GetMember
+Push "_y", "_parent"
+GetVariable
+Push "_parent"
+GetMember
+Push "_y"
+GetMember
+Push 10
+Add2
+SetMember
+Push "_parent"
+GetVariable
+Push "nn"
+GetMember
+Push 1
+Less2
+Not
+Not
+If loc00c6
+Push "_parent"
+GetVariable
+Push "touch"
+GetMember
+Push true
+Equals2
+Not
+If loc00c6
+Push "跳招2", 1, "_parent"
+GetVariable
+Push "gotoAndPlay"
+CallMethod
+Pop
+loc00c6:

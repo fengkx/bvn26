@@ -1,0 +1,60 @@
+{
+  "tests_passed": 7,
+  "nearest_samples": 436000,
+  "retained_nearest_exact": 409816,
+  "candidate_nearest_exact": 435919,
+  "uncached_nearest_exact": 218000,
+  "uncached_nearest_samples": 218000,
+  "cached_nearest_exact": 217919,
+  "cached_nearest_samples": 218000,
+  "cached_counterexamples": 81,
+  "local_pixels_per_cache_state": 15980,
+  "retained_local_exact_per_cache_state": 15979,
+  "candidate_local_exact_per_cache_state": 15980,
+  "complete_diagnostics_exact": 46,
+  "complete_diagnostics_total": 54,
+  "new_native_capture": false,
+  "float_branch_routing_proved": false,
+  "translation_round_mode_proved": false,
+  "fill_routing_proved": false,
+  "candidate_admitted": false,
+  "gpu_advance_allowed": false,
+  "production_admitted": false,
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK"
+}

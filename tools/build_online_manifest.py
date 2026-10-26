@@ -12,6 +12,10 @@ from pathlib import Path
 from typing import Iterable
 
 from importer.visual_blend_modes import validate_timeline_blends
+from importer.import_guards import finite_numbers
+from importer.visual_control_guard import validate_build_controls
+from importer.placement_build_guard import validate_build_placements
+from importer.frame_call_guard import validate_cached_frame_calls
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,7 +32,9 @@ STAGE_CATALOG = GODOT / "generated/stages/catalog/catalog.json"
 
 def load_json(path: Path) -> object:
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        value = json.loads(path.read_text(encoding="utf-8"))
+        finite_numbers(value, str(path))
+        return value
     except (OSError, json.JSONDecodeError) as exc:
         raise ValueError(f"cannot read {path.relative_to(ROOT)}: {exc}") from exc
 
@@ -153,12 +159,20 @@ def content_inputs() -> tuple[list[Path], dict[str, list[str]]]:
     # stage source directories; hash the shipped copies as well.
     for shared in (GODOT / "generated/music", GODOT / "generated/stages/current_world"):
         paths.extend(files_under(shared))
+    forms = GODOT / 'generated/forms'
+    if forms.is_dir():
+        paths.extend(files_under(forms))
     return paths, names
 
 
 def make_documents() -> tuple[dict[str, object], dict[str, object]]:
     for timeline in (GODOT / "generated").rglob("timeline.json"):
-        validate_timeline_blends(load_json(timeline), relative(timeline))
+        data = load_json(timeline)
+        validate_timeline_blends(data, relative(timeline))
+        validate_build_controls(data, relative(timeline))
+        validate_build_placements(data, relative(timeline))
+        if timeline.parent.parent == GODOT / "generated/fighters":
+            validate_cached_frame_calls(data, load_json(timeline.with_name('ai.json')), directory=timeline.parent)
     protocol_text = MATCHMAKING_PROTOCOL.read_text(encoding="utf-8")
     protocol_match = re.search(r"export\s+const\s+VERSION\s*=\s*(\d+)", protocol_text)
     if not protocol_match:

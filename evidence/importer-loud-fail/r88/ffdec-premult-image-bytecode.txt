@@ -1,0 +1,102 @@
+  protected com.jpexs.helpers.SerializableImage getImage();
+    Code:
+         0: new           #51                 // class com/jpexs/helpers/SerializableImage
+         3: dup
+         4: aload_0
+         5: getfield      #9                  // Field bitmapWidth:I
+         8: aload_0
+         9: getfield      #10                 // Field bitmapHeight:I
+        12: getstatic     #77                 // Field com/jpexs/helpers/SerializableImage.TYPE_INT_ARGB_PRE:I
+        15: invokespecial #78                 // Method com/jpexs/helpers/SerializableImage."<init>":(III)V
+        18: astore_1
+        19: aload_1
+        20: invokevirtual #56                 // Method com/jpexs/helpers/SerializableImage.getRaster:()Ljava/awt/image/WritableRaster;
+        23: invokevirtual #57                 // Method java/awt/image/WritableRaster.getDataBuffer:()Ljava/awt/image/DataBuffer;
+        26: checkcast     #58                 // class java/awt/image/DataBufferInt
+        29: invokevirtual #59                 // Method java/awt/image/DataBufferInt.getData:()[I
+        32: astore_2
+        33: aconst_null
+        34: astore_3
+        35: aconst_null
+        36: astore        4
+        38: aload_0
+        39: getfield      #8                  // Field bitmapFormat:I
+        42: iconst_3
+        43: if_icmpne     51
+        46: aload_0
+        47: invokevirtual #79                 // Method getColorMapData:()Lcom/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA;
+        50: astore_3
+        51: aload_0
+        52: getfield      #8                  // Field bitmapFormat:I
+        55: iconst_5
+        56: if_icmpne     65
+        59: aload_0
+        60: invokevirtual #80                 // Method getBitmapData:()Lcom/jpexs/decompiler/flash/types/ALPHABITMAPDATA;
+        63: astore        4
+        65: iconst_0
+        66: istore        5
+        68: iconst_0
+        69: istore        6
+        71: iconst_0
+        72: istore        7
+        74: iload         7
+        76: aload_0
+        77: getfield      #10                 // Field bitmapHeight:I
+        80: if_icmpge     193
+        83: iconst_0
+        84: istore        8
+        86: iload         8
+        88: aload_0
+        89: getfield      #9                  // Field bitmapWidth:I
+        92: if_icmpge     174
+        95: iconst_0
+        96: istore        9
+        98: aload_0
+        99: getfield      #8                  // Field bitmapFormat:I
+       102: iconst_3
+       103: if_icmpne     138
+       106: aload_3
+       107: getfield      #81                 // Field com/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA.colorMapPixelData:[B
+       110: iload         5
+       112: baload
+       113: sipush        255
+       116: iand
+       117: istore        10
+       119: iload         10
+       121: aload_3
+       122: getfield      #82                 // Field com/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA.colorTableRGB:[I
+       125: arraylength
+       126: if_icmpge     138
+       129: aload_3
+       130: getfield      #82                 // Field com/jpexs/decompiler/flash/types/ALPHACOLORMAPDATA.colorTableRGB:[I
+       133: iload         10
+       135: iaload
+       136: istore        9
+       138: aload_0
+       139: getfield      #8                  // Field bitmapFormat:I
+       142: iconst_5
+       143: if_icmpne     156
+       146: aload         4
+       148: getfield      #36                 // Field com/jpexs/decompiler/flash/types/ALPHABITMAPDATA.bitmapPixelData:[I
+       151: iload         6
+       153: iaload
+       154: istore        9
+       156: aload_2
+       157: iload         6
+       159: iload         9
+       161: iastore
+       162: iinc          5, 1
+       165: iinc          6, 1
+       168: iinc          8, 1
+       171: goto          86
+       174: iload         5
+       176: iconst_4
+       177: irem
+       178: ifeq          187
+       181: iinc          5, 1
+       184: goto          174
+       187: iinc          7, 1
+       190: goto          74
+       193: aload_1
+       194: areturn
+

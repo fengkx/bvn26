@@ -249,6 +249,11 @@ func paths_by_descending_depth() -> Array:
 	return ordered.map(func(hook: Dictionary) -> String: return hook["path"])
 
 
+func goto_frame(frame: int, play: bool) -> void:
+	fighter.source_goto_frame(frame, play)
+	synchronize(display_tick)
+
+
 func goto_label(label: String, play: bool) -> void:
 	# Shared controls can reference labels absent from a particular source form.
 	# Native Flash leaves the playhead unchanged for those authored requests.

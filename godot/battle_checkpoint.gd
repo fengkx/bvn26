@@ -421,6 +421,9 @@ func _encode(value: Variant) -> Variant:
 				for field in ["texture", "frame", "offset"]:
 					if field == "texture" and value.get_parent() is ShadowSnapshot: continue
 					record.native[field] = _encode(value.get(field))
+			if value == _game:
+				# Flash _root position is simulation state even though Main is a Control.
+				record.native["position"] = _encode(value.position)
 			if value is Control:
 				for field in ["visible", "modulate"]: record.native[field] = _encode(value.get(field))
 			if value.has_meta("shadow_counter"): record.meta.shadow_counter = _encode(value.get_meta("shadow_counter"))

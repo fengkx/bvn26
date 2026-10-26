@@ -1,0 +1,57 @@
+{
+  "caches": {
+    "command": [
+      "python3",
+      "tools/build_online_manifest.py",
+      "--check"
+    ],
+    "exit": 0
+  },
+  "fingerprint": {
+    "command": [
+      "python3",
+      "tools/test_online_manifest.py"
+    ],
+    "exit": 0
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-loud-fail/r02/venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit": 0
+  },
+  "protected": "PROTECTED_FUNCTION_OK",
+  "scalar_exact": 16377,
+  "old_exact": 71824,
+  "jiraiya_exact_images": 6,
+  "span_exact": 9360,
+  "cpu_bounded_candidate_passed": true,
+  "gpu_advance_allowed": true,
+  "production_admitted": false,
+  "not_rerun": [
+    "full roster/Web export (production unchanged)",
+    "54 component images",
+    "GPU (next isolated diagnostic)"
+  ],
+  "python": {
+    "tests": 723,
+    "passed": 721,
+    "skipped": 2,
+    "exit": 0
+  }
+}

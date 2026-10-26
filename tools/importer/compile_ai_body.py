@@ -151,7 +151,8 @@ def compile_function(name: str, params: str, body: str, extra_calls: frozenset[s
     return '\n'.join(output) + '\n'
 
 
-def compile_body(bundle: dict, sprite: int, *, player: bool = False) -> tuple[str, dict]:
+def compile_body(bundle: dict, sprite: int, *, player: bool = False, form_callbacks: bool = False, form_helpers: bool = False) -> tuple[str, dict]:
+    form_callbacks = form_callbacks or form_helpers
     path = f'DefineSprite_{sprite}/frame_1/DoAction.as'
     if hashlib.sha256((ROOT / bundle['game_file']).read_bytes()).hexdigest() != bundle['swf_sha256']:
         raise ValueError('Retained BODY source hash mismatch')
@@ -184,11 +185,83 @@ def compile_body(bundle: dict, sprite: int, *, player: bool = False) -> tuple[st
         header += '\nfunc source_key(key: String) -> Variant:\n\treturn adapter.source_key(key)\n'
     text = header + ''.join(compile_function(name, *functions[name], extra_calls, player=player) for name in NAMES)
     text += ''.join(compile_function(name, *signature, extra_calls, player=player) for name, signature in callbacks.items())
-    return text, {'status': 'compiled_not_integrated', 'functions': list(NAMES),
+    compiled_names = list(NAMES)
+    if form_callbacks:
+        found = list(re.finditer(r'^feixue = function\(\)\n\{\n(.*?)^\};',
+                             source.replace('\r\n', '\n'), re.M | re.S))
+        callback = found[0] if len(found) == 1 else None
+        root_source = FUNCTION.sub('', source.replace('\r\n', '\n'))
+        receiver_writes = re.findall(r'(?m)^\s*(?:var\s+)?_this\s*=\s*([^;]+);', root_source)
+        if receiver_writes != ['this']:
+            raise ValueError(f"{bundle['game_file']}:{path}: uncompiled callback receiver binding")
+        if callback is None or 'loseHp' not in functions:
+            raise ValueError(f"{bundle['game_file']}:{path}: missing form callback/loseHp implementation")
+        callback_body = callback[1].replace('_this.hp', 'hp').replace('_root.maxhp', 'maximum_health()')
+        callback_body = re.sub(r'\bloseHp\(', 'live_lose_hp(', callback_body)
+        try:
+            text += '\nfunc maximum_health() -> Variant:\n\treturn adapter.maximum_health()\n'
+            text += '\nfunc live_lose_hp(amount: Variant) -> Variant:\n\treturn adapter.call_live_body_function("loseHp", [amount])\n'
+            text += compile_function('loseHp', *functions['loseHp'], player=player)
+            text += compile_function('feixue', '', callback_body,
+                                     frozenset({'live_lose_hp', 'maximum_health'}), player=player)
+        except (ValueError, SyntaxError, KeyError) as error:
+            raise ValueError(f"{bundle['game_file']}:{path}#feixue/loseHp: {error}") from error
+        compiled_names += ['loseHp', 'feixue']
+    if form_helpers:
+        from compile_form_helpers import compile_helpers, NAMES as FORM_NAMES
+        try:
+            random_sites = {m[1]: bundle['game_file'].removeprefix('game/').removesuffix('.swf') + '#' + path + ':' + str(line)
+                            for line, text_line in enumerate(functions['randAI'][1].splitlines(), 1)
+                            if (m := re.fullmatch(r'\s*(attran|defran|goran|jumpran|bisharan) = Math.random\(\) \* _loc\d+_;', text_line))}
+            text += compile_helpers(functions, compile_function, random_sites=random_sites)
+        except (ValueError, SyntaxError, KeyError) as error:
+            raise ValueError(f"{bundle['game_file']}:{path}#form_helpers: {error}") from error
+        compiled_names += list(FORM_NAMES)
+    return text, {'status': 'compiled_not_integrated', 'functions': compiled_names,
                   'host_services': sorted(HOST_CALLS), 'callbacks': list(callbacks),
                   'scalar_fields': sorted(FIELDS), 'external_fields': sorted(set(REFS.values())), 'path': path,
                   'source_swf': bundle['game_file'], 'swf_sha256': bundle['swf_sha256'],
                   'source_sha256': hashlib.sha256(source.encode()).hexdigest()}
+
+
+def compile_player_body(bundle: dict, sprite: int, timeline: dict, *,
+                        form_callbacks: bool = False, form_helpers: bool = False) -> tuple[str, dict]:
+    code, metadata = compile_body(bundle, sprite, player=True,
+                                  form_callbacks=form_callbacks, form_helpers=form_helpers)
+    metadata['input_mode'] = 'source_player_branches_preserved'
+    hooks = []
+    for script in bundle['scripts']:
+        if not script['path'].startswith(f'DefineSprite_{timeline["sprite_id"]}/'):
+            continue
+        compact = re.sub(r'\s+', '', script['source'])
+        motion = re.fullmatch(
+            r'onClipEvent\(enterFrame\)\{if\(_root\.zhanting==false\)\{'
+            r'if\(_parent\._parent\._xscale>0\)\{_parent\._parent\._x\+=Math\.round\(_parent\.speed/(\d+)\);\}'
+            r'else\{_parent\._parent\._x-=Math\.round\(_parent\.speed/\1\);\}\}\}', compact)
+        if '_parent.beidax(' not in script['source'] and not motion:
+            continue
+        match = re.fullmatch(r'onClipEvent\(enterFrame\)\{\s*_parent.beidax\((true)?\);\s*\}\s*', script['source'])
+        placement = re.fullmatch(r'DefineSprite_\d+/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
+        if (not match and not motion) or not placement:
+            raise ValueError('Unsupported player hurt callback: ' + script['path'])
+        frame, controller_id, depth = map(int, placement.groups())
+        members = [item['frame'] for item in timeline['frames'] if any(
+            p.get('character_id') == controller_id and p['depth'] == depth and p['placed_frame'] == frame
+            for p in item['display_list'])]
+        if not members:
+            raise ValueError('Missing player hurt placement: ' + script['path'])
+        operation = {'flying': bool(match[1])} if match else {}
+        if motion:
+            method = f'placement_frame_{frame}_depth_{depth}'
+            callback = script['source'].replace('\r\n', '\n').split('\n', 1)[1].rsplit('}', 1)[0]
+            callback = callback.replace('_parent._parent.', '_parent.').replace('_parent.speed', 'value("speed")')
+            code += compile_function(method, '', callback, player=True)
+            operation = {'body_method': method, 'body_args': [], 'scope_binding': 'controller_parent_is_body'}
+        hooks.append({'path': script['path'], 'method': 'enter_frame', 'depth': depth,
+                      'placement_frame': frame, 'member_frames': members,
+                      **operation, 'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest()})
+    metadata['hurt_hooks'] = hooks
+    return code, metadata
 
 
 def main() -> None:
@@ -196,45 +269,15 @@ def main() -> None:
     parser.add_argument('--fighter', default='yihu')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--player', action='store_true')
+    parser.add_argument('--form-callbacks', action='store_true')
+    parser.add_argument('--form-helpers', action='store_true')
     args = parser.parse_args()
     bundle = json.loads((ROOT / f'scripts/fighter/{args.fighter}.json').read_text())
     timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())
-    code, metadata = compile_body(bundle, timeline['sprite_id'], player=args.player)
+    code, metadata = compile_body(bundle, timeline['sprite_id'], player=args.player, form_callbacks=args.form_callbacks, form_helpers=args.form_helpers)
     if args.player:
-        metadata['input_mode'] = 'source_player_branches_preserved'
-        timeline = json.loads((ROOT / f'data/slices/{args.fighter}-base.timeline.json').read_text())
-        hooks = []
-        for script in bundle['scripts']:
-            if not script['path'].startswith(f'DefineSprite_{timeline["sprite_id"]}/'):
-                continue
-            compact = re.sub(r'\s+', '', script['source'])
-            motion = re.fullmatch(
-                r'onClipEvent\(enterFrame\)\{if\(_root\.zhanting==false\)\{'
-                r'if\(_parent\._parent\._xscale>0\)\{_parent\._parent\._x\+=Math\.round\(_parent\.speed/(\d+)\);\}'
-                r'else\{_parent\._parent\._x-=Math\.round\(_parent\.speed/\1\);\}\}\}', compact)
-            if '_parent.beidax(' not in script['source'] and not motion:
-                continue
-            match = re.fullmatch(r'onClipEvent\(enterFrame\)\{\s*_parent.beidax\((true)?\);\s*\}\s*', script['source'])
-            placement = re.fullmatch(r'DefineSprite_\d+/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\).as', script['path'])
-            if (not match and not motion) or not placement:
-                raise ValueError('Unsupported player hurt callback: ' + script['path'])
-            frame, controller_id, depth = map(int, placement.groups())
-            members = [item['frame'] for item in timeline['frames'] if any(
-                p.get('character_id') == controller_id and p['depth'] == depth and p['placed_frame'] == frame
-                for p in item['display_list'])]
-            if not members:
-                raise ValueError('Missing player hurt placement: ' + script['path'])
-            operation = {'flying': bool(match[1])} if match else {}
-            if motion:
-                method = f'placement_frame_{frame}_depth_{depth}'
-                callback = script['source'].replace('\r\n', '\n').split('\n', 1)[1].rsplit('}', 1)[0]
-                callback = callback.replace('_parent._parent.', '_parent.').replace('_parent.speed', 'value("speed")')
-                code += compile_function(method, '', callback, player=True)
-                operation = {'body_method': method, 'body_args': [], 'scope_binding': 'controller_parent_is_body'}
-            hooks.append({'path': script['path'], 'method': 'enter_frame', 'depth': depth,
-                          'placement_frame': frame, 'member_frames': members,
-                          **operation, 'source_sha256': hashlib.sha256(script['source'].encode()).hexdigest()})
-        metadata['hurt_hooks'] = hooks
+        code, metadata = compile_player_body(bundle, timeline['sprite_id'], timeline,
+                                            form_callbacks=args.form_callbacks, form_helpers=args.form_helpers)
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output / 'body.gd').write_text(code)
     (args.output / 'body.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')

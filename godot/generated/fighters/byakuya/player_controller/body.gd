@@ -69,6 +69,9 @@ func defer_body(method: String, delay: Variant) -> Variant:
 func applyColors() -> Variant:
 	return adapter.body_service("applyColors")
 
+func source_key(key: String) -> Variant:
+	return adapter.source_key(key)
+
 func hurtSkill() -> Variant:
 	if truth(((number(value("hp")) <= number(0)))):
 		return false
@@ -78,6 +81,8 @@ func hurtSkill() -> Variant:
 		return false
 	if truth((equal(value("opponent_action"), 3))):
 		return false
+	if truth((not truth(value("useAI")))):
+		return source_key("换")
 	return ((number(value("goran")) < number(30)))
 	return null
 
@@ -92,6 +97,22 @@ func dash() -> Variant:
 		return false
 	if truth((equal(value("opponent_sw"), true))):
 		return false
+	if truth((not truth(value("useAI")))):
+		if truth(source_key("冲")):
+			if truth(source_key("上")):
+				write_value("dashX", 0)
+				write_value("dashY", (-number(14)))
+				return true
+			if truth(source_key("下")):
+				if truth((truth(value("hitBan")) or truth(value("touch")))):
+					write_value("dashX", 10)
+					write_value("dashY", 0)
+					updateDirect()
+				else:
+					write_value("dashX", 0)
+					write_value("dashY", 12)
+				return true
+			return false
 	if truth((truth((not truth(value("hitBan")))) and truth((not truth(value("touch")))))):
 		return false
 	var _loc3_: Variant = null
@@ -355,4 +376,161 @@ func doHurtSkill_timeout_1() -> Variant:
 	adapter.goto_label("招换", false)
 	adapter.play_body()
 	adapter.stage_hit("XG_baoqi", {"pw": 80, "zl": 5, "yup": 0, "hitx": 15, "hdtime": 0, "htype": "击飞"})
+	return null
+
+func maximum_health() -> Variant:
+	return adapter.maximum_health()
+
+func live_lose_hp(amount: Variant) -> Variant:
+	return adapter.call_live_body_function("loseHp", [amount])
+
+func loseHp(v: Variant = null) -> Variant:
+	if truth(value("wudi")):
+		return null
+	write_value("hp", (number(value("hp")) - number(v)))
+	return null
+
+func feixue() -> Variant:
+	if truth((equal(value("root_paused"), false))):
+		if truth(((number(value("hp")) > number((number(maximum_health()) / number(5)))))):
+			live_lose_hp(10)
+	return null
+
+func wankai() -> Variant:
+	form_write("transformed", true)
+	form_write("transfer_ql", value("ql"))
+	form_write("transfer_hp", value("hp"))
+	if truth((not truth(value("wudi")))):
+		form_clear_interval("feiint")
+		form_interval("feiint", "feixue", 1000)
+	if truth((not truth(form_next_frame()))):
+		return null
+	form_write("root_y", 0)
+	return null
+
+func doWanKai() -> Variant:
+	initCtrl()
+	if truth(form_read("transformed")):
+		write_value("hp", form_read("transfer_hp"))
+		write_value("ql", form_read("transfer_ql"))
+		if truth((equal(form_read("wrapper_name"), "p1"))):
+			form_write("trace", "p1")
+			form_write("body_key:上", form_read("key:w"))
+			form_write("body_key:下", form_read("key:s"))
+			form_write("body_key:左", form_read("key:a"))
+			form_write("body_key:右", form_read("key:d"))
+			form_write("body_key:斩", form_read("key:j"))
+			form_write("body_key:跳", form_read("key:k"))
+			form_write("body_key:冲", form_read("key:l"))
+			form_write("body_key:招", form_read("key:u"))
+			form_write("body_key:必杀", form_read("key:i"))
+			form_write("body_key:换", form_read("key:o"))
+		else:
+			form_write("trace", "p2")
+			form_write("body_key:上", form_read("key:上箭"))
+			form_write("body_key:下", form_read("key:下箭"))
+			form_write("body_key:左", form_read("key:左箭"))
+			form_write("body_key:右", form_read("key:右箭"))
+			form_write("body_key:斩", form_read("key:N1"))
+			form_write("body_key:跳", form_read("key:N2"))
+			form_write("body_key:冲", form_read("key:N3"))
+			form_write("body_key:招", form_read("key:N4"))
+			form_write("body_key:必杀", form_read("key:N5"))
+			form_write("body_key:换", form_read("key:N6"))
+		adapter.goto_label("开场", false)
+		adapter.play_body()
+	return null
+
+func initCtrl() -> Variant:
+	if truth((equal(value("useAI"), null))):
+		return null
+	form_write("trace", form_init_trace(value("useAI")))
+	form_effect("_parent.updateGJL()")
+	form_effect("_root.game[\"p\" + pn].updateGJL()")
+	if truth(value("useAI")):
+		form_effect("AImain.gotoAndStop(2)")
+		form_interval("airanset", "randAI", 500)
+	else:
+		form_effect("AImain.gotoAndStop(1)")
+		form_effect("AImain.unloadMovie()")
+	return null
+
+func randAI() -> Variant:
+	var _loc2_: Variant = (number(100) * number(form_read("difficulty")))
+	form_write("body_field:attran", (number(form_random("fighter/Byakuya#DefineSprite_631/frame_1/DoAction.as:2")) * number(_loc2_)))
+	form_write("body_field:defran", (number(form_random("fighter/Byakuya#DefineSprite_631/frame_1/DoAction.as:3")) * number(_loc2_)))
+	form_write("body_field:goran", (number(form_random("fighter/Byakuya#DefineSprite_631/frame_1/DoAction.as:4")) * number(_loc2_)))
+	form_write("body_field:jumpran", (number(form_random("fighter/Byakuya#DefineSprite_631/frame_1/DoAction.as:5")) * number(_loc2_)))
+	form_write("body_field:bisharan", (number(form_random("fighter/Byakuya#DefineSprite_631/frame_1/DoAction.as:6")) * number(_loc2_)))
+	return null
+
+func form_init_trace(v: Variant) -> String:
+	if v == null:
+		return "initCtrl: undefined"
+	assert(v is bool, "Uncompiled useAI trace value")
+	return "initCtrl: " + ("true" if v else "false")
+
+func form_next_frame() -> Variant:
+	return adapter.form_next_frame()
+
+func form_random(site: String) -> Variant:
+	return adapter.form_random(site)
+
+func form_read(key: String) -> Variant:
+	return adapter.form_read(key)
+
+func form_write(key: String, v: Variant) -> Variant:
+	adapter.form_write(key, v)
+	return null
+
+func form_effect(operation: String) -> Variant:
+	adapter.form_effect(operation)
+	return null
+
+func form_interval(slot: String, method: String, delay: int) -> Variant:
+	adapter.form_interval(slot, Callable(self, method), delay)
+	return null
+
+func form_clear_interval(slot: String) -> Variant:
+	adapter.form_clear_interval(slot)
+	return null
+
+func placement_frame_171_depth_34() -> Variant:
+	if truth((equal(value("root_paused"), false))):
+		if truth(((number(value("xscale")) > number(0)))):
+			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(4))))))
+		else:
+			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(4))))))
+	return null
+
+func placement_frame_188_depth_34() -> Variant:
+	if truth((equal(value("root_paused"), false))):
+		if truth(((number(value("xscale")) > number(0)))):
+			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(3))))))
+		else:
+			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(3))))))
+	return null
+
+func placement_frame_209_depth_34() -> Variant:
+	if truth((equal(value("root_paused"), false))):
+		if truth(((number(value("xscale")) > number(0)))):
+			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(4))))))
+		else:
+			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(4))))))
+	return null
+
+func placement_frame_275_depth_34() -> Variant:
+	if truth((equal(value("root_paused"), false))):
+		if truth(((number(value("xscale")) > number(0)))):
+			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(2))))))
+		else:
+			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(2))))))
+	return null
+
+func placement_frame_284_depth_34() -> Variant:
+	if truth((equal(value("root_paused"), false))):
+		if truth(((number(value("xscale")) > number(0)))):
+			write_value("x", (number(value("x")) + number(source_round((number(value("speed")) / number(4))))))
+		else:
+			write_value("x", (number(value("x")) - number(source_round((number(value("speed")) / number(4))))))
 	return null

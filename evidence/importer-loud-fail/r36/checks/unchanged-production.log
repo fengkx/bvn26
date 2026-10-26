@@ -1,0 +1,9 @@
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:33: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  premult = [[*(c*(a+1)//256 for c in (r, g, b)), a] for r, g, b, a in decoded.getdata()]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:57: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  'pixels': 304, 'exact_pixels': sum(a == b for a, b in zip(reference.getdata(), actual.getdata())),
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:62: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  predicted = [tuple(v+96*(256-p[3])//256 for v in p[:3]) for p in glow.getdata()]
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/run_production_wrapper.py:64: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  'exact_pixels': sum(a == b for a, b in zip(predicted, native.crop((281,196,319,204)).getdata()))})
+{"images": 4, "exact": 0, "wrapper_passed": false, "production_admitted": false, "production_path_passed": false}

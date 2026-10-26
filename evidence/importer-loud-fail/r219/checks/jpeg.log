@@ -1,0 +1,19 @@
+/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_original_jpeg.py:40: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for rgb, a in zip(image.getdata(), alpha)]
+./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/tests/test_jpeg_color_sequences.py:19: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  case=row['case']['id'];values=list(Image.open(evidence/'planes'/f'{case}.ycbcr.ppm').getdata())
+../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/validate_jpeg_row_route.py:54: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  values=zip(*(im.getdata() for im in images));failures=[]
+..../Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/tests/test_jpeg_chroma_lattice.py:20: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  case=row['case']['id'];values=list(Image.open(evidence/'planes'/f'{case}.ycbcr.ppm').getdata())
+./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/analyze_jpeg_controls.py:39: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  actual=list(Image.open(BytesIO(p.stdout)).convert('RGB').getdata())
+./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/probes/compare_jpeg_decoder_modes.py:51: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  for i,(rgb,a,expected) in enumerate(zip(image.getdata(),alpha,target)):
+./Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/tests/test_jpeg_scaled_planes.py:25: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  planes=[list(Image.open(p).getdata()) for p in paths]
+.
+----------------------------------------------------------------------
+Ran 11 tests in 7.167s
+
+OK

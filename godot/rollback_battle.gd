@@ -31,6 +31,11 @@ func configure(scene: Node) -> String:
 	for driver in [scene.player_body_driver._driver, scene.opponent_driver]:
 		if driver.timeouts.pending_count() != 0:
 			return "Cannot adopt live BODY timeout registrations"
+	if scene.source_root_intervals != null and scene.source_root_intervals.pending_count() != 0:
+		return "Cannot adopt live root interval registrations"
+	scene.recorded_form_timers = true
+	if scene.source_root_intervals != null:
+		scene.source_root_intervals.recorded = true
 	for driver in [scene.player_body_driver._driver, scene.opponent_driver]:
 		driver.timeouts.recorded = true
 	game = scene
@@ -51,7 +56,7 @@ func set_frame_events(frame: int, time_ms: int, skip: bool = false, events: Arra
 	if _journal.has(frame):
 		return "" if _journal[frame] == value else "Conflicting immutable frame envelope"
 	for event in events:
-		if not event is Dictionary or event.get("kind", "") not in ["intro_poll", "nextfight", "countdown", "body_timeout"]:
+		if not event is Dictionary or event.get("kind", "") not in ["intro_poll", "nextfight", "countdown", "body_timeout", "root_interval"]:
 			return "Invalid battle callback envelope"
 		var phase := "before_root_observer" if event.kind == "nextfight" else "after_actor_advance"
 		if event.get("phase") != phase: return "Invalid battle callback phase"
@@ -59,6 +64,8 @@ func set_frame_events(frame: int, time_ms: int, skip: bool = false, events: Arra
 			return "Invalid intro callback coordinates"
 		if event.kind == "body_timeout" and (event.get("slot") not in ["p1", "p2"] or not event.get("id") is int or event.id <= 0):
 			return "Invalid BODY timeout reference"
+		if event.kind == "root_interval" and (not event.get("id") is int or event.id <= 0):
+			return "Invalid root interval reference"
 	_journal[frame] = value
 	return ""
 

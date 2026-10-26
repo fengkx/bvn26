@@ -2,13 +2,18 @@ extends SceneTree
 
 func _initialize() -> void:
 	var definition := {"frame_count": 3, "display_list_frame_events": [[], [], [{"visual_controls": [{"op": "stop"}]}]]}
-	var clip := VisualPlayhead.create(definition)
+	var entered: Array[int] = []
+	var on_frame := func(frame: int) -> void: entered.append(frame)
+	var clip := VisualPlayhead.create(definition, on_frame)
 	for tick in 20:
-		VisualPlayhead.advance(clip, definition)
+		VisualPlayhead.advance(clip, definition, on_frame)
+	assert(entered == [1, 2, 3], "Stopped clips do not re-enter frame scripts")
 	assert(clip.frame == 3 and not clip.playing and clip.age == 20)
 	var jump := {"frame_count": 4, "frame_labels": {"end": 4}, "display_list_frame_events": [[], [{"visual_controls": [{"op": "goto", "label": "end"}, {"op": "play"}]}], [], [{"visual_controls": [{"op": "stop"}]}]]}
-	clip = VisualPlayhead.create(jump)
-	VisualPlayhead.advance(clip, jump)
+	entered.clear()
+	clip = VisualPlayhead.create(jump, on_frame)
+	VisualPlayhead.advance(clip, jump, on_frame)
+	assert(entered == [1, 2, 4], "A goto enters its target script in source order")
 	assert(clip.frame == 4 and not clip.playing)
 	for named in [false, true]:
 		for paused in [false, true]:

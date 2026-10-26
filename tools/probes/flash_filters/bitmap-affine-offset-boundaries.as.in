@@ -1,0 +1,19 @@
+stop();var seq=0;var phase=0;var id=0;
+function emit(k,v){trace("AIREF|RUN|"+(seq++)+"|0|0|0|"+k+"|"+v);}
+var source=new flash.display.BitmapData(128,128,true,0);
+for(var y=0;y<128;y++)for(var x=0;x<128;x++)source.setPixel32(x,y,0xff000000+x*65536+y*256+73);
+var blackSource=new flash.display.BitmapData(128,128,false,0);blackSource.draw(source);
+for(var y=0;y<128;y++){var row=[];for(var x=0;x<128;x++)row.push(source.getPixel32(x,y),blackSource.getPixel32(x,y));emit("source",y+","+row.join(","));}blackSource.dispose();
+var cases=__CASES__;
+_root.onEnterFrame=function(){
+ var v=cases[phase];var parent=_root.createEmptyMovieClip("parent",1);var child=parent.createEmptyMovieClip("child",1);
+ child.beginBitmapFill(source,new flash.geom.Matrix(),false,false);child.moveTo(0,0);child.lineTo(128,0);child.lineTo(128,128);child.lineTo(0,128);child.lineTo(0,0);child.endFill();
+ child.transform.matrix=new flash.geom.Matrix(v[0],v[1],v[2],v[3],v[4],v[5]);var cm=child.transform.matrix;var draw=new flash.geom.Matrix(1,0,0,1,v[6],v[7]);
+ for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){
+  var xx=v[8]+dx;var yy=v[9]+dy;var image=new flash.display.BitmapData(768,768,true,0);
+  image.draw(parent,draw,null,null,new flash.geom.Rectangle(xx,yy,1,1));var black=new flash.display.BitmapData(768,768,false,0);black.draw(image);
+  emit("sample",[id++,phase,dx,dy,cm.a,cm.b,cm.c,cm.d,cm.tx,cm.ty,draw.a,draw.b,draw.c,draw.d,draw.tx,draw.ty,xx,yy,image.getPixel32(xx,yy),black.getPixel32(xx,yy)].join(","));
+  image.dispose();black.dispose();
+ }
+ parent.removeMovieClip();phase++;if(phase==cases.length){source.dispose();delete _root.onEnterFrame;emit("done","ok");fscommand("quit");}
+};

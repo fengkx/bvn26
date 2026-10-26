@@ -20,7 +20,8 @@ from materialize_timeline_assets import materialize
 from materialize_stage_music import materialize as materialize_music
 
 
-def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> dict:
+def build(workspace: Path, output: Path, manifest_path: Path, source: Path,
+          current_world_output: Path | None = None) -> dict:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     report = json.loads((workspace / "export-report.json").read_text(encoding="utf-8"))
     if report["source"]["sha256"] != file_sha256(source):
@@ -35,9 +36,40 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> d
         if (match := re.fullmatch(r"DefineSprite_(\d+)/frame_1/DoAction.as", item["path"]))
         and item["source"].strip() == "_visible = false;"
     }
+    previous_catalog = output / "catalog.json"
+    previous_stages = (json.loads(previous_catalog.read_text())["stages"]
+                       if previous_catalog.is_file() else [])
     stages = []
     music_output = output / "music"
     music_output.mkdir(parents=True, exist_ok=True)
+    directory = output / "world"
+    directory.mkdir(parents=True, exist_ok=True)
+    world_timeline = copy.deepcopy(timeline)
+    # GameWorld owns the root game transform (source camera enterFrame).
+    # Keeping its authored placement here applies that container twice.
+    world_timeline.pop("wrapper", None)
+    # Each cache identifies this complete source sprite. Keep every frame
+    # and dependency so omitted root obligations cannot hide in a slice.
+    # The stage consumer selects its catalog frame with autoplay disabled.
+    for definition in world_timeline["definitions"]:
+        if definition["character_id"] in hidden_ids:
+            definition["initial_visible"] = False
+    # Sprite1900 loads fighter/helper movies into these marker clips.
+    # Their geometry remains available for spawning; the runtime owns art.
+    for source_frame in world_timeline["frames"]:
+        for placement in source_frame["display_list"]:
+            if placement.get("name") in {"p1", "p2", "p1fz", "p2fz"}:
+                placement["replaced_by_external_movie"] = True
+    world_timeline["source_swf"] = {
+        "path": source.as_posix(),
+        "sha256": file_sha256(source),
+    }
+    # Keep the compiler input outside the materializer's destination file.
+    timeline_path = output / "world.timeline.json"
+    timeline_path.write_text(
+        json.dumps(world_timeline, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    assets = materialize(workspace, timeline_path, directory)
     for key, entry in manifest["map_catalog"].items():
         matches = [f for f in timeline["frames"] if entry["frame"] in f["labels"]]
         if len(matches) != 1:
@@ -46,32 +78,6 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> d
         names = {p.get("name") for p in frame["display_list"]}
         if not {"p1", "p2"} <= names:
             raise ValueError(f"Missing fighter spawn markers: {key}")
-        directory = output / f"frame_{frame['frame']}"
-        directory.mkdir(parents=True, exist_ok=True)
-        sliced = copy.deepcopy(timeline)
-        # GameWorld owns the root game transform (source camera enterFrame).
-        # Keeping its authored placement here applies that container twice.
-        sliced.pop("wrapper", None)
-        sliced["frames"] = [frame]
-        sliced["definitions"] = referenced_definitions(root, [frame])
-        for definition in sliced["definitions"]:
-            if definition["character_id"] in hidden_ids:
-                definition["initial_visible"] = False
-        # Sprite1900 loads fighter/helper movies into these marker clips.
-        # Their geometry remains available for spawning; the runtime owns art.
-        for placement in sliced["frames"][0]["display_list"]:
-            if placement.get("name") in {"p1", "p2", "p1fz", "p2fz"}:
-                placement["replaced_by_external_movie"] = True
-        sliced["source_swf"] = {
-            "path": source.as_posix(),
-            "sha256": file_sha256(source),
-        }
-        # Keep the compiler input outside the materializer's destination file.
-        timeline_path = output / f"frame_{frame['frame']}.timeline.json"
-        timeline_path.write_text(
-            json.dumps(sliced, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-        )
-        assets = materialize(workspace, timeline_path, directory)
         background_frame = next(f for f in backgrounds["frames"] if entry["frame"] in f["labels"])
         background = copy.deepcopy(backgrounds)
         background["frames"] = [background_frame]
@@ -103,6 +109,8 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> d
                 "runtime_verified": False,
             }
         )
+    if current_world_output is not None:
+        materialize(workspace, timeline_path, current_world_output)
     script_bundle = json.loads(Path("scripts/main.json").read_text(encoding="utf-8"))
     defaults = next(
         item["source"]
@@ -121,6 +129,16 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path) -> d
     (output / "catalog.json").write_text(
         json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
+    # Retire only directories previously owned by this catalog, after the
+    # replacement has materialized successfully. Stale slices fail root guards.
+    active_directories = {stage["directory"] for stage in stages}
+    for stage in previous_stages:
+        old_directory = stage["directory"]
+        if old_directory not in active_directories:
+            if not re.fullmatch(r"frame_\d+", old_directory):
+                raise ValueError(f"Unexpected obsolete stage directory: {old_directory}")
+            shutil.rmtree(output / old_directory)
+            (output / f"{old_directory}.timeline.json").unlink(missing_ok=True)
     return catalog
 
 
@@ -132,10 +150,11 @@ def main() -> None:
     )
     parser.add_argument("--manifest", type=Path, default=Path("manifest.json"))
     parser.add_argument("--source", type=Path, default=Path("game/main.swf"))
+    parser.add_argument("--current-world-output", type=Path)
     args = parser.parse_args()
     print(
         json.dumps(
-            build(args.workspace, args.output, args.manifest, args.source),
+            build(args.workspace, args.output, args.manifest, args.source, args.current_world_output),
             ensure_ascii=False,
         )
     )

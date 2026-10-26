@@ -1,6 +1,6 @@
 extends RefCounted
 
-const IMMUTABLE := ["_timeline", "_fighter", "_definitions", "_assets", "_frames",
+const IMMUTABLE := ["source_form_profiles", "_pending_form", "_timeline", "_fighter", "_definitions", "_assets", "_frames",
 	"_combat", "spec", "_spec", "_hooks", "clips_metadata",
 	"cpu_visual_spec", "cpu_profile", "ko_metadata", "_sound_assets", "_sound_segments",
 	"_events", "_sound_events", "_manifest", "_scalar_fields", "_data", "_entries_by_label", "ai_color_operations", "training_spec", "_source_spec", "_helper_spec"]
@@ -14,6 +14,7 @@ const MAIN_FIELDS := ["game_world", "naruto", "ichigo", "current_world", "naruto
 	"_match_input_active", "session", "super_runtime", "super_presentation", "physics_tick",
 	"naruto_helper", "ichigo_helper", "screen_flash", "screen_flash_age", "hit_fx_pause_count",
 	"player_body_driver", "source_callbacks", "source_health_rules", "source_health_registration",
+	"source_root_intervals", "source_form_root_values",
 	"source_frame_sequence", "source_child_frames", "player_body_services", "training_timer"]
 const MAIN_EXTERNAL := [
 	"tick_label",
@@ -40,6 +41,6 @@ const MAIN_EXTERNAL := [
 	"_diagnostic_watchdog_elapsed_ms",
 	"_diagnostic_stall_reported",
 	"diagnostic_input_provider",
-	"recorded_training_timers",
+	"recorded_training_timers", "recorded_form_timers",
 ]
 const EXTERNAL_FIELDS := ["diagnostics", "diagnostic_runtime"]

@@ -138,6 +138,7 @@ for src, tests in groups.items():
         for code, data, _ in original
         if code == 39
     }
+    sprites[0] = original
     defs = b"".join(
         raw
         for code, data, raw in original
@@ -191,6 +192,8 @@ for src, tests in groups.items():
             "id": r["id"],
             "samples": r["samples"],
             "scale": r["normalization"]["scale"],
+            "raster_input_only": r.get("raster_input_only", False),
+            "depth": r["placement"]["depth"],
             "x": r["normalization"]["x"],
             "y": r["normalization"]["y"],
         }
@@ -203,7 +206,7 @@ function capture(mc,item){
  var b=new flash.display.BitmapData(600,400,false,6316128);var m=new flash.geom.Matrix(item.scale,0,0,item.scale,item.x,item.y);b.draw(mc,m);
  for(var y=0;y<400;y++){var row="";var last=b.getPixel(0,y);var count=1;for(var x=1;x<=600;x++){var pixel=x<600?b.getPixel(x,y):-1;if(pixel==last)count++;else{row+=count.toString(16)+":"+last.toString(16)+",";count=1;last=pixel;}}emit("pixels",item.id+","+y+","+row);}b.dispose();
 }
-function observe(){for(var i=0;i<cases.length;i++){var mc=_root["case"+i];clocks(mc,cases[i].id);for(var j=0;j<cases[i].samples.length;j++)if(cases[i].samples[j]==tick)capture(mc,cases[i]);}}
+function observe(){for(var i=0;i<cases.length;i++){var mc=_root["case"+i];if(cases[i].raster_input_only){var child=mc.getInstanceAtDepth(cases[i].depth-16384);if(typeof(child)!="movieclip"){emit("input_error",cases[i].id);fscommand("quit");return;}child.filters=[];child.cacheAsBitmap=false;if(tick==0)emit("raster_input",cases[i].id+","+child.filters.length+","+child.cacheAsBitmap);}clocks(mc,cases[i].id);for(var j=0;j<cases[i].samples.length;j++)if(cases[i].samples[j]==tick)capture(mc,cases[i]);}}
 for(var i=0;i<cases.length;i++){var mc=_root.attachMovie("case"+i,"case"+i,i+1);mc.gotoAndStop(1);}
 observe();
 _root.onEnterFrame=function(){tick++;if(tick==10 || tick==20){for(var i=0;i<cases.length;i++)_root["case"+i].gotoAndStop(tick==10?2:1);}observe();if(tick>=100){delete _root.onEnterFrame;emit("done","ok");fscommand("quit");}};
@@ -248,6 +251,8 @@ _root.onEnterFrame=function(){tick++;if(tick==10 || tick==20){for(var i=0;i<case
             {
                 "run_id": run,
                 "source": src,
+                "raster_input_only": all(r.get("raster_input_only", False) for r in tests),
+                "harness_script_sha256": hashlib.sha256(code.encode()).hexdigest(),
                 "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
                 "outputs_sha256": {
                     "game/main.swf": hashlib.sha256(

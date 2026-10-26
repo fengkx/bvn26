@@ -44,13 +44,17 @@ static var _cxform_shader: Shader
 var _source_color_mul := Color(1, 1, 1, 1)
 var _source_color_add := Color(0, 0, 0, 0)
 var _source_color_matrix: Array = []
+var _source_placement_filters_cleared := false
 static var _source_filter_shader: Shader
 static var _blend_shaders: Dictionary = {}
+static var _raster_input_shaders: Dictionary = {}
+var _filter_input_depth := 0
 
 const SourceBoundsMath = preload("res://source_matrix_bounds.gd")
 const SourceMatrixTransform = preload("res://source_matrix_transform.gd")
 const TWIPS_PER_PIXEL := 20.0
 const BlendGroupScript = preload("res://blend_group.gd")
+const FilterGroupScript = preload("res://filter_group.gd")
 
 const SOURCE_FILTER_SHADER := """
 shader_type canvas_item;
@@ -439,8 +443,12 @@ func _advance_visual_clip(clip: Dictionary) -> void:
 		clip.age = int(source.get("age", 0))
 		clip.frame = int(source.local_start)
 	else:
-		VisualPlayhead.advance(clip, definition)
+		VisualPlayhead.advance(clip, definition, _queue_visual_frame.bind(int(clip.placement.character_id)))
 	_sync_visual_children(clip, definition)
+
+
+func _queue_visual_frame(_frame: int, _sprite: int) -> void:
+	pass
 
 
 func _visual_source_record(placement: Dictionary) -> Dictionary:
@@ -468,7 +476,7 @@ func _sync_visual_list(placements: Array, previous_clips: Dictionary) -> Diction
 		var depth := int(placement["depth"])
 		var identity := [placement["character_id"], placement.get("placed_frame", 1)]
 		var previous: Dictionary = previous_clips.get(depth, {})
-		var clip: Dictionary = previous if previous.get("identity") == identity else VisualPlayhead.create(definition)
+		var clip: Dictionary = previous if previous.get("identity") == identity else VisualPlayhead.create(definition, _queue_visual_frame.bind(int(placement.character_id)))
 		clip.identity = identity
 		clip.placement = placement
 		var source := _visual_source_record(placement)
@@ -527,12 +535,23 @@ func materialize_display() -> void:
 	var frame: Dictionary = _frames[_current_frame]
 	var wrapper := _wrapper_transform()
 	var wrapper_blend := int(_timeline.get("wrapper", {}).get("blend_mode", 1))
+	var filters: Array = [] if _source_placement_filters_cleared else _timeline.get("wrapper", {}).get("filters", [])
 	var first_child := get_child_count()
-	_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
-		0, _source_color_mul, _source_color_add, [], true,
-		1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips)
-	if wrapper_blend not in [0, 1]:
-		_compose_blend_group(first_child, 1.0, 0, wrapper_blend)
+	if not filters.is_empty():
+		# Filter the body cache before its source color transform, like a child
+		# placement. resColor() can retire the authored filter at initialization.
+		_filter_input_depth += 1
+		_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
+			0, Color.WHITE, Color(0, 0, 0, 0), [], true, 1, _retained_visual_clips)
+		_filter_input_depth -= 1
+		_compose_blend_group(first_child, _source_color_mul.a, 0, wrapper_blend,
+			filters, true, _source_color_mul, _source_color_add)
+	else:
+		_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
+			0, _source_color_mul, _source_color_add, [], true,
+			1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips)
+		if wrapper_blend not in [0, 1]:
+			_compose_blend_group(first_child, 1.0, 0, wrapper_blend)
 	queue_redraw()
 
 
@@ -880,6 +899,28 @@ func _render_placement(
 	var character_id := int(placement.get("character_id", -1))
 	if not _definitions.has(character_id):
 		return
+	var filters: Array = placement.get("filters", [])
+	if not filters.is_empty() or bool(placement.get("cache_as_bitmap", false)):
+		var unfiltered := placement.duplicate()
+		unfiltered.erase("filters")
+		unfiltered.erase("cache_as_bitmap")
+		unfiltered["blend_mode"] = 1
+		var filter_cx: Dictionary = placement.get("color_transform", {})
+		var filter_mul := _cxform_mul(filter_cx)
+		var filter_add := _cxform_add(filter_cx)
+		var filter_alpha := parent_alpha * filter_mul.a
+		# The display-object CXFORM operates on the filtered cache.
+		unfiltered.erase("color_transform")
+		var first_child := get_child_count()
+		_filter_input_depth += 1
+		_render_placement(unfiltered, parent_transform, 1.0, parent_depth,
+			timeline_frame, clip_age, Color.WHITE, Color(0, 0, 0, 0), clip_masks, 1, visual_clip)
+		_filter_input_depth -= 1
+		_compose_blend_group(first_child, filter_alpha, parent_depth,
+			int(placement.get("blend_mode", inherited_blend)), filters, true,
+			_cxform_combine_mul(parent_rgb_mul, filter_mul),
+			_cxform_combine_add(parent_rgb_mul, parent_rgb_add, filter_mul, filter_add))
+		return
 	var definition: Dictionary = _definitions[character_id]
 	if not bool(definition.get("initial_visible", true)):
 		return
@@ -1141,13 +1182,17 @@ func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: fl
 	sprite.material = material
 
 
-func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: int) -> void:
+func _compose_blend_group(
+	first_child: int, opacity: float, depth: int, blend: int,
+	filters: Array = [], isolate: bool = false,
+	post_mul: Color = Color.WHITE, post_add: Color = Color(0, 0, 0, 0)
+) -> void:
 	var items := get_children().slice(first_child)
 	if items.is_empty():
 		return
-	# A single leaf already is a composed object; retain its original raster
-	# sampling, and insert the background copy before it in draw order.
-	if items.size() == 1 and (items[0] is Sprite2D or items[0] is Polygon2D):
+	# Non-normal blends cache their input before applying group opacity, even
+	# for a single leaf. Distributing opacity into that leaf quantizes too early.
+	if blend in [0, 1] and not isolate and filters.is_empty() and items.size() == 1 and (items[0] is Sprite2D or items[0] is Polygon2D):
 		var item: CanvasItem = items[0]
 		remove_child(item)
 		item.modulate.a *= opacity
@@ -1156,23 +1201,78 @@ func _compose_blend_group(first_child: int, opacity: float, depth: int, blend: i
 		return
 	for item: Node in items:
 		remove_child(item)
-	var group := BlendGroupScript.new()
+	var group = BlendGroupScript.new() if filters.is_empty() else FilterGroupScript.new()
+	if not filters.is_empty():
+		group.set_meta("flash_filters", filters.duplicate(true))
 	group.z_index = depth
 	var composite: Sprite2D = group.setup(items, opacity)
 	# Viewport textures hold premultiplied RGB. Decode once before blending;
 	# the blend_mix pipeline then applies source alpha exactly once.
 	var material := ShaderMaterial.new()
 	var shader := Shader.new()
-	shader.code = "shader_type canvas_item; void fragment() { vec4 pixel = texture(TEXTURE, UV); if (pixel.a > 0.0) { pixel.rgb /= pixel.a; } COLOR = pixel; }"
+	shader.code = """
+shader_type canvas_item;
+uniform float group_opacity = 1.0;
+uniform bool cached_opacity = false;
+uniform vec3 post_mul = vec3(1.0);
+uniform vec3 post_add = vec3(0.0);
+void fragment() {
+	vec4 pixel = texture(TEXTURE, UV);
+	if (pixel.a > 0.0) {
+		pixel.rgb = clamp(pixel.rgb / pixel.a * post_mul + post_add, vec3(0.0), vec3(1.0)) * pixel.a;
+	}
+	if (cached_opacity) {
+		pixel = floor(pixel * 255.0 * group_opacity + 0.0001) / 255.0;
+	}
+	if (pixel.a > 0.0) { pixel.rgb /= pixel.a; }
+	if (!cached_opacity) { pixel.a *= group_opacity; }
+	COLOR = pixel;
+}
+"""
 	material.shader = shader
+	material.set_shader_parameter("group_opacity", opacity)
+	material.set_shader_parameter("cached_opacity", isolate)
+	material.set_shader_parameter("post_mul", Vector3(post_mul.r, post_mul.g, post_mul.b))
+	material.set_shader_parameter("post_add", Vector3(post_add.r, post_add.g, post_add.b))
+	composite.modulate.a = 1.0
 	composite.material = material
 	_apply_blend(composite, blend, group)
 	group.add_child(composite)
 	add_child(group)
 
 
+func _quantize_raster_input(item: CanvasItem) -> void:
+	if item.has_meta("flash_raster_input"):
+		return
+	item.set_meta("flash_raster_input", true)
+	var material := item.material as ShaderMaterial
+	var original := material.shader.code if material != null else "shader_type canvas_item; void fragment() { }"
+	var opacity := item.modulate.a if material != null else 1.0
+	if not _raster_input_shaders.has(original):
+		var shader := Shader.new()
+		var code := original.replace("shader_type canvas_item;", "shader_type canvas_item; uniform float filter_input_opacity = 1.0;")
+		code = code.insert(code.rfind("}"), """
+float input_alpha = floor(clamp(COLOR.a * filter_input_opacity, 0.0, 1.0) * 255.0 + 0.5);
+vec3 input_rgb = floor(clamp(COLOR.rgb, vec3(0.0), vec3(1.0)) * 255.0 + 0.5);
+// Flash's cached raster uses the integer multiply (channel * (alpha + 1)) >> 8.
+vec3 premultiplied = floor(input_rgb * (input_alpha + 1.0) / 256.0);
+COLOR = vec4(input_alpha > 0.0 ? premultiplied / input_alpha : vec3(0.0), input_alpha / 255.0);
+""")
+		shader.code = code
+		_raster_input_shaders[original] = shader
+	material = material.duplicate() if material != null else ShaderMaterial.new()
+	material.shader = _raster_input_shaders[original]
+	material.set_shader_parameter("filter_input_opacity", opacity)
+	item.modulate.a = 1.0 if opacity != 1.0 else item.modulate.a
+	item.material = material
+
+
 func _apply_blend(item: CanvasItem, blend: int, copy_parent: Node = null) -> void:
-	assert(blend in [0, 1, 2, 3, 4, 5, 6, 8, 9, 14], "Unsupported Flash blend mode: %d" % blend)
+	# Blends sample the already-composited backdrop. Preserve Flash byte inputs
+	# for ordinary leaves too; their rounded GPU colors cannot be recovered later.
+	if copy_parent == null:
+		_quantize_raster_input(item)
+	assert(blend in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14], "Unsupported Flash blend mode: %d" % blend)
 	if blend in [0, 1]:
 		return
 	# Copy at each object's depth, so earlier blended siblings are included.
@@ -1185,7 +1285,7 @@ func _apply_blend(item: CanvasItem, blend: int, copy_parent: Node = null) -> voi
 	var material := item.material as ShaderMaterial
 	var opacity := item.modulate.a if material != null else 1.0
 	var original := material.shader.code if material != null else "shader_type canvas_item;\nvoid fragment() { }"
-	var arithmetic := blend in [8, 9]
+	var arithmetic := blend in [7, 8, 9, 13]
 	var shader_key := original + ("|arithmetic" if arithmetic else "|over")
 	if not _blend_shaders.has(shader_key):
 		var shader := Shader.new()
@@ -1211,6 +1311,24 @@ else if (flash_blend_mode == 14) {
 }
 COLOR.rgb = mix(cs, mixed, backdrop.a);
 COLOR.a = clamp(COLOR.a * blend_opacity, 0.0, 1.0);
+// Keep all products in byte units and truncate only the final quotient.
+if (flash_blend_mode == 7 || flash_blend_mode == 13) {
+    float sa = floor(COLOR.a * 255.0 + 0.0001);
+    float ba = floor(backdrop.a * 255.0 + 0.5);
+    vec3 sp = floor(cs * COLOR.a * 255.0 + 0.0001);
+    vec3 bp = floor(backdrop.rgb * 255.0 + 0.5);
+    vec3 numerator = (bp + sp) * 255.0 - 2.0 * min(bp * sa, sp * ba);
+    if (flash_blend_mode == 13) {
+        vec3 base = (bp + sp) * 255.0 - bp * sa - sp * ba;
+        vec3 low = base + 2.0 * bp * sp;
+        vec3 high = base + sa * ba - 2.0 * (ba - bp) * (sa - sp);
+        // Native overlay high branch is an open upper bound at integer results.
+        if (sa > 0.0 && ba > 0.0) { high -= 1.0; }
+        numerator = mix(low, high, step(vec3(ba + 1.0), 2.0 * bp));
+    }
+    COLOR = vec4(floor(numerator / 255.0) / 255.0, floor(((sa + ba) * 255.0 - sa * ba) / 255.0) / 255.0);
+}
+
 if (flash_blend_mode == 8 || flash_blend_mode == 9) {
     vec3 source_premultiplied = cs * COLOR.a;
     vec3 result = flash_blend_mode == 8 ? backdrop.rgb + source_premultiplied : backdrop.rgb - source_premultiplied;

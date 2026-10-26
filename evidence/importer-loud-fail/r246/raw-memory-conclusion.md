@@ -1,0 +1,11 @@
+# Independent guest-virtual entry read: denied
+
+The single authorized attempt attached to freshly owned PID17256, exact source-pinned run `jinye-profile-e57538835f71`. LLDB resolved pinned compose entry0x10029dad0 to guest virtual0x102328ad0 and returned the expected16-byte prefix. Before any hardware breakpoint command, the host-side libSystem `task_for_pid` call returned5 (`KERN_FAILURE`). No Mach task read was attempted, no task right was acquired, and no breakpoint was created. The diagnostic stopped closed, detached successfully, completed447capture events, and left no owned process running. It did not retry, alter security settings/signatures/entitlements, or use another process as a fallback.
+
+This is a measured inability of this host ctypes path to obtain the owned task port. It does not show that the debugger cannot read memory (r244/r245 already proved LLDB access), and does not establish why the port request was denied. LLDB masked entry readback remains insufficient to prove independent guest-virtual bytes; physical memory and Rosetta translated instructions are separate, also unproved. All admission flags remain false.
+
+The outer harness `explicit_breakpoints_requested=true` describes the requested hardware-probe mode. The inner receipt proves execution stopped before the creation command (`breakpoint_cleanup=[]`, no hardware_command field). No breakpoint was actually submitted in this run.
+
+Next: retain this denied obligation honestly. A source-profile-pinned callsite diagnostic can still collect explicitly unclassified generic operands under the already proven hardware-only debugger scope, if separately authorized, but cannot claim this independent-byte gate passed. The input-selected candidate site0x1000f28db has independently pinned setup RDI=RBX+0x48, RSI=R14, RDX=RBP-0x230 immediately before its direct call to0x10029dad0. At a pre-CALL stop RSP is NOT the callee return slot; verify call bytes and anticipated return instead. Numeric agreement with source matrices alone cannot establish fill ownership.
+
+Tests:15/15 focused Python tests, including exact signed-int32 owned PID bounds, boolean rejection, denied/short reads, and task-port release on read exception. No renderer changes.
