@@ -571,3 +571,12 @@ BitmapData/DoAction 后续，两标志 false。见 [s58](../evidence/sampling-up
 固定 1,072 条源码清单中 475 块插桩，446 未访问、597 未插桩保留，完整 AS gate exit 1。
 删除入口、样本或源码义务均拒绝，恢复后复验；入口不证明语句/调用/分支所有权。
 clip-action/call 后续，两标志 false。见 [s60](../evidence/sampling-upgrade/s60/README.md)。
+
+## s61：special 单格 clip-action 入口
+
+仅 `didala__special__neutral__ground__near`：原生 7,701 事件、61/61 根样本，
+2,873 次 clip 入口/12 源处理器（战斗窗口 254 次），另有 374 次帧块入口/29 块。
+收据与结构收集通过；缺事件/样本/源码义务拒绝，恢复后复验。
+固定清单保留 615 未访问项（446 帧块/169 处理器）、416 未插桩脚本，完整 AS gate exit 1。
+内部调用/分支、精确生命周期及既有几何/显示/像素差异仍后续，两标志 false。
+见 [s61](../evidence/sampling-upgrade/s61/README.md)。
