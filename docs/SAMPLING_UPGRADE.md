@@ -389,3 +389,12 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 逐字节比较 0/61 精确，19,229,825 通道不同、最大差 255，gate exit 1；
 缺帧/缺行/缺图像及单字节差异均拒绝。相位/外部时钟、像素一致性仍未证明，
 本格 DoAction/所有权是后续项，两标志 false。见 [s38](../evidence/sampling-upgrade/s38/README.md)。
+
+## s39：jump 单格 DoAction 入口覆盖
+
+仅 `didala__jump__neutral__ground__near`，复用 s32 入口探针与严格门槛。
+原生 6,196 事件、61/61 根样本、380 次入口/26 源块；战斗观察区间 50 次/12 块。
+固定 1,072 项源清单，475 块插桩，449 未访问、597 未插桩逐项保留。
+缺入口/根样本/源码义务均拒绝；完整 AS gate exit 1，入口不证明语句/函数体/分支。
+本格 clip-action/调用所有权及既有显示/像素残差仍为后续项，两标志 false。
+见 [s39](../evidence/sampling-upgrade/s39/README.md)。
