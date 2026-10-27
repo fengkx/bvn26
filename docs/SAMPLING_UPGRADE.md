@@ -522,3 +522,11 @@ clip-action/call 为后续薄切片，两标志 false。见 [s53](../evidence/sa
 固定清单保留 608 未访问项（439 帧块/169 处理器）、416 未插桩脚本，完整 AS gate exit 1。
 内部调用/分支、精确生命周期及既有几何/显示/像素差异仍后续，两标志 false。
 见 [s54](../evidence/sampling-upgrade/s54/README.md)。
+
+## s55：ranged 单格调用点与真假分支
+
+仅 `didala__ranged__neutral__ground__near`：原生 9,130 事件、61/61 根样本；
+选定 enterFrame 中 gameRunning→doAllAction 有 417 次完整观察（396 假/21 真且调用前后配对）。
+另一次 tick 10 真分支到 call_before 后缺 call_after/end，选定边界 gate exit 1，未补造返回。
+六类缺标记、缺样本/事件/源码义务均拒绝，原始诊断复验；608 未访问、416 未插桩保留。
+callee 内部与完整 AS 所有权未证明，两标志 false。见 [s55](../evidence/sampling-upgrade/s55/README.md)。
