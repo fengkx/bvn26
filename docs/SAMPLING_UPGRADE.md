@@ -604,3 +604,11 @@ done 后同 tick/显示帧有 4 条随机记录；保留原始尾部，校验改
 完整 gate exit 1；仅 tick 0–57 前缀 58 样本/228 框结构验证通过，缺样本/框拒绝。
 须核我爱罗援助 atm1 的源放置、生命周期与探针 stamp，不按名称猜绑定或忽略援助框。
 完整原生/Godot 几何未证明，其余维度后续，两标志 false。见 [s64](../evidence/sampling-upgrade/s64/README.md)。
+
+## s65：summon 单格子显示列表与镜头
+
+仅 `didala__summon__neutral__ground__near`：原生 8,283 事件、61/61 样本、
+1,538 节点记录，收据/结构校验通过；缺样本/角色节点拒绝，恢复后复验。
+完整显示/镜头 gate exit 1：122 条 AImain 源帧缺口和 76 条特效符号缺口保留。
+动态 mask/完整镜头对照未证明；s64 援助框来源缺口不因显示采样解除。
+BitmapData/DoAction 后续，两标志 false。见 [s65](../evidence/sampling-upgrade/s65/README.md)。
