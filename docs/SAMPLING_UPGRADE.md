@@ -588,3 +588,11 @@ clip-action/call 后续，两标志 false。见 [s60](../evidence/sampling-upgra
 另一次 tick 10 真分支到 call_before 后缺 call_after/end，选定边界 gate exit 1，未补造返回。
 六类缺标记、缺样本/事件/源码义务均拒绝，原始诊断复验；615 未访问、416 未插桩保留。
 callee 内部与完整 AS 所有权未证明，两标志 false。见 [s62](../evidence/sampling-upgrade/s62/README.md)。
+
+## s63：第六个迪达拉原生单格（summon）
+
+仅 `didala__summon__neutral__ground__near`：原生 4,858 事件、122 双方状态，
+o/79 意图 tick 10–12 与源读取一致；收据复验、Godot required-native 单格通过。
+done 后同 tick/显示帧有 4 条随机记录；保留原始尾部，校验改为最终状态后唯一 done，
+尾部不得跨 tick/显示帧且全量哈希绑定。提前/重复完成、跨帧尾部及错配/缺失均拒绝。
+整批因其他格缺收据 exit 1。本格其余维度后续，两标志 false。见 [s63](../evidence/sampling-upgrade/s63/README.md)。

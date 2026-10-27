@@ -38,12 +38,17 @@ def validate_capture(case, metadata, trace):
     rows = []
     done = []
     sequence = []
+    terminal = None
+    expected = [(tick, slot) for tick in range(case['frames'] + 1) for slot in ('p1', 'p2')]
     for line in trace.read_text().splitlines():
         parts = line.split('|', 7)
         if len(parts) != 8 or parts[:2] != ['AIREF', metadata['run_id']]:
             raise ValueError('native evidence: malformed or foreign run event')
         seq, tick = int(parts[2]), int(parts[5])
         sequence.append(seq)
+        display = int(parts[4])
+        if terminal is not None and (tick, display) != terminal:
+            raise ValueError('native evidence: events beyond completion boundary')
         if parts[6] == 'timeout':
             raise ValueError('native evidence: capture timed out')
         if parts[6] == 'state' and tick >= 0:
@@ -58,11 +63,16 @@ def validate_capture(case, metadata, trace):
                     raise ValueError('native evidence: requested posture not reached')
             rows.append((tick, fields[0]))
         if parts[6] == 'done':
+            if rows != expected:
+                raise ValueError('native evidence: premature completion before final states')
             done.append((tick, seq))
-    expected = [(tick, slot) for tick in range(case['frames'] + 1) for slot in ('p1', 'p2')]
+            terminal = (tick, display)
+    # quit is requested inside the root observer; native callbacks can still emit
+    # events in that same display frame. Retain and hash the entire suffix.
+
     if sequence != list(range(1, len(sequence) + 1)) or rows != expected:
         raise ValueError('native evidence: missing/duplicate/out-of-order observations')
-    if done != [(case['frames'], len(sequence))]:
+    if len(done) != 1 or done[0][0] != case['frames']:
         raise ValueError('native evidence: missing or premature completion')
 
 

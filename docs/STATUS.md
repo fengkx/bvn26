@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s63）：迪达拉 summon 原生 4,858 事件/122 状态，收据与 Godot 单格通过；保留 done 后同帧 4 事件，严格绑定完成边界，缺失/错配/跨帧拒绝。整批仍未完成，两标志 false。[证据](../evidence/sampling-upgrade/s63/README.md)。
+
 - 2026-10-27（采样 s62）：迪达拉 special 调用点 407 次完整观察（397 假/10 真），tick 10 另一次缺返回/结束标记，gate exit 1；缺标记/样本/义务拒绝，完整 AS 未证明，两标志 false。[证据](../evidence/sampling-upgrade/s62/README.md)。
 
 - 2026-10-27（采样 s61）：迪达拉 special clip-action 61/61 样本、2,873 次入口/12 处理器；615 未访问、416 未插桩保留，完整 AS gate exit 1；缺事件/样本/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s61/README.md)。

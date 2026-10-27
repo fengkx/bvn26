@@ -98,6 +98,30 @@ class NativeEvidenceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'receipt bindings changed'):
                 matrix.require_full_coverage(self.campaign, output, self.receipt.parent)
 
+    def test_same_boundary_tail_is_retained_and_hash_bound(self):
+        self.trace.write_text('\n'.join(self.lines + [
+            'AIREF|fixture-s27|124|0|60|60|random|1,source,0.5']))
+        self.seal()
+        native.validate(self.case_path, self.receipt)
+        self.trace.write_text(self.trace.read_text().replace('source,0.5', 'source,0.25'))
+        with self.assertRaisesRegex(ValueError, 'changed capture'):
+            native.validate(self.case_path, self.receipt)
+
+    def test_completion_boundary_violations_reject(self):
+        tails = ['AIREF|fixture-s27|124|0|61|60|random|1,source,0.5',
+                 'AIREF|fixture-s27|124|0|60|61|random|1,source,0.5',
+                 'AIREF|fixture-s27|124|0|60|60|done|']
+        variants = [self.lines + [tail] for tail in tails]
+        early = self.lines[:]
+        early[-3], early[-1] = early[-1], early[-3]
+        variants.append(['|'.join([*line.split('|')[:2], str(i+1), *line.split('|')[3:]])
+                         for i, line in enumerate(early)])
+        for lines in variants:
+            with self.subTest(tail=lines[-1]):
+                self.trace.write_text('\n'.join(lines))
+                with self.assertRaises(ValueError):
+                    self.seal()
+
     def test_missing_receipt_rejects(self):
         with self.assertRaisesRegex(ValueError, 'missing native evidence'):
             matrix.require_native_evidence([self.entry], self.campaign, self.receipt.parent)
