@@ -471,3 +471,11 @@ DoAction 是后续项。见 [s44](../evidence/sampling-upgrade/s44/README.md)。
 另 1 次缺返回/结束标记，选定边界 gate exit 1，不补造返回或推断生命周期。
 缺标记/样本/源码义务拒绝；623 未访问、416 未插桩保留，完整 AS 所有权未证明。
 两标志 false。见 [s48](../evidence/sampling-upgrade/s48/README.md)。
+
+## s49：第四个迪达拉原生单格（ranged）
+
+仅 `didala__ranged__neutral__ground__near`，原生 4,736 事件、122 双方状态；
+原生 u/85 意图 tick 10–12 与源读取匹配。收据复验及 Godot required-native
+单格 1/324 执行通过；缺收据/错案例/缺样本拒绝，整批检查因其他缺收据格 exit 1。
+本格几何/DL/镜头/BitmapData/DoAction/所有权均为后续项，不重跑其他格；
+两标志 false。见 [s49](../evidence/sampling-upgrade/s49/README.md)。
