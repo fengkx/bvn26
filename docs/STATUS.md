@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s48）：迪达拉 dash 调用点 460 次完整执行（416 假/44 真），tick 10 另一次缺返回边界，gate exit 1；完整 AS 未证明，两标志 false。[证据](../evidence/sampling-upgrade/s48/README.md)。
+
 - 2026-10-27（采样 s47）：迪达拉 dash clip-action 61/61 样本、3,117 入口/9 处理器；623 未访问、416 未插桩保留，完整所有权 gate exit 1；缺事件/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s47/README.md)。
 
 - 2026-10-27（采样 s46）：迪达拉 dash DoAction 61/61 样本、373 入口/24 源块；451 未访问块、597 未插桩保留，完整 AS gate exit 1；缺事件/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s46/README.md)。
