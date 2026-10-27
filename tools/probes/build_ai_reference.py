@@ -14,11 +14,13 @@ import re
 import subprocess
 
 try:
+    from .callsite_observer import instrument as instrument_callsite, specification as callsite_specification
     from .doaction_observer import inventory as action_inventory, instrument as instrument_action
     from .probe_reference_helpers import quoted, sha
     from .shadow_instrumentation import instrument as instrument_shadow
     from .hit_receive_observer import instrument_hit_receive, observer_schema
 except ImportError:
+    from callsite_observer import instrument as instrument_callsite, specification as callsite_specification
     from doaction_observer import inventory as action_inventory, instrument as instrument_action
     from probe_reference_helpers import quoted, sha
     from shadow_instrumentation import instrument as instrument_shadow
@@ -169,7 +171,8 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False) -> dict:
+    sampling_clipaction = sampling_clipaction or sampling_callsite
     sampling_doaction = sampling_doaction or sampling_clipaction
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
@@ -650,6 +653,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
             if (sampling_geometry or sampling_display) and re.fullmatch(r"(?:DefineSprite_\d+/)?frame_\d+/DoAction.as", script["path"]):
                 origin = bundle["game_file"] + "#" + script["path"]
                 updated += '\n_root.aiGeoStamp(this, ' + json.dumps(origin) + ');\n'
+            if sampling_callsite:
+                updated = instrument_callsite(updated, action_records[script["path"]])
             if sampling_doaction:
                 updated = instrument_action(updated, action_records[script['path']])
             if updated == original:
@@ -692,6 +697,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "sampling_bitmap": sampling_bitmap,
         "sampling_doaction": sampling_doaction,
         "sampling_clipaction": sampling_clipaction,
+        "sampling_callsite": sampling_callsite,
+        "callsite_specification": callsite_specification(observed_actions) if sampling_callsite else None,
         "doaction_inventory": observed_actions,
         "move_case": json.loads(move_case.read_text()) if move_case else None,
         "dynamic_move_case": dynamic_move_case,
@@ -757,10 +764,11 @@ def main() -> None:
     parser.add_argument("--sampling-bitmap", action="store_true")
     parser.add_argument("--sampling-doaction", action="store_true")
     parser.add_argument("--sampling-clipaction", action="store_true")
+    parser.add_argument("--sampling-callsite", action="store_true")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite), ensure_ascii=False))
 
 
 if __name__ == "__main__":
