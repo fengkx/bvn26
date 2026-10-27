@@ -513,3 +513,12 @@ DoAction 为后续薄切片，两标志 false。见 [s52](../evidence/sampling-u
 固定 1,072 条源码清单中 475 块插桩，439 未访问、597 未插桩保留，完整 AS gate exit 1。
 删除入口、样本或源码义务均拒绝，恢复后复验；入口不证明语句/调用/分支所有权。
 clip-action/call 为后续薄切片，两标志 false。见 [s53](../evidence/sampling-upgrade/s53/README.md)。
+
+## s54：ranged 单格 clip-action 入口
+
+仅 `didala__ranged__neutral__ground__near`：原生 7,981 事件、61/61 根样本，
+2,933 次 clip 入口/12 源处理器（战斗窗口 296 次），另有 371 次帧块入口/36 块。
+收据与结构收集通过；缺事件/样本/源码义务拒绝，恢复后复验。
+固定清单保留 608 未访问项（439 帧块/169 处理器）、416 未插桩脚本，完整 AS gate exit 1。
+内部调用/分支、精确生命周期及既有几何/显示/像素差异仍后续，两标志 false。
+见 [s54](../evidence/sampling-upgrade/s54/README.md)。
