@@ -14,10 +14,12 @@ import re
 import subprocess
 
 try:
+    from .doaction_observer import inventory as action_inventory, instrument as instrument_action
     from .probe_reference_helpers import quoted, sha
     from .shadow_instrumentation import instrument as instrument_shadow
     from .hit_receive_observer import instrument_hit_receive, observer_schema
 except ImportError:
+    from doaction_observer import inventory as action_inventory, instrument as instrument_action
     from probe_reference_helpers import quoted, sha
     from shadow_instrumentation import instrument as instrument_shadow
     from hit_receive_observer import instrument_hit_receive, observer_schema
@@ -167,7 +169,7 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     if hit_receive_probe and move_case is None:
@@ -466,6 +468,14 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         # window after done while the player's asynchronous quit is pending.
         bootstrap = bootstrap.replace('aiEvent("done", "");',
             'aiEvent("done", "");\n      _root.onEnterFrame = function() {};\n      _root.aiEvent = function() {};')
+    if sampling_doaction:
+        if move_case is None:
+            raise ValueError("DoAction observation requires a move case")
+        needle = f'   if(aiFight >= {frames})'
+        if bootstrap.count(needle) != 1:
+            raise ValueError("Missing DoAction root observation boundary")
+        bootstrap = bootstrap.replace(needle, '   if(aiFight >= 0) aiEvent("doaction_sample", "root-observer");\n' + needle)
+    observed_actions = []
     hooks, battle = bootstrap.split("_root.aiHeld = {};", 1)
     battle = "_root.aiHeld = {};" + battle
     helper_sources = {"fighter/fz/kon", "fighter/fz/woailuo"}
@@ -481,6 +491,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         sources[bundle["game_file"]] = sha(input_swf)
         sources[f"scripts/{name}.json"] = sha(bundle_path)
         patch = output / "patches" / name
+        action_records = {r['path']: r for r in action_inventory(bundle)} if sampling_doaction else {}
+        observed_actions.extend(action_records.values())
         for script in bundle["scripts"]:
             original = script["source"]
             updated = instrument(original, name + "#" + script["path"], name != "main")
@@ -637,6 +649,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
             if (sampling_geometry or sampling_display) and re.fullmatch(r"(?:DefineSprite_\d+/)?frame_\d+/DoAction.as", script["path"]):
                 origin = bundle["game_file"] + "#" + script["path"]
                 updated += '\n_root.aiGeoStamp(this, ' + json.dumps(origin) + ');\n'
+            if sampling_doaction:
+                updated = instrument_action(updated, action_records[script['path']])
             if updated == original:
                 continue
             target = patch / script["path"]
@@ -675,6 +689,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "sampling_geometry": sampling_geometry,
         "sampling_display": sampling_display,
         "sampling_bitmap": sampling_bitmap,
+        "sampling_doaction": sampling_doaction,
+        "doaction_inventory": observed_actions,
         "move_case": json.loads(move_case.read_text()) if move_case else None,
         "dynamic_move_case": dynamic_move_case,
         "fixture_url": fixture_url,
@@ -737,10 +753,11 @@ def main() -> None:
     parser.add_argument("--sampling-geometry", action="store_true")
     parser.add_argument("--sampling-display", action="store_true")
     parser.add_argument("--sampling-bitmap", action="store_true")
+    parser.add_argument("--sampling-doaction", action="store_true")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction), ensure_ascii=False))
 
 
 if __name__ == "__main__":
