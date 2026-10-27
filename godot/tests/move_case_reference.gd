@@ -1,6 +1,8 @@
 extends SceneTree
 
 var game
+var bitmap_tick := -1
+var bitmap_directory := ""
 var fixture: Dictionary
 var mode: int
 var rows: Array = []
@@ -24,7 +26,31 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
-	if args[0] == "--batch":
+	if args[0] == "--bitmap-sequence":
+		bitmap_directory = args[2]
+		assert(DirAccess.get_files_at(bitmap_directory).is_empty(), "Use a fresh bitmap output directory")
+		assert(not DisplayServer.get_name() == "headless", "Bitmap capture requires a real renderer")
+		root.size = Vector2i(600, 400)
+		root.content_scale_size = Vector2i(600, 400)
+		RenderingServer.set_default_clear_color(Color.BLACK)
+		var spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(args[1]))
+		for tick in range(int(spec.frames) + 1):
+			bitmap_tick = tick
+			await _run_case(args[1], bitmap_directory.path_join("state-%03d.json" % tick))
+		var images := []
+		for tick in range(int(spec.frames) + 1):
+			var filename := "%03d.png" % tick
+			images.append({"tick": tick, "file": filename,
+				"sha256": FileAccess.get_sha256(bitmap_directory.path_join(filename))})
+		var manifest := {"case_id": spec.id, "case_sha256": FileAccess.get_sha256(args[1]),
+			"phase": "root-observer", "format": "RGBA8", "background": "opaque-black",
+			"width": 600, "height": 400, "images": images,
+			"engine": Engine.get_version_info(),
+			"engine_sha256": FileAccess.get_sha256(OS.get_executable_path()),
+			"runner_sha256": FileAccess.get_sha256("res://tests/move_case_reference.gd"),
+			"native_parity_proven": false, "production_admitted": false}
+		FileAccess.open(bitmap_directory.path_join("bitmap.json"), FileAccess.WRITE).store_string(JSON.stringify(manifest))
+	elif args[0] == "--batch":
 		var paths: Array = JSON.parse_string(FileAccess.get_file_as_string(args[1]))
 		for path in paths:
 			var spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
@@ -107,19 +133,29 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 			if not game.battle_intro.active:
 				_drive_source_timers(1000.0 / Engine.physics_ticks_per_second)
 				_observe(0)
-			return false)
+			return bitmap_tick == 0 and rows.size() == 2)
 		# The intro can become inactive after the root callback but before the
 		# first post-intro observer runs. Keep one more tick so tick 0 retains
 		# both fighter snapshots instead of producing an empty trace.
 		if not game.battle_intro.active and rows.size() == 2: break
 	assert(not game.battle_intro.active and rows.size() == 2)
-	for tick in range(1, int(fixture.frames) + 1):
+	for tick in range(1, (bitmap_tick if bitmap_tick >= 0 else int(fixture.frames)) + 1):
 		# Timer callbacks occur after the preceding source snapshot and before
 		# the next fight advance. Deliver the external clock at that boundary.
 		_drive_source_timers(1000.0 / Engine.physics_ticks_per_second)
 		game._advance_fight(recovery_events.get(tick, []), func() -> bool:
 			_observe(tick)
-			return false)
+			return tick == bitmap_tick)
+	if bitmap_tick >= 0:
+		# Terminal observer skips deferred frame scripts; pause all processing
+		# while pending CanvasItem draws settle, without advancing gameplay.
+		game.process_mode = Node.PROCESS_MODE_DISABLED
+		await process_frame
+		await RenderingServer.frame_post_draw
+		var image := root.get_texture().get_image()
+		assert(image.get_size() == Vector2i(600, 400), "Unexpected bitmap size")
+		image.convert(Image.FORMAT_RGBA8)
+		assert(image.save_png(bitmap_directory.path_join("%03d.png" % bitmap_tick)) == OK)
 	assert(applied_interventions.size() == fixture.get("resource_interventions", []).size(),
 		"one or more resource interventions did not execute")
 	FileAccess.open(output_path, FileAccess.WRITE).store_string(JSON.stringify(rows, "", true, true))

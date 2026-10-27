@@ -167,7 +167,7 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     if hit_receive_probe and move_case is None:
@@ -454,6 +454,18 @@ _root.aiFixtureLoader.load(__CASE_URI__);
             bootstrap = (Path(__file__).parent / 'as2/ai_reference/sampling_display.as').read_text() + bootstrap
             calls += '   _root.aiDisplaySample();\n'
         bootstrap = bootstrap.replace(needle, calls + needle)
+    if sampling_bitmap:
+        if move_case is None:
+            raise ValueError("Sampling bitmap requires a move case")
+        needle = f'   if(aiFight >= {frames})'
+        if bootstrap.count(needle) != 1:
+            raise ValueError("Missing bitmap sampling boundary")
+        bootstrap = (Path(__file__).parent / 'as2/ai_reference/sampling_bitmap.as').read_text() + bootstrap
+        bootstrap = bootstrap.replace(needle, '   _root.aiBitmapSample();\n' + needle)
+        # Bitmap tracing can outlast a display period. Close the observation
+        # window after done while the player's asynchronous quit is pending.
+        bootstrap = bootstrap.replace('aiEvent("done", "");',
+            'aiEvent("done", "");\n      _root.onEnterFrame = function() {};\n      _root.aiEvent = function() {};')
     hooks, battle = bootstrap.split("_root.aiHeld = {};", 1)
     battle = "_root.aiHeld = {};" + battle
     helper_sources = {"fighter/fz/kon", "fighter/fz/woailuo"}
@@ -662,6 +674,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "mode_probe": mode_probe,
         "sampling_geometry": sampling_geometry,
         "sampling_display": sampling_display,
+        "sampling_bitmap": sampling_bitmap,
         "move_case": json.loads(move_case.read_text()) if move_case else None,
         "dynamic_move_case": dynamic_move_case,
         "fixture_url": fixture_url,
@@ -723,10 +736,11 @@ def main() -> None:
     parser.add_argument("--p2-helper", choices=helper_choices)
     parser.add_argument("--sampling-geometry", action="store_true")
     parser.add_argument("--sampling-display", action="store_true")
+    parser.add_argument("--sampling-bitmap", action="store_true")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap), ensure_ascii=False))
 
 
 if __name__ == "__main__":

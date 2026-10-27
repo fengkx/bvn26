@@ -306,3 +306,15 @@ s02 的拒绝桩现可通过 `--native-evidence DIR` 接收逐案例收据。
 动态 setMask 尚未采集。全部记录和缺口原样保留，不用根位置冒充完整镜头证明。
 `production_admitted=false`、`native_parity_proven=false`；动态来源/遮罩、完整镜头、
 BitmapData、DoAction 和其他采样格为后续项。见 [s30 证据](../evidence/sampling-upgrade/s30/README.md)。
+
+## s31：单格 BitmapData 捕获与严格字节门槛
+
+迪达拉原生真实捕获 61/61 张 600×400 黑底不透明图，58,560,000 个 RGBA 字节；
+缺帧/缺行硬失败。新比较器要求两端相位、尺寸、颜色/alpha 语义和逐帧图像完整，
+任何单通道差异均拒绝，不缩图、不放宽阈值。Godot 扩展复用同一 runner 的根观察器
+终止接口，计划逐目标 tick 重放后读取真实 viewport；默认路径仍通过。
+
+当前 Godot GUI 命令在沙箱内 SIGABRT，实际图像尚未取得；原生捕获获批的提权范围
+不覆盖 Godot，已另行请求单命令许可。实际比较门槛因缺 Godot 图像退出 1，不能声称
+已有像素差异统计。日志采像会影响原生外部时钟，时钟及渲染相位对齐仍待证明。
+两个准入/一致性标志保持 false；见 [s31 证据与剩余限制](../evidence/sampling-upgrade/s31/README.md)。
