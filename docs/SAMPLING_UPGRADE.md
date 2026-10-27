@@ -455,3 +455,11 @@ DoAction 是后续项。见 [s44](../evidence/sampling-upgrade/s44/README.md)。
 固定清单保留 451 未访问块、597 未插桩脚本；缺入口/样本/源码义务拒绝。
 完整 AS gate exit 1，入口不证明函数体/调用/分支，clip-action/调用加深为后续项。
 两标志 false。见 [s46](../evidence/sampling-upgrade/s46/README.md)。
+
+## s47：dash 单格 clip-action 入口
+
+仅 `didala__dash__neutral__ground__near`，复用既有处理器入口探针。
+原生 9,629 事件、61/61 根样本、3,117 次入口/9 源处理器（战斗区间 334 次）。
+623 未访问项、416 未插桩脚本保留；缺事件/样本/源码义务拒绝。
+完整所有权 gate exit 1，入口不证明内部调用/分支，两标志 false；
+调用点加深为后续项。见 [s47](../evidence/sampling-upgrade/s47/README.md)。
