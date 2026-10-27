@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s53）：迪达拉 ranged DoAction 61/61 样本、374 次入口/36 源块；439 未访问、597 未插桩保留，完整 AS gate exit 1；缺入口/样本/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s53/README.md)。
+
 - 2026-10-27（采样 s52）：迪达拉 ranged 原生/Godot 各 61 图，严格 RGBA 0/61 精确、24,121,725 通道不同，gate exit 1；缺图/帧/行拒绝，时钟与渲染残留未归因，两标志 false。[证据](../evidence/sampling-upgrade/s52/README.md)。
 
 - 2026-10-27（采样 s51）：迪达拉 ranged 显示/镜头原生 61/61 样本、1,512 节点，结构与收据通过；完整 gate exit 1，192 条源帧/特效符号义务保留，动态 mask 与相机对照未证明，两标志 false。[证据](../evidence/sampling-upgrade/s51/README.md)。
