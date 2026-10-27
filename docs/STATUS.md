@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s46）：迪达拉 dash DoAction 61/61 样本、373 入口/24 源块；451 未访问块、597 未插桩保留，完整 AS gate exit 1；缺事件/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s46/README.md)。
+
 - 2026-10-27（采样 s45）：迪达拉 dash 原生/Godot 各 61/61 图像；RGBA 0/61 精确，20,354,476 通道差异、最大 255，gate exit 1；相位/时钟未对齐，两标志 false。[证据](../evidence/sampling-upgrade/s45/README.md)。
 
 - 2026-10-27（采样 s44）：迪达拉 dash 显示/镜头 61/61 样本、1,497 节点；122 条缺源帧义务及动态遮罩未证明，完整 gate exit 1；缺样本/节点拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s44/README.md)。

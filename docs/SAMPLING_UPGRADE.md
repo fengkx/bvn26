@@ -447,3 +447,11 @@ DoAction 是后续项。见 [s44](../evidence/sampling-upgrade/s44/README.md)。
 严格比较 0/61 精确，20,354,476 通道不同、最大差 255，gate exit 1；缺帧/行/图像
 及单字节差异拒绝。相位/时钟与像素一致性未证明，两标志 false，本格 DoAction
 为后续项。见 [s45](../evidence/sampling-upgrade/s45/README.md)。
+
+## s46：dash 单格 DoAction 入口
+
+仅 `didala__dash__neutral__ground__near`，复用既有入口探针。
+原生 6,156 事件、61/61 根样本、373 入口/24 源块（战斗区间 47 次/10 块）。
+固定清单保留 451 未访问块、597 未插桩脚本；缺入口/样本/源码义务拒绝。
+完整 AS gate exit 1，入口不证明函数体/调用/分支，clip-action/调用加深为后续项。
+两标志 false。见 [s46](../evidence/sampling-upgrade/s46/README.md)。
