@@ -596,3 +596,11 @@ o/79 意图 tick 10–12 与源读取一致；收据复验、Godot required-nati
 done 后同 tick/显示帧有 4 条随机记录；保留原始尾部，校验改为最终状态后唯一 done，
 尾部不得跨 tick/显示帧且全量哈希绑定。提前/重复完成、跨帧尾部及错配/缺失均拒绝。
 整批因其他格缺收据 exit 1。本格其余维度后续，两标志 false。见 [s63](../evidence/sampling-upgrade/s63/README.md)。
+
+## s64：summon 单格全局几何（援助来源缺口）
+
+仅 `didala__summon__neutral__ground__near`：原生 5,349 事件，收据复验通过。
+原始 61 对样本边界/238 条绑定框记录，tick 58–60 的 p1fz.atm1 三次报 unbound，
+完整 gate exit 1；仅 tick 0–57 前缀 58 样本/228 框结构验证通过，缺样本/框拒绝。
+须核我爱罗援助 atm1 的源放置、生命周期与探针 stamp，不按名称猜绑定或忽略援助框。
+完整原生/Godot 几何未证明，其余维度后续，两标志 false。见 [s64](../evidence/sampling-upgrade/s64/README.md)。
