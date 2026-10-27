@@ -431,3 +431,11 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 攻击/援助攻击/舞台攻击数组为空。缺整帧/单框均拒绝，原记录复验通过。
 Godot 几何对照及本格 DL/镜头、BitmapData、DoAction/所有权均为后续项，
 两标志 false，不宣称原生一致性。见 [s43](../evidence/sampling-upgrade/s43/README.md)。
+
+## s44：dash 单格子显示列表与镜头
+
+仅 `didala__dash__neutral__ground__near`，复用既有显示/镜头探针。
+原生 8,950 事件、61/61 结构样本、1,497 节点；缺样本/节点拒绝。
+完整 gate exit 1：双方 AImain 的 122 条 frame 0 缺源帧义务及动态遮罩缺口保留。
+Stage/根矩阵/子树观测不等于完整镜头一致性，两标志 false；本格 BitmapData/
+DoAction 是后续项。见 [s44](../evidence/sampling-upgrade/s44/README.md)。
