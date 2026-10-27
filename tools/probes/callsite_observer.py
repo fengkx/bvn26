@@ -1,0 +1,33 @@
+"""One reviewed handler: preserve predicate evaluation and original call syntax."""
+SWF = 'game/fighter/didala.swf'
+PATH = 'DefineSprite_542/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'
+SOURCE = 'onClipEvent(enterFrame){\n   if(gameRunning())\n   {\n      doAllAction();\n   }\n}\n'
+
+
+def selected(record):
+    return record['swf'] == SWF and record['path'] == PATH
+
+
+def specification(records):
+    matches = [r for r in records if selected(r)]
+    if len(matches) != 1 or not matches[0]['instrumented']:
+        raise ValueError('missing unique instrumented call-site handler')
+    return {'handler_id': matches[0]['id'], 'source': matches[0],
+            'predicate': {'line': 2, 'expression': 'gameRunning()'},
+            'statement': {'line': 4, 'expression': 'doAllAction();'},
+            'scope': 'call-site before/after and predicate branch; not callee-body ownership'}
+
+
+def instrument(source, record):
+    if not selected(record):
+        return source
+    if source.replace('\r\n', '\n') != SOURCE:
+        raise ValueError('changed/unsupported selected handler: ' + record['path'])
+    def event(phase):
+        return '_root.aiEvent("callsite", "' + record['id'] + ',' + phase + '," + escape(String(this)));'
+    # Evaluate the original condition once. Keep the original unqualified call
+    # and its receiver lookup; the false arm contains observations only.
+    return ('onClipEvent(enterFrame){\n' + event('predicate_before') + '\n'
+            '   if(gameRunning())\n   {\n' + event('true') + '\n' + event('call_before') + '\n'
+            '      doAllAction();\n' + event('call_after') + '\n   }\n   else\n   {\n'
+            + event('false') + '\n   }\n' + event('end') + '\n}\n')

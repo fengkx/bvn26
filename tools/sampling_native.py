@@ -10,7 +10,7 @@ from tools.probes.collect_ai_reference import decode_number
 
 ROOT = Path(__file__).resolve().parents[1]
 PROBES = [ROOT / 'tools/probes/build_ai_reference.py',
-          ROOT / 'tools/probes/move_cases.py', ROOT / 'tools/probes/doaction_observer.py', ROOT / 'tools/probes/capture_native_player.py',
+          ROOT / 'tools/probes/move_cases.py', ROOT / 'tools/probes/doaction_observer.py', ROOT / 'tools/probes/callsite_observer.py', ROOT / 'tools/probes/capture_native_player.py',
           ROOT / 'tools/probes/collect_ai_reference.py', Path(__file__).resolve(),
           ROOT / 'evidence/reference-environment.md']
 PROBES += sorted((ROOT / 'tools/probes/as2/ai_reference').glob('*.as'))

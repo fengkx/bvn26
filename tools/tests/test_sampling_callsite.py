@@ -1,0 +1,65 @@
+import unittest
+from tools.probes.callsite_observer import SWF, PATH, SOURCE, specification, instrument
+from tools.probes.doaction_observer import inventory
+from tools.sampling_callsite import collect_calls
+
+
+class CallSiteTests(unittest.TestCase):
+    def spec(self):
+        return specification(inventory({'game_file': SWF, 'swf_sha256': 'locked',
+            'scripts': [{'path': PATH, 'source': SOURCE}]}, include_clip=True))
+
+    def rows(self, taken=True):
+        identity = self.spec()['handler_id']
+        phases = ['predicate_before', 'true', 'call_before', 'call_after', 'end'] if taken else ['predicate_before', 'false', 'end']
+        return [f'AIREF|test|1|0|1|0|clipaction_entry|{identity},_level0.game.p1.mc.AImain,1'] + [
+            f'AIREF|test|{i+2}|0|1|0|callsite|{identity},{phase},_level0.game.p1.mc.AImain'
+            for i,phase in enumerate(phases)]
+
+    def test_both_branch_paths_and_call_pairs(self):
+        spec = self.spec()
+        for taken in (True, False):
+            result = collect_calls(self.rows(taken), spec)
+            self.assertEqual(result['paired_call_count'], int(taken))
+            self.assertFalse(result['callee_body_ownership_proven'])
+
+    def test_every_missing_marker_rejects(self):
+        rows = self.rows()
+        for index in range(len(rows)):
+            with self.subTest(index=index), self.assertRaises(ValueError):
+                collect_calls(rows[:index]+rows[index+1:], self.spec())
+
+    def test_wrong_branch_duplicate_and_foreign_source_reject(self):
+        rows = self.rows()
+        for bad in [rows[:3]+[rows[2]]+rows[3:], [x.replace(',true,', ',false,') for x in rows],
+                    [x.replace(self.spec()['handler_id'], 'foreign') for x in rows]]:
+            with self.assertRaises(ValueError): collect_calls(bad, self.spec())
+
+    def test_reentrant_or_missing_invocation_rejects(self):
+        rows = self.rows()
+        with self.assertRaises(ValueError): collect_calls(rows[:2]+rows, self.spec())
+        with self.assertRaises(ValueError): collect_calls([], self.spec())
+        with self.assertRaises(ValueError): specification([])
+
+    def test_diagnostic_retains_incomplete_without_admission(self):
+        rows = self.rows()
+        result = collect_calls(rows[:4]+rows, self.spec(), retain_incomplete=True)
+        self.assertFalse(result['invocation_observations_complete'])
+        self.assertEqual(len(result['incomplete_invocations']), 1)
+        self.assertEqual(result['paired_call_count'], 1)
+        with self.assertRaises(ValueError):
+            collect_calls(rows[:4]+rows, self.spec())
+
+    def test_condition_evaluated_once_original_call_preserved(self):
+        record = self.spec()['source']
+        result = instrument(SOURCE, record)
+        self.assertEqual(result.count('if(gameRunning())'), 1)
+        self.assertEqual(result.count('doAllAction();'), 1)
+        self.assertIn('else', result)
+        for changed in [SOURCE.replace('doAllAction();', ''), SOURCE.replace('gameRunning()', 'unknown(speed*18)')]:
+            with self.assertRaisesRegex(ValueError, 'changed/unsupported'):
+                instrument(changed, record)
+
+
+if __name__ == '__main__':
+    unittest.main()
