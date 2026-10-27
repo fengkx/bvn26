@@ -479,3 +479,12 @@ DoAction 是后续项。见 [s44](../evidence/sampling-upgrade/s44/README.md)。
 单格 1/324 执行通过；缺收据/错案例/缺样本拒绝，整批检查因其他缺收据格 exit 1。
 本格几何/DL/镜头/BitmapData/DoAction/所有权均为后续项，不重跑其他格；
 两标志 false。见 [s49](../evidence/sampling-upgrade/s49/README.md)。
+
+## s50：ranged 单格几何捕获（完整门槛拒绝）
+
+仅 `didala__ranged__neutral__ground__near`：原生 5,066 事件、收据复验通过。
+原始几何有 61 对开始/结束、199 框，但 tick 14 的 `p1.mc.abcd.hitmc`
+（DefineSprite_69/frame_1）报 missing-source-list，完整 gate exit 1，不能称 61/61 完整。
+仅 tick 0–13 前缀 14 样本/54 框验证通过；缺样本/框负例拒绝。
+需逐项读取目标容器/pn 与三个源数组，区分未初始化或所有权问题，不默认空列表。
+Godot 几何对照及其他维度仍后续，两标志 false。见 [s50](../evidence/sampling-upgrade/s50/README.md)。
