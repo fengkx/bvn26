@@ -398,3 +398,11 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 缺入口/根样本/源码义务均拒绝；完整 AS gate exit 1，入口不证明语句/函数体/分支。
 本格 clip-action/调用所有权及既有显示/像素残差仍为后续项，两标志 false。
 见 [s39](../evidence/sampling-upgrade/s39/README.md)。
+
+## s40：jump 单格 clip-action 入口
+
+仅 `didala__jump__neutral__ground__near`，复用 s33 探针与严格收据/清单门槛。
+原生 9,427 事件、61/61 根样本、3,062 次处理器入口/13 源处理器（战斗区间 353 次）。
+固定清单保留 617 未访问项、416 未插桩脚本；缺事件/样本/源码义务拒绝。
+完整所有权 gate exit 1：处理器入口不证明内部调用/分支，后续再观测，两标志 false。
+不重跑几何/图像或其他格。见 [s40](../evidence/sampling-upgrade/s40/README.md)。
