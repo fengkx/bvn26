@@ -364,3 +364,11 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 缺收据、错案例和缺样本拒绝，整批门槛仍拒绝其他未捕获格。
 未重跑首格；本格几何/DL/镜头/BitmapData/DoAction/所有权与行为对照是后续项，
 不将捕获完整性称为一致性，两标志 false。见 [s35](../evidence/sampling-upgrade/s35/README.md)。
+
+## s36：jump 单格全局几何
+
+仅 `didala__jump__neutral__ground__near`，复用 s29 未改动的几何探针。
+真实原生 6,271 事件、61/61 根采样、242 条受击框、6 个实例身份；双方均纳入，
+攻击/援助攻击/舞台攻击为空数组。缺整帧或缺单框负例均拒绝，原记录复验通过。
+本格 DL/镜头、BitmapData、DoAction/所有权及 Godot 几何对照仍为后续项；
+不将观测完整性称为原生一致性，两标志 false。见 [s36](../evidence/sampling-upgrade/s36/README.md)。
