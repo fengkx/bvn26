@@ -423,3 +423,11 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 单格 1/324 执行通过；缺收据/错案例/缺样本拒绝，整批检查仍拒绝其他缺收据格。
 本格几何/DL/镜头/BitmapData/DoAction/所有权均为后续项，不重跑 attack/jump，
 不宣称原生一致性，两标志 false。见 [s42](../evidence/sampling-upgrade/s42/README.md)。
+
+## s43：dash 单格全局几何
+
+仅 `didala__dash__neutral__ground__near`，复用既有几何探针与严格门槛。
+真实原生 6,236 事件、61/61 根采样、233 受击框、6 实例身份；双方均纳入，
+攻击/援助攻击/舞台攻击数组为空。缺整帧/单框均拒绝，原记录复验通过。
+Godot 几何对照及本格 DL/镜头、BitmapData、DoAction/所有权均为后续项，
+两标志 false，不宣称原生一致性。见 [s43](../evidence/sampling-upgrade/s43/README.md)。
