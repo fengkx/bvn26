@@ -294,3 +294,15 @@ s02 的拒绝桩现可通过 `--native-evidence DIR` 接收逐案例收据。
 短命实例、精确销毁时点或 Godot 几何一致性。`production_admitted=false`、
 `native_parity_proven=false`；其他采样格、像素、子显示列表、完整镜头和 DoAction 保持后续项。
 见 [s29 证据](../evidence/sampling-upgrade/s29/README.md)。
+
+## s30：单格子显示列表与镜头观测（完整门槛仍拒绝）
+
+迪达拉同一 tape 的真实原生捕获含 61/61 根帧、1,538 条 MovieClip 记录；
+保留父子关系、深度、实例 ID、源帧、局部/全局矩阵、视口模式、scrollRect、
+滤镜顺序及观察间创建/移除。源时间轴补充静态叶节点、clipDepth 和原始放置字段。
+缺采样/缺子节点负例硬失败，恢复后结构检查通过。
+
+完整门槛仍 exit 1：AImain frame 0 共 122 条、动态 xgmc0 未绑定 47 条；
+动态 setMask 尚未采集。全部记录和缺口原样保留，不用根位置冒充完整镜头证明。
+`production_admitted=false`、`native_parity_proven=false`；动态来源/遮罩、完整镜头、
+BitmapData、DoAction 和其他采样格为后续项。见 [s30 证据](../evidence/sampling-upgrade/s30/README.md)。
