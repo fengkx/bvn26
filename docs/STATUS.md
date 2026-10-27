@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s56）：迪达拉第五格 special 原生 4,647 事件/122 状态，收据复验与 Godot required-native 单格通过；缺失/错配拒绝，整批仍因其他格缺收据退出 1，两标志 false。[证据](../evidence/sampling-upgrade/s56/README.md)。
+
 - 2026-10-27（采样 s55）：迪达拉 ranged 调用点 417 次完整观察（396 假/21 真），tick 10 另一次缺返回/结束标记，gate exit 1；缺标记/样本/义务拒绝，完整 AS 未证明，两标志 false。[证据](../evidence/sampling-upgrade/s55/README.md)。
 
 - 2026-10-27（采样 s54）：迪达拉 ranged clip-action 61/61 样本、2,933 次入口/12 处理器；608 未访问、416 未插桩保留，完整 AS gate exit 1；缺事件/样本/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s54/README.md)。

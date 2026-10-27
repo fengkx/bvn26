@@ -530,3 +530,11 @@ clip-action/call 为后续薄切片，两标志 false。见 [s53](../evidence/sa
 另一次 tick 10 真分支到 call_before 后缺 call_after/end，选定边界 gate exit 1，未补造返回。
 六类缺标记、缺样本/事件/源码义务均拒绝，原始诊断复验；608 未访问、416 未插桩保留。
 callee 内部与完整 AS 所有权未证明，两标志 false。见 [s55](../evidence/sampling-upgrade/s55/README.md)。
+
+## s56：第五个迪达拉原生单格（special）
+
+仅 `didala__special__neutral__ground__near`：原生 4,647 事件、122 双方状态，
+原生 i/73 意图 tick 10–12 与源按键读取一致；收据复验、Godot required-native
+单格 1/324 执行通过，无错误。缺收据/错案例/缺样本拒绝；整批因其他格缺收据 exit 1。
+未重跑前四格；本格几何/DL/镜头/BitmapData/DoAction/所有权均为后续项。
+不宣称玩法/像素一致，两标志 false。见 [s56](../evidence/sampling-upgrade/s56/README.md)。
