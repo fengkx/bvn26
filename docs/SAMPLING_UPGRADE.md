@@ -488,3 +488,11 @@ DoAction 是后续项。见 [s44](../evidence/sampling-upgrade/s44/README.md)。
 仅 tick 0–13 前缀 14 样本/54 框验证通过；缺样本/框负例拒绝。
 需逐项读取目标容器/pn 与三个源数组，区分未初始化或所有权问题，不默认空列表。
 Godot 几何对照及其他维度仍后续，两标志 false。见 [s50](../evidence/sampling-upgrade/s50/README.md)。
+
+## s51：ranged 单格子显示列表与镜头
+
+仅 `didala__ranged__neutral__ground__near`：真实原生 8,083 事件，61/61 样本、
+1,512 节点记录，收据与结构校验通过；缺样本/角色节点拒绝，恢复后复验通过。
+完整显示/镜头 gate exit 1：122 条 AImain 源帧缺口与 70 条特效层符号绑定缺口保留。
+动态 mask、完整相机对照仍未证明；s50 几何来源缺口不因本次采样解除。
+BitmapData/DoAction 为后续薄切片，两标志 false。见 [s51](../evidence/sampling-upgrade/s51/README.md)。

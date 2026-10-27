@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s51）：迪达拉 ranged 显示/镜头原生 61/61 样本、1,512 节点，结构与收据通过；完整 gate exit 1，192 条源帧/特效符号义务保留，动态 mask 与相机对照未证明，两标志 false。[证据](../evidence/sampling-upgrade/s51/README.md)。
+
 - 2026-10-27（采样 s50）：迪达拉 ranged 几何原生捕获完成，但 tick 14 abcd.hitmc 报 missing-source-list，完整 gate exit 1；仅前缀 14 样本/54 框通过，完整原生/Godot 几何均未证明，两标志 false。[证据](../evidence/sampling-upgrade/s50/README.md)。
 
 - 2026-10-27（采样 s49）：迪达拉第四格 ranged 原生 4,736 事件/122 状态，收据复验与 required-native 单格执行通过；缺失/错配拒绝，其他维度后续，两标志 false。[证据](../evidence/sampling-upgrade/s49/README.md)。
