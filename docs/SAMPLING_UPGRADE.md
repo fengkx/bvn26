@@ -463,3 +463,11 @@ DoAction 是后续项。见 [s44](../evidence/sampling-upgrade/s44/README.md)。
 623 未访问项、416 未插桩脚本保留；缺事件/样本/源码义务拒绝。
 完整所有权 gate exit 1，入口不证明内部调用/分支，两标志 false；
 调用点加深为后续项。见 [s47](../evidence/sampling-upgrade/s47/README.md)。
+
+## s48：dash 单格分支与调用点
+
+仅 `didala__dash__neutral__ground__near`，复用既有源码绑定调用点探针。
+原生 61/61 根样本、460 次完整执行（416 假/44 真及配对调用）；tick 10
+另 1 次缺返回/结束标记，选定边界 gate exit 1，不补造返回或推断生命周期。
+缺标记/样本/源码义务拒绝；623 未访问、416 未插桩保留，完整 AS 所有权未证明。
+两标志 false。见 [s48](../evidence/sampling-upgrade/s48/README.md)。
