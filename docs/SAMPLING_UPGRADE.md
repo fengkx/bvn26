@@ -439,3 +439,11 @@ Godot 几何对照及本格 DL/镜头、BitmapData、DoAction/所有权均为后
 完整 gate exit 1：双方 AImain 的 122 条 frame 0 缺源帧义务及动态遮罩缺口保留。
 Stage/根矩阵/子树观测不等于完整镜头一致性，两标志 false；本格 BitmapData/
 DoAction 是后续项。见 [s44](../evidence/sampling-upgrade/s44/README.md)。
+
+## s45：dash 单格 BitmapData 严格比较
+
+仅 `didala__dash__neutral__ground__near`，复用既有原生/Godot 图像路径。
+原生 30,436 事件，双方各 61/61 张 600×400 不透明 RGBA 图像；收据及图像验证通过。
+严格比较 0/61 精确，20,354,476 通道不同、最大差 255，gate exit 1；缺帧/行/图像
+及单字节差异拒绝。相位/时钟与像素一致性未证明，两标志 false，本格 DoAction
+为后续项。见 [s45](../evidence/sampling-upgrade/s45/README.md)。
