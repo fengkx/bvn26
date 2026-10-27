@@ -15,7 +15,8 @@ def check_inventory(metadata):
     expected = []
     for path in metadata['sources_sha256']:
         if path.startswith('scripts/') and path.endswith('.json'):
-            expected.extend(inventory(json.loads((ROOT / path).read_text())))
+            expected.extend(inventory(json.loads((ROOT / path).read_text()),
+                                      include_clip=metadata.get('sampling_clipaction', False)))
     if not expected or metadata.get('doaction_inventory') != expected:
         raise ValueError('dropped/changed source obligation in DoAction inventory')
     return expected
@@ -40,17 +41,23 @@ def collect(lines, run_id, frames, records):
             if tick != len(samples) or value != 'root-observer':
                 raise ValueError('missing/duplicate root sample')
             samples.append({'tick': tick, 'sequence': sequence, 'display': display})
-        elif kind == 'doaction_entry':
+        elif kind in ('doaction_entry', 'clipaction_entry'):
             identity, instance, current_frame = value.split(',')
             if identity not in by_id or not by_id[identity]['instrumented'] or not instance:
                 raise ValueError('unbound/unsupported action entry')
-            entries.append({'id': identity, 'instance': unquote(instance),
+            expected_kind = 'clipaction_entry' if by_id[identity]['kind'] == 'clip_action' else 'doaction_entry'
+            if kind != expected_kind:
+                raise ValueError('action event/source kind mismatch')
+            entries.append({'event_kind': kind, 'id': identity, 'instance': unquote(instance),
                             'current_frame': int(current_frame), 'sequence': sequence,
                             'display': display, 'observer_tick': tick})
-        elif kind.startswith('doaction_'):
+        elif kind.startswith(('doaction_', 'clipaction_')):
             raise ValueError('unsupported action observation')
     if len(samples) != frames + 1 or not entries:
         raise ValueError('missing root samples or executed action entries')
+    if any(r['instrumented'] and r['kind'] == 'clip_action' for r in records) and not any(
+            e['event_kind'] == 'clipaction_entry' for e in entries):
+        raise ValueError('missing all clip-action observations')
     counts = Counter(e['id'] for e in entries)
     fight_counts = Counter(e['id'] for e in entries if e['observer_tick'] >= 0)
     return {'samples': samples, 'entries': entries,
