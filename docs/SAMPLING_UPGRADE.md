@@ -496,3 +496,12 @@ Godot 几何对照及其他维度仍后续，两标志 false。见 [s50](../evid
 完整显示/镜头 gate exit 1：122 条 AImain 源帧缺口与 70 条特效层符号绑定缺口保留。
 动态 mask、完整相机对照仍未证明；s50 几何来源缺口不因本次采样解除。
 BitmapData/DoAction 为后续薄切片，两标志 false。见 [s51](../evidence/sampling-upgrade/s51/README.md)。
+
+## s52：ranged 单格 BitmapData 与严格 RGBA 比较
+
+仅 `didala__ranged__neutral__ground__near`：真实 Flash/Godot 各 61/61 图，
+原生 29,273 事件，收据/图片校验通过；严格比较 0/61 精确，
+24,121,725 通道不同、8,970,029 像素不同，最大 Δ255，gate exit 1。
+缺原生帧/行、缺 Godot 图片及单通道修改均拒绝，恢复后复验。
+时钟/阶段、画面构图与渲染差异未归因；s50 几何和 s51 显示绑定缺口仍保留。
+DoAction 为后续薄切片，两标志 false。见 [s52](../evidence/sampling-upgrade/s52/README.md)。

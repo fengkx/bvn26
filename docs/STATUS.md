@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s52）：迪达拉 ranged 原生/Godot 各 61 图，严格 RGBA 0/61 精确、24,121,725 通道不同，gate exit 1；缺图/帧/行拒绝，时钟与渲染残留未归因，两标志 false。[证据](../evidence/sampling-upgrade/s52/README.md)。
+
 - 2026-10-27（采样 s51）：迪达拉 ranged 显示/镜头原生 61/61 样本、1,512 节点，结构与收据通过；完整 gate exit 1，192 条源帧/特效符号义务保留，动态 mask 与相机对照未证明，两标志 false。[证据](../evidence/sampling-upgrade/s51/README.md)。
 
 - 2026-10-27（采样 s50）：迪达拉 ranged 几何原生捕获完成，但 tick 14 abcd.hitmc 报 missing-source-list，完整 gate exit 1；仅前缀 14 样本/54 框通过，完整原生/Godot 几何均未证明，两标志 false。[证据](../evidence/sampling-upgrade/s50/README.md)。
