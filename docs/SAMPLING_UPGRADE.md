@@ -538,3 +538,11 @@ callee 内部与完整 AS 所有权未证明，两标志 false。见 [s55](../ev
 单格 1/324 执行通过，无错误。缺收据/错案例/缺样本拒绝；整批因其他格缺收据 exit 1。
 未重跑前四格；本格几何/DL/镜头/BitmapData/DoAction/所有权均为后续项。
 不宣称玩法/像素一致，两标志 false。见 [s56](../evidence/sampling-upgrade/s56/README.md)。
+
+## s57：special 单格全局几何（完整门槛拒绝）
+
+仅 `didala__special__neutral__ground__near`：原生 5,000 事件、61/61 结构样本，
+177 hurt/27 attack 框记录、13 实例 ID；收据/结构校验通过，缺样本/框负例拒绝。
+完整 gate exit 1：tick 11 的 p1（源运行帧 474）没有 receiver，tick 10/12 有 bdmn/mian。
+须核该帧放置/移除/初始化与观测阶段，不补造框、不推断无敌、不忽略该 tick。
+完整原生几何及 Godot 对照未证明；其他维度后续，两标志 false。见 [s57](../evidence/sampling-upgrade/s57/README.md)。

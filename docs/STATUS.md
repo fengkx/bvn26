@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s57）：迪达拉 special 几何 61/61 结构样本、177 hurt/27 attack 记录；tick 11 缺 p1 receiver，完整 gate exit 1，缺样本/框拒绝，完整原生与 Godot 对照未证明，两标志 false。[证据](../evidence/sampling-upgrade/s57/README.md)。
+
 - 2026-10-27（采样 s56）：迪达拉第五格 special 原生 4,647 事件/122 状态，收据复验与 Godot required-native 单格通过；缺失/错配拒绝，整批仍因其他格缺收据退出 1，两标志 false。[证据](../evidence/sampling-upgrade/s56/README.md)。
 
 - 2026-10-27（采样 s55）：迪达拉 ranged 调用点 417 次完整观察（396 假/21 真），tick 10 另一次缺返回/结束标记，gate exit 1；缺标记/样本/义务拒绝，完整 AS 未证明，两标志 false。[证据](../evidence/sampling-upgrade/s55/README.md)。
