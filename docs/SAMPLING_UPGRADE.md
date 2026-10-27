@@ -355,3 +355,12 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 选定边界 gate 保持 exit 1，完整 AS 所有权同样未证明；缺标记/删义务硬拒绝。
 函数体、其他语句/分支、全阵容、像素/时钟与显示残差均是后续项，两标志 false。
 见 [s34 证据](../evidence/sampling-upgrade/s34/README.md)。
+
+## s35：第二个迪达拉单格原生捕获
+
+新增 `didala__jump__neutral__ground__near`，仅这一格：原生 5,926 事件、
+122 双方状态观察（tick 0–60），jump 意图 tick 10–12 与源按键读取验证通过。
+案例绑定收据复验通过，Godot required-native 路径 1/324 执行无错误；
+缺收据、错案例和缺样本拒绝，整批门槛仍拒绝其他未捕获格。
+未重跑首格；本格几何/DL/镜头/BitmapData/DoAction/所有权与行为对照是后续项，
+不将捕获完整性称为一致性，两标志 false。见 [s35](../evidence/sampling-upgrade/s35/README.md)。

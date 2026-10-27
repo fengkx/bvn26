@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s35）：第二个迪达拉格 jump/neutral/ground/near 原生 5,926 事件、122 状态，收据复验与 required-native 单格执行通过；缺失/错配拒绝，两标志 false，其他观测维度后续。[证据](../evidence/sampling-upgrade/s35/README.md)。
+
 - 2026-10-27（采样 s34）：迪达拉单格分支/调用点原生观测，454 次完整执行（406 假、48 真），另 1 次缺返回边界，gate exit 1；两标志 false，完整所有权仍未证明。[证据](../evidence/sampling-upgrade/s34/README.md)。
 
 - 2026-10-27（采样 s33）：迪达拉单格真实 clip-action 入口 3,138 次/12 处理器，根样本 61/61；616 未访问、416 未插桩保留，完整所有权 gate exit 1。缺事件/删义务拒绝，调用/分支仍未证明，两标志 false。[证据](../evidence/sampling-upgrade/s33/README.md)。
