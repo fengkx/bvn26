@@ -554,3 +554,12 @@ callee 内部与完整 AS 所有权未证明，两标志 false。见 [s55](../ev
 完整显示/镜头 gate exit 1：122 条 AImain 源帧缺口、142 条特效层符号缺口保留。
 动态 mask/完整镜头对照未证明，s57 tick 11 几何缺口不因本次采样解除。
 BitmapData/DoAction 后续，两标志 false。见 [s58](../evidence/sampling-upgrade/s58/README.md)。
+
+## s59：special 单格 BitmapData 与严格 RGBA 比较
+
+仅 `didala__special__neutral__ground__near`：真实 Flash/Godot 各 61/61 图，
+原生 28,948 事件，收据/图像校验通过；严格比较 0/61 精确，
+20,213,338 通道、8,090,967 像素不同，最大 Δ255，gate exit 1。
+缺原生帧/行、缺 Godot 图和单通道修改均拒绝，恢复后复验。
+时钟/阶段与渲染差异未归因，s57/s58 缺口保留；DoAction 后续，两标志 false。
+见 [s59](../evidence/sampling-upgrade/s59/README.md)。
