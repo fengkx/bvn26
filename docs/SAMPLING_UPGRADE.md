@@ -563,3 +563,11 @@ BitmapData/DoAction 后续，两标志 false。见 [s58](../evidence/sampling-up
 缺原生帧/行、缺 Godot 图和单通道修改均拒绝，恢复后复验。
 时钟/阶段与渲染差异未归因，s57/s58 缺口保留；DoAction 后续，两标志 false。
 见 [s59](../evidence/sampling-upgrade/s59/README.md)。
+
+## s60：special 单格 DoAction 入口覆盖
+
+仅 `didala__special__neutral__ground__near`：原生 5,147 事件、61/61 根样本，
+400 次入口/29 个源块；战斗窗口 45 次入口/16 块。收据与结构收集通过。
+固定 1,072 条源码清单中 475 块插桩，446 未访问、597 未插桩保留，完整 AS gate exit 1。
+删除入口、样本或源码义务均拒绝，恢复后复验；入口不证明语句/调用/分支所有权。
+clip-action/call 后续，两标志 false。见 [s60](../evidence/sampling-upgrade/s60/README.md)。
