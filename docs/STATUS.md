@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s44）：迪达拉 dash 显示/镜头 61/61 样本、1,497 节点；122 条缺源帧义务及动态遮罩未证明，完整 gate exit 1；缺样本/节点拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s44/README.md)。
+
 - 2026-10-27（采样 s43）：迪达拉 dash 全局几何 61/61 根样本、233 受击框、6 实例；缺样本/框拒绝，Godot 几何对照未做，两标志 false。[证据](../evidence/sampling-upgrade/s43/README.md)。
 
 - 2026-10-27（采样 s42）：迪达拉第三格 dash 原生 5,704 事件/122 状态，收据复验与 required-native 单格执行通过；缺失/错配拒绝，其他维度后续，两标志 false。[证据](../evidence/sampling-upgrade/s42/README.md)。
