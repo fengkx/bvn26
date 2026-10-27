@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s38）：迪达拉 jump 原生/Godot 各 61/61 图像；严格 RGBA 比较 0/61 精确（19,229,825 通道差异，最大 255），gate exit 1；相位/时钟未对齐，两标志 false。[证据](../evidence/sampling-upgrade/s38/README.md)。
+
 - 2026-10-27（采样 s37）：迪达拉 jump 显示/镜头观测 61/61 样本、1,522 节点，缺样本/节点拒绝；122 条源帧义务及动态遮罩未证明，完整 gate exit 1，两标志 false。[证据](../evidence/sampling-upgrade/s37/README.md)。
 
 - 2026-10-27（采样 s36）：迪达拉 jump 单格全局几何 61/61 根样本、242 受击框、6 实例，缺样本/缺框拒绝；原生/Godot 几何一致性未证明，两标志 false。[证据](../evidence/sampling-upgrade/s36/README.md)。

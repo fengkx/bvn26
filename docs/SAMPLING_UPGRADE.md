@@ -381,3 +381,11 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 动态遮罩所有权未证明；Stage/根矩阵/子树变换不等于完整镜头一致性。
 本格 BitmapData、DoAction/所有权及完整渲染对照为后续项，两标志 false。
 见 [s37](../evidence/sampling-upgrade/s37/README.md)。
+
+## s38：jump 单格 BitmapData 严格比较
+
+仅 `didala__jump__neutral__ground__near`，复用 s31 未改动的原生/Godot 图像路径。
+原生 30,295 事件，双方各 61/61 张 600×400 不透明 RGBA 图像；收据与图像验证通过。
+逐字节比较 0/61 精确，19,229,825 通道不同、最大差 255，gate exit 1；
+缺帧/缺行/缺图像及单字节差异均拒绝。相位/外部时钟、像素一致性仍未证明，
+本格 DoAction/所有权是后续项，两标志 false。见 [s38](../evidence/sampling-upgrade/s38/README.md)。
