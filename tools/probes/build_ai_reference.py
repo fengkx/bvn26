@@ -167,7 +167,7 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False) -> dict:
     if output.exists():
         raise ValueError("Use a fresh output directory; previous reference runs must remain intact")
     if hit_receive_probe and move_case is None:
@@ -441,6 +441,15 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         needle = '      _root.game.p2.mc.bisharan = 400;\n      _root.game.p2.mc.gotoAndPlay(10);'
         bootstrap = bootstrap.replace(needle, '      _root.game.p2.mc.bisharan = 400;')
         bootstrap = bootstrap.replace('fixed samples; cancel AI interval', 'fixed samples; cancel AI interval; walking instance created first')
+    if sampling_geometry:
+        if move_case is None:
+            raise ValueError("Sampling geometry requires a move case")
+        geometry = (Path(__file__).parent / "as2/ai_reference/sampling_geometry.as").read_text()
+        bootstrap = geometry + bootstrap
+        needle = f'   if(aiFight >= {frames})'
+        if bootstrap.count(needle) != 1:
+            raise ValueError('Missing geometry sampling boundary')
+        bootstrap = bootstrap.replace(needle, '   _root.aiGeometrySample();\n' + needle)
     hooks, battle = bootstrap.split("_root.aiHeld = {};", 1)
     battle = "_root.aiHeld = {};" + battle
     helper_sources = {"fighter/fz/kon", "fighter/fz/woailuo"}
@@ -609,6 +618,9 @@ _root.aiFixtureLoader.load(__CASE_URI__);
                 updated = instrument_schedule(updated, name + "#" + script["path"])
             if shadow_probe:
                 updated = instrument_shadow(updated)
+            if sampling_geometry and re.fullmatch(r"(?:DefineSprite_\d+/)?frame_\d+/DoAction.as", script["path"]):
+                origin = bundle["game_file"] + "#" + script["path"]
+                updated += '\n_root.aiGeoStamp(this, ' + json.dumps(origin) + ');\n'
             if updated == original:
                 continue
             target = patch / script["path"]
@@ -644,6 +656,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "timeout_probe": timeout_probe,
         "ghost_probe": ghost_probe,
         "mode_probe": mode_probe,
+        "sampling_geometry": sampling_geometry,
         "move_case": json.loads(move_case.read_text()) if move_case else None,
         "dynamic_move_case": dynamic_move_case,
         "fixture_url": fixture_url,
@@ -703,10 +716,11 @@ def main() -> None:
     parser.add_argument("--p2-character", default="一护")
     parser.add_argument("--p1-helper", choices=helper_choices)
     parser.add_argument("--p2-helper", choices=helper_choices)
+    parser.add_argument("--sampling-geometry", action="store_true")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry), ensure_ascii=False))
 
 
 if __name__ == "__main__":

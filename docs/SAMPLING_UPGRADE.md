@@ -281,3 +281,16 @@ s02 的拒绝桩现可通过 `--native-evidence DIR` 接收逐案例收据。
 `production_admitted=false`、`native_parity_proven=false`。原生一致性、BitmapData、
 判定框、子显示列表、完整镜头、DoAction 及 Jinye/Yijiao 残差保持后续项。
 见 [s28 证据、命令及原始产物](../evidence/sampling-upgrade/s28/README.md)。
+
+## s29：一个真实原生格的全局判定框采样
+
+复用 s28 迪达拉 tape，增加可选 `--sampling-geometry` 原生观察器：同一根帧边界
+扫描双方及源碰撞列表引用的援助/舞台候选框，记录原始脚本路径、实例 ID、初始化时点、
+观察寿命、全局矩阵和局部矩形。61/61 采样、240 条框记录、9 个实例身份；攻击框在
+ tick 13–14 出现，双方受击框每帧覆盖。零框按角色类别显式空数组；缺帧、缺框、
+未知来源或观察器错误均拒绝。50 项聚焦测试及 19 项探针测试通过。
+
+这里只证明原生根边界的现存碰撞候选框，不等于该帧必定可造成伤害，也不宣称帧内
+短命实例、精确销毁时点或 Godot 几何一致性。`production_admitted=false`、
+`native_parity_proven=false`；其他采样格、像素、子显示列表、完整镜头和 DoAction 保持后续项。
+见 [s29 证据](../evidence/sampling-upgrade/s29/README.md)。

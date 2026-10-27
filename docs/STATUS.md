@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s29）：迪达拉单格原生全局几何 61/61 根帧通过（240 条候选框、9 个实例身份），缺采样/缺框硬拒绝；双方及源碰撞列表纳入扫描。仅观察完整性，非 Godot 几何一致性，两标志仍 false。[证据](../evidence/sampling-upgrade/s29/README.md)。
+
 - 2026-10-27（采样 s28）：迪达拉单格实际 Flash 捕获与收据重验通过（5,572 事件、122 状态），同 tape 的 Godot required-native 路径 1/324 完成；缺失/错配拒绝。无原生行为或像素一致性声明，两标志仍 false。[证据](../evidence/sampling-upgrade/s28/README.md)。
 
 - 2026-10-27（采样 s27）：接入案例绑定的原生捕获收据，复用静态 move-case 与既有 Flash 捕获器；缺失、错配、缺帧、产物改动硬失败。单案例合成夹具正反向通过，未宣称实际原生捕获或一致性，两个准入标志仍为 false。[证据](../evidence/sampling-upgrade/s27/README.md)。
