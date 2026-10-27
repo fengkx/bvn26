@@ -415,3 +415,11 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 六种标记删除、缺根样本/源码义务均拒绝；617 未访问、416 未插桩逐项保留。
 完整 AS/被调函数体所有权仍未证明，两标志 false；其他维度不重跑。
 见 [s41](../evidence/sampling-upgrade/s41/README.md)。
+
+## s42：第三个迪达拉原生单格（dash）
+
+仅 `didala__dash__neutral__ground__near`，原生 5,704 事件、122 双方状态；
+原生 l/76 按键意图 tick 10–12 与源读取匹配。收据复验及 Godot required-native
+单格 1/324 执行通过；缺收据/错案例/缺样本拒绝，整批检查仍拒绝其他缺收据格。
+本格几何/DL/镜头/BitmapData/DoAction/所有权均为后续项，不重跑 attack/jump，
+不宣称原生一致性，两标志 false。见 [s42](../evidence/sampling-upgrade/s42/README.md)。

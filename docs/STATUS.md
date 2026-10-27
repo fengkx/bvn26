@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s42）：迪达拉第三格 dash 原生 5,704 事件/122 状态，收据复验与 required-native 单格执行通过；缺失/错配拒绝，其他维度后续，两标志 false。[证据](../evidence/sampling-upgrade/s42/README.md)。
+
 - 2026-10-27（采样 s41）：迪达拉 jump 调用点 453 次完整执行（416 假/37 真），另 tick 10 一次缺返回边界，gate exit 1；完整 AS 未证明，两标志 false。[证据](../evidence/sampling-upgrade/s41/README.md)。
 
 - 2026-10-27（采样 s40）：迪达拉 jump clip-action 61/61 样本、3,062 入口/13 处理器；617 未访问、416 未插桩保留，完整所有权 gate exit 1，两标志 false。[证据](../evidence/sampling-upgrade/s40/README.md)。
