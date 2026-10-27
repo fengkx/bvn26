@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s27）：接入案例绑定的原生捕获收据，复用静态 move-case 与既有 Flash 捕获器；缺失、错配、缺帧、产物改动硬失败。单案例合成夹具正反向通过，未宣称实际原生捕获或一致性，两个准入标志仍为 false。[证据](../evidence/sampling-upgrade/s27/README.md)。
+
 - 2026-10-26（PR48后续采样 s01）：独立分支建立26角色×324组合输入矩阵与执行覆盖硬门槛，复用固定tape回放器；缺帧/缺案例/准备姿态错误均拒绝。未宣称Flash像素或DoAction覆盖，`production_admitted=false`。见[设计](SAMPLING_UPGRADE.md)与[证据](../evidence/sampling-upgrade/s01/README.md)。
 
 - 2026-10-26（根帧审查跟进）：保留Cursor要求的根义务缺帧硬错误；舞台缓存改为共享完整23帧源时间轴，十个地图仍选各自原始帧，默认current_world同步保留完整源。原有选中帧及图片字节核对一致，54项聚焦测试通过，89/89时间轴义务通过（去重前98）。完整生产像素/AS所有权仍为后续项，`production_admitted=false`。[证据](../evidence/importer-loud-fail/stage-root-retention/README.md)。

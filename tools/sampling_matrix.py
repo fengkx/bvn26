@@ -119,26 +119,26 @@ def validate_trace(case, rows, camera):
         raise ValueError(f'{case_id}: requested posture not reached before input')
 
 
-def require_native_evidence(entries):
-    """Fail closed until a native capture adapter can validate case-bound evidence.
-
-    Godot traces and hand-written success receipts cannot satisfy this reservation.
-    Keeping the hook rejecting is intentional; it makes no native parity claim.
-    """
+def require_native_evidence(entries, campaign, native_evidence=None):
+    from tools.sampling_native import validate
+    receipts = {}
     for entry in entries:
         if entry.get('require_native', False):
-            raise ValueError(f"{entry['id']}: missing native evidence; "
-                             "native capture adapter is not connected")
+            receipt = native_evidence / (entry['id'] + '.json') if native_evidence else None
+            if receipt is None or not receipt.is_file():
+                raise ValueError(f"{entry['id']}: missing native evidence")
+            receipts[entry['id']] = validate(campaign / 'cases' / (entry['id'] + '.json'), receipt)
+    return receipts
 
 
-def run(campaign, output, godot, selected=None):
+def run(campaign, output, godot, selected=None, native_evidence=None):
     manifest = load_campaign(campaign)
     entries = manifest['cases']
     if selected is not None:
         if not selected or len(set(selected)) != len(selected) or set(selected) - {e['id'] for e in entries}:
             raise ValueError('empty, duplicate, or unknown case selection')
         entries = [e for e in entries if e['id'] in selected]
-    require_native_evidence(entries)
+    receipts = require_native_evidence(entries, campaign, native_evidence)
     output.mkdir(parents=True, exist_ok=False)
     paths = [campaign / 'cases' / (entry['id'] + '.json') for entry in entries]
     results = execute_batch(godot.resolve(), paths, output.resolve())
@@ -152,7 +152,7 @@ def run(campaign, output, godot, selected=None):
                            json.loads(Path(str(trace) + '.presentation.json').read_text()))
         except (ValueError, OSError) as error:
             errors.append(str(error))
-    report = {'matrix_sha256': digest(campaign / 'matrix.json'), 'planned': len(manifest['cases']),
+    report = {'native_receipts': receipts, 'matrix_sha256': digest(campaign / 'matrix.json'), 'planned': len(manifest['cases']),
               'executed': len(results), 'errors': errors, 'results': results,
               'execution_coverage_complete': len(results) == len(manifest['cases']) and not errors,
               'native_parity_proven': False, 'production_admitted': False}
@@ -162,10 +162,12 @@ def run(campaign, output, godot, selected=None):
     return report
 
 
-def require_full_coverage(campaign, output):
+def require_full_coverage(campaign, output, native_evidence=None):
     manifest = load_campaign(campaign)
-    require_native_evidence(manifest['cases'])
+    receipts = require_native_evidence(manifest['cases'], campaign, native_evidence)
     report = json.loads((output / 'report.json').read_text())
+    if report.get('native_receipts', {}) != receipts:
+        raise ValueError('native evidence: report receipt bindings changed')
     if report['matrix_sha256'] != digest(campaign / 'matrix.json'):
         raise ValueError('results belong to another campaign')
     if report['errors'] or [r['id'] for r in report['results']] != [e['id'] for e in manifest['cases']]:
@@ -186,7 +188,7 @@ def main():
     gen.add_argument('--output', type=Path, required=True)
     gen.add_argument('--fighters', nargs='+')
     gen.add_argument('--require-native', action='store_true',
-                     help='Reserve native evidence for every case; currently rejects until capture is wired')
+                     help='Require validated case-bound native capture receipts')
     execute = sub.add_parser('run')
     execute.add_argument('--campaign', type=Path, required=True)
     execute.add_argument('--output', type=Path, required=True)
@@ -195,15 +197,17 @@ def main():
     check = sub.add_parser('check')
     check.add_argument('--campaign', type=Path, required=True)
     check.add_argument('--output', type=Path, required=True)
+    execute.add_argument('--native-evidence', type=Path)
+    check.add_argument('--native-evidence', type=Path)
     args = parser.parse_args()
     try:
         if args.command == 'generate':
             print('MATRIX_GENERATED', len(generate(args.output, args.fighters, args.require_native)['cases']))
         elif args.command == 'run':
-            report = run(args.campaign.resolve(), args.output.resolve(), args.godot, args.cases)
+            report = run(args.campaign.resolve(), args.output.resolve(), args.godot, args.cases, args.native_evidence)
             print('MATRIX_EXECUTED', report['executed'], 'of', report['planned'], 'native_parity_proven=false')
         else:
-            print('MATRIX_EXECUTION_COVERAGE_OK', require_full_coverage(args.campaign, args.output))
+            print('MATRIX_EXECUTION_COVERAGE_OK', require_full_coverage(args.campaign, args.output, args.native_evidence))
     except (ValueError, OSError, KeyError, TypeError) as error:
         parser.exit(1, f'sampling matrix error: {error}\n')
 

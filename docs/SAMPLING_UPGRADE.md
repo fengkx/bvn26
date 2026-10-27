@@ -63,12 +63,12 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 
 生成时添加 `--require-native`，会把要求同时写进案例和矩阵清单。
 `run` 检查选中的案例，`check` 检查整个矩阵；必需原生证据尚未接入时，
-两者都以案例 ID + `missing native evidence` 硬失败。当前这是明确拒绝的
+两者都以案例 ID + `missing native evidence` 硬失败。s02 当时这是明确拒绝的
 接入桩，不支持导入任何成功收据，也不把 Godot 输出当原生证据。
 未加此选项的 s01 案例与执行覆盖规则不变。
 
 这项门槛可独立送审；捕获适配器、原生轨迹验证及像素对比是后续项。
-见 [s02 证据](../evidence/sampling-upgrade/s02/README.md)。
+见 [s02 证据](../evidence/sampling-upgrade/s02/README.md)；当前接入能力见下方 s27。
 
 ## s03：额外角色执行证据
 
@@ -255,3 +255,17 @@ python3 -m tools.sampling_matrix check --campaign /tmp/bvn-matrix \
 原生 Flash 一致性、BitmapData、全局判定框、子显示列表、完整镜头和 DoAction，
 以及 Jinye/Yijiao 采样器残差仍是明确后续项，不阻塞本执行证据切片。
 见 [s26 证据](../evidence/sampling-upgrade/s26/README.md)及[已知差异](IMPORTER_KNOWN_GAPS.md)。
+
+## s27：案例绑定的原生捕获适配器
+
+s02 的拒绝桩现可通过 `--native-evidence DIR` 接收逐案例收据。
+`python3 -m tools.sampling_native` 复用既有静态 move-case 探针和 Flash 捕获工具，
+绑定完整 tape、构建配置、源 SWF、探针、播放器及产物哈希，并核对逐帧双角色记录、
+准备姿态和结束事件。`run` 记录收据哈希；`check` 重新校验，缺失、错配或改动均硬失败。
+静态案例以外的动态加载收据仍拒绝；绝对路径所指产物必须保留。
+
+本轮仅以明确合成的单案例夹具验证正反向门槛，没有新原生捕获或像素一致性证明。
+收据是可信本地构建的审计记录，不是防伪签名。`production_admitted=false`、
+`native_parity_proven=false`；实际单案例原生捕获、随机/时钟对齐、BitmapData、判定框、
+子显示列表、完整镜头和 DoAction 仍为后续项。Jinye/Yijiao 已知残差未改变。
+见 [s27 证据与命令](../evidence/sampling-upgrade/s27/README.md)。
