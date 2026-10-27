@@ -546,3 +546,11 @@ callee 内部与完整 AS 所有权未证明，两标志 false。见 [s55](../ev
 完整 gate exit 1：tick 11 的 p1（源运行帧 474）没有 receiver，tick 10/12 有 bdmn/mian。
 须核该帧放置/移除/初始化与观测阶段，不补造框、不推断无敌、不忽略该 tick。
 完整原生几何及 Godot 对照未证明；其他维度后续，两标志 false。见 [s57](../evidence/sampling-upgrade/s57/README.md)。
+
+## s58：special 单格子显示列表与镜头
+
+仅 `didala__special__neutral__ground__near`：原生 7,716 事件、61/61 样本、
+1,567 节点记录，收据与结构校验通过；缺样本/角色节点拒绝，恢复后复验。
+完整显示/镜头 gate exit 1：122 条 AImain 源帧缺口、142 条特效层符号缺口保留。
+动态 mask/完整镜头对照未证明，s57 tick 11 几何缺口不因本次采样解除。
+BitmapData/DoAction 后续，两标志 false。见 [s58](../evidence/sampling-upgrade/s58/README.md)。
