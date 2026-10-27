@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s37）：迪达拉 jump 显示/镜头观测 61/61 样本、1,522 节点，缺样本/节点拒绝；122 条源帧义务及动态遮罩未证明，完整 gate exit 1，两标志 false。[证据](../evidence/sampling-upgrade/s37/README.md)。
+
 - 2026-10-27（采样 s36）：迪达拉 jump 单格全局几何 61/61 根样本、242 受击框、6 实例，缺样本/缺框拒绝；原生/Godot 几何一致性未证明，两标志 false。[证据](../evidence/sampling-upgrade/s36/README.md)。
 
 - 2026-10-27（采样 s35）：第二个迪达拉格 jump/neutral/ground/near 原生 5,926 事件、122 状态，收据复验与 required-native 单格执行通过；缺失/错配拒绝，两标志 false，其他观测维度后续。[证据](../evidence/sampling-upgrade/s35/README.md)。

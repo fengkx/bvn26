@@ -372,3 +372,12 @@ Godot 首次沙箱启动 SIGABRT 后，经用户批准的单命令提权已取�
 攻击/援助攻击/舞台攻击为空数组。缺整帧或缺单框负例均拒绝，原记录复验通过。
 本格 DL/镜头、BitmapData、DoAction/所有权及 Godot 几何对照仍为后续项；
 不将观测完整性称为原生一致性，两标志 false。见 [s36](../evidence/sampling-upgrade/s36/README.md)。
+
+## s37：jump 单格子显示列表与镜头观测
+
+仅 `didala__jump__neutral__ground__near`，复用 s30 未改动的探针/源绑定门槛。
+原生 8,968 事件、61/61 结构采样、1,522 节点；缺样本/缺节点均拒绝。
+完整显示/镜头 gate exit 1：双方 AImain 各 61 条 frame 0 缺源帧义务均保留，
+动态遮罩所有权未证明；Stage/根矩阵/子树变换不等于完整镜头一致性。
+本格 BitmapData、DoAction/所有权及完整渲染对照为后续项，两标志 false。
+见 [s37](../evidence/sampling-upgrade/s37/README.md)。
