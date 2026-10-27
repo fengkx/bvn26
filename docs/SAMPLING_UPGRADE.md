@@ -269,3 +269,15 @@ s02 的拒绝桩现可通过 `--native-evidence DIR` 接收逐案例收据。
 `native_parity_proven=false`；实际单案例原生捕获、随机/时钟对齐、BitmapData、判定框、
 子显示列表、完整镜头和 DoAction 仍为后续项。Jinye/Yijiao 已知残差未改变。
 见 [s27 证据与命令](../evidence/sampling-upgrade/s27/README.md)。
+
+## s28：一个真实原生采样格
+
+迪达拉地面近距离普攻单格通过实际 Flash 捕获：5,572 条事件、双方 0–60 tick
+共 122 条状态记录，原生收据绑定并重验通过。同一 tape 经 `--native-evidence`
+运行 Godot，明确为 **1/324**；缺失/错案例收据硬失败，恢复后通过。未标记项仍无需收据，
+全 campaign 检查仍因其余 323 格缺原生证据而拒绝。未重跑已证明角色。
+
+本轮仅证明真实捕获与收据接入，不比较逐帧行为或像素；
+`production_admitted=false`、`native_parity_proven=false`。原生一致性、BitmapData、
+判定框、子显示列表、完整镜头、DoAction 及 Jinye/Yijiao 残差保持后续项。
+见 [s28 证据、命令及原始产物](../evidence/sampling-upgrade/s28/README.md)。
