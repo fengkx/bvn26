@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-27（采样 s33）：迪达拉单格真实 clip-action 入口 3,138 次/12 处理器，根样本 61/61；616 未访问、416 未插桩保留，完整所有权 gate exit 1。缺事件/删义务拒绝，调用/分支仍未证明，两标志 false。[证据](../evidence/sampling-upgrade/s33/README.md)。
+
 - 2026-10-27（采样 s32）：迪达拉单格真实 DoAction 入口 394 次/28 源块，根样本 61/61；447 未访问、597 未插桩，完整 AS gate exit 1，调用/clip-action 所有权未证明。缺证据/删源义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s32/README.md)。
 
 - 2026-10-27（采样 s31）：迪达拉真实 BitmapData 61/61 帧，缺帧/缺行/单字节差异拒绝。Godot 经单命令授权提权取得 61/61 图像，严格比较 0/61 精确（18,630,929 通道不同、最大差 255），gate exit 1；时钟/渲染相位与像素一致性未证明，两标志 false。[证据](../evidence/sampling-upgrade/s31/README.md)。
