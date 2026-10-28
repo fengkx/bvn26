@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s66）：迪达拉 summon 原生/Godot 各 61 图，严格 RGBA 0/61 精确、17,613,026 通道不同，gate exit 1；缺图/帧/行拒绝，时钟/渲染残留未归因，两标志 false。[证据](../evidence/sampling-upgrade/s66/README.md)。
+
 - 2026-10-27（采样 s65）：迪达拉 summon 显示/镜头 61/61 样本、1,538 节点，收据/结构通过；198 条源帧/特效符号义务保留，完整 gate exit 1，两标志 false。[证据](../evidence/sampling-upgrade/s65/README.md)。
 
 - 2026-10-27（采样 s64）：迪达拉 summon 几何捕获完成，tick 58–60 援助 p1fz.atm1 缺来源绑定，完整 gate exit 1；仅前缀 58 样本/228 框通过，缺样本/框拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s64/README.md)。
