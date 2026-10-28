@@ -612,3 +612,12 @@ done 后同 tick/显示帧有 4 条随机记录；保留原始尾部，校验改
 完整显示/镜头 gate exit 1：122 条 AImain 源帧缺口和 76 条特效符号缺口保留。
 动态 mask/完整镜头对照未证明；s64 援助框来源缺口不因显示采样解除。
 BitmapData/DoAction 后续，两标志 false。见 [s65](../evidence/sampling-upgrade/s65/README.md)。
+
+## s66：summon 单格 BitmapData 与严格 RGBA 比较
+
+仅 `didala__summon__neutral__ground__near`：真实 Flash/Godot 各 61/61 图，
+原生 29,376 事件，收据/图像校验通过；严格比较 0/61 精确，
+17,613,026 通道、6,973,018 像素不同，最大 Δ255，gate exit 1。
+缺原生帧/行、缺 Godot 图及单通道修改均拒绝，恢复后复验。
+时钟/阶段与渲染差异未归因，s64/s65 缺口保留；DoAction 后续，两标志 false。
+见 [s66](../evidence/sampling-upgrade/s66/README.md)。
