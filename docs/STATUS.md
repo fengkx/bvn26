@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s182–s188，同角色 PR）：鸣人 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，142 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s182/README.md)。
+
 - 2026-10-28（采样 s175–s181，同角色 PR）：蓝染 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，138 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s175/README.md)。
 
 - 2026-10-28（采样 s168–s174，同角色 PR）：卡卡西 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，138 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s168/README.md)。
