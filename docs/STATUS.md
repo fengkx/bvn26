@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s217–s223，同角色 PR）：佐助 attack 七维实采；native 收据/单格执行通过，几何/显示/调用捕获因完成边界错误拒绝，严格 RGBA 与完整 AS 覆盖 exit 1。144 项测试通过，失败原始轨迹保留，两标志 false。[总览](../evidence/sampling-upgrade/s217/README.md)。
+
 - 2026-10-28（采样 s203–s209，同角色 PR）：日番谷 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，144 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s203/README.md)。
 
 - 2026-10-28（采样 s196–s202，同角色 PR）：佩恩 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，144 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s196/README.md)。
