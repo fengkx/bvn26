@@ -1,0 +1,14 @@
+{"events": 8347, "done": true, "capture": "/private/tmp/bvn-s159-capture.log", "launch": "windowed LaunchServices launch (activation possible)", "player_app": "/Volumes/Flash Player/Flash Player.app", "command": ["/usr/bin/open", "-g", "-n", "-W", "-a", "/Volumes/Flash Player/Flash Player.app", "--args", "/private/tmp/bvn-s159-build/game/main.swf"], "runtime_fighter": null}
+159 sealed
+{"events": 10053, "done": true, "capture": "/private/tmp/bvn-s160-capture.log", "launch": "windowed LaunchServices launch (activation possible)", "player_app": "/Volumes/Flash Player/Flash Player.app", "command": ["/usr/bin/open", "-g", "-n", "-W", "-a", "/Volumes/Flash Player/Flash Player.app", "--args", "/private/tmp/bvn-s160-build/game/main.swf"], "runtime_fighter": null}
+Traceback (most recent call last):
+  File "/tmp/bvn-itachi-remaining-captures.py", line 11, in <module>
+    seal(case,b,trace,player.BINARY,Path(f'/tmp/bvn-s{n}-receipts')/case.name)
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/sampling_native.py", line 106, in seal
+    files = inspect(case, build, trace, engine)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/sampling_native.py", line 82, in inspect
+    validate_capture(case, metadata, trace)
+  File "/Users/fengkx/me/agent-code/bvn2_6-loud-fail/tools/sampling_native.py", line 51, in validate_capture
+    raise ValueError('native evidence: events beyond completion boundary')
+ValueError: native evidence: events beyond completion boundary

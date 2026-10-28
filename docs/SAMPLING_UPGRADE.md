@@ -911,3 +911,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s147/README.md)。
+
+## s154–s160：鼬 attack 单格七维（同一角色 PR）
+
+仅 `itachi__attack__neutral__ground__near`；原版角色名“鼬”，源 `itachi.swf`。
+
+- **s154 Native receipt:** 5179 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+- **s155 Global geometry:** 61/61 samples; {'hurt': 238, 'attack': 4} box records; 10 sampled instances. Native gate passes; Godot geometry comparison remains open.
+- **s156 Child display list and camera:** 61/61 samples; 1525 nodes; full gate exits 1 with 164 source obligations: see source-gap-summary.json for exact reasons and paths. Dynamic masks/full camera remain unproven.
+- **s157 BitmapData and RGBA:** 61 native and 61 actual Godot images, 600x400 opaque RGBA. Strict gate exits 1: 0/61 exact; 17713306 differing channels, 6882344 differing pixels; max channel delta 255. No alignment, cropping, reference rewriting or tolerance.
+- **s158 DoAction entry coverage:** 61/61 samples; 372 entries / 30 blocks. Full gate exits 1: 443 unvisited, 600 uninstrumented.
+- **s159 Clip-action handler coverage:** 61/61 samples; 2819 clip entries / 13 handlers. Full gate exits 1: 615 unvisited, 415 uninstrumented.
+- **s160 Call-site and branch observations:** 61/61 samples; 429 complete invocations (389 false / 40 true); 1 incomplete. Full ownership gate exits 1; callee bodies, other branches and Godot ownership remain unproven. Exact incomplete boundaries retained in callsite-summary.json.
+
+各维缺失负例拒绝且恢复复验。138 项聚焦测试通过；无游戏运行时改动。
+production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
+动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
+[角色总览与复现](../evidence/sampling-upgrade/s154/README.md)。

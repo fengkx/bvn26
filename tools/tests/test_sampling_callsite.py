@@ -180,6 +180,20 @@ class CallSiteTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'unique'):
             specification(records + [self.spec()['source']])
 
+    def test_itachi_locked_handler_binding(self):
+        root = Path(__file__).resolve().parents[2]
+        bundle = json.loads((root / 'scripts/fighter/itachi.json').read_text())
+        records = inventory(bundle, include_clip=True)
+        spec = specification(records)
+        source = next(s['source'] for s in bundle['scripts'] if s['path'] == spec['source']['path'])
+        self.assertEqual(spec['source']['sprite'], 294)
+        self.assertEqual(spec['source']['placement_path'], 'PlaceObject2_11_33')
+        self.assertEqual(instrument(source, spec['source']).count('doAllAction();'), 1)
+        with self.assertRaisesRegex(ValueError, 'changed/unsupported'):
+            instrument(source.replace('doAllAction();', 'unknown(speed*18);'), spec['source'])
+        with self.assertRaisesRegex(ValueError, 'unique'):
+            specification(records + [self.spec()['source']])
+
     def rows(self, taken=True):
         identity = self.spec()['handler_id']
         phases = ['predicate_before', 'true', 'call_before', 'call_after', 'end'] if taken else ['predicate_before', 'false', 'end']
