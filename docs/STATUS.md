@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s72）：茶渡 attack 显示/镜头 61/61 样本、1,532 节点，结构/收据通过；167 条来源义务保留，完整 gate exit 1；缺样本/节点拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s72/README.md)。
+
 - 2026-10-28（采样 s71）：茶渡 attack 原生几何 61/61 样本、238 受击框 + 2 攻击框、9 实例，收据/gate 通过；缺样本/框拒绝，尚无 Godot 几何对照，两标志 false。[证据](../evidence/sampling-upgrade/s71/README.md)。
 
 - 2026-10-28（采样 s70）：茶渡 attack 原生 4,910 事件/122 状态，收据与 Godot required-native 单格通过；缺失/错配/缺样本拒绝，整批仍 exit 1，两标志 false。[证据](../evidence/sampling-upgrade/s70/README.md)。
