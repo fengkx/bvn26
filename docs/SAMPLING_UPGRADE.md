@@ -669,3 +669,12 @@ Godot required-native 单格执行 1/324、无错误；缺失/错配收据、缺
 仅证明根观察边界的来源绑定候选；精确生命周期、帧内瞬态与 Godot 几何对照仍未证明。
 DL/镜头、BitmapData、DoAction/所有权后续，两标志 false。
 见 [s71](../evidence/sampling-upgrade/s71/README.md)。
+
+## s72：茶渡 attack 单格子显示列表与镜头
+
+仅 `chad__attack__neutral__ground__near`：原生 8,438 事件、61/61 样本、
+1,532 节点记录，收据与结构检查通过；缺样本/角色节点拒绝，恢复后复验。
+完整 gate exit 1：122 条 AImain 源帧缺口、45 条 xgmc0 特效符号缺口保留。
+动态 mask、帧内生命周期和完整 Godot 镜头对照未证明；Chad XML 来源哈希锁定。
+BitmapData/DoAction 后续，production_admitted=false、native_parity_proven=false。
+见 [s72](../evidence/sampling-upgrade/s72/README.md)。
