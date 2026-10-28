@@ -651,3 +651,12 @@ tick 10 另一次到达 call_before 后缺 call_after/end，原始记录保留�
 614 未访问、416 未插桩保留，callee 内部与完整 AS 所有权未证明。
 s64/s65/s66 残留不变；production_admitted=false、native_parity_proven=false。
 见 [s69](../evidence/sampling-upgrade/s69/README.md)。
+
+## s70：茶渡首个原生单格（attack）
+
+仅 `chad__attack__neutral__ground__near`：原生 4,910 事件、122 双方状态，
+攻击键 74 意图 tick 10–12；1,569 次源读取与意图一致。收据复验通过，
+Godot required-native 单格执行 1/324、无错误；缺失/错配收据、缺原生样本拒绝。
+整批因其他格缺收据 exit 1。几何、显示/镜头、BitmapData、DoAction/所有权后续，
+不宣称行为或像素一致；production_admitted=false、native_parity_proven=false。
+见 [s70](../evidence/sampling-upgrade/s70/README.md)。

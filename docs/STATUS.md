@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s70）：茶渡 attack 原生 4,910 事件/122 状态，收据与 Godot required-native 单格通过；缺失/错配/缺样本拒绝，整批仍 exit 1，两标志 false。[证据](../evidence/sampling-upgrade/s70/README.md)。
+
 - 2026-10-28（采样 s69）：迪达拉 summon 调用点 428 次完整观察（410 假/18 真），tick 10 另一次缺返回/结束标记，gate exit 1；缺标记/样本/义务拒绝，完整 AS 未证明，两标志 false。[证据](../evidence/sampling-upgrade/s69/README.md)。
 
 - 2026-10-28（采样 s68）：迪达拉 summon clip-action 61/61 样本、2,935 次入口/10 处理器；614 未访问、416 未插桩保留，完整 AS gate exit 1；缺事件/样本/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s68/README.md)。
