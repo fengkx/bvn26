@@ -631,3 +631,13 @@ BitmapData/DoAction 后续，两标志 false。见 [s65](../evidence/sampling-up
 函数内部、分支、clip-action 与调用所有权后续；s64/s65/s66 残留不变，
 production_admitted=false、native_parity_proven=false。
 见 [s67](../evidence/sampling-upgrade/s67/README.md)。
+
+## s68：summon 单格 clip-action 处理器入口
+
+仅 `didala__summon__neutral__ground__near`：原生 8,238 事件、61/61 根样本、
+2,935 次 clip 入口/10 源处理器（战斗窗口 328 次）；另有 369 次 DoAction/32 块。
+收据和入口结构校验通过；缺 clip 事件/样本/源码义务均拒绝，恢复后复验。
+614 未访问（443 块 + 171 处理器）、416 未插桩保留，完整 AS gate exit 1。
+处理器内部调用/分支与完整所有权后续，s64/s65/s66 残留不变；
+production_admitted=false、native_parity_proven=false。
+见 [s68](../evidence/sampling-upgrade/s68/README.md)。
