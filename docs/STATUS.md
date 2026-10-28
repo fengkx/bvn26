@@ -4,6 +4,8 @@
 
 - 2026-10-28（采样 s168–s174，同角色 PR）：卡卡西 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，138 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s168/README.md)。
 
+- 2026-10-28（采样 s161–s167，同角色 PR）：自来也 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，138 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s161/README.md)。
+
 - 2026-10-28（采样 s154–s160，同角色 PR）：鼬 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，138 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s154/README.md)。
 
 - 2026-10-28（采样 s147–s153，同角色 PR）：我爱罗 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，137 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s147/README.md)。
