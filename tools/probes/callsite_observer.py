@@ -1,11 +1,16 @@
-"""One reviewed handler: preserve predicate evaluation and original call syntax."""
+"""Reviewed source handlers: preserve predicate evaluation and original call syntax."""
 SWF = 'game/fighter/didala.swf'
 PATH = 'DefineSprite_542/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'
+HANDLERS = {
+    (SWF, PATH),
+    ('game/fighter/chad.swf',
+     'DefineSprite_607/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'),
+}
 SOURCE = 'onClipEvent(enterFrame){\n   if(gameRunning())\n   {\n      doAllAction();\n   }\n}\n'
 
 
 def selected(record):
-    return record['swf'] == SWF and record['path'] == PATH
+    return (record['swf'], record['path']) in HANDLERS
 
 
 def specification(records):
