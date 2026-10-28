@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s77–s83，同角色 PR）：恋次 attack 七维实采；原生收据/几何通过，显示 167 来源缺口、RGBA 0/61 精确、完整 AS/调用缺返回仍 exit 1。各维负例拒绝，127 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s77/README.md)。
+
 - 2026-10-28（采样 s75–s76，同 PR）：茶渡 attack clip 2,786 入口/13 处理器；调用点 441 完整观察（396 假/45 真），另一次缺返回。两维各 61/61 样本，硬失败负例通过，完整 gate 均 exit 1，两标志 false。[clip](../evidence/sampling-upgrade/s75/README.md) / [调用](../evidence/sampling-upgrade/s76/README.md)。
 
 - 2026-10-28（采样 s74）：茶渡 attack DoAction 61/61 样本、424 次入口/28 源块；425 未访问、597 未插桩保留，完整 AS gate exit 1；缺入口/样本/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s74/README.md)。

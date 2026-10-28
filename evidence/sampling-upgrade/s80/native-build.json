@@ -1,0 +1,129 @@
+{
+  "run_id": "s80-renji-attack-20261028",
+  "status": "built_not_run",
+  "frames_after_ready": 60,
+  "configuration": {
+    "modo": 3,
+    "p1": "恋次",
+    "p2": "一护",
+    "p2cpu": false,
+    "AI": 5,
+    "stage": "现世",
+    "p1sf": "我爱罗",
+    "p2sf": "魂"
+  },
+  "sources_sha256": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "game/fighter/Renji.swf": "7505e9591f46ba1d05bb03fff9450d52583804022a08ba3bb7a0ecfb21cb116a",
+    "scripts/fighter/Renji.json": "4bf693e5bac1316c2a7124bc2844eaf5b438bf9b557c50ad69fa9ab4489cbf35",
+    "game/fighter/yihu.swf": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+    "scripts/fighter/yihu.json": "5c4996b3767c2e31810595604c5b869c511c9c4f1cd8c123e059212294fc5d5b",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+    "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46"
+  },
+  "ffdec_sha256": "090ab695053ad94cba6408574c7d7eea20ec60b6ae789ee6056a23f45106762f",
+  "outputs_sha256": {
+    "game/main.swf": "7b6712394a3383e295cd5219be6f6e4d6f6b9cf0e28a382c290161d119d182d7",
+    "game/fighter/yihu.swf": "e70b55801d6d55491d9fd23626e11a8db2a5aa282f6ecb3ff3e1f76ffe596dc4",
+    "game/fighter/Renji.swf": "5907d1fb03a23f365a1fa187f1527cf4a60e112b001da69b702c2ccd598abffd",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+  },
+  "instrumentation_sha256": "a3a59e3c50a85dba2b4338adb7483e5af7bd74ae5ce7cc8342641d5bf4ba11be",
+  "frame_order_probe": false,
+  "body_boundaries": false,
+  "body_callback_observer": false,
+  "recovery_order_probe": false,
+  "recovery_walk_first": false,
+  "match_flow": false,
+  "helper_probe": null,
+  "dash_probe": null,
+  "dash_trigger_frame": null,
+  "dash_duration": 36,
+  "timeout_probe": null,
+  "ghost_probe": null,
+  "mode_probe": 3,
+  "sampling_geometry": false,
+  "sampling_display": false,
+  "sampling_bitmap": true,
+  "sampling_doaction": false,
+  "sampling_clipaction": false,
+  "sampling_callsite": false,
+  "callsite_specification": null,
+  "doaction_inventory": [],
+  "move_case": {
+    "id": "renji__attack__neutral__ground__near",
+    "fighter": "renji",
+    "slot": "p1",
+    "frames": 60,
+    "fighters": {
+      "p1": "renji",
+      "p2": "yihu"
+    },
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂",
+    "stage": "现世",
+    "setup": {
+      "p1": {
+        "x": 100,
+        "energy": 300
+      },
+      "p2": {
+        "x": 150,
+        "energy": 300
+      }
+    },
+    "inputs": [
+      {
+        "slot": "p1",
+        "keys": [
+          "attack"
+        ],
+        "start": 10,
+        "end": 13
+      }
+    ],
+    "target_frames": [],
+    "sampling_cell": {
+      "fighter": "renji",
+      "key": "attack",
+      "direction": "neutral",
+      "posture": "ground",
+      "distance": "near"
+    },
+    "require_native": true
+  },
+  "dynamic_move_case": false,
+  "fixture_url": null,
+  "player_display": "windowed_showAll",
+  "presentation_probe": false,
+  "root_write_observer": false,
+  "body_call_scope_probe": false,
+  "schedule_probe": false,
+  "hurt_summon_probe": false,
+  "shadow_probe": false,
+  "effect_phase_probe": false,
+  "hit_receive_probe": false,
+  "projectile_probe": {},
+  "hit_receive_event_schema": null,
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "helper_sources": {
+    "p1": {
+      "character_id": "我爱罗",
+      "asset": "woailuo",
+      "url": "woailuo.swf"
+    },
+    "p2": {
+      "character_id": "魂",
+      "asset": "kon",
+      "url": "kon.swf"
+    }
+  },
+  "input_injection": "body_kis_alias_with_per_read_trace",
+  "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
+  "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped"
+}
