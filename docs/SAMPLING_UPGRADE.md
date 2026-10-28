@@ -1113,3 +1113,19 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 148 项聚焦测试通过。失败原始轨迹完整保留；无游戏运行时改动。
 `production_admitted=false`、`native_parity_proven=false`。
 [角色总览与复现](../evidence/sampling-upgrade/s231/README.md)。
+
+## s238–s244：玉龙 attack 单格七维（同一角色 PR）
+
+仅 `yulong__attack__neutral__ground__near`；锁定小写源路径 `scripts/fighter/yulong.json` 与 `game/fighter/yulong.swf`。
+
+- **s238 Native receipt:** PASS (exit 0): 4742 native events, 122 actor observations. Required-native selected Godot execution passes (1/324); full campaign rejects missing receipts.
+- **s239 Global geometry:** FAIL (exit 1): native receipt valid; 61 raw geometry boundaries, three missing-source-list errors for k1atm.mian at ticks 16–18. Full geometry and Godot comparison remain open.
+- **s240 Child display list and camera:** FAIL (exit 1): native evidence: events beyond completion boundary. No receipt issued; zero admitted samples. Full raw trace and build retained.
+- **s241 BitmapData and RGBA:** FAIL (exit 1): 61 native and 61 actual Godot viewport frames; 0/61 exact, 17595960 differing channels and 6839571 differing pixels. Maximum channel delta 255; no tolerance or image alignment.
+- **s242 DoAction entry coverage:** FAIL (exit 1): 61/61 samples; 416 entries / 31 visited blocks; 428 unvisited and 592 uninstrumented obligations.
+- **s243 Clip-action handler coverage:** FAIL (exit 1): 61/61 samples; 2758 clip entries / 14 handlers; 591 unvisited and 415 uninstrumented obligations.
+- **s244 Call-site and branch observations:** FAIL (exit 1): 61/61 samples; 438 complete invocations (36 true / 402 false), 1 incomplete. Full AS/callee/Godot ownership remains unproven.
+
+123 项聚焦测试通过。失败原始轨迹完整保留；无游戏运行时改动。
+`production_admitted=false`、`native_parity_proven=false`。
+[角色总览与复现](../evidence/sampling-upgrade/s238/README.md)。

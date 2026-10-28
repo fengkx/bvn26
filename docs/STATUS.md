@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-29（采样 s238–s244，同角色 PR）：玉龙 attack 七维证据与失败闸门已保留；逐维结果、缺口及实测耗时见[总览](../evidence/sampling-upgrade/s238/README.md)。123 项测试通过；两标志 false，无游戏运行时改动。
+
 - 2026-10-28（采样 s231–s237，同角色 PR）：一角 attack 七维证据与失败闸门已保留；逐维结果、缺口及实测耗时见[总览](../evidence/sampling-upgrade/s231/README.md)。148 项测试通过；两标志 false，无游戏运行时改动。
 
 - 2026-10-28（采样 s224–s230，同角色 PR）：ichigo 零段（原版「一护2」，不是 yihu）attack 七维观察。Godot 尚无该角色实现，campaign 拒绝、像素对照未执行；各维收据和 gate 结果见[总览](../evidence/sampling-upgrade/s224/README.md)。148 项测试通过，两标志 false，M0-02 保持未完成。
