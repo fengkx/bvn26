@@ -621,3 +621,13 @@ BitmapData/DoAction 后续，两标志 false。见 [s65](../evidence/sampling-up
 缺原生帧/行、缺 Godot 图及单通道修改均拒绝，恢复后复验。
 时钟/阶段与渲染差异未归因，s64/s65 缺口保留；DoAction 后续，两标志 false。
 见 [s66](../evidence/sampling-upgrade/s66/README.md)。
+
+## s67：summon 单格 DoAction 入口覆盖
+
+仅 `didala__summon__neutral__ground__near`：原生 5,446 事件、61/61 根样本、
+380 次入口/32 源块（战斗窗口 42 次/18 块），收据和入口结构校验通过。
+固定 1,072 项源码义务中 475 块已插桩；443 未访问、597 未插桩仍保留，
+完整 AS gate exit 1。缺入口/样本/源码义务均拒绝，恢复后复验。
+函数内部、分支、clip-action 与调用所有权后续；s64/s65/s66 残留不变，
+production_admitted=false、native_parity_proven=false。
+见 [s67](../evidence/sampling-upgrade/s67/README.md)。
