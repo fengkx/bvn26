@@ -678,3 +678,13 @@ DL/镜头、BitmapData、DoAction/所有权后续，两标志 false。
 动态 mask、帧内生命周期和完整 Godot 镜头对照未证明；Chad XML 来源哈希锁定。
 BitmapData/DoAction 后续，production_admitted=false、native_parity_proven=false。
 见 [s72](../evidence/sampling-upgrade/s72/README.md)。
+
+## s73：茶渡 attack 单格 BitmapData 与严格 RGBA 比较
+
+仅 `chad__attack__neutral__ground__near`：真实 Flash/Godot 各 61/61 图，
+原生 29,564 事件，收据与图像校验通过；严格比较 0/61 精确，
+17,616,253 通道、6,832,516 像素不同，最大 Δ255，gate exit 1。
+缺原生帧/行、缺 Godot 图及单通道修改均拒绝，恢复后复验。
+时钟/观察阶段与渲染差异未归因，s72 来源/mask 缺口保留；DoAction 后续，
+production_admitted=false、native_parity_proven=false。
+见 [s73](../evidence/sampling-upgrade/s73/README.md)。

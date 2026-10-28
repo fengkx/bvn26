@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s73）：茶渡 attack 原生/Godot 各 61 图，严格 RGBA 0/61 精确、17,616,253 通道不同，gate exit 1；缺图/帧/行拒绝，时钟/渲染残留未归因，两标志 false。[证据](../evidence/sampling-upgrade/s73/README.md)。
+
 - 2026-10-28（采样 s72）：茶渡 attack 显示/镜头 61/61 样本、1,532 节点，结构/收据通过；167 条来源义务保留，完整 gate exit 1；缺样本/节点拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s72/README.md)。
 
 - 2026-10-28（采样 s71）：茶渡 attack 原生几何 61/61 样本、238 受击框 + 2 攻击框、9 实例，收据/gate 通过；缺样本/框拒绝，尚无 Godot 几何对照，两标志 false。[证据](../evidence/sampling-upgrade/s71/README.md)。
