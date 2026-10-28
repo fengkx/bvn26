@@ -732,3 +732,25 @@ production_admitted=false、native_parity_proven=false。七维观察材料齐�
 完整所有权或行为/像素一致。后续应核 tick10 调用退出/接收者寿命、显示来源/mask、
 时钟阶段和 RGBA 残留；不以清空清单或容差宣称通过。
 见 [角色证据总览](../evidence/sampling-upgrade/s77/README.md) 与其复现说明。
+
+## s84–s90：小李 attack 单格七维（同一角色 PR）
+
+仅 `lee__attack__neutral__ground__near`，未执行宁次或其他角色/招式。
+
+| 证据 | 结果 | 完整门槛 |
+|---|---|---|
+| s84 原生/收据 | 5,402 事件、122 状态；Godot required-native 单格通过 | 整批缺其他收据 exit 1 |
+| s85 几何 | 61/61 样本，242 受击 + 2 攻击框，7 实例 | 原生 exit 0；未作 Godot 几何对照 |
+| s86 显示/镜头 | 61/61 样本、1,506 节点 | 122 AImain 源帧义务，exit 1；动态 mask 未证明 |
+| s87 BitmapData | 双方各 61 图，0/61 精确；17,650,119 通道不同 | 严格 RGBA exit 1，时钟/渲染差异未归因 |
+| s88 DoAction | 448 入口/26 块 | 461 未访问、612 未插桩，exit 1 |
+| s89 clip-action | 2,814 入口/11 处理器 | 647 未访问、415 未插桩，exit 1 |
+| s90 调用/分支 | 449 完整（405 假/44 真），另一次缺返回/结束 | tick10 缺口保留，exit 1 |
+
+各维缺收据/样本/框/节点/图/入口/标记负例均拒绝并恢复复验。
+唯一探针扩展为 Lee Sprite518/PlaceObject2_18_31 精确源码绑定；源码改写与
+多处理器歧义仍拒绝。128 项聚焦测试通过，未改运行时；
+production_admitted=false、native_parity_proven=false。七维材料齐备不等于
+完整所有权或行为/像素一致。显示来源/mask、调用退出/接收者寿命、
+时钟阶段和 RGBA 残留继续开放。
+见 [角色证据总览](../evidence/sampling-upgrade/s84/README.md) 与复现说明。
