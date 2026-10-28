@@ -1,4 +1,6 @@
 import unittest
+import json
+from pathlib import Path
 from tools.probes.callsite_observer import SWF, PATH, SOURCE, specification, instrument
 from tools.probes.doaction_observer import inventory
 from tools.sampling_callsite import collect_calls
@@ -8,6 +10,21 @@ class CallSiteTests(unittest.TestCase):
     def spec(self):
         return specification(inventory({'game_file': SWF, 'swf_sha256': 'locked',
             'scripts': [{'path': PATH, 'source': SOURCE}]}, include_clip=True))
+
+    def test_chad_locked_handler_and_ambiguous_selection(self):
+        root = Path(__file__).resolve().parents[2]
+        bundle = json.loads((root / 'scripts/fighter/chad.json').read_text())
+        records = inventory(bundle, include_clip=True)
+        spec = specification(records)
+        source = next(s['source'] for s in bundle['scripts'] if s['path'] == spec['source']['path'])
+        self.assertEqual(spec['source']['sprite'], 607)
+        result = instrument(source, spec['source'])
+        self.assertEqual(result.count('if(gameRunning())'), 1)
+        self.assertEqual(result.count('doAllAction();'), 1)
+        with self.assertRaisesRegex(ValueError, 'changed/unsupported'):
+            instrument(source.replace('doAllAction();', 'unknown(speed*18);'), spec['source'])
+        with self.assertRaisesRegex(ValueError, 'unique'):
+            specification(records + [self.spec()['source']])
 
     def rows(self, taken=True):
         identity = self.spec()['handler_id']

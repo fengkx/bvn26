@@ -698,3 +698,15 @@ production_admitted=false、native_parity_proven=false。
 函数内部、分支、clip-action 与调用所有权后续；s72/s73 残留不变，
 production_admitted=false、native_parity_proven=false。
 见 [s74](../evidence/sampling-upgrade/s74/README.md)。
+
+## s75–s76：茶渡 attack 单格 clip-action 与调用/分支（同一 PR）
+
+s75 原生 8,299 事件、61/61 根样本、2,786 次 clip 入口/13 处理器；
+缺事件/样本/义务拒绝，完整 AS gate exit 1：594 未访问、415 未插桩保留。
+s76 原生 9,464 事件、61/61 根样本；Chad 源 Sprite607 处理器 441 次完整
+调用点观察（396 假/45 真），tick 10 另一次缺 call_after/end，gate exit 1。
+六类标记删除均拒绝，原始诊断/收据复验；探针只增加精确源路径绑定，
+源码变化与多处理器歧义拒绝，未改运行时。
+这完成本格七维观察材料收集，不等于完整所有权或原生一致；callee 内部、
+生命周期、s72 来源/mask 与 s73 像素/时钟残留仍开放，两标志 false。
+见 [s75](../evidence/sampling-upgrade/s75/README.md)、[s76](../evidence/sampling-upgrade/s76/README.md)。
