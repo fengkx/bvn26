@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s147–s153，同角色 PR）：我爱罗 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，137 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s147/README.md)。
+
 - 2026-10-28（采样 s140–s146，同角色 PR）：带土 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，136 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s140/README.md)。
 
 - 2026-10-28（采样 s133–s139，同角色 PR）：白哉 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，135 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s133/README.md)。
