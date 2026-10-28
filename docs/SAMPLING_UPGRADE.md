@@ -996,3 +996,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s182/README.md)。
+
+## s189–s195：大蛇丸 attack 单格七维（同一角色 PR）
+
+仅 `orochimaru__attack__neutral__ground__near`；原版角色名“大蛇丸”，源 `orochimaru.swf`。
+
+- **s189 Native receipt:** 5543 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+- **s190 Global geometry:** 61/61 samples; {'hurt': 238, 'attack': 2} box records; 9 sampled instances. Native gate passes; Godot geometry comparison remains open.
+- **s191 Child display list and camera:** 61/61 samples; 1533 nodes; full gate exits 1 with 169 source obligations: see source-gap-summary.json for exact reasons and paths. Dynamic masks/full camera remain unproven.
+- **s192 BitmapData and RGBA:** 61 native and 61 actual Godot images, 600x400 opaque RGBA. Strict gate exits 1: 0/61 exact; 17299599 differing channels, 6762877 differing pixels; max channel delta 255. No alignment, cropping, reference rewriting or tolerance.
+- **s193 DoAction entry coverage:** 61/61 samples; 459 entries / 29 blocks. Full gate exits 1: 438 unvisited, 598 uninstrumented.
+- **s194 Clip-action handler coverage:** 61/61 samples; 3038 clip entries / 13 handlers. Full gate exits 1: 608 unvisited, 415 uninstrumented.
+- **s195 Call-site and branch observations:** 61/61 samples; 432 complete invocations (388 false / 44 true); 1 incomplete. Full ownership gate exits 1; callee bodies, other branches and Godot ownership remain unproven. Exact incomplete boundaries retained in callsite-summary.json.
+
+各维缺失负例拒绝且恢复复验。142 项聚焦测试通过；无游戏运行时改动。
+production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
+动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
+[角色总览与复现](../evidence/sampling-upgrade/s189/README.md)。
