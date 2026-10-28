@@ -1,0 +1,32 @@
+# s112 — Jianba attack: Native receipt
+
+Only `jianba__attack__neutral__ground__near`, unchanged s112 generated tape.
+Base `fe8d14fb`; branch `feat/sampling-jianba-attack-one-cell`.
+`production_admitted=false`; `native_parity_proven=false`.
+
+## Result
+
+5098 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+
+See acceptance.json and the original receipt/build/raw trace. Missing receipt,
+sample, box, node, image, entry or marker negatives are retained in this folder's
+gate-proof.json or negative-proof.json as appropriate. Original inputs are restored
+and revalidated. No incomplete source inventory was removed to obtain a pass.
+
+88 focused + 25 import guard + 19 probe tests pass (132 distinct tests shared
+across all seven dimensions); logs and integrity/handoff/contracts are in s112.
+No gameplay/runtime changes. Source-bound Jianba Sprite514/PlaceObject2_13_31
+is the sole probe binding addition; source changes and ambiguous matches reject.
+
+[Shared reproduction and limits](../s112/REPRODUCTION.md).
+Capture completeness is not gameplay/pixel parity. Independent captures do not
+prove clock/random/phase equivalence; exact AS ownership remains incomplete.
+
+## Character review map
+
+- [s113: Global geometry](../s113/README.md)
+- [s114: Child display list and camera](../s114/README.md)
+- [s115: BitmapData and RGBA](../s115/README.md)
+- [s116: DoAction entry coverage](../s116/README.md)
+- [s117: Clip-action handler coverage](../s117/README.md)
+- [s118: Call-site and branch observations](../s118/README.md)
