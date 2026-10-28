@@ -1081,3 +1081,18 @@ production_admitted=false、native_parity_proven=false；无游戏运行时改�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s210/README.md)。
+
+
+## s224–s230：ichigo 零段 attack 单格七维
+
+指定源 `ichigo.swf` / `ichigo.json` 对应原版「一护2／零段」Sprite 274；普通「一护」是另一资产 yihu。当前 Godot 目录没有 ichigo，campaign 按原门槛拒绝；本次仅用既有 fixture 函数生成原生单格输入，没有新增角色实现或替换为 yihu。
+
+- **s224 Native receipt:** PASS (exit 0); 5031 native events, 122 actor observations. Campaign exit 1; Godot execution unavailable.
+- **s225 Global geometry:** PASS (exit 0); 61 samples, {'hurt': 238, 'attack': 2}, 9 observed lifetimes. Godot geometry parity untested.
+- **s226 Display list / camera:** INCOMPLETE (exit 1); receipt rejected: native evidence: events beyond completion boundary
+- **s227 BitmapData / RGBA:** INCOMPLETE (exit 1); 61 native images, 0 Godot images. Pixel comparison not evaluated (missing ichigo implementation).
+- **s228 DoAction:** INCOMPLETE (exit 1); receipt rejected: native evidence: events beyond completion boundary
+- **s229 Clip-action:** INCOMPLETE (exit 1); 61 samples, 3333 entries, 42 visited / 772 unvisited / 417 uninstrumented items. Entry kinds: {'doaction_entry': 438, 'clipaction_entry': 2895}.
+- **s230 Call / branch:** INCOMPLETE (exit 1); 61 samples, 3264 entries, 42 visited / 772 unvisited / 417 uninstrumented items. 453 complete invocations (47 true / 406 false), 1 incomplete.
+
+148 项工具与探针测试通过。完整原生一致性、Godot 对照、动态 mask、源绑定和完整 AS 所有权仍未验收。两标志 false，无游戏运行时改动。[总览与复现](../evidence/sampling-upgrade/s224/README.md)。
