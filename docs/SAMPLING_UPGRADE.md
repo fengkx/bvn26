@@ -877,3 +877,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s133/README.md)。
+
+## s140–s146：带土 attack 单格七维（同一角色 PR）
+
+仅 `daitu__attack__neutral__ground__near`；原版角色名“带土”，源 `daitu.swf`。
+
+- **s140 Native receipt:** 5188 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+- **s141 Global geometry:** 61/61 samples; {'hurt': 238, 'attack': 2} box records; 9 sampled instances. Native gate passes; Godot geometry comparison remains open.
+- **s142 Child display list and camera:** 61/61 samples; 1535 nodes; full gate exits 1 with 170 source obligations: see source-gap-summary.json for exact reasons and paths. Dynamic masks/full camera remain unproven.
+- **s143 BitmapData and RGBA:** 61 native and 61 actual Godot images, 600x400 opaque RGBA. Strict gate exits 1: 0/61 exact; 16686821 differing channels, 6507282 differing pixels; max channel delta 255. No alignment, cropping, reference rewriting or tolerance.
+- **s144 DoAction entry coverage:** 61/61 samples; 418 entries / 31 blocks. Full gate exits 1: 552 unvisited, 665 uninstrumented.
+- **s145 Clip-action handler coverage:** 61/61 samples; 2952 clip entries / 13 handlers. Full gate exits 1: 789 unvisited, 415 uninstrumented.
+- **s146 Call-site and branch observations:** 61/61 samples; 447 complete invocations (402 false / 45 true); 1 incomplete. Full ownership gate exits 1; callee bodies, other branches and Godot ownership remain unproven. Exact incomplete boundaries retained in callsite-summary.json.
+
+各维缺失负例拒绝且恢复复验。136 项聚焦测试通过；无游戏运行时改动。
+production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
+动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
+[角色总览与复现](../evidence/sampling-upgrade/s140/README.md)。
