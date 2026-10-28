@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s68）：迪达拉 summon clip-action 61/61 样本、2,935 次入口/10 处理器；614 未访问、416 未插桩保留，完整 AS gate exit 1；缺事件/样本/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s68/README.md)。
+
 - 2026-10-28（采样 s67）：迪达拉 summon DoAction 61/61 样本、380 次入口/32 源块；443 未访问、597 未插桩保留，完整 AS gate exit 1；缺入口/样本/义务拒绝，两标志 false。[证据](../evidence/sampling-upgrade/s67/README.md)。
 
 - 2026-10-28（采样 s66）：迪达拉 summon 原生/Godot 各 61 图，严格 RGBA 0/61 精确、17,613,026 通道不同，gate exit 1；缺图/帧/行拒绝，时钟/渲染残留未归因，两标志 false。[证据](../evidence/sampling-upgrade/s66/README.md)。
