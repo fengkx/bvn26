@@ -843,3 +843,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s119/README.md)。
+
+## s126–s132：小南 attack 单格七维（同一角色 PR）
+
+仅 `konan__attack__neutral__ground__near`；原版角色名“小南”，源 `konan.swf`。
+
+- **s126 Native receipt:** 5120 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+- **s127 Global geometry:** 61/61 samples; {'hurt': 238, 'attack': 3} box records; 9 sampled instances. Native gate passes; Godot geometry comparison remains open.
+- **s128 Child display list and camera:** 61/61 samples; 1528 nodes; full gate exits 1 with 169 source obligations: see source-gap-summary.json for exact reasons and paths. Dynamic masks/full camera remain unproven.
+- **s129 BitmapData and RGBA:** 61 native and 61 actual Godot images, 600x400 opaque RGBA. Strict gate exits 1: 0/61 exact; 18441332 differing channels, 7122911 differing pixels; max channel delta 255. No alignment, cropping, reference rewriting or tolerance.
+- **s130 DoAction entry coverage:** 61/61 samples; 381 entries / 30 blocks. Full gate exits 1: 441 unvisited, 596 uninstrumented.
+- **s131 Clip-action handler coverage:** 61/61 samples; 2753 clip entries / 12 handlers. Full gate exits 1: 610 unvisited, 415 uninstrumented.
+- **s132 Call-site and branch observations:** 61/61 samples; 449 complete invocations (407 false / 42 true); 1 incomplete. Full ownership gate exits 1; callee bodies, other branches and Godot ownership remain unproven. Exact incomplete boundaries retained in callsite-summary.json.
+
+各维缺失负例拒绝且恢复复验。134 项聚焦测试通过；无游戏运行时改动。
+production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
+动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
+[角色总览与复现](../evidence/sampling-upgrade/s126/README.md)。
