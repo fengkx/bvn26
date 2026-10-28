@@ -278,6 +278,20 @@ class CallSiteTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'unique'):
             specification(records + [self.spec()['source']])
 
+    def test_rukia_locked_handler_binding(self):
+        root = Path(__file__).resolve().parents[2]
+        bundle = json.loads((root / 'scripts/fighter/rukia.json').read_text())
+        records = inventory(bundle, include_clip=True)
+        spec = specification(records)
+        source = next(s['source'] for s in bundle['scripts'] if s['path'] == spec['source']['path'])
+        self.assertEqual(spec['source']['sprite'], 533)
+        self.assertEqual(spec['source']['placement_path'], 'PlaceObject2_16_31')
+        self.assertEqual(instrument(source, spec['source']).count('doAllAction();'), 1)
+        with self.assertRaisesRegex(ValueError, 'changed/unsupported'):
+            instrument(source.replace('doAllAction();', 'unknown(speed*18);'), spec['source'])
+        with self.assertRaisesRegex(ValueError, 'unique'):
+            specification(records + [self.spec()['source']])
+
     def test_sasuke_locked_handler_binding(self):
         root = Path(__file__).resolve().parents[2]
         bundle = json.loads((root / 'scripts/fighter/Sasuke.json').read_text())
