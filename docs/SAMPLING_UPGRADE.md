@@ -710,3 +710,25 @@ s76 原生 9,464 事件、61/61 根样本；Chad 源 Sprite607 处理器 441 次
 这完成本格七维观察材料收集，不等于完整所有权或原生一致；callee 内部、
 生命周期、s72 来源/mask 与 s73 像素/时钟残留仍开放，两标志 false。
 见 [s75](../evidence/sampling-upgrade/s75/README.md)、[s76](../evidence/sampling-upgrade/s76/README.md)。
+
+## s77–s83：恋次 attack 单格七维（同一角色 PR）
+
+仅 `renji__attack__neutral__ground__near`，未执行其他角色/招式。
+
+| 证据 | 结果 | 完整门槛 |
+|---|---|---|
+| s77 原生/收据 | 5,107 事件、122 状态；Godot required-native 单格通过 | 整批缺其他收据 exit 1 |
+| s78 几何 | 61/61 样本，238 受击 + 2 攻击框，9 实例 | 原生 gate exit 0；未作 Godot 几何对照 |
+| s79 显示/镜头 | 61/61 样本、1,527 节点 | 167 来源义务，exit 1；动态 mask 未证明 |
+| s80 BitmapData | 双方各 61 图，0/61 精确；17,860,537 通道不同 | 严格 RGBA exit 1，时钟/渲染差异未归因 |
+| s81 DoAction | 435 入口/29 块 | 444 未访问、594 未插桩，exit 1 |
+| s82 clip-action | 2,802 入口/13 处理器 | 608 未访问、417 未插桩，exit 1 |
+| s83 调用/分支 | 448 完整（405 假/43 真），另一次缺返回/结束 | tick 10 缺口保留，exit 1 |
+
+各维缺收据/样本/框/节点/图/入口/标记负例均拒绝并恢复复验。
+唯一探针扩展为 Renji Sprite717/PlaceObject2_16_29 精确源码绑定；源码改写、
+多处理器歧义仍拒绝。127 项聚焦测试通过，原生入参/语义未改；
+production_admitted=false、native_parity_proven=false。七维观察材料齐备不等于
+完整所有权或行为/像素一致。后续应核 tick10 调用退出/接收者寿命、显示来源/mask、
+时钟阶段和 RGBA 残留；不以清空清单或容差宣称通过。
+见 [角色证据总览](../evidence/sampling-upgrade/s77/README.md) 与其复现说明。
