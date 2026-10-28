@@ -70,7 +70,7 @@ class CallSiteTests(unittest.TestCase):
 
     def test_sakura_locked_handler_binding(self):
         root = Path(__file__).resolve().parents[2]
-        bundle = json.loads((root / 'scripts/fighter/sakura.json').read_text())
+        bundle = json.loads((root / 'scripts/fighter/Sakura.json').read_text())
         records = inventory(bundle, include_clip=True)
         spec = specification(records)
         source = next(s['source'] for s in bundle['scripts'] if s['path'] == spec['source']['path'])

@@ -30,3 +30,13 @@ prove clock/random/phase equivalence; exact AS ownership remains incomplete.
 - [s102: DoAction entry coverage](../s102/README.md)
 - [s103: Clip-action handler coverage](../s103/README.md)
 - [s104: Call-site and branch observations](../s104/README.md)
+
+## PR review correction: path case
+
+The Sakura binding test now opens the tracked `scripts/fighter/Sakura.json`,
+matching case-sensitive filesystems. The old lowercase spelling is rejected by
+an exact directory-entry check, and the corrected test passes under that check
+(see path-case-review.txt). This was run on macOS, not Linux. All 130 tests were
+rerun; updated logs are retained. The PR's 126 changed files, including compressed
+evidence archives, contain no other lowercase bundle-path references. Native
+captures, receipt hashes and gameplay code are unchanged.
