@@ -660,3 +660,12 @@ Godot required-native 单格执行 1/324、无错误；缺失/错配收据、缺
 整批因其他格缺收据 exit 1。几何、显示/镜头、BitmapData、DoAction/所有权后续，
 不宣称行为或像素一致；production_admitted=false、native_parity_proven=false。
 见 [s70](../evidence/sampling-upgrade/s70/README.md)。
+
+## s71：茶渡 attack 单格全局几何
+
+仅 `chad__attack__neutral__ground__near`：原生 5,562 事件、61/61 几何样本，
+238 条受击框 + 2 条攻击框、9 个观察实例；双方每个样本均有受击候选，
+援助/舞台攻击数组显式为空。收据复验及原生几何 gate 通过；缺样本/框拒绝，恢复后复验。
+仅证明根观察边界的来源绑定候选；精确生命周期、帧内瞬态与 Godot 几何对照仍未证明。
+DL/镜头、BitmapData、DoAction/所有权后续，两标志 false。
+见 [s71](../evidence/sampling-upgrade/s71/README.md)。
