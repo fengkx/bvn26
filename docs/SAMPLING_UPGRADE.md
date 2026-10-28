@@ -1047,3 +1047,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s203/README.md)。
+
+## s217–s223：佐助 attack 单格七维（同一角色 PR）
+
+仅 `sasuke__attack__neutral__ground__near`；原版角色名“佐助”，锁定源 `Sasuke.swf` / `Sasuke.json`，基础形态 Sprite 603。
+
+- **s217 Native receipt:** PASS (exit 0): 5404 native events, 122 actor observations; required-native selected Godot execution passes (1/324). Full campaign rejects missing receipts. This is not a parity result.
+- **s218 Global geometry:** FAIL (exit 1): all four captures rejected events beyond the completion boundary. No receipt issued; zero admitted geometry samples. Final full trace contains 63 geometry_begin and 249 geometry_box events, including the rejected suffix. No Godot geometry comparison claimed.
+- **s219 Child display list and camera:** FAIL (exit 1): all three captures rejected events beyond the completion boundary. No receipt issued; source joins not evaluated. Final full trace contains 62 display_begin/camera and 1,553 node events, including the rejected suffix. Source XML and hashes retained; no camera/mask completeness claimed.
+- **s220 BitmapData and RGBA:** FAIL (exit 1): 61 native and 61 actual Godot images, 600x400 opaque RGBA; 0/61 exact, 17732741 differing channels, 6864492 differing pixels, max channel delta 255. No alignment, cropping or tolerance.
+- **s221 DoAction entry coverage:** FAIL (exit 1): receipt and 61 samples pass; 428 entries / 30 visited blocks. Full coverage retains 596 unvisited and 662 uninstrumented source items.
+- **s222 Clip-action handler coverage:** FAIL (exit 1): receipt and 61 samples pass; 2849 clip entries / 13 handlers. Full coverage retains 825 unvisited and 420 uninstrumented source items.
+- **s223 Call-site and branch observations:** FAIL (exit 1): both captures rejected events beyond the completion boundary. No receipt issued. Unadmitted full-stream diagnostic retains 444 complete invocations (43 true / 401 false) and one incomplete invocation. This diagnostic does not establish valid sample boundaries, callee bodies or Godot ownership.
+
+144 项测试通过。几何、显示、调用维度共 9 次捕获被完成边界校验拒绝，保留完整轨迹，不裁剪、不补造收据。
+这三个维度的采样准入仍未完成；Godot 几何、显示源绑定、动态 mask、像素差异与完整 AS 所有权仍待解决。
+production_admitted=false、native_parity_proven=false；无游戏运行时改动。
+[角色总览与复现](../evidence/sampling-upgrade/s217/README.md)。
