@@ -2,6 +2,8 @@
 SWF = 'game/fighter/didala.swf'
 PATH = 'DefineSprite_542/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'
 HANDLERS = {
+    ('game/fighter/rifagu.swf',
+     'DefineSprite_638/frame_1/PlaceObject2_14_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'),
     ('game/fighter/orochimaru.swf',
      'DefineSprite_541/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'),
     ('game/fighter/minren.swf',

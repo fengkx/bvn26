@@ -1013,3 +1013,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s189/README.md)。
+
+## s203–s209：日番谷 attack 单格七维（同一角色 PR）
+
+仅 `rifagu__attack__neutral__ground__near`；原版角色名“日番谷”，源 `rifagu.swf`。
+
+- **s203 Native receipt:** 5274 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+- **s204 Global geometry:** 61/61 samples; {'hurt': 237, 'attack': 3} box records; 9 sampled instances. Native gate passes; Godot geometry comparison remains open.
+- **s205 Child display list and camera:** 61/61 samples; 1529 nodes; full gate exits 1 with 167 source obligations: see source-gap-summary.json for exact reasons and paths. Dynamic masks/full camera remain unproven.
+- **s206 BitmapData and RGBA:** 61 native and 61 actual Godot images, 600x400 opaque RGBA. Strict gate exits 1: 0/61 exact; 17337041 differing channels, 6746417 differing pixels; max channel delta 255. No alignment, cropping, reference rewriting or tolerance.
+- **s207 DoAction entry coverage:** 61/61 samples; 421 entries / 29 blocks. Full gate exits 1: 560 unvisited, 653 uninstrumented.
+- **s208 Clip-action handler coverage:** 61/61 samples; 2891 clip entries / 13 handlers. Full gate exits 1: 781 unvisited, 419 uninstrumented.
+- **s209 Call-site and branch observations:** 61/61 samples; 444 complete invocations (402 false / 42 true); 1 incomplete. Full ownership gate exits 1; callee bodies, other branches and Godot ownership remain unproven. Exact incomplete boundaries retained in callsite-summary.json.
+
+各维缺失负例拒绝且恢复复验。144 项聚焦测试通过；无游戏运行时改动。
+production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
+动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
+[角色总览与复现](../evidence/sampling-upgrade/s203/README.md)。
