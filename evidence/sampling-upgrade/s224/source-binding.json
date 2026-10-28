@@ -1,0 +1,58 @@
+{
+  "requested_asset": "ichigo",
+  "native_character": "一护2",
+  "source_catalog_record": {
+    "name": "黑崎·一护 零段",
+    "url": "ichigo.swf",
+    "fz": "石田",
+    "vs": [
+      "恋次",
+      "露其雅始解"
+    ],
+    "music": "ichigo.mp3",
+    "says": [
+      "光是战斗根本没有意思 只是活下去也没有意义。",
+      "我也不知道为什么，总之很爽就是了! \n 这是…我的战斗。",
+      "正因为我们看不见，那才可怕。"
+    ],
+    "clone_of": "一护"
+  },
+  "normal_ichigo_record": {
+    "name": "黑崎·一护",
+    "url": "yihu.swf",
+    "fz": "魂",
+    "vs": [
+      "恋次",
+      "露其雅始解"
+    ],
+    "music": "ichigo.mp3",
+    "says": [
+      "光是战斗根本没有意思 只是活下去也没有意义。",
+      "我也不知道为什么，总之很爽就是了! \n 这是…我的战斗。",
+      "正因为我们看不见，那才可怕。"
+    ]
+  },
+  "source_paths": {
+    "swf": "game/fighter/ichigo.swf",
+    "scripts": "scripts/fighter/ichigo.json"
+  },
+  "root_form_1_placement": [
+    {
+      "path": "frame_1/PlaceObject2_274_1/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   on_enterframe();\r\n}\r\n"
+    },
+    {
+      "path": "frame_1/PlaceObject2_274_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "source": "onClipEvent(load){\r\n   var kcplayed = 0;\r\n   var movspeed = 0;\r\n   var fall = false;\r\n   var touch = true;\r\n   var sw = false;\r\n   var jump = 0;\r\n   var khit = 0;\r\n   var fan = 0;\r\n   var jumped = 1;\r\n   var bisha = 0;\r\n   var played = 0;\r\n   var jhp = 0;\r\n   var ql = 0;\r\n   var speed = 0;\r\n   var kis = Key.isDown;\r\n   var spd = 7;\r\n   var jumpPower = 15;\r\n}\r\n"
+    }
+  ],
+  "available_catalog": "godot/generated/main/character_selection/available.json",
+  "available_catalog_sha256": "33893b557e0f648b6d48c6cc45b92f0eda82d7fe650e8717d70a8e4b5609f5bc",
+  "available_catalog_has_ichigo": false,
+  "generated_ichigo_directory_exists": false,
+  "campaign_gate_exit_code": 1,
+  "fixture_creation": "tools.sampling_matrix.fixture(cell, require_native=True); native-only one-cell fixture, not an admitted campaign",
+  "godot_execution_status": "blocked_missing_ichigo_implementation",
+  "production_admitted": false,
+  "native_parity_proven": false
+}

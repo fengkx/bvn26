@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s224–s230，同角色 PR）：ichigo 零段（原版「一护2」，不是 yihu）attack 七维观察。Godot 尚无该角色实现，campaign 拒绝、像素对照未执行；各维收据和 gate 结果见[总览](../evidence/sampling-upgrade/s224/README.md)。148 项测试通过，两标志 false，M0-02 保持未完成。
+
 - 2026-10-28（采样 s210–s216，同角色 PR）：露琪亚 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，144 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s210/README.md)。
 
 - 2026-10-28（采样 s217–s223，同角色 PR）：佐助 attack 七维实采；native 收据/单格执行通过，几何/显示/调用捕获因完成边界错误拒绝，严格 RGBA 与完整 AS 覆盖 exit 1。144 项测试通过，失败原始轨迹保留，两标志 false。[总览](../evidence/sampling-upgrade/s217/README.md)。
