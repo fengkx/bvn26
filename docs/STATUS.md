@@ -2,6 +2,8 @@
 
 - 2026-10-28（采样 s203–s209，同角色 PR）：日番谷 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，144 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s203/README.md)。
 
+- 2026-10-28（采样 s196–s202，同角色 PR）：佩恩 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，144 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s196/README.md)。
+
 - 2026-10-28（采样 s189–s195，同角色 PR）：大蛇丸 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，142 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s189/README.md)。
 
 - 2026-10-28（采样 s182–s188，同角色 PR）：鸣人 attack 七维实采；收据/几何通过，显示源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，142 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s182/README.md)。
