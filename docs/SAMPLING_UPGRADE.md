@@ -754,3 +754,24 @@ production_admitted=false、native_parity_proven=false。七维材料齐备不�
 完整所有权或行为/像素一致。显示来源/mask、调用退出/接收者寿命、
 时钟阶段和 RGBA 残留继续开放。
 见 [角色证据总览](../evidence/sampling-upgrade/s84/README.md) 与复现说明。
+
+## s91–s97：宁次 attack 单格七维（同一角色 PR）
+
+仅 `neji__attack__neutral__ground__near`，未执行其他角色/招式。
+
+| 维度 | 实采结果 | 门槛 |
+|---|---|---|
+| s91 原生/收据 | 5735 事件、122 状态；Godot 单格通过 | 整批缺其他收据 exit 1 |
+| s92 几何 | 61/61 样本、241 受击 + 2 攻击框、8 实例 | 原生 exit 0；未作 Godot 几何对照 |
+| s93 显示/镜头 | 61/61 样本、1,505 节点 | 122 AImain 源帧缺口，exit 1 |
+| s94 BitmapData | 双方 61 图，0/61 精确，17,099,973 通道不同 | 严格 RGBA exit 1 |
+| s95 DoAction | 429 入口/26 块 | 438 未访问/611 未插桩，exit 1 |
+| s96 clip-action | 3045 入口/11 处理器 | 623 未访问/415 未插桩，exit 1 |
+| s97 调用/分支 | 453 完整（409 假/44 真），1 次边界缺失 | 缺口保留，exit 1 |
+
+各维缺收据/样本/框/节点/图/入口/标记负例均拒绝并恢复复验。
+唯一探针扩展为 Neji Sprite535/PlaceObject2_20_31 精确源码绑定；源码改写与
+多处理器歧义仍拒绝。129 项聚焦测试通过，未改运行时；
+production_admitted=false、native_parity_proven=false。材料齐备不等于完整所有权
+或行为/像素一致。动态 mask、来源帧、调用退出/接收者寿命及像素/时钟差异仍开放。
+见 [角色总览](../evidence/sampling-upgrade/s91/README.md) 与复现说明。
