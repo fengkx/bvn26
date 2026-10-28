@@ -775,3 +775,20 @@ production_admitted=false、native_parity_proven=false。七维材料齐备不�
 production_admitted=false、native_parity_proven=false。材料齐备不等于完整所有权
 或行为/像素一致。动态 mask、来源帧、调用退出/接收者寿命及像素/时钟差异仍开放。
 见 [角色总览](../evidence/sampling-upgrade/s91/README.md) 与复现说明。
+
+## s98–s104：小樱 attack 单格七维（同一角色 PR）
+
+仅 `sakura__attack__neutral__ground__near`；原版角色名“樱”，源 `Sakura.swf`。
+
+- **s98 Native receipt:** 5275 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+- **s99 Global geometry:** 61/61 samples; {'hurt': 238, 'attack': 2} box records; 9 sampled instances. Native gate passes; Godot geometry comparison remains open.
+- **s100 Child display list and camera:** 61/61 samples; 1483 nodes; full gate exits 1 with 167 source obligations: 122 missing source frames, 45 unresolved runtime symbols. Dynamic masks/full camera remain unproven.
+- **s101 BitmapData and RGBA:** 61 native and 61 actual Godot images, 600x400 opaque RGBA. Strict gate exits 1: 0/61 exact; 17422535 differing channels, 6771071 differing pixels; max channel delta 255. No alignment, cropping, reference rewriting or tolerance.
+- **s102 DoAction entry coverage:** 61/61 samples; 440 entries / 30 blocks. Full gate exits 1: 441 unvisited, 606 uninstrumented.
+- **s103 Clip-action handler coverage:** 61/61 samples; 2803 clip entries / 13 handlers. Full gate exits 1: 619 unvisited, 415 uninstrumented.
+- **s104 Call-site and branch observations:** 61/61 samples; 454 complete invocations (410 false / 44 true); 1 incomplete. Full ownership gate exits 1; callee bodies, other branches and Godot ownership remain unproven. Exact incomplete boundaries retained in callsite-summary.json.
+
+各维缺失负例拒绝且恢复复验。130 项聚焦测试通过；无游戏运行时改动。
+production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
+动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
+[角色总览与复现](../evidence/sampling-upgrade/s98/README.md)。
