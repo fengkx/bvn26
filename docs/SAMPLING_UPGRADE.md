@@ -1096,3 +1096,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 - **s230 Call / branch:** INCOMPLETE (exit 1); 61 samples, 3264 entries, 42 visited / 772 unvisited / 417 uninstrumented items. 453 complete invocations (47 true / 406 false), 1 incomplete.
 
 148 项工具与探针测试通过。完整原生一致性、Godot 对照、动态 mask、源绑定和完整 AS 所有权仍未验收。两标志 false，无游戏运行时改动。[总览与复现](../evidence/sampling-upgrade/s224/README.md)。
+
+
+## s231–s237：一角 attack 单格七维（同一角色 PR）
+
+仅 `yijiao__attack__neutral__ground__near`；锁定小写源路径 `scripts/fighter/yijiao.json` 与 `game/fighter/yijiao.swf`。
+
+- **s231 Native receipt:** FAIL (exit 1): native evidence: events beyond completion boundary. No receipt issued; zero admitted samples. Full raw trace and build retained.
+- **s232 Global geometry:** FAIL (exit 1): native evidence: events beyond completion boundary. No receipt issued; zero admitted samples. Full raw trace and build retained.
+- **s233 Child display list and camera:** FAIL (exit 1): native evidence: events beyond completion boundary. No receipt issued; zero admitted samples. Full raw trace and build retained.
+- **s234 BitmapData and RGBA:** FAIL (exit 1): 61 native and 61 actual Godot viewport frames; 0/61 exact, 17818352 differing channels and 6910686 differing pixels. Maximum channel delta 255; no tolerance or image alignment.
+- **s235 DoAction entry coverage:** FAIL (exit 1): native evidence: events beyond completion boundary. No receipt issued; zero admitted samples. Full raw trace and build retained.
+- **s236 Clip-action handler coverage:** FAIL (exit 1): 61/61 samples; 2844 clip entries / 13 handlers; 626 unvisited and 416 uninstrumented obligations.
+- **s237 Call-site and branch observations:** FAIL (exit 1): native evidence: events beyond completion boundary. No receipt issued; zero admitted samples. Full raw trace and build retained.
+
+148 项聚焦测试通过。失败原始轨迹完整保留；无游戏运行时改动。
+`production_admitted=false`、`native_parity_proven=false`。
+[角色总览与复现](../evidence/sampling-upgrade/s231/README.md)。
