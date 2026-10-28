@@ -688,3 +688,13 @@ BitmapData/DoAction 后续，production_admitted=false、native_parity_proven=fa
 时钟/观察阶段与渲染差异未归因，s72 来源/mask 缺口保留；DoAction 后续，
 production_admitted=false、native_parity_proven=false。
 见 [s73](../evidence/sampling-upgrade/s73/README.md)。
+
+## s74：茶渡 attack 单格 DoAction 入口覆盖
+
+仅 `chad__attack__neutral__ground__near`：原生 5,527 事件、61/61 根样本、
+424 次入口/28 源块（战斗窗口 59 次/16 块），收据和入口结构校验通过。
+固定 1,050 项源码义务中 453 块已插桩；425 未访问、597 未插桩保留，
+完整 AS gate exit 1。缺入口/样本/源码义务均拒绝，恢复后复验。
+函数内部、分支、clip-action 与调用所有权后续；s72/s73 残留不变，
+production_admitted=false、native_parity_proven=false。
+见 [s74](../evidence/sampling-upgrade/s74/README.md)。
