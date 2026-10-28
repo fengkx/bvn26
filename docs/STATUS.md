@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-28（采样 s98–s104，同角色 PR）：小樱 attack 七维实采；收据/几何通过，显示 167 源绑定缺口、严格 RGBA 与完整 AS 所有权 exit 1。各维负例拒绝，130 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s98/README.md)。
+
 - 2026-10-28（采样 s91–s97，同角色 PR）：宁次 attack 七维实采；收据/几何通过，显示 122 源帧缺口、RGBA 与完整 AS/调用边界仍 exit 1。各维负例拒绝，129 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s91/README.md)。
 
 - 2026-10-28（采样 s84–s90，同角色 PR）：小李 attack 七维实采；收据/几何通过，显示 122 源帧缺口、RGBA 0/61 精确、完整 AS/缺调用返回仍 exit 1。各维负例拒绝，128 项测试通过，两标志 false。[总览](../evidence/sampling-upgrade/s84/README.md)。
