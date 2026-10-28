@@ -236,6 +236,20 @@ class CallSiteTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'unique'):
             specification(records + [self.spec()['source']])
 
+    def test_rifagu_locked_handler_binding(self):
+        root = Path(__file__).resolve().parents[2]
+        bundle = json.loads((root / 'scripts/fighter/rifagu.json').read_text())
+        records = inventory(bundle, include_clip=True)
+        spec = specification(records)
+        source = next(s['source'] for s in bundle['scripts'] if s['path'] == spec['source']['path'])
+        self.assertEqual(spec['source']['sprite'], 638)
+        self.assertEqual(spec['source']['placement_path'], 'PlaceObject2_14_31')
+        self.assertEqual(instrument(source, spec['source']).count('doAllAction();'), 1)
+        with self.assertRaisesRegex(ValueError, 'changed/unsupported'):
+            instrument(source.replace('doAllAction();', 'unknown(speed*18);'), spec['source'])
+        with self.assertRaisesRegex(ValueError, 'unique'):
+            specification(records + [self.spec()['source']])
+
     def test_orochimaru_locked_handler_binding(self):
         root = Path(__file__).resolve().parents[2]
         bundle = json.loads((root / 'scripts/fighter/orochimaru.json').read_text())
