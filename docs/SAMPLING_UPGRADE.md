@@ -860,3 +860,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s126/README.md)。
+
+## s133–s139：白哉 attack 单格七维（同一角色 PR）
+
+仅 `byakuya__attack__neutral__ground__near`；原版角色名“白哉”，源 `Byakuya.swf`。
+
+- **s133 Native receipt:** 5200 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+- **s134 Global geometry:** 61/61 samples; {'hurt': 238, 'attack': 2} box records; 9 sampled instances. Native gate passes; Godot geometry comparison remains open.
+- **s135 Child display list and camera:** 61/61 samples; 1539 nodes; full gate exits 1 with 167 source obligations: see source-gap-summary.json for exact reasons and paths. Dynamic masks/full camera remain unproven.
+- **s136 BitmapData and RGBA:** 61 native and 61 actual Godot images, 600x400 opaque RGBA. Strict gate exits 1: 0/61 exact; 17098339 differing channels, 6661071 differing pixels; max channel delta 255. No alignment, cropping, reference rewriting or tolerance.
+- **s137 DoAction entry coverage:** 61/61 samples; 445 entries / 31 blocks. Full gate exits 1: 553 unvisited, 643 uninstrumented.
+- **s138 Clip-action handler coverage:** 61/61 samples; 2780 clip entries / 13 handlers. Full gate exits 1: 767 unvisited, 416 uninstrumented.
+- **s139 Call-site and branch observations:** 61/61 samples; 441 complete invocations (396 false / 45 true); 1 incomplete. Full ownership gate exits 1; callee bodies, other branches and Godot ownership remain unproven. Exact incomplete boundaries retained in callsite-summary.json.
+
+各维缺失负例拒绝且恢复复验。135 项聚焦测试通过；无游戏运行时改动。
+production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
+动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
+[角色总览与复现](../evidence/sampling-upgrade/s133/README.md)。
