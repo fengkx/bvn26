@@ -2,6 +2,8 @@
 SWF = 'game/fighter/didala.swf'
 PATH = 'DefineSprite_542/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'
 HANDLERS = {
+    ('game/fighter/yijiao.swf',
+     'DefineSprite_455/frame_1/PlaceObject2_18_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'),
     ('game/fighter/ichigo.swf',
      'DefineSprite_274/frame_1/PlaceObject2_12_31/CLIPACTIONRECORD onClipEvent(enterFrame).as'),
     ('game/fighter/rukia.swf',
