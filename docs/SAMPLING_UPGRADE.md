@@ -928,3 +928,20 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
 动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
 [角色总览与复现](../evidence/sampling-upgrade/s154/README.md)。
+
+## s168–s174：卡卡西 attack 单格七维（同一角色 PR）
+
+仅 `kakashi__attack__neutral__ground__near`；原版角色名“卡卡西”，源 `Kakashi.swf`。
+
+- **s168 Native receipt:** 5121 native events; receipt revalidation and Godot required-native selected execution pass (1/324). Full campaign rejects other missing receipts.
+- **s169 Global geometry:** 61/61 samples; {'hurt': 237, 'attack': 2} box records; 9 sampled instances. Native gate passes; Godot geometry comparison remains open.
+- **s170 Child display list and camera:** 61/61 samples; 1481 nodes; full gate exits 1 with 167 source obligations: see source-gap-summary.json for exact reasons and paths. Dynamic masks/full camera remain unproven.
+- **s171 BitmapData and RGBA:** 61 native and 61 actual Godot images, 600x400 opaque RGBA. Strict gate exits 1: 0/61 exact; 17199106 differing channels, 6692930 differing pixels; max channel delta 255. No alignment, cropping, reference rewriting or tolerance.
+- **s172 DoAction entry coverage:** 61/61 samples; 383 entries / 30 blocks. Full gate exits 1: 453 unvisited, 609 uninstrumented.
+- **s173 Clip-action handler coverage:** 61/61 samples; 2816 clip entries / 13 handlers. Full gate exits 1: 634 unvisited, 415 uninstrumented.
+- **s174 Call-site and branch observations:** 61/61 samples; 434 complete invocations (392 false / 42 true); 1 incomplete. Full ownership gate exits 1; callee bodies, other branches and Godot ownership remain unproven. Exact incomplete boundaries retained in callsite-summary.json.
+
+各维缺失负例拒绝且恢复复验。138 项聚焦测试通过；无游戏运行时改动。
+production_admitted=false、native_parity_proven=false。完整原生一致性、源绑定、
+动态 mask、Godot 几何、像素/时钟差异和完整 AS 所有权仍为后续工作。
+[角色总览与复现](../evidence/sampling-upgrade/s168/README.md)。
