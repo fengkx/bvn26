@@ -1140,3 +1140,14 @@ goto 后沿、callee 出口及 caller 后沿均未观测到，新退出 gate 与
 不据此推断 VM 返回/中止语义。原 AS 594 未访问、415 未插桩保留。132 项测试通过，
 122 个战斗状态与保留 s76 原生轨迹相同；不代表 Godot 一致性。两标志 false，
 无游戏运行时改动，M0-02 保持 pending。[证据与复现](../evidence/sampling-upgrade/s245/README.md)。
+
+
+## s246：迪达拉 summon 援助 atm1 几何来源残留
+
+按用户选择接续 s64，仅原 summon tape。源帧44新放置 Woailuo Sprite48 / depth2 /
+atm1，子 Sprite 唯一 DoAction 在帧33。九条新增原生观测确认：父帧44 stamp 只命中
+援助根，随后 load 前后及 tick58–60 子帧1–3 的 ID/source/birth 均 undefined。
+DoAction-only stamp 缺少首次查询前的子实例绑定，不能继承父 stamp 或猜源。
+5,498 原生事件，收据 exit 0；来源绑定 gate 与原完整几何 gate 均 exit 1，保留
+三条 unbound 错误。141 项测试通过，122 状态与 s64 原生保留轨迹相同；无 Godot
+对照或运行时改动，两标志 false，M0-02 pending。[证据](../evidence/sampling-upgrade/s246/README.md)。
