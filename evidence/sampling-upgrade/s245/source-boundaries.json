@@ -1,0 +1,48 @@
+{
+  "source_swf": "game/fighter/chad.swf",
+  "source_sha256": "2a15610b6e28d2a0b1c88d616b0af0406c9ee78410007068c3e43a6a1967a4be",
+  "xml_archive": "evidence/sampling-upgrade/s72/chad-source-export.tar.gz",
+  "xml_sha256": "308e85b27cce77343eae21f241871f069c4c0ce65c3a4fdf64bbca4dae1b120c",
+  "timeline_sprite": 607,
+  "timeline_facts": [
+    {
+      "frame": 1,
+      "tag_index": 8,
+      "attributes": {
+        "type": "PlaceObject2Tag",
+        "characterId": "16",
+        "depth": "31",
+        "forceWriteAsLong": "true",
+        "placeFlagHasCharacter": "true",
+        "placeFlagHasClipActions": "true",
+        "placeFlagHasClipDepth": "false",
+        "placeFlagHasColorTransform": "true",
+        "placeFlagHasMatrix": "true",
+        "placeFlagHasName": "false",
+        "placeFlagHasRatio": "false",
+        "placeFlagMove": "false"
+      }
+    },
+    {
+      "frame": 13,
+      "tag_index": 26,
+      "attributes": {
+        "type": "RemoveObject2Tag",
+        "depth": "31",
+        "forceWriteAsLong": "false"
+      }
+    },
+    {
+      "frame": 183,
+      "tag_index": 342,
+      "attributes": {
+        "type": "FrameLabelTag",
+        "forceWriteAsLong": "true",
+        "name": "砍1",
+        "namedAnchor": "false"
+      }
+    }
+  ],
+  "callee_path": "DefineSprite_16/frame_1/DoAction.as",
+  "callee_function": "function doAllAction(special)\n{\n   if(special == undefined)\n   {\n      special = \"\";\n   }\n   if(defence())\n   {\n      _parent.gotoAndPlay(\"防御\");\n   }\n   if(nornalhit())\n   {\n      _parent.gotoAndPlay(\"砍1\");\n   }\n   if(wankai())\n   {\n      _parent.gotoAndPlay(\"万解\");\n   }\n   if(skill2())\n   {\n      _parent.gotoAndPlay(\"砍技2\");\n   }\n   if(skill1())\n   {\n      _parent.gotoAndPlay(\"砍技1\");\n   }\n   if(magichit3())\n   {\n      _parent.gotoAndPlay(\"招3\");\n   }\n   if(magichit2())\n   {\n      _parent.gotoAndPlay(\"招2\");\n   }\n   if(magichit1())\n   {\n      _parent.gotoAndPlay(\"招1\");\n   }\n   if(bishaSuper())\n   {\n      _parent.gotoAndPlay(\"超必杀\");\n   }\n   if(bishaUP())\n   {\n      _parent.gotoAndPlay(\"上必杀\");\n   }\n   if(bisha())\n   {\n      _parent.gotoAndPlay(\"必杀\");\n   }\n   if(zhaoHuan())\n   {\n      _parent.gotoAndPlay(\"招换\");\n   }\n   var _loc3_ = moveLeft();\n   var _loc2_ = moveRight();\n   if(_loc3_)\n   {\n      _parent._parent._xscale = -100;\n      _parent._parent.scale_X = -1;\n   }\n   if(_loc2_)\n   {\n      _parent._parent._xscale = 100;\n      _parent._parent.scale_X = 1;\n   }\n   if(rush())\n   {\n      _parent.gotoAndPlay(\"瞬步\");\n   }\n   if(jump())\n   {\n      _parent.gotoAndPlay(\"跳\");\n   }\n   if(_loc3_)\n   {\n      _parent._parent._x -= _parent.speed;\n      _parent.gotoAndPlay(\"走\");\n   }\n   if(_loc2_)\n   {\n      _parent._parent._x += _parent.speed;\n      _parent.gotoAndPlay(\"走\");\n   }\n   if(!_loc3_ && !_loc2_)\n   {\n      _parent.updateDirect();\n   }\n   doDropDown();\n}"
+}
