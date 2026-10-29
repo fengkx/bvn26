@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-29（采样 s246，s64 残留）：迪达拉 summon 的 Woailuo atm1 源放置/load 与 stamp 观测确认 ID/source/birth 均缺；父 stamp 不覆盖新子实例，子首个 DoAction 在帧33。收据 exit 0，绑定及完整几何 gate exit 1；141 项测试通过，两标志 false，无运行时改动。[证据](../evidence/sampling-upgrade/s246/README.md)。
+
 - 2026-10-29（采样 s245，s76 残留）：茶渡 tick10 调用/goto 前沿与 tick11 根观察确认原接收者深度槽已空；三个退出后沿仍缺，退出及完整 AS gate 均 exit 1，收据 exit 0。132 项测试通过；两标志 false，无运行时改动。[证据](../evidence/sampling-upgrade/s245/README.md)。
 
 - 2026-10-29（采样 s238–s244，同角色 PR）：玉龙 attack 七维证据与失败闸门已保留；逐维结果、缺口及实测耗时见[总览](../evidence/sampling-upgrade/s238/README.md)。123 项测试通过；两标志 false，无游戏运行时改动。

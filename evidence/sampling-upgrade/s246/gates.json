@@ -1,0 +1,41 @@
+{
+  "receipt": {
+    "exit_code": 0,
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json'), Path('/tmp/bvn-s246-capture-r01/receipt.json')))"
+    ],
+    "elapsed_seconds": 0.9016477079130709
+  },
+  "provenance": {
+    "exit_code": 1,
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_atm1_provenance",
+      "--case",
+      "evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s246-capture-r01/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s246/provenance.json"
+    ],
+    "elapsed_seconds": 0.10551725002005696
+  },
+  "geometry": {
+    "exit_code": 1,
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s246-capture-r01/receipt.json",
+      "--output",
+      "/tmp/bvn-s246-geometry.json"
+    ],
+    "elapsed_seconds": 0.1170565839856863
+  }
+}

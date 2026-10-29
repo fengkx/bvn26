@@ -1,0 +1,86 @@
+{
+  "swf": "game/fighter/fz/woailuo.swf",
+  "swf_sha256": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+  "script_bundle": "scripts/fighter/fz/woailuo.json",
+  "script_bundle_sha256": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46",
+  "xml_archive": "evidence/sampling-upgrade/s30/source-exports.tar.gz",
+  "xml_archive_member": "bvn-s30-source/fighter-fz-woailuo.xml",
+  "xml_sha256": "da4a9273df1e7f46b118b409f010e05fdd11a90dae8ae69d0ca390cae965036d",
+  "atm1_placements": [
+    {
+      "frame": 44,
+      "tag_index": 115,
+      "attributes": {
+        "type": "PlaceObject2Tag",
+        "characterId": "48",
+        "depth": "2",
+        "forceWriteAsLong": "true",
+        "name": "atm1",
+        "placeFlagHasCharacter": "true",
+        "placeFlagHasClipActions": "true",
+        "placeFlagHasClipDepth": "false",
+        "placeFlagHasColorTransform": "false",
+        "placeFlagHasMatrix": "true",
+        "placeFlagHasName": "true",
+        "placeFlagHasRatio": "true",
+        "placeFlagMove": "false",
+        "ratio": "43"
+      },
+      "matrix": {
+        "type": "MATRIX",
+        "hasRotate": "false",
+        "hasScale": "false",
+        "nRotateBits": "0",
+        "nScaleBits": "0",
+        "nTranslateBits": "13",
+        "translateX": "3437",
+        "translateY": "-1783"
+      }
+    }
+  ],
+  "depth_2_changes": [
+    {
+      "frame": 44,
+      "tag_index": 115,
+      "attributes": {
+        "type": "PlaceObject2Tag",
+        "characterId": "48",
+        "depth": "2",
+        "forceWriteAsLong": "true",
+        "name": "atm1",
+        "placeFlagHasCharacter": "true",
+        "placeFlagHasClipActions": "true",
+        "placeFlagHasClipDepth": "false",
+        "placeFlagHasColorTransform": "false",
+        "placeFlagHasMatrix": "true",
+        "placeFlagHasName": "true",
+        "placeFlagHasRatio": "true",
+        "placeFlagMove": "false",
+        "ratio": "43"
+      }
+    }
+  ],
+  "sprite_48_action_frames": [
+    {
+      "frame": 33,
+      "tag_index": 49
+    }
+  ],
+  "source_records": [
+    {
+      "path": "DefineSprite_48/frame_33/DoAction.as",
+      "source": "stop();\r\n"
+    },
+    {
+      "path": "frame_44/DoAction.as",
+      "source": "_root.shine(9461816);\r\n"
+    },
+    {
+      "path": "frame_44/PlaceObject2_48_2/CLIPACTIONRECORD onClipEvent(load).as",
+      "source": "onClipEvent(load){\r\n   if(_parent._xscale < 0)\r\n   {\r\n      _X = - (_root.game[\"p\" + _parent.pn]._x - _parent._x);\r\n   }\r\n   else\r\n   {\r\n      _X = _root.game[\"p\" + _parent.pn]._x - _parent._x;\r\n   }\r\n}\r\n"
+    }
+  ],
+  "stamp_rule": "build_ai_reference.py appends aiGeoStamp(this, source) only to authored DoAction blocks; ClipAction load is not a stamp site",
+  "production_admitted": false,
+  "native_parity_proven": false
+}
