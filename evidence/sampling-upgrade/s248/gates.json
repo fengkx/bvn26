@@ -1,0 +1,53 @@
+{
+  "receipt": {
+    "exit_code": 0,
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s240/yulong__attack__neutral__ground__near.json'),Path('/tmp/bvn-s248-capture-r05/receipt.json')))"
+    ],
+    "elapsed_seconds": 1.0260268331039697
+  },
+  "display-structure": {
+    "exit_code": 0,
+    "command": [
+      "python3",
+      "-c",
+      "import json; from pathlib import Path; from tools.sampling_display import collect; b=json.load(open('/tmp/bvn-s248-build-r05/build.json')); s=collect(Path('/tmp/bvn-s248-capture-r05/native.log').read_text().splitlines(),b['run_id'],60); print('complete samples:',len(s))"
+    ],
+    "elapsed_seconds": 0.09354424988850951
+  },
+  "display": {
+    "exit_code": 1,
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_display",
+      "--case",
+      "evidence/sampling-upgrade/s240/yulong__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s248-capture-r05/receipt.json",
+      "--exports",
+      "evidence/sampling-upgrade/s248/source-exports.json",
+      "--output",
+      "/tmp/bvn-s248-display-r05.json"
+    ],
+    "elapsed_seconds": 3.0919494580011815
+  },
+  "receipt-r02": {
+    "exit_code": 0,
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s240/yulong__attack__neutral__ground__near.json'),Path('/tmp/bvn-s248-capture-r02/receipt.json')))"
+    ]
+  },
+  "receipt-r03": {
+    "exit_code": 0,
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s240/yulong__attack__neutral__ground__near.json'),Path('/tmp/bvn-s248-capture-r03/receipt.json')))"
+    ]
+  }
+}
