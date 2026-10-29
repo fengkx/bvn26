@@ -14,6 +14,7 @@ import re
 import subprocess
 
 try:
+    from .yulong_k1atm_observer import instrument_source as instrument_k1_source, instrument_geometry as instrument_k1_geometry, validate_case as validate_k1_case
     from .deidara_atm1_observer import instrument_load as instrument_atm1_load, instrument_stamp as instrument_atm1_stamp, validate_case as validate_atm1_case
     from .chad_lifecycle_observer import instrument as instrument_chad_lifecycle, validate_case as validate_chad_lifecycle_case
     from .callsite_observer import instrument as instrument_callsite, specification as callsite_specification
@@ -22,6 +23,7 @@ try:
     from .shadow_instrumentation import instrument as instrument_shadow
     from .hit_receive_observer import instrument_hit_receive, observer_schema
 except ImportError:
+    from yulong_k1atm_observer import instrument_source as instrument_k1_source, instrument_geometry as instrument_k1_geometry, validate_case as validate_k1_case
     from deidara_atm1_observer import instrument_load as instrument_atm1_load, instrument_stamp as instrument_atm1_stamp, validate_case as validate_atm1_case
     from chad_lifecycle_observer import instrument as instrument_chad_lifecycle, validate_case as validate_chad_lifecycle_case
     from callsite_observer import instrument as instrument_callsite, specification as callsite_specification
@@ -175,7 +177,10 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False, chad_lifecycle: bool = False, deidara_atm1: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False, chad_lifecycle: bool = False, deidara_atm1: bool = False, yulong_k1atm: bool = False) -> dict:
+    if yulong_k1atm:
+        validate_k1_case(move_case)
+        sampling_geometry = True
     if deidara_atm1:
         validate_atm1_case(move_case)
         sampling_geometry = True
@@ -463,6 +468,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         geometry = (Path(__file__).parent / "as2/ai_reference/sampling_geometry.as").read_text()
         if deidara_atm1:
             geometry = instrument_atm1_stamp(geometry)
+        if yulong_k1atm:
+            geometry = instrument_k1_geometry(geometry)
         bootstrap = geometry + bootstrap
         needle = f'   if(aiFight >= {frames})'
         if bootstrap.count(needle) != 1:
@@ -501,6 +508,12 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         if bootstrap.count(needle) != 1:
             raise ValueError('missing unique atm1 root observation boundary')
         bootstrap = bootstrap.replace(needle, '   _root.aiAtm1Observe("root_sample",_root.game.p1fz.atm1,"root-before-geometry");\n' + needle)
+    if yulong_k1atm:
+        bootstrap = (Path(__file__).parent / 'as2/ai_reference/yulong_k1atm.as').read_text() + bootstrap
+        needle = '   _root.aiGeometrySample();'
+        if bootstrap.count(needle) != 1:
+            raise ValueError('missing unique k1atm observation boundary')
+        bootstrap = bootstrap.replace(needle, '   _root.aiK1Observe("root_sample",_root.game.p1.mc.k1atm.mian,_root.game["p" + _root.game.p1.mc.k1atm.pn]);\n' + needle)
     observed_actions = []
     hooks, battle = bootstrap.split("_root.aiHeld = {};", 1)
     battle = "_root.aiHeld = {};" + battle
@@ -677,6 +690,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
                 updated += '\n_root.aiGeoStamp(this, ' + json.dumps(origin) + ');\n'
             if sampling_callsite:
                 updated = instrument_callsite(updated, action_records[script["path"]])
+            if yulong_k1atm:
+                updated = instrument_k1_source(original, updated, name, script["path"])
             if deidara_atm1:
                 updated = instrument_atm1_load(original, updated, name, script["path"])
             if chad_lifecycle:
@@ -726,6 +741,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "sampling_callsite": sampling_callsite,
         "chad_lifecycle": chad_lifecycle,
         "deidara_atm1": deidara_atm1,
+        "yulong_k1atm": yulong_k1atm,
         "callsite_specification": callsite_specification(observed_actions) if sampling_callsite else None,
         "doaction_inventory": observed_actions,
         "move_case": json.loads(move_case.read_text()) if move_case else None,
@@ -795,10 +811,11 @@ def main() -> None:
     parser.add_argument("--sampling-callsite", action="store_true")
     parser.add_argument("--chad-lifecycle", action="store_true")
     parser.add_argument("--deidara-atm1", action="store_true")
+    parser.add_argument("--yulong-k1atm", action="store_true")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite, args.chad_lifecycle, args.deidara_atm1), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite, args.chad_lifecycle, args.deidara_atm1, args.yulong_k1atm), ensure_ascii=False))
 
 
 if __name__ == "__main__":

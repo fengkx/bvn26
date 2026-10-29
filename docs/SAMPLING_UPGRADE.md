@@ -1151,3 +1151,14 @@ DoAction-only stamp 缺少首次查询前的子实例绑定，不能继承父 st
 5,498 原生事件，收据 exit 0；来源绑定 gate 与原完整几何 gate 均 exit 1，保留
 三条 unbound 错误。141 项测试通过，122 状态与 s64 原生保留轨迹相同；无 Godot
 对照或运行时改动，两标志 false，M0-02 pending。[证据](../evidence/sampling-upgrade/s246/README.md)。
+
+
+## s247：玉龙 attack k1atm.mian source-list 残留
+
+按用户选择接续 s239，仅原 attack tape。九条新增观测确认 tick16–18 的 stamp 完整，
+三个列表长度96/5/10，唯一失败条件是 target undefined：直接父级 k1atm.pn 未定义，
+再上一层角色主体 pn=2。源放置链为 Sprite345/f188 → Sprite104/k1atm → Sprite2/mian；
+函数存在触发的接收器扫描尚未证明该嵌套实例的受击所有权，不替换父级查找。
+5,079 原生事件，收据 exit 0，来源诊断及完整几何 gate 均 exit 1；150 项测试通过，
+122 状态与 s239 原生轨迹相同。两标志 false，M0-02 pending，无运行时改动，
+未处理 s240 完成边界。[证据](../evidence/sampling-upgrade/s247/README.md)。
