@@ -17,3 +17,13 @@
 - 标签 end_frame 不是回站立。无 goto/stop 的标签要编 timeline_fallthroughs，播放头继续走。新 PlaceObject 不继承实例变量；enterFrame 从放置的下一根帧开始。
 - 新行为优先加编译规则，禁止按角色在 GDScript 里猜补位移、高度或演出。测试只锁源里能指出的不变量，不得把实现假设写进回归再去凑。
 - 重击、破防、连击次数、命中火花、防御挡住和必杀黑底/立绘横幅必须按 docs/HIT_RECEIVE_SOP.md 的步骤 A→E 落地：先锁 35 角色共用链和援助无链，再按形态编译 gjlN 与 showFace 标签，运行时只解释编译字段。不得按角色猜重击或手贴大招背景，也不得把第一下显示成连击。大招特效盖住对手却不受击时，先核 Flash MATRIX（`rotateSkew0/1` 不得对调）和 `*atm` 的 PlaceObject 寿命，禁止按角色放大框或写“必中”补丁。下+I 一类 `_parent._x = opponent._x` 是容器闪现（`body_warps`），只闪 X 时不同水平面不中，不得写成走路或按角色补高度。面向/`bdmn._width` 编进同一字段的分支，不得把其他形态 Sprite 混进当前切片。击中后带着走来自 `beidax` 非击飞不加重力，不是抓取，也不得给「被打」加 `zhongli`。最后击飞对手的是 `cbsatm`，不是攻击方 942 自跳。手测大招仍漏时先对 `bsd`/`cbsd` 的 `stopMc(对手)` 和该帧 `*atm` AABB，禁止放大框或写必中；没有步骤 E 轨迹不得称一比一。
+
+## Cursor Cloud specific instructions
+
+Cloud Agent 镜像里已固定下列工具。命令从仓库根目录执行。
+
+- 资料检查用系统 Python 3.12：`python3 tools/verify.py`、`python3 tools/check_handoff.py`。契约检查用 `.venv/bin/python tools/validate_contracts.py`（`requirements-dev.txt` 的 jsonschema 4.25.1）。
+- Godot 4.7.2-stable 的命令是 `godot`。无头冒烟：`godot --headless --path godot -s res://tests/menu_smoke.gd`。Web 导出模板在 `~/.local/share/godot/export_templates/4.7.2.stable/`。导出：`godot --headless --path godot --export-release Web ../dist/web/index.html`。
+- Node 必须是 24.18.0（`services/matchmaking/.node-version`）。`cd services/matchmaking && npm test` 跑房间服务测试。`npm run dev` 把本地 Worker 开在 `http://127.0.0.1:8787`，`GET /health` 应返回 `{"service":"bvn-matchmaking","protocol":1}`。环境启动脚本会在每次开机拉起该服务。
+- JPEXS 26.2.1 在 `/opt/ffdec-26.2.1/ffdec.jar`，命令是 `ffdec`。jar 的 SHA-256 是 `090ab695053ad94cba6408574c7d7eea20ec60b6ae789ee6056a23f45106762f`。
+- `tools/tests/test_sasuke_compilers.py` 读取 `data/slices/sasuke-base.timeline.json`，已入库的文件名是 `Sasuke-base.timeline.json`。在区分大小写的文件系统上这一项会报错，不是缺依赖。
