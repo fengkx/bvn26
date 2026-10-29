@@ -1,0 +1,41 @@
+{
+  "receipt": {
+    "exit_code": 0,
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s239/yulong__attack__neutral__ground__near.json'), Path('/tmp/bvn-s247-capture-r01/receipt.json')))"
+    ],
+    "elapsed_seconds": 0.9643537499941885
+  },
+  "provenance": {
+    "exit_code": 1,
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_k1atm_provenance",
+      "--case",
+      "evidence/sampling-upgrade/s239/yulong__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s247-capture-r01/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s247/provenance.json"
+    ],
+    "elapsed_seconds": 0.141689500072971
+  },
+  "geometry": {
+    "exit_code": 1,
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s239/yulong__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s247-capture-r01/receipt.json",
+      "--output",
+      "/tmp/bvn-s247-geometry.json"
+    ],
+    "elapsed_seconds": 0.13462183298543096
+  }
+}

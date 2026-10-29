@@ -1,0 +1,85 @@
+{
+  "swf": "game/fighter/yulong.swf",
+  "swf_sha256": "fcf2246b602b4e498caf2b3c9ac6625ae492e45b6249effb22e9b7d669713199",
+  "bundle": "scripts/fighter/yulong.json",
+  "bundle_sha256": "ea5dd3ba77a3c612516b4e8b0b1cd85f0affe1d46395d7798ef9f8173ca6869f",
+  "xml_archive": "evidence/sampling-upgrade/s240/yulong-source-export.tar.gz",
+  "xml_member": "fighter-yulong.xml",
+  "xml_sha256": "29b78ddbb6a115e75d0f9a07eac4270246c4bae2b48b8266d3d729816077ddfe",
+  "placement_chain": [
+    {
+      "parent_sprite": 104,
+      "frame": 1,
+      "tag_index": 3,
+      "attributes": {
+        "type": "PlaceObject2Tag",
+        "characterId": "2",
+        "depth": "2",
+        "forceWriteAsLong": "true",
+        "name": "mian",
+        "placeFlagHasCharacter": "true",
+        "placeFlagHasClipActions": "false",
+        "placeFlagHasClipDepth": "false",
+        "placeFlagHasColorTransform": "false",
+        "placeFlagHasMatrix": "true",
+        "placeFlagHasName": "true",
+        "placeFlagHasRatio": "false",
+        "placeFlagMove": "false"
+      }
+    },
+    {
+      "parent_sprite": 104,
+      "frame": 5,
+      "tag_index": 8,
+      "attributes": {
+        "type": "RemoveObject2Tag",
+        "depth": "2",
+        "forceWriteAsLong": "false"
+      }
+    },
+    {
+      "parent_sprite": 345,
+      "frame": 188,
+      "tag_index": 352,
+      "attributes": {
+        "type": "PlaceObject2Tag",
+        "characterId": "104",
+        "depth": "28",
+        "forceWriteAsLong": "true",
+        "name": "k1atm",
+        "placeFlagHasCharacter": "true",
+        "placeFlagHasClipActions": "true",
+        "placeFlagHasClipDepth": "false",
+        "placeFlagHasColorTransform": "false",
+        "placeFlagHasMatrix": "true",
+        "placeFlagHasName": "true",
+        "placeFlagHasRatio": "true",
+        "placeFlagMove": "false",
+        "ratio": "187"
+      }
+    }
+  ],
+  "source_records": [
+    {
+      "path": "DefineSprite_104/frame_1/DoAction.as",
+      "source": "stop();\r\n"
+    },
+    {
+      "path": "DefineSprite_104/frame_10/DoAction.as",
+      "source": "stop();\r\n"
+    },
+    {
+      "path": "DefineSprite_104/frame_5/DoAction.as",
+      "source": "this._name = \"abcd\";\r\n"
+    },
+    {
+      "path": "DefineSprite_2/frame_1/DoAction.as",
+      "source": "function gameRunning()\r\n{\r\n   return _root.zhanting == false && _root.game[\"p\" + _parent.pn].mc.sw == false;\r\n}\r\nfunction beida()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.time = 0;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n   }\r\n   _parent.gotoAndPlay(_loc2_.htype);\r\n}\r\nfunction fangyu()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n      _parent.gotoAndPlay(_loc2_.htype);\r\n   }\r\n   else\r\n   {\r\n      _parent.yup = 0;\r\n      _parent.gotoAndPlay(\"防住\");\r\n   }\r\n}\r\nfunction checkHit()\r\n{\r\n   if(!gameRunning())\r\n   {\r\n      return null;\r\n   }\r\n   if(!_parent.canhit)\r\n   {\r\n      return null;\r\n   }\r\n   var _loc3_ = getHitObj(_fsArray,_root.game[\"p\" + _parent.pn].mc,\"atm\",_parent.pw);\r\n   if(!_loc3_)\r\n   {\r\n      _loc3_ = getHitObj(_fzfsArray,_root.game[\"p\" + _parent.pn + \"fz\"],\"\",_parent.fzpw);\r\n   }\r\n   if(!_loc3_)\r\n   {\r\n      _loc3_ = getStgHitObj();\r\n   }\r\n   return _loc3_;\r\n}\r\nfunction getHitObj(array, player, afterFix, ppw)\r\n{\r\n   if(afterFix == undefined)\r\n   {\r\n      afterFix = \"\";\r\n   }\r\n   var _loc2_;\r\n   var _loc4_;\r\n   for(var _loc14_ in array)\r\n   {\r\n      _loc2_ = array[_loc14_];\r\n      _loc4_ = player[_loc2_ + afterFix];\r\n      if(_loc4_)\r\n      {\r\n         if(this.hitTest(_loc4_))\r\n         {\r\n            return {pw:ppw[_loc2_ + \"pw\"],zl:ppw[_loc2_ + \"zl\"],yup:ppw[_loc2_ + \"up\"],hitx:ppw[_loc2_ + \"x\"],hdtime:ppw[_loc2_ + \"tm\"],htype:ppw[_loc2_ + \"dz\"]};\r\n         }\r\n      }\r\n   }\r\n   return null;\r\n}\r\nfunction getStgHitObj()\r\n{\r\n   var _loc4_;\r\n   for(var _loc5_ in stgks)\r\n   {\r\n      _loc4_ = _root.game.layer_effect[stgks[_loc5_] + \"_P\" + _parent.pn];\r\n      if(_loc4_)\r\n      {\r\n         if(this.hitTest(_loc4_.mian))\r\n         {\r\n            return _loc4_.hitObj;\r\n         }\r\n      }\r\n   }\r\n}\r\nvar hitks = [\"tk\",\"tz\",\"k1\",\"k2\",\"k3\",\"k4\",\"k5\",\"kj1\",\"kj2\",\"zh1\",\"zh2\",\"zh3\",\"bs\",\"sbs\",\"cbs\",\"kbs\"];\r\nvar stgks = [\"stgk1\",\"stgk2\",\"stgk3\",\"stgk4\",\"stgk5\",\"stgk6\",\"stgk7\",\"stgk8\",\"stgk9\",\"stgk10\"];\r\nvar _fsArray = [];\r\nvar i = 0;\r\nwhile(i < hitks.length)\r\n{\r\n   var kv = hitks[i];\r\n   _fsArray.push(kv);\r\n   var k = 1;\r\n   while(k <= 5)\r\n   {\r\n      _fsArray.push(kv + k);\r\n      k++;\r\n   }\r\n   i++;\r\n}\r\nvar _fzfsArray = [\"atm1\",\"atm2\",\"atm3\",\"atm4\",\"atm5\"];\r\n"
+    },
+    {
+      "path": "DefineSprite_345/frame_188/PlaceObject2_104_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(mian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or mian.hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or mian.hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitmc.mian.hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or mian.hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + movspeed;\r\n      }\r\n   }\r\n}\r\n"
+    }
+  ],
+  "scope": "static XML/source provenance only; no s240 capture or gate rerun"
+}
