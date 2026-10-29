@@ -1129,3 +1129,14 @@ production_admitted=false、native_parity_proven=false。完整原生一致性�
 123 项聚焦测试通过。失败原始轨迹完整保留；无游戏运行时改动。
 `production_admitted=false`、`native_parity_proven=false`。
 [角色总览与复现](../evidence/sampling-upgrade/s238/README.md)。
+
+
+## s245：茶渡 tick-10 调用退出／接收者寿命残留
+
+按用户选择接续 s76，仅复用 Chad attack 单格 tape。原生 9,486 事件、61 根样本、
+122 状态，收据复验 exit 0。调用入口、callee 入口和普通攻击 goto 前沿仍是同一
+接收者；tick11 独立根观测见父帧 183、原深度槽为空、保存接收者的父/帧失效。
+goto 后沿、callee 出口及 caller 后沿均未观测到，新退出 gate 与原 AS gate 均 exit 1；
+不据此推断 VM 返回/中止语义。原 AS 594 未访问、415 未插桩保留。132 项测试通过，
+122 个战斗状态与保留 s76 原生轨迹相同；不代表 Godot 一致性。两标志 false，
+无游戏运行时改动，M0-02 保持 pending。[证据与复现](../evidence/sampling-upgrade/s245/README.md)。
