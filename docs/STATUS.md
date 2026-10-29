@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-29（采样 s248，s240 残留）：玉龙显示捕获的旧完成边界拒绝已定位；仅此格 opt-in 窗口关闭及延迟退出对照留证。收据/61样本结构 exit 0，完整显示保留166来源义务 exit 1；159项测试通过，两标志 false。约定玉龙专项残留队列（s239诊断+s240边界）已交付证据，其他既有失败不重开。[证据](../evidence/sampling-upgrade/s248/README.md)。
+
 - 2026-10-29（采样 s247，s239 残留）：玉龙 k1atm.mian 的 stamp 与三个列表均完整；tick16–18 唯一失败项为直接父级 pn 未定义导致 target 缺失。收据 exit 0，诊断与完整几何 gate exit 1；150 项测试通过，两标志 false，无运行时或 s240 完成边界改动。[证据](../evidence/sampling-upgrade/s247/README.md)。
 
 - 2026-10-29（采样 s246，s64 残留）：迪达拉 summon 的 Woailuo atm1 源放置/load 与 stamp 观测确认 ID/source/birth 均缺；父 stamp 不覆盖新子实例，子首个 DoAction 在帧33。收据 exit 0，绑定及完整几何 gate exit 1；141 项测试通过，两标志 false，无运行时改动。[证据](../evidence/sampling-upgrade/s246/README.md)。
