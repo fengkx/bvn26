@@ -1,0 +1,69 @@
+{
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json'),Path('/tmp/bvn-s264-r01-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.6708909999579191,
+    "log": "receipt.txt"
+  },
+  "geometry": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s264-r01-capture/receipt.json",
+      "--output",
+      "/tmp/bvn-s264-geometry.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.10413241712376475,
+    "log": "geometry.txt"
+  },
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s264/diagnose.py",
+      "--output",
+      "/tmp/s264-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7301346659660339,
+    "log": "diagnosis.txt"
+  },
+  "pre-init-query": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s264/diagnose.py",
+      "--output",
+      "/tmp/s264-query-required.json",
+      "--require-pre-init-query"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.7605659170076251,
+    "log": "pre-init-query.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_receiver_authored_query",
+      "tools.tests.test_receiver_init_order",
+      "tools.tests.test_p1_receiver_availability",
+      "tools.tests.test_deidara_atm1_load_stamp",
+      "tools.tests.test_deidara_atm1_observer",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 4.618399417027831,
+    "log": "focused-tests.txt"
+  }
+}
