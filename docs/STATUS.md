@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-30（采样 s266，AFTER-s263 排名第三项）：复用锁定s263构建，新增 authored 子时间轴定义函数及父级保留/移除goto对照。有效捕获9493事件：保留槽位post=1，移除槽位post=0；root定义动态对照两者仍post=1，Chad post/entry仍0。首捕获误用动态深度查询authored槽位，完整保留并拒收；修正getDepth后补捕获。122角色状态与s263相同，100聚焦测试通过。未证明精确PC/栈或退出模型，不实现removal-as-return；receipt/诊断exit0，精确continuation/生命周期/调用/完整AS均exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1/2/4–9及s254–s265未动，无运行时或严格验证器修改。[证据](../evidence/sampling-upgrade/s266/README.md)。
+
 - 2026-10-30（采样 s265，AFTER-s263 排名第二项）：复用锁定s262构建，一次无成像捕获27643事件。个位PlaceObject独立load观测跨538个采样点保持代号1；同源保留对照frame1重入仍代号2，同深度替换出现unload2/load3。122角色状态与s262相同。无编码路径17次回调不能替代s262的68次；编码窗口寿命和场景连接仍未证明，准入exit1，未推进场景或生成图片。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1及3–9、s254–s264、运行时和严格验证器未动。[证据](../evidence/sampling-upgrade/s265/README.md)。
 
 - 2026-10-30（采样 s264，AFTER-s263 新排名第一项）：基于9d214870/#141重排，仅观察迪达拉P1 tick10–12真实查询。一次5437事件捕获，12条查询记录均在frame1初始化后；两次原调用链返回undefined，未进入hitTest操作数站点。方法体观察不能证明初始化前没有未定义方法调用，eligibility_fix_proved=false，不豁免接收方。122角色、61输入、954按键记录与s260相同，随机差异保留。73测试、receipt/诊断通过；pre-init要求与完整几何exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；新排名2+仅规划，未开始；无运行时或严格验证器修改。[排序](../evidence/sampling-upgrade/next-fix-priority-after-s263.md) · [证据](../evidence/sampling-upgrade/s264/README.md)。
