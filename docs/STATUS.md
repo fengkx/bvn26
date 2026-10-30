@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-31（采样 s269，AFTER-s263 排名第六项）：先分类 s223 首次 callsite 拒绝的完整尾段：51条终止周期事件后出现11条tick61事件。仅此案例独立 opt-in 正常/延迟退出两次捕获收据与61样本通过；延迟对照保留51条回调再闭窗，无tick61。122角色状态与旧案例相同，随机差异保留。tick10缺调用后沿仍在，callsite/完整AS均exit1，825未访问、420未插桩；107聚焦测试通过。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–5/7–9及s254–s268未动，无默认推广或运行时/严格验证器变更。[证据](../evidence/sampling-upgrade/s269/README.md)。
+
 - 2026-10-31（采样 s268，AFTER-s263 排名第五项）：复算锁定 s259 normal/held 与 s263 加载证据，三份原收据仍 exit0。helper_load 是请求前标记，onLoadComplete 未记录 target；构建哈希与 initCtrl 路径不能连接实际消费字节和实例寿命。离线 Yihu→Yijiao 字节替换被拒绝，但实际错资源加载对照仍缺，loader attestation exit1。43 项聚焦测试通过；零新捕获、无收据修补或运行时变更。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及 s254–s267 未动。[证据](../evidence/sampling-upgrade/s268/README.md)。
 
 - 2026-10-31（采样 s267，AFTER-s263 排名第四项）：复算锁定 s261 root8/9 清空边界及独立对照，新增同哈希原生播放器的符号/调试信息审计。尚未建立槽位到原生分配代次的观测，保留内容清空与同深度替换的原生校准对照仍缺；属性删除不冒充保留清空。未新采样，未证明映射修复。65 项聚焦测试、历史收据/诊断通过；分配身份与完整显示 gate exit1，169 项来源义务保留。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–3/5–9及s254–s266、运行时和严格验证器未动。[证据](../evidence/sampling-upgrade/s267/README.md)。
