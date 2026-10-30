@@ -1,0 +1,32 @@
+{
+  "integrity": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.4470567498356104,
+    "log": "integrity.txt"
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.06893800012767315,
+    "log": "handoff.txt"
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-s27-venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.15675854217261076,
+    "log": "contracts.txt"
+  }
+}

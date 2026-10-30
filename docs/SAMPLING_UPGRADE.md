@@ -1403,3 +1403,10 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-10-31（采样 s273，AFTER-s272 重新排名第1项）：以 master 68136e5e/#150 的 s249–s272 证据重排，仅审计 P2 一护基础 Sprite638 身体推挤 hitTest 对 P1 新 bdmn 的调用点。完整复算 s264 的5437事件；函数归档与源码一致但无调用点观测，tick10–12帧4/5/6和4055–4062初始化边界不能证明短路条件、操作数或执行。65聚焦测试通过；调用点证明要求及完整几何仍exit1（tick11缺P1接收者）。零新捕获，无eligibility修复。production_admitted=false、native_parity_proven=false，M0-02 pending；新排名2+仅规划，旧队列与严格验证器不变。
 
 [新优先级表](../evidence/sampling-upgrade/next-fix-priority-after-s272.md)；[证据、成本与复现](../evidence/sampling-upgrade/s273/README.md)。
+
+
+## s274：s272 后排名第二项——编码窗口内的个位寿命
+
+2026-10-31（采样 s274，AFTER-s272 排名第2项）：一次有界原生捕获26828事件、63回调、57内存编码窗口；个位在4次自然frame1重入及随后回调中保留load代号1，编码内外保留/替换对照成立，122角色状态与s265相同。仅证明有界寿命观测，独立子时钟与开场场景连接仍缺，完整状态准入exit1。零像素导出、无运行时修改；production_admitted=false、native_parity_proven=false，M0-02 pending。其他排名和s254–s273未动，严格验证器保持不变。
+
+[证据、准入边界与复现](../evidence/sampling-upgrade/s274/README.md)。
