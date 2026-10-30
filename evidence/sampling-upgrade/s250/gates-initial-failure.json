@@ -1,0 +1,63 @@
+{
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_yulong_display_completion",
+      "tools.tests.test_yulong_k1atm_observer",
+      "tools.tests.test_deidara_atm1_observer",
+      "tools.tests.test_chad_lifecycle_observer",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_matrix",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_clipaction",
+      "tools.tests.test_import_guards",
+      "tools.tests.test_probe_builder",
+      "tools.tests.test_owned_debugger_probe",
+      "tools.tests.test_move_reference_mapping",
+      "tools.tests.test_move_reference_capture_preflight",
+      "tools.tests.test_display_source_frame_diagnosis"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 5.5077290534973145,
+    "output": "..........................................................................................................bitmap evidence error: pixel mismatch: 0/1 exact frames; see report\n.........................................................EEEEE...\n======================================================================\nERROR: test_all_five_raw_captures_retain_the_zero_frame_nodes (tools.tests.test_display_source_frame_diagnosis.DisplaySourceFrameDiagnosisTests.test_all_five_raw_captures_retain_the_zero_frame_nodes) (slice='s86')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_display_source_frame_diagnosis.py\", line 91, in test_all_five_raw_captures_retain_the_zero_frame_nodes\n    collect(removed, metadata['run_id'], 60)\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/sampling_display.py\", line 102, in collect\n    node = current['nodes'][unquote(f[0])]\n           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\nKeyError: '_level0.game.p1.mc.AImain'\n\n======================================================================\nERROR: test_all_five_raw_captures_retain_the_zero_frame_nodes (tools.tests.test_display_source_frame_diagnosis.DisplaySourceFrameDiagnosisTests.test_all_five_raw_captures_retain_the_zero_frame_nodes) (slice='s93')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_display_source_frame_diagnosis.py\", line 91, in test_all_five_raw_captures_retain_the_zero_frame_nodes\n    collect(removed, metadata['run_id'], 60)\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/sampling_display.py\", line 102, in collect\n    node = current['nodes'][unquote(f[0])]\n           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\nKeyError: '_level0.game.p1.mc.AImain'\n\n======================================================================\nERROR: test_all_five_raw_captures_retain_the_zero_frame_nodes (tools.tests.test_display_source_frame_diagnosis.DisplaySourceFrameDiagnosisTests.test_all_five_raw_captures_retain_the_zero_frame_nodes) (slice='s100')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_display_source_frame_diagnosis.py\", line 91, in test_all_five_raw_captures_retain_the_zero_frame_nodes\n    collect(removed, metadata['run_id'], 60)\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/sampling_display.py\", line 102, in collect\n    node = current['nodes'][unquote(f[0])]\n           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\nKeyError: '_level0.game.p1.mc.AImain'\n\n======================================================================\nERROR: test_all_five_raw_captures_retain_the_zero_frame_nodes (tools.tests.test_display_source_frame_diagnosis.DisplaySourceFrameDiagnosisTests.test_all_five_raw_captures_retain_the_zero_frame_nodes) (slice='s248')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_display_source_frame_diagnosis.py\", line 91, in test_all_five_raw_captures_retain_the_zero_frame_nodes\n    collect(removed, metadata['run_id'], 60)\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/sampling_display.py\", line 102, in collect\n    node = current['nodes'][unquote(f[0])]\n           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\nKeyError: '_level0.game.p1.mc.AImain'\n\n======================================================================\nERROR: test_all_five_raw_captures_retain_the_zero_frame_nodes (tools.tests.test_display_source_frame_diagnosis.DisplaySourceFrameDiagnosisTests.test_all_five_raw_captures_retain_the_zero_frame_nodes) (slice='s249')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_display_source_frame_diagnosis.py\", line 91, in test_all_five_raw_captures_retain_the_zero_frame_nodes\n    collect(removed, metadata['run_id'], 60)\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/sampling_display.py\", line 102, in collect\n    node = current['nodes'][unquote(f[0])]\n           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\nKeyError: '_level0.game.p1.mc.AImain'\n\n----------------------------------------------------------------------\nRan 167 tests in 5.230s\n\nFAILED (errors=5)\nNATIVE_CAPTURE_RECEIPT_OK native_parity_proven=false\n"
+  },
+  "s249-receipt": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_native",
+      "--case",
+      "evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s249-held-capture/receipt.json"
+    ],
+    "exit_code": 2,
+    "elapsed_seconds": 0.04505586624145508,
+    "output": "usage: sampling_native.py [-h] --case CASE --build BUILD --trace TRACE\n                          --receipt RECEIPT [--player-app PLAYER_APP]\n                          [--timeout TIMEOUT] [--allow-window-activation]\nsampling_native.py: error: the following arguments are required: --build, --trace\n"
+  },
+  "s249-full-display": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_display",
+      "--case",
+      "evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s249-held-capture/receipt.json",
+      "--exports",
+      "evidence/sampling-upgrade/s249/source-exports.json",
+      "--output",
+      "/tmp/bvn-s250-recomputed-display.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 4.73526668548584,
+    "output": "display evidence error: 169 unresolved source/hierarchy obligations; see output\n"
+  }
+}
