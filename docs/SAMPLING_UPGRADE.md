@@ -1251,3 +1251,14 @@ s232 完整5705事件重算：done后34条仍在tick60/display525，16条在tick
 receipt和61样本结构通过；122条角色状态的14字段与s249完全一致；
 完整显示保留169义务、exit1。生产运行时、严格验证器、排名1/3/4/5均未修改。
 两标志false，M0-02 pending。[证据与复现](../evidence/sampling-upgrade/s255/README.md)。
+
+## s256：AFTER-s253 排名第三项——P1 receiver tick11 可用性
+
+仅观测 s251 同一原 tape 的迪达拉 P1 bdmn：源840非 MOVE 新放置，841无槽位变化。
+新捕获 tick11 命名/depth对象存在，但两个接收函数、三个列表和stamp均undefined；
+tick12初始化齐全。保存的旧引用也读到新字段，不能据引用相等声称实例连续。
+证据不足以安全修改eligibility，保持原闸门；不补stamp、不替换ancestor pn。
+一次5400事件、122角色状态与s251完全相同；receipt/诊断exit0，完整几何exit1，
+61项聚焦测试通过。下一判别为该次跳转、Sprite2初始化及首个enterFrame的直接顺序观测。
+两标志false，M0-02 pending；排名1/2/4/5、tick41、玉龙、BitmapData和玩法均未扩展。
+[证据、成本与复现](../evidence/sampling-upgrade/s256/README.md)。

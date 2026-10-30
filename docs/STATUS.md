@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-30（采样 s256，AFTER-s253 排名第三项）：仅诊断迪达拉 P1 bdmn tick11。原版840新放置；实时命名/depth槽均存在，但接收函数、候选列表和stamp尚未初始化，tick12恢复。保存引用相等不证明实例连续，未改eligibility。一次5400事件捕获，122条角色状态与s251相同；receipt/诊断通过，完整几何exit1。两标志false，M0-02 pending；排名1/2/4/5未动。[证据](../evidence/sampling-upgrade/s256/README.md)。
+
 - 2026-10-30（采样 s255，AFTER-s253 排名第二项）：仅观测一角 P1 的一次 initCtrl unload 寿命。卸载前后及下一根仍为1/2，首采样变为0/0并丢失来源与临时身份标记；引用/槽位相等不足以证明底层对象连续身份，不做映射修复。一次原生捕获8238事件，receipt通过，122条角色状态与s249一致；完整显示保留169义务、exit1。两标志false，M0-02 pending；排名1/3/4/5未扩展。[证据](../evidence/sampling-upgrade/s255/README.md)。
 
 - 2026-10-30（采样 s254，队列后重排第一项）：仅诊断 s232 非 display 几何完成边界。完整5705事件中，done后34条属于终止周期，随后16条属于tick61/下一根周期，包含第二次done；归档bootstrap与SWF哈希核对一致。原验证器仍exit1、零准入样本，无闭窗推广或运行时修改。两标志false，M0-02 pending；后续排名未执行。[新排序](../evidence/sampling-upgrade/next-fix-priority-after-s253.md) · [证据](../evidence/sampling-upgrade/s254/README.md)。
