@@ -1,0 +1,94 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s263/diagnose.py",
+      "--output",
+      "/tmp/s263-recomputed.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.38990924996323884
+  },
+  "exact-continuation": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s263/diagnose.py",
+      "--output",
+      "/tmp/s263-exact.json",
+      "--require-exact-continuation"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.36018645903095603
+  },
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json'),Path('/tmp/bvn-s263-r01-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7318562911823392
+  },
+  "lifecycle": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_chad_lifecycle",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s263-r01-capture/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s263/lifecycle.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.11598208313807845
+  },
+  "callsite": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_callsite",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s263-r01-capture/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s263/callsite.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.14796662516891956
+  },
+  "full_as": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s263-r01-capture/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s263/full_as.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.13781425007618964
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_chad_register_control",
+      "tools.tests.test_as_continuation_discriminator",
+      "tools.tests.test_chad_lifecycle_observer",
+      "tools.tests.test_call_exit_diagnosis",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.5734093750361353
+  }
+}
