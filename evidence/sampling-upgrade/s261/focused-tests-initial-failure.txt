@@ -1,0 +1,15 @@
+F..........................................................
+======================================================================
+FAIL: test_authored_unload_preserved (tools.tests.test_aimain_content_clearing.ContentClearingTests.test_authored_unload_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_aimain_content_clearing.py", line 74, in test_authored_unload_preserved
+    self.assertEqual(patched, source)
+AssertionError: 'func[9291 chars]e();\n      _global.s261Observe("after_unload"[9852 chars]\r\n' != 'func[9291 chars]e();\r\n   }\r\n}\r\nfunction on_enterframe()\[9800 chars]\r\n'
+Diff is 19261 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 59 tests in 11.013s
+
+FAILED (failures=1)
+NATIVE_CAPTURE_RECEIPT_OK native_parity_proven=false

@@ -1,0 +1,58 @@
+{
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json'),Path('/tmp/bvn-s261-r01-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7822477500885725,
+    "log": "receipt.txt"
+  },
+  "full-display": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_display",
+      "--case",
+      "evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s261-r01-capture/receipt.json",
+      "--exports",
+      "evidence/sampling-upgrade/s261/source-exports.json",
+      "--output",
+      "/tmp/s261-full-display.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 2.5591566250659525,
+    "log": "full-display.txt"
+  },
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s261/diagnose.py",
+      "--output",
+      "/tmp/s261-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.6146866250783205,
+    "log": "diagnosis.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_aimain_content_clearing",
+      "tools.tests.test_aimain_unload_identity",
+      "tools.tests.test_display_source_frame_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.155125541845337,
+    "log": "focused-tests.txt"
+  }
+}

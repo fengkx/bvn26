@@ -1,0 +1,23 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "tools.sampling_native",
+    "--case",
+    "evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json",
+    "--build",
+    "/tmp/bvn-s261-r01-build",
+    "--trace",
+    "/tmp/bvn-s261-r01-capture/native.log",
+    "--receipt",
+    "/tmp/bvn-s261-r01-capture/receipt.json",
+    "--timeout",
+    "180",
+    "--allow-window-activation"
+  ],
+  "exit_code": 0,
+  "capture_elapsed_seconds": 30.239298917120323,
+  "new_native_captures": 1,
+  "reason": "s255 lacks intervening root boundaries and independent retention/replacement controls; unchanged s231 input tape reused.",
+  "initial_sandbox_failure": "Operation not permitted: ps; no player launched"
+}

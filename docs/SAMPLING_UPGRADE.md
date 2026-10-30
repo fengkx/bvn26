@@ -1314,3 +1314,10 @@ production_admitted=false、native_parity_proven=false，M0-02 pending。
 下一判别是在同一未初始化区间观察真实源碰撞查询及其操作数，带正向观测对照，
 不得人工调用方法或豁免接收方。排名1/3/4/5、s254–s259、tick41、nested Yulong、
 ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evidence/sampling-upgrade/s260/README.md)。
+
+## s261：s258 后排名第三项——AImain 内容清空与身份
+
+2026-10-30（采样 s261，s258 后排名第三项）：仅跟踪一角 P1 AImain 卸载后的每根 root，root8仍1/2、root9首次0/0。独立保留/同名同深度替换对照证明旧引用相等不能判身份；替换与保留实例但删标记信号相同，清空后身份判别仍未证明，不做映射修复。一次8290事件捕获，122角色状态与s255一致；receipt/诊断exit0，完整显示169义务、exit1。两标志false，M0-02 pending；排名1/2/4/5和s254–s260未动。
+
+下一判别需要在root8/9间记录原生播放器分配身份，并以保留内容清空与同路径替换校准；AS2引用和丢失标记不足。
+[证据、成本与复现](../evidence/sampling-upgrade/s261/README.md)。
