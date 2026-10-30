@@ -1,0 +1,648 @@
+{
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "shared_builder_changed": false,
+  "trace_trimmed": false,
+  "runs": {
+    "normal": {
+      "event_count": 5503,
+      "raw_sha256": "bd4095e5e35bfb86ee070a6f821c6056d90083eb91cee4f0601706423a26e842",
+      "receipt_capture_validation_exit": 0,
+      "samples": 61,
+      "boxes": 240,
+      "missing_receivers": [],
+      "done_event": [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "5503",
+        "27320",
+        "510",
+        "60",
+        "done",
+        ""
+      ],
+      "terminal_suffix": [],
+      "terminal_geometry": [
+        [
+          "AIREF",
+          "s259-yijiao-geometry-normal",
+          "5497",
+          "27316",
+          "510",
+          "60",
+          "geometry_begin",
+          ""
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-normal",
+          "5498",
+          "27317",
+          "510",
+          "60",
+          "geometry_box",
+          "hurt,_level0.game.p1.mc.bdmn,77,game/fighter/yijiao.swf#DefineSprite_2/frame_1/DoAction.as,476,-16355,1,f:1:-1:101270080:0,f:1:0:0:0,f:1:0:0:0,f:1:0:124146080:0,f:1:7:94109696:0,f:1:8:72548352:0,f:1:0:0:0,f:1:0:0:0,f:1:6:69153587:13421773,f:1:5:84934656:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-normal",
+          "5499",
+          "27318",
+          "510",
+          "60",
+          "geometry_box",
+          "hurt,_level0.game.p1.mc.mian,63,game/fighter/yijiao.swf#DefineSprite_2/frame_1/DoAction.as,247,-16361,1,f:1:0:74251192:0,f:1:0:0:0,f:1:0:0:0,f:1:-1:124956640:0,f:1:7:84803584:0,f:1:8:69664768:0,f:1:0:0:0,f:1:0:0:0,f:1:6:69153587:13421773,f:1:5:84934656:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-normal",
+          "5500",
+          "27319",
+          "510",
+          "60",
+          "geometry_box",
+          "hurt,_level0.game.p2.mc.bdmn,79,game/fighter/yihu.swf#DefineSprite_2/frame_1/DoAction.as,478,-16355,1,f:-1:-1:101346680:0,f:1:0:0:0,f:1:0:0:0,f:1:1:69276352:0,f:1:8:92602368:0,f:1:8:70647808:0,f:1:0:0:0,f:1:0:0:0,f:1:6:69153587:13421773,f:1:5:84934656:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-normal",
+          "5501",
+          "27320",
+          "510",
+          "60",
+          "geometry_box",
+          "hurt,_level0.game.p2.mc.mian,55,game/fighter/yihu.swf#DefineSprite_2/frame_1/DoAction.as,1,-16361,1,f:-1:0:74251192:0,f:1:0:0:0,f:1:0:0:0,f:1:-1:124865168:0,f:1:8:95551488:0,f:1:8:78249984:0,f:1:0:0:0,f:1:0:0:0,f:1:6:69153587:13421773,f:1:5:84934656:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-normal",
+          "5502",
+          "27320",
+          "510",
+          "60",
+          "geometry_end",
+          "4,4"
+        ]
+      ],
+      "comparison_to_s232_ticks_0_60": {
+        "state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_clip_state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_lifecycle": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "input_next_display": {
+          "historical_count": 61,
+          "fresh_count": 61,
+          "tick_payload_equal": true
+        },
+        "key_read": {
+          "historical_count": 1591,
+          "fresh_count": 1557,
+          "tick_payload_equal": false
+        },
+        "random": {
+          "historical_count": 1,
+          "fresh_count": 1,
+          "tick_payload_equal": false
+        }
+      },
+      "key_reads_before_terminal_equal": true,
+      "random_events": [
+        [
+          "AIREF",
+          "s259-yijiao-geometry-normal",
+          "14",
+          "10389",
+          "3",
+          "-1",
+          "random",
+          "1,main#DefineSprite_1900/frame_1/DoAction.as:1,f:1:-1:80191354:50331648"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-normal",
+          "3617",
+          "25780",
+          "463",
+          "13",
+          "random",
+          "2,fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1,f:1:-2:100707528:41943040"
+        ]
+      ],
+      "random_callsite_order_equal": true,
+      "root_observer": "_root.aiYulongDisplayComplete = false;\nonEnterFrame = function()\n{\n   if(_root.aiYulongDisplayComplete)\n   {\n      aiEvent(\"capture_window_closed\", \"before-next-root-increment\");\n      _root.onEnterFrame = function() {};\n      _root.aiEvent = function() {};\n      return;\n   }\n   aiDisplay++;\n   if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)\n   {\n      aiFight = 0;\n      aiEvent(\"ready\", \"\");\n   }\n   else if(aiFight >= 0)\n   {\n      aiFight++;\n   }\n   if(aiFight == 0)\n   {\n      clearInterval(_root.airanset);\n      _root.game.p1.mc.gotoAndPlay(\"站立\");\n      _root.game.p1._x = 100.0;\n      _root.game.p1.mc.ql = 300.0;\n      _root.game.p2.mc.gotoAndPlay(\"站立\");\n      _root.game.p2._x = 150.0;\n      _root.game.p2.mc.ql = 300.0;\n   }\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 13) { aiHeld[j] = true; }\n   // These inputs become visible to the next display callback, as logged.\n   aiEvent(\"input_next_display\", \"w=\" + aiHeld[w] + \",\" + \"a=\" + aiHeld[a] + \",\" + \"l=\" + aiHeld[l] + \",\" + \"上箭=\" + aiHeld[上箭] + \",\" + \"下箭=\" + aiHeld[下箭] + \",\" + \"左箭=\" + aiHeld[左箭] + \",\" + \"右箭=\" + aiHeld[右箭] + \",\" + \"N1=\" + aiHeld[N1] + \",\" + \"N2=\" + aiHeld[N2] + \",\" + \"N3=\" + aiHeld[N3] + \",\" + \"N4=\" + aiHeld[N4] + \",\" + \"N5=\" + aiHeld[N5] + \",\" + \"N6=\" + aiHeld[N6] + \",\" + \"right=\" + aiHeld[d] + \",attack=\" + aiHeld[j] + \",down=\" + aiHeld[s] + \",ranged=\" + aiHeld[u] + \",jump=\" + aiHeld[k] + \",special=\" + aiHeld[i] + \",summon=\" + aiHeld[o]);\n   if(p2loaded == true)\n   {\n      if(!_root.aiGeometryLogged && _root.game.p2.useAI == true && _root.game.p2.mc.AImain._currentframe == 2)\n      {\n         _root.aiGeometryLogged = true;\n         aiGeometry();\n      }\n      aiState(\"p1\");\n      aiHelperState(\"p1\");\n      aiState(\"p2\");\n      aiHelperState(\"p2\");\n   }\n   _root.aiGeometrySample();\n   if(aiFight >= 60)\n   {\n      aiEvent(\"done\", \"\");\n      _root.aiYulongDisplayComplete = true;\n      fscommand(\"quit\");\n   }\n   if(aiDisplay > 60 + 900)\n   {\n      aiEvent(\"timeout\", \"ready=\" + _menuEnabled + \",loaded=\" + p2loaded);\n      fscommand(\"quit\");\n   }\n};\n\n_root.aiGeoStamp(this, \"game/main.swf#frame_10/DoAction.as\");\n",
+      "runtime_fighter_identity_proved": false
+    },
+    "held": {
+      "event_count": 5416,
+      "raw_sha256": "9c50b33c51a94db3c19a250ffdd4f887ac4041ec2df5e561a597c63319b99f30",
+      "receipt_capture_validation_exit": 0,
+      "samples": 61,
+      "boxes": 240,
+      "missing_receivers": [],
+      "done_event": [
+        "AIREF",
+        "s259-yijiao-geometry-held",
+        "5381",
+        "26047",
+        "498",
+        "60",
+        "done",
+        ""
+      ],
+      "terminal_suffix": [
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5382",
+          "26069",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,40,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5383",
+          "26069",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,97,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5384",
+          "26069",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,97,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5385",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,38,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5386",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,40,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5387",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,38,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5388",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,40,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5389",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,100,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5390",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,40,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5391",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,38,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5392",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,101,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5393",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,102,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5394",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,37,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5395",
+          "26070",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,39,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5396",
+          "26071",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,99,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5397",
+          "26071",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,98,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5398",
+          "26071",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,83,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5399",
+          "26071",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,74,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5400",
+          "26071",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,74,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5401",
+          "26071",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,87,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5402",
+          "26071",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,83,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5403",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,87,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5404",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,83,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5405",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,85,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5406",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,83,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5407",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,87,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5408",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,73,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5409",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,79,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5410",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,65,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5411",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,68,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5412",
+          "26072",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,76,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5413",
+          "26073",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,75,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5414",
+          "26073",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,99,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5415",
+          "26073",
+          "498",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,76,false"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5416",
+          "26073",
+          "498",
+          "60",
+          "capture_window_closed",
+          "before-next-root-increment"
+        ]
+      ],
+      "terminal_geometry": [
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5375",
+          "26044",
+          "498",
+          "60",
+          "geometry_begin",
+          ""
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5376",
+          "26044",
+          "498",
+          "60",
+          "geometry_box",
+          "hurt,_level0.game.p1.mc.bdmn,77,game/fighter/yijiao.swf#DefineSprite_2/frame_1/DoAction.as,464,-16355,1,f:1:-1:101270080:0,f:1:0:0:0,f:1:0:0:0,f:1:0:124146080:0,f:1:7:94109696:0,f:1:8:72548352:0,f:1:0:0:0,f:1:0:0:0,f:1:6:69153587:13421773,f:1:5:84934656:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5377",
+          "26045",
+          "498",
+          "60",
+          "geometry_box",
+          "hurt,_level0.game.p1.mc.mian,63,game/fighter/yijiao.swf#DefineSprite_2/frame_1/DoAction.as,249,-16361,1,f:1:0:74251192:0,f:1:0:0:0,f:1:0:0:0,f:1:-1:124956640:0,f:1:7:84803584:0,f:1:8:69664768:0,f:1:0:0:0,f:1:0:0:0,f:1:6:69153587:13421773,f:1:5:84934656:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5378",
+          "26046",
+          "498",
+          "60",
+          "geometry_box",
+          "hurt,_level0.game.p2.mc.bdmn,79,game/fighter/yihu.swf#DefineSprite_2/frame_1/DoAction.as,466,-16355,1,f:-1:-1:101346680:0,f:1:0:0:0,f:1:0:0:0,f:1:1:69276352:0,f:1:8:92602368:0,f:1:8:70647808:0,f:1:0:0:0,f:1:0:0:0,f:1:6:69153587:13421773,f:1:5:84934656:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5379",
+          "26046",
+          "498",
+          "60",
+          "geometry_box",
+          "hurt,_level0.game.p2.mc.mian,55,game/fighter/yihu.swf#DefineSprite_2/frame_1/DoAction.as,1,-16361,1,f:-1:0:74251192:0,f:1:0:0:0,f:1:0:0:0,f:1:-1:124865168:0,f:1:8:95551488:0,f:1:8:78249984:0,f:1:0:0:0,f:1:0:0:0,f:1:6:69153587:13421773,f:1:5:84934656:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "5380",
+          "26047",
+          "498",
+          "60",
+          "geometry_end",
+          "4,4"
+        ]
+      ],
+      "comparison_to_s232_ticks_0_60": {
+        "state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_clip_state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_lifecycle": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "input_next_display": {
+          "historical_count": 61,
+          "fresh_count": 61,
+          "tick_payload_equal": true
+        },
+        "key_read": {
+          "historical_count": 1591,
+          "fresh_count": 1591,
+          "tick_payload_equal": true
+        },
+        "random": {
+          "historical_count": 1,
+          "fresh_count": 1,
+          "tick_payload_equal": false
+        }
+      },
+      "key_reads_before_terminal_equal": true,
+      "random_events": [
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "14",
+          "9551",
+          "3",
+          "-1",
+          "random",
+          "1,main#DefineSprite_1900/frame_1/DoAction.as:1,f:1:-6:103878934:0"
+        ],
+        [
+          "AIREF",
+          "s259-yijiao-geometry-held",
+          "3495",
+          "24503",
+          "451",
+          "13",
+          "random",
+          "2,fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1,f:1:-2:133438586:25165824"
+        ]
+      ],
+      "random_callsite_order_equal": true,
+      "root_observer": "_root.aiYulongDisplayComplete = false;\nonEnterFrame = function()\n{\n   if(_root.aiYulongDisplayComplete)\n   {\n      aiEvent(\"capture_window_closed\", \"before-next-root-increment\");\n      _root.onEnterFrame = function() {};\n      _root.aiEvent = function() {};\n      fscommand(\"quit\");\n      return;\n   }\n   aiDisplay++;\n   if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)\n   {\n      aiFight = 0;\n      aiEvent(\"ready\", \"\");\n   }\n   else if(aiFight >= 0)\n   {\n      aiFight++;\n   }\n   if(aiFight == 0)\n   {\n      clearInterval(_root.airanset);\n      _root.game.p1.mc.gotoAndPlay(\"站立\");\n      _root.game.p1._x = 100.0;\n      _root.game.p1.mc.ql = 300.0;\n      _root.game.p2.mc.gotoAndPlay(\"站立\");\n      _root.game.p2._x = 150.0;\n      _root.game.p2.mc.ql = 300.0;\n   }\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 13) { aiHeld[j] = true; }\n   // These inputs become visible to the next display callback, as logged.\n   aiEvent(\"input_next_display\", \"w=\" + aiHeld[w] + \",\" + \"a=\" + aiHeld[a] + \",\" + \"l=\" + aiHeld[l] + \",\" + \"上箭=\" + aiHeld[上箭] + \",\" + \"下箭=\" + aiHeld[下箭] + \",\" + \"左箭=\" + aiHeld[左箭] + \",\" + \"右箭=\" + aiHeld[右箭] + \",\" + \"N1=\" + aiHeld[N1] + \",\" + \"N2=\" + aiHeld[N2] + \",\" + \"N3=\" + aiHeld[N3] + \",\" + \"N4=\" + aiHeld[N4] + \",\" + \"N5=\" + aiHeld[N5] + \",\" + \"N6=\" + aiHeld[N6] + \",\" + \"right=\" + aiHeld[d] + \",attack=\" + aiHeld[j] + \",down=\" + aiHeld[s] + \",ranged=\" + aiHeld[u] + \",jump=\" + aiHeld[k] + \",special=\" + aiHeld[i] + \",summon=\" + aiHeld[o]);\n   if(p2loaded == true)\n   {\n      if(!_root.aiGeometryLogged && _root.game.p2.useAI == true && _root.game.p2.mc.AImain._currentframe == 2)\n      {\n         _root.aiGeometryLogged = true;\n         aiGeometry();\n      }\n      aiState(\"p1\");\n      aiHelperState(\"p1\");\n      aiState(\"p2\");\n      aiHelperState(\"p2\");\n   }\n   _root.aiGeometrySample();\n   if(aiFight >= 60)\n   {\n      aiEvent(\"done\", \"\");\n      _root.aiYulongDisplayComplete = true;\n   }\n   if(aiDisplay > 60 + 900)\n   {\n      aiEvent(\"timeout\", \"ready=\" + _menuEnabled + \",loaded=\" + p2loaded);\n      fscommand(\"quit\");\n   }\n};\n\n_root.aiGeoStamp(this, \"game/main.swf#frame_10/DoAction.as\");\n",
+      "runtime_fighter_identity_proved": false
+    }
+  },
+  "historical_rejection": "native evidence: events beyond completion boundary"
+}

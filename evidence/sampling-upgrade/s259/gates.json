@@ -1,0 +1,94 @@
+{
+  "normal-receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json'),Path('/tmp/bvn-s259-normal-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8856034998316318,
+    "log": "normal-receipt.txt"
+  },
+  "normal-geometry": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s259-normal-capture/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s259/normal/geometry.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.13029849994927645,
+    "log": "normal-geometry.txt"
+  },
+  "held-receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json'),Path('/tmp/bvn-s259-held-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.12477370887063444,
+    "log": "held-receipt.txt"
+  },
+  "held-geometry": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s259-held-capture/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s259/held/geometry.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.1340946250129491,
+    "log": "held-geometry.txt"
+  },
+  "historical-rejection": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s254/diagnose.py",
+      "--output",
+      "/tmp/s259-old-strict.json",
+      "--strict-native"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.12080608285032213,
+    "log": "historical-rejection.txt"
+  },
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s259/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s259/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.2989425000268966,
+    "log": "diagnosis.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_geometry_completion_window",
+      "tools.tests.test_non_display_completion_diagnosis",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_yulong_display_completion",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.876985999988392,
+    "log": "focused-tests.txt"
+  }
+}
