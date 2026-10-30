@@ -1,0 +1,140 @@
+{
+  "diagnosis": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s262/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s262/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 6.124405334005132,
+    "log": "diagnosis.txt"
+  },
+  "build-scene": {
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s262/build_scene.py",
+      "--output",
+      "/tmp/bvn-s262-paired.gd"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.0406461248639971,
+    "log": "build-scene.txt"
+  },
+  "paired-scene": {
+    "command": [
+      "/tmp/bvn-s66-tools/engine/Godot.app/Contents/MacOS/Godot",
+      "--headless",
+      "--path",
+      "godot",
+      "--log-file",
+      "/tmp/bvn-s262-scene.log",
+      "--script",
+      "/tmp/bvn-s262-paired.gd",
+      "--",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json",
+      "/tmp/bvn-s262-actors.json"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 4.590305499965325,
+    "log": "paired-scene.txt",
+    "environment": {
+      "S262_CONTRACT": "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s262/diagnosis.json",
+      "S262_SCENE_OUTPUT": "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s262/paired-scene.json"
+    }
+  },
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json'),Path('evidence/sampling-upgrade/s262/native-receipt.json')))"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.0179675000254065,
+    "log": "receipt.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_matrix",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_clipaction",
+      "tools.tests.test_sampling_callsite"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 28.93228945787996,
+    "log": "focused-tests.txt"
+  },
+  "focused-tests-initial-failure": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_matrix",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_clipaction",
+      "tools.tests.test_sampling_callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit": 0,
+    "elapsed_seconds": 33.61172933317721,
+    "log": "focused-tests-initial-failure.txt"
+  },
+  "strict-rgba": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/tmp/bvn-s262-historical-strict.json",
+      "--strict-rgba"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 17.004811624996364,
+    "log": "strict-rgba.txt"
+  },
+  "historical-bitmap-gate": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_bitmap",
+      "--case",
+      "evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json",
+      "--receipt",
+      "evidence/sampling-upgrade/s220/native-receipt.json",
+      "--godot",
+      "/private/tmp/bvn-s220-godot/frames",
+      "--output",
+      "/tmp/bvn-s262-historical-bitmap.json"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 1.4514238748233765,
+    "log": "historical-bitmap-gate.txt"
+  }
+}

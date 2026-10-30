@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-30（采样 s262，AFTER-s258 排名第四项）：一次有界新捕获扩展回调快照，记录32227事件、2194视觉节点和9次frame1初始化；68次回调重放吻合，122角色状态与s258一致。数字frame1重入不能当出生；Godot配对场景的HUD选定字段一致，但tick13相机X为原版-0.05/Godot0，寿命与开场回调连接仍未证明。成像前拒绝exit1，不写新Godot图片、不接生产适配器；两标志false，M0-02 pending；排名1/2/3/5及s254–s261未动。[证据](../evidence/sampling-upgrade/s262/README.md)。
+
 - 2026-10-30（采样 s261，s258 后排名第三项）：仅跟踪一角 P1 AImain 卸载后的每根 root，root8仍1/2、root9首次0/0。独立保留/同名同深度替换对照证明旧引用相等不能判身份；替换与保留实例但删标记信号相同，清空后身份判别仍未证明，不做映射修复。一次8290事件捕获，122角色状态与s255一致；receipt/诊断exit0，完整显示169义务、exit1。两标志false，M0-02 pending；排名1/2/4/5和s254–s260未动。[证据](../evidence/sampling-upgrade/s261/README.md)。
 
 - 2026-10-30（采样 s260，s258 后重新排名第二项）：仅观测迪达拉 P1 tick11 接收方初始化。原几何采样结束后才进入 Sprite2 frame1，出口函数/列表/stamp 完整，首个 bdmn enterFrame 在父帧841执行；不提前初始化、不移动采样、不改 eligibility。一次5274事件捕获，122角色状态、61输入和954按键读取与s256相同；随机差异保留。68测试通过，receipt/诊断exit0，完整几何仍exit1。两标志false，M0-02 pending；排名1/3/4/5和s254–s259未动。[证据](../evidence/sampling-upgrade/s260/README.md)。
