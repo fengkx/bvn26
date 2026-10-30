@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-30（采样 s261，s258 后排名第三项）：仅跟踪一角 P1 AImain 卸载后的每根 root，root8仍1/2、root9首次0/0。独立保留/同名同深度替换对照证明旧引用相等不能判身份；替换与保留实例但删标记信号相同，清空后身份判别仍未证明，不做映射修复。一次8290事件捕获，122角色状态与s255一致；receipt/诊断exit0，完整显示169义务、exit1。两标志false，M0-02 pending；排名1/2/4/5和s254–s260未动。[证据](../evidence/sampling-upgrade/s261/README.md)。
+
 - 2026-10-30（采样 s260，s258 后重新排名第二项）：仅观测迪达拉 P1 tick11 接收方初始化。原几何采样结束后才进入 Sprite2 frame1，出口函数/列表/stamp 完整，首个 bdmn enterFrame 在父帧841执行；不提前初始化、不移动采样、不改 eligibility。一次5274事件捕获，122角色状态、61输入和954按键读取与s256相同；随机差异保留。68测试通过，receipt/诊断exit0，完整几何仍exit1。两标志false，M0-02 pending；排名1/3/4/5和s254–s259未动。[证据](../evidence/sampling-upgrade/s260/README.md)。
 
 - 2026-10-30（采样 s259，s258 后重新排名第一项）：仅对 s232 一角几何做独立 opt-in 完成窗口；正常/延迟退出两次新捕获均为61样本、240框，收据与本格完整几何 exit0。延迟对照保留34条终止回调再闭窗，无tick61；122角色状态与原轨迹一致，随机值差异原样保留。旧s232仍exit1，无默认推广；两标志false，M0-02 pending，排名2–5未开始。[排序](../evidence/sampling-upgrade/next-fix-priority-after-s258.md) · [证据](../evidence/sampling-upgrade/s259/README.md)。
