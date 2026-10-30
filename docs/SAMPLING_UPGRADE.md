@@ -1202,3 +1202,15 @@ Woailuo frame44 / Sprite48 / depth2 / atm1 load 末尾调用既有 stamp，
 tick11/41 缺 P1 receiver 而 exit 1（旧 s64/s246 原始记录也缺），不放宽义务。
 收据和局部证明 exit 0；122状态与两份旧捕获完全相同，不代表 Godot 一致。
 两标志 false，M0-02 pending，其他排名不重开。[证据](../evidence/sampling-upgrade/s251/README.md)。
+
+
+## s252：排名第四项——AS 调用退出与 receiver 归属
+
+原 s76 Chad tape 用现有 s245 探针在 master 5bd0d797 上新采一次，
+9,423事件、61样本；goto 前深度占用，下一 root 样本深度为空，三个退出标记仍缺。
+捕获 SWF 的 P-code 证明 goto 后与 caller 后的插桩已编入；这不是执行 PC 或 VM 返回证明。
+不合成 call_after、不把消失当返回、不猜 ancestor pn。s247 原日志重算仍为 target 未定义，
+属于独立的嵌套归属问题。本次证据型交付，无退出模型/玩法/验证器改动。
+收据 exit 0，退出/调用/完整 AS 均 exit 1；594未访问、415未插桩义务保留。
+122状态与 s76/s245 一致，两标志 false，M0-02 pending。
+[完整观察、编译交叉检查与后续判别条件](../evidence/sampling-upgrade/s252/README.md)。

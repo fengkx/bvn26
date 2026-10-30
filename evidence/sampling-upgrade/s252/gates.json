@@ -1,0 +1,67 @@
+{
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json'),Path('/tmp/bvn-s252-capture-r01/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.1825707501266152
+  },
+  "lifecycle": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_chad_lifecycle",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s252-capture-r01/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s252/lifecycle.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.16030245879665017
+  },
+  "ownership": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_callsite",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s252-capture-r01/receipt.json",
+      "--output",
+      "/tmp/bvn-s252-actions.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.2597643749322742
+  },
+  "full_as": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s252-capture-r01/receipt.json",
+      "--output",
+      "/tmp/bvn-s252-doaction.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.26551704201847315
+  },
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s252/diagnose.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 0.2853291667997837
+  }
+}
