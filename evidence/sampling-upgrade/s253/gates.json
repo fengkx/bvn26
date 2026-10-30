@@ -1,0 +1,109 @@
+[
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_matrix",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_clipaction",
+      "tools.tests.test_sampling_callsite"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 23.572
+  },
+  {
+    "name": "initial-receipt-cli-usage",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_native",
+      "--case",
+      "evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json",
+      "--receipt",
+      "evidence/sampling-upgrade/s220/native-receipt.json"
+    ],
+    "exit": 2,
+    "elapsed_seconds": 0.05
+  },
+  {
+    "name": "full-bitmap-gate",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_bitmap",
+      "--case",
+      "evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json",
+      "--receipt",
+      "evidence/sampling-upgrade/s220/native-receipt.json",
+      "--godot",
+      "/private/tmp/bvn-s220-godot/frames",
+      "--output",
+      "/private/tmp/bvn-s253-analysis/full-bitmap.json"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 1.086
+  },
+  {
+    "name": "receipt-validation",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; validate(Path('evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json'), Path('evidence/sampling-upgrade/s220/native-receipt.json'))"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 1.857
+  },
+  {
+    "name": "strict-rgba-recomputation",
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/private/tmp/bvn-s253-analysis/strict.json",
+      "--strict-rgba"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 25.009
+  },
+  {
+    "name": "diagnosis",
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/private/tmp/bvn-s253-analysis/diagnosis.json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 27.547
+  },
+  {
+    "name": "final-focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_matrix",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_clipaction",
+      "tools.tests.test_sampling_callsite"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 27.72
+  }
+]
