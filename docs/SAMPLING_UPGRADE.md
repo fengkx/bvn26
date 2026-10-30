@@ -1227,3 +1227,14 @@ Godot逐图重建并同步推进，倒计时仍由独立墙钟 Timer 驱动。�
 0/61、17732741通道/6864492像素差异、最大255，exit1。
 历史收据不重签；当前完整CLI失败与原始结构重验分开报告。
 两标志false，M0-02 pending。[证据与复现](../evidence/sampling-upgrade/s253/README.md)。
+
+## s254：s253 后重排第一项——非 display 完成边界诊断
+
+[新排序](../evidence/sampling-upgrade/next-fix-priority-after-s253.md) 优先恢复
+非 display 捕获入口，随后是 AImain 卸载身份、几何 receiver、AS 正向续执行证明、
+共同倒计时观测。只执行第一项，未开始其他排名。
+s232 完整5705事件重算：done后34条仍在tick60/display525，16条在tick61/display526；
+后者包含额外完整几何样本与第二次done。归档根回调先递增，再采样，再请求退出，
+没有闭窗。该证据支持重入诊断，不证明向geometry推广s249闭窗；未改运行时或插桩。
+原严格原生验证仍exit1、零准入样本，未发收据、未裁剪终止回调；完整几何闸门受阻，
+未评估下游义务。两标志false，M0-02 pending。[证据与复现](../evidence/sampling-upgrade/s254/README.md)。

@@ -1,0 +1,41 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s254/diagnose.py",
+      "--output",
+      "/tmp/s254-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.106,
+    "log": "diagnosis.txt"
+  },
+  "strict-native": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s254/diagnose.py",
+      "--output",
+      "/tmp/s254-strict-native.json",
+      "--strict-native"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.093,
+    "log": "strict-native.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_non_display_completion_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_yulong_display_completion",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.898,
+    "log": "focused-tests.txt"
+  }
+}

@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-30（采样 s254，队列后重排第一项）：仅诊断 s232 非 display 几何完成边界。完整5705事件中，done后34条属于终止周期，随后16条属于tick61/下一根周期，包含第二次done；归档bootstrap与SWF哈希核对一致。原验证器仍exit1、零准入样本，无闭窗推广或运行时修改。两标志false，M0-02 pending；后续排名未执行。[新排序](../evidence/sampling-upgrade/next-fix-priority-after-s253.md) · [证据](../evidence/sampling-upgrade/s254/README.md)。
+
 - 2026-10-30（采样 s253，排名第五项）：重算佐助 s220 原 native/Godot 配对；tick1–60 的120条角色状态完全相同，tick0 两条 undefined/null 保留。tick13 角色源帧205/7一致但倒计时47/59；原生图像编码中位1980ms，60 tick跨度120118ms，两侧无共同倒计时回调 tape。仅诊断，无时钟或渲染修复；严格RGBA仍0/61、exit1，两标志false，M0-02 pending。[证据](../evidence/sampling-upgrade/s253/README.md)。
 
 - 2026-10-30（采样 s252，排名第四项）：原 tape 新采 Chad 调用边界，9,423事件/61样本；tick10 goto 前 receiver 仍在，tick11 深度为空，三个退出标记仍缺。捕获 SWF 的 P-code 确认退出插桩已编入，但不证明执行或 VM 返回；证据型交付，无退出模型修复。收据 exit 0，退出/调用/完整 AS 闸门均 exit 1（594未访问、415未插桩）；122状态与 s76/s245 相同。s247 嵌套归属问题独立保留，两标志 false，M0-02 pending。[证据](../evidence/sampling-upgrade/s252/README.md)。
