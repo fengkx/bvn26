@@ -1,0 +1,149 @@
+[
+  {
+    "name": "historical-rejection",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s269/classify.py",
+      "--output",
+      "/tmp/s269-historical.json",
+      "--strict-native"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 0.133,
+    "log": "historical-rejection.txt"
+  },
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s269/diagnose.py",
+      "--output",
+      "/tmp/s269-diagnosis.json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.305,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "s259-locked-control",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s259/diagnose.py",
+      "--output",
+      "/tmp/s269-s259-control.json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.238,
+    "log": "s259-locked-control.txt"
+  },
+  {
+    "name": "normal-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s223/sasuke__attack__neutral__ground__near.json'),Path('/private/tmp/bvn-s269-normal-capture/receipt.json')))"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.756,
+    "log": "normal-receipt.txt"
+  },
+  {
+    "name": "normal-callsite",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_callsite",
+      "--case",
+      "evidence/sampling-upgrade/s223/sasuke__attack__neutral__ground__near.json",
+      "--receipt",
+      "/private/tmp/bvn-s269-normal-capture/receipt.json",
+      "--output",
+      "/tmp/s269-normal-callsite.json"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 0.165,
+    "log": "normal-callsite.txt"
+  },
+  {
+    "name": "normal-full-as",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s223/sasuke__attack__neutral__ground__near.json",
+      "--receipt",
+      "/private/tmp/bvn-s269-normal-capture/receipt.json",
+      "--output",
+      "/tmp/s269-normal-full-as.json"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 0.148,
+    "log": "normal-full-as.txt"
+  },
+  {
+    "name": "held-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s223/sasuke__attack__neutral__ground__near.json'),Path('/private/tmp/bvn-s269-held-capture/receipt.json')))"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.1,
+    "log": "held-receipt.txt"
+  },
+  {
+    "name": "held-callsite",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_callsite",
+      "--case",
+      "evidence/sampling-upgrade/s223/sasuke__attack__neutral__ground__near.json",
+      "--receipt",
+      "/private/tmp/bvn-s269-held-capture/receipt.json",
+      "--output",
+      "/tmp/s269-held-callsite.json"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 0.168,
+    "log": "held-callsite.txt"
+  },
+  {
+    "name": "held-full-as",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s223/sasuke__attack__neutral__ground__near.json",
+      "--receipt",
+      "/private/tmp/bvn-s269-held-capture/receipt.json",
+      "--output",
+      "/tmp/s269-held-full-as.json"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 0.154,
+    "log": "held-full-as.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_callsite_completion_window",
+      "tools.tests.test_geometry_completion_window",
+      "tools.tests.test_non_display_completion_diagnosis",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_yulong_display_completion",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_import_guards"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 2.797,
+    "log": "focused-tests.txt"
+  }
+]

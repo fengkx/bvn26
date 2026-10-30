@@ -1,0 +1,33 @@
+[
+  {
+    "name": "normal",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s269/build_probe.py",
+      "--ffdec",
+      "/tmp/bvn-s66-tools/ffdec/ffdec.jar",
+      "--output",
+      "/tmp/bvn-s269-normal-build",
+      "--run-id",
+      "s269-sasuke-callsite-normal"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 7.918
+  },
+  {
+    "name": "held",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s269/build_probe.py",
+      "--ffdec",
+      "/tmp/bvn-s66-tools/ffdec/ffdec.jar",
+      "--output",
+      "/tmp/bvn-s269-held-build",
+      "--run-id",
+      "s269-sasuke-callsite-held",
+      "--hold-quit"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 8.161
+  }
+]

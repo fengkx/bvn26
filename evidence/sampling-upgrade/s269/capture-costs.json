@@ -1,0 +1,44 @@
+[
+  {
+    "name": "normal",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_native",
+      "--case",
+      "evidence/sampling-upgrade/s223/sasuke__attack__neutral__ground__near.json",
+      "--build",
+      "/private/tmp/bvn-s269-normal-build",
+      "--trace",
+      "/private/tmp/bvn-s269-normal-capture/native.log",
+      "--receipt",
+      "/private/tmp/bvn-s269-normal-capture/receipt.json",
+      "--timeout",
+      "180",
+      "--allow-window-activation"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 31.743
+  },
+  {
+    "name": "held",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_native",
+      "--case",
+      "evidence/sampling-upgrade/s223/sasuke__attack__neutral__ground__near.json",
+      "--build",
+      "/private/tmp/bvn-s269-held-build",
+      "--trace",
+      "/private/tmp/bvn-s269-held-capture/native.log",
+      "--receipt",
+      "/private/tmp/bvn-s269-held-capture/receipt.json",
+      "--timeout",
+      "180",
+      "--allow-window-activation"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 29.245
+  }
+]
