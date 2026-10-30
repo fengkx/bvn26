@@ -1328,3 +1328,11 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 
 下一判别是独立于frame1重入的PlaceObject寿命对照，以及注册至首快照期间HUD子时钟、相机更新与Godot开场边界的连接；先过状态断言再成像。旧s258 tick13=50、s220 47/59均保留，新捕获tick13=49不移植到旧图。
 [证据、成本与复现](../evidence/sampling-upgrade/s262/README.md)。
+
+
+## s263：s258 后排名第五项——Chad goto 执行后续判别
+
+2026-10-30（采样 s263，AFTER-s258 排名第五项）：复用锁定s257构建，一次新捕获9774事件；同一root定义函数的保留/移除动态接收者对照均完成寄存器写入，移除后槽位为空有独立正观测。但这不等于Chad函数定义时间轴失效；原goto后的post/entry仍0，精确PC/栈与退出模型未证明。122角色状态与s257一致，95聚焦测试通过；receipt/诊断exit0，精确continuation/生命周期/调用/完整AS均exit1。两标志false，M0-02 pending；排名1–4、s254–s262、生产运行时与严格验证器未动。
+
+下一判别需要在原生子时间轴内定义函数、绑定定义上下文并配对保留/移除goto；root定义函数只换this不足以证明上下文失效。仍无正对照时需精确CallMethod/Pop/SetMember的原生执行PC与栈观测。
+[证据、成本与复现](../evidence/sampling-upgrade/s263/README.md)。
