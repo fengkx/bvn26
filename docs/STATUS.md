@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-31（采样 s267，AFTER-s263 排名第四项）：复算锁定 s261 root8/9 清空边界及独立对照，新增同哈希原生播放器的符号/调试信息审计。尚未建立槽位到原生分配代次的观测，保留内容清空与同深度替换的原生校准对照仍缺；属性删除不冒充保留清空。未新采样，未证明映射修复。65 项聚焦测试、历史收据/诊断通过；分配身份与完整显示 gate exit1，169 项来源义务保留。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–3/5–9及s254–s266、运行时和严格验证器未动。[证据](../evidence/sampling-upgrade/s267/README.md)。
+
 - 2026-10-30（采样 s266，AFTER-s263 排名第三项）：复用锁定s263构建，新增 authored 子时间轴定义函数及父级保留/移除goto对照。有效捕获9493事件：保留槽位post=1，移除槽位post=0；root定义动态对照两者仍post=1，Chad post/entry仍0。首捕获误用动态深度查询authored槽位，完整保留并拒收；修正getDepth后补捕获。122角色状态与s263相同，100聚焦测试通过。未证明精确PC/栈或退出模型，不实现removal-as-return；receipt/诊断exit0，精确continuation/生命周期/调用/完整AS均exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1/2/4–9及s254–s265未动，无运行时或严格验证器修改。[证据](../evidence/sampling-upgrade/s266/README.md)。
 
 - 2026-10-30（采样 s265，AFTER-s263 排名第二项）：复用锁定s262构建，一次无成像捕获27643事件。个位PlaceObject独立load观测跨538个采样点保持代号1；同源保留对照frame1重入仍代号2，同深度替换出现unload2/load3。122角色状态与s262相同。无编码路径17次回调不能替代s262的68次；编码窗口寿命和场景连接仍未证明，准入exit1，未推进场景或生成图片。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1及3–9、s254–s264、运行时和严格验证器未动。[证据](../evidence/sampling-upgrade/s265/README.md)。

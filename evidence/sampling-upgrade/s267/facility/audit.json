@@ -1,0 +1,62 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "new_player_launches": 0,
+  "process_attach_attempts": 0,
+  "allocation_events_captured": 0,
+  "checks": {
+    "file": {
+      "command": [
+        "file",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.014001708012074232,
+      "log": "file.txt",
+      "sha256": "cf9013bff4afccf9c2eb258ddd44e087d912bd98e3d391da24b2e7bfe5f7eb35"
+    },
+    "defined-symbols": {
+      "command": [
+        "nm",
+        "-U",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.022590917069464922,
+      "log": "defined-symbols.txt",
+      "sha256": "5ef36f6e10daa352ec6293b1589f74e15d58dd3fb0442099a4d369c8fdddc36c"
+    },
+    "debug-info": {
+      "command": [
+        "dwarfdump",
+        "--debug-info",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.9638670838903636,
+      "log": "debug-info.txt",
+      "sha256": "f1ff38a8dd24b7180d80fbef71877ef568cb743a78de21411970fadaa88eb0aa"
+    },
+    "lldb-symbols": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -r -n \"MovieClip|Sprite|unloadMovie|ScriptObject\" \"Flash Player Debugger\""
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "elapsed_seconds": 0.8156157911289483,
+      "log": "lldb-symbols.txt",
+      "sha256": "b65e1619cd6c4fb840497c684f0ce23ce64499a18eba64da8c2e30b99ae4abf6"
+    }
+  },
+  "limitation": "Static symbol/type availability only; neither allocation identity nor absence of a possible reverse-engineered facility is proved."
+}

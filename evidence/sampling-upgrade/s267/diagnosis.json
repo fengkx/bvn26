@@ -1,0 +1,98 @@
+{
+  "scope": "AFTER-s263 rank 4 only",
+  "baseline": "ddd23ad9d37333ba51a640d0f87dbd22de221825",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "mapping_fix_proved": false,
+  "identity_discriminator_valid_for_cleared_content": false,
+  "allocation_generation_observations_established": false,
+  "status": "unproved_native_observation_prerequisite",
+  "product_obligations_closed": 0,
+  "retained_capture": {
+    "path": "evidence/sampling-upgrade/s261/native-capture.log.gz",
+    "events": 8290,
+    "samples": 61,
+    "raw_validation_exit": 0,
+    "source_gap_count": 169,
+    "actor_comparison": {
+      "reference": "s255/native-capture.log.gz",
+      "rows": 122,
+      "all_14_fields_equal": true
+    }
+  },
+  "allocation_observability": {
+    "target_observer_sites": [
+      {
+        "event_sequence": 36,
+        "root": 8,
+        "clock_ms": 11399,
+        "path": "_level0.game.p1.mc.AImain",
+        "depth": "-16383",
+        "frame": "1",
+        "total_frames": "2",
+        "native_allocation_address": null,
+        "native_allocation_generation": null,
+        "saved_reference_native_referent": null
+      },
+      {
+        "event_sequence": 44,
+        "root": 9,
+        "clock_ms": 11424,
+        "path": "_level0.game.p1.mc.AImain",
+        "depth": "-16383",
+        "frame": "0",
+        "total_frames": "0",
+        "native_allocation_address": null,
+        "native_allocation_generation": null,
+        "saved_reference_native_referent": null
+      }
+    ],
+    "controls": {
+      "retained_content_clear": {
+        "status": "missing_native_control",
+        "available_as2_control": "retained_content_deleted",
+        "available_signal": [
+          "true",
+          "false"
+        ],
+        "native_allocation_generation_before": null,
+        "native_allocation_generation_after": null,
+        "limitation": "Deleting one token property is not a calibrated retained-content-clear allocation control."
+      },
+      "same_name_same_depth_replacement": {
+        "status": "operation_observed_native_generation_missing",
+        "available_as2_control": "replaced",
+        "available_signal": [
+          "true",
+          "false"
+        ],
+        "native_allocation_generation_before": null,
+        "native_allocation_generation_after": null,
+        "limitation": "Explicit remove/create is observed, but no native allocation/free or saved-reference resolution is captured."
+      }
+    },
+    "indistinguishable_as2_signals": true,
+    "missing": [
+      "native_slot_to_object_resolution_at_both_root_sites",
+      "allocation_and_free_history_including_address_reuse",
+      "native_saved_reference_resolution_at_both_root_sites",
+      "independently_verified_retained_content_clear_control",
+      "same_depth_replacement_native_generation_control"
+    ]
+  },
+  "facility": {
+    "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "new_player_launches": 0,
+    "allocation_events_captured": 0,
+    "historical_same_binary_attach_succeeded": true,
+    "historical_attach_is_target_identity_evidence": false,
+    "native_slot_resolver_established": false,
+    "absence_of_possible_facility_proved": false
+  },
+  "next_discriminator": [
+    "Identify and byte-pin the native AImain depth-slot resolver and its returned object layout on the s261 executable; generic compose addresses are not applicable.",
+    "Calibrate a native allocation/free generation ledger against a retained object whose content is cleared and a same-name/depth remove/create control; address equality alone is insufficient under reuse.",
+    "At the source-equivalent last-nonzero and first-zero observer sites, join the parent slot and saved AS2 reference to that ledger without minting identity from clip properties, load callbacks, frame values or path strings.",
+    "Retain complete event order, run/source/engine hashes and both controls in the same owned capture. Only a calibrated discriminator can support a later thin mapping proposal."
+  ]
+}
