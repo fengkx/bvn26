@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-30（采样 s258，AFTER-s253 排名第五项）：沿用 s220 输入与快照边界，一次新原生捕获记录倒计时注册、70次真实回调及61组快照前后状态；15次暂停回调不递减但更新数字。现有源编译回调逐事件重放70/70吻合，122条角色状态与s220相同；新tick13倒计时50，旧配对47/59不替换。完整视觉相位仍未证明，不接入时钟适配器；严格RGBA仍exit1，两标志false，M0-02 pending。排名1–4及s254–s257未动。[证据](../evidence/sampling-upgrade/s258/README.md)。
+
 - 2026-10-30（采样 s257，AFTER-s253 排名第四项）：仅诊断 Chad 原调用的 goto 后续执行。预存普通对象及函数引用的调用前对照成功；tick11/12 的 post 与观察器入口仍为0。P-code 确认寄存器写入早于目标查询和 guard，但首条执行 PC、VM 返回均未证明；不改退出模型。一次9727事件捕获，122角色状态与s252相同；91测试通过，receipt/诊断exit0，退出/调用/完整AS均exit1。两标志false，M0-02 pending，排名1/2/3/5未动。[证据](../evidence/sampling-upgrade/s257/README.md)。
 
 - 2026-10-30（采样 s256，AFTER-s253 排名第三项）：仅诊断迪达拉 P1 bdmn tick11。原版840新放置；实时命名/depth槽均存在，但接收函数、候选列表和stamp尚未初始化，tick12恢复。保存引用相等不证明实例连续，未改eligibility。一次5400事件捕获，122条角色状态与s251相同；receipt/诊断通过，完整几何exit1。两标志false，M0-02 pending；排名1/2/4/5未动。[证据](../evidence/sampling-upgrade/s256/README.md)。
