@@ -1,0 +1,88 @@
+{
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_matrix",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_clipaction",
+      "tools.tests.test_sampling_callsite"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 34.38363295793533
+  },
+  "compiled-callback-replay": {
+    "command": [
+      "/tmp/bvn-s66-tools/engine/Godot.app/Contents/MacOS/Godot",
+      "--headless",
+      "--path",
+      "godot",
+      "--log-file",
+      "/tmp/bvn-s258-replay.log",
+      "--script",
+      "../evidence/sampling-upgrade/s258/replay.gd",
+      "--",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s258/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4969250001013279
+  },
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json'),Path('evidence/sampling-upgrade/s258/native-receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.5321634579449892
+  },
+  "strict-rgba": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/tmp/bvn-s258-unchanged-strict.json",
+      "--strict-rgba"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 25.546416833996773
+  },
+  "historical-bitmap-gate": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_bitmap",
+      "--case",
+      "evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json",
+      "--receipt",
+      "evidence/sampling-upgrade/s220/native-receipt.json",
+      "--godot",
+      "/private/tmp/bvn-s220-godot/frames",
+      "--output",
+      "/tmp/bvn-s258-historical-bitmap.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.49862750014290214
+  },
+  "diagnosis": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s258/diagnose.py",
+      "--output",
+      "/tmp/bvn-s258-checked-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 9.912156582809985
+  }
+}
