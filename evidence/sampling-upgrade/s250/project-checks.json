@@ -1,0 +1,29 @@
+{
+  "integrity": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "output": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "elapsed_seconds": 1.1680419445037842
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "output": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 733, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "elapsed_seconds": 0.13960886001586914
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-s27-venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit_code": 0,
+    "output": "{\"status\": \"passed\", \"schemas\": 6, \"examples\": 6, \"gameplay_tested\": false, \"production_ready_data\": false}\n",
+    "elapsed_seconds": 0.25908684730529785
+  }
+}

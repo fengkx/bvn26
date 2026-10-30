@@ -1183,3 +1183,12 @@ s239由s247诊断，s240由本切片补齐捕获边界证据；不重开s241–s
 一角 s233 原 tape 新正常/延迟退出均获有效收据、61样本/1533节点；延迟对照 done 后
 保留34条同周期事件再关闭，无 tick61。完整显示仍169项义务 exit 1，旧拒绝轨迹不变。
 两标志 false，M0-02 pending，玉龙专项证据队列不重开。[证据](../evidence/sampling-upgrade/s249/README.md)。
+
+## s250：排名第二项——AImain 来源/帧归属诊断
+
+s86/s93/s100/s248/s249 原始日志重算与既有报告一致：610条 AImain
+记录全部为 frame 0、无 source stamp、无子节点；源放置归属角色 Sprite 3，
+不是 main.swf。源 initCtrl 非 AI 分支执行 unloadMovie，但现有显示 ID
+不能证明卸载前后的连续身份。禁止将0别名为1或删除节点；本次为 evidence-only，
+未修复任何缺帧义务。新增源时间轴/节点保留负例；完整显示仍 exit 1，
+两标志 false，M0-02 pending。[证据与下一步观测](../evidence/sampling-upgrade/s250/README.md)。
