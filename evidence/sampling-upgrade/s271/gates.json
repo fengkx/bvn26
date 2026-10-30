@@ -1,0 +1,47 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s271/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s271/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7753705410286784
+  },
+  "thin-coverage": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s271/diagnose.py",
+      "--output",
+      "/tmp/s271-required.json",
+      "--require-thin-coverage"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.7795151250902563
+  },
+  "full-as": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s271/diagnose.py",
+      "--output",
+      "/tmp/s271-full-as.json",
+      "--require-full-as"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.7733079998288304
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_button_family_inventory",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.921836083056405
+  }
+}

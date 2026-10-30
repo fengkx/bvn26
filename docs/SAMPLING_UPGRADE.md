@@ -1384,3 +1384,10 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-10-31（采样 s270，AFTER-s263 排名第七项）：仅复算玉龙 Sprite345→k1atm(Sprite104)→mian(Sprite2) 链。补全10帧时间轴、外层五个碰撞操作数和父子采样寿命；tick19子路径消失但父仍stamp70/frame5，第四接收者为hitmc.mian。实际调用操作数及移除/改名瞬间仍缺，无绑定或eligibility修复。54聚焦测试通过；完整原始序列/诊断exit0，绑定要求/严格几何collector exit1；旧收据因既有探针哈希漂移exit1，未修补。零新捕获，production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s269未动，无运行时或严格验证器修改。
 
 [证据、成本与复现](../evidence/sampling-upgrade/s270/README.md)。
+
+
+## s271：s263 后排名第八项——按钮事件家族的执行前置条件
+
+2026-10-31（采样 s271，AFTER-s263 排名第八项）：仅盘点 main Button2009 的 Enter/release 两条未插桩义务，绑定 game_menu 十帧、放置与菜单键盘前置链。复算 s263 全部9774事件/61采样，仍594未访问、415未插桩；战斗按键读取不证明原生按钮派发，s266也未证明精确退出模型。无可证明覆盖修复，零新捕获；诊断/48聚焦测试通过，薄覆盖要求及严格完整AS exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s270未动，无运行时或严格验证器修改。
+
+[证据、成本与复现](../evidence/sampling-upgrade/s271/README.md)。
