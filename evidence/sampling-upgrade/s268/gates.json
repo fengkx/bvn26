@@ -1,0 +1,81 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s268/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s268/diagnosis.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.401,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "loader-attestation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s268/diagnose.py",
+      "--output",
+      "/tmp/s268-required.json",
+      "--require-loader-attestation"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.419,
+    "log": "loader-attestation.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_loader_attestation_diagnosis",
+      "tools.tests.test_capture_runtime_fighter",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 3.056,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "s259-normal-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json'), Path('evidence/sampling-upgrade/s259/normal/native-receipt.json')))"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.007,
+    "log": "s259-normal-receipt.txt"
+  },
+  {
+    "name": "s259-held-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json'), Path('evidence/sampling-upgrade/s259/held/native-receipt.json')))"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.133,
+    "log": "s259-held-receipt.txt"
+  },
+  {
+    "name": "s263-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json'), Path('evidence/sampling-upgrade/s263/native-receipt.json')))"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.128,
+    "log": "s263-receipt.txt"
+  }
+]
