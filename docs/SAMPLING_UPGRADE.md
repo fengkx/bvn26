@@ -1397,3 +1397,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-10-31（采样 s272，AFTER-s263 排名第九项）：限定倒计时字形边缘候选家族，复算 s262 的32227事件/61原版位图，并逐项核对同次捕获的配对场景状态。tick13数字5/10对1/1；相机X差异12帧、scale精确值差异61帧。状态准入未通过且同次Godot图片为0，不能归因栅格化；薄切要求及历史严格RGBA仍exit1（0/61），保留下一步同次捕获状态连接与边缘分类判别。零新捕获，无渲染修复。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–8及s254–s271未动，严格验证器不变。
 
 [证据、成本与复现](../evidence/sampling-upgrade/s272/README.md)。
+
+## s273：s272 后重新排名——外部碰撞调用点盲区
+
+2026-10-31（采样 s273，AFTER-s272 重新排名第1项）：以 master 68136e5e/#150 的 s249–s272 证据重排，仅审计 P2 一护基础 Sprite638 身体推挤 hitTest 对 P1 新 bdmn 的调用点。完整复算 s264 的5437事件；函数归档与源码一致但无调用点观测，tick10–12帧4/5/6和4055–4062初始化边界不能证明短路条件、操作数或执行。65聚焦测试通过；调用点证明要求及完整几何仍exit1（tick11缺P1接收者）。零新捕获，无eligibility修复。production_admitted=false、native_parity_proven=false，M0-02 pending；新排名2+仅规划，旧队列与严格验证器不变。
+
+[新优先级表](../evidence/sampling-upgrade/next-fix-priority-after-s272.md)；[证据、成本与复现](../evidence/sampling-upgrade/s273/README.md)。

@@ -1,0 +1,62 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s273/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s273/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.99997629201971,
+    "log": "diagnosis.txt"
+  },
+  "external-callsite": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s273/diagnose.py",
+      "--output",
+      "/tmp/s273-required.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.9516807079780847,
+    "log": "external-callsite.txt"
+  },
+  "geometry": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s264-r01-capture/receipt.json",
+      "--output",
+      "/tmp/s273-geometry.json"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.7347618341445923,
+    "log": "geometry.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_external_collision_callsite",
+      "tools.tests.test_receiver_authored_query",
+      "tools.tests.test_receiver_init_order",
+      "tools.tests.test_p1_receiver_availability",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 3.9674984158482403,
+    "log": "focused-tests.txt"
+  }
+}
