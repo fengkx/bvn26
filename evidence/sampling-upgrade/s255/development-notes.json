@@ -1,0 +1,27 @@
+{
+  "initial_build": {
+    "command": "PYTHONPATH=. python3 evidence/sampling-upgrade/s255/build_probe.py --ffdec /tmp/bvn-s66-tools/ffdec/ffdec.jar --output /tmp/bvn-s255-build --run-id s255-yijiao-unload",
+    "exit_code": 1,
+    "error": "ValueError: missing unique root/sample boundaries",
+    "cause": "The ordinary builder places display hooks in main frame 1 and the root callback in frame 10; the initial wrapper expected both in frame 10.",
+    "resolution": "Separate exact-match hooks for frame 1 and frame 10. Retry in a fresh build directory and run ID.",
+    "native_player_launched": false,
+    "validator_changed": false
+  },
+  "capture_preflight": {
+    "exit_code": 1,
+    "error": "Sandbox denied ps before player launch",
+    "resolution": "Authorized capture rerun with sandbox escalation; no extra native launch."
+  },
+  "portable_recompute": {
+    "exit_code": 1,
+    "error": "KeyError: main.xml",
+    "resolution": "Use the actual bvn-s30-source/ archive prefix; source XML hashes unchanged."
+  },
+  "initial_tests": {
+    "exit_code": 1,
+    "error": "Assertion compared integer 15 to the collector string ID '15'",
+    "resolution": "Compare observed string IDs without changing collector or evidence.",
+    "log": "focused-tests-initial-failure.txt"
+  }
+}

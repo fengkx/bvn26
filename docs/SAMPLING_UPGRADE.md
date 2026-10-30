@@ -1238,3 +1238,16 @@ s232 完整5705事件重算：done后34条仍在tick60/display525，16条在tick
 没有闭窗。该证据支持重入诊断，不证明向geometry推广s249闭窗；未改运行时或插桩。
 原严格原生验证仍exit1、零准入样本，未发收据、未裁剪终止回调；完整几何闸门受阻，
 未评估下游义务。两标志false，M0-02 pending。[证据与复现](../evidence/sampling-upgrade/s254/README.md)。
+
+
+## s255：AFTER-s253 排名第二项——AImain 卸载身份
+
+从 master `544ec6f5` / #132 出发，仅在一角 P1 的一次 initCtrl 卸载前后、
+下一根边界与首采样记录保存引用、按名称查找和 getInstanceAtDepth 槽位对象。
+复用 s231 锁定 tape，一次原生捕获8238事件。前三个边界仍为frame1/total2；
+首采样变为0/0，source stamp及临时身份标记消失，父标记保留。
+引用相等不等于底层分配身份，尚不能排除间隔内同槽替换；不做0→1映射或卸载豁免。
+下一判别点是逐根定位首次0/0，并取得能区分保留引用与同槽替换的身份对照。
+receipt和61样本结构通过；122条角色状态的14字段与s249完全一致；
+完整显示保留169义务、exit1。生产运行时、严格验证器、排名1/3/4/5均未修改。
+两标志false，M0-02 pending。[证据与复现](../evidence/sampling-upgrade/s255/README.md)。
