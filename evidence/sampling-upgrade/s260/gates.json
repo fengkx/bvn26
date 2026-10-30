@@ -1,0 +1,56 @@
+{
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json'),Path('/tmp/bvn-s260-r01-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.2166484999470413,
+    "log": "receipt.txt"
+  },
+  "geometry": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s260-r01-capture/receipt.json",
+      "--output",
+      "/tmp/bvn-s260-geometry.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.1402196658309549,
+    "log": "geometry.txt"
+  },
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s260/diagnose.py",
+      "--output",
+      "/tmp/s260-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.6391761670820415,
+    "log": "diagnosis.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_receiver_init_order",
+      "tools.tests.test_p1_receiver_availability",
+      "tools.tests.test_deidara_atm1_load_stamp",
+      "tools.tests.test_deidara_atm1_observer",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.2443962499964982,
+    "log": "focused-tests.txt"
+  }
+}
