@@ -1214,3 +1214,16 @@ tick11/41 缺 P1 receiver 而 exit 1（旧 s64/s246 原始记录也缺），不�
 收据 exit 0，退出/调用/完整 AS 均 exit 1；594未访问、415未插桩义务保留。
 122状态与 s76/s245 一致，两标志 false，M0-02 pending。
 [完整观察、编译交叉检查与后续判别条件](../evidence/sampling-upgrade/s252/README.md)。
+
+## s253：排名第五项——严格 RGBA / 时钟对齐诊断
+
+只重算 s217 tape 对应的 s220 原生/Godot 配对，不重开 s241–s244 或排名1–4。
+tick1–60 的120条角色状态在14字段完全一致；tick0 的两条 touchFloor
+undefined/null 差异保留。tick13 源帧205/7匹配，但原图倒计时47/59。
+原生每帧 BitmapData 编码中位1980ms，tick0到60耗时120118ms；
+Godot逐图重建并同步推进，倒计时仍由独立墙钟 Timer 驱动。两侧均缺
+倒计时回调 tape，因此相同 root-observer 标签不证明共同视觉相位。
+没有证明安全的时钟修复，不调整运行时或渲染。严格RGBA重算保持
+0/61、17732741通道/6864492像素差异、最大255，exit1。
+历史收据不重签；当前完整CLI失败与原始结构重验分开报告。
+两标志false，M0-02 pending。[证据与复现](../evidence/sampling-upgrade/s253/README.md)。
