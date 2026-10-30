@@ -1336,3 +1336,11 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 
 下一判别需要在原生子时间轴内定义函数、绑定定义上下文并配对保留/移除goto；root定义函数只换this不足以证明上下文失效。仍无正对照时需精确CallMethod/Pop/SetMember的原生执行PC与栈观测。
 [证据、成本与复现](../evidence/sampling-upgrade/s263/README.md)。
+
+
+## s264：s263 后重新排名第一项——未初始化接收方的真实查询
+
+2026-10-30（采样 s264，AFTER-s263 新排名第一项）：基于9d214870/#141重排，仅观察迪达拉P1 tick10–12真实查询。一次5437事件捕获，12条查询记录均在frame1初始化后；两次原调用链返回undefined，未进入hitTest操作数站点。方法体观察不能证明初始化前没有未定义方法调用，eligibility_fix_proved=false，不豁免接收方。122角色、61输入、954按键记录与s260相同，随机差异保留。73测试、receipt/诊断通过；pre-init要求与完整几何exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；新排名2+仅规划，未开始；无运行时或严格验证器修改。
+
+下一判别须在不依赖frame1定义的方法体之外观察调用点，区分未定义方法调用与未调用；不得提前初始化或移动采样。构建/捕获/检查的实际耗时保存在切片证据中。
+[新排序](../evidence/sampling-upgrade/next-fix-priority-after-s263.md) · [证据与复现](../evidence/sampling-upgrade/s264/README.md)。
