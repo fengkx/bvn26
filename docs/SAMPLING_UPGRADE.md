@@ -1300,3 +1300,17 @@ Chad 执行 PC。只执行第一项，其他项未开始。
 tape 重放或普遍行为不变。旧s232完整流仍exit1。67项测试通过，其他非display模式
 不推广；production_admitted=false、native_parity_proven=false，M0-02 pending。
 [证据与复现](../evidence/sampling-upgrade/s259/README.md)。
+
+## s260：s258 后排名第二项——receiver 初始化顺序
+
+仅跟进[AFTER-s258 排名2](../evidence/sampling-upgrade/next-fix-priority-after-s258.md)，
+沿用s256/s64原输入与tick11采样边界，一次新捕获补齐源跳转前、Sprite2 frame1入口/出口、
+首个bdmn enterFrame。事件序号证明几何结束早于frame1初始化，首回调已到父帧841；
+根计数尚为tick11，不能把它误称放置当帧回调。跳转后标记缺失不推导VM返回语义。
+初始化时序已观测，eligibility修复未证；不提前初始化、不移动采样、不改运行时。
+5274事件全流保留，122角色状态、61输入与954按键读取对s256相同，随机差异保留。
+68测试通过，receipt/诊断exit0，完整几何仍exit1（tick11缺P1 receiver）。
+production_admitted=false、native_parity_proven=false，M0-02 pending。
+下一判别是在同一未初始化区间观察真实源碰撞查询及其操作数，带正向观测对照，
+不得人工调用方法或豁免接收方。排名1/3/4/5、s254–s259、tick41、nested Yulong、
+ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evidence/sampling-upgrade/s260/README.md)。
