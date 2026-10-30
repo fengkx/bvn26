@@ -1287,3 +1287,16 @@ goto 后先寄存器写入，观察器入口先写入再执行旧 guard/receiver
 两标志false，M0-02 pending；排名1–4、s254–s257、运行时、阈值与验证器未动。
 下一判别为同一回调快照契约下完整视觉状态绑定及配对Godot场景重放。
 [证据、成本与复现](../evidence/sampling-upgrade/s258/README.md)。
+
+## s259：s258 后重排——独立几何完成窗口
+
+[新排序](../evidence/sampling-upgrade/next-fix-priority-after-s258.md) 根据 s254–s258
+新证据调整为：几何完成窗口、receiver 初始化顺序、AImain 清空身份、回调绑定视觉状态、
+Chad 执行 PC。只执行第一项，其他项未开始。
+
+固定 s232 一角 tape 的独立包装器启用终止周期闭窗，未修改共享 builder。正常/延迟退出
+收据与本格几何 gate 均 exit0（61样本/240框）；延迟对照保留34条终止回调，在下一根
+计数前闭窗，无tick61。122条角色状态及输入相同；随机值不同且原样留存，不宣称随机
+tape 重放或普遍行为不变。旧s232完整流仍exit1。67项测试通过，其他非display模式
+不推广；production_admitted=false、native_parity_proven=false，M0-02 pending。
+[证据与复现](../evidence/sampling-upgrade/s259/README.md)。

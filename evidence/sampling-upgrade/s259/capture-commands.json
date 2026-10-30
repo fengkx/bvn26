@@ -1,0 +1,61 @@
+{
+  "normal": {
+    "build": [
+      "python3",
+      "evidence/sampling-upgrade/s259/build_probe.py",
+      "--ffdec",
+      "/tmp/bvn-s66-tools/ffdec/ffdec.jar",
+      "--output",
+      "/tmp/bvn-s259-normal-build",
+      "--run-id",
+      "s259-yijiao-geometry-normal"
+    ],
+    "capture": [
+      "python3",
+      "-m",
+      "tools.sampling_native",
+      "--case",
+      "evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json",
+      "--build",
+      "/tmp/bvn-s259-normal-build",
+      "--trace",
+      "/tmp/bvn-s259-normal-capture/native.log",
+      "--receipt",
+      "/tmp/bvn-s259-normal-capture/receipt.json",
+      "--timeout",
+      "180",
+      "--allow-window-activation"
+    ],
+    "capture_exit_code": 0
+  },
+  "held": {
+    "build": [
+      "python3",
+      "evidence/sampling-upgrade/s259/build_probe.py",
+      "--ffdec",
+      "/tmp/bvn-s66-tools/ffdec/ffdec.jar",
+      "--output",
+      "/tmp/bvn-s259-held-build",
+      "--run-id",
+      "s259-yijiao-geometry-held",
+      "--hold-quit"
+    ],
+    "capture": [
+      "python3",
+      "-m",
+      "tools.sampling_native",
+      "--case",
+      "evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json",
+      "--build",
+      "/tmp/bvn-s259-held-build",
+      "--trace",
+      "/tmp/bvn-s259-held-capture/native.log",
+      "--receipt",
+      "/tmp/bvn-s259-held-capture/receipt.json",
+      "--timeout",
+      "180",
+      "--allow-window-activation"
+    ],
+    "capture_exit_code": 0
+  }
+}
