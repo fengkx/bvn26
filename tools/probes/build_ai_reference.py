@@ -179,7 +179,16 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False, chad_lifecycle: bool = False, deidara_atm1: bool = False, yulong_k1atm: bool = False, yulong_display_completion: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False, chad_lifecycle: bool = False, deidara_atm1: bool = False, yulong_k1atm: bool = False, yulong_display_completion: bool = False, deidara_atm1_load_stamp: bool = False) -> dict:
+    if deidara_atm1_load_stamp:
+        validate_atm1_case(move_case)
+        if (frames != 60 or p1_character != "迪达拉" or p2_character != "一护"
+                or p1_helper != "我爱罗" or p2_helper != "魂"
+                or dynamic_move_case or sampling_display or sampling_bitmap
+                or sampling_doaction or sampling_clipaction or sampling_callsite
+                or chad_lifecycle or yulong_k1atm or yulong_display_completion):
+            raise ValueError("atm1 load stamp requires the exclusive s64 geometry configuration")
+        deidara_atm1 = True
     if yulong_display_completion:
         validate_display_completion_case(move_case)
         if sampling_geometry or sampling_bitmap or sampling_doaction or sampling_clipaction or sampling_callsite or chad_lifecycle or deidara_atm1 or yulong_k1atm:
@@ -707,7 +716,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
             if yulong_k1atm:
                 updated = instrument_k1_source(original, updated, name, script["path"])
             if deidara_atm1:
-                updated = instrument_atm1_load(original, updated, name, script["path"])
+                updated = instrument_atm1_load(original, updated, name, script["path"], stamp=deidara_atm1_load_stamp)
             if chad_lifecycle:
                 updated = instrument_chad_lifecycle(original, updated, name, script["path"])
             if sampling_doaction:
@@ -755,6 +764,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "sampling_callsite": sampling_callsite,
         "chad_lifecycle": chad_lifecycle,
         "deidara_atm1": deidara_atm1,
+        "deidara_atm1_load_stamp": deidara_atm1_load_stamp,
         "yulong_k1atm": yulong_k1atm,
         "yulong_display_completion": yulong_display_completion,
         "display_completion_window": display_completion_window,
@@ -827,12 +837,14 @@ def main() -> None:
     parser.add_argument("--sampling-callsite", action="store_true")
     parser.add_argument("--chad-lifecycle", action="store_true")
     parser.add_argument("--deidara-atm1", action="store_true")
+    parser.add_argument("--deidara-atm1-load-stamp", action="store_true",
+                        help="Stamp only the source-bound s64 Woailuo atm1 load lifetime")
     parser.add_argument("--yulong-k1atm", action="store_true")
     parser.add_argument("--yulong-display-completion", action="store_true")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite, args.chad_lifecycle, args.deidara_atm1, args.yulong_k1atm, args.yulong_display_completion), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite, args.chad_lifecycle, args.deidara_atm1, args.yulong_k1atm, args.yulong_display_completion, args.deidara_atm1_load_stamp), ensure_ascii=False))
 
 
 if __name__ == "__main__":

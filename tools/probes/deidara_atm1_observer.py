@@ -14,7 +14,7 @@ def validate_case(path):
         raise ValueError('atm1 provenance requires the unchanged s64 summon case')
 
 
-def instrument_load(original, updated, name, path):
+def instrument_load(original, updated, name, path, *, stamp=False):
     if name != 'fighter/fz/woailuo' or path != LOAD_PATH:
         return updated
     if hashlib.sha256(original.replace('\r\n', '\n').encode()).hexdigest() != LOAD_SHA256:
@@ -23,7 +23,9 @@ def instrument_load(original, updated, name, path):
     closing = updated.rfind('}')
     def event(phase):
         return f'\n_root.aiAtm1Observe("{phase}",this,"{LOAD_SOURCE}");\n'
-    return updated[:opening] + event('load_before') + updated[opening:closing] + event('load_after') + updated[closing:]
+    # Bind this authored placement, never the helper root or a name-only lookup.
+    binding = f'\n_root.aiGeoStamp(this,"{LOAD_SOURCE}");\n' if stamp else ''
+    return updated[:opening] + event('load_before') + updated[opening:closing] + binding + event('load_after') + updated[closing:]
 
 
 def instrument_stamp(source):

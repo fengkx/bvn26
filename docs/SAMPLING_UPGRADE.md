@@ -1192,3 +1192,13 @@ s86/s93/s100/s248/s249 原始日志重算与既有报告一致：610条 AImain
 不能证明卸载前后的连续身份。禁止将0别名为1或删除节点；本次为 evidence-only，
 未修复任何缺帧义务。新增源时间轴/节点保留负例；完整显示仍 exit 1，
 两标志 false，M0-02 pending。[证据与下一步观测](../evidence/sampling-upgrade/s250/README.md)。
+
+## s251：排名第三项——单一援助放置的 load stamp
+
+仅原 s64 summon tape，显式 `--deidara-atm1-load-stamp` 在已核哈希的
+Woailuo frame44 / Sprite48 / depth2 / atm1 load 末尾调用既有 stamp，
+原 load 语句与 DoAction 不变。新原生捕获确认首次赋值与 tick58–60 子帧1–3
+身份延续，三条 unbound 消失；61样本/241框可结构读取，完整几何仍因
+tick11/41 缺 P1 receiver 而 exit 1（旧 s64/s246 原始记录也缺），不放宽义务。
+收据和局部证明 exit 0；122状态与两份旧捕获完全相同，不代表 Godot 一致。
+两标志 false，M0-02 pending，其他排名不重开。[证据](../evidence/sampling-upgrade/s251/README.md)。

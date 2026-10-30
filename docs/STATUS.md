@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-30（采样 s251，排名第三项）：仅 s64 原 tape 的 Woailuo frame44 / Sprite48 / atm1 load 插桩补齐 stamp；原生 tick58–60 子帧1–3绑定完整，三条 unbound 消失。收据/局部寿命证明 exit 0；完整几何仍因 tick11/41 缺 P1 receiver 而 exit 1，旧轨迹同样缺失。122状态与 s64/s246 相同；两标志 false，M0-02 pending，无玩法或门槛改动。[证据](../evidence/sampling-upgrade/s251/README.md)。
+
 - 2026-10-30（采样 s250，排名第二项诊断）：五份历史日志的610条 AImain 记录均为 frame 0；父时间轴绑定的是角色 Sprite 3，而非 main。非 AI initCtrl 明确 unloadMovie，但缺卸载前后连续身份观测，不能将0映射到1；本次仅交付证据与负例，完整显示仍 exit 1，两标志 false，M0-02 pending。[证据](../evidence/sampling-upgrade/s250/README.md)。
 
 - 2026-10-30（采样修复 s249）：先写五类缺口优先级，再将排名第一的 display 完成窗口用于普通单维采样。一角原 tape 正常/延迟退出收据与61样本结构 exit 0；延迟对照保留34条终止周期事件，完整显示仍有169项义务 exit 1。两标志 false，M0-02 pending，玉龙专项残留队列不重开。[排序](../evidence/sampling-upgrade/next-fix-priority.md) · [证据](../evidence/sampling-upgrade/s249/README.md)。
