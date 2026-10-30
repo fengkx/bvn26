@@ -1,0 +1,22 @@
+{
+  "main_sha256": "0ca27ddf66438b3c94ba2bb888bd94387c4b95f755257cd5ef5aacf6ea7aac12",
+  "ffdec_sha256": "090ab695053ad94cba6408574c7d7eea20ec60b6ae789ee6056a23f45106762f",
+  "exports_sha256": {
+    "worker.pcode.gz": "09af15e974496a092b2bcc03c843201278887725a23d772e752d903dd5bcf5fd",
+    "root.pcode.gz": "9cf1e5816a3162fe78d4d2e0006624e971ba9f86840724b4b272065a41d62540",
+    "boundary.pcode.gz": "722a48cc9fbfd953c72b0b4875c7ae588ca1d84726a048e8e8a6c7442a157552"
+  },
+  "command": [
+    "java",
+    "-Djava.awt.headless=true",
+    "-jar",
+    "/tmp/bvn-s66-tools/ffdec/ffdec.jar",
+    "-format",
+    "script:pcode",
+    "-export",
+    "script",
+    "/tmp/bvn-s266-r02-pcode",
+    "/tmp/bvn-s266-r02-build/game/main.swf"
+  ],
+  "scope": "Emitted P-code only; no executed-PC or stack capture."
+}
