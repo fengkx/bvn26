@@ -1,0 +1,72 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s270/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s270/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.20898012490943074
+  },
+  "runtime-binding": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s270/diagnose.py",
+      "--output",
+      "/tmp/s270-required.json",
+      "--require-runtime-binding"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.19560704100877047
+  },
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s239/yulong__attack__neutral__ground__near.json'),Path('/tmp/bvn-s247-capture-r01/receipt.json')))"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.7288511248771101
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_nested_owner_diagnosis",
+      "tools.tests.test_yulong_k1atm_observer",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.9841206660494208
+  },
+  "geometry-cli": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s239/yulong__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s247-capture-r01/receipt.json",
+      "--output",
+      "/tmp/s270-geometry.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.08371391706168652
+  },
+  "geometry-collector": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s270/diagnose.py",
+      "--output",
+      "/tmp/s270-geometry-diagnosis.json",
+      "--require-geometry"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.2115860420744866
+  }
+}

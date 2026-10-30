@@ -1377,3 +1377,10 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-10-31（采样 s269，AFTER-s263 排名第六项）：先分类 s223 首次 callsite 拒绝的完整尾段：51条终止周期事件后出现11条tick61事件。仅此案例独立 opt-in 正常/延迟退出两次捕获收据与61样本通过；延迟对照保留51条回调再闭窗，无tick61。122角色状态与旧案例相同，随机差异保留。tick10缺调用后沿仍在，callsite/完整AS均exit1，825未访问、420未插桩；107聚焦测试通过。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–5/7–9及s254–s268未动，无默认推广或运行时/严格验证器变更。
 
 [证据、成本与复现](../evidence/sampling-upgrade/s269/README.md)。
+
+
+## s270：s263 后排名第七项——嵌套几何 owner 链
+
+2026-10-31（采样 s270，AFTER-s263 排名第七项）：仅复算玉龙 Sprite345→k1atm(Sprite104)→mian(Sprite2) 链。补全10帧时间轴、外层五个碰撞操作数和父子采样寿命；tick19子路径消失但父仍stamp70/frame5，第四接收者为hitmc.mian。实际调用操作数及移除/改名瞬间仍缺，无绑定或eligibility修复。54聚焦测试通过；完整原始序列/诊断exit0，绑定要求/严格几何collector exit1；旧收据因既有探针哈希漂移exit1，未修补。零新捕获，production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s269未动，无运行时或严格验证器修改。
+
+[证据、成本与复现](../evidence/sampling-upgrade/s270/README.md)。
