@@ -1,0 +1,75 @@
+{
+  "diagnosis": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s274/diagnose.py",
+      "--output",
+      "/tmp/s274-check.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.2832779160235077,
+    "log": "diagnosis.txt"
+  },
+  "state-admission": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s274/diagnose.py",
+      "--output",
+      "/tmp/s274-required.json",
+      "--require-state-admission"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.27651108405552804,
+    "log": "state-admission.txt"
+  },
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json'), Path('evidence/sampling-upgrade/s274/native-receipt.json')))"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.7455595000647008,
+    "log": "receipt.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_encoded_digit_lifetime",
+      "tools.tests.test_callback_scene_lifetime",
+      "tools.tests.test_strict_raster_admission",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_bitmap"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 19.223915667040274,
+    "log": "focused-tests.txt"
+  },
+  "historical-strict-rgba": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/tmp/s274-historical-strict.json",
+      "--strict-rgba"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 16.378544291947037,
+    "log": "historical-strict-rgba.txt"
+  }
+}
