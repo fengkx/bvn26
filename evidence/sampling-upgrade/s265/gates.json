@@ -1,0 +1,73 @@
+{
+  "diagnosis": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s265/diagnose.py",
+      "--output",
+      "/tmp/s265-check.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.6314876659307629,
+    "log": "diagnosis.txt"
+  },
+  "scene-admission": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s265/diagnose.py",
+      "--output",
+      "/tmp/s265-required.json",
+      "--require-scene-join"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.6184226248878986,
+    "log": "scene-admission.txt"
+  },
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s220/sasuke__attack__neutral__ground__near.json'), Path('evidence/sampling-upgrade/s265/native-receipt.json')))"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.9765779168810695,
+    "log": "receipt.txt"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_callback_scene_lifetime",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_bitmap"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 12.067245292011648,
+    "log": "focused-tests.txt"
+  },
+  "historical-strict-rgba": {
+    "command": [
+      "env",
+      "PYTHONPATH=.",
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/tmp/s265-historical-strict.json",
+      "--strict-rgba"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 14.093881041975692,
+    "log": "historical-strict-rgba.txt"
+  }
+}

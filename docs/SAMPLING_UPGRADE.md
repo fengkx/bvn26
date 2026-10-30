@@ -1344,3 +1344,10 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 
 下一判别须在不依赖frame1定义的方法体之外观察调用点，区分未定义方法调用与未调用；不得提前初始化或移动采样。构建/捕获/检查的实际耗时保存在切片证据中。
 [新排序](../evidence/sampling-upgrade/next-fix-priority-after-s263.md) · [证据与复现](../evidence/sampling-upgrade/s264/README.md)。
+
+
+## s265：s263 后排名第二项——回调到场景的视觉连接
+
+2026-10-30（采样 s265，AFTER-s263 排名第二项）：复用锁定s262构建，一次无成像捕获27643事件。个位PlaceObject独立load观测跨538个采样点保持代号1；同源保留对照frame1重入仍代号2，同深度替换出现unload2/load3。122角色状态与s262相同。无编码路径17次回调不能替代s262的68次；编码窗口寿命和场景连接仍未证明，准入exit1，未推进场景或生成图片。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1及3–9、s254–s264、运行时和严格验证器未动。
+
+[证据、成本与复现](../evidence/sampling-upgrade/s265/README.md)。
