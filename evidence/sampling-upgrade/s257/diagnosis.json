@@ -1,0 +1,295 @@
+{
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "exit_model_fix_proved": false,
+  "positive_post_goto_witness": false,
+  "events": 9727,
+  "root_samples": 61,
+  "observations": [
+    {
+      "type": "undefined",
+      "token": "undefined",
+      "before": "undefined",
+      "control": "undefined",
+      "post": "undefined",
+      "observer_entry": "undefined",
+      "sequence": 7439,
+      "tick": 10,
+      "display": 445
+    },
+    {
+      "type": "object",
+      "token": "s257-chad-normal-goto",
+      "before": "1",
+      "control": "1",
+      "post": "0",
+      "observer_entry": "0",
+      "sequence": 7484,
+      "tick": 11,
+      "display": 446
+    },
+    {
+      "type": "object",
+      "token": "s257-chad-normal-goto",
+      "before": "1",
+      "control": "1",
+      "post": "0",
+      "observer_entry": "0",
+      "sequence": 7521,
+      "tick": 12,
+      "display": 447
+    }
+  ],
+  "actor_comparison": {
+    "rows": 122,
+    "exact_tick_payload_equal_s252": true
+  },
+  "lifecycle": {
+    "observations": [
+      {
+        "phase": "caller_before",
+        "saved_path": "_level0.game.p1.mc.instance255",
+        "receiver": "_level0.game.p1.mc.instance255",
+        "saved_receiver": "_level0.game.p1.mc.instance255",
+        "saved_parent": "_level0.game.p1.mc",
+        "saved_frame": "1",
+        "depth": "-16353",
+        "parent_frame": "5",
+        "occupant": "_level0.game.p1.mc.instance255",
+        "same_occupant": "true",
+        "sequence": 7462,
+        "display": 445,
+        "tick": 10
+      },
+      {
+        "phase": "callee_enter",
+        "saved_path": "_level0.game.p1.mc.instance255",
+        "receiver": "_level0.game.p1.mc.instance255",
+        "saved_receiver": "_level0.game.p1.mc.instance255",
+        "saved_parent": "_level0.game.p1.mc",
+        "saved_frame": "1",
+        "depth": "-16353",
+        "parent_frame": "5",
+        "occupant": "_level0.game.p1.mc.instance255",
+        "same_occupant": "true",
+        "sequence": 7463,
+        "display": 445,
+        "tick": 10
+      },
+      {
+        "phase": "goto_before",
+        "saved_path": "_level0.game.p1.mc.instance255",
+        "receiver": "_level0.game.p1.mc.instance255",
+        "saved_receiver": "_level0.game.p1.mc.instance255",
+        "saved_parent": "_level0.game.p1.mc",
+        "saved_frame": "1",
+        "depth": "-16353",
+        "parent_frame": "5",
+        "occupant": "_level0.game.p1.mc.instance255",
+        "same_occupant": "true",
+        "sequence": 7469,
+        "display": 445,
+        "tick": 10
+      },
+      {
+        "phase": "root_sample",
+        "saved_path": "_level0.game.p1.mc.instance255",
+        "receiver": "undefined",
+        "saved_receiver": "",
+        "saved_parent": "undefined",
+        "saved_frame": "undefined",
+        "depth": "-16353",
+        "parent_frame": "183",
+        "occupant": "undefined",
+        "same_occupant": "false",
+        "sequence": 7485,
+        "display": 446,
+        "tick": 11
+      }
+    ],
+    "missing_boundaries": [
+      "goto_after",
+      "callee_exit",
+      "caller_after"
+    ],
+    "exit_observations_complete": false,
+    "production_admitted": false,
+    "native_parity_proven": false,
+    "scope": "one Chad tick-10 invocation; no VM control-flow or full AS ownership proof"
+  },
+  "incomplete_invocations": [
+    {
+      "entry_sequence": 7458,
+      "observer_tick": 10,
+      "instance": "_level0.game.p1.mc.instance255",
+      "phases": [
+        {
+          "phase": "predicate_before",
+          "sequence": 7459
+        },
+        {
+          "phase": "true",
+          "sequence": 7460
+        },
+        {
+          "phase": "call_before",
+          "sequence": 7461
+        }
+      ]
+    }
+  ],
+  "call_counts": {
+    "true": 45,
+    "false": 409
+  },
+  "full_as": {
+    "unvisited": 594,
+    "uninstrumented": 415
+  },
+  "boundary_window": [
+    "AIREF|s257-chad-continuation-r01|7439|24603|445|10|s257_witness|undefined,undefined,undefined,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7440|24632|445|10|clipaction_entry|836a495aa5e42aead7bf12cce8c73b508f15188ffb56146111ed1ee69dbb8b37,%5Flevel0%2Egame%2Ep2%2Emc%2Einstance336,1",
+    "AIREF|s257-chad-continuation-r01|7441|24632|445|10|key_read|_level0.game.p2.mc,40,false",
+    "AIREF|s257-chad-continuation-r01|7442|24632|445|10|key_read|_level0.game.p2.mc,97,false",
+    "AIREF|s257-chad-continuation-r01|7443|24632|445|10|key_read|_level0.game.p2.mc,97,false",
+    "AIREF|s257-chad-continuation-r01|7444|24633|445|10|key_read|_level0.game.p2.mc,38,false",
+    "AIREF|s257-chad-continuation-r01|7445|24633|445|10|key_read|_level0.game.p2.mc,40,false",
+    "AIREF|s257-chad-continuation-r01|7446|24633|445|10|key_read|_level0.game.p2.mc,38,false",
+    "AIREF|s257-chad-continuation-r01|7447|24633|445|10|key_read|_level0.game.p2.mc,40,false",
+    "AIREF|s257-chad-continuation-r01|7448|24633|445|10|key_read|_level0.game.p2.mc,100,false",
+    "AIREF|s257-chad-continuation-r01|7449|24633|445|10|key_read|_level0.game.p2.mc,40,false",
+    "AIREF|s257-chad-continuation-r01|7450|24633|445|10|key_read|_level0.game.p2.mc,38,false",
+    "AIREF|s257-chad-continuation-r01|7451|24633|445|10|key_read|_level0.game.p2.mc,101,false",
+    "AIREF|s257-chad-continuation-r01|7452|24633|445|10|key_read|_level0.game.p2.mc,102,false",
+    "AIREF|s257-chad-continuation-r01|7453|24634|445|10|key_read|_level0.game.p2.mc,37,false",
+    "AIREF|s257-chad-continuation-r01|7454|24634|445|10|key_read|_level0.game.p2.mc,39,false",
+    "AIREF|s257-chad-continuation-r01|7455|24634|445|10|key_read|_level0.game.p2.mc,99,false",
+    "AIREF|s257-chad-continuation-r01|7456|24634|445|10|key_read|_level0.game.p2.mc,98,false",
+    "AIREF|s257-chad-continuation-r01|7457|24634|445|10|clipaction_entry|419041ec6f957ed818305813813a020634dd3151a04b4090ea1a279de51a682d,%5Flevel0%2Egame%2Ep2%2Emc%2Ebdmn,1",
+    "AIREF|s257-chad-continuation-r01|7458|24635|445|10|clipaction_entry|bb6a13a3379e88408fcfa67c7d99591e3ecd7eff29f7d21f08ac0349fe9f9e5b,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,1",
+    "AIREF|s257-chad-continuation-r01|7459|24635|445|10|callsite|bb6a13a3379e88408fcfa67c7d99591e3ecd7eff29f7d21f08ac0349fe9f9e5b,predicate_before,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255",
+    "AIREF|s257-chad-continuation-r01|7460|24635|445|10|callsite|bb6a13a3379e88408fcfa67c7d99591e3ecd7eff29f7d21f08ac0349fe9f9e5b,true,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255",
+    "AIREF|s257-chad-continuation-r01|7461|24635|445|10|callsite|bb6a13a3379e88408fcfa67c7d99591e3ecd7eff29f7d21f08ac0349fe9f9e5b,call_before,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255",
+    "AIREF|s257-chad-continuation-r01|7462|24635|445|10|chad_lifecycle|caller_before,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc,1,-16353,5,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,true",
+    "AIREF|s257-chad-continuation-r01|7463|24635|445|10|chad_lifecycle|callee_enter,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc,1,-16353,5,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,true",
+    "AIREF|s257-chad-continuation-r01|7464|24635|445|10|key_read|_level0.game.p1.mc,83,false",
+    "AIREF|s257-chad-continuation-r01|7465|24636|445|10|key_read|_level0.game.p1.mc,74,true",
+    "AIREF|s257-chad-continuation-r01|7466|24636|445|10|key_read|_level0.game.p1.mc,75,false",
+    "AIREF|s257-chad-continuation-r01|7467|24636|445|10|key_read|_level0.game.p1.mc,87,false",
+    "AIREF|s257-chad-continuation-r01|7468|24636|445|10|key_read|_level0.game.p1.mc,83,false",
+    "AIREF|s257-chad-continuation-r01|7469|24636|445|10|chad_lifecycle|goto_before,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,%5Flevel0%2Egame%2Ep1%2Emc,1,-16353,5,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,true",
+    "AIREF|s257-chad-continuation-r01|7470|24636|445|10|clipaction_entry|da33ad8d578c467a1e7e7ff91748c862255326589bc6976d620dcedda60a467a,%5Flevel0%2Egame%2Ep2%2Emc,5",
+    "AIREF|s257-chad-continuation-r01|7471|24636|445|10|key_read|_level0.game.p2.mc,99,false",
+    "AIREF|s257-chad-continuation-r01|7472|24636|445|10|clipaction_entry|4c900d2e2e4150f5e4a73469da6ac846e075fadf54a614b7331e41adc8a7065d,%5Flevel0%2Egame%2Ep1%2Emc,183",
+    "AIREF|s257-chad-continuation-r01|7473|24636|445|10|key_read|_level0.game.p1.mc,76,false",
+    "AIREF|s257-chad-continuation-r01|7474|24637|446|11|input_next_display|w=undefined,a=undefined,l=undefined,上箭=undefined,下箭=undefined,左箭=undefined,右箭=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=true,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined",
+    "AIREF|s257-chad-continuation-r01|7475|24637|446|11|state|p1,183,f:1:6:104857600:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false",
+    "AIREF|s257-chad-continuation-r01|7476|24637|446|11|helper_state|p1,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7477|24637|446|11|helper_clip_state|p1,1,atm1=undefined",
+    "AIREF|s257-chad-continuation-r01|7478|24637|446|11|helper_lifecycle|p1,1,true,false,2,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7479|24638|446|11|state|p2,5,f:1:7:78643200:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false",
+    "AIREF|s257-chad-continuation-r01|7480|24638|446|11|helper_state|p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7481|24638|446|11|helper_clip_state|p2,1,atm1=undefined",
+    "AIREF|s257-chad-continuation-r01|7482|24638|446|11|helper_lifecycle|p2,1,true,false,2,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7483|24638|446|11|doaction_sample|root-observer",
+    "AIREF|s257-chad-continuation-r01|7484|24638|446|11|s257_witness|object,s257-chad-normal-goto,1,1,0,0",
+    "AIREF|s257-chad-continuation-r01|7485|24638|446|11|chad_lifecycle|root_sample,%5Flevel0%2Egame%2Ep1%2Emc%2Einstance255,undefined,,undefined,undefined,-16353,183,undefined,false",
+    "AIREF|s257-chad-continuation-r01|7486|24638|446|11|doaction_entry|c4579938b4b61aa28bcf3c2b23c341ff7981b13691cf31ff76e2e333e601cfcb,%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn,1",
+    "AIREF|s257-chad-continuation-r01|7487|24664|446|11|clipaction_entry|ef4502143ec56c2080f2358ae96e13c4ad25d998a1c519ddcb33e85c7ec6e06a,%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn,1",
+    "AIREF|s257-chad-continuation-r01|7488|24664|446|11|clipaction_entry|836a495aa5e42aead7bf12cce8c73b508f15188ffb56146111ed1ee69dbb8b37,%5Flevel0%2Egame%2Ep2%2Emc%2Einstance336,1",
+    "AIREF|s257-chad-continuation-r01|7489|24664|446|11|key_read|_level0.game.p2.mc,40,false",
+    "AIREF|s257-chad-continuation-r01|7490|24664|446|11|key_read|_level0.game.p2.mc,97,false",
+    "AIREF|s257-chad-continuation-r01|7491|24665|446|11|key_read|_level0.game.p2.mc,97,false",
+    "AIREF|s257-chad-continuation-r01|7492|24665|446|11|key_read|_level0.game.p2.mc,38,false",
+    "AIREF|s257-chad-continuation-r01|7493|24665|446|11|key_read|_level0.game.p2.mc,40,false",
+    "AIREF|s257-chad-continuation-r01|7494|24665|446|11|key_read|_level0.game.p2.mc,38,false",
+    "AIREF|s257-chad-continuation-r01|7495|24665|446|11|key_read|_level0.game.p2.mc,40,false",
+    "AIREF|s257-chad-continuation-r01|7496|24665|446|11|key_read|_level0.game.p2.mc,100,false",
+    "AIREF|s257-chad-continuation-r01|7497|24665|446|11|key_read|_level0.game.p2.mc,40,false",
+    "AIREF|s257-chad-continuation-r01|7498|24665|446|11|key_read|_level0.game.p2.mc,38,false",
+    "AIREF|s257-chad-continuation-r01|7499|24665|446|11|key_read|_level0.game.p2.mc,101,false",
+    "AIREF|s257-chad-continuation-r01|7500|24666|446|11|key_read|_level0.game.p2.mc,102,false",
+    "AIREF|s257-chad-continuation-r01|7501|24666|446|11|key_read|_level0.game.p2.mc,37,false",
+    "AIREF|s257-chad-continuation-r01|7502|24666|446|11|key_read|_level0.game.p2.mc,39,false",
+    "AIREF|s257-chad-continuation-r01|7503|24666|446|11|key_read|_level0.game.p2.mc,99,false",
+    "AIREF|s257-chad-continuation-r01|7504|24666|446|11|key_read|_level0.game.p2.mc,98,false",
+    "AIREF|s257-chad-continuation-r01|7505|24666|446|11|clipaction_entry|419041ec6f957ed818305813813a020634dd3151a04b4090ea1a279de51a682d,%5Flevel0%2Egame%2Ep2%2Emc%2Ebdmn,1",
+    "AIREF|s257-chad-continuation-r01|7506|24666|446|11|clipaction_entry|da33ad8d578c467a1e7e7ff91748c862255326589bc6976d620dcedda60a467a,%5Flevel0%2Egame%2Ep2%2Emc,6",
+    "AIREF|s257-chad-continuation-r01|7507|24667|446|11|key_read|_level0.game.p2.mc,99,false",
+    "AIREF|s257-chad-continuation-r01|7508|24667|446|11|clipaction_entry|4c900d2e2e4150f5e4a73469da6ac846e075fadf54a614b7331e41adc8a7065d,%5Flevel0%2Egame%2Ep1%2Emc,184",
+    "AIREF|s257-chad-continuation-r01|7509|24667|446|11|key_read|_level0.game.p1.mc,76,false",
+    "AIREF|s257-chad-continuation-r01|7510|24667|446|11|doaction_entry|ba16ad32e6d138fcaa6139572d02e71166d8b6bd62c7ebbd8cfd98b3ce5ff4d4,%5Flevel0%2Egame%2Ep1%2Emc,184",
+    "AIREF|s257-chad-continuation-r01|7511|24667|447|12|input_next_display|w=undefined,a=undefined,l=undefined,上箭=undefined,下箭=undefined,左箭=undefined,右箭=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=true,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined",
+    "AIREF|s257-chad-continuation-r01|7512|24667|447|12|state|p1,184,f:1:6:104857600:0,f:-1:4:104857600:0,f:1:6:104857600:0,1,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false",
+    "AIREF|s257-chad-continuation-r01|7513|24667|447|12|helper_state|p1,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7514|24668|447|12|helper_clip_state|p1,1,atm1=undefined",
+    "AIREF|s257-chad-continuation-r01|7515|24668|447|12|helper_lifecycle|p1,1,true,false,2,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7516|24668|447|12|state|p2,6,f:1:7:78643200:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false",
+    "AIREF|s257-chad-continuation-r01|7517|24668|447|12|helper_state|p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7518|24668|447|12|helper_clip_state|p2,1,atm1=undefined",
+    "AIREF|s257-chad-continuation-r01|7519|24668|447|12|helper_lifecycle|p2,1,true,false,2,undefined,undefined,undefined",
+    "AIREF|s257-chad-continuation-r01|7520|24668|447|12|doaction_sample|root-observer",
+    "AIREF|s257-chad-continuation-r01|7521|24668|447|12|s257_witness|object,s257-chad-normal-goto,1,1,0,0"
+  ],
+  "compiled_sites": {
+    "post_goto": "Push \"砍1\"\nPush 1\nPush register2\nPush \"gotoAndPlay\"\nCallMethod\nPop\nPush register5\nPush \"post\"\nPush 1\nSetMember\nPush register5\nPush register1\nPush \"goto_after\"\nPush 3\nPush register6\nPush undefined\nCallMethod",
+    "observer_entry": "4, \"s257Witness\" {\nPush register4\nPush \"observerEntry\"\nPush 1\nSetMember\n",
+    "positive_control": "Push register5\nPush register1\nPush \"s257_control\"\nPush 3\nPush register6\nPush undefined\nCallMethod",
+    "executed_pc_trace": false
+  },
+  "source": {
+    "handler_path": "DefineSprite_607/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+    "handler": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      doAllAction();\r\n   }\r\n}\r\n",
+    "callee_path": "DefineSprite_16/frame_1/DoAction.as",
+    "callee": "function doAllAction(special)\r\n{\r\n   if(special == undefined)\r\n   {\r\n      special = \"\";\r\n   }\r\n   if(defence())\r\n   {\r\n      _parent.gotoAndPlay(\"防御\");\r\n   }\r\n   if(nornalhit())\r\n   {\r\n      _parent.gotoAndPlay(\"砍1\");\r\n   }\r\n   if(wankai())\r\n   {\r\n      _parent.gotoAndPlay(\"万解\");\r\n   }\r\n   if(skill2())\r\n   {\r\n      _parent.gotoAndPlay(\"砍技2\");\r\n   }\r\n   if(skill1())\r\n   {\r\n      _parent.gotoAndPlay(\"砍技1\");\r\n   }\r\n   if(magichit3())\r\n   {\r\n      _parent.gotoAndPlay(\"招3\");\r\n   }\r\n   if(magichit2())\r\n   {\r\n      _parent.gotoAndPlay(\"招2\");\r\n   }\r\n   if(magichit1())\r\n   {\r\n      _parent.gotoAndPlay(\"招1\");\r\n   }\r\n   if(bishaSuper())\r\n   {\r\n      _parent.gotoAndPlay(\"超必杀\");\r\n   }\r\n   if(bishaUP())\r\n   {\r\n      _parent.gotoAndPlay(\"上必杀\");\r\n   }\r\n   if(bisha())\r\n   {\r\n      _parent.gotoAndPlay(\"必杀\");\r\n   }\r\n   if(zhaoHuan())\r\n   {\r\n      _parent.gotoAndPlay(\"招换\");\r\n   }\r\n   var _loc3_ = moveLeft();\r\n   var _loc2_ = moveRight();\r\n   if(_loc3_)\r\n   {\r\n      _parent._parent._xscale = -100;\r\n      _parent._parent.scale_X = -1;\r\n   }\r\n   if(_loc2_)\r\n   {\r\n      _parent._parent._xscale = 100;\r\n      _parent._parent.scale_X = 1;\r\n   }\r\n   if(rush())\r\n   {\r\n      _parent.gotoAndPlay(\"瞬步\");\r\n   }\r\n   if(jump())\r\n   {\r\n      _parent.gotoAndPlay(\"跳\");\r\n   }\r\n   if(_loc3_)\r\n   {\r\n      _parent._parent._x -= _parent.speed;\r\n      _parent.gotoAndPlay(\"走\");\r\n   }\r\n   if(_loc2_)\r\n   {\r\n      _parent._parent._x += _parent.speed;\r\n      _parent.gotoAndPlay(\"走\");\r\n   }\r\n   if(!_loc3_ && !_loc2_)\r\n   {\r\n      _parent.updateDirect();\r\n   }\r\n   doDropDown();\r\n}",
+    "timeline": {
+      "source_swf": "game/fighter/chad.swf",
+      "source_sha256": "2a15610b6e28d2a0b1c88d616b0af0406c9ee78410007068c3e43a6a1967a4be",
+      "xml_archive": "evidence/sampling-upgrade/s72/chad-source-export.tar.gz",
+      "xml_sha256": "308e85b27cce77343eae21f241871f069c4c0ce65c3a4fdf64bbca4dae1b120c",
+      "timeline_sprite": 607,
+      "timeline_facts": [
+        {
+          "frame": 1,
+          "tag_index": 8,
+          "attributes": {
+            "type": "PlaceObject2Tag",
+            "characterId": "16",
+            "depth": "31",
+            "forceWriteAsLong": "true",
+            "placeFlagHasCharacter": "true",
+            "placeFlagHasClipActions": "true",
+            "placeFlagHasClipDepth": "false",
+            "placeFlagHasColorTransform": "true",
+            "placeFlagHasMatrix": "true",
+            "placeFlagHasName": "false",
+            "placeFlagHasRatio": "false",
+            "placeFlagMove": "false"
+          }
+        },
+        {
+          "frame": 13,
+          "tag_index": 26,
+          "attributes": {
+            "type": "RemoveObject2Tag",
+            "depth": "31",
+            "forceWriteAsLong": "false"
+          }
+        },
+        {
+          "frame": 183,
+          "tag_index": 342,
+          "attributes": {
+            "type": "FrameLabelTag",
+            "forceWriteAsLong": "true",
+            "name": "砍1",
+            "namedAnchor": "false"
+          }
+        }
+      ],
+      "callee_path": "DefineSprite_16/frame_1/DoAction.as",
+      "callee_function": "function doAllAction(special)\n{\n   if(special == undefined)\n   {\n      special = \"\";\n   }\n   if(defence())\n   {\n      _parent.gotoAndPlay(\"防御\");\n   }\n   if(nornalhit())\n   {\n      _parent.gotoAndPlay(\"砍1\");\n   }\n   if(wankai())\n   {\n      _parent.gotoAndPlay(\"万解\");\n   }\n   if(skill2())\n   {\n      _parent.gotoAndPlay(\"砍技2\");\n   }\n   if(skill1())\n   {\n      _parent.gotoAndPlay(\"砍技1\");\n   }\n   if(magichit3())\n   {\n      _parent.gotoAndPlay(\"招3\");\n   }\n   if(magichit2())\n   {\n      _parent.gotoAndPlay(\"招2\");\n   }\n   if(magichit1())\n   {\n      _parent.gotoAndPlay(\"招1\");\n   }\n   if(bishaSuper())\n   {\n      _parent.gotoAndPlay(\"超必杀\");\n   }\n   if(bishaUP())\n   {\n      _parent.gotoAndPlay(\"上必杀\");\n   }\n   if(bisha())\n   {\n      _parent.gotoAndPlay(\"必杀\");\n   }\n   if(zhaoHuan())\n   {\n      _parent.gotoAndPlay(\"招换\");\n   }\n   var _loc3_ = moveLeft();\n   var _loc2_ = moveRight();\n   if(_loc3_)\n   {\n      _parent._parent._xscale = -100;\n      _parent._parent.scale_X = -1;\n   }\n   if(_loc2_)\n   {\n      _parent._parent._xscale = 100;\n      _parent._parent.scale_X = 1;\n   }\n   if(rush())\n   {\n      _parent.gotoAndPlay(\"瞬步\");\n   }\n   if(jump())\n   {\n      _parent.gotoAndPlay(\"跳\");\n   }\n   if(_loc3_)\n   {\n      _parent._parent._x -= _parent.speed;\n      _parent.gotoAndPlay(\"走\");\n   }\n   if(_loc2_)\n   {\n      _parent._parent._x += _parent.speed;\n      _parent.gotoAndPlay(\"走\");\n   }\n   if(!_loc3_ && !_loc2_)\n   {\n      _parent.updateDirect();\n   }\n   doDropDown();\n}"
+    }
+  },
+  "next_discriminator": "Executed-PC or VM stack observation across this exact goto CallMethod/Pop and following register5 SetMember, paired with a positive same-context continuation control. Do not infer return or abort from absent writes."
+}

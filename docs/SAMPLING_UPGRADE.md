@@ -1262,3 +1262,15 @@ tick12初始化齐全。保存的旧引用也读到新字段，不能据引用�
 61项聚焦测试通过。下一判别为该次跳转、Sprite2初始化及首个enterFrame的直接顺序观测。
 两标志false，M0-02 pending；排名1/2/4/5、tick41、玉龙、BitmapData和玩法均未扩展。
 [证据、成本与复现](../evidence/sampling-upgrade/s256/README.md)。
+
+## s257：AFTER-s253 排名第四项——独立 AS continuation 判别
+
+仅针对 Chad s76 tick10 的原始调用，使用预存普通对象和函数引用，
+goto 后先寄存器写入，观察器入口先写入再执行旧 guard/receiver 查询。
+调用前对照成功，tick11/12 post 与入口仍为0；编译序列存在不等于已执行 PC，
+没有正向后续执行或 VM 返回证明，不实现退出模型。一次9727事件捕获，
+122条角色状态与s252完全相同。91项测试通过，receipt/诊断exit0，
+退出/调用/完整AS保留exit1（594未访问、415未插桩）。两标志false、M0-02 pending。
+下一判别需精确 goto/Pop/SetMember 的执行 PC 和栈展开观测，分别记录移除与返回。
+排名1/2/3/5、s254–s256、运行时和严格验证器未动；
+[证据、捕获恢复说明与复现](../evidence/sampling-upgrade/s257/README.md)。
