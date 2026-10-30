@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-31（采样 s272，AFTER-s263 排名第九项）：限定倒计时字形边缘候选家族，复算 s262 的32227事件/61原版位图，并逐项核对同次捕获的配对场景状态。tick13数字5/10对1/1；相机X差异12帧、scale精确值差异61帧。状态准入未通过且同次Godot图片为0，不能归因栅格化；薄切要求及历史严格RGBA仍exit1（0/61），保留下一步同次捕获状态连接与边缘分类判别。零新捕获，无渲染修复。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–8及s254–s271未动，严格验证器不变。[证据](../evidence/sampling-upgrade/s272/README.md)。
+
 - 2026-10-31（采样 s271，AFTER-s263 排名第八项）：仅盘点 main Button2009 的 Enter/release 两条未插桩义务，绑定 game_menu 十帧、放置与菜单键盘前置链。复算 s263 全部9774事件/61采样，仍594未访问、415未插桩；战斗按键读取不证明原生按钮派发，s266也未证明精确退出模型。无可证明覆盖修复，零新捕获；诊断/48聚焦测试通过，薄覆盖要求及严格完整AS exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s270未动，无运行时或严格验证器修改。[证据](../evidence/sampling-upgrade/s271/README.md)。
 
 - 2026-10-31（采样 s270，AFTER-s263 排名第七项）：仅复算玉龙 Sprite345→k1atm(Sprite104)→mian(Sprite2) 链。补全10帧时间轴、外层五个碰撞操作数和父子采样寿命；tick19子路径消失但父仍stamp70/frame5，第四接收者为hitmc.mian。实际调用操作数及移除/改名瞬间仍缺，无绑定或eligibility修复。54聚焦测试通过；完整原始序列/诊断exit0，绑定要求/严格几何collector exit1；旧收据因既有探针哈希漂移exit1，未修补。零新捕获，production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s269未动，无运行时或严格验证器修改。[证据](../evidence/sampling-upgrade/s270/README.md)。
