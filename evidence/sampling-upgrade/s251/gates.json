@@ -1,0 +1,37 @@
+{
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json'),Path('/tmp/bvn-s251-capture-r01/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.12444120808504522
+  },
+  "geometry": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s64/didala__summon__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s251-capture-r01/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s251/geometry.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.1464444159064442
+  },
+  "bounded_lifetime": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s251/verify_lifetime.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 0.35561837488785386
+  }
+}
