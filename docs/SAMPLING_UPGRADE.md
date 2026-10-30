@@ -1174,3 +1174,12 @@ DoAction-only stamp 缺少首次查询前的子实例绑定，不能继承父 st
 159项测试通过，两标志 false，无游戏改动。约定的玉龙专项残留队列已留证：
 s239由s247诊断，s240由本切片补齐捕获边界证据；不重开s241–s244，不代表全角色
 或M0-02通过。[证据及对照条件](../evidence/sampling-upgrade/s248/README.md)。
+
+
+## s249：修复优先级第一项——普通 display 完成窗口
+
+先按跨角色收益、隔离程度与机制证据写[五类排序](../evidence/sampling-upgrade/next-fix-priority.md)，
+本刀仅推广 s248 已证实的终止周期关闭到普通单维 display；混合模式及其他维度保持原行为。
+一角 s233 原 tape 新正常/延迟退出均获有效收据、61样本/1533节点；延迟对照 done 后
+保留34条同周期事件再关闭，无 tick61。完整显示仍169项义务 exit 1，旧拒绝轨迹不变。
+两标志 false，M0-02 pending，玉龙专项证据队列不重开。[证据](../evidence/sampling-upgrade/s249/README.md)。

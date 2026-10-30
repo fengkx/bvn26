@@ -1,0 +1,60 @@
+{
+  "normal-receipt": {
+    "exit_code": 0,
+    "case": "evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json",
+    "receipt": "/tmp/bvn-s249-capture/receipt.json"
+  },
+  "normal-structure": {
+    "exit_code": 0,
+    "samples": 61
+  },
+  "normal-display": {
+    "exit_code": 1,
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_display",
+      "--case",
+      "evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s249-capture/receipt.json",
+      "--exports",
+      "evidence/sampling-upgrade/s249/source-exports.json",
+      "--output",
+      "/tmp/bvn-s249-display.json"
+    ],
+    "output": "display evidence error: 169 unresolved source/hierarchy obligations; see output\n"
+  },
+  "held-receipt": {
+    "exit_code": 0,
+    "case": "evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json",
+    "receipt": "/tmp/bvn-s249-held-capture/receipt.json"
+  },
+  "held-structure": {
+    "exit_code": 0,
+    "samples": 61
+  },
+  "held-display": {
+    "exit_code": 1,
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_display",
+      "--case",
+      "evidence/sampling-upgrade/s231/yijiao__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s249-held-capture/receipt.json",
+      "--exports",
+      "evidence/sampling-upgrade/s249/source-exports.json",
+      "--output",
+      "/tmp/bvn-s249-held-display.json"
+    ],
+    "output": "display evidence error: 169 unresolved source/hierarchy obligations; see output\n"
+  },
+  "focused-tests": {
+    "exit_code": 0,
+    "tests": 163,
+    "log": "tests.log",
+    "command": "python3 -m unittest tools.tests.test_display_completion_default tools.tests.test_yulong_display_completion tools.tests.test_yulong_k1atm_observer tools.tests.test_deidara_atm1_observer tools.tests.test_chad_lifecycle_observer tools.tests.test_sampling_callsite tools.tests.test_sampling_native tools.tests.test_sampling_matrix tools.tests.test_sampling_geometry tools.tests.test_sampling_display tools.tests.test_sampling_bitmap tools.tests.test_sampling_doaction tools.tests.test_sampling_clipaction tools.tests.test_import_guards tools.tests.test_probe_builder tools.tests.test_owned_debugger_probe tools.tests.test_move_reference_mapping tools.tests.test_move_reference_capture_preflight"
+  }
+}

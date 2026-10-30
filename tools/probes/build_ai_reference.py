@@ -521,7 +521,12 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         if bootstrap.count(needle) != 1:
             raise ValueError('missing unique k1atm observation boundary')
         bootstrap = bootstrap.replace(needle, '   _root.aiK1Observe("root_sample",_root.game.p1.mc.k1atm.mian,_root.game["p" + _root.game.p1.mc.k1atm.pn]);\n' + needle)
-    if yulong_display_completion:
+    # Preserve mixed-mode behavior; only standalone display adopts the proven
+    # terminal-period window. The historical flag name keeps s248 reproducible.
+    display_completion_window = sampling_display and not any((
+        sampling_geometry, sampling_bitmap, sampling_doaction, sampling_clipaction,
+        sampling_callsite, chad_lifecycle, deidara_atm1, yulong_k1atm))
+    if display_completion_window:
         bootstrap = instrument_display_completion(bootstrap)
     observed_actions = []
     hooks, battle = bootstrap.split("_root.aiHeld = {};", 1)
@@ -752,6 +757,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "deidara_atm1": deidara_atm1,
         "yulong_k1atm": yulong_k1atm,
         "yulong_display_completion": yulong_display_completion,
+        "display_completion_window": display_completion_window,
         "callsite_specification": callsite_specification(observed_actions) if sampling_callsite else None,
         "doaction_inventory": observed_actions,
         "move_case": json.loads(move_case.read_text()) if move_case else None,
