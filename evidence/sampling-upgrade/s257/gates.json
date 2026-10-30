@@ -1,0 +1,72 @@
+{
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json'),Path('/tmp/bvn-s257-r01-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8880878330674022
+  },
+  "lifecycle": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_chad_lifecycle",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s257-r01-capture/receipt.json",
+      "--output",
+      "evidence/sampling-upgrade/s257/lifecycle.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.1127160838805139
+  },
+  "callsite": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_callsite",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s257-r01-capture/receipt.json",
+      "--output",
+      "/tmp/bvn-s257-actions.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.17861674982123077
+  },
+  "full_as": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s257-r01-capture/receipt.json",
+      "--output",
+      "/tmp/bvn-s257-doaction.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.16871674987487495
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_as_continuation_discriminator",
+      "tools.tests.test_chad_lifecycle_observer",
+      "tools.tests.test_call_exit_diagnosis",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.838998791994527
+  }
+}

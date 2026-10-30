@@ -1,0 +1,40 @@
+{
+  "commands": [
+    [
+      "java",
+      "-Duser.home=/tmp/bvn-s257-java-home",
+      "-jar",
+      "/tmp/bvn-s66-tools/ffdec/ffdec.jar",
+      "-format",
+      "script:pcode",
+      "-export",
+      "script",
+      "/tmp/bvn-s257-chad-pcode",
+      "/tmp/bvn-s257-r01-build/game/fighter/chad.swf"
+    ],
+    [
+      "java",
+      "-Duser.home=/tmp/bvn-s257-java-home",
+      "-jar",
+      "/tmp/bvn-s66-tools/ffdec/ffdec.jar",
+      "-format",
+      "script:pcode",
+      "-export",
+      "script",
+      "/tmp/bvn-s257-main-pcode",
+      "/tmp/bvn-s257-r01-build/game/main.swf"
+    ]
+  ],
+  "ffdec_sha256": "090ab695053ad94cba6408574c7d7eea20ec60b6ae789ee6056a23f45106762f",
+  "inputs_sha256": {
+    "game/main.swf": "1ab7af67b3852fcd8451cfb40071bf0958bf69cdeed3ba17f0b61d3dd78b9945",
+    "game/fighter/chad.swf": "72c7bdd3167f555547e88251f496bc07e73ff2a27cae1377e5820aadc3ec20d5"
+  },
+  "exports_sha256": {
+    "pcode/chad/DefineSprite_16/frame_1/DoAction.pcode.gz": "7d434990a1454f4006556ab81b801b4392171d15495278c3f4ee5b332c50e262",
+    "pcode/chad/DefineSprite_607/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).pcode.gz": "6f2eec5b778692db9afd232d5e3fc5b1c88a2dcc505b58300d8d29b7862a7c09",
+    "pcode/main/frame_1/DoAction.pcode.gz": "b327bb3a18e58d87c955fe16ebcb1f063d25d3bb2e24af8ffacba1dadde691e6",
+    "pcode/main/frame_10/DoAction.pcode.gz": "b58e4edb7ccd834dd0ea4ab02276165e724f6d9f407b8456a67ca822a32585e8"
+  },
+  "scope": "Emitted bytecode only; not an executed-PC trace."
+}

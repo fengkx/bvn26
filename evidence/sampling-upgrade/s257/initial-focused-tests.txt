@@ -1,0 +1,19 @@
+.E.....
+======================================================================
+ERROR: test_exact_patch_and_unchanged_unqualified_caller (tools.tests.test_as_continuation_discriminator.ContinuationDiscriminatorTests.test_exact_patch_and_unchanged_unqualified_caller)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_as_continuation_discriminator.py", line 76, in test_exact_patch_and_unchanged_unqualified_caller
+    self.assertEqual(self.builder.patch_callee(old.extractfile(path).read().decode()),
+                                               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/tarfile.py", line 2457, in extractfile
+    tarinfo = self.getmember(member)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/tarfile.py", line 2035, in getmember
+    raise KeyError("filename %r not found" % name)
+KeyError: "filename 'patches/fighter/chad/DefineSprite_16/frame_1/DoAction.as' not found"
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.254s
+
+FAILED (errors=1)
