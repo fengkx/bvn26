@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s282，AFTER-s281 重新排名第1项）：基于 master f66987b3/#159 重排剩余缺口，仅审计 s274 个位独立目标帧观测。复算26828事件和63回调：45次选择无入口插桩的帧2–10；18次选择帧1，其中4个自然入口窗口、14个开场前无入口记录窗口。同步帧读数不补齐独立子时钟，证明要求exit1；零新构建/捕获/图片，无运行时实现。production_admitted=false、native_parity_proven=false，M0-02 pending；新排名2+仅规划，s254–s281及共享验证器不变。[证据](../evidence/sampling-upgrade/s282/README.md)。
+
 - 2026-11-02（采样 s281，AFTER-s272 排名第9项）：仅复算 s272/s262 的32227事件与 s274 的26828事件，分别绑定捕获身份；68/63回调及局部寿命观测不能跨捕获补齐完整场景准入。错误字形、独立子时钟/开场连接和同次配对图片仍阻塞，边缘/内部RGBA残差未测量；历史严格RGBA保持0/61，薄栅格及状态准入要求exit1。零新构建/捕获/图片，无运行时修复。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–8及s254–s280、共享采样器/阈值/验证器未动。[证据](../evidence/sampling-upgrade/s281/README.md)。
 
 - 2026-11-02（采样 s280，AFTER-s272 排名第8项）：选择不同于已解决案例的 s228 一护零段独立 DoAction 拒绝，复算完整5630事件；done后34条同周期按键回调与跨tick61/62的56条事件全部分类。复算锁定s269正常/延迟退出尾段，正常退出截断与越界单列，不能移植为s228证明。独立opt-in正常/延迟实验已给出判据，尚无执行证明；严格原生及完成证明要求exit1。零新构建/捕获，无实现或默认推广。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s279、运行时与严格验证器不变。[证据](../evidence/sampling-upgrade/s280/README.md)。
