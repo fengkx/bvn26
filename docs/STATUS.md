@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s316，AFTER-s308 排名第8项）：完整复现锁定 s307；新增8290条历史日志的对照操作数和四段观测空隙审计。替换与属性删除虽同为true,false，保存引用操作数不同；首次创建前及最终清理后无对照日志。日志连续不证明原生对象池覆盖，独立槽位/引用布局未导出，实际清空/替换/free/reuse及连续代次仍缺，四项证明门禁exit1。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s316与跟踪更新，s254–s315和其他排名不变，零构建/启动/附加/捕获。 [证据](../evidence/sampling-upgrade/s316/README.md)。
+
 - 2026-11-02（采样 s315，AFTER-s308 排名第7项）：锁定 s305 完整复现；本次精确 Flash Player 路径窗口选择在22.3855秒后超时，未获得窗口状态、未发送输入。超时不构成未派发证明；编译/opcode资格与原菜单Enter/release及无派发对照延后，行为观测均为null。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s315与跟踪更新，s254–s314及其他排名不变，零构建/新捕获；应用激活副作用未知。 [证据](../evidence/sampling-upgrade/s315/README.md)。
 
 - 2026-11-02（采样 s314，AFTER-s308 排名第6项）：完整复现锁定 s304；新增归档 aiEvent 八字段序列化与单回调九处源边界审计。主机保管独立但仍复制同一事件通道；关闭标记先于禁用日志、quit及可能返回，同帧计数不能充当activation身份。加载函数体、owner代次、入口—dispatcher返回及observer-off/on五项见证仍缺，三项证明门禁exit1；完整终端派发清单延后。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s314与跟踪更新，其他排名及s254–s313不变，零构建/启动/附加/捕获。 [证据](../evidence/sampling-upgrade/s314/README.md)。
