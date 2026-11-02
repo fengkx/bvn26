@@ -1,0 +1,295 @@
+{
+  "scope": "s289 / AFTER-s281 rank #8 only",
+  "base": "8c54258e",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "allocation_identity_proved": false,
+  "product_obligations_closed": 0,
+  "status": "honest_unproved",
+  "requirement_failure_code": "S289_NATIVE_ALLOCATION_UNPROVED",
+  "retained_capture": {
+    "path": "evidence/sampling-upgrade/s261/native-capture.log.gz",
+    "events": 8290,
+    "samples": 61,
+    "raw_validation_exit": 0,
+    "source_gap_count": 169,
+    "actor_comparison": {
+      "reference": "s255/native-capture.log.gz",
+      "rows": 122,
+      "all_14_fields_equal": true
+    }
+  },
+  "source_bindings": {
+    "save_reference": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 23,
+      "statement": "_global.s261Receiver = receiver;",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "read_saved_reference": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 32,
+      "statement": "var saved = _global.s261Receiver;",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "read_depth_slot": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 33,
+      "statement": "var occupant = parent.getInstanceAtDepth(_global.s261Depth);",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "read_named_slot": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 34,
+      "statement": "var named = parent.AImain;",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "control_remove": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 52,
+      "statement": "saved.removeMovieClip();",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "control_replace": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 53,
+      "statement": "var replacement = host.createEmptyMovieClip(\"slot\", 1);",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "control_property_delete": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 58,
+      "statement": "delete replacement.identity;",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    }
+  },
+  "reference_window": {
+    "run_id": "s261-yijiao-r01",
+    "event_count": 8290,
+    "events": [
+      {
+        "sequence": 36,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_identity",
+        "payload": "root,true,true,true,-16383"
+      },
+      {
+        "sequence": 37,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,1,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:8;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+      },
+      {
+        "sequence": 38,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+      },
+      {
+        "sequence": 39,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+      },
+      {
+        "sequence": 40,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+      },
+      {
+        "sequence": 41,
+        "clock_ms": 11400,
+        "root": 8,
+        "tick": -1,
+        "kind": "input_next_display",
+        "payload": "w=undefined,a=undefined,l=undefined,上箭=undefined,下箭=undefined,左箭=undefined,右箭=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+      },
+      {
+        "sequence": 42,
+        "clock_ms": 11423,
+        "root": 8,
+        "tick": -1,
+        "kind": "intro_body_enter",
+        "payload": "8,8"
+      },
+      {
+        "sequence": 43,
+        "clock_ms": 11424,
+        "root": 8,
+        "tick": -1,
+        "kind": "intro_body_exit",
+        "payload": "8,1"
+      },
+      {
+        "sequence": 44,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_identity",
+        "payload": "root,true,true,true,-16383"
+      },
+      {
+        "sequence": 45,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,2,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:0;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:9;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+      },
+      {
+        "sequence": 46,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+      },
+      {
+        "sequence": 47,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+      },
+      {
+        "sequence": 48,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+      }
+    ],
+    "controls": [
+      {
+        "sequence": 21,
+        "clock_ms": 11396,
+        "root": 7,
+        "tick": -1,
+        "kind": "s261_control",
+        "payload": "retained,true,true"
+      },
+      {
+        "sequence": 22,
+        "clock_ms": 11397,
+        "root": 7,
+        "tick": -1,
+        "kind": "s261_control",
+        "payload": "replaced,true,false"
+      },
+      {
+        "sequence": 23,
+        "clock_ms": 11397,
+        "root": 7,
+        "tick": -1,
+        "kind": "s261_control",
+        "payload": "retained_content_deleted,true,false"
+      }
+    ],
+    "raw_sha256": "a807109c58f98b2b48e27275c5ac36663defe1ea56f224ab1cf333f154cd40c0",
+    "interpretation": "AS2 observations only; contiguous log sequence is not complete native lifecycle coverage"
+  },
+  "target_sites": [
+    {
+      "event_sequence": 36,
+      "root": 8,
+      "clock_ms": 11399,
+      "path": "_level0.game.p1.mc.AImain",
+      "depth": "-16383",
+      "frame": "1",
+      "total_frames": "2",
+      "native_allocation_address": null,
+      "native_allocation_generation": null,
+      "saved_reference_native_referent": null
+    },
+    {
+      "event_sequence": 44,
+      "root": 9,
+      "clock_ms": 11424,
+      "path": "_level0.game.p1.mc.AImain",
+      "depth": "-16383",
+      "frame": "0",
+      "total_frames": "0",
+      "native_allocation_address": null,
+      "native_allocation_generation": null,
+      "saved_reference_native_referent": null
+    }
+  ],
+  "controls": {
+    "retained_content_clear": {
+      "status": "missing_native_control",
+      "available_as2_control": "retained_content_deleted",
+      "available_signal": [
+        "true",
+        "false"
+      ],
+      "native_allocation_generation_before": null,
+      "native_allocation_generation_after": null,
+      "limitation": "Deleting one token property is not a calibrated retained-content-clear allocation control."
+    },
+    "same_name_same_depth_replacement": {
+      "status": "operation_observed_native_generation_missing",
+      "available_as2_control": "replaced",
+      "available_signal": [
+        "true",
+        "false"
+      ],
+      "native_allocation_generation_before": null,
+      "native_allocation_generation_after": null,
+      "limitation": "Explicit remove/create is observed, but no native allocation/free or saved-reference resolution is captured."
+    }
+  },
+  "native_observations": {
+    "slot_resolver": null,
+    "saved_reference_resolver": null,
+    "object_layout": null,
+    "allocation_free_reuse_ledger": null,
+    "pool_lifetime_coverage": null,
+    "retained_content_clear": null,
+    "replacement_control_generations": null
+  },
+  "missing": [
+    "native_slot_to_object_resolution_at_both_root_sites",
+    "allocation_and_free_history_including_address_reuse",
+    "native_saved_reference_resolution_at_both_root_sites",
+    "independently_verified_retained_content_clear_control",
+    "same_depth_replacement_native_generation_control"
+  ],
+  "next_discriminator": [
+    "Derive native parent/depth lookup and saved AS2 reference dereference independently on the pinned module; retain relative addresses, instruction bytes, layout and live provenance. Import stubs do not resolve either.",
+    "Establish object allocation/destruction and pool reuse coverage before control creation. System malloc/free alone may miss pooled object lifetimes. Track allocation generations, not pointer equality.",
+    "Qualify the same resolver/ledger on actual retained-content clearing and same-name/depth replacement. Record independent retention/free/reuse evidence and saved-reference referents; deleting a property is insufficient.",
+    "Only then capture the unchanged s261 tape at source-equivalent last-nonzero/first-zero boundaries with complete lifecycle ordering. Preserve actual roots and all events; no numeric-root assumption, alias or unloaded exemption."
+  ],
+  "new_player_launches": 0,
+  "new_captures": 0,
+  "absence_of_possible_resolver_proved": false,
+  "exclusions": [
+    "pointer-only identity",
+    "0->1 alias",
+    "token-loss identity",
+    "unloaded exemption",
+    "import inventory as runtime proof",
+    "ranks 1-7 and 9",
+    "production implementation"
+  ]
+}

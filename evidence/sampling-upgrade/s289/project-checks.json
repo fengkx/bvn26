@@ -1,0 +1,75 @@
+{
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s289",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "elapsed_seconds": 8.28481,
+    "log": "focused-tests.txt"
+  },
+  "retained-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_aimain_native_resolver_gap",
+      "tools.tests.test_aimain_allocation_identity",
+      "tools.tests.test_aimain_content_clearing",
+      "tools.tests.test_aimain_unload_identity",
+      "tools.tests.test_display_source_frame_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_import_guards"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "elapsed_seconds": 21.052767,
+    "log": "retained-tests.txt"
+  },
+  "integrity": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.728016,
+    "log": "integrity.txt",
+    "sha256": "0162836fe25f40a47f7aae51e44567a66ad4ca4b9a8257823059e80fe16503e8"
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.065036,
+    "log": "handoff.txt",
+    "sha256": "c2741b4f913bd3ae2fcc83f971417bdeb076a9b79ed4ad65f438b67d66716707"
+  },
+  "diff-check": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.091839,
+    "log": "diff-check.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

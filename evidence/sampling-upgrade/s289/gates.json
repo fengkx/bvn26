@@ -1,0 +1,49 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s289/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s289/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "elapsed_seconds": 2.775826,
+    "log": "diagnosis.txt"
+  },
+  "slot-reference": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s289/diagnose.py",
+      "--output",
+      "/tmp/s289-slot-reference.json",
+      "--require-slot-reference"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "elapsed_seconds": 2.663553,
+    "log": "slot-reference.txt"
+  },
+  "allocation-identity": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s289/diagnose.py",
+      "--output",
+      "/tmp/s289-allocation-identity.json",
+      "--require-allocation-identity"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "elapsed_seconds": 2.960762,
+    "log": "allocation-identity.txt"
+  }
+}
