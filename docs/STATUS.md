@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s317，AFTER-s308 排名第9项）：静态重放完整复现锁定 s308；61个边界仍全部未通过同次状态准入，同次Godot配对图片为零。核验逐边界门禁顺序与汇总不可提升，源绑定边缘/内部RGBA保持null，未捕获或分类；三项证明门禁均exit1。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；不修准入、不执行排名1–8，仅s317与跟踪更新，s254–s316及其他证据目录不变，零构建/启动/捕获/图片。 [证据](../evidence/sampling-upgrade/s317/README.md)。
+
 - 2026-11-02（采样 s316，AFTER-s308 排名第8项）：完整复现锁定 s307；新增8290条历史日志的对照操作数和四段观测空隙审计。替换与属性删除虽同为true,false，保存引用操作数不同；首次创建前及最终清理后无对照日志。日志连续不证明原生对象池覆盖，独立槽位/引用布局未导出，实际清空/替换/free/reuse及连续代次仍缺，四项证明门禁exit1。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s316与跟踪更新，s254–s315和其他排名不变，零构建/启动/附加/捕获。 [证据](../evidence/sampling-upgrade/s316/README.md)。
 
 - 2026-11-02（采样 s315，AFTER-s308 排名第7项）：锁定 s305 完整复现；本次精确 Flash Player 路径窗口选择在22.3855秒后超时，未获得窗口状态、未发送输入。超时不构成未派发证明；编译/opcode资格与原菜单Enter/release及无派发对照延后，行为观测均为null。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s315与跟踪更新，s254–s314及其他排名不变，零构建/新捕获；应用激活副作用未知。 [证据](../evidence/sampling-upgrade/s315/README.md)。
