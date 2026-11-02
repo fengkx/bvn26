@@ -1,0 +1,61 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s300/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s300/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.91962133301422,
+    "log": "diagnosis.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "name": "activation-preservation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s300/diagnose.py",
+      "--output",
+      "/tmp/s300-activation-preservation.json",
+      "--require-activation-preservation"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.9095762083306909,
+    "log": "activation-preservation.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s300/diagnose.py",
+      "--output",
+      "/tmp/s300-observer.json",
+      "--require-observer"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.7861701659858227,
+    "log": "observer.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "name": "external-callsite",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s300/diagnose.py",
+      "--output",
+      "/tmp/s300-external-callsite.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.7750014578923583,
+    "log": "external-callsite.txt",
+    "PYTHONPATH": "."
+  }
+]
