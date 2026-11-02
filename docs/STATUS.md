@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s301，AFTER-s299 排名第2项）：完整复现锁定 s292 诊断；新增十帧 glyph PlaceObject2 前缀与历史对照顺序核查。字形到源帧静态映射成立，但不能计数重复入口或解析活实例；两组相等端点之后仍有帧1事件，不能拆出独立重复/改变目标入口。十帧独立入口、替换及 observer-off/on 对照均保持 null；三项证明门槛 exit1，新捕获在资格前阻塞。production_admitted=false、native_parity_proven=false，M0-02 pending；仅 s301 与跟踪文件变更，s254–s300 不变，不执行排名1或3+，零构建/启动/捕获/图片。 [证据](../evidence/sampling-upgrade/s301/README.md)。
+
 - 2026-11-02（采样 s300，post-s299 重排）：s291–s299交付保持关闭，仅执行新排名第1项 P2 body-push 四处初始化定义—读取审计。完整复现s291的5437历史事件与条件结构对应；四处初始化均不到达8个显式读取，后续写入来源全部与原版映射一致，保留每条定义路径。该静态性质不证明activation可见消去、helper无扰动或实际调用；三项证明门槛exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；排名2+仅规划，s254–s299及共享工具不变，零新构建/启动/捕获，无运行时修改。 [新排名](../evidence/sampling-upgrade/next-fix-priority-after-s299.md)；[证据](../evidence/sampling-upgrade/s300/README.md)。
 
 - 2026-11-02（采样 s299，AFTER-s290 排名第9项）：完整复现锁定 s290 诊断，61个边界仍全部存在数字及其他场景状态差异，同次Godot图片为零。新增逐边界源绑定边缘/内部及RGBA未知项，保持null而非零；状态准入、配对场景、严格RGBA三项要求均exit1。缺完整同次状态准入，未尝试配对捕获或分类；不修准入、不执行排名1–8。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s299及跟踪文件变更，s254–s298不变，无构建/启动/捕获/图片及运行时变更。[证据](../evidence/sampling-upgrade/s299/README.md)。
