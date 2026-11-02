@@ -1,0 +1,4020 @@
+{
+  "slice": "s302",
+  "base": "a866246aa4e1deedd0b802bb584b0ebc20ea31d8",
+  "scope": "AFTER-s299 rank #3 only; Sprite345 frame188 depth28 Sprite104/depth2 Sprite2; ticks15-22",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "complete_correspondence_proved": false,
+  "observer_qualified": false,
+  "direct_removal_dispatch_proved": false,
+  "nested_entry_proved": false,
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_captures": 0,
+  "paired_controls": 0,
+  "product_obligations_closed": 0,
+  "locked_s294_reproduced": true,
+  "retained_events": 5214,
+  "activation_headers": {
+    "original": {
+      "opcode": 142,
+      "header_hex": "8e2f006765744869744f626a0004000f2900096172726179000d706c61796572000c6166746572466978000370707700e500",
+      "register_count": 15,
+      "flags": 41,
+      "parameters": [
+        {
+          "name": "array",
+          "register": 9
+        },
+        {
+          "name": "player",
+          "register": 13
+        },
+        {
+          "name": "afterFix",
+          "register": 12
+        },
+        {
+          "name": "ppw",
+          "register": 3
+        }
+      ],
+      "body_sha256": "b3ed0b318b35a5f1881928906db1c13d50d13de6406958d8af5d6a62e2580d1d",
+      "body_offset": 5010,
+      "body_length": 229
+    },
+    "s275_archive": {
+      "opcode": 142,
+      "header_hex": "8e2f006765744869744f626a0004000929000261727261790003706c61796572000461667465724669780005707077003c01",
+      "register_count": 9,
+      "flags": 41,
+      "parameters": [
+        {
+          "name": "array",
+          "register": 2
+        },
+        {
+          "name": "player",
+          "register": 3
+        },
+        {
+          "name": "afterFix",
+          "register": 4
+        },
+        {
+          "name": "ppw",
+          "register": 5
+        }
+      ],
+      "body_sha256": "d9e4169c300a600d1e2e0b19954bf5596cd9bac1422b6a1882e2dd6605428a8e",
+      "body_offset": 5829,
+      "body_length": 316
+    }
+  },
+  "getHitObj_audit": {
+    "original": [
+      {
+        "id": 0,
+        "offset": 5010,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "afterFix"
+        ],
+        "raw_hex": "960300040c03",
+        "target_offset": null
+      },
+      {
+        "id": 1,
+        "offset": 5010,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "undefined"
+        ],
+        "raw_hex": "960300040c03",
+        "target_offset": null
+      },
+      {
+        "id": 2,
+        "offset": 5016,
+        "push_part": 0,
+        "op": "Equals2",
+        "operand": [],
+        "raw_hex": "49",
+        "target_offset": null
+      },
+      {
+        "id": 3,
+        "offset": 5017,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 4,
+        "offset": 5018,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d02000a00",
+        "target_offset": 5033,
+        "target": 8
+      },
+      {
+        "id": 5,
+        "offset": 5023,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          ""
+        ],
+        "raw_hex": "960200081b",
+        "target_offset": null
+      },
+      {
+        "id": 6,
+        "offset": 5028,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "afterFix"
+        ],
+        "raw_hex": "8701000c",
+        "target_offset": null
+      },
+      {
+        "id": 7,
+        "offset": 5032,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 8,
+        "offset": 5033,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "array"
+        ],
+        "raw_hex": "9602000409",
+        "target_offset": null
+      },
+      {
+        "id": 9,
+        "offset": 5038,
+        "push_part": 0,
+        "op": "Enumerate2",
+        "operand": [],
+        "raw_hex": "55",
+        "target_offset": null
+      },
+      {
+        "id": 10,
+        "offset": 5039,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "enumeration_item"
+        ],
+        "raw_hex": "87010000",
+        "target_offset": null
+      },
+      {
+        "id": 11,
+        "offset": 5043,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "null"
+        ],
+        "raw_hex": "96010002",
+        "target_offset": null
+      },
+      {
+        "id": 12,
+        "offset": 5047,
+        "push_part": 0,
+        "op": "Equals2",
+        "operand": [],
+        "raw_hex": "49",
+        "target_offset": null
+      },
+      {
+        "id": 13,
+        "offset": 5048,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d0200b500",
+        "target_offset": 5234,
+        "target": 85
+      },
+      {
+        "id": 14,
+        "offset": 5053,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "enumeration_item"
+        ],
+        "raw_hex": "9602000400",
+        "target_offset": null
+      },
+      {
+        "id": 15,
+        "offset": 5058,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "_loc14_"
+        ],
+        "raw_hex": "8701000e",
+        "target_offset": null
+      },
+      {
+        "id": 16,
+        "offset": 5062,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 17,
+        "offset": 5063,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "array"
+        ],
+        "raw_hex": "9604000409040e",
+        "target_offset": null
+      },
+      {
+        "id": 18,
+        "offset": 5063,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc14_"
+        ],
+        "raw_hex": "9604000409040e",
+        "target_offset": null
+      },
+      {
+        "id": 19,
+        "offset": 5070,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 20,
+        "offset": 5071,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "_loc2_"
+        ],
+        "raw_hex": "87010002",
+        "target_offset": null
+      },
+      {
+        "id": 21,
+        "offset": 5075,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 22,
+        "offset": 5076,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "player"
+        ],
+        "raw_hex": "960600040d0402040c",
+        "target_offset": null
+      },
+      {
+        "id": 23,
+        "offset": 5076,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "960600040d0402040c",
+        "target_offset": null
+      },
+      {
+        "id": 24,
+        "offset": 5076,
+        "push_part": 2,
+        "op": "Push",
+        "operand": [
+          "register",
+          "afterFix"
+        ],
+        "raw_hex": "960600040d0402040c",
+        "target_offset": null
+      },
+      {
+        "id": 25,
+        "offset": 5085,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 26,
+        "offset": 5086,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 27,
+        "offset": 5087,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "_loc4_"
+        ],
+        "raw_hex": "87010004",
+        "target_offset": null
+      },
+      {
+        "id": 28,
+        "offset": 5091,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 29,
+        "offset": 5092,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc4_"
+        ],
+        "raw_hex": "9602000404",
+        "target_offset": null
+      },
+      {
+        "id": 30,
+        "offset": 5097,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 31,
+        "offset": 5098,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 32,
+        "offset": 5099,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d02000500",
+        "target_offset": 5109,
+        "target": 34
+      },
+      {
+        "id": 33,
+        "offset": 5104,
+        "push_part": 0,
+        "op": "Jump",
+        "operand": [],
+        "raw_hex": "990200baff",
+        "target_offset": 5039,
+        "target": 10
+      },
+      {
+        "id": 34,
+        "offset": 5109,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc4_"
+        ],
+        "raw_hex": "960b00040407010000000401081f",
+        "target_offset": null
+      },
+      {
+        "id": 35,
+        "offset": 5109,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "integer",
+          1
+        ],
+        "raw_hex": "960b00040407010000000401081f",
+        "target_offset": null
+      },
+      {
+        "id": 36,
+        "offset": 5109,
+        "push_part": 2,
+        "op": "Push",
+        "operand": [
+          "register",
+          "this"
+        ],
+        "raw_hex": "960b00040407010000000401081f",
+        "target_offset": null
+      },
+      {
+        "id": 37,
+        "offset": 5109,
+        "push_part": 3,
+        "op": "Push",
+        "operand": [
+          "string",
+          "hitTest"
+        ],
+        "raw_hex": "960b00040407010000000401081f",
+        "target_offset": null
+      },
+      {
+        "id": 38,
+        "offset": 5123,
+        "push_part": 0,
+        "op": "CallMethod",
+        "operand": [],
+        "raw_hex": "52",
+        "target_offset": null
+      },
+      {
+        "id": 39,
+        "offset": 5124,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 40,
+        "offset": 5125,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d02006300",
+        "target_offset": 5229,
+        "target": 84
+      },
+      {
+        "id": 41,
+        "offset": 5130,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "null"
+        ],
+        "raw_hex": "96010002",
+        "target_offset": null
+      },
+      {
+        "id": 42,
+        "offset": 5134,
+        "push_part": 0,
+        "op": "Equals2",
+        "operand": [],
+        "raw_hex": "49",
+        "target_offset": null
+      },
+      {
+        "id": 43,
+        "offset": 5135,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 44,
+        "offset": 5136,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d0200f5ff",
+        "target_offset": 5130,
+        "target": 41
+      },
+      {
+        "id": 45,
+        "offset": 5141,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "pw"
+        ],
+        "raw_hex": "9608000808040304020808",
+        "target_offset": null
+      },
+      {
+        "id": 46,
+        "offset": 5141,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9608000808040304020808",
+        "target_offset": null
+      },
+      {
+        "id": 47,
+        "offset": 5141,
+        "push_part": 2,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9608000808040304020808",
+        "target_offset": null
+      },
+      {
+        "id": 48,
+        "offset": 5141,
+        "push_part": 3,
+        "op": "Push",
+        "operand": [
+          "string",
+          "pw"
+        ],
+        "raw_hex": "9608000808040304020808",
+        "target_offset": null
+      },
+      {
+        "id": 49,
+        "offset": 5152,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 50,
+        "offset": 5153,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 51,
+        "offset": 5154,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "zl"
+        ],
+        "raw_hex": "960800080a04030402080a",
+        "target_offset": null
+      },
+      {
+        "id": 52,
+        "offset": 5154,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "960800080a04030402080a",
+        "target_offset": null
+      },
+      {
+        "id": 53,
+        "offset": 5154,
+        "push_part": 2,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "960800080a04030402080a",
+        "target_offset": null
+      },
+      {
+        "id": 54,
+        "offset": 5154,
+        "push_part": 3,
+        "op": "Push",
+        "operand": [
+          "string",
+          "zl"
+        ],
+        "raw_hex": "960800080a04030402080a",
+        "target_offset": null
+      },
+      {
+        "id": 55,
+        "offset": 5165,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 56,
+        "offset": 5166,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 57,
+        "offset": 5167,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "yup"
+        ],
+        "raw_hex": "960800080b040304020820",
+        "target_offset": null
+      },
+      {
+        "id": 58,
+        "offset": 5167,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "960800080b040304020820",
+        "target_offset": null
+      },
+      {
+        "id": 59,
+        "offset": 5167,
+        "push_part": 2,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "960800080b040304020820",
+        "target_offset": null
+      },
+      {
+        "id": 60,
+        "offset": 5167,
+        "push_part": 3,
+        "op": "Push",
+        "operand": [
+          "string",
+          "up"
+        ],
+        "raw_hex": "960800080b040304020820",
+        "target_offset": null
+      },
+      {
+        "id": 61,
+        "offset": 5178,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 62,
+        "offset": 5179,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 63,
+        "offset": 5180,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "hitx"
+        ],
+        "raw_hex": "960800080d040304020821",
+        "target_offset": null
+      },
+      {
+        "id": 64,
+        "offset": 5180,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "960800080d040304020821",
+        "target_offset": null
+      },
+      {
+        "id": 65,
+        "offset": 5180,
+        "push_part": 2,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "960800080d040304020821",
+        "target_offset": null
+      },
+      {
+        "id": 66,
+        "offset": 5180,
+        "push_part": 3,
+        "op": "Push",
+        "operand": [
+          "string",
+          "x"
+        ],
+        "raw_hex": "960800080d040304020821",
+        "target_offset": null
+      },
+      {
+        "id": 67,
+        "offset": 5191,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 68,
+        "offset": 5192,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 69,
+        "offset": 5193,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "hdtime"
+        ],
+        "raw_hex": "9608000810040304020822",
+        "target_offset": null
+      },
+      {
+        "id": 70,
+        "offset": 5193,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9608000810040304020822",
+        "target_offset": null
+      },
+      {
+        "id": 71,
+        "offset": 5193,
+        "push_part": 2,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9608000810040304020822",
+        "target_offset": null
+      },
+      {
+        "id": 72,
+        "offset": 5193,
+        "push_part": 3,
+        "op": "Push",
+        "operand": [
+          "string",
+          "tm"
+        ],
+        "raw_hex": "9608000810040304020822",
+        "target_offset": null
+      },
+      {
+        "id": 73,
+        "offset": 5204,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 74,
+        "offset": 5205,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 75,
+        "offset": 5206,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "htype"
+        ],
+        "raw_hex": "9608000812040304020823",
+        "target_offset": null
+      },
+      {
+        "id": 76,
+        "offset": 5206,
+        "push_part": 1,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9608000812040304020823",
+        "target_offset": null
+      },
+      {
+        "id": 77,
+        "offset": 5206,
+        "push_part": 2,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9608000812040304020823",
+        "target_offset": null
+      },
+      {
+        "id": 78,
+        "offset": 5206,
+        "push_part": 3,
+        "op": "Push",
+        "operand": [
+          "string",
+          "dz"
+        ],
+        "raw_hex": "9608000812040304020823",
+        "target_offset": null
+      },
+      {
+        "id": 79,
+        "offset": 5217,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 80,
+        "offset": 5218,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 81,
+        "offset": 5219,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "integer",
+          6
+        ],
+        "raw_hex": "9605000706000000",
+        "target_offset": null
+      },
+      {
+        "id": 82,
+        "offset": 5227,
+        "push_part": 0,
+        "op": "InitObject",
+        "operand": [],
+        "raw_hex": "43",
+        "target_offset": null
+      },
+      {
+        "id": 83,
+        "offset": 5228,
+        "push_part": 0,
+        "op": "Return",
+        "operand": [],
+        "raw_hex": "3e",
+        "target_offset": null
+      },
+      {
+        "id": 84,
+        "offset": 5229,
+        "push_part": 0,
+        "op": "Jump",
+        "operand": [],
+        "raw_hex": "9902003dff",
+        "target_offset": 5039,
+        "target": 10
+      },
+      {
+        "id": 85,
+        "offset": 5234,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "null"
+        ],
+        "raw_hex": "96010002",
+        "target_offset": null
+      },
+      {
+        "id": 86,
+        "offset": 5238,
+        "push_part": 0,
+        "op": "Return",
+        "operand": [],
+        "raw_hex": "3e",
+        "target_offset": null
+      }
+    ],
+    "s275_archive": [
+      {
+        "id": 0,
+        "offset": 5829,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "afterFix"
+        ],
+        "raw_hex": "9602000404",
+        "target_offset": null
+      },
+      {
+        "id": 1,
+        "offset": 5834,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "undefined"
+        ],
+        "raw_hex": "96010003",
+        "target_offset": null
+      },
+      {
+        "id": 2,
+        "offset": 5838,
+        "push_part": 0,
+        "op": "Equals2",
+        "operand": [],
+        "raw_hex": "49",
+        "target_offset": null
+      },
+      {
+        "id": 3,
+        "offset": 5839,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 4,
+        "offset": 5840,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d02000a00",
+        "target_offset": 5855,
+        "target": 8
+      },
+      {
+        "id": 5,
+        "offset": 5845,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          ""
+        ],
+        "raw_hex": "960200081b",
+        "target_offset": null
+      },
+      {
+        "id": 6,
+        "offset": 5850,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "afterFix"
+        ],
+        "raw_hex": "87010004",
+        "target_offset": null
+      },
+      {
+        "id": 7,
+        "offset": 5854,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 8,
+        "offset": 5855,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "undefined"
+        ],
+        "raw_hex": "96010003",
+        "target_offset": null
+      },
+      {
+        "id": 9,
+        "offset": 5859,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "_loc2_"
+        ],
+        "raw_hex": "87010006",
+        "target_offset": null
+      },
+      {
+        "id": 10,
+        "offset": 5863,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 11,
+        "offset": 5864,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "undefined"
+        ],
+        "raw_hex": "96010003",
+        "target_offset": null
+      },
+      {
+        "id": 12,
+        "offset": 5868,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "_loc4_"
+        ],
+        "raw_hex": "87010007",
+        "target_offset": null
+      },
+      {
+        "id": 13,
+        "offset": 5872,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 14,
+        "offset": 5873,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "array"
+        ],
+        "raw_hex": "9602000402",
+        "target_offset": null
+      },
+      {
+        "id": 15,
+        "offset": 5878,
+        "push_part": 0,
+        "op": "Enumerate2",
+        "operand": [],
+        "raw_hex": "55",
+        "target_offset": null
+      },
+      {
+        "id": 16,
+        "offset": 5879,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "enumeration_item"
+        ],
+        "raw_hex": "87010000",
+        "target_offset": null
+      },
+      {
+        "id": 17,
+        "offset": 5883,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "null"
+        ],
+        "raw_hex": "96010002",
+        "target_offset": null
+      },
+      {
+        "id": 18,
+        "offset": 5887,
+        "push_part": 0,
+        "op": "Equals2",
+        "operand": [],
+        "raw_hex": "49",
+        "target_offset": null
+      },
+      {
+        "id": 19,
+        "offset": 5888,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d0200f700",
+        "target_offset": 6140,
+        "target": 89
+      },
+      {
+        "id": 20,
+        "offset": 5893,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "enumeration_item"
+        ],
+        "raw_hex": "9602000400",
+        "target_offset": null
+      },
+      {
+        "id": 21,
+        "offset": 5898,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "_loc14_"
+        ],
+        "raw_hex": "87010008",
+        "target_offset": null
+      },
+      {
+        "id": 22,
+        "offset": 5902,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 23,
+        "offset": 5903,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "array"
+        ],
+        "raw_hex": "9602000402",
+        "target_offset": null
+      },
+      {
+        "id": 24,
+        "offset": 5908,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc14_"
+        ],
+        "raw_hex": "9602000408",
+        "target_offset": null
+      },
+      {
+        "id": 25,
+        "offset": 5913,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 26,
+        "offset": 5914,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "_loc2_"
+        ],
+        "raw_hex": "87010006",
+        "target_offset": null
+      },
+      {
+        "id": 27,
+        "offset": 5918,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 28,
+        "offset": 5919,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "player"
+        ],
+        "raw_hex": "9602000403",
+        "target_offset": null
+      },
+      {
+        "id": 29,
+        "offset": 5924,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9602000406",
+        "target_offset": null
+      },
+      {
+        "id": 30,
+        "offset": 5929,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "afterFix"
+        ],
+        "raw_hex": "9602000404",
+        "target_offset": null
+      },
+      {
+        "id": 31,
+        "offset": 5934,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 32,
+        "offset": 5935,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 33,
+        "offset": 5936,
+        "push_part": 0,
+        "op": "StoreRegister",
+        "operand": [
+          "_loc4_"
+        ],
+        "raw_hex": "87010007",
+        "target_offset": null
+      },
+      {
+        "id": 34,
+        "offset": 5940,
+        "push_part": 0,
+        "op": "Pop",
+        "operand": [],
+        "raw_hex": "17",
+        "target_offset": null
+      },
+      {
+        "id": 35,
+        "offset": 5941,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc4_"
+        ],
+        "raw_hex": "9602000407",
+        "target_offset": null
+      },
+      {
+        "id": 36,
+        "offset": 5946,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 37,
+        "offset": 5947,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d0200b700",
+        "target_offset": 6135,
+        "target": 88
+      },
+      {
+        "id": 38,
+        "offset": 5952,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc4_"
+        ],
+        "raw_hex": "9602000407",
+        "target_offset": null
+      },
+      {
+        "id": 39,
+        "offset": 5957,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "integer",
+          1
+        ],
+        "raw_hex": "9605000701000000",
+        "target_offset": null
+      },
+      {
+        "id": 40,
+        "offset": 5965,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "this"
+        ],
+        "raw_hex": "9602000401",
+        "target_offset": null
+      },
+      {
+        "id": 41,
+        "offset": 5970,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "hitTest"
+        ],
+        "raw_hex": "960200081f",
+        "target_offset": null
+      },
+      {
+        "id": 42,
+        "offset": 5975,
+        "push_part": 0,
+        "op": "CallMethod",
+        "operand": [],
+        "raw_hex": "52",
+        "target_offset": null
+      },
+      {
+        "id": 43,
+        "offset": 5976,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 44,
+        "offset": 5977,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d02009900",
+        "target_offset": 6135,
+        "target": 88
+      },
+      {
+        "id": 45,
+        "offset": 5982,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "null"
+        ],
+        "raw_hex": "96010002",
+        "target_offset": null
+      },
+      {
+        "id": 46,
+        "offset": 5986,
+        "push_part": 0,
+        "op": "Equals2",
+        "operand": [],
+        "raw_hex": "49",
+        "target_offset": null
+      },
+      {
+        "id": 47,
+        "offset": 5987,
+        "push_part": 0,
+        "op": "Not",
+        "operand": [],
+        "raw_hex": "12",
+        "target_offset": null
+      },
+      {
+        "id": 48,
+        "offset": 5988,
+        "push_part": 0,
+        "op": "If",
+        "operand": [],
+        "raw_hex": "9d0200f5ff",
+        "target_offset": 5982,
+        "target": 45
+      },
+      {
+        "id": 49,
+        "offset": 5993,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "pw"
+        ],
+        "raw_hex": "9602000808",
+        "target_offset": null
+      },
+      {
+        "id": 50,
+        "offset": 5998,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9602000405",
+        "target_offset": null
+      },
+      {
+        "id": 51,
+        "offset": 6003,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9602000406",
+        "target_offset": null
+      },
+      {
+        "id": 52,
+        "offset": 6008,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "pw"
+        ],
+        "raw_hex": "9602000808",
+        "target_offset": null
+      },
+      {
+        "id": 53,
+        "offset": 6013,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 54,
+        "offset": 6014,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 55,
+        "offset": 6015,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "zl"
+        ],
+        "raw_hex": "960200080a",
+        "target_offset": null
+      },
+      {
+        "id": 56,
+        "offset": 6020,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9602000405",
+        "target_offset": null
+      },
+      {
+        "id": 57,
+        "offset": 6025,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9602000406",
+        "target_offset": null
+      },
+      {
+        "id": 58,
+        "offset": 6030,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "zl"
+        ],
+        "raw_hex": "960200080a",
+        "target_offset": null
+      },
+      {
+        "id": 59,
+        "offset": 6035,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 60,
+        "offset": 6036,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 61,
+        "offset": 6037,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "yup"
+        ],
+        "raw_hex": "960200080b",
+        "target_offset": null
+      },
+      {
+        "id": 62,
+        "offset": 6042,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9602000405",
+        "target_offset": null
+      },
+      {
+        "id": 63,
+        "offset": 6047,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9602000406",
+        "target_offset": null
+      },
+      {
+        "id": 64,
+        "offset": 6052,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "up"
+        ],
+        "raw_hex": "9602000820",
+        "target_offset": null
+      },
+      {
+        "id": 65,
+        "offset": 6057,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 66,
+        "offset": 6058,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 67,
+        "offset": 6059,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "hitx"
+        ],
+        "raw_hex": "960200080d",
+        "target_offset": null
+      },
+      {
+        "id": 68,
+        "offset": 6064,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9602000405",
+        "target_offset": null
+      },
+      {
+        "id": 69,
+        "offset": 6069,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9602000406",
+        "target_offset": null
+      },
+      {
+        "id": 70,
+        "offset": 6074,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "x"
+        ],
+        "raw_hex": "9602000821",
+        "target_offset": null
+      },
+      {
+        "id": 71,
+        "offset": 6079,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 72,
+        "offset": 6080,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 73,
+        "offset": 6081,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "hdtime"
+        ],
+        "raw_hex": "9602000810",
+        "target_offset": null
+      },
+      {
+        "id": 74,
+        "offset": 6086,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9602000405",
+        "target_offset": null
+      },
+      {
+        "id": 75,
+        "offset": 6091,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9602000406",
+        "target_offset": null
+      },
+      {
+        "id": 76,
+        "offset": 6096,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "tm"
+        ],
+        "raw_hex": "9602000822",
+        "target_offset": null
+      },
+      {
+        "id": 77,
+        "offset": 6101,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 78,
+        "offset": 6102,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 79,
+        "offset": 6103,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "htype"
+        ],
+        "raw_hex": "9602000812",
+        "target_offset": null
+      },
+      {
+        "id": 80,
+        "offset": 6108,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "ppw"
+        ],
+        "raw_hex": "9602000405",
+        "target_offset": null
+      },
+      {
+        "id": 81,
+        "offset": 6113,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "register",
+          "_loc2_"
+        ],
+        "raw_hex": "9602000406",
+        "target_offset": null
+      },
+      {
+        "id": 82,
+        "offset": 6118,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "string",
+          "dz"
+        ],
+        "raw_hex": "9602000823",
+        "target_offset": null
+      },
+      {
+        "id": 83,
+        "offset": 6123,
+        "push_part": 0,
+        "op": "Add2",
+        "operand": [],
+        "raw_hex": "47",
+        "target_offset": null
+      },
+      {
+        "id": 84,
+        "offset": 6124,
+        "push_part": 0,
+        "op": "GetMember",
+        "operand": [],
+        "raw_hex": "4e",
+        "target_offset": null
+      },
+      {
+        "id": 85,
+        "offset": 6125,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "integer",
+          6
+        ],
+        "raw_hex": "9605000706000000",
+        "target_offset": null
+      },
+      {
+        "id": 86,
+        "offset": 6133,
+        "push_part": 0,
+        "op": "InitObject",
+        "operand": [],
+        "raw_hex": "43",
+        "target_offset": null
+      },
+      {
+        "id": 87,
+        "offset": 6134,
+        "push_part": 0,
+        "op": "Return",
+        "operand": [],
+        "raw_hex": "3e",
+        "target_offset": null
+      },
+      {
+        "id": 88,
+        "offset": 6135,
+        "push_part": 0,
+        "op": "Jump",
+        "operand": [],
+        "raw_hex": "990200fbfe",
+        "target_offset": 5879,
+        "target": 16
+      },
+      {
+        "id": 89,
+        "offset": 6140,
+        "push_part": 0,
+        "op": "Push",
+        "operand": [
+          "null"
+        ],
+        "raw_hex": "96010002",
+        "target_offset": null
+      },
+      {
+        "id": 90,
+        "offset": 6144,
+        "push_part": 0,
+        "op": "Return",
+        "operand": [],
+        "raw_hex": "3e",
+        "target_offset": null
+      }
+    ],
+    "register_roles": {
+      "original": {
+        "0": "enumeration_item",
+        "1": "this",
+        "2": "_loc2_",
+        "3": "ppw",
+        "4": "_loc4_",
+        "9": "array",
+        "12": "afterFix",
+        "13": "player",
+        "14": "_loc14_"
+      },
+      "s275_archive": {
+        "0": "enumeration_item",
+        "1": "this",
+        "2": "array",
+        "3": "player",
+        "4": "afterFix",
+        "5": "ppw",
+        "6": "_loc2_",
+        "7": "_loc4_",
+        "8": "_loc14_"
+      }
+    },
+    "original_projection": {
+      "entry": 0,
+      "nodes": {
+        "0": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "afterFix"
+          ],
+          "edges": [
+            1
+          ]
+        },
+        "1": {
+          "op": "Push",
+          "operand": [
+            "undefined"
+          ],
+          "edges": [
+            2
+          ]
+        },
+        "2": {
+          "op": "Equals2",
+          "operand": [],
+          "edges": [
+            4
+          ]
+        },
+        "4": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            5,
+            8
+          ]
+        },
+        "5": {
+          "op": "Push",
+          "operand": [
+            "string",
+            ""
+          ],
+          "edges": [
+            6
+          ]
+        },
+        "6": {
+          "op": "StoreRegister",
+          "operand": [
+            "afterFix"
+          ],
+          "edges": [
+            7
+          ]
+        },
+        "7": {
+          "op": "Pop",
+          "operand": [],
+          "edges": [
+            8
+          ]
+        },
+        "8": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "array"
+          ],
+          "edges": [
+            9
+          ]
+        },
+        "9": {
+          "op": "Enumerate2",
+          "operand": [],
+          "edges": [
+            10
+          ]
+        },
+        "10": {
+          "op": "StoreRegister",
+          "operand": [
+            "enumeration_item"
+          ],
+          "edges": [
+            11
+          ]
+        },
+        "11": {
+          "op": "Push",
+          "operand": [
+            "null"
+          ],
+          "edges": [
+            12
+          ]
+        },
+        "12": {
+          "op": "Equals2",
+          "operand": [],
+          "edges": [
+            13
+          ]
+        },
+        "13": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            85,
+            14
+          ]
+        },
+        "14": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "enumeration_item"
+          ],
+          "edges": [
+            15
+          ]
+        },
+        "15": {
+          "op": "StoreRegister",
+          "operand": [
+            "_loc14_"
+          ],
+          "edges": [
+            16
+          ]
+        },
+        "16": {
+          "op": "Pop",
+          "operand": [],
+          "edges": [
+            17
+          ]
+        },
+        "17": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "array"
+          ],
+          "edges": [
+            18
+          ]
+        },
+        "18": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc14_"
+          ],
+          "edges": [
+            19
+          ]
+        },
+        "19": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            20
+          ]
+        },
+        "20": {
+          "op": "StoreRegister",
+          "operand": [
+            "_loc2_"
+          ],
+          "edges": [
+            21
+          ]
+        },
+        "21": {
+          "op": "Pop",
+          "operand": [],
+          "edges": [
+            22
+          ]
+        },
+        "22": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "player"
+          ],
+          "edges": [
+            23
+          ]
+        },
+        "23": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            24
+          ]
+        },
+        "24": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "afterFix"
+          ],
+          "edges": [
+            25
+          ]
+        },
+        "25": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            26
+          ]
+        },
+        "26": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            27
+          ]
+        },
+        "27": {
+          "op": "StoreRegister",
+          "operand": [
+            "_loc4_"
+          ],
+          "edges": [
+            28
+          ]
+        },
+        "28": {
+          "op": "Pop",
+          "operand": [],
+          "edges": [
+            29
+          ]
+        },
+        "29": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc4_"
+          ],
+          "edges": [
+            32
+          ]
+        },
+        "32": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            34,
+            10
+          ]
+        },
+        "34": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc4_"
+          ],
+          "edges": [
+            35
+          ]
+        },
+        "35": {
+          "op": "Push",
+          "operand": [
+            "integer",
+            1
+          ],
+          "edges": [
+            36
+          ]
+        },
+        "36": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "this"
+          ],
+          "edges": [
+            37
+          ]
+        },
+        "37": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "hitTest"
+          ],
+          "edges": [
+            38
+          ]
+        },
+        "38": {
+          "op": "CallMethod",
+          "operand": [],
+          "edges": [
+            40
+          ]
+        },
+        "40": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            41,
+            10
+          ]
+        },
+        "41": {
+          "op": "Push",
+          "operand": [
+            "null"
+          ],
+          "edges": [
+            42
+          ]
+        },
+        "42": {
+          "op": "Equals2",
+          "operand": [],
+          "edges": [
+            44
+          ]
+        },
+        "44": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            45,
+            41
+          ]
+        },
+        "45": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "pw"
+          ],
+          "edges": [
+            46
+          ]
+        },
+        "46": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            47
+          ]
+        },
+        "47": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            48
+          ]
+        },
+        "48": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "pw"
+          ],
+          "edges": [
+            49
+          ]
+        },
+        "49": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            50
+          ]
+        },
+        "50": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            51
+          ]
+        },
+        "51": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "zl"
+          ],
+          "edges": [
+            52
+          ]
+        },
+        "52": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            53
+          ]
+        },
+        "53": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            54
+          ]
+        },
+        "54": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "zl"
+          ],
+          "edges": [
+            55
+          ]
+        },
+        "55": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            56
+          ]
+        },
+        "56": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            57
+          ]
+        },
+        "57": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "yup"
+          ],
+          "edges": [
+            58
+          ]
+        },
+        "58": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            59
+          ]
+        },
+        "59": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            60
+          ]
+        },
+        "60": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "up"
+          ],
+          "edges": [
+            61
+          ]
+        },
+        "61": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            62
+          ]
+        },
+        "62": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            63
+          ]
+        },
+        "63": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "hitx"
+          ],
+          "edges": [
+            64
+          ]
+        },
+        "64": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            65
+          ]
+        },
+        "65": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            66
+          ]
+        },
+        "66": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "x"
+          ],
+          "edges": [
+            67
+          ]
+        },
+        "67": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            68
+          ]
+        },
+        "68": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            69
+          ]
+        },
+        "69": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "hdtime"
+          ],
+          "edges": [
+            70
+          ]
+        },
+        "70": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            71
+          ]
+        },
+        "71": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            72
+          ]
+        },
+        "72": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "tm"
+          ],
+          "edges": [
+            73
+          ]
+        },
+        "73": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            74
+          ]
+        },
+        "74": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            75
+          ]
+        },
+        "75": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "htype"
+          ],
+          "edges": [
+            76
+          ]
+        },
+        "76": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            77
+          ]
+        },
+        "77": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            78
+          ]
+        },
+        "78": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "dz"
+          ],
+          "edges": [
+            79
+          ]
+        },
+        "79": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            80
+          ]
+        },
+        "80": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            81
+          ]
+        },
+        "81": {
+          "op": "Push",
+          "operand": [
+            "integer",
+            6
+          ],
+          "edges": [
+            82
+          ]
+        },
+        "82": {
+          "op": "InitObject",
+          "operand": [],
+          "edges": [
+            83
+          ]
+        },
+        "83": {
+          "op": "Return",
+          "operand": [],
+          "edges": []
+        },
+        "85": {
+          "op": "Push",
+          "operand": [
+            "null"
+          ],
+          "edges": [
+            86
+          ]
+        },
+        "86": {
+          "op": "Return",
+          "operand": [],
+          "edges": []
+        }
+      },
+      "rewrites": [
+        {
+          "kind": "boolean_branch_polarity",
+          "nodes": [
+            3,
+            4
+          ],
+          "not_count": 1
+        },
+        {
+          "kind": "boolean_branch_polarity",
+          "nodes": [
+            30,
+            31,
+            32
+          ],
+          "not_count": 2
+        },
+        {
+          "kind": "jump_bypass",
+          "nodes": [
+            33
+          ],
+          "target": 10
+        },
+        {
+          "kind": "boolean_branch_polarity",
+          "nodes": [
+            39,
+            40
+          ],
+          "not_count": 1
+        },
+        {
+          "kind": "boolean_branch_polarity",
+          "nodes": [
+            43,
+            44
+          ],
+          "not_count": 1
+        },
+        {
+          "kind": "jump_bypass",
+          "nodes": [
+            84
+          ],
+          "target": 10
+        }
+      ]
+    },
+    "archived_projection": {
+      "entry": 0,
+      "nodes": {
+        "0": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "afterFix"
+          ],
+          "edges": [
+            1
+          ]
+        },
+        "1": {
+          "op": "Push",
+          "operand": [
+            "undefined"
+          ],
+          "edges": [
+            2
+          ]
+        },
+        "2": {
+          "op": "Equals2",
+          "operand": [],
+          "edges": [
+            4
+          ]
+        },
+        "4": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            5,
+            14
+          ]
+        },
+        "5": {
+          "op": "Push",
+          "operand": [
+            "string",
+            ""
+          ],
+          "edges": [
+            6
+          ]
+        },
+        "6": {
+          "op": "StoreRegister",
+          "operand": [
+            "afterFix"
+          ],
+          "edges": [
+            7
+          ]
+        },
+        "7": {
+          "op": "Pop",
+          "operand": [],
+          "edges": [
+            14
+          ]
+        },
+        "14": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "array"
+          ],
+          "edges": [
+            15
+          ]
+        },
+        "15": {
+          "op": "Enumerate2",
+          "operand": [],
+          "edges": [
+            16
+          ]
+        },
+        "16": {
+          "op": "StoreRegister",
+          "operand": [
+            "enumeration_item"
+          ],
+          "edges": [
+            17
+          ]
+        },
+        "17": {
+          "op": "Push",
+          "operand": [
+            "null"
+          ],
+          "edges": [
+            18
+          ]
+        },
+        "18": {
+          "op": "Equals2",
+          "operand": [],
+          "edges": [
+            19
+          ]
+        },
+        "19": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            89,
+            20
+          ]
+        },
+        "20": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "enumeration_item"
+          ],
+          "edges": [
+            21
+          ]
+        },
+        "21": {
+          "op": "StoreRegister",
+          "operand": [
+            "_loc14_"
+          ],
+          "edges": [
+            22
+          ]
+        },
+        "22": {
+          "op": "Pop",
+          "operand": [],
+          "edges": [
+            23
+          ]
+        },
+        "23": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "array"
+          ],
+          "edges": [
+            24
+          ]
+        },
+        "24": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc14_"
+          ],
+          "edges": [
+            25
+          ]
+        },
+        "25": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            26
+          ]
+        },
+        "26": {
+          "op": "StoreRegister",
+          "operand": [
+            "_loc2_"
+          ],
+          "edges": [
+            27
+          ]
+        },
+        "27": {
+          "op": "Pop",
+          "operand": [],
+          "edges": [
+            28
+          ]
+        },
+        "28": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "player"
+          ],
+          "edges": [
+            29
+          ]
+        },
+        "29": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            30
+          ]
+        },
+        "30": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "afterFix"
+          ],
+          "edges": [
+            31
+          ]
+        },
+        "31": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            32
+          ]
+        },
+        "32": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            33
+          ]
+        },
+        "33": {
+          "op": "StoreRegister",
+          "operand": [
+            "_loc4_"
+          ],
+          "edges": [
+            34
+          ]
+        },
+        "34": {
+          "op": "Pop",
+          "operand": [],
+          "edges": [
+            35
+          ]
+        },
+        "35": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc4_"
+          ],
+          "edges": [
+            37
+          ]
+        },
+        "37": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            38,
+            16
+          ]
+        },
+        "38": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc4_"
+          ],
+          "edges": [
+            39
+          ]
+        },
+        "39": {
+          "op": "Push",
+          "operand": [
+            "integer",
+            1
+          ],
+          "edges": [
+            40
+          ]
+        },
+        "40": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "this"
+          ],
+          "edges": [
+            41
+          ]
+        },
+        "41": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "hitTest"
+          ],
+          "edges": [
+            42
+          ]
+        },
+        "42": {
+          "op": "CallMethod",
+          "operand": [],
+          "edges": [
+            44
+          ]
+        },
+        "44": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            45,
+            16
+          ]
+        },
+        "45": {
+          "op": "Push",
+          "operand": [
+            "null"
+          ],
+          "edges": [
+            46
+          ]
+        },
+        "46": {
+          "op": "Equals2",
+          "operand": [],
+          "edges": [
+            48
+          ]
+        },
+        "48": {
+          "op": "BranchTruthy",
+          "operand": [],
+          "edges": [
+            49,
+            45
+          ]
+        },
+        "49": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "pw"
+          ],
+          "edges": [
+            50
+          ]
+        },
+        "50": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            51
+          ]
+        },
+        "51": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            52
+          ]
+        },
+        "52": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "pw"
+          ],
+          "edges": [
+            53
+          ]
+        },
+        "53": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            54
+          ]
+        },
+        "54": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            55
+          ]
+        },
+        "55": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "zl"
+          ],
+          "edges": [
+            56
+          ]
+        },
+        "56": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            57
+          ]
+        },
+        "57": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            58
+          ]
+        },
+        "58": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "zl"
+          ],
+          "edges": [
+            59
+          ]
+        },
+        "59": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            60
+          ]
+        },
+        "60": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            61
+          ]
+        },
+        "61": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "yup"
+          ],
+          "edges": [
+            62
+          ]
+        },
+        "62": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            63
+          ]
+        },
+        "63": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            64
+          ]
+        },
+        "64": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "up"
+          ],
+          "edges": [
+            65
+          ]
+        },
+        "65": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            66
+          ]
+        },
+        "66": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            67
+          ]
+        },
+        "67": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "hitx"
+          ],
+          "edges": [
+            68
+          ]
+        },
+        "68": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            69
+          ]
+        },
+        "69": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            70
+          ]
+        },
+        "70": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "x"
+          ],
+          "edges": [
+            71
+          ]
+        },
+        "71": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            72
+          ]
+        },
+        "72": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            73
+          ]
+        },
+        "73": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "hdtime"
+          ],
+          "edges": [
+            74
+          ]
+        },
+        "74": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            75
+          ]
+        },
+        "75": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            76
+          ]
+        },
+        "76": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "tm"
+          ],
+          "edges": [
+            77
+          ]
+        },
+        "77": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            78
+          ]
+        },
+        "78": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            79
+          ]
+        },
+        "79": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "htype"
+          ],
+          "edges": [
+            80
+          ]
+        },
+        "80": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "ppw"
+          ],
+          "edges": [
+            81
+          ]
+        },
+        "81": {
+          "op": "Push",
+          "operand": [
+            "register",
+            "_loc2_"
+          ],
+          "edges": [
+            82
+          ]
+        },
+        "82": {
+          "op": "Push",
+          "operand": [
+            "string",
+            "dz"
+          ],
+          "edges": [
+            83
+          ]
+        },
+        "83": {
+          "op": "Add2",
+          "operand": [],
+          "edges": [
+            84
+          ]
+        },
+        "84": {
+          "op": "GetMember",
+          "operand": [],
+          "edges": [
+            85
+          ]
+        },
+        "85": {
+          "op": "Push",
+          "operand": [
+            "integer",
+            6
+          ],
+          "edges": [
+            86
+          ]
+        },
+        "86": {
+          "op": "InitObject",
+          "operand": [],
+          "edges": [
+            87
+          ]
+        },
+        "87": {
+          "op": "Return",
+          "operand": [],
+          "edges": []
+        },
+        "89": {
+          "op": "Push",
+          "operand": [
+            "null"
+          ],
+          "edges": [
+            90
+          ]
+        },
+        "90": {
+          "op": "Return",
+          "operand": [],
+          "edges": []
+        }
+      },
+      "rewrites": [
+        {
+          "kind": "conditional_initializer_erasure",
+          "nodes": [
+            8,
+            9,
+            10
+          ],
+          "role": "_loc2_",
+          "activation_visible_erasure_proved": false
+        },
+        {
+          "kind": "conditional_initializer_erasure",
+          "nodes": [
+            11,
+            12,
+            13
+          ],
+          "role": "_loc4_",
+          "activation_visible_erasure_proved": false
+        },
+        {
+          "kind": "boolean_branch_polarity",
+          "nodes": [
+            3,
+            4
+          ],
+          "not_count": 1
+        },
+        {
+          "kind": "boolean_branch_polarity",
+          "nodes": [
+            36,
+            37
+          ],
+          "not_count": 1
+        },
+        {
+          "kind": "boolean_branch_polarity",
+          "nodes": [
+            43,
+            44
+          ],
+          "not_count": 1
+        },
+        {
+          "kind": "boolean_branch_polarity",
+          "nodes": [
+            47,
+            48
+          ],
+          "not_count": 1
+        },
+        {
+          "kind": "jump_bypass",
+          "nodes": [
+            88
+          ],
+          "target": 16
+        }
+      ]
+    },
+    "node_pairs": [
+      {
+        "original": 0,
+        "archived": 0
+      },
+      {
+        "original": 1,
+        "archived": 1
+      },
+      {
+        "original": 2,
+        "archived": 2
+      },
+      {
+        "original": 4,
+        "archived": 4
+      },
+      {
+        "original": 5,
+        "archived": 5
+      },
+      {
+        "original": 6,
+        "archived": 6
+      },
+      {
+        "original": 7,
+        "archived": 7
+      },
+      {
+        "original": 8,
+        "archived": 14
+      },
+      {
+        "original": 9,
+        "archived": 15
+      },
+      {
+        "original": 10,
+        "archived": 16
+      },
+      {
+        "original": 11,
+        "archived": 17
+      },
+      {
+        "original": 12,
+        "archived": 18
+      },
+      {
+        "original": 13,
+        "archived": 19
+      },
+      {
+        "original": 14,
+        "archived": 20
+      },
+      {
+        "original": 15,
+        "archived": 21
+      },
+      {
+        "original": 16,
+        "archived": 22
+      },
+      {
+        "original": 17,
+        "archived": 23
+      },
+      {
+        "original": 18,
+        "archived": 24
+      },
+      {
+        "original": 19,
+        "archived": 25
+      },
+      {
+        "original": 20,
+        "archived": 26
+      },
+      {
+        "original": 21,
+        "archived": 27
+      },
+      {
+        "original": 22,
+        "archived": 28
+      },
+      {
+        "original": 23,
+        "archived": 29
+      },
+      {
+        "original": 24,
+        "archived": 30
+      },
+      {
+        "original": 25,
+        "archived": 31
+      },
+      {
+        "original": 26,
+        "archived": 32
+      },
+      {
+        "original": 27,
+        "archived": 33
+      },
+      {
+        "original": 28,
+        "archived": 34
+      },
+      {
+        "original": 29,
+        "archived": 35
+      },
+      {
+        "original": 32,
+        "archived": 37
+      },
+      {
+        "original": 34,
+        "archived": 38
+      },
+      {
+        "original": 35,
+        "archived": 39
+      },
+      {
+        "original": 36,
+        "archived": 40
+      },
+      {
+        "original": 37,
+        "archived": 41
+      },
+      {
+        "original": 38,
+        "archived": 42
+      },
+      {
+        "original": 40,
+        "archived": 44
+      },
+      {
+        "original": 41,
+        "archived": 45
+      },
+      {
+        "original": 42,
+        "archived": 46
+      },
+      {
+        "original": 44,
+        "archived": 48
+      },
+      {
+        "original": 45,
+        "archived": 49
+      },
+      {
+        "original": 46,
+        "archived": 50
+      },
+      {
+        "original": 47,
+        "archived": 51
+      },
+      {
+        "original": 48,
+        "archived": 52
+      },
+      {
+        "original": 49,
+        "archived": 53
+      },
+      {
+        "original": 50,
+        "archived": 54
+      },
+      {
+        "original": 51,
+        "archived": 55
+      },
+      {
+        "original": 52,
+        "archived": 56
+      },
+      {
+        "original": 53,
+        "archived": 57
+      },
+      {
+        "original": 54,
+        "archived": 58
+      },
+      {
+        "original": 55,
+        "archived": 59
+      },
+      {
+        "original": 56,
+        "archived": 60
+      },
+      {
+        "original": 57,
+        "archived": 61
+      },
+      {
+        "original": 58,
+        "archived": 62
+      },
+      {
+        "original": 59,
+        "archived": 63
+      },
+      {
+        "original": 60,
+        "archived": 64
+      },
+      {
+        "original": 61,
+        "archived": 65
+      },
+      {
+        "original": 62,
+        "archived": 66
+      },
+      {
+        "original": 63,
+        "archived": 67
+      },
+      {
+        "original": 64,
+        "archived": 68
+      },
+      {
+        "original": 65,
+        "archived": 69
+      },
+      {
+        "original": 66,
+        "archived": 70
+      },
+      {
+        "original": 67,
+        "archived": 71
+      },
+      {
+        "original": 68,
+        "archived": 72
+      },
+      {
+        "original": 69,
+        "archived": 73
+      },
+      {
+        "original": 70,
+        "archived": 74
+      },
+      {
+        "original": 71,
+        "archived": 75
+      },
+      {
+        "original": 72,
+        "archived": 76
+      },
+      {
+        "original": 73,
+        "archived": 77
+      },
+      {
+        "original": 74,
+        "archived": 78
+      },
+      {
+        "original": 75,
+        "archived": 79
+      },
+      {
+        "original": 76,
+        "archived": 80
+      },
+      {
+        "original": 77,
+        "archived": 81
+      },
+      {
+        "original": 78,
+        "archived": 82
+      },
+      {
+        "original": 79,
+        "archived": 83
+      },
+      {
+        "original": 80,
+        "archived": 84
+      },
+      {
+        "original": 81,
+        "archived": 85
+      },
+      {
+        "original": 82,
+        "archived": 86
+      },
+      {
+        "original": 83,
+        "archived": 87
+      },
+      {
+        "original": 85,
+        "archived": 89
+      },
+      {
+        "original": 86,
+        "archived": 90
+      }
+    ],
+    "conditional_graph_equal": true,
+    "complete_correspondence_proved": false,
+    "premises": [
+      "Register roles are a static correspondence, not an executed activation binding.",
+      "Two added undefined local writes are conditionally erased; activation-visible erasure is unproved.",
+      "Push splitting preserves ordered values only; instruction dispatch/timing equality is not claimed.",
+      "Jump bypass and Boolean polarity preserve graph predicates, not native cursor or scheduling."
+    ]
+  },
+  "observer_effects": {
+    "sources": {
+      "aiGeoStamp": {
+        "archive_member": "s275-patches/main/frame_1/DoAction.as",
+        "source": "aiGeoStamp = function(mc, source)\n{\n   if(mc.__aiGeoId == undefined)\n   {\n      mc.__aiGeoId = ++_root.aiGeoSerial;\n      mc.__aiGeoSource = source;\n      mc.__aiGeoBirth = _root.aiDisplay;\n   }\n};",
+        "source_sha256": "99f1b4649e274a5e53bcd6d30a1eb46b833c85c6094dc48ef7622fd07c54e02a",
+        "start_line": 27
+      },
+      "aiK1Observe": {
+        "archive_member": "s275-patches/main/frame_1/DoAction.as",
+        "source": "aiK1Observe = function(phase, mc, target)\n{\n   if(_root.aiFight < 15 || _root.aiFight > 19) return;\n   var parent = mc._parent;\n   var grandparent = parent._parent;\n   _root.aiEvent(\"k1atm_provenance\", phase + \",\" + escape(String(mc)) + \",\" + (mc != undefined) + \",\" + mc._currentframe + \",\" + escape(String(mc.__aiGeoId)) + \",\" + escape(String(mc.__aiGeoSource)) + \",\" + escape(String(mc.__aiGeoBirth)) + \",\" + escape(String(parent)) + \",\" + parent._currentframe + \",\" + parent.pn + \",\" + escape(String(target)) + \",\" + (mc._fsArray != undefined) + \",\" + mc._fsArray.length + \",\" + escape(String(mc._fsArray)) + \",\" + (mc._fzfsArray != undefined) + \",\" + mc._fzfsArray.length + \",\" + escape(String(mc._fzfsArray)) + \",\" + (mc.stgks != undefined) + \",\" + mc.stgks.length + \",\" + escape(String(mc.stgks)) + \",\" + typeof(mc.getHitObj) + \",\" + typeof(mc.getStgHitObj) + \",\" + escape(String(grandparent)) + \",\" + grandparent.pn);\n};",
+        "source_sha256": "d40dfb25c623cbb7bea106929e3654d3301669efb6c274408c0ab66c714fa610",
+        "start_line": 18
+      },
+      "aiEvent": {
+        "archive_member": "s275-patches/main/frame_1/DoAction.as",
+        "source": "aiEvent = function(kind, value)\n{\n   trace(\"AIREF|\" + aiRun + \"|\" + (++aiSeq) + \"|\" + getTimer() + \"|\" + aiDisplay + \"|\" + aiFight + \"|\" + kind + \"|\" + value);\n};",
+        "source_sha256": "afa644911e3ab41b5f017f53885b0d25b3125a83fc832e463c89009feaea3b4a",
+        "start_line": 129
+      },
+      "s275-patches/main/frame_10/DoAction.as": {
+        "archive_member": "s275-patches/main/frame_10/DoAction.as",
+        "source_sha256": "7e6d19b9211694ca192ee935d0148aa9a040ad6e32a08081d17367f43bed66d3",
+        "source": "_root.aiHeld = {};\n_root.aiKeyDown = function(code)\n{\n   var held = _root.aiHeld[code] == true;\n   _root.aiEvent(\"key_read\", String(this) + \",\" + code + \",\" + held);\n   return held;\n};\np1selt = \"石田\";\np2selt = \"一护\";\np1sf = \"我爱罗\";\np2sf = \"魂\";\ncurStage = \"现世\";\nmodo = 3;\np1cpu = false;\np2cpu = false;\nAI = 5;\nmaxhp = 1000;\nmaxtime = 60;\nfighterDir = \"file:///private/tmp/bvn-s275-r03-build/game/fighter/\";\nfzDir = \"file:///private/tmp/bvn-s275-r03-build/game/fighter/fz/\";\nmusicDir = \"file:///private/tmp/bvn-s275-r03-build/game/music/\";\n_root.aiEvent(\"boot\", \"vs_com,minren,yihu,AI=5\");\n_root.aiEvent(\"input_bindings\", \"w=\" + w + \",\" + \"a=\" + a + \",\" + \"l=\" + l + \",\" + \"上箭=\" + 上箭 + \",\" + \"下箭=\" + 下箭 + \",\" + \"左箭=\" + 左箭 + \",\" + \"右箭=\" + 右箭 + \",\" + \"N1=\" + N1 + \",\" + \"N2=\" + N2 + \",\" + \"N3=\" + N3 + \",\" + \"N4=\" + N4 + \",\" + \"N5=\" + N5 + \",\" + \"N6=\" + N6 + \",\" + \"right=\" + d + \",attack=\" + j + \",down=\" + s + \",ranged=\" + u + \",jump=\" + k + \",special=\" + i + \",summon=\" + o);\ngotoAndStop(\"游戏场景\");\nonEnterFrame = function()\n{\n   aiDisplay++;\n   if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)\n   {\n      aiFight = 0;\n      aiEvent(\"ready\", \"\");\n   }\n   else if(aiFight >= 0)\n   {\n      aiFight++;\n   }\n   if(aiFight == 0)\n   {\n      clearInterval(_root.airanset);\n      _root.game.p1.mc.gotoAndPlay(\"站立\");\n      _root.game.p1._x = 100.0;\n      _root.game.p1.mc.ql = 300.0;\n      _root.game.p2.mc.gotoAndPlay(\"站立\");\n      _root.game.p2._x = 150.0;\n      _root.game.p2.mc.ql = 300.0;\n   }\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 13) { aiHeld[j] = true; }\n   // These inputs become visible to the next display callback, as logged.\n   aiEvent(\"input_next_display\", \"w=\" + aiHeld[w] + \",\" + \"a=\" + aiHeld[a] + \",\" + \"l=\" + aiHeld[l] + \",\" + \"上箭=\" + aiHeld[上箭] + \",\" + \"下箭=\" + aiHeld[下箭] + \",\" + \"左箭=\" + aiHeld[左箭] + \",\" + \"右箭=\" + aiHeld[右箭] + \",\" + \"N1=\" + aiHeld[N1] + \",\" + \"N2=\" + aiHeld[N2] + \",\" + \"N3=\" + aiHeld[N3] + \",\" + \"N4=\" + aiHeld[N4] + \",\" + \"N5=\" + aiHeld[N5] + \",\" + \"N6=\" + aiHeld[N6] + \",\" + \"right=\" + aiHeld[d] + \",attack=\" + aiHeld[j] + \",down=\" + aiHeld[s] + \",ranged=\" + aiHeld[u] + \",jump=\" + aiHeld[k] + \",special=\" + aiHeld[i] + \",summon=\" + aiHeld[o]);\n   if(p2loaded == true)\n   {\n      if(!_root.aiGeometryLogged && _root.game.p2.useAI == true && _root.game.p2.mc.AImain._currentframe == 2)\n      {\n         _root.aiGeometryLogged = true;\n         aiGeometry();\n      }\n      aiState(\"p1\");\n      aiHelperState(\"p1\");\n      aiState(\"p2\");\n      aiHelperState(\"p2\");\n   }\n   _root.aiK1Observe(\"root_sample\",_root.game.p1.mc.k1atm.mian,_root.game[\"p\" + _root.game.p1.mc.k1atm.pn]);\n   _root.s275Boundary(\"root_slot\", _root.game.p1.mc.getInstanceAtDepth(-16356));\n_root.aiGeometrySample();\n   if(aiFight >= 60)\n   {\n      aiEvent(\"done\", \"\");\n      fscommand(\"quit\");\n   }\n   if(aiDisplay > 60 + 900)\n   {\n      aiEvent(\"timeout\", \"ready=\" + _menuEnabled + \",loaded=\" + p2loaded);\n      fscommand(\"quit\");\n   }\n};\n\n_root.aiGeoStamp(this, \"game/main.swf#frame_10/DoAction.as\");\n"
+      },
+      "patches/fighter/yulong/DefineSprite_104/frame_1/DoAction.as": {
+        "archive_member": "patches/fighter/yulong/DefineSprite_104/frame_1/DoAction.as",
+        "source_sha256": "f818f0c1ea81552f2ee63b7d59609f5b9119e2813a2b7b8d904a6def89d948c3",
+        "source": "stop();\r\n\n_root.aiGeoStamp(this, \"game/fighter/yulong.swf#DefineSprite_104/frame_1/DoAction.as\");\n"
+      },
+      "patches/fighter/yulong/DefineSprite_104/frame_10/DoAction.as": {
+        "archive_member": "patches/fighter/yulong/DefineSprite_104/frame_10/DoAction.as",
+        "source_sha256": "c5ad785fba7894a8736d324e2295461827483aa4db9d8079683083ed2b3b286b",
+        "source": "stop();\r\n\n_root.aiGeoStamp(this, \"game/fighter/yulong.swf#DefineSprite_104/frame_10/DoAction.as\");\n"
+      },
+      "s275-patches/fighter/yulong/DefineSprite_345/frame_188/PlaceObject2_104_28/CLIPACTIONRECORD onClipEvent(enterFrame).as": {
+        "archive_member": "s275-patches/fighter/yulong/DefineSprite_345/frame_188/PlaceObject2_104_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+        "source_sha256": "1d835ca05435bc5de1cc64e08a39ef0425edb759c70587b444329733f0dff309",
+        "source": "onClipEvent(enterFrame){\n   if(_root.s275Value(\"pause\", _root.zhanting == false))\n   {\n      if(_root.s275Value(\"result1\", _root.s275Value(\"receiver1\", mian).hitTest(_root.s275Value(\"target1\", _root.game[\"p\" + _parent.pn].mc.bdmn))) or _root.s275Value(\"result2\", _root.s275Value(\"receiver2\", mian).hitTest(_root.s275Value(\"target2\", _root.game[\"p\" + _parent.pn].mc.zh1atm))) or _root.s275Value(\"result3\", _root.s275Value(\"receiver3\", mian).hitTest(_root.s275Value(\"target3\", _root.game[\"p\" + _parent.pn].mc.zh2atm))) or _root.s275Value(\"result4\", _root.s275Value(\"receiver4\", hitmc.mian).hitTest(_root.s275Value(\"target4\", _root.game[\"p\" + _parent.pn].mc.zh3atm))) or _root.s275Value(\"result5\", _root.s275Value(\"receiver5\", mian).hitTest(_root.s275Value(\"target5\", _root.game[\"p\" + _parent.pn].mc.abcd))))\n      {\n         if(_root.s275Value(\"played\", played == 0))\n         {\n            played = 1;\n            movspeed = 0;\n            _root.s275Boundary(\"before_goto\", this);\n         gotoAndPlay(5);\n         _root.s275Boundary(\"after_goto\", this);\n         }\n      }\n      else\n      {\n         _X = _X + movspeed;\n      }\n   }\n}\n"
+      },
+      "s275-patches/fighter/yulong/DefineSprite_104/frame_5/DoAction.as": {
+        "archive_member": "s275-patches/fighter/yulong/DefineSprite_104/frame_5/DoAction.as",
+        "source_sha256": "79c93d5c10ae1a1f2bba086708b8913c20e2d460a6b33beb04d2c22573bdbcf3",
+        "source": "_root.s275Boundary(\"before_rename\", this);\nthis._name = \"abcd\";\n_root.s275Boundary(\"after_rename\", this);\n"
+      },
+      "patches/fighter/yulong/DefineSprite_2/frame_1/DoAction.as": {
+        "archive_member": "patches/fighter/yulong/DefineSprite_2/frame_1/DoAction.as",
+        "source_sha256": "ac292989dbcdc3342185aa134cc9d70ae6791ce5dff385dc81fc00e1b68747a2",
+        "source": "function gameRunning()\r\n{\r\n   return _root.zhanting == false && _root.game[\"p\" + _parent.pn].mc.sw == false;\r\n}\r\nfunction beida()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.time = 0;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n   }\r\n   _parent.gotoAndPlay(_loc2_.htype);\r\n}\r\nfunction fangyu()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n      _parent.gotoAndPlay(_loc2_.htype);\r\n   }\r\n   else\r\n   {\r\n      _parent.yup = 0;\r\n      _parent.gotoAndPlay(\"防住\");\r\n   }\r\n}\r\nfunction checkHit()\r\n{\r\n   if(!gameRunning())\r\n   {\r\n      return null;\r\n   }\r\n   if(!_parent.canhit)\r\n   {\r\n      return null;\r\n   }\r\n   var _loc3_ = getHitObj(_fsArray,_root.game[\"p\" + _parent.pn].mc,\"atm\",_parent.pw);\r\n   if(!_loc3_)\r\n   {\r\n      _loc3_ = getHitObj(_fzfsArray,_root.game[\"p\" + _parent.pn + \"fz\"],\"\",_parent.fzpw);\r\n   }\r\n   if(!_loc3_)\r\n   {\r\n      _loc3_ = getStgHitObj();\r\n   }\r\n   return _loc3_;\r\n}\r\nfunction getHitObj(array, player, afterFix, ppw)\r\n{\r\n   if(afterFix == undefined)\r\n   {\r\n      afterFix = \"\";\r\n   }\r\n   var _loc2_;\r\n   var _loc4_;\r\n   for(var _loc14_ in array)\r\n   {\r\n      _loc2_ = array[_loc14_];\r\n      _loc4_ = player[_loc2_ + afterFix];\r\n      if(_loc4_)\r\n      {\r\n         if(this.hitTest(_loc4_))\r\n         {\r\n            return {pw:ppw[_loc2_ + \"pw\"],zl:ppw[_loc2_ + \"zl\"],yup:ppw[_loc2_ + \"up\"],hitx:ppw[_loc2_ + \"x\"],hdtime:ppw[_loc2_ + \"tm\"],htype:ppw[_loc2_ + \"dz\"]};\r\n         }\r\n      }\r\n   }\r\n   return null;\r\n}\r\nfunction getStgHitObj()\r\n{\r\n   var _loc4_;\r\n   for(var _loc5_ in stgks)\r\n   {\r\n      _loc4_ = _root.game.layer_effect[stgks[_loc5_] + \"_P\" + _parent.pn];\r\n      if(_loc4_)\r\n      {\r\n         if(this.hitTest(_loc4_.mian))\r\n         {\r\n            return _loc4_.hitObj;\r\n         }\r\n      }\r\n   }\r\n}\r\nvar hitks = [\"tk\",\"tz\",\"k1\",\"k2\",\"k3\",\"k4\",\"k5\",\"kj1\",\"kj2\",\"zh1\",\"zh2\",\"zh3\",\"bs\",\"sbs\",\"cbs\",\"kbs\"];\r\nvar stgks = [\"stgk1\",\"stgk2\",\"stgk3\",\"stgk4\",\"stgk5\",\"stgk6\",\"stgk7\",\"stgk8\",\"stgk9\",\"stgk10\"];\r\nvar _fsArray = [];\r\nvar i = 0;\r\nwhile(i < hitks.length)\r\n{\r\n   var kv = hitks[i];\r\n   _fsArray.push(kv);\r\n   var k = 1;\r\n   while(k <= 5)\r\n   {\r\n      _fsArray.push(kv + k);\r\n      k++;\r\n   }\r\n   i++;\r\n}\r\nvar _fzfsArray = [\"atm1\",\"atm2\",\"atm3\",\"atm4\",\"atm5\"];\r\n\n_root.aiGeoStamp(this, \"game/fighter/yulong.swf#DefineSprite_2/frame_1/DoAction.as\");\n\nif(String(this) == \"_level0.game.p1.mc.k1atm.mian\") _root.aiK1Observe(\"source_after_stamp\",this,_root.game[\"p\" + this._parent.pn]);\n"
+      },
+      "s275_helpers": {
+        "path": "evidence/sampling-upgrade/s275/observer.as",
+        "source": "// Analysis-only pass-through: return the same once-evaluated value.\n_root.s275Value = function(site, value)\n{\n   if(_root.aiFight >= 15 && _root.aiFight <= 22)\n   {\n      _root.aiEvent(\"s275_value\", site + \",\" + typeof(value) + \",\" + escape(String(value)) + \",\" + escape(String(value._parent)) + \",\" + value._currentframe + \",\" + value.__aiGeoId + \",\" + escape(String(value.__aiGeoSource)));\n   }\n   return value;\n};\n_root.s275Boundary = function(phase, mc)\n{\n   if(_root.aiFight < 15 || _root.aiFight > 22) return;\n   _root.aiEvent(\"s275_boundary\", phase + \",\" + escape(String(mc)) + \",\" + mc._currentframe + \",\" + mc.__aiGeoId + \",\" + escape(String(mc._parent)) + \",\" + escape(String(mc.mian)) + \",\" + escape(String(mc.getInstanceAtDepth(-16382))) + \",\" + escape(String(_root.game.p1.mc.getInstanceAtDepth(-16356))) + \",\" + escape(String(_root.game.p1.mc.k1atm)) + \",\" + escape(String(_root.game.p1.mc.abcd)));\n};\n"
+      }
+    },
+    "effects": [
+      {
+        "site": "Sprite2 initialization suffix / aiGeoStamp",
+        "effects": [
+          "reads mc.__aiGeoId; conditionally increments root.aiGeoSerial",
+          "writes mc.__aiGeoId, mc.__aiGeoSource, mc.__aiGeoBirth",
+          "adds observable own properties; not assumed invisible to enumeration"
+        ]
+      },
+      {
+        "site": "Sprite2 initialization suffix / aiK1Observe",
+        "effects": [
+          "String(this) path guard and direct-parent pn target lookup",
+          "reads parent, lists, function properties and historical grandparent.pn for logging only",
+          "String/escape conversions and aiEvent call; no nested function entry hook",
+          "historical ancestor read is disclosed, never used as a pn substitute or eligibility rule"
+        ]
+      },
+      {
+        "site": "frame188 enterFrame / s275Value",
+        "effects": [
+          "wraps pause, five original receiver/target/results and played expressions",
+          "reads value parent/frame/stamp properties, coerces values, invokes aiEvent, returns supplied value",
+          "source pass-through does not prove getter/conversion/activation/timing neutrality"
+        ]
+      },
+      {
+        "site": "before/after goto, before/after rename / s275Boundary",
+        "effects": [
+          "reads slots and stamps; calls getInstanceAtDepth, String, escape and aiEvent",
+          "helper after goto is not a direct removal dispatch or invalidated-continuation witness"
+        ]
+      },
+      {
+        "site": "root frame10 sampling and Sprite104 frame1/frame10 stamps",
+        "effects": [
+          "root_sample and root_slot calls add reads outside the nested function",
+          "Sprite104 initialization/stop frames also call aiGeoStamp; exact archived sources retained",
+          "no independent direct dispatch channel is supplied by root sampling"
+        ]
+      },
+      {
+        "site": "aiEvent shared logging dependency",
+        "effects": [
+          "exact retained source exposes aiSeq increment, getTimer, string concatenation and trace work",
+          "logging cost and callback scheduling perturbation have no independent off/on bound"
+        ]
+      }
+    ],
+    "complete_compiled_helper_preservation_proved": false,
+    "independent_observer_off_on": null,
+    "perturbation_bound": null,
+    "limit": "Source effect inventory, not complete transitive compiled equivalence or measured runtime effects."
+  },
+  "observations": {
+    "loaded_action_buffer": null,
+    "dispatch_pc": null,
+    "placement_allocation_identity": null,
+    "defining_activation": null,
+    "entry_receiver": null,
+    "entry_arguments": null,
+    "operand_stack": null,
+    "registers": null,
+    "scope_chain": null,
+    "direct_parent": null,
+    "nested_return_or_invalidated_continuation": null,
+    "perturbation_bound": null
+  },
+  "removal_tag_binding": {
+    "original": [
+      {
+        "sprite": 104,
+        "frame": 5,
+        "depth": 2,
+        "tag_index": 8,
+        "uncompressed_offset": 66858,
+        "tag_hex": "02070200",
+        "tag_sha256": "e92a0c909446c93cc36d9aaca012e411a786026663807a865ada6b6363e1d234"
+      },
+      {
+        "sprite": 345,
+        "frame": 194,
+        "depth": 28,
+        "tag_index": 361,
+        "uncompressed_offset": 687655,
+        "tag_hex": "02071c00",
+        "tag_sha256": "386567080ffefbcda5bae5c35c1c4b72ac2273fbf714b4a7c4e7d3ba852c606b"
+      }
+    ],
+    "s275_build": [
+      {
+        "sprite": 104,
+        "frame": 5,
+        "depth": 2,
+        "tag_index": 8,
+        "uncompressed_offset": 75020,
+        "tag_hex": "02070200",
+        "tag_sha256": "e92a0c909446c93cc36d9aaca012e411a786026663807a865ada6b6363e1d234"
+      },
+      {
+        "sprite": 345,
+        "frame": 194,
+        "depth": 28,
+        "tag_index": 361,
+        "uncompressed_offset": 702677,
+        "tag_hex": "02071c00",
+        "tag_sha256": "386567080ffefbcda5bae5c35c1c4b72ac2273fbf714b4a7c4e7d3ba852c606b"
+      }
+    ],
+    "coordinate_system": "uncompressed SWF file offsets, not dispatch PCs"
+  },
+  "exclusions": [
+    "ancestor pn",
+    "aliases",
+    "artificial hitTest/call",
+    "enlarged boxes",
+    "other chains",
+    "eligibility rule",
+    "other ranks",
+    "production changes",
+    "s254-s301 edits",
+    "ranks 1-2 or 4+ execution",
+    "runtime/contracts/shared sampler/threshold/validator changes"
+  ],
+  "blocker": "Activation-visible initializer erasure and helper effects remain unproved; no loaded activation/operand binding or independent observer-off/on control. Direct removal and natural nested-entry paired controls remain blocked.",
+  "coordinates": "Uncompressed file offsets and expanded audit node IDs, never native PCs or live action cursors."
+}

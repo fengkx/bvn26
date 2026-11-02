@@ -1,0 +1,167 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s302/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s302/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.352174,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "correspondence",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s302/diagnose.py",
+      "--output",
+      "/tmp/s302-correspondence.json",
+      "--require-correspondence"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.334591,
+    "log": "correspondence.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s302/diagnose.py",
+      "--output",
+      "/tmp/s302-observer.json",
+      "--require-observer"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.325486,
+    "log": "observer.txt"
+  },
+  {
+    "name": "parent-removal",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s302/diagnose.py",
+      "--output",
+      "/tmp/s302-parent-removal.json",
+      "--require-parent-removal"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.321219,
+    "log": "parent-removal.txt"
+  },
+  {
+    "name": "nested-entry",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s302/diagnose.py",
+      "--output",
+      "/tmp/s302-nested-entry.json",
+      "--require-nested-entry"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.334075,
+    "log": "nested-entry.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s302",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.375151,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s294-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s294",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.292089,
+    "log": "retained-s294-tests.txt"
+  },
+  {
+    "name": "retained-s285-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s285",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.303391,
+    "log": "retained-s285-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_yulong_operand_boundary",
+      "tools.tests.test_nested_owner_diagnosis",
+      "tools.tests.test_yulong_k1atm_observer",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.802551,
+    "log": "retained-tests.txt"
+  }
+]
