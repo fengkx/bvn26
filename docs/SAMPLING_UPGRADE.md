@@ -1514,3 +1514,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s292，AFTER-s290 排名第2项）：锁定复算 s282 的26828事件、63次选择与4个入口连接；新增原版/归档 Sprite1810 全标签字节核对，非动作时间轴相同、帧1保留 Stop/End，帧2–10均无入口脚本。现有保留对照在同回调先跳2再跳1，不能证明独立重复/改变目标入口；全十帧替换及 observer-off/on 顺序对照仍缺。资格和时钟要求以 S292_ENTRY_OBSERVER_UNPROVED exit1，新捕获被前置资格阻塞；零构建/启动/捕获/图片，无运行时变更。production_admitted=false、native_parity_proven=false，M0-02 pending；仅本切片与跟踪文件变更，排名1及3–9未执行，s254–s291不变。
 
 [证据与复现](../evidence/sampling-upgrade/s292/README.md)。实际校验耗时见切片 gates/session-timing；前期设计、未来资格/捕获成本及人天未知。
+
+## s293 — AFTER-s290 rank #3: Independent s228 completion pair
+
+2026-11-02（采样 s293，AFTER-s290 排名第3项）：新建独立 s228 normal/held 对，5849/5549条完整事件均通过严格捕获与入口检查，各61样本；每次持锁归档完整主机日志并核对后才允许下一次启动，限定的独立对照成立。normal退出截断、随机值及held随机调用顺序差异保留；终端回调完整性和两次full-AS仍exit1（547未访问块、656未插桩脚本）。s284锁定诊断完全复现且仍未证明，不修补或重封。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s293及跟踪文件变更，其他排名和s254–s292不变，无运行时变更或默认推广。
+
+[证据与复现](../evidence/sampling-upgrade/s293/README.md)。实际构建、捕获与校验耗时见 execution/gates/session-timing；前期阅读设计及人天未知。

@@ -1,0 +1,184 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s293/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s293/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.5261363750323653,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "completion-required",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s293/diagnose.py",
+      "--output",
+      "/private/tmp/s293-pair.json",
+      "--require-completion-proof"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.2880071247927845,
+    "log": "completion-required.txt"
+  },
+  {
+    "name": "terminal-required",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s293/diagnose.py",
+      "--output",
+      "/private/tmp/s293-terminal.json",
+      "--require-terminal-completeness"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 1.3101289588958025,
+    "log": "terminal-required.txt"
+  },
+  {
+    "name": "normal-full-as-portable",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s293/diagnose.py",
+      "--output",
+      "/private/tmp/s293-normal-full.json",
+      "--require-full-as",
+      "normal"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 1.2855068328790367,
+    "log": "normal-full-as-portable.txt"
+  },
+  {
+    "name": "held-full-as-portable",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s293/diagnose.py",
+      "--output",
+      "/private/tmp/s293-held-full.json",
+      "--require-full-as",
+      "held"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 1.2979883751831949,
+    "log": "held-full-as-portable.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s293",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.541233791038394,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s284-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s284",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.9502687091007829,
+    "log": "retained-s284-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_additional_nondisplay_completion",
+      "tools.tests.test_non_display_completion_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.727993874810636,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "normal-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json'),Path('/private/tmp/bvn-s293-normal-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.08380762487649918,
+    "log": "normal-receipt.txt"
+  },
+  {
+    "name": "normal-full-as",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json",
+      "--receipt",
+      "/private/tmp/bvn-s293-normal-capture/receipt.json",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s293/normal/doaction-coverage.json"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.09919899981468916,
+    "log": "normal-full-as.txt"
+  },
+  {
+    "name": "held-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json'),Path('/private/tmp/bvn-s293-held-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.08123862510547042,
+    "log": "held-receipt.txt"
+  },
+  {
+    "name": "held-full-as",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json",
+      "--receipt",
+      "/private/tmp/bvn-s293-held-capture/receipt.json",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s293/held/doaction-coverage.json"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.1007368341088295,
+    "log": "held-full-as.txt"
+  }
+]
