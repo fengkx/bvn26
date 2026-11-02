@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s281，AFTER-s272 排名第9项）：仅复算 s272/s262 的32227事件与 s274 的26828事件，分别绑定捕获身份；68/63回调及局部寿命观测不能跨捕获补齐完整场景准入。错误字形、独立子时钟/开场连接和同次配对图片仍阻塞，边缘/内部RGBA残差未测量；历史严格RGBA保持0/61，薄栅格及状态准入要求exit1。零新构建/捕获/图片，无运行时修复。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–8及s254–s280、共享采样器/阈值/验证器未动。[证据](../evidence/sampling-upgrade/s281/README.md)。
+
 - 2026-11-02（采样 s280，AFTER-s272 排名第8项）：选择不同于已解决案例的 s228 一护零段独立 DoAction 拒绝，复算完整5630事件；done后34条同周期按键回调与跨tick61/62的56条事件全部分类。复算锁定s269正常/延迟退出尾段，正常退出截断与越界单列，不能移植为s228证明。独立opt-in正常/延迟实验已给出判据，尚无执行证明；严格原生及完成证明要求exit1。零新构建/捕获，无实现或默认推广。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s279、运行时与严格验证器不变。[证据](../evidence/sampling-upgrade/s280/README.md)。
 
 - 2026-11-02（采样 s279，AFTER-s272 排名第7项）：复算 s267/s261 的8290事件与root8/9边界；同哈希播放器的四个allocator导入跳板及指针槽已按字节锁定，但槽位/保存引用解析器候选仍零地址，原生对象分配、释放与复用记录均缺。保留内容清空和同深度替换的代际对照未通过，身份要求exit1；零新构建/捕获，无运行时映射。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s278、严格验证器不变。[证据](../evidence/sampling-upgrade/s279/README.md)。
