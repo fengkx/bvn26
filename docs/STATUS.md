@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s309，post-s308 重排）：s300–s308交付保持关闭，仅执行新排名第1项 Yulong getHitObj 两处新增初始化定义—读取审计。完整复现s302的5214历史事件，原版87/归档91节点未消去图全量遍历；两处初始化均不到达9个显式读取，后续写入与原版对应并保留见证路径。静态覆盖不证明activation可见消去、观察器无扰动、直接移除派发或自然嵌套入口，四项证明门槛exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；排名2+仅规划，s254–s308及共享工具不变，零新构建/启动/捕获，无运行时修改。 [新排名](../evidence/sampling-upgrade/next-fix-priority-after-s308.md)；[证据](../evidence/sampling-upgrade/s309/README.md)。
+
 - 2026-11-02（采样 s308，AFTER-s299 排名第9项）：完整复现锁定 s299 诊断，61个边界仍全部存在数字及其他场景状态差异，同次Godot配对图片为零。新增逐边界捕获/分类资格与首个未满足门槛审计；缺完整同次状态准入，捕获和严格源绑定边缘/内部RGBA分类均未执行，像素未知项保持null。三项证明门槛exit1，零构建/启动/捕获/图片，不修准入。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s308与跟踪文件变更，s254–s307不变，不执行排名1–8，无运行时修改。 [证据](../evidence/sampling-upgrade/s308/README.md)。
 
 - 2026-11-02（采样 s307，AFTER-s299 排名第8项）：完整复现锁定 s298 的8290历史事件；新增保存引用、深度槽位和对照操作的完整归档函数及顺序审计。两条AS2读取路径不构成独立原生解析器，四次对象日志不是原子快照；属性删除不是实际内容清空。原生布局、活实例绑定及完整对象池代际仍缺，清空/替换/free/reuse未获资格，四项证明门槛exit1。零新构建/启动/附加/捕获/符号查询，无运行时修改。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s307及跟踪文件变更，s254–s306不变，不执行排名1–7或9。 [证据](../evidence/sampling-upgrade/s307/README.md)。
