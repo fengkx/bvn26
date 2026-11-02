@@ -1454,3 +1454,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s281，AFTER-s272 排名第9项）：仅复算 s272/s262 的32227事件与 s274 的26828事件，分别绑定捕获身份；68/63回调及局部寿命观测不能跨捕获补齐完整场景准入。错误字形、独立子时钟/开场连接和同次配对图片仍阻塞，边缘/内部RGBA残差未测量；历史严格RGBA保持0/61，薄栅格及状态准入要求exit1。零新构建/捕获/图片，无运行时修复。production_admitted=false、native_parity_proven=false，M0-02 pending；排名1–8及s254–s280、共享采样器/阈值/验证器未动。
 
 [独立捕获审计与复现](../evidence/sampling-upgrade/s281/README.md)。
+
+## s282：AFTER-s281 重排与个位逐目标帧观测（时钟未证明）
+
+2026-11-02（采样 s282，AFTER-s281 重新排名第1项）：基于 master f66987b3/#159 重排剩余缺口，仅审计 s274 个位独立目标帧观测。复算26828事件和63回调：45次选择无入口插桩的帧2–10；18次选择帧1，其中4个自然入口窗口、14个开场前无入口记录窗口。同步帧读数不补齐独立子时钟，证明要求exit1；零新构建/捕获/图片，无运行时实现。production_admitted=false、native_parity_proven=false，M0-02 pending；新排名2+仅规划，s254–s281及共享验证器不变。
+
+[新排名](../evidence/sampling-upgrade/next-fix-priority-after-s281.md)；[逐帧证据与复现](../evidence/sampling-upgrade/s282/README.md)。

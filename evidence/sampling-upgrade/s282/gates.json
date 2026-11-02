@@ -1,0 +1,91 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s282/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s282/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.342586,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "child-clock",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s282/diagnose.py",
+      "--output",
+      "/tmp/s282-required.json",
+      "--require-child-clock"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.343175,
+    "log": "child-clock.txt"
+  },
+  {
+    "name": "state-admission",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s274/diagnose.py",
+      "--output",
+      "/tmp/s282-state.json",
+      "--require-state-admission"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.320865,
+    "log": "state-admission.txt"
+  },
+  {
+    "name": "strict-rgba",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/tmp/s282-rgba.json",
+      "--strict-rgba"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 13.09899,
+    "log": "strict-rgba.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s282",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.696397,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_encoded_digit_lifetime",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_bitmap"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 11.771477,
+    "log": "retained-tests.txt"
+  }
+]
