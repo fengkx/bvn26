@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s286，AFTER-s281 排名第5项）：仅重试 Button2009 原生 UI 控制。应用清单成功，bundle ID 因两个副本歧义失败，完整安装路径仍 timeoutReached；三次工具耗时共17.0744秒。无窗口状态、输入或新捕获，编译/字节码核对与原菜单 Enter/release/无派发对照未执行。复算 s276/s271 的9774历史事件与六份候选补丁哈希；原生UI、薄覆盖及完整AS要求均exit1，59聚焦测试通过。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s286与跟踪文件变更，无运行时修复，其他排名及s254–s285不变。[证据](../evidence/sampling-upgrade/s286/README.md)。
+
 - 2026-11-02（采样 s285，AFTER-s281 排名第4项）：仅审计玉龙frame188嵌套寿命。复算s275完整5214事件，绑定原始/插桩SWF的frame194 depth28移除字节，并连接body193/194与root21/22槽位；文件偏移不是原生派发PC。六个嵌套函数只有初始化后插桩，无直接入口/操作数记录；日志跨度不是扰动上界，资格仍未通过。父移除、嵌套调用、观察器资格及严格几何要求均exit1；零新构建/捕获，无eligibility或运行时修复。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名、s254–s284与共享验证器不变。[证据](../evidence/sampling-upgrade/s285/README.md)。
 
 - 2026-11-02（采样 s284，AFTER-s281 排名第3项）：仅执行经源保留资格核对的独立 s228 DoAction normal/held 对。5752/5733条完整保存事件均通过严格捕获与入口检查，均61样本；held在tick60保留34条按键回调后闭窗，normal无尾段，退出截断单列。角色/援助/输入与历史一致，随机值差异保留。normal主机日志在held启动时清空，独立一致性检查未保存，完整实验仍未证明；完成要求及两次full-AS门槛exit1（547未访问块、656未插桩脚本）。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s284与跟踪文件变更，无默认推广、运行时修改或收据修补。[证据](../evidence/sampling-upgrade/s284/README.md)。

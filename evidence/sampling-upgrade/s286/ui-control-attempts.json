@@ -1,0 +1,28 @@
+{
+  "facility": "mcp__cua_repl.js",
+  "attempts": [
+    {
+      "operation": "await cua.getState();",
+      "reported_wall_seconds": 3.834,
+      "result": "Inventory returned; Flash Player Debugger listed running.",
+      "window_state_obtained": false
+    },
+    {
+      "operation": "var flash = await cua.getApp(\"com.macromedia.Flash Player Debugger.app\");",
+      "reported_wall_seconds": 3.6477,
+      "result": "Ambiguous app identifier 'com.macromedia.Flash Player Debugger.app'. Multiple apps share this bundle identifier: /Users/fengkx/me/code/flash-player/Flash Player.app, /Volumes/Flash Player/Flash Player.app. Use an app name or full app path instead.",
+      "window_state_obtained": false
+    },
+    {
+      "operation": "var flash = await cua.getApp(\"/Users/fengkx/me/code/flash-player/Flash Player.app\");",
+      "reported_wall_seconds": 9.5927,
+      "result": "Computer Use server error -10005: timeoutReached",
+      "window_state_obtained": false
+    }
+  ],
+  "ui_inputs_sent": 0,
+  "instrumented_movie_launches": 0,
+  "new_capture_count": 0,
+  "app_activation_unknown": true,
+  "native_receipt": false
+}
