@@ -1,0 +1,66 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s315/diagnose.py",
+      "--output",
+      "/tmp/s315-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.578749
+  },
+  {
+    "name": "native-ui",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s315/diagnose.py",
+      "--output",
+      "/tmp/s315-diagnosis.json",
+      "--require-native-ui"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.534948
+  },
+  {
+    "name": "opcode-qualification",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s315/diagnose.py",
+      "--output",
+      "/tmp/s315-diagnosis.json",
+      "--require-opcode-qualification"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.52888
+  },
+  {
+    "name": "thin-coverage",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s315/diagnose.py",
+      "--output",
+      "/tmp/s315-diagnosis.json",
+      "--require-thin-coverage"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.528536
+  },
+  {
+    "name": "full-as",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s315/diagnose.py",
+      "--output",
+      "/tmp/s315-diagnosis.json",
+      "--require-full-as"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.526102
+  }
+]
