@@ -1,0 +1,59 @@
+{
+  "id": "s276-button2009-ui",
+  "status": "not_executed",
+  "separate_from_combat_tapes": true,
+  "source": "game/main.swf",
+  "scope": "Button2009 Enter/release entry only",
+  "setup": "Launch an isolated copy of original main and locked dependencies. Use original title/mode/character/stage menus to reach an enabled in-fight menu; record all UI input and configuration. Do not force root or menu frames.",
+  "phases": [
+    {
+      "id": "frame1_no_button",
+      "input": "Native Enter up to open pause menu; wait without input",
+      "require": "menu_keyup with enabled guard, visible frame1, selection2; no Button2009 entry"
+    },
+    {
+      "id": "route_enter",
+      "input": "Native Up down/up, then Enter down/up",
+      "require": "selection1 then authored menu_play_branch; natural frame10 entry"
+    },
+    {
+      "id": "frame10_no_dispatch",
+      "input": "No keys or mouse events for a recorded wall-clock interval",
+      "require": "frame10 stays active; zero button entries and zero native input dispatch"
+    },
+    {
+      "id": "enter",
+      "input": "Native Enter down/up once",
+      "require": "independent native input record plus exact enter_entry; record actual ordering, menu visibility and frame transitions without assuming listener order"
+    },
+    {
+      "id": "route_release",
+      "input": "Reopen via original menu if hidden; select1 with Up and Enter; wait for natural frame10",
+      "require": "new frame10 arrival; no forced goto or handler invocation"
+    },
+    {
+      "id": "mouse_no_dispatch",
+      "input": "Wait without input at frame10",
+      "require": "zero release_entry and zero mouse input"
+    },
+    {
+      "id": "release",
+      "input": "Use a fresh screenshot to locate live Button2009; mouse down/up inside its hit area",
+      "require": "independent mouse down/up plus release_entry at live frame10"
+    },
+    {
+      "id": "frame1_negative",
+      "input": "Observe target frame1 and wait without input",
+      "require": "frame1 depth5 occupant independently inspected; no inference of handler return"
+    }
+  ],
+  "acceptance": "All phases need full ordered native records, input action log, source/build/player hashes, live slot correlation, and original/observed opcode projection. Source preparation alone is never entry proof.",
+  "prohibited": [
+    "combat tape edits",
+    "forced menu frame",
+    "synthetic handler call",
+    "synthetic return",
+    "assumed listener order",
+    "full-AS claim"
+  ]
+}

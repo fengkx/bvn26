@@ -1,0 +1,40 @@
+[
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3968818341381848
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.1391621669754386
+  },
+  {
+    "name": "contracts",
+    "command": [
+      "/tmp/bvn-s27-venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.020811791997402906,
+    "log": "contracts-missing-dependency.txt"
+  },
+  {
+    "name": "contracts-with-isolated-dependencies",
+    "command": [
+      "/tmp/bvn-s276-venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.16722920816391706,
+    "log": "contracts.txt"
+  }
+]
