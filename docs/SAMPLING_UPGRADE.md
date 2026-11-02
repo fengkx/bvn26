@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-02（采样 s304，AFTER-s299 排名第5项）：完整复现锁定 s293，独立 normal/held 主机保管证明保持关闭。限定归档根 onEnterFrame 的源入口、显式/隐式出口及关闭分支归属；done 后34次读取与关闭标记均无 activation/返回见证，日志关闭发生在退出请求及返回之前。单回调完成、全部终端回调完成两项门槛均 exit1；缺独立入口—返回关联与完整派发清单，禁止以读取数量或静默代替。零新构建/启动/捕获，不修收据或随机 tape。production_admitted=false、native_parity_proven=false，M0-02 pending；仅 s304 与跟踪文件变更，s254–s303 不变，不执行排名1–4或6+。 [证据](../evidence/sampling-upgrade/s304/README.md)。
+
 - 2026-11-02（采样 s303，AFTER-s299 排名第4项）：完整复现锁定 s295 的9493事件；从收据锁定播放器提取 Mach-O 模块身份及五段机器码/表字节，推导候选字节读取、游标推进与三项opcode跳转目标。静态派发候选不构成加载worker、游标实测或保留调用证明；defining scope/register4/activation身份布局仍缺，五项证明门槛exit1，三指令观测保持阻塞。零新名称查询/构建/启动/捕获。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s303及跟踪文件变更，s254–s302不变，不执行排名1–3或5+。 [证据](../evidence/sampling-upgrade/s303/README.md)。
 
 - 2026-11-02（采样 s302，AFTER-s299 排名第3项）：完整复现锁定 s294 的5214事件；getHitObj 原版62条/归档91条指令全量解码，寄存器角色、常量操作数及分支在显式条件投影后80节点对应。归档新增两处 undefined 局部初始化；其 activation 可见消去及 helper 读写/转换/日志扰动仍未证明。四项证明门槛 exit1，直接移除/自然嵌套入口配对对照保持阻塞；零新构建/启动/捕获。production_admitted=false、native_parity_proven=false，M0-02 pending；仅 s302 与跟踪文件变更，s254–s301 不变，不执行排名1–2或4+。 [证据](../evidence/sampling-upgrade/s302/README.md)。

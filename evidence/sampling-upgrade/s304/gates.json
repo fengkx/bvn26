@@ -1,0 +1,132 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s304/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s304/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.4406892922706902,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "callback-completion",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s304/diagnose.py",
+      "--output",
+      "/tmp/s304-callback-completion.json",
+      "--require-callback-completion"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 1.356505624949932,
+    "log": "callback-completion.txt"
+  },
+  {
+    "name": "terminal-completeness",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s304/diagnose.py",
+      "--output",
+      "/tmp/s304-terminal-completeness.json",
+      "--require-terminal-completeness"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 1.3236003750935197,
+    "log": "terminal-completeness.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s304",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 4.461151916068047,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s293-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s293",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.7776978332549334,
+    "log": "retained-s293-tests.txt"
+  },
+  {
+    "name": "retained-s284-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s284",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.9552216250449419,
+    "log": "retained-s284-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_additional_nondisplay_completion",
+      "tools.tests.test_non_display_completion_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_import_guards"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.6634736247360706,
+    "log": "retained-tests.txt"
+  }
+]
