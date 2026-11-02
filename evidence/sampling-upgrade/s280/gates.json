@@ -1,0 +1,63 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s280/diagnose.py",
+      "--output",
+      "/tmp/s280-recomputed.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.133317,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "historical-rejection",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s280/diagnose.py",
+      "--output",
+      "/tmp/s280-strict.json",
+      "--strict-native"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.119956,
+    "log": "historical-rejection.txt"
+  },
+  {
+    "name": "completion-required",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s280/diagnose.py",
+      "--output",
+      "/tmp/s280-required.json",
+      "--require-completion-proof"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.113089,
+    "log": "completion-required.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_additional_nondisplay_completion",
+      "tools.tests.test_callsite_completion_window",
+      "tools.tests.test_non_display_completion_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_yulong_display_completion",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 2.285537,
+    "log": "focused-tests.txt"
+  }
+]

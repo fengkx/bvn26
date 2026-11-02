@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s280，AFTER-s272 排名第8项）：选择不同于已解决案例的 s228 一护零段独立 DoAction 拒绝，复算完整5630事件；done后34条同周期按键回调与跨tick61/62的56条事件全部分类。复算锁定s269正常/延迟退出尾段，正常退出截断与越界单列，不能移植为s228证明。独立opt-in正常/延迟实验已给出判据，尚无执行证明；严格原生及完成证明要求exit1。零新构建/捕获，无实现或默认推广。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s279、运行时与严格验证器不变。[证据](../evidence/sampling-upgrade/s280/README.md)。
+
 - 2026-11-02（采样 s279，AFTER-s272 排名第7项）：复算 s267/s261 的8290事件与root8/9边界；同哈希播放器的四个allocator导入跳板及指针槽已按字节锁定，但槽位/保存引用解析器候选仍零地址，原生对象分配、释放与复用记录均缺。保留内容清空和同深度替换的代际对照未通过，身份要求exit1；零新构建/捕获，无运行时映射。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s278、严格验证器不变。[证据](../evidence/sampling-upgrade/s279/README.md)。
 
 - 2026-11-02（采样 s278，AFTER-s272 排名第6项）：复算 s266 的9493事件与保留/移除对照，锁定原 goto CallMethod、Pop 和 register5 写入窗口。LLDB 沙箱启动失败，提权后成功停在播放器入口并读取CPU寄存器；AVM1候选断点零地址、activation类型查询无匹配，不能观察目标指令或退出。原生continuation要求exit1，无已证明实现；零新SWF构建/电影捕获。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s277、运行时与严格验证器不变。[证据](../evidence/sampling-upgrade/s278/README.md)。

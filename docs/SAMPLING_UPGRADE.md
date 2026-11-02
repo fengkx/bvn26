@@ -1442,3 +1442,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s279，AFTER-s272 排名第7项）：复算 s267/s261 的8290事件与root8/9边界；同哈希播放器的四个allocator导入跳板及指针槽已按字节锁定，但槽位/保存引用解析器候选仍零地址，原生对象分配、释放与复用记录均缺。保留内容清空和同深度替换的代际对照未通过，身份要求exit1；零新构建/捕获，无运行时映射。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s278、严格验证器不变。
 
 导入跳板不是对象解析器，系统malloc/free也不能证明内部对象池寿命。下一判别需先绑定两种引用的原生对象、覆盖释放与地址复用，再以真实内容清空保留及同深度替换校准。不得以属性丢失、指针相等、0→1或unloaded豁免替代。详见 [s279](../evidence/sampling-upgrade/s279/README.md)。
+
+## s280：额外非显示完成案例——s228 DoAction（未证明）
+
+2026-11-02（采样 s280，AFTER-s272 排名第8项）：选择不同于已解决案例的 s228 一护零段独立 DoAction 拒绝，复算完整5630事件；done后34条同周期按键回调与跨tick61/62的56条事件全部分类。复算锁定s269正常/延迟退出尾段，正常退出截断与越界单列，不能移植为s228证明。独立opt-in正常/延迟实验已给出判据，尚无执行证明；严格原生及完成证明要求exit1。零新构建/捕获，无实现或默认推广。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s279、运行时与严格验证器不变。
+
+[完整尾段、独立实验判据与成本](../evidence/sampling-upgrade/s280/README.md)。
