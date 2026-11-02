@@ -1,0 +1,395 @@
+{
+  "base": "435d7f2aa60ba81e5c754fc45c984ff4f92984af",
+  "scope": "AFTER-s308 rank #5 only; s259-normal P1",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "M0-02": "pending",
+  "product_obligations_closed": 0,
+  "locked_s306_reproduced": true,
+  "historical_normal": {
+    "events": 5503,
+    "raw_sha256": "bd4095e5e35bfb86ee070a6f821c6056d90083eb91cee4f0601706423a26e842",
+    "capture_structure_exit": 0,
+    "archived_output_and_receipt_hashes_match": true,
+    "configuration_fighter": "yijiao",
+    "requested_slot_expression": "_root.game[pr]",
+    "expected_source_sha256": "9734a584c1e7c1b88665db0347595fd95083cba6a4c1410c5ee0381c22eb479d",
+    "expected_instrumented_sha256": "685762d5faf094be413b64ff0dd595d824f8fe383ea38ef3ff016462b73fa0da",
+    "loader_sites": {
+      "request": "_this._loader.loadClip(_root.fighterDir + _loc3_.url,_root.game[pr]);",
+      "callback": "LO.onLoadComplete = function(target)\n{\n   loadStep++;\n   loadSteps[loadStep]();\n};",
+      "callback_target_recorded": false,
+      "callback_consumes_target": false,
+      "helper_load_before_request": true
+    },
+    "event_kind_counts": {
+      "boot": 1,
+      "done": 1,
+      "frame_state_enter": 64,
+      "frame_state_exit": 64,
+      "geometry_begin": 61,
+      "geometry_box": 240,
+      "geometry_end": 61,
+      "helper_clip_state": 658,
+      "helper_lifecycle": 658,
+      "helper_load": 2,
+      "helper_state": 658,
+      "initCtrl": 6,
+      "input_bindings": 1,
+      "input_next_display": 510,
+      "intro_body_enter": 126,
+      "intro_body_exit": 126,
+      "intro_goto_before": 1,
+      "intro_goto_return": 1,
+      "intro_poll": 21,
+      "intro_poll_state": 21,
+      "intro_step": 4,
+      "key_read": 1557,
+      "random": 2,
+      "ready": 1,
+      "state": 658
+    },
+    "candidate_proxy_events": [
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "1",
+        "10158",
+        "0",
+        "-1",
+        "boot",
+        "vs_com,minren,yihu,AI=5"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "3",
+        "10320",
+        "0",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "5",
+        "10362",
+        "1",
+        "-1",
+        "helper_load",
+        "p1,我爱罗,woailuo.swf"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "8",
+        "10369",
+        "1",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "12",
+        "10375",
+        "2",
+        "-1",
+        "helper_load",
+        "p2,魂,kon.swf"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "19",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "20",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "21",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "22",
+        "10580",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2.mc"
+      ]
+    ],
+    "actual_load_callback_target": null,
+    "consumed_bytes_observation": null,
+    "callback_to_instance_lifetime": null
+  },
+  "source_loader_order": {
+    "authored_request_order": [
+      "loadman(\"p1\")",
+      "loadman(\"p2\")",
+      "loadfz(\"p1\")",
+      "loadfz(\"p2\")",
+      "loadSound()"
+    ],
+    "movie_clip_loader_instances_in_script": 1,
+    "completion_calls_next_step_inline": true,
+    "on_load_init_listener_present": false,
+    "callback_target_consumed": false,
+    "actual_callback_order": null,
+    "limitation": "Source order is not an observed callback schedule. A mutable current-request field can be advanced before a later initialization event; use a qualified per-request association."
+  },
+  "consumer_boundary_audit": {
+    "kind": "static_boundary_audit_not_live_attestation",
+    "witnesses": [
+      {
+        "address": "0x1004b3595",
+        "hex": "4589f5",
+        "static_fact": "r14d copied into r13d at shared exit"
+      },
+      {
+        "address": "0x1004b35c0",
+        "hex": "48c7431800000000",
+        "static_fact": "cleanup path writes zero to rbx+0x18"
+      },
+      {
+        "address": "0x1004b35c8",
+        "hex": "488bbba0000000",
+        "static_fact": "exit call argument loaded from rbx+0xa0"
+      },
+      {
+        "address": "0x1004b35d4",
+        "hex": "4489e8",
+        "static_fact": "r13d copied into eax after exit call"
+      },
+      {
+        "address": "0x1004b35e5",
+        "hex": "c3",
+        "static_fact": "wrapper returns to an unresolved caller"
+      },
+      {
+        "address": "0x1004b35e6",
+        "hex": "4189c6",
+        "static_fact": "positive API result eax copied into r14d"
+      }
+    ],
+    "calls": [
+      {
+        "address": "0x1004b346d",
+        "hex": "e8ee58feff",
+        "kind": "direct_relative",
+        "static_target": "0x100498d60",
+        "return_site": "0x1004b3472",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b3480",
+        "hex": "ff9000040000",
+        "kind": "indirect_rax_plus_0x400",
+        "static_target": null,
+        "return_site": "0x1004b3486",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b34ad",
+        "hex": "e8ec26b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5b9e",
+        "return_site": "0x1004b34b2",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b34ba",
+        "hex": "e8d926b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5b98",
+        "return_site": "0x1004b34bf",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b34d0",
+        "hex": "ff9000040000",
+        "kind": "indirect_rax_plus_0x400",
+        "static_target": null,
+        "return_site": "0x1004b34d6",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b34ef",
+        "hex": "e83c54feff",
+        "kind": "direct_relative",
+        "static_target": "0x100498930",
+        "return_site": "0x1004b34f4",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b3521",
+        "hex": "e85a26b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5b80",
+        "return_site": "0x1004b3526",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b352f",
+        "hex": "e8bc000000",
+        "kind": "direct_relative",
+        "static_target": "0x1004b35f0",
+        "return_site": "0x1004b3534",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b353c",
+        "hex": "e88126b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5bc2",
+        "return_site": "0x1004b3541",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b354d",
+        "hex": "e85826b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5baa",
+        "return_site": "0x1004b3552",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b3561",
+        "hex": "e83226b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5b98",
+        "return_site": "0x1004b3566",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b3573",
+        "hex": "ff9000040000",
+        "kind": "indirect_rax_plus_0x400",
+        "static_target": null,
+        "return_site": "0x1004b3579",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b35a9",
+        "hex": "e80826b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5bb6",
+        "return_site": "0x1004b35ae",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b35b2",
+        "hex": "e8c325b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5b7a",
+        "return_site": "0x1004b35b7",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b35bb",
+        "hex": "e80226b000",
+        "kind": "direct_relative",
+        "static_target": "0x100fb5bc2",
+        "return_site": "0x1004b35c0",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      },
+      {
+        "address": "0x1004b35cf",
+        "hex": "e84c57feff",
+        "kind": "direct_relative",
+        "static_target": "0x100498d20",
+        "return_site": "0x1004b35d4",
+        "executed_target": null,
+        "p1_consumer_identity": null
+      }
+    ],
+    "returns": [
+      "0x1004b35e5"
+    ],
+    "indirect_call_sites": [
+      "0x1004b3480",
+      "0x1004b34d0",
+      "0x1004b3573"
+    ],
+    "candidate_api_return": "0x1004b3552",
+    "candidate_wrapper_return": "0x1004b35e5",
+    "caller_continuation": null,
+    "actual_p1_consumer": null,
+    "immutable_request_generation": null,
+    "limitation": "Return-register copies do not identify a consumer. The exit contains an external call whose effects are unqualified. The cleared stream slot is mutable, not a generation identity. No native class or ABI-level preservation is inferred."
+  },
+  "observations": {
+    "executed_read_return": null,
+    "returned_buffer_ranges": null,
+    "loader_consumer": null,
+    "immutable_request_identity": null,
+    "target_before_loadStep_advance": null,
+    "same_request_initialization": null,
+    "target_lifetime": null,
+    "actual_wrong_resource_control": null,
+    "consumed_buffer_ranges": null,
+    "observer_effects": null
+  },
+  "consumer_request_proved": false,
+  "loader_attestation_proved": false,
+  "normal_association_qualified": false,
+  "pre_advance_target_proved": false,
+  "wrong_resource_control_qualified": false,
+  "wrong_resource_control_executed": false,
+  "first_unmet_prerequisite": "actual P1 consumer and immutable request generation",
+  "blocker": "No executed P1 consumer/request resolver. API return, wrapper return and mutable stream slot do not join returned/consumed ranges to an immutable request and target before inline loadStep advance.",
+  "next_discriminator": "Independently resolve one actual P1 consumer and request generation; bind executed returned/consumed ranges and callback target before loadStep++. Qualify observer effects and same-request init/use/unload/replacement. Only then run separate Yihu-for-Yijiao control with expected Yijiao identity unchanged.",
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_process_attaches": 0,
+  "new_captures": 0,
+  "new_memory_reads": 0,
+  "exclusions_enforced": [
+    "static hash as live bytes",
+    "mutable request proxy",
+    "helper stamp",
+    "global counter",
+    "receipt resealing",
+    "rollout",
+    "ranks 1-4 and 6-9",
+    "s254-s312 edits",
+    "game/scripts/runtime/contracts/shared sampler/threshold/validator changes"
+  ]
+}
