@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s294，AFTER-s290 排名第4项）：完整复现锁定 s285 的5214事件诊断，新增原版/归档 Sprite2 六函数完整字节与函数头审计。getHitObj 寄存器数15→9，四参数寄存器9/13/12/3→2/3/4/5；六函数体及常量池均不同，源文本保留不等于完整activation/操作数保留，也不据此断言语义不等价。直接移除派发、自然嵌套入口及完整保留映射仍缺，四项资格门槛exit1；零新构建/启动/捕获，配对对照被前置资格阻塞。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s294及跟踪文件变更，其他排名和s254–s293不变，无运行时修复。[证据](../evidence/sampling-upgrade/s294/README.md)。
+
 - 2026-11-02（采样 s293，AFTER-s290 排名第3项）：新建独立 s228 normal/held 对，5849/5549条完整事件均通过严格捕获与入口检查，各61样本；每次持锁归档完整主机日志并核对后才允许下一次启动，限定的独立对照成立。normal退出截断、随机值及held随机调用顺序差异保留；终端回调完整性和两次full-AS仍exit1（547未访问块、656未插桩脚本）。s284锁定诊断完全复现且仍未证明，不修补或重封。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s293及跟踪文件变更，其他排名和s254–s292不变，无运行时变更或默认推广。[证据](../evidence/sampling-upgrade/s293/README.md)。
 
 - 2026-11-02（采样 s292，AFTER-s290 排名第2项）：锁定复算 s282 的26828事件、63次选择与4个入口连接；新增原版/归档 Sprite1810 全标签字节核对，非动作时间轴相同、帧1保留 Stop/End，帧2–10均无入口脚本。现有保留对照在同回调先跳2再跳1，不能证明独立重复/改变目标入口；全十帧替换及 observer-off/on 顺序对照仍缺。资格和时钟要求以 S292_ENTRY_OBSERVER_UNPROVED exit1，新捕获被前置资格阻塞；零构建/启动/捕获/图片，无运行时变更。production_admitted=false、native_parity_proven=false，M0-02 pending；仅本切片与跟踪文件变更，排名1及3–9未执行，s254–s291不变。[证据](../evidence/sampling-upgrade/s292/README.md)。

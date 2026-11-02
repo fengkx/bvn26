@@ -1520,3 +1520,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s293，AFTER-s290 排名第3项）：新建独立 s228 normal/held 对，5849/5549条完整事件均通过严格捕获与入口检查，各61样本；每次持锁归档完整主机日志并核对后才允许下一次启动，限定的独立对照成立。normal退出截断、随机值及held随机调用顺序差异保留；终端回调完整性和两次full-AS仍exit1（547未访问块、656未插桩脚本）。s284锁定诊断完全复现且仍未证明，不修补或重封。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s293及跟踪文件变更，其他排名和s254–s292不变，无运行时变更或默认推广。
 
 [证据与复现](../evidence/sampling-upgrade/s293/README.md)。实际构建、捕获与校验耗时见 execution/gates/session-timing；前期阅读设计及人天未知。
+
+## s294 — AFTER-s290 rank #4: Yulong nested observer qualification
+
+2026-11-02（采样 s294，AFTER-s290 排名第4项）：完整复现锁定 s285 的5214事件诊断，新增原版/归档 Sprite2 六函数完整字节与函数头审计。getHitObj 寄存器数15→9，四参数寄存器9/13/12/3→2/3/4/5；六函数体及常量池均不同，源文本保留不等于完整activation/操作数保留，也不据此断言语义不等价。直接移除派发、自然嵌套入口及完整保留映射仍缺，四项资格门槛exit1；零新构建/启动/捕获，配对对照被前置资格阻塞。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s294及跟踪文件变更，其他排名和s254–s293不变，无运行时修复。
+
+[证据与复现](../evidence/sampling-upgrade/s294/README.md)。实际校验耗时见 gates/project-checks/session-timing；前期阅读设计及人天未知。
