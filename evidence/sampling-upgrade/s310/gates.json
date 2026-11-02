@@ -1,0 +1,96 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s310/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s310/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 0.5285342917777598,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s310/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s310/diagnosis.json",
+      "--require-observer"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.4526860830374062,
+    "log": "observer.txt"
+  },
+  {
+    "name": "independent-controls",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s310/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s310/diagnosis.json",
+      "--require-independent-controls"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.4256827919743955,
+    "log": "independent-controls.txt"
+  },
+  {
+    "name": "child-clock",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s310/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s310/diagnosis.json",
+      "--require-child-clock"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.4265168746933341,
+    "log": "child-clock.txt"
+  },
+  {
+    "name": "fresh-capture",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s310/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s310/diagnosis.json",
+      "--require-fresh-capture"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.42458179220557213,
+    "log": "fresh-capture.txt"
+  }
+]
