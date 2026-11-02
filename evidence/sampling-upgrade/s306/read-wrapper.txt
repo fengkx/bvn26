@@ -1,0 +1,115 @@
+(lldb) settings set target.preload-symbols false
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --address 0x1004b354d --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1004b3440:
+Flash Player Debugger[0x1004b3440] <+0>:   55                                         pushq  %rbp
+Flash Player Debugger[0x1004b3441] <+1>:   48 89 e5                                   movq   %rsp, %rbp
+Flash Player Debugger[0x1004b3444] <+4>:   41 57                                      pushq  %r15
+Flash Player Debugger[0x1004b3446] <+6>:   41 56                                      pushq  %r14
+Flash Player Debugger[0x1004b3448] <+8>:   41 55                                      pushq  %r13
+Flash Player Debugger[0x1004b344a] <+10>:  41 54                                      pushq  %r12
+Flash Player Debugger[0x1004b344c] <+12>:  53                                         pushq  %rbx
+Flash Player Debugger[0x1004b344d] <+13>:  48 83 ec 18                                subq   $0x18, %rsp
+Flash Player Debugger[0x1004b3451] <+17>:  41 89 d4                                   movl   %edx, %r12d
+Flash Player Debugger[0x1004b3454] <+20>:  48 89 75 d0                                movq   %rsi, -0x30(%rbp)
+Flash Player Debugger[0x1004b3458] <+24>:  48 89 fb                                   movq   %rdi, %rbx
+Flash Player Debugger[0x1004b345b] <+27>:  48 8b bb a0 00 00 00                       movq   0xa0(%rbx), %rdi
+Flash Player Debugger[0x1004b3462] <+34>:  41 be ff ff ff ff                          movl   $0xffffffff, %r14d        ; imm = 0xFFFFFFFF
+Flash Player Debugger[0x1004b3468] <+40>:  be ff ff ff ff                             movl   $0xffffffff, %esi         ; imm = 0xFFFFFFFF
+Flash Player Debugger[0x1004b346d] <+45>:  e8 ee 58 fe ff                             callq  0x100498d60               ; ___lldb_unnamed_symbol_100498d60
+Flash Player Debugger[0x1004b3472] <+50>:  c6 83 9c 00 00 00 00                       movb   $0x0, 0x9c(%rbx)
+Flash Player Debugger[0x1004b3479] <+57>:  48 8b 7b 08                                movq   0x8(%rbx), %rdi
+Flash Player Debugger[0x1004b347d] <+61>:  48 8b 07                                   movq   (%rdi), %rax
+Flash Player Debugger[0x1004b3480] <+64>:  ff 90 00 04 00 00                          callq  *0x400(%rax)
+Flash Player Debugger[0x1004b3486] <+70>:  41 89 c7                                   movl   %eax, %r15d
+Flash Player Debugger[0x1004b3489] <+73>:  49 63 c4                                   movslq %r12d, %rax
+Flash Player Debugger[0x1004b348c] <+76>:  48 89 45 c8                                movq   %rax, -0x38(%rbp)
+Flash Player Debugger[0x1004b3490] <+80>:  41 b4 01                                   movb   $0x1, %r12b
+Flash Player Debugger[0x1004b3493] <+83>:  80 bb 9d 00 00 00 00                       cmpb   $0x0, 0x9d(%rbx)
+Flash Player Debugger[0x1004b349a] <+90>:  0f 85 f2 00 00 00                          jne    0x1004b3592               ; <+338>
+Flash Player Debugger[0x1004b34a0] <+96>:  48 8b 7b 18                                movq   0x18(%rbx), %rdi
+Flash Player Debugger[0x1004b34a4] <+100>: 48 85 ff                                   testq  %rdi, %rdi
+Flash Player Debugger[0x1004b34a7] <+103>: 0f 84 e5 00 00 00                          je     0x1004b3592               ; <+338>
+Flash Player Debugger[0x1004b34ad] <+109>: e8 ec 26 b0 00                             callq  0x100fb5b9e               ; symbol stub for: CFReadStreamHasBytesAvailable
+Flash Player Debugger[0x1004b34b2] <+114>: 84 c0                                      testb  %al, %al
+Flash Player Debugger[0x1004b34b4] <+116>: 75 5a                                      jne    0x1004b3510               ; <+208>
+Flash Player Debugger[0x1004b34b6] <+118>: 48 8b 7b 18                                movq   0x18(%rbx), %rdi
+Flash Player Debugger[0x1004b34ba] <+122>: e8 d9 26 b0 00                             callq  0x100fb5b98               ; symbol stub for: CFReadStreamGetStatus
+Flash Player Debugger[0x1004b34bf] <+127>: 48 83 f8 05                                cmpq   $0x5, %rax
+Flash Player Debugger[0x1004b34c3] <+131>: 0f 84 c9 00 00 00                          je     0x1004b3592               ; <+338>
+Flash Player Debugger[0x1004b34c9] <+137>: 48 8b 7b 08                                movq   0x8(%rbx), %rdi
+Flash Player Debugger[0x1004b34cd] <+141>: 48 8b 07                                   movq   (%rdi), %rax
+Flash Player Debugger[0x1004b34d0] <+144>: ff 90 00 04 00 00                          callq  *0x400(%rax)
+Flash Player Debugger[0x1004b34d6] <+150>: 44 29 f8                                   subl   %r15d, %eax
+Flash Player Debugger[0x1004b34d9] <+153>: 41 bd ff ff ff ff                          movl   $0xffffffff, %r13d        ; imm = 0xFFFFFFFF
+Flash Player Debugger[0x1004b34df] <+159>: 3d 10 27 00 00                             cmpl   $0x2710, %eax             ; imm = 0x2710
+Flash Player Debugger[0x1004b34e4] <+164>: 0f 8f b0 00 00 00                          jg     0x1004b359a               ; <+346>
+Flash Player Debugger[0x1004b34ea] <+170>: bf 14 00 00 00                             movl   $0x14, %edi
+Flash Player Debugger[0x1004b34ef] <+175>: e8 3c 54 fe ff                             callq  0x100498930               ; ___lldb_unnamed_symbol_100498930
+Flash Player Debugger[0x1004b34f4] <+180>: 80 bb 9d 00 00 00 00                       cmpb   $0x0, 0x9d(%rbx)
+Flash Player Debugger[0x1004b34fb] <+187>: 74 a3                                      je     0x1004b34a0               ; <+96>
+Flash Player Debugger[0x1004b34fd] <+189>: e9 8a 00 00 00                             jmp    0x1004b358c               ; <+332>
+Flash Player Debugger[0x1004b3502] <+194>: 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nopw   %cs:(%rax,%rax)
+Flash Player Debugger[0x1004b3510] <+208>: 83 7b 50 00                                cmpl   $0x0, 0x50(%rbx)
+Flash Player Debugger[0x1004b3514] <+212>: 75 2b                                      jne    0x1004b3541               ; <+257>
+Flash Player Debugger[0x1004b3516] <+214>: 48 8b 7b 18                                movq   0x18(%rbx), %rdi
+Flash Player Debugger[0x1004b351a] <+218>: 48 8d 35 e7 cf 0c 01                       leaq   0x10ccfe7(%rip), %rsi     ; @"kCFStreamPropertyHTTPResponseHeader"
+Flash Player Debugger[0x1004b3521] <+225>: e8 5a 26 b0 00                             callq  0x100fb5b80               ; symbol stub for: CFReadStreamCopyProperty
+Flash Player Debugger[0x1004b3526] <+230>: 49 89 c5                                   movq   %rax, %r13
+Flash Player Debugger[0x1004b3529] <+233>: 48 89 df                                   movq   %rbx, %rdi
+Flash Player Debugger[0x1004b352c] <+236>: 4c 89 ee                                   movq   %r13, %rsi
+Flash Player Debugger[0x1004b352f] <+239>: e8 bc 00 00 00                             callq  0x1004b35f0               ; ___lldb_unnamed_symbol_1004b35f0
+Flash Player Debugger[0x1004b3534] <+244>: 4d 85 ed                                   testq  %r13, %r13
+Flash Player Debugger[0x1004b3537] <+247>: 74 08                                      je     0x1004b3541               ; <+257>
+Flash Player Debugger[0x1004b3539] <+249>: 4c 89 ef                                   movq   %r13, %rdi
+Flash Player Debugger[0x1004b353c] <+252>: e8 81 26 b0 00                             callq  0x100fb5bc2               ; symbol stub for: CFRelease
+Flash Player Debugger[0x1004b3541] <+257>: 48 8b 7b 18                                movq   0x18(%rbx), %rdi
+Flash Player Debugger[0x1004b3545] <+261>: 48 8b 75 d0                                movq   -0x30(%rbp), %rsi
+Flash Player Debugger[0x1004b3549] <+265>: 48 8b 55 c8                                movq   -0x38(%rbp), %rdx
+Flash Player Debugger[0x1004b354d] <+269>: e8 58 26 b0 00                             callq  0x100fb5baa               ; symbol stub for: CFReadStreamRead
+Flash Player Debugger[0x1004b3552] <+274>: 48 85 c0                                   testq  %rax, %rax
+Flash Player Debugger[0x1004b3555] <+277>: 78 3b                                      js     0x1004b3592               ; <+338>
+Flash Player Debugger[0x1004b3557] <+279>: 0f 85 89 00 00 00                          jne    0x1004b35e6               ; <+422>
+Flash Player Debugger[0x1004b355d] <+285>: 48 8b 7b 18                                movq   0x18(%rbx), %rdi
+Flash Player Debugger[0x1004b3561] <+289>: e8 32 26 b0 00                             callq  0x100fb5b98               ; symbol stub for: CFReadStreamGetStatus
+Flash Player Debugger[0x1004b3566] <+294>: 48 83 f8 05                                cmpq   $0x5, %rax
+Flash Player Debugger[0x1004b356a] <+298>: 74 26                                      je     0x1004b3592               ; <+338>
+Flash Player Debugger[0x1004b356c] <+300>: 48 8b 7b 08                                movq   0x8(%rbx), %rdi
+Flash Player Debugger[0x1004b3570] <+304>: 48 8b 07                                   movq   (%rdi), %rax
+Flash Player Debugger[0x1004b3573] <+307>: ff 90 00 04 00 00                          callq  *0x400(%rax)
+Flash Player Debugger[0x1004b3579] <+313>: 44 29 f8                                   subl   %r15d, %eax
+Flash Player Debugger[0x1004b357c] <+316>: 3d 10 27 00 00                             cmpl   $0x2710, %eax             ; imm = 0x2710
+Flash Player Debugger[0x1004b3581] <+321>: 0f 8e 09 ff ff ff                          jle    0x1004b3490               ; <+80>
+Flash Player Debugger[0x1004b3587] <+327>: 45 31 e4                                   xorl   %r12d, %r12d
+Flash Player Debugger[0x1004b358a] <+330>: eb 06                                      jmp    0x1004b3592               ; <+338>
+Flash Player Debugger[0x1004b358c] <+332>: 41 be ff ff ff ff                          movl   $0xffffffff, %r14d        ; imm = 0xFFFFFFFF
+Flash Player Debugger[0x1004b3592] <+338>: 45 84 e4                                   testb  %r12b, %r12b
+Flash Player Debugger[0x1004b3595] <+341>: 45 89 f5                                   movl   %r14d, %r13d
+Flash Player Debugger[0x1004b3598] <+344>: 75 2e                                      jne    0x1004b35c8               ; <+392>
+Flash Player Debugger[0x1004b359a] <+346>: 48 8b 7b 18                                movq   0x18(%rbx), %rdi
+Flash Player Debugger[0x1004b359e] <+350>: 48 85 ff                                   testq  %rdi, %rdi
+Flash Player Debugger[0x1004b35a1] <+353>: 74 25                                      je     0x1004b35c8               ; <+392>
+Flash Player Debugger[0x1004b35a3] <+355>: 31 f6                                      xorl   %esi, %esi
+Flash Player Debugger[0x1004b35a5] <+357>: 31 d2                                      xorl   %edx, %edx
+Flash Player Debugger[0x1004b35a7] <+359>: 31 c9                                      xorl   %ecx, %ecx
+Flash Player Debugger[0x1004b35a9] <+361>: e8 08 26 b0 00                             callq  0x100fb5bb6               ; symbol stub for: CFReadStreamSetClient
+Flash Player Debugger[0x1004b35ae] <+366>: 48 8b 7b 18                                movq   0x18(%rbx), %rdi
+Flash Player Debugger[0x1004b35b2] <+370>: e8 c3 25 b0 00                             callq  0x100fb5b7a               ; symbol stub for: CFReadStreamClose
+Flash Player Debugger[0x1004b35b7] <+375>: 48 8b 7b 18                                movq   0x18(%rbx), %rdi
+Flash Player Debugger[0x1004b35bb] <+379>: e8 02 26 b0 00                             callq  0x100fb5bc2               ; symbol stub for: CFRelease
+Flash Player Debugger[0x1004b35c0] <+384>: 48 c7 43 18 00 00 00 00                    movq   $0x0, 0x18(%rbx)
+Flash Player Debugger[0x1004b35c8] <+392>: 48 8b bb a0 00 00 00                       movq   0xa0(%rbx), %rdi
+Flash Player Debugger[0x1004b35cf] <+399>: e8 4c 57 fe ff                             callq  0x100498d20               ; ___lldb_unnamed_symbol_100498d20
+Flash Player Debugger[0x1004b35d4] <+404>: 44 89 e8                                   movl   %r13d, %eax
+Flash Player Debugger[0x1004b35d7] <+407>: 48 83 c4 18                                addq   $0x18, %rsp
+Flash Player Debugger[0x1004b35db] <+411>: 5b                                         popq   %rbx
+Flash Player Debugger[0x1004b35dc] <+412>: 41 5c                                      popq   %r12
+Flash Player Debugger[0x1004b35de] <+414>: 41 5d                                      popq   %r13
+Flash Player Debugger[0x1004b35e0] <+416>: 41 5e                                      popq   %r14
+Flash Player Debugger[0x1004b35e2] <+418>: 41 5f                                      popq   %r15
+Flash Player Debugger[0x1004b35e4] <+420>: 5d                                         popq   %rbp
+Flash Player Debugger[0x1004b35e5] <+421>: c3                                         retq
+Flash Player Debugger[0x1004b35e6] <+422>: 41 89 c6                                   movl   %eax, %r14d
+Flash Player Debugger[0x1004b35e9] <+425>: eb a7                                      jmp    0x1004b3592               ; <+338>
+Flash Player Debugger[0x1004b35eb] <+427>: 0f 1f 44 00 00                             nopl   (%rax,%rax)

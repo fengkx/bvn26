@@ -1,0 +1,22 @@
+{
+  "command": [
+    "lldb",
+    "--batch",
+    "-o",
+    "settings set target.preload-symbols false",
+    "-o",
+    "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+    "-o",
+    "disassemble --address 0x1004b354d --bytes"
+  ],
+  "exit": 0,
+  "elapsed_seconds": 0.4644529586657882,
+  "log": "read-wrapper.txt",
+  "sha256": "d8bce708c8ef89e73372daa86db315223ef29bf62f5a1ce977cfc2a52fe49f27",
+  "player_launches": 0,
+  "process_attaches": 0,
+  "new_captures": 0,
+  "raw_log": "read-wrapper-raw.json",
+  "raw_transcript_sha256": "8f20fae88be6aa5bb59a697c8ea3fab1e16803f0f48c4c1ccc74424c90bf287d",
+  "text_normalization": "rstrip each line; raw transcript retained losslessly in JSON"
+}
