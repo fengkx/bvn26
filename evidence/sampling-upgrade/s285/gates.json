@@ -1,0 +1,106 @@
+[
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s285",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.31930545810610056,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_yulong_operand_boundary",
+      "tools.tests.test_nested_owner_diagnosis",
+      "tools.tests.test_yulong_k1atm_observer",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.9229277921840549,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s285/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s285/diagnosis.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.20299479132518172,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "parent-removal",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s285/diagnose.py",
+      "--output",
+      "/tmp/s285-parent-removal.json",
+      "--require-parent-removal"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.2115438748151064,
+    "log": "parent-removal.txt"
+  },
+  {
+    "name": "nested-invocation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s285/diagnose.py",
+      "--output",
+      "/tmp/s285-nested-invocation.json",
+      "--require-nested-invocation"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.21321750013157725,
+    "log": "nested-invocation.txt"
+  },
+  {
+    "name": "observer-qualification",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s285/diagnose.py",
+      "--output",
+      "/tmp/s285-observer-qualification.json",
+      "--require-observer-qualification"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.2223251247778535,
+    "log": "observer-qualification.txt"
+  },
+  {
+    "name": "geometry",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s285/diagnose.py",
+      "--output",
+      "/tmp/s285-geometry.json",
+      "--require-geometry"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.2435839157551527,
+    "log": "geometry.txt"
+  }
+]
