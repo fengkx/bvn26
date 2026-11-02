@@ -1,0 +1,71 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s294/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s294/diagnosis.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.2991348751820624,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "observer-qualification",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s294/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s294/diagnosis.json",
+      "--require-observer-qualification"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.26540462486445904,
+    "log": "observer-qualification.txt"
+  },
+  {
+    "name": "parent-removal",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s294/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s294/diagnosis.json",
+      "--require-parent-removal"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.2650231667794287,
+    "log": "parent-removal.txt"
+  },
+  {
+    "name": "nested-entry",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s294/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s294/diagnosis.json",
+      "--require-nested-entry"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.30308545799925923,
+    "log": "nested-entry.txt"
+  },
+  {
+    "name": "activation-preservation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s294/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s294/diagnosis.json",
+      "--require-activation-preservation"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.3000337923876941,
+    "log": "activation-preservation.txt"
+  }
+]
