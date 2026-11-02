@@ -1410,3 +1410,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-10-31（采样 s274，AFTER-s272 排名第2项）：一次有界原生捕获26828事件、63回调、57内存编码窗口；个位在4次自然frame1重入及随后回调中保留load代号1，编码内外保留/替换对照成立，122角色状态与s265相同。仅证明有界寿命观测，独立子时钟与开场场景连接仍缺，完整状态准入exit1。零像素导出、无运行时修改；production_admitted=false、native_parity_proven=false，M0-02 pending。其他排名和s254–s273未动，严格验证器保持不变。
 
 [证据、准入边界与复现](../evidence/sampling-upgrade/s274/README.md)。
+
+## s275：s272 后排名第三项——玉龙操作数与父子边界
+
+2026-10-31（采样 s275，AFTER-s272 排名第3项）：仅观察玉龙frame188、ticks15–22原操作数与父子边界。一次原生启动恢复完整5214事件；原版与观察版P-code投影一致，原or为非短路Or，tick18第一项true后仍求值其余项。子槽在tick18 goto内清空、父级tick19改名、depth28在root21/22之间消失；122角色状态与s247相同。61聚焦测试、序列/收据/诊断通过；绑定要求与严格几何exit1，无运行时修复。保存目录缺失导致capture命令exit1，原日志完整恢复与成本明确留存。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s274未动，严格验证器不变。
+
+[证据、恢复过程与复现](../evidence/sampling-upgrade/s275/README.md)。

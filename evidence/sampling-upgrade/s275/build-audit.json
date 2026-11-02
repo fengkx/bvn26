@@ -1,0 +1,40 @@
+{
+  "base": "af2ddb594da72fb42c2a88c7e05d744a25f230cb",
+  "locked_archive": "evidence/sampling-upgrade/s247/native-build.tar.gz",
+  "build_command": [
+    "python3",
+    "evidence/sampling-upgrade/s275/build_probe.py",
+    "--output",
+    "/tmp/bvn-s275-r03-build",
+    "--ffdec",
+    "/tmp/bvn-s66-tools/ffdec/ffdec.jar"
+  ],
+  "changed_outputs": [
+    "game/main.swf",
+    "game/fighter/yulong.swf"
+  ],
+  "unchanged_outputs": [
+    "game/fighter/yihu.swf",
+    "game/fighter/fz/kon.swf",
+    "game/fighter/fz/woailuo.swf"
+  ],
+  "pcode_export_command_template": [
+    "java",
+    "-Duser.home=/tmp/bvn-s275-java-home",
+    "-Djava.awt.headless=true",
+    "-jar",
+    "/tmp/bvn-s66-tools/ffdec/ffdec.jar",
+    "-format",
+    "script:pcode",
+    "-selectid",
+    "345",
+    "-export",
+    "script",
+    "/tmp/bvn-s275-pcode-{original,observed}",
+    "{game/fighter/yulong.swf,/tmp/bvn-s275-r03-build/game/fighter/yulong.swf}"
+  ],
+  "retained_pcode_path": "scripts/DefineSprite_345/frame_188/PlaceObject2_104_28/CLIPACTIONRECORD onClipEvent(enterFrame).pcode",
+  "images_exported": 0,
+  "opcode_projection_includes_branch_destinations": true,
+  "full_vm_semantic_equivalence_proved": false
+}

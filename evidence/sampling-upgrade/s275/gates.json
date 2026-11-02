@@ -1,0 +1,73 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s275/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s275/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.2142399160657078
+  },
+  "runtime-binding": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s275/diagnose.py",
+      "--output",
+      "/tmp/s275-required.json",
+      "--require-runtime-binding"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.17325320793315768
+  },
+  "geometry-collector": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s275/diagnose.py",
+      "--output",
+      "/tmp/s275-geometry.json",
+      "--require-geometry"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.1733187090139836
+  },
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s239/yulong__attack__neutral__ground__near.json'),Path('/tmp/bvn-s275-r01-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.7612218339927495
+  },
+  "geometry-cli": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_geometry",
+      "--case",
+      "evidence/sampling-upgrade/s239/yulong__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s275-r01-capture/receipt.json",
+      "--output",
+      "/tmp/s275-full-geometry.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.09731083293445408
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_yulong_operand_boundary",
+      "tools.tests.test_nested_owner_diagnosis",
+      "tools.tests.test_yulong_k1atm_observer",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.3789263751823455
+  }
+}

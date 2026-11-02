@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-10-31（采样 s275，AFTER-s272 排名第3项）：仅观察玉龙frame188、ticks15–22原操作数与父子边界。一次原生启动恢复完整5214事件；原版与观察版P-code投影一致，原or为非短路Or，tick18第一项true后仍求值其余项。子槽在tick18 goto内清空、父级tick19改名、depth28在root21/22之间消失；122角色状态与s247相同。61聚焦测试、序列/收据/诊断通过；绑定要求与严格几何exit1，无运行时修复。保存目录缺失导致capture命令exit1，原日志完整恢复与成本明确留存。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s274未动，严格验证器不变。[证据](../evidence/sampling-upgrade/s275/README.md)。
+
 - 2026-10-31（采样 s274，AFTER-s272 排名第2项）：一次有界原生捕获26828事件、63回调、57内存编码窗口；个位在4次自然frame1重入及随后回调中保留load代号1，编码内外保留/替换对照成立，122角色状态与s265相同。仅证明有界寿命观测，独立子时钟与开场场景连接仍缺，完整状态准入exit1。零像素导出、无运行时修改；production_admitted=false、native_parity_proven=false，M0-02 pending。其他排名和s254–s273未动，严格验证器保持不变。[证据](../evidence/sampling-upgrade/s274/README.md)。
 
 - 2026-10-31（采样 s273，AFTER-s272 重新排名第1项）：以 master 68136e5e/#150 的 s249–s272 证据重排，仅审计 P2 一护基础 Sprite638 身体推挤 hitTest 对 P1 新 bdmn 的调用点。完整复算 s264 的5437事件；函数归档与源码一致但无调用点观测，tick10–12帧4/5/6和4055–4062初始化边界不能证明短路条件、操作数或执行。65聚焦测试通过；调用点证明要求及完整几何仍exit1（tick11缺P1接收者）。零新捕获，无eligibility修复。production_admitted=false、native_parity_proven=false，M0-02 pending；新排名2+仅规划，旧队列与严格验证器不变。[证据](../evidence/sampling-upgrade/s273/README.md)。

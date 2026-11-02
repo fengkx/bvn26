@@ -1,0 +1,262 @@
+ConstantPool "_root", "zhanting", "pause", "s275Value", "game", "p", "_parent", "pn", "mc", "bdmn", "target1", "mian", "receiver1", "hitTest", "result1", "zh1atm", "target2", "receiver2", "result2", "zh2atm", "target3", "receiver3", "result3", "zh3atm", "target4", "hitmc", "receiver4", "result4", "abcd", "target5", "receiver5", "result5", "played", "movspeed", "this", "before_goto", "s275Boundary", "after_goto", ""
+Push "_root"
+GetVariable
+Push "zhanting"
+GetMember
+Push false
+Equals2
+Push "pause"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Not
+If loc04d2
+Push "_root"
+GetVariable
+Push "game"
+GetMember
+Push "p"
+Push "_parent"
+GetVariable
+Push "pn"
+GetMember
+Add2
+GetMember
+Push "mc"
+GetMember
+Push "bdmn"
+GetMember
+Push "target1"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push 1
+Push "mian"
+GetVariable
+Push "receiver1"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push "hitTest"
+CallMethod
+Push "result1"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push "_root"
+GetVariable
+Push "game"
+GetMember
+Push "p"
+Push "_parent"
+GetVariable
+Push "pn"
+GetMember
+Add2
+GetMember
+Push "mc"
+GetMember
+Push "zh1atm"
+GetMember
+Push "target2"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push 1
+Push "mian"
+GetVariable
+Push "receiver2"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push "hitTest"
+CallMethod
+Push "result2"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Or
+Push "_root"
+GetVariable
+Push "game"
+GetMember
+Push "p"
+Push "_parent"
+GetVariable
+Push "pn"
+GetMember
+Add2
+GetMember
+Push "mc"
+GetMember
+Push "zh2atm"
+GetMember
+Push "target3"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push 1
+Push "mian"
+GetVariable
+Push "receiver3"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push "hitTest"
+CallMethod
+Push "result3"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Or
+Push "_root"
+GetVariable
+Push "game"
+GetMember
+Push "p"
+Push "_parent"
+GetVariable
+Push "pn"
+GetMember
+Add2
+GetMember
+Push "mc"
+GetMember
+Push "zh3atm"
+GetMember
+Push "target4"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push 1
+Push "hitmc"
+GetVariable
+Push "mian"
+GetMember
+Push "receiver4"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push "hitTest"
+CallMethod
+Push "result4"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Or
+Push "_root"
+GetVariable
+Push "game"
+GetMember
+Push "p"
+Push "_parent"
+GetVariable
+Push "pn"
+GetMember
+Add2
+GetMember
+Push "mc"
+GetMember
+Push "abcd"
+GetMember
+Push "target5"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push 1
+Push "mian"
+GetVariable
+Push "receiver5"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Push "hitTest"
+CallMethod
+Push "result5"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Or
+Not
+If loc04af
+Push "played"
+GetVariable
+Push 0
+Equals2
+Push "played"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Value"
+CallMethod
+Not
+If loc04aa
+Push "played"
+Push 1
+SetVariable
+Push "movspeed"
+Push 0
+SetVariable
+Push "this"
+GetVariable
+Push "before_goto"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Boundary"
+CallMethod
+Pop
+GotoFrame 4
+Play
+Push "this"
+GetVariable
+Push "after_goto"
+Push 2
+Push "_root"
+GetVariable
+Push "s275Boundary"
+CallMethod
+Pop
+loc04aa:Jump loc04d2
+loc04af:Push ""
+Push 0
+Push ""
+Push 0
+GetProperty
+Push "movspeed"
+GetVariable
+Add2
+SetProperty
+loc04d2:
