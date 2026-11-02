@@ -1,0 +1,2971 @@
+{
+  "slice": "s312",
+  "base": "19aef574dbba5e574ffa492eabb6066dd6214f64",
+  "scope": "AFTER-s308 rank #4 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "product_obligations_closed": 0,
+  "locked_s300_reproduced": true,
+  "retained_static_overwrite_property": true,
+  "historical_events_revalidated": 5437,
+  "historical_execution_observed": null,
+  "binding_audit": {
+    "coordinate_kind": "Expanded archived pcode node indices, not byte offsets or executed order",
+    "headers": {
+      "original": {
+        "raw": "DefineFunction2 \"on_enterframe\", 0, 12, true, true, true, false, true, false, true, false, false {",
+        "register_count": 12,
+        "flags": {
+          "preloadParentFlag": true,
+          "preloadRootFlag": true,
+          "suppressSuperFlag": true,
+          "preloadSuperFlag": false,
+          "suppressArgumentsFlag": true,
+          "preloadArgumentsFlag": false,
+          "suppressThisFlag": true,
+          "preloadThisFlag": false,
+          "preloadGlobalFlag": false
+        },
+        "exporter_preload_names": {
+          "1": "_root",
+          "2": "_parent"
+        }
+      },
+      "candidate": {
+        "raw": "DefineFunction2 \"on_enterframe\", 0, 13, true, true, true, false, true, false, false, true, false {",
+        "register_count": 13,
+        "flags": {
+          "preloadParentFlag": true,
+          "preloadRootFlag": true,
+          "suppressSuperFlag": true,
+          "preloadSuperFlag": false,
+          "suppressArgumentsFlag": true,
+          "preloadArgumentsFlag": false,
+          "suppressThisFlag": false,
+          "preloadThisFlag": true,
+          "preloadGlobalFlag": false
+        },
+        "exporter_preload_names": {
+          "1": "this",
+          "2": "_root",
+          "3": "_parent"
+        }
+      }
+    },
+    "changed_header_fields": [
+      "register_count",
+      "suppressThisFlag",
+      "preloadThisFlag"
+    ],
+    "preload_name_correspondence": [
+      {
+        "name": "_root",
+        "original_register": 1,
+        "candidate_register": 2,
+        "live_identity": null
+      },
+      {
+        "name": "_parent",
+        "original_register": 2,
+        "candidate_register": 3,
+        "live_identity": null
+      }
+    ],
+    "candidate_added_this_uses": [
+      {
+        "index": 61,
+        "instruction": "Push register1",
+        "successors": [
+          62
+        ]
+      },
+      {
+        "index": 97,
+        "instruction": "Push register1",
+        "successors": [
+          98
+        ]
+      },
+      {
+        "index": 242,
+        "instruction": "Push register1",
+        "successors": [
+          243
+        ]
+      },
+      {
+        "index": 256,
+        "instruction": "Push register1",
+        "successors": [
+          257
+        ]
+      },
+      {
+        "index": 278,
+        "instruction": "Push register1",
+        "successors": [
+          279
+        ]
+      },
+      {
+        "index": 292,
+        "instruction": "Push register1",
+        "successors": [
+          293
+        ]
+      },
+      {
+        "index": 293,
+        "instruction": "Push register1",
+        "successors": [
+          294
+        ]
+      },
+      {
+        "index": 312,
+        "instruction": "Push register1",
+        "successors": [
+          313
+        ]
+      }
+    ],
+    "full_callback_inventory": {
+      "original": {
+        "node_count": 485,
+        "scope_operations": [
+          {
+            "index": 5,
+            "instruction": "GetVariable",
+            "successors": [
+              6
+            ]
+          },
+          {
+            "index": 12,
+            "instruction": "SetVariable",
+            "successors": [
+              13
+            ]
+          },
+          {
+            "index": 14,
+            "instruction": "GetVariable",
+            "successors": [
+              15
+            ]
+          },
+          {
+            "index": 21,
+            "instruction": "SetVariable",
+            "successors": [
+              22
+            ]
+          },
+          {
+            "index": 23,
+            "instruction": "GetVariable",
+            "successors": [
+              24
+            ]
+          },
+          {
+            "index": 30,
+            "instruction": "SetVariable",
+            "successors": [
+              31
+            ]
+          },
+          {
+            "index": 33,
+            "instruction": "GetMember",
+            "successors": [
+              34
+            ]
+          },
+          {
+            "index": 41,
+            "instruction": "SetMember",
+            "successors": [
+              42
+            ]
+          },
+          {
+            "index": 44,
+            "instruction": "GetMember",
+            "successors": [
+              45
+            ]
+          },
+          {
+            "index": 47,
+            "instruction": "GetMember",
+            "successors": [
+              48
+            ]
+          },
+          {
+            "index": 57,
+            "instruction": "GetMember",
+            "successors": [
+              58
+            ]
+          },
+          {
+            "index": 60,
+            "instruction": "SetMember",
+            "successors": [
+              61
+            ]
+          },
+          {
+            "index": 62,
+            "instruction": "GetVariable",
+            "successors": [
+              63
+            ]
+          },
+          {
+            "index": 71,
+            "instruction": "GetMember",
+            "successors": [
+              72
+            ]
+          },
+          {
+            "index": 74,
+            "instruction": "GetMember",
+            "successors": [
+              75
+            ]
+          },
+          {
+            "index": 82,
+            "instruction": "GetMember",
+            "successors": [
+              83
+            ]
+          },
+          {
+            "index": 83,
+            "instruction": "SetMember",
+            "successors": [
+              84
+            ]
+          },
+          {
+            "index": 87,
+            "instruction": "GetMember",
+            "successors": [
+              88
+            ]
+          },
+          {
+            "index": 88,
+            "instruction": "SetVariable",
+            "successors": [
+              89
+            ]
+          },
+          {
+            "index": 93,
+            "instruction": "GetMember",
+            "successors": [
+              94
+            ]
+          },
+          {
+            "index": 99,
+            "instruction": "GetVariable",
+            "successors": [
+              100
+            ]
+          },
+          {
+            "index": 107,
+            "instruction": "GetVariable",
+            "successors": [
+              108
+            ]
+          },
+          {
+            "index": 117,
+            "instruction": "GetVariable",
+            "successors": [
+              118
+            ]
+          },
+          {
+            "index": 126,
+            "instruction": "SetVariable",
+            "successors": [
+              127
+            ]
+          },
+          {
+            "index": 129,
+            "instruction": "GetVariable",
+            "successors": [
+              130
+            ]
+          },
+          {
+            "index": 132,
+            "instruction": "SetVariable",
+            "successors": [
+              133
+            ]
+          },
+          {
+            "index": 135,
+            "instruction": "GetVariable",
+            "successors": [
+              136
+            ]
+          },
+          {
+            "index": 142,
+            "instruction": "SetVariable",
+            "successors": [
+              143
+            ]
+          },
+          {
+            "index": 147,
+            "instruction": "SetVariable",
+            "successors": [
+              148
+            ]
+          },
+          {
+            "index": 149,
+            "instruction": "SetVariable",
+            "successors": [
+              150
+            ]
+          },
+          {
+            "index": 151,
+            "instruction": "GetVariable",
+            "successors": [
+              152
+            ]
+          },
+          {
+            "index": 161,
+            "instruction": "GetMember",
+            "successors": [
+              162
+            ]
+          },
+          {
+            "index": 164,
+            "instruction": "GetVariable",
+            "successors": [
+              165
+            ]
+          },
+          {
+            "index": 166,
+            "instruction": "GetMember",
+            "successors": [
+              167
+            ]
+          },
+          {
+            "index": 171,
+            "instruction": "GetMember",
+            "successors": [
+              172
+            ]
+          },
+          {
+            "index": 173,
+            "instruction": "GetVariable",
+            "successors": [
+              174
+            ]
+          },
+          {
+            "index": 196,
+            "instruction": "GetMember",
+            "successors": [
+              197
+            ]
+          },
+          {
+            "index": 208,
+            "instruction": "GetMember",
+            "successors": [
+              209
+            ]
+          },
+          {
+            "index": 217,
+            "instruction": "SetMember",
+            "successors": [
+              218
+            ]
+          },
+          {
+            "index": 222,
+            "instruction": "SetMember",
+            "successors": [
+              223
+            ]
+          },
+          {
+            "index": 224,
+            "instruction": "GetVariable",
+            "successors": [
+              225
+            ]
+          },
+          {
+            "index": 233,
+            "instruction": "GetMember",
+            "successors": [
+              234
+            ]
+          },
+          {
+            "index": 236,
+            "instruction": "GetVariable",
+            "successors": [
+              237
+            ]
+          },
+          {
+            "index": 238,
+            "instruction": "GetMember",
+            "successors": [
+              239
+            ]
+          },
+          {
+            "index": 240,
+            "instruction": "GetMember",
+            "successors": [
+              241
+            ]
+          },
+          {
+            "index": 242,
+            "instruction": "GetMember",
+            "successors": [
+              243
+            ]
+          },
+          {
+            "index": 257,
+            "instruction": "GetMember",
+            "successors": [
+              258
+            ]
+          },
+          {
+            "index": 260,
+            "instruction": "GetVariable",
+            "successors": [
+              261
+            ]
+          },
+          {
+            "index": 262,
+            "instruction": "GetMember",
+            "successors": [
+              263
+            ]
+          },
+          {
+            "index": 264,
+            "instruction": "GetMember",
+            "successors": [
+              265
+            ]
+          },
+          {
+            "index": 266,
+            "instruction": "GetMember",
+            "successors": [
+              267
+            ]
+          },
+          {
+            "index": 269,
+            "instruction": "GetVariable",
+            "successors": [
+              270
+            ]
+          },
+          {
+            "index": 283,
+            "instruction": "GetMember",
+            "successors": [
+              284
+            ]
+          },
+          {
+            "index": 293,
+            "instruction": "GetMember",
+            "successors": [
+              294
+            ]
+          },
+          {
+            "index": 296,
+            "instruction": "GetMember",
+            "successors": [
+              297
+            ]
+          },
+          {
+            "index": 332,
+            "instruction": "GetMember",
+            "successors": [
+              333
+            ]
+          },
+          {
+            "index": 336,
+            "instruction": "GetMember",
+            "successors": [
+              337
+            ]
+          },
+          {
+            "index": 339,
+            "instruction": "SetMember",
+            "successors": [
+              340
+            ]
+          },
+          {
+            "index": 351,
+            "instruction": "GetMember",
+            "successors": [
+              352
+            ]
+          },
+          {
+            "index": 352,
+            "instruction": "SetVariable",
+            "successors": [
+              353
+            ]
+          },
+          {
+            "index": 358,
+            "instruction": "GetMember",
+            "successors": [
+              359
+            ]
+          },
+          {
+            "index": 364,
+            "instruction": "GetMember",
+            "successors": [
+              365
+            ]
+          },
+          {
+            "index": 370,
+            "instruction": "SetVariable",
+            "successors": [
+              371
+            ]
+          },
+          {
+            "index": 373,
+            "instruction": "SetVariable",
+            "successors": [
+              374
+            ]
+          },
+          {
+            "index": 379,
+            "instruction": "GetMember",
+            "successors": [
+              380
+            ]
+          },
+          {
+            "index": 393,
+            "instruction": "SetVariable",
+            "successors": [
+              394
+            ]
+          },
+          {
+            "index": 395,
+            "instruction": "GetVariable",
+            "successors": [
+              396
+            ]
+          },
+          {
+            "index": 402,
+            "instruction": "SetVariable",
+            "successors": [
+              403
+            ]
+          },
+          {
+            "index": 405,
+            "instruction": "SetVariable",
+            "successors": [
+              406
+            ]
+          },
+          {
+            "index": 409,
+            "instruction": "GetVariable",
+            "successors": [
+              410
+            ]
+          },
+          {
+            "index": 414,
+            "instruction": "SetVariable",
+            "successors": [
+              415
+            ]
+          },
+          {
+            "index": 417,
+            "instruction": "SetVariable",
+            "successors": [
+              418
+            ]
+          },
+          {
+            "index": 421,
+            "instruction": "SetMember",
+            "successors": [
+              422
+            ]
+          },
+          {
+            "index": 427,
+            "instruction": "GetMember",
+            "successors": [
+              428
+            ]
+          },
+          {
+            "index": 437,
+            "instruction": "GetMember",
+            "successors": [
+              438
+            ]
+          },
+          {
+            "index": 438,
+            "instruction": "SetMember",
+            "successors": [
+              439
+            ]
+          },
+          {
+            "index": 441,
+            "instruction": "SetVariable",
+            "successors": [
+              442
+            ]
+          },
+          {
+            "index": 444,
+            "instruction": "SetVariable",
+            "successors": [
+              445
+            ]
+          },
+          {
+            "index": 452,
+            "instruction": "SetVariable",
+            "successors": [
+              453
+            ]
+          },
+          {
+            "index": 457,
+            "instruction": "GetMember",
+            "successors": [
+              458
+            ]
+          },
+          {
+            "index": 460,
+            "instruction": "GetMember",
+            "successors": [
+              461
+            ]
+          },
+          {
+            "index": 462,
+            "instruction": "SetMember",
+            "successors": [
+              463
+            ]
+          },
+          {
+            "index": 464,
+            "instruction": "GetVariable",
+            "successors": [
+              465
+            ]
+          },
+          {
+            "index": 473,
+            "instruction": "SetVariable",
+            "successors": [
+              474
+            ]
+          },
+          {
+            "index": 475,
+            "instruction": "GetVariable",
+            "successors": [
+              476
+            ]
+          },
+          {
+            "index": 484,
+            "instruction": "SetVariable",
+            "successors": [
+              485
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "node": {
+              "index": 2,
+              "instruction": "CallFunction",
+              "successors": [
+                3
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 0,
+                "instruction": "Push 0",
+                "successors": [
+                  1
+                ]
+              },
+              {
+                "index": 1,
+                "instruction": "Push \"initWudi\"",
+                "successors": [
+                  2
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 67,
+              "instruction": "CallFunction",
+              "successors": [
+                68
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 63,
+                "instruction": "Not",
+                "successors": [
+                  64
+                ]
+              },
+              {
+                "index": 64,
+                "instruction": "If 91",
+                "successors": [
+                  91,
+                  65
+                ]
+              },
+              {
+                "index": 65,
+                "instruction": "Push 0",
+                "successors": [
+                  66
+                ]
+              },
+              {
+                "index": 66,
+                "instruction": "Push \"onDashing\"",
+                "successors": [
+                  67
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 110,
+              "instruction": "CallFunction",
+              "successors": [
+                111
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 106,
+                "instruction": "Push \"wdFrameX\"",
+                "successors": [
+                  107
+                ]
+              },
+              {
+                "index": 107,
+                "instruction": "GetVariable",
+                "successors": [
+                  108
+                ]
+              },
+              {
+                "index": 108,
+                "instruction": "Push 1",
+                "successors": [
+                  109
+                ]
+              },
+              {
+                "index": 109,
+                "instruction": "Push \"isNaN\"",
+                "successors": [
+                  110
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 120,
+              "instruction": "CallFunction",
+              "successors": [
+                121
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 116,
+                "instruction": "Push \"wdFrame\"",
+                "successors": [
+                  117
+                ]
+              },
+              {
+                "index": 117,
+                "instruction": "GetVariable",
+                "successors": [
+                  118
+                ]
+              },
+              {
+                "index": 118,
+                "instruction": "Push 1",
+                "successors": [
+                  119
+                ]
+              },
+              {
+                "index": 119,
+                "instruction": "Push \"isNaN\"",
+                "successors": [
+                  120
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 157,
+              "instruction": "CallFunction",
+              "successors": [
+                158
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 153,
+                "instruction": "Not",
+                "successors": [
+                  154
+                ]
+              },
+              {
+                "index": 154,
+                "instruction": "If 159",
+                "successors": [
+                  159,
+                  155
+                ]
+              },
+              {
+                "index": 155,
+                "instruction": "Push 0",
+                "successors": [
+                  156
+                ]
+              },
+              {
+                "index": 156,
+                "instruction": "Push \"doDashX\"",
+                "successors": [
+                  157
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 271,
+              "instruction": "CallMethod",
+              "successors": [
+                272
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 267,
+                "instruction": "Push 1",
+                "successors": [
+                  268
+                ]
+              },
+              {
+                "index": 268,
+                "instruction": "Push \"bdmn\"",
+                "successors": [
+                  269
+                ]
+              },
+              {
+                "index": 269,
+                "instruction": "GetVariable",
+                "successors": [
+                  270
+                ]
+              },
+              {
+                "index": 270,
+                "instruction": "Push \"hitTest\"",
+                "successors": [
+                  271
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 346,
+              "instruction": "CallMethod",
+              "successors": [
+                347
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 342,
+                "instruction": "Subtract",
+                "successors": [
+                  343
+                ]
+              },
+              {
+                "index": 343,
+                "instruction": "Push 1",
+                "successors": [
+                  344
+                ]
+              },
+              {
+                "index": 344,
+                "instruction": "Push register2",
+                "successors": [
+                  345
+                ]
+              },
+              {
+                "index": 345,
+                "instruction": "Push \"moveX\"",
+                "successors": [
+                  346
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 385,
+              "instruction": "CallFunction",
+              "successors": [
+                386
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 381,
+                "instruction": "Not",
+                "successors": [
+                  382
+                ]
+              },
+              {
+                "index": 382,
+                "instruction": "If 424",
+                "successors": [
+                  424,
+                  383
+                ]
+              },
+              {
+                "index": 383,
+                "instruction": "Push 0",
+                "successors": [
+                  384
+                ]
+              },
+              {
+                "index": 384,
+                "instruction": "Push \"isHitBan\"",
+                "successors": [
+                  385
+                ]
+              }
+            ]
+          }
+        ],
+        "returns": [
+          {
+            "index": 90,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 97,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 375,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 407,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 423,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 446,
+            "instruction": "Return",
+            "successors": []
+          }
+        ]
+      },
+      "candidate": {
+        "node_count": 543,
+        "scope_operations": [
+          {
+            "index": 5,
+            "instruction": "GetVariable",
+            "successors": [
+              6
+            ]
+          },
+          {
+            "index": 12,
+            "instruction": "SetVariable",
+            "successors": [
+              13
+            ]
+          },
+          {
+            "index": 14,
+            "instruction": "GetVariable",
+            "successors": [
+              15
+            ]
+          },
+          {
+            "index": 21,
+            "instruction": "SetVariable",
+            "successors": [
+              22
+            ]
+          },
+          {
+            "index": 23,
+            "instruction": "GetVariable",
+            "successors": [
+              24
+            ]
+          },
+          {
+            "index": 30,
+            "instruction": "SetVariable",
+            "successors": [
+              31
+            ]
+          },
+          {
+            "index": 33,
+            "instruction": "GetMember",
+            "successors": [
+              34
+            ]
+          },
+          {
+            "index": 41,
+            "instruction": "SetMember",
+            "successors": [
+              42
+            ]
+          },
+          {
+            "index": 44,
+            "instruction": "GetMember",
+            "successors": [
+              45
+            ]
+          },
+          {
+            "index": 47,
+            "instruction": "GetMember",
+            "successors": [
+              48
+            ]
+          },
+          {
+            "index": 57,
+            "instruction": "GetMember",
+            "successors": [
+              58
+            ]
+          },
+          {
+            "index": 60,
+            "instruction": "SetMember",
+            "successors": [
+              61
+            ]
+          },
+          {
+            "index": 63,
+            "instruction": "GetVariable",
+            "successors": [
+              64
+            ]
+          },
+          {
+            "index": 77,
+            "instruction": "GetMember",
+            "successors": [
+              78
+            ]
+          },
+          {
+            "index": 80,
+            "instruction": "GetMember",
+            "successors": [
+              81
+            ]
+          },
+          {
+            "index": 88,
+            "instruction": "GetMember",
+            "successors": [
+              89
+            ]
+          },
+          {
+            "index": 89,
+            "instruction": "SetMember",
+            "successors": [
+              90
+            ]
+          },
+          {
+            "index": 93,
+            "instruction": "GetMember",
+            "successors": [
+              94
+            ]
+          },
+          {
+            "index": 94,
+            "instruction": "SetVariable",
+            "successors": [
+              95
+            ]
+          },
+          {
+            "index": 100,
+            "instruction": "GetMember",
+            "successors": [
+              101
+            ]
+          },
+          {
+            "index": 111,
+            "instruction": "GetVariable",
+            "successors": [
+              112
+            ]
+          },
+          {
+            "index": 119,
+            "instruction": "GetVariable",
+            "successors": [
+              120
+            ]
+          },
+          {
+            "index": 129,
+            "instruction": "GetVariable",
+            "successors": [
+              130
+            ]
+          },
+          {
+            "index": 138,
+            "instruction": "SetVariable",
+            "successors": [
+              139
+            ]
+          },
+          {
+            "index": 141,
+            "instruction": "GetVariable",
+            "successors": [
+              142
+            ]
+          },
+          {
+            "index": 144,
+            "instruction": "SetVariable",
+            "successors": [
+              145
+            ]
+          },
+          {
+            "index": 147,
+            "instruction": "GetVariable",
+            "successors": [
+              148
+            ]
+          },
+          {
+            "index": 154,
+            "instruction": "SetVariable",
+            "successors": [
+              155
+            ]
+          },
+          {
+            "index": 159,
+            "instruction": "SetVariable",
+            "successors": [
+              160
+            ]
+          },
+          {
+            "index": 161,
+            "instruction": "SetVariable",
+            "successors": [
+              162
+            ]
+          },
+          {
+            "index": 163,
+            "instruction": "GetVariable",
+            "successors": [
+              164
+            ]
+          },
+          {
+            "index": 171,
+            "instruction": "GetMember",
+            "successors": [
+              172
+            ]
+          },
+          {
+            "index": 174,
+            "instruction": "GetVariable",
+            "successors": [
+              175
+            ]
+          },
+          {
+            "index": 176,
+            "instruction": "GetMember",
+            "successors": [
+              177
+            ]
+          },
+          {
+            "index": 181,
+            "instruction": "GetMember",
+            "successors": [
+              182
+            ]
+          },
+          {
+            "index": 183,
+            "instruction": "GetVariable",
+            "successors": [
+              184
+            ]
+          },
+          {
+            "index": 206,
+            "instruction": "GetMember",
+            "successors": [
+              207
+            ]
+          },
+          {
+            "index": 218,
+            "instruction": "GetMember",
+            "successors": [
+              219
+            ]
+          },
+          {
+            "index": 227,
+            "instruction": "SetMember",
+            "successors": [
+              228
+            ]
+          },
+          {
+            "index": 232,
+            "instruction": "SetMember",
+            "successors": [
+              233
+            ]
+          },
+          {
+            "index": 244,
+            "instruction": "GetVariable",
+            "successors": [
+              245
+            ]
+          },
+          {
+            "index": 259,
+            "instruction": "GetMember",
+            "successors": [
+              260
+            ]
+          },
+          {
+            "index": 262,
+            "instruction": "GetVariable",
+            "successors": [
+              263
+            ]
+          },
+          {
+            "index": 264,
+            "instruction": "GetMember",
+            "successors": [
+              265
+            ]
+          },
+          {
+            "index": 266,
+            "instruction": "GetMember",
+            "successors": [
+              267
+            ]
+          },
+          {
+            "index": 268,
+            "instruction": "GetMember",
+            "successors": [
+              269
+            ]
+          },
+          {
+            "index": 296,
+            "instruction": "GetMember",
+            "successors": [
+              297
+            ]
+          },
+          {
+            "index": 299,
+            "instruction": "GetVariable",
+            "successors": [
+              300
+            ]
+          },
+          {
+            "index": 301,
+            "instruction": "GetMember",
+            "successors": [
+              302
+            ]
+          },
+          {
+            "index": 303,
+            "instruction": "GetMember",
+            "successors": [
+              304
+            ]
+          },
+          {
+            "index": 305,
+            "instruction": "GetMember",
+            "successors": [
+              306
+            ]
+          },
+          {
+            "index": 314,
+            "instruction": "GetVariable",
+            "successors": [
+              315
+            ]
+          },
+          {
+            "index": 338,
+            "instruction": "GetMember",
+            "successors": [
+              339
+            ]
+          },
+          {
+            "index": 348,
+            "instruction": "GetMember",
+            "successors": [
+              349
+            ]
+          },
+          {
+            "index": 351,
+            "instruction": "GetMember",
+            "successors": [
+              352
+            ]
+          },
+          {
+            "index": 387,
+            "instruction": "GetMember",
+            "successors": [
+              388
+            ]
+          },
+          {
+            "index": 391,
+            "instruction": "GetMember",
+            "successors": [
+              392
+            ]
+          },
+          {
+            "index": 394,
+            "instruction": "SetMember",
+            "successors": [
+              395
+            ]
+          },
+          {
+            "index": 406,
+            "instruction": "GetMember",
+            "successors": [
+              407
+            ]
+          },
+          {
+            "index": 407,
+            "instruction": "SetVariable",
+            "successors": [
+              408
+            ]
+          },
+          {
+            "index": 413,
+            "instruction": "GetMember",
+            "successors": [
+              414
+            ]
+          },
+          {
+            "index": 419,
+            "instruction": "GetMember",
+            "successors": [
+              420
+            ]
+          },
+          {
+            "index": 425,
+            "instruction": "SetVariable",
+            "successors": [
+              426
+            ]
+          },
+          {
+            "index": 428,
+            "instruction": "SetVariable",
+            "successors": [
+              429
+            ]
+          },
+          {
+            "index": 437,
+            "instruction": "GetMember",
+            "successors": [
+              438
+            ]
+          },
+          {
+            "index": 451,
+            "instruction": "SetVariable",
+            "successors": [
+              452
+            ]
+          },
+          {
+            "index": 453,
+            "instruction": "GetVariable",
+            "successors": [
+              454
+            ]
+          },
+          {
+            "index": 460,
+            "instruction": "SetVariable",
+            "successors": [
+              461
+            ]
+          },
+          {
+            "index": 463,
+            "instruction": "SetVariable",
+            "successors": [
+              464
+            ]
+          },
+          {
+            "index": 467,
+            "instruction": "GetVariable",
+            "successors": [
+              468
+            ]
+          },
+          {
+            "index": 472,
+            "instruction": "SetVariable",
+            "successors": [
+              473
+            ]
+          },
+          {
+            "index": 475,
+            "instruction": "SetVariable",
+            "successors": [
+              476
+            ]
+          },
+          {
+            "index": 479,
+            "instruction": "SetMember",
+            "successors": [
+              480
+            ]
+          },
+          {
+            "index": 485,
+            "instruction": "GetMember",
+            "successors": [
+              486
+            ]
+          },
+          {
+            "index": 495,
+            "instruction": "GetMember",
+            "successors": [
+              496
+            ]
+          },
+          {
+            "index": 496,
+            "instruction": "SetMember",
+            "successors": [
+              497
+            ]
+          },
+          {
+            "index": 499,
+            "instruction": "SetVariable",
+            "successors": [
+              500
+            ]
+          },
+          {
+            "index": 502,
+            "instruction": "SetVariable",
+            "successors": [
+              503
+            ]
+          },
+          {
+            "index": 510,
+            "instruction": "SetVariable",
+            "successors": [
+              511
+            ]
+          },
+          {
+            "index": 515,
+            "instruction": "GetMember",
+            "successors": [
+              516
+            ]
+          },
+          {
+            "index": 518,
+            "instruction": "GetMember",
+            "successors": [
+              519
+            ]
+          },
+          {
+            "index": 520,
+            "instruction": "SetMember",
+            "successors": [
+              521
+            ]
+          },
+          {
+            "index": 522,
+            "instruction": "GetVariable",
+            "successors": [
+              523
+            ]
+          },
+          {
+            "index": 531,
+            "instruction": "SetVariable",
+            "successors": [
+              532
+            ]
+          },
+          {
+            "index": 533,
+            "instruction": "GetVariable",
+            "successors": [
+              534
+            ]
+          },
+          {
+            "index": 542,
+            "instruction": "SetVariable",
+            "successors": [
+              543
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "node": {
+              "index": 2,
+              "instruction": "CallFunction",
+              "successors": [
+                3
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 0,
+                "instruction": "Push 0",
+                "successors": [
+                  1
+                ]
+              },
+              {
+                "index": 1,
+                "instruction": "Push \"initWudi\"",
+                "successors": [
+                  2
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 68,
+              "instruction": "CallMethod",
+              "successors": [
+                69
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 64,
+                "instruction": "Push \"dashing\"",
+                "successors": [
+                  65
+                ]
+              },
+              {
+                "index": 65,
+                "instruction": "Push 3",
+                "successors": [
+                  66
+                ]
+              },
+              {
+                "index": 66,
+                "instruction": "Push register2",
+                "successors": [
+                  67
+                ]
+              },
+              {
+                "index": 67,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  68
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 73,
+              "instruction": "CallFunction",
+              "successors": [
+                74
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 69,
+                "instruction": "Not",
+                "successors": [
+                  70
+                ]
+              },
+              {
+                "index": 70,
+                "instruction": "If 97",
+                "successors": [
+                  97,
+                  71
+                ]
+              },
+              {
+                "index": 71,
+                "instruction": "Push 0",
+                "successors": [
+                  72
+                ]
+              },
+              {
+                "index": 72,
+                "instruction": "Push \"onDashing\"",
+                "successors": [
+                  73
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 105,
+              "instruction": "CallMethod",
+              "successors": [
+                106
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 101,
+                "instruction": "Push \"paused\"",
+                "successors": [
+                  102
+                ]
+              },
+              {
+                "index": 102,
+                "instruction": "Push 3",
+                "successors": [
+                  103
+                ]
+              },
+              {
+                "index": 103,
+                "instruction": "Push register2",
+                "successors": [
+                  104
+                ]
+              },
+              {
+                "index": 104,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  105
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 122,
+              "instruction": "CallFunction",
+              "successors": [
+                123
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 118,
+                "instruction": "Push \"wdFrameX\"",
+                "successors": [
+                  119
+                ]
+              },
+              {
+                "index": 119,
+                "instruction": "GetVariable",
+                "successors": [
+                  120
+                ]
+              },
+              {
+                "index": 120,
+                "instruction": "Push 1",
+                "successors": [
+                  121
+                ]
+              },
+              {
+                "index": 121,
+                "instruction": "Push \"isNaN\"",
+                "successors": [
+                  122
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 132,
+              "instruction": "CallFunction",
+              "successors": [
+                133
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 128,
+                "instruction": "Push \"wdFrame\"",
+                "successors": [
+                  129
+                ]
+              },
+              {
+                "index": 129,
+                "instruction": "GetVariable",
+                "successors": [
+                  130
+                ]
+              },
+              {
+                "index": 130,
+                "instruction": "Push 1",
+                "successors": [
+                  131
+                ]
+              },
+              {
+                "index": 131,
+                "instruction": "Push \"isNaN\"",
+                "successors": [
+                  132
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 167,
+              "instruction": "CallFunction",
+              "successors": [
+                168
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 163,
+                "instruction": "GetVariable",
+                "successors": [
+                  164
+                ]
+              },
+              {
+                "index": 164,
+                "instruction": "If 169",
+                "successors": [
+                  169,
+                  165
+                ]
+              },
+              {
+                "index": 165,
+                "instruction": "Push 0",
+                "successors": [
+                  166
+                ]
+              },
+              {
+                "index": 166,
+                "instruction": "Push \"doDashX\"",
+                "successors": [
+                  167
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 251,
+              "instruction": "CallMethod",
+              "successors": [
+                252
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 247,
+                "instruction": "Push \"own_air\"",
+                "successors": [
+                  248
+                ]
+              },
+              {
+                "index": 248,
+                "instruction": "Push 3",
+                "successors": [
+                  249
+                ]
+              },
+              {
+                "index": 249,
+                "instruction": "Push register2",
+                "successors": [
+                  250
+                ]
+              },
+              {
+                "index": 250,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  251
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 275,
+              "instruction": "CallMethod",
+              "successors": [
+                276
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 271,
+                "instruction": "Push \"other_air\"",
+                "successors": [
+                  272
+                ]
+              },
+              {
+                "index": 272,
+                "instruction": "Push 3",
+                "successors": [
+                  273
+                ]
+              },
+              {
+                "index": 273,
+                "instruction": "Push register2",
+                "successors": [
+                  274
+                ]
+              },
+              {
+                "index": 274,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  275
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 287,
+              "instruction": "CallMethod",
+              "successors": [
+                288
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 283,
+                "instruction": "Push \"displacement\"",
+                "successors": [
+                  284
+                ]
+              },
+              {
+                "index": 284,
+                "instruction": "Push 3",
+                "successors": [
+                  285
+                ]
+              },
+              {
+                "index": 285,
+                "instruction": "Push register2",
+                "successors": [
+                  286
+                ]
+              },
+              {
+                "index": 286,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  287
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 310,
+              "instruction": "CallMethod",
+              "successors": [
+                311
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 306,
+                "instruction": "Push \"target\"",
+                "successors": [
+                  307
+                ]
+              },
+              {
+                "index": 307,
+                "instruction": "Push 3",
+                "successors": [
+                  308
+                ]
+              },
+              {
+                "index": 308,
+                "instruction": "Push register2",
+                "successors": [
+                  309
+                ]
+              },
+              {
+                "index": 309,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  310
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 319,
+              "instruction": "CallMethod",
+              "successors": [
+                320
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 315,
+                "instruction": "Push \"receiver\"",
+                "successors": [
+                  316
+                ]
+              },
+              {
+                "index": 316,
+                "instruction": "Push 3",
+                "successors": [
+                  317
+                ]
+              },
+              {
+                "index": 317,
+                "instruction": "Push register2",
+                "successors": [
+                  318
+                ]
+              },
+              {
+                "index": 318,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  319
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 321,
+              "instruction": "CallMethod",
+              "successors": [
+                322
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 317,
+                "instruction": "Push register2",
+                "successors": [
+                  318
+                ]
+              },
+              {
+                "index": 318,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  319
+                ]
+              },
+              {
+                "index": 319,
+                "instruction": "CallMethod",
+                "successors": [
+                  320
+                ]
+              },
+              {
+                "index": 320,
+                "instruction": "Push \"hitTest\"",
+                "successors": [
+                  321
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 326,
+              "instruction": "CallMethod",
+              "successors": [
+                327
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 322,
+                "instruction": "Push \"result\"",
+                "successors": [
+                  323
+                ]
+              },
+              {
+                "index": 323,
+                "instruction": "Push 3",
+                "successors": [
+                  324
+                ]
+              },
+              {
+                "index": 324,
+                "instruction": "Push register2",
+                "successors": [
+                  325
+                ]
+              },
+              {
+                "index": 325,
+                "instruction": "Push \"s283Value\"",
+                "successors": [
+                  326
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 401,
+              "instruction": "CallMethod",
+              "successors": [
+                402
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 397,
+                "instruction": "Subtract",
+                "successors": [
+                  398
+                ]
+              },
+              {
+                "index": 398,
+                "instruction": "Push 1",
+                "successors": [
+                  399
+                ]
+              },
+              {
+                "index": 399,
+                "instruction": "Push register3",
+                "successors": [
+                  400
+                ]
+              },
+              {
+                "index": 400,
+                "instruction": "Push \"moveX\"",
+                "successors": [
+                  401
+                ]
+              }
+            ]
+          },
+          {
+            "node": {
+              "index": 443,
+              "instruction": "CallFunction",
+              "successors": [
+                444
+              ]
+            },
+            "preceding_nodes": [
+              {
+                "index": 439,
+                "instruction": "Not",
+                "successors": [
+                  440
+                ]
+              },
+              {
+                "index": 440,
+                "instruction": "If 482",
+                "successors": [
+                  482,
+                  441
+                ]
+              },
+              {
+                "index": 441,
+                "instruction": "Push 0",
+                "successors": [
+                  442
+                ]
+              },
+              {
+                "index": 442,
+                "instruction": "Push \"isHitBan\"",
+                "successors": [
+                  443
+                ]
+              }
+            ]
+          }
+        ],
+        "returns": [
+          {
+            "index": 96,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 109,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 430,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 465,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 481,
+            "instruction": "Return",
+            "successors": []
+          },
+          {
+            "index": 504,
+            "instruction": "Return",
+            "successors": []
+          }
+        ]
+      }
+    },
+    "helper_envelopes": [
+      {
+        "reason": "hypothetical pass-through: dashing",
+        "indices": [
+          64,
+          65,
+          66,
+          67,
+          68
+        ],
+        "instructions": [
+          "Push \"dashing\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: paused",
+        "indices": [
+          101,
+          102,
+          103,
+          104,
+          105
+        ],
+        "instructions": [
+          "Push \"paused\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: own_air",
+        "indices": [
+          247,
+          248,
+          249,
+          250,
+          251
+        ],
+        "instructions": [
+          "Push \"own_air\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: other_air",
+        "indices": [
+          271,
+          272,
+          273,
+          274,
+          275
+        ],
+        "instructions": [
+          "Push \"other_air\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: displacement",
+        "indices": [
+          283,
+          284,
+          285,
+          286,
+          287
+        ],
+        "instructions": [
+          "Push \"displacement\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: target",
+        "indices": [
+          306,
+          307,
+          308,
+          309,
+          310
+        ],
+        "instructions": [
+          "Push \"target\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: receiver",
+        "indices": [
+          315,
+          316,
+          317,
+          318,
+          319
+        ],
+        "instructions": [
+          "Push \"receiver\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: result",
+        "indices": [
+          322,
+          323,
+          324,
+          325,
+          326
+        ],
+        "instructions": [
+          "Push \"result\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      }
+    ],
+    "initialization_envelopes": [
+      {
+        "reason": "candidate local initialization register7; conditional deletion",
+        "indices": [
+          233,
+          234,
+          235
+        ],
+        "instructions": [
+          "Push undefined",
+          "StoreRegister 7",
+          "Pop"
+        ]
+      },
+      {
+        "reason": "candidate local initialization register8; conditional deletion",
+        "indices": [
+          236,
+          237,
+          238
+        ],
+        "instructions": [
+          "Push undefined",
+          "StoreRegister 8",
+          "Pop"
+        ]
+      },
+      {
+        "reason": "candidate local initialization register9; conditional deletion",
+        "indices": [
+          239,
+          240,
+          241
+        ],
+        "instructions": [
+          "Push undefined",
+          "StoreRegister 9",
+          "Pop"
+        ]
+      },
+      {
+        "reason": "candidate local initialization register12; conditional deletion",
+        "indices": [
+          431,
+          432,
+          433
+        ],
+        "instructions": [
+          "Push undefined",
+          "StoreRegister 12",
+          "Pop"
+        ]
+      }
+    ],
+    "scope_operation_correspondence": [
+      {
+        "original_index": 5,
+        "candidate_index": 5,
+        "instruction": "GetVariable",
+        "successors": [
+          6
+        ]
+      },
+      {
+        "original_index": 12,
+        "candidate_index": 12,
+        "instruction": "SetVariable",
+        "successors": [
+          13
+        ]
+      },
+      {
+        "original_index": 14,
+        "candidate_index": 14,
+        "instruction": "GetVariable",
+        "successors": [
+          15
+        ]
+      },
+      {
+        "original_index": 21,
+        "candidate_index": 21,
+        "instruction": "SetVariable",
+        "successors": [
+          22
+        ]
+      },
+      {
+        "original_index": 23,
+        "candidate_index": 23,
+        "instruction": "GetVariable",
+        "successors": [
+          24
+        ]
+      },
+      {
+        "original_index": 30,
+        "candidate_index": 30,
+        "instruction": "SetVariable",
+        "successors": [
+          31
+        ]
+      },
+      {
+        "original_index": 62,
+        "candidate_index": 63,
+        "instruction": "GetVariable",
+        "successors": [
+          63
+        ]
+      },
+      {
+        "original_index": 88,
+        "candidate_index": 94,
+        "instruction": "SetVariable",
+        "successors": [
+          89
+        ]
+      },
+      {
+        "original_index": 99,
+        "candidate_index": 111,
+        "instruction": "GetVariable",
+        "successors": [
+          100
+        ]
+      },
+      {
+        "original_index": 107,
+        "candidate_index": 119,
+        "instruction": "GetVariable",
+        "successors": [
+          108
+        ]
+      },
+      {
+        "original_index": 117,
+        "candidate_index": 129,
+        "instruction": "GetVariable",
+        "successors": [
+          118
+        ]
+      },
+      {
+        "original_index": 126,
+        "candidate_index": 138,
+        "instruction": "SetVariable",
+        "successors": [
+          127
+        ]
+      },
+      {
+        "original_index": 129,
+        "candidate_index": 141,
+        "instruction": "GetVariable",
+        "successors": [
+          130
+        ]
+      },
+      {
+        "original_index": 132,
+        "candidate_index": 144,
+        "instruction": "SetVariable",
+        "successors": [
+          133
+        ]
+      },
+      {
+        "original_index": 135,
+        "candidate_index": 147,
+        "instruction": "GetVariable",
+        "successors": [
+          136
+        ]
+      },
+      {
+        "original_index": 142,
+        "candidate_index": 154,
+        "instruction": "SetVariable",
+        "successors": [
+          143
+        ]
+      },
+      {
+        "original_index": 147,
+        "candidate_index": 159,
+        "instruction": "SetVariable",
+        "successors": [
+          148
+        ]
+      },
+      {
+        "original_index": 149,
+        "candidate_index": 161,
+        "instruction": "SetVariable",
+        "successors": [
+          150
+        ]
+      },
+      {
+        "original_index": 151,
+        "candidate_index": 163,
+        "instruction": "GetVariable",
+        "successors": [
+          152
+        ]
+      },
+      {
+        "original_index": 164,
+        "candidate_index": 174,
+        "instruction": "GetVariable",
+        "successors": [
+          163
+        ]
+      },
+      {
+        "original_index": 173,
+        "candidate_index": 183,
+        "instruction": "GetVariable",
+        "successors": [
+          172
+        ]
+      },
+      {
+        "original_index": 224,
+        "candidate_index": 244,
+        "instruction": "GetVariable",
+        "successors": [
+          223
+        ]
+      },
+      {
+        "original_index": 236,
+        "candidate_index": 262,
+        "instruction": "GetVariable",
+        "successors": [
+          235
+        ]
+      },
+      {
+        "original_index": 260,
+        "candidate_index": 299,
+        "instruction": "GetVariable",
+        "successors": [
+          259
+        ]
+      },
+      {
+        "original_index": 269,
+        "candidate_index": 314,
+        "instruction": "GetVariable",
+        "successors": [
+          268
+        ]
+      },
+      {
+        "original_index": 352,
+        "candidate_index": 407,
+        "instruction": "SetVariable",
+        "successors": [
+          351
+        ]
+      },
+      {
+        "original_index": 370,
+        "candidate_index": 425,
+        "instruction": "SetVariable",
+        "successors": [
+          369
+        ]
+      },
+      {
+        "original_index": 373,
+        "candidate_index": 428,
+        "instruction": "SetVariable",
+        "successors": [
+          372
+        ]
+      },
+      {
+        "original_index": 393,
+        "candidate_index": 451,
+        "instruction": "SetVariable",
+        "successors": [
+          392
+        ]
+      },
+      {
+        "original_index": 395,
+        "candidate_index": 453,
+        "instruction": "GetVariable",
+        "successors": [
+          394
+        ]
+      },
+      {
+        "original_index": 402,
+        "candidate_index": 460,
+        "instruction": "SetVariable",
+        "successors": [
+          401
+        ]
+      },
+      {
+        "original_index": 405,
+        "candidate_index": 463,
+        "instruction": "SetVariable",
+        "successors": [
+          404
+        ]
+      },
+      {
+        "original_index": 409,
+        "candidate_index": 467,
+        "instruction": "GetVariable",
+        "successors": [
+          408
+        ]
+      },
+      {
+        "original_index": 414,
+        "candidate_index": 472,
+        "instruction": "SetVariable",
+        "successors": [
+          413
+        ]
+      },
+      {
+        "original_index": 417,
+        "candidate_index": 475,
+        "instruction": "SetVariable",
+        "successors": [
+          416
+        ]
+      },
+      {
+        "original_index": 441,
+        "candidate_index": 499,
+        "instruction": "SetVariable",
+        "successors": [
+          440
+        ]
+      },
+      {
+        "original_index": 444,
+        "candidate_index": 502,
+        "instruction": "SetVariable",
+        "successors": [
+          443
+        ]
+      },
+      {
+        "original_index": 452,
+        "candidate_index": 510,
+        "instruction": "SetVariable",
+        "successors": [
+          451
+        ]
+      },
+      {
+        "original_index": 464,
+        "candidate_index": 522,
+        "instruction": "GetVariable",
+        "successors": [
+          463
+        ]
+      },
+      {
+        "original_index": 473,
+        "candidate_index": 531,
+        "instruction": "SetVariable",
+        "successors": [
+          472
+        ]
+      },
+      {
+        "original_index": 475,
+        "candidate_index": 533,
+        "instruction": "GetVariable",
+        "successors": [
+          474
+        ]
+      },
+      {
+        "original_index": 484,
+        "candidate_index": 542,
+        "instruction": "SetVariable",
+        "successors": [
+          483
+        ]
+      }
+    ],
+    "initialization_cut_context": [
+      {
+        "store_index": 234,
+        "helper_calls_at_lower_node_indices": [
+          68,
+          105
+        ],
+        "helper_calls_at_higher_node_indices": [
+          251,
+          275,
+          287,
+          310,
+          319,
+          326
+        ],
+        "live_activation_visibility": null
+      },
+      {
+        "store_index": 237,
+        "helper_calls_at_lower_node_indices": [
+          68,
+          105
+        ],
+        "helper_calls_at_higher_node_indices": [
+          251,
+          275,
+          287,
+          310,
+          319,
+          326
+        ],
+        "live_activation_visibility": null
+      },
+      {
+        "store_index": 240,
+        "helper_calls_at_lower_node_indices": [
+          68,
+          105
+        ],
+        "helper_calls_at_higher_node_indices": [
+          251,
+          275,
+          287,
+          310,
+          319,
+          326
+        ],
+        "live_activation_visibility": null
+      },
+      {
+        "store_index": 432,
+        "helper_calls_at_lower_node_indices": [
+          68,
+          105,
+          251,
+          275,
+          287,
+          310,
+          319,
+          326
+        ],
+        "helper_calls_at_higher_node_indices": [],
+        "live_activation_visibility": null
+      }
+    ],
+    "static_preload_name_correspondence_proved": true,
+    "live_scope_identity": null,
+    "activation_visible_erasure": null,
+    "helper_effect_observation": null,
+    "independent_off_on_observation": null,
+    "limit": "Exporter names and explicit scope-operation correspondence do not establish live bindings. Lower/higher indices are lexical positions, not executed paths. No claim excludes hidden activation access, exceptions, reentrancy, lifetime or scheduling effects. Double-Not coercion remains unproved."
+  },
+  "gates": {
+    "scope-binding": {
+      "proved": false,
+      "code": "S312_SCOPE_BINDING_UNPROVED"
+    },
+    "activation-erasure": {
+      "proved": false,
+      "code": "S312_ACTIVATION_ERASURE_UNPROVED"
+    },
+    "helper-effects": {
+      "proved": false,
+      "code": "S312_HELPER_EFFECTS_UNPROVED"
+    },
+    "off-on": {
+      "proved": false,
+      "code": "S312_OFF_ON_UNPROVED"
+    },
+    "external-callsite": {
+      "proved": false,
+      "code": "S312_EXTERNAL_CALLSITE_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_captures": 0,
+  "other_ranks_executed": [],
+  "exclusions": [
+    "repeat solved dataflow as new work",
+    "early initialization",
+    "receiver exemption",
+    "extra hitTest",
+    "tick41",
+    "runtime changes",
+    "s254-s311 edits",
+    "game/scripts/contracts/shared sampler/threshold/validator changes"
+  ],
+  "blocker": "Static preload names correspond, but changed this suppression/preload and defining scope lack live binding evidence. Initialization erasure remains activation-visible-unproved. Independent helper effects and off/on controls are blocked on that qualification.",
+  "next_discriminator": "Establish original/candidate defining scope and this/root/parent identities for a retained invocation, including suppression and hidden activation visibility; qualify initialization and double-Not erasure. Only then independently measure helper effects and natural executed/skipped observer-off/on controls. No helper installation or capture is admitted here."
+}
