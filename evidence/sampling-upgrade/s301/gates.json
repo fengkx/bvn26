@@ -1,0 +1,148 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s301/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s301/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.541806,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s301/diagnose.py",
+      "--output",
+      "/tmp/s301-observer.json",
+      "--require-observer"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.482765,
+    "log": "observer.txt"
+  },
+  {
+    "name": "independent-controls",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s301/diagnose.py",
+      "--output",
+      "/tmp/s301-independent-controls.json",
+      "--require-independent-controls"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.51345,
+    "log": "independent-controls.txt"
+  },
+  {
+    "name": "child-clock",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s301/diagnose.py",
+      "--output",
+      "/tmp/s301-child-clock.json",
+      "--require-child-clock"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.473933,
+    "log": "child-clock.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s301",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.615889,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s292-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s292",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.797762,
+    "log": "retained-s292-tests.txt"
+  },
+  {
+    "name": "retained-s282-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s282",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.710128,
+    "log": "retained-s282-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_encoded_digit_lifetime",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_sampling_native"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 10.73223,
+    "log": "retained-tests.txt"
+  }
+]
