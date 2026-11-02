@@ -1,0 +1,56 @@
+[
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s314/diagnose.py",
+      "--output",
+      "/tmp/s314-observer-qualification.json",
+      "--require-observer-qualification"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.4920748751610518,
+    "log": "observer-qualification.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s314/diagnose.py",
+      "--output",
+      "/tmp/s314-callback-completion.json",
+      "--require-callback-completion"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.5642875423654914,
+    "log": "callback-completion.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s314/diagnose.py",
+      "--output",
+      "/tmp/s314-terminal-completeness.json",
+      "--require-terminal-completeness"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.511402207892388,
+    "log": "terminal-completeness.txt"
+  }
+]
