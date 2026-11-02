@@ -1,0 +1,93 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s281/diagnose.py",
+      "--output",
+      "/tmp/s281-recomputed.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 4.102746,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "thin-raster",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s281/diagnose.py",
+      "--output",
+      "/tmp/s281-required.json",
+      "--require-thin-raster"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 4.056876,
+    "log": "thin-raster.txt"
+  },
+  {
+    "name": "state-admission",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s274/diagnose.py",
+      "--output",
+      "/tmp/s281-lifetime.json",
+      "--require-state-admission"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.240352,
+    "log": "state-admission.txt"
+  },
+  {
+    "name": "strict-rgba",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/tmp/s281-historical.json",
+      "--strict-rgba"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 12.168002,
+    "log": "strict-rgba.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s281",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 4.123203,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_strict_raster_admission",
+      "tools.tests.test_encoded_digit_lifetime",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 26.959195,
+    "log": "retained-tests.txt"
+  }
+]
