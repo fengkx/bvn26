@@ -1,0 +1,91 @@
+[
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s298",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 16.68677333276719,
+    "log": "focused-tests.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s289",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 8.447102874983102,
+    "log": "retained-s289-tests.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_aimain_native_resolver_gap",
+      "tools.tests.test_aimain_allocation_identity",
+      "tools.tests.test_aimain_content_clearing",
+      "tools.tests.test_aimain_unload_identity",
+      "tools.tests.test_display_source_frame_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 21.671754374634475,
+    "log": "retained-tests.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.6800773749127984,
+    "log": "integrity.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.06151612475514412,
+    "log": "handoff.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.09919804101809859,
+    "log": "diff-check.txt",
+    "PYTHONPATH": "."
+  }
+]

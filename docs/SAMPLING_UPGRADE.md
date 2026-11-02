@@ -1544,3 +1544,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s297，AFTER-s290 排名第7项）：完整复现锁定 s287 的5503事件诊断与四个静态读取跳板；新增四项原生请求/流类型及消费方符号查询均无匹配。候选名称不代表已知原生类型，空查询不证明对象不存在。实际P1返回字节、消费方、不可变请求与loadStep推进前目标关联仍缺，三项证明要求exit1；正常资格未建立，错资源对照未执行。零新构建/启动/捕获，无运行时变更。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s297及跟踪文件变更，其他排名和s254–s296不变。
 
 [证据与复现](../evidence/sampling-upgrade/s297/README.md)。设施与校验实际耗时见本切片记录；前期阅读设计及人天未知。
+
+## s298 — AFTER-s290 rank #8: AImain allocation
+
+2026-11-02（采样 s298，AFTER-s290 排名第8项）：完整复现锁定 s289 的8290事件及原生观察缺口；对收据锁定播放器新增四项槽位/保存引用类型、解析及对象池寿命符号查询，均无匹配。候选名称仅为搜索假设，不证明解析器不存在。实际清空、替换、free/reuse 的对象池有序代际仍缺，四项证明要求exit1；属性删除不是内容清空。零新构建/启动/捕获，未执行原生对照，无运行时变更。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s298及跟踪文件变更，其他排名和s254–s297不变。
+
+[证据与复现](../evidence/sampling-upgrade/s298/README.md)。设施与校验实际耗时见本切片记录；前期阅读设计及人天未知。

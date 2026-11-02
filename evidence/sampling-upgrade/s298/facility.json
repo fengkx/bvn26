@@ -1,0 +1,78 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "checks": [
+    {
+      "name": "slot-type",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t DisplayObjectContainer"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.606620458420366,
+      "log": "slot-type.txt",
+      "sha256": "fd6043862c385621abe1c3e7831d04cbbde164b9181e250b154ee5b1132f3b3f"
+    },
+    {
+      "name": "reference-type",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t MovieClipObject"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.13039045920595527,
+      "log": "reference-type.txt",
+      "sha256": "22be110c58f085275476298b23e48babfccaa87134df100564b89473639386ae"
+    },
+    {
+      "name": "slot-reference-symbols",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -r -n \"(GetInstanceAtDepth|GetChildAtDepth|ResolveMovieClip|MovieClipReference)\" \"Flash Player Debugger\""
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.3330384590663016,
+      "log": "slot-reference-symbols.txt",
+      "sha256": "6f52c3a7b5f10dd2368dc0136a5b4abf91f5bf19e094854792ac4b47eee532aa"
+    },
+    {
+      "name": "pool-lifetime-symbols",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -r -n \"(AllocMovieClip|FreeMovieClip|DisplayObjectPool|DestroyMovieClip)\" \"Flash Player Debugger\""
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.32076137512922287,
+      "log": "pool-lifetime-symbols.txt",
+      "sha256": "179c69ee6bb1c86e905cf9e6492ed2cc1aee3d762dc13c19c998fbff89a592a3"
+    }
+  ],
+  "player_launches": 0,
+  "process_attaches": 0,
+  "new_captures": 0,
+  "live_lifetime_events": null
+}
