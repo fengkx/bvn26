@@ -1,0 +1,91 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.4903712081722915
+  },
+  {
+    "name": "activation-erasure",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json",
+      "--require-activation-erasure"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 1.8193020829930902
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json",
+      "--require-observer"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 2.7808339591138065
+  },
+  {
+    "name": "nested-entry",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json",
+      "--require-nested-entry"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 0.7493589157238603
+  },
+  {
+    "name": "parent-removal",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json",
+      "--require-parent-removal"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 0.9279991248622537
+  }
+]
