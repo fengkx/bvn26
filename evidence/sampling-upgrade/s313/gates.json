@@ -1,0 +1,74 @@
+[
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s313/diagnose.py",
+      "--output",
+      "/tmp/s313-gate.json",
+      "--require-consumer-request"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.13577274978160858,
+    "log": "consumer-request.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s313/diagnose.py",
+      "--output",
+      "/tmp/s313-gate.json",
+      "--require-loader-attestation"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.13831566693261266,
+    "log": "loader-attestation.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s313/diagnose.py",
+      "--output",
+      "/tmp/s313-gate.json",
+      "--require-pre-advance-target"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.1368191670626402,
+    "log": "pre-advance-target.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s313/diagnose.py",
+      "--output",
+      "/tmp/s313-gate.json",
+      "--require-wrong-resource-control"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.13506604125723243,
+    "log": "wrong-resource-control.txt"
+  }
+]

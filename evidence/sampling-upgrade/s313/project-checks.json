@@ -1,0 +1,171 @@
+[
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s313/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s313/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.18552704202011228,
+    "log": "diagnosis.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s313",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.8540286249481142,
+    "log": "focused-tests.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s306",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.68719945801422,
+    "log": "retained-s306-tests.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s297",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.5354268746450543,
+    "log": "retained-s297-tests.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s287",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.3996226661838591,
+    "log": "retained-s287-tests.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_loader_read_target_diagnosis",
+      "tools.tests.test_loader_attestation_diagnosis",
+      "tools.tests.test_capture_runtime_fighter",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 2.426880500279367,
+    "log": "retained-tests.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.755336582660675,
+    "log": "integrity.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.15737883327528834,
+    "log": "handoff.txt"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "435d7f2a",
+      "--check"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.3249090421013534,
+    "log": "diff-check.txt"
+  }
+]
