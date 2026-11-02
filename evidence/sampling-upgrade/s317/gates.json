@@ -1,0 +1,57 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s317/diagnose.py",
+      "--output",
+      "/tmp/s317-checked.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 4.204757583327591
+  },
+  {
+    "name": "state-admission",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s317/diagnose.py",
+      "--output",
+      "/tmp/s317-checked.json",
+      "--require-state-admission"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 4.083381291013211
+  },
+  {
+    "name": "paired-scene",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s317/diagnose.py",
+      "--output",
+      "/tmp/s317-checked.json",
+      "--require-paired-scene"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 4.38857854064554
+  },
+  {
+    "name": "thin-raster",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s317/diagnose.py",
+      "--output",
+      "/tmp/s317-checked.json",
+      "--require-thin-raster"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 4.0514340829104185
+  }
+]
