@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-02（采样 s314，AFTER-s308 排名第6项）：完整复现锁定 s304；新增归档 aiEvent 八字段序列化与单回调九处源边界审计。主机保管独立但仍复制同一事件通道；关闭标记先于禁用日志、quit及可能返回，同帧计数不能充当activation身份。加载函数体、owner代次、入口—dispatcher返回及observer-off/on五项见证仍缺，三项证明门禁exit1；完整终端派发清单延后。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s314与跟踪更新，其他排名及s254–s313不变，零构建/启动/附加/捕获。 [证据](../evidence/sampling-upgrade/s314/README.md)。
+
 - 2026-11-02（采样 s313，AFTER-s308 排名第5项）：完整复现锁定 s306 的5503历史事件；新增432字节包装函数的16调用/1返回清单与六处消费边界见证。三个间接调用目标、实际P1消费方和不可变请求代次仍未解析；寄存器复制与可清空的流指针不构成返回/消费字节关联。四项证明门禁 exit1，正常资格未建立，错资源对照未执行。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s313与跟踪更新，不执行排名1–4或6–9，零构建/启动/附加/内存读取/捕获。 [证据](../evidence/sampling-upgrade/s313/README.md)。
 
 - 2026-11-02（采样 s312，AFTER-s308 排名第4项）：复现锁定 s300 的5437历史事件，不重开四初始化/八显式读取的数据流结论。新增完整回调 header/preload/scope 审计：对应版本 JPEXS 源支持静态 preload 名称映射，但 this suppression/preload 改变缺 live scope/activation 绑定；保留完整调用与作用域访问清单及初始化相对 helper 的词法位置，不冒充执行顺序。五项证明门槛 exit1，helper-effect/off-on 观察在资格前阻塞。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s312与跟踪更新，不执行排名1–3或5–9，零构建/启动/捕获。 [证据](../evidence/sampling-upgrade/s312/README.md)。

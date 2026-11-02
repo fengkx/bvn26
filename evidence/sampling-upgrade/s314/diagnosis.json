@@ -1,0 +1,523 @@
+{
+  "base": "dfdbdcd5d1de59b27194b21e6fc138ef91bc37ae",
+  "scope": "AFTER-s308 rank #6 only; one archived instrumentation callback",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "M0-02": "pending",
+  "product_obligations_closed": 0,
+  "locked_s304_reproduced": true,
+  "independent_pair_proved_and_closed": true,
+  "channel_audit": {
+    "logger_member": "patches/main/frame_1/DoAction.as",
+    "logger_member_sha256": "cb0961a80a36764734adc41eef2d2ddfaa1d40ac067557e925524bbb22d4954b",
+    "logger_line_start": 40,
+    "logger_line_end": 43,
+    "logger_source": "_root.aiEvent = function(kind, value)\n{\n   trace(\"AIREF|\" + aiRun + \"|\" + (++aiSeq) + \"|\" + getTimer() + \"|\" + aiDisplay + \"|\" + aiFight + \"|\" + kind + \"|\" + value);\n};",
+    "serialized_fields": [
+      "literal AIREF",
+      "run ID",
+      "event sequence",
+      "getTimer()",
+      "display counter",
+      "fight counter",
+      "kind",
+      "value"
+    ],
+    "callback_member": "patches/main/frame_10/DoAction.as",
+    "callback_sha256": "3a31a0955390a23879cc87d525f75bb96f55468ddb091c4185a5f4a1ef064214",
+    "boundaries": [
+      {
+        "operation": "assignment",
+        "line": 26,
+        "source": "onEnterFrame = function()",
+        "independent_activation_witness": null
+      },
+      {
+        "operation": "guard",
+        "line": 28,
+        "source": "   if(_root.aiS284DoActionComplete)",
+        "independent_activation_witness": null
+      },
+      {
+        "operation": "closure_marker",
+        "line": 30,
+        "source": "      aiEvent(\"capture_window_closed\", \"before-next-root-increment\");",
+        "independent_activation_witness": null
+      },
+      {
+        "operation": "replace_callback",
+        "line": 31,
+        "source": "      _root.onEnterFrame = function() {};",
+        "independent_activation_witness": null
+      },
+      {
+        "operation": "disable_logger",
+        "line": 32,
+        "source": "      _root.aiEvent = function() {};",
+        "independent_activation_witness": null
+      },
+      {
+        "operation": "explicit_return",
+        "line": 34,
+        "source": "      return;",
+        "independent_activation_witness": null
+      },
+      {
+        "operation": "done_marker",
+        "line": 75,
+        "source": "      aiEvent(\"done\", \"\");",
+        "independent_activation_witness": null
+      },
+      {
+        "operation": "arm_guard",
+        "line": 76,
+        "source": "      _root.aiS284DoActionComplete = true;",
+        "independent_activation_witness": null
+      },
+      {
+        "operation": "timeout_guard",
+        "line": 78,
+        "source": "   if(aiDisplay > 60 + 900)",
+        "independent_activation_witness": null
+      }
+    ],
+    "guard_after_marker": [
+      {
+        "line": 31,
+        "source": "      _root.onEnterFrame = function() {};"
+      },
+      {
+        "line": 32,
+        "source": "      _root.aiEvent = function() {};"
+      },
+      {
+        "line": 33,
+        "source": "      fscommand(\"quit\");"
+      },
+      {
+        "line": 34,
+        "source": "      return;"
+      }
+    ],
+    "source_identity_is_loaded_body_identity": false,
+    "aiEvent_independent_of_callback_mutation": false,
+    "host_copy_independent_of_event_producer": false,
+    "host_copy_limit": "Independent host custody copies the same AIREF producer; it supplies no callback entry/dispatcher-return observation.",
+    "return_paths": [
+      "guard branch: quit request then explicit return if execution resumes",
+      "ordinary branch: implicit fallthrough after timeout conditional",
+      "timeout branch: quit request before possible fallthrough"
+    ],
+    "same_clock_limit": "Guard precedes aiDisplay increment. A closing invocation can retain the done invocation clock values; those counters cannot identify an activation."
+  },
+  "runs": {
+    "normal": {
+      "done": {
+        "run_id": "s293-normal-20261102-r01",
+        "sequence": 5849,
+        "time_ms": 29114,
+        "display": 525,
+        "tick": 60,
+        "kind": "done",
+        "payload": ""
+      },
+      "suffix": [],
+      "events": 5849,
+      "suffix_kind_counts": {},
+      "suffix_clock_pairs": [],
+      "completion_witness": null
+    },
+    "held": {
+      "done": {
+        "run_id": "s293-held-20261102-r01",
+        "sequence": 5514,
+        "time_ms": 27354,
+        "display": 495,
+        "tick": 60,
+        "kind": "done",
+        "payload": ""
+      },
+      "suffix": [
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5515,
+          "time_ms": 27368,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,40,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5516,
+          "time_ms": 27368,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,97,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5517,
+          "time_ms": 27368,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,97,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5518,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,38,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5519,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,40,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5520,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,38,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5521,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,40,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5522,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,100,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5523,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,40,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5524,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,38,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5525,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,101,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5526,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,102,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5527,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,37,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5528,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,39,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5529,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,99,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5530,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,98,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5531,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5532,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5533,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5534,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5535,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5536,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5537,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5538,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5539,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5540,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5541,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,73,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5542,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,79,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5543,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5544,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5545,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5546,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5547,
+          "time_ms": 27372,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,99,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5548,
+          "time_ms": 27372,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5549,
+          "time_ms": 27372,
+          "display": 495,
+          "tick": 60,
+          "kind": "capture_window_closed",
+          "payload": "before-next-root-increment"
+        }
+      ],
+      "events": 5549,
+      "suffix_kind_counts": {
+        "capture_window_closed": 1,
+        "key_read": 34
+      },
+      "suffix_clock_pairs": [
+        [
+          495,
+          60
+        ]
+      ],
+      "completion_witness": null
+    }
+  },
+  "qualification_requirements": {
+    "loaded_body": {
+      "requirement": "Resolve executing body bytes to the archived callback, not merely a source/SWF hash.",
+      "qualified_witness": null
+    },
+    "owner_generation": {
+      "requirement": "Bind root owner lifetime, defining scope and closure generation across property replacement.",
+      "qualified_witness": null
+    },
+    "activation_entry": {
+      "requirement": "Observe entry with an invocation identity independent of shared tick/display and aiEvent.",
+      "qualified_witness": null
+    },
+    "dispatcher_return": {
+      "requirement": "Match that same invocation at the dispatcher continuation; distinguish return, unwind and termination.",
+      "qualified_witness": null
+    },
+    "observer_preservation": {
+      "requirement": "Qualify observer-off/on effects and retained observation after aiEvent replacement.",
+      "qualified_witness": null
+    }
+  },
+  "observer_qualified": false,
+  "callback_completion_proved": false,
+  "terminal_inventory_executed": false,
+  "terminal_completeness_proved": false,
+  "first_unmet_prerequisite": "Independent loaded-body/owner-generation/activation resolver with matched dispatcher return.",
+  "blocker": "The retained channel is disabled by the callback itself; neither source identity nor host custody supplies an independent activation entry-to-dispatcher-return witness.",
+  "facility_search_scope": "Locked s304 source/diagnosis and its s293 held archive/normal-held logs only; not a claim that no external facility can exist.",
+  "next_discriminator": "Qualify the five independent witness obligations for this callback before any capture. Keep done and closing invocations distinct; normal return, unwind and process termination need separate outcomes. Full terminal dispatch inventory remains deferred.",
+  "gates": {
+    "observer-qualification": {
+      "proved": false,
+      "code": "S314_OBSERVER_QUALIFICATION_UNPROVED"
+    },
+    "callback-completion": {
+      "proved": false,
+      "code": "S314_CALLBACK_COMPLETION_UNPROVED"
+    },
+    "terminal-completeness": {
+      "proved": false,
+      "code": "S314_TERMINAL_COMPLETENESS_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_process_attaches": 0,
+  "new_captures": 0,
+  "new_memory_reads": 0,
+  "other_ranks_executed": false,
+  "fixed_read_threshold": null,
+  "full_as_proven": false
+}
