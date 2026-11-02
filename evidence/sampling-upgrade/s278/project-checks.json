@@ -1,0 +1,42 @@
+{
+  "integrity": {
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.396035,
+    "log": "integrity.txt",
+    "sha256": "0162836fe25f40a47f7aae51e44567a66ad4ca4b9a8257823059e80fe16503e8"
+  },
+  "handoff": {
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.064479,
+    "log": "handoff.txt",
+    "sha256": "e7ec4c60708a985f907a98a89e2e624a7df58259d79201209c281c6ff789027e"
+  },
+  "contracts-missing-dependency": {
+    "command": [
+      "/tmp/bvn-s27-venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.021898,
+    "log": "contracts-missing-dependency.txt",
+    "sha256": "0bbe84cd43dabc9ff254790dd0b72c44ecd526b2f8c106d00e05f69788cad6ca"
+  },
+  "contracts": {
+    "command": [
+      "/tmp/bvn-s276-venv/bin/python",
+      "tools/validate_contracts.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.150925,
+    "log": "contracts.txt",
+    "sha256": "291243d6453693fde4d915dae622ba89b3746a23cce273af0e112e227f5fff62"
+  }
+}

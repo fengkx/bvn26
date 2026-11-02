@@ -1,0 +1,59 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "checks": {
+    "instruction-breakpoints": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "breakpoint set --shlib \"Flash Player Debugger\" --func-regex \"(ActionCallMethod|ActionPop|ActionSetMember|DoAction|ExecuteAction|AVM1|ActionScript.*(execute|interpret))\"",
+        "-o",
+        "breakpoint list"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.470566,
+      "log": "instruction-breakpoints.txt",
+      "sha256": "30ef55cd924027265af95e6ad109cd3ef8966cdaf7fd423fa7f307686b9d668c"
+    },
+    "action-exec-type": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t \"ActionExec\""
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.135043,
+      "log": "action-exec-type.txt",
+      "sha256": "ef819b7e4525323142fac5b615fc5e10a9fc7c4e4aea306bc6c7352dd62bdb18"
+    },
+    "activation-type": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t \"Activation\""
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.123628,
+      "log": "activation-type.txt",
+      "sha256": "20828ffe247348dcd8eaa41d2370d3e1c9ef43f884ef1af994455ccad8535b4a"
+    }
+  },
+  "launch_requested": false,
+  "movie_supplied": false,
+  "limit": "Native CPU registers are not AVM1 PC/operand stack/registers or defining activation. No movie execution is requested."
+}

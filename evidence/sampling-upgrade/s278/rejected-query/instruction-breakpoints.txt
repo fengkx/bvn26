@@ -1,0 +1,5 @@
+(lldb) settings set target.preload-symbols false
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) breakpoint set --shlib "Flash Player Debugger" --func-regex "(?i)(ActionCallMethod|ActionPop|ActionSetMember|DoAction|ExecuteAction|AVM1|ActionScript.*(execute|interpret))"
+error: Function name regular expression could not be compiled: repetition-operator operand invalid
