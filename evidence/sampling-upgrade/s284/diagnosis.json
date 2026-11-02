@@ -1,0 +1,599 @@
+{
+  "scope": "AFTER-s281 rank 3 only",
+  "base": "d58aee18fb5c94de66e556851c6f15f21f329f63",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "trace_trimmed": false,
+  "product_obligations_closed": 0,
+  "runs": {
+    "normal": {
+      "qualification": {
+        "source_preserving_build_qualified": true,
+        "mode": "normal",
+        "ordinary_diff_equal_after_run_id_and_build_path_substitution": true,
+        "fighter_helper_binaries_unchanged": true,
+        "inventory_unchanged": true,
+        "guard_before_clock_input_and_sample": true,
+        "scope": "source/inventory/binary qualification; no native parity or callback completeness claim",
+        "production_admitted": false,
+        "native_parity_proven": false
+      },
+      "event_count": 5752,
+      "strict_native_capture_exit": 0,
+      "doaction_entry_capture_exit": 0,
+      "samples": 61,
+      "entries": 432,
+      "unvisited": 547,
+      "uninstrumented": 656,
+      "full_as_gate": {
+        "exit_code": 1,
+        "error": "incomplete AS coverage: 547 unvisited blocks, 656 uninstrumented scripts; statement/call ownership unproven"
+      },
+      "done": [
+        "AIREF",
+        "s284-normal-20261102-r01",
+        "5752",
+        "29376",
+        "517",
+        "60",
+        "done",
+        ""
+      ],
+      "terminal_suffix": [],
+      "terminal_kind_counts": {},
+      "host_log_equality": {
+        "equal": null,
+        "limitation": "Prior run absent from account-wide log after next player launch; independent equality not established",
+        "events": 5752,
+        "sha256": "ab0cbfba9eac9b0690b2f3fc56d777693e52fbde42d5f1835a5a123634f440fa",
+        "host_log": "/Users/fengkx/Library/Preferences/Macromedia/Flash Player/Logs/flashlog.txt",
+        "trace_trimmed": false
+      },
+      "comparison_to_s228_ticks_0_60": {
+        "state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_clip_state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_lifecycle": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "input_next_display": {
+          "historical_count": 61,
+          "fresh_count": 61,
+          "tick_payload_equal": true
+        },
+        "key_read": {
+          "historical_count": 1639,
+          "fresh_count": 1605,
+          "tick_payload_equal": false
+        },
+        "random": {
+          "historical_count": 1,
+          "fresh_count": 1,
+          "tick_payload_equal": false
+        }
+      },
+      "key_reads_before_terminal_equal": true,
+      "random_rows": [
+        [
+          "AIREF",
+          "s284-normal-20261102-r01",
+          "29",
+          "12288",
+          "3",
+          "-1",
+          "random",
+          "1,main#DefineSprite_1900/frame_1/DoAction.as:1,f:1:-6:109197710:0"
+        ],
+        [
+          "AIREF",
+          "s284-normal-20261102-r01",
+          "4067",
+          "27903",
+          "472",
+          "15",
+          "random",
+          "2,fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1,f:1:-1:93580353:29360128"
+        ]
+      ],
+      "random_callsite_order_equal": true,
+      "root_observer": "\nonEnterFrame = function()\n{\n   if(_root.aiS284DoActionComplete)\n   {\n      aiEvent(\"capture_window_closed\", \"before-next-root-increment\");\n      _root.onEnterFrame = function() {};\n      _root.aiEvent = function() {};\n      return;\n   }\n   aiDisplay++;\n   if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)\n   {\n      aiFight = 0;\n      aiEvent(\"ready\", \"\");\n   }\n   else if(aiFight >= 0)\n   {\n      aiFight++;\n   }\n   if(aiFight == 0)\n   {\n      clearInterval(_root.airanset);\n      _root.game.p1.mc.gotoAndPlay(\"站立\");\n      _root.game.p1._x = 100.0;\n      _root.game.p1.mc.ql = 300.0;\n      _root.game.p2.mc.gotoAndPlay(\"站立\");\n      _root.game.p2._x = 150.0;\n      _root.game.p2.mc.ql = 300.0;\n   }\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 13) { aiHeld[j] = true; }\n   // These inputs become visible to the next display callback, as logged.\n   aiEvent(\"input_next_display\", \"w=\" + aiHeld[w] + \",\" + \"a=\" + aiHeld[a] + \",\" + \"l=\" + aiHeld[l] + \",\" + \"上箭=\" + aiHeld[上箭] + \",\" + \"下箭=\" + aiHeld[下箭] + \",\" + \"左箭=\" + aiHeld[左箭] + \",\" + \"右箭=\" + aiHeld[右箭] + \",\" + \"N1=\" + aiHeld[N1] + \",\" + \"N2=\" + aiHeld[N2] + \",\" + \"N3=\" + aiHeld[N3] + \",\" + \"N4=\" + aiHeld[N4] + \",\" + \"N5=\" + aiHeld[N5] + \",\" + \"N6=\" + aiHeld[N6] + \",\" + \"right=\" + aiHeld[d] + \",attack=\" + aiHeld[j] + \",down=\" + aiHeld[s] + \",ranged=\" + aiHeld[u] + \",jump=\" + aiHeld[k] + \",special=\" + aiHeld[i] + \",summon=\" + aiHeld[o]);\n   if(p2loaded == true)\n   {\n      if(!_root.aiGeometryLogged && _root.game.p2.useAI == true && _root.game.p2.mc.AImain._currentframe == 2)\n      {\n         _root.aiGeometryLogged = true;\n         aiGeometry();\n      }\n      aiState(\"p1\");\n      aiHelperState(\"p1\");\n      aiState(\"p2\");\n      aiHelperState(\"p2\");\n   }\n   if(aiFight >= 0) aiEvent(\"doaction_sample\", \"root-observer\");\n   if(aiFight >= 60)\n   {\n      aiEvent(\"done\", \"\");\n      _root.aiS284DoActionComplete = true;\n      fscommand(\"quit\");\n   }\n   if(aiDisplay > 60 + 900)\n   {\n      aiEvent(\"timeout\", \"ready=\" + _menuEnabled + \",loaded=\" + p2loaded);\n      fscommand(\"quit\");\n   }\n};\n"
+    },
+    "held": {
+      "qualification": {
+        "source_preserving_build_qualified": true,
+        "mode": "held",
+        "ordinary_diff_equal_after_run_id_and_build_path_substitution": true,
+        "fighter_helper_binaries_unchanged": true,
+        "inventory_unchanged": true,
+        "guard_before_clock_input_and_sample": true,
+        "scope": "source/inventory/binary qualification; no native parity or callback completeness claim",
+        "production_admitted": false,
+        "native_parity_proven": false
+      },
+      "event_count": 5733,
+      "strict_native_capture_exit": 0,
+      "doaction_entry_capture_exit": 0,
+      "samples": 61,
+      "entries": 429,
+      "unvisited": 547,
+      "uninstrumented": 656,
+      "full_as_gate": {
+        "exit_code": 1,
+        "error": "incomplete AS coverage: 547 unvisited blocks, 656 uninstrumented scripts; statement/call ownership unproven"
+      },
+      "done": [
+        "AIREF",
+        "s284-held-20261102-r01",
+        "5698",
+        "27845",
+        "511",
+        "60",
+        "done",
+        ""
+      ],
+      "terminal_suffix": [
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5699",
+          "27874",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,40,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5700",
+          "27874",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,97,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5701",
+          "27874",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,97,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5702",
+          "27874",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,38,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5703",
+          "27874",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,40,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5704",
+          "27874",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,38,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5705",
+          "27875",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,40,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5706",
+          "27875",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,100,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5707",
+          "27875",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,40,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5708",
+          "27875",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,38,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5709",
+          "27875",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,101,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5710",
+          "27875",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,102,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5711",
+          "27875",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,37,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5712",
+          "27875",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,39,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5713",
+          "27876",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,99,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5714",
+          "27876",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,98,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5715",
+          "27876",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,83,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5716",
+          "27876",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,74,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5717",
+          "27877",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,74,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5718",
+          "27877",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,87,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5719",
+          "27877",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,83,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5720",
+          "27877",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,87,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5721",
+          "27877",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,83,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5722",
+          "27877",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,85,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5723",
+          "27877",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,83,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5724",
+          "27877",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,87,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5725",
+          "27878",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,73,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5726",
+          "27878",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,79,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5727",
+          "27878",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,65,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5728",
+          "27878",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,68,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5729",
+          "27878",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,76,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5730",
+          "27878",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,75,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5731",
+          "27879",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p2.mc,99,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5732",
+          "27879",
+          "511",
+          "60",
+          "key_read",
+          "_level0.game.p1.mc,76,false"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "5733",
+          "27879",
+          "511",
+          "60",
+          "capture_window_closed",
+          "before-next-root-increment"
+        ]
+      ],
+      "terminal_kind_counts": {
+        "key_read": 34,
+        "capture_window_closed": 1
+      },
+      "host_log_equality": {
+        "equal": true,
+        "limitation": null,
+        "events": 5733,
+        "sha256": "b64967c7315fe357df5f43169f5e201a5f2b4c9e510263f663b5684f6e60e044",
+        "host_log": "/Users/fengkx/Library/Preferences/Macromedia/Flash Player/Logs/flashlog.txt",
+        "trace_trimmed": false
+      },
+      "comparison_to_s228_ticks_0_60": {
+        "state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_clip_state": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "helper_lifecycle": {
+          "historical_count": 122,
+          "fresh_count": 122,
+          "tick_payload_equal": true
+        },
+        "input_next_display": {
+          "historical_count": 61,
+          "fresh_count": 61,
+          "tick_payload_equal": true
+        },
+        "key_read": {
+          "historical_count": 1639,
+          "fresh_count": 1639,
+          "tick_payload_equal": true
+        },
+        "random": {
+          "historical_count": 1,
+          "fresh_count": 1,
+          "tick_payload_equal": false
+        }
+      },
+      "key_reads_before_terminal_equal": true,
+      "random_rows": [
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "29",
+          "10947",
+          "3",
+          "-1",
+          "random",
+          "1,main#DefineSprite_1900/frame_1/DoAction.as:1,f:1:-1:116938284:62914560"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "30",
+          "10947",
+          "3",
+          "-1",
+          "random",
+          "2,main#DefineSprite_1900/frame_1/DoAction.as:2,f:1:-1:74623168:41943040"
+        ],
+        [
+          "AIREF",
+          "s284-held-20261102-r01",
+          "4013",
+          "26378",
+          "466",
+          "15",
+          "random",
+          "3,fighter/yihu#DefineSprite_638/frame_1/DoAction.as:1,f:1:-4:131878797:0"
+        ]
+      ],
+      "random_callsite_order_equal": false,
+      "root_observer": "\nonEnterFrame = function()\n{\n   if(_root.aiS284DoActionComplete)\n   {\n      aiEvent(\"capture_window_closed\", \"before-next-root-increment\");\n      _root.onEnterFrame = function() {};\n      _root.aiEvent = function() {};\n      fscommand(\"quit\");\n      return;\n   }\n   aiDisplay++;\n   if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)\n   {\n      aiFight = 0;\n      aiEvent(\"ready\", \"\");\n   }\n   else if(aiFight >= 0)\n   {\n      aiFight++;\n   }\n   if(aiFight == 0)\n   {\n      clearInterval(_root.airanset);\n      _root.game.p1.mc.gotoAndPlay(\"站立\");\n      _root.game.p1._x = 100.0;\n      _root.game.p1.mc.ql = 300.0;\n      _root.game.p2.mc.gotoAndPlay(\"站立\");\n      _root.game.p2._x = 150.0;\n      _root.game.p2.mc.ql = 300.0;\n   }\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 13) { aiHeld[j] = true; }\n   // These inputs become visible to the next display callback, as logged.\n   aiEvent(\"input_next_display\", \"w=\" + aiHeld[w] + \",\" + \"a=\" + aiHeld[a] + \",\" + \"l=\" + aiHeld[l] + \",\" + \"上箭=\" + aiHeld[上箭] + \",\" + \"下箭=\" + aiHeld[下箭] + \",\" + \"左箭=\" + aiHeld[左箭] + \",\" + \"右箭=\" + aiHeld[右箭] + \",\" + \"N1=\" + aiHeld[N1] + \",\" + \"N2=\" + aiHeld[N2] + \",\" + \"N3=\" + aiHeld[N3] + \",\" + \"N4=\" + aiHeld[N4] + \",\" + \"N5=\" + aiHeld[N5] + \",\" + \"N6=\" + aiHeld[N6] + \",\" + \"right=\" + aiHeld[d] + \",attack=\" + aiHeld[j] + \",down=\" + aiHeld[s] + \",ranged=\" + aiHeld[u] + \",jump=\" + aiHeld[k] + \",special=\" + aiHeld[i] + \",summon=\" + aiHeld[o]);\n   if(p2loaded == true)\n   {\n      if(!_root.aiGeometryLogged && _root.game.p2.useAI == true && _root.game.p2.mc.AImain._currentframe == 2)\n      {\n         _root.aiGeometryLogged = true;\n         aiGeometry();\n      }\n      aiState(\"p1\");\n      aiHelperState(\"p1\");\n      aiState(\"p2\");\n      aiHelperState(\"p2\");\n   }\n   if(aiFight >= 0) aiEvent(\"doaction_sample\", \"root-observer\");\n   if(aiFight >= 60)\n   {\n      aiEvent(\"done\", \"\");\n      _root.aiS284DoActionComplete = true;\n   }\n   if(aiDisplay > 60 + 900)\n   {\n      aiEvent(\"timeout\", \"ready=\" + _menuEnabled + \",loaded=\" + p2loaded);\n      fscommand(\"quit\");\n   }\n};\n"
+    }
+  },
+  "historical_rejection": "native evidence: events beyond completion boundary",
+  "held_closure_observed": true,
+  "normal_quit_truncation": {
+    "normal_terminal_kinds": {},
+    "held_terminal_kinds": {
+      "key_read": 34,
+      "capture_window_closed": 1
+    },
+    "interpretation": "Normal quit can truncate the terminal period; absence is not callback completeness. Counts are run-specific."
+  },
+  "bounded_window_observed": true,
+  "independent_pair_proved": false,
+  "terminal_callback_completeness_proved": false
+}

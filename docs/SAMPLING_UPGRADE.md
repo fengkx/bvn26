@@ -1466,3 +1466,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s283，AFTER-s281 排名第2项）：仅资格审计 P2 基础 Sprite638 ticks10–12 身体推挤调用。原版完整字节码证明两处短路和目标先于接收者求值；候选编译改变函数寄存器数12→13、预加载标志与分配，完整控制流已保留但对应关系及观察器消去未证明。复算5437历史事件，调用执行仍未知；资格/调用证明要求exit1，零原生启动/捕获，无运行时修复。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s282、共享验证器不变。
 
 [完整指令与控制流诊断](../evidence/sampling-upgrade/s283/README.md)。
+
+## s284：独立 s228 DoAction 完成窗口（证据，完整实验未证明）
+
+2026-11-02（采样 s284，AFTER-s281 排名第3项）：仅执行经源保留资格核对的独立 s228 DoAction normal/held 对。5752/5733条完整保存事件均通过严格捕获与入口检查，均61样本；held在tick60保留34条按键回调后闭窗，normal无尾段，退出截断单列。角色/援助/输入与历史一致，随机值差异保留。normal主机日志在held启动时清空，独立一致性检查未保存，完整实验仍未证明；完成要求及两次full-AS门槛exit1（547未访问块、656未插桩脚本）。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s284与跟踪文件变更，无默认推广、运行时修改或收据修补。
+
+[独立捕获、退出截断与缺失证明](../evidence/sampling-upgrade/s284/README.md)。

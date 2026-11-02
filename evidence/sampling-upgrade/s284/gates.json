@@ -1,0 +1,137 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s284/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s284/diagnosis.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.7327746669761837,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "completion-required",
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s284/diagnose.py",
+      "--output",
+      "/private/tmp/s284-required.json",
+      "--require-completion-proof"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.6868302496150136,
+    "log": "completion-required.txt"
+  },
+  {
+    "name": "historical-rejection",
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s284/diagnose.py",
+      "--output",
+      "/private/tmp/s284-historical.json",
+      "--strict-historical"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.7339792503044009,
+    "log": "historical-rejection.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s284",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.013834625016898,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_additional_nondisplay_completion",
+      "tools.tests.test_non_display_completion_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_import_guards"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.6993931666947901,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "normal-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json'),Path('/private/tmp/bvn-s284-normal-capture/receipt.json')))"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.08546737488359213,
+    "log": "normal-receipt.txt"
+  },
+  {
+    "name": "normal-full-as",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json",
+      "--receipt",
+      "/private/tmp/bvn-s284-normal-capture/receipt.json",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s284/normal/doaction-coverage.json"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.10010679112747312,
+    "log": "normal-full-as.txt"
+  },
+  {
+    "name": "held-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json'),Path('/private/tmp/bvn-s284-held-capture/receipt.json')))"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.08386154193431139,
+    "log": "held-receipt.txt"
+  },
+  {
+    "name": "held-full-as",
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json",
+      "--receipt",
+      "/private/tmp/bvn-s284-held-capture/receipt.json",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s284/held/doaction-coverage.json"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.10615204134956002,
+    "log": "held-full-as.txt"
+  }
+]
