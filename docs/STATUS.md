@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s292，AFTER-s290 排名第2项）：锁定复算 s282 的26828事件、63次选择与4个入口连接；新增原版/归档 Sprite1810 全标签字节核对，非动作时间轴相同、帧1保留 Stop/End，帧2–10均无入口脚本。现有保留对照在同回调先跳2再跳1，不能证明独立重复/改变目标入口；全十帧替换及 observer-off/on 顺序对照仍缺。资格和时钟要求以 S292_ENTRY_OBSERVER_UNPROVED exit1，新捕获被前置资格阻塞；零构建/启动/捕获/图片，无运行时变更。production_admitted=false、native_parity_proven=false，M0-02 pending；仅本切片与跟踪文件变更，排名1及3–9未执行，s254–s291不变。[证据](../evidence/sampling-upgrade/s292/README.md)。
+
 - 2026-11-02（采样 s291，post-s290 重排）：审阅 AFTER-s281 九项交付，仅执行新排名第1项 P2 Sprite638 body-push 静态资格核查。完整原/候选485/543节点经显式有条件剔除和寄存器对应后，483节点及全部控制流边一致；函数头、activation绑定、观察器副作用与剔除语义仍未证明。两项证明要求exit1，零新构建/启动/捕获，无运行时变更。production_admitted=false、native_parity_proven=false，M0-02 pending；排名2+仅规划，旧交付及s254–s290不变。[排序](../evidence/sampling-upgrade/next-fix-priority-after-s290.md) · [证据](../evidence/sampling-upgrade/s291/README.md)。
 
 - 2026-11-02（采样 s290，AFTER-s281 排名第9项）：复算锁定 s281 的 s262/s274 证据，逐行绑定61个状态边界；每行至少一位数字不匹配且存在其他场景状态差异。完整同次状态准入和配对Godot图片仍缺，边缘/内部RGBA保持未测量，两项证明要求以 S290_STRICT_RASTER_UNPROVED exit1。零新构建/启动/捕获/图片，无运行时实现。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s290及跟踪文件变更，排名1–8和s254–s289不变。[证据](../evidence/sampling-upgrade/s290/README.md)。

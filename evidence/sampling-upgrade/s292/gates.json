@@ -1,0 +1,93 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s292/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s292/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.464062,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s292/diagnose.py",
+      "--output",
+      "/tmp/s292-observer.json",
+      "--require-observer"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.41884,
+    "log": "observer.txt"
+  },
+  {
+    "name": "child-clock",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s292/diagnose.py",
+      "--output",
+      "/tmp/s292-child-clock.json",
+      "--require-child-clock"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.469977,
+    "log": "child-clock.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s292",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.755453,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s282-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s282",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.816855,
+    "log": "retained-s282-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_encoded_digit_lifetime",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_sampling_native"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 10.863889,
+    "log": "retained-tests.txt"
+  }
+]
