@@ -1,0 +1,110 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s290/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s290/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 4.162471,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "state-admission",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s290/diagnose.py",
+      "--output",
+      "/tmp/s290-state-admission.json",
+      "--require-state-admission"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 4.325226,
+    "log": "state-admission.txt"
+  },
+  {
+    "name": "thin-raster",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s290/diagnose.py",
+      "--output",
+      "/tmp/s290-thin-raster.json",
+      "--require-thin-raster"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 4.008695,
+    "log": "thin-raster.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s290",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 12.710025,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s281-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s281",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 4.162054,
+    "log": "retained-s281-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_strict_raster_admission",
+      "tools.tests.test_encoded_digit_lifetime",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 27.021764,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "historical-strict-rgba",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s253/diagnose.py",
+      "--output",
+      "/tmp/s290-historical-rgba.json",
+      "--strict-rgba"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 11.937698,
+    "log": "historical-strict-rgba.txt"
+  }
+]

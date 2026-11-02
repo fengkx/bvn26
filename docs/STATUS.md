@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s290，AFTER-s281 排名第9项）：复算锁定 s281 的 s262/s274 证据，逐行绑定61个状态边界；每行至少一位数字不匹配且存在其他场景状态差异。完整同次状态准入和配对Godot图片仍缺，边缘/内部RGBA保持未测量，两项证明要求以 S290_STRICT_RASTER_UNPROVED exit1。零新构建/启动/捕获/图片，无运行时实现。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s290及跟踪文件变更，排名1–8和s254–s289不变。[证据](../evidence/sampling-upgrade/s290/README.md)。
+
 - 2026-11-02（采样 s289，AFTER-s281 排名第8项）：复算锁定 s279/s267/s261 的8290事件，新增归档 AS2 保存引用/槽位/对照语句绑定与完整 event36–48 边界审计。remove/create 与单属性删除均为 true,false，不能替代真实内容清空及原生代际对照。槽位/保存引用解析、allocation/free/reuse 与对象池覆盖仍缺，两项证明要求以 S289_NATIVE_ALLOCATION_UNPROVED exit1；零新构建/启动/捕获，无运行时实现。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s289及跟踪文件变更，其他排名及s254–s288不变。[证据](../evidence/sampling-upgrade/s289/README.md)。
 - 2026-11-02（采样 s288，AFTER-s281 排名第7项）：复算 s278/s266 的9493事件，新增归档 SWF 字节边界定位：Chad CallMethod/Pop 为28257/28258、register5目标SetMember为28277；保留对照窗口及函数定义单独绑定。静态偏移不是执行PC，加载缓冲区、栈与定义activation仍缺，两项证明要求exit1。零新构建/启动/捕获，无运行时实现；production_admitted=false、native_parity_proven=false，M0-02 pending。仅s288及跟踪文件变更，其他排名和s254–s287、共享验证器不变。[证据](../evidence/sampling-upgrade/s288/README.md)。
 
