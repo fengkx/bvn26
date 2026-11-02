@@ -1,0 +1,72 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s287/diagnose.py",
+      "--output",
+      "/tmp/s287-check.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "seconds": 0.16695724986493587
+  },
+  {
+    "name": "loader-attestation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s287/diagnose.py",
+      "--output",
+      "/tmp/s287-check.json",
+      "--require-loader-attestation"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "seconds": 0.13249929156154394
+  },
+  {
+    "name": "wrong-resource",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s287/diagnose.py",
+      "--output",
+      "/tmp/s287-check.json",
+      "--require-wrong-resource-control"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "seconds": 0.12788758287206292
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s287",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "seconds": 0.40932012535631657
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_loader_read_target_diagnosis",
+      "tools.tests.test_loader_attestation_diagnosis",
+      "tools.tests.test_capture_runtime_fighter",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "seconds": 2.196537125390023
+  }
+]

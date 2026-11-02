@@ -1,0 +1,95 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "checks": [
+    {
+      "name": "read-entry",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -n read -n fread -n CFReadStreamRead -n mmap"
+      ],
+      "exit": 1,
+      "seconds": 0.6269648750312626,
+      "log": "read-entry.txt",
+      "sha256": "9627c29ae922fe299d7ca6f85f857dc45ba81dc0fcb4896ac6537bb0740c96f1"
+    },
+    {
+      "name": "read-stubs",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "disassemble --name read --bytes"
+      ],
+      "exit": 1,
+      "seconds": 0.1534498748369515,
+      "log": "read-stubs.txt",
+      "sha256": "7278de64bafa86c86a5512a3d27e56c4713135475eb94bf0917dadebd89294d8"
+    },
+    {
+      "name": "consumer-resolver",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -r -n \"MovieClipLoader|loadClip|onLoadComplete|URLLoader|URLRequest\" \"Flash Player Debugger\""
+      ],
+      "exit": 1,
+      "seconds": 0.3573831249959767,
+      "log": "consumer-resolver.txt",
+      "sha256": "7f03b9eb2957ab11b873b2d79cba421fb4a02f1498e105096a48477e0f880eef"
+    },
+    {
+      "name": "indirect-symbols",
+      "command": [
+        "otool",
+        "-Iv",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit": 0,
+      "seconds": 0.021886625327169895,
+      "log": "indirect-symbols.txt",
+      "sha256": "0598026a2e38d32ccbe602ce4617b1d0c0ae2382ac23bebcadbcab67eadf6703"
+    },
+    {
+      "name": "read-addresses",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "disassemble --start-address 0x0000000100fb5baa --count 1 --bytes",
+        "-o",
+        "disassemble --start-address 0x0000000100fb65be --count 1 --bytes",
+        "-o",
+        "disassemble --start-address 0x0000000100fb6720 --count 1 --bytes",
+        "-o",
+        "disassemble --start-address 0x0000000100fb6882 --count 1 --bytes"
+      ],
+      "exit": 0,
+      "seconds": 0.16080504190176725,
+      "log": "read-addresses.txt",
+      "sha256": "73b3a1fb63e0f609f118dd248f6f3ddec0148e1d28515fbb7e3a08cab73686a1"
+    }
+  ],
+  "player_launches": 0,
+  "process_attaches": 0,
+  "live_read_events": null
+}
