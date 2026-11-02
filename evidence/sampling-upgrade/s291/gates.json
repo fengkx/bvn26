@@ -1,0 +1,110 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s291/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s291/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.822511,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s291/diagnose.py",
+      "--output",
+      "/tmp/s291-observer.json",
+      "--require-observer"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.796857,
+    "log": "observer.txt"
+  },
+  {
+    "name": "external-callsite",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s291/diagnose.py",
+      "--output",
+      "/tmp/s291-external-callsite.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.835229,
+    "log": "external-callsite.txt"
+  },
+  {
+    "name": "retained-callsite",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s273/diagnose.py",
+      "--output",
+      "/tmp/s291-retained.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.790198,
+    "log": "retained-callsite.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s291",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.830689,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s283-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s283",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.898793,
+    "log": "retained-s283-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_external_collision_callsite",
+      "tools.tests.test_receiver_authored_query",
+      "tools.tests.test_receiver_init_order",
+      "tools.tests.test_p1_receiver_availability",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 3.501057,
+    "log": "retained-tests.txt"
+  }
+]

@@ -1,0 +1,4412 @@
+{
+  "base": "975defcd0a9e6c80a3b938bc27ee14964e4459b8",
+  "scope": "AFTER-s290 rank 1 only; P2 Sprite638 ticks10-12 static qualification",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "observer_qualified": false,
+  "activation_correspondence_proved": false,
+  "external_callsite_execution_proved": false,
+  "product_obligations_closed": 0,
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_captures": 0,
+  "historical_events_revalidated": 5437,
+  "historical_execution_observed": null,
+  "audit": {
+    "conditional_body_graph_equal": true,
+    "original_header": "DefineFunction2 \"on_enterframe\", 0, 12, true, true, true, false, true, false, true, false, false {",
+    "candidate_header": "DefineFunction2 \"on_enterframe\", 0, 13, true, true, true, false, true, false, false, true, false {",
+    "headers_equal": false,
+    "candidate_to_original_register_map": {
+      "0": 0,
+      "2": 1,
+      "3": 2,
+      "4": 6,
+      "5": 4,
+      "6": 3,
+      "7": 8,
+      "8": 5,
+      "9": 11,
+      "10": 10,
+      "11": 7,
+      "12": 9
+    },
+    "candidate_erasure": [
+      {
+        "reason": "observer owner pushes; activation meaning remains unproved",
+        "indices": [
+          61,
+          97,
+          242,
+          256,
+          278,
+          292,
+          293,
+          312
+        ],
+        "instructions": [
+          "Push register1",
+          "Push register1",
+          "Push register1",
+          "Push register1",
+          "Push register1",
+          "Push register1",
+          "Push register1",
+          "Push register1"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: dashing",
+        "indices": [
+          64,
+          65,
+          66,
+          67,
+          68
+        ],
+        "instructions": [
+          "Push \"dashing\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: paused",
+        "indices": [
+          101,
+          102,
+          103,
+          104,
+          105
+        ],
+        "instructions": [
+          "Push \"paused\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: own_air",
+        "indices": [
+          247,
+          248,
+          249,
+          250,
+          251
+        ],
+        "instructions": [
+          "Push \"own_air\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: other_air",
+        "indices": [
+          271,
+          272,
+          273,
+          274,
+          275
+        ],
+        "instructions": [
+          "Push \"other_air\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: displacement",
+        "indices": [
+          283,
+          284,
+          285,
+          286,
+          287
+        ],
+        "instructions": [
+          "Push \"displacement\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: target",
+        "indices": [
+          306,
+          307,
+          308,
+          309,
+          310
+        ],
+        "instructions": [
+          "Push \"target\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: receiver",
+        "indices": [
+          315,
+          316,
+          317,
+          318,
+          319
+        ],
+        "instructions": [
+          "Push \"receiver\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "hypothetical pass-through: result",
+        "indices": [
+          322,
+          323,
+          324,
+          325,
+          326
+        ],
+        "instructions": [
+          "Push \"result\"",
+          "Push 3",
+          "Push register2",
+          "Push \"s283Value\"",
+          "CallMethod"
+        ]
+      },
+      {
+        "reason": "candidate local initialization register7; conditional deletion",
+        "indices": [
+          233,
+          234,
+          235
+        ],
+        "instructions": [
+          "Push undefined",
+          "StoreRegister 7",
+          "Pop"
+        ]
+      },
+      {
+        "reason": "candidate local initialization register8; conditional deletion",
+        "indices": [
+          236,
+          237,
+          238
+        ],
+        "instructions": [
+          "Push undefined",
+          "StoreRegister 8",
+          "Pop"
+        ]
+      },
+      {
+        "reason": "candidate local initialization register9; conditional deletion",
+        "indices": [
+          239,
+          240,
+          241
+        ],
+        "instructions": [
+          "Push undefined",
+          "StoreRegister 9",
+          "Pop"
+        ]
+      },
+      {
+        "reason": "candidate local initialization register12; conditional deletion",
+        "indices": [
+          431,
+          432,
+          433
+        ],
+        "instructions": [
+          "Push undefined",
+          "StoreRegister 12",
+          "Pop"
+        ]
+      }
+    ],
+    "original_erasure": [
+      {
+        "index": 152,
+        "instruction": "Not"
+      },
+      {
+        "index": 153,
+        "instruction": "Not"
+      }
+    ],
+    "original_node_count": 485,
+    "candidate_node_count": 543,
+    "residual_node_count": 483,
+    "node_correspondence": [
+      {
+        "original_index": 0,
+        "candidate_index": 0,
+        "instruction": "Push 0",
+        "successors": [
+          1
+        ]
+      },
+      {
+        "original_index": 1,
+        "candidate_index": 1,
+        "instruction": "Push \"initWudi\"",
+        "successors": [
+          2
+        ]
+      },
+      {
+        "original_index": 2,
+        "candidate_index": 2,
+        "instruction": "CallFunction",
+        "successors": [
+          3
+        ]
+      },
+      {
+        "original_index": 3,
+        "candidate_index": 3,
+        "instruction": "Pop",
+        "successors": [
+          4
+        ]
+      },
+      {
+        "original_index": 4,
+        "candidate_index": 4,
+        "instruction": "Push \"ql\"",
+        "successors": [
+          5
+        ]
+      },
+      {
+        "original_index": 5,
+        "candidate_index": 5,
+        "instruction": "GetVariable",
+        "successors": [
+          6
+        ]
+      },
+      {
+        "original_index": 6,
+        "candidate_index": 6,
+        "instruction": "Push 0",
+        "successors": [
+          7
+        ]
+      },
+      {
+        "original_index": 7,
+        "candidate_index": 7,
+        "instruction": "Less2",
+        "successors": [
+          8
+        ]
+      },
+      {
+        "original_index": 8,
+        "candidate_index": 8,
+        "instruction": "Not",
+        "successors": [
+          9
+        ]
+      },
+      {
+        "original_index": 9,
+        "candidate_index": 9,
+        "instruction": "If 13",
+        "successors": [
+          13,
+          10
+        ]
+      },
+      {
+        "original_index": 10,
+        "candidate_index": 10,
+        "instruction": "Push \"ql\"",
+        "successors": [
+          11
+        ]
+      },
+      {
+        "original_index": 11,
+        "candidate_index": 11,
+        "instruction": "Push 0",
+        "successors": [
+          12
+        ]
+      },
+      {
+        "original_index": 12,
+        "candidate_index": 12,
+        "instruction": "SetVariable",
+        "successors": [
+          13
+        ]
+      },
+      {
+        "original_index": 13,
+        "candidate_index": 13,
+        "instruction": "Push \"ql\"",
+        "successors": [
+          14
+        ]
+      },
+      {
+        "original_index": 14,
+        "candidate_index": 14,
+        "instruction": "GetVariable",
+        "successors": [
+          15
+        ]
+      },
+      {
+        "original_index": 15,
+        "candidate_index": 15,
+        "instruction": "Push 300",
+        "successors": [
+          16
+        ]
+      },
+      {
+        "original_index": 16,
+        "candidate_index": 16,
+        "instruction": "Greater",
+        "successors": [
+          17
+        ]
+      },
+      {
+        "original_index": 17,
+        "candidate_index": 17,
+        "instruction": "Not",
+        "successors": [
+          18
+        ]
+      },
+      {
+        "original_index": 18,
+        "candidate_index": 18,
+        "instruction": "If 22",
+        "successors": [
+          22,
+          19
+        ]
+      },
+      {
+        "original_index": 19,
+        "candidate_index": 19,
+        "instruction": "Push \"ql\"",
+        "successors": [
+          20
+        ]
+      },
+      {
+        "original_index": 20,
+        "candidate_index": 20,
+        "instruction": "Push 300",
+        "successors": [
+          21
+        ]
+      },
+      {
+        "original_index": 21,
+        "candidate_index": 21,
+        "instruction": "SetVariable",
+        "successors": [
+          22
+        ]
+      },
+      {
+        "original_index": 22,
+        "candidate_index": 22,
+        "instruction": "Push \"hp\"",
+        "successors": [
+          23
+        ]
+      },
+      {
+        "original_index": 23,
+        "candidate_index": 23,
+        "instruction": "GetVariable",
+        "successors": [
+          24
+        ]
+      },
+      {
+        "original_index": 24,
+        "candidate_index": 24,
+        "instruction": "Push 0",
+        "successors": [
+          25
+        ]
+      },
+      {
+        "original_index": 25,
+        "candidate_index": 25,
+        "instruction": "Less2",
+        "successors": [
+          26
+        ]
+      },
+      {
+        "original_index": 26,
+        "candidate_index": 26,
+        "instruction": "Not",
+        "successors": [
+          27
+        ]
+      },
+      {
+        "original_index": 27,
+        "candidate_index": 27,
+        "instruction": "If 31",
+        "successors": [
+          31,
+          28
+        ]
+      },
+      {
+        "original_index": 28,
+        "candidate_index": 28,
+        "instruction": "Push \"hp\"",
+        "successors": [
+          29
+        ]
+      },
+      {
+        "original_index": 29,
+        "candidate_index": 29,
+        "instruction": "Push 0",
+        "successors": [
+          30
+        ]
+      },
+      {
+        "original_index": 30,
+        "candidate_index": 30,
+        "instruction": "SetVariable",
+        "successors": [
+          31
+        ]
+      },
+      {
+        "original_index": 31,
+        "candidate_index": 31,
+        "instruction": "Push register2",
+        "successors": [
+          32
+        ]
+      },
+      {
+        "original_index": 32,
+        "candidate_index": 32,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          33
+        ]
+      },
+      {
+        "original_index": 33,
+        "candidate_index": 33,
+        "instruction": "GetMember",
+        "successors": [
+          34
+        ]
+      },
+      {
+        "original_index": 34,
+        "candidate_index": 34,
+        "instruction": "Push 20",
+        "successors": [
+          35
+        ]
+      },
+      {
+        "original_index": 35,
+        "candidate_index": 35,
+        "instruction": "Less2",
+        "successors": [
+          36
+        ]
+      },
+      {
+        "original_index": 36,
+        "candidate_index": 36,
+        "instruction": "Not",
+        "successors": [
+          37
+        ]
+      },
+      {
+        "original_index": 37,
+        "candidate_index": 37,
+        "instruction": "If 42",
+        "successors": [
+          42,
+          38
+        ]
+      },
+      {
+        "original_index": 38,
+        "candidate_index": 38,
+        "instruction": "Push register2",
+        "successors": [
+          39
+        ]
+      },
+      {
+        "original_index": 39,
+        "candidate_index": 39,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          40
+        ]
+      },
+      {
+        "original_index": 40,
+        "candidate_index": 40,
+        "instruction": "Push 20",
+        "successors": [
+          41
+        ]
+      },
+      {
+        "original_index": 41,
+        "candidate_index": 41,
+        "instruction": "SetMember",
+        "successors": [
+          42
+        ]
+      },
+      {
+        "original_index": 42,
+        "candidate_index": 42,
+        "instruction": "Push register2",
+        "successors": [
+          43
+        ]
+      },
+      {
+        "original_index": 43,
+        "candidate_index": 43,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          44
+        ]
+      },
+      {
+        "original_index": 44,
+        "candidate_index": 44,
+        "instruction": "GetMember",
+        "successors": [
+          45
+        ]
+      },
+      {
+        "original_index": 45,
+        "candidate_index": 45,
+        "instruction": "Push register1",
+        "successors": [
+          46
+        ]
+      },
+      {
+        "original_index": 46,
+        "candidate_index": 46,
+        "instruction": "Push \"mapSizeX\"",
+        "successors": [
+          47
+        ]
+      },
+      {
+        "original_index": 47,
+        "candidate_index": 47,
+        "instruction": "GetMember",
+        "successors": [
+          48
+        ]
+      },
+      {
+        "original_index": 48,
+        "candidate_index": 48,
+        "instruction": "Push 30",
+        "successors": [
+          49
+        ]
+      },
+      {
+        "original_index": 49,
+        "candidate_index": 49,
+        "instruction": "Subtract",
+        "successors": [
+          50
+        ]
+      },
+      {
+        "original_index": 50,
+        "candidate_index": 50,
+        "instruction": "Greater",
+        "successors": [
+          51
+        ]
+      },
+      {
+        "original_index": 51,
+        "candidate_index": 51,
+        "instruction": "Not",
+        "successors": [
+          52
+        ]
+      },
+      {
+        "original_index": 52,
+        "candidate_index": 52,
+        "instruction": "If 61",
+        "successors": [
+          61,
+          53
+        ]
+      },
+      {
+        "original_index": 53,
+        "candidate_index": 53,
+        "instruction": "Push register2",
+        "successors": [
+          54
+        ]
+      },
+      {
+        "original_index": 54,
+        "candidate_index": 54,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          55
+        ]
+      },
+      {
+        "original_index": 55,
+        "candidate_index": 55,
+        "instruction": "Push register1",
+        "successors": [
+          56
+        ]
+      },
+      {
+        "original_index": 56,
+        "candidate_index": 56,
+        "instruction": "Push \"mapSizeX\"",
+        "successors": [
+          57
+        ]
+      },
+      {
+        "original_index": 57,
+        "candidate_index": 57,
+        "instruction": "GetMember",
+        "successors": [
+          58
+        ]
+      },
+      {
+        "original_index": 58,
+        "candidate_index": 58,
+        "instruction": "Push 30",
+        "successors": [
+          59
+        ]
+      },
+      {
+        "original_index": 59,
+        "candidate_index": 59,
+        "instruction": "Subtract",
+        "successors": [
+          60
+        ]
+      },
+      {
+        "original_index": 60,
+        "candidate_index": 60,
+        "instruction": "SetMember",
+        "successors": [
+          61
+        ]
+      },
+      {
+        "original_index": 61,
+        "candidate_index": 62,
+        "instruction": "Push \"dashing\"",
+        "successors": [
+          62
+        ]
+      },
+      {
+        "original_index": 62,
+        "candidate_index": 63,
+        "instruction": "GetVariable",
+        "successors": [
+          63
+        ]
+      },
+      {
+        "original_index": 63,
+        "candidate_index": 69,
+        "instruction": "Not",
+        "successors": [
+          64
+        ]
+      },
+      {
+        "original_index": 64,
+        "candidate_index": 70,
+        "instruction": "If 91",
+        "successors": [
+          91,
+          65
+        ]
+      },
+      {
+        "original_index": 65,
+        "candidate_index": 71,
+        "instruction": "Push 0",
+        "successors": [
+          66
+        ]
+      },
+      {
+        "original_index": 66,
+        "candidate_index": 72,
+        "instruction": "Push \"onDashing\"",
+        "successors": [
+          67
+        ]
+      },
+      {
+        "original_index": 67,
+        "candidate_index": 73,
+        "instruction": "CallFunction",
+        "successors": [
+          68
+        ]
+      },
+      {
+        "original_index": 68,
+        "candidate_index": 74,
+        "instruction": "Pop",
+        "successors": [
+          69
+        ]
+      },
+      {
+        "original_index": 69,
+        "candidate_index": 75,
+        "instruction": "Push register2",
+        "successors": [
+          70
+        ]
+      },
+      {
+        "original_index": 70,
+        "candidate_index": 76,
+        "instruction": "Push \"_y\"",
+        "successors": [
+          71
+        ]
+      },
+      {
+        "original_index": 71,
+        "candidate_index": 77,
+        "instruction": "GetMember",
+        "successors": [
+          72
+        ]
+      },
+      {
+        "original_index": 72,
+        "candidate_index": 78,
+        "instruction": "Push register1",
+        "successors": [
+          73
+        ]
+      },
+      {
+        "original_index": 73,
+        "candidate_index": 79,
+        "instruction": "Push \"floorY\"",
+        "successors": [
+          74
+        ]
+      },
+      {
+        "original_index": 74,
+        "candidate_index": 80,
+        "instruction": "GetMember",
+        "successors": [
+          75
+        ]
+      },
+      {
+        "original_index": 75,
+        "candidate_index": 81,
+        "instruction": "Greater",
+        "successors": [
+          76
+        ]
+      },
+      {
+        "original_index": 76,
+        "candidate_index": 82,
+        "instruction": "Not",
+        "successors": [
+          77
+        ]
+      },
+      {
+        "original_index": 77,
+        "candidate_index": 83,
+        "instruction": "If 84",
+        "successors": [
+          84,
+          78
+        ]
+      },
+      {
+        "original_index": 78,
+        "candidate_index": 84,
+        "instruction": "Push register2",
+        "successors": [
+          79
+        ]
+      },
+      {
+        "original_index": 79,
+        "candidate_index": 85,
+        "instruction": "Push \"_y\"",
+        "successors": [
+          80
+        ]
+      },
+      {
+        "original_index": 80,
+        "candidate_index": 86,
+        "instruction": "Push register1",
+        "successors": [
+          81
+        ]
+      },
+      {
+        "original_index": 81,
+        "candidate_index": 87,
+        "instruction": "Push \"floorY\"",
+        "successors": [
+          82
+        ]
+      },
+      {
+        "original_index": 82,
+        "candidate_index": 88,
+        "instruction": "GetMember",
+        "successors": [
+          83
+        ]
+      },
+      {
+        "original_index": 83,
+        "candidate_index": 89,
+        "instruction": "SetMember",
+        "successors": [
+          84
+        ]
+      },
+      {
+        "original_index": 84,
+        "candidate_index": 90,
+        "instruction": "Push \"_lastX\"",
+        "successors": [
+          85
+        ]
+      },
+      {
+        "original_index": 85,
+        "candidate_index": 91,
+        "instruction": "Push register2",
+        "successors": [
+          86
+        ]
+      },
+      {
+        "original_index": 86,
+        "candidate_index": 92,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          87
+        ]
+      },
+      {
+        "original_index": 87,
+        "candidate_index": 93,
+        "instruction": "GetMember",
+        "successors": [
+          88
+        ]
+      },
+      {
+        "original_index": 88,
+        "candidate_index": 94,
+        "instruction": "SetVariable",
+        "successors": [
+          89
+        ]
+      },
+      {
+        "original_index": 89,
+        "candidate_index": 95,
+        "instruction": "Push undefined",
+        "successors": [
+          90
+        ]
+      },
+      {
+        "original_index": 90,
+        "candidate_index": 96,
+        "instruction": "Return",
+        "successors": []
+      },
+      {
+        "original_index": 91,
+        "candidate_index": 98,
+        "instruction": "Push register1",
+        "successors": [
+          92
+        ]
+      },
+      {
+        "original_index": 92,
+        "candidate_index": 99,
+        "instruction": "Push \"zhanting\"",
+        "successors": [
+          93
+        ]
+      },
+      {
+        "original_index": 93,
+        "candidate_index": 100,
+        "instruction": "GetMember",
+        "successors": [
+          94
+        ]
+      },
+      {
+        "original_index": 94,
+        "candidate_index": 106,
+        "instruction": "Not",
+        "successors": [
+          95
+        ]
+      },
+      {
+        "original_index": 95,
+        "candidate_index": 107,
+        "instruction": "If 98",
+        "successors": [
+          98,
+          96
+        ]
+      },
+      {
+        "original_index": 96,
+        "candidate_index": 108,
+        "instruction": "Push undefined",
+        "successors": [
+          97
+        ]
+      },
+      {
+        "original_index": 97,
+        "candidate_index": 109,
+        "instruction": "Return",
+        "successors": []
+      },
+      {
+        "original_index": 98,
+        "candidate_index": 110,
+        "instruction": "Push \"wdFrameX\"",
+        "successors": [
+          99
+        ]
+      },
+      {
+        "original_index": 99,
+        "candidate_index": 111,
+        "instruction": "GetVariable",
+        "successors": [
+          100
+        ]
+      },
+      {
+        "original_index": 100,
+        "candidate_index": 112,
+        "instruction": "Push 0",
+        "successors": [
+          101
+        ]
+      },
+      {
+        "original_index": 101,
+        "candidate_index": 113,
+        "instruction": "Greater",
+        "successors": [
+          102
+        ]
+      },
+      {
+        "original_index": 102,
+        "candidate_index": 114,
+        "instruction": "PushDuplicate",
+        "successors": [
+          103
+        ]
+      },
+      {
+        "original_index": 103,
+        "candidate_index": 115,
+        "instruction": "Not",
+        "successors": [
+          104
+        ]
+      },
+      {
+        "original_index": 104,
+        "candidate_index": 116,
+        "instruction": "If 112",
+        "successors": [
+          112,
+          105
+        ]
+      },
+      {
+        "original_index": 105,
+        "candidate_index": 117,
+        "instruction": "Pop",
+        "successors": [
+          106
+        ]
+      },
+      {
+        "original_index": 106,
+        "candidate_index": 118,
+        "instruction": "Push \"wdFrameX\"",
+        "successors": [
+          107
+        ]
+      },
+      {
+        "original_index": 107,
+        "candidate_index": 119,
+        "instruction": "GetVariable",
+        "successors": [
+          108
+        ]
+      },
+      {
+        "original_index": 108,
+        "candidate_index": 120,
+        "instruction": "Push 1",
+        "successors": [
+          109
+        ]
+      },
+      {
+        "original_index": 109,
+        "candidate_index": 121,
+        "instruction": "Push \"isNaN\"",
+        "successors": [
+          110
+        ]
+      },
+      {
+        "original_index": 110,
+        "candidate_index": 122,
+        "instruction": "CallFunction",
+        "successors": [
+          111
+        ]
+      },
+      {
+        "original_index": 111,
+        "candidate_index": 123,
+        "instruction": "Not",
+        "successors": [
+          112
+        ]
+      },
+      {
+        "original_index": 112,
+        "candidate_index": 124,
+        "instruction": "PushDuplicate",
+        "successors": [
+          113
+        ]
+      },
+      {
+        "original_index": 113,
+        "candidate_index": 125,
+        "instruction": "Not",
+        "successors": [
+          114
+        ]
+      },
+      {
+        "original_index": 114,
+        "candidate_index": 126,
+        "instruction": "If 122",
+        "successors": [
+          122,
+          115
+        ]
+      },
+      {
+        "original_index": 115,
+        "candidate_index": 127,
+        "instruction": "Pop",
+        "successors": [
+          116
+        ]
+      },
+      {
+        "original_index": 116,
+        "candidate_index": 128,
+        "instruction": "Push \"wdFrame\"",
+        "successors": [
+          117
+        ]
+      },
+      {
+        "original_index": 117,
+        "candidate_index": 129,
+        "instruction": "GetVariable",
+        "successors": [
+          118
+        ]
+      },
+      {
+        "original_index": 118,
+        "candidate_index": 130,
+        "instruction": "Push 1",
+        "successors": [
+          119
+        ]
+      },
+      {
+        "original_index": 119,
+        "candidate_index": 131,
+        "instruction": "Push \"isNaN\"",
+        "successors": [
+          120
+        ]
+      },
+      {
+        "original_index": 120,
+        "candidate_index": 132,
+        "instruction": "CallFunction",
+        "successors": [
+          121
+        ]
+      },
+      {
+        "original_index": 121,
+        "candidate_index": 133,
+        "instruction": "Not",
+        "successors": [
+          122
+        ]
+      },
+      {
+        "original_index": 122,
+        "candidate_index": 134,
+        "instruction": "Not",
+        "successors": [
+          123
+        ]
+      },
+      {
+        "original_index": 123,
+        "candidate_index": 135,
+        "instruction": "If 150",
+        "successors": [
+          150,
+          124
+        ]
+      },
+      {
+        "original_index": 124,
+        "candidate_index": 136,
+        "instruction": "Push \"canhit\"",
+        "successors": [
+          125
+        ]
+      },
+      {
+        "original_index": 125,
+        "candidate_index": 137,
+        "instruction": "Push false",
+        "successors": [
+          126
+        ]
+      },
+      {
+        "original_index": 126,
+        "candidate_index": 138,
+        "instruction": "SetVariable",
+        "successors": [
+          127
+        ]
+      },
+      {
+        "original_index": 127,
+        "candidate_index": 139,
+        "instruction": "Push \"wdFrame\"",
+        "successors": [
+          128
+        ]
+      },
+      {
+        "original_index": 128,
+        "candidate_index": 140,
+        "instruction": "Push \"wdFrame\"",
+        "successors": [
+          129
+        ]
+      },
+      {
+        "original_index": 129,
+        "candidate_index": 141,
+        "instruction": "GetVariable",
+        "successors": [
+          130
+        ]
+      },
+      {
+        "original_index": 130,
+        "candidate_index": 142,
+        "instruction": "Increment",
+        "successors": [
+          131
+        ]
+      },
+      {
+        "original_index": 131,
+        "candidate_index": 143,
+        "instruction": "StoreRegister 0",
+        "successors": [
+          132
+        ]
+      },
+      {
+        "original_index": 132,
+        "candidate_index": 144,
+        "instruction": "SetVariable",
+        "successors": [
+          133
+        ]
+      },
+      {
+        "original_index": 133,
+        "candidate_index": 145,
+        "instruction": "Push register0",
+        "successors": [
+          134
+        ]
+      },
+      {
+        "original_index": 134,
+        "candidate_index": 146,
+        "instruction": "Push \"wdFrameX\"",
+        "successors": [
+          135
+        ]
+      },
+      {
+        "original_index": 135,
+        "candidate_index": 147,
+        "instruction": "GetVariable",
+        "successors": [
+          136
+        ]
+      },
+      {
+        "original_index": 136,
+        "candidate_index": 148,
+        "instruction": "Less2",
+        "successors": [
+          137
+        ]
+      },
+      {
+        "original_index": 137,
+        "candidate_index": 149,
+        "instruction": "Not",
+        "successors": [
+          138
+        ]
+      },
+      {
+        "original_index": 138,
+        "candidate_index": 150,
+        "instruction": "Not",
+        "successors": [
+          139
+        ]
+      },
+      {
+        "original_index": 139,
+        "candidate_index": 151,
+        "instruction": "If 150",
+        "successors": [
+          150,
+          140
+        ]
+      },
+      {
+        "original_index": 140,
+        "candidate_index": 152,
+        "instruction": "Push \"canhit\"",
+        "successors": [
+          141
+        ]
+      },
+      {
+        "original_index": 141,
+        "candidate_index": 153,
+        "instruction": "Push true",
+        "successors": [
+          142
+        ]
+      },
+      {
+        "original_index": 142,
+        "candidate_index": 154,
+        "instruction": "SetVariable",
+        "successors": [
+          143
+        ]
+      },
+      {
+        "original_index": 143,
+        "candidate_index": 155,
+        "instruction": "Push \"wdFrame\"",
+        "successors": [
+          144
+        ]
+      },
+      {
+        "original_index": 144,
+        "candidate_index": 156,
+        "instruction": "Push \"wdFrameX\"",
+        "successors": [
+          145
+        ]
+      },
+      {
+        "original_index": 145,
+        "candidate_index": 157,
+        "instruction": "Push 0",
+        "successors": [
+          146
+        ]
+      },
+      {
+        "original_index": 146,
+        "candidate_index": 158,
+        "instruction": "StoreRegister 0",
+        "successors": [
+          147
+        ]
+      },
+      {
+        "original_index": 147,
+        "candidate_index": 159,
+        "instruction": "SetVariable",
+        "successors": [
+          148
+        ]
+      },
+      {
+        "original_index": 148,
+        "candidate_index": 160,
+        "instruction": "Push register0",
+        "successors": [
+          149
+        ]
+      },
+      {
+        "original_index": 149,
+        "candidate_index": 161,
+        "instruction": "SetVariable",
+        "successors": [
+          150
+        ]
+      },
+      {
+        "original_index": 150,
+        "candidate_index": 162,
+        "instruction": "Push \"dashing\"",
+        "successors": [
+          151
+        ]
+      },
+      {
+        "original_index": 151,
+        "candidate_index": 163,
+        "instruction": "GetVariable",
+        "successors": [
+          152
+        ]
+      },
+      {
+        "original_index": 154,
+        "candidate_index": 164,
+        "instruction": "If 157",
+        "successors": [
+          157,
+          153
+        ]
+      },
+      {
+        "original_index": 155,
+        "candidate_index": 165,
+        "instruction": "Push 0",
+        "successors": [
+          154
+        ]
+      },
+      {
+        "original_index": 156,
+        "candidate_index": 166,
+        "instruction": "Push \"doDashX\"",
+        "successors": [
+          155
+        ]
+      },
+      {
+        "original_index": 157,
+        "candidate_index": 167,
+        "instruction": "CallFunction",
+        "successors": [
+          156
+        ]
+      },
+      {
+        "original_index": 158,
+        "candidate_index": 168,
+        "instruction": "Pop",
+        "successors": [
+          157
+        ]
+      },
+      {
+        "original_index": 159,
+        "candidate_index": 169,
+        "instruction": "Push register1",
+        "successors": [
+          158
+        ]
+      },
+      {
+        "original_index": 160,
+        "candidate_index": 170,
+        "instruction": "Push \"game\"",
+        "successors": [
+          159
+        ]
+      },
+      {
+        "original_index": 161,
+        "candidate_index": 171,
+        "instruction": "GetMember",
+        "successors": [
+          160
+        ]
+      },
+      {
+        "original_index": 162,
+        "candidate_index": 172,
+        "instruction": "Push \"p\"",
+        "successors": [
+          161
+        ]
+      },
+      {
+        "original_index": 163,
+        "candidate_index": 173,
+        "instruction": "Push \"pn\"",
+        "successors": [
+          162
+        ]
+      },
+      {
+        "original_index": 164,
+        "candidate_index": 174,
+        "instruction": "GetVariable",
+        "successors": [
+          163
+        ]
+      },
+      {
+        "original_index": 165,
+        "candidate_index": 175,
+        "instruction": "Add2",
+        "successors": [
+          164
+        ]
+      },
+      {
+        "original_index": 166,
+        "candidate_index": 176,
+        "instruction": "GetMember",
+        "successors": [
+          165
+        ]
+      },
+      {
+        "original_index": 167,
+        "candidate_index": 177,
+        "instruction": "StoreRegister 6",
+        "successors": [
+          166
+        ]
+      },
+      {
+        "original_index": 168,
+        "candidate_index": 178,
+        "instruction": "Pop",
+        "successors": [
+          167
+        ]
+      },
+      {
+        "original_index": 169,
+        "candidate_index": 179,
+        "instruction": "Push register2",
+        "successors": [
+          168
+        ]
+      },
+      {
+        "original_index": 170,
+        "candidate_index": 180,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          169
+        ]
+      },
+      {
+        "original_index": 171,
+        "candidate_index": 181,
+        "instruction": "GetMember",
+        "successors": [
+          170
+        ]
+      },
+      {
+        "original_index": 172,
+        "candidate_index": 182,
+        "instruction": "Push \"_lastX\"",
+        "successors": [
+          171
+        ]
+      },
+      {
+        "original_index": 173,
+        "candidate_index": 183,
+        "instruction": "GetVariable",
+        "successors": [
+          172
+        ]
+      },
+      {
+        "original_index": 174,
+        "candidate_index": 184,
+        "instruction": "Subtract",
+        "successors": [
+          173
+        ]
+      },
+      {
+        "original_index": 175,
+        "candidate_index": 185,
+        "instruction": "StoreRegister 4",
+        "successors": [
+          174
+        ]
+      },
+      {
+        "original_index": 176,
+        "candidate_index": 186,
+        "instruction": "Pop",
+        "successors": [
+          175
+        ]
+      },
+      {
+        "original_index": 177,
+        "candidate_index": 187,
+        "instruction": "Push register4",
+        "successors": [
+          176
+        ]
+      },
+      {
+        "original_index": 178,
+        "candidate_index": 188,
+        "instruction": "Push 30",
+        "successors": [
+          177
+        ]
+      },
+      {
+        "original_index": 179,
+        "candidate_index": 189,
+        "instruction": "Greater",
+        "successors": [
+          178
+        ]
+      },
+      {
+        "original_index": 180,
+        "candidate_index": 190,
+        "instruction": "Not",
+        "successors": [
+          179
+        ]
+      },
+      {
+        "original_index": 181,
+        "candidate_index": 191,
+        "instruction": "If 183",
+        "successors": [
+          183,
+          180
+        ]
+      },
+      {
+        "original_index": 182,
+        "candidate_index": 192,
+        "instruction": "Push 30",
+        "successors": [
+          181
+        ]
+      },
+      {
+        "original_index": 183,
+        "candidate_index": 193,
+        "instruction": "StoreRegister 4",
+        "successors": [
+          182
+        ]
+      },
+      {
+        "original_index": 184,
+        "candidate_index": 194,
+        "instruction": "Pop",
+        "successors": [
+          183
+        ]
+      },
+      {
+        "original_index": 185,
+        "candidate_index": 195,
+        "instruction": "Push register4",
+        "successors": [
+          184
+        ]
+      },
+      {
+        "original_index": 186,
+        "candidate_index": 196,
+        "instruction": "Push -30",
+        "successors": [
+          185
+        ]
+      },
+      {
+        "original_index": 187,
+        "candidate_index": 197,
+        "instruction": "Less2",
+        "successors": [
+          186
+        ]
+      },
+      {
+        "original_index": 188,
+        "candidate_index": 198,
+        "instruction": "Not",
+        "successors": [
+          187
+        ]
+      },
+      {
+        "original_index": 189,
+        "candidate_index": 199,
+        "instruction": "If 191",
+        "successors": [
+          191,
+          188
+        ]
+      },
+      {
+        "original_index": 190,
+        "candidate_index": 200,
+        "instruction": "Push -30",
+        "successors": [
+          189
+        ]
+      },
+      {
+        "original_index": 191,
+        "candidate_index": 201,
+        "instruction": "StoreRegister 4",
+        "successors": [
+          190
+        ]
+      },
+      {
+        "original_index": 192,
+        "candidate_index": 202,
+        "instruction": "Pop",
+        "successors": [
+          191
+        ]
+      },
+      {
+        "original_index": 193,
+        "candidate_index": 203,
+        "instruction": "Push register4",
+        "successors": [
+          192
+        ]
+      },
+      {
+        "original_index": 194,
+        "candidate_index": 204,
+        "instruction": "Push register2",
+        "successors": [
+          193
+        ]
+      },
+      {
+        "original_index": 195,
+        "candidate_index": 205,
+        "instruction": "Push \"scale_X\"",
+        "successors": [
+          194
+        ]
+      },
+      {
+        "original_index": 196,
+        "candidate_index": 206,
+        "instruction": "GetMember",
+        "successors": [
+          195
+        ]
+      },
+      {
+        "original_index": 197,
+        "candidate_index": 207,
+        "instruction": "Multiply",
+        "successors": [
+          196
+        ]
+      },
+      {
+        "original_index": 198,
+        "candidate_index": 208,
+        "instruction": "StoreRegister 3",
+        "successors": [
+          197
+        ]
+      },
+      {
+        "original_index": 199,
+        "candidate_index": 209,
+        "instruction": "Pop",
+        "successors": [
+          198
+        ]
+      },
+      {
+        "original_index": 200,
+        "candidate_index": 210,
+        "instruction": "Push register3",
+        "successors": [
+          199
+        ]
+      },
+      {
+        "original_index": 201,
+        "candidate_index": 211,
+        "instruction": "Push 0",
+        "successors": [
+          200
+        ]
+      },
+      {
+        "original_index": 202,
+        "candidate_index": 212,
+        "instruction": "Greater",
+        "successors": [
+          201
+        ]
+      },
+      {
+        "original_index": 203,
+        "candidate_index": 213,
+        "instruction": "Not",
+        "successors": [
+          202
+        ]
+      },
+      {
+        "original_index": 204,
+        "candidate_index": 214,
+        "instruction": "If 217",
+        "successors": [
+          217,
+          203
+        ]
+      },
+      {
+        "original_index": 205,
+        "candidate_index": 215,
+        "instruction": "Push register3",
+        "successors": [
+          204
+        ]
+      },
+      {
+        "original_index": 206,
+        "candidate_index": 216,
+        "instruction": "Push register6",
+        "successors": [
+          205
+        ]
+      },
+      {
+        "original_index": 207,
+        "candidate_index": 217,
+        "instruction": "Push \"vecx\"",
+        "successors": [
+          206
+        ]
+      },
+      {
+        "original_index": 208,
+        "candidate_index": 218,
+        "instruction": "GetMember",
+        "successors": [
+          207
+        ]
+      },
+      {
+        "original_index": 209,
+        "candidate_index": 219,
+        "instruction": "Push 2",
+        "successors": [
+          208
+        ]
+      },
+      {
+        "original_index": 210,
+        "candidate_index": 220,
+        "instruction": "Divide",
+        "successors": [
+          209
+        ]
+      },
+      {
+        "original_index": 211,
+        "candidate_index": 221,
+        "instruction": "Add2",
+        "successors": [
+          210
+        ]
+      },
+      {
+        "original_index": 212,
+        "candidate_index": 222,
+        "instruction": "StoreRegister 3",
+        "successors": [
+          211
+        ]
+      },
+      {
+        "original_index": 213,
+        "candidate_index": 223,
+        "instruction": "Pop",
+        "successors": [
+          212
+        ]
+      },
+      {
+        "original_index": 214,
+        "candidate_index": 224,
+        "instruction": "Push register2",
+        "successors": [
+          213
+        ]
+      },
+      {
+        "original_index": 215,
+        "candidate_index": 225,
+        "instruction": "Push \"vecx\"",
+        "successors": [
+          214
+        ]
+      },
+      {
+        "original_index": 216,
+        "candidate_index": 226,
+        "instruction": "Push register3",
+        "successors": [
+          215
+        ]
+      },
+      {
+        "original_index": 217,
+        "candidate_index": 227,
+        "instruction": "SetMember",
+        "successors": [
+          216
+        ]
+      },
+      {
+        "original_index": 218,
+        "candidate_index": 228,
+        "instruction": "Jump 221",
+        "successors": [
+          221
+        ]
+      },
+      {
+        "original_index": 219,
+        "candidate_index": 229,
+        "instruction": "Push register2",
+        "successors": [
+          218
+        ]
+      },
+      {
+        "original_index": 220,
+        "candidate_index": 230,
+        "instruction": "Push \"vecx\"",
+        "successors": [
+          219
+        ]
+      },
+      {
+        "original_index": 221,
+        "candidate_index": 231,
+        "instruction": "Push 0",
+        "successors": [
+          220
+        ]
+      },
+      {
+        "original_index": 222,
+        "candidate_index": 232,
+        "instruction": "SetMember",
+        "successors": [
+          221
+        ]
+      },
+      {
+        "original_index": 223,
+        "candidate_index": 243,
+        "instruction": "Push \"airBody\"",
+        "successors": [
+          222
+        ]
+      },
+      {
+        "original_index": 224,
+        "candidate_index": 244,
+        "instruction": "GetVariable",
+        "successors": [
+          223
+        ]
+      },
+      {
+        "original_index": 225,
+        "candidate_index": 245,
+        "instruction": "Push false",
+        "successors": [
+          224
+        ]
+      },
+      {
+        "original_index": 226,
+        "candidate_index": 246,
+        "instruction": "Equals2",
+        "successors": [
+          225
+        ]
+      },
+      {
+        "original_index": 227,
+        "candidate_index": 252,
+        "instruction": "PushDuplicate",
+        "successors": [
+          226
+        ]
+      },
+      {
+        "original_index": 228,
+        "candidate_index": 253,
+        "instruction": "Not",
+        "successors": [
+          227
+        ]
+      },
+      {
+        "original_index": 229,
+        "candidate_index": 254,
+        "instruction": "If 243",
+        "successors": [
+          243,
+          228
+        ]
+      },
+      {
+        "original_index": 230,
+        "candidate_index": 255,
+        "instruction": "Pop",
+        "successors": [
+          229
+        ]
+      },
+      {
+        "original_index": 231,
+        "candidate_index": 257,
+        "instruction": "Push register1",
+        "successors": [
+          230
+        ]
+      },
+      {
+        "original_index": 232,
+        "candidate_index": 258,
+        "instruction": "Push \"game\"",
+        "successors": [
+          231
+        ]
+      },
+      {
+        "original_index": 233,
+        "candidate_index": 259,
+        "instruction": "GetMember",
+        "successors": [
+          232
+        ]
+      },
+      {
+        "original_index": 234,
+        "candidate_index": 260,
+        "instruction": "Push \"p\"",
+        "successors": [
+          233
+        ]
+      },
+      {
+        "original_index": 235,
+        "candidate_index": 261,
+        "instruction": "Push \"pn\"",
+        "successors": [
+          234
+        ]
+      },
+      {
+        "original_index": 236,
+        "candidate_index": 262,
+        "instruction": "GetVariable",
+        "successors": [
+          235
+        ]
+      },
+      {
+        "original_index": 237,
+        "candidate_index": 263,
+        "instruction": "Add2",
+        "successors": [
+          236
+        ]
+      },
+      {
+        "original_index": 238,
+        "candidate_index": 264,
+        "instruction": "GetMember",
+        "successors": [
+          237
+        ]
+      },
+      {
+        "original_index": 239,
+        "candidate_index": 265,
+        "instruction": "Push \"mc\"",
+        "successors": [
+          238
+        ]
+      },
+      {
+        "original_index": 240,
+        "candidate_index": 266,
+        "instruction": "GetMember",
+        "successors": [
+          239
+        ]
+      },
+      {
+        "original_index": 241,
+        "candidate_index": 267,
+        "instruction": "Push \"airBody\"",
+        "successors": [
+          240
+        ]
+      },
+      {
+        "original_index": 242,
+        "candidate_index": 268,
+        "instruction": "GetMember",
+        "successors": [
+          241
+        ]
+      },
+      {
+        "original_index": 243,
+        "candidate_index": 269,
+        "instruction": "Push false",
+        "successors": [
+          242
+        ]
+      },
+      {
+        "original_index": 244,
+        "candidate_index": 270,
+        "instruction": "Equals2",
+        "successors": [
+          243
+        ]
+      },
+      {
+        "original_index": 245,
+        "candidate_index": 276,
+        "instruction": "Not",
+        "successors": [
+          244
+        ]
+      },
+      {
+        "original_index": 246,
+        "candidate_index": 277,
+        "instruction": "If 346",
+        "successors": [
+          346,
+          245
+        ]
+      },
+      {
+        "original_index": 247,
+        "candidate_index": 279,
+        "instruction": "Push register3",
+        "successors": [
+          246
+        ]
+      },
+      {
+        "original_index": 248,
+        "candidate_index": 280,
+        "instruction": "Push 0",
+        "successors": [
+          247
+        ]
+      },
+      {
+        "original_index": 249,
+        "candidate_index": 281,
+        "instruction": "Less2",
+        "successors": [
+          248
+        ]
+      },
+      {
+        "original_index": 250,
+        "candidate_index": 282,
+        "instruction": "Not",
+        "successors": [
+          249
+        ]
+      },
+      {
+        "original_index": 251,
+        "candidate_index": 288,
+        "instruction": "PushDuplicate",
+        "successors": [
+          250
+        ]
+      },
+      {
+        "original_index": 252,
+        "candidate_index": 289,
+        "instruction": "Not",
+        "successors": [
+          251
+        ]
+      },
+      {
+        "original_index": 253,
+        "candidate_index": 290,
+        "instruction": "If 270",
+        "successors": [
+          270,
+          252
+        ]
+      },
+      {
+        "original_index": 254,
+        "candidate_index": 291,
+        "instruction": "Pop",
+        "successors": [
+          253
+        ]
+      },
+      {
+        "original_index": 255,
+        "candidate_index": 294,
+        "instruction": "Push register1",
+        "successors": [
+          254
+        ]
+      },
+      {
+        "original_index": 256,
+        "candidate_index": 295,
+        "instruction": "Push \"game\"",
+        "successors": [
+          255
+        ]
+      },
+      {
+        "original_index": 257,
+        "candidate_index": 296,
+        "instruction": "GetMember",
+        "successors": [
+          256
+        ]
+      },
+      {
+        "original_index": 258,
+        "candidate_index": 297,
+        "instruction": "Push \"p\"",
+        "successors": [
+          257
+        ]
+      },
+      {
+        "original_index": 259,
+        "candidate_index": 298,
+        "instruction": "Push \"pn\"",
+        "successors": [
+          258
+        ]
+      },
+      {
+        "original_index": 260,
+        "candidate_index": 299,
+        "instruction": "GetVariable",
+        "successors": [
+          259
+        ]
+      },
+      {
+        "original_index": 261,
+        "candidate_index": 300,
+        "instruction": "Add2",
+        "successors": [
+          260
+        ]
+      },
+      {
+        "original_index": 262,
+        "candidate_index": 301,
+        "instruction": "GetMember",
+        "successors": [
+          261
+        ]
+      },
+      {
+        "original_index": 263,
+        "candidate_index": 302,
+        "instruction": "Push \"mc\"",
+        "successors": [
+          262
+        ]
+      },
+      {
+        "original_index": 264,
+        "candidate_index": 303,
+        "instruction": "GetMember",
+        "successors": [
+          263
+        ]
+      },
+      {
+        "original_index": 265,
+        "candidate_index": 304,
+        "instruction": "Push \"bdmn\"",
+        "successors": [
+          264
+        ]
+      },
+      {
+        "original_index": 266,
+        "candidate_index": 305,
+        "instruction": "GetMember",
+        "successors": [
+          265
+        ]
+      },
+      {
+        "original_index": 267,
+        "candidate_index": 311,
+        "instruction": "Push 1",
+        "successors": [
+          266
+        ]
+      },
+      {
+        "original_index": 268,
+        "candidate_index": 313,
+        "instruction": "Push \"bdmn\"",
+        "successors": [
+          267
+        ]
+      },
+      {
+        "original_index": 269,
+        "candidate_index": 314,
+        "instruction": "GetVariable",
+        "successors": [
+          268
+        ]
+      },
+      {
+        "original_index": 270,
+        "candidate_index": 320,
+        "instruction": "Push \"hitTest\"",
+        "successors": [
+          269
+        ]
+      },
+      {
+        "original_index": 271,
+        "candidate_index": 321,
+        "instruction": "CallMethod",
+        "successors": [
+          270
+        ]
+      },
+      {
+        "original_index": 272,
+        "candidate_index": 327,
+        "instruction": "Not",
+        "successors": [
+          271
+        ]
+      },
+      {
+        "original_index": 273,
+        "candidate_index": 328,
+        "instruction": "If 346",
+        "successors": [
+          346,
+          272
+        ]
+      },
+      {
+        "original_index": 274,
+        "candidate_index": 329,
+        "instruction": "Push register3",
+        "successors": [
+          273
+        ]
+      },
+      {
+        "original_index": 275,
+        "candidate_index": 330,
+        "instruction": "Push 0",
+        "successors": [
+          274
+        ]
+      },
+      {
+        "original_index": 276,
+        "candidate_index": 331,
+        "instruction": "Equals2",
+        "successors": [
+          275
+        ]
+      },
+      {
+        "original_index": 277,
+        "candidate_index": 332,
+        "instruction": "PushDuplicate",
+        "successors": [
+          276
+        ]
+      },
+      {
+        "original_index": 278,
+        "candidate_index": 333,
+        "instruction": "Not",
+        "successors": [
+          277
+        ]
+      },
+      {
+        "original_index": 279,
+        "candidate_index": 334,
+        "instruction": "If 284",
+        "successors": [
+          284,
+          278
+        ]
+      },
+      {
+        "original_index": 280,
+        "candidate_index": 335,
+        "instruction": "Pop",
+        "successors": [
+          279
+        ]
+      },
+      {
+        "original_index": 281,
+        "candidate_index": 336,
+        "instruction": "Push register6",
+        "successors": [
+          280
+        ]
+      },
+      {
+        "original_index": 282,
+        "candidate_index": 337,
+        "instruction": "Push \"vecx\"",
+        "successors": [
+          281
+        ]
+      },
+      {
+        "original_index": 283,
+        "candidate_index": 338,
+        "instruction": "GetMember",
+        "successors": [
+          282
+        ]
+      },
+      {
+        "original_index": 284,
+        "candidate_index": 339,
+        "instruction": "Push 0",
+        "successors": [
+          283
+        ]
+      },
+      {
+        "original_index": 285,
+        "candidate_index": 340,
+        "instruction": "Equals2",
+        "successors": [
+          284
+        ]
+      },
+      {
+        "original_index": 286,
+        "candidate_index": 341,
+        "instruction": "Not",
+        "successors": [
+          285
+        ]
+      },
+      {
+        "original_index": 287,
+        "candidate_index": 342,
+        "instruction": "If 289",
+        "successors": [
+          289,
+          286
+        ]
+      },
+      {
+        "original_index": 288,
+        "candidate_index": 343,
+        "instruction": "Push 10",
+        "successors": [
+          287
+        ]
+      },
+      {
+        "original_index": 289,
+        "candidate_index": 344,
+        "instruction": "StoreRegister 3",
+        "successors": [
+          288
+        ]
+      },
+      {
+        "original_index": 290,
+        "candidate_index": 345,
+        "instruction": "Pop",
+        "successors": [
+          289
+        ]
+      },
+      {
+        "original_index": 291,
+        "candidate_index": 346,
+        "instruction": "Push register6",
+        "successors": [
+          290
+        ]
+      },
+      {
+        "original_index": 292,
+        "candidate_index": 347,
+        "instruction": "Push \"heavy\"",
+        "successors": [
+          291
+        ]
+      },
+      {
+        "original_index": 293,
+        "candidate_index": 348,
+        "instruction": "GetMember",
+        "successors": [
+          292
+        ]
+      },
+      {
+        "original_index": 294,
+        "candidate_index": 349,
+        "instruction": "Push register2",
+        "successors": [
+          293
+        ]
+      },
+      {
+        "original_index": 295,
+        "candidate_index": 350,
+        "instruction": "Push \"heavy\"",
+        "successors": [
+          294
+        ]
+      },
+      {
+        "original_index": 296,
+        "candidate_index": 351,
+        "instruction": "GetMember",
+        "successors": [
+          295
+        ]
+      },
+      {
+        "original_index": 297,
+        "candidate_index": 352,
+        "instruction": "Subtract",
+        "successors": [
+          296
+        ]
+      },
+      {
+        "original_index": 298,
+        "candidate_index": 353,
+        "instruction": "StoreRegister 8",
+        "successors": [
+          297
+        ]
+      },
+      {
+        "original_index": 299,
+        "candidate_index": 354,
+        "instruction": "Pop",
+        "successors": [
+          298
+        ]
+      },
+      {
+        "original_index": 300,
+        "candidate_index": 355,
+        "instruction": "Push register8",
+        "successors": [
+          299
+        ]
+      },
+      {
+        "original_index": 301,
+        "candidate_index": 356,
+        "instruction": "Push 0",
+        "successors": [
+          300
+        ]
+      },
+      {
+        "original_index": 302,
+        "candidate_index": 357,
+        "instruction": "Less2",
+        "successors": [
+          301
+        ]
+      },
+      {
+        "original_index": 303,
+        "candidate_index": 358,
+        "instruction": "Not",
+        "successors": [
+          302
+        ]
+      },
+      {
+        "original_index": 304,
+        "candidate_index": 359,
+        "instruction": "If 306",
+        "successors": [
+          306,
+          303
+        ]
+      },
+      {
+        "original_index": 305,
+        "candidate_index": 360,
+        "instruction": "Push 0",
+        "successors": [
+          304
+        ]
+      },
+      {
+        "original_index": 306,
+        "candidate_index": 361,
+        "instruction": "StoreRegister 8",
+        "successors": [
+          305
+        ]
+      },
+      {
+        "original_index": 307,
+        "candidate_index": 362,
+        "instruction": "Pop",
+        "successors": [
+          306
+        ]
+      },
+      {
+        "original_index": 308,
+        "candidate_index": 363,
+        "instruction": "Push register3",
+        "successors": [
+          307
+        ]
+      },
+      {
+        "original_index": 309,
+        "candidate_index": 364,
+        "instruction": "Push 2",
+        "successors": [
+          308
+        ]
+      },
+      {
+        "original_index": 310,
+        "candidate_index": 365,
+        "instruction": "Divide",
+        "successors": [
+          309
+        ]
+      },
+      {
+        "original_index": 311,
+        "candidate_index": 366,
+        "instruction": "Push register8",
+        "successors": [
+          310
+        ]
+      },
+      {
+        "original_index": 312,
+        "candidate_index": 367,
+        "instruction": "Subtract",
+        "successors": [
+          311
+        ]
+      },
+      {
+        "original_index": 313,
+        "candidate_index": 368,
+        "instruction": "StoreRegister 5",
+        "successors": [
+          312
+        ]
+      },
+      {
+        "original_index": 314,
+        "candidate_index": 369,
+        "instruction": "Pop",
+        "successors": [
+          313
+        ]
+      },
+      {
+        "original_index": 315,
+        "candidate_index": 370,
+        "instruction": "Push register5",
+        "successors": [
+          314
+        ]
+      },
+      {
+        "original_index": 316,
+        "candidate_index": 371,
+        "instruction": "Push 0",
+        "successors": [
+          315
+        ]
+      },
+      {
+        "original_index": 317,
+        "candidate_index": 372,
+        "instruction": "Less2",
+        "successors": [
+          316
+        ]
+      },
+      {
+        "original_index": 318,
+        "candidate_index": 373,
+        "instruction": "Not",
+        "successors": [
+          317
+        ]
+      },
+      {
+        "original_index": 319,
+        "candidate_index": 374,
+        "instruction": "If 321",
+        "successors": [
+          321,
+          318
+        ]
+      },
+      {
+        "original_index": 320,
+        "candidate_index": 375,
+        "instruction": "Push 0",
+        "successors": [
+          319
+        ]
+      },
+      {
+        "original_index": 321,
+        "candidate_index": 376,
+        "instruction": "StoreRegister 5",
+        "successors": [
+          320
+        ]
+      },
+      {
+        "original_index": 322,
+        "candidate_index": 377,
+        "instruction": "Pop",
+        "successors": [
+          321
+        ]
+      },
+      {
+        "original_index": 323,
+        "candidate_index": 378,
+        "instruction": "Push register3",
+        "successors": [
+          322
+        ]
+      },
+      {
+        "original_index": 324,
+        "candidate_index": 379,
+        "instruction": "Push register5",
+        "successors": [
+          323
+        ]
+      },
+      {
+        "original_index": 325,
+        "candidate_index": 380,
+        "instruction": "Subtract",
+        "successors": [
+          324
+        ]
+      },
+      {
+        "original_index": 326,
+        "candidate_index": 381,
+        "instruction": "StoreRegister 11",
+        "successors": [
+          325
+        ]
+      },
+      {
+        "original_index": 327,
+        "candidate_index": 382,
+        "instruction": "Pop",
+        "successors": [
+          326
+        ]
+      },
+      {
+        "original_index": 328,
+        "candidate_index": 383,
+        "instruction": "Push register6",
+        "successors": [
+          327
+        ]
+      },
+      {
+        "original_index": 329,
+        "candidate_index": 384,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          328
+        ]
+      },
+      {
+        "original_index": 330,
+        "candidate_index": 385,
+        "instruction": "Push register6",
+        "successors": [
+          329
+        ]
+      },
+      {
+        "original_index": 331,
+        "candidate_index": 386,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          330
+        ]
+      },
+      {
+        "original_index": 332,
+        "candidate_index": 387,
+        "instruction": "GetMember",
+        "successors": [
+          331
+        ]
+      },
+      {
+        "original_index": 333,
+        "candidate_index": 388,
+        "instruction": "Push register5",
+        "successors": [
+          332
+        ]
+      },
+      {
+        "original_index": 334,
+        "candidate_index": 389,
+        "instruction": "Push register2",
+        "successors": [
+          333
+        ]
+      },
+      {
+        "original_index": 335,
+        "candidate_index": 390,
+        "instruction": "Push \"scale_X\"",
+        "successors": [
+          334
+        ]
+      },
+      {
+        "original_index": 336,
+        "candidate_index": 391,
+        "instruction": "GetMember",
+        "successors": [
+          335
+        ]
+      },
+      {
+        "original_index": 337,
+        "candidate_index": 392,
+        "instruction": "Multiply",
+        "successors": [
+          336
+        ]
+      },
+      {
+        "original_index": 338,
+        "candidate_index": 393,
+        "instruction": "Add2",
+        "successors": [
+          337
+        ]
+      },
+      {
+        "original_index": 339,
+        "candidate_index": 394,
+        "instruction": "SetMember",
+        "successors": [
+          338
+        ]
+      },
+      {
+        "original_index": 340,
+        "candidate_index": 395,
+        "instruction": "Push 0",
+        "successors": [
+          339
+        ]
+      },
+      {
+        "original_index": 341,
+        "candidate_index": 396,
+        "instruction": "Push register11",
+        "successors": [
+          340
+        ]
+      },
+      {
+        "original_index": 342,
+        "candidate_index": 397,
+        "instruction": "Subtract",
+        "successors": [
+          341
+        ]
+      },
+      {
+        "original_index": 343,
+        "candidate_index": 398,
+        "instruction": "Push 1",
+        "successors": [
+          342
+        ]
+      },
+      {
+        "original_index": 344,
+        "candidate_index": 399,
+        "instruction": "Push register2",
+        "successors": [
+          343
+        ]
+      },
+      {
+        "original_index": 345,
+        "candidate_index": 400,
+        "instruction": "Push \"moveX\"",
+        "successors": [
+          344
+        ]
+      },
+      {
+        "original_index": 346,
+        "candidate_index": 401,
+        "instruction": "CallMethod",
+        "successors": [
+          345
+        ]
+      },
+      {
+        "original_index": 347,
+        "candidate_index": 402,
+        "instruction": "Pop",
+        "successors": [
+          346
+        ]
+      },
+      {
+        "original_index": 348,
+        "candidate_index": 403,
+        "instruction": "Push \"_lastX\"",
+        "successors": [
+          347
+        ]
+      },
+      {
+        "original_index": 349,
+        "candidate_index": 404,
+        "instruction": "Push register2",
+        "successors": [
+          348
+        ]
+      },
+      {
+        "original_index": 350,
+        "candidate_index": 405,
+        "instruction": "Push \"_x\"",
+        "successors": [
+          349
+        ]
+      },
+      {
+        "original_index": 351,
+        "candidate_index": 406,
+        "instruction": "GetMember",
+        "successors": [
+          350
+        ]
+      },
+      {
+        "original_index": 352,
+        "candidate_index": 407,
+        "instruction": "SetVariable",
+        "successors": [
+          351
+        ]
+      },
+      {
+        "original_index": 353,
+        "candidate_index": 408,
+        "instruction": "Push true",
+        "successors": [
+          352
+        ]
+      },
+      {
+        "original_index": 354,
+        "candidate_index": 409,
+        "instruction": "StoreRegister 10",
+        "successors": [
+          353
+        ]
+      },
+      {
+        "original_index": 355,
+        "candidate_index": 410,
+        "instruction": "Pop",
+        "successors": [
+          354
+        ]
+      },
+      {
+        "original_index": 356,
+        "candidate_index": 411,
+        "instruction": "Push register2",
+        "successors": [
+          355
+        ]
+      },
+      {
+        "original_index": 357,
+        "candidate_index": 412,
+        "instruction": "Push \"_y\"",
+        "successors": [
+          356
+        ]
+      },
+      {
+        "original_index": 358,
+        "candidate_index": 413,
+        "instruction": "GetMember",
+        "successors": [
+          357
+        ]
+      },
+      {
+        "original_index": 359,
+        "candidate_index": 414,
+        "instruction": "StoreRegister 7",
+        "successors": [
+          358
+        ]
+      },
+      {
+        "original_index": 360,
+        "candidate_index": 415,
+        "instruction": "Pop",
+        "successors": [
+          359
+        ]
+      },
+      {
+        "original_index": 361,
+        "candidate_index": 416,
+        "instruction": "Push register7",
+        "successors": [
+          360
+        ]
+      },
+      {
+        "original_index": 362,
+        "candidate_index": 417,
+        "instruction": "Push register1",
+        "successors": [
+          361
+        ]
+      },
+      {
+        "original_index": 363,
+        "candidate_index": 418,
+        "instruction": "Push \"floorY\"",
+        "successors": [
+          362
+        ]
+      },
+      {
+        "original_index": 364,
+        "candidate_index": 419,
+        "instruction": "GetMember",
+        "successors": [
+          363
+        ]
+      },
+      {
+        "original_index": 365,
+        "candidate_index": 420,
+        "instruction": "Equals2",
+        "successors": [
+          364
+        ]
+      },
+      {
+        "original_index": 366,
+        "candidate_index": 421,
+        "instruction": "Not",
+        "successors": [
+          365
+        ]
+      },
+      {
+        "original_index": 367,
+        "candidate_index": 422,
+        "instruction": "If 374",
+        "successors": [
+          374,
+          366
+        ]
+      },
+      {
+        "original_index": 368,
+        "candidate_index": 423,
+        "instruction": "Push \"touch\"",
+        "successors": [
+          367
+        ]
+      },
+      {
+        "original_index": 369,
+        "candidate_index": 424,
+        "instruction": "Push true",
+        "successors": [
+          368
+        ]
+      },
+      {
+        "original_index": 370,
+        "candidate_index": 425,
+        "instruction": "SetVariable",
+        "successors": [
+          369
+        ]
+      },
+      {
+        "original_index": 371,
+        "candidate_index": 426,
+        "instruction": "Push \"touchFloor\"",
+        "successors": [
+          370
+        ]
+      },
+      {
+        "original_index": 372,
+        "candidate_index": 427,
+        "instruction": "Push true",
+        "successors": [
+          371
+        ]
+      },
+      {
+        "original_index": 373,
+        "candidate_index": 428,
+        "instruction": "SetVariable",
+        "successors": [
+          372
+        ]
+      },
+      {
+        "original_index": 374,
+        "candidate_index": 429,
+        "instruction": "Push undefined",
+        "successors": [
+          373
+        ]
+      },
+      {
+        "original_index": 375,
+        "candidate_index": 430,
+        "instruction": "Return",
+        "successors": []
+      },
+      {
+        "original_index": 376,
+        "candidate_index": 434,
+        "instruction": "Push register7",
+        "successors": [
+          375
+        ]
+      },
+      {
+        "original_index": 377,
+        "candidate_index": 435,
+        "instruction": "Push register1",
+        "successors": [
+          376
+        ]
+      },
+      {
+        "original_index": 378,
+        "candidate_index": 436,
+        "instruction": "Push \"floorY\"",
+        "successors": [
+          377
+        ]
+      },
+      {
+        "original_index": 379,
+        "candidate_index": 437,
+        "instruction": "GetMember",
+        "successors": [
+          378
+        ]
+      },
+      {
+        "original_index": 380,
+        "candidate_index": 438,
+        "instruction": "Less2",
+        "successors": [
+          379
+        ]
+      },
+      {
+        "original_index": 381,
+        "candidate_index": 439,
+        "instruction": "Not",
+        "successors": [
+          380
+        ]
+      },
+      {
+        "original_index": 382,
+        "candidate_index": 440,
+        "instruction": "If 422",
+        "successors": [
+          422,
+          381
+        ]
+      },
+      {
+        "original_index": 383,
+        "candidate_index": 441,
+        "instruction": "Push 0",
+        "successors": [
+          382
+        ]
+      },
+      {
+        "original_index": 384,
+        "candidate_index": 442,
+        "instruction": "Push \"isHitBan\"",
+        "successors": [
+          383
+        ]
+      },
+      {
+        "original_index": 385,
+        "candidate_index": 443,
+        "instruction": "CallFunction",
+        "successors": [
+          384
+        ]
+      },
+      {
+        "original_index": 386,
+        "candidate_index": 444,
+        "instruction": "StoreRegister 9",
+        "successors": [
+          385
+        ]
+      },
+      {
+        "original_index": 387,
+        "candidate_index": 445,
+        "instruction": "Pop",
+        "successors": [
+          386
+        ]
+      },
+      {
+        "original_index": 388,
+        "candidate_index": 446,
+        "instruction": "Push \"hitBan\"",
+        "successors": [
+          387
+        ]
+      },
+      {
+        "original_index": 389,
+        "candidate_index": 447,
+        "instruction": "Push register9",
+        "successors": [
+          388
+        ]
+      },
+      {
+        "original_index": 390,
+        "candidate_index": 448,
+        "instruction": "Push 0",
+        "successors": [
+          389
+        ]
+      },
+      {
+        "original_index": 391,
+        "candidate_index": 449,
+        "instruction": "Equals2",
+        "successors": [
+          390
+        ]
+      },
+      {
+        "original_index": 392,
+        "candidate_index": 450,
+        "instruction": "Not",
+        "successors": [
+          391
+        ]
+      },
+      {
+        "original_index": 393,
+        "candidate_index": 451,
+        "instruction": "SetVariable",
+        "successors": [
+          392
+        ]
+      },
+      {
+        "original_index": 394,
+        "candidate_index": 452,
+        "instruction": "Push \"jump\"",
+        "successors": [
+          393
+        ]
+      },
+      {
+        "original_index": 395,
+        "candidate_index": 453,
+        "instruction": "GetVariable",
+        "successors": [
+          394
+        ]
+      },
+      {
+        "original_index": 396,
+        "candidate_index": 454,
+        "instruction": "Push 1",
+        "successors": [
+          395
+        ]
+      },
+      {
+        "original_index": 397,
+        "candidate_index": 455,
+        "instruction": "Equals2",
+        "successors": [
+          396
+        ]
+      },
+      {
+        "original_index": 398,
+        "candidate_index": 456,
+        "instruction": "Not",
+        "successors": [
+          397
+        ]
+      },
+      {
+        "original_index": 399,
+        "candidate_index": 457,
+        "instruction": "If 406",
+        "successors": [
+          406,
+          398
+        ]
+      },
+      {
+        "original_index": 400,
+        "candidate_index": 458,
+        "instruction": "Push \"touch\"",
+        "successors": [
+          399
+        ]
+      },
+      {
+        "original_index": 401,
+        "candidate_index": 459,
+        "instruction": "Push false",
+        "successors": [
+          400
+        ]
+      },
+      {
+        "original_index": 402,
+        "candidate_index": 460,
+        "instruction": "SetVariable",
+        "successors": [
+          401
+        ]
+      },
+      {
+        "original_index": 403,
+        "candidate_index": 461,
+        "instruction": "Push \"touchFloor\"",
+        "successors": [
+          402
+        ]
+      },
+      {
+        "original_index": 404,
+        "candidate_index": 462,
+        "instruction": "Push false",
+        "successors": [
+          403
+        ]
+      },
+      {
+        "original_index": 405,
+        "candidate_index": 463,
+        "instruction": "SetVariable",
+        "successors": [
+          404
+        ]
+      },
+      {
+        "original_index": 406,
+        "candidate_index": 464,
+        "instruction": "Push undefined",
+        "successors": [
+          405
+        ]
+      },
+      {
+        "original_index": 407,
+        "candidate_index": 465,
+        "instruction": "Return",
+        "successors": []
+      },
+      {
+        "original_index": 408,
+        "candidate_index": 466,
+        "instruction": "Push \"hitBan\"",
+        "successors": [
+          407
+        ]
+      },
+      {
+        "original_index": 409,
+        "candidate_index": 467,
+        "instruction": "GetVariable",
+        "successors": [
+          408
+        ]
+      },
+      {
+        "original_index": 410,
+        "candidate_index": 468,
+        "instruction": "Not",
+        "successors": [
+          409
+        ]
+      },
+      {
+        "original_index": 411,
+        "candidate_index": 469,
+        "instruction": "If 422",
+        "successors": [
+          422,
+          410
+        ]
+      },
+      {
+        "original_index": 412,
+        "candidate_index": 470,
+        "instruction": "Push \"touch\"",
+        "successors": [
+          411
+        ]
+      },
+      {
+        "original_index": 413,
+        "candidate_index": 471,
+        "instruction": "Push true",
+        "successors": [
+          412
+        ]
+      },
+      {
+        "original_index": 414,
+        "candidate_index": 472,
+        "instruction": "SetVariable",
+        "successors": [
+          413
+        ]
+      },
+      {
+        "original_index": 415,
+        "candidate_index": 473,
+        "instruction": "Push \"touchFloor\"",
+        "successors": [
+          414
+        ]
+      },
+      {
+        "original_index": 416,
+        "candidate_index": 474,
+        "instruction": "Push false",
+        "successors": [
+          415
+        ]
+      },
+      {
+        "original_index": 417,
+        "candidate_index": 475,
+        "instruction": "SetVariable",
+        "successors": [
+          416
+        ]
+      },
+      {
+        "original_index": 418,
+        "candidate_index": 476,
+        "instruction": "Push register2",
+        "successors": [
+          417
+        ]
+      },
+      {
+        "original_index": 419,
+        "candidate_index": 477,
+        "instruction": "Push \"_y\"",
+        "successors": [
+          418
+        ]
+      },
+      {
+        "original_index": 420,
+        "candidate_index": 478,
+        "instruction": "Push register9",
+        "successors": [
+          419
+        ]
+      },
+      {
+        "original_index": 421,
+        "candidate_index": 479,
+        "instruction": "SetMember",
+        "successors": [
+          420
+        ]
+      },
+      {
+        "original_index": 422,
+        "candidate_index": 480,
+        "instruction": "Push undefined",
+        "successors": [
+          421
+        ]
+      },
+      {
+        "original_index": 423,
+        "candidate_index": 481,
+        "instruction": "Return",
+        "successors": []
+      },
+      {
+        "original_index": 424,
+        "candidate_index": 482,
+        "instruction": "Push register7",
+        "successors": [
+          423
+        ]
+      },
+      {
+        "original_index": 425,
+        "candidate_index": 483,
+        "instruction": "Push register1",
+        "successors": [
+          424
+        ]
+      },
+      {
+        "original_index": 426,
+        "candidate_index": 484,
+        "instruction": "Push \"floorY\"",
+        "successors": [
+          425
+        ]
+      },
+      {
+        "original_index": 427,
+        "candidate_index": 485,
+        "instruction": "GetMember",
+        "successors": [
+          426
+        ]
+      },
+      {
+        "original_index": 428,
+        "candidate_index": 486,
+        "instruction": "Push 10",
+        "successors": [
+          427
+        ]
+      },
+      {
+        "original_index": 429,
+        "candidate_index": 487,
+        "instruction": "Subtract",
+        "successors": [
+          428
+        ]
+      },
+      {
+        "original_index": 430,
+        "candidate_index": 488,
+        "instruction": "Greater",
+        "successors": [
+          429
+        ]
+      },
+      {
+        "original_index": 431,
+        "candidate_index": 489,
+        "instruction": "Not",
+        "successors": [
+          430
+        ]
+      },
+      {
+        "original_index": 432,
+        "candidate_index": 490,
+        "instruction": "If 445",
+        "successors": [
+          445,
+          431
+        ]
+      },
+      {
+        "original_index": 433,
+        "candidate_index": 491,
+        "instruction": "Push register2",
+        "successors": [
+          432
+        ]
+      },
+      {
+        "original_index": 434,
+        "candidate_index": 492,
+        "instruction": "Push \"_y\"",
+        "successors": [
+          433
+        ]
+      },
+      {
+        "original_index": 435,
+        "candidate_index": 493,
+        "instruction": "Push register1",
+        "successors": [
+          434
+        ]
+      },
+      {
+        "original_index": 436,
+        "candidate_index": 494,
+        "instruction": "Push \"floorY\"",
+        "successors": [
+          435
+        ]
+      },
+      {
+        "original_index": 437,
+        "candidate_index": 495,
+        "instruction": "GetMember",
+        "successors": [
+          436
+        ]
+      },
+      {
+        "original_index": 438,
+        "candidate_index": 496,
+        "instruction": "SetMember",
+        "successors": [
+          437
+        ]
+      },
+      {
+        "original_index": 439,
+        "candidate_index": 497,
+        "instruction": "Push \"touch\"",
+        "successors": [
+          438
+        ]
+      },
+      {
+        "original_index": 440,
+        "candidate_index": 498,
+        "instruction": "Push true",
+        "successors": [
+          439
+        ]
+      },
+      {
+        "original_index": 441,
+        "candidate_index": 499,
+        "instruction": "SetVariable",
+        "successors": [
+          440
+        ]
+      },
+      {
+        "original_index": 442,
+        "candidate_index": 500,
+        "instruction": "Push \"touchFloor\"",
+        "successors": [
+          441
+        ]
+      },
+      {
+        "original_index": 443,
+        "candidate_index": 501,
+        "instruction": "Push true",
+        "successors": [
+          442
+        ]
+      },
+      {
+        "original_index": 444,
+        "candidate_index": 502,
+        "instruction": "SetVariable",
+        "successors": [
+          443
+        ]
+      },
+      {
+        "original_index": 445,
+        "candidate_index": 503,
+        "instruction": "Push undefined",
+        "successors": [
+          444
+        ]
+      },
+      {
+        "original_index": 446,
+        "candidate_index": 504,
+        "instruction": "Return",
+        "successors": []
+      },
+      {
+        "original_index": 447,
+        "candidate_index": 505,
+        "instruction": "Push register10",
+        "successors": [
+          446
+        ]
+      },
+      {
+        "original_index": 448,
+        "candidate_index": 506,
+        "instruction": "Not",
+        "successors": [
+          447
+        ]
+      },
+      {
+        "original_index": 449,
+        "candidate_index": 507,
+        "instruction": "If 483",
+        "successors": [
+          483,
+          448
+        ]
+      },
+      {
+        "original_index": 450,
+        "candidate_index": 508,
+        "instruction": "Push \"touch\"",
+        "successors": [
+          449
+        ]
+      },
+      {
+        "original_index": 451,
+        "candidate_index": 509,
+        "instruction": "Push false",
+        "successors": [
+          450
+        ]
+      },
+      {
+        "original_index": 452,
+        "candidate_index": 510,
+        "instruction": "SetVariable",
+        "successors": [
+          451
+        ]
+      },
+      {
+        "original_index": 453,
+        "candidate_index": 511,
+        "instruction": "Push register2",
+        "successors": [
+          452
+        ]
+      },
+      {
+        "original_index": 454,
+        "candidate_index": 512,
+        "instruction": "Push \"_y\"",
+        "successors": [
+          453
+        ]
+      },
+      {
+        "original_index": 455,
+        "candidate_index": 513,
+        "instruction": "Push register2",
+        "successors": [
+          454
+        ]
+      },
+      {
+        "original_index": 456,
+        "candidate_index": 514,
+        "instruction": "Push \"_y\"",
+        "successors": [
+          455
+        ]
+      },
+      {
+        "original_index": 457,
+        "candidate_index": 515,
+        "instruction": "GetMember",
+        "successors": [
+          456
+        ]
+      },
+      {
+        "original_index": 458,
+        "candidate_index": 516,
+        "instruction": "Push register1",
+        "successors": [
+          457
+        ]
+      },
+      {
+        "original_index": 459,
+        "candidate_index": 517,
+        "instruction": "Push \"zhongli\"",
+        "successors": [
+          458
+        ]
+      },
+      {
+        "original_index": 460,
+        "candidate_index": 518,
+        "instruction": "GetMember",
+        "successors": [
+          459
+        ]
+      },
+      {
+        "original_index": 461,
+        "candidate_index": 519,
+        "instruction": "Add2",
+        "successors": [
+          460
+        ]
+      },
+      {
+        "original_index": 462,
+        "candidate_index": 520,
+        "instruction": "SetMember",
+        "successors": [
+          461
+        ]
+      },
+      {
+        "original_index": 463,
+        "candidate_index": 521,
+        "instruction": "Push \"jumped\"",
+        "successors": [
+          462
+        ]
+      },
+      {
+        "original_index": 464,
+        "candidate_index": 522,
+        "instruction": "GetVariable",
+        "successors": [
+          463
+        ]
+      },
+      {
+        "original_index": 465,
+        "candidate_index": 523,
+        "instruction": "Push 1",
+        "successors": [
+          464
+        ]
+      },
+      {
+        "original_index": 466,
+        "candidate_index": 524,
+        "instruction": "Equals2",
+        "successors": [
+          465
+        ]
+      },
+      {
+        "original_index": 467,
+        "candidate_index": 525,
+        "instruction": "Not",
+        "successors": [
+          466
+        ]
+      },
+      {
+        "original_index": 468,
+        "candidate_index": 526,
+        "instruction": "If 472",
+        "successors": [
+          472,
+          467
+        ]
+      },
+      {
+        "original_index": 469,
+        "candidate_index": 527,
+        "instruction": "GoToLabel \"落\"",
+        "successors": [
+          468
+        ]
+      },
+      {
+        "original_index": 470,
+        "candidate_index": 528,
+        "instruction": "Play",
+        "successors": [
+          469
+        ]
+      },
+      {
+        "original_index": 471,
+        "candidate_index": 529,
+        "instruction": "Push \"jumped\"",
+        "successors": [
+          470
+        ]
+      },
+      {
+        "original_index": 472,
+        "candidate_index": 530,
+        "instruction": "Push 0",
+        "successors": [
+          471
+        ]
+      },
+      {
+        "original_index": 473,
+        "candidate_index": 531,
+        "instruction": "SetVariable",
+        "successors": [
+          472
+        ]
+      },
+      {
+        "original_index": 474,
+        "candidate_index": 532,
+        "instruction": "Push \"jumped\"",
+        "successors": [
+          473
+        ]
+      },
+      {
+        "original_index": 475,
+        "candidate_index": 533,
+        "instruction": "GetVariable",
+        "successors": [
+          474
+        ]
+      },
+      {
+        "original_index": 476,
+        "candidate_index": 534,
+        "instruction": "Push 2",
+        "successors": [
+          475
+        ]
+      },
+      {
+        "original_index": 477,
+        "candidate_index": 535,
+        "instruction": "Equals2",
+        "successors": [
+          476
+        ]
+      },
+      {
+        "original_index": 478,
+        "candidate_index": 536,
+        "instruction": "Not",
+        "successors": [
+          477
+        ]
+      },
+      {
+        "original_index": 479,
+        "candidate_index": 537,
+        "instruction": "If 483",
+        "successors": [
+          483,
+          478
+        ]
+      },
+      {
+        "original_index": 480,
+        "candidate_index": 538,
+        "instruction": "GoToLabel \"落2\"",
+        "successors": [
+          479
+        ]
+      },
+      {
+        "original_index": 481,
+        "candidate_index": 539,
+        "instruction": "Play",
+        "successors": [
+          480
+        ]
+      },
+      {
+        "original_index": 482,
+        "candidate_index": 540,
+        "instruction": "Push \"jumped\"",
+        "successors": [
+          481
+        ]
+      },
+      {
+        "original_index": 483,
+        "candidate_index": 541,
+        "instruction": "Push 0",
+        "successors": [
+          482
+        ]
+      },
+      {
+        "original_index": 484,
+        "candidate_index": 542,
+        "instruction": "SetVariable",
+        "successors": [
+          483
+        ]
+      }
+    ],
+    "register_uses": [
+      {
+        "candidate_register": 0,
+        "original_register": 0,
+        "candidate_indices": [
+          143,
+          145,
+          158,
+          160
+        ],
+        "original_indices": [
+          131,
+          133,
+          146,
+          148
+        ]
+      },
+      {
+        "candidate_register": 2,
+        "original_register": 1,
+        "candidate_indices": [
+          45,
+          55,
+          78,
+          86,
+          98,
+          169,
+          257,
+          294,
+          417,
+          435,
+          483,
+          493,
+          516
+        ],
+        "original_indices": [
+          45,
+          55,
+          72,
+          80,
+          91,
+          159,
+          231,
+          255,
+          362,
+          377,
+          425,
+          435,
+          458
+        ]
+      },
+      {
+        "candidate_register": 3,
+        "original_register": 2,
+        "candidate_indices": [
+          31,
+          38,
+          42,
+          53,
+          75,
+          84,
+          91,
+          179,
+          204,
+          224,
+          229,
+          349,
+          389,
+          399,
+          404,
+          411,
+          476,
+          491,
+          511,
+          513
+        ],
+        "original_indices": [
+          31,
+          38,
+          42,
+          53,
+          69,
+          78,
+          85,
+          169,
+          194,
+          214,
+          219,
+          294,
+          334,
+          344,
+          349,
+          356,
+          418,
+          433,
+          453,
+          455
+        ]
+      },
+      {
+        "candidate_register": 4,
+        "original_register": 6,
+        "candidate_indices": [
+          177,
+          216,
+          336,
+          346,
+          383,
+          385
+        ],
+        "original_indices": [
+          167,
+          206,
+          281,
+          291,
+          328,
+          330
+        ]
+      },
+      {
+        "candidate_register": 5,
+        "original_register": 4,
+        "candidate_indices": [
+          185,
+          187,
+          193,
+          195,
+          201,
+          203
+        ],
+        "original_indices": [
+          175,
+          177,
+          183,
+          185,
+          191,
+          193
+        ]
+      },
+      {
+        "candidate_register": 6,
+        "original_register": 3,
+        "candidate_indices": [
+          208,
+          210,
+          215,
+          222,
+          226,
+          279,
+          329,
+          344,
+          363,
+          378
+        ],
+        "original_indices": [
+          198,
+          200,
+          205,
+          212,
+          216,
+          247,
+          274,
+          289,
+          308,
+          323
+        ]
+      },
+      {
+        "candidate_register": 7,
+        "original_register": 8,
+        "candidate_indices": [
+          353,
+          355,
+          361,
+          366
+        ],
+        "original_indices": [
+          298,
+          300,
+          306,
+          311
+        ]
+      },
+      {
+        "candidate_register": 8,
+        "original_register": 5,
+        "candidate_indices": [
+          368,
+          370,
+          376,
+          379,
+          388
+        ],
+        "original_indices": [
+          313,
+          315,
+          321,
+          324,
+          333
+        ]
+      },
+      {
+        "candidate_register": 9,
+        "original_register": 11,
+        "candidate_indices": [
+          381,
+          396
+        ],
+        "original_indices": [
+          326,
+          341
+        ]
+      },
+      {
+        "candidate_register": 10,
+        "original_register": 10,
+        "candidate_indices": [
+          409,
+          505
+        ],
+        "original_indices": [
+          354,
+          447
+        ]
+      },
+      {
+        "candidate_register": 11,
+        "original_register": 7,
+        "candidate_indices": [
+          414,
+          416,
+          434,
+          482
+        ],
+        "original_indices": [
+          359,
+          361,
+          376,
+          424
+        ]
+      },
+      {
+        "candidate_register": 12,
+        "original_register": 9,
+        "candidate_indices": [
+          444,
+          447,
+          478
+        ],
+        "original_indices": [
+          386,
+          389,
+          420
+        ]
+      }
+    ],
+    "assumptions_not_proved": [
+      "Changed function flags/preloads bind corresponding registers to equivalent live activations.",
+      "s283Value is identity with no mutation, exceptions, reentrancy, lifetime or scheduling effects; no helper is installed.",
+      "Deleting four candidate local initializations preserves activation-visible behavior.",
+      "Deleting source double-Not before If preserves coercion behavior on actual values."
+    ]
+  },
+  "capture_decision": "Not authorized by this static cut; observer prerequisites remain unproved.",
+  "blocker": "Conditional graph correspondence is not activation/helper/perturbation equivalence.",
+  "next_discriminator": "Independently qualify the changed activation/preload mapping and all four erasure assumptions before installing a bounded helper or capturing. Keep natural executed/skipped controls and same-run operand lifetimes separate."
+}
