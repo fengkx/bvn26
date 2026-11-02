@@ -1,0 +1,188 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s303/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s303/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.726652,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "native-resolver",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s303/diagnose.py",
+      "--output",
+      "/tmp/s303-native-resolver.json",
+      "--require-native-resolver"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.531746,
+    "log": "native-resolver.txt"
+  },
+  {
+    "name": "loaded-buffer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s303/diagnose.py",
+      "--output",
+      "/tmp/s303-loaded-buffer.json",
+      "--require-loaded-buffer"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.521843,
+    "log": "loaded-buffer.txt"
+  },
+  {
+    "name": "cursor-convention",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s303/diagnose.py",
+      "--output",
+      "/tmp/s303-cursor-convention.json",
+      "--require-cursor-convention"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.527182,
+    "log": "cursor-convention.txt"
+  },
+  {
+    "name": "retained-activation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s303/diagnose.py",
+      "--output",
+      "/tmp/s303-retained-activation.json",
+      "--require-retained-activation"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.525151,
+    "log": "retained-activation.txt"
+  },
+  {
+    "name": "instruction-boundaries",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s303/diagnose.py",
+      "--output",
+      "/tmp/s303-instruction-boundaries.json",
+      "--require-instruction-boundaries"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.524705,
+    "log": "instruction-boundaries.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s303",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 3.189288,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s295-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s295",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 2.80594,
+    "log": "retained-s295-tests.txt"
+  },
+  {
+    "name": "retained-s288-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s288",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 1.698259,
+    "log": "retained-s288-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_chad_native_instruction_diagnosis",
+      "tools.tests.test_chad_defining_context",
+      "tools.tests.test_chad_register_control",
+      "tools.tests.test_as_continuation_discriminator",
+      "tools.tests.test_chad_lifecycle_observer",
+      "tools.tests.test_call_exit_diagnosis",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "environment": {
+      "PYTHONPATH": "."
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 3.14254,
+    "log": "retained-tests.txt"
+  }
+]

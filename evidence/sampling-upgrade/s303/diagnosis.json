@@ -1,0 +1,271 @@
+{
+  "base": "27f70be588e72bcc0e260ce1d827559dc322b002",
+  "scope": "AFTER-s299 rank #4 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "product_obligations_closed": 0,
+  "exact_continuation_proved": false,
+  "locked_s295_reproduced": true,
+  "historical": {
+    "events": 9493,
+    "root_samples": 61,
+    "controls": [
+      {
+        "mode": "retain",
+        "before": "1",
+        "receiver_before": "true",
+        "defining_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "false",
+        "parent_frame": "2",
+        "depth": "-16383",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "false",
+        "sequence": 7206,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "mode": "remove",
+        "before": "1",
+        "receiver_before": "true",
+        "defining_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "true",
+        "parent_frame": "3",
+        "depth": "-16383",
+        "boundary": "1",
+        "post": "0",
+        "empty_after": "true",
+        "sequence": 7207,
+        "tick": 10,
+        "display": 433
+      }
+    ],
+    "dynamic_controls": [
+      {
+        "mode": "retain",
+        "before": "1",
+        "receiver_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "false",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "false",
+        "sequence": 7204,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "mode": "remove",
+        "before": "1",
+        "receiver_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "true",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "true",
+        "sequence": 7205,
+        "tick": 10,
+        "display": 433
+      }
+    ],
+    "chad_witnesses": [
+      {
+        "type": "undefined",
+        "token": "undefined",
+        "before": "undefined",
+        "control": "undefined",
+        "post": "undefined",
+        "observer_entry": "undefined",
+        "sequence": 7208,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "type": "object",
+        "token": "s257-chad-normal-goto",
+        "before": "1",
+        "control": "1",
+        "post": "0",
+        "observer_entry": "0",
+        "sequence": 7253,
+        "tick": 11,
+        "display": 434
+      },
+      {
+        "type": "object",
+        "token": "s257-chad-normal-goto",
+        "before": "1",
+        "control": "1",
+        "post": "0",
+        "observer_entry": "0",
+        "sequence": 7290,
+        "tick": 12,
+        "display": 435
+      }
+    ],
+    "actor_comparison": {
+      "rows": 122,
+      "exact_tick_payload_equal_s263": true
+    },
+    "full_as": {
+      "unvisited": 594,
+      "uninstrumented": 415
+    },
+    "missing_boundaries": [
+      "goto_after",
+      "callee_exit",
+      "caller_after"
+    ]
+  },
+  "retained_worker": {
+    "archive": "s266/build-extension.tar.gz",
+    "member": "game/main.swf",
+    "swf_sha256": "0ca27ddf66438b3c94ba2bb888bd94387c4b95f755257cd5ef5aacf6ea7aac12",
+    "definition": {
+      "definition_offset": 589258,
+      "name": "",
+      "body_offset": 589289,
+      "body_length": 139,
+      "body_sha256": "017e564eef18c95ef248f7571aaf6f8e6cee09f54d257e6196336703e2b4aa44",
+      "register_count": 6,
+      "flags": 41,
+      "definition_hex": "8e1c00000200062900027769746e65737300036f7065726174696f6e008b00"
+    },
+    "body_hex": "96020004028701000417960200040387010005179602000404960200080396050007010000004f960200040496020008049602000401960200040496020008054e494f9602000404960200080696020008001c960200040496020008054e494f9602000404960500070100000096020004059601000352179602000404960200080796050007010000004f",
+    "body_occurrences_in_archived_swf": 1,
+    "doaction_file_range": [
+      589163,
+      589430
+    ],
+    "cursor_candidates": [
+      {
+        "instruction": "CallMethod",
+        "hex": "52",
+        "current_opcode_file_offset": 589407,
+        "next_opcode_file_offset": 589408,
+        "current_body_relative": 118,
+        "next_body_relative": 119
+      },
+      {
+        "instruction": "Pop",
+        "hex": "17",
+        "current_opcode_file_offset": 589408,
+        "next_opcode_file_offset": 589409,
+        "current_body_relative": 119,
+        "next_body_relative": 120
+      },
+      {
+        "instruction": "SetMember",
+        "hex": "4f",
+        "current_opcode_file_offset": 589427,
+        "next_opcode_file_offset": 589428,
+        "current_body_relative": 138,
+        "next_body_relative": 139
+      }
+    ],
+    "coordinate_kind": "Uncompressed archived file/body offsets; NOT loaded buffer addresses",
+    "ambiguous_file_offset": 589408,
+    "ambiguity": "CallMethod next cursor equals Pop current cursor; static bytes cannot select convention",
+    "activation_limit": "Retain and remove invoke the same authored function; body identity is not invocation identity"
+  },
+  "native_candidate": {
+    "module_uuid": "067c4cfe5b2a3424aaa01fae2df056eb",
+    "image_base": 4294967296,
+    "coordinate_kind": "Unslid module-relative machine-code offsets; NOT SWF offsets or live PCs",
+    "fetch_relative": 1197965,
+    "dispatch_relative": 1198742,
+    "dispatch_table_relative": 1232708,
+    "index_expression": "unsigned(opcode - 4) <= 0x9b",
+    "targets": [
+      {
+        "opcode": 82,
+        "authored_opcode_name": "CallMethod",
+        "table_entry_relative": 1233020,
+        "entry_hex": "e77cffff",
+        "target_relative": 1199147,
+        "status": "static candidate, not executed instruction observation"
+      },
+      {
+        "opcode": 23,
+        "authored_opcode_name": "Pop",
+        "table_entry_relative": 1232784,
+        "entry_hex": "678dffff",
+        "target_relative": 1203371,
+        "status": "static candidate, not executed instruction observation"
+      },
+      {
+        "opcode": 79,
+        "authored_opcode_name": "SetMember",
+        "table_entry_relative": 1233008,
+        "entry_hex": "5083ffff",
+        "target_relative": 1200788,
+        "status": "static candidate, not executed instruction observation"
+      }
+    ],
+    "candidate_layout": {
+      "descriptor": "qword [rbp-0x160]",
+      "data": "qword [descriptor+0]",
+      "extent": "signed dword [descriptor+8]; -1 bypasses finite extent check",
+      "cursor": "signed dword [rbp-0x158]",
+      "opcode": "r15d",
+      "stack_owner": "qword [rbp-0x558]",
+      "stack_count": "dword [owner+0x520]",
+      "stack_storage": "qword [owner+0x528]; eight-byte slots",
+      "defining_scope": null,
+      "register4_location": null,
+      "activation_identity": null
+    },
+    "static_cursor_relation": "Before fetch, slot is incremented from c to c+1; fetch uses old c. For short opcodes, r8d receives c+1. This is a local static path relation, not a measured convention for the retained invocation or all native paths.",
+    "long_action_relation": "High-bit path reads a little-endian 16-bit length, advances slot by two and adds payload length to r8d. Slot and r8d need not denote the same cursor.",
+    "semantic_limit": "Opcode range/length format and Pop-like stack mutation support an AVM1 dispatch candidate. No complete activation resolver, tagged-value decoder, helper preservation proof, loaded buffer binding or native execution is established."
+  },
+  "observations": {
+    "loaded_action_buffer": null,
+    "native_dispatch_pc": null,
+    "cursor_convention": null,
+    "retained_activation": null,
+    "operand_stack": null,
+    "register4_witness": null,
+    "executed_callmethod": null,
+    "executed_pop": null,
+    "executed_setmember": null
+  },
+  "gates": {
+    "native-resolver": {
+      "proved": false,
+      "code": "S303_NATIVE_RESOLVER_UNPROVED"
+    },
+    "loaded-buffer": {
+      "proved": false,
+      "code": "S303_LOADED_BUFFER_UNPROVED"
+    },
+    "cursor-convention": {
+      "proved": false,
+      "code": "S303_CURSOR_CONVENTION_UNPROVED"
+    },
+    "retained-activation": {
+      "proved": false,
+      "code": "S303_RETAINED_ACTIVATION_UNPROVED"
+    },
+    "instruction-boundaries": {
+      "proved": false,
+      "code": "S303_INSTRUCTION_BOUNDARIES_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_captures": 0,
+  "new_name_queries": 0,
+  "exclusions": [
+    "CPU-entry-as-AVM proof",
+    "silence/removal-as-return",
+    "root-worker equivalence",
+    "broad interpreter",
+    "other ranks"
+  ],
+  "blocker": "Static dispatch candidate has no defining-scope/register4/activation identity resolver. No loaded worker bytes/extent, measured cursor or retained invocation join exists. Three instruction observations remain blocked.",
+  "next_observation": "Derive and independently qualify the candidate activation/scope/value layout; relocate using a live module UUID/slide and verify code bytes, bind loaded worker bytes and finite extent, measure cursor at fetch and dispatch, identify one retained authored invocation with defining scope, stack and register4 witness before three boundaries. Keep removed and root-defined controls separate; no silence/removal-as-return."
+}

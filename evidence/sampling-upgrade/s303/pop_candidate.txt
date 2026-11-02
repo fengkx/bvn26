@@ -1,0 +1,15 @@
+
+/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger:	file format mach-o 64-bit x86-64
+
+Disassembly of section __TEXT,__text:
+
+0000000100002000 <__text>:
+100125cab: 48 8b 8d a8 fa ff ff        	mov	rcx, qword ptr [rbp - 0x558]
+100125cb2: 8b 81 20 05 00 00           	mov	eax, dword ptr [rcx + 0x520]
+100125cb8: 85 c0                       	test	eax, eax
+100125cba: 0f 84 2d ec ff ff           	je	0x1001248ed <__text+0x1228ed>
+100125cc0: ff c8                       	dec	eax
+100125cc2: 89 81 20 05 00 00           	mov	dword ptr [rcx + 0x520], eax
+100125cc8: 48 8b 89 28 05 00 00        	mov	rcx, qword ptr [rcx + 0x528]
+100125ccf: 48 c7 04 c1 02 00 00 00     	mov	qword ptr [rcx + 8*rax], 0x2
+100125cd7: e9 11 ec ff ff              	jmp	0x1001248ed <__text+0x1228ed>

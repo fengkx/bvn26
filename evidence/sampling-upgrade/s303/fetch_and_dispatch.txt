@@ -1,0 +1,204 @@
+
+/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger:	file format mach-o 64-bit x86-64
+
+Disassembly of section __TEXT,__text:
+
+0000000100002000 <__text>:
+100124726: 48 63 85 a8 fe ff ff        	movsxd	rax, dword ptr [rbp - 0x158]
+10012472d: 48 8b 8d 90 fa ff ff        	mov	rcx, qword ptr [rbp - 0x570]
+100124734: 8b 49 28                    	mov	ecx, dword ptr [rcx + 0x28]
+100124737: 01 c1                       	add	ecx, eax
+100124739: 0f 88 3c 70 00 00           	js	0x10012b77b <__text+0x12977b>
+10012473f: 45 85 ed                    	test	r13d, r13d
+100124742: 78 09                       	js	0x10012474d <__text+0x12274d>
+100124744: 41 01 c5                    	add	r13d, eax
+100124747: 0f 88 42 70 00 00           	js	0x10012b78f <__text+0x12978f>
+10012474d: 48 8b 95 a0 fe ff ff        	mov	rdx, qword ptr [rbp - 0x160]
+100124754: 31 db                       	xor	ebx, ebx
+100124756: 48 85 d2                    	test	rdx, rdx
+100124759: 0f 84 43 70 00 00           	je	0x10012b7a2 <__text+0x1297a2>
+10012475f: 48 8b 0a                    	mov	rcx, qword ptr [rdx]
+100124762: 31 db                       	xor	ebx, ebx
+100124764: 48 85 c9                    	test	rcx, rcx
+100124767: 4c 8b ad a8 fa ff ff        	mov	r13, qword ptr [rbp - 0x558]
+10012476e: 0f 84 28 6f 00 00           	je	0x10012b69c <__text+0x12969c>
+100124774: 8b 52 08                    	mov	edx, dword ptr [rdx + 0x8]
+100124777: 83 fa ff                    	cmp	edx, -0x1
+10012477a: 74 08                       	je	0x100124784 <__text+0x122784>
+10012477c: 39 d0                       	cmp	eax, edx
+10012477e: 0f 8d 18 6f 00 00           	jge	0x10012b69c <__text+0x12969c>
+100124784: 8d 50 01                    	lea	edx, [rax + 0x1]
+100124787: 89 95 a8 fe ff ff           	mov	dword ptr [rbp - 0x158], edx
+10012478d: 44 0f b6 3c 01              	movzx	r15d, byte ptr [rcx + rax]
+100124792: 45 85 ff                    	test	r15d, r15d
+100124795: 0f 84 01 6f 00 00           	je	0x10012b69c <__text+0x12969c>
+10012479b: 48 8b 85 88 fa ff ff        	mov	rax, qword ptr [rbp - 0x578]
+1001247a2: 48 8b 40 08                 	mov	rax, qword ptr [rax + 0x8]
+1001247a6: 48 85 c0                    	test	rax, rax
+1001247a9: 41 bc 00 00 00 00           	mov	r12d, 0x0
+1001247af: 74 04                       	je	0x1001247b5 <__text+0x1227b5>
+1001247b1: 4c 8b 60 08                 	mov	r12, qword ptr [rax + 0x8]
+1001247b5: 48 8b 85 98 fa ff ff        	mov	rax, qword ptr [rbp - 0x568]
+1001247bc: 80 78 66 00                 	cmp	byte ptr [rax + 0x66], 0x0
+1001247c0: 75 6e                       	jne	0x100124830 <__text+0x122830>
+1001247c2: 4d 85 e4                    	test	r12, r12
+1001247c5: 74 69                       	je	0x100124830 <__text+0x122830>
+1001247c7: 48 8b 85 98 fa ff ff        	mov	rax, qword ptr [rbp - 0x568]
+1001247ce: 4c 3b 60 30                 	cmp	r12, qword ptr [rax + 0x30]
+1001247d2: 74 5c                       	je	0x100124830 <__text+0x122830>
+1001247d4: 48 8b 85 98 fa ff ff        	mov	rax, qword ptr [rbp - 0x568]
+1001247db: 48 8b 58 38                 	mov	rbx, qword ptr [rax + 0x38]
+1001247df: 48 8d bd 90 fe ff ff        	lea	rdi, [rbp - 0x170]
+1001247e6: 4c 89 e6                    	mov	rsi, r12
+1001247e9: e8 b2 9f 00 00              	call	0x10012e7a0 <__text+0x12c7a0>
+1001247ee: b9 01 00 00 00              	mov	ecx, 0x1
+1001247f3: 48 89 df                    	mov	rdi, rbx
+1001247f6: 48 8b b5 10 fa ff ff        	mov	rsi, qword ptr [rbp - 0x5f0]
+1001247fd: 48 8d 95 90 fe ff ff        	lea	rdx, [rbp - 0x170]
+100124804: e8 87 b8 08 00              	call	0x1001b0090 <__text+0x1ae090>
+100124809: 48 c7 85 90 fe ff ff 00 00 00 00    	mov	qword ptr [rbp - 0x170], 0x0
+100124814: 48 8b bd 18 fa ff ff        	mov	rdi, qword ptr [rbp - 0x5e8]
+10012481b: 4c 89 e6                    	mov	rsi, r12
+10012481e: e8 4d 90 86 00              	call	0x10098d870 <_main+0x4c6270>
+100124823: 66 66 66 66 2e 0f 1f 84 00 00 00 00 00      	nop	word ptr cs:[rax + rax]
+100124830: 45 84 ff                    	test	r15b, r15b
+100124833: 78 1b                       	js	0x100124850 <__text+0x122850>
+100124835: 45 31 ed                    	xor	r13d, r13d
+100124838: 44 8b 85 a8 fe ff ff        	mov	r8d, dword ptr [rbp - 0x158]
+10012483f: e9 84 00 00 00              	jmp	0x1001248c8 <__text+0x1228c8>
+100124844: 66 66 66 2e 0f 1f 84 00 00 00 00 00 	nop	word ptr cs:[rax + rax]
+100124850: 80 bd b6 fe ff ff 00        	cmp	byte ptr [rbp - 0x14a], 0x0
+100124857: 0f 85 a4 70 00 00           	jne	0x10012b901 <__text+0x129901>
+10012485d: 48 8b 85 a0 fe ff ff        	mov	rax, qword ptr [rbp - 0x160]
+100124864: 31 c9                       	xor	ecx, ecx
+100124866: 48 85 c0                    	test	rax, rax
+100124869: 74 08                       	je	0x100124873 <__text+0x122873>
+10012486b: 8b 48 08                    	mov	ecx, dword ptr [rax + 0x8]
+10012486e: 83 f9 ff                    	cmp	ecx, -0x1
+100124871: 74 12                       	je	0x100124885 <__text+0x122885>
+100124873: 8b 95 a8 fe ff ff           	mov	edx, dword ptr [rbp - 0x158]
+100124879: 8d 72 02                    	lea	esi, [rdx + 0x2]
+10012487c: 39 ce                       	cmp	esi, ecx
+10012487e: 7e 0b                       	jle	0x10012488b <__text+0x12288b>
+100124880: e9 7c 70 00 00              	jmp	0x10012b901 <__text+0x129901>
+100124885: 8b 95 a8 fe ff ff           	mov	edx, dword ptr [rbp - 0x158]
+10012488b: 48 8b 08                    	mov	rcx, qword ptr [rax]
+10012488e: 48 63 d2                    	movsxd	rdx, edx
+100124891: 44 8d 42 02                 	lea	r8d, [rdx + 0x2]
+100124895: 44 89 85 a8 fe ff ff        	mov	dword ptr [rbp - 0x158], r8d
+10012489c: 0f b6 34 11                 	movzx	esi, byte ptr [rcx + rdx]
+1001248a0: 44 0f b6 6c 11 01           	movzx	r13d, byte ptr [rcx + rdx + 0x1]
+1001248a6: 41 c1 e5 08                 	shl	r13d, 0x8
+1001248aa: 41 09 f5                    	or	r13d, esi
+1001248ad: 31 c9                       	xor	ecx, ecx
+1001248af: 48 85 c0                    	test	rax, rax
+1001248b2: 74 08                       	je	0x1001248bc <__text+0x1228bc>
+1001248b4: 8b 48 08                    	mov	ecx, dword ptr [rax + 0x8]
+1001248b7: 83 f9 ff                    	cmp	ecx, -0x1
+1001248ba: 74 0c                       	je	0x1001248c8 <__text+0x1228c8>
+1001248bc: 43 8d 04 28                 	lea	eax, [r8 + r13]
+1001248c0: 39 c8                       	cmp	eax, ecx
+1001248c2: 0f 8f 40 70 00 00           	jg	0x10012b908 <__text+0x129908>
+1001248c8: 45 01 e8                    	add	r8d, r13d
+1001248cb: 8b 85 6c fa ff ff           	mov	eax, dword ptr [rbp - 0x594]
+1001248d1: 85 c0                       	test	eax, eax
+1001248d3: 0f 8e 87 00 00 00           	jle	0x100124960 <__text+0x122960>
+1001248d9: ff c8                       	dec	eax
+1001248db: 89 85 6c fa ff ff           	mov	dword ptr [rbp - 0x594], eax
+1001248e1: 8b 85 78 fa ff ff           	mov	eax, dword ptr [rbp - 0x588]
+1001248e7: 89 85 68 fa ff ff           	mov	dword ptr [rbp - 0x598], eax
+1001248ed: 4c 8b ad a8 fa ff ff        	mov	r13, qword ptr [rbp - 0x558]
+1001248f4: 41 80 bd 4b 0d 00 00 00     	cmp	byte ptr [r13 + 0xd4b], 0x0
+1001248fc: bb 00 00 00 00              	mov	ebx, 0x0
+100124901: 0f 85 95 6d 00 00           	jne	0x10012b69c <__text+0x12969c>
+100124907: 66 41 ff 85 12 06 00 00     	inc	word ptr [r13 + 0x612]
+10012490f: 75 0e                       	jne	0x10012491f <__text+0x12291f>
+100124911: 4c 89 ef                    	mov	rdi, r13
+100124914: 4d 89 c6                    	mov	r14, r8
+100124917: e8 a4 c9 f9 ff              	call	0x1000c12c0 <__text+0xbf2c0>
+10012491c: 4d 89 f0                    	mov	r8, r14
+10012491f: 8b 85 48 fa ff ff           	mov	eax, dword ptr [rbp - 0x5b8]
+100124925: a8 01                       	test	al, 0x1
+100124927: 4c 8b b5 90 fa ff ff        	mov	r14, qword ptr [rbp - 0x570]
+10012492e: 8b 95 68 fa ff ff           	mov	edx, dword ptr [rbp - 0x598]
+100124934: 0f 85 62 6d 00 00           	jne	0x10012b69c <__text+0x12969c>
+10012493a: 8b 85 54 fa ff ff           	mov	eax, dword ptr [rbp - 0x5ac]
+100124940: 8b 8d 44 fa ff ff           	mov	ecx, dword ptr [rbp - 0x5bc]
+100124946: 08 c8                       	or	al, cl
+100124948: 24 01                       	and	al, 0x1
+10012494a: 41 0a 85 11 06 00 00        	or	al, byte ptr [r13 + 0x611]
+100124951: 0f 84 b9 f5 ff ff           	je	0x100123f10 <__text+0x121f10>
+100124957: e9 40 6d 00 00              	jmp	0x10012b69c <__text+0x12969c>
+10012495c: 0f 1f 40 00                 	nop	dword ptr [rax]
+100124960: 48 8b 85 98 fa ff ff        	mov	rax, qword ptr [rbp - 0x568]
+100124967: 80 78 6a 00                 	cmp	byte ptr [rax + 0x6a], 0x0
+10012496b: 4d 89 e1                    	mov	r9, r12
+10012496e: 74 04                       	je	0x100124974 <__text+0x122974>
+100124970: 4c 8b 48 28                 	mov	r9, qword ptr [rax + 0x28]
+100124974: 4d 85 c9                    	test	r9, r9
+100124977: bb 00 00 00 00              	mov	ebx, 0x0
+10012497c: 0f 84 ee 00 00 00           	je	0x100124a70 <__text+0x122a70>
+100124982: 49 8b 41 48                 	mov	rax, qword ptr [r9 + 0x48]
+100124986: 49 8b 99 b8 00 00 00        	mov	rbx, qword ptr [r9 + 0xb8]
+10012498d: 89 c1                       	mov	ecx, eax
+10012498f: 83 e1 07                    	and	ecx, 0x7
+100124992: 83 f9 07                    	cmp	ecx, 0x7
+100124995: 48 89 c2                    	mov	rdx, rax
+100124998: 75 10                       	jne	0x1001249aa <__text+0x1229aa>
+10012499a: 48 89 c1                    	mov	rcx, rax
+10012499d: 48 83 e1 f8                 	and	rcx, -0x8
+1001249a1: 48 8b 51 18                 	mov	rdx, qword ptr [rcx + 0x18]
+1001249a5: 89 d1                       	mov	ecx, edx
+1001249a7: 83 e1 07                    	and	ecx, 0x7
+1001249aa: 83 e2 1f                    	and	edx, 0x1f
+1001249ad: 83 f9 02                    	cmp	ecx, 0x2
+1001249b0: 0f 45 d1                    	cmovne	edx, ecx
+1001249b3: 83 fa 0a                    	cmp	edx, 0xa
+1001249b6: 0f 84 b4 00 00 00           	je	0x100124a70 <__text+0x122a70>
+1001249bc: 8b 8d 78 fa ff ff           	mov	ecx, dword ptr [rbp - 0x588]
+1001249c2: 0f b6 c9                    	movzx	ecx, cl
+1001249c5: 81 f9 96 00 00 00           	cmp	ecx, 0x96
+1001249cb: 0f 84 9f 00 00 00           	je	0x100124a70 <__text+0x122a70>
+1001249d1: 83 f9 1c                    	cmp	ecx, 0x1c
+1001249d4: 0f 84 96 00 00 00           	je	0x100124a70 <__text+0x122a70>
+1001249da: 83 f9 4e                    	cmp	ecx, 0x4e
+1001249dd: 0f 84 8d 00 00 00           	je	0x100124a70 <__text+0x122a70>
+1001249e3: 89 c1                       	mov	ecx, eax
+1001249e5: 83 e1 07                    	and	ecx, 0x7
+1001249e8: 48 83 f9 07                 	cmp	rcx, 0x7
+1001249ec: 75 08                       	jne	0x1001249f6 <__text+0x1229f6>
+1001249ee: 48 83 e0 f8                 	and	rax, -0x8
+1001249f2: 48 8b 40 18                 	mov	rax, qword ptr [rax + 0x18]
+1001249f6: 48 83 f8 0a                 	cmp	rax, 0xa
+1001249fa: 74 74                       	je	0x100124a70 <__text+0x122a70>
+1001249fc: 4c 89 85 78 fa ff ff        	mov	qword ptr [rbp - 0x588], r8
+100124a03: 44 89 bd 68 fa ff ff        	mov	dword ptr [rbp - 0x598], r15d
+100124a0a: 4d 8d 79 48                 	lea	r15, [r9 + 0x48]
+100124a0e: 4c 89 8d e8 f9 ff ff        	mov	qword ptr [rbp - 0x618], r9
+100124a15: 4c 89 f8                    	mov	rax, r15
+100124a18: 48 25 00 f0 ff ff           	and	rax, -0x1000
+100124a1e: 4c 8b 70 08                 	mov	r14, qword ptr [rax + 0x8]
+100124a22: 31 d2                       	xor	edx, edx
+100124a24: 4c 89 f7                    	mov	rdi, r14
+100124a27: 4c 89 fe                    	mov	rsi, r15
+100124a2a: e8 b1 6e 86 00              	call	0x10098b8e0 <_main+0x4c42e0>
+100124a2f: 48 c7 45 a8 0a 00 00 00     	mov	qword ptr [rbp - 0x58], 0xa
+100124a37: 4c 89 f7                    	mov	rdi, r14
+100124a3a: 48 89 c6                    	mov	rsi, rax
+100124a3d: 4c 89 fa                    	mov	rdx, r15
+100124a40: 48 8d 4d a8                 	lea	rcx, [rbp - 0x58]
+100124a44: e8 37 ab 00 00              	call	0x10012f580 <__text+0x12d580>
+100124a49: 48 c7 45 a8 00 00 00 00     	mov	qword ptr [rbp - 0x58], 0x0
+100124a51: 44 8b bd 68 fa ff ff        	mov	r15d, dword ptr [rbp - 0x598]
+100124a58: 4c 8b 85 78 fa ff ff        	mov	r8, qword ptr [rbp - 0x588]
+100124a5f: 4c 8b 8d e8 f9 ff ff        	mov	r9, qword ptr [rbp - 0x618]
+100124a66: 66 2e 0f 1f 84 00 00 00 00 00       	nop	word ptr cs:[rax + rax]
+100124a70: 44 89 bd 68 fa ff ff        	mov	dword ptr [rbp - 0x598], r15d
+100124a77: 44 89 f8                    	mov	eax, r15d
+100124a7a: 83 c0 fc                    	add	eax, -0x4
+100124a7d: 3d 9b 00 00 00              	cmp	eax, 0x9b
+100124a82: 0f 87 65 fe ff ff           	ja	0x1001248ed <__text+0x1228ed>
+100124a88: 48 8d 0d b5 84 00 00        	lea	rcx, [rip + 0x84b5]     ## 0x10012cf44 <__text+0x12af44>
+100124a8f: 48 63 04 81                 	movsxd	rax, dword ptr [rcx + 4*rax]
+100124a93: 48 01 c8                    	add	rax, rcx
+100124a96: ff e0                       	jmp	rax
