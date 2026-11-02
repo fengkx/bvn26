@@ -1,0 +1,410 @@
+{
+  "base": "0038929ce894539da159afe3331ba0a3e8e2da25",
+  "scope": "s298 / AFTER-s290 rank #8 only",
+  "status": "honest_unproved",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "slot_reference_proved": false,
+  "allocation_identity_proved": false,
+  "product_obligations_closed": 0,
+  "locked_s289_reproduced": true,
+  "retained_capture": {
+    "path": "evidence/sampling-upgrade/s261/native-capture.log.gz",
+    "events": 8290,
+    "samples": 61,
+    "raw_validation_exit": 0,
+    "source_gap_count": 169,
+    "actor_comparison": {
+      "reference": "s255/native-capture.log.gz",
+      "rows": 122,
+      "all_14_fields_equal": true
+    }
+  },
+  "source_bindings": {
+    "save_reference": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 23,
+      "statement": "_global.s261Receiver = receiver;",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "read_saved_reference": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 32,
+      "statement": "var saved = _global.s261Receiver;",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "read_depth_slot": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 33,
+      "statement": "var occupant = parent.getInstanceAtDepth(_global.s261Depth);",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "read_named_slot": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 34,
+      "statement": "var named = parent.AImain;",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "control_remove": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 52,
+      "statement": "saved.removeMovieClip();",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "control_replace": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 53,
+      "statement": "var replacement = host.createEmptyMovieClip(\"slot\", 1);",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    },
+    "control_property_delete": {
+      "member": "patches/main/frame_1/DoAction.as",
+      "line": 58,
+      "statement": "delete replacement.identity;",
+      "member_sha256": "cc368c0f988fc0bade2ec3fe4f9456b0d82215156ccc21b2702e4238e0783f4f",
+      "native_address": null
+    }
+  },
+  "reference_window": {
+    "run_id": "s261-yijiao-r01",
+    "event_count": 8290,
+    "events": [
+      {
+        "sequence": 36,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_identity",
+        "payload": "root,true,true,true,-16383"
+      },
+      {
+        "sequence": 37,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,1,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:8;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+      },
+      {
+        "sequence": 38,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+      },
+      {
+        "sequence": 39,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+      },
+      {
+        "sequence": 40,
+        "clock_ms": 11399,
+        "root": 8,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+      },
+      {
+        "sequence": 41,
+        "clock_ms": 11400,
+        "root": 8,
+        "tick": -1,
+        "kind": "input_next_display",
+        "payload": "w=undefined,a=undefined,l=undefined,上箭=undefined,下箭=undefined,左箭=undefined,右箭=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+      },
+      {
+        "sequence": 42,
+        "clock_ms": 11423,
+        "root": 8,
+        "tick": -1,
+        "kind": "intro_body_enter",
+        "payload": "8,8"
+      },
+      {
+        "sequence": 43,
+        "clock_ms": 11424,
+        "root": 8,
+        "tick": -1,
+        "kind": "intro_body_exit",
+        "payload": "8,1"
+      },
+      {
+        "sequence": 44,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_identity",
+        "payload": "root,true,true,true,-16383"
+      },
+      {
+        "sequence": 45,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,2,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:0;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:9;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+      },
+      {
+        "sequence": 46,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+      },
+      {
+        "sequence": 47,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+      },
+      {
+        "sequence": 48,
+        "clock_ms": 11424,
+        "root": 9,
+        "tick": -1,
+        "kind": "aimain_object",
+        "payload": "root,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+      }
+    ],
+    "controls": [
+      {
+        "sequence": 21,
+        "clock_ms": 11396,
+        "root": 7,
+        "tick": -1,
+        "kind": "s261_control",
+        "payload": "retained,true,true"
+      },
+      {
+        "sequence": 22,
+        "clock_ms": 11397,
+        "root": 7,
+        "tick": -1,
+        "kind": "s261_control",
+        "payload": "replaced,true,false"
+      },
+      {
+        "sequence": 23,
+        "clock_ms": 11397,
+        "root": 7,
+        "tick": -1,
+        "kind": "s261_control",
+        "payload": "retained_content_deleted,true,false"
+      }
+    ],
+    "raw_sha256": "a807109c58f98b2b48e27275c5ac36663defe1ea56f224ab1cf333f154cd40c0",
+    "interpretation": "AS2 observations only; contiguous log sequence is not complete native lifecycle coverage"
+  },
+  "target_sites": [
+    {
+      "event_sequence": 36,
+      "root": 8,
+      "clock_ms": 11399,
+      "path": "_level0.game.p1.mc.AImain",
+      "depth": "-16383",
+      "frame": "1",
+      "total_frames": "2",
+      "native_allocation_address": null,
+      "native_allocation_generation": null,
+      "saved_reference_native_referent": null
+    },
+    {
+      "event_sequence": 44,
+      "root": 9,
+      "clock_ms": 11424,
+      "path": "_level0.game.p1.mc.AImain",
+      "depth": "-16383",
+      "frame": "0",
+      "total_frames": "0",
+      "native_allocation_address": null,
+      "native_allocation_generation": null,
+      "saved_reference_native_referent": null
+    }
+  ],
+  "native_observations": {
+    "slot_resolver": null,
+    "saved_reference_resolver": null,
+    "object_layout": null,
+    "allocation_free_reuse_ledger": null,
+    "pool_lifetime_coverage": null,
+    "retained_content_clear": null,
+    "replacement_control_generations": null
+  },
+  "control_obligations": {
+    "retained_content_clear": {
+      "historical_signal": {
+        "status": "missing_native_control",
+        "available_as2_control": "retained_content_deleted",
+        "available_signal": [
+          "true",
+          "false"
+        ],
+        "native_allocation_generation_before": null,
+        "native_allocation_generation_after": null,
+        "limitation": "Deleting one token property is not a calibrated retained-content-clear allocation control."
+      },
+      "qualified": false,
+      "required_order": [
+        "Resolve slot and saved referent independently before clearing.",
+        "Observe an actual content-clear operation and complete pool lifetime coverage.",
+        "Resolve both again; establish retention independently of address or token equality."
+      ],
+      "observed_native_generations": null
+    },
+    "same_name_depth_replacement": {
+      "historical_signal": {
+        "status": "operation_observed_native_generation_missing",
+        "available_as2_control": "replaced",
+        "available_signal": [
+          "true",
+          "false"
+        ],
+        "native_allocation_generation_before": null,
+        "native_allocation_generation_after": null,
+        "limitation": "Explicit remove/create is observed, but no native allocation/free or saved-reference resolution is captured."
+      },
+      "qualified": false,
+      "required_order": [
+        "Resolve the original slot and saved referent with a live generation.",
+        "Observe removal, destruction/free and pool lifecycle events in actual execution order.",
+        "Observe replacement creation and resolve slot and saved referent independently."
+      ],
+      "observed_native_generations": null
+    },
+    "free_reuse": {
+      "qualified": false,
+      "required_order": [
+        "Start complete object/pool lifetime coverage before control allocation.",
+        "Observe the old generation ending before actual address reuse begins a new generation.",
+        "Resolve slot and saved referent after reuse without assigning identity by pointer."
+      ],
+      "observed_native_generations": null,
+      "limitation": "Removal need not imply immediate free. Unexercised reuse or a coverage gap remains unproved; generic malloc/free hooks alone do not cover internal pools."
+    }
+  },
+  "facility": {
+    "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+    "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "checks": [
+      {
+        "name": "slot-type",
+        "command": [
+          "lldb",
+          "--batch",
+          "-o",
+          "settings set target.preload-symbols false",
+          "-o",
+          "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+          "-o",
+          "image lookup -t DisplayObjectContainer"
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.606620458420366,
+        "log": "slot-type.txt",
+        "sha256": "fd6043862c385621abe1c3e7831d04cbbde164b9181e250b154ee5b1132f3b3f"
+      },
+      {
+        "name": "reference-type",
+        "command": [
+          "lldb",
+          "--batch",
+          "-o",
+          "settings set target.preload-symbols false",
+          "-o",
+          "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+          "-o",
+          "image lookup -t MovieClipObject"
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.13039045920595527,
+        "log": "reference-type.txt",
+        "sha256": "22be110c58f085275476298b23e48babfccaa87134df100564b89473639386ae"
+      },
+      {
+        "name": "slot-reference-symbols",
+        "command": [
+          "lldb",
+          "--batch",
+          "-o",
+          "settings set target.preload-symbols false",
+          "-o",
+          "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+          "-o",
+          "image lookup -r -n \"(GetInstanceAtDepth|GetChildAtDepth|ResolveMovieClip|MovieClipReference)\" \"Flash Player Debugger\""
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.3330384590663016,
+        "log": "slot-reference-symbols.txt",
+        "sha256": "6f52c3a7b5f10dd2368dc0136a5b4abf91f5bf19e094854792ac4b47eee532aa"
+      },
+      {
+        "name": "pool-lifetime-symbols",
+        "command": [
+          "lldb",
+          "--batch",
+          "-o",
+          "settings set target.preload-symbols false",
+          "-o",
+          "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+          "-o",
+          "image lookup -r -n \"(AllocMovieClip|FreeMovieClip|DisplayObjectPool|DestroyMovieClip)\" \"Flash Player Debugger\""
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.32076137512922287,
+        "log": "pool-lifetime-symbols.txt",
+        "sha256": "179c69ee6bb1c86e905cf9e6492ed2cc1aee3d762dc13c19c998fbff89a592a3"
+      }
+    ],
+    "player_launches": 0,
+    "process_attaches": 0,
+    "new_captures": 0,
+    "live_lifetime_events": null
+  },
+  "resolver_audit": {
+    "query_count": 4,
+    "matching_layouts_or_symbols_observed": 0,
+    "native_slot_reference_resolver_qualified": false,
+    "limitation": "Candidate names are search hypotheses, not established native class names. Empty lookup results do not prove that these objects are absent or native analysis is impossible."
+  },
+  "new_builds": 0,
+  "new_captures": 0,
+  "new_player_launches": 0,
+  "actual_native_controls_executed": false,
+  "absence_of_possible_resolver_proved": false,
+  "exclusions_enforced": [
+    "pointer-only identity",
+    "0->1 alias",
+    "token-loss identity",
+    "unloaded exemption",
+    "import inventory as runtime proof",
+    "property deletion as content clearing",
+    "ranks 1-7 and 9"
+  ],
+  "requirement_failure_codes": {
+    "slot-reference": "S298_SLOT_REFERENCE_UNPROVED",
+    "content-clearing": "S298_CONTENT_CLEARING_UNPROVED",
+    "replacement": "S298_REPLACEMENT_UNPROVED",
+    "allocation-identity": "S298_POOL_GENERATIONS_UNPROVED"
+  },
+  "blocker": "No native parent/depth slot or saved-reference resolver/layout qualified. No actual retained-content clearing, replacement or free/reuse control has a complete pool-aware ordered generation ledger.",
+  "next_discriminator": [
+    "Derive native parent/depth lookup and saved AS2 reference dereference independently on the pinned module; retain relative addresses, instruction bytes, layout and live provenance. Import stubs do not resolve either.",
+    "Establish object allocation/destruction and pool reuse coverage before control creation. System malloc/free alone may miss pooled object lifetimes. Track allocation generations, not pointer equality.",
+    "Qualify the same resolver/ledger on actual retained-content clearing and same-name/depth replacement. Record independent retention/free/reuse evidence and saved-reference referents; deleting a property is insufficient.",
+    "Only then capture the unchanged s261 tape at source-equivalent last-nonzero/first-zero boundaries with complete lifecycle ordering. Preserve actual roots and all events; no numeric-root assumption, alias or unloaded exemption."
+  ]
+}
