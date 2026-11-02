@@ -1,0 +1,37 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s288/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s288/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.644384,
+    "log": "diagnosis.txt"
+  },
+  "continuation": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s288/diagnose.py",
+      "--output",
+      "/tmp/s288-required.json",
+      "--require-native-continuation"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.640539,
+    "log": "continuation.txt"
+  },
+  "retained-activation": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s288/diagnose.py",
+      "--output",
+      "/tmp/s288-control.json",
+      "--require-retained-activation"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.636209,
+    "log": "retained-activation.txt"
+  }
+}

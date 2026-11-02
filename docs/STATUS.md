@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s288，AFTER-s281 排名第7项）：复算 s278/s266 的9493事件，新增归档 SWF 字节边界定位：Chad CallMethod/Pop 为28257/28258、register5目标SetMember为28277；保留对照窗口及函数定义单独绑定。静态偏移不是执行PC，加载缓冲区、栈与定义activation仍缺，两项证明要求exit1。零新构建/启动/捕获，无运行时实现；production_admitted=false、native_parity_proven=false，M0-02 pending。仅s288及跟踪文件变更，其他排名和s254–s287、共享验证器不变。[证据](../evidence/sampling-upgrade/s288/README.md)。
+
 - 2026-11-02（采样 s287，AFTER-s281 排名第6项）：仅核对 s259-normal P1 Loader 读取关联。复算5503历史事件；五次静态设施查询定位四个读取跳板及间接槽，名称查询失败不等于导入不存在。未观测实际读取返回、消费方或 loadStep 推进前的请求/目标关联，错资源对照尚未具备资格；两项证明要求均exit1。零新构建/启动/捕获，无收据修补或运行时实现。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s286、共享验证器不变。[证据](../evidence/sampling-upgrade/s287/README.md)。
 
 - 2026-11-02（采样 s286，AFTER-s281 排名第5项）：仅重试 Button2009 原生 UI 控制。应用清单成功，bundle ID 因两个副本歧义失败，完整安装路径仍 timeoutReached；三次工具耗时共17.0744秒。无窗口状态、输入或新捕获，编译/字节码核对与原菜单 Enter/release/无派发对照未执行。复算 s276/s271 的9774历史事件与六份候选补丁哈希；原生UI、薄覆盖及完整AS要求均exit1，59聚焦测试通过。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s286与跟踪文件变更，无运行时修复，其他排名及s254–s285不变。[证据](../evidence/sampling-upgrade/s286/README.md)。
