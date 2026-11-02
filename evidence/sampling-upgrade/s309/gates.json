@@ -1,0 +1,96 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s309/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s309/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 0.40630829194560647,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "activation-preservation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s309/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s309/diagnosis.json",
+      "--require-activation-preservation"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.36116445902734995,
+    "log": "activation-preservation.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s309/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s309/diagnosis.json",
+      "--require-observer"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.3255680841393769,
+    "log": "observer.txt"
+  },
+  {
+    "name": "nested-entry",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s309/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s309/diagnosis.json",
+      "--require-nested-entry"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.32008929224684834,
+    "log": "nested-entry.txt"
+  },
+  {
+    "name": "parent-removal",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s309/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s309/diagnosis.json",
+      "--require-parent-removal"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.3284779591485858,
+    "log": "parent-removal.txt"
+  }
+]
