@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-02（采样 s311，AFTER-s308 排名第3项）：完整复现锁定 s303 的9493历史事件；新增七段机器码值来源/转存审计，界定三次八字节槽转存、六条外部边及栈owner/value carrier/descriptor三种来源。局部清槽与低位判别不证明AVM类型、defining scope/register4或activation所有权，五项证明门槛exit1；live绑定、游标实测和保留调用在资格前阻塞。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s311与跟踪文件变更，s254–s310不变，不执行排名1–2或4–9，零构建/启动/内存读取/捕获。 [证据](../evidence/sampling-upgrade/s311/README.md)。
+
 - 2026-11-02（采样 s310，AFTER-s308 排名第2项）：完整复现锁定 s301；新增两组替换控制 before/unload/load/after 同次事件核查，仅观测帧1，unload 深度 -132770 与端点100001保留原值，不解释为原生实例身份。未导出独立十帧入口/实例解析器；重复、改变、替换及 observer-off/on 控制仍未获资格，四项证明门禁 exit1，新捕获在启动前阻塞。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s310与跟踪文件变更，s254–s309不变，不执行排名1或3–9，零构建/启动/捕获/图片。 [证据](../evidence/sampling-upgrade/s310/README.md)。
 
 - 2026-11-02（采样 s309，post-s308 重排）：s300–s308交付保持关闭，仅执行新排名第1项 Yulong getHitObj 两处新增初始化定义—读取审计。完整复现s302的5214历史事件，原版87/归档91节点未消去图全量遍历；两处初始化均不到达9个显式读取，后续写入与原版对应并保留见证路径。静态覆盖不证明activation可见消去、观察器无扰动、直接移除派发或自然嵌套入口，四项证明门槛exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；排名2+仅规划，s254–s308及共享工具不变，零新构建/启动/捕获，无运行时修改。 [新排名](../evidence/sampling-upgrade/next-fix-priority-after-s308.md)；[证据](../evidence/sampling-upgrade/s309/README.md)。

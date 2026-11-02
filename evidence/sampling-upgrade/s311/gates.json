@@ -1,0 +1,97 @@
+[
+  {
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s311/diagnose.py",
+      "--output",
+      "/tmp/s311-gate.json",
+      "--require-activation-layout"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.5556771657429636,
+    "log": "activation-layout.txt",
+    "code": "S311_ACTIVATION_LAYOUT_UNPROVED"
+  },
+  {
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s311/diagnose.py",
+      "--output",
+      "/tmp/s311-gate.json",
+      "--require-value-ownership"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.6057178326882422,
+    "log": "value-ownership.txt",
+    "code": "S311_VALUE_OWNERSHIP_UNPROVED"
+  },
+  {
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s311/diagnose.py",
+      "--output",
+      "/tmp/s311-gate.json",
+      "--require-live-binding"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.5771147920750082,
+    "log": "live-binding.txt",
+    "code": "S311_LIVE_BINDING_UNPROVED"
+  },
+  {
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s311/diagnose.py",
+      "--output",
+      "/tmp/s311-gate.json",
+      "--require-cursor-convention"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.5795158338733017,
+    "log": "cursor-convention.txt",
+    "code": "S311_CURSOR_CONVENTION_UNPROVED"
+  },
+  {
+    "command": [
+      "python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s311/diagnose.py",
+      "--output",
+      "/tmp/s311-gate.json",
+      "--require-retained-invocation"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.5957579580135643,
+    "log": "retained-invocation.txt",
+    "code": "S311_RETAINED_INVOCATION_UNPROVED"
+  }
+]
