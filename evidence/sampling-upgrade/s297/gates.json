@@ -1,0 +1,57 @@
+[
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s297/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s297/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.15937937516719103,
+    "log": "diagnosis.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s297/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s297/diagnosis.json",
+      "--require-loader-attestation"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.14232550002634525,
+    "log": "loader-association.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s297/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s297/diagnosis.json",
+      "--require-pre-advance-target"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.14085283409804106,
+    "log": "pre-advance-target.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s297/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s297/diagnosis.json",
+      "--require-wrong-resource-control"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.13879079231992364,
+    "log": "wrong-resource.txt",
+    "PYTHONPATH": "."
+  }
+]
