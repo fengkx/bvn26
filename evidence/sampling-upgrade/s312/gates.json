@@ -1,0 +1,92 @@
+[
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s312/diagnose.py",
+      "--output",
+      "/tmp/s312-gate.json",
+      "--require-scope-binding"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.8423145827837288,
+    "log": "scope-binding.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s312/diagnose.py",
+      "--output",
+      "/tmp/s312-gate.json",
+      "--require-activation-erasure"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.9218267076648772,
+    "log": "activation-erasure.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s312/diagnose.py",
+      "--output",
+      "/tmp/s312-gate.json",
+      "--require-helper-effects"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.8906222912482917,
+    "log": "helper-effects.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s312/diagnose.py",
+      "--output",
+      "/tmp/s312-gate.json",
+      "--require-off-on"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.8451827079989016,
+    "log": "off-on.txt"
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s312/diagnose.py",
+      "--output",
+      "/tmp/s312-gate.json",
+      "--require-external-callsite"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.8628948340192437,
+    "log": "external-callsite.txt"
+  }
+]
