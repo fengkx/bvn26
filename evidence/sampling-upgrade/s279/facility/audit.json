@@ -1,0 +1,82 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "checks": {
+    "module-uuid": {
+      "command": [
+        "dwarfdump",
+        "--uuid",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.04651,
+      "log": "module-uuid.txt",
+      "sha256": "424d7b1fe8a04d9d7f473a62a5efef8fbf068668ffb728f6a5ea55123b06d76e"
+    },
+    "indirect-symbols": {
+      "command": [
+        "otool",
+        "-Iv",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.019431,
+      "log": "indirect-symbols.txt",
+      "sha256": "0598026a2e38d32ccbe602ce4617b1d0c0ae2382ac23bebcadbcab67eadf6703"
+    },
+    "resolver-breakpoints": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "breakpoint set --shlib \"Flash Player Debugger\" --func-regex \"(GetInstanceAtDepth|getInstanceAtDepth|GetDisplayObject|GetMember|MovieClipObject|MovieClipRef|ResolvePath|ResolveTarget|UnloadMovie|unloadMovie)\"",
+        "-o",
+        "breakpoint list"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.995914,
+      "log": "resolver-breakpoints.txt",
+      "sha256": "a5a5ac9554b858bba526d4108f1eea432e6acc4a545a28411f371f8e8374efc7"
+    },
+    "reference-type": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t \"MovieClipObject\""
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.136378,
+      "log": "reference-type.txt",
+      "sha256": "a33c26f7486235a268e4ae452e348b4f5143b2cbed3641a6563d5a588d1b8729"
+    },
+    "allocator-stubs": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -r -n \"^(malloc|calloc|realloc|free)$\" \"Flash Player Debugger\""
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.238307,
+      "log": "allocator-stubs.txt",
+      "sha256": "8c1768dad99f25d1e1ed55dfb24be9ba4afddfbb6adaaad67d4b95842d9b61ee"
+    }
+  },
+  "player_launches": 0,
+  "new_captures": 0,
+  "allocation_events_observed": 0,
+  "limitation": "Import stubs are candidates only: no slot, saved reference, object layout or native generation is resolved."
+}

@@ -1435,3 +1435,10 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s278，AFTER-s272 排名第6项）：复算 s266 的9493事件与保留/移除对照，锁定原 goto CallMethod、Pop 和 register5 写入窗口。LLDB 沙箱启动失败，提权后成功停在播放器入口并读取CPU寄存器；AVM1候选断点零地址、activation类型查询无匹配，不能观察目标指令或退出。原生continuation要求exit1，无已证明实现；零新SWF构建/电影捕获。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s277、运行时与严格验证器不变。
 
 [证据、设施尝试与下一判别步骤](../evidence/sampling-upgrade/s278/README.md)。
+
+
+## s279：AImain 原生槽位、保存引用与分配代际（未证明）
+
+2026-11-02（采样 s279，AFTER-s272 排名第7项）：复算 s267/s261 的8290事件与root8/9边界；同哈希播放器的四个allocator导入跳板及指针槽已按字节锁定，但槽位/保存引用解析器候选仍零地址，原生对象分配、释放与复用记录均缺。保留内容清空和同深度替换的代际对照未通过，身份要求exit1；零新构建/捕获，无运行时映射。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s278、严格验证器不变。
+
+导入跳板不是对象解析器，系统malloc/free也不能证明内部对象池寿命。下一判别需先绑定两种引用的原生对象、覆盖释放与地址复用，再以真实内容清空保留及同深度替换校准。不得以属性丢失、指针相等、0→1或unloaded豁免替代。详见 [s279](../evidence/sampling-upgrade/s279/README.md)。
