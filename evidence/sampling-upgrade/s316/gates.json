@@ -1,0 +1,71 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s316/diagnose.py",
+      "--output",
+      "/tmp/s316-checked.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 2.782437541987747,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "slot-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s316/diagnose.py",
+      "--output",
+      "/tmp/s316-checked.json",
+      "--require-slot-reference"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 2.70020700013265,
+    "log": "slot-reference.txt"
+  },
+  {
+    "name": "content-clearing",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s316/diagnose.py",
+      "--output",
+      "/tmp/s316-checked.json",
+      "--require-content-clearing"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 2.7899745418690145,
+    "log": "content-clearing.txt"
+  },
+  {
+    "name": "replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s316/diagnose.py",
+      "--output",
+      "/tmp/s316-checked.json",
+      "--require-replacement"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 2.8842334169894457,
+    "log": "replacement.txt"
+  },
+  {
+    "name": "allocation-identity",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s316/diagnose.py",
+      "--output",
+      "/tmp/s316-checked.json",
+      "--require-allocation-identity"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 3.065718207973987,
+    "log": "allocation-identity.txt"
+  }
+]

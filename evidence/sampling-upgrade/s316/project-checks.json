@@ -1,0 +1,125 @@
+[
+  {
+    "name": "s316-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s316",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 3.459121583029628,
+    "log": "s316-tests.txt"
+  },
+  {
+    "name": "s307-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s307",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 13.781503040809184,
+    "log": "s307-tests.txt"
+  },
+  {
+    "name": "s298-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s298",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 16.198280999902636,
+    "log": "s298-tests.txt"
+  },
+  {
+    "name": "s289-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s289",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 8.056623707991093,
+    "log": "s289-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_aimain_native_resolver_gap",
+      "tools.tests.test_aimain_allocation_identity",
+      "tools.tests.test_aimain_content_clearing",
+      "tools.tests.test_aimain_unload_identity",
+      "tools.tests.test_display_source_frame_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_import_guards"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 21.003599249757826,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.7472532498650253,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.06594704184681177,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.11032433295622468,
+    "log": "diff-check.txt"
+  }
+]
