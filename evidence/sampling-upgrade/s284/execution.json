@@ -1,0 +1,69 @@
+[
+  {
+    "mode": "normal",
+    "build_command": [
+      "python3",
+      "evidence/sampling-upgrade/s284/build_probe.py",
+      "--ffdec",
+      "/private/tmp/bvn-s283-tools/ffdec/ffdec.jar",
+      "--output",
+      "/private/tmp/bvn-s284-normal",
+      "--run-id",
+      "s284-normal-20261102-r01"
+    ],
+    "build_exit": 0,
+    "capture_command": [
+      "python3",
+      "-m",
+      "tools.sampling_native",
+      "--case",
+      "evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json",
+      "--build",
+      "/private/tmp/bvn-s284-normal",
+      "--trace",
+      "/private/tmp/bvn-s284-normal-capture/native.log",
+      "--receipt",
+      "/private/tmp/bvn-s284-normal-capture/receipt.json",
+      "--timeout",
+      "90",
+      "--allow-window-activation"
+    ],
+    "capture_exit": 0,
+    "execution": "tool-approved sandbox escalation",
+    "qualification_before_launch": true
+  },
+  {
+    "mode": "held",
+    "build_command": [
+      "python3",
+      "evidence/sampling-upgrade/s284/build_probe.py",
+      "--ffdec",
+      "/private/tmp/bvn-s283-tools/ffdec/ffdec.jar",
+      "--output",
+      "/private/tmp/bvn-s284-held",
+      "--run-id",
+      "s284-held-20261102-r01",
+      "--hold-quit"
+    ],
+    "build_exit": 0,
+    "capture_command": [
+      "python3",
+      "-m",
+      "tools.sampling_native",
+      "--case",
+      "evidence/sampling-upgrade/s228/ichigo__attack__neutral__ground__near.json",
+      "--build",
+      "/private/tmp/bvn-s284-held",
+      "--trace",
+      "/private/tmp/bvn-s284-held-capture/native.log",
+      "--receipt",
+      "/private/tmp/bvn-s284-held-capture/receipt.json",
+      "--timeout",
+      "90",
+      "--allow-window-activation"
+    ],
+    "capture_exit": 0,
+    "execution": "tool-approved sandbox escalation",
+    "qualification_before_launch": true
+  }
+]

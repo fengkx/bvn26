@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s284，AFTER-s281 排名第3项）：仅执行经源保留资格核对的独立 s228 DoAction normal/held 对。5752/5733条完整保存事件均通过严格捕获与入口检查，均61样本；held在tick60保留34条按键回调后闭窗，normal无尾段，退出截断单列。角色/援助/输入与历史一致，随机值差异保留。normal主机日志在held启动时清空，独立一致性检查未保存，完整实验仍未证明；完成要求及两次full-AS门槛exit1（547未访问块、656未插桩脚本）。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s284与跟踪文件变更，无默认推广、运行时修改或收据修补。[证据](../evidence/sampling-upgrade/s284/README.md)。
+
 - 2026-11-02（采样 s283，AFTER-s281 排名第2项）：仅资格审计 P2 基础 Sprite638 ticks10–12 身体推挤调用。原版完整字节码证明两处短路和目标先于接收者求值；候选编译改变函数寄存器数12→13、预加载标志与分配，完整控制流已保留但对应关系及观察器消去未证明。复算5437历史事件，调用执行仍未知；资格/调用证明要求exit1，零原生启动/捕获，无运行时修复。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s282、共享验证器不变。[证据](../evidence/sampling-upgrade/s283/README.md)。
 
 - 2026-11-02（采样 s282，AFTER-s281 重新排名第1项）：基于 master f66987b3/#159 重排剩余缺口，仅审计 s274 个位独立目标帧观测。复算26828事件和63回调：45次选择无入口插桩的帧2–10；18次选择帧1，其中4个自然入口窗口、14个开场前无入口记录窗口。同步帧读数不补齐独立子时钟，证明要求exit1；零新构建/捕获/图片，无运行时实现。production_admitted=false、native_parity_proven=false，M0-02 pending；新排名2+仅规划，s254–s281及共享验证器不变。[证据](../evidence/sampling-upgrade/s282/README.md)。
