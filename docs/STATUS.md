@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s296，AFTER-s290 排名第6项）：完整复现锁定 s286 诊断与六份候选补丁哈希；本次精确路径原生窗口选择在16.1641秒后 timeoutReached，未取得窗口状态，零输入、零插桩启动、零新捕获。原生UI前置条件未满足，编译/opcode资格及Enter/release与无派发对照顺序阻塞，四项证明要求均exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s296及跟踪文件变更，其他排名与s254–s295不变，无运行时修复。[证据](../evidence/sampling-upgrade/s296/README.md)。
+
 - 2026-11-02（采样 s295，AFTER-s290 排名第5项）：完整复现锁定 s288 的9493事件诊断；对收据锁定播放器新增三项缓冲区类型/游标符号查询，均无匹配。归档 retained worker 的139字节体唯一，但589408同时是CallMethod下一位置与Pop当前位置，静态字节无法确定游标约定或区分retain/remove调用。加载缓冲区、游标约定、retained activation与三指令边界四项要求均exit1；零新构建/启动/捕获，机制仍未证明。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s295及跟踪文件变更，其他排名和s254–s294不变，无运行时修复。[证据](../evidence/sampling-upgrade/s295/README.md)。
 
 - 2026-11-02（采样 s294，AFTER-s290 排名第4项）：完整复现锁定 s285 的5214事件诊断，新增原版/归档 Sprite2 六函数完整字节与函数头审计。getHitObj 寄存器数15→9，四参数寄存器9/13/12/3→2/3/4/5；六函数体及常量池均不同，源文本保留不等于完整activation/操作数保留，也不据此断言语义不等价。直接移除派发、自然嵌套入口及完整保留映射仍缺，四项资格门槛exit1；零新构建/启动/捕获，配对对照被前置资格阻塞。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s294及跟踪文件变更，其他排名和s254–s293不变，无运行时修复。[证据](../evidence/sampling-upgrade/s294/README.md)。

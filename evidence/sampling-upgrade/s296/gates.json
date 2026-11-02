@@ -1,0 +1,61 @@
+[
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s296/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s296/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.5865256669931114
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s296/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s296/diagnosis.json",
+      "--require-native-ui"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.5522924168035388
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s296/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s296/diagnosis.json",
+      "--require-opcode-qualification"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.5413177921436727
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s296/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s296/diagnosis.json",
+      "--require-thin-coverage"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.5418559582903981
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s296/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s296/diagnosis.json",
+      "--require-full-as"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.6932625407353044
+  }
+]
