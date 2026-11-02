@@ -1,0 +1,93 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s283/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s283/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.9279560833238065,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s283/diagnose.py",
+      "--output",
+      "/tmp/s283-observer.json",
+      "--require-observer"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.8433160409331322,
+    "log": "observer.txt"
+  },
+  {
+    "name": "external-callsite",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s283/diagnose.py",
+      "--output",
+      "/tmp/s283-call.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.9190465831197798,
+    "log": "external-callsite.txt"
+  },
+  {
+    "name": "retained-callsite",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s273/diagnose.py",
+      "--output",
+      "/tmp/s283-s273.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 0.7826242498122156,
+    "log": "retained-callsite.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s283",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 0.8122077081352472,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_external_collision_callsite",
+      "tools.tests.test_receiver_authored_query",
+      "tools.tests.test_receiver_init_order",
+      "tools.tests.test_p1_receiver_availability",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 3.669759917072952,
+    "log": "retained-tests.txt"
+  }
+]
