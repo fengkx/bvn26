@@ -1,0 +1,92 @@
+[
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s295",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 2.7746840841136873,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s288-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s288",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 1.5702577093616128,
+    "log": "retained-s288-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_chad_native_instruction_diagnosis",
+      "tools.tests.test_chad_defining_context",
+      "tools.tests.test_chad_register_control",
+      "tools.tests.test_as_continuation_discriminator",
+      "tools.tests.test_chad_lifecycle_observer",
+      "tools.tests.test_call_exit_diagnosis",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 3.2793272081762552,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.7232087920419872,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.06185616599395871,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.09565266687422991,
+    "log": "diff-check.txt"
+  }
+]

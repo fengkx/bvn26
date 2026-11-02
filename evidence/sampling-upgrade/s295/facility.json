@@ -1,0 +1,60 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "checks": [
+    {
+      "name": "buffer-types",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t ActionBuffer"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.5690747913904488,
+      "log": "buffer-types.txt",
+      "sha256": "9542597e2cded855dbdc9c8dc101fa670d5242debe4fb3d12c36f905dd5380a7"
+    },
+    {
+      "name": "buffer-data-types",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t ActionBufferData"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.13740512495860457,
+      "log": "buffer-data-types.txt",
+      "sha256": "b5ae26e42a3517bd0d13f3b31bca123fa0ff438ce15d9446060d18418b03cc4d"
+    },
+    {
+      "name": "cursor-symbols",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -r -n \"(ActionBuffer|ActionExec|ActionContext|AS2.*(Execute|Activation))\""
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.3669265420176089,
+      "log": "cursor-symbols.txt",
+      "sha256": "47b3cbdb7be87c701d29bb8fdfb39314d3a1f9f718a38895fa1145547d861323"
+    }
+  ],
+  "launch_requested": false,
+  "movie_supplied": false,
+  "limitation": "Name/type lookup only; failure does not rule out stripped-code analysis."
+}

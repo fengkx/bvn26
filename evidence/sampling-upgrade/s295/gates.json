@@ -1,0 +1,71 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s295/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s295/diagnosis.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.6394632090814412,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "loaded-buffer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s295/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s295/diagnosis.json",
+      "--require-loaded-buffer"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.5805132500827312,
+    "log": "loaded-buffer.txt"
+  },
+  {
+    "name": "cursor-convention",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s295/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s295/diagnosis.json",
+      "--require-cursor-convention"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.5930126667954028,
+    "log": "cursor-convention.txt"
+  },
+  {
+    "name": "retained-activation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s295/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s295/diagnosis.json",
+      "--require-retained-activation"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.591472583822906,
+    "log": "retained-activation.txt"
+  },
+  {
+    "name": "instruction-boundaries",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s295/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s295/diagnosis.json",
+      "--require-instruction-boundaries"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.521563250105828,
+    "log": "instruction-boundaries.txt"
+  }
+]
