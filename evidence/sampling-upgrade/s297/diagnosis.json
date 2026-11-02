@@ -1,0 +1,302 @@
+{
+  "base": "9ee71eaf6b73fffbe7277cf4d79fc4a412dab76d",
+  "scope": "AFTER-s290 rank #7 only; s259-normal P1",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "loader_attestation_proved": false,
+  "normal_association_qualified": false,
+  "pre_advance_target_proved": false,
+  "wrong_resource_control_qualified": false,
+  "wrong_resource_control_executed": false,
+  "product_obligations_closed": 0,
+  "locked_s287_reproduced": true,
+  "historical_normal": {
+    "events": 5503,
+    "raw_sha256": "bd4095e5e35bfb86ee070a6f821c6056d90083eb91cee4f0601706423a26e842",
+    "capture_structure_exit": 0,
+    "archived_output_and_receipt_hashes_match": true,
+    "configuration_fighter": "yijiao",
+    "requested_slot_expression": "_root.game[pr]",
+    "expected_source_sha256": "9734a584c1e7c1b88665db0347595fd95083cba6a4c1410c5ee0381c22eb479d",
+    "expected_instrumented_sha256": "685762d5faf094be413b64ff0dd595d824f8fe383ea38ef3ff016462b73fa0da",
+    "loader_sites": {
+      "request": "_this._loader.loadClip(_root.fighterDir + _loc3_.url,_root.game[pr]);",
+      "callback": "LO.onLoadComplete = function(target)\n{\n   loadStep++;\n   loadSteps[loadStep]();\n};",
+      "callback_target_recorded": false,
+      "callback_consumes_target": false,
+      "helper_load_before_request": true
+    },
+    "event_kind_counts": {
+      "boot": 1,
+      "done": 1,
+      "frame_state_enter": 64,
+      "frame_state_exit": 64,
+      "geometry_begin": 61,
+      "geometry_box": 240,
+      "geometry_end": 61,
+      "helper_clip_state": 658,
+      "helper_lifecycle": 658,
+      "helper_load": 2,
+      "helper_state": 658,
+      "initCtrl": 6,
+      "input_bindings": 1,
+      "input_next_display": 510,
+      "intro_body_enter": 126,
+      "intro_body_exit": 126,
+      "intro_goto_before": 1,
+      "intro_goto_return": 1,
+      "intro_poll": 21,
+      "intro_poll_state": 21,
+      "intro_step": 4,
+      "key_read": 1557,
+      "random": 2,
+      "ready": 1,
+      "state": 658
+    },
+    "candidate_proxy_events": [
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "1",
+        "10158",
+        "0",
+        "-1",
+        "boot",
+        "vs_com,minren,yihu,AI=5"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "3",
+        "10320",
+        "0",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "5",
+        "10362",
+        "1",
+        "-1",
+        "helper_load",
+        "p1,我爱罗,woailuo.swf"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "8",
+        "10369",
+        "1",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "12",
+        "10375",
+        "2",
+        "-1",
+        "helper_load",
+        "p2,魂,kon.swf"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "19",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "20",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "21",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "22",
+        "10580",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2.mc"
+      ]
+    ],
+    "actual_load_callback_target": null,
+    "consumed_bytes_observation": null,
+    "callback_to_instance_lifetime": null
+  },
+  "source_loader_order": {
+    "authored_request_order": [
+      "loadman(\"p1\")",
+      "loadman(\"p2\")",
+      "loadfz(\"p1\")",
+      "loadfz(\"p2\")",
+      "loadSound()"
+    ],
+    "movie_clip_loader_instances_in_script": 1,
+    "completion_calls_next_step_inline": true,
+    "on_load_init_listener_present": false,
+    "callback_target_consumed": false,
+    "actual_callback_order": null,
+    "limitation": "Source order is not an observed callback schedule. A mutable current-request field can be advanced before a later initialization event; use a qualified per-request association."
+  },
+  "static_read_stubs": [
+    {
+      "symbol": "CFReadStreamRead",
+      "unslid_stub": "0x100fb5baa",
+      "unslid_pointer_slot": "0x1014b2660",
+      "instruction_hex": "ff25b0ca4f00"
+    },
+    {
+      "symbol": "fread",
+      "unslid_stub": "0x100fb65be",
+      "unslid_pointer_slot": "0x1014b33d0",
+      "instruction_hex": "ff250cce4f00"
+    },
+    {
+      "symbol": "mmap",
+      "unslid_stub": "0x100fb6720",
+      "unslid_pointer_slot": "0x1014b35a8",
+      "instruction_hex": "ff2582ce4f00"
+    },
+    {
+      "symbol": "read",
+      "unslid_stub": "0x100fb6882",
+      "unslid_pointer_slot": "0x1014b3780",
+      "instruction_hex": "ff25f8ce4f00"
+    }
+  ],
+  "facility": {
+    "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+    "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "checks": [
+      {
+        "name": "loader-type",
+        "command": [
+          "lldb",
+          "--batch",
+          "-o",
+          "settings set target.preload-symbols false",
+          "-o",
+          "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+          "-o",
+          "image lookup -t MovieClipLoader"
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.5729808751493692,
+        "log": "loader-type.txt",
+        "sha256": "d80b1dfa842dce851150c2a76797a8d5f2f37ff42dc96643b78890efc272559c"
+      },
+      {
+        "name": "request-type",
+        "command": [
+          "lldb",
+          "--batch",
+          "-o",
+          "settings set target.preload-symbols false",
+          "-o",
+          "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+          "-o",
+          "image lookup -t URLRequest"
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.1290929582901299,
+        "log": "request-type.txt",
+        "sha256": "1b63575776d09e08bf7e4afa5ecfcf778514396474661b9322c747dab3554d7b"
+      },
+      {
+        "name": "stream-type",
+        "command": [
+          "lldb",
+          "--batch",
+          "-o",
+          "settings set target.preload-symbols false",
+          "-o",
+          "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+          "-o",
+          "image lookup -t CFReadStreamRef"
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.12545266607776284,
+        "log": "stream-type.txt",
+        "sha256": "bb0ce1e93de0354a5d64f445c647e5089024b2db286b5599eafe191cdadfea88"
+      },
+      {
+        "name": "request-consumer-symbols",
+        "command": [
+          "lldb",
+          "--batch",
+          "-o",
+          "settings set target.preload-symbols false",
+          "-o",
+          "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+          "-o",
+          "image lookup -r -n \"(ReadStream|LoadRequest|LoadContext|LoaderInfo|StreamConsumer)\" \"Flash Player Debugger\""
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.3301043747924268,
+        "log": "request-consumer-symbols.txt",
+        "sha256": "d55d30fa152eb0bcbc5076d96d6357bf076ba77789f49a668f72013ad6ec7d9a"
+      }
+    ],
+    "player_launches": 0,
+    "process_attaches": 0,
+    "new_captures": 0,
+    "live_read_events": null
+  },
+  "resolver_audit": {
+    "query_count": 4,
+    "matching_layouts_or_symbols_observed": 0,
+    "native_request_resolver_qualified": false,
+    "limitation": "Candidate names are search hypotheses, not established native class names. Empty lookup results do not prove that these objects are absent or native analysis is impossible."
+  },
+  "observations": {
+    "executed_read_return": null,
+    "returned_buffer_ranges": null,
+    "loader_consumer": null,
+    "immutable_request_identity": null,
+    "target_before_loadStep_advance": null,
+    "same_request_initialization": null,
+    "target_lifetime": null,
+    "actual_wrong_resource_control": null
+  },
+  "new_builds": 0,
+  "new_captures": 0,
+  "new_player_launches": 0,
+  "exclusions_enforced": [
+    "static hash/live-byte substitution",
+    "mutable request proxy",
+    "helper stamp",
+    "global counter",
+    "receipt resealing",
+    "rollout",
+    "other ranks"
+  ],
+  "blocker": "No executed P1 read-return/buffer-to-consumer-to-immutable-request resolver or target observation before inline loadStep advance. Static stubs and empty candidate lookups cannot qualify that join.",
+  "wrong_resource_blocker": "Normal association must be independently qualified first; actual Yihu-for-Yijiao control not executed.",
+  "next_discriminator": "Resolve the actual P1 consuming native call chain and immutable request identity, retain returned byte ranges (or mapped ranges actually consumed), and observe its callback target before loadStep++. Qualify observer preservation and same-request init/use/replacement separately. Only then run an isolated wrong-resource control with expected Yijiao identity unchanged."
+}

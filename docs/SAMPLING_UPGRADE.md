@@ -1538,3 +1538,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s296，AFTER-s290 排名第6项）：完整复现锁定 s286 诊断与六份候选补丁哈希；本次精确路径原生窗口选择在16.1641秒后 timeoutReached，未取得窗口状态，零输入、零插桩启动、零新捕获。原生UI前置条件未满足，编译/opcode资格及Enter/release与无派发对照顺序阻塞，四项证明要求均exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s296及跟踪文件变更，其他排名与s254–s295不变，无运行时修复。
 
 [证据与复现](../evidence/sampling-upgrade/s296/README.md)。设施与校验实际耗时见本切片记录；前期阅读设计及人天未知。
+
+## s297 — AFTER-s290 rank #7: Loader consumed bytes
+
+2026-11-02（采样 s297，AFTER-s290 排名第7项）：完整复现锁定 s287 的5503事件诊断与四个静态读取跳板；新增四项原生请求/流类型及消费方符号查询均无匹配。候选名称不代表已知原生类型，空查询不证明对象不存在。实际P1返回字节、消费方、不可变请求与loadStep推进前目标关联仍缺，三项证明要求exit1；正常资格未建立，错资源对照未执行。零新构建/启动/捕获，无运行时变更。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s297及跟踪文件变更，其他排名和s254–s296不变。
+
+[证据与复现](../evidence/sampling-upgrade/s297/README.md)。设施与校验实际耗时见本切片记录；前期阅读设计及人天未知。

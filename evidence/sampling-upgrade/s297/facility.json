@@ -1,0 +1,78 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "checks": [
+    {
+      "name": "loader-type",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t MovieClipLoader"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.5729808751493692,
+      "log": "loader-type.txt",
+      "sha256": "d80b1dfa842dce851150c2a76797a8d5f2f37ff42dc96643b78890efc272559c"
+    },
+    {
+      "name": "request-type",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t URLRequest"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.1290929582901299,
+      "log": "request-type.txt",
+      "sha256": "1b63575776d09e08bf7e4afa5ecfcf778514396474661b9322c747dab3554d7b"
+    },
+    {
+      "name": "stream-type",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -t CFReadStreamRef"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.12545266607776284,
+      "log": "stream-type.txt",
+      "sha256": "bb0ce1e93de0354a5d64f445c647e5089024b2db286b5599eafe191cdadfea88"
+    },
+    {
+      "name": "request-consumer-symbols",
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -r -n \"(ReadStream|LoadRequest|LoadContext|LoaderInfo|StreamConsumer)\" \"Flash Player Debugger\""
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.3301043747924268,
+      "log": "request-consumer-symbols.txt",
+      "sha256": "d55d30fa152eb0bcbc5076d96d6357bf076ba77789f49a668f72013ad6ec7d9a"
+    }
+  ],
+  "player_launches": 0,
+  "process_attaches": 0,
+  "new_captures": 0,
+  "live_read_events": null
+}
