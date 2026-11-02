@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-02（采样 s306，AFTER-s299 排名第7项）：完整复现锁定 s297 的5503历史事件；新增收据匹配播放器432字节读取包装函数审计，核对完整反汇编、流/缓冲区/长度操作数及返回分支。静态候选不证明该路径用于P1，消费方、不可变请求与loadStep推进前目标关联仍缺；三项证明门槛exit1，正常资格未通过，错资源对照未执行。零新构建/启动/附加/捕获，无运行时修改。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s306及跟踪文件变更，s254–s305不变，不执行排名1–6或8–9。 [证据](../evidence/sampling-upgrade/s306/README.md)。
+
 - 2026-11-02（采样 s305，AFTER-s299 排名第6项）：完整复现锁定 s296 诊断与六份候选补丁哈希；本次精确路径原生窗口选择在18.3654秒后 timeoutReached，未取得窗口状态，零输入、零插桩启动、零新捕获。应用激活副作用未知，不能把失败当成未派发或返回证明。原生UI前置条件未满足，编译/opcode资格及原菜单Enter/release与无派发对照保持阻塞，四项证明门槛均exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s305及跟踪文件变更，s254–s304不变，不执行排名1–5或7+。 [证据](../evidence/sampling-upgrade/s305/README.md)。
 
 - 2026-11-02（采样 s304，AFTER-s299 排名第5项）：完整复现锁定 s293，独立 normal/held 主机保管证明保持关闭。限定归档根 onEnterFrame 的源入口、显式/隐式出口及关闭分支归属；done 后34次读取与关闭标记均无 activation/返回见证，日志关闭发生在退出请求及返回之前。单回调完成、全部终端回调完成两项门槛均 exit1；缺独立入口—返回关联与完整派发清单，禁止以读取数量或静默代替。零新构建/启动/捕获，不修收据或随机 tape。production_admitted=false、native_parity_proven=false，M0-02 pending；仅 s304 与跟踪文件变更，s254–s303 不变，不执行排名1–4或6+。 [证据](../evidence/sampling-upgrade/s304/README.md)。

@@ -1,0 +1,61 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s306/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s306/diagnosis.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 0.16814674995839596,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "loader-association",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s306/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s306/diagnosis.json",
+      "--require-loader-attestation"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.14172358391806483,
+    "log": "loader-association.txt"
+  },
+  {
+    "name": "pre-advance-target",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s306/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s306/diagnosis.json",
+      "--require-pre-advance-target"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.15316383307799697,
+    "log": "pre-advance-target.txt"
+  },
+  {
+    "name": "wrong-resource",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s306/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s306/diagnosis.json",
+      "--require-wrong-resource-control"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 0.1389863332733512,
+    "log": "wrong-resource.txt"
+  }
+]
