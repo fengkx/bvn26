@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-02（采样 s299，AFTER-s290 排名第9项）：完整复现锁定 s290 诊断，61个边界仍全部存在数字及其他场景状态差异，同次Godot图片为零。新增逐边界源绑定边缘/内部及RGBA未知项，保持null而非零；状态准入、配对场景、严格RGBA三项要求均exit1。缺完整同次状态准入，未尝试配对捕获或分类；不修准入、不执行排名1–8。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s299及跟踪文件变更，s254–s298不变，无构建/启动/捕获/图片及运行时变更。[证据](../evidence/sampling-upgrade/s299/README.md)。
+
 这是 PR #48 fail-loud 安全网之后的独立工作，不改变该 PR 的送审标准。
 `production_admitted=false`；它仍是证据状态，不是 FilterGroup 的运行时开关。
 

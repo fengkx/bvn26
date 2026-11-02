@@ -1,0 +1,57 @@
+[
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s299/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s299/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "wall_seconds": 4.159125207923353,
+    "log": "diagnosis.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s299/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s299/diagnosis.json",
+      "--require-state-admission"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 4.124566125217825,
+    "log": "state-admission.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s299/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s299/diagnosis.json",
+      "--require-paired-scene"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 4.012236417271197,
+    "log": "paired-scene.txt",
+    "PYTHONPATH": "."
+  },
+  {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s299/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s299/diagnosis.json",
+      "--require-thin-raster"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "wall_seconds": 4.161641958169639,
+    "log": "thin-raster.txt",
+    "PYTHONPATH": "."
+  }
+]
