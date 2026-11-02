@@ -1423,3 +1423,9 @@ ancestor-pn、严格验证器及基准未动。[证据、成本与复现](../evi
 2026-11-02（采样 s276，AFTER-s272 排名第4项）：仅准备 Button2009 独立原菜单 UI 案例和候选入口观察补丁。原生 UI 控制选应用超时1433.1215秒，未取得窗口、未发送输入、无新捕获；frame10、Enter/release 入口及无派发对照均未观测。锁定 s271/s263 重放通过，594未访问/415未插桩保留；薄覆盖与完整AS要求exit1，无已证明实现。production_admitted=false、native_parity_proven=false，M0-02 pending。其他排名及s254–s275未动，严格验证器与运行时不变。
 
 [证据、失败成本与复现](../evidence/sampling-upgrade/s276/README.md)。
+
+## s277：s272 后排名第五项——实际加载读取关联仍未证明
+
+2026-11-02（采样 s277，AFTER-s272 排名第5项）：仅复算 s259 normal P1 的5503事件，核对共用loader及完成回调内联推进下一请求的源码边界。原收据同哈希播放器导入多种读取API，但未建立实际读取到请求/回调的关联；DTrace在沙箱内外查询均exit1，模块内loader符号查询无匹配。独立消费字节、真实错资源加载及有界目标寿命仍未观测，证明要求exit1；零新构建/捕获，无运行时实现或收据修补。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s276、严格验证器不变。
+
+[证据、设施查询与下一判别步骤](../evidence/sampling-upgrade/s277/README.md)。

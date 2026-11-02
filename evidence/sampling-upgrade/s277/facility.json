@@ -1,0 +1,64 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "expected_receipt_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "checks": {
+    "imports": {
+      "command": [
+        "nm",
+        "-u",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 0.049,
+      "log": "imports.txt",
+      "sha256": "fb23cf05f9f0457cc81ecfbe545a959683e4211322241dc11d710cf9a31c762e"
+    },
+    "loader-symbols": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "image lookup -r -n \"MovieClipLoader|loadClip|onLoadComplete|URLLoader|URLRequest\" \"Flash Player Debugger\""
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.789,
+      "log": "loader-symbols.txt",
+      "sha256": "7f03b9eb2957ab11b873b2d79cba421fb4a02f1498e105096a48477e0f880eef"
+    },
+    "read-probes": {
+      "command": [
+        "/usr/sbin/dtrace",
+        "-l",
+        "-n",
+        "syscall::*read*:return"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 0.008,
+      "log": "read-probes.txt",
+      "sha256": "3e4e7de1c10dac6bf41c3d87cf1f2dabeef2e8a09996421b6793e6f69ab7f478"
+    },
+    "read-probes-unsandboxed": {
+      "command": [
+        "/usr/sbin/dtrace",
+        "-l",
+        "-n",
+        "syscall::*read*:return"
+      ],
+      "sandbox_permissions": "require_escalated",
+      "exit": 1,
+      "elapsed_seconds": null,
+      "timing_note": "Tool reported 2.5 seconds wall time; subprocess duration not independently measured.",
+      "log": "read-probes-unsandboxed.txt",
+      "sha256": "2c7bb36b3c1b63aad6a623be8c61b5de485badd895ee3436e9832e913ec7e633"
+    }
+  },
+  "player_launches": 0,
+  "process_attaches": 0,
+  "live_read_events": null,
+  "limitation": "Static imports and symbol lookup only. DTrace listing failed both inside and outside the sandbox. No observed read-return, callback, consumption or target lifetime; no claim that LLDB attachment or reverse engineering is impossible."
+}

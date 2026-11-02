@@ -1,0 +1,58 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s277/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s277/diagnosis.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.146,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "loader-attestation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s277/diagnose.py",
+      "--output",
+      "/tmp/s277-required.json",
+      "--require-loader-attestation"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 0.134,
+    "log": "loader-attestation.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_loader_read_target_diagnosis",
+      "tools.tests.test_loader_attestation_diagnosis",
+      "tools.tests.test_capture_runtime_fighter",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 2.232,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "historical-normal-receipt",
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s232/yijiao__attack__neutral__ground__near.json').resolve(), Path('evidence/sampling-upgrade/s259/normal/native-receipt.json')))"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.08,
+    "log": "historical-normal-receipt.txt"
+  }
+]

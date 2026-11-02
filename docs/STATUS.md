@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s277，AFTER-s272 排名第5项）：仅复算 s259 normal P1 的5503事件，核对共用loader及完成回调内联推进下一请求的源码边界。原收据同哈希播放器导入多种读取API，但未建立实际读取到请求/回调的关联；DTrace在沙箱内外查询均exit1，模块内loader符号查询无匹配。独立消费字节、真实错资源加载及有界目标寿命仍未观测，证明要求exit1；零新构建/捕获，无运行时实现或收据修补。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s276、严格验证器不变。[证据](../evidence/sampling-upgrade/s277/README.md)。
+
 - 2026-11-02（采样 s276，AFTER-s272 排名第4项）：仅准备 Button2009 独立原菜单 UI 案例和候选入口观察补丁。原生 UI 控制选应用超时1433.1215秒，未取得窗口、未发送输入、无新捕获；frame10、Enter/release 入口及无派发对照均未观测。锁定 s271/s263 重放通过，594未访问/415未插桩保留；薄覆盖与完整AS要求exit1，无已证明实现。production_admitted=false、native_parity_proven=false，M0-02 pending。其他排名及s254–s275未动，严格验证器与运行时不变。[证据](../evidence/sampling-upgrade/s276/README.md)。
 
 - 2026-10-31（采样 s275，AFTER-s272 排名第3项）：仅观察玉龙frame188、ticks15–22原操作数与父子边界。一次原生启动恢复完整5214事件；原版与观察版P-code投影一致，原or为非短路Or，tick18第一项true后仍求值其余项。子槽在tick18 goto内清空、父级tick19改名、depth28在root21/22之间消失；122角色状态与s247相同。61聚焦测试、序列/收据/诊断通过；绑定要求与严格几何exit1，无运行时修复。保存目录缺失导致capture命令exit1，原日志完整恢复与成本明确留存。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s274未动，严格验证器不变。[证据](../evidence/sampling-upgrade/s275/README.md)。
