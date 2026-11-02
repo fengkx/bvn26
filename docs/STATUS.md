@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s307，AFTER-s299 排名第8项）：完整复现锁定 s298 的8290历史事件；新增保存引用、深度槽位和对照操作的完整归档函数及顺序审计。两条AS2读取路径不构成独立原生解析器，四次对象日志不是原子快照；属性删除不是实际内容清空。原生布局、活实例绑定及完整对象池代际仍缺，清空/替换/free/reuse未获资格，四项证明门槛exit1。零新构建/启动/附加/捕获/符号查询，无运行时修改。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s307及跟踪文件变更，s254–s306不变，不执行排名1–7或9。 [证据](../evidence/sampling-upgrade/s307/README.md)。
+
 - 2026-11-02（采样 s306，AFTER-s299 排名第7项）：完整复现锁定 s297 的5503历史事件；新增收据匹配播放器432字节读取包装函数审计，核对完整反汇编、流/缓冲区/长度操作数及返回分支。静态候选不证明该路径用于P1，消费方、不可变请求与loadStep推进前目标关联仍缺；三项证明门槛exit1，正常资格未通过，错资源对照未执行。零新构建/启动/附加/捕获，无运行时修改。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s306及跟踪文件变更，s254–s305不变，不执行排名1–6或8–9。 [证据](../evidence/sampling-upgrade/s306/README.md)。
 
 - 2026-11-02（采样 s305，AFTER-s299 排名第6项）：完整复现锁定 s296 诊断与六份候选补丁哈希；本次精确路径原生窗口选择在18.3654秒后 timeoutReached，未取得窗口状态，零输入、零插桩启动、零新捕获。应用激活副作用未知，不能把失败当成未派发或返回证明。原生UI前置条件未满足，编译/opcode资格及原菜单Enter/release与无派发对照保持阻塞，四项证明门槛均exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s305及跟踪文件变更，s254–s304不变，不执行排名1–5或7+。 [证据](../evidence/sampling-upgrade/s305/README.md)。
