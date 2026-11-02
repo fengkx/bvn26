@@ -1,0 +1,419 @@
+{
+  "scope": "AFTER-s299 rank #5 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "locked_s293_diagnosis_equal": true,
+  "independent_pair_proved_and_closed": true,
+  "source_callback": {
+    "archive_member": "patches/main/frame_10/DoAction.as",
+    "sha256": "3a31a0955390a23879cc87d525f75bb96f55468ddb091c4185a5f4a1ef064214",
+    "lines": {
+      "assignment": 26,
+      "guard": 28,
+      "closure_marker": 30,
+      "replace_callback": 31,
+      "disable_logger": 32,
+      "explicit_return": 34,
+      "clock_increment": 36,
+      "done_marker": 75,
+      "arm_guard": 76,
+      "timeout_guard": 78
+    },
+    "quit_lines": [
+      33,
+      81
+    ],
+    "fallthrough_end_line": 83,
+    "source": "_root.aiHeld = {};\n_root.aiKeyDown = function(code)\n{\n   var held = _root.aiHeld[code] == true;\n   _root.aiEvent(\"key_read\", String(this) + \",\" + code + \",\" + held);\n   return held;\n};\np1selt = \"一护2\";\np2selt = \"一护\";\np1sf = \"我爱罗\";\np2sf = \"魂\";\ncurStage = \"现世\";\nmodo = 3;\np1cpu = false;\np2cpu = false;\nAI = 5;\nmaxhp = 1000;\nmaxtime = 60;\nfighterDir = \"file:///private/tmp/bvn-s293-held/game/fighter/\";\nfzDir = \"file:///private/tmp/bvn-s293-held/game/fighter/fz/\";\nmusicDir = \"file:///private/tmp/bvn-s293-held/game/music/\";\n_root.aiEvent(\"boot\", \"vs_com,minren,yihu,AI=5\");\n_root.aiEvent(\"input_bindings\", \"w=\" + w + \",\" + \"a=\" + a + \",\" + \"l=\" + l + \",\" + \"上箭=\" + 上箭 + \",\" + \"下箭=\" + 下箭 + \",\" + \"左箭=\" + 左箭 + \",\" + \"右箭=\" + 右箭 + \",\" + \"N1=\" + N1 + \",\" + \"N2=\" + N2 + \",\" + \"N3=\" + N3 + \",\" + \"N4=\" + N4 + \",\" + \"N5=\" + N5 + \",\" + \"N6=\" + N6 + \",\" + \"right=\" + d + \",attack=\" + j + \",down=\" + s + \",ranged=\" + u + \",jump=\" + k + \",special=\" + i + \",summon=\" + o);\ngotoAndStop(\"游戏场景\");\n_root.aiS284DoActionComplete = false;\nonEnterFrame = function()\n{\n   if(_root.aiS284DoActionComplete)\n   {\n      aiEvent(\"capture_window_closed\", \"before-next-root-increment\");\n      _root.onEnterFrame = function() {};\n      _root.aiEvent = function() {};\n      fscommand(\"quit\");\n      return;\n   }\n   aiDisplay++;\n   if(aiFight < 0 && p2loaded == true && _menuEnabled == true && zhanting == false)\n   {\n      aiFight = 0;\n      aiEvent(\"ready\", \"\");\n   }\n   else if(aiFight >= 0)\n   {\n      aiFight++;\n   }\n   if(aiFight == 0)\n   {\n      clearInterval(_root.airanset);\n      _root.game.p1.mc.gotoAndPlay(\"站立\");\n      _root.game.p1._x = 100.0;\n      _root.game.p1.mc.ql = 300.0;\n      _root.game.p2.mc.gotoAndPlay(\"站立\");\n      _root.game.p2._x = 150.0;\n      _root.game.p2.mc.ql = 300.0;\n   }\n   aiHeld = {};\n   if(aiFight >= 10 && aiFight < 13) { aiHeld[j] = true; }\n   // These inputs become visible to the next display callback, as logged.\n   aiEvent(\"input_next_display\", \"w=\" + aiHeld[w] + \",\" + \"a=\" + aiHeld[a] + \",\" + \"l=\" + aiHeld[l] + \",\" + \"上箭=\" + aiHeld[上箭] + \",\" + \"下箭=\" + aiHeld[下箭] + \",\" + \"左箭=\" + aiHeld[左箭] + \",\" + \"右箭=\" + aiHeld[右箭] + \",\" + \"N1=\" + aiHeld[N1] + \",\" + \"N2=\" + aiHeld[N2] + \",\" + \"N3=\" + aiHeld[N3] + \",\" + \"N4=\" + aiHeld[N4] + \",\" + \"N5=\" + aiHeld[N5] + \",\" + \"N6=\" + aiHeld[N6] + \",\" + \"right=\" + aiHeld[d] + \",attack=\" + aiHeld[j] + \",down=\" + aiHeld[s] + \",ranged=\" + aiHeld[u] + \",jump=\" + aiHeld[k] + \",special=\" + aiHeld[i] + \",summon=\" + aiHeld[o]);\n   if(p2loaded == true)\n   {\n      if(!_root.aiGeometryLogged && _root.game.p2.useAI == true && _root.game.p2.mc.AImain._currentframe == 2)\n      {\n         _root.aiGeometryLogged = true;\n         aiGeometry();\n      }\n      aiState(\"p1\");\n      aiHelperState(\"p1\");\n      aiState(\"p2\");\n      aiHelperState(\"p2\");\n   }\n   if(aiFight >= 0) aiEvent(\"doaction_sample\", \"root-observer\");\n   if(aiFight >= 60)\n   {\n      aiEvent(\"done\", \"\");\n      _root.aiS284DoActionComplete = true;\n   }\n   if(aiDisplay > 60 + 900)\n   {\n      aiEvent(\"timeout\", \"ready=\" + _menuEnabled + \",loaded=\" + p2loaded);\n      fscommand(\"quit\");\n   }\n};\n",
+    "owner": "root onEnterFrame property assigned by root frame_10 DoAction",
+    "entry": "function body before completion guard; no entry marker",
+    "exits": [
+      "guard branch: quit request then explicit return if execution resumes",
+      "ordinary branch: implicit fallthrough after timeout conditional",
+      "timeout branch: quit request before possible fallthrough"
+    ],
+    "closure_owner": "next root callback invocation, not the done-emitting invocation",
+    "live_activation_identity": null,
+    "observed_return": null
+  },
+  "runs": {
+    "normal": {
+      "done": {
+        "run_id": "s293-normal-20261102-r01",
+        "sequence": 5849,
+        "time_ms": 29114,
+        "display": 525,
+        "tick": 60,
+        "kind": "done",
+        "payload": ""
+      },
+      "suffix": [],
+      "events": 5849,
+      "suffix_kind_counts": {},
+      "suffix_clock_pairs": [],
+      "completion_witness": null
+    },
+    "held": {
+      "done": {
+        "run_id": "s293-held-20261102-r01",
+        "sequence": 5514,
+        "time_ms": 27354,
+        "display": 495,
+        "tick": 60,
+        "kind": "done",
+        "payload": ""
+      },
+      "suffix": [
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5515,
+          "time_ms": 27368,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,40,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5516,
+          "time_ms": 27368,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,97,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5517,
+          "time_ms": 27368,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,97,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5518,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,38,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5519,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,40,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5520,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,38,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5521,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,40,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5522,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,100,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5523,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,40,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5524,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,38,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5525,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,101,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5526,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,102,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5527,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,37,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5528,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,39,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5529,
+          "time_ms": 27369,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,99,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5530,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,98,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5531,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5532,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5533,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,74,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5534,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5535,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5536,
+          "time_ms": 27370,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5537,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5538,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,85,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5539,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,83,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5540,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,87,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5541,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,73,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5542,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,79,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5543,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,65,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5544,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,68,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5545,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5546,
+          "time_ms": 27371,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,75,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5547,
+          "time_ms": 27372,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p2.mc,99,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5548,
+          "time_ms": 27372,
+          "display": 495,
+          "tick": 60,
+          "kind": "key_read",
+          "payload": "_level0.game.p1.mc,76,false"
+        },
+        {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5549,
+          "time_ms": 27372,
+          "display": 495,
+          "tick": 60,
+          "kind": "capture_window_closed",
+          "payload": "before-next-root-increment"
+        }
+      ],
+      "events": 5549,
+      "suffix_kind_counts": {
+        "capture_window_closed": 1,
+        "key_read": 34
+      },
+      "suffix_clock_pairs": [
+        [
+          495,
+          60
+        ]
+      ],
+      "completion_witness": null
+    }
+  },
+  "ownership_limit": "key_read carries receiver text, key and value, not caller, closure generation, activation ID or return; no suffix row is assigned to a gameplay callback",
+  "missing_independent_witness": [
+    "Qualified observer independent of aiEvent binds root callback entry to exact loaded body, owner generation and activation ID.",
+    "Same activation is observed returning to its dispatcher (or explicit unwind/termination classified separately), after done and after the closure marker; property replacement is not a return.",
+    "For every-callback completeness additionally enumerate pending/dispatched terminal callbacks with owner generations and matched exits, including callbacks without key reads; qualify observer-off/on preservation before capture."
+  ],
+  "gates": {
+    "callback-completion": {
+      "proved": false,
+      "code": "S304_CALLBACK_COMPLETION_UNPROVED"
+    },
+    "terminal-completeness": {
+      "proved": false,
+      "code": "S304_TERMINAL_CALLBACK_COMPLETENESS_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_captures": 0,
+  "other_ranks_executed": false,
+  "fixed_suffix_threshold": null,
+  "full_as_proven": false
+}
