@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-02（采样 s300，post-s299 重排）：s291–s299交付保持关闭，仅执行新排名第1项 P2 body-push 四处初始化定义—读取审计。完整复现s291的5437历史事件与条件结构对应；四处初始化均不到达8个显式读取，后续写入来源全部与原版映射一致，保留每条定义路径。该静态性质不证明activation可见消去、helper无扰动或实际调用；三项证明门槛exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；排名2+仅规划，s254–s299及共享工具不变，零新构建/启动/捕获，无运行时修改。 [新排名](../evidence/sampling-upgrade/next-fix-priority-after-s299.md)；[证据](../evidence/sampling-upgrade/s300/README.md)。
+
 - 2026-11-02（采样 s299，AFTER-s290 排名第9项）：完整复现锁定 s290 诊断，61个边界仍全部存在数字及其他场景状态差异，同次Godot图片为零。新增逐边界源绑定边缘/内部及RGBA未知项，保持null而非零；状态准入、配对场景、严格RGBA三项要求均exit1。缺完整同次状态准入，未尝试配对捕获或分类；不修准入、不执行排名1–8。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s299及跟踪文件变更，s254–s298不变，无构建/启动/捕获/图片及运行时变更。[证据](../evidence/sampling-upgrade/s299/README.md)。
 
 这是 PR #48 fail-loud 安全网之后的独立工作，不改变该 PR 的送审标准。
