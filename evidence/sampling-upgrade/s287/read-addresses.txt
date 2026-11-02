@@ -1,0 +1,15 @@
+(lldb) settings set target.preload-symbols false
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x0000000100fb5baa --count 1 --bytes
+Flash Player Debugger`CFReadStreamRead:
+Flash Player Debugger[0x100fb5baa] <+0>: ff 25 b0 ca 4f 00  jmpq   *0x4fcab0(%rip)           ; (void *)0x0000000100fb70cc
+(lldb) disassemble --start-address 0x0000000100fb65be --count 1 --bytes
+Flash Player Debugger`fread:
+Flash Player Debugger[0x100fb65be] <+0>: ff 25 0c ce 4f 00  jmpq   *0x4fce0c(%rip)           ; (void *)0x0000000100fb815c
+(lldb) disassemble --start-address 0x0000000100fb6720 --count 1 --bytes
+Flash Player Debugger`mmap:
+Flash Player Debugger[0x100fb6720] <+0>: ff 25 82 ce 4f 00  jmpq   *0x4fce82(%rip)           ; (void *)0x0000000100fb83aa
+(lldb) disassemble --start-address 0x0000000100fb6882 --count 1 --bytes
+Flash Player Debugger`read:
+Flash Player Debugger[0x100fb6882] <+0>: ff 25 f8 ce 4f 00  jmpq   *0x4fcef8(%rip)           ; (void *)0x0000000100fb85f8
