@@ -1,0 +1,390 @@
+DefineFunction2 "on_enterframe", 0, 12, true, true, true, false, true, false, true, false, false {
+Push 0.0, "initWudi"
+CallFunction
+Pop
+Push "ql"
+GetVariable
+Push 0.0
+Less2
+Not
+If loc192b
+Push "ql", 0.0
+SetVariable
+loc192b:Push "ql"
+GetVariable
+Push 300
+Greater
+Not
+If loc194b
+Push "ql", 300
+SetVariable
+loc194b:Push "hp"
+GetVariable
+Push 0.0
+Less2
+Not
+If loc1973
+Push "hp", 0.0
+SetVariable
+loc1973:Push register2, "_x"
+GetMember
+Push 20
+Less2
+Not
+If loc1997
+Push register2, "_x", 20
+SetMember
+loc1997:Push register2, "_x"
+GetMember
+Push register1, "mapSizeX"
+GetMember
+Push 30
+Subtract
+Greater
+Not
+If loc19cd
+Push register2, "_x", register1, "mapSizeX"
+GetMember
+Push 30
+Subtract
+SetMember
+loc19cd:Push "dashing"
+GetVariable
+Not
+If loc1a1d
+Push 0.0, "onDashing"
+CallFunction
+Pop
+Push register2, "_y"
+GetMember
+Push register1, "floorY"
+GetMember
+Greater
+Not
+If loc1a0d
+Push register2, "_y", register1, "floorY"
+GetMember
+SetMember
+loc1a0d:Push "_lastX", register2, "_x"
+GetMember
+SetVariable
+Push undefined
+Return
+loc1a1d:Push register1, "zhanting"
+GetMember
+Not
+If loc1a30
+Push undefined
+Return
+loc1a30:Push "wdFrameX"
+GetVariable
+Push 0.0
+Greater
+PushDuplicate
+Not
+If loc1a5d
+Pop
+Push "wdFrameX"
+GetVariable
+Push 1, "isNaN"
+CallFunction
+Not
+loc1a5d:PushDuplicate
+Not
+If loc1a77
+Pop
+Push "wdFrame"
+GetVariable
+Push 1, "isNaN"
+CallFunction
+Not
+loc1a77:Not
+If loc1ac6
+Push "canhit", false
+SetVariable
+Push "wdFrame", "wdFrame"
+GetVariable
+Increment
+StoreRegister 0
+SetVariable
+Push register0, "wdFrameX"
+GetVariable
+Less2
+Not
+Not
+If loc1ac6
+Push "canhit", true
+SetVariable
+Push "wdFrame", "wdFrameX", 0.0
+StoreRegister 0
+SetVariable
+Push register0
+SetVariable
+loc1ac6:Push "dashing"
+GetVariable
+Not
+Not
+If loc1ae3
+Push 0.0, "doDashX"
+CallFunction
+Pop
+loc1ae3:Push register1, "game"
+GetMember
+Push "p", "pn"
+GetVariable
+Add2
+GetMember
+StoreRegister 6
+Pop
+Push register2, "_x"
+GetMember
+Push "_lastX"
+GetVariable
+Subtract
+StoreRegister 4
+Pop
+Push register4, 30
+Greater
+Not
+If loc1b2c
+Push 30
+StoreRegister 4
+Pop
+loc1b2c:Push register4, -30
+Less2
+Not
+If loc1b4a
+Push -30
+StoreRegister 4
+Pop
+loc1b4a:Push register4, register2, "scale_X"
+GetMember
+Multiply
+StoreRegister 3
+Pop
+Push register3, 0.0
+Greater
+Not
+If loc1b97
+Push register3, register6, "vecx"
+GetMember
+Push 2
+Divide
+Add2
+StoreRegister 3
+Pop
+Push register2, "vecx", register3
+SetMember
+Jump loc1ba8
+loc1b97:Push register2, "vecx", 0.0
+SetMember
+loc1ba8:Push "airBody"
+GetVariable
+Push false
+Equals2
+PushDuplicate
+Not
+If loc1be0
+Pop
+Push register1, "game"
+GetMember
+Push "p", "pn"
+GetVariable
+Add2
+GetMember
+Push "mc"
+GetMember
+Push "airBody"
+GetMember
+Push false
+Equals2
+loc1be0:Not
+If loc1d2d
+Push register3, 0.0
+Less2
+Not
+PushDuplicate
+Not
+If loc1c2d
+Pop
+Push register1, "game"
+GetMember
+Push "p", "pn"
+GetVariable
+Add2
+GetMember
+Push "mc"
+GetMember
+Push "bdmn"
+GetMember
+Push 1, "bdmn"
+GetVariable
+Push "hitTest"
+CallMethod
+loc1c2d:Not
+If loc1d2d
+Push register3, 0.0
+Equals2
+PushDuplicate
+Not
+If loc1c5f
+Pop
+Push register6, "vecx"
+GetMember
+Push 0.0
+Equals2
+loc1c5f:Not
+If loc1c72
+Push 10
+StoreRegister 3
+Pop
+loc1c72:Push register6, "heavy"
+GetMember
+Push register2, "heavy"
+GetMember
+Subtract
+StoreRegister 8
+Pop
+Push register8, 0.0
+Less2
+Not
+If loc1cae
+Push 0.0
+StoreRegister 8
+Pop
+loc1cae:Push register3, 2
+Divide
+Push register8
+Subtract
+StoreRegister 5
+Pop
+Push register5, 0.0
+Less2
+Not
+If loc1cea
+Push 0.0
+StoreRegister 5
+Pop
+loc1cea:Push register3, register5
+Subtract
+StoreRegister 11
+Pop
+Push register6, "_x", register6, "_x"
+GetMember
+Push register5, register2, "scale_X"
+GetMember
+Multiply
+Add2
+SetMember
+Push 0.0, register11
+Subtract
+Push 1, register2, "moveX"
+CallMethod
+Pop
+loc1d2d:Push "_lastX", register2, "_x"
+GetMember
+SetVariable
+Push true
+StoreRegister 10
+Pop
+Push register2, "_y"
+GetMember
+StoreRegister 7
+Pop
+Push register7, register1, "floorY"
+GetMember
+Equals2
+Not
+If loc1d75
+Push "touch", true
+SetVariable
+Push "touchFloor", true
+SetVariable
+Push undefined
+Return
+loc1d75:Push register7, register1, "floorY"
+GetMember
+Less2
+Not
+If loc1e02
+Push 0.0, "isHitBan"
+CallFunction
+StoreRegister 9
+Pop
+Push "hitBan", register9, 0.0
+Equals2
+Not
+SetVariable
+Push "jump"
+GetVariable
+Push 1
+Equals2
+Not
+If loc1dd7
+Push "touch", false
+SetVariable
+Push "touchFloor", false
+SetVariable
+Push undefined
+Return
+loc1dd7:Push "hitBan"
+GetVariable
+Not
+If loc1e02
+Push "touch", true
+SetVariable
+Push "touchFloor", false
+SetVariable
+Push register2, "_y", register9
+SetMember
+Push undefined
+Return
+loc1e02:Push register7, register1, "floorY"
+GetMember
+Push 10
+Subtract
+Greater
+Not
+If loc1e3e
+Push register2, "_y", register1, "floorY"
+GetMember
+SetMember
+Push "touch", true
+SetVariable
+Push "touchFloor", true
+SetVariable
+Push undefined
+Return
+loc1e3e:Push register10
+Not
+If loc1ec0
+Push "touch", false
+SetVariable
+Push register2, "_y", register2, "_y"
+GetMember
+Push register1, "zhongli"
+GetMember
+Add2
+SetMember
+Push "jumped"
+GetVariable
+Push 1
+Equals2
+Not
+If loc1e93
+GoToLabel "落"
+Play
+Push "jumped", 0.0
+SetVariable
+loc1e93:Push "jumped"
+GetVariable
+Push 2
+Equals2
+Not
+If loc1ec0
+GoToLabel "落2"
+Play
+Push "jumped", 0.0
+SetVariable
+loc1ec0:
+}
