@@ -1,0 +1,34 @@
+
+/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger:	file format mach-o 64-bit x86-64
+
+Disassembly of section __TEXT,__text:
+
+0000000100002000 <__text>:
+100124c2b: 4c 8b ad a8 fa ff ff        	mov	r13, qword ptr [rbp - 0x558]
+100124c32: 41 8b 85 20 05 00 00        	mov	eax, dword ptr [r13 + 0x520]
+100124c39: 85 c0                       	test	eax, eax
+100124c3b: 0f 84 78 18 00 00           	je	0x1001264b9 <__text+0x1244b9>
+100124c41: 89 c1                       	mov	ecx, eax
+100124c43: ff c9                       	dec	ecx
+100124c45: 41 89 8d 20 05 00 00        	mov	dword ptr [r13 + 0x520], ecx
+100124c4c: 49 8b 95 28 05 00 00        	mov	rdx, qword ptr [r13 + 0x528]
+100124c53: 48 8b 34 ca                 	mov	rsi, qword ptr [rdx + 8*rcx]
+100124c57: 48 89 75 a0                 	mov	qword ptr [rbp - 0x60], rsi
+100124c5b: 48 c7 04 ca 02 00 00 00     	mov	qword ptr [rdx + 8*rcx], 0x2
+100124c63: 4c 8b bd 90 fa ff ff        	mov	r15, qword ptr [rbp - 0x570]
+100124c6a: 0f 84 58 18 00 00           	je	0x1001264c8 <__text+0x1244c8>
+100124c70: 89 c1                       	mov	ecx, eax
+100124c72: 83 c1 fe                    	add	ecx, -0x2
+100124c75: 41 89 8d 20 05 00 00        	mov	dword ptr [r13 + 0x520], ecx
+100124c7c: 49 8b 95 28 05 00 00        	mov	rdx, qword ptr [r13 + 0x528]
+100124c83: 48 8b 34 ca                 	mov	rsi, qword ptr [rdx + 8*rcx]
+100124c87: 48 89 75 98                 	mov	qword ptr [rbp - 0x68], rsi
+100124c8b: 48 c7 04 ca 02 00 00 00     	mov	qword ptr [rdx + 8*rcx], 0x2
+100124c93: 0f 84 37 18 00 00           	je	0x1001264d0 <__text+0x1244d0>
+100124c99: 83 c0 fd                    	add	eax, -0x3
+100124c9c: 41 89 85 20 05 00 00        	mov	dword ptr [r13 + 0x520], eax
+100124ca3: 49 8b 8d 28 05 00 00        	mov	rcx, qword ptr [r13 + 0x528]
+100124caa: 48 8b 14 c1                 	mov	rdx, qword ptr [rcx + 8*rax]
+100124cae: 48 89 95 b8 fa ff ff        	mov	qword ptr [rbp - 0x548], rdx
+100124cb5: 48 c7 04 c1 02 00 00 00     	mov	qword ptr [rcx + 8*rax], 0x2
+100124cbd: e9 19 18 00 00              	jmp	0x1001264db <__text+0x1244db>
