@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s308，AFTER-s299 排名第9项）：完整复现锁定 s299 诊断，61个边界仍全部存在数字及其他场景状态差异，同次Godot配对图片为零。新增逐边界捕获/分类资格与首个未满足门槛审计；缺完整同次状态准入，捕获和严格源绑定边缘/内部RGBA分类均未执行，像素未知项保持null。三项证明门槛exit1，零构建/启动/捕获/图片，不修准入。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s308与跟踪文件变更，s254–s307不变，不执行排名1–8，无运行时修改。 [证据](../evidence/sampling-upgrade/s308/README.md)。
+
 - 2026-11-02（采样 s307，AFTER-s299 排名第8项）：完整复现锁定 s298 的8290历史事件；新增保存引用、深度槽位和对照操作的完整归档函数及顺序审计。两条AS2读取路径不构成独立原生解析器，四次对象日志不是原子快照；属性删除不是实际内容清空。原生布局、活实例绑定及完整对象池代际仍缺，清空/替换/free/reuse未获资格，四项证明门槛exit1。零新构建/启动/附加/捕获/符号查询，无运行时修改。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s307及跟踪文件变更，s254–s306不变，不执行排名1–7或9。 [证据](../evidence/sampling-upgrade/s307/README.md)。
 
 - 2026-11-02（采样 s306，AFTER-s299 排名第7项）：完整复现锁定 s297 的5503历史事件；新增收据匹配播放器432字节读取包装函数审计，核对完整反汇编、流/缓冲区/长度操作数及返回分支。静态候选不证明该路径用于P1，消费方、不可变请求与loadStep推进前目标关联仍缺；三项证明门槛exit1，正常资格未通过，错资源对照未执行。零新构建/启动/附加/捕获，无运行时修改。production_admitted=false、native_parity_proven=false，M0-02 pending；仅s306及跟踪文件变更，s254–s305不变，不执行排名1–6或8–9。 [证据](../evidence/sampling-upgrade/s306/README.md)。

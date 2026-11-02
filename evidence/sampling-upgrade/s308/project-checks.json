@@ -1,0 +1,131 @@
+[
+  {
+    "name": "focused-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s308",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 25.70578383328393,
+    "log": "focused-tests.txt"
+  },
+  {
+    "name": "retained-s299-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s299",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 20.80053437501192,
+    "log": "retained-s299-tests.txt"
+  },
+  {
+    "name": "retained-s290-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s290",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 12.783980624750257,
+    "log": "retained-s290-tests.txt"
+  },
+  {
+    "name": "retained-s281-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s281",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 4.1596975000575185,
+    "log": "retained-s281-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_strict_raster_admission",
+      "tools.tests.test_encoded_digit_lifetime",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 27.041472125332803,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 0.7391385417431593,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 0.1437753331847489,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 0.2445770837366581,
+    "log": "diff-check.txt"
+  }
+]

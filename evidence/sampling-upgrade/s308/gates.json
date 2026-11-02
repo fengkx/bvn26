@@ -1,0 +1,61 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s308/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s308/diagnosis.json"
+    ],
+    "exit": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "elapsed_seconds": 4.645291582681239,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "state-admission",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s308/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s308/diagnosis.json",
+      "--require-state-admission"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 3.9996982500888407,
+    "log": "state-admission.txt"
+  },
+  {
+    "name": "paired-scene",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s308/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s308/diagnosis.json",
+      "--require-paired-scene"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 4.09572945907712,
+    "log": "paired-scene.txt"
+  },
+  {
+    "name": "thin-raster",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s308/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s308/diagnosis.json",
+      "--require-thin-raster"
+    ],
+    "exit": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "elapsed_seconds": 3.9209682079963386,
+    "log": "thin-raster.txt"
+  }
+]
