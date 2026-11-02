@@ -1,0 +1,264 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.4903712081722915
+  },
+  {
+    "name": "activation-erasure",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json",
+      "--require-activation-erasure"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 1.8193020829930902
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json",
+      "--require-observer"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 2.7808339591138065
+  },
+  {
+    "name": "nested-entry",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json",
+      "--require-nested-entry"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 0.7493589157238603
+  },
+  {
+    "name": "parent-removal",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s318/diagnose.py",
+      "--output",
+      "/tmp/s318-checked.json",
+      "--require-parent-removal"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "passed": true,
+    "seconds": 0.9279991248622537
+  },
+  {
+    "name": "s318-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s318",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.9497717502526939
+  },
+  {
+    "name": "s309-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s309",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.4499667501077056
+  },
+  {
+    "name": "s302-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s302",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.5057476251386106
+  },
+  {
+    "name": "s294-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s294",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.3025996251963079
+  },
+  {
+    "name": "s285-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s285",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.298638541251421
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_yulong_operand_boundary",
+      "tools.tests.test_nested_owner_diagnosis",
+      "tools.tests.test_yulong_k1atm_observer",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 1.8516869996674359
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.800010500010103
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.14416570821776986
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "passed": true,
+    "seconds": 0.25035700015723705
+  }
+]

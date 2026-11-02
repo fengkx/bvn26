@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s318，post-s317 重排）：s309–s317交付保持关闭，仅执行新排名第1项 Yulong 初始化到覆盖/返回暴露区间审计。复现锁定s309的5214历史事件，保留两处初始化后的全部图节点及路径；两处均有未经覆盖到达null-return的结构路径，显式call均在覆盖之后。枚举/成员/转换的隐藏效应与活activation绑定仍未知，不以无显式调用证明安全消去；四项证明门禁exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；排名2+仅规划，s254–s317及共享工具不变，零新构建/启动/捕获，无运行时修改。 [新排名](../evidence/sampling-upgrade/next-fix-priority-after-s317.md)；[证据](../evidence/sampling-upgrade/s318/README.md)。
+
 - 2026-11-02（采样 s317，AFTER-s308 排名第9项）：静态重放完整复现锁定 s308；61个边界仍全部未通过同次状态准入，同次Godot配对图片为零。核验逐边界门禁顺序与汇总不可提升，源绑定边缘/内部RGBA保持null，未捕获或分类；三项证明门禁均exit1。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；不修准入、不执行排名1–8，仅s317与跟踪更新，s254–s316及其他证据目录不变，零构建/启动/捕获/图片。 [证据](../evidence/sampling-upgrade/s317/README.md)。
 
 - 2026-11-02（采样 s316，AFTER-s308 排名第8项）：完整复现锁定 s307；新增8290条历史日志的对照操作数和四段观测空隙审计。替换与属性删除虽同为true,false，保存引用操作数不同；首次创建前及最终清理后无对照日志。日志连续不证明原生对象池覆盖，独立槽位/引用布局未导出，实际清空/替换/free/reuse及连续代次仍缺，四项证明门禁exit1。Evidence-only、honest-unproved，production_admitted=false、native_parity_proven=false，M0-02 pending；仅s316与跟踪更新，s254–s315和其他排名不变，零构建/启动/附加/捕获。 [证据](../evidence/sampling-upgrade/s316/README.md)。
