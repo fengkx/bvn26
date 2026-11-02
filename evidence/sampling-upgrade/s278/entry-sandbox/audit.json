@@ -1,0 +1,31 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "checks": {
+    "native-entry": {
+      "command": [
+        "lldb",
+        "--batch",
+        "-o",
+        "settings set target.preload-symbols false",
+        "-o",
+        "target create --no-dependents \"/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger\"",
+        "-o",
+        "process launch --stop-at-entry",
+        "-o",
+        "register read rip rsp rbp",
+        "-o",
+        "thread backtrace",
+        "-o",
+        "process kill"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 5.29135,
+      "log": "native-entry.txt",
+      "sha256": "f910941cfe61988a66b033b82601253eee69ad1264e121f6b0bf77d183bd0c17"
+    }
+  },
+  "launch_requested": true,
+  "movie_supplied": false,
+  "limit": "Native CPU registers are not AVM1 PC/operand stack/registers or defining activation. No movie execution is requested."
+}

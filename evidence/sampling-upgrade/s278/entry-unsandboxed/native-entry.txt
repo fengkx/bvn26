@@ -1,0 +1,14 @@
+(lldb) settings set target.preload-symbols false
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) process launch --stop-at-entry
+Process 55794 launched: '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64)
+(lldb) register read rip rsp rbp
+     rip = 0x0000000201822e50  dyld`_dyld_start
+     rsp = 0x0000000305952a68
+     rbp = 0x0000000000000020
+(lldb) thread backtrace
+* thread #1, stop reason = signal SIGSTOP
+   * frame #0: 0x0000000201822e50 dyld`_dyld_start
+(lldb) process kill
+Process 55794 exited with status = 9 (0x00000009) killed

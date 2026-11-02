@@ -1,0 +1,110 @@
+{
+  "diagnosis": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s278/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s278/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.465394,
+    "log": "diagnosis.txt",
+    "sha256": "5de73434114e7e543f2d6c92d20847371214385dc4957f25443b08c139adb0d6"
+  },
+  "native-continuation": {
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s278/diagnose.py",
+      "--output",
+      "/tmp/s278-required.json",
+      "--require-native-continuation"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.452048,
+    "log": "native-continuation.txt",
+    "sha256": "cf474414c22cbc0dd55213e5bd64cc47dc80d1d3d867be17d32a3f4002591947"
+  },
+  "receipt": {
+    "command": [
+      "python3",
+      "-c",
+      "from pathlib import Path; from tools.sampling_native import validate; print(validate(Path('evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json'),Path('/tmp/bvn-s266-r02-capture/receipt.json')))"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.095687,
+    "log": "receipt.txt",
+    "sha256": "8fe1db050623e602e94f0123d628877b97698da92ae2d64fa7228172dec1328b"
+  },
+  "lifecycle": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_chad_lifecycle",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s266-r02-capture/receipt.json",
+      "--output",
+      "/tmp/s278-lifecycle.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.08874,
+    "log": "lifecycle.txt",
+    "sha256": "485d896b8b09d435083d67b9f9b07bfd5764f4b57903164a19d435dc5e841e5b"
+  },
+  "callsite": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_callsite",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s266-r02-capture/receipt.json",
+      "--output",
+      "/tmp/s278-callsite.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.13232,
+    "log": "callsite.txt",
+    "sha256": "2efdd8b7821a0e222dc0f897508f7890187dd862555ff7bb9839e08985bb0799"
+  },
+  "full_as": {
+    "command": [
+      "python3",
+      "-m",
+      "tools.sampling_doaction",
+      "--case",
+      "evidence/sampling-upgrade/s76/chad__attack__neutral__ground__near.json",
+      "--receipt",
+      "/tmp/bvn-s266-r02-capture/receipt.json",
+      "--output",
+      "/tmp/s278-full-as.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.128368,
+    "log": "full_as.txt",
+    "sha256": "88b66a7a9254ffc9d52cc575403b51b0384ffc385df1924d64e656e5c399c589"
+  },
+  "focused-tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_chad_native_instruction_diagnosis",
+      "tools.tests.test_chad_register_control",
+      "tools.tests.test_as_continuation_discriminator",
+      "tools.tests.test_chad_lifecycle_observer",
+      "tools.tests.test_call_exit_diagnosis",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards",
+      "tools.tests.test_chad_defining_context"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.203611,
+    "log": "focused-tests.txt",
+    "sha256": "02e7577dbefa43c79f8592d057d8c3979dbcd0f80ef8606ccaa10dae93da884f"
+  }
+}

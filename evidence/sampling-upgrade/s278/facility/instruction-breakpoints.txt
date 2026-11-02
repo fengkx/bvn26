@@ -1,0 +1,10 @@
+(lldb) settings set target.preload-symbols false
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) breakpoint set --shlib "Flash Player Debugger" --func-regex "(ActionCallMethod|ActionPop|ActionSetMember|DoAction|ExecuteAction|AVM1|ActionScript.*(execute|interpret))"
+Breakpoint 1: no locations (pending).
+WARNING:  Unable to resolve breakpoint to any actual locations.
+(lldb) breakpoint list
+Current breakpoints:
+1: regex = '(ActionCallMethod|ActionPop|ActionSetMember|DoAction|ExecuteAction|AVM1|ActionScript.*(execute|interpret))', module = Flash Player Debugger, locations = 0 (pending)
+

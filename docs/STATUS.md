@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-02（采样 s278，AFTER-s272 排名第6项）：复算 s266 的9493事件与保留/移除对照，锁定原 goto CallMethod、Pop 和 register5 写入窗口。LLDB 沙箱启动失败，提权后成功停在播放器入口并读取CPU寄存器；AVM1候选断点零地址、activation类型查询无匹配，不能观察目标指令或退出。原生continuation要求exit1，无已证明实现；零新SWF构建/电影捕获。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s277、运行时与严格验证器不变。[证据](../evidence/sampling-upgrade/s278/README.md)。
+
 - 2026-11-02（采样 s277，AFTER-s272 排名第5项）：仅复算 s259 normal P1 的5503事件，核对共用loader及完成回调内联推进下一请求的源码边界。原收据同哈希播放器导入多种读取API，但未建立实际读取到请求/回调的关联；DTrace在沙箱内外查询均exit1，模块内loader符号查询无匹配。独立消费字节、真实错资源加载及有界目标寿命仍未观测，证明要求exit1；零新构建/捕获，无运行时实现或收据修补。production_admitted=false、native_parity_proven=false，M0-02 pending；其他排名及s254–s276、严格验证器不变。[证据](../evidence/sampling-upgrade/s277/README.md)。
 
 - 2026-11-02（采样 s276，AFTER-s272 排名第4项）：仅准备 Button2009 独立原菜单 UI 案例和候选入口观察补丁。原生 UI 控制选应用超时1433.1215秒，未取得窗口、未发送输入、无新捕获；frame10、Enter/release 入口及无派发对照均未观测。锁定 s271/s263 重放通过，594未访问/415未插桩保留；薄覆盖与完整AS要求exit1，无已证明实现。production_admitted=false、native_parity_proven=false，M0-02 pending。其他排名及s254–s275未动，严格验证器与运行时不变。[证据](../evidence/sampling-upgrade/s276/README.md)。
