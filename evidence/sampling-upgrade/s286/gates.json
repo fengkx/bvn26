@@ -1,0 +1,44 @@
+[
+  {
+    "name": "diagnosis",
+    "command": "PYTHONPATH=. python3 evidence/sampling-upgrade/s286/diagnose.py --output evidence/sampling-upgrade/s286/diagnosis.json",
+    "exit": 0,
+    "expected_exit": 0,
+    "seconds": 0.5794767499901354
+  },
+  {
+    "name": "native-ui",
+    "command": "PYTHONPATH=. python3 evidence/sampling-upgrade/s286/diagnose.py --output /tmp/s286-native-ui.json --require-native-ui",
+    "exit": 1,
+    "expected_exit": 1,
+    "seconds": 0.5180193330161273
+  },
+  {
+    "name": "thin-coverage",
+    "command": "PYTHONPATH=. python3 evidence/sampling-upgrade/s286/diagnose.py --output /tmp/s286-thin-coverage.json --require-thin-coverage",
+    "exit": 1,
+    "expected_exit": 1,
+    "seconds": 0.528411999810487
+  },
+  {
+    "name": "full-as",
+    "command": "PYTHONPATH=. python3 evidence/sampling-upgrade/s286/diagnose.py --output /tmp/s286-full-as.json --require-full-as",
+    "exit": 1,
+    "expected_exit": 1,
+    "seconds": 0.5384449576959014
+  },
+  {
+    "name": "focused-tests",
+    "command": "PYTHONPATH=. python3 -m unittest discover -s evidence/sampling-upgrade/s286 -p 'test_*.py'",
+    "exit": 0,
+    "expected_exit": 0,
+    "seconds": 0.5298872496932745
+  },
+  {
+    "name": "retained-tests",
+    "command": "python3 -m unittest tools.tests.test_button_entry_preparation tools.tests.test_button_family_inventory tools.tests.test_sampling_doaction tools.tests.test_sampling_native tools.tests.test_import_guards",
+    "exit": 0,
+    "expected_exit": 0,
+    "seconds": 2.78156645828858
+  }
+]
