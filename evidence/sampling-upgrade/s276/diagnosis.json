@@ -1,0 +1,54 @@
+{
+  "base": "6179ca1e",
+  "scope": "AFTER-s272 rank 4 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "thin_coverage_cut_proved": false,
+  "product_obligations_closed": 0,
+  "ui_case": "s276-button2009-ui",
+  "ui_case_executed": false,
+  "frame10_observed": null,
+  "enter_dispatch_observed": null,
+  "release_dispatch_observed": null,
+  "handler_entries_observed": null,
+  "no_dispatch_controls_observed": null,
+  "listener_order_observed": null,
+  "handler_return_observed": null,
+  "candidate_patch_sha256": {
+    "DefineButton2_2009/BUTTONCONDACTION on(keyPress Enter).as": "2f8564011d3c2774638551c065dbb97d546c4a2b7c3dd4c79c58687e6bf2c4b3",
+    "DefineButton2_2009/BUTTONCONDACTION on(release).as": "8c3818bcc954d7be00247bee32fc9763c4a0fc6b7b6e9011df4f034f881d9b45",
+    "DefineSprite_1991/frame_1/DoAction.as": "3c1161b6e0798aeb4e480ef480c2248b445310221784e0227d8d7b41ea0ca228",
+    "DefineSprite_2010/frame_1/DoAction.as": "d62b6314a3c5785c2cd84358c3267fe878bb5333f9fd84e47789c1bebec5723b",
+    "DefineSprite_2010/frame_10/DoAction.as": "e6d1a8cd5721ad26e76220183c699ce51749bafa528cae6643ee118406ff5a29",
+    "frame_1/DoAction.as": "ac87f4cec668c6bfb0dcd7ac7f9c8b15f2405a3abe514f2620c92232d27b2fff"
+  },
+  "candidate_compiled": false,
+  "candidate_opcode_preservation_checked": false,
+  "candidate_native_behavior_preservation_proved": false,
+  "locked_replay": {
+    "events": 9774,
+    "root_samples": 61,
+    "unvisited": 594,
+    "uninstrumented": 415,
+    "raw_capture_structure_exit": 0,
+    "strict_full_as_exit": 1,
+    "strict_full_as_error": "incomplete AS coverage: 594 unvisited blocks, 415 uninstrumented scripts; statement/call ownership unproven"
+  },
+  "family_obligations": [
+    "cccff6b6713c4928e34d16c371237850ce318284428ef10105aa4755e8c420c8",
+    "67691cb61effa8d573d2fddb0f71b205c68da1e820d27a3956b104532ac82c93"
+  ],
+  "blocker": {
+    "facility": "mcp__cua_repl.js",
+    "operation": "let app = await cua.getApp('/Volumes/Flash Player/Flash Player.app');",
+    "tool_result": "Computer Use server error -10005: timeoutReached",
+    "reported_wall_seconds": 1433.1215,
+    "window_state_obtained": false,
+    "ui_inputs_sent": 0,
+    "capture_log_created": false,
+    "instrumented_player_launches": 0,
+    "app_activation_unknown": true,
+    "notes": "getApp may launch an app; no movie launch or UI state was confirmed. This is a tool failure record, not a native receipt. No handler dispatch or nonexecution can be inferred."
+  },
+  "next_discriminator": "Restore native UI control, compile the isolated candidate against original main, and verify original opcode/control-flow projection before capture. Execute ui-case.json via original menus, record actual native input callbacks and exact Button2009 entries separately, bracket live placement with independent timeline/slot observations and no-dispatch intervals. Preserve complete logs and actual listener ordering. Do not promote entry or return coverage from preparation or absent records."
+}
