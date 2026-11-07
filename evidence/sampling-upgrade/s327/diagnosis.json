@@ -1,0 +1,346 @@
+{
+  "slice": "s327",
+  "base": "3b37d8a62bd1dbe5abe5760c4765fe77126881ce",
+  "scope": "AFTER-s326 rank #1 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "product_obligations_closed": 0,
+  "locked_s320_reproduced": true,
+  "prior_results_are_new_progress": false,
+  "historical": {
+    "events": 9493,
+    "root_samples": 61,
+    "controls": [
+      {
+        "mode": "retain",
+        "before": "1",
+        "receiver_before": "true",
+        "defining_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "false",
+        "parent_frame": "2",
+        "depth": "-16383",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "false",
+        "sequence": 7206,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "mode": "remove",
+        "before": "1",
+        "receiver_before": "true",
+        "defining_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "true",
+        "parent_frame": "3",
+        "depth": "-16383",
+        "boundary": "1",
+        "post": "0",
+        "empty_after": "true",
+        "sequence": 7207,
+        "tick": 10,
+        "display": 433
+      }
+    ],
+    "dynamic_controls": [
+      {
+        "mode": "retain",
+        "before": "1",
+        "receiver_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "false",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "false",
+        "sequence": 7204,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "mode": "remove",
+        "before": "1",
+        "receiver_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "true",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "true",
+        "sequence": 7205,
+        "tick": 10,
+        "display": 433
+      }
+    ],
+    "chad_witnesses": [
+      {
+        "type": "undefined",
+        "token": "undefined",
+        "before": "undefined",
+        "control": "undefined",
+        "post": "undefined",
+        "observer_entry": "undefined",
+        "sequence": 7208,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "type": "object",
+        "token": "s257-chad-normal-goto",
+        "before": "1",
+        "control": "1",
+        "post": "0",
+        "observer_entry": "0",
+        "sequence": 7253,
+        "tick": 11,
+        "display": 434
+      },
+      {
+        "type": "object",
+        "token": "s257-chad-normal-goto",
+        "before": "1",
+        "control": "1",
+        "post": "0",
+        "observer_entry": "0",
+        "sequence": 7290,
+        "tick": 12,
+        "display": 435
+      }
+    ],
+    "actor_comparison": {
+      "rows": 122,
+      "exact_tick_payload_equal_s263": true
+    },
+    "full_as": {
+      "unvisited": 594,
+      "uninstrumented": 415
+    },
+    "missing_boundaries": [
+      "goto_after",
+      "callee_exit",
+      "caller_after"
+    ]
+  },
+  "audit": {
+    "coordinates": "Unslid module-relative machine addresses, not SWF offsets or live PCs",
+    "bytes_audited": 68,
+    "instructions": [
+      {
+        "address": 860672,
+        "hex": "55",
+        "mnemonic": "push",
+        "operands": "rbp"
+      },
+      {
+        "address": 860673,
+        "hex": "4889e5",
+        "mnemonic": "mov",
+        "operands": "rbp, rsp"
+      },
+      {
+        "address": 860676,
+        "hex": "4157",
+        "mnemonic": "push",
+        "operands": "r15"
+      },
+      {
+        "address": 860678,
+        "hex": "4156",
+        "mnemonic": "push",
+        "operands": "r14"
+      },
+      {
+        "address": 860680,
+        "hex": "4155",
+        "mnemonic": "push",
+        "operands": "r13"
+      },
+      {
+        "address": 860682,
+        "hex": "4154",
+        "mnemonic": "push",
+        "operands": "r12"
+      },
+      {
+        "address": 860684,
+        "hex": "53",
+        "mnemonic": "push",
+        "operands": "rbx"
+      },
+      {
+        "address": 860685,
+        "hex": "4881ec38020000",
+        "mnemonic": "sub",
+        "operands": "rsp, 0x238"
+      },
+      {
+        "address": 860692,
+        "hex": "4989d7",
+        "mnemonic": "mov",
+        "operands": "r15, rdx"
+      },
+      {
+        "address": 860695,
+        "hex": "4989f6",
+        "mnemonic": "mov",
+        "operands": "r14, rsi"
+      },
+      {
+        "address": 860698,
+        "hex": "4989fc",
+        "mnemonic": "mov",
+        "operands": "r12, rdi"
+      },
+      {
+        "address": 860701,
+        "hex": "4c8b2d34fa3d01",
+        "mnemonic": "mov",
+        "operands": "r13, qword ptr [rip + 0x13dfa34] ## 0x1014b1c58 <dyld_stub_binder+0x1014b1c58>"
+      },
+      {
+        "address": 860708,
+        "hex": "4d8b6d00",
+        "mnemonic": "mov",
+        "operands": "r13, qword ptr [r13]"
+      },
+      {
+        "address": 860712,
+        "hex": "4c896dd0",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rbp - 0x30], r13"
+      },
+      {
+        "address": 860716,
+        "hex": "49c7042402000000",
+        "mnemonic": "mov",
+        "operands": "qword ptr [r12], 0x2"
+      },
+      {
+        "address": 860724,
+        "hex": "498b1f",
+        "mnemonic": "mov",
+        "operands": "rbx, qword ptr [r15]"
+      },
+      {
+        "address": 860727,
+        "hex": "89d9",
+        "mnemonic": "mov",
+        "operands": "ecx, ebx"
+      },
+      {
+        "address": 860729,
+        "hex": "83e107",
+        "mnemonic": "and",
+        "operands": "ecx, 0x7"
+      },
+      {
+        "address": 860732,
+        "hex": "83f907",
+        "mnemonic": "cmp",
+        "operands": "ecx, 0x7"
+      },
+      {
+        "address": 860735,
+        "hex": "4889d8",
+        "mnemonic": "mov",
+        "operands": "rax, rbx"
+      },
+      {
+        "address": 860738,
+        "hex": "7510",
+        "mnemonic": "jne",
+        "operands": "0x1000d2254 <__text+0xd0254>"
+      }
+    ],
+    "caller_site": 1206649,
+    "incoming_argument_relations": [
+      {
+        "argument": "rdi",
+        "caller": "&dispatcher_rbp-0x550",
+        "saved_at": 860698,
+        "saved_register": "r12",
+        "access_at": 860716,
+        "access": "write qword raw 2"
+      },
+      {
+        "argument": "rsi",
+        "caller": "dispatcher_r13",
+        "saved_at": 860695,
+        "saved_register": "r14",
+        "access_at": null,
+        "access": "no direct dereference of r14 in this block"
+      },
+      {
+        "argument": "rdx",
+        "caller": "&dispatcher_rbp-0x60",
+        "saved_at": 860692,
+        "saved_register": "r15",
+        "access_at": 860724,
+        "access": "read qword into rbx"
+      }
+    ],
+    "first_frontier": {
+      "site": 860738,
+      "kind": "conditional_branch",
+      "target": 860756,
+      "fallthrough": 860740,
+      "successors_expanded": false
+    },
+    "rip_relative_pointer_cell": 21699672,
+    "rip_relative_dereference_sites": [
+      860701,
+      860708
+    ],
+    "local_stack_save": 860712,
+    "predicate": "(low 32 bits of the loaded qword & 7) != 7",
+    "explicit_calls": 0,
+    "machine_returns": 0,
+    "live_values": null,
+    "alias_relations": null,
+    "exceptional_exits": null,
+    "actual_execution_proven": false,
+    "callee_return_proven": false,
+    "limit": "Only the first block is decoded. Straight-line order is conditional on reaching each instruction without fault. Pointer-cell contents, aliases, types, scope, ownership, native lifetime and both branch continuations are unproved. Helper rbp is not dispatcher rbp."
+  },
+  "observations": {
+    "activation_identity": null,
+    "defining_scope": null,
+    "register4_location": null,
+    "stack_carrier_descriptor_alias_relation": null,
+    "allocation_generation": null,
+    "helper_preservation": null,
+    "live_module_binding": null,
+    "loaded_worker_binding": null,
+    "measured_cursor": null,
+    "retained_invocation": null
+  },
+  "gates": {
+    "external-effects": {
+      "proved": false,
+      "code": "S327_EXTERNAL_EFFECTS_UNPROVED"
+    },
+    "value-ownership": {
+      "proved": false,
+      "code": "S327_VALUE_OWNERSHIP_UNPROVED"
+    },
+    "live-binding": {
+      "proved": false,
+      "code": "S327_LIVE_BINDING_UNPROVED"
+    },
+    "cursor-convention": {
+      "proved": false,
+      "code": "S327_CURSOR_CONVENTION_UNPROVED"
+    },
+    "retained-invocation": {
+      "proved": false,
+      "code": "S327_RETAINED_INVOCATION_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_memory_reads": 0,
+  "new_captures": 0,
+  "other_ranks_executed": [],
+  "blocker": "The first callee block has a raw write/read before a conditional branch; both successors, pointer contents, alias/ownership effects and exceptional paths remain unproved. No live module/worker, cursor or retained invocation binding exists."
+}
