@@ -1,0 +1,99 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s331/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s331/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 3.2746752500534058,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "scope-binding",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s331/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s331/diagnosis.json",
+      "--require-scope-binding"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 2.1211857083253562,
+    "log": "scope-binding.txt"
+  },
+  {
+    "name": "activation-erasure",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s331/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s331/diagnosis.json",
+      "--require-activation-erasure"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 2.7674762909300625,
+    "log": "activation-erasure.txt"
+  },
+  {
+    "name": "coercion-erasure",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s331/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s331/diagnosis.json",
+      "--require-coercion-erasure"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.755050916224718,
+    "log": "coercion-erasure.txt"
+  },
+  {
+    "name": "helper-effects",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s331/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s331/diagnosis.json",
+      "--require-helper-effects"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.4830322922207415,
+    "log": "helper-effects.txt"
+  },
+  {
+    "name": "off-on",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s331/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s331/diagnosis.json",
+      "--require-off-on"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.4848473332822323,
+    "log": "off-on.txt"
+  },
+  {
+    "name": "external-callsite",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s331/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s331/diagnosis.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.7591199171729386,
+    "log": "external-callsite.txt"
+  }
+]

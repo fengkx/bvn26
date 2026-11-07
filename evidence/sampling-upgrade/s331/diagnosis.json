@@ -1,0 +1,142 @@
+{
+  "slice": "s331",
+  "scope": "AFTER-s326 rank #5 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s322_reproduced": true,
+  "replay_is_new_progress": false,
+  "facilities": [
+    {
+      "path": "tools/probes/probe_owned_debugger.py",
+      "function": "debugger_script",
+      "start_line": 21,
+      "end_line": 48,
+      "source": "def debugger_script(pid, binary, result_path):\n    return f'''import json\nimport lldb\nfrom pathlib import Path\nresult = {{'attached': False, 'registers_available': False, 'detach_attempted': False, 'detached': False, 'pid': {pid}, 'pixel_reference': False, 'routing_verified': False}}\nprocess = None\ntry:\n    target = lldb.debugger.CreateTarget({str(binary)!r})\n    error = lldb.SBError()\n    process = target.AttachToProcessWithID(lldb.debugger.GetListener(), {pid}, error)\n    result['attach_error'] = str(error)\n    result['attached'] = error.Success() and process.IsValid()\n    if result['attached']:\n        result['target_triple'] = target.GetTriple()\n        result['state'] = lldb.SBDebugger.StateAsCString(process.GetState())\n        frame = process.GetSelectedThread().GetFrameAtIndex(0)\n        result['registers'] = {{name: frame.FindRegister(name).GetValue() for name in {REGISTERS!r}}}\n        result['registers_available'] = all(value is not None for value in result['registers'].values())\nexcept BaseException as error:\n    result['error'] = repr(error)\nfinally:\n    if result['attached'] and process is not None:\n        result['detach_attempted'] = True\n        error = process.Detach()\n        result['detach_error'] = str(error)\n        result['detached'] = error.Success()\n    Path({str(result_path)!r}).write_text(json.dumps(result, indent=2)+chr(10))\n'''",
+      "missing": "Selected CPU registers do not resolve a loaded AVM body, defining scope, activation or uninterrupted this/root/parent generations.",
+      "invoked": false
+    },
+    {
+      "path": "evidence/sampling-upgrade/s283/build_probe.py",
+      "function": "instrument",
+      "start_line": 22,
+      "end_line": 46,
+      "source": "def instrument(source):\n    original = callback(source)\n    candidate = original\n    replacements = [\n        ('bdmn.hitTest(_root.game[\"p\" + pn].mc.bdmn)',\n         '_root.s283Value(\"result\", _root.s283Value(\"receiver\", bdmn, this).hitTest(_root.s283Value(\"target\", _root.game[\"p\" + pn].mc.bdmn, this)), this)'),\n        ('if(dashing)', 'if(_root.s283Value(\"dashing\", dashing, this))'),\n        ('if(_root.zhanting)', 'if(_root.s283Value(\"paused\", _root.zhanting, this))'),\n        ('airBody == false', '_root.s283Value(\"own_air\", airBody == false, this)'),\n        ('_root.game[\"p\" + pn].mc.airBody == false', '_root.s283Value(\"other_air\", _root.game[\"p\" + pn].mc.airBody == false, this)'),\n        ('_loc3_ >= 0', '_root.s283Value(\"displacement\", _loc3_ >= 0, this)'),\n    ]\n    # Replace the full opponent expression before its shorter own-air suffix.\n    replacements[3], replacements[4] = replacements[4], replacements[3]\n    for old, new in replacements:\n        if candidate.count(old) != 1:\n            # The own expression is also a suffix of the already wrapped opponent.\n            if old == 'airBody == false':\n                old, new = 'if(airBody == false', 'if(' + new\n            else:\n                raise ValueError('ambiguous observer replacement: ' + old)\n        candidate = candidate.replace(old, new, 1)\n    if candidate.count('.hitTest(') != 1:\n        raise ValueError('extra hitTest')\n    return source.replace(original, candidate, 1)",
+      "missing": "Candidate wrappers pass this as an owner argument to s283Value. This is not an independent scope/generation channel or a measurement of observer erasure.",
+      "invoked": false
+    },
+    {
+      "path": "evidence/sampling-upgrade/s283/build_probe.py",
+      "function": "build",
+      "start_line": 59,
+      "end_line": 83,
+      "source": "def build(output, ffdec):\n    output.mkdir(parents=True, exist_ok=False)\n    source = next(s['source'] for s in json.loads((ROOT / 'scripts/fighter/yihu.json').read_text())['scripts'] if s['path'] == BODY).replace('\\r\\n', '\\n')\n    candidate = instrument(source)\n    patch = output / 'patches' / BODY\n    patch.parent.mkdir(parents=True)\n    patch.write_text(candidate)\n    commands = []\n    base = ['java', '-Duser.home=' + str(output / 'java-home'), '-Djava.awt.headless=true', '-jar', str(ffdec)]\n    def run(args):\n        started = time.monotonic()\n        result = subprocess.run(base + args, capture_output=True, text=True)\n        log = output / ('command-' + str(len(commands)) + '.log')\n        log.write_text(result.stdout + result.stderr)\n        commands.append({'command': base + args, 'exit_code': result.returncode, 'wall_seconds': time.monotonic()-started, 'log_sha256': hashlib.sha256(log.read_bytes()).hexdigest()})\n        result.check_returncode()\n    run(['-importScript', str(ROOT / 'game/fighter/yihu.swf'), str(output / 'candidate.swf'), str(output / 'patches')])\n    for name, swf in [('original', ROOT / 'game/fighter/yihu.swf'), ('candidate', output / 'candidate.swf')]:\n        run(['-format', 'script:pcode', '-selectid', '638', '-export', 'script', str(output / name), str(swf)])\n        full = (output / name / 'scripts' / BODY.replace('.as', '.pcode')).read_text()\n        (HERE / (name + '.frame.pcode.gz')).write_bytes(gzip.compress(full.encode(), mtime=0))\n        (HERE / (name + '.pcode')).write_text(function_pcode(full))\n    (HERE / 'candidate.as').write_text(callback(candidate) + '\\n')\n    hashes = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in [ffdec, ROOT / 'game/fighter/yihu.swf', output / 'candidate.swf', patch]}\n    (HERE / 'build-audit.json').write_text(json.dumps({'commands':commands, 'sha256':hashes, 'player_launches':0, 'candidate_only':True, 'helper_installed':False, 'capture_ready':False},indent=2)+'\\n')",
+      "missing": "Compilation and pcode export produce disk artifacts only; they do not observe activation slots, live coercion or helper effects.",
+      "invoked": false
+    }
+  ],
+  "independent_native_observations": 0,
+  "historical_events_revalidated": 5437,
+  "observations": {
+    "loaded_body": null,
+    "invocation": null,
+    "defining_scope_generation": null,
+    "this_generation": null,
+    "root_generation": null,
+    "parent_generation": null,
+    "suppression_preload_visibility": null,
+    "activation_visibility": null,
+    "dashing_value_type": null,
+    "coercion_effects": null,
+    "helper_effects": null,
+    "off_on": null,
+    "external_callsite": null
+  },
+  "boundary_measurements": [
+    {
+      "boundary": "initialization",
+      "original": null,
+      "candidate": null,
+      "erasure": null
+    },
+    {
+      "boundary": "scope-member-access",
+      "original": null,
+      "candidate": null,
+      "erasure": null
+    },
+    {
+      "boundary": "intervening-call",
+      "original": null,
+      "candidate": null,
+      "erasure": null
+    },
+    {
+      "boundary": "first-overwrite",
+      "original": null,
+      "candidate": null,
+      "erasure": null
+    },
+    {
+      "boundary": "return-before-overwrite",
+      "original": null,
+      "candidate": null,
+      "erasure": null
+    },
+    {
+      "boundary": "body-end",
+      "original": null,
+      "candidate": null,
+      "erasure": null
+    },
+    {
+      "boundary": "dashing-read",
+      "original": null,
+      "candidate": null,
+      "erasure": null
+    },
+    {
+      "boundary": "coercion-and-branch",
+      "original": null,
+      "candidate": null,
+      "erasure": null
+    }
+  ],
+  "helper_installed": false,
+  "off_on_controls_executed": false,
+  "gates": {
+    "scope-binding": {
+      "proved": false,
+      "code": "S331_SCOPE_BINDING_UNPROVED"
+    },
+    "activation-erasure": {
+      "proved": false,
+      "code": "S331_ACTIVATION_ERASURE_UNPROVED"
+    },
+    "coercion-erasure": {
+      "proved": false,
+      "code": "S331_COERCION_ERASURE_UNPROVED"
+    },
+    "helper-effects": {
+      "proved": false,
+      "code": "S331_HELPER_EFFECTS_UNPROVED"
+    },
+    "off-on": {
+      "proved": false,
+      "code": "S331_OFF_ON_UNPROVED"
+    },
+    "external-callsite": {
+      "proved": false,
+      "code": "S331_EXTERNAL_CALLSITE_UNPROVED"
+    }
+  },
+  "first_unmet_prerequisite": "independent loaded body/invocation and defining scope with this/root/parent generations",
+  "blocker": "Inspected adapters do not provide an independent live resolver or activation/coercion erasure measurement. Helper and off/on controls remain deferred before installation.",
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_process_attaches": 0,
+  "new_memory_reads": 0,
+  "new_captures": 0,
+  "product_obligations_closed": 0,
+  "other_ranks_executed": []
+}
