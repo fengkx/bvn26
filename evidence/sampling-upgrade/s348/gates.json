@@ -1,0 +1,138 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s348/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s348/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.20758633315563202,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "consumer-request",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s348/diagnose.py",
+      "--output",
+      "/tmp/s348-gate.json",
+      "--require-consumer-request"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.23382225027307868,
+    "log": "consumer-request.txt"
+  },
+  {
+    "name": "returned-consumed-ranges",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s348/diagnose.py",
+      "--output",
+      "/tmp/s348-gate.json",
+      "--require-returned-consumed-ranges"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.0074846670031548,
+    "log": "returned-consumed-ranges.txt"
+  },
+  {
+    "name": "pre-advance-target",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s348/diagnose.py",
+      "--output",
+      "/tmp/s348-gate.json",
+      "--require-pre-advance-target"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.15689204214140773,
+    "log": "pre-advance-target.txt"
+  },
+  {
+    "name": "loader-attestation",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s348/diagnose.py",
+      "--output",
+      "/tmp/s348-gate.json",
+      "--require-loader-attestation"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.14969150023534894,
+    "log": "loader-attestation.txt"
+  },
+  {
+    "name": "wrong-resource-control",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s348/diagnose.py",
+      "--output",
+      "/tmp/s348-gate.json",
+      "--require-wrong-resource-control"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.1562656657770276,
+    "log": "wrong-resource-control.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s348/diagnose.py",
+      "--output",
+      "/tmp/s348-gate.json",
+      "--require-consumer-request",
+      "--require-returned-consumed-ranges",
+      "--require-pre-advance-target",
+      "--require-loader-attestation",
+      "--require-wrong-resource-control"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.1475053750909865,
+    "log": "all-proofs.txt"
+  }
+]
