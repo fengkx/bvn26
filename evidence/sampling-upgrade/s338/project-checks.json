@@ -1,0 +1,226 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s338/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s338/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.44332520803436637
+  },
+  {
+    "name": "activation-pair",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s338/diagnose.py",
+      "--output",
+      "/tmp/s338-gate.json",
+      "--require-activation-pair"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.35750754177570343
+  },
+  {
+    "name": "activation-scope",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s338/diagnose.py",
+      "--output",
+      "/tmp/s338-gate.json",
+      "--require-activation-scope"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.3610533750616014
+  },
+  {
+    "name": "activation-erasure",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s338/diagnose.py",
+      "--output",
+      "/tmp/s338-gate.json",
+      "--require-activation-erasure"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.36343116592615843
+  },
+  {
+    "name": "observer",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s338/diagnose.py",
+      "--output",
+      "/tmp/s338-gate.json",
+      "--require-observer"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.41089812526479363
+  },
+  {
+    "name": "s338-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s338",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 3.5144418329000473
+  },
+  {
+    "name": "s329-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s329",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.6794845000840724
+  },
+  {
+    "name": "s318-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s318",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.5176094579510391
+  },
+  {
+    "name": "s309-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s309",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.3684066249988973
+  },
+  {
+    "name": "s302-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s302",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.3442387501709163
+  },
+  {
+    "name": "s294-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s294",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.27744270768016577
+  },
+  {
+    "name": "s285-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s285",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.27714870823547244
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_yulong_operand_boundary",
+      "tools.tests.test_nested_owner_diagnosis",
+      "tools.tests.test_yulong_k1atm_observer",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 1.8554020002484322
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.7125172084197402
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.06851095799356699
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.08927041571587324
+  }
+]

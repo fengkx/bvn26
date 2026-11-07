@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-08（采样 s338，AFTER-s335 排名第3项）：完整复现锁定 s329，仅作保留验证，不将 CFG/接口复查计作新证明。未取得独立 original/candidate activation pair、defining scope 或初始化至覆盖/返回的 erasure 测量；绑定与各边界测量保持 null，在 live binding 和观察器安装前停止，零新增独立原生观测。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名3，不重排；排名1–2交付保持关闭，排名4+仅规划，权威表与 s254–s337 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s338/README.md)。
+
 - 2026-11-08（采样 s337，AFTER-s335 排名第2项）：完整复现锁定 s328，仅作保留验证；在哈希锁定播放器磁盘字节中查找 NUL 分隔 gotoAndStop 名称，精确匹配为零，未获得原生入口候选。此限定负结果不证明其他通道不存在；byte-bound target-entry 与独立 outer-instance lifetime 均未导出，四类对照未执行，fresh capture 在启动前阻塞。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零产品义务关闭。仅排名2，不重排；排名1交付保持关闭，排名3+仅规划；权威表及 s254–s336 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s337/README.md)。
 
 - 2026-11-08（采样 s336，post-s335 重排）：s327–s335交付保持关闭，仅执行新排名第1项 Chad 两个直接后继窗口审计。完整复现锁定s327仅作保留验证；新增收据匹配二进制41个不重复字节/12指令，区分间接读取路径与直接汇合路径，锁定下一条无符号条件分支。重叠25字节不重复计数，新分支后继不展开。类型、别名、所有权、异常与live绑定仍未证明，五项证明门禁exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零产品义务关闭。排名2+仅规划；旧表与s254–s335不变，零构建/启动/附加/内存读取/捕获，无运行时修改。 [新排名](../evidence/sampling-upgrade/next-fix-priority-after-s335.md)；[证据](../evidence/sampling-upgrade/s336/README.md)。
