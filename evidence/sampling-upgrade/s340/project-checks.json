@@ -1,0 +1,290 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s340/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s340/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 1.111857291776687,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "invocation-generations",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s340/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s340/diagnosis.json",
+      "--require-invocation-generations"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.089220916852355,
+    "log": "invocation-generations.txt"
+  },
+  {
+    "name": "activation-erasure",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s340/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s340/diagnosis.json",
+      "--require-activation-erasure"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.110110584180802,
+    "log": "activation-erasure.txt"
+  },
+  {
+    "name": "coercion-erasure",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s340/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s340/diagnosis.json",
+      "--require-coercion-erasure"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.7895017080008984,
+    "log": "coercion-erasure.txt"
+  },
+  {
+    "name": "helper-effects",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s340/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s340/diagnosis.json",
+      "--require-helper-effects"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 2.052543167024851,
+    "log": "helper-effects.txt"
+  },
+  {
+    "name": "off-on",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s340/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s340/diagnosis.json",
+      "--require-off-on"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.076687625143677,
+    "log": "off-on.txt"
+  },
+  {
+    "name": "external-callsite",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s340/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s340/diagnosis.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.0016253753565252,
+    "log": "external-callsite.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s340/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s340/diagnosis.json",
+      "--require-invocation-generations",
+      "--require-activation-erasure",
+      "--require-coercion-erasure",
+      "--require-helper-effects",
+      "--require-off-on",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.365287708118558,
+    "log": "all-proofs.txt"
+  },
+  {
+    "name": "s340-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s340",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 12.132506208028644,
+    "log": "s340-tests.txt"
+  },
+  {
+    "name": "s331-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s331",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 8.888340999837965,
+    "log": "s331-tests.txt"
+  },
+  {
+    "name": "s322-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s322",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 9.479948999825865,
+    "log": "s322-tests.txt"
+  },
+  {
+    "name": "s312-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s312",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 7.84286466659978,
+    "log": "s312-tests.txt"
+  },
+  {
+    "name": "s300-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s300",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 2.1883727088570595,
+    "log": "s300-tests.txt"
+  },
+  {
+    "name": "s291-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s291",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 1.1649563750252128,
+    "log": "s291-tests.txt"
+  },
+  {
+    "name": "s283-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s283",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.9573045838624239,
+    "log": "s283-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_external_collision_callsite",
+      "tools.tests.test_receiver_authored_query",
+      "tools.tests.test_receiver_init_order",
+      "tools.tests.test_p1_receiver_availability",
+      "tools.tests.test_sampling_geometry",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 4.443682790733874,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.8059997498057783,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.07784683303907514,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.16172804171219468,
+    "log": "diff-check.txt"
+  }
+]
