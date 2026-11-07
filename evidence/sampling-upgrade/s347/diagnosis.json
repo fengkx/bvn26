@@ -1,0 +1,170 @@
+{
+  "slice": "s347",
+  "scope": "AFTER-s344 rank #3 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s338_reproduced": true,
+  "replay_is_new_progress": false,
+  "repeated_cfg_or_interface_audit_is_new_proof": false,
+  "attempt": {
+    "slice": "s347",
+    "scope": "AFTER-s344 rank #3 only",
+    "status": "blocked-before-live-binding",
+    "original_run": null,
+    "candidate_run": null,
+    "same_input_tape": null,
+    "original_loaded_body": null,
+    "candidate_loaded_body": null,
+    "original_activation": null,
+    "candidate_activation": null,
+    "original_defining_scope": null,
+    "candidate_defining_scope": null,
+    "independent_channel": null,
+    "uninterrupted_lifetime": null,
+    "boundaries": [
+      {
+        "boundary": "initialization",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "enumeration",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "member-access",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "coercion",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "overwrite",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "no-overwrite-null-return",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      }
+    ],
+    "observer_installed": false,
+    "observer_controls_executed": false,
+    "independent_observations": [],
+    "reason": "Locked s338 supplies no independent activation/scope resolver. Numeric 0x8e dispatch and its first callee branch were independently read from disk; this supplies no loaded-body, activation or defining-scope association. No paired live trace was obtained in s347. Measurement stops before live binding and observer installation."
+  },
+  "native_route": {
+    "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "binary_size": 24120048,
+    "module_uuid": "067c4cfe5b2a3424aaa01fae2df056eb",
+    "image_base": 4294967296,
+    "opcode": 142,
+    "dispatch": {
+      "start": 1198711,
+      "end_exclusive": 1198744,
+      "file_offset": 1198711,
+      "hex": "4489f883c0fc3d9b0000000f8765feffff488d0db5840000486304814801c8ffe0",
+      "sha256": "908aa37a5ba5c9e0c06d53bef693dc36c43db3fcd9ea211baf63b951c9d591cf"
+    },
+    "table": 1232708,
+    "table_entry": {
+      "start": 1233260,
+      "end_exclusive": 1233264,
+      "file_offset": 1233260,
+      "hex": "8d7bffff",
+      "sha256": "438cb9cfee0b9dabe6cecff9f2c572a644449406a82de2f4bf48c83efc44fd76"
+    },
+    "target": 1198801,
+    "regions": {
+      "dispatch_arm": {
+        "start": 1198801,
+        "end_exclusive": 1198828,
+        "file_offset": 1198801,
+        "hex": "4c898de8f9ffff4d89c6488dbda0feffffbe01000000e874990700",
+        "sha256": "40902108a2e7fea94a314a25c567d96a2e15853aaf675f9f11669617156744fe",
+        "disassembly_sha256": "1fc9b266a9aaa3117fc25a051f5b0ddf46d5f2f2ffd66d3d0c28f8329a6b7115",
+        "command": [
+          "objdump",
+          "-d",
+          "--x86-asm-syntax=intel",
+          "--start-address=0x100124ad1",
+          "--stop-address=0x100124aec",
+          "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+        ]
+      },
+      "callee_prefix": {
+        "start": 1696864,
+        "end_exclusive": 1696878,
+        "file_offset": 1696864,
+        "hex": "554889e5807f16000f8598000000",
+        "sha256": "064c9451df4a86363abfa65c29ca3f3f5fb2a34e70c61276c27695d43bd2f3a5",
+        "disassembly_sha256": "fd0d57f4e53677557b966dc53bbd17e64fcba4f912c5f4e078c298b4ab22c053",
+        "command": [
+          "objdump",
+          "-d",
+          "--x86-asm-syntax=intel",
+          "--start-address=0x10019e460",
+          "--stop-address=0x10019e46e",
+          "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+        ]
+      }
+    },
+    "new_name_searches": 0,
+    "new_player_launches": 0,
+    "new_attaches": 0,
+    "new_memory_reads": 0
+  },
+  "independent_native_observations": 0,
+  "mechanism_obligations_closed": 0,
+  "product_obligations_closed": 0,
+  "gates": {
+    "activation-pair": {
+      "proved": false,
+      "code": "S347_ACTIVATION_PAIR_UNPROVED"
+    },
+    "activation-scope": {
+      "proved": false,
+      "code": "S347_ACTIVATION_SCOPE_UNPROVED"
+    },
+    "activation-erasure": {
+      "proved": false,
+      "code": "S347_ACTIVATION_ERASURE_UNPROVED"
+    },
+    "observer": {
+      "proved": false,
+      "code": "S347_OBSERVER_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_memory_reads": 0,
+  "new_helper_installations": 0,
+  "new_captures": 0,
+  "other_ranks_executed": [],
+  "next_required_evidence": "Independently derive and qualify a loaded-body, activation and defining-scope channel for one original/candidate pair, retaining uninterrupted lifetime and initialization-to-overwrite/return observations through opaque operations. Then measure erasure; only afterwards qualify observer controls."
+}

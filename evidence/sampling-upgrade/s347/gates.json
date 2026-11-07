@@ -1,0 +1,118 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s347/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s347/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.44495795806869864,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "activation-pair",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s347/diagnose.py",
+      "--output",
+      "/tmp/s347-gate.json",
+      "--require-activation-pair"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.3896440831013024,
+    "log": "activation-pair.txt"
+  },
+  {
+    "name": "activation-scope",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s347/diagnose.py",
+      "--output",
+      "/tmp/s347-gate.json",
+      "--require-activation-scope"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.4359988747164607,
+    "log": "activation-scope.txt"
+  },
+  {
+    "name": "activation-erasure",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s347/diagnose.py",
+      "--output",
+      "/tmp/s347-gate.json",
+      "--require-activation-erasure"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.4109397907741368,
+    "log": "activation-erasure.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s347/diagnose.py",
+      "--output",
+      "/tmp/s347-gate.json",
+      "--require-observer"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.38393291691318154,
+    "log": "observer.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s347/diagnose.py",
+      "--output",
+      "/tmp/s347-gate.json",
+      "--require-activation-pair",
+      "--require-activation-scope",
+      "--require-activation-erasure",
+      "--require-observer"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.3777316673658788,
+    "log": "all-proofs.txt"
+  }
+]

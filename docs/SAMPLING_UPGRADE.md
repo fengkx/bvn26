@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-08（采样 s347，AFTER-s344 排名第3项）：独立读取锁定播放器 0x8e 数值分派→0x124ad1→0x19e460 首分支的41字节，作为定义入口候选线索；没有把寄存器/地址认作 defining scope。完整 s338 复现仅作保留验证。同输入 activation pair、defining scopes、初始化至覆盖/返回的 erasure 均未证明，六个边界仍 null，观察器对照未执行。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank3，不重排；rank1–2交付保持关闭，rank4+仅规划，权威表与 s254–s346 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s347/README.md)。
+
 - 2026-11-08（采样 s346，AFTER-s344 排名第2项）：沿锁定数值分派器取得 0x9f 表项→0x125f31→0x1204c0 首分支的静态字节关系，新增66字节；未重复名称搜索。完整复现 s337 仅作保留验证。ones 调用点与该路径的关联、十帧实际入口及独立 outer lifetime 均未证明；寄存器传递不作实例身份，四类对照和 fresh capture 未执行。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank2，不重排；rank1 交付保持关闭，rank3+ 仅规划；权威表及 s254–s345 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s346/README.md)。
 
 - 2026-11-08（采样 s344，AFTER-s335 排名第9项）：完整复现锁定 s335，仅作保留验证；61 个边界仍未满足完整同次捕获准入，配对场景图为零。对应场景捕获与源绑定边缘/内部精确 RGBA 分类未执行，残差保持 null；零新增独立运行观测。基础诊断 exit0，三项证明门禁 exit1；production_admitted=false、native_parity_proven=false、M0-02 pending，零产品义务关闭。仅执行最终 rank9，rank1–8 已交付；不重排，不修准入，权威表及 s254–s343 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s344/README.md)。
