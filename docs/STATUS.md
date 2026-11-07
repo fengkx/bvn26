@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s325，AFTER-s317 排名第8项）：完整复现锁定 s316，仅作保留验证。新增当前播放器磁盘符号表核验：1039条原始记录与1038条nm输出相符，差项为N_OPT/debug记录；1032项是导入、6项为已定义符号，无__DWARF段。二进制哈希与s298一致，但未导出独立槽位/引用布局或live binding；实际清空/替换/free/reuse及连续池代次仍未证明，四项证明门禁exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；零构建/启动/附加/捕获，仅排名8，排名9仍规划，权威表与s254–s324不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s325/README.md)。
+
 - 2026-11-08（采样 s324，AFTER-s317 排名第7项）：锁定 s315 完整复现，历史补丁与战斗证据不算新进展；本次精确 Flash Player 路径选择在16.9532秒后 timeoutReached，未取得窗口状态，零输入、零插桩启动、零新捕获。应用激活副作用未知，超时不能证明未派发。编译/opcode资格及原菜单Enter/release与无派发对照延后，行为观测保持null，四项证明门禁exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；仅排名7，排名8+仍规划，权威表及s254–s323不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s324/README.md)。
 
 - 2026-11-08（采样 s323，AFTER-s317 排名第6项）：完整复现锁定 s314，既有保管对与序列化审计不算新进展。新增四类保留 observer 对根回调的适用性审计：schedule 包住安装赋值，BODY exit 只在内层调用之后，DoAction/callsite 不选择此根回调；均依赖被替换的 aiEvent。独立 loaded-body/owner-generation/activation 到 dispatcher-return 通道仍未建立，五项见证保持 null，四项证明门禁 exit1，完整终端清单延后。production_admitted=false、native_parity_proven=false，M0-02 pending；仅排名6，排名7+仍规划，权威表与s254–s322不变，零构建/启动/附加/内存读取/捕获，无运行时修改。 [证据](../evidence/sampling-upgrade/s323/README.md)。

@@ -1,0 +1,37 @@
+{
+  "binary": "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "binary_size": 24120048,
+  "checks": [
+    {
+      "command": [
+        "xcrun",
+        "nm",
+        "-m",
+        "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.036865875124931335,
+      "stdout": "native-symbols.txt",
+      "stderr": "native-symbols-stderr.txt",
+      "stdout_sha256": "0854fc07ffe8652a7c0c0b2b5bd027448bbd4b5236eddabf5c11c17c8c13747a"
+    },
+    {
+      "command": [
+        "xcrun",
+        "otool",
+        "-l",
+        "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.02431066706776619,
+      "stdout": "native-load-commands.txt",
+      "stderr": "native-load-commands-stderr.txt",
+      "stdout_sha256": "1163196d26d3162e29836cfe473baa35aff40cb3e636d149375ab465fb50cf9f"
+    }
+  ],
+  "process_attaches": 0,
+  "player_launches": 0,
+  "live_binding": null,
+  "limitation": "On-disk inventory only. No independent native layout or live object identity derived."
+}
