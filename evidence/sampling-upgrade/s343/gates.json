@@ -1,0 +1,96 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s343/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s343/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.6174576659686863,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "slot-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s343/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s343/diagnosis.json",
+      "--require-slot-reference"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.954199833329767,
+    "log": "slot-reference.txt"
+  },
+  {
+    "name": "content-clearing",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s343/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s343/diagnosis.json",
+      "--require-content-clearing"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.518345042131841,
+    "log": "content-clearing.txt"
+  },
+  {
+    "name": "replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s343/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s343/diagnosis.json",
+      "--require-replacement"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.9964610002934933,
+    "log": "replacement.txt"
+  },
+  {
+    "name": "allocation-identity",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s343/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s343/diagnosis.json",
+      "--require-allocation-identity"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.6439945828169584,
+    "log": "allocation-identity.txt"
+  }
+]

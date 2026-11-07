@@ -1,0 +1,103 @@
+{
+  "kind": "local_collector_implementation_error_not_native_failure",
+  "error": "Collection timer variable was overwritten by a context byte offset; duration validation rejected the report before proof gates.",
+  "fix": "Use distinct started timer and context start variables; recollect and rerun.",
+  "initial_gates": [
+    {
+      "name": "diagnosis",
+      "command": [
+        "python3",
+        "evidence/sampling-upgrade/s343/diagnose.py",
+        "--output",
+        "evidence/sampling-upgrade/s343/diagnosis.json"
+      ],
+      "environment": {
+        "PYTHONPATH": ".",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 1,
+      "expected_exit": 0,
+      "passed": false,
+      "wall_seconds": 3.583378416020423,
+      "log": "diagnosis.txt"
+    },
+    {
+      "name": "slot-reference",
+      "command": [
+        "python3",
+        "evidence/sampling-upgrade/s343/diagnose.py",
+        "--output",
+        "evidence/sampling-upgrade/s343/diagnosis.json",
+        "--require-slot-reference"
+      ],
+      "environment": {
+        "PYTHONPATH": ".",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 1,
+      "expected_exit": 1,
+      "passed": true,
+      "wall_seconds": 3.5460382918827236,
+      "log": "slot-reference.txt"
+    },
+    {
+      "name": "content-clearing",
+      "command": [
+        "python3",
+        "evidence/sampling-upgrade/s343/diagnose.py",
+        "--output",
+        "evidence/sampling-upgrade/s343/diagnosis.json",
+        "--require-content-clearing"
+      ],
+      "environment": {
+        "PYTHONPATH": ".",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 1,
+      "expected_exit": 1,
+      "passed": true,
+      "wall_seconds": 4.0118710827082396,
+      "log": "content-clearing.txt"
+    },
+    {
+      "name": "replacement",
+      "command": [
+        "python3",
+        "evidence/sampling-upgrade/s343/diagnose.py",
+        "--output",
+        "evidence/sampling-upgrade/s343/diagnosis.json",
+        "--require-replacement"
+      ],
+      "environment": {
+        "PYTHONPATH": ".",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 1,
+      "expected_exit": 1,
+      "passed": true,
+      "wall_seconds": 3.5494902497157454,
+      "log": "replacement.txt"
+    },
+    {
+      "name": "allocation-identity",
+      "command": [
+        "python3",
+        "evidence/sampling-upgrade/s343/diagnose.py",
+        "--output",
+        "evidence/sampling-upgrade/s343/diagnosis.json",
+        "--require-allocation-identity"
+      ],
+      "environment": {
+        "PYTHONPATH": ".",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 1,
+      "expected_exit": 1,
+      "passed": true,
+      "wall_seconds": 3.591931375209242,
+      "log": "allocation-identity.txt"
+    }
+  ],
+  "stdout": "S343_EVIDENCE_INVALID: Invalid collection duration",
+  "test_run": "interrupted before a complete test result; not counted"
+}
