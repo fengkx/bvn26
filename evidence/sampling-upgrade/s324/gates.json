@@ -1,0 +1,96 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s324/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s324/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.8194302502088249,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "native-ui",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s324/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s324/diagnosis.json",
+      "--require-native-ui"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.7815217501483858,
+    "log": "native-ui.txt"
+  },
+  {
+    "name": "opcode-qualification",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s324/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s324/diagnosis.json",
+      "--require-opcode-qualification"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.7280719159170985,
+    "log": "opcode-qualification.txt"
+  },
+  {
+    "name": "thin-coverage",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s324/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s324/diagnosis.json",
+      "--require-thin-coverage"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.7705248328857124,
+    "log": "thin-coverage.txt"
+  },
+  {
+    "name": "full-as",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s324/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s324/diagnosis.json",
+      "--require-full-as"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.7958892500028014,
+    "log": "full-as.txt"
+  }
+]
