@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s351，AFTER-s344 排名第7项）：对 s343 五个锁定文本地址执行独立绝对地址引用/节重定位检查：零精确 u64 引用、31 节 relocation count 均零；不排除 RIP 相对引用、表基址或动态绑定。名称到代码关联及独立 saved-reference 解引用仍未证明，live generations 与 clearing/replacement/free/reuse 对照未执行。完整 s343 报告保留、s334 链重放仅作验证。基础诊断 exit0，六项证明门禁 exit1；production_admitted=false、native_parity_proven=false、M0-02 pending，零机制/产品义务关闭。仅 rank7；rank1–6 已交付、rank8+ 仅规划；不重排、不改旧证据或运行时。[证据](../evidence/sampling-upgrade/s351/README.md)。
+
 - 2026-11-08（采样 s350，AFTER-s344 排名第6项）：独立读取锁定播放器 0x3e 数值分派到 0x124fef 首分支的20字节，仅为静态候选路径，未绑定 loaded closure/body、owner generation 或 activation 经 logger 替换到 dispatcher continuation。全部 live 见证保持 null；off/on 与 inventory 未执行。完整 s341 重放仅作保留验证。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank6，不重排；rank1–5 已交付，rank7+ 仅规划；权威表及 s254–s349 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s350/README.md)。
 
 - 2026-11-08（采样 s349，AFTER-s344 排名第5项）：独立尝试未经修改的原版/候选 SWF 调试入口；锁定原版无 58/63/64 调试标签，构建收据指向的候选临时文件缺失，仅为磁盘/设施观察，不是调用或 erasure 证明。未建立 loaded body、invocation、scope/this/root/parent 连续代际；activation/coercion 测量保持 null，helper/off-on 未执行。完整 s340 重放仅作保留验证。基础诊断 exit0，六项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank5，不重排；rank1–4 已交付，rank6+ 仅规划，权威表与 s254–s348 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s349/README.md)。

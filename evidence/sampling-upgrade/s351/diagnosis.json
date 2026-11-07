@@ -1,0 +1,2127 @@
+{
+  "slice": "s351",
+  "scope": "AFTER-s344 rank #7 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "retained_s343_diagnosis": {
+    "slice": "s343",
+    "scope": "AFTER-s335 rank #8 only",
+    "production_admitted": false,
+    "native_parity_proven": false,
+    "m0_02_status": "pending",
+    "locked_s334_reproduced": true,
+    "locked_s334_diagnosis": {
+      "slice": "s334",
+      "scope": "AFTER-s326 rank #8 only",
+      "production_admitted": false,
+      "native_parity_proven": false,
+      "m0_02_status": "pending",
+      "locked_s325_reproduced": true,
+      "replay_is_new_progress": false,
+      "locked_s325_diagnosis": {
+        "base": "93c306d177cc8f2dbafb52be73c049df5f9c0cd3",
+        "scope": "AFTER-s317 rank #8 only",
+        "status": "honest_unproved",
+        "production_admitted": false,
+        "native_parity_proven": false,
+        "m0_02_status": "pending",
+        "product_obligations_closed": 0,
+        "locked_s316_reproduced": true,
+        "locked_s316_diagnosis": {
+          "base": "03b2e5df67adeddfb4a293d7009cc0b885b040d7",
+          "scope": "AFTER-s308 rank #8 only",
+          "status": "honest_unproved",
+          "production_admitted": false,
+          "native_parity_proven": false,
+          "m0_02_status": "pending",
+          "product_obligations_closed": 0,
+          "locked_s307_reproduced": true,
+          "locked_s307_diagnosis": {
+            "base": "87b844c6",
+            "scope": "s307 / AFTER-s299 rank #8 only",
+            "status": "honest_unproved",
+            "production_admitted": false,
+            "native_parity_proven": false,
+            "product_obligations_closed": 0,
+            "m0_02_status": "pending",
+            "locked_s298_reproduced": true,
+            "retained_capture": {
+              "path": "evidence/sampling-upgrade/s261/native-capture.log.gz",
+              "events": 8290,
+              "samples": 61,
+              "raw_validation_exit": 0,
+              "source_gap_count": 169,
+              "actor_comparison": {
+                "reference": "s255/native-capture.log.gz",
+                "rows": 122,
+                "all_14_fields_equal": true
+              }
+            },
+            "source_audit": {
+              "functions": [
+                {
+                  "name": "s261Describe",
+                  "first_line": 4,
+                  "last_line": 15,
+                  "sha256": "19bee3540531253b285782f39ad6472faf0ae760413e85a79c64ba9b951a29c3",
+                  "lines": [
+                    {
+                      "line": 4,
+                      "text": "_global.s261Describe = function(mc)"
+                    },
+                    {
+                      "line": 5,
+                      "text": "{"
+                    },
+                    {
+                      "line": 6,
+                      "text": "   var children = [];"
+                    },
+                    {
+                      "line": 7,
+                      "text": "   for(var key in mc)"
+                    },
+                    {
+                      "line": 8,
+                      "text": "   {"
+                    },
+                    {
+                      "line": 9,
+                      "text": "      var child = mc[key];"
+                    },
+                    {
+                      "line": 10,
+                      "text": "      if(typeof(child) == \"movieclip\" && child._parent == mc)"
+                    },
+                    {
+                      "line": 11,
+                      "text": "         children.push(escape(String(child)) + \":\" + child.getDepth() + \":\" + child._currentframe);"
+                    },
+                    {
+                      "line": 12,
+                      "text": "   }"
+                    },
+                    {
+                      "line": 13,
+                      "text": "   children.sort();"
+                    },
+                    {
+                      "line": 14,
+                      "text": "   return escape(String(mc)) + \",\" + typeof(mc) + \",\" + escape(String(mc._parent)) + \",\" + escape(String(mc._name)) + \",\" + mc.getDepth() + \",\" + mc._currentframe + \",\" + mc._totalframes + \",\" + escape(String(mc.__aiGeoSource)) + \",\" + mc.__s261Token + \",\" + mc.__aiDlId + \",\" + children.length + \",\" + children.join(\";\");"
+                    },
+                    {
+                      "line": 15,
+                      "text": "};"
+                    }
+                  ]
+                },
+                {
+                  "name": "s261Observe",
+                  "first_line": 16,
+                  "last_line": 42,
+                  "sha256": "9b220022fc2430b09b6083fe10426420ebec6865c2564fb98dd4b01198a3ad65",
+                  "lines": [
+                    {
+                      "line": 16,
+                      "text": "_global.s261Observe = function(phase, receiver)"
+                    },
+                    {
+                      "line": 17,
+                      "text": "{"
+                    },
+                    {
+                      "line": 18,
+                      "text": "   var root = _global.s261Root;"
+                    },
+                    {
+                      "line": 19,
+                      "text": "   if(phase == \"before_unload\")"
+                    },
+                    {
+                      "line": 20,
+                      "text": "   {"
+                    },
+                    {
+                      "line": 21,
+                      "text": "      if(_global.s261Armed || receiver._parent != root.game.p1.mc) return;"
+                    },
+                    {
+                      "line": 22,
+                      "text": "      _global.s261Armed = true;"
+                    },
+                    {
+                      "line": 23,
+                      "text": "      _global.s261Receiver = receiver;"
+                    },
+                    {
+                      "line": 24,
+                      "text": "      _global.s261Parent = receiver._parent;"
+                    },
+                    {
+                      "line": 25,
+                      "text": "      _global.s261Depth = receiver.getDepth();"
+                    },
+                    {
+                      "line": 26,
+                      "text": "      _global.s261Parent.__s261Token = \"s261-parent-1\";"
+                    },
+                    {
+                      "line": 27,
+                      "text": "      receiver.__s261Token = \"s261-receiver-1\";"
+                    },
+                    {
+                      "line": 28,
+                      "text": "      _global.s261Controls();"
+                    },
+                    {
+                      "line": 29,
+                      "text": "   }"
+                    },
+                    {
+                      "line": 30,
+                      "text": "   if(!_global.s261Armed) return;"
+                    },
+                    {
+                      "line": 31,
+                      "text": "   var parent = _global.s261Parent;"
+                    },
+                    {
+                      "line": 32,
+                      "text": "   var saved = _global.s261Receiver;"
+                    },
+                    {
+                      "line": 33,
+                      "text": "   var occupant = parent.getInstanceAtDepth(_global.s261Depth);"
+                    },
+                    {
+                      "line": 34,
+                      "text": "   var named = parent.AImain;"
+                    },
+                    {
+                      "line": 35,
+                      "text": "   root.aiEvent(\"aimain_identity\", phase + \",\" + (saved == occupant) + \",\" + (named == occupant) + \",\" + (saved._parent == parent) + \",\" + _global.s261Depth);"
+                    },
+                    {
+                      "line": 36,
+                      "text": "   root.aiEvent(\"aimain_object\", phase + \",parent,\" + _global.s261Describe(parent));"
+                    },
+                    {
+                      "line": 37,
+                      "text": "   root.aiEvent(\"aimain_object\", phase + \",saved_receiver,\" + _global.s261Describe(saved));"
+                    },
+                    {
+                      "line": 38,
+                      "text": "   root.aiEvent(\"aimain_object\", phase + \",depth_occupant,\" + _global.s261Describe(occupant));"
+                    },
+                    {
+                      "line": 39,
+                      "text": "   root.aiEvent(\"aimain_object\", phase + \",named_receiver,\" + _global.s261Describe(named));"
+                    },
+                    {
+                      "line": 40,
+                      "text": "   if(phase == \"root\" && occupant._currentframe == 0 && occupant._totalframes == 0) _global.s261Zero = true;"
+                    },
+                    {
+                      "line": 41,
+                      "text": "   if(phase == \"after_unload\") _global.s261AwaitRoot = true;"
+                    },
+                    {
+                      "line": 42,
+                      "text": "};"
+                    }
+                  ]
+                },
+                {
+                  "name": "s261Controls",
+                  "first_line": 45,
+                  "last_line": 61,
+                  "sha256": "d9527d3fb4dc2f6eab5c144788a8acb7d6162d59c4309945c4c0d830323efff2",
+                  "lines": [
+                    {
+                      "line": 45,
+                      "text": "_global.s261Controls = function()"
+                    },
+                    {
+                      "line": 46,
+                      "text": "{"
+                    },
+                    {
+                      "line": 47,
+                      "text": "   var host = _root.createEmptyMovieClip(\"__s261Control\", 100001);"
+                    },
+                    {
+                      "line": 48,
+                      "text": "   var saved = host.createEmptyMovieClip(\"slot\", 1);"
+                    },
+                    {
+                      "line": 49,
+                      "text": "   var token = {};"
+                    },
+                    {
+                      "line": 50,
+                      "text": "   saved.identity = token;"
+                    },
+                    {
+                      "line": 51,
+                      "text": "   _root.aiEvent(\"s261_control\", \"retained,\" + (saved == host.slot) + \",\" + (host.slot.identity == token));"
+                    },
+                    {
+                      "line": 52,
+                      "text": "   saved.removeMovieClip();"
+                    },
+                    {
+                      "line": 53,
+                      "text": "   var replacement = host.createEmptyMovieClip(\"slot\", 1);"
+                    },
+                    {
+                      "line": 54,
+                      "text": "   replacement.identity = {};"
+                    },
+                    {
+                      "line": 55,
+                      "text": "   _root.aiEvent(\"s261_control\", \"replaced,\" + (saved == host.slot) + \",\" + (host.slot.identity == token));"
+                    },
+                    {
+                      "line": 56,
+                      "text": "   var retained = replacement;"
+                    },
+                    {
+                      "line": 57,
+                      "text": "   var secondToken = replacement.identity;"
+                    },
+                    {
+                      "line": 58,
+                      "text": "   delete replacement.identity;"
+                    },
+                    {
+                      "line": 59,
+                      "text": "   _root.aiEvent(\"s261_control\", \"retained_content_deleted,\" + (retained == host.slot) + \",\" + (host.slot.identity == secondToken));"
+                    },
+                    {
+                      "line": 60,
+                      "text": "   host.removeMovieClip();"
+                    },
+                    {
+                      "line": 61,
+                      "text": "};"
+                    }
+                  ]
+                }
+              ],
+              "reference_routes": {
+                "saved_reference": [
+                  {
+                    "line": 23,
+                    "statement": "_global.s261Receiver = receiver;"
+                  },
+                  {
+                    "line": 32,
+                    "statement": "var saved = _global.s261Receiver;"
+                  }
+                ],
+                "depth_slot": [
+                  {
+                    "line": 24,
+                    "statement": "_global.s261Parent = receiver._parent;"
+                  },
+                  {
+                    "line": 25,
+                    "statement": "_global.s261Depth = receiver.getDepth();"
+                  },
+                  {
+                    "line": 31,
+                    "statement": "var parent = _global.s261Parent;"
+                  },
+                  {
+                    "line": 33,
+                    "statement": "var occupant = parent.getInstanceAtDepth(_global.s261Depth);"
+                  }
+                ],
+                "named_slot": [
+                  {
+                    "line": 34,
+                    "statement": "var named = parent.AImain;"
+                  }
+                ]
+              },
+              "explicit_reference_writes_in_member": {
+                "s261Receiver": [
+                  23
+                ],
+                "s261Parent": [
+                  24
+                ],
+                "s261Depth": [
+                  25
+                ]
+              },
+              "control_operations_in_source_order": [
+                {
+                  "line": 47,
+                  "statement": "var host = _root.createEmptyMovieClip(\"__s261Control\", 100001);"
+                },
+                {
+                  "line": 48,
+                  "statement": "var saved = host.createEmptyMovieClip(\"slot\", 1);"
+                },
+                {
+                  "line": 50,
+                  "statement": "saved.identity = token;"
+                },
+                {
+                  "line": 52,
+                  "statement": "saved.removeMovieClip();"
+                },
+                {
+                  "line": 53,
+                  "statement": "var replacement = host.createEmptyMovieClip(\"slot\", 1);"
+                },
+                {
+                  "line": 54,
+                  "statement": "replacement.identity = {};"
+                },
+                {
+                  "line": 56,
+                  "statement": "var retained = replacement;"
+                },
+                {
+                  "line": 57,
+                  "statement": "var secondToken = replacement.identity;"
+                },
+                {
+                  "line": 58,
+                  "statement": "delete replacement.identity;"
+                },
+                {
+                  "line": 60,
+                  "statement": "host.removeMovieClip();"
+                }
+              ],
+              "control_logs": [
+                {
+                  "line": 51,
+                  "statement": "_root.aiEvent(\"s261_control\", \"retained,\" + (saved == host.slot) + \",\" + (host.slot.identity == token));"
+                },
+                {
+                  "line": 55,
+                  "statement": "_root.aiEvent(\"s261_control\", \"replaced,\" + (saved == host.slot) + \",\" + (host.slot.identity == token));"
+                },
+                {
+                  "line": 59,
+                  "statement": "_root.aiEvent(\"s261_control\", \"retained_content_deleted,\" + (retained == host.slot) + \",\" + (host.slot.identity == secondToken));"
+                }
+              ],
+              "source_order_only": true,
+              "independent_native_resolvers_derived": false,
+              "findings": [
+                "Saved global and parent/depth query are distinct AS2 expression routes, not independent native referent resolvers.",
+                "Parent and depth are saved from the same receiver before controls; no explicit reassignment of these three globals occurs in this member. Dynamic/native mutation is not excluded.",
+                "Control remove/create occurs between logs 51 and 55. No log occurs at native destruction, free, pool checkout or reuse.",
+                "The final control aliases retained to replacement, saves its property, then deletes only replacement.identity before log 59.",
+                "Describe enumerates and sorts children, coerces strings, and reads properties sequentially. Four object logs are not one atomic native snapshot."
+              ],
+              "native_layout": null,
+              "loaded_module_binding": null,
+              "ordered_pool_generations": null
+            },
+            "reference_window": {
+              "run_id": "s261-yijiao-r01",
+              "event_count": 8290,
+              "events": [
+                {
+                  "sequence": 36,
+                  "clock_ms": 11399,
+                  "root": 8,
+                  "tick": -1,
+                  "kind": "aimain_identity",
+                  "payload": "root,true,true,true,-16383"
+                },
+                {
+                  "sequence": 37,
+                  "clock_ms": 11399,
+                  "root": 8,
+                  "tick": -1,
+                  "kind": "aimain_object",
+                  "payload": "root,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,1,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:8;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+                },
+                {
+                  "sequence": 38,
+                  "clock_ms": 11399,
+                  "root": 8,
+                  "tick": -1,
+                  "kind": "aimain_object",
+                  "payload": "root,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+                },
+                {
+                  "sequence": 39,
+                  "clock_ms": 11399,
+                  "root": 8,
+                  "tick": -1,
+                  "kind": "aimain_object",
+                  "payload": "root,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+                },
+                {
+                  "sequence": 40,
+                  "clock_ms": 11399,
+                  "root": 8,
+                  "tick": -1,
+                  "kind": "aimain_object",
+                  "payload": "root,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+                },
+                {
+                  "sequence": 41,
+                  "clock_ms": 11400,
+                  "root": 8,
+                  "tick": -1,
+                  "kind": "input_next_display",
+                  "payload": "w=undefined,a=undefined,l=undefined,\u4e0a\u7bad=undefined,\u4e0b\u7bad=undefined,\u5de6\u7bad=undefined,\u53f3\u7bad=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+                },
+                {
+                  "sequence": 42,
+                  "clock_ms": 11423,
+                  "root": 8,
+                  "tick": -1,
+                  "kind": "intro_body_enter",
+                  "payload": "8,8"
+                },
+                {
+                  "sequence": 43,
+                  "clock_ms": 11424,
+                  "root": 8,
+                  "tick": -1,
+                  "kind": "intro_body_exit",
+                  "payload": "8,1"
+                },
+                {
+                  "sequence": 44,
+                  "clock_ms": 11424,
+                  "root": 9,
+                  "tick": -1,
+                  "kind": "aimain_identity",
+                  "payload": "root,true,true,true,-16383"
+                },
+                {
+                  "sequence": 45,
+                  "clock_ms": 11424,
+                  "root": 9,
+                  "tick": -1,
+                  "kind": "aimain_object",
+                  "payload": "root,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,2,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:0;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:9;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+                },
+                {
+                  "sequence": 46,
+                  "clock_ms": 11424,
+                  "root": 9,
+                  "tick": -1,
+                  "kind": "aimain_object",
+                  "payload": "root,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+                },
+                {
+                  "sequence": 47,
+                  "clock_ms": 11424,
+                  "root": 9,
+                  "tick": -1,
+                  "kind": "aimain_object",
+                  "payload": "root,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+                },
+                {
+                  "sequence": 48,
+                  "clock_ms": 11424,
+                  "root": 9,
+                  "tick": -1,
+                  "kind": "aimain_object",
+                  "payload": "root,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+                }
+              ],
+              "controls": [
+                {
+                  "sequence": 21,
+                  "clock_ms": 11396,
+                  "root": 7,
+                  "tick": -1,
+                  "kind": "s261_control",
+                  "payload": "retained,true,true"
+                },
+                {
+                  "sequence": 22,
+                  "clock_ms": 11397,
+                  "root": 7,
+                  "tick": -1,
+                  "kind": "s261_control",
+                  "payload": "replaced,true,false"
+                },
+                {
+                  "sequence": 23,
+                  "clock_ms": 11397,
+                  "root": 7,
+                  "tick": -1,
+                  "kind": "s261_control",
+                  "payload": "retained_content_deleted,true,false"
+                }
+              ],
+              "raw_sha256": "a807109c58f98b2b48e27275c5ac36663defe1ea56f224ab1cf333f154cd40c0",
+              "interpretation": "AS2 observations only; contiguous log sequence is not complete native lifecycle coverage"
+            },
+            "target_sites": [
+              {
+                "event_sequence": 36,
+                "root": 8,
+                "clock_ms": 11399,
+                "path": "_level0.game.p1.mc.AImain",
+                "depth": "-16383",
+                "frame": "1",
+                "total_frames": "2",
+                "native_allocation_address": null,
+                "native_allocation_generation": null,
+                "saved_reference_native_referent": null
+              },
+              {
+                "event_sequence": 44,
+                "root": 9,
+                "clock_ms": 11424,
+                "path": "_level0.game.p1.mc.AImain",
+                "depth": "-16383",
+                "frame": "0",
+                "total_frames": "0",
+                "native_allocation_address": null,
+                "native_allocation_generation": null,
+                "saved_reference_native_referent": null
+              }
+            ],
+            "native_observations": {
+              "slot_resolver": null,
+              "saved_reference_resolver": null,
+              "object_layout": null,
+              "allocation_free_reuse_ledger": null,
+              "pool_lifetime_coverage": null,
+              "retained_content_clear": null,
+              "replacement_control_generations": null
+            },
+            "control_obligations": {
+              "retained_content_clear": {
+                "historical_signal": {
+                  "status": "missing_native_control",
+                  "available_as2_control": "retained_content_deleted",
+                  "available_signal": [
+                    "true",
+                    "false"
+                  ],
+                  "native_allocation_generation_before": null,
+                  "native_allocation_generation_after": null,
+                  "limitation": "Deleting one token property is not a calibrated retained-content-clear allocation control."
+                },
+                "qualified": false,
+                "required_order": [
+                  "Resolve slot and saved referent independently before clearing.",
+                  "Observe an actual content-clear operation and complete pool lifetime coverage.",
+                  "Resolve both again; establish retention independently of address or token equality."
+                ],
+                "observed_native_generations": null
+              },
+              "same_name_depth_replacement": {
+                "historical_signal": {
+                  "status": "operation_observed_native_generation_missing",
+                  "available_as2_control": "replaced",
+                  "available_signal": [
+                    "true",
+                    "false"
+                  ],
+                  "native_allocation_generation_before": null,
+                  "native_allocation_generation_after": null,
+                  "limitation": "Explicit remove/create is observed, but no native allocation/free or saved-reference resolution is captured."
+                },
+                "qualified": false,
+                "required_order": [
+                  "Resolve the original slot and saved referent with a live generation.",
+                  "Observe removal, destruction/free and pool lifecycle events in actual execution order.",
+                  "Observe replacement creation and resolve slot and saved referent independently."
+                ],
+                "observed_native_generations": null
+              },
+              "free_reuse": {
+                "qualified": false,
+                "required_order": [
+                  "Start complete object/pool lifetime coverage before control allocation.",
+                  "Observe the old generation ending before actual address reuse begins a new generation.",
+                  "Resolve slot and saved referent after reuse without assigning identity by pointer."
+                ],
+                "observed_native_generations": null,
+                "limitation": "Removal need not imply immediate free. Unexercised reuse or a coverage gap remains unproved; generic malloc/free hooks alone do not cover internal pools."
+              }
+            },
+            "slot_reference_proved": false,
+            "allocation_identity_proved": false,
+            "actual_native_controls_executed": false,
+            "absence_of_possible_resolver_proved": false,
+            "new_builds": 0,
+            "new_player_launches": 0,
+            "new_process_attaches": 0,
+            "new_captures": 0,
+            "new_symbol_queries": 0,
+            "exclusions_enforced": [
+              "pointer-only identity",
+              "0->1 alias",
+              "token-loss identity",
+              "unloaded exemption",
+              "import inventory as runtime proof",
+              "property deletion as content clearing",
+              "ranks 1-7 and 9",
+              "s254-s306 edits",
+              "runtime/contracts/shared sampler/threshold/validator changes"
+            ],
+            "requirement_failure_codes": {
+              "slot-reference": "S307_SLOT_REFERENCE_UNPROVED",
+              "content-clearing": "S307_CONTENT_CLEARING_UNPROVED",
+              "replacement": "S307_REPLACEMENT_UNPROVED",
+              "allocation-identity": "S307_POOL_GENERATIONS_UNPROVED"
+            },
+            "blocker": "Independent native slot/saved-reference layouts and live bindings remain missing. AS2 routes cannot supply actual content clearing, destruction/free or complete ordered pool generations; replacement and reuse remain unqualified.",
+            "next_discriminator": [
+              "Derive native parent/depth lookup and saved AS2 reference dereference independently on the pinned module; retain relative addresses, instruction bytes, layout and live provenance. Import stubs do not resolve either.",
+              "Establish object allocation/destruction and pool reuse coverage before control creation. System malloc/free alone may miss pooled object lifetimes. Track allocation generations, not pointer equality.",
+              "Qualify the same resolver/ledger on actual retained-content clearing and same-name/depth replacement. Record independent retention/free/reuse evidence and saved-reference referents; deleting a property is insufficient.",
+              "Only then capture the unchanged s261 tape at source-equivalent last-nonzero/first-zero boundaries with complete lifecycle ordering. Preserve actual roots and all events; no numeric-root assumption, alias or unloaded exemption."
+            ]
+          },
+          "control_operand_and_interval_audit": {
+            "event_count": 8290,
+            "as2_sequence_contiguous": true,
+            "control_bindings": [
+              {
+                "event": {
+                  "run": "s261-yijiao-r01",
+                  "sequence": 21,
+                  "clock_ms": 11396,
+                  "root": 7,
+                  "tick": -1,
+                  "kind": "s261_control",
+                  "payload": "retained,true,true"
+                },
+                "source_log": {
+                  "line": 51,
+                  "statement": "_root.aiEvent(\"s261_control\", \"retained,\" + (saved == host.slot) + \",\" + (host.slot.identity == token));"
+                },
+                "operands": {
+                  "left_reference": "saved",
+                  "property_reference": "token",
+                  "definition_lines": [
+                    48,
+                    49,
+                    50
+                  ]
+                },
+                "independent_native_referents": null
+              },
+              {
+                "event": {
+                  "run": "s261-yijiao-r01",
+                  "sequence": 22,
+                  "clock_ms": 11397,
+                  "root": 7,
+                  "tick": -1,
+                  "kind": "s261_control",
+                  "payload": "replaced,true,false"
+                },
+                "source_log": {
+                  "line": 55,
+                  "statement": "_root.aiEvent(\"s261_control\", \"replaced,\" + (saved == host.slot) + \",\" + (host.slot.identity == token));"
+                },
+                "operands": {
+                  "left_reference": "saved",
+                  "property_reference": "token",
+                  "definition_lines": [
+                    48,
+                    49,
+                    53,
+                    54
+                  ]
+                },
+                "independent_native_referents": null
+              },
+              {
+                "event": {
+                  "run": "s261-yijiao-r01",
+                  "sequence": 23,
+                  "clock_ms": 11397,
+                  "root": 7,
+                  "tick": -1,
+                  "kind": "s261_control",
+                  "payload": "retained_content_deleted,true,false"
+                },
+                "source_log": {
+                  "line": 59,
+                  "statement": "_root.aiEvent(\"s261_control\", \"retained_content_deleted,\" + (retained == host.slot) + \",\" + (host.slot.identity == secondToken));"
+                },
+                "operands": {
+                  "left_reference": "retained",
+                  "property_reference": "secondToken",
+                  "definition_lines": [
+                    53,
+                    54,
+                    56,
+                    57,
+                    58
+                  ]
+                },
+                "independent_native_referents": null
+              }
+            ],
+            "unobserved_native_intervals": [
+              {
+                "name": "creation_before_first_log",
+                "source_operations": [
+                  {
+                    "line": 47,
+                    "statement": "var host = _root.createEmptyMovieClip(\"__s261Control\", 100001);"
+                  },
+                  {
+                    "line": 48,
+                    "statement": "var saved = host.createEmptyMovieClip(\"slot\", 1);"
+                  },
+                  {
+                    "line": 50,
+                    "statement": "saved.identity = token;"
+                  }
+                ],
+                "bracketing_control_sequences": [
+                  null,
+                  21
+                ],
+                "native_pool_events": null,
+                "native_generation_order_proved": false
+              },
+              {
+                "name": "remove_replace",
+                "source_operations": [
+                  {
+                    "line": 52,
+                    "statement": "saved.removeMovieClip();"
+                  },
+                  {
+                    "line": 53,
+                    "statement": "var replacement = host.createEmptyMovieClip(\"slot\", 1);"
+                  },
+                  {
+                    "line": 54,
+                    "statement": "replacement.identity = {};"
+                  }
+                ],
+                "bracketing_control_sequences": [
+                  21,
+                  22
+                ],
+                "native_pool_events": null,
+                "native_generation_order_proved": false
+              },
+              {
+                "name": "property_delete",
+                "source_operations": [
+                  {
+                    "line": 56,
+                    "statement": "var retained = replacement;"
+                  },
+                  {
+                    "line": 57,
+                    "statement": "var secondToken = replacement.identity;"
+                  },
+                  {
+                    "line": 58,
+                    "statement": "delete replacement.identity;"
+                  }
+                ],
+                "bracketing_control_sequences": [
+                  22,
+                  23
+                ],
+                "native_pool_events": null,
+                "native_generation_order_proved": false
+              },
+              {
+                "name": "cleanup_after_final_log",
+                "source_operations": [
+                  {
+                    "line": 60,
+                    "statement": "host.removeMovieClip();"
+                  }
+                ],
+                "bracketing_control_sequences": [
+                  23,
+                  null
+                ],
+                "native_pool_events": null,
+                "native_generation_order_proved": false
+              }
+            ],
+            "equal_boolean_signals": {
+              "sequences": [
+                22,
+                23
+              ],
+              "signal": [
+                "true",
+                "false"
+              ],
+              "same_reference_operands": false,
+              "native_identity_implication": null
+            },
+            "before_after_unload_window": [
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 24,
+                "clock_ms": 11397,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_identity",
+                "payload": "before_unload,true,true,true,-16383"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 25,
+                "clock_ms": 11397,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "before_unload,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,1,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:8;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 26,
+                "clock_ms": 11397,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "before_unload,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 27,
+                "clock_ms": 11398,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "before_unload,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 28,
+                "clock_ms": 11398,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "before_unload,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 29,
+                "clock_ms": 11398,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_identity",
+                "payload": "after_unload,true,true,true,-16383"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 30,
+                "clock_ms": 11398,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "after_unload,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,1,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:8;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 31,
+                "clock_ms": 11398,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "after_unload,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 32,
+                "clock_ms": 11398,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "after_unload,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 33,
+                "clock_ms": 11398,
+                "root": 7,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "after_unload,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              }
+            ],
+            "root8_root9_window": [
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 36,
+                "clock_ms": 11399,
+                "root": 8,
+                "tick": -1,
+                "kind": "aimain_identity",
+                "payload": "root,true,true,true,-16383"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 37,
+                "clock_ms": 11399,
+                "root": 8,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "root,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,1,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:8;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 38,
+                "clock_ms": 11399,
+                "root": 8,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "root,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 39,
+                "clock_ms": 11399,
+                "root": 8,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "root,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 40,
+                "clock_ms": 11399,
+                "root": 8,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "root,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,1,2,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F3%2Fframe%5F1%2FDoAction%2Eas,s261-receiver-1,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 41,
+                "clock_ms": 11400,
+                "root": 8,
+                "tick": -1,
+                "kind": "input_next_display",
+                "payload": "w=undefined,a=undefined,l=undefined,\u4e0a\u7bad=undefined,\u4e0b\u7bad=undefined,\u5de6\u7bad=undefined,\u53f3\u7bad=undefined,N1=undefined,N2=undefined,N3=undefined,N4=undefined,N5=undefined,N6=undefined,right=undefined,attack=undefined,down=undefined,ranged=undefined,jump=undefined,special=undefined,summon=undefined"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 42,
+                "clock_ms": 11423,
+                "root": 8,
+                "tick": -1,
+                "kind": "intro_body_enter",
+                "payload": "8,8"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 43,
+                "clock_ms": 11424,
+                "root": 8,
+                "tick": -1,
+                "kind": "intro_body_exit",
+                "payload": "8,1"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 44,
+                "clock_ms": 11424,
+                "root": 9,
+                "tick": -1,
+                "kind": "aimain_identity",
+                "payload": "root,true,true,true,-16383"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 45,
+                "clock_ms": 11424,
+                "root": 9,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "root,parent,%5Flevel0%2Egame%2Ep1%2Emc,movieclip,%5Flevel0%2Egame%2Ep1,mc,-16383,2,1041,game%2Ffighter%2Fyijiao%2Eswf%23DefineSprite%5F455%2Fframe%5F1%2FDoAction%2Eas,s261-parent-1,undefined,6,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain:-16383:0;%5Flevel0%2Egame%2Ep1%2Emc%2Ebdmn:-16355:1;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance83:-16357:9;%5Flevel0%2Egame%2Ep1%2Emc%2Einstance84:-16353:1;%5Flevel0%2Egame%2Ep1%2Emc%2Ejiao:-16359:1;%5Flevel0%2Egame%2Ep1%2Emc%2Emian:-16361:1"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 46,
+                "clock_ms": 11424,
+                "root": 9,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "root,saved_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 47,
+                "clock_ms": 11424,
+                "root": 9,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "root,depth_occupant,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+              },
+              {
+                "run": "s261-yijiao-r01",
+                "sequence": 48,
+                "clock_ms": 11424,
+                "root": 9,
+                "tick": -1,
+                "kind": "aimain_object",
+                "payload": "root,named_receiver,%5Flevel0%2Egame%2Ep1%2Emc%2EAImain,movieclip,%5Flevel0%2Egame%2Ep1%2Emc,AImain,-16383,0,0,undefined,undefined,undefined,0,"
+              }
+            ],
+            "independent_native_layouts_derived": false,
+            "uninterrupted_native_pool_coverage": false,
+            "limitation": "Contiguous AS2 logs prove logger ordering only. Equal booleans use different saved values; no native layout, allocation generation or pool coverage follows."
+          },
+          "native_observations": {
+            "slot_resolver": null,
+            "saved_reference_resolver": null,
+            "object_layout": null,
+            "allocation_free_reuse_ledger": null,
+            "pool_lifetime_coverage": null,
+            "retained_content_clear": null,
+            "replacement_control_generations": null
+          },
+          "slot_reference_proved": false,
+          "content_clearing_proved": false,
+          "replacement_proved": false,
+          "allocation_identity_proved": false,
+          "actual_native_controls_executed": false,
+          "new_builds": 0,
+          "new_player_launches": 0,
+          "new_process_attaches": 0,
+          "new_captures": 0,
+          "new_symbol_queries": 0,
+          "other_ranks_executed": [],
+          "requirement_failure_codes": {
+            "slot-reference": "S316_SLOT_REFERENCE_UNPROVED",
+            "content-clearing": "S316_CONTENT_CLEARING_UNPROVED",
+            "replacement": "S316_REPLACEMENT_UNPROVED",
+            "allocation-identity": "S316_POOL_GENERATIONS_UNPROVED"
+          },
+          "blocker": "Independent native slot/reference layouts and live bindings are absent; actual clear/replacement/free/reuse lack uninterrupted ordered object-pool generations.",
+          "next_discriminator": [
+            "Derive native parent/depth lookup and saved AS2 reference dereference independently on the pinned module; retain relative addresses, instruction bytes, layout and live provenance. Import stubs do not resolve either.",
+            "Establish object allocation/destruction and pool reuse coverage before control creation. System malloc/free alone may miss pooled object lifetimes. Track allocation generations, not pointer equality.",
+            "Qualify the same resolver/ledger on actual retained-content clearing and same-name/depth replacement. Record independent retention/free/reuse evidence and saved-reference referents; deleting a property is insufficient.",
+            "Only then capture the unchanged s261 tape at source-equivalent last-nonzero/first-zero boundaries with complete lifecycle ordering. Preserve actual roots and all events; no numeric-root assumption, alias or unloaded exemption."
+          ]
+        },
+        "fresh_on_disk_inventory_audit": {
+          "symbol_table_entries": 1039,
+          "nm_visible_entries": 1038,
+          "defined_symbols": [
+            {
+              "index": 1,
+              "file_offset": 23757616,
+              "entry_hex": "040000000f1e0000706e680101000000",
+              "name": "_NXArgc",
+              "n_type": 15,
+              "n_sect": 30,
+              "n_desc": 0,
+              "n_value": 4318588528
+            },
+            {
+              "index": 2,
+              "file_offset": 23757632,
+              "entry_hex": "0c0000000f1e0000786e680101000000",
+              "name": "_NXArgv",
+              "n_type": 15,
+              "n_sect": 30,
+              "n_desc": 0,
+              "n_value": 4318588536
+            },
+            {
+              "index": 3,
+              "file_offset": 23757648,
+              "entry_hex": "140000000f1e0000886e680101000000",
+              "name": "___progname",
+              "n_type": 15,
+              "n_sect": 30,
+              "n_desc": 0,
+              "n_value": 4318588552
+            },
+            {
+              "index": 4,
+              "file_offset": 23757664,
+              "entry_hex": "200000000f0110000000000001000000",
+              "name": "__mh_execute_header",
+              "n_type": 15,
+              "n_sect": 1,
+              "n_desc": 16,
+              "n_value": 4294967296
+            },
+            {
+              "index": 5,
+              "file_offset": 23757680,
+              "entry_hex": "340000000f1e0000806e680101000000",
+              "name": "_environ",
+              "n_type": 15,
+              "n_sect": 30,
+              "n_desc": 0,
+              "n_value": 4318588544
+            },
+            {
+              "index": 6,
+              "file_offset": 23757696,
+              "entry_hex": "3d0000000f01000000764c0001000000",
+              "name": "_main",
+              "n_type": 15,
+              "n_sect": 1,
+              "n_desc": 0,
+              "n_value": 4299978240
+            }
+          ],
+          "undefined_symbol_count": 1032,
+          "debug_entries_omitted_by_nm": [
+            {
+              "index": 0,
+              "file_offset": 23757600,
+              "entry_hex": "cb5200003c0000004245610500000000",
+              "name": "radr://5614542",
+              "n_type": 60,
+              "n_sect": 0,
+              "n_desc": 0,
+              "n_value": 90260802
+            }
+          ],
+          "dwarf_segment_present": false,
+          "module_uuid": "067C4CFE-5B2A-3424-AAA0-1FAE2DF056EB",
+          "independent_slot_layout": null,
+          "independent_reference_layout": null,
+          "live_binding": null,
+          "pool_generation_coverage": null,
+          "limitation": "Complete on-disk symbol inventory, not complete machine-code analysis. Defined names and imported allocators establish no object layout, live referent or pool lifetime."
+        },
+        "native_observations": {
+          "slot_resolver": null,
+          "saved_reference_resolver": null,
+          "object_layout": null,
+          "allocation_free_reuse_ledger": null,
+          "pool_lifetime_coverage": null,
+          "retained_content_clear": null,
+          "replacement_control_generations": null
+        },
+        "slot_reference_proved": false,
+        "content_clearing_proved": false,
+        "replacement_proved": false,
+        "allocation_identity_proved": false,
+        "actual_native_controls_executed": false,
+        "new_builds": 0,
+        "new_captures": 0,
+        "new_player_launches": 0,
+        "new_process_attaches": 0,
+        "other_ranks_executed": [],
+        "rank_9_status": "planning",
+        "requirement_failure_codes": {
+          "slot-reference": "S325_SLOT_REFERENCE_UNPROVED",
+          "content-clearing": "S325_CONTENT_CLEARING_UNPROVED",
+          "replacement": "S325_REPLACEMENT_UNPROVED",
+          "allocation-identity": "S325_POOL_GENERATIONS_UNPROVED"
+        },
+        "blocker": "No independently derived native slot/reference layouts or live binding; actual clearing/replacement/free/reuse with uninterrupted pool generations remain unproved.",
+        "next_discriminator": [
+          "Derive native parent/depth lookup and saved AS2 reference dereference independently on the pinned module; retain relative addresses, instruction bytes, layout and live provenance. Import stubs do not resolve either.",
+          "Establish object allocation/destruction and pool reuse coverage before control creation. System malloc/free alone may miss pooled object lifetimes. Track allocation generations, not pointer equality.",
+          "Qualify the same resolver/ledger on actual retained-content clearing and same-name/depth replacement. Record independent retention/free/reuse evidence and saved-reference referents; deleting a property is insufficient.",
+          "Only then capture the unchanged s261 tape at source-equivalent last-nonzero/first-zero boundaries with complete lifecycle ordering. Preserve actual roots and all events; no numeric-root assumption, alias or unloaded exemption."
+        ]
+      },
+      "facilities": [
+        {
+          "path": "evidence/sampling-upgrade/s279/pin_imports.py",
+          "function": "pin",
+          "start_line": 12,
+          "end_line": 54,
+          "source": "def pin(binary, indirect):\n    data = binary.read_bytes()\n    if hashlib.sha256(data).hexdigest() != EXPECTED:\n        raise ValueError('Player differs from s261 receipt')\n    magic, _, _, _, ncmds, _, _, _ = struct.unpack_from('<8I', data)\n    if magic != 0xfeedfacf:\n        raise ValueError('Expected little-endian Mach-O 64')\n    offset, sections, uuid = 32, [], None\n    for _ in range(ncmds):\n        cmd, size = struct.unpack_from('<II', data, offset)\n        if cmd == 0x1b:\n            uuid = data[offset + 8:offset + 24].hex()\n        if cmd == 0x19:\n            nsects = struct.unpack_from('<I', data, offset + 64)[0]\n            for index in range(nsects):\n                at = offset + 72 + index * 80\n                name, segment, addr, length, file_offset = struct.unpack_from('<16s16sQQI', data, at)\n                sections.append((segment.rstrip(b'\\0').decode(), name.rstrip(b'\\0').decode(), addr, length, file_offset))\n        offset += size\n    rows = []\n    for address, name in re.findall(r'^(0x[0-9a-f]+)\\s+\\d+\\s+_(malloc|calloc|realloc|free)$', indirect, re.M):\n        address = int(address, 16)\n        segment, section, start, length, file_start = next(s for s in sections if s[2] <= address < s[2] + s[3])\n        width = 6 if section == '__stubs' else 8\n        file_offset = file_start + address - start\n        raw = data[file_offset:file_offset + width]\n        row = {'symbol': name, 'segment': segment, 'section': section,\n               'unslid_address': hex(address), 'file_offset': file_offset, 'bytes_hex': raw.hex()}\n        if section == '__stubs':\n            if raw[:2] != b'\\xff\\x25':\n                raise ValueError('Expected x86_64 RIP-relative indirect jump')\n            row['indirect_slot_unslid_address'] = hex(address + 6 + struct.unpack('<i', raw[2:])[0])\n        rows.append(row)\n    if len(rows) != 8:\n        raise ValueError('Expected four stubs and four pointer slots')\n    for row in rows:\n        if row['section'] == '__stubs':\n            if not any(other['symbol'] == row['symbol'] and other['unslid_address'] == row['indirect_slot_unslid_address'] for other in rows):\n                raise ValueError('Stub/indirect symbol disagreement')\n    return {'binary_sha256': EXPECTED, 'module_uuid_hex': uuid, 'imports': rows,\n            'slot_resolver': None, 'saved_reference_resolver': None,\n            'object_allocator_or_destructor': None,\n            'limitation': 'On-disk import trampolines and initial pointer bytes only; no live address, object identity, allocation/free event or pool coverage.'}",
+          "missing": "Maps imported allocator trampolines to indirect slots only. These slots are not parent/depth display slots or saved AS2 references; no internal pool checkout/return ledger.",
+          "invoked": false
+        },
+        {
+          "path": "tools/probes/probe_owned_debugger.py",
+          "function": "debugger_script",
+          "start_line": 21,
+          "end_line": 48,
+          "source": "def debugger_script(pid, binary, result_path):\n    return f'''import json\nimport lldb\nfrom pathlib import Path\nresult = {{'attached': False, 'registers_available': False, 'detach_attempted': False, 'detached': False, 'pid': {pid}, 'pixel_reference': False, 'routing_verified': False}}\nprocess = None\ntry:\n    target = lldb.debugger.CreateTarget({str(binary)!r})\n    error = lldb.SBError()\n    process = target.AttachToProcessWithID(lldb.debugger.GetListener(), {pid}, error)\n    result['attach_error'] = str(error)\n    result['attached'] = error.Success() and process.IsValid()\n    if result['attached']:\n        result['target_triple'] = target.GetTriple()\n        result['state'] = lldb.SBDebugger.StateAsCString(process.GetState())\n        frame = process.GetSelectedThread().GetFrameAtIndex(0)\n        result['registers'] = {{name: frame.FindRegister(name).GetValue() for name in {REGISTERS!r}}}\n        result['registers_available'] = all(value is not None for value in result['registers'].values())\nexcept BaseException as error:\n    result['error'] = repr(error)\nfinally:\n    if result['attached'] and process is not None:\n        result['detach_attempted'] = True\n        error = process.Detach()\n        result['detach_error'] = str(error)\n        result['detached'] = error.Success()\n    Path({str(result_path)!r}).write_text(json.dumps(result, indent=2)+chr(10))\n'''",
+          "missing": "Selected CPU registers have no parent/depth occupant lookup or saved-reference dereference, layout or generation resolver; then detach creates an observation boundary.",
+          "invoked": false
+        },
+        {
+          "path": "tools/probes/probe_owned_debugger.py",
+          "function": "probe",
+          "start_line": 57,
+          "end_line": 143,
+          "source": "def probe(build, output, app, debugger_timeout=15, *, script_factory=debugger_script,\n          explicit_breakpoints_requested=False, post_debugger=None):\n    debugger_timeout = validate_debugger_timeout(debugger_timeout)\n    build,output,app = build.resolve(),output.resolve(),app.resolve()\n    if output.exists() and any(output.iterdir()):\n        raise ValueError('Debugger output directory must be fresh')\n    output.mkdir(parents=True,exist_ok=True)\n    preflight(app)\n    binary = player_binary(app)\n    if hashlib.sha256(binary.read_bytes()).hexdigest() != BINARY_SHA256:\n        raise ValueError('Native executable differs from pinned baseline')\n    movie = (build/'game/main.swf').resolve()\n    metadata = json.loads((build/'build.json').read_text())\n    if metadata.get('swf_sha256') != hashlib.sha256(movie.read_bytes()).hexdigest():\n        raise ValueError('Probe movie differs from its build record')\n    if metadata.get('fixture_sha256') != hashlib.sha256((build/'fixture.json').read_bytes()).hexdigest():\n        raise ValueError('Probe fixture differs from its build record')\n    if metadata.get('raw_tags_preserved') is not True:\n        raise ValueError('Owned probe must preserve original source tags')\n    before = matching_players(movie,binary)\n    if before:\n        raise RuntimeError('Refusing a pre-existing player')\n    observations = []\n    timings = {}\n    observer_result = None\n    with ThreadPoolExecutor(max_workers=1) as executor:\n        timings['capture_submit_monotonic'] = time.monotonic()\n        future = executor.submit(capture,build,build/'native.log',90,app)\n        deadline = time.monotonic()+20\n        pid = None\n        while time.monotonic()<deadline and not future.done():\n            current = matching_players(movie,binary)\n            if current:\n                pid = require_unique_owned(before,current)\n                break\n            time.sleep(.1)\n        if pid is None:\n            raise RuntimeError('No owned probe process before deadline')\n        prefix = 'AIREF|'+metadata['run_id']+'|'\n        while time.monotonic()<deadline and not future.done():\n            if LOG.exists() and any(line.startswith(prefix) and '|profile|' in line for line in LOG.read_text(errors='replace').splitlines()):\n                break\n            time.sleep(.05)\n        else:\n            raise RuntimeError('No run-specific profile marker')\n        require_unique_owned(before,matching_players(movie,binary),pid)\n        observations.append({'pid':pid,'movie':str(movie),'binary':str(binary),'run_id':metadata['run_id'],'ownership_checked_immediately_before_attach':True})\n        script = output/'lldb-readonly.py'\n        script.write_text(script_factory(pid,binary,output/'debugger-result.json'))\n        command = ['xcrun','lldb','--batch','-o',f'script exec(compile(open({str(script)!r}).read(), {str(script)!r}, \"exec\"))']\n        timings['debugger_start_monotonic'] = time.monotonic()\n        try:\n            completed = subprocess.run(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=debugger_timeout)\n            transcript,exit_code,timed_out = completed.stdout,completed.returncode,False\n        except subprocess.TimeoutExpired as error:\n            transcript = error.stdout or b''\n            if isinstance(transcript,bytes):transcript=transcript.decode(errors='replace')\n            exit_code,timed_out = None,True\n        timings['debugger_end_monotonic'] = time.monotonic()\n        (output/'lldb.log').write_text(transcript)\n        if post_debugger is not None:\n            timings['receipt_observed_monotonic'] = time.monotonic()\n            try:\n                receipt_path = output/'debugger-result.json'\n                receipt = json.loads(receipt_path.read_text()) if receipt_path.exists() else {}\n                if receipt.get('detached') is True and exit_code == 0 and not timed_out:\n                    observer_result = post_debugger(pid,movie,binary,metadata['run_id'],output)\n                else:\n                    observer_result = {'skipped':True,'reason':'No successful current detach receipt'}\n            except Exception as error:\n                observer_result = {'error':repr(error)}\n            finally:\n                timings['observer_end_monotonic'] = time.monotonic()\n        captured = future.result()\n        timings['capture_result_monotonic'] = time.monotonic()\n    result_path = output/'debugger-result.json'\n    result = json.loads(result_path.read_text()) if result_path.exists() else {'attached':None,'detached':None,'registers_available':None,'result_missing':True}\n    final = {'ownership':observations,'debugger':result,'debugger_exit':exit_code,'debugger_timed_out':timed_out,'debugger_timeout_seconds':debugger_timeout,\n             'capture_complete':captured,'owned_processes_remaining':sorted(matching_players(movie,binary)),\n             'binary_sha256':BINARY_SHA256,'movie_sha256':hashlib.sha256(movie.read_bytes()).hexdigest(),\n             'explicit_breakpoints_requested':explicit_breakpoints_requested,'target_memory_writes_requested':False,'lldb_internal_memory_writes_verified':False,'pixel_reference':False,\n             'operand_semantics_proved':False,'production_admitted':False}\n    if post_debugger is not None:\n        final['lifecycle_monotonic'] = timings\n        final['post_debugger_observation'] = observer_result\n    (output/'feasibility.json').write_text(json.dumps(final,indent=2)+'\\n')\n    return final",
+          "missing": "Owned PID and build hashes protect custody, not object generations. AIREF profile waiting begins after launch; extension hooks implement neither lookup path nor uninterrupted pool coverage.",
+          "invoked": false
+        }
+      ],
+      "independent_native_observations": 0,
+      "lookup_paths": {
+        "parent_depth": {
+          "required_inputs": [
+            "parent instance generation",
+            "depth"
+          ],
+          "module_relative_address": null,
+          "instruction_bytes": null,
+          "layout": null,
+          "live_binding": null,
+          "result_allocation_generation": null,
+          "derived": false
+        },
+        "saved_reference": {
+          "required_inputs": [
+            "saved AS2 value location",
+            "reference representation"
+          ],
+          "module_relative_address": null,
+          "instruction_bytes": null,
+          "layout": null,
+          "live_binding": null,
+          "result_allocation_generation": null,
+          "derived": false
+        }
+      },
+      "observations": {
+        "loaded_module": null,
+        "owner_generation": null,
+        "retained_content_clearing": null,
+        "replacement": null,
+        "free": null,
+        "reuse": null,
+        "uninterrupted_pool_generations": null,
+        "deferred_free_order": null
+      },
+      "actual_native_controls_executed": false,
+      "gates": {
+        "slot-reference": {
+          "proved": false,
+          "code": "S334_SLOT_REFERENCE_UNPROVED"
+        },
+        "content-clearing": {
+          "proved": false,
+          "code": "S334_CONTENT_CLEARING_UNPROVED"
+        },
+        "replacement": {
+          "proved": false,
+          "code": "S334_REPLACEMENT_UNPROVED"
+        },
+        "allocation-identity": {
+          "proved": false,
+          "code": "S334_ALLOCATION_IDENTITY_UNPROVED"
+        }
+      },
+      "first_unmet_prerequisite": "separate byte-bound parent/depth and saved-reference lookup paths",
+      "blocker": "Inspected adapters implement neither native lookup path. Independent layouts and live binding remain absent; clearing/replacement/free/reuse controls are deferred behind this prerequisite.",
+      "search_scope": "Three named retained adapter functions and complete locked s325 replay; not exhaustive machine-code analysis or proof that no resolver can be built.",
+      "new_builds": 0,
+      "new_player_launches": 0,
+      "new_process_attaches": 0,
+      "new_memory_reads": 0,
+      "new_captures": 0,
+      "product_obligations_closed": 0,
+      "other_ranks_executed": [],
+      "rank_9_status": "planning"
+    },
+    "replay_is_new_progress": false,
+    "disk_candidate_search": {
+      "binary": "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+      "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+      "binary_size": 24120048,
+      "search_kind": "exact substring bytes; lowercase is a search variant, not an alias",
+      "rows": [
+        {
+          "route": "parent_depth",
+          "source_name": "_parent",
+          "spelling": "_parent",
+          "encoding": "ascii",
+          "needle_hex": "5f706172656e74",
+          "file_offsets": [
+            18477025
+          ]
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "_parent",
+          "spelling": "_parent",
+          "encoding": "utf-16-le",
+          "needle_hex": "5f0070006100720065006e007400",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "getDepth",
+          "spelling": "getDepth",
+          "encoding": "ascii",
+          "needle_hex": "6765744465707468",
+          "file_offsets": [
+            17286325,
+            17287618,
+            17287780
+          ]
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "getDepth",
+          "spelling": "getDepth",
+          "encoding": "utf-16-le",
+          "needle_hex": "67006500740044006500700074006800",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "getDepth",
+          "spelling": "getdepth",
+          "encoding": "ascii",
+          "needle_hex": "6765746465707468",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "getDepth",
+          "spelling": "getdepth",
+          "encoding": "utf-16-le",
+          "needle_hex": "67006500740064006500700074006800",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "getInstanceAtDepth",
+          "spelling": "getInstanceAtDepth",
+          "encoding": "ascii",
+          "needle_hex": "676574496e7374616e636541744465707468",
+          "file_offsets": [
+            17286473
+          ]
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "getInstanceAtDepth",
+          "spelling": "getInstanceAtDepth",
+          "encoding": "utf-16-le",
+          "needle_hex": "67006500740049006e007300740061006e00630065004100740044006500700074006800",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "getInstanceAtDepth",
+          "spelling": "getinstanceatdepth",
+          "encoding": "ascii",
+          "needle_hex": "676574696e7374616e636561746465707468",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "getInstanceAtDepth",
+          "spelling": "getinstanceatdepth",
+          "encoding": "utf-16-le",
+          "needle_hex": "67006500740069006e007300740061006e00630065006100740064006500700074006800",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "s261Parent",
+          "spelling": "s261Parent",
+          "encoding": "ascii",
+          "needle_hex": "73323631506172656e74",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "s261Parent",
+          "spelling": "s261Parent",
+          "encoding": "utf-16-le",
+          "needle_hex": "730032003600310050006100720065006e007400",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "s261Parent",
+          "spelling": "s261parent",
+          "encoding": "ascii",
+          "needle_hex": "73323631706172656e74",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "s261Parent",
+          "spelling": "s261parent",
+          "encoding": "utf-16-le",
+          "needle_hex": "730032003600310070006100720065006e007400",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "s261Depth",
+          "spelling": "s261Depth",
+          "encoding": "ascii",
+          "needle_hex": "733236314465707468",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "s261Depth",
+          "spelling": "s261Depth",
+          "encoding": "utf-16-le",
+          "needle_hex": "730032003600310044006500700074006800",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "s261Depth",
+          "spelling": "s261depth",
+          "encoding": "ascii",
+          "needle_hex": "733236316465707468",
+          "file_offsets": []
+        },
+        {
+          "route": "parent_depth",
+          "source_name": "s261Depth",
+          "spelling": "s261depth",
+          "encoding": "utf-16-le",
+          "needle_hex": "730032003600310064006500700074006800",
+          "file_offsets": []
+        },
+        {
+          "route": "saved_reference",
+          "source_name": "s261Receiver",
+          "spelling": "s261Receiver",
+          "encoding": "ascii",
+          "needle_hex": "733236315265636569766572",
+          "file_offsets": []
+        },
+        {
+          "route": "saved_reference",
+          "source_name": "s261Receiver",
+          "spelling": "s261Receiver",
+          "encoding": "utf-16-le",
+          "needle_hex": "730032003600310052006500630065006900760065007200",
+          "file_offsets": []
+        },
+        {
+          "route": "saved_reference",
+          "source_name": "s261Receiver",
+          "spelling": "s261receiver",
+          "encoding": "ascii",
+          "needle_hex": "733236317265636569766572",
+          "file_offsets": []
+        },
+        {
+          "route": "saved_reference",
+          "source_name": "s261Receiver",
+          "spelling": "s261receiver",
+          "encoding": "utf-16-le",
+          "needle_hex": "730032003600310072006500630065006900760065007200",
+          "file_offsets": []
+        }
+      ],
+      "contexts": [
+        {
+          "file_offset": 17286325,
+          "segment": "__TEXT",
+          "section": "__const",
+          "unslid_address": "0x10107c4b5",
+          "context_start": 17286277,
+          "context_hex": "546f74616c2c67657442797465734c6f616465642c36617474616368417564696f2c36617474616368566964656f2c3667657444657074682c367365744d61736b2c706c61792c73746f702c6e6578744672616d652c707265764672616d652c676f746f416e64506c61792c676f746f416e6453746f702c6475706c69636174654d6f766965436c69702c72656d6f76"
+        },
+        {
+          "file_offset": 17286473,
+          "segment": "__TEXT",
+          "section": "__const",
+          "unslid_address": "0x10107c549",
+          "context_start": 17286425,
+          "context_hex": "6965436c69702c7374617274447261672c73746f70447261672c376765744e6578744869676865737444657074682c37676574496e7374616e6365417444657074682c67657453574656657273696f6e2c386174746163684269746d61702c38676574526563740036637265617465456d7074794d6f766965436c69702c36626567696e46696c6c2c36626567696e47"
+        },
+        {
+          "file_offset": 17287618,
+          "segment": "__TEXT",
+          "section": "__const",
+          "unslid_address": "0x10107c9c2",
+          "context_start": 17287570,
+          "context_hex": "69692c676574436f64652c6973446f776e2c6973546f67676c65642c697341636365737369626c6500427574746f6e00676574446570746800387363616c6539477269642c3866696c746572732c38636163686541734269746d61702c38626c656e644d6f646500546578744669656c6400367265706c61636553656c2c3667657454657874466f726d61742c367365"
+        },
+        {
+          "file_offset": 17287780,
+          "segment": "__TEXT",
+          "section": "__const",
+          "unslid_address": "0x10107ca64",
+          "context_start": 17287732,
+          "context_hex": "65546578744669656c642c366765744e657754657874466f726d61742c367365744e657754657874466f726d61742c3667657444657074682c377265706c6163655465787400676574466f6e744c697374003867726964466974547970652c38616e7469416c696173547970652c38746869636b6e6573732c3873686172706e6573732c3866696c7465727300537479"
+        },
+        {
+          "file_offset": 18477025,
+          "segment": "__TEXT",
+          "section": "__cstring",
+          "unslid_address": "0x10119efe1",
+          "context_start": 18476977,
+          "context_hex": "656e7473005f5f636f6e7374727563746f725f5f005f5f7265736f6c7665006c656e677468006d61787363726f6c6c005f706172656e740068697441726561005f726f6f740064656c65746553747265616d00636c6f736553747265616d006f6e456e7465724672616d65006f6e556e6c6f6164006f6e4d6f7573654d6f7665006f6e4d6f757365446f776e006f6e4d"
+        }
+      ],
+      "independent_native_observations": 0,
+      "live_binding": null,
+      "limitation": "Finite names/encodings only. Absence does not exclude encoded, interned, runtime-created or indirect lookup paths. A hit is not executable code, a resolver, a layout or a referent."
+    },
+    "lookup_paths": {
+      "parent_depth": {
+        "required_inputs": [
+          "parent instance generation",
+          "depth"
+        ],
+        "module_relative_address": null,
+        "instruction_bytes": null,
+        "layout": null,
+        "live_binding": null,
+        "result_allocation_generation": null,
+        "derived": false
+      },
+      "saved_reference": {
+        "required_inputs": [
+          "saved AS2 value location",
+          "reference representation"
+        ],
+        "module_relative_address": null,
+        "instruction_bytes": null,
+        "layout": null,
+        "live_binding": null,
+        "result_allocation_generation": null,
+        "derived": false
+      }
+    },
+    "observations": {
+      "loaded_module": null,
+      "owner_generation": null,
+      "retained_content_clearing": null,
+      "replacement": null,
+      "free": null,
+      "reuse": null,
+      "uninterrupted_pool_generations": null,
+      "deferred_free_order": null
+    },
+    "independent_native_observations": 0,
+    "actual_native_controls_executed": false,
+    "gates": {
+      "slot-reference": {
+        "proved": false,
+        "code": "S343_SLOT_REFERENCE_UNPROVED"
+      },
+      "content-clearing": {
+        "proved": false,
+        "code": "S343_CONTENT_CLEARING_UNPROVED"
+      },
+      "replacement": {
+        "proved": false,
+        "code": "S343_REPLACEMENT_UNPROVED"
+      },
+      "allocation-identity": {
+        "proved": false,
+        "code": "S343_ALLOCATION_IDENTITY_UNPROVED"
+      }
+    },
+    "first_unmet_prerequisite": "separate byte-bound parent/depth and saved-reference lookup paths",
+    "blocker": "Parent/depth names occur in disk text lists; saved-global names have no hits in the finite search. Neither result supplies instruction entry, dereference layout or allocation generation. Live binding and clearing/replacement/free/reuse controls remain deferred.",
+    "absence_of_possible_resolver_proved": false,
+    "new_builds": 0,
+    "new_player_launches": 0,
+    "new_process_attaches": 0,
+    "new_memory_reads": 0,
+    "new_captures": 0,
+    "product_obligations_closed": 0,
+    "other_ranks_executed": [],
+    "rank_9_status": "planning"
+  },
+  "complete_s334_replayed": true,
+  "s343_disk_name_search_repeated": false,
+  "retained_validation_is_new_progress": false,
+  "reference_attempt": {
+    "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "binary_size": 24120048,
+    "load_commands_hex": "cffaedfe0700000103000080020000002400000070140000850021000000000019000000480000005f5f504147455a45524f00000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000019000000b80300005f5f5445585400000000000000000000000000000100000000104b0100000000000000000000000000104b010000000007000000050000000b000000000000005f5f74657874000000000000000000005f5f544558540000000000000000000000200000010000000138fb0000000000002000000c0000000000000000000000000400800000000000000000000000005f5f73747562730000000000000000005f5f54455854000000000000000000000258fb0001000000a2120000000000000258fb00010000000000000000000000080400800000000006000000000000005f5f737475625f68656c7065720000005f5f5445585400000000000000000000a46afb0001000000e21e000000000000a46afb00020000000000000000000000000400800000000000000000000000005f5f6763635f6578636570745f7461625f5f54455854000000000000000000008889fb000100000030400b00000000008889fb00020000000000000000000000000000000000000000000000000000005f5f636f6e73740000000000000000005f5f5445585400000000000000000000c0c9060101000000c013130000000000c0c90601060000000000000000000000000000000000000000000000000000005f5f63737472696e67000000000000005f5f544558540000000000000000000080dd190101000000147c09000000000080dd1901040000000000000000000000020000000000000000000000000000005f5f6f626a635f6d6574686e616d65005f5f54455854000000000000000000009459230101000000864800000000000094592301000000000000000000000000020000000000000000000000000000005f5f6f626a635f636c6173736e616d655f5f54455854000000000000000000001aa22301010000001e030000000000001aa22301000000000000000000000000020000000000000000000000000000005f5f6f626a635f6d65746874797065005f5f544558540000000000000000000038a5230101000000568600000000000038a52301000000000000000000000000020000000000000000000000000000005f5f756e77696e645f696e666f0000005f5f5445585400000000000000000000902b240101000000d49e030000000000902b2401020000000000000000000000000000000000000000000000000000005f5f65685f6672616d650000000000005f5f544558540000000000000000000068ca270101000000d83b23000000000068ca27010300000000000000000000000000000000000000000000000000000019000000880600005f5f444154410000000000000000000000104b010100000000302f000000000000104b010000000000601d0000000000070000000300000014000000000000005f5f70726f6772616d5f7661727300005f5f444154410000000000000000000000104b0101000000280000000000000000104b01030000000000000000000000000000000000000000000000000000005f5f6e6c5f73796d626f6c5f707472005f5f444154410000000000000000000028104b0101000000100000000000000028104b01030000000000000000000000060000001b03000000000000000000005f5f676f7400000000000000000000005f5f444154410000000000000000000038104b0101000000481100000000000038104b01030000000000000000000000060000001d03000000000000000000005f5f6c615f73796d626f6c5f707472005f5f444154410000000000000000000080214b0101000000d81800000000000080214b01030000000000000000000000070000004605000000000000000000005f5f6d6f645f696e69745f66756e63005f5f4441544100000000000000000000583a4b0101000000d001000000000000583a4b01030000000000000000000000090000000000000000000000000000005f5f636f6e73740000000000000000005f5f4441544100000000000000000000303c4b010100000098c20c0000000000303c4b01040000000000000000000000000000000000000000000000000000005f5f6366737472696e670000000000005f5f4441544100000000000000000000c8fe5701010000002029000000000000c8fe5701030000000000000000000000000000000000000000000000000000005f5f6f626a635f636c6173736c6973745f5f4441544100000000000000000000e827580101000000d800000000000000e8275801030000000000000000000000000000100000000000000000000000005f5f6f626a635f6361746c69737400005f5f4441544100000000000000000000c0285801010000001000000000000000c0285801030000000000000000000000000000100000000000000000000000005f5f6f626a635f70726f746f6c6973745f5f4441544100000000000000000000d0285801010000003800000000000000d0285801030000000000000000000000000000000000000000000000000000005f5f6f626a635f696d616765696e666f5f5f44415441000000000000000000000829580101000000080000000000000008295801020000000000000000000000000000000000000000000000000000005f5f6f626a635f636f6e7374000000005f5f44415441000000000000000000001029580101000000384700000000000010295801030000000000000000000000000000000000000000000000000000005f5f6f626a635f73656c7265667300005f5f44415441000000000000000000004870580101000000681400000000000048705801030000000000000000000000050000100000000000000000000000005f5f6f626a635f636c617373726566735f5f4441544100000000000000000000b084580101000000d002000000000000b0845801030000000000000000000000000000100000000000000000000000005f5f6f626a635f7375706572726566735f5f44415441000000000000000000008087580101000000d00000000000000080875801030000000000000000000000000000100000000000000000000000005f5f6f626a635f6976617200000000005f5f44415441000000000000000000005088580101000000300300000000000050885801030000000000000000000000000000000000000000000000000000005f5f6f626a635f6461746100000000005f5f4441544100000000000000000000808b5801010000007008000000000000808b5801030000000000000000000000000000000000000000000000000000005f5f64617461000000000000000000005f5f4441544100000000000000000000009458010100000068da0f000000000000945801050000000000000000000000000000000000000000000000000000005f5f636f6d6d6f6e00000000000000005f5f4441544100000000000000000000706e680101000000e84d10000000000000000000040000000000000000000000010000000000000000000000000000005f5f62737300000000000000000000005f5f444154410000000000000000000060bc7801010000008881010000000000000000000400000000000000000000000100000000000000000000000000000019000000480000005f5f4c494e4b4544495400000000000000407a010100000000a00700000000000070680100000000f09a07000000000007000000010000000000000000000000220000803000000000706801d86a0000d8da6801c023000098fe6801a000000038ff6801f85000003050690170000000020000001800000020836a010f04000094e56a01e05200000b0000005000000000000000010000000100000006000000070000000804000000000000000000000000000000000000000000000000000010c46a0161080000000000000000000000000000000000000e000000200000000c0000002f7573722f6c69622f64796c64000000000000001b00000018000000067c4cfe5b2a3424aaa01fae2df056eb240000001000000000060a00000c0a0005000000b8000000040000002a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000100000000000000000000000000000000000000000000000000000000000000000000000c00000070000000180000000200000000003000000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f4170706c69636174696f6e53657276696365732e6672616d65776f726b2f56657273696f6e732f412f4170706c69636174696f6e5365727669636573000c000000680000001800000002000000000f4405000096002f53797374656d2f4c6962726172792f4672616d65776f726b732f436f7265466f756e646174696f6e2e6672616d65776f726b2f56657273696f6e732f412f436f7265466f756e646174696f6e0000000c00000068000000180000000200000002080703000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f436f726553657276696365732e6672616d65776f726b2f56657273696f6e732f412f436f72655365727669636573000000000000000c00000058000000180000000200000000009d00000002002f53797374656d2f4c6962726172792f4672616d65776f726b732f436172626f6e2e6672616d65776f726b2f56657273696f6e732f412f436172626f6e0000000c00000060000000180000000200000000000400000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f416363656c65726174652e6672616d65776f726b2f56657273696f6e732f412f416363656c65726174650000000c00000050000000180000000200000000000100000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f41474c2e6672616d65776f726b2f56657273696f6e732f412f41474c000c000000580000001800000002000000003be00500002d002f53797374656d2f4c6962726172792f4672616d65776f726b732f4170704b69742e6672616d65776f726b2f56657273696f6e732f432f4170704b69740000000c00000060000000180000000200000000000100000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f417564696f556e69742e6672616d65776f726b2f56657273696f6e732f412f417564696f556e697400000000000c00000060000000180000000200000000000100000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f436f7265417564696f2e6672616d65776f726b2f56657273696f6e732f412f436f7265417564696f00000000000c0000006000000018000000020000000000450500002c012f53797374656d2f4c6962726172792f4672616d65776f726b732f466f756e646174696f6e2e6672616d65776f726b2f56657273696f6e732f432f466f756e646174696f6e0000000c00000058000000180000000200000000000100000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f4f70656e474c2e6672616d65776f726b2f56657273696f6e732f412f4f70656e474c0000000c00000070000000180000000200000005147803000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f53797374656d436f6e66696775726174696f6e2e6672616d65776f726b2f56657273696f6e732f412f53797374656d436f6e66696775726174696f6e000c00000060000000180000000200000016148ce1000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f53656375726974792e6672616d65776f726b2f56657273696f6e732f412f5365637572697479000000000000000c0000006800000018000000020000000000ec01000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f417564696f546f6f6c626f782e6672616d65776f726b2f56657273696f6e732f412f417564696f546f6f6c626f78000000000000000c00000058000000180000000200000000000100000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f51756172747a2e6672616d65776f726b2f56657273696f6e732f412f51756172747a0000000c0000007000000018000000020000000314cc03000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f536572766963654d616e6167656d656e742e6672616d65776f726b2f56657273696f6e732f412f536572766963654d616e6167656d656e7400000000000c000000600000001800000002000000000b0100000201002f53797374656d2f4c6962726172792f4672616d65776f726b732f51756172747a436f72652e6672616d65776f726b2f56657273696f6e732f412f51756172747a436f72650000000c00000058000000180000000200000000001301000001002f53797374656d2f4c6962726172792f4672616d65776f726b732f494f4b69742e6672616d65776f726b2f56657273696f6e732f412f494f4b697400000000000c00000060000000180000000200000000050100000201002f53797374656d2f4c6962726172792f4672616d65776f726b732f436f7265566964656f2e6672616d65776f726b2f56657273696f6e732f412f436f7265566964656f00000000000c00000038000000180000000200000000016800000007002f7573722f6c69622f6c6962737464632b2b2e362e64796c69620000000000000c0000003800000018000000020000000000d604000001002f7573722f6c69622f6c696253797374656d2e422e64796c69620000000000000c0000003800000018000000020000000000e400000001002f7573722f6c69622f6c69626f626a632e412e64796c696200000000000000002600000010000000a050690180320100290000001000000020836a01000000001d0000001000000080386b0170d20400",
+    "sections": [
+      {
+        "segment": "__TEXT",
+        "section": "__text",
+        "address": 4294975488,
+        "size": 16463873,
+        "file_offset": 8192,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 2147484672,
+        "section_header_hex": "5f5f74657874000000000000000000005f5f544558540000000000000000000000200000010000000138fb0000000000002000000c000000000000000000000000040080000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__stubs",
+        "address": 4311439362,
+        "size": 4770,
+        "file_offset": 16472066,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 2147484680,
+        "section_header_hex": "5f5f73747562730000000000000000005f5f54455854000000000000000000000258fb0001000000a2120000000000000258fb0001000000000000000000000008040080000000000600000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__stub_helper",
+        "address": 4311444132,
+        "size": 7906,
+        "file_offset": 16476836,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 2147484672,
+        "section_header_hex": "5f5f737475625f68656c7065720000005f5f5445585400000000000000000000a46afb0001000000e21e000000000000a46afb0002000000000000000000000000040080000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__gcc_except_tab",
+        "address": 4311452040,
+        "size": 737328,
+        "file_offset": 16484744,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f6763635f6578636570745f7461625f5f54455854000000000000000000008889fb000100000030400b00000000008889fb0002000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__const",
+        "address": 4312189376,
+        "size": 1250240,
+        "file_offset": 17222080,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f636f6e73740000000000000000005f5f5445585400000000000000000000c0c9060101000000c013130000000000c0c9060106000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__cstring",
+        "address": 4313439616,
+        "size": 621588,
+        "file_offset": 18472320,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 2,
+        "section_header_hex": "5f5f63737472696e67000000000000005f5f544558540000000000000000000080dd190101000000147c09000000000080dd190104000000000000000000000002000000000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__objc_methname",
+        "address": 4314061204,
+        "size": 18566,
+        "file_offset": 19093908,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 2,
+        "section_header_hex": "5f5f6f626a635f6d6574686e616d65005f5f5445585400000000000000000000945923010100000086480000000000009459230100000000000000000000000002000000000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__objc_classname",
+        "address": 4314079770,
+        "size": 798,
+        "file_offset": 19112474,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 2,
+        "section_header_hex": "5f5f6f626a635f636c6173736e616d655f5f54455854000000000000000000001aa22301010000001e030000000000001aa2230100000000000000000000000002000000000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__objc_methtype",
+        "address": 4314080568,
+        "size": 34390,
+        "file_offset": 19113272,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 2,
+        "section_header_hex": "5f5f6f626a635f6d65746874797065005f5f544558540000000000000000000038a5230101000000568600000000000038a5230100000000000000000000000002000000000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__unwind_info",
+        "address": 4314114960,
+        "size": 237268,
+        "file_offset": 19147664,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f756e77696e645f696e666f0000005f5f5445585400000000000000000000902b240101000000d49e030000000000902b240102000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__TEXT",
+        "section": "__eh_frame",
+        "address": 4314352232,
+        "size": 2309080,
+        "file_offset": 19384936,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f65685f6672616d650000000000005f5f544558540000000000000000000068ca270101000000d83b23000000000068ca270103000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__program_vars",
+        "address": 4316663808,
+        "size": 40,
+        "file_offset": 21696512,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f70726f6772616d5f7661727300005f5f444154410000000000000000000000104b0101000000280000000000000000104b0103000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__nl_symbol_ptr",
+        "address": 4316663848,
+        "size": 16,
+        "file_offset": 21696552,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 6,
+        "section_header_hex": "5f5f6e6c5f73796d626f6c5f707472005f5f444154410000000000000000000028104b0101000000100000000000000028104b01030000000000000000000000060000001b0300000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__got",
+        "address": 4316663864,
+        "size": 4424,
+        "file_offset": 21696568,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 6,
+        "section_header_hex": "5f5f676f7400000000000000000000005f5f444154410000000000000000000038104b0101000000481100000000000038104b01030000000000000000000000060000001d0300000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__la_symbol_ptr",
+        "address": 4316668288,
+        "size": 6360,
+        "file_offset": 21700992,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 7,
+        "section_header_hex": "5f5f6c615f73796d626f6c5f707472005f5f444154410000000000000000000080214b0101000000d81800000000000080214b0103000000000000000000000007000000460500000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__mod_init_func",
+        "address": 4316674648,
+        "size": 464,
+        "file_offset": 21707352,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 9,
+        "section_header_hex": "5f5f6d6f645f696e69745f66756e63005f5f4441544100000000000000000000583a4b0101000000d001000000000000583a4b0103000000000000000000000009000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__const",
+        "address": 4316675120,
+        "size": 836248,
+        "file_offset": 21707824,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f636f6e73740000000000000000005f5f4441544100000000000000000000303c4b010100000098c20c0000000000303c4b0104000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__cfstring",
+        "address": 4317511368,
+        "size": 10528,
+        "file_offset": 22544072,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f6366737472696e670000000000005f5f4441544100000000000000000000c8fe5701010000002029000000000000c8fe570103000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_classlist",
+        "address": 4317521896,
+        "size": 216,
+        "file_offset": 22554600,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 268435456,
+        "section_header_hex": "5f5f6f626a635f636c6173736c6973745f5f4441544100000000000000000000e827580101000000d800000000000000e827580103000000000000000000000000000010000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_catlist",
+        "address": 4317522112,
+        "size": 16,
+        "file_offset": 22554816,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 268435456,
+        "section_header_hex": "5f5f6f626a635f6361746c69737400005f5f4441544100000000000000000000c0285801010000001000000000000000c028580103000000000000000000000000000010000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_protolist",
+        "address": 4317522128,
+        "size": 56,
+        "file_offset": 22554832,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f6f626a635f70726f746f6c6973745f5f4441544100000000000000000000d0285801010000003800000000000000d028580103000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_imageinfo",
+        "address": 4317522184,
+        "size": 8,
+        "file_offset": 22554888,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f6f626a635f696d616765696e666f5f5f4441544100000000000000000000082958010100000008000000000000000829580102000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_const",
+        "address": 4317522192,
+        "size": 18232,
+        "file_offset": 22554896,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f6f626a635f636f6e7374000000005f5f4441544100000000000000000000102958010100000038470000000000001029580103000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_selrefs",
+        "address": 4317540424,
+        "size": 5224,
+        "file_offset": 22573128,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 268435461,
+        "section_header_hex": "5f5f6f626a635f73656c7265667300005f5f4441544100000000000000000000487058010100000068140000000000004870580103000000000000000000000005000010000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_classrefs",
+        "address": 4317545648,
+        "size": 720,
+        "file_offset": 22578352,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 268435456,
+        "section_header_hex": "5f5f6f626a635f636c617373726566735f5f4441544100000000000000000000b084580101000000d002000000000000b084580103000000000000000000000000000010000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_superrefs",
+        "address": 4317546368,
+        "size": 208,
+        "file_offset": 22579072,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 268435456,
+        "section_header_hex": "5f5f6f626a635f7375706572726566735f5f44415441000000000000000000008087580101000000d0000000000000008087580103000000000000000000000000000010000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_ivar",
+        "address": 4317546576,
+        "size": 816,
+        "file_offset": 22579280,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f6f626a635f6976617200000000005f5f4441544100000000000000000000508858010100000030030000000000005088580103000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__objc_data",
+        "address": 4317547392,
+        "size": 2160,
+        "file_offset": 22580096,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f6f626a635f6461746100000000005f5f4441544100000000000000000000808b5801010000007008000000000000808b580103000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__data",
+        "address": 4317549568,
+        "size": 1038952,
+        "file_offset": 22582272,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 0,
+        "section_header_hex": "5f5f64617461000000000000000000005f5f4441544100000000000000000000009458010100000068da0f00000000000094580105000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__common",
+        "address": 4318588528,
+        "size": 1068520,
+        "file_offset": 0,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 1,
+        "section_header_hex": "5f5f636f6d6d6f6e00000000000000005f5f4441544100000000000000000000706e680101000000e84d1000000000000000000004000000000000000000000001000000000000000000000000000000"
+      },
+      {
+        "segment": "__DATA",
+        "section": "__bss",
+        "address": 4319657056,
+        "size": 98696,
+        "file_offset": 0,
+        "relocation_offset": 0,
+        "relocation_count": 0,
+        "flags": 1,
+        "section_header_hex": "5f5f62737300000000000000000000005f5f444154410000000000000000000060bc78010100000088810100000000000000000004000000000000000000000001000000000000000000000000000000"
+      }
+    ],
+    "section_relocation_count": 0,
+    "dyld_info": [
+      {
+        "command": 2147483682,
+        "fields": [
+          23621632,
+          27352,
+          23648984,
+          9152,
+          23658136,
+          160,
+          23658296,
+          20728,
+          23679024,
+          112
+        ],
+        "interpreted": false
+      }
+    ],
+    "targets": [
+      {
+        "address": 4312253621,
+        "file_offset": 17286325,
+        "absolute_u64_occurrences": []
+      },
+      {
+        "address": 4312253769,
+        "file_offset": 17286473,
+        "absolute_u64_occurrences": []
+      },
+      {
+        "address": 4312254914,
+        "file_offset": 17287618,
+        "absolute_u64_occurrences": []
+      },
+      {
+        "address": 4312255076,
+        "file_offset": 17287780,
+        "absolute_u64_occurrences": []
+      },
+      {
+        "address": 4313444321,
+        "file_offset": 18477025,
+        "absolute_u64_occurrences": []
+      }
+    ],
+    "method": "All byte alignments, exact little-endian u64 address equality to five locked s343 locations; section relocation metadata only",
+    "executable_association": null,
+    "saved_reference_dereference": null,
+    "live_generations": null,
+    "controls_executed": false,
+    "limitation": "No RIP-relative, relative table, dyld rebase/bind stream or enclosing-list-base resolution. No hits cannot prove no references. Section relocation absence is not absence of dynamic fixups."
+  },
+  "lookup_paths": {
+    "parent_depth": {
+      "required_inputs": [
+        "parent instance generation",
+        "depth"
+      ],
+      "module_relative_address": null,
+      "instruction_bytes": null,
+      "layout": null,
+      "live_binding": null,
+      "result_allocation_generation": null,
+      "derived": false
+    },
+    "saved_reference": {
+      "required_inputs": [
+        "saved AS2 value location",
+        "reference representation"
+      ],
+      "module_relative_address": null,
+      "instruction_bytes": null,
+      "layout": null,
+      "live_binding": null,
+      "result_allocation_generation": null,
+      "derived": false
+    }
+  },
+  "observations": {
+    "loaded_module": null,
+    "owner_generation": null,
+    "retained_content_clearing": null,
+    "replacement": null,
+    "free": null,
+    "reuse": null,
+    "uninterrupted_pool_generations": null,
+    "deferred_free_order": null
+  },
+  "independent_native_observations": 0,
+  "actual_native_controls_executed": false,
+  "saved_reference_attempt": {
+    "source_route": "_global.s261Receiver -> saved",
+    "source_is_retained_only": true,
+    "value_location": null,
+    "representation": null,
+    "dereference_instructions": null,
+    "result_allocation_generation": null,
+    "slot_result_borrowed": false,
+    "blocker": "No independently resolved saved AS2 value location or representation; no native address target can be selected without assuming the missing layout. No saved-name search repeated."
+  },
+  "gates": {
+    "name-executable": {
+      "proved": false,
+      "code": "S351_NAME_EXECUTABLE_UNPROVED"
+    },
+    "saved-reference": {
+      "proved": false,
+      "code": "S351_SAVED_REFERENCE_UNPROVED"
+    },
+    "slot-reference": {
+      "proved": false,
+      "code": "S351_SLOT_REFERENCE_UNPROVED"
+    },
+    "content-clearing": {
+      "proved": false,
+      "code": "S351_CONTENT_CLEARING_UNPROVED"
+    },
+    "replacement": {
+      "proved": false,
+      "code": "S351_REPLACEMENT_UNPROVED"
+    },
+    "allocation-identity": {
+      "proved": false,
+      "code": "S351_ALLOCATION_IDENTITY_UNPROVED"
+    }
+  },
+  "first_unmet_prerequisite": "byte-bound name-to-executable association and separate saved-value dereference",
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_memory_reads": 0,
+  "new_captures": 0,
+  "mechanism_obligations_closed": 0,
+  "product_obligations_closed": 0,
+  "other_ranks_executed": [],
+  "ranks_8_plus": "planning only"
+}
