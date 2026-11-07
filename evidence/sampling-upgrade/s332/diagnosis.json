@@ -1,0 +1,576 @@
+{
+  "slice": "s332",
+  "scope": "AFTER-s326 rank #6 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s323_reproduced": true,
+  "replay_is_new_progress": false,
+  "facilities": [
+    {
+      "path": "tools/probes/probe_owned_debugger.py",
+      "function": "debugger_script",
+      "start_line": 21,
+      "end_line": 48,
+      "source": "def debugger_script(pid, binary, result_path):\n    return f'''import json\nimport lldb\nfrom pathlib import Path\nresult = {{'attached': False, 'registers_available': False, 'detach_attempted': False, 'detached': False, 'pid': {pid}, 'pixel_reference': False, 'routing_verified': False}}\nprocess = None\ntry:\n    target = lldb.debugger.CreateTarget({str(binary)!r})\n    error = lldb.SBError()\n    process = target.AttachToProcessWithID(lldb.debugger.GetListener(), {pid}, error)\n    result['attach_error'] = str(error)\n    result['attached'] = error.Success() and process.IsValid()\n    if result['attached']:\n        result['target_triple'] = target.GetTriple()\n        result['state'] = lldb.SBDebugger.StateAsCString(process.GetState())\n        frame = process.GetSelectedThread().GetFrameAtIndex(0)\n        result['registers'] = {{name: frame.FindRegister(name).GetValue() for name in {REGISTERS!r}}}\n        result['registers_available'] = all(value is not None for value in result['registers'].values())\nexcept BaseException as error:\n    result['error'] = repr(error)\nfinally:\n    if result['attached'] and process is not None:\n        result['detach_attempted'] = True\n        error = process.Detach()\n        result['detach_error'] = str(error)\n        result['detached'] = error.Success()\n    Path({str(result_path)!r}).write_text(json.dumps(result, indent=2)+chr(10))\n'''",
+      "missing": "Host receipt does not use aiEvent, but selected CPU registers have no loaded AVM closure/body resolver, owner generation, activation identity or matched dispatcher continuation.",
+      "invoked": false
+    },
+    {
+      "path": "tools/probes/probe_owned_debugger.py",
+      "function": "probe",
+      "start_line": 57,
+      "end_line": 143,
+      "source": "def probe(build, output, app, debugger_timeout=15, *, script_factory=debugger_script,\n          explicit_breakpoints_requested=False, post_debugger=None):\n    debugger_timeout = validate_debugger_timeout(debugger_timeout)\n    build,output,app = build.resolve(),output.resolve(),app.resolve()\n    if output.exists() and any(output.iterdir()):\n        raise ValueError('Debugger output directory must be fresh')\n    output.mkdir(parents=True,exist_ok=True)\n    preflight(app)\n    binary = player_binary(app)\n    if hashlib.sha256(binary.read_bytes()).hexdigest() != BINARY_SHA256:\n        raise ValueError('Native executable differs from pinned baseline')\n    movie = (build/'game/main.swf').resolve()\n    metadata = json.loads((build/'build.json').read_text())\n    if metadata.get('swf_sha256') != hashlib.sha256(movie.read_bytes()).hexdigest():\n        raise ValueError('Probe movie differs from its build record')\n    if metadata.get('fixture_sha256') != hashlib.sha256((build/'fixture.json').read_bytes()).hexdigest():\n        raise ValueError('Probe fixture differs from its build record')\n    if metadata.get('raw_tags_preserved') is not True:\n        raise ValueError('Owned probe must preserve original source tags')\n    before = matching_players(movie,binary)\n    if before:\n        raise RuntimeError('Refusing a pre-existing player')\n    observations = []\n    timings = {}\n    observer_result = None\n    with ThreadPoolExecutor(max_workers=1) as executor:\n        timings['capture_submit_monotonic'] = time.monotonic()\n        future = executor.submit(capture,build,build/'native.log',90,app)\n        deadline = time.monotonic()+20\n        pid = None\n        while time.monotonic()<deadline and not future.done():\n            current = matching_players(movie,binary)\n            if current:\n                pid = require_unique_owned(before,current)\n                break\n            time.sleep(.1)\n        if pid is None:\n            raise RuntimeError('No owned probe process before deadline')\n        prefix = 'AIREF|'+metadata['run_id']+'|'\n        while time.monotonic()<deadline and not future.done():\n            if LOG.exists() and any(line.startswith(prefix) and '|profile|' in line for line in LOG.read_text(errors='replace').splitlines()):\n                break\n            time.sleep(.05)\n        else:\n            raise RuntimeError('No run-specific profile marker')\n        require_unique_owned(before,matching_players(movie,binary),pid)\n        observations.append({'pid':pid,'movie':str(movie),'binary':str(binary),'run_id':metadata['run_id'],'ownership_checked_immediately_before_attach':True})\n        script = output/'lldb-readonly.py'\n        script.write_text(script_factory(pid,binary,output/'debugger-result.json'))\n        command = ['xcrun','lldb','--batch','-o',f'script exec(compile(open({str(script)!r}).read(), {str(script)!r}, \"exec\"))']\n        timings['debugger_start_monotonic'] = time.monotonic()\n        try:\n            completed = subprocess.run(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=debugger_timeout)\n            transcript,exit_code,timed_out = completed.stdout,completed.returncode,False\n        except subprocess.TimeoutExpired as error:\n            transcript = error.stdout or b''\n            if isinstance(transcript,bytes):transcript=transcript.decode(errors='replace')\n            exit_code,timed_out = None,True\n        timings['debugger_end_monotonic'] = time.monotonic()\n        (output/'lldb.log').write_text(transcript)\n        if post_debugger is not None:\n            timings['receipt_observed_monotonic'] = time.monotonic()\n            try:\n                receipt_path = output/'debugger-result.json'\n                receipt = json.loads(receipt_path.read_text()) if receipt_path.exists() else {}\n                if receipt.get('detached') is True and exit_code == 0 and not timed_out:\n                    observer_result = post_debugger(pid,movie,binary,metadata['run_id'],output)\n                else:\n                    observer_result = {'skipped':True,'reason':'No successful current detach receipt'}\n            except Exception as error:\n                observer_result = {'error':repr(error)}\n            finally:\n                timings['observer_end_monotonic'] = time.monotonic()\n        captured = future.result()\n        timings['capture_result_monotonic'] = time.monotonic()\n    result_path = output/'debugger-result.json'\n    result = json.loads(result_path.read_text()) if result_path.exists() else {'attached':None,'detached':None,'registers_available':None,'result_missing':True}\n    final = {'ownership':observations,'debugger':result,'debugger_exit':exit_code,'debugger_timed_out':timed_out,'debugger_timeout_seconds':debugger_timeout,\n             'capture_complete':captured,'owned_processes_remaining':sorted(matching_players(movie,binary)),\n             'binary_sha256':BINARY_SHA256,'movie_sha256':hashlib.sha256(movie.read_bytes()).hexdigest(),\n             'explicit_breakpoints_requested':explicit_breakpoints_requested,'target_memory_writes_requested':False,'lldb_internal_memory_writes_verified':False,'pixel_reference':False,\n             'operand_semantics_proved':False,'production_admitted':False}\n    if post_debugger is not None:\n        final['lifecycle_monotonic'] = timings\n        final['post_debugger_observation'] = observer_result\n    (output/'feasibility.json').write_text(json.dumps(final,indent=2)+'\\n')\n    return final",
+      "missing": "Owned PID and disk hashes bind process/build custody only. Run-profile waiting uses AIREF; script_factory and post_debugger are extension hooks, not implemented callback identity or replacement-survival witnesses.",
+      "invoked": false
+    },
+    {
+      "path": "evidence/sampling-upgrade/s284/build_probe.py",
+      "function": "defer_quit",
+      "start_line": 17,
+      "end_line": 21,
+      "source": "def defer_quit(source):\n    if source.count(TERMINAL) != 1 or source.count(CLOSURE) != 1:\n        raise ValueError('missing unique terminal/closure sites')\n    return source.replace(TERMINAL, '      _root.aiS284DoActionComplete = true;', 1).replace(\n        CLOSURE, '      _root.aiEvent = function() {};\\n      fscommand(\"quit\");\\n      return;', 1)",
+      "missing": "Moves quit past logger replacement in source only. This does not observe execution, distinguish unwind/termination/return, or qualify observer off/on.",
+      "invoked": false
+    }
+  ],
+  "independent_native_observations": 0,
+  "retained_validation_not_new_progress": {
+    "independent_pair_proved_and_closed": true,
+    "runs": {
+      "normal": {
+        "done": {
+          "run_id": "s293-normal-20261102-r01",
+          "sequence": 5849,
+          "time_ms": 29114,
+          "display": 525,
+          "tick": 60,
+          "kind": "done",
+          "payload": ""
+        },
+        "suffix": [],
+        "events": 5849,
+        "suffix_kind_counts": {},
+        "suffix_clock_pairs": [],
+        "completion_witness": null
+      },
+      "held": {
+        "done": {
+          "run_id": "s293-held-20261102-r01",
+          "sequence": 5514,
+          "time_ms": 27354,
+          "display": 495,
+          "tick": 60,
+          "kind": "done",
+          "payload": ""
+        },
+        "suffix": [
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5515,
+            "time_ms": 27368,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,40,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5516,
+            "time_ms": 27368,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,97,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5517,
+            "time_ms": 27368,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,97,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5518,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,38,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5519,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,40,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5520,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,38,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5521,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,40,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5522,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,100,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5523,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,40,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5524,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,38,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5525,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,101,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5526,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,102,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5527,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,37,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5528,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,39,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5529,
+            "time_ms": 27369,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,99,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5530,
+            "time_ms": 27370,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,98,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5531,
+            "time_ms": 27370,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,83,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5532,
+            "time_ms": 27370,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,74,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5533,
+            "time_ms": 27370,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,74,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5534,
+            "time_ms": 27370,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,87,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5535,
+            "time_ms": 27370,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,83,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5536,
+            "time_ms": 27370,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,87,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5537,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,83,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5538,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,85,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5539,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,83,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5540,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,87,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5541,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,73,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5542,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,79,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5543,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,65,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5544,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,68,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5545,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,76,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5546,
+            "time_ms": 27371,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,75,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5547,
+            "time_ms": 27372,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p2.mc,99,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5548,
+            "time_ms": 27372,
+            "display": 495,
+            "tick": 60,
+            "kind": "key_read",
+            "payload": "_level0.game.p1.mc,76,false"
+          },
+          {
+            "run_id": "s293-held-20261102-r01",
+            "sequence": 5549,
+            "time_ms": 27372,
+            "display": 495,
+            "tick": 60,
+            "kind": "capture_window_closed",
+            "payload": "before-next-root-increment"
+          }
+        ],
+        "events": 5549,
+        "suffix_kind_counts": {
+          "capture_window_closed": 1,
+          "key_read": 34
+        },
+        "suffix_clock_pairs": [
+          [
+            495,
+            60
+          ]
+        ],
+        "completion_witness": null
+      }
+    },
+    "channel_audit": {
+      "logger_member": "patches/main/frame_1/DoAction.as",
+      "logger_member_sha256": "cb0961a80a36764734adc41eef2d2ddfaa1d40ac067557e925524bbb22d4954b",
+      "logger_line_start": 40,
+      "logger_line_end": 43,
+      "logger_source": "_root.aiEvent = function(kind, value)\n{\n   trace(\"AIREF|\" + aiRun + \"|\" + (++aiSeq) + \"|\" + getTimer() + \"|\" + aiDisplay + \"|\" + aiFight + \"|\" + kind + \"|\" + value);\n};",
+      "serialized_fields": [
+        "literal AIREF",
+        "run ID",
+        "event sequence",
+        "getTimer()",
+        "display counter",
+        "fight counter",
+        "kind",
+        "value"
+      ],
+      "callback_member": "patches/main/frame_10/DoAction.as",
+      "callback_sha256": "3a31a0955390a23879cc87d525f75bb96f55468ddb091c4185a5f4a1ef064214",
+      "boundaries": [
+        {
+          "operation": "assignment",
+          "line": 26,
+          "source": "onEnterFrame = function()",
+          "independent_activation_witness": null
+        },
+        {
+          "operation": "guard",
+          "line": 28,
+          "source": "   if(_root.aiS284DoActionComplete)",
+          "independent_activation_witness": null
+        },
+        {
+          "operation": "closure_marker",
+          "line": 30,
+          "source": "      aiEvent(\"capture_window_closed\", \"before-next-root-increment\");",
+          "independent_activation_witness": null
+        },
+        {
+          "operation": "replace_callback",
+          "line": 31,
+          "source": "      _root.onEnterFrame = function() {};",
+          "independent_activation_witness": null
+        },
+        {
+          "operation": "disable_logger",
+          "line": 32,
+          "source": "      _root.aiEvent = function() {};",
+          "independent_activation_witness": null
+        },
+        {
+          "operation": "explicit_return",
+          "line": 34,
+          "source": "      return;",
+          "independent_activation_witness": null
+        },
+        {
+          "operation": "done_marker",
+          "line": 75,
+          "source": "      aiEvent(\"done\", \"\");",
+          "independent_activation_witness": null
+        },
+        {
+          "operation": "arm_guard",
+          "line": 76,
+          "source": "      _root.aiS284DoActionComplete = true;",
+          "independent_activation_witness": null
+        },
+        {
+          "operation": "timeout_guard",
+          "line": 78,
+          "source": "   if(aiDisplay > 60 + 900)",
+          "independent_activation_witness": null
+        }
+      ],
+      "guard_after_marker": [
+        {
+          "line": 31,
+          "source": "      _root.onEnterFrame = function() {};"
+        },
+        {
+          "line": 32,
+          "source": "      _root.aiEvent = function() {};"
+        },
+        {
+          "line": 33,
+          "source": "      fscommand(\"quit\");"
+        },
+        {
+          "line": 34,
+          "source": "      return;"
+        }
+      ],
+      "source_identity_is_loaded_body_identity": false,
+      "aiEvent_independent_of_callback_mutation": false,
+      "host_copy_independent_of_event_producer": false,
+      "host_copy_limit": "Independent host custody copies the same AIREF producer; it supplies no callback entry/dispatcher-return observation.",
+      "return_paths": [
+        "guard branch: quit request then explicit return if execution resumes",
+        "ordinary branch: implicit fallthrough after timeout conditional",
+        "timeout branch: quit request before possible fallthrough"
+      ],
+      "same_clock_limit": "Guard precedes aiDisplay increment. A closing invocation can retain the done invocation clock values; those counters cannot identify an activation."
+    }
+  },
+  "qualification_requirements": {
+    "loaded_body": {
+      "requirement": "Resolve executing body bytes to the archived callback, not merely a source/SWF hash.",
+      "qualified_witness": null
+    },
+    "owner_generation": {
+      "requirement": "Bind root owner lifetime, defining scope and closure generation across property replacement.",
+      "qualified_witness": null
+    },
+    "activation_entry": {
+      "requirement": "Observe entry with an invocation identity independent of shared tick/display and aiEvent.",
+      "qualified_witness": null
+    },
+    "dispatcher_return": {
+      "requirement": "Match that same invocation at the dispatcher continuation; distinguish return, unwind and termination.",
+      "qualified_witness": null
+    },
+    "observer_preservation": {
+      "requirement": "Qualify observer-off/on effects and retained observation after aiEvent replacement.",
+      "qualified_witness": null
+    }
+  },
+  "observations": {
+    "loaded_closure_body": null,
+    "owner_generation": null,
+    "defining_scope_generation": null,
+    "closure_generation": null,
+    "activation_entry": null,
+    "logger_replacement": null,
+    "matched_dispatcher_continuation": null,
+    "outcome": null,
+    "replacement_survival": null,
+    "observer_off": null,
+    "observer_on": null,
+    "off_on_preservation": null
+  },
+  "independently_observed_live_invocations": [],
+  "off_on_controls_executed": false,
+  "terminal_inventory_executed": false,
+  "full_as_proven": false,
+  "fixed_suffix_threshold": null,
+  "gates": {
+    "independent-channel": {
+      "proved": false,
+      "code": "S332_INDEPENDENT_CHANNEL_UNPROVED"
+    },
+    "logger-replacement": {
+      "proved": false,
+      "code": "S332_LOGGER_REPLACEMENT_UNPROVED"
+    },
+    "callback-completion": {
+      "proved": false,
+      "code": "S332_CALLBACK_COMPLETION_UNPROVED"
+    },
+    "off-on": {
+      "proved": false,
+      "code": "S332_OFF_ON_UNPROVED"
+    },
+    "terminal-completeness": {
+      "proved": false,
+      "code": "S332_TERMINAL_COMPLETENESS_UNPROVED"
+    }
+  },
+  "first_unmet_prerequisite": "independent loaded closure/body, owner generation and activation through dispatcher continuation after logger replacement",
+  "blocker": "Inspected adapters supply no live identity resolver or matched continuation channel. Off/on qualification and terminal inventory remain deferred; no live proof is inferred from a host sink independent of aiEvent.",
+  "search_scope": "Only the three named adapter functions plus locked s323 replay; not an exhaustive facility search.",
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_process_attaches": 0,
+  "new_memory_reads": 0,
+  "new_captures": 0,
+  "product_obligations_closed": 0,
+  "other_ranks_executed": []
+}
