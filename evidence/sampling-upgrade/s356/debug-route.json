@@ -1,0 +1,35 @@
+{
+  "slice": "s356",
+  "route": "existing-source-debugger-entry",
+  "hypothesis": "Existing debugger metadata might identify a loaded definition independently of numeric dispatch and observer slots.",
+  "receipt": "evidence/sampling-upgrade/s275/native-build.json",
+  "archive": "evidence/sampling-upgrade/s275/native-build.tar.gz",
+  "archive_member": "game/fighter/yulong.swf",
+  "original": {
+    "sha256": "fcf2246b602b4e498caf2b3c9ac6625ae492e45b6249effb22e9b7d669713199",
+    "file_bytes": 625728,
+    "validated_timelines": 18,
+    "debug_tags": [],
+    "debug_tag_counts": {
+      "EnableDebugger": 0,
+      "DebugID": 0,
+      "EnableDebugger2": 0
+    }
+  },
+  "candidate": {
+    "sha256": "6552776258058bc3e9362fb9056b33db7da09a8f82db9f2c9883dfd2fe99fd57",
+    "file_bytes": 628218,
+    "validated_timelines": 18,
+    "debug_tags": [],
+    "debug_tag_counts": {
+      "EnableDebugger": 0,
+      "DebugID": 0,
+      "EnableDebugger2": 0
+    }
+  },
+  "loaded_definition_pair": null,
+  "same_input_activation_pair": null,
+  "defining_scope_pair": null,
+  "independent_runtime_observations": [],
+  "conclusion": "Disk identity and debug-tag presence/absence only. No source-breakpoint-to-loaded-definition association or defining-scope channel obtained. Absence does not establish that native debugging is impossible."
+}
