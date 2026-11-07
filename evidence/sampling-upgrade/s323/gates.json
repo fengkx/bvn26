@@ -1,0 +1,96 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s323/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s323/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 2.063869415782392,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "independent-channel",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s323/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s323/diagnosis.json",
+      "--require-independent-channel"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 2.6319249579682946,
+    "log": "independent-channel.txt"
+  },
+  {
+    "name": "logger-replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s323/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s323/diagnosis.json",
+      "--require-logger-replacement"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 2.634494457859546,
+    "log": "logger-replacement.txt"
+  },
+  {
+    "name": "callback-completion",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s323/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s323/diagnosis.json",
+      "--require-callback-completion"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 2.3199162501841784,
+    "log": "callback-completion.txt"
+  },
+  {
+    "name": "terminal-completeness",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s323/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s323/diagnosis.json",
+      "--require-terminal-completeness"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 2.5295948339626193,
+    "log": "terminal-completeness.txt"
+  }
+]
