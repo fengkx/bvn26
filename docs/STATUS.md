@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s360，AFTER-s353 rank #7）：独立检查两个锁定地址的 RIP 相对 LEA，depth 精确目标零匹配，parent 七个字节候选；按函数起点距离选最短前缀，核对96字节/30指令，证明 `_parent` 文本地址传入直接调用的静态关联。未证明父/深度对象解析、独立 saved-reference 解引用或 live generations；clearing/replacement/free/reuse/pool 对照未执行。完整 s351 重放仅作保留验证。基础及静态关联门禁 exit0，六项原生证明及组合门禁 exit1。production_admitted=false、native_parity_proven=false，M0-02 pending，零义务关闭。仅 rank7，rank1–6已交付、rank8+仅规划；权威表、s254–s359及运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s360/README.md)。
+
 - 2026-11-08（采样 s359，AFTER-s353 rank #6）：独立按收据 SHA-256 检查固定基线可达的65个 SWF Git对象，无候选匹配；收据临时路径仍缺失。此有界恢复失败不证明全局缺失或调试不可能，不重建替代资格。loaded body、scope、invocation 与 this/root/parent 连续代际仍未证明，八个 erasure 边界保持 null，helper/off-on 未执行。完整 s349 重放仅作保留验证；基础诊断 exit0，七项证明及组合门禁 exit1。production_admitted=false、native_parity_proven=false，M0-02 pending，零义务关闭。仅 rank6，rank1–5已交付、rank7+仅规划；权威表、s254–s358及运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s359/README.md)。
 
 - 2026-11-08（采样 s358，AFTER-s353 rank #5）：独立通过 Mach-O stub/间接符号表将 s348 首个外部调用绑定到导入名 _pthread_mutex_lock；仅为磁盘导入关系，实际 P1 consumer、不可变请求代次、返回/消费区间及 inline advance 前目标仍未证明。正常资格未通过，错资源对照未执行，八个 live 边界保持 null。完整 s348 重放仅作保留验证；基础诊断 exit0，五项证明及组合门禁 exit1。production_admitted=false、native_parity_proven=false，M0-02 pending，零义务关闭。仅 rank5，rank1–4已交付、rank6+仅规划；权威表、s254–s357及运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s358/README.md)。
