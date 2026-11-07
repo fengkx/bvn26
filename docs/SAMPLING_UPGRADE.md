@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-08（采样 s327，post-s326 重排）：s318–s326交付保持关闭，仅执行新排名第1项 Chad 0xd2200首基本块边界审计。完整复现锁定s320，仅作保留验证；新增收据匹配二进制68字节/21指令，将调用参数对应到首次条件分支前的原始值2写入及读取。两条后继均不展开，类型、别名、所有权、异常与live绑定仍未证明，五项证明门禁exit1。production_admitted=false、native_parity_proven=false，M0-02 pending，零产品义务关闭；排名2+仅规划，旧表与s254–s326不变，零构建/启动/附加/内存读取/捕获，无运行时修改。 [新排名](../evidence/sampling-upgrade/next-fix-priority-after-s326.md)；[证据](../evidence/sampling-upgrade/s327/README.md)。
+
 - 2026-11-08（采样 s326，AFTER-s317 排名第9项）：完整复现锁定 s317，仅作历史证据保留验证，无新增独立运行观测。61个边界仍未通过完整同次状态准入，配对Godot图片为零；不修准入，未启动配对捕获或像素分类，源绑定边缘/内部RGBA仍为null。基础诊断exit0，三项证明门禁exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零产品义务关闭。仅排名9，不重排；权威表及s254–s325不变，零构建/启动/捕获/新图片，无运行时修改。 [证据](../evidence/sampling-upgrade/s326/README.md)。
 
 - 2026-11-08（采样 s325，AFTER-s317 排名第8项）：完整复现锁定 s316，仅作保留验证。新增当前播放器磁盘符号表核验：1039条原始记录与1038条nm输出相符，差项为N_OPT/debug记录；1032项是导入、6项为已定义符号，无__DWARF段。二进制哈希与s298一致，但未导出独立槽位/引用布局或live binding；实际清空/替换/free/reuse及连续池代次仍未证明，四项证明门禁exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；零构建/启动/附加/捕获，仅排名8，排名9仍规划，权威表与s254–s324不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s325/README.md)。
