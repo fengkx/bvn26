@@ -1,0 +1,89 @@
+{
+  "binary": "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "binary_size": 24120048,
+  "module_uuid": "067c4cfe5b2a3424aaa01fae2df056eb",
+  "image_base": 4294967296,
+  "regions": {
+    "stack_join": {
+      "module_relative": 1205433,
+      "file_offset": 1205433,
+      "size": 195,
+      "hex": "48c745a0020000004c8bbd90faffff48c745980200000048c785b8faffff02000000498b85500d000080b85109000000488b45a0744889c183e10783f9074889c275104889c14883e1f8488b511889d183e10783e21f83f9020f45d183fa02751d4d89ce4c898578faffff498b85e80d0000488985b0faffffe94704000089c183e10783f9074889c275104889c14883e1f8488b511889d183e1074d89ce4c898578faffff83e21f83f9020f45d183fa050f85fb030000488985b0faffffe902040000",
+      "sha256": "630fadb6f4afba91f309102fe80942ab7bd24c5b58031afa3cc7447616bb4fa5",
+      "disassembly": "stack_join.txt",
+      "disassembly_sha256": "f2e8a86cd9c1e311cdce6a3a203a4556158430ea320418b61e8ec191e5fdefb3",
+      "command": [
+        "objdump",
+        "-d",
+        "--x86-asm-syntax=intel",
+        "--start-address=0x1001264b9",
+        "--stop-address=0x10012657c",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.08793079201132059
+    },
+    "stack_call_frontier": {
+      "module_relative": 1206635,
+      "file_offset": 1206635,
+      "size": 34,
+      "hex": "488dbdb0faffff488d55a04c89eee882b8faff488db5b8faffff4c89efe8c3f5edff",
+      "sha256": "d69eb21ddaf59f0c1f6825f2066eef11addf599ed87fae811331592dcf91067e",
+      "disassembly": "stack_call_frontier.txt",
+      "disassembly_sha256": "c2071c17dd695fdf660efbdfec663ec812805ca2443f38ce515f5736c13eda16",
+      "command": [
+        "objdump",
+        "-d",
+        "--x86-asm-syntax=intel",
+        "--start-address=0x10012696b",
+        "--stop-address=0x10012698d",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.0343232499435544
+    },
+    "carrier_lookup": {
+      "module_relative": 10008800,
+      "file_offset": 10008800,
+      "size": 428,
+      "hex": "554889e5415741564155415453504989f64989ff31c04d39b7800800000f877a01000031c04d39b7880800000f866b010000498b97d00800004c89f34881e3000000f84839da7509498b8fd8080000eb2e498dbf800800004c89f6e8308800004889c131c04885c90f842f01000049898fd808000049899fd00800004889da4c89f048c1e80e25ff1f00000fb634014c89f148c1e90b80e106d3ee83e60331c083fe010f84be00000083fe030f849e00000083fe020f85e20000004d8da7800800004981c600f0ffff4d89f5eb106690498b97d00800004981c500f0ffff4c89eb4881e3000000f84839da7513498b87d8080000eb28662e0f1f8400000000004c89e74c89eee8858700004885c07433498987d808000049899fd00800004c89e948c1e90e81e1ff1f00000fb604084c89e948c1e90b80e106d3e883e00383f802748d4981e500f0ffff4983cd30eb4a4d89f54981e500f0ffff4983cd3031c04d39f57635eb364c89f64881e600f0ffff488b565031c04c39f27721488b46104929d6440fb7685e4d0fafee8a486049d3fd440faf6e044901d54c89e84883c4085b415c415d415e415f5dc3",
+      "sha256": "ae141350f9603298e961aaec4e09aa9b815ad1d7541a9485c419f777b233094d",
+      "disassembly": "carrier_lookup.txt",
+      "disassembly_sha256": "af21046b5895aaf14f098550aa97e24c7a16bbfebcc422f63ffce448d087c2f3",
+      "command": [
+        "objdump",
+        "-d",
+        "--x86-asm-syntax=intel",
+        "--start-address=0x10098b8e0",
+        "--stop-address=0x10098ba8c",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.03595495782792568
+    },
+    "carrier_store": {
+      "module_relative": 1242496,
+      "file_offset": 1242496,
+      "size": 392,
+      "hex": "554889e5415741564154534889cb4989d44989f64989ff498b0c2489c883e0064883f8060f82960000004889ce4883e6f88b46080fb6d083fa010f848000000085c0747c89c281e2000000407572ffc88946080fb6d083fa0175654881e100f0ffff488b7908488b8f80220000483b8f88220000733e488d5108488997802200004889318b8f902200008d51018997902200008b9770220000c1e21d81caff00005021c2c1e10809d181c900000080894e08eb0c4881c758220000e8a0338600488b1b89d883e0074883f8070f87a9000000b932000000480fa3c10f8285000000b9c0000000480fa3c10f838b0000004889d84883e0f8746d8b480885c9746689ca81e200000040755cffc18948080fb6d181faff000000750881c900000040eb4185c979404889da4881e200f0ffff488b520889cec1ee0889cfc1ef1181e7ff070000488b9260220000488b14fa81e6ff01000048c704f20000000081e1ff0000708948084180bf5107000000740b4c89ff4c89f6e835e3850049891c245b415c415e415f5dc3",
+      "sha256": "a5f5de502929afb3b10a82b6a2a69ca3c3d1dd440979f5d28bc53acb9b8dcd98",
+      "disassembly": "carrier_store.txt",
+      "disassembly_sha256": "ea9247fd3e7b9888194f6f572b4e05453c448b2ab6766a712a99e5cff3b83722",
+      "command": [
+        "objdump",
+        "-d",
+        "--x86-asm-syntax=intel",
+        "--start-address=0x10012f580",
+        "--stop-address=0x10012f708",
+        "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.030577334109693766
+    }
+  },
+  "elapsed_seconds": 1.22204316733405,
+  "player_launches": 0,
+  "memory_reads": 0,
+  "limit": "Static file bytes only; call fallthrough is conditional on machine return. No live binding."
+}

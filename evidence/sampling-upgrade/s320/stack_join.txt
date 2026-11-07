@@ -1,0 +1,53 @@
+
+/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger:	file format mach-o 64-bit x86-64
+
+Disassembly of section __TEXT,__text:
+
+0000000100002000 <__text>:
+1001264b9: 48 c7 45 a0 02 00 00 00     	mov	qword ptr [rbp - 0x60], 0x2
+1001264c1: 4c 8b bd 90 fa ff ff        	mov	r15, qword ptr [rbp - 0x570]
+1001264c8: 48 c7 45 98 02 00 00 00     	mov	qword ptr [rbp - 0x68], 0x2
+1001264d0: 48 c7 85 b8 fa ff ff 02 00 00 00    	mov	qword ptr [rbp - 0x548], 0x2
+1001264db: 49 8b 85 50 0d 00 00        	mov	rax, qword ptr [r13 + 0xd50]
+1001264e2: 80 b8 51 09 00 00 00        	cmp	byte ptr [rax + 0x951], 0x0
+1001264e9: 48 8b 45 a0                 	mov	rax, qword ptr [rbp - 0x60]
+1001264ed: 74 48                       	je	0x100126537 <__text+0x124537>
+1001264ef: 89 c1                       	mov	ecx, eax
+1001264f1: 83 e1 07                    	and	ecx, 0x7
+1001264f4: 83 f9 07                    	cmp	ecx, 0x7
+1001264f7: 48 89 c2                    	mov	rdx, rax
+1001264fa: 75 10                       	jne	0x10012650c <__text+0x12450c>
+1001264fc: 48 89 c1                    	mov	rcx, rax
+1001264ff: 48 83 e1 f8                 	and	rcx, -0x8
+100126503: 48 8b 51 18                 	mov	rdx, qword ptr [rcx + 0x18]
+100126507: 89 d1                       	mov	ecx, edx
+100126509: 83 e1 07                    	and	ecx, 0x7
+10012650c: 83 e2 1f                    	and	edx, 0x1f
+10012650f: 83 f9 02                    	cmp	ecx, 0x2
+100126512: 0f 45 d1                    	cmovne	edx, ecx
+100126515: 83 fa 02                    	cmp	edx, 0x2
+100126518: 75 1d                       	jne	0x100126537 <__text+0x124537>
+10012651a: 4d 89 ce                    	mov	r14, r9
+10012651d: 4c 89 85 78 fa ff ff        	mov	qword ptr [rbp - 0x588], r8
+100126524: 49 8b 85 e8 0d 00 00        	mov	rax, qword ptr [r13 + 0xde8]
+10012652b: 48 89 85 b0 fa ff ff        	mov	qword ptr [rbp - 0x550], rax
+100126532: e9 47 04 00 00              	jmp	0x10012697e <__text+0x12497e>
+100126537: 89 c1                       	mov	ecx, eax
+100126539: 83 e1 07                    	and	ecx, 0x7
+10012653c: 83 f9 07                    	cmp	ecx, 0x7
+10012653f: 48 89 c2                    	mov	rdx, rax
+100126542: 75 10                       	jne	0x100126554 <__text+0x124554>
+100126544: 48 89 c1                    	mov	rcx, rax
+100126547: 48 83 e1 f8                 	and	rcx, -0x8
+10012654b: 48 8b 51 18                 	mov	rdx, qword ptr [rcx + 0x18]
+10012654f: 89 d1                       	mov	ecx, edx
+100126551: 83 e1 07                    	and	ecx, 0x7
+100126554: 4d 89 ce                    	mov	r14, r9
+100126557: 4c 89 85 78 fa ff ff        	mov	qword ptr [rbp - 0x588], r8
+10012655e: 83 e2 1f                    	and	edx, 0x1f
+100126561: 83 f9 02                    	cmp	ecx, 0x2
+100126564: 0f 45 d1                    	cmovne	edx, ecx
+100126567: 83 fa 05                    	cmp	edx, 0x5
+10012656a: 0f 85 fb 03 00 00           	jne	0x10012696b <__text+0x12496b>
+100126570: 48 89 85 b0 fa ff ff        	mov	qword ptr [rbp - 0x550], rax
+100126577: e9 02 04 00 00              	jmp	0x10012697e <__text+0x12497e>

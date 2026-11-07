@@ -1,0 +1,143 @@
+[
+  {
+    "name": "s320-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s320",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 9.080863957758993,
+    "log": "s320-tests.txt"
+  },
+  {
+    "name": "s311-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s311",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 9.063827333971858,
+    "log": "s311-tests.txt"
+  },
+  {
+    "name": "s303-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s303",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 9.050446374807507,
+    "log": "s303-tests.txt"
+  },
+  {
+    "name": "s295-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s295",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 10.013039958663285,
+    "log": "s295-tests.txt"
+  },
+  {
+    "name": "s288-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s288",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 6.456313957925886,
+    "log": "s288-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_chad_native_instruction_diagnosis",
+      "tools.tests.test_chad_defining_context",
+      "tools.tests.test_chad_register_control",
+      "tools.tests.test_as_continuation_discriminator",
+      "tools.tests.test_chad_lifecycle_observer",
+      "tools.tests.test_call_exit_diagnosis",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 10.690788666717708,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 1.3371526249684393,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.2146313339471817,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.4710835828445852,
+    "log": "diff-check.txt"
+  }
+]

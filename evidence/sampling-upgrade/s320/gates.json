@@ -1,0 +1,85 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s320/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s320/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 1.3106053746305406,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "external-effects",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s320/diagnose.py",
+      "--output",
+      "/tmp/s320-external-effects.json",
+      "--require-external-effects"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.306993874721229,
+    "log": "external-effects.txt"
+  },
+  {
+    "name": "value-ownership",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s320/diagnose.py",
+      "--output",
+      "/tmp/s320-value-ownership.json",
+      "--require-value-ownership"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.3148512500338256,
+    "log": "value-ownership.txt"
+  },
+  {
+    "name": "live-binding",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s320/diagnose.py",
+      "--output",
+      "/tmp/s320-live-binding.json",
+      "--require-live-binding"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.5149813331663609,
+    "log": "live-binding.txt"
+  },
+  {
+    "name": "cursor-convention",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s320/diagnose.py",
+      "--output",
+      "/tmp/s320-cursor-convention.json",
+      "--require-cursor-convention"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.511256624944508,
+    "log": "cursor-convention.txt"
+  },
+  {
+    "name": "retained-invocation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s320/diagnose.py",
+      "--output",
+      "/tmp/s320-retained-invocation.json",
+      "--require-retained-invocation"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.5026366249658167,
+    "log": "retained-invocation.txt"
+  }
+]

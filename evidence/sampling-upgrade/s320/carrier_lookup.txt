@@ -1,0 +1,120 @@
+
+/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger:	file format mach-o 64-bit x86-64
+
+Disassembly of section __TEXT,__text:
+
+00000001004c7600 <_main>:
+10098b8e0: 55                          	push	rbp
+10098b8e1: 48 89 e5                    	mov	rbp, rsp
+10098b8e4: 41 57                       	push	r15
+10098b8e6: 41 56                       	push	r14
+10098b8e8: 41 55                       	push	r13
+10098b8ea: 41 54                       	push	r12
+10098b8ec: 53                          	push	rbx
+10098b8ed: 50                          	push	rax
+10098b8ee: 49 89 f6                    	mov	r14, rsi
+10098b8f1: 49 89 ff                    	mov	r15, rdi
+10098b8f4: 31 c0                       	xor	eax, eax
+10098b8f6: 4d 39 b7 80 08 00 00        	cmp	qword ptr [r15 + 0x880], r14
+10098b8fd: 0f 87 7a 01 00 00           	ja	0x10098ba7d <_main+0x4c447d>
+10098b903: 31 c0                       	xor	eax, eax
+10098b905: 4d 39 b7 88 08 00 00        	cmp	qword ptr [r15 + 0x888], r14
+10098b90c: 0f 86 6b 01 00 00           	jbe	0x10098ba7d <_main+0x4c447d>
+10098b912: 49 8b 97 d0 08 00 00        	mov	rdx, qword ptr [r15 + 0x8d0]
+10098b919: 4c 89 f3                    	mov	rbx, r14
+10098b91c: 48 81 e3 00 00 00 f8        	and	rbx, -0x8000000
+10098b923: 48 39 da                    	cmp	rdx, rbx
+10098b926: 75 09                       	jne	0x10098b931 <_main+0x4c4331>
+10098b928: 49 8b 8f d8 08 00 00        	mov	rcx, qword ptr [r15 + 0x8d8]
+10098b92f: eb 2e                       	jmp	0x10098b95f <_main+0x4c435f>
+10098b931: 49 8d bf 80 08 00 00        	lea	rdi, [r15 + 0x880]
+10098b938: 4c 89 f6                    	mov	rsi, r14
+10098b93b: e8 30 88 00 00              	call	0x100994170 <_main+0x4ccb70>
+10098b940: 48 89 c1                    	mov	rcx, rax
+10098b943: 31 c0                       	xor	eax, eax
+10098b945: 48 85 c9                    	test	rcx, rcx
+10098b948: 0f 84 2f 01 00 00           	je	0x10098ba7d <_main+0x4c447d>
+10098b94e: 49 89 8f d8 08 00 00        	mov	qword ptr [r15 + 0x8d8], rcx
+10098b955: 49 89 9f d0 08 00 00        	mov	qword ptr [r15 + 0x8d0], rbx
+10098b95c: 48 89 da                    	mov	rdx, rbx
+10098b95f: 4c 89 f0                    	mov	rax, r14
+10098b962: 48 c1 e8 0e                 	shr	rax, 0xe
+10098b966: 25 ff 1f 00 00              	and	eax, 0x1fff
+10098b96b: 0f b6 34 01                 	movzx	esi, byte ptr [rcx + rax]
+10098b96f: 4c 89 f1                    	mov	rcx, r14
+10098b972: 48 c1 e9 0b                 	shr	rcx, 0xb
+10098b976: 80 e1 06                    	and	cl, 0x6
+10098b979: d3 ee                       	shr	esi, cl
+10098b97b: 83 e6 03                    	and	esi, 0x3
+10098b97e: 31 c0                       	xor	eax, eax
+10098b980: 83 fe 01                    	cmp	esi, 0x1
+10098b983: 0f 84 be 00 00 00           	je	0x10098ba47 <_main+0x4c4447>
+10098b989: 83 fe 03                    	cmp	esi, 0x3
+10098b98c: 0f 84 9e 00 00 00           	je	0x10098ba30 <_main+0x4c4430>
+10098b992: 83 fe 02                    	cmp	esi, 0x2
+10098b995: 0f 85 e2 00 00 00           	jne	0x10098ba7d <_main+0x4c447d>
+10098b99b: 4d 8d a7 80 08 00 00        	lea	r12, [r15 + 0x880]
+10098b9a2: 49 81 c6 00 f0 ff ff        	add	r14, -0x1000
+10098b9a9: 4d 89 f5                    	mov	r13, r14
+10098b9ac: eb 10                       	jmp	0x10098b9be <_main+0x4c43be>
+10098b9ae: 66 90                       	nop
+10098b9b0: 49 8b 97 d0 08 00 00        	mov	rdx, qword ptr [r15 + 0x8d0]
+10098b9b7: 49 81 c5 00 f0 ff ff        	add	r13, -0x1000
+10098b9be: 4c 89 eb                    	mov	rbx, r13
+10098b9c1: 48 81 e3 00 00 00 f8        	and	rbx, -0x8000000
+10098b9c8: 48 39 da                    	cmp	rdx, rbx
+10098b9cb: 75 13                       	jne	0x10098b9e0 <_main+0x4c43e0>
+10098b9cd: 49 8b 87 d8 08 00 00        	mov	rax, qword ptr [r15 + 0x8d8]
+10098b9d4: eb 28                       	jmp	0x10098b9fe <_main+0x4c43fe>
+10098b9d6: 66 2e 0f 1f 84 00 00 00 00 00       	nop	word ptr cs:[rax + rax]
+10098b9e0: 4c 89 e7                    	mov	rdi, r12
+10098b9e3: 4c 89 ee                    	mov	rsi, r13
+10098b9e6: e8 85 87 00 00              	call	0x100994170 <_main+0x4ccb70>
+10098b9eb: 48 85 c0                    	test	rax, rax
+10098b9ee: 74 33                       	je	0x10098ba23 <_main+0x4c4423>
+10098b9f0: 49 89 87 d8 08 00 00        	mov	qword ptr [r15 + 0x8d8], rax
+10098b9f7: 49 89 9f d0 08 00 00        	mov	qword ptr [r15 + 0x8d0], rbx
+10098b9fe: 4c 89 e9                    	mov	rcx, r13
+10098ba01: 48 c1 e9 0e                 	shr	rcx, 0xe
+10098ba05: 81 e1 ff 1f 00 00           	and	ecx, 0x1fff
+10098ba0b: 0f b6 04 08                 	movzx	eax, byte ptr [rax + rcx]
+10098ba0f: 4c 89 e9                    	mov	rcx, r13
+10098ba12: 48 c1 e9 0b                 	shr	rcx, 0xb
+10098ba16: 80 e1 06                    	and	cl, 0x6
+10098ba19: d3 e8                       	shr	eax, cl
+10098ba1b: 83 e0 03                    	and	eax, 0x3
+10098ba1e: 83 f8 02                    	cmp	eax, 0x2
+10098ba21: 74 8d                       	je	0x10098b9b0 <_main+0x4c43b0>
+10098ba23: 49 81 e5 00 f0 ff ff        	and	r13, -0x1000
+10098ba2a: 49 83 cd 30                 	or	r13, 0x30
+10098ba2e: eb 4a                       	jmp	0x10098ba7a <_main+0x4c447a>
+10098ba30: 4d 89 f5                    	mov	r13, r14
+10098ba33: 49 81 e5 00 f0 ff ff        	and	r13, -0x1000
+10098ba3a: 49 83 cd 30                 	or	r13, 0x30
+10098ba3e: 31 c0                       	xor	eax, eax
+10098ba40: 4d 39 f5                    	cmp	r13, r14
+10098ba43: 76 35                       	jbe	0x10098ba7a <_main+0x4c447a>
+10098ba45: eb 36                       	jmp	0x10098ba7d <_main+0x4c447d>
+10098ba47: 4c 89 f6                    	mov	rsi, r14
+10098ba4a: 48 81 e6 00 f0 ff ff        	and	rsi, -0x1000
+10098ba51: 48 8b 56 50                 	mov	rdx, qword ptr [rsi + 0x50]
+10098ba55: 31 c0                       	xor	eax, eax
+10098ba57: 4c 39 f2                    	cmp	rdx, r14
+10098ba5a: 77 21                       	ja	0x10098ba7d <_main+0x4c447d>
+10098ba5c: 48 8b 46 10                 	mov	rax, qword ptr [rsi + 0x10]
+10098ba60: 49 29 d6                    	sub	r14, rdx
+10098ba63: 44 0f b7 68 5e              	movzx	r13d, word ptr [rax + 0x5e]
+10098ba68: 4d 0f af ee                 	imul	r13, r14
+10098ba6c: 8a 48 60                    	mov	cl, byte ptr [rax + 0x60]
+10098ba6f: 49 d3 fd                    	sar	r13, cl
+10098ba72: 44 0f af 6e 04              	imul	r13d, dword ptr [rsi + 0x4]
+10098ba77: 49 01 d5                    	add	r13, rdx
+10098ba7a: 4c 89 e8                    	mov	rax, r13
+10098ba7d: 48 83 c4 08                 	add	rsp, 0x8
+10098ba81: 5b                          	pop	rbx
+10098ba82: 41 5c                       	pop	r12
+10098ba84: 41 5d                       	pop	r13
+10098ba86: 41 5e                       	pop	r14
+10098ba88: 41 5f                       	pop	r15
+10098ba8a: 5d                          	pop	rbp
+10098ba8b: c3                          	ret
