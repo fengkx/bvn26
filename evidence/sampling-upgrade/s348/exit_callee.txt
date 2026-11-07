@@ -1,0 +1,23 @@
+
+/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger:	file format mach-o 64-bit x86-64
+
+Disassembly of section __TEXT,__text:
+
+0000000100002000 <__text>:
+100498d20: 55                          	push	rbp
+100498d21: 48 89 e5                    	mov	rbp, rsp
+100498d24: 41 56                       	push	r14
+100498d26: 53                          	push	rbx
+100498d27: 48 89 fb                    	mov	rbx, rdi
+100498d2a: 4c 8d 73 38                 	lea	r14, [rbx + 0x38]
+100498d2e: 4c 89 f7                    	mov	rdi, r14
+100498d31: e8 d4 da b1 00              	call	0x100fb680a <dyld_stub_binder+0x100fb680a>
+100498d36: c6 43 78 01                 	mov	byte ptr [rbx + 0x78], 0x1
+100498d3a: 4c 89 f7                    	mov	rdi, r14
+100498d3d: e8 d4 da b1 00              	call	0x100fb6816 <dyld_stub_binder+0x100fb6816>
+100498d42: 48 83 c3 08                 	add	rbx, 0x8
+100498d46: 48 89 df                    	mov	rdi, rbx
+100498d49: 5b                          	pop	rbx
+100498d4a: 41 5e                       	pop	r14
+100498d4c: 5d                          	pop	rbp
+100498d4d: e9 5e da b1 00              	jmp	0x100fb67b0 <dyld_stub_binder+0x100fb67b0>

@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-08（采样 s348，AFTER-s344 排名第4项）：独立提取 Loader 包装器返回前外部 callee 的50字节，得到两次调用、字段写入和尾跳转的静态关系；未取得实际 P1 消费者、不可变请求代次、返回/消费区间或 inline advance 前目标，初始化零仍有歧义。完整 s339 重放仅作保留验证；正常加载未合格，错资源对照未执行。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank4，不重排；rank1–3已交付，rank5+仅规划，权威表与 s254–s347 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s348/README.md)。
+
 - 2026-11-08（采样 s347，AFTER-s344 排名第3项）：独立读取锁定播放器 0x8e 数值分派→0x124ad1→0x19e460 首分支的41字节，作为定义入口候选线索；没有把寄存器/地址认作 defining scope。完整 s338 复现仅作保留验证。同输入 activation pair、defining scopes、初始化至覆盖/返回的 erasure 均未证明，六个边界仍 null，观察器对照未执行。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank3，不重排；rank1–2交付保持关闭，rank4+仅规划，权威表与 s254–s346 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s347/README.md)。
 
 - 2026-11-08（采样 s346，AFTER-s344 排名第2项）：沿锁定数值分派器取得 0x9f 表项→0x125f31→0x1204c0 首分支的静态字节关系，新增66字节；未重复名称搜索。完整复现 s337 仅作保留验证。ones 调用点与该路径的关联、十帧实际入口及独立 outer lifetime 均未证明；寄存器传递不作实例身份，四类对照和 fresh capture 未执行。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank2，不重排；rank1 交付保持关闭，rank3+ 仅规划；权威表及 s254–s345 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s346/README.md)。

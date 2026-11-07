@@ -1,0 +1,160 @@
+{
+  "slice": "s348",
+  "scope": "AFTER-s344 rank #4 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s339_reproduced": true,
+  "replay_is_new_progress": false,
+  "repeated_static_or_interface_audit_is_new_proof": false,
+  "attempt": {
+    "slice": "s348",
+    "scope": "AFTER-s344 rank #4 only",
+    "status": "blocked-before-live-binding",
+    "independent_channel": null,
+    "native_run": null,
+    "executed_caller": null,
+    "actual_p1_consumer": null,
+    "immutable_request_generation": null,
+    "executed_read_return": null,
+    "returned_buffer_ranges": null,
+    "consumed_buffer_ranges": null,
+    "target_before_inline_advance": null,
+    "partial_or_failed_read_behavior": null,
+    "uninterrupted_lifetime": null,
+    "observer_effects": null,
+    "boundaries": [
+      {
+        "boundary": "read-entry",
+        "event": null,
+        "request_generation": null,
+        "range_measurement": null,
+        "target_generation": null
+      },
+      {
+        "boundary": "read-return",
+        "event": null,
+        "request_generation": null,
+        "range_measurement": null,
+        "target_generation": null
+      },
+      {
+        "boundary": "consumer-use",
+        "event": null,
+        "request_generation": null,
+        "range_measurement": null,
+        "target_generation": null
+      },
+      {
+        "boundary": "pre-inline-advance",
+        "event": null,
+        "request_generation": null,
+        "range_measurement": null,
+        "target_generation": null
+      },
+      {
+        "boundary": "initialization",
+        "event": null,
+        "request_generation": null,
+        "range_measurement": null,
+        "target_generation": null
+      },
+      {
+        "boundary": "target-use",
+        "event": null,
+        "request_generation": null,
+        "range_measurement": null,
+        "target_generation": null
+      },
+      {
+        "boundary": "unload",
+        "event": null,
+        "request_generation": null,
+        "range_measurement": null,
+        "target_generation": null
+      },
+      {
+        "boundary": "replacement",
+        "event": null,
+        "request_generation": null,
+        "range_measurement": null,
+        "target_generation": null
+      }
+    ],
+    "normal_association_qualified": false,
+    "wrong_resource_control_executed": false,
+    "independent_observations": [],
+    "reason": "Locked s339 supplies no independent executed-consumer/request resolver. The independent wrapper-exit callee route reaches opaque external transfers, not a live resolver. Normal remains unqualified; wrong-resource control was not executed."
+  },
+  "native_route": {
+    "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+    "binary_size": 24120048,
+    "module_uuid": "067c4cfe5b2a3424aaa01fae2df056eb",
+    "image_base": 4294967296,
+    "wrapper_anchor": {
+      "start": 4928968,
+      "end_exclusive": 4928983,
+      "file_offset": 4928968,
+      "hex": "488bbba0000000e84c57feff4489e8",
+      "sha256": "44532af9c153fd89a7f22f8ce6b7f2f21090c0c635999f738b42f1f5bf7a0233"
+    },
+    "wrapper_call_target": 4820256,
+    "regions": {
+      "exit_callee": {
+        "start": 4820256,
+        "end_exclusive": 4820306,
+        "file_offset": 4820256,
+        "hex": "554889e54156534889fb4c8d73384c89f7e8d4dab100c64378014c89f7e8d4dab1004883c3084889df5b415e5de95edab100",
+        "sha256": "6092d8875145de52038ec171aa4778f31ad8bfeb9eadcda86101203365d1831c",
+        "disassembly_sha256": "52c0c3ca180d87f843f280007de12aaf6291073bfbde032e6a3388be50136df3",
+        "command": [
+          "objdump",
+          "-d",
+          "--x86-asm-syntax=intel",
+          "--start-address=0x100498d20",
+          "--stop-address=0x100498d52",
+          "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+        ]
+      }
+    },
+    "kind": "static_file_bytes_not_executed_or_consumed_bytes",
+    "discovery_window_bytes": 128,
+    "retained_new_bytes": 50,
+    "new_player_launches": 0,
+    "new_attaches": 0,
+    "new_memory_reads": 0
+  },
+  "independent_native_observations": 0,
+  "mechanism_obligations_closed": 0,
+  "product_obligations_closed": 0,
+  "gates": {
+    "consumer-request": {
+      "proved": false,
+      "code": "S348_CONSUMER_REQUEST_UNPROVED"
+    },
+    "returned-consumed-ranges": {
+      "proved": false,
+      "code": "S348_RETURNED_CONSUMED_RANGES_UNPROVED"
+    },
+    "pre-advance-target": {
+      "proved": false,
+      "code": "S348_PRE_ADVANCE_TARGET_UNPROVED"
+    },
+    "loader-attestation": {
+      "proved": false,
+      "code": "S348_LOADER_ATTESTATION_UNPROVED"
+    },
+    "wrong-resource-control": {
+      "proved": false,
+      "code": "S348_WRONG_RESOURCE_CONTROL_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_memory_reads": 0,
+  "new_helper_installations": 0,
+  "new_captures": 0,
+  "other_ranks_executed": [],
+  "next_required_evidence": "Bind an actually executed P1 consumer to immutable request generation, actual returned and consumed ranges including partial/failed reads, and target before inline loadStep advance. Preserve same-request initialization/use/unload/replacement and qualify observer effects. Qualify normal before any wrong-resource control."
+}
