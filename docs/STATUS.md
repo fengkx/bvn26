@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s324，AFTER-s317 排名第7项）：锁定 s315 完整复现，历史补丁与战斗证据不算新进展；本次精确 Flash Player 路径选择在16.9532秒后 timeoutReached，未取得窗口状态，零输入、零插桩启动、零新捕获。应用激活副作用未知，超时不能证明未派发。编译/opcode资格及原菜单Enter/release与无派发对照延后，行为观测保持null，四项证明门禁exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；仅排名7，排名8+仍规划，权威表及s254–s323不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s324/README.md)。
+
 - 2026-11-08（采样 s323，AFTER-s317 排名第6项）：完整复现锁定 s314，既有保管对与序列化审计不算新进展。新增四类保留 observer 对根回调的适用性审计：schedule 包住安装赋值，BODY exit 只在内层调用之后，DoAction/callsite 不选择此根回调；均依赖被替换的 aiEvent。独立 loaded-body/owner-generation/activation 到 dispatcher-return 通道仍未建立，五项见证保持 null，四项证明门禁 exit1，完整终端清单延后。production_admitted=false、native_parity_proven=false，M0-02 pending；仅排名6，排名7+仍规划，权威表与s254–s322不变，零构建/启动/附加/内存读取/捕获，无运行时修改。 [证据](../evidence/sampling-upgrade/s323/README.md)。
 
 - 2026-11-08（采样 s322，AFTER-s317 排名第5项）：完整复现锁定 s312 的5437历史事件；已有数据流/header映射只作保留验证。新增四初始化到首次覆盖/返回/体末的完整结构路径审计，均存在覆盖前调用及未覆盖出口；另保留 dashing 作用域读取到双重Not/分支的对照窗口。静态路径不证明执行或隐藏效应；独立 defining scope、this/root/parent 代次与 activation/coercion 消去仍未证明，六项证明门禁exit1，helper/off-on在资格前阻塞。production_admitted=false、native_parity_proven=false，M0-02 pending；仅排名5，排名6+仍规划，权威表与s254–s321不变，零构建/启动/附加/内存读取/捕获，无运行时修改。 [证据](../evidence/sampling-upgrade/s322/README.md)。
