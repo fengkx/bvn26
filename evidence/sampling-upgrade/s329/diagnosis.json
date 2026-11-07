@@ -1,0 +1,109 @@
+{
+  "slice": "s329",
+  "scope": "AFTER-s326 rank #3 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s318_reproduced": true,
+  "replay_is_new_progress": false,
+  "facilities": [
+    {
+      "path": "tools/probes/probe_owned_debugger.py",
+      "function": "debugger_script",
+      "start_line": 21,
+      "end_line": 48,
+      "source": "def debugger_script(pid, binary, result_path):\n    return f'''import json\nimport lldb\nfrom pathlib import Path\nresult = {{'attached': False, 'registers_available': False, 'detach_attempted': False, 'detached': False, 'pid': {pid}, 'pixel_reference': False, 'routing_verified': False}}\nprocess = None\ntry:\n    target = lldb.debugger.CreateTarget({str(binary)!r})\n    error = lldb.SBError()\n    process = target.AttachToProcessWithID(lldb.debugger.GetListener(), {pid}, error)\n    result['attach_error'] = str(error)\n    result['attached'] = error.Success() and process.IsValid()\n    if result['attached']:\n        result['target_triple'] = target.GetTriple()\n        result['state'] = lldb.SBDebugger.StateAsCString(process.GetState())\n        frame = process.GetSelectedThread().GetFrameAtIndex(0)\n        result['registers'] = {{name: frame.FindRegister(name).GetValue() for name in {REGISTERS!r}}}\n        result['registers_available'] = all(value is not None for value in result['registers'].values())\nexcept BaseException as error:\n    result['error'] = repr(error)\nfinally:\n    if result['attached'] and process is not None:\n        result['detach_attempted'] = True\n        error = process.Detach()\n        result['detach_error'] = str(error)\n        result['detached'] = error.Success()\n    Path({str(result_path)!r}).write_text(json.dumps(result, indent=2)+chr(10))\n'''",
+      "missing": "Selected frame-zero CPU registers do not resolve AVM activation, defining scope, slot lifetime or boundary execution.",
+      "invoked": false
+    },
+    {
+      "path": "tools/probes/yulong_k1atm_observer.py",
+      "function": "instrument_source",
+      "start_line": 17,
+      "end_line": 22,
+      "source": "def instrument_source(original, updated, name, path):\n    if name != 'fighter/yulong' or path != SOURCE_PATH:\n        return updated\n    if hashlib.sha256(original.replace('\\r\\n', '\\n').encode()).hexdigest() != SOURCE_SHA256:\n        raise ValueError('changed Yulong nested receiver source')\n    return updated + '\\nif(String(this) == \"' + TARGET + '\") _root.aiK1Observe(\"source_after_stamp\",this,_root.game[\"p\" + this._parent.pn]);\\n'",
+      "missing": "Appends aiK1Observe after source stamp; AS receiver/path and parent pn do not independently bind activation or defining scope.",
+      "invoked": false
+    },
+    {
+      "path": "tools/probes/yulong_k1atm_observer.py",
+      "function": "instrument_geometry",
+      "start_line": 25,
+      "end_line": 29,
+      "source": "def instrument_geometry(source):\n    needle = '      var target = _root.game[\"p\" + mc._parent.pn];'\n    if source.count(needle) != 1:\n        raise ValueError('changed geometry source-list check boundary')\n    return source.replace(needle, needle + '\\n      if(path == \"' + TARGET + '\") _root.aiK1Observe(\"source_list_check\",mc,target);', 1)",
+      "missing": "Adds aiK1Observe at source-list check, not an independent initialization/opaque-operation/return channel.",
+      "invoked": false
+    }
+  ],
+  "independent_native_observations": 0,
+  "bindings": [
+    {
+      "boundary": "initialization",
+      "original_activation": null,
+      "candidate_activation": null,
+      "original_defining_scope": null,
+      "candidate_defining_scope": null,
+      "erasure_measurement": null
+    },
+    {
+      "boundary": "enumeration",
+      "original_activation": null,
+      "candidate_activation": null,
+      "original_defining_scope": null,
+      "candidate_defining_scope": null,
+      "erasure_measurement": null
+    },
+    {
+      "boundary": "member-access",
+      "original_activation": null,
+      "candidate_activation": null,
+      "original_defining_scope": null,
+      "candidate_defining_scope": null,
+      "erasure_measurement": null
+    },
+    {
+      "boundary": "coercion",
+      "original_activation": null,
+      "candidate_activation": null,
+      "original_defining_scope": null,
+      "candidate_defining_scope": null,
+      "erasure_measurement": null
+    },
+    {
+      "boundary": "overwrite",
+      "original_activation": null,
+      "candidate_activation": null,
+      "original_defining_scope": null,
+      "candidate_defining_scope": null,
+      "erasure_measurement": null
+    },
+    {
+      "boundary": "no-overwrite-null-return",
+      "original_activation": null,
+      "candidate_activation": null,
+      "original_defining_scope": null,
+      "candidate_defining_scope": null,
+      "erasure_measurement": null
+    }
+  ],
+  "gates": {
+    "activation-scope": {
+      "proved": false,
+      "code": "S329_ACTIVATION_SCOPE_UNPROVED"
+    },
+    "activation-erasure": {
+      "proved": false,
+      "code": "S329_ACTIVATION_ERASURE_UNPROVED"
+    },
+    "observer": {
+      "proved": false,
+      "code": "S329_OBSERVER_UNPROVED"
+    }
+  },
+  "blocker": "No independent activation/scope resolver or paired erasure measurement is available in the inspected adapters. Observer controls are deferred before installation.",
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_captures": 0,
+  "product_obligations_closed": 0,
+  "other_ranks_executed": []
+}

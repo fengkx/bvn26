@@ -1742,3 +1742,6 @@ remains pending. No merge or Worker/Vercel deployment.
 - 2026-10-21：重吾基础形态已源编译并接入本地／联机选人，无独立援助。12 条原生 Flash 对照匹配 8,664 条角色状态、14 字段；超必杀 450 伤害／7 连击，重复上必杀第二次空挥与原版一致。取消时序按源第 200 帧校准；无名弹体、脚部判定、子剪辑牵引和条件跳转由通用编译字段执行。回滚、全角色回放、真实截图及实际耗时见[重吾检查记录](../evidence/characters/juggo/checks.json)。PR #37 恢复保持不变，coverage 仍 partial，完整视听／浏览器／AI／全部边界未验收，未合并或部署。
 
 2026-10-23 Draft PR #48：导入器严格检查与滤镜工作仍在进行。小对象模糊已通过 242 组、37,280 个原版 alpha 采样点对照；颜色滤镜和完整语义审计仍有阻塞，全角色最终验收未完成。未新增角色、未合并部署，不提升里程碑状态。见[本轮证据](../evidence/importer-loud-fail/r02/README.md)。
+
+
+2026-11-08: s329 executes only AFTER-s326 rank #3. Locked s318 replay is retained validation, not new CFG progress. Three retained adapter functions lack independent activation/defining-scope binding at initialization, opaque operations and overwrite/return. No erasure measurement or independent native observation was obtained; observer installation/controls deferred. Base exit 0; three proof gates exit 1. production_admitted=false; native_parity_proven=false; M0-02 pending. Ranks 1–2 deliveries remain closed; ranks 4+ planning only. Zero builds, launches or captures. Actual check costs: evidence/sampling-upgrade/s329/project-checks.json; person-days unknown. See [s329](../evidence/sampling-upgrade/s329/README.md).
