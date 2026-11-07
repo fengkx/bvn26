@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-08（采样 s344，AFTER-s335 排名第9项）：完整复现锁定 s335，仅作保留验证；61 个边界仍未满足完整同次捕获准入，配对场景图为零。对应场景捕获与源绑定边缘/内部精确 RGBA 分类未执行，残差保持 null；零新增独立运行观测。基础诊断 exit0，三项证明门禁 exit1；production_admitted=false、native_parity_proven=false、M0-02 pending，零产品义务关闭。仅执行最终 rank9，rank1–8 已交付；不重排，不修准入，权威表及 s254–s343 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s344/README.md)。
+
 - 2026-11-08（采样 s343，AFTER-s335 排名第8项）：限定磁盘名称/编码搜索得到 parent/depth 方法名文本，未建立代码入口关联；saved globals 未命中不代表运行时不存在。两条独立原生 lookup、live binding 与 clearing/replacement/free/reuse/pool generations 仍未证明，对照未执行。完整 s334 重放仅作保留验证。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false、M0-02 pending，零机制/产品义务关闭。仅 rank8，rank1–7 已交付、rank9 仅规划；权威表和 s254–s342 不变。[证据](../evidence/sampling-upgrade/s343/README.md)。
 
 - 2026-11-08（采样 s342，AFTER-s335 排名第7项）：本次精确 Flash Player 路径选择在11.8150秒后 timeoutReached，未取得窗口状态；零输入、零插桩启动、零新捕获，应用激活副作用未知。超时不能证明未派发。完整复现锁定 s333 仅作保留验证；编译/opcode资格及原菜单 Enter/release 与无派发对照延后，行为观测保持 null。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名7，不重排；排名1–6已交付，排名8+仅规划；权威表与 s254–s341 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s342/README.md)。
