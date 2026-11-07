@@ -1,0 +1,183 @@
+{
+  "slice": "s349",
+  "scope": "AFTER-s344 rank #5 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s340_reproduced": true,
+  "replay_is_new_progress": false,
+  "repeated_header_dataflow_or_interface_audit_is_new_proof": false,
+  "attempt": {
+    "slice": "s349",
+    "scope": "AFTER-s344 rank #5 only",
+    "status": "blocked-before-live-binding",
+    "original_run": null,
+    "candidate_run": null,
+    "same_input_tape": null,
+    "original_loaded_body": null,
+    "candidate_loaded_body": null,
+    "original_invocation": null,
+    "candidate_invocation": null,
+    "original_activation": null,
+    "candidate_activation": null,
+    "original_this_generation": null,
+    "candidate_this_generation": null,
+    "original_root_generation": null,
+    "candidate_root_generation": null,
+    "original_parent_generation": null,
+    "candidate_parent_generation": null,
+    "original_defining_scope": null,
+    "candidate_defining_scope": null,
+    "original_scope_generation": null,
+    "candidate_scope_generation": null,
+    "suppression_preload_visibility": null,
+    "dashing_value_type": null,
+    "coercion_effects": null,
+    "external_callsite": null,
+    "independent_channel": null,
+    "uninterrupted_lifetime": null,
+    "boundaries": [
+      {
+        "boundary": "initialization",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "scope-member-access",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "intervening-call",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "first-overwrite",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "return-before-overwrite",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "body-end",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "dashing-read",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "coercion-and-branch",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      }
+    ],
+    "helper_installed": false,
+    "off_on_controls_executed": false,
+    "independent_observations": [],
+    "reason": "Locked s340 supplies no independent body/invocation/scope/generation resolver. Independent unmodified-artifact debugger-entry probe did not establish a live channel in s349. Measurement stops before live binding and helper installation."
+  },
+  "independent_route": {
+    "slice": "s349",
+    "route": "unmodified-artifact-debugger-entry",
+    "hypothesis": "Existing debugger metadata could supply a source-breakpoint entry independent of s283Value.",
+    "original": {
+      "sha256": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+      "file_bytes": 1050761,
+      "swf_version": 8,
+      "debug_tag_counts": {
+        "EnableDebugger": 0,
+        "DebugID": 0,
+        "EnableDebugger2": 0
+      },
+      "validated_timelines": 49
+    },
+    "candidate": {
+      "path": "/private/tmp/bvn-s283-qualification-r02/candidate.swf",
+      "expected_sha256": "02089de774d202446491ce8e0afc58a3e0fcd7ad508dcf463668175d91163eb7",
+      "status": "absent-at-exact-receipt-path",
+      "observed_sha256": null,
+      "debug_metadata": null
+    },
+    "loaded_body_binding": null,
+    "breakpoint_entry": null,
+    "invocation_pair": null,
+    "generation_channel": null,
+    "activation_measurements": null,
+    "coercion_measurements": null,
+    "native_observations": [],
+    "new_builds": 0,
+    "new_player_launches": 0,
+    "new_attaches": 0,
+    "new_memory_reads": 0,
+    "helper_installed": false,
+    "conclusion": "No independent invocation or generation channel established. Tag absence is a disk observation only; candidate absence is local to the receipt path. Neither proves that native debugging is impossible. No SWF was changed or launched."
+  },
+  "independent_native_observations": 0,
+  "mechanism_obligations_closed": 0,
+  "product_obligations_closed": 0,
+  "gates": {
+    "invocation-generations": {
+      "proved": false,
+      "code": "S349_INVOCATION_GENERATIONS_UNPROVED"
+    },
+    "activation-erasure": {
+      "proved": false,
+      "code": "S349_ACTIVATION_ERASURE_UNPROVED"
+    },
+    "coercion-erasure": {
+      "proved": false,
+      "code": "S349_COERCION_ERASURE_UNPROVED"
+    },
+    "helper-effects": {
+      "proved": false,
+      "code": "S349_HELPER_EFFECTS_UNPROVED"
+    },
+    "off-on": {
+      "proved": false,
+      "code": "S349_OFF_ON_UNPROVED"
+    },
+    "external-callsite": {
+      "proved": false,
+      "code": "S349_EXTERNAL_CALLSITE_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_memory_reads": 0,
+  "new_helper_installations": 0,
+  "new_captures": 0,
+  "other_ranks_executed": [],
+  "next_required_evidence": "Independently derive and qualify a loaded-body, activation and defining-scope channel for one original/candidate invocation pair, binding uninterrupted this/root/parent generations and retaining uninterrupted lifetime and initialization-to-overwrite/return observations through opaque operations. Then measure erasure; including actual dashing value/type and coercion effects; only afterwards qualify helper effects and natural off/on controls."
+}

@@ -1,0 +1,36 @@
+{
+  "slice": "s349",
+  "route": "unmodified-artifact-debugger-entry",
+  "hypothesis": "Existing debugger metadata could supply a source-breakpoint entry independent of s283Value.",
+  "original": {
+    "sha256": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+    "file_bytes": 1050761,
+    "swf_version": 8,
+    "debug_tag_counts": {
+      "EnableDebugger": 0,
+      "DebugID": 0,
+      "EnableDebugger2": 0
+    },
+    "validated_timelines": 49
+  },
+  "candidate": {
+    "path": "/private/tmp/bvn-s283-qualification-r02/candidate.swf",
+    "expected_sha256": "02089de774d202446491ce8e0afc58a3e0fcd7ad508dcf463668175d91163eb7",
+    "status": "absent-at-exact-receipt-path",
+    "observed_sha256": null,
+    "debug_metadata": null
+  },
+  "loaded_body_binding": null,
+  "breakpoint_entry": null,
+  "invocation_pair": null,
+  "generation_channel": null,
+  "activation_measurements": null,
+  "coercion_measurements": null,
+  "native_observations": [],
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_memory_reads": 0,
+  "helper_installed": false,
+  "conclusion": "No independent invocation or generation channel established. Tag absence is a disk observation only; candidate absence is local to the receipt path. Neither proves that native debugging is impossible. No SWF was changed or launched."
+}

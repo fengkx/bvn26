@@ -1,0 +1,118 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s349/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s349/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 1.3769625001586974,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "invocation-generations",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s349/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s349/diagnosis.json",
+      "--require-invocation-generations"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.8587414165958762,
+    "log": "invocation-generations.txt"
+  },
+  {
+    "name": "activation-erasure",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s349/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s349/diagnosis.json",
+      "--require-activation-erasure"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.8565829582512379,
+    "log": "activation-erasure.txt"
+  },
+  {
+    "name": "coercion-erasure",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s349/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s349/diagnosis.json",
+      "--require-coercion-erasure"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.8548790002241731,
+    "log": "coercion-erasure.txt"
+  },
+  {
+    "name": "helper-effects",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s349/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s349/diagnosis.json",
+      "--require-helper-effects"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.8281443333253264,
+    "log": "helper-effects.txt"
+  },
+  {
+    "name": "off-on",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s349/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s349/diagnosis.json",
+      "--require-off-on"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.8912853328511119,
+    "log": "off-on.txt"
+  },
+  {
+    "name": "external-callsite",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s349/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s349/diagnosis.json",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.9700344172306359,
+    "log": "external-callsite.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s349/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s349/diagnosis.json",
+      "--require-invocation-generations",
+      "--require-activation-erasure",
+      "--require-coercion-erasure",
+      "--require-helper-effects",
+      "--require-off-on",
+      "--require-external-callsite"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.9629059578292072,
+    "log": "all-proofs.txt"
+  }
+]
