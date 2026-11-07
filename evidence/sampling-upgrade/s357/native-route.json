@@ -1,0 +1,41 @@
+{
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "binary_size": 24120048,
+  "module_uuid": "067c4cfe5b2a3424aaa01fae2df056eb",
+  "image_base": 4294967296,
+  "predecessor": "evidence/sampling-upgrade/s350/native-route.json",
+  "predecessor_branch": 1200125,
+  "target": 1200131,
+  "entry_condition": "s350 [rax+0x58] load result is nonzero; not observed live",
+  "regions": {
+    "first_continuation": {
+      "start": 1200131,
+      "end_exclusive": 1200148,
+      "file_offset": 1200131,
+      "hex": "80784000488b95a8faffff0f8532210000",
+      "sha256": "854f32c6f1e517ec065037a7dce153f732de22fe48d16e9620ef8c7432dcb4d4",
+      "disassembly_sha256": "8f2215ddddda4f10b14407b5e8c7230fe3acc25fd34e745c5c41563fb416755d",
+      "command": [
+        "objdump",
+        "-d",
+        "--x86-asm-syntax=intel",
+        "--start-address=0x100125003",
+        "--stop-address=0x100125014",
+        "<receipt-pinned-player>"
+      ]
+    }
+  },
+  "branch_target": 1208646,
+  "fallthrough": 1200148,
+  "frontier": "Untyped [rax+0x40] byte and [rbp-0x558] value; no loaded callback/owner/activation association",
+  "loaded_closure_body": null,
+  "owner_generation": null,
+  "activation": null,
+  "matched_dispatcher_continuation": null,
+  "replacement_survival": null,
+  "native_observations": [],
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_memory_reads": 0,
+  "successor_expansions": 0
+}

@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-08（采样 s357，AFTER-s353 rank #4）：独立读取 s350 非零返回臂续行17字节、3条指令，止于未解析字段的下一条件分支；磁盘谓词与目标已核对，loaded callback/owner/activation 经替换到 dispatcher outcome 仍未证明。off/on 与 inventory 未执行；完整 s350 重放仅作保留验证。基础诊断 exit0，五项证明及组合门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank4，rank1–3已交付、rank5+仅规划；权威表和s254–s356不变，无运行时修改。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s357/README.md)。
+
 - 2026-11-08（采样 s356，AFTER-s353 rank #3）：独立检查原版与归档候选现有 SWF 调试入口，收据哈希匹配，各18条时间轴无58/63/64标签；仅为磁盘观察，不证明原生调试不可能或已加载身份。未取得 loaded definition、同输入 activation pair、defining scopes，六个 erasure 边界保持 null，观察器未安装。完整 s347 重放仅作保留验证；基础诊断 exit0，四项证明及组合门禁 exit1。production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank3，rank1–2交付保持关闭、rank4+仅规划；权威表与s254–s355不变，无运行时修改。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s356/README.md)。
 
 - 2026-11-08（采样 s355，AFTER-s353 rank #2）：从原始 Sprite1813 timer 的常量池、函数边界与 ones 操作数独立绑定静态调用点（action offset660，0x52），区别于 s346 的0x9f候选；沿保留数值分派读取20字节新 continuation 首分支。完整 s346 重放仅作保留验证。loaded caller/方法解析、十目标帧入口及独立 outer lifetime 仍未证明；四类对照和 fresh capture 未执行。基础诊断 exit0，五项证明及组合门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零产品义务关闭。rank1交付保持关闭、rank3+仅规划，不重排，权威表与s254–s354不变，无运行时修改。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s355/README.md)。
