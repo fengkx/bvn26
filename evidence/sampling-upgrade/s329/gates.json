@@ -1,0 +1,53 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s329/diagnose.py",
+      "--output",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s329/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.665337292
+  },
+  {
+    "name": "activation-scope",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s329/diagnose.py",
+      "--output",
+      "/tmp/s329-gate.json",
+      "--require-activation-scope"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.7464484589999999
+  },
+  {
+    "name": "activation-erasure",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s329/diagnose.py",
+      "--output",
+      "/tmp/s329-gate.json",
+      "--require-activation-erasure"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.7674228749999998
+  },
+  {
+    "name": "observer",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s329/diagnose.py",
+      "--output",
+      "/tmp/s329-gate.json",
+      "--require-observer"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 1.057987416
+  }
+]
