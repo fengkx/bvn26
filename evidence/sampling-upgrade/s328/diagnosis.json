@@ -1,0 +1,188 @@
+{
+  "slice": "s328",
+  "base": "bf44f46e8b5ea19190566f9fa0c6cf570c9b6931",
+  "scope": "AFTER-s326 rank #2 only",
+  "authority": "evidence/sampling-upgrade/next-fix-priority-after-s326.md",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s319_reproduced": true,
+  "historical_validation_only": {
+    "run_id": "s274-lifetime-r01",
+    "raw_sha256": "2afbe8a8f0a484a1854abbaf0385001bd760d13b68882a0f3f93d79f8b32f54e",
+    "events_revalidated": 26828,
+    "callback_count": 63,
+    "natural_encoding_entry_joins": 4,
+    "uninstrumented_target_windows": 45
+  },
+  "host_facility_source_audit": [
+    {
+      "path": "tools/probes/probe_owned_debugger.py",
+      "function": "debugger_script",
+      "lines": [
+        21,
+        48
+      ],
+      "function_sha256": "e62be051bed9aee7cf6361cdbf35abb6bf8c426cbbb6fadabd02029249bbbfec",
+      "source": "def debugger_script(pid, binary, result_path):\n    return f'''import json\nimport lldb\nfrom pathlib import Path\nresult = {{'attached': False, 'registers_available': False, 'detach_attempted': False, 'detached': False, 'pid': {pid}, 'pixel_reference': False, 'routing_verified': False}}\nprocess = None\ntry:\n    target = lldb.debugger.CreateTarget({str(binary)!r})\n    error = lldb.SBError()\n    process = target.AttachToProcessWithID(lldb.debugger.GetListener(), {pid}, error)\n    result['attach_error'] = str(error)\n    result['attached'] = error.Success() and process.IsValid()\n    if result['attached']:\n        result['target_triple'] = target.GetTriple()\n        result['state'] = lldb.SBDebugger.StateAsCString(process.GetState())\n        frame = process.GetSelectedThread().GetFrameAtIndex(0)\n        result['registers'] = {{name: frame.FindRegister(name).GetValue() for name in {REGISTERS!r}}}\n        result['registers_available'] = all(value is not None for value in result['registers'].values())\nexcept BaseException as error:\n    result['error'] = repr(error)\nfinally:\n    if result['attached'] and process is not None:\n        result['detach_attempted'] = True\n        error = process.Detach()\n        result['detach_error'] = str(error)\n        result['detached'] = error.Success()\n    Path({str(result_path)!r}).write_text(json.dumps(result, indent=2)+chr(10))\n'''",
+      "output": "Selected thread frame-zero registers at attach, plus attach/detach status.",
+      "missing_join": "No ones target-entry breakpoint, outer instance layout or uninterrupted allocation lifetime in this script. A CPU register snapshot is not a frame-entry event.",
+      "invoked": false,
+      "independent_entry_resolver": null,
+      "independent_instance_resolver": null,
+      "observer_off_on_qualified": null
+    },
+    {
+      "path": "tools/probes/monitor_owned_native.py",
+      "function": "monitor_owned",
+      "lines": [
+        8,
+        46
+      ],
+      "function_sha256": "54194a372268f437610e5ffe8866c225cf086c5ea75946950a445afd6946ec71",
+      "source": "def monitor_owned(pid, movie, binary, run_id, output):\n    report = {'pid':pid,'movie':str(movie),'binary':str(binary),'run_id':run_id,\n              'debugger_reattachment_requested':False,'sample_requested':False,\n              'observations':[]}\n\n    def state(label):\n        checked = time.monotonic()\n        current = matching_players(movie,binary)\n        prefix = 'AIREF|'+run_id+'|'\n        marker = LOG.exists() and any(line.startswith(prefix) and '|profile|' in line for line in LOG.read_text(errors='replace').splitlines())\n        if current != {pid} or not marker:\n            report['observations'].append({'label':label,'monotonic':checked,\n                                          'ownership_matches':False,'run_marker_present':marker,'matching_pids':sorted(current)})\n            return False\n        require_unique_owned(set(),current,pid)\n        completed = subprocess.run(['/bin/ps','-p',str(pid),'-o','pid=,state=,etime=,command='],\n                                   capture_output=True,text=True,timeout=3)\n        report['observations'].append({'label':label,'monotonic':checked,'ownership_matches':True,\n                                      'ps_returncode':completed.returncode,'ps_stdout':completed.stdout,\n                                      'ps_stderr':completed.stderr})\n        return True\n\n    if not state('before_sample'):\n        return report\n    if not state('immediately_before_sample'):\n        return report\n    report['sample_requested'] = True\n    report['sample_start_monotonic'] = time.monotonic()\n    command = ['/usr/bin/sample',str(pid),'1','1','-file',str(output/'post-detach-sample.txt')]\n    try:\n        completed = subprocess.run(command,capture_output=True,text=True,timeout=8)\n        report['sample'] = {'command':command,'returncode':completed.returncode,\n                            'stdout':completed.stdout,'stderr':completed.stderr,'timed_out':False}\n    except subprocess.TimeoutExpired as error:\n        report['sample'] = {'command':command,'timed_out':True,\n                            'stdout':str(error.stdout or ''),'stderr':str(error.stderr or '')}\n    report['sample_end_monotonic'] = time.monotonic()\n    state('after_sample')\n    return report",
+      "output": "PID ownership checks, run profile marker, ps state and a one-second sample request.",
+      "missing_join": "Process ownership is not outer clip identity. Statistical stack sampling does not enumerate all entries or count repeated targets. The ownership marker still reads the AIREF log.",
+      "invoked": false,
+      "independent_entry_resolver": null,
+      "independent_instance_resolver": null,
+      "observer_off_on_qualified": null
+    },
+    {
+      "path": "tools/sampling_native.py",
+      "function": "validate_capture",
+      "lines": [
+        23,
+        76
+      ],
+      "function_sha256": "99ceb20eac92987de90de8c8e2c51f3e988c59a9528ac606215bd07f67cd45b3",
+      "source": "def validate_capture(case, metadata, trace):\n    if metadata['move_case'] != case:\n        raise ValueError('native evidence: changed input tape or case identity')\n    if metadata.get('dynamic_move_case'):\n        raise ValueError('native evidence: dynamic fixture loading is not admitted by this adapter')\n    if metadata['frames_after_ready'] != case['frames']:\n        raise ValueError('native evidence: wrong capture duration')\n    config = metadata['configuration']\n    catalog = json.loads((ROOT / 'manifest.json').read_text())['fighter_catalog']\n    for slot, fighter in case['fighters'].items():\n        if Path(catalog[config[slot]]['url']).stem.lower() != fighter.lower():\n            raise ValueError('native evidence: wrong fighter configuration')\n    if (config['modo'] != 3 or config['p2cpu'] is not False or config['stage'] != case['stage']\n            or config['p1sf'] != case['p1_helper'] or config['p2sf'] != case['p2_helper']):\n        raise ValueError('native evidence: wrong match configuration')\n    rows = []\n    done = []\n    sequence = []\n    terminal = None\n    expected = [(tick, slot) for tick in range(case['frames'] + 1) for slot in ('p1', 'p2')]\n    for line in trace.read_text().splitlines():\n        parts = line.split('|', 7)\n        if len(parts) != 8 or parts[:2] != ['AIREF', metadata['run_id']]:\n            raise ValueError('native evidence: malformed or foreign run event')\n        seq, tick = int(parts[2]), int(parts[5])\n        sequence.append(seq)\n        display = int(parts[4])\n        if terminal is not None and (tick, display) != terminal:\n            raise ValueError('native evidence: events beyond completion boundary')\n        if parts[6] == 'timeout':\n            raise ValueError('native evidence: capture timed out')\n        if parts[6] == 'state' and tick >= 0:\n            fields = parts[7].split(',')\n            if len(fields) != 15 or any(not field for field in fields):\n                raise ValueError('native evidence: incomplete state payload')\n            if any(not math.isfinite(decode_number(fields[i])) for i in (1, 2, 3, 4, 6, 7)):\n                raise ValueError('native evidence: nonfinite state')\n            if tick == 10 and fields[0] == 'p1':\n                expected_touch = 'true' if case['sampling_cell']['posture'] == 'ground' else 'false'\n                if fields[9] != expected_touch:\n                    raise ValueError('native evidence: requested posture not reached')\n            rows.append((tick, fields[0]))\n        if parts[6] == 'done':\n            if rows != expected:\n                raise ValueError('native evidence: premature completion before final states')\n            done.append((tick, seq))\n            terminal = (tick, display)\n    # quit is requested inside the root observer; native callbacks can still emit\n    # events in that same display frame. Retain and hash the entire suffix.\n\n    if sequence != list(range(1, len(sequence) + 1)) or rows != expected:\n        raise ValueError('native evidence: missing/duplicate/out-of-order observations')\n    if len(done) != 1 or done[0][0] != case['frames']:\n        raise ValueError('native evidence: missing or premature completion')",
+      "output": "Case/configuration, sequential AIREF log, fighter state rows and completion checks.",
+      "missing_join": "Receipt validation consumes the supplied AS log; it does not independently observe the ones instance, target entry or observer-off execution.",
+      "invoked": false,
+      "independent_entry_resolver": null,
+      "independent_instance_resolver": null,
+      "observer_off_on_qualified": null
+    }
+  ],
+  "audit_boundary": "Three existing host adapter functions, read only and not invoked. Not an exhaustive native facility search or a new native observation. Prior source/event findings are retained validation only.",
+  "independent_observations_new": [],
+  "qualification_matrix": [
+    {
+      "frame": 1,
+      "original_action_present": true,
+      "archived_action_present": true,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 2,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 3,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 4,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 5,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 6,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 7,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 8,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 9,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 10,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    }
+  ],
+  "live_entry_resolver": null,
+  "live_instance_resolver": null,
+  "observer_qualified": false,
+  "independent_controls_proved": false,
+  "independent_child_clock_proved": false,
+  "fresh_capture_eligible": false,
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_captures": 0,
+  "new_images": 0,
+  "other_ranks_executed": [],
+  "re_ranked": false,
+  "product_obligations_closed": 0,
+  "blocker": "Independent outer-instance lifetime and all-ten-frame target-entry channel were not derived. Retained host adapters provide no qualified join from their outputs to those events. Repeated/changed/replacement/off-on controls remain unproved; fresh capture is blocked before launch.",
+  "next_required_observation": "Derive and bind a native target-entry site plus outer-instance lifetime resolver, including actionless frames2-10. Independently retain selection, actual entry and following root/callback order in one run/lifetime. Then qualify isolated repeated, changed, same-depth replacement and observer-off/on controls before fresh ones capture."
+}

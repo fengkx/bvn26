@@ -1,0 +1,71 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s328/diagnose.py",
+      "--output",
+      "/tmp/s328-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.5648105829022825,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "observer",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s328/diagnose.py",
+      "--output",
+      "/tmp/s328-diagnosis.json",
+      "--require-observer"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.5364305409602821,
+    "log": "observer.txt"
+  },
+  {
+    "name": "independent-controls",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s328/diagnose.py",
+      "--output",
+      "/tmp/s328-diagnosis.json",
+      "--require-independent-controls"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.8467827090062201,
+    "log": "independent-controls.txt"
+  },
+  {
+    "name": "child-clock",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s328/diagnose.py",
+      "--output",
+      "/tmp/s328-diagnosis.json",
+      "--require-child-clock"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.4668051670305431,
+    "log": "child-clock.txt"
+  },
+  {
+    "name": "fresh-capture",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s328/diagnose.py",
+      "--output",
+      "/tmp/s328-diagnosis.json",
+      "--require-fresh-capture"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.48767858324572444,
+    "log": "fresh-capture.txt"
+  }
+]
