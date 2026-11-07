@@ -1,0 +1,40 @@
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s328/diagnose.py", line 120, in <module>
+    raise SystemExit(main())
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s328/diagnose.py", line 108, in main
+    result = diagnose()
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s328/diagnose.py", line 78, in diagnose
+    prior = load_prior().diagnose()
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s319/diagnose.py", line 101, in diagnose
+    historical = load_prior().diagnose()
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s310/diagnose.py", line 81, in diagnose
+    historical = prior.diagnose()
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s301/diagnose.py", line 80, in diagnose
+    historical = prior_module().diagnose()
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s292/diagnose.py", line 156, in diagnose
+    prior = prior_module()
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s292/diagnose.py", line 22, in prior_module
+    spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s282/diagnose.py", line 15, in <module>
+    SPEC.loader.exec_module(locked)
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s274/diagnose.py", line 18, in <module>
+    SPEC.loader.exec_module(locked)
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s265/diagnose.py", line 19, in <module>
+    SPEC.loader.exec_module(s262)
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s262/diagnose.py", line 18, in <module>
+    spec.loader.exec_module(s258)
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/sampling-upgrade/s258/diagnose.py", line 13, in <module>
+    from tools.sampling_bitmap import collect
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/sampling_bitmap.py", line 7, in <module>
+    from PIL import Image
+ModuleNotFoundError: No module named 'PIL'
