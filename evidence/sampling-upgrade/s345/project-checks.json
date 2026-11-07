@@ -1,0 +1,273 @@
+[
+  {
+    "name": "reextract",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s345/extract_native.py",
+      "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+      "--output-dir",
+      "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/s345-reextract-6pro5u59"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.09649720881134272,
+    "log": "reextract.txt"
+  },
+  {
+    "name": "s336-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s336",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 4.59540145797655,
+    "log": "s336-tests.txt"
+  },
+  {
+    "name": "s327-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s327",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 4.838172791991383,
+    "log": "s327-tests.txt"
+  },
+  {
+    "name": "s320-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s320",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.532886500004679,
+    "log": "s320-tests.txt"
+  },
+  {
+    "name": "s311-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s311",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.4283366668969393,
+    "log": "s311-tests.txt"
+  },
+  {
+    "name": "s303-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s303",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.578313915990293,
+    "log": "s303-tests.txt"
+  },
+  {
+    "name": "s295-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s295",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 2.688520624767989,
+    "log": "s295-tests.txt"
+  },
+  {
+    "name": "s288-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s288",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 1.6211086669936776,
+    "log": "s288-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_chad_native_instruction_diagnosis",
+      "tools.tests.test_chad_defining_context",
+      "tools.tests.test_chad_register_control",
+      "tools.tests.test_as_continuation_discriminator",
+      "tools.tests.test_chad_lifecycle_observer",
+      "tools.tests.test_call_exit_diagnosis",
+      "tools.tests.test_sampling_callsite",
+      "tools.tests.test_sampling_doaction",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.1370191662572324,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "s345-tests",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s345",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 4.943415416870266,
+    "log": "s345-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "tools/verify.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 1.0217157080769539,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "tools/check_handoff.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.06428462499752641,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.10370779223740101,
+    "log": "diff-check.txt"
+  }
+]
