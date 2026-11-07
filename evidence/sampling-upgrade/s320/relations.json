@@ -1,0 +1,62 @@
+{
+  "stack_join": {
+    "evidence_spans": [
+      [
+        1205433,
+        1205467
+      ],
+      [
+        1205467,
+        1205628
+      ],
+      [
+        1206635,
+        1206669
+      ]
+    ],
+    "observed": [
+      "The zero/one/two-slot branches fill remaining frame-0x60/-0x68/-0x548 temporaries with raw 2, respectively; all four s311 exits converge at 0x1264db.",
+      "r13 retains the candidate stack origin from s311. The join reads [r13+0xd50]->byte+0x951 and conditionally [r13+0xde8]; it saves r9 in r14 and r8 in frame-0x588 on both classification branches.",
+      "One branch stores [r13+0xde8] into frame-0x550; another stores the original frame-0x60 value. The remaining branch passes &frame-0x550, r13, &frame-0x60 to opaque call 0xd2200 at 0x126979.",
+      "At 0x12697e, r13 and &frame-0x548 are passed to opaque call 0x5f50 at 0x126988. Reaching this site after 0x126979 requires an unproved normal machine return."
+    ],
+    "not_proved": "The shared owner register is a static argument relation, not defining scope, register4, allocation generation, AVM argument meaning or activation identity."
+  },
+  "carrier_lookup": {
+    "evidence_spans": [
+      [
+        10008800,
+        10009228
+      ]
+    ],
+    "observed": [
+      "At the s311 call site, rdi is page(field_address)+8 dereferenced, rsi is carrier+0x48, and edx is zero. Here incoming rdi/rsi are saved in r15/r14.",
+      "The helper compares rsi against incoming rdi fields +0x880/+0x888, reads/writes +0x8d0/+0x8d8, and has two opaque calls to 0x994170.",
+      "The backward edge 0x98ba21->0x98b9b0 can repeat page subtraction by 0x1000. No iteration bound is established.",
+      "Different paths produce zero or computed address candidates in rax and share machine RET 0x98ba8b. The s311 caller copies rax into rsi for the second helper."
+    ],
+    "not_proved": "No allocation owner or finite lifetime is identified. RET existence proves neither termination nor a live return, and nested callees may have further effects."
+  },
+  "carrier_store": {
+    "evidence_spans": [
+      [
+        1242496,
+        1242888
+      ]
+    ],
+    "observed": [
+      "Incoming rdi/rsi/rdx/rcx are saved as r15/r14/r12/rbx. At the s311 caller these correspond to page-derived candidate, first-helper result, carrier+0x48, &frame-0x58 (raw temporary 10).",
+      "The helper reads [r12], conditionally decrements dword [(value & ~7)+8] and can update page-derived fields +0x2280/+0x2290 and an indexed slot; the alternate path calls 0x9929e0.",
+      "It then reads [rbx], conditionally increments/changes dword [(new_value & ~7)+8] and can clear a page-derived indexed slot. It conditionally calls 0x98da30 with saved incoming rdi/rsi after testing byte [r15+0x751].",
+      "The final store at 0x12f6fb writes rbx to [r12], then reaches machine RET 0x12f707. At this call site the direct destination is carrier+0x48, conditional on reaching that instruction."
+    ],
+    "not_proved": "Masks and raw counters are not named AVM types or retain/release semantics. Nested-call effects, preservation and exceptional exits are unknown."
+  },
+  "descriptor_boundary": {
+    "evidence_spans": [],
+    "observed": [
+      "No direct operand in these four bounded windows reads the original dispatcher frame-0x160 descriptor origin. Helper rbp is a new native frame and must not be identified with the dispatcher rbp."
+    ],
+    "not_proved": "Absence of a direct operand does not prove non-aliasing or no indirect descriptor access. Stack owner, selected carrier and descriptor ownership/lifetime relation remains unknown."
+  }
+}

@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-07（采样 s320，AFTER-s317 排名第3项）：完整复现锁定 s311，历史结论不算新进展；新增收据匹配播放器1049字节、四窗口的外部 helper/栈出口审计。四栈分支汇合并到达两个不透明调用，两个carrier helper另含四调用点、两机器RET及未定界循环；静态参数/写入关系不证明类型、所有权、AVM返回或活调用。嵌套效果、异常路径及stack/carrier/descriptor寿命关系仍未证明，五项证明门禁exit1；live绑定、游标及保留调用在捕获前阻塞。production_admitted=false、native_parity_proven=false，M0-02 pending；仅排名3，排名4+仍规划，权威表与s254–s319不变，零构建/启动/内存读取/捕获，无运行时修改。 [证据](../evidence/sampling-upgrade/s320/README.md)。
+
 - 2026-11-07（采样 s319，AFTER-s317 排名第2项）：完整复现锁定 s310，历史结论不算新进展；新增归档入口/生命周期/状态三报告与四源文件的依赖审计。三报告共享 mc 字段与 aiEvent，代次和校准标记由 helper 写入，不能构成独立实例/入口观察。独立十帧解析器未导出，重复/改变/替换/off-on 资格均未证明，四项证明门禁 exit1，新捕获在启动前阻塞。production_admitted=false、native_parity_proven=false，M0-02 pending；仅排名2，排名3+仍规划，权威表与 s254–s318 不变，零构建/启动/捕获，无运行时修改。 [证据](../evidence/sampling-upgrade/s319/README.md)。
 
 - 2026-11-02（采样 s318，post-s317 重排）：s309–s317交付保持关闭，仅执行新排名第1项 Yulong 初始化到覆盖/返回暴露区间审计。复现锁定s309的5214历史事件，保留两处初始化后的全部图节点及路径；两处均有未经覆盖到达null-return的结构路径，显式call均在覆盖之后。枚举/成员/转换的隐藏效应与活activation绑定仍未知，不以无显式调用证明安全消去；四项证明门禁exit1。production_admitted=false、native_parity_proven=false，M0-02 pending；排名2+仅规划，s254–s317及共享工具不变，零新构建/启动/捕获，无运行时修改。 [新排名](../evidence/sampling-upgrade/next-fix-priority-after-s317.md)；[证据](../evidence/sampling-upgrade/s318/README.md)。
