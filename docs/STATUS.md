@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s343，AFTER-s335 排名第8项）：限定磁盘名称/编码搜索得到 parent/depth 方法名文本，未建立代码入口关联；saved globals 未命中不代表运行时不存在。两条独立原生 lookup、live binding 与 clearing/replacement/free/reuse/pool generations 仍未证明，对照未执行。完整 s334 重放仅作保留验证。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false、M0-02 pending，零机制/产品义务关闭。仅 rank8，rank1–7 已交付、rank9 仅规划；权威表和 s254–s342 不变。[证据](../evidence/sampling-upgrade/s343/README.md)。
+
 - 2026-11-08（采样 s342，AFTER-s335 排名第7项）：本次精确 Flash Player 路径选择在11.8150秒后 timeoutReached，未取得窗口状态；零输入、零插桩启动、零新捕获，应用激活副作用未知。超时不能证明未派发。完整复现锁定 s333 仅作保留验证；编译/opcode资格及原菜单 Enter/release 与无派发对照延后，行为观测保持 null。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名7，不重排；排名1–6已交付，排名8+仅规划；权威表与 s254–s341 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s342/README.md)。
 
 - 2026-11-08（采样 s341，AFTER-s335 排名第6项）：完整复现锁定 s332，仅作保留验证，不将旧 host sink/observer/后缀证据计作新进展。未取得 loaded closure/body、owner generation、activation 经替换到 dispatcher continuation 的独立绑定；身份、replacement survival、返回结果及 off/on 见证保持 null。off/on 资格与 terminal inventory 未执行，零新增独立原生观测。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名6，不重排；排名1–5交付关闭，排名7+仅规划；权威表及 s254–s340 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s341/README.md)。
