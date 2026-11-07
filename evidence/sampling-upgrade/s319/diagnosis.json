@@ -1,0 +1,243 @@
+{
+  "slice": "s319",
+  "base": "4e486b4d9c0764d1abba983c3af8ae4d1bcf6a48",
+  "scope": "AFTER-s317 rank #2 only: Independent ones entry clock",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s310_reproduced": true,
+  "historical_validation_only": {
+    "run_id": "s274-lifetime-r01",
+    "raw_sha256": "2afbe8a8f0a484a1854abbaf0385001bd760d13b68882a0f3f93d79f8b32f54e",
+    "events_revalidated": 26828,
+    "callback_count": 63,
+    "natural_encoding_entry_joins": 4,
+    "uninstrumented_target_windows": 45
+  },
+  "observer_dependency_audit": {
+    "archive": "evidence/sampling-upgrade/s274/native-build.tar.gz",
+    "members": {
+      "s274-patches/frame_1/DoAction.as": {
+        "sha256": "e519fef3f187a7eae4b5b3744a0ec8a5764f60a7711d052aa4532d9034db8516",
+        "line_count": 280
+      },
+      "s274-patches/DefineSprite_1810/frame_1/DoAction.as": {
+        "sha256": "4751fab5156ef1e796c7fdcd3ab727844671aaac49aa0bd55ceef0b21c04bc39",
+        "line_count": 3
+      },
+      "s274-patches/DefineSprite_1813/frame_1/PlaceObject2_1810_3/CLIPACTIONRECORD onClipEvent(load).as": {
+        "sha256": "91981b8fa59145dcce35d6f6e7cceb2413eee49302d09630bb166da3fdd16468",
+        "line_count": 1
+      },
+      "s274-patches/DefineSprite_1813/frame_1/PlaceObject2_1810_3/CLIPACTIONRECORD onClipEvent(unload).as": {
+        "sha256": "b2a450e4b49d2d2ba8b07867c0337050a09f8bbed40b4c7fb613dbe57a81f857",
+        "line_count": 1
+      }
+    },
+    "root_sections": [
+      {
+        "role": "generation_seed",
+        "member": "s274-patches/frame_1/DoAction.as",
+        "lines": [
+          1,
+          1
+        ],
+        "source": "_root.s274Generation = 0;"
+      },
+      {
+        "role": "life",
+        "member": "s274-patches/frame_1/DoAction.as",
+        "lines": [
+          2,
+          7
+        ],
+        "source": "_root.s274Life = function(mc, phase)\n{\n   if(phase == \"load\") { mc.s274Generation = ++_root.s274Generation; }\n   if(phase == \"unload\" && mc.s274Generation == 2) _root.s274Unloaded2 = true;\n   _root.aiEvent(\"s274_life\", phase + \",\" + String(mc) + \",\" + mc.getDepth() + \",\" + mc.s274Generation + \",\" + mc._currentframe);\n};"
+      },
+      {
+        "role": "entry",
+        "member": "s274-patches/frame_1/DoAction.as",
+        "lines": [
+          8,
+          12
+        ],
+        "source": "_root.s274Entry = function(mc)\n{\n   if(mc.s274Generation == 2 && _root.aiFight == 1) _root.s274RetainedEntry2 = true;\n   _root.aiEvent(\"s274_entry\", String(mc) + \",\" + mc.getDepth() + \",\" + mc.s274Generation + \",\" + mc._currentframe);\n};"
+      },
+      {
+        "role": "state",
+        "member": "s274-patches/frame_1/DoAction.as",
+        "lines": [
+          13,
+          16
+        ],
+        "source": "_root.s274State = function(phase, mc)\n{\n   _root.aiEvent(\"s274_state\", phase + \",\" + String(mc) + \",\" + mc.getDepth() + \",\" + mc.s274Generation + \",\" + mc._currentframe);\n};"
+      }
+    ],
+    "hooks": [
+      {
+        "member": "s274-patches/DefineSprite_1810/frame_1/DoAction.as",
+        "source": "_root.s274Entry(this);\n_root.s262Init(this,1810);\nstop();\n"
+      },
+      {
+        "member": "s274-patches/DefineSprite_1813/frame_1/PlaceObject2_1810_3/CLIPACTIONRECORD onClipEvent(load).as",
+        "source": "onClipEvent(load) { _root.s274Life(this,\"load\"); }\n"
+      },
+      {
+        "member": "s274-patches/DefineSprite_1813/frame_1/PlaceObject2_1810_3/CLIPACTIONRECORD onClipEvent(unload).as",
+        "source": "onClipEvent(unload) { _root.s274Life(this,\"unload\"); }\n"
+      }
+    ],
+    "serialized_operands": [
+      "String(mc)",
+      "mc.getDepth()",
+      "mc.s274Generation",
+      "mc._currentframe"
+    ],
+    "shared_sink": "_root.aiEvent",
+    "sink_call_lines": [
+      6,
+      11,
+      15
+    ],
+    "generation_write_line": 4,
+    "calibration_write_lines": [
+      5,
+      10
+    ],
+    "entry_hook_lexical_order": [
+      "s274Entry(this)",
+      "s262Init(this,1810)",
+      "stop()"
+    ],
+    "independent_live_channel": null,
+    "observer_off_surviving_channel": null,
+    "interpretation": "All three audited helper reports read the supplied mc and call the same AS sink. Generation is written by the load helper; calibration flags are written by life/entry helpers. This source dependency is not native allocation identity or action-preservation proof. Removing the sole audited sink leaves no independent witness in these reports; actual off/on behavior was not observed.",
+    "audit_boundary": "Four archived source members only. Lexical order is not dispatch order; no claim that independent facilities elsewhere are impossible or absent."
+  },
+  "qualification_matrix": [
+    {
+      "frame": 1,
+      "original_action_present": true,
+      "archived_action_present": true,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 2,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 3,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 4,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 5,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 6,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 7,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 8,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 9,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    },
+    {
+      "frame": 10,
+      "original_action_present": false,
+      "archived_action_present": false,
+      "independent_entry": null,
+      "isolated_repeated_target": null,
+      "isolated_changed_target": null,
+      "same_depth_replacement": null,
+      "observer_off_on_order": null
+    }
+  ],
+  "live_entry_resolver": null,
+  "live_instance_resolver": null,
+  "observer_qualified": false,
+  "independent_controls_proved": false,
+  "independent_child_clock_proved": false,
+  "fresh_capture_eligible": false,
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_captures": 0,
+  "new_images": 0,
+  "other_ranks_executed": [],
+  "product_obligations_closed": 0,
+  "blocker": "The retained entry/life/state reporters share mc-derived operands and aiEvent. No independent live outer-instance lifetime and all-ten-frame entry channel is bound. Isolated repeated/changed/replacement/off-on controls remain unproved; fresh ones-only capture is blocked before launch.",
+  "next_required_observation": "Bind independent live outer-instance generation and target-entry dispatch for frames1-10, including actionless frames. Qualify isolated repeated/changed-target, replacement and observer-off/on trials with selection, entry and following root/callback boundary in the same run and lifetime before one fresh capture.",
+  "exclusions": [
+    "static glyph-as-entry",
+    "synthetic clock",
+    "empty-frame actions treated as neutral",
+    "scene/intro repair",
+    "cross-run images or tape",
+    "HUD reset",
+    "s254-s318 edits",
+    "runtime/contracts/shared sampler/threshold/validator changes",
+    "rank 1 or ranks 3+ execution"
+  ]
+}

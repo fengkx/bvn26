@@ -1,0 +1,66 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s319/diagnose.py",
+      "--output",
+      "/tmp/s319-check-diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "elapsed_seconds": 0.9958
+  },
+  {
+    "name": "observer",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s319/diagnose.py",
+      "--output",
+      "/tmp/s319-check-diagnosis.json",
+      "--require-observer"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 1.1581
+  },
+  {
+    "name": "independent-controls",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s319/diagnose.py",
+      "--output",
+      "/tmp/s319-check-diagnosis.json",
+      "--require-independent-controls"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 1.381
+  },
+  {
+    "name": "child-clock",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s319/diagnose.py",
+      "--output",
+      "/tmp/s319-check-diagnosis.json",
+      "--require-child-clock"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 1.3257
+  },
+  {
+    "name": "fresh-capture",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s319/diagnose.py",
+      "--output",
+      "/tmp/s319-check-diagnosis.json",
+      "--require-fresh-capture"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "elapsed_seconds": 3.7758
+  }
+]
