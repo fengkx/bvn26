@@ -1,0 +1,96 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s325/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s325/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 5.262560334056616,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "slot-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s325/diagnose.py",
+      "--output",
+      "/tmp/s325-slot-reference.json",
+      "--require-slot-reference"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 7.063083208166063,
+    "log": "slot-reference.txt"
+  },
+  {
+    "name": "content-clearing",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s325/diagnose.py",
+      "--output",
+      "/tmp/s325-content-clearing.json",
+      "--require-content-clearing"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 5.474501874763519,
+    "log": "content-clearing.txt"
+  },
+  {
+    "name": "replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s325/diagnose.py",
+      "--output",
+      "/tmp/s325-replacement.json",
+      "--require-replacement"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 5.772701416630298,
+    "log": "replacement.txt"
+  },
+  {
+    "name": "allocation-identity",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s325/diagnose.py",
+      "--output",
+      "/tmp/s325-allocation-identity.json",
+      "--require-allocation-identity"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 5.012942334171385,
+    "log": "allocation-identity.txt"
+  }
+]
