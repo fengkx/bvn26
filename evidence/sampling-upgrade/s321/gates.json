@@ -1,0 +1,71 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s321/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s321/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 0.707853333,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "consumer-request",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s321/diagnose.py",
+      "--output",
+      "/tmp/s321-consumer-request.json",
+      "--require-consumer-request"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.708141291,
+    "log": "consumer-request.txt"
+  },
+  {
+    "name": "loader-attestation",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s321/diagnose.py",
+      "--output",
+      "/tmp/s321-loader-attestation.json",
+      "--require-loader-attestation"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.701802834,
+    "log": "loader-attestation.txt"
+  },
+  {
+    "name": "pre-advance-target",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s321/diagnose.py",
+      "--output",
+      "/tmp/s321-pre-advance-target.json",
+      "--require-pre-advance-target"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.696314041,
+    "log": "pre-advance-target.txt"
+  },
+  {
+    "name": "wrong-resource-control",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s321/diagnose.py",
+      "--output",
+      "/tmp/s321-wrong-resource-control.json",
+      "--require-wrong-resource-control"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 0.8232720830000001,
+    "log": "wrong-resource-control.txt"
+  }
+]
