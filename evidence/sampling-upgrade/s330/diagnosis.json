@@ -1,0 +1,198 @@
+{
+  "slice": "s330",
+  "scope": "AFTER-s326 rank #4 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s321_reproduced": true,
+  "replay_is_new_progress": false,
+  "facilities": [
+    {
+      "path": "tools/probes/probe_owned_debugger.py",
+      "function": "debugger_script",
+      "start_line": 21,
+      "end_line": 48,
+      "source": "def debugger_script(pid, binary, result_path):\n    return f'''import json\nimport lldb\nfrom pathlib import Path\nresult = {{'attached': False, 'registers_available': False, 'detach_attempted': False, 'detached': False, 'pid': {pid}, 'pixel_reference': False, 'routing_verified': False}}\nprocess = None\ntry:\n    target = lldb.debugger.CreateTarget({str(binary)!r})\n    error = lldb.SBError()\n    process = target.AttachToProcessWithID(lldb.debugger.GetListener(), {pid}, error)\n    result['attach_error'] = str(error)\n    result['attached'] = error.Success() and process.IsValid()\n    if result['attached']:\n        result['target_triple'] = target.GetTriple()\n        result['state'] = lldb.SBDebugger.StateAsCString(process.GetState())\n        frame = process.GetSelectedThread().GetFrameAtIndex(0)\n        result['registers'] = {{name: frame.FindRegister(name).GetValue() for name in {REGISTERS!r}}}\n        result['registers_available'] = all(value is not None for value in result['registers'].values())\nexcept BaseException as error:\n    result['error'] = repr(error)\nfinally:\n    if result['attached'] and process is not None:\n        result['detach_attempted'] = True\n        error = process.Detach()\n        result['detach_error'] = str(error)\n        result['detached'] = error.Success()\n    Path({str(result_path)!r}).write_text(json.dumps(result, indent=2)+chr(10))\n'''",
+      "missing": "Selected frame-zero registers do not bind an executed P1 consumer, request generation, read return or callback target.",
+      "invoked": false
+    },
+    {
+      "path": "tools/probes/capture_native_player.py",
+      "function": "_verify_runtime_fighter",
+      "start_line": 51,
+      "end_line": 101,
+      "source": "def _verify_runtime_fighter(build, metadata):\n    \"\"\"Verify the fighter SWF at the path embedded in the launched main movie.\"\"\"\n    if not metadata.get('dynamic_move_case'):\n        return None\n    move_case = metadata.get('move_case')\n    configuration = metadata.get('configuration')\n    if not move_case or not configuration:\n        raise ValueError('Dynamic capture lacks case/configuration metadata')\n    slot = move_case.get('slot')\n    character = configuration.get(slot)\n    if not slot or not character:\n        raise ValueError('Dynamic capture cannot resolve selected fighter slot')\n\n    catalog_path = Path(__file__).resolve().parents[2] / 'manifest.json'\n    catalog = json.loads(catalog_path.read_text()).get('fighter_catalog', {})\n    character_record = catalog.get(character)\n    if not character_record or not character_record.get('url'):\n        raise ValueError(f'No manifest fighter SWF mapping for {character!r}')\n    relative = Path('game/fighter') / character_record['url']\n    expected = metadata.get('outputs_sha256', {}).get(relative.as_posix())\n    if not expected:\n        expected = metadata.get('sources_sha256', {}).get(relative.as_posix())\n    if not expected:\n        raise ValueError(f'Build metadata has no expected hash for {relative.as_posix()}')\n\n    declared = build / relative\n    if declared.is_file():\n        declared_sha = hashlib.sha256(declared.read_bytes()).hexdigest()\n        if declared_sha != expected:\n            raise ValueError(\n                f'Build artifact hash mismatch for {relative}: expected {expected}, got {declared_sha}'\n            )\n\n    body = _swf_body(build / 'game/main.swf')\n    roots = set(re.findall(rb'(file:///[\\x20-\\x7e]{1,2048}?/game/fighter/)', body))\n    if len(roots) != 1:\n        raise ValueError(f'Main SWF has {len(roots)} resolvable fighterDir paths; expected one')\n    url = roots.pop().decode('ascii')\n    parsed = urlparse(url)\n    if parsed.scheme != 'file' or parsed.netloc:\n        raise ValueError(f'Unsupported embedded fighterDir URL: {url!r}')\n    actual = Path(unquote(parsed.path)) / character_record['url']\n    if not actual.is_file():\n        raise FileNotFoundError(f'Embedded fighterDir resolves to missing file: {actual}')\n    actual_sha = hashlib.sha256(actual.read_bytes()).hexdigest()\n    if actual_sha != expected:\n        raise ValueError(\n            f'Runtime fighter hash mismatch: main.swf loads {actual} ({actual_sha}), '\n            f'but build expects {relative} ({expected})'\n        )\n    return {'path': str(actual), 'sha256': actual_sha}",
+      "missing": "Disk path and hash preflight do not observe bytes returned to or consumed by a live request.",
+      "invoked": false
+    },
+    {
+      "path": "evidence/sampling-upgrade/s321/extract_native.py",
+      "function": "main",
+      "start_line": 22,
+      "end_line": 53,
+      "source": "def main():\n    started = time.monotonic()\n    lock = json.loads((HERE.parent / 's303/native-audit.json').read_text())\n    raw = Path(lock['binary']).read_bytes()\n    if hashlib.sha256(raw).hexdigest() != lock['binary_sha256']:\n        raise ValueError('receipt binary mismatch')\n    spec = importlib.util.spec_from_file_location('macho', HERE.parent / 's303/audit_native.py')\n    module = importlib.util.module_from_spec(spec)\n    spec.loader.exec_module(module)\n    metadata = module.macho(raw)\n    if metadata != lock['module']:\n        raise ValueError('module metadata mismatch')\n    header = bytes.fromhex(metadata['header_hex'])\n    section = header.index(b'__text' + bytes(10))\n    import struct\n    address, size, offset = struct.unpack_from('<QQI', header, section + 32)\n    found = candidates(raw, offset, offset + size, address - offset, TARGET)\n    start = module.file_offset(metadata, BEGIN, END - BEGIN)\n    command = ['objdump', '-d', '--x86-asm-syntax=intel', '--start-address=' + hex(BEGIN),\n               '--stop-address=' + hex(END), lock['binary']]\n    result = subprocess.run(command, capture_output=True, check=True, timeout=60)\n    (HERE / 'caller-window.txt').write_bytes(result.stdout + result.stderr)\n    report = dict(binary=lock['binary'], binary_sha256=lock['binary_sha256'],\n                  module_uuid=metadata['uuid'], target=TARGET,\n                  scan=dict(file_offset=offset, size=size, address=address,\n                            candidate_file_offsets=found, instruction_boundaries_proved=False),\n                  window=dict(address=BEGIN, end_exclusive=END, file_offset=start,\n                              hex=raw[start:start + END - BEGIN].hex()),\n                  command=command, exit_code=result.returncode,\n                  elapsed_seconds=time.monotonic() - started,\n                  kind='static_file_bytes_not_executed_or_consumed_bytes')\n    (HERE / 'native-audit.json').write_text(json.dumps(report, indent=2) + '\\n')",
+      "missing": "Disk-byte extraction and disassembly identify a static candidate only; no execution or immutable request identity.",
+      "invoked": false
+    }
+  ],
+  "independent_native_observations": 0,
+  "retained_candidate": {
+    "kind": "static_candidate_only",
+    "instructions": [
+      {
+        "address": "0x100108f54",
+        "hex": "c6401000",
+        "instruction": "mov\tbyte ptr [rax + 0x10], 0x0"
+      },
+      {
+        "address": "0x100108f58",
+        "hex": "c645d700",
+        "instruction": "mov\tbyte ptr [rbp - 0x29], 0x0"
+      },
+      {
+        "address": "0x100108f5c",
+        "hex": "488b38",
+        "instruction": "mov\trdi, qword ptr [rax]"
+      },
+      {
+        "address": "0x100108f5f",
+        "hex": "ba01000000",
+        "instruction": "mov\tedx, 0x1"
+      },
+      {
+        "address": "0x100108f64",
+        "hex": "488d75d7",
+        "instruction": "lea\trsi, [rbp - 0x29]"
+      },
+      {
+        "address": "0x100108f68",
+        "hex": "e8d3a43a00",
+        "instruction": "call\t0x1004b3440 <__text+0x4b1440>"
+      },
+      {
+        "address": "0x100108f6d",
+        "hex": "0fb64dd7",
+        "instruction": "movzx\tecx, byte ptr [rbp - 0x29]"
+      },
+      {
+        "address": "0x100108f71",
+        "hex": "88ca",
+        "instruction": "mov\tdl, cl"
+      },
+      {
+        "address": "0x100108f73",
+        "hex": "80e201",
+        "instruction": "and\tdl, 0x1"
+      },
+      {
+        "address": "0x100108f76",
+        "hex": "80fa01",
+        "instruction": "cmp\tdl, 0x1"
+      },
+      {
+        "address": "0x100108f79",
+        "hex": "4519ed",
+        "instruction": "sbb\tr13d, r13d"
+      },
+      {
+        "address": "0x100108f7c",
+        "hex": "4509f5",
+        "instruction": "or\tr13d, r14d"
+      },
+      {
+        "address": "0x100108f7f",
+        "hex": "83f8ff",
+        "instruction": "cmp\teax, -0x1"
+      },
+      {
+        "address": "0x100108f82",
+        "hex": "440f44e8",
+        "instruction": "cmove\tr13d, eax"
+      },
+      {
+        "address": "0x100108f86",
+        "hex": "48c1e104",
+        "instruction": "shl\trcx, 0x4"
+      },
+      {
+        "address": "0x100108f8a",
+        "hex": "81e1e00f0000",
+        "instruction": "and\tecx, 0xfe0"
+      },
+      {
+        "address": "0x100108f90",
+        "hex": "48898b40010000",
+        "instruction": "mov\tqword ptr [rbx + 0x140], rcx"
+      },
+      {
+        "address": "0x100108f97",
+        "hex": "488bbbd8010000",
+        "instruction": "mov\trdi, qword ptr [rbx + 0x1d8]"
+      },
+      {
+        "address": "0x100108f9e",
+        "hex": "488b07",
+        "instruction": "mov\trax, qword ptr [rdi]"
+      },
+      {
+        "address": "0x100108fa1",
+        "hex": "ff9000040000",
+        "instruction": "call\tqword ptr [rax + 0x400]"
+      }
+    ],
+    "call_site": "0x100108f68",
+    "wrapper_target": "0x1004b3440",
+    "argument_buffer": "address of caller rbp-0x29",
+    "argument_length": 1,
+    "buffer_initialization": "zero at 0x100108f58 before call",
+    "post_call_read": "movzx ecx, byte ptr [rbp-0x29] at 0x100108f6d",
+    "derived_store": "(zero-extended byte << 4) & 0xfe0 to [rbx+0x140] at 0x100108f90",
+    "next_opaque_call": "[rax+0x400] at 0x100108fa1",
+    "limitation": "Conditional on normal wrapper return. The local can still contain its initialized zero on failure; a post-call load does not prove returned-byte provenance. No executed path, P1 identity, class, generation or target inferred."
+  },
+  "observations": {
+    "executed_caller": null,
+    "actual_p1_consumer": null,
+    "immutable_request_generation": null,
+    "executed_read_return": null,
+    "returned_buffer_ranges": null,
+    "consumed_buffer_ranges": null,
+    "target_before_inline_advance": null,
+    "same_request_initialization": null,
+    "target_use_unload_replacement": null,
+    "observer_effects": null
+  },
+  "normal_association_qualified": false,
+  "wrong_resource_control_executed": false,
+  "gates": {
+    "consumer-request": {
+      "proved": false,
+      "code": "S330_CONSUMER_REQUEST_UNPROVED"
+    },
+    "returned-consumed-ranges": {
+      "proved": false,
+      "code": "S330_RETURNED_CONSUMED_RANGES_UNPROVED"
+    },
+    "pre-advance-target": {
+      "proved": false,
+      "code": "S330_PRE_ADVANCE_TARGET_UNPROVED"
+    },
+    "loader-attestation": {
+      "proved": false,
+      "code": "S330_LOADER_ATTESTATION_UNPROVED"
+    },
+    "wrong-resource-control": {
+      "proved": false,
+      "code": "S330_WRONG_RESOURCE_CONTROL_UNPROVED"
+    }
+  },
+  "first_unmet_prerequisite": "executed P1 consumer bound to immutable request generation",
+  "blocker": "Inspected adapters provide no independent request resolver. Normal association remains unqualified; wrong-resource control is deferred.",
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_process_attaches": 0,
+  "new_memory_reads": 0,
+  "new_captures": 0,
+  "product_obligations_closed": 0,
+  "other_ranks_executed": []
+}
