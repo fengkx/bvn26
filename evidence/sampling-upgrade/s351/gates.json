@@ -1,0 +1,126 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s351/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s351/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 5.777193749789149,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "name-executable",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s351/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s351/diagnosis.json",
+      "--require-name-executable"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 4.981514375191182,
+    "log": "name-executable.txt"
+  },
+  {
+    "name": "saved-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s351/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s351/diagnosis.json",
+      "--require-saved-reference"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 5.96147245913744,
+    "log": "saved-reference.txt"
+  },
+  {
+    "name": "slot-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s351/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s351/diagnosis.json",
+      "--require-slot-reference"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 4.392824833281338,
+    "log": "slot-reference.txt"
+  },
+  {
+    "name": "content-clearing",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s351/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s351/diagnosis.json",
+      "--require-content-clearing"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 7.632218707818538,
+    "log": "content-clearing.txt"
+  },
+  {
+    "name": "replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s351/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s351/diagnosis.json",
+      "--require-replacement"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 4.337353041861206,
+    "log": "replacement.txt"
+  },
+  {
+    "name": "allocation-identity",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s351/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s351/diagnosis.json",
+      "--require-allocation-identity"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 5.338614709209651,
+    "log": "allocation-identity.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s351/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s351/diagnosis.json",
+      "--require-name-executable",
+      "--require-saved-reference",
+      "--require-slot-reference",
+      "--require-content-clearing",
+      "--require-replacement",
+      "--require-allocation-identity"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 4.672855458687991,
+    "log": "all-proofs.txt"
+  }
+]
