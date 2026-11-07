@@ -1,0 +1,375 @@
+{
+  "slice": "s336",
+  "base": "6e0c9b4ad6c588274cc4299a4725396963c764de",
+  "scope": "AFTER-s335 rank #1 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "product_obligations_closed": 0,
+  "locked_s327_reproduced": true,
+  "prior_results_are_new_progress": false,
+  "historical": {
+    "events": 9493,
+    "root_samples": 61,
+    "controls": [
+      {
+        "mode": "retain",
+        "before": "1",
+        "receiver_before": "true",
+        "defining_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "false",
+        "parent_frame": "2",
+        "depth": "-16383",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "false",
+        "sequence": 7206,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "mode": "remove",
+        "before": "1",
+        "receiver_before": "true",
+        "defining_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "true",
+        "parent_frame": "3",
+        "depth": "-16383",
+        "boundary": "1",
+        "post": "0",
+        "empty_after": "true",
+        "sequence": 7207,
+        "tick": 10,
+        "display": 433
+      }
+    ],
+    "dynamic_controls": [
+      {
+        "mode": "retain",
+        "before": "1",
+        "receiver_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "false",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "false",
+        "sequence": 7204,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "mode": "remove",
+        "before": "1",
+        "receiver_before": "true",
+        "occupied_before": "true",
+        "empty_at_boundary": "true",
+        "boundary": "1",
+        "post": "1",
+        "empty_after": "true",
+        "sequence": 7205,
+        "tick": 10,
+        "display": 433
+      }
+    ],
+    "chad_witnesses": [
+      {
+        "type": "undefined",
+        "token": "undefined",
+        "before": "undefined",
+        "control": "undefined",
+        "post": "undefined",
+        "observer_entry": "undefined",
+        "sequence": 7208,
+        "tick": 10,
+        "display": 433
+      },
+      {
+        "type": "object",
+        "token": "s257-chad-normal-goto",
+        "before": "1",
+        "control": "1",
+        "post": "0",
+        "observer_entry": "0",
+        "sequence": 7253,
+        "tick": 11,
+        "display": 434
+      },
+      {
+        "type": "object",
+        "token": "s257-chad-normal-goto",
+        "before": "1",
+        "control": "1",
+        "post": "0",
+        "observer_entry": "0",
+        "sequence": 7290,
+        "tick": 12,
+        "display": 435
+      }
+    ],
+    "actor_comparison": {
+      "rows": 122,
+      "exact_tick_payload_equal_s263": true
+    },
+    "full_as": {
+      "unvisited": 594,
+      "uninstrumented": 415
+    },
+    "missing_boundaries": [
+      "goto_after",
+      "callee_exit",
+      "caller_after"
+    ]
+  },
+  "audit": {
+    "coordinates": "Unslid module-relative machine addresses, not SWF offsets or live PCs",
+    "windows": [
+      {
+        "start": 860740,
+        "end_exclusive": 860781,
+        "instructions": [
+          {
+            "address": 860740,
+            "hex": "4889d8",
+            "mnemonic": "mov",
+            "operands": "rax, rbx"
+          },
+          {
+            "address": 860743,
+            "hex": "4883e0f8",
+            "mnemonic": "and",
+            "operands": "rax, -0x8"
+          },
+          {
+            "address": 860747,
+            "hex": "488b4018",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rax + 0x18]"
+          },
+          {
+            "address": 860751,
+            "hex": "89c1",
+            "mnemonic": "mov",
+            "operands": "ecx, eax"
+          },
+          {
+            "address": 860753,
+            "hex": "83e107",
+            "mnemonic": "and",
+            "operands": "ecx, 0x7"
+          },
+          {
+            "address": 860756,
+            "hex": "83e01f",
+            "mnemonic": "and",
+            "operands": "eax, 0x1f"
+          },
+          {
+            "address": 860759,
+            "hex": "83f902",
+            "mnemonic": "cmp",
+            "operands": "ecx, 0x2"
+          },
+          {
+            "address": 860762,
+            "hex": "0f45c1",
+            "mnemonic": "cmovne",
+            "operands": "eax, ecx"
+          },
+          {
+            "address": 860765,
+            "hex": "b902000000",
+            "mnemonic": "mov",
+            "operands": "ecx, 0x2"
+          },
+          {
+            "address": 860770,
+            "hex": "89c2",
+            "mnemonic": "mov",
+            "operands": "edx, eax"
+          },
+          {
+            "address": 860772,
+            "hex": "83f812",
+            "mnemonic": "cmp",
+            "operands": "eax, 0x12"
+          },
+          {
+            "address": 860775,
+            "hex": "0f8715020000",
+            "mnemonic": "ja",
+            "operands": "0x1000d2482 <__text+0xd0482>"
+          }
+        ]
+      },
+      {
+        "start": 860756,
+        "end_exclusive": 860781,
+        "instructions": [
+          {
+            "address": 860756,
+            "hex": "83e01f",
+            "mnemonic": "and",
+            "operands": "eax, 0x1f"
+          },
+          {
+            "address": 860759,
+            "hex": "83f902",
+            "mnemonic": "cmp",
+            "operands": "ecx, 0x2"
+          },
+          {
+            "address": 860762,
+            "hex": "0f45c1",
+            "mnemonic": "cmovne",
+            "operands": "eax, ecx"
+          },
+          {
+            "address": 860765,
+            "hex": "b902000000",
+            "mnemonic": "mov",
+            "operands": "ecx, 0x2"
+          },
+          {
+            "address": 860770,
+            "hex": "89c2",
+            "mnemonic": "mov",
+            "operands": "edx, eax"
+          },
+          {
+            "address": 860772,
+            "hex": "83f812",
+            "mnemonic": "cmp",
+            "operands": "eax, 0x12"
+          },
+          {
+            "address": 860775,
+            "hex": "0f8715020000",
+            "mnemonic": "ja",
+            "operands": "0x1000d2482 <__text+0xd0482>"
+          }
+        ]
+      }
+    ],
+    "unique_bytes_audited": 41,
+    "unique_instructions": 12,
+    "overlap_bytes": 25,
+    "join": 860756,
+    "basic_blocks": [
+      {
+        "start": 860740,
+        "end_exclusive": 860756,
+        "exit": "fallthrough to known join"
+      },
+      {
+        "start": 860756,
+        "end_exclusive": 860781,
+        "exit": "conditional branch"
+      }
+    ],
+    "incoming_argument_relations": [
+      {
+        "argument": "rdi",
+        "caller": "&dispatcher_rbp-0x550",
+        "saved_at": 860698,
+        "saved_register": "r12",
+        "access_at": 860716,
+        "access": "write qword raw 2"
+      },
+      {
+        "argument": "rsi",
+        "caller": "dispatcher_r13",
+        "saved_at": 860695,
+        "saved_register": "r14",
+        "access_at": null,
+        "access": "no direct dereference of r14 in this block"
+      },
+      {
+        "argument": "rdx",
+        "caller": "&dispatcher_rbp-0x60",
+        "saved_at": 860692,
+        "saved_register": "r15",
+        "access_at": 860724,
+        "access": "read qword into rbx"
+      }
+    ],
+    "routes": [
+      {
+        "entry": 860740,
+        "condition": "s327 loaded qword low bits equal 7",
+        "operations": "rax = rbx & ~7; rax = qword[rax + 0x18]; ecx = low32(rax) & 7",
+        "read_site": 860747,
+        "read_width_bytes": 8,
+        "read_value": null,
+        "limit": "Masked value plus displacement is only a machine address expression; no AVM object, type, validity or ownership follows."
+      },
+      {
+        "entry": 860756,
+        "condition": "s327 loaded qword low bits differ from 7",
+        "operations": "Entry rax remains the loaded rbx; ecx remains low32(rbx) & 7",
+        "read_site": null,
+        "read_width_bytes": null,
+        "read_value": null,
+        "limit": "No additional direct memory read on this local route; absence here does not prove harmlessness."
+      }
+    ],
+    "shared_operations": "eax &= 0x1f; if ecx != 2 then eax = ecx; ecx = 2; edx = eax; unsigned compare eax with 0x12",
+    "next_frontier": {
+      "site": 860775,
+      "kind": "unsigned_above",
+      "target": 861314,
+      "fallthrough": 860781,
+      "successors_expanded": false
+    },
+    "explicit_calls": 0,
+    "machine_returns": 0,
+    "direct_memory_writes": 0,
+    "live_values": null,
+    "alias_relations": null,
+    "exceptional_exits": null,
+    "actual_execution_proven": false,
+    "callee_return_proven": false,
+    "limit": "Conditional on reaching each instruction without fault. No AVM tag names, pointer contents, external effects, ownership or live identity are proved. Both new frontier successors are excluded."
+  },
+  "observations": {
+    "activation_identity": null,
+    "defining_scope": null,
+    "register4_location": null,
+    "stack_carrier_descriptor_alias_relation": null,
+    "allocation_generation": null,
+    "helper_preservation": null,
+    "live_module_binding": null,
+    "loaded_worker_binding": null,
+    "measured_cursor": null,
+    "retained_invocation": null
+  },
+  "gates": {
+    "external-effects": {
+      "proved": false,
+      "code": "S336_EXTERNAL_EFFECTS_UNPROVED"
+    },
+    "value-ownership": {
+      "proved": false,
+      "code": "S336_VALUE_OWNERSHIP_UNPROVED"
+    },
+    "live-binding": {
+      "proved": false,
+      "code": "S336_LIVE_BINDING_UNPROVED"
+    },
+    "cursor-convention": {
+      "proved": false,
+      "code": "S336_CURSOR_CONVENTION_UNPROVED"
+    },
+    "retained-invocation": {
+      "proved": false,
+      "code": "S336_RETAINED_INVOCATION_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_memory_reads": 0,
+  "new_captures": 0,
+  "other_ranks_executed": [],
+  "blocker": "Two immediate successor windows join before another branch. Its successors, indirect read value, faults, external effects and ownership remain unproved. No live module/worker, cursor or retained invocation binding exists."
+}
