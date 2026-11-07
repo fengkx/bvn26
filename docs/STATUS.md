@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s354，post-s353 重排）：旧 s345–s353 交付保持关闭，仅执行新 rank1 Chad 有界偏移表。完整锁定 s345 重放仅作保留验证；新读取 0xd2540 的19个有符号表项，共76字节，推导8个静态目的地址，其中12项汇合到0xd2482，不展开目的代码。实际执行、效果、所有权及 live 绑定仍未证明；基础诊断 exit0，五项证明门禁及组合门禁 exit1。production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。rank2+仅规划；旧表与s254–s353不变，无运行时修改，零构建/启动/附加/捕获。实际耗时见证据包，person-days未知。[新排名](../evidence/sampling-upgrade/next-fix-priority-after-s353.md)；[证据](../evidence/sampling-upgrade/s354/README.md)。
+
 - 2026-11-08（采样 s353，AFTER-s344 排名第9项）：完整复现锁定 s344，仅作历史证据校验，不计为新像素进展。61 个边界仍未满足完整同次捕获准入，对应场景图像对为零；未执行捕获或源绑定边缘/内部精确 RGBA 分类，残差保持 null。基础诊断 exit0，三项证明门槛 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零产品义务关闭。仅执行 rank9，rank1–8 已交付；不重排、不修准入，权威表、旧证据及运行时不变。实际耗时见证据包，person-days 未知。[证据](../evidence/sampling-upgrade/s353/README.md)。
 
 - 2026-11-08（采样 s352，AFTER-s344 排名第8项）：独立 System Events 查询由名称零匹配推进到 bundle ID 两条相同 PID、无窗口行；原版启动请求 exit0，CUA bundle 选择明确报告两个安装路径歧义。均为设施观测，不证明实际窗口/输入控制或未派发。零输入、零插桩启动、零行为捕获；编译/opcode 与 Enter/release、无派发对照仍未证明。完整 s342 重放仅作保留验证；基础诊断 exit0，四项证明门禁 exit1。production_admitted=false、native_parity_proven=false，M0-02 pending，零义务关闭。仅 rank8，rank1–7 已交付、rank9 仅规划；权威表、旧证据与运行时不变。[证据](../evidence/sampling-upgrade/s352/README.md)。
