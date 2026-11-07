@@ -1,0 +1,149 @@
+{
+  "slice": "s341",
+  "scope": "AFTER-s335 rank #6 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s332_reproduced": true,
+  "replay_is_new_progress": false,
+  "repeated_adapter_inventory_is_new_proof": false,
+  "qualification_requirements": {
+    "loaded_body": {
+      "requirement": "Resolve executing body bytes to the archived callback, not merely a source/SWF hash.",
+      "qualified_witness": null
+    },
+    "owner_generation": {
+      "requirement": "Bind root owner lifetime, defining scope and closure generation across property replacement.",
+      "qualified_witness": null
+    },
+    "activation_entry": {
+      "requirement": "Observe entry with an invocation identity independent of shared tick/display and aiEvent.",
+      "qualified_witness": null
+    },
+    "dispatcher_return": {
+      "requirement": "Match that same invocation at the dispatcher continuation; distinguish return, unwind and termination.",
+      "qualified_witness": null
+    },
+    "observer_preservation": {
+      "requirement": "Qualify observer-off/on effects and retained observation after aiEvent replacement.",
+      "qualified_witness": null
+    }
+  },
+  "attempt": {
+    "slice": "s341",
+    "scope": "AFTER-s335 rank #6 only",
+    "status": "blocked-before-live-binding",
+    "target": "archived patches/main/frame_10/DoAction.as root onEnterFrame",
+    "loaded_closure_body": null,
+    "owner_generation": null,
+    "defining_scope_generation": null,
+    "closure_generation": null,
+    "activation_entry": null,
+    "independent_channel": null,
+    "uninterrupted_lifetime": null,
+    "logger_replacement": null,
+    "matched_dispatcher_continuation": null,
+    "outcome": null,
+    "replacement_survival": null,
+    "observer_off": null,
+    "observer_on": null,
+    "off_on_preservation": null,
+    "boundaries": [
+      {
+        "boundary": "activation-entry",
+        "event": null,
+        "closure_generation": null,
+        "owner_generation": null,
+        "activation": null,
+        "outcome": null
+      },
+      {
+        "boundary": "done-producing-invocation",
+        "event": null,
+        "closure_generation": null,
+        "owner_generation": null,
+        "activation": null,
+        "outcome": null
+      },
+      {
+        "boundary": "closing-invocation",
+        "event": null,
+        "closure_generation": null,
+        "owner_generation": null,
+        "activation": null,
+        "outcome": null
+      },
+      {
+        "boundary": "callback-replacement",
+        "event": null,
+        "closure_generation": null,
+        "owner_generation": null,
+        "activation": null,
+        "outcome": null
+      },
+      {
+        "boundary": "logger-replacement",
+        "event": null,
+        "closure_generation": null,
+        "owner_generation": null,
+        "activation": null,
+        "outcome": null
+      },
+      {
+        "boundary": "quit-request",
+        "event": null,
+        "closure_generation": null,
+        "owner_generation": null,
+        "activation": null,
+        "outcome": null
+      },
+      {
+        "boundary": "dispatcher-continuation",
+        "event": null,
+        "closure_generation": null,
+        "owner_generation": null,
+        "activation": null,
+        "outcome": null
+      }
+    ],
+    "off_on_controls_executed": false,
+    "terminal_inventory_executed": false,
+    "independent_observations": [],
+    "reason": "Locked s332 has an aiEvent-independent host sink but no loaded closure/body, owner-generation or activation resolver through replacement and dispatcher continuation. No replacement-surviving live binding was obtained in s341. Off/on qualification must precede inventory."
+  },
+  "independent_native_observations": 0,
+  "mechanism_obligations_closed": 0,
+  "product_obligations_closed": 0,
+  "gates": {
+    "independent-channel": {
+      "proved": false,
+      "code": "S341_INDEPENDENT_CHANNEL_UNPROVED"
+    },
+    "logger-replacement": {
+      "proved": false,
+      "code": "S341_LOGGER_REPLACEMENT_UNPROVED"
+    },
+    "callback-completion": {
+      "proved": false,
+      "code": "S341_CALLBACK_COMPLETION_UNPROVED"
+    },
+    "off-on": {
+      "proved": false,
+      "code": "S341_OFF_ON_UNPROVED"
+    },
+    "terminal-completeness": {
+      "proved": false,
+      "code": "S341_TERMINAL_COMPLETENESS_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_memory_reads": 0,
+  "new_helper_installations": 0,
+  "new_captures": 0,
+  "other_ranks_executed": [],
+  "full_as_proven": false,
+  "fixed_suffix_threshold": null,
+  "next_required_evidence": "Independently bind one loaded closure/body, owner and closure generations and activation through a replacement-surviving dispatcher-continuation channel. Distinguish normal return, unwind and termination, and done-producing from closing invocations. Qualify observer off/on before terminal inventory."
+}
