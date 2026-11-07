@@ -1,0 +1,195 @@
+[
+  {
+    "name": "s326-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s326",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 39.09319333406165,
+    "log": "s326-tests.txt"
+  },
+  {
+    "name": "s317-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s317",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 45.094809458591044,
+    "log": "s317-tests.txt"
+  },
+  {
+    "name": "s308-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s308",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 33.486997375264764,
+    "log": "s308-tests.txt"
+  },
+  {
+    "name": "s299-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s299",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 27.982222207821906,
+    "log": "s299-tests.txt"
+  },
+  {
+    "name": "s290-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s290",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 16.821063332725316,
+    "log": "s290-tests.txt"
+  },
+  {
+    "name": "s281-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s281",
+      "-p",
+      "test_*.py"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 5.268756458070129,
+    "log": "s281-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_strict_raster_admission",
+      "tools.tests.test_encoded_digit_lifetime",
+      "tools.tests.test_callback_visual_state",
+      "tools.tests.test_countdown_phase_tape",
+      "tools.tests.test_rgba_clock_diagnosis",
+      "tools.tests.test_sampling_bitmap",
+      "tools.tests.test_sampling_native"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 36.70129608269781,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.7081735832616687,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.06740095932036638,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.08867929223924875,
+    "log": "diff-check.txt"
+  }
+]

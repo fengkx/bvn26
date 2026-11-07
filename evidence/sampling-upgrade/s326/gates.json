@@ -1,0 +1,77 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s326/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s326/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 6.200512249954045,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "state-admission",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s326/diagnose.py",
+      "--output",
+      "/tmp/s326-state-admission.json",
+      "--require-state-admission"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 7.7572174170054495,
+    "log": "state-admission.txt"
+  },
+  {
+    "name": "paired-scene",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s326/diagnose.py",
+      "--output",
+      "/tmp/s326-paired-scene.json",
+      "--require-paired-scene"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 6.994716708082706,
+    "log": "paired-scene.txt"
+  },
+  {
+    "name": "thin-raster",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s326/diagnose.py",
+      "--output",
+      "/tmp/s326-thin-raster.json",
+      "--require-thin-raster"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 7.80931141693145,
+    "log": "thin-raster.txt"
+  }
+]
