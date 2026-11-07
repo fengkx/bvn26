@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s342，AFTER-s335 排名第7项）：本次精确 Flash Player 路径选择在11.8150秒后 timeoutReached，未取得窗口状态；零输入、零插桩启动、零新捕获，应用激活副作用未知。超时不能证明未派发。完整复现锁定 s333 仅作保留验证；编译/opcode资格及原菜单 Enter/release 与无派发对照延后，行为观测保持 null。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名7，不重排；排名1–6已交付，排名8+仅规划；权威表与 s254–s341 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s342/README.md)。
+
 - 2026-11-08（采样 s341，AFTER-s335 排名第6项）：完整复现锁定 s332，仅作保留验证，不将旧 host sink/observer/后缀证据计作新进展。未取得 loaded closure/body、owner generation、activation 经替换到 dispatcher continuation 的独立绑定；身份、replacement survival、返回结果及 off/on 见证保持 null。off/on 资格与 terminal inventory 未执行，零新增独立原生观测。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名6，不重排；排名1–5交付关闭，排名7+仅规划；权威表及 s254–s340 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s341/README.md)。
 
 - 2026-11-08（采样 s340，AFTER-s335 排名第5项）：完整复现锁定 s331，仅作保留验证，不将 header/dataflow/接口盘点计作新证明。未取得 original/candidate invocation、loaded body、scope/this/root/parent 代际的独立绑定；activation/coercion erasure 测量保持 null，helper/off-on 对照未执行，零新增独立原生观测。基础诊断 exit0，六项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名5，不重排；排名1–4交付保持关闭，排名6+仅规划；权威表与 s254–s339 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s340/README.md)。
