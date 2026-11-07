@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s340，AFTER-s335 排名第5项）：完整复现锁定 s331，仅作保留验证，不将 header/dataflow/接口盘点计作新证明。未取得 original/candidate invocation、loaded body、scope/this/root/parent 代际的独立绑定；activation/coercion erasure 测量保持 null，helper/off-on 对照未执行，零新增独立原生观测。基础诊断 exit0，六项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名5，不重排；排名1–4交付保持关闭，排名6+仅规划；权威表与 s254–s339 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s340/README.md)。
+
 - 2026-11-08（采样 s339，AFTER-s335 排名第4项）：完整复现锁定 s330，仅作保留验证。未取得实际 P1 消费者、不可变请求代际、实际返回/消费区间及 inline advance 前目标的独立绑定，各项观测仍为 null；正常加载未合格，wrong-resource control 未执行。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名4，不重排；排名1–3交付保持关闭，排名5+仅规划，权威表与 s254–s338 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s339/README.md)。
 
 - 2026-11-08（采样 s338，AFTER-s335 排名第3项）：完整复现锁定 s329，仅作保留验证，不将 CFG/接口复查计作新证明。未取得独立 original/candidate activation pair、defining scope 或初始化至覆盖/返回的 erasure 测量；绑定与各边界测量保持 null，在 live binding 和观察器安装前停止，零新增独立原生观测。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名3，不重排；排名1–2交付保持关闭，排名4+仅规划，权威表与 s254–s337 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s338/README.md)。
