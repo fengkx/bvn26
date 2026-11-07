@@ -1,0 +1,138 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s350/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s350/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 1.6632542498409748,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "independent-channel",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s350/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s350/diagnosis.json",
+      "--require-independent-channel"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.4664786248467863,
+    "log": "independent-channel.txt"
+  },
+  {
+    "name": "logger-replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s350/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s350/diagnosis.json",
+      "--require-logger-replacement"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.4504450839012861,
+    "log": "logger-replacement.txt"
+  },
+  {
+    "name": "callback-completion",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s350/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s350/diagnosis.json",
+      "--require-callback-completion"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.5196689581498504,
+    "log": "callback-completion.txt"
+  },
+  {
+    "name": "off-on",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s350/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s350/diagnosis.json",
+      "--require-off-on"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.8261582921259105,
+    "log": "off-on.txt"
+  },
+  {
+    "name": "terminal-completeness",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s350/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s350/diagnosis.json",
+      "--require-terminal-completeness"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.6090876660309732,
+    "log": "terminal-completeness.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s350/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s350/diagnosis.json",
+      "--require-independent-channel",
+      "--require-logger-replacement",
+      "--require-callback-completion",
+      "--require-off-on",
+      "--require-terminal-completeness"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.3890505000017583,
+    "log": "all-proofs.txt"
+  }
+]

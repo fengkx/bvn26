@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s350，AFTER-s344 排名第6项）：独立读取锁定播放器 0x3e 数值分派到 0x124fef 首分支的20字节，仅为静态候选路径，未绑定 loaded closure/body、owner generation 或 activation 经 logger 替换到 dispatcher continuation。全部 live 见证保持 null；off/on 与 inventory 未执行。完整 s341 重放仅作保留验证。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank6，不重排；rank1–5 已交付，rank7+ 仅规划；权威表及 s254–s349 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s350/README.md)。
+
 - 2026-11-08（采样 s349，AFTER-s344 排名第5项）：独立尝试未经修改的原版/候选 SWF 调试入口；锁定原版无 58/63/64 调试标签，构建收据指向的候选临时文件缺失，仅为磁盘/设施观察，不是调用或 erasure 证明。未建立 loaded body、invocation、scope/this/root/parent 连续代际；activation/coercion 测量保持 null，helper/off-on 未执行。完整 s340 重放仅作保留验证。基础诊断 exit0，六项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank5，不重排；rank1–4 已交付，rank6+ 仅规划，权威表与 s254–s348 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s349/README.md)。
 
 - 2026-11-08（采样 s348，AFTER-s344 排名第4项）：独立提取 Loader 包装器返回前外部 callee 的50字节，得到两次调用、字段写入和尾跳转的静态关系；未取得实际 P1 消费者、不可变请求代次、返回/消费区间或 inline advance 前目标，初始化零仍有歧义。完整 s339 重放仅作保留验证；正常加载未合格，错资源对照未执行。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank4，不重排；rank1–3已交付，rank5+仅规划，权威表与 s254–s347 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s348/README.md)。
