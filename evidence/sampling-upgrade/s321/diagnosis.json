@@ -1,0 +1,328 @@
+{
+  "base": "49ccb1065788ef98ddf9facc5bb7a5ede003916e",
+  "scope": "AFTER-s317 rank #4 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "M0-02": "pending",
+  "product_obligations_closed": 0,
+  "locked_s313_reproduced": true,
+  "historical_normal": {
+    "events": 5503,
+    "raw_sha256": "bd4095e5e35bfb86ee070a6f821c6056d90083eb91cee4f0601706423a26e842",
+    "capture_structure_exit": 0,
+    "archived_output_and_receipt_hashes_match": true,
+    "configuration_fighter": "yijiao",
+    "requested_slot_expression": "_root.game[pr]",
+    "expected_source_sha256": "9734a584c1e7c1b88665db0347595fd95083cba6a4c1410c5ee0381c22eb479d",
+    "expected_instrumented_sha256": "685762d5faf094be413b64ff0dd595d824f8fe383ea38ef3ff016462b73fa0da",
+    "loader_sites": {
+      "request": "_this._loader.loadClip(_root.fighterDir + _loc3_.url,_root.game[pr]);",
+      "callback": "LO.onLoadComplete = function(target)\n{\n   loadStep++;\n   loadSteps[loadStep]();\n};",
+      "callback_target_recorded": false,
+      "callback_consumes_target": false,
+      "helper_load_before_request": true
+    },
+    "event_kind_counts": {
+      "boot": 1,
+      "done": 1,
+      "frame_state_enter": 64,
+      "frame_state_exit": 64,
+      "geometry_begin": 61,
+      "geometry_box": 240,
+      "geometry_end": 61,
+      "helper_clip_state": 658,
+      "helper_lifecycle": 658,
+      "helper_load": 2,
+      "helper_state": 658,
+      "initCtrl": 6,
+      "input_bindings": 1,
+      "input_next_display": 510,
+      "intro_body_enter": 126,
+      "intro_body_exit": 126,
+      "intro_goto_before": 1,
+      "intro_goto_return": 1,
+      "intro_poll": 21,
+      "intro_poll_state": 21,
+      "intro_step": 4,
+      "key_read": 1557,
+      "random": 2,
+      "ready": 1,
+      "state": 658
+    },
+    "candidate_proxy_events": [
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "1",
+        "10158",
+        "0",
+        "-1",
+        "boot",
+        "vs_com,minren,yihu,AI=5"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "3",
+        "10320",
+        "0",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "5",
+        "10362",
+        "1",
+        "-1",
+        "helper_load",
+        "p1,我爱罗,woailuo.swf"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "8",
+        "10369",
+        "1",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "12",
+        "10375",
+        "2",
+        "-1",
+        "helper_load",
+        "p2,魂,kon.swf"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "19",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "20",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p1.mc"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "21",
+        "10579",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2"
+      ],
+      [
+        "AIREF",
+        "s259-yijiao-geometry-normal",
+        "22",
+        "10580",
+        "7",
+        "-1",
+        "initCtrl",
+        "_level0.game.p2.mc"
+      ]
+    ],
+    "actual_load_callback_target": null,
+    "consumed_bytes_observation": null,
+    "callback_to_instance_lifetime": null
+  },
+  "source_loader_order": {
+    "authored_request_order": [
+      "loadman(\"p1\")",
+      "loadman(\"p2\")",
+      "loadfz(\"p1\")",
+      "loadfz(\"p2\")",
+      "loadSound()"
+    ],
+    "movie_clip_loader_instances_in_script": 1,
+    "completion_calls_next_step_inline": true,
+    "on_load_init_listener_present": false,
+    "callback_target_consumed": false,
+    "actual_callback_order": null,
+    "limitation": "Source order is not an observed callback schedule. A mutable current-request field can be advanced before a later initialization event; use a qualified per-request association."
+  },
+  "static_candidate": {
+    "kind": "static_candidate_only",
+    "instructions": [
+      {
+        "address": "0x100108f54",
+        "hex": "c6401000",
+        "instruction": "mov\tbyte ptr [rax + 0x10], 0x0"
+      },
+      {
+        "address": "0x100108f58",
+        "hex": "c645d700",
+        "instruction": "mov\tbyte ptr [rbp - 0x29], 0x0"
+      },
+      {
+        "address": "0x100108f5c",
+        "hex": "488b38",
+        "instruction": "mov\trdi, qword ptr [rax]"
+      },
+      {
+        "address": "0x100108f5f",
+        "hex": "ba01000000",
+        "instruction": "mov\tedx, 0x1"
+      },
+      {
+        "address": "0x100108f64",
+        "hex": "488d75d7",
+        "instruction": "lea\trsi, [rbp - 0x29]"
+      },
+      {
+        "address": "0x100108f68",
+        "hex": "e8d3a43a00",
+        "instruction": "call\t0x1004b3440 <__text+0x4b1440>"
+      },
+      {
+        "address": "0x100108f6d",
+        "hex": "0fb64dd7",
+        "instruction": "movzx\tecx, byte ptr [rbp - 0x29]"
+      },
+      {
+        "address": "0x100108f71",
+        "hex": "88ca",
+        "instruction": "mov\tdl, cl"
+      },
+      {
+        "address": "0x100108f73",
+        "hex": "80e201",
+        "instruction": "and\tdl, 0x1"
+      },
+      {
+        "address": "0x100108f76",
+        "hex": "80fa01",
+        "instruction": "cmp\tdl, 0x1"
+      },
+      {
+        "address": "0x100108f79",
+        "hex": "4519ed",
+        "instruction": "sbb\tr13d, r13d"
+      },
+      {
+        "address": "0x100108f7c",
+        "hex": "4509f5",
+        "instruction": "or\tr13d, r14d"
+      },
+      {
+        "address": "0x100108f7f",
+        "hex": "83f8ff",
+        "instruction": "cmp\teax, -0x1"
+      },
+      {
+        "address": "0x100108f82",
+        "hex": "440f44e8",
+        "instruction": "cmove\tr13d, eax"
+      },
+      {
+        "address": "0x100108f86",
+        "hex": "48c1e104",
+        "instruction": "shl\trcx, 0x4"
+      },
+      {
+        "address": "0x100108f8a",
+        "hex": "81e1e00f0000",
+        "instruction": "and\tecx, 0xfe0"
+      },
+      {
+        "address": "0x100108f90",
+        "hex": "48898b40010000",
+        "instruction": "mov\tqword ptr [rbx + 0x140], rcx"
+      },
+      {
+        "address": "0x100108f97",
+        "hex": "488bbbd8010000",
+        "instruction": "mov\trdi, qword ptr [rbx + 0x1d8]"
+      },
+      {
+        "address": "0x100108f9e",
+        "hex": "488b07",
+        "instruction": "mov\trax, qword ptr [rdi]"
+      },
+      {
+        "address": "0x100108fa1",
+        "hex": "ff9000040000",
+        "instruction": "call\tqword ptr [rax + 0x400]"
+      }
+    ],
+    "call_site": "0x100108f68",
+    "wrapper_target": "0x1004b3440",
+    "argument_buffer": "address of caller rbp-0x29",
+    "argument_length": 1,
+    "buffer_initialization": "zero at 0x100108f58 before call",
+    "post_call_read": "movzx ecx, byte ptr [rbp-0x29] at 0x100108f6d",
+    "derived_store": "(zero-extended byte << 4) & 0xfe0 to [rbx+0x140] at 0x100108f90",
+    "next_opaque_call": "[rax+0x400] at 0x100108fa1",
+    "limitation": "Conditional on normal wrapper return. The local can still contain its initialized zero on failure; a post-call load does not prove returned-byte provenance. No executed path, P1 identity, class, generation or target inferred."
+  },
+  "pattern_scan": {
+    "file_offset": 8192,
+    "size": 16463873,
+    "address": 4294975488,
+    "candidate_file_offsets": [
+      1085288,
+      1085386,
+      1086519,
+      1087127,
+      4927020
+    ],
+    "instruction_boundaries_proved": false
+  },
+  "observations": {
+    "executed_read_return": null,
+    "returned_buffer_ranges": null,
+    "loader_consumer": null,
+    "immutable_request_identity": null,
+    "target_before_loadStep_advance": null,
+    "same_request_initialization": null,
+    "target_lifetime": null,
+    "actual_wrong_resource_control": null,
+    "consumed_buffer_ranges": null,
+    "observer_effects": null,
+    "executed_caller": null,
+    "immutable_request_generation": null
+  },
+  "consumer_request_proved": false,
+  "loader_attestation_proved": false,
+  "normal_association_qualified": false,
+  "pre_advance_target_proved": false,
+  "wrong_resource_control_executed": false,
+  "wrong_resource_control_qualified": false,
+  "first_unmet_prerequisite": "actual P1 consumer and immutable request generation",
+  "blocker": "One static buffer-read candidate is bounded; actual caller/P1/request ownership and executed returned/consumed ranges before inline advance remain absent. Normal must qualify before wrong-resource control.",
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_process_attaches": 0,
+  "new_captures": 0,
+  "new_memory_reads": 0,
+  "exclusions": [
+    "return-register copy as consumption",
+    "mutable slot as generation",
+    "static hash as live bytes",
+    "helper stamp",
+    "receipt resealing",
+    "rollout",
+    "other ranks",
+    "prior evidence edits",
+    "runtime changes"
+  ]
+}

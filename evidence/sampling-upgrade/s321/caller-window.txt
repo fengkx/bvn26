@@ -1,0 +1,26 @@
+
+/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger:	file format mach-o 64-bit x86-64
+
+Disassembly of section __TEXT,__text:
+
+0000000100002000 <__text>:
+100108f54: c6 40 10 00                 	mov	byte ptr [rax + 0x10], 0x0
+100108f58: c6 45 d7 00                 	mov	byte ptr [rbp - 0x29], 0x0
+100108f5c: 48 8b 38                    	mov	rdi, qword ptr [rax]
+100108f5f: ba 01 00 00 00              	mov	edx, 0x1
+100108f64: 48 8d 75 d7                 	lea	rsi, [rbp - 0x29]
+100108f68: e8 d3 a4 3a 00              	call	0x1004b3440 <__text+0x4b1440>
+100108f6d: 0f b6 4d d7                 	movzx	ecx, byte ptr [rbp - 0x29]
+100108f71: 88 ca                       	mov	dl, cl
+100108f73: 80 e2 01                    	and	dl, 0x1
+100108f76: 80 fa 01                    	cmp	dl, 0x1
+100108f79: 45 19 ed                    	sbb	r13d, r13d
+100108f7c: 45 09 f5                    	or	r13d, r14d
+100108f7f: 83 f8 ff                    	cmp	eax, -0x1
+100108f82: 44 0f 44 e8                 	cmove	r13d, eax
+100108f86: 48 c1 e1 04                 	shl	rcx, 0x4
+100108f8a: 81 e1 e0 0f 00 00           	and	ecx, 0xfe0
+100108f90: 48 89 8b 40 01 00 00        	mov	qword ptr [rbx + 0x140], rcx
+100108f97: 48 8b bb d8 01 00 00        	mov	rdi, qword ptr [rbx + 0x1d8]
+100108f9e: 48 8b 07                    	mov	rax, qword ptr [rdi]
+100108fa1: ff 90 00 04 00 00           	call	qword ptr [rax + 0x400]
