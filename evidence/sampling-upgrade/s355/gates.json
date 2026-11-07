@@ -1,0 +1,110 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s355/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s355/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 1.1157920421101153,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "target-entry",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s355/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s355/diagnosis.json",
+      "--require-target-entry"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.1179944169707596,
+    "log": "target-entry.txt"
+  },
+  {
+    "name": "outer-lifetime",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s355/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s355/diagnosis.json",
+      "--require-outer-lifetime"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.0837091254070401,
+    "log": "outer-lifetime.txt"
+  },
+  {
+    "name": "independent-controls",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s355/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s355/diagnosis.json",
+      "--require-independent-controls"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.1031722081825137,
+    "log": "independent-controls.txt"
+  },
+  {
+    "name": "child-clock",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s355/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s355/diagnosis.json",
+      "--require-child-clock"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.3641142090782523,
+    "log": "child-clock.txt"
+  },
+  {
+    "name": "fresh-capture",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s355/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s355/diagnosis.json",
+      "--require-fresh-capture"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 1.2560427086427808,
+    "log": "fresh-capture.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s355/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s355/diagnosis.json",
+      "--require-target-entry",
+      "--require-outer-lifetime",
+      "--require-independent-controls",
+      "--require-child-clock",
+      "--require-fresh-capture"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 2.184412708040327,
+    "log": "all-proofs.txt"
+  }
+]
