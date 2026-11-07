@@ -1,0 +1,110 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s357/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s357/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.2337277089245617,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "independent-channel",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s357/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s357/diagnosis.json",
+      "--require-independent-channel"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.630159040912986,
+    "log": "independent-channel.txt"
+  },
+  {
+    "name": "logger-replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s357/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s357/diagnosis.json",
+      "--require-logger-replacement"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 4.174127667210996,
+    "log": "logger-replacement.txt"
+  },
+  {
+    "name": "callback-completion",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s357/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s357/diagnosis.json",
+      "--require-callback-completion"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 2.900559625122696,
+    "log": "callback-completion.txt"
+  },
+  {
+    "name": "off-on",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s357/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s357/diagnosis.json",
+      "--require-off-on"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 2.8274469999596477,
+    "log": "off-on.txt"
+  },
+  {
+    "name": "terminal-completeness",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s357/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s357/diagnosis.json",
+      "--require-terminal-completeness"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 4.716796167194843,
+    "log": "terminal-completeness.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s357/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s357/diagnosis.json",
+      "--require-independent-channel",
+      "--require-logger-replacement",
+      "--require-callback-completion",
+      "--require-off-on",
+      "--require-terminal-completeness"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.0749525418505073,
+    "log": "all-proofs.txt"
+  }
+]
