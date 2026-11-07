@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（采样 s339，AFTER-s335 排名第4项）：完整复现锁定 s330，仅作保留验证。未取得实际 P1 消费者、不可变请求代际、实际返回/消费区间及 inline advance 前目标的独立绑定，各项观测仍为 null；正常加载未合格，wrong-resource control 未执行。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名4，不重排；排名1–3交付保持关闭，排名5+仅规划，权威表与 s254–s338 不变，无运行时修改。[证据](../evidence/sampling-upgrade/s339/README.md)。
+
 - 2026-11-08（采样 s338，AFTER-s335 排名第3项）：完整复现锁定 s329，仅作保留验证，不将 CFG/接口复查计作新证明。未取得独立 original/candidate activation pair、defining scope 或初始化至覆盖/返回的 erasure 测量；绑定与各边界测量保持 null，在 live binding 和观察器安装前停止，零新增独立原生观测。基础诊断 exit0，四项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅排名3，不重排；排名1–2交付保持关闭，排名4+仅规划，权威表与 s254–s337 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s338/README.md)。
 
 - 2026-11-08（采样 s337，AFTER-s335 排名第2项）：完整复现锁定 s328，仅作保留验证；在哈希锁定播放器磁盘字节中查找 NUL 分隔 gotoAndStop 名称，精确匹配为零，未获得原生入口候选。此限定负结果不证明其他通道不存在；byte-bound target-entry 与独立 outer-instance lifetime 均未导出，四类对照未执行，fresh capture 在启动前阻塞。基础诊断 exit0，五项证明门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零产品义务关闭。仅排名2，不重排；排名1交付保持关闭，排名3+仅规划；权威表及 s254–s336 不变，无运行时修改。 [证据](../evidence/sampling-upgrade/s337/README.md)。
