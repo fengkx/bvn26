@@ -1,0 +1,85 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s330/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s330/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "wall_seconds": 5.239803999662399,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "consumer-request",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s330/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s330/diagnosis.json",
+      "--require-consumer-request"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 2.0021584588102996,
+    "log": "consumer-request.txt"
+  },
+  {
+    "name": "returned-consumed-ranges",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s330/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s330/diagnosis.json",
+      "--require-returned-consumed-ranges"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 4.605502041056752,
+    "log": "returned-consumed-ranges.txt"
+  },
+  {
+    "name": "pre-advance-target",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s330/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s330/diagnosis.json",
+      "--require-pre-advance-target"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 7.4663200825452805,
+    "log": "pre-advance-target.txt"
+  },
+  {
+    "name": "loader-attestation",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s330/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s330/diagnosis.json",
+      "--require-loader-attestation"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 6.3907459997572005,
+    "log": "loader-attestation.txt"
+  },
+  {
+    "name": "wrong-resource-control",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s330/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s330/diagnosis.json",
+      "--require-wrong-resource-control"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "wall_seconds": 2.8236666661687195,
+    "log": "wrong-resource-control.txt"
+  }
+]
