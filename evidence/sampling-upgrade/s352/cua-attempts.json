@@ -1,0 +1,33 @@
+{
+  "facility": "mcp__cua_repl.js",
+  "attempts": [
+    {
+      "operation": "await cua.getState();",
+      "reported_wall_seconds": 6.0243,
+      "relevant_result": {
+        "apps": [
+          {
+            "displayName": "Flash Player Debugger",
+            "id": "com.macromedia.Flash Player Debugger.app",
+            "isRunning": true
+          },
+          {
+            "displayName": "Flash Player Debugger",
+            "id": "com.macromedia.Flash Player Debugger.app",
+            "isRunning": true
+          }
+        ],
+        "windows_returned": false
+      },
+      "retention": "Flash entries only; unrelated application inventory omitted"
+    },
+    {
+      "operation": "let flash = await cua.getApp(\"com.macromedia.Flash Player Debugger.app\");",
+      "reported_wall_seconds": 5.4967,
+      "result": "Ambiguous app identifier 'com.macromedia.Flash Player Debugger.app'. Multiple apps share this bundle identifier: /Users/fengkx/me/code/flash-player/Flash Player.app, /Volumes/Flash Player/Flash Player.app. Use an app name or full app path instead."
+    }
+  ],
+  "permission_prompt_observed": false,
+  "ui_inputs_sent": 0,
+  "window_state_obtained": false
+}
