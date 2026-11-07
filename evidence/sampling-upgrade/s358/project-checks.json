@@ -1,0 +1,231 @@
+[
+  {
+    "name": "reextract",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s358/recheck_native.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.1318927090615034,
+    "log": "reextract.txt"
+  },
+  {
+    "name": "s348-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s348",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.7900311248376966,
+    "log": "s348-tests.txt"
+  },
+  {
+    "name": "s339-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s339",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.1552149578928947,
+    "log": "s339-tests.txt"
+  },
+  {
+    "name": "s330-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s330",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 2.0009062089957297,
+    "log": "s330-tests.txt"
+  },
+  {
+    "name": "s321-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s321",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 2.0527967917732894,
+    "log": "s321-tests.txt"
+  },
+  {
+    "name": "s313-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s313",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 2.5379757080227137,
+    "log": "s313-tests.txt"
+  },
+  {
+    "name": "s306-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s306",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 1.6123335417360067,
+    "log": "s306-tests.txt"
+  },
+  {
+    "name": "s297-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s297",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 1.3701605834066868,
+    "log": "s297-tests.txt"
+  },
+  {
+    "name": "s287-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s287",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.7947734575718641,
+    "log": "s287-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_loader_read_target_diagnosis",
+      "tools.tests.test_loader_attestation_diagnosis",
+      "tools.tests.test_capture_runtime_fighter",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 4.57671537483111,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "s358-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s358",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.620634624734521,
+    "log": "s358-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 1.3270001248456538,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.1555685419589281,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.19605470821261406,
+    "log": "diff-check.txt"
+  }
+]
