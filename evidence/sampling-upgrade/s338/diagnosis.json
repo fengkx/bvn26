@@ -1,0 +1,109 @@
+{
+  "slice": "s338",
+  "scope": "AFTER-s335 rank #3 only",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "m0_02_status": "pending",
+  "locked_s329_reproduced": true,
+  "replay_is_new_progress": false,
+  "repeated_cfg_or_interface_audit_is_new_proof": false,
+  "attempt": {
+    "slice": "s338",
+    "scope": "AFTER-s335 rank #3 only",
+    "status": "blocked-before-live-binding",
+    "original_run": null,
+    "candidate_run": null,
+    "same_input_tape": null,
+    "original_loaded_body": null,
+    "candidate_loaded_body": null,
+    "original_activation": null,
+    "candidate_activation": null,
+    "original_defining_scope": null,
+    "candidate_defining_scope": null,
+    "independent_channel": null,
+    "uninterrupted_lifetime": null,
+    "boundaries": [
+      {
+        "boundary": "initialization",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "enumeration",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "member-access",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "coercion",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "overwrite",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      },
+      {
+        "boundary": "no-overwrite-null-return",
+        "original_event": null,
+        "candidate_event": null,
+        "original_slot_state": null,
+        "candidate_slot_state": null,
+        "erasure_measurement": null
+      }
+    ],
+    "observer_installed": false,
+    "observer_controls_executed": false,
+    "independent_observations": [],
+    "reason": "Locked s329 supplies no independent activation/scope resolver. No replacement resolver or paired live trace was obtained in s338. Measurement stops before live binding and observer installation."
+  },
+  "independent_native_observations": 0,
+  "mechanism_obligations_closed": 0,
+  "product_obligations_closed": 0,
+  "gates": {
+    "activation-pair": {
+      "proved": false,
+      "code": "S338_ACTIVATION_PAIR_UNPROVED"
+    },
+    "activation-scope": {
+      "proved": false,
+      "code": "S338_ACTIVATION_SCOPE_UNPROVED"
+    },
+    "activation-erasure": {
+      "proved": false,
+      "code": "S338_ACTIVATION_ERASURE_UNPROVED"
+    },
+    "observer": {
+      "proved": false,
+      "code": "S338_OBSERVER_UNPROVED"
+    }
+  },
+  "new_builds": 0,
+  "new_player_launches": 0,
+  "new_attaches": 0,
+  "new_memory_reads": 0,
+  "new_helper_installations": 0,
+  "new_captures": 0,
+  "other_ranks_executed": [],
+  "next_required_evidence": "Independently derive and qualify a loaded-body, activation and defining-scope channel for one original/candidate pair, retaining uninterrupted lifetime and initialization-to-overwrite/return observations through opaque operations. Then measure erasure; only afterwards qualify observer controls."
+}
