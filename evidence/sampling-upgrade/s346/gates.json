@@ -1,0 +1,138 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s346/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s346/diagnosis.json"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.6355179171077907,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "target-entry",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s346/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s346/diagnosis.json",
+      "--require-target-entry"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.47031283332034945,
+    "log": "target-entry.txt"
+  },
+  {
+    "name": "outer-lifetime",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s346/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s346/diagnosis.json",
+      "--require-outer-lifetime"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.4787303749471903,
+    "log": "outer-lifetime.txt"
+  },
+  {
+    "name": "independent-controls",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s346/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s346/diagnosis.json",
+      "--require-independent-controls"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.4648207500576973,
+    "log": "independent-controls.txt"
+  },
+  {
+    "name": "child-clock",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s346/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s346/diagnosis.json",
+      "--require-child-clock"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.48647612472996116,
+    "log": "child-clock.txt"
+  },
+  {
+    "name": "fresh-capture",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s346/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s346/diagnosis.json",
+      "--require-fresh-capture"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.46708675008267164,
+    "log": "fresh-capture.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "/Users/fengkx/.local/share/mise/installs/python/3.11.15/bin/python3",
+      "evidence/sampling-upgrade/s346/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s346/diagnosis.json",
+      "--require-target-entry",
+      "--require-outer-lifetime",
+      "--require-independent-controls",
+      "--require-child-clock",
+      "--require-fresh-capture"
+    ],
+    "environment": {
+      "PYTHONPATH": ".",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 0.45693904208019376,
+    "log": "all-proofs.txt"
+  }
+]
