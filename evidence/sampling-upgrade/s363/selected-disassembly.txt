@@ -1,0 +1,23 @@
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x1000d227d --count 1 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000d2200:
+Flash Player Debugger[0x1000d227d] <+125>: 89 d8  movl   %ebx, %eax
+
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x1000d227f --count 1 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000d2200:
+Flash Player Debugger[0x1000d227f] <+127>: 83 e0 07  andl   $0x7, %eax
+
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x1000d2282 --count 1 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000d2200:
+Flash Player Debugger[0x1000d2282] <+130>: 48 83 f8 07  cmpq   $0x7, %rax
+
+(lldb) target create --no-dependents "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x1000d2286 --count 1 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000d2200:
+Flash Player Debugger[0x1000d2286] <+134>: 75 08  jne    0x1000d2290               ; <+144>

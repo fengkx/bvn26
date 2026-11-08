@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-08（采样 s363，post-s362 重排）：旧 s354–s362 交付保持关闭，仅执行新 rank1 Chad 索引0目的地址首分支。独立逐指令核对 0xd227d 起11字节/4指令，得到 RBX 低三位与7比较及两个静态后继；停在首个控制转移，不展开后继，不推断类型或实际执行。完整 s354 重放仅作保留验证。基础 exit0，五项证明及组合 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零义务关闭。rank2+仅规划；旧表、s254–s362及运行时不变。实际耗时见证据包，person-days未知。[新排名](../evidence/sampling-upgrade/next-fix-priority-after-s362.md)；[证据](../evidence/sampling-upgrade/s363/README.md)。
+
 - 2026-11-08（采样 s362，AFTER-s353 rank #9）：独立从收据哈希锁定的 s262 原始日志按 tick/display/callback 关联场景，逐边界导出数字源帧及 shape 矛盾；61 个边界均可在不依赖相机差异的情况下拒绝。仅为历史字节的独立负向推导，非新原生或像素观测；完整 s353 重放仅作保留验证。完整同次捕获准入仍缺，未捕获对应场景，RGBA 边缘/内部残差保持 null。基础 exit0，三项证明及组合 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零义务关闭。仅 rank9，rank1–8已交付，无后续排名，不重排、不修准入；s254–s361、权威表及运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s362/README.md)。
 
 - 2026-11-08（采样 s361，AFTER-s353 rank #8）：独立 ps/NSWorkspace/WindowServer 交叉查询区分收据路径 PID68944 与挂载副本 PID50810，并将本 worktree main.swf 标题窗口117370关联到68944。仅证明进程路径/窗口属主元数据；实际可见内容、输入目标和已加载字节身份未证明。精确路径 CUA 选择超时且绑定 undefined，不能解释为未派发。零输入、零新行为捕获；编译 opcode、Enter/release 与观察到的无派发对照待验证。完整 s352 重放仅作保留验证。基础/元数据关联门禁 exit0，四项证明及组合门禁 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零义务关闭。仅 rank8，rank1–7已交付、rank9+仅规划；s254–s360、权威表与运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s361/README.md)。
