@@ -1,0 +1,116 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r01",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "blocked\n",
+    "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.007s\n\nOK\n",
+    "seconds": 0.14289212506264448
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r02",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\n",
+    "seconds": 0.0833745407871902
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r03",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.005s\n\nOK\n",
+    "seconds": 0.08049729187041521
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "tools.tests.test_capture_serialization",
+      "tools.tests.test_capture_runtime_fighter"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"events\": 0, \"done\": false, \"capture\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpxfgor12z/capture.log\", \"launch\": \"windowed LaunchServices launch (activation possible)\", \"player_app\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpxfgor12z/Custom Flash Player.app\", \"command\": [\"/usr/bin/open\", \"-g\", \"-n\", \"-W\", \"-a\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpxfgor12z/Custom Flash Player.app\", \"--args\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpxfgor12z/build/game/main.swf\"], \"runtime_fighter\": null}\n{\"events\": 0, \"done\": false, \"capture\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpo1de8yjm/capture.log\", \"launch\": \"windowed LaunchServices launch (activation possible)\", \"player_app\": \"/Volumes/Flash Player/Flash Player.app\", \"command\": [\"/usr/bin/open\", \"-g\", \"-n\", \"-W\", \"-a\", \"/Volumes/Flash Player/Flash Player.app\", \"--args\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpo1de8yjm/build/game/main.swf\"], \"runtime_fighter\": null}\n",
+    "stderr": "............\n----------------------------------------------------------------------\nRan 12 tests in 10.221s\n\nOK\n",
+    "seconds": 10.326662499923259
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r03/analyze.py",
+      "evidence/oracle/native-fight-r03/run-01",
+      "--require-oracle"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/oracle/native-fight-r03/analyze.py\", line 80, in <module>\n    result=analyze(args.directory)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/oracle/native-fight-r03/analyze.py\", line 43, in analyze\n    raise ValueError('Cleanup or asset recheck incomplete')\nValueError: Cleanup or asset recheck incomplete\n",
+    "seconds": 0.05933395912870765
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": "",
+    "seconds": 0.9350768746808171
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 995, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": "",
+    "seconds": 0.0984139577485621
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "seconds": 0.14697820786386728
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "exit_code": 0,
+    "note": "Final complete staged check after lossless compression of raw CRLF diffs and compiler stderr. Initial staged check returned2 on raw whitespace; no commit was created."
+  }
+]

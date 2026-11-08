@@ -8,6 +8,16 @@ failures](oracle/native-fight-r02/README.md). Missing: exact initial state/clock
 input consumption ticks, random tape, run-tagged state trace and repeat comparison.
 No TCC denial was observed; no speculative user grant is required.
 
+## M0-02 observer preparation r03, 2026-11-09
+
+A separate observer copy emitted one unique boot-tag event. The exact-PID driver
+then stopped on focus loss after S, before any accepted fight-state capture.
+The user deferred further live capture. A revised source-site observer build and
+offline checks are ready; its state/key/random output has not been observed.
+Only three DoAction payloads change; original assets remain locked. See
+[r03 source audit and failed attempt](oracle/native-fight-r03/README.md).
+M0-02 remains pending; both admission flags remain false.
+
 ## Historical M0-02 live oracle attempt r01, 2026-11-08
 
 The mounted player executable matches the full locked SHA below. A serialized
