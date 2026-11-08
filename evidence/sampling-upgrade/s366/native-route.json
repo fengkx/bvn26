@@ -1,0 +1,87 @@
+{
+  "binary_sha256": "8d4c1f5934adae809b5f4ce4f6ca7c64d4260df46bb3eb9c41fe32be2ee905be",
+  "binary_size": 24120048,
+  "search_sections": [
+    {
+      "segment": "__TEXT",
+      "section": "__cstring",
+      "address": 4313439616,
+      "size": 621588,
+      "file_offset": 18472320,
+      "relocation_offset": 0,
+      "relocation_count": 0,
+      "flags": 2,
+      "section_header_hex": "5f5f63737472696e67000000000000005f5f544558540000000000000000000080dd190101000000147c09000000000080dd190104000000000000000000000002000000000000000000000000000000"
+    },
+    {
+      "segment": "__TEXT",
+      "section": "__text",
+      "address": 4294975488,
+      "size": 16463873,
+      "file_offset": 8192,
+      "relocation_offset": 0,
+      "relocation_count": 0,
+      "flags": 2147484672,
+      "section_header_hex": "5f5f74657874000000000000000000005f5f544558540000000000000000000000200000010000000138fb0000000000002000000c000000000000000000000000040080000000000000000000000000"
+    }
+  ],
+  "method": "Exact NUL-delimited ASCII in __TEXT,__cstring, then REX.W RIP-LEA byte candidates in __TEXT,__text; unique candidate selected",
+  "name": {
+    "text": "onEnterFrame",
+    "file_offset": 18477072,
+    "address": 4313444368,
+    "bytes_hex": "6f6e456e7465724672616d6500"
+  },
+  "candidates": [
+    {
+      "file_offset": 614727,
+      "address": 4295582023,
+      "target": 4313444368,
+      "displacement": 17862338,
+      "bytes_hex": "488d15c28e1001"
+    }
+  ],
+  "function_metadata": {
+    "preceding_start": 4295571376,
+    "next_start": 4295589616,
+    "stream_offset": 23679136,
+    "stream_size": 78464,
+    "stream_sha256": "914d56beacd602a9b6bfc33d3a0a4de537cd0f238212b815bc69c2cbc7bc4f2e"
+  },
+  "local_decode": {
+    "start": 4295582023,
+    "end_exclusive": 4295582045,
+    "bytes_hex": "488d15c28e1001488dbd30fdffff4c89eee833c40300",
+    "sha256": "d2cdb59f7f6463d8f810b567a3c7a5e2c39d3f492f71ac727a3258588cf74eff",
+    "instruction_lengths": [
+      7,
+      7,
+      3,
+      5
+    ],
+    "name_operand": {
+      "next_rip": 4295582030,
+      "displacement": 17862338,
+      "target": 4313444368,
+      "register": "rdx"
+    },
+    "other_operands": [
+      "rdi = rbp - 0x2d0",
+      "rsi = r13"
+    ],
+    "direct_call": {
+      "address": 4295582040,
+      "target": 4295828880
+    },
+    "instruction_boundary_from_function_entry_proven": false,
+    "semantics": "Local decoding from a byte-pattern candidate only; no executed-path or native type assertion"
+  },
+  "loaded_closure_body": null,
+  "owner_generation": null,
+  "activation": null,
+  "matched_dispatcher_continuation": null,
+  "replacement_survival": null,
+  "native_observations": [],
+  "successor_expansions": 0,
+  "limitation": "Name address is not callback identity. Function metadata does not establish the local candidate as a reachable instruction boundary. No callee or successor decoded; no live launch, attach, off/on or terminal inventory."
+}

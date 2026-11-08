@@ -1,0 +1,23 @@
+(lldb) target create --no-dependents "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x100096147 --count 1 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000937b0:
+Flash Player Debugger[0x100096147] <+10647>: 48 8d 15 c2 8e 10 01  leaq   0x1108ec2(%rip), %rdx     ; "onEnterFrame"
+
+(lldb) target create --no-dependents "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x10009614e --count 1 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000937b0:
+Flash Player Debugger[0x10009614e] <+10654>: 48 8d bd 30 fd ff ff  leaq   -0x2d0(%rbp), %rdi
+
+(lldb) target create --no-dependents "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x100096155 --count 1 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000937b0:
+Flash Player Debugger[0x100096155] <+10661>: 4c 89 ee  movq   %r13, %rsi
+
+(lldb) target create --no-dependents "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x100096158 --count 1 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000937b0:
+Flash Player Debugger[0x100096158] <+10664>: e8 33 c4 03 00  callq  0x1000d2590               ; ___lldb_unnamed_symbol_1000d2590
