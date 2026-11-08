@@ -1,0 +1,34 @@
+(lldb) target create --no-dependents "/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger"
+Current executable set to '/Users/fengkx/me/code/flash-player/Flash Player.app/Contents/MacOS/Flash Player Debugger' (x86_64).
+(lldb) disassemble --start-address 0x1000bfcc0 --end-address 0x1000bfd20 --bytes
+Flash Player Debugger`___lldb_unnamed_symbol_1000bfcc0:
+Flash Player Debugger[0x1000bfcc0] <+0>:  55                    pushq  %rbp
+Flash Player Debugger[0x1000bfcc1] <+1>:  48 89 e5              movq   %rsp, %rbp
+Flash Player Debugger[0x1000bfcc4] <+4>:  41 56                 pushq  %r14
+Flash Player Debugger[0x1000bfcc6] <+6>:  53                    pushq  %rbx
+Flash Player Debugger[0x1000bfcc7] <+7>:  48 89 f3              movq   %rsi, %rbx
+Flash Player Debugger[0x1000bfcca] <+10>: 48 8d 35 6f 00 14 01  leaq   0x114006f(%rip), %rsi     ; ""
+Flash Player Debugger[0x1000bfcd1] <+17>: 48 89 df              movq   %rbx, %rdi
+Flash Player Debugger[0x1000bfcd4] <+20>: e8 87 dc f9 ff        callq  0x10005d960               ; ___lldb_unnamed_symbol_10005d960
+Flash Player Debugger[0x1000bfcd9] <+25>: 41 b6 01              movb   $0x1, %r14b
+Flash Player Debugger[0x1000bfcdc] <+28>: 84 c0                 testb  %al, %al
+Flash Player Debugger[0x1000bfcde] <+30>: 75 38                 jne    0x1000bfd18               ; <+88>
+Flash Player Debugger[0x1000bfce0] <+32>: 48 8d 35 15 f8 0d 01  leaq   0x10df815(%rip), %rsi     ; "_self"
+Flash Player Debugger[0x1000bfce7] <+39>: 48 89 df              movq   %rbx, %rdi
+Flash Player Debugger[0x1000bfcea] <+42>: e8 71 dc f9 ff        callq  0x10005d960               ; ___lldb_unnamed_symbol_10005d960
+Flash Player Debugger[0x1000bfcef] <+47>: 84 c0                 testb  %al, %al
+Flash Player Debugger[0x1000bfcf1] <+49>: 75 25                 jne    0x1000bfd18               ; <+88>
+Flash Player Debugger[0x1000bfcf3] <+51>: 48 8d 35 e7 f2 0d 01  leaq   0x10df2e7(%rip), %rsi     ; "_parent"
+Flash Player Debugger[0x1000bfcfa] <+58>: 48 89 df              movq   %rbx, %rdi
+Flash Player Debugger[0x1000bfcfd] <+61>: e8 5e dc f9 ff        callq  0x10005d960               ; ___lldb_unnamed_symbol_10005d960
+Flash Player Debugger[0x1000bfd02] <+66>: 84 c0                 testb  %al, %al
+Flash Player Debugger[0x1000bfd04] <+68>: 75 12                 jne    0x1000bfd18               ; <+88>
+Flash Player Debugger[0x1000bfd06] <+70>: 48 8d 35 f5 f7 0d 01  leaq   0x10df7f5(%rip), %rsi     ; "_top"
+Flash Player Debugger[0x1000bfd0d] <+77>: 48 89 df              movq   %rbx, %rdi
+Flash Player Debugger[0x1000bfd10] <+80>: e8 4b dc f9 ff        callq  0x10005d960               ; ___lldb_unnamed_symbol_10005d960
+Flash Player Debugger[0x1000bfd15] <+85>: 41 88 c6              movb   %al, %r14b
+Flash Player Debugger[0x1000bfd18] <+88>: 44 88 f0              movb   %r14b, %al
+Flash Player Debugger[0x1000bfd1b] <+91>: 5b                    popq   %rbx
+Flash Player Debugger[0x1000bfd1c] <+92>: 41 5e                 popq   %r14
+Flash Player Debugger[0x1000bfd1e] <+94>: 5d                    popq   %rbp
+Flash Player Debugger[0x1000bfd1f] <+95>: c3                    retq   

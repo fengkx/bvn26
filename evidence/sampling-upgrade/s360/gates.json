@@ -1,0 +1,142 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 7.07480145804584,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "relative-code-association",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json",
+      "--require-relative-code-association"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 7.954082291107625,
+    "log": "relative-code-association.txt"
+  },
+  {
+    "name": "parent-depth-resolver",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json",
+      "--require-parent-depth-resolver"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 7.04910883307457,
+    "log": "parent-depth-resolver.txt"
+  },
+  {
+    "name": "saved-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json",
+      "--require-saved-reference"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 7.479345000348985,
+    "log": "saved-reference.txt"
+  },
+  {
+    "name": "slot-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json",
+      "--require-slot-reference"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 6.61203341698274,
+    "log": "slot-reference.txt"
+  },
+  {
+    "name": "content-clearing",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json",
+      "--require-content-clearing"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 7.472253458108753,
+    "log": "content-clearing.txt"
+  },
+  {
+    "name": "replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json",
+      "--require-replacement"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 7.5803885422647,
+    "log": "replacement.txt"
+  },
+  {
+    "name": "allocation-identity",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json",
+      "--require-allocation-identity"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 6.9931075419299304,
+    "log": "allocation-identity.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s360/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s360/diagnosis.json",
+      "--require-relative-code-association",
+      "--require-parent-depth-resolver",
+      "--require-saved-reference",
+      "--require-slot-reference",
+      "--require-content-clearing",
+      "--require-replacement",
+      "--require-allocation-identity"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 8.078789082821459,
+    "log": "all-proofs.txt"
+  }
+]
