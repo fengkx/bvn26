@@ -1,0 +1,78 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r02",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+    "seconds": 0.076128417160362
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r01",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "blocked\n",
+    "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.005s\n\nOK\n",
+    "seconds": 0.09033716702833772
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "tools.tests.test_capture_serialization",
+      "tools.tests.test_capture_runtime_fighter"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"events\": 0, \"done\": false, \"capture\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpedyydkzs/capture.log\", \"launch\": \"windowed LaunchServices launch (activation possible)\", \"player_app\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpedyydkzs/Custom Flash Player.app\", \"command\": [\"/usr/bin/open\", \"-g\", \"-n\", \"-W\", \"-a\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpedyydkzs/Custom Flash Player.app\", \"--args\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpedyydkzs/build/game/main.swf\"], \"runtime_fighter\": null}\n{\"events\": 0, \"done\": false, \"capture\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpruumpls1/capture.log\", \"launch\": \"windowed LaunchServices launch (activation possible)\", \"player_app\": \"/Volumes/Flash Player/Flash Player.app\", \"command\": [\"/usr/bin/open\", \"-g\", \"-n\", \"-W\", \"-a\", \"/Volumes/Flash Player/Flash Player.app\", \"--args\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpruumpls1/build/game/main.swf\"], \"runtime_fighter\": null}\n",
+    "stderr": "............\n----------------------------------------------------------------------\nRan 12 tests in 10.197s\n\nOK\n",
+    "seconds": 10.274901375174522
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": "",
+    "seconds": 0.8569520423188806
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 994, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": "",
+    "seconds": 0.08671649964526296
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "seconds": 0.12778549967333674
+  }
+]

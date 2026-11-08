@@ -1,10 +1,14 @@
 # Original reference environment
 
-Status: usable for native-player boot and isolated AVM1 scheduling probes. A fixed
-Naruto-versus-Ichigo gameplay replay has not yet been captured, so `M0-02` remains
-pending.
+Status: native exact-PID window/input binding has recovered. An unchanged original
+Vs Com menu run visibly reached Ichigo versus Naruto ROUND 1; this is facility
+proof, not an accepted reproducible oracle. M0-02 remains pending and both
+admission flags remain false. See [live recovery, physical tape and retained
+failures](oracle/native-fight-r02/README.md). Missing: exact initial state/clock,
+input consumption ticks, random tape, run-tagged state trace and repeat comparison.
+No TCC denial was observed; no speculative user grant is required.
 
-## M0-02 live oracle attempt, 2026-11-08
+## Historical M0-02 live oracle attempt r01, 2026-11-08
 
 The mounted player executable matches the full locked SHA below. A serialized
 15-second launch of an unchanged copy of all 75 game assets observed one exact
