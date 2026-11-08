@@ -4,6 +4,18 @@ Status: usable for native-player boot and isolated AVM1 scheduling probes. A fix
 Naruto-versus-Ichigo gameplay replay has not yet been captured, so `M0-02` remains
 pending.
 
+## M0-02 live oracle attempt, 2026-11-08
+
+The mounted player executable matches the full locked SHA below. A serialized
+15-second launch of an unchanged copy of all 75 game assets observed one exact
+movie-command PID, then cleaned only that process. macOS 26.7/25G229, arm64 host
+and x86_64 translated-command availability were recorded; mm.cfg matches.
+CUA failed with `Sky Computer Use native pipe startup failed`, including after
+kernel reset. No visible content/input binding or fixed fight capture was obtained;
+flashlog appended zero bytes, which is not a native trace or no-dispatch proof.
+M0-02 stays pending with a concrete facility blocker. Both admission flags remain
+false. See [session receipts and recovery prerequisites](oracle/native-fight-r01/README.md).
+
 ## Runtime
 
 - Player: Adobe Flash Player Debugger `32.0.0.465`, standalone macOS application

@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-08（M0-02 原生固定对战 oracle，live r01）：在独立本地分支实际启动锁定挂载播放器，75个原资源副本及trace配置匹配；捕获锁内观察到唯一临时movie进程并清理，flashlog新增0字节。CUA全局/指定路径/重置后均报 `Sky Computer Use native pipe startup failed`，未获得可见窗口、输入绑定、对战初态、输入/随机tape或有效轨迹；M0-02保持pending，本次明确blocked，production_admitted=false、native_parity_proven=false。不接续静态排名，不推送/建PR/部署；依赖未合并PR244。[阻塞收据与后续条件](../evidence/oracle/native-fight-r01/README.md)。
+
 - 2026-11-08（采样 s366，AFTER-s362 rank #4）：独立 callback-name 路线在锁定播放器 cstring 中找到 onEnterFrame 文本及一个 RIP-LEA 字节候选，局部解码22字节/4指令止于首个调用；仅证明磁盘操作数字节与算术，候选入口边界、调用语义及 loaded callback/owner/activation 到 dispatcher outcome 均未证明。off/on 与 inventory 未执行；完整 s357 重放仅作保留验证。基础 exit0，五项证明及组合 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank4；rank1–3已交付、rank5+仅规划；不重排，权威表、s254–s365及运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s366/README.md)。
 
 - 2026-11-08（采样 s365，AFTER-s362 rank #3）：独立解码 s360 已选调用目标首个控制转移前缀，共11字节/5指令；仅观察到清零 EAX、检查 RDI 为零后条件跳转，不解引用 RDI、不使用 RSI。父/深度解析与独立 saved-reference 表示/解引用未证明，live generations及清理/替换/free/reuse/pool对照未执行。完整 s360 重放仅作保留验证。基础 exit0，六项证明及组合 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank3；rank1–2已交付、rank4+仅规划；不重排，权威表、s254–s364及运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s365/README.md)。

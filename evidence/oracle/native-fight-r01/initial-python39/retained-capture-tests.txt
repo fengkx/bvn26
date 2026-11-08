@@ -1,0 +1,17 @@
+{"events": 0, "done": false, "capture": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpmgy_s68z/capture.log", "launch": "windowed LaunchServices launch (activation possible)", "player_app": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpmgy_s68z/Custom Flash Player.app", "command": ["/usr/bin/open", "-g", "-n", "-W", "-a", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpmgy_s68z/Custom Flash Player.app", "--args", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpmgy_s68z/build/game/main.swf"], "runtime_fighter": null}
+{"events": 0, "done": false, "capture": "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpo52zcdae/capture.log", "launch": "windowed LaunchServices launch (activation possible)", "player_app": "/Volumes/Flash Player/Flash Player.app", "command": ["/usr/bin/open", "-g", "-n", "-W", "-a", "/Volumes/Flash Player/Flash Player.app", "--args", "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpo52zcdae/build/game/main.swf"], "runtime_fighter": null}
+.E..........
+======================================================================
+ERROR: test_capture_error_is_primary_when_cleanup_also_fails (tools.tests.test_capture_serialization.CaptureSerializationTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_capture_serialization.py", line 141, in test_capture_error_is_primary_when_cleanup_also_fails
+    capture._capture_locked(build, destination, 0.01)
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/probes/capture_native_player.py", line 206, in _capture_locked
+    capture_error.add_note(f'Capture cleanup also failed: {error!r}')
+AttributeError: 'ValueError' object has no attribute 'add_note'
+
+----------------------------------------------------------------------
+Ran 12 tests in 10.224s
+
+FAILED (errors=1)
