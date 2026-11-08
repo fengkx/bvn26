@@ -1,0 +1,126 @@
+[
+  {
+    "name": "diagnosis",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s365/diagnosis.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 3.4346794998273253,
+    "log": "diagnosis.txt"
+  },
+  {
+    "name": "parent-depth-resolver",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s365/diagnosis.json",
+      "--require-parent-depth-resolver"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.111136541236192,
+    "log": "parent-depth-resolver.txt"
+  },
+  {
+    "name": "saved-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s365/diagnosis.json",
+      "--require-saved-reference"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.1129812081344426,
+    "log": "saved-reference.txt"
+  },
+  {
+    "name": "slot-reference",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s365/diagnosis.json",
+      "--require-slot-reference"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.1589371669106185,
+    "log": "slot-reference.txt"
+  },
+  {
+    "name": "content-clearing",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s365/diagnosis.json",
+      "--require-content-clearing"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.1441366248764098,
+    "log": "content-clearing.txt"
+  },
+  {
+    "name": "replacement",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s365/diagnosis.json",
+      "--require-replacement"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.173744000028819,
+    "log": "replacement.txt"
+  },
+  {
+    "name": "allocation-identity",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s365/diagnosis.json",
+      "--require-allocation-identity"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.5135548328980803,
+    "log": "allocation-identity.txt"
+  },
+  {
+    "name": "all-proofs",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/diagnose.py",
+      "--output",
+      "evidence/sampling-upgrade/s365/diagnosis.json",
+      "--require-parent-depth-resolver",
+      "--require-saved-reference",
+      "--require-slot-reference",
+      "--require-content-clearing",
+      "--require-replacement",
+      "--require-allocation-identity"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "passed": true,
+    "wall_seconds": 3.136344540864229,
+    "log": "all-proofs.txt"
+  }
+]

@@ -1,0 +1,258 @@
+[
+  {
+    "name": "reextract",
+    "command": [
+      "python3",
+      "evidence/sampling-upgrade/s365/extract_native.py",
+      "--binary",
+      "/Volumes/Flash Player/Flash Player.app/Contents/MacOS/Flash Player Debugger",
+      "--output",
+      "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/s365-reextract-3ihe8j5i/native-prefix.json"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.05427920911461115,
+    "log": "reextract.txt",
+    "entire_record_equal": true
+  },
+  {
+    "name": "s351-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s351",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 24.30324054090306,
+    "log": "s351-tests.txt"
+  },
+  {
+    "name": "s343-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s343",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 29.096998875029385,
+    "log": "s343-tests.txt"
+  },
+  {
+    "name": "s334-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s334",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 30.246909250039607,
+    "log": "s334-tests.txt"
+  },
+  {
+    "name": "s325-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s325",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 4.963488624896854,
+    "log": "s325-tests.txt"
+  },
+  {
+    "name": "s316-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s316",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 4.118530374951661,
+    "log": "s316-tests.txt"
+  },
+  {
+    "name": "s307-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s307",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 23.23179579200223,
+    "log": "s307-tests.txt"
+  },
+  {
+    "name": "s298-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s298",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 22.149618667084724,
+    "log": "s298-tests.txt"
+  },
+  {
+    "name": "s289-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s289",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 10.207965624984354,
+    "log": "s289-tests.txt"
+  },
+  {
+    "name": "retained-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_aimain_native_resolver_gap",
+      "tools.tests.test_aimain_allocation_identity",
+      "tools.tests.test_aimain_content_clearing",
+      "tools.tests.test_aimain_unload_identity",
+      "tools.tests.test_display_source_frame_diagnosis",
+      "tools.tests.test_sampling_native",
+      "tools.tests.test_sampling_display",
+      "tools.tests.test_display_completion_default",
+      "tools.tests.test_import_guards"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 26.016863125376403,
+    "log": "retained-tests.txt"
+  },
+  {
+    "name": "s360-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s360",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 30.096386542078108,
+    "log": "s360-tests.txt"
+  },
+  {
+    "name": "s365-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/sampling-upgrade/s365",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 36.14181387517601,
+    "log": "s365-tests.txt"
+  },
+  {
+    "name": "integrity",
+    "command": [
+      "python3",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.6984235001727939,
+    "log": "integrity.txt"
+  },
+  {
+    "name": "handoff",
+    "command": [
+      "python3",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.07091458374634385,
+    "log": "handoff.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "passed": true,
+    "wall_seconds": 0.13914083410054445,
+    "log": "diff-check.txt"
+  }
+]
