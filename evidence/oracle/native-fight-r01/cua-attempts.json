@@ -1,0 +1,51 @@
+{
+  "facility": "mcp__cua_repl",
+  "attempts": [
+    {
+      "operation": "await cua.getState();",
+      "reported_wall_seconds": 8.9774,
+      "result": {
+        "apps": [],
+        "browsers": [],
+        "errors": [
+          "Native apps: Error: Sky Computer Use native pipe startup failed"
+        ]
+      }
+    },
+    {
+      "operation": "let oracleFlash = await cua.getApp(\"/Volumes/Flash Player/Flash Player.app\");",
+      "reported_wall_seconds": 8.6499,
+      "result": "Sky Computer Use native pipe startup failed"
+    },
+    {
+      "operation": "mcp__cua_repl.js_reset",
+      "reported_wall_seconds": 0.0289,
+      "result": "js kernel reset"
+    },
+    {
+      "operation": "let oracleFlash = await cua.getApp(\"/Volumes/Flash Player/Flash Player.app\");",
+      "reported_wall_seconds": 8.7007,
+      "result": "Sky Computer Use native pipe startup failed"
+    },
+    {
+      "operation": "let oracleFlashLive = await cua.getApp(\"/Volumes/Flash Player/Flash Player.app\");",
+      "context": "After attempt-02 launch requested; exact overlap not independently timestamp-bound",
+      "reported_wall_seconds": 8.0976,
+      "result": "Sky Computer Use native pipe startup failed"
+    }
+  ],
+  "binding_obtained": false,
+  "ui_inputs_sent": 0,
+  "screenshots_obtained": 0,
+  "trust_or_permission_prompt_text": null,
+  "prompt_absence_proven": false,
+  "usage_monitor": {
+    "user_reported_weekly_remaining_percent": 55,
+    "user_requested_stop_floor_percent": 20,
+    "current_independent_ui_reading": null,
+    "reason": "Native CUA pipe startup unavailable; no credential/session files or unofficial usage endpoint read"
+  },
+  "settings_changes": [],
+  "model_change_requested": false,
+  "limitation": "Tool failure is neither a native no-dispatch observation nor proof that no prompt appeared."
+}

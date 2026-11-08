@@ -1,0 +1,37 @@
+{
+  "kind": "human-reviewed-native-facility-result",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "m0_02": "pending",
+  "successful_physical_tape_run": "run-04",
+  "movie_pid": 95146,
+  "tape_sha256": "eaa0442f59f0c311302350b586a6d26650a64e822d8e2cd09afddf4dfbeced0d",
+  "reviewed_screenshots": {
+    "00-windowed.jpg": "Normal menu, movie-title window",
+    "01-vs-com.jpg": "Vs Com, 与电脑对战",
+    "02-roster-p1.jpg": "Ichigo selected",
+    "03-roster-p2.jpg": "Naruto selected",
+    "04-assist-p1.jpg": "Kon selected",
+    "05-assist-p2.jpg": "Gaara selected",
+    "06-map.jpg": "现世 highlighted",
+    "07-fight.jpg": "Ichigo/Naruto active fight; clock55, not exact initial state"
+  },
+  "append_bytes": 3362,
+  "trace_attribution": "account-wide only",
+  "repeatability": "Exploratory menu path and one pinned v2 tape run reached the same visible roster; no identical tick/state/random replay comparison. run03 failed focus, not a successful repeat.",
+  "failed_runs": {
+    "run-01": "process-reference returned wrong PID; append check failed",
+    "run-02": "S during logo; Normal rather than Vs Com",
+    "run-03": "frontmost PID changed; stopped before S"
+  },
+  "capture_exit": 1,
+  "missing": [
+    "exact post-menu initial state and clock phase",
+    "native physical-input consumption ticks",
+    "random draw tape or validated seed",
+    "unique run-tagged state trace",
+    "contract-valid normalized trace and repeat comparison"
+  ],
+  "budget": "Last coordinator UI report53% weekly; floor20%; no credential/session files or unofficial usage endpoints read."
+}
