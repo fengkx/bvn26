@@ -1,5 +1,7 @@
 # 输入采样升级：执行覆盖先行
 
+- 2026-11-08（采样 s365，AFTER-s362 rank #3）：独立解码 s360 已选调用目标首个控制转移前缀，共11字节/5指令；仅观察到清零 EAX、检查 RDI 为零后条件跳转，不解引用 RDI、不使用 RSI。父/深度解析与独立 saved-reference 表示/解引用未证明，live generations及清理/替换/free/reuse/pool对照未执行。完整 s360 重放仅作保留验证。基础 exit0，六项证明及组合 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank3；rank1–2已交付、rank4+仅规划；不重排，权威表、s254–s364及运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s365/README.md)。
+
 - 2026-11-08（采样 s364，AFTER-s362 rank #2）：独立从 packed-name 容器寻找方法关联：原生磁盘有两处 gotoAndStop ASCII 子串，其中一处属于328字节逗号名称串；串首的限定 RIP-LEA/u64 引用搜索无候选。名称与相邻 removeMovieClip 不是可执行方法或外层寿命身份，十目标 loaded entry、独立 outer lifetime 仍未证明；对照与捕获未执行。完整 s355 重放仅作保留验证。基础 exit0，五项证明及组合 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零机制/产品义务关闭。仅 rank2；rank1已交付、rank3+仅规划；不重排，权威表、s254–s363及运行时不变。实际耗时见证据包，person-days未知。[证据](../evidence/sampling-upgrade/s364/README.md)。
 
 - 2026-11-08（采样 s363，post-s362 重排）：旧 s354–s362 交付保持关闭，仅执行新 rank1 Chad 索引0目的地址首分支。独立逐指令核对 0xd227d 起11字节/4指令，得到 RBX 低三位与7比较及两个静态后继；停在首个控制转移，不展开后继，不推断类型或实际执行。完整 s354 重放仅作保留验证。基础 exit0，五项证明及组合 exit1；production_admitted=false、native_parity_proven=false，M0-02 pending，零义务关闭。rank2+仅规划；旧表、s254–s362及运行时不变。实际耗时见证据包，person-days未知。[新排名](../evidence/sampling-upgrade/next-fix-priority-after-s362.md)；[证据](../evidence/sampling-upgrade/s363/README.md)。
