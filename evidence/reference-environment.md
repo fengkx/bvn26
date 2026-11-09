@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Offline fight observer r05
+
+2026-11-09 M0-02 r05 offline: added 39 lexical Ichigo base-form fight decision key observers and existing timer entry/exit observations in independent SWF copies; five DoAction payloads across main/ichigo only. No live launch/capture. Analyzer and require-oracle exit 1 without live proof; local ordinals are not global ticks. Initial state, fight consumption, full random tape, exclusive trace, deterministic repeat and noninterference remain unproved; all admission flags false, M0-02 pending. See [r05](oracle/native-fight-r05/README.md).
+
 Status: native exact-PID window/input binding has recovered. An unchanged original
 Vs Com menu run visibly reached Ichigo versus Naruto ROUND 1; this is facility
 proof, not an accepted reproducible oracle. M0-02 remains pending and both
