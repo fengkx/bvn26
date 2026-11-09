@@ -1,0 +1,28 @@
+{
+  "timer": {
+    "path": "DefineSprite_1813/frame_1/DoAction.as",
+    "source": "stop();\r\n_root.gametime = _root.maxtime;\r\ntime = function()\r\n{\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game.p1.mc.sw == false and _root.game.p2.mc.sw == false)\r\n      {\r\n         if(_root.modo != 4)\r\n         {\r\n            _root.gametime -= 1;\r\n         }\r\n      }\r\n   }\r\n   tm = _root.gametime;\r\n   if(tm <= 0)\r\n   {\r\n      if(_root.timeover.played == 0)\r\n      {\r\n         _root.to = true;\r\n         _root.timeover.play();\r\n         played = 1;\r\n      }\r\n      tm = 0;\r\n   }\r\n   else\r\n   {\r\n      _root.to = false;\r\n   }\r\n   if(tm >= 10)\r\n   {\r\n      shi = Math.floor(tm / 10);\r\n      gs = tm - shi * 10;\r\n   }\r\n   if(tm < 10)\r\n   {\r\n      shi = 0;\r\n      gs = tm;\r\n   }\r\n   十.gotoAndStop(shi + 1);\r\n   个.gotoAndStop(gs + 1);\r\n};\r\nif(_root.maxtime == 100 or _root.modo == 4)\r\n{\r\n   gotoAndStop(\"无限时\");\r\n}\r\nelse\r\n{\r\n   _root.timeset = setInterval(time,1000);\r\n}\r\n"
+  },
+  "root_boundaries": [
+    {
+      "path": "frame_8/DoAction.as",
+      "line": 289,
+      "source": "function startGame()\n{\n   _root.chushi();\n   _root.p2loaded = true;\n   _root.stageSound.start(0,999);\n   _root.stageSound.setVolume(80);\n}\nfunction fadinXuetiao()"
+    },
+    {
+      "path": "frame_8/DoAction.as",
+      "line": 473,
+      "source": "function startFight()\n{\n   _root.zhanting = false;\n   _root.readying = false;\n   _root.setMenuEnable(true);\n}\nfunction KOplay(pn)\n{"
+    },
+    {
+      "path": "frame_8/DoAction.as",
+      "line": 661,
+      "source": "var chushi = function()\n{\n   if(_root.p1cpu == false)\n   {\n      _root.game.p1.mc.上 = _root.w;\n      _root.game.p1.mc.下 = _root.s;\n      _root.game.p1.mc.左 = _root.a;\n      _root.game.p1.mc.右 = _root.d;"
+    },
+    {
+      "path": "frame_8/DoAction.as",
+      "line": 697,
+      "source": "   _root.game.p1.mc.hp = _root.game.p2.mc.hp = _root.maxhp;\n   _root.game.p1.isNaruto = _root.getFighterData(_root.p1selt).isNaruto;\n   _root.game.p2.isNaruto = _root.getFighterData(_root.p2selt).isNaruto;\n};\nvar stgi = 0;\nvar _menuEnabled = false;\nvar koPause = false;"
+    }
+  ]
+}

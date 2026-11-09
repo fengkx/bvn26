@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Offline r10 clock-boundary discrimination
+
+2026-11-09 M0-02 r10 offline: immutable r09 replay classifies all48 timer boundaries without filtering: 12 HP-incomplete before observed chushi assignment, 36 field-complete after; 16 complete boundaries still precede first observed unpaused checkpoint. Source timer pause guard controls decrement, not callback execution. Original full-prefix r05 structural refusal retained; both r10 modes exit1, flags false, M0-02 pending. Six targeted tests; no new SWF or live needed for this diagnosis. Exact fight-start/global ticks, consumption, full RNG, repeat/noninterference still require evidence. Official remaining UNKNOWN. See [r10](oracle/native-fight-r10/README.md).
+
 ## Live r09 discriminating markers
 
 2026-11-09 M0-02 r09 live: one 85.9118s exact-PID47665 run captured 7760 tagged events; corrected yihu path emitted 2787 fight queries including two true yihu-decision-9 returns. Loader request/completion and 12 decision-install markers observed; chushi HP undefined→1000 transition followed six early timer callbacks (12 incomplete boundaries). Whole-prefix unchanged structural gate still refuses; analyze/require-oracle exit1. Sampled focus and cleanup/hash checks passed, no human/TCC blocker; no repeat. All flags false, M0-02 pending; certified ticks, full random tape, helper generation, complete trace, repeat/noninterference unproved. Official remaining UNKNOWN. See [r09](oracle/native-fight-r09/README.md).
