@@ -1,5 +1,7 @@
 # Original reference environment
 
+- 2026-11-10 M0-02 r19 offline: receipt-matched r18 P-code retains post-goto saved-sink call; encoded layout does not prove execution/cause. Prepared direct Trace before/after at both original true gotos, retaining sink/dynamic channels; six-DoAction scope and75 copy hashes pass. Combined-order pairing refuses gaps/ambiguity. Historical prep-without-breadcrumb cause unproved; both modes exit1. No live;five flags false/M0-02 pending; official remaining UNKNOWN. [r19](oracle/native-fight-r19/README.md).
+
 - 2026-11-10 M0-02 r18 live: one 92.1717s PID15906 run, 10420 events; one doAllAction true candidate emits prep seq8217 but zero breadcrumb/dynamic after. Pairing prep-without-breadcrumb, cause unproved;340 false intervals validated/one true refused. 4082 fight queries/two positive,10 early HP-incomplete boundaries retained; both modes exit1. Sampled focus/hash/owned cleanup pass, no blocker/repeat. Five flags false/M0-02 pending; official remaining UNKNOWN. [r18](oracle/native-fight-r18/README.md).
 
 - 2026-11-10 M0-02 r17 offline: prepared saved-attribution/sink continuation-prep + breadcrumb at both doStand/doAllAction true gotos, retaining dynamic after. Independent copy compiled; six-DoAction original scope retained. Pairing refuses missing/orphan/interleaved evidence; historical r15 cause remains unproved, both modes exit1. No live; five flags false/M0-02 pending. Future fresh-tag positive-branch live required; official remaining UNKNOWN. [r17](oracle/native-fight-r17/README.md).
