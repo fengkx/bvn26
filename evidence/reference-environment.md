@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Offline r14 input-consumer preparation
+
+2026-11-10 M0-02 r14 offline: prepared doStand/doAllAction full nornalhit predicate and original 砍1 goto before/after observers, helper-local serial/target/useAI; original native key expression and calls preserved. Independent copy retains six-DoAction scope. R13 command timestamps have no per-edge consumption or calibrated Flash clock mapping; no proximity-based tick join. No live; both analysis modes exit1, original incomplete actor refusal retained. All flags false/M0-02 pending; future live plus separate synchronization/scheduling proof required. Official remaining UNKNOWN. See [r14](oracle/native-fight-r14/README.md).
+
 ## Live r13 startFight/menu markers
 
 2026-11-09 M0-02 r13 live: one99.272s PID43607 run captured7866 events; exact source startFight interval seq3201–3208 observed zhanting true→false and menu flag false→true while menu remained invisible; readying already false at entry. One interval passes unchanged r12 shape checks, not oracle admission. 2767 fight queries/one true;10 early HP-incomplete timer boundaries retained. Both analysis modes exit1 with original structural refusal. Cleanup/copy hashes and sampled focus passed; no human/TCC blocker, no repeat. Flags false/M0-02 pending; global ticks/consumption, full RNG/trace, repeat/noninterference unproved. Official remaining UNKNOWN. See [r13](oracle/native-fight-r13/README.md).
