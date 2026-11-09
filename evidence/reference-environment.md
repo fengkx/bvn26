@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Live r15 consumer markers
+
+2026-11-10 M0-02 r15 live: one84.5249s PID26153 run captured7992 events;224 doAllAction consumer candidates,223 strict false-predicate source intervals validated,one true candidate refused (goto-before present, zero goto-after; later reinstall/interleaving retained). No doStand interval observed. 2662 key queries/two true do not certify OS input joins;12 incomplete HP boundaries and whole-prefix structural refusal retained. Both analysis modes exit1. Cleanup/hash/sampled focus passed, no blocker or repeat. All five admission/tick/join flags false, M0-02 pending; official remaining UNKNOWN. See [r15](oracle/native-fight-r15/README.md).
+
 ## Offline r14 input-consumer preparation
 
 2026-11-10 M0-02 r14 offline: prepared doStand/doAllAction full nornalhit predicate and original 砍1 goto before/after observers, helper-local serial/target/useAI; original native key expression and calls preserved. Independent copy retains six-DoAction scope. R13 command timestamps have no per-edge consumption or calibrated Flash clock mapping; no proximity-based tick join. No live; both analysis modes exit1, original incomplete actor refusal retained. All flags false/M0-02 pending; future live plus separate synchronization/scheduling proof required. Official remaining UNKNOWN. See [r14](oracle/native-fight-r14/README.md).

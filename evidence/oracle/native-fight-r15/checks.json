@@ -1,0 +1,58 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r15",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_build_identity_mismatch_refused (test_analysis.ReceiptTests.test_build_identity_mismatch_refused) ... ok\ntest_missing_post_goto_keeps_true_candidate_unjoined (test_analysis.ReceiptTests.test_missing_post_goto_keeps_true_candidate_unjoined) ... ok\ntest_raw_tag_selection_tampering_refused (test_analysis.ReceiptTests.test_raw_tag_selection_tampering_refused) ... ok\ntest_rejected_prefix_retains_observed_hp_transition (test_analysis.ReceiptTests.test_rejected_prefix_retains_observed_hp_transition) ... ok\ntest_accepts_one_exact_owned_window_with_unrelated_peer (test_binding.BindingTests.test_accepts_one_exact_owned_window_with_unrelated_peer) ... ok\ntest_other_same_bundle_process_cannot_replace_owned_pid (test_binding.BindingTests.test_other_same_bundle_process_cannot_replace_owned_pid) ... ok\ntest_rejects_duplicate_movie_windows (test_binding.BindingTests.test_rejects_duplicate_movie_windows) ... ok\ntest_rejects_focus_loss_and_offscreen (test_binding.BindingTests.test_rejects_focus_loss_and_offscreen) ... ok\ntest_rejects_foreign_window_owner (test_binding.BindingTests.test_rejects_foreign_window_owner) ... ok\ntest_rejects_title_and_ax_failure (test_binding.BindingTests.test_rejects_title_and_ax_failure) ... ok\ntest_installation_inside_interval_refused (test_consumer_join.ConsumerJoinTests.test_installation_inside_interval_refused) ... ok\ntest_interleaved_queries_are_not_joined (test_consumer_join.ConsumerJoinTests.test_interleaved_queries_are_not_joined) ... ok\ntest_outside_key_not_associated (test_consumer_join.ConsumerJoinTests.test_outside_key_not_associated) ... ok\ntest_query_owner_ai_pause_or_site_mismatch_refused (test_consumer_join.ConsumerJoinTests.test_query_owner_ai_pause_or_site_mismatch_refused) ... ok\ntest_reused_installation_and_serial_refused (test_consumer_join.ConsumerJoinTests.test_reused_installation_and_serial_refused) ... ok\ntest_true_and_false_shape_never_certify_os_or_tick (test_consumer_join.ConsumerJoinTests.test_true_and_false_shape_never_certify_os_or_tick) ... ok\ntest_true_missing_after_refused (test_consumer_join.ConsumerJoinTests.test_true_missing_after_refused) ... ok\ntest_true_result_requires_complete_short_circuit_chain (test_consumer_join.ConsumerJoinTests.test_true_result_requires_complete_short_circuit_chain) ... ok\n\n----------------------------------------------------------------------\nRan 18 tests in 0.323s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r14",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_ai_branch_not_called_physical_consumption (test_consumer.ConsumerTests.test_ai_branch_not_called_physical_consumption) ... ok\ntest_false_predicate_cannot_manufacture_goto (test_consumer.ConsumerTests.test_false_predicate_cannot_manufacture_goto) ... ok\ntest_missing_exit_and_wrong_owner_or_serial_refused (test_consumer.ConsumerTests.test_missing_exit_and_wrong_owner_or_serial_refused) ... ok\ntest_original_predicate_and_goto_restored_exactly (test_consumer.ConsumerTests.test_original_predicate_and_goto_restored_exactly) ... ok\ntest_shape_never_certifies_os_join_or_global_tick (test_consumer.ConsumerTests.test_shape_never_certifies_os_join_or_global_tick) ... ok\ntest_source_drift_refused (test_consumer.ConsumerTests.test_source_drift_refused) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.004s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1007, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
