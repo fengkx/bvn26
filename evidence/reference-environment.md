@@ -8,6 +8,17 @@ failures](oracle/native-fight-r02/README.md). Missing: exact initial state/clock
 input consumption ticks, random tape, run-tagged state trace and repeat comparison.
 No TCC denial was observed; no speculative user grant is required.
 
+## M0-02 r03b observer live validation r04, 2026-11-09
+
+A fresh-tag observer copy completed the exact-PID physical menu/fight tape in
+85.25 seconds without a focus-loss/TCC blocker. Its raw log contains 4,615
+continuous tagged events: 722 callback pairs, 2,888 actor states, 280 false intro
+key queries and one music random return. The strict analyzer and require-oracle
+both refuse with exit 1 because positive key observations are absent. The first
+unpaused checkpoint is a local observation, not a proved global initial tick.
+Cleanup and three-DoAction-only byte auditing pass; all admission flags remain
+false and M0-02 pending. See [r04 receipts and limits](oracle/native-fight-r04/README.md).
+
 ## M0-02 observer preparation r03, 2026-11-09
 
 A separate observer copy emitted one unique boot-tag event. The exact-PID driver

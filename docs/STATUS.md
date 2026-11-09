@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-09（M0-02 r03b观察器现场验证，live r04）：新唯一tag与PID99050完成85.25秒物理菜单→Vs Com一护/鸣人→战斗J捕获，无失焦/TCC阻塞，已清理且资源复核通过。获得4615条连续事件：722对局部回调、2888条角色状态、280次开场Key查询（全false）、1次选曲随机返回。首次未暂停checkpoint在局部序号466，不称全局初态tick；缺少正值Key观测，原analyze及require-oracle均exit1，门禁不变。三DoAction-only审计通过，27项测试通过。M0-02 pending，production_admitted=false/native_parity_proven=false/oracle_accepted=false；完整随机tape、战斗消费、独占完整trace、确定性重复与同输入插桩对照仍缺。[现场收据及门禁拒绝](../evidence/oracle/native-fight-r04/README.md)。
+
 - 2026-11-09（M0-02 观察器准备，live r03）：独立SWF副本实际发出唯一运行标记boot事件；PID30565在S后失焦，已停止并清理，没有状态/按键/随机轨迹准入。按用户要求暂缓后续现场捕获，离线改为明确源码调用点观察；新构建只改变3个DoAction，其余tag与74个非main资源不变，尚未运行。局部回调序号不称全局tick，开场按键查询不称战斗消费，选曲随机不称完整随机tape；M0-02 pending，两项admission flags为false。[收据、源码边界与待捕获项](../evidence/oracle/native-fight-r03/README.md)。
 
 - 2026-11-08（M0-02 原生窗口/输入设施恢复，live r02）：按授权改用精确 movie PID 的 AX/CG 归属与 System Events 物理输入，原版副本已实测经 Vs Com 菜单到一护/鸣人 ROUND 1，账户级 flashlog 追加3206字节。新增带归属/失焦检查的菜单 tape 重跑器；保留错误进程引用、启动日志重置、Normal误选和失焦失败，命令成功不等于固定场景复现。逐tick初态/输入消费、随机tape、独占运行trace及完整重复对照仍缺；M0-02 pending，production_admitted=false、native_parity_proven=false。PR244已合并，分支保留r01并承接master；本次允许Draft审查，不部署/ready/merge。[实测与限制](../evidence/oracle/native-fight-r02/README.md)。

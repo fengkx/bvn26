@@ -1,0 +1,63 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r01",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "blocked\n",
+    "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.005s\n\nOK\n",
+    "seconds": 0.08568850019946694
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r02",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+    "seconds": 0.050455957651138306
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r03",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.003s\n\nOK\n",
+    "seconds": 0.06044550007209182
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "tools.tests.test_capture_serialization",
+      "tools.tests.test_capture_runtime_fighter"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"events\": 0, \"done\": false, \"capture\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp4nuhnliw/capture.log\", \"launch\": \"windowed LaunchServices launch (activation possible)\", \"player_app\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp4nuhnliw/Custom Flash Player.app\", \"command\": [\"/usr/bin/open\", \"-g\", \"-n\", \"-W\", \"-a\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp4nuhnliw/Custom Flash Player.app\", \"--args\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmp4nuhnliw/build/game/main.swf\"], \"runtime_fighter\": null}\n{\"events\": 0, \"done\": false, \"capture\": \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpbws5nd8g/capture.log\", \"launch\": \"windowed LaunchServices launch (activation possible)\", \"player_app\": \"/Volumes/Flash Player/Flash Player.app\", \"command\": [\"/usr/bin/open\", \"-g\", \"-n\", \"-W\", \"-a\", \"/Volumes/Flash Player/Flash Player.app\", \"--args\", \"/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/tmpbws5nd8g/build/game/main.swf\"], \"runtime_fighter\": null}\n",
+    "stderr": "............\n----------------------------------------------------------------------\nRan 12 tests in 10.195s\n\nOK\n",
+    "seconds": 10.270544082857668
+  }
+]
