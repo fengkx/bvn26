@@ -1,0 +1,77 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r14/analyze.py"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"certified_global_tick\": false,\n  \"os_input_join_proven\": false,\n  \"input_sha256\": {\n    \"build.json\": \"5332020b8dcbd12ce182cba7badbd86986ff9c86e96157e550074afe93027107\",\n    \"run-01/tagged.log\": \"3acce9b9f713119b830a6b7fc690b46c6665907e35d249cd35525c5ba0debf01\",\n    \"run-01/session.json\": \"1463919e3b233db20c22734886c7cc0859924d4079989451f25f1488362b8a10\"\n  },\n  \"physical_fight_operation\": {\n    \"step\": {\n      \"name\": \"fight-j\",\n      \"key\": \"j\",\n      \"hold_seconds\": 0.5,\n      \"settle_seconds\": 1\n    },\n    \"pid\": 43607,\n    \"started_unix\": 1794238044.69856,\n    \"started_monotonic\": 2775882.064908916,\n    \"result\": \"43607, true, /private/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/bvn-native-menu-o1l0p8pu/game/main.swf\\n\",\n    \"returned_monotonic\": 2775883.597798666,\n    \"screenshot\": \"08-fight-j.jpg\"\n  },\n  \"positive_native_queries\": [\n    {\n      \"seq\": 6649,\n      \"timer_ms\": 90810,\n      \"ordinal\": 668,\n      \"phase\": \"between-game-callbacks\",\n      \"kind\": \"fight-key-return\",\n      \"data\": \"yihu-decision-9,74,true,%2Fgame%2Fp1%2Fmc,false,false,false,7,f%3A1%3A0%3A0%3A0,f%3A1%3A5%3A113246208%3A0\"\n    }\n  ],\n  \"consumer_marker_count\": 0,\n  \"clock_domains\": {\n    \"os\": \"Python wall/monotonic command bracket, not per-edge dispatch/consumption\",\n    \"native\": \"Flash getTimer plus camera-local ordinal\",\n    \"calibrated_mapping\": null\n  },\n  \"refusal\": \"No observed consumer interval or certified cross-clock/event join; temporal proximity is insufficient\",\n  \"original_structural_refusal\": \"Incomplete actor state at clock boundary\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r14/analyze.py",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"certified_global_tick\": false,\n  \"os_input_join_proven\": false,\n  \"input_sha256\": {\n    \"build.json\": \"5332020b8dcbd12ce182cba7badbd86986ff9c86e96157e550074afe93027107\",\n    \"run-01/tagged.log\": \"3acce9b9f713119b830a6b7fc690b46c6665907e35d249cd35525c5ba0debf01\",\n    \"run-01/session.json\": \"1463919e3b233db20c22734886c7cc0859924d4079989451f25f1488362b8a10\"\n  },\n  \"physical_fight_operation\": {\n    \"step\": {\n      \"name\": \"fight-j\",\n      \"key\": \"j\",\n      \"hold_seconds\": 0.5,\n      \"settle_seconds\": 1\n    },\n    \"pid\": 43607,\n    \"started_unix\": 1794238044.69856,\n    \"started_monotonic\": 2775882.064908916,\n    \"result\": \"43607, true, /private/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/bvn-native-menu-o1l0p8pu/game/main.swf\\n\",\n    \"returned_monotonic\": 2775883.597798666,\n    \"screenshot\": \"08-fight-j.jpg\"\n  },\n  \"positive_native_queries\": [\n    {\n      \"seq\": 6649,\n      \"timer_ms\": 90810,\n      \"ordinal\": 668,\n      \"phase\": \"between-game-callbacks\",\n      \"kind\": \"fight-key-return\",\n      \"data\": \"yihu-decision-9,74,true,%2Fgame%2Fp1%2Fmc,false,false,false,7,f%3A1%3A0%3A0%3A0,f%3A1%3A5%3A113246208%3A0\"\n    }\n  ],\n  \"consumer_marker_count\": 0,\n  \"clock_domains\": {\n    \"os\": \"Python wall/monotonic command bracket, not per-edge dispatch/consumption\",\n    \"native\": \"Flash getTimer plus camera-local ordinal\",\n    \"calibrated_mapping\": null\n  },\n  \"refusal\": \"No observed consumer interval or certified cross-clock/event join; temporal proximity is insufficient\",\n  \"original_structural_refusal\": \"Incomplete actor state at clock boundary\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r14",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_ai_branch_not_called_physical_consumption (test_consumer.ConsumerTests.test_ai_branch_not_called_physical_consumption) ... ok\ntest_false_predicate_cannot_manufacture_goto (test_consumer.ConsumerTests.test_false_predicate_cannot_manufacture_goto) ... ok\ntest_missing_exit_and_wrong_owner_or_serial_refused (test_consumer.ConsumerTests.test_missing_exit_and_wrong_owner_or_serial_refused) ... ok\ntest_original_predicate_and_goto_restored_exactly (test_consumer.ConsumerTests.test_original_predicate_and_goto_restored_exactly) ... ok\ntest_shape_never_certifies_os_join_or_global_tick (test_consumer.ConsumerTests.test_shape_never_certifies_os_join_or_global_tick) ... ok\ntest_source_drift_refused (test_consumer.ConsumerTests.test_source_drift_refused) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.004s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r12",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_collision_refused (test_markers.StartFightTests.test_collision_refused) ... ok\ntest_each_missing_or_duplicate_body_fails (test_markers.StartFightTests.test_each_missing_or_duplicate_body_fails) ... ok\ntest_menu_and_readying_result_must_be_actual_matching_fields (test_markers.StartFightTests.test_menu_and_readying_result_must_be_actual_matching_fields) ... ok\ntest_missing_return_reorder_and_duplicate_refused (test_markers.StartFightTests.test_missing_return_reorder_and_duplicate_refused) ... ok\ntest_restore_all_original_operations_exactly (test_markers.StartFightTests.test_restore_all_original_operations_exactly) ... ok\ntest_synthetic_shape_does_not_prove_global_tick_or_admission (test_markers.StartFightTests.test_synthetic_shape_does_not_prove_global_tick_or_admission) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.009s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1006, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
