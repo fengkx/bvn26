@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Live r09 discriminating markers
+
+2026-11-09 M0-02 r09 live: one 85.9118s exact-PID47665 run captured 7760 tagged events; corrected yihu path emitted 2787 fight queries including two true yihu-decision-9 returns. Loader request/completion and 12 decision-install markers observed; chushi HP undefined→1000 transition followed six early timer callbacks (12 incomplete boundaries). Whole-prefix unchanged structural gate still refuses; analyze/require-oracle exit1. Sampled focus and cleanup/hash checks passed, no human/TCC blocker; no repeat. All flags false, M0-02 pending; certified ticks, full random tape, helper generation, complete trace, repeat/noninterference unproved. Official remaining UNKNOWN. See [r09](oracle/native-fight-r09/README.md).
+
 ## Offline r08 loader/init markers
 
 2026-11-09 M0-02 r08 offline (stacked on r07 9cfd2685/#250): compiled source-local loader-request, actual onLoadComplete entry/normal-exit, and chushi HP before/after markers; retained yihu Sprite16 39 forwards/install marker. No existing onLoadInit in locked exported source, so that required boundary remains unproved; onLoadComplete is not renamed as init. Six intended DoActions total; no live run, no early-state trimming. Flags false, M0-02 pending. Official remaining UNKNOWN; not claiming above floor. See [r08](oracle/native-fight-r08/README.md).
