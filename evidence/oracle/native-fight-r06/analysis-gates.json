@@ -1,0 +1,29 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r05/analyze.py",
+      "--build",
+      "evidence/oracle/native-fight-r06/build.json",
+      "--directory",
+      "evidence/oracle/native-fight-r06/run-01"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"refusal\": \"Incomplete actor state at clock boundary\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r05/analyze.py",
+      "--build",
+      "evidence/oracle/native-fight-r06/build.json",
+      "--directory",
+      "evidence/oracle/native-fight-r06/run-01",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"refusal\": \"Incomplete actor state at clock boundary\"\n}\n",
+    "stderr": ""
+  }
+]

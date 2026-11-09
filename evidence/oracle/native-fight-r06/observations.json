@@ -1,0 +1,104 @@
+{
+  "kind": "descriptive-observations-not-admission",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "duration_seconds": 84.87844920158386,
+  "movie_pid": 42900,
+  "run_tag": "m002-r06-live-20261109-1654",
+  "events": 4871,
+  "counts": {
+    "boot": 1,
+    "game-state": 1482,
+    "actor-state": 3060,
+    "random-return": 1,
+    "clock-entry": 24,
+    "clock-exit": 24,
+    "key-return": 278,
+    "ready-play-before": 1
+  },
+  "fight_key_events": 0,
+  "positive_fight_key_events": 0,
+  "clock_entries": 24,
+  "clock_exits": 24,
+  "first_clock": {
+    "seq": 183,
+    "timer_ms": 57086,
+    "ordinal": 30,
+    "phase": "between-game-callbacks",
+    "kind": "clock-entry",
+    "data": "1,f%3A1%3A5%3A125829120%3A0,true,false"
+  },
+  "last_clock": {
+    "seq": 4827,
+    "timer_ms": 80555,
+    "ordinal": 734,
+    "phase": "between-game-callbacks",
+    "kind": "clock-exit",
+    "data": "24,f%3A1%3A5%3A106954752%3A0,false,false"
+  },
+  "incomplete_clock_boundaries": 10,
+  "first_incomplete_clock": {
+    "boundary": {
+      "seq": 183,
+      "timer_ms": 57086,
+      "ordinal": 30,
+      "phase": "between-game-callbacks",
+      "kind": "clock-entry",
+      "data": "1,f%3A1%3A5%3A125829120%3A0,true,false"
+    },
+    "actors": [
+      {
+        "seq": 184,
+        "timer_ms": 57087,
+        "ordinal": 30,
+        "phase": "between-game-callbacks",
+        "kind": "actor-state",
+        "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A1%3A100663296%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+      },
+      {
+        "seq": 185,
+        "timer_ms": 57087,
+        "ordinal": 30,
+        "phase": "between-game-callbacks",
+        "kind": "actor-state",
+        "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A1%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+      }
+    ]
+  },
+  "sampled_frontmost": {
+    "00-windowed-before.json": 87154,
+    "01-vs-com-before.json": 42900,
+    "02-roster-p1-before.json": 42900,
+    "03-roster-p2-before.json": 42900,
+    "04-assist-p1-before.json": 42900,
+    "05-assist-p2-before.json": 42900,
+    "06-map-before.json": 42900,
+    "07-fight-before.json": 42900,
+    "08-fight-j-before.json": 42900,
+    "00-windowed-after.json": 42900,
+    "01-vs-com-after.json": 42900,
+    "02-roster-p1-after.json": 42900,
+    "03-roster-p2-after.json": 42900,
+    "04-assist-p1-after.json": 42900,
+    "05-assist-p2-after.json": 42900,
+    "06-map-after.json": 42900,
+    "07-fight-after.json": 42900,
+    "08-fight-j-after.json": 42900
+  },
+  "cleanup": [],
+  "asset_recheck": "passed",
+  "changed_tag_paths_by_asset": {
+    "game/main.swf": [
+      "root/547:12",
+      "root/2012:39/sprite1813/1:12",
+      "root/2106:39/sprite1900/1:12",
+      "root/2198:39/sprite1991/1:12"
+    ],
+    "game/fighter/ichigo.swf": [
+      "root/15:39/sprite12/1:12"
+    ]
+  },
+  "all_75_retained_copy_hashes_match": true,
+  "limitation": "Descriptive counts do not admit incomplete prefix; local callback clocks are not global ticks; no fight-key event is not proof that physical J was not consumed."
+}
