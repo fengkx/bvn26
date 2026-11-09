@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Offline r08 loader/init markers
+
+2026-11-09 M0-02 r08 offline (stacked on r07 9cfd2685/#250): compiled source-local loader-request, actual onLoadComplete entry/normal-exit, and chushi HP before/after markers; retained yihu Sprite16 39 forwards/install marker. No existing onLoadInit in locked exported source, so that required boundary remains unproved; onLoadComplete is not renamed as init. Six intended DoActions total; no live run, no early-state trimming. Flags false, M0-02 pending. Official remaining UNKNOWN; not claiming above floor. See [r08](oracle/native-fight-r08/README.md).
+
 ## Offline r07 asset-routing diagnosis
 
 2026-11-09 M0-02 r07 offline: r06 selected 一护 maps to yihu.swf, whereas r05 instrumented ichigo.swf (一护2); receipt/copy/source hashes confirm the asset-routing mismatch. Corrected 39 lexical forwards to yihu Sprite16 plus install marker; temporary compile changes only five DoActions. Ten incomplete timer boundaries are HP undefined at local ordinals1–5 entry/exit; chushi initialization ordering remains unobserved, no prefix trimming or relaxed gate. No live launch. All flags false, M0-02 pending; fresh live authorization and loaded identity/initial-boundary proof required. Official remaining UNKNOWN; not claiming above floor. See [r07](oracle/native-fight-r07/README.md).
