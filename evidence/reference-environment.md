@@ -1,5 +1,7 @@
 # Original reference environment
 
+- 2026-11-10 M0-02 r16 offline: reconstructed true-branch post-goto dynamic reads; additive classifier preserves 223 false intervals and one unjoined true candidate (seq6973–6979). Later logging/installations do not prove cause or helper removal. Both modes retain structural refusal; no new SWF/live. Minimal continuation-breadcrumb preparation plan recorded; five flags false, M0-02 pending; official remaining UNKNOWN. [r16](oracle/native-fight-r16/README.md).
+
 ## Live r15 consumer markers
 
 2026-11-10 M0-02 r15 live: one84.5249s PID26153 run captured7992 events;224 doAllAction consumer candidates,223 strict false-predicate source intervals validated,one true candidate refused (goto-before present, zero goto-after; later reinstall/interleaving retained). No doStand interval observed. 2662 key queries/two true do not certify OS input joins;12 incomplete HP boundaries and whole-prefix structural refusal retained. Both analysis modes exit1. Cleanup/hash/sampled focus passed, no blocker or repeat. All five admission/tick/join flags false, M0-02 pending; official remaining UNKNOWN. See [r15](oracle/native-fight-r15/README.md).
