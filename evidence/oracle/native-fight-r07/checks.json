@@ -1,0 +1,99 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r07",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_early_hp_unknowns_are_retained (test_observer.CorrectionTests.test_early_hp_unknowns_are_retained) ... ok\ntest_lexical_forwarding_preserves_every_original_expression (test_observer.CorrectionTests.test_lexical_forwarding_preserves_every_original_expression) ... ok\ntest_repository_output_refused (test_observer.CorrectionTests.test_repository_output_refused) ... ok\ntest_selected_asset_matches_registry_not_display_name_guess (test_observer.CorrectionTests.test_selected_asset_matches_registry_not_display_name_guess) ... ok\ntest_wrong_fighter_and_inventory_drift_refused (test_observer.CorrectionTests.test_wrong_fighter_and_inventory_drift_refused) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.060s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r07/diagnose.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"selected\": \"game/fighter/yihu.swf\", \"instrumented\": \"game/fighter/ichigo.swf\", \"incomplete_boundaries\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r07/analyze.py"
+    ],
+    "exit": 1,
+    "stdout": "{\"production_admitted\": false, \"native_parity_proven\": false, \"oracle_accepted\": false, \"refusal\": \"r07 has no live capture; corrected asset/site and initial-state ordering remain unvalidated\"}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r07/analyze.py",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\"production_admitted\": false, \"native_parity_proven\": false, \"oracle_accepted\": false, \"refusal\": \"r07 has no live capture; corrected asset/site and initial-state ordering remain unvalidated\"}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r05/analyze.py",
+      "--build",
+      "evidence/oracle/native-fight-r06/build.json",
+      "--directory",
+      "evidence/oracle/native-fight-r06/run-01"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"refusal\": \"Incomplete actor state at clock boundary\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r05/analyze.py",
+      "--build",
+      "evidence/oracle/native-fight-r06/build.json",
+      "--directory",
+      "evidence/oracle/native-fight-r06/run-01",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"refusal\": \"Incomplete actor state at clock boundary\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 999, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
