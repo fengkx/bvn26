@@ -1,0 +1,93 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r18/capture_observer.py",
+      "--output",
+      "evidence/oracle/native-fight-r18/run-01",
+      "--build",
+      "/tmp/bvn-m002-r18-live-01",
+      "--allow-window-activation"
+    ],
+    "exit": 1,
+    "stdout": "physical-tape-executed; tagged observer validation required; oracle unproved\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r18/analyze.py"
+    ],
+    "exit": 1,
+    "stdout": "{\"events\": 10420, \"fight_key_total\": 4082, \"fight_key_positive\": 2, \"positive_sites\": {\"yihu-decision-9\": 2}, \"structural_observations_admitted\": false}\nIncomplete actor state at clock boundary\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r18/analyze.py",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\"events\": 10420, \"fight_key_total\": 4082, \"fight_key_positive\": 2, \"positive_sites\": {\"yihu-decision-9\": 2}, \"structural_observations_admitted\": false}\nIncomplete actor state at clock boundary\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r18",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.447s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r17",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.003s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1010, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
