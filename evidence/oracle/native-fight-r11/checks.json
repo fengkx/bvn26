@@ -1,0 +1,77 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r11/analyze.py"
+    ],
+    "exit": 1,
+    "stdout": "{\"timer_counts\": {\"pre-hp-incomplete\": 12, \"post-hp-complete-paused\": 18, \"post-hp-complete-unpaused-readiness-unproved\": 18}, \"first_subset_seq\": 3092, \"original_structural_refusal\": \"Incomplete actor state at clock boundary\", \"oracle_accepted\": false}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r11/analyze.py",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\"timer_counts\": {\"pre-hp-incomplete\": 12, \"post-hp-complete-paused\": 18, \"post-hp-complete-unpaused-readiness-unproved\": 18}, \"first_subset_seq\": 3092, \"original_structural_refusal\": \"Incomplete actor state at clock boundary\", \"oracle_accepted\": false}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r11",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_first_subset_is_not_exact_start_or_admission (test_boundary.FightSubsetTests.test_first_subset_is_not_exact_start_or_admission) ... ok\ntest_later_pause_not_promoted_by_first_subset (test_boundary.FightSubsetTests.test_later_pause_not_promoted_by_first_subset) ... ok\ntest_missing_actor_field_defers_candidate_without_filling (test_boundary.FightSubsetTests.test_missing_actor_field_defers_candidate_without_filling) ... ok\ntest_missing_ready_or_hp_marker_refused (test_boundary.FightSubsetTests.test_missing_ready_or_hp_marker_refused) ... ok\ntest_post_hp_incomplete_timer_keeps_its_own_class (test_boundary.FightSubsetTests.test_post_hp_incomplete_timer_keeps_its_own_class) ... ok\ntest_unknown_boolean_is_not_false (test_boundary.FightSubsetTests.test_unknown_boolean_is_not_false) ... ok\ntest_unpaused_without_loading_flag_cannot_satisfy_subset (test_boundary.FightSubsetTests.test_unpaused_without_loading_flag_cannot_satisfy_subset) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.204s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r10",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_all_48_boundaries_and_raw_unknowns_retained (test_classification.ClockClassificationTests.test_all_48_boundaries_and_raw_unknowns_retained) ... ok\ntest_hp_assignment_not_relabelled_fight_start (test_classification.ClockClassificationTests.test_hp_assignment_not_relabelled_fight_start) ... ok\ntest_incomplete_assignment_result_cannot_establish_phase (test_classification.ClockClassificationTests.test_incomplete_assignment_result_cannot_establish_phase) ... ok\ntest_missing_duplicate_or_reordered_hp_markers_refused (test_classification.ClockClassificationTests.test_missing_duplicate_or_reordered_hp_markers_refused) ... ok\ntest_post_assignment_missing_hp_remains_incomplete (test_classification.ClockClassificationTests.test_post_assignment_missing_hp_remains_incomplete) ... ok\ntest_timer_gap_and_missing_actor_refused (test_classification.ClockClassificationTests.test_timer_gap_and_missing_actor_refused) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.137s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1003, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

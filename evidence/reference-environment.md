@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Offline r11 first observed readiness subset
+
+2026-11-09 M0-02 r11 offline: immutable r09 first observed readiness subset at seq3092/local camera455 (HP assignment observed, ready request observed, unpaused, p2loaded, complete actor fields), previous entry seq3074 still paused. Exact startFight/readying/menu outcome unobserved; no full readiness/global tick claim. All48 timer boundaries retained:12 pre-HP incomplete,18 post-HP complete paused,18 post-HP complete unpaused; ordinal17 re-pauses after first subset. Original structural refusal and both exit1 gates preserved. No live/new SWF; flags false, M0-02 pending; official remaining UNKNOWN. See [r11](oracle/native-fight-r11/README.md).
+
 ## Offline r10 clock-boundary discrimination
 
 2026-11-09 M0-02 r10 offline: immutable r09 replay classifies all48 timer boundaries without filtering: 12 HP-incomplete before observed chushi assignment, 36 field-complete after; 16 complete boundaries still precede first observed unpaused checkpoint. Source timer pause guard controls decrement, not callback execution. Original full-prefix r05 structural refusal retained; both r10 modes exit1, flags false, M0-02 pending. Six targeted tests; no new SWF or live needed for this diagnosis. Exact fight-start/global ticks, consumption, full RNG, repeat/noninterference still require evidence. Official remaining UNKNOWN. See [r10](oracle/native-fight-r10/README.md).
