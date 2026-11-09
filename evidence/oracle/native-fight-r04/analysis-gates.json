@@ -1,0 +1,23 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r03/analyze.py",
+      "evidence/oracle/native-fight-r04/run-01"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/oracle/native-fight-r03/analyze.py\", line 80, in <module>\n    result=analyze(args.directory)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/oracle/native-fight-r03/analyze.py\", line 56, in analyze\n    raise ValueError('State/input/random live observations missing')\nValueError: State/input/random live observations missing\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r03/analyze.py",
+      "evidence/oracle/native-fight-r04/run-01",
+      "--require-oracle"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/oracle/native-fight-r03/analyze.py\", line 80, in <module>\n    result=analyze(args.directory)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/oracle/native-fight-r03/analyze.py\", line 56, in analyze\n    raise ValueError('State/input/random live observations missing')\nValueError: State/input/random live observations missing\n"
+  }
+]

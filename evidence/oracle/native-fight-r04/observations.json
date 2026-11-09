@@ -1,0 +1,100 @@
+{
+  "kind": "partial-native-observation-description-not-admission",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "strict_analyzer_exit": 1,
+  "strict_analyzer_reason": "State/input/random live observations missing",
+  "specific_missing_condition": "zero positive intro key-return observations; positive fight J is outside the instrumented intro query path",
+  "movie_pid": 99050,
+  "run_id": "m002-live-20261109-r04-7bc19e",
+  "events": 4615,
+  "counts": {
+    "boot": 1,
+    "game-state": 1444,
+    "actor-state": 2888,
+    "random-return": 1,
+    "key-return": 280,
+    "ready-play-before": 1
+  },
+  "local_callback_pairs": 722,
+  "first_observed_unpaused_entry": {
+    "seq": 3074,
+    "timer_ms": 71962,
+    "ordinal": 466,
+    "phase": "game-entry",
+    "kind": "game-state",
+    "data": "56,1,false,false,true,2,%E7%8E%B0%E4%B8%96,%E4%B8%80%E6%8A%A4,%E9%B8%A3%E4%BA%BA,%E9%AD%82,%E6%88%91%E7%88%B1%E7%BD%97"
+  },
+  "first_observed_unpaused_actors": [
+    {
+      "seq": 3075,
+      "fields": {
+        "slot": "p1",
+        "container_x": 374.1,
+        "container_y": -25.0,
+        "container_xscale": 100.0,
+        "body_frame": 4.0,
+        "hp": 1000.0,
+        "ql": 0.0,
+        "action": 0.0,
+        "beida": 0.0,
+        "kcplayed": 2.0
+      }
+    },
+    {
+      "seq": 3076,
+      "fields": {
+        "slot": "p2",
+        "container_x": 637.1,
+        "container_y": -25.0,
+        "container_xscale": -100.0,
+        "body_frame": 20.0,
+        "hp": 1000.0,
+        "ql": 0.0,
+        "action": 0.0,
+        "beida": 0.0,
+        "kcplayed": 2.0
+      }
+    }
+  ],
+  "random_returns": [
+    {
+      "seq": 20,
+      "timer_ms": 56499,
+      "ordinal": 3,
+      "phase": "between-game-callbacks",
+      "kind": "random-return",
+      "data": "loadSound-1,f%3A1%3A%2D1%3A88728549%3A33554432",
+      "decoded_return": 0.6610792092978954
+    }
+  ],
+  "key_queries": 280,
+  "positive_key_queries": 0,
+  "key_sites": {
+    "intro-renderSkip-1": 140,
+    "intro-renderSkip-2": 140
+  },
+  "key_ordinal_range": [
+    199,
+    338
+  ],
+  "fresh_tag_and_contiguous_sequence": true,
+  "raw_tag_selection_verified": true,
+  "changed_tag_paths": [
+    "root/547:12",
+    "root/2106:39/sprite1900/1:12",
+    "root/2198:39/sprite1991/1:12"
+  ],
+  "same_pid_returned_for_all_physical_operations": true,
+  "capture_seconds": 85.2516553401947,
+  "end_marker_present": false,
+  "limits": [
+    "local ordinal is not global tick",
+    "first unpaused checkpoint is not proved initial-state boundary",
+    "intro key queries are not fight-path consumption",
+    "one music draw is not full random tape",
+    "unique-tag filtering is not independent per-write PID attestation or exclusive complete state trace",
+    "no deterministic repeat or same-input instrumented/uninstrumented comparison"
+  ]
+}
