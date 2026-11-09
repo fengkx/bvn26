@@ -1,0 +1,337 @@
+{
+  "events": 10420,
+  "run_tag": "m002-r18-live-20261110-a83d",
+  "movie_pid": 15906,
+  "duration_seconds": 92.17166590690613,
+  "counts": {
+    "boot": 1,
+    "loader-request": 2,
+    "menu-write-before": 2,
+    "menu-write-after": 2,
+    "menu-exit": 2,
+    "load-complete-entry": 4,
+    "load-complete-exit": 4,
+    "decision-installed": 12,
+    "game-state": 1730,
+    "actor-state": 3580,
+    "random-return": 1,
+    "clock-entry": 28,
+    "clock-exit": 28,
+    "chushi-hp-before": 1,
+    "chushi-hp-after": 1,
+    "key-return": 252,
+    "ready-play-before": 1,
+    "startfight-entry": 1,
+    "startfight-state-written": 1,
+    "startfight-exit": 1,
+    "fight-key-return": 4082,
+    "consumer-query-before": 341,
+    "consumer-predicate-result": 341,
+    "consumer-goto-before": 1,
+    "continuation-prep": 1
+  },
+  "continuation_analysis": {
+    "outcomes": [
+      {
+        "prep_seq": 8217,
+        "classification": "prep-without-breadcrumb",
+        "cause": "unproved",
+        "source_continuation_observed": false
+      }
+    ],
+    "production_admitted": false,
+    "native_parity_proven": false,
+    "oracle_accepted": false,
+    "certified_global_tick": false,
+    "os_input_join_proven": false
+  },
+  "incomplete_clock_boundaries": [
+    {
+      "marker": {
+        "seq": 197,
+        "timer_ms": 59820,
+        "ordinal": 30,
+        "phase": "between-game-callbacks",
+        "kind": "clock-entry",
+        "data": "1,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 198,
+          "timer_ms": 59820,
+          "ordinal": 30,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A1%3A100663296%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 199,
+          "timer_ms": 59820,
+          "ordinal": 30,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A1%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 200,
+        "timer_ms": 59820,
+        "ordinal": 30,
+        "phase": "between-game-callbacks",
+        "kind": "clock-exit",
+        "data": "1,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 201,
+          "timer_ms": 59821,
+          "ordinal": 30,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A1%3A100663296%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 202,
+          "timer_ms": 59821,
+          "ordinal": 30,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A1%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 383,
+        "timer_ms": 60820,
+        "ordinal": 60,
+        "phase": "between-game-callbacks",
+        "kind": "clock-entry",
+        "data": "2,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 384,
+          "timer_ms": 60821,
+          "ordinal": 60,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A2%3A83886080%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 385,
+          "timer_ms": 60821,
+          "ordinal": 60,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A2%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 386,
+        "timer_ms": 60821,
+        "ordinal": 60,
+        "phase": "between-game-callbacks",
+        "kind": "clock-exit",
+        "data": "2,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 387,
+          "timer_ms": 60822,
+          "ordinal": 60,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A2%3A83886080%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 388,
+          "timer_ms": 60822,
+          "ordinal": 60,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A2%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 575,
+        "timer_ms": 61853,
+        "ordinal": 91,
+        "phase": "between-game-callbacks",
+        "kind": "clock-entry",
+        "data": "3,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 576,
+          "timer_ms": 61853,
+          "ordinal": 91,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A3%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 577,
+          "timer_ms": 61854,
+          "ordinal": 91,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A2%3A117440512%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 578,
+        "timer_ms": 61854,
+        "ordinal": 91,
+        "phase": "between-game-callbacks",
+        "kind": "clock-exit",
+        "data": "3,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 579,
+          "timer_ms": 61854,
+          "ordinal": 91,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A3%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 580,
+          "timer_ms": 61855,
+          "ordinal": 91,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A2%3A117440512%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 761,
+        "timer_ms": 62853,
+        "ordinal": 121,
+        "phase": "between-game-callbacks",
+        "kind": "clock-entry",
+        "data": "4,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 762,
+          "timer_ms": 62854,
+          "ordinal": 121,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A1%3A100663296%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 763,
+          "timer_ms": 62855,
+          "ordinal": 121,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A1%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 764,
+        "timer_ms": 62855,
+        "ordinal": 121,
+        "phase": "between-game-callbacks",
+        "kind": "clock-exit",
+        "data": "4,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 765,
+          "timer_ms": 62856,
+          "ordinal": 121,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A1%3A100663296%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 766,
+          "timer_ms": 62856,
+          "ordinal": 121,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A1%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 947,
+        "timer_ms": 63853,
+        "ordinal": 151,
+        "phase": "between-game-callbacks",
+        "kind": "clock-entry",
+        "data": "5,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 948,
+          "timer_ms": 63854,
+          "ordinal": 151,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A2%3A83886080%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 949,
+          "timer_ms": 63855,
+          "ordinal": 151,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A2%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    },
+    {
+      "marker": {
+        "seq": 950,
+        "timer_ms": 63855,
+        "ordinal": 151,
+        "phase": "between-game-callbacks",
+        "kind": "clock-exit",
+        "data": "5,f%3A1%3A5%3A125829120%3A0,true,false"
+      },
+      "actors": [
+        {
+          "seq": 951,
+          "timer_ms": 63855,
+          "ordinal": 151,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p1,f%3A1%3A8%3A98068070%3A26843546,f%3A%2D1%3A4%3A104857600%3A0,f%3A1%3A6%3A104857600%3A0,f%3A1%3A2%3A83886080%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        },
+        {
+          "seq": 952,
+          "timer_ms": 63856,
+          "ordinal": 151,
+          "phase": "between-game-callbacks",
+          "kind": "actor-state",
+          "data": "p2,f%3A1%3A9%3A83505971%3A13421773,f%3A%2D1%3A4%3A104857600%3A0,f%3A%2D1%3A6%3A104857600%3A0,f%3A1%3A2%3A67108864%3A0,undefined,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0,f%3A1%3A0%3A0%3A0"
+        }
+      ]
+    }
+  ],
+  "structural_refusal": "Incomplete actor state at clock boundary",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "all_copy_hashes_and_tags_match": true
+}
