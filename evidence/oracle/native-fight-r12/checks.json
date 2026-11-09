@@ -1,0 +1,77 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r12/analyze.py"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"new_live_runs\": 0,\n  \"existing_r09_startfight_marker_count\": 0,\n  \"input_sha256\": {\n    \"build.json\": \"46fcb935e577076f8c04321230f95d73258f3e7685c9c6f47e088ce3aa0b4939\",\n    \"run-01/tagged.log\": \"d27d0e9e88f46a3543233cbdbae98187a14a70e75d4199d240d8ec3d35c03ab8\"\n  },\n  \"marker_refusal\": \"Missing, reordered, duplicated or nested startFight/menu boundary\",\n  \"original_structural_refusal\": \"Incomplete actor state at clock boundary\",\n  \"refusal\": \"No r12 live marker sequence; shape-only validation cannot admit a production oracle\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r12/analyze.py",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"new_live_runs\": 0,\n  \"existing_r09_startfight_marker_count\": 0,\n  \"input_sha256\": {\n    \"build.json\": \"46fcb935e577076f8c04321230f95d73258f3e7685c9c6f47e088ce3aa0b4939\",\n    \"run-01/tagged.log\": \"d27d0e9e88f46a3543233cbdbae98187a14a70e75d4199d240d8ec3d35c03ab8\"\n  },\n  \"marker_refusal\": \"Missing, reordered, duplicated or nested startFight/menu boundary\",\n  \"original_structural_refusal\": \"Incomplete actor state at clock boundary\",\n  \"refusal\": \"No r12 live marker sequence; shape-only validation cannot admit a production oracle\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r12",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_collision_refused (test_markers.StartFightTests.test_collision_refused) ... ok\ntest_each_missing_or_duplicate_body_fails (test_markers.StartFightTests.test_each_missing_or_duplicate_body_fails) ... ok\ntest_menu_and_readying_result_must_be_actual_matching_fields (test_markers.StartFightTests.test_menu_and_readying_result_must_be_actual_matching_fields) ... ok\ntest_missing_return_reorder_and_duplicate_refused (test_markers.StartFightTests.test_missing_return_reorder_and_duplicate_refused) ... ok\ntest_restore_all_original_operations_exactly (test_markers.StartFightTests.test_restore_all_original_operations_exactly) ... ok\ntest_synthetic_shape_does_not_prove_global_tick_or_admission (test_markers.StartFightTests.test_synthetic_shape_does_not_prove_global_tick_or_admission) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.008s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r08",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_ambiguous_root_frame_action_refused (test_markers.MarkerTests.test_ambiguous_root_frame_action_refused) ... ok\ntest_cannot_claim_load_init_from_load_complete (test_markers.MarkerTests.test_cannot_claim_load_init_from_load_complete) ... ok\ntest_hp_snapshots_bracket_assignment_without_filtering (test_markers.MarkerTests.test_hp_snapshots_bracket_assignment_without_filtering) ... ok\ntest_missing_or_duplicate_boundaries_refused (test_markers.MarkerTests.test_missing_or_duplicate_boundaries_refused) ... ok\ntest_original_operations_and_short_circuit_unchanged (test_markers.MarkerTests.test_original_operations_and_short_circuit_unchanged) ... ok\ntest_original_r07_fighter_forwarders_remain (test_markers.MarkerTests.test_original_r07_fighter_forwarders_remain) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.010s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1004, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

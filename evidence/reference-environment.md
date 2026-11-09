@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Offline r12 startFight/menu observers
+
+2026-11-09 M0-02 r12 offline: source-local startFight entry/state-written/normal-end and setMenuEnable assignment-before/after/normal-end markers compiled on independent r08 copy. Reads actual readying, pause and lexical menu flag; enabled is not visible. Only root frame8 DoAction changes beyond r08; original six-DoAction scope retained. No live; historical r09 lacks these markers, original structural refusal and both exit1 modes retained. Flags false/M0-02 pending; live needed to validate marker sequence and outcomes, not needed/executed for this offline slice. Official remaining UNKNOWN. See [r12](oracle/native-fight-r12/README.md).
+
 ## Offline r11 first observed readiness subset
 
 2026-11-09 M0-02 r11 offline: immutable r09 first observed readiness subset at seq3092/local camera455 (HP assignment observed, ready request observed, unpaused, p2loaded, complete actor fields), previous entry seq3074 still paused. Exact startFight/readying/menu outcome unobserved; no full readiness/global tick claim. All48 timer boundaries retained:12 pre-HP incomplete,18 post-HP complete paused,18 post-HP complete unpaused; ordinal17 re-pauses after first subset. Original structural refusal and both exit1 gates preserved. No live/new SWF; flags false, M0-02 pending; official remaining UNKNOWN. See [r11](oracle/native-fight-r11/README.md).
