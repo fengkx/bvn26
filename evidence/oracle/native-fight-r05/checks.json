@@ -1,0 +1,77 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r05",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_foreign_tag_gap_owner_site_timer_and_intro_refused (test_observer.ObserverTests.test_foreign_tag_gap_owner_site_timer_and_intro_refused) ... ok\ntest_inventory_drift_refused (test_observer.ObserverTests.test_inventory_drift_refused) ... ok\ntest_no_live_receipt_refused (test_observer.ObserverTests.test_no_live_receipt_refused) ... ok\ntest_original_alias_and_short_circuit_preserved (test_observer.ObserverTests.test_original_alias_and_short_circuit_preserved) ... ok\ntest_repository_output_refused_before_compiler (test_observer.ObserverTests.test_repository_output_refused_before_compiler) ... ok\ntest_synthetic_parser_success_is_not_tick_proof (test_observer.ObserverTests.test_synthetic_parser_success_is_not_tick_proof) ... ok\ntest_timer_preserves_original_body (test_observer.ObserverTests.test_timer_preserves_original_body) ... ok\ntest_wrong_build_and_reused_tag_refused (test_observer.ObserverTests.test_wrong_build_and_reused_tag_refused) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.006s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r03",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_local_ordinal_does_not_require_global_tick (test_observer.ObserverTests.test_local_ordinal_does_not_require_global_tick) ... ok\ntest_namespace_collision_fails_before_build (test_observer.ObserverTests.test_namespace_collision_fails_before_build) ... ok\ntest_rejects_foreign_duplicate_and_missing_boot (test_observer.ObserverTests.test_rejects_foreign_duplicate_and_missing_boot) ... ok\ntest_run_tag_cannot_inject_source (test_observer.ObserverTests.test_run_tag_cannot_inject_source) ... ok\ntest_source_boundaries_are_unique_and_fail_on_change (test_observer.ObserverTests.test_source_boundaries_are_unique_and_fail_on_change) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.002s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r05/analyze.py"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"refusal\": \"No r05 live capture; offline build cannot prove observations\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r05/analyze.py",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"refusal\": \"No r05 live capture; offline build cannot prove observations\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 997, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
