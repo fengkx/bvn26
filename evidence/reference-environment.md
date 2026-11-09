@@ -1,5 +1,7 @@
 # Original reference environment
 
+- 2026-11-10 M0-02 r17 offline: prepared saved-attribution/sink continuation-prep + breadcrumb at both doStand/doAllAction true gotos, retaining dynamic after. Independent copy compiled; six-DoAction original scope retained. Pairing refuses missing/orphan/interleaved evidence; historical r15 cause remains unproved, both modes exit1. No live; five flags false/M0-02 pending. Future fresh-tag positive-branch live required; official remaining UNKNOWN. [r17](oracle/native-fight-r17/README.md).
+
 - 2026-11-10 M0-02 r16 offline: reconstructed true-branch post-goto dynamic reads; additive classifier preserves 223 false intervals and one unjoined true candidate (seq6973–6979). Later logging/installations do not prove cause or helper removal. Both modes retain structural refusal; no new SWF/live. Minimal continuation-breadcrumb preparation plan recorded; five flags false, M0-02 pending; official remaining UNKNOWN. [r16](oracle/native-fight-r16/README.md).
 
 ## Live r15 consumer markers
