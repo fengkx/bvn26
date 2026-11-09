@@ -1,0 +1,66 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r19/analyze.py",
+      "--output",
+      "evidence/oracle/native-fight-r19/diagnosis.json"
+    ],
+    "exit": 1,
+    "stdout": "Incomplete actor state at clock boundary\nNo r19 live side-channel evidence; admission refused\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r19/analyze.py",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "Incomplete actor state at clock boundary\nNo r19 live side-channel evidence; admission refused\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r19",
+      "-p",
+      "test_*.py"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.084s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1011, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
