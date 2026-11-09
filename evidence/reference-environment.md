@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Offline r07 asset-routing diagnosis
+
+2026-11-09 M0-02 r07 offline: r06 selected 一护 maps to yihu.swf, whereas r05 instrumented ichigo.swf (一护2); receipt/copy/source hashes confirm the asset-routing mismatch. Corrected 39 lexical forwards to yihu Sprite16 plus install marker; temporary compile changes only five DoActions. Ten incomplete timer boundaries are HP undefined at local ordinals1–5 entry/exit; chushi initialization ordering remains unobserved, no prefix trimming or relaxed gate. No live launch. All flags false, M0-02 pending; fresh live authorization and loaded identity/initial-boundary proof required. Official remaining UNKNOWN; not claiming above floor. See [r07](oracle/native-fight-r07/README.md).
+
 ## Live r05 observer validation r06
 
 2026-11-09 M0-02 r06 live: one 84.878-second exact-PID run (42900, fresh tag m002-r06-live-20261109-1654) completed physical menu/fight J with no reported focus/TCC blocker, owned cleanup and original/two-copy hashes passed. Retained 4871 events, 24 timer pairs, but zero fight-key events; 10 timer boundaries have undefined actor state. Unchanged analyzer and require-oracle both exit 1 (Incomplete actor state at clock boundary). No retry or relaxed gate. M0-02 pending; production_admitted=false/native_parity_proven=false/oracle_accepted=false. Fight consumption, global initial-state/ticks, full random tape, exclusive complete trace, repeat and noninterference unproved. See [r06](oracle/native-fight-r06/README.md).

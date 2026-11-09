@@ -1,0 +1,257 @@
+{
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "source_hashes": {
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "scripts/fighter/yihu.json": "5c4996b3767c2e31810595604c5b869c511c9c4f1cd8c123e059212294fc5d5b",
+    "scripts/fighter/ichigo.json": "6fcef16f2c7af2f72c557d201bdc6e9260009ed69ec1e340da1ffa1b7daedc94",
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "game/fighter/yihu.swf": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+    "game/fighter/ichigo.swf": "21bf68e942d417b0b39e8702ae388b8146a9c275510d83125d51a4f08dd9723f"
+  },
+  "r06_hashes": {
+    "build.json": "685a0b0d51dc848ba62ce4225c7cb07294e159e4349e0566bd865c6565431bc3",
+    "run-01/session.json": "794180ae57b3cba8cd00e8bfe53d06f51f48d4089cf8cab8b8f5620750b1395b",
+    "run-01/tagged.log": "bf210a6952133fcb106659bdace452092a554e12a3307b394e238fd05d47dfbd",
+    "run-01/flashlog.after.log": "380cc64b90351ab60109e872e41694b6ba7f41a227a01f186b3580f92e5b0394",
+    "run-01/08-fight-j.jpg": "f4ec5bba4323c049fe4976baa30dc108f70ed819510430bed47e869932ca68aa"
+  },
+  "registry": [
+    "addFighterData(\"一护\",{name:\"黑崎·一护\",url:\"yihu.swf\",fz:\"魂\",vs:[\"恋次\",\"露其雅始解\"],music:\"ichigo.mp3\",says:[\"光是战斗根本没有意思 只是活下去也没有意义。\",\"我也不知道为什么，总之很爽就是了! \\n 这是…我的战斗。\",\"正因为我们看不见，那才可怕。\"]});",
+    "addFighterClone(\"一护2\",\"一护\",{name:\"黑崎·一护 零段\",url:\"ichigo.swf\",fz:\"石田\"});"
+  ],
+  "selected_p1": "一护",
+  "source_selected_asset": "game/fighter/yihu.swf",
+  "r05_instrumented_asset": "game/fighter/ichigo.swf",
+  "copies": {
+    "game/main.swf": {
+      "original_sha256": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+      "captured_copy_sha256": "ade6680982efb2317b3ae7ec56a662d6cf44cd0ed9de564680906d9e11ee5db8",
+      "retained_copy_matches": true
+    },
+    "game/fighter/ichigo.swf": {
+      "original_sha256": "21bf68e942d417b0b39e8702ae388b8146a9c275510d83125d51a4f08dd9723f",
+      "captured_copy_sha256": "b955e102242be61aeac72963d25e4577dd89fd9165a8b6fc7e009171243aa6ac",
+      "retained_copy_matches": true
+    },
+    "game/fighter/yihu.swf": {
+      "original_sha256": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+      "captured_copy_sha256": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+      "retained_copy_matches": true
+    }
+  },
+  "loadman_source": "\r\n{\r\n   trace(\"loadman : \" + pr + \",\" + _root[pr + \"selt\"]);\r\n   var _loc3_ = _root.getFighterData(_root[pr + \"selt\"]);\r\n   _this._loader.loadClip(_root.fighterDir + _loc3_.url,_root.game[pr]);\r\n}\r\n",
+  "decision_lifecycle": {
+    "path": "scripts/fighter/yihu.json:DefineSprite_638/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+    "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      doAllAction();\r\n   }\r\n}\r\n"
+  },
+  "hp_initialization": {
+    "path": "scripts/main.json:frame_8/DoAction.as",
+    "line": 697,
+    "statement": "   _root.game.p1.mc.hp = _root.game.p2.mc.hp = _root.maxhp;"
+  },
+  "incomplete_boundaries": [
+    {
+      "seq": 183,
+      "local_timer": "1",
+      "unknown": [
+        {
+          "seq": 184,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 185,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 186,
+      "local_timer": "1",
+      "unknown": [
+        {
+          "seq": 187,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 188,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 375,
+      "local_timer": "2",
+      "unknown": [
+        {
+          "seq": 376,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 377,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 378,
+      "local_timer": "2",
+      "unknown": [
+        {
+          "seq": 379,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 380,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 567,
+      "local_timer": "3",
+      "unknown": [
+        {
+          "seq": 568,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 569,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 570,
+      "local_timer": "3",
+      "unknown": [
+        {
+          "seq": 571,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 572,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 759,
+      "local_timer": "4",
+      "unknown": [
+        {
+          "seq": 760,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 761,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 762,
+      "local_timer": "4",
+      "unknown": [
+        {
+          "seq": 763,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 764,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 951,
+      "local_timer": "5",
+      "unknown": [
+        {
+          "seq": 952,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 953,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    },
+    {
+      "seq": 954,
+      "local_timer": "5",
+      "unknown": [
+        {
+          "seq": 955,
+          "slot": "p1",
+          "field_index": 5,
+          "value": "undefined"
+        },
+        {
+          "seq": 956,
+          "slot": "p2",
+          "field_index": 5,
+          "value": "undefined"
+        }
+      ]
+    }
+  ],
+  "physical_fight_j": {
+    "step": {
+      "name": "fight-j",
+      "key": "j",
+      "hold_seconds": 0.5,
+      "settle_seconds": 1
+    },
+    "pid": 42900,
+    "started_unix": 1794214668.600242,
+    "started_monotonic": 2752506.177311208,
+    "result": "42900, true, /private/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/bvn-native-menu-5oqjfu_j/game/main.swf\n",
+    "returned_monotonic": 2752507.704713875,
+    "screenshot": "08-fight-j.jpg"
+  },
+  "missing": [
+    "loaded URL/definition/decision-install identity",
+    "native query return at corrected site",
+    "HP initialization boundary event ordering versus timer callbacks",
+    "certified input tick/global clock",
+    "full random tape/repeat/noninterference"
+  ]
+}
