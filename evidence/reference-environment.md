@@ -1,5 +1,9 @@
 # Original reference environment
 
+## Live r05 observer validation r06
+
+2026-11-09 M0-02 r06 live: one 84.878-second exact-PID run (42900, fresh tag m002-r06-live-20261109-1654) completed physical menu/fight J with no reported focus/TCC blocker, owned cleanup and original/two-copy hashes passed. Retained 4871 events, 24 timer pairs, but zero fight-key events; 10 timer boundaries have undefined actor state. Unchanged analyzer and require-oracle both exit 1 (Incomplete actor state at clock boundary). No retry or relaxed gate. M0-02 pending; production_admitted=false/native_parity_proven=false/oracle_accepted=false. Fight consumption, global initial-state/ticks, full random tape, exclusive complete trace, repeat and noninterference unproved. See [r06](oracle/native-fight-r06/README.md).
+
 ## Offline fight observer r05
 
 2026-11-09 M0-02 r05 offline: added 39 lexical Ichigo base-form fight decision key observers and existing timer entry/exit observations in independent SWF copies; five DoAction payloads across main/ichigo only. No live launch/capture. Analyzer and require-oracle exit 1 without live proof; local ordinals are not global ticks. Initial state, fight consumption, full random tape, exclusive trace, deterministic repeat and noninterference remain unproved; all admission flags false, M0-02 pending. See [r05](oracle/native-fight-r05/README.md).

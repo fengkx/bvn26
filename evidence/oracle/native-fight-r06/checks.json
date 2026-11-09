@@ -1,0 +1,81 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r06",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_accepts_one_exact_owned_window_with_unrelated_peer (test_binding.BindingTests.test_accepts_one_exact_owned_window_with_unrelated_peer) ... ok\ntest_other_same_bundle_process_cannot_replace_owned_pid (test_binding.BindingTests.test_other_same_bundle_process_cannot_replace_owned_pid) ... ok\ntest_rejects_duplicate_movie_windows (test_binding.BindingTests.test_rejects_duplicate_movie_windows) ... ok\ntest_rejects_focus_loss_and_offscreen (test_binding.BindingTests.test_rejects_focus_loss_and_offscreen) ... ok\ntest_rejects_foreign_window_owner (test_binding.BindingTests.test_rejects_foreign_window_owner) ... ok\ntest_rejects_title_and_ax_failure (test_binding.BindingTests.test_rejects_title_and_ax_failure) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r05",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_foreign_tag_gap_owner_site_timer_and_intro_refused (test_observer.ObserverTests.test_foreign_tag_gap_owner_site_timer_and_intro_refused) ... ok\ntest_inventory_drift_refused (test_observer.ObserverTests.test_inventory_drift_refused) ... ok\ntest_no_live_receipt_refused (test_observer.ObserverTests.test_no_live_receipt_refused) ... ok\ntest_original_alias_and_short_circuit_preserved (test_observer.ObserverTests.test_original_alias_and_short_circuit_preserved) ... ok\ntest_repository_output_refused_before_compiler (test_observer.ObserverTests.test_repository_output_refused_before_compiler) ... ok\ntest_synthetic_parser_success_is_not_tick_proof (test_observer.ObserverTests.test_synthetic_parser_success_is_not_tick_proof) ... ok\ntest_timer_preserves_original_body (test_observer.ObserverTests.test_timer_preserves_original_body) ... ok\ntest_wrong_build_and_reused_tag_refused (test_observer.ObserverTests.test_wrong_build_and_reused_tag_refused) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.007s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r03",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_local_ordinal_does_not_require_global_tick (test_observer.ObserverTests.test_local_ordinal_does_not_require_global_tick) ... ok\ntest_namespace_collision_fails_before_build (test_observer.ObserverTests.test_namespace_collision_fails_before_build) ... ok\ntest_rejects_foreign_duplicate_and_missing_boot (test_observer.ObserverTests.test_rejects_foreign_duplicate_and_missing_boot) ... ok\ntest_run_tag_cannot_inject_source (test_observer.ObserverTests.test_run_tag_cannot_inject_source) ... ok\ntest_source_boundaries_are_unique_and_fail_on_change (test_observer.ObserverTests.test_source_boundaries_are_unique_and_fail_on_change) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.002s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r06/summarize.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"events\": 4871, \"counts\": {\"boot\": 1, \"game-state\": 1482, \"actor-state\": 3060, \"random-return\": 1, \"clock-entry\": 24, \"clock-exit\": 24, \"key-return\": 278, \"ready-play-before\": 1}, \"incomplete_clock_boundaries\": 10, \"fight_key_events\": 0}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 998, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
