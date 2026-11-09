@@ -1,0 +1,77 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r08",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_ambiguous_root_frame_action_refused (test_markers.MarkerTests.test_ambiguous_root_frame_action_refused) ... ok\ntest_cannot_claim_load_init_from_load_complete (test_markers.MarkerTests.test_cannot_claim_load_init_from_load_complete) ... ok\ntest_hp_snapshots_bracket_assignment_without_filtering (test_markers.MarkerTests.test_hp_snapshots_bracket_assignment_without_filtering) ... ok\ntest_missing_or_duplicate_boundaries_refused (test_markers.MarkerTests.test_missing_or_duplicate_boundaries_refused) ... ok\ntest_original_operations_and_short_circuit_unchanged (test_markers.MarkerTests.test_original_operations_and_short_circuit_unchanged) ... ok\ntest_original_r07_fighter_forwarders_remain (test_markers.MarkerTests.test_original_r07_fighter_forwarders_remain) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.012s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r08/analyze.py"
+    ],
+    "exit": 1,
+    "stdout": "{\"production_admitted\": false, \"native_parity_proven\": false, \"oracle_accepted\": false, \"refusal\": \"No r08 live capture; no existing source onLoadInit; onLoadComplete is not initialization completion\"}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r08/analyze.py",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\"production_admitted\": false, \"native_parity_proven\": false, \"oracle_accepted\": false, \"refusal\": \"No r08 live capture; no existing source onLoadInit; onLoadComplete is not initialization completion\"}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r05/analyze.py",
+      "--build",
+      "evidence/oracle/native-fight-r06/build.json",
+      "--directory",
+      "evidence/oracle/native-fight-r06/run-01",
+      "--require-oracle"
+    ],
+    "exit": 1,
+    "stdout": "{\n  \"production_admitted\": false,\n  \"native_parity_proven\": false,\n  \"oracle_accepted\": false,\n  \"refusal\": \"Incomplete actor state at clock boundary\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1000, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
