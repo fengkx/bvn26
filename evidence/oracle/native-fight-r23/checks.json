@@ -1,0 +1,64 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r23",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.041s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r23/analyze.py"
+    ],
+    "exit_code": 1,
+    "stdout": "Incomplete actor state at clock boundary\nTarget marker has no live proof; cause/lifetime/call join unproved\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r23/analyze.py",
+      "--require-oracle"
+    ],
+    "exit_code": 1,
+    "stdout": "Incomplete actor state at clock boundary\nTarget marker has no live proof; cause/lifetime/call join unproved\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1016, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
