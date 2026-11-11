@@ -1,0 +1,102 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r29",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.022s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r29/analyze.py"
+    ],
+    "exit_code": 1,
+    "stdout": "public-protocol-lead-found-native-binding-unproved\nIncomplete actor state at clock boundary\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r29/analyze.py",
+      "--require-oracle"
+    ],
+    "exit_code": 1,
+    "stdout": "public-protocol-lead-found-native-binding-unproved\nIncomplete actor state at clock boundary\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1022, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "exit_code": 2,
+    "note": "Initial staging found upstream LICENSE/NOTICE trailing whitespace; license-text copies normalized only, compressed source snapshots untouched."
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1022, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
