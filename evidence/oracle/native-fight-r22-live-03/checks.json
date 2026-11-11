@@ -1,0 +1,80 @@
+[
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r22-live-03/analyze.py"
+    ],
+    "exit_code": 1,
+    "stdout": "{\"events\": 7629, \"fight_key_total\": 1914, \"fight_key_positive\": 1, \"positive_sites\": {\"yihu-decision-9\": 1}, \"structural_observations_admitted\": false}\nIncomplete actor state at clock boundary\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "evidence/oracle/native-fight-r22-live-03/analyze.py",
+      "--require-oracle"
+    ],
+    "exit_code": 1,
+    "stdout": "{\"events\": 7629, \"fight_key_total\": 1914, \"fight_key_positive\": 1, \"positive_sites\": {\"yihu-decision-9\": 1}, \"structural_observations_admitted\": false}\nIncomplete actor state at clock boundary\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r22-live-03",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "..............F.\n======================================================================\nFAIL: test_after_silence_and_admission_refusal_retained (test_live.LiveReceiptTests.test_after_silence_and_admission_refusal_retained)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-next-slice/evidence/oracle/native-fight-r22-live-03/test_live.py\", line 21, in test_after_silence_and_admission_refusal_retained\n    self.assertEqual(report['incomplete_clock_boundaries'], 12)\nAssertionError: [{'marker': {'seq': 197, 'timer_ms': 5942[9714 chars]'}]}] != 12\n\n----------------------------------------------------------------------\nRan 16 tests in 0.045s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/verify.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"assets\": 75, \"dependencies\": 74, \"swfs\": 62, \"script_bundles\": 62, \"script_exports\": 8853}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "tools/check_handoff.py"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\": \"passed\", \"documents\": 24, \"local_links\": 1015, \"tasks\": 31, \"requirements\": 20, \"fighter_configs\": 64, \"maps\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3.11",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "evidence/oracle/native-fight-r22-live-03",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "................\n----------------------------------------------------------------------\nRan 16 tests in 0.041s\n\nOK\n",
+    "note": "Correct new test assertion to count boundary records, retaining the initial test failure."
+  }
+]
