@@ -1,0 +1,254 @@
+{
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "status": "native-boundary-and-schema-still-unjustified",
+  "qualified_native_boundary": null,
+  "identity_schema_verified": false,
+  "preservation_plan_executed": false,
+  "native_return_proven": false,
+  "source_call_interval": "Push \"M002LITERAL|m002-r25-live-20261112-f19d|doAllAction|before\"\r\nTrace\r\nPush \"砍1\"\r\nPush 1\r\nPush register3\r\nPush \"gotoAndPlay\"\r\nCallMethod\r\nPop\r\nPush \"M002LITERAL|m002-r25-live-20261112-f19d|doAllAction|after\"",
+  "source_interval_means": "Encoded inner CallMethod, not observed native entry or outer clip-event return",
+  "candidates": [
+    {
+      "id": "s350",
+      "file_offset": "0x124fef",
+      "meaning": "Retained numeric ActionReturn arm",
+      "applicable": false,
+      "refusal": "Generic explicit opcode arm lacks loaded body/activation binding; not the inner goto call or general outer fallthrough/unwind boundary."
+    },
+    {
+      "id": "s357",
+      "file_offset": "0x125003",
+      "meaning": "Retained continuation of s350 nonzero branch",
+      "applicable": false,
+      "refusal": "Untyped memory operands, no owner/generation/activation meaning; archived root callback target differs from gameplay clip-event invocation."
+    },
+    {
+      "id": "s366",
+      "unslid_candidate": "0x100096147",
+      "reachable_instruction_boundary": false,
+      "applicable": false,
+      "refusal": "onEnterFrame string operand is not clip-event/goto identity; reachability and field semantics unproved."
+    }
+  ],
+  "identity_requirements": {
+    "kind": "unimplemented-evidence-requirements-not-native-layout",
+    "schema_verified": false,
+    "fields": [
+      {
+        "name": "loaded_body",
+        "required_evidence": "SWF hash + parent character definition + action/clip-action location + native loaded-code binding",
+        "current_limit": "Source/P-code location is known; no native loaded-code binding.",
+        "native_location": null,
+        "verified_type": null,
+        "independent_witness": null
+      },
+      {
+        "name": "owner",
+        "required_evidence": "Parent/child object identity bound independently to definition and placement/depth",
+        "current_limit": "Path/depth/address alone is reusable; r25 has no native object binding.",
+        "native_location": null,
+        "verified_type": null,
+        "independent_witness": null
+      },
+      {
+        "name": "owner_generation",
+        "required_evidence": "Observed birth, replacement/removal and reuse-safe continuity for that owner",
+        "current_limit": "Install marker is not a native birth or terminal edge.",
+        "native_location": null,
+        "verified_type": null,
+        "independent_witness": null
+      },
+      {
+        "name": "closure_generation",
+        "required_evidence": "Loaded function/callback identity and replacement-safe continuity",
+        "current_limit": "Sprite16 source function name does not identify one loaded closure.",
+        "native_location": null,
+        "verified_type": null,
+        "independent_witness": null
+      },
+      {
+        "name": "activation",
+        "required_evidence": "Unique dispatcher entry for this callback with recursion/reentrancy disambiguation",
+        "current_limit": "Local consumer serial is not native activation identity.",
+        "native_location": null,
+        "verified_type": null,
+        "independent_witness": null
+      },
+      {
+        "name": "transition_edge",
+        "required_evidence": "Observed receiver/argument/initiating activation at a justified native goto/removal edge",
+        "current_limit": "CallMethod encoding and source-before Trace are not native entry.",
+        "native_location": null,
+        "verified_type": null,
+        "independent_witness": null
+      },
+      {
+        "name": "dispatcher_outcome",
+        "required_evidence": "Matching outer dispatch continuation/outcome including explicit return, fallthrough, interruption and missing observations",
+        "current_limit": "Inner method return or process termination cannot substitute.",
+        "native_location": null,
+        "verified_type": null,
+        "independent_witness": null
+      },
+      {
+        "name": "body_target",
+        "required_evidence": "Generation-bound body identity linked by an independently witnessed edge to the initiating activation",
+        "current_limit": "M002TARGET supplies body path/frame, not causal token.",
+        "native_location": null,
+        "verified_type": null,
+        "independent_witness": null
+      }
+    ]
+  },
+  "preservation_plan": {
+    "status": "design-only-not-executed",
+    "qualified": false,
+    "authorization": "No live, attachment, callback or capture implementation authorized by this plan.",
+    "prerequisites": [
+      "Specific native boundary and independent field meanings must be reviewed before any instrumented trial.",
+      "Exact player/image/SWF/build identity; unique owned process and no reused historical tag.",
+      "Input-consumption and random tape comparability currently unproved: observation timestamps alone cannot qualify an off/on pair."
+    ],
+    "stages": [
+      {
+        "name": "offline-source-bytecode",
+        "require": [
+          "Original predicate/goto/action counts and short-circuit logic preserved",
+          "All original/copy tag diffs enumerated",
+          "No forced timeline, global API override or guessed field offset"
+        ],
+        "performed": false
+      },
+      {
+        "name": "paired-off-on-design",
+        "require": [
+          "Fixed initial state and pinned consumed input/RNG, or explicitly mark comparison unqualified",
+          "Same independent output/behavior checks in both modes",
+          "Keep failed/partial/raw logs and noncomparable runs; no threshold adjustment"
+        ],
+        "performed": false
+      },
+      {
+        "name": "identity-negative-controls",
+        "require": [
+          "Reject path/depth/address reuse and generation changes",
+          "Reject nested/reentrant/missing/duplicate/interleaved activations",
+          "Separate callback and logger replacement from dispatcher outcome",
+          "Do not insert controls into locked game or execute them under this plan"
+        ],
+        "performed": false
+      },
+      {
+        "name": "independent-observer-check",
+        "require": [
+          "Independent witness must survive loss/replacement of source logger",
+          "Report raw-memory/debugger limitations and observer effects",
+          "Absence of witness is unknown, not destruction/return"
+        ],
+        "performed": false
+      },
+      {
+        "name": "bounded-owned-host-plan",
+        "require": [
+          "Separately reviewed scoped approval; no signature/security changes or software fallback",
+          "Retain breakpoint/attach/detach/cleanup receipts for exact owned process",
+          "Timeout, denial, focus/identity loss fail closed without retry"
+        ],
+        "performed": false
+      }
+    ],
+    "admission": "Passing a future control does not itself close M0-02 or certify ticks/OS join."
+  },
+  "structural_refusal": "Incomplete actor state at clock boundary",
+  "r25_join_refusal": [
+    {
+      "target": {
+        "raw_line": 7058,
+        "owner": "/game/p1/mc",
+        "frame": 174,
+        "initiating_call_join_proven": false,
+        "helper_lifetime_proven": false
+      },
+      "classification": "body-target-observed-dispatch-identity-unjoined",
+      "preceding_root_seq": 6932,
+      "following_root_seq": 6933,
+      "source_prefix_candidates": [
+        {
+          "prep_seq": 6925,
+          "raw_line": 7048,
+          "helper_path": "/game/p1/mc/instance2915",
+          "serial": "127",
+          "site": "doAllAction",
+          "body_path": "/game/p1/mc",
+          "recorded_body_frame": "f:1:1:67108864:0",
+          "source_prefix_valid": true
+        }
+      ],
+      "observed_installation_paths": [
+        {
+          "seq": 9,
+          "source_marker": "yihu-sprite16",
+          "helper_path": "/game/p1/mc/instance2375",
+          "query_count": 0,
+          "last_exact_path_root_seq": 9,
+          "termination_observed": false
+        },
+        {
+          "seq": 1779,
+          "source_marker": "yihu-sprite16",
+          "helper_path": "/game/p1/mc/instance2570",
+          "query_count": 55,
+          "last_exact_path_root_seq": 4365,
+          "termination_observed": false
+        },
+        {
+          "seq": 4381,
+          "source_marker": "yihu-sprite16",
+          "helper_path": "/game/p1/mc/instance2852",
+          "query_count": 1,
+          "last_exact_path_root_seq": 4385,
+          "termination_observed": false
+        },
+        {
+          "seq": 4407,
+          "source_marker": "yihu-sprite16",
+          "helper_path": "/game/p1/mc/instance2907",
+          "query_count": 0,
+          "last_exact_path_root_seq": 4407,
+          "termination_observed": false
+        },
+        {
+          "seq": 4498,
+          "source_marker": "yihu-sprite16",
+          "helper_path": "/game/p1/mc/instance2915",
+          "query_count": 127,
+          "last_exact_path_root_seq": 6925,
+          "termination_observed": false
+        },
+        {
+          "seq": 6932,
+          "source_marker": "yihu-sprite16",
+          "helper_path": "/game/p1/mc/instance3071",
+          "query_count": 0,
+          "last_exact_path_root_seq": 6932,
+          "termination_observed": false
+        }
+      ],
+      "missing_witnesses": [
+        "target has no originating helper or invocation token",
+        "installation has no parent-definition/depth/generation binding",
+        "no observed native removal/interrupt edge",
+        "no observed dispatch entry/exit identity"
+      ],
+      "initiating_call_join_proven": false,
+      "helper_lifetime_proven": false,
+      "removal_edge_proven": false,
+      "native_return_proven": false,
+      "cause": "unproved"
+    }
+  ]
+}

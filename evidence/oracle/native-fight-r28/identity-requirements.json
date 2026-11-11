@@ -1,0 +1,70 @@
+{
+  "kind": "unimplemented-evidence-requirements-not-native-layout",
+  "schema_verified": false,
+  "fields": [
+    {
+      "name": "loaded_body",
+      "required_evidence": "SWF hash + parent character definition + action/clip-action location + native loaded-code binding",
+      "current_limit": "Source/P-code location is known; no native loaded-code binding.",
+      "native_location": null,
+      "verified_type": null,
+      "independent_witness": null
+    },
+    {
+      "name": "owner",
+      "required_evidence": "Parent/child object identity bound independently to definition and placement/depth",
+      "current_limit": "Path/depth/address alone is reusable; r25 has no native object binding.",
+      "native_location": null,
+      "verified_type": null,
+      "independent_witness": null
+    },
+    {
+      "name": "owner_generation",
+      "required_evidence": "Observed birth, replacement/removal and reuse-safe continuity for that owner",
+      "current_limit": "Install marker is not a native birth or terminal edge.",
+      "native_location": null,
+      "verified_type": null,
+      "independent_witness": null
+    },
+    {
+      "name": "closure_generation",
+      "required_evidence": "Loaded function/callback identity and replacement-safe continuity",
+      "current_limit": "Sprite16 source function name does not identify one loaded closure.",
+      "native_location": null,
+      "verified_type": null,
+      "independent_witness": null
+    },
+    {
+      "name": "activation",
+      "required_evidence": "Unique dispatcher entry for this callback with recursion/reentrancy disambiguation",
+      "current_limit": "Local consumer serial is not native activation identity.",
+      "native_location": null,
+      "verified_type": null,
+      "independent_witness": null
+    },
+    {
+      "name": "transition_edge",
+      "required_evidence": "Observed receiver/argument/initiating activation at a justified native goto/removal edge",
+      "current_limit": "CallMethod encoding and source-before Trace are not native entry.",
+      "native_location": null,
+      "verified_type": null,
+      "independent_witness": null
+    },
+    {
+      "name": "dispatcher_outcome",
+      "required_evidence": "Matching outer dispatch continuation/outcome including explicit return, fallthrough, interruption and missing observations",
+      "current_limit": "Inner method return or process termination cannot substitute.",
+      "native_location": null,
+      "verified_type": null,
+      "independent_witness": null
+    },
+    {
+      "name": "body_target",
+      "required_evidence": "Generation-bound body identity linked by an independently witnessed edge to the initiating activation",
+      "current_limit": "M002TARGET supplies body path/frame, not causal token.",
+      "native_location": null,
+      "verified_type": null,
+      "independent_witness": null
+    }
+  ]
+}
