@@ -96,3 +96,34 @@ directory and append a newline to exactly one file. Run the same r13-report
 command on that copy; require exit1 and identity_refused, not a replay result.
 For legacy r12, use input-alias-r12/events.jsonl with combat-boundaries only.
 No headless result here certifies GPU rendering, visual parity or native return.
+
+## PR #278 P1 CPU review correction
+
+The reviewed d0b2caf6 module rejected any truthy runtime p1cpu, rather than
+comparing it with configuration. This was correct for the pinned human-P1 run,
+but failed to enforce an explicit contrary configuration. The pinned build.json
+omits p1cpu; immutable input-binary-r13/instrumentation.diff line223 explicitly
+assigns `p1cpu = false`. The module now uses that source-bound default only for
+this already hash-qualified profile, validates a Boolean configuration value,
+and compares runtime P1 CPU with the expected value. It does not edit the build
+or broaden receipt qualification.
+
+Coverage adds absent-default mismatch, explicit false match, explicit true
+mismatch and match, and non-Boolean rejection. Explicit true cases are synthetic
+function-contract tests, not another qualified native profile. The explicit
+true-config / false-runtime negative fails on the reviewed module (test line51,
+strict exit1), and passes with the fix (strict exit0). Previous positives and six
+negatives still pass. identity-test.log.gz is re-recorded; p1-cpu-before.log.gz
+retains the failing regression. The pinned Godot SHA is rechecked in artifacts.json.
+
+Full r13 rerun strict exit0; replay JSON equals the retained report in full.
+The rerun acceptance remains exit1 / source_build_provenance_not_clean, and Ready
+helper identity remains refused. New rerun log and acceptance receipts are
+retained as p1-cpu-r13.log.gz and p1-cpu-acceptance.json.gz; the unchanged replay
+artifact is not rewritten. Three report regressions, six existing Python tests,
+verify.py, check_handoff.py and diff-check pass using the commands above.
+
+Residual review notes deliberately not included: record_ready's last-two-row
+indexing and the refusal report's absence of five explicit flag keys are separate
+reporting concerns, not prerequisites for the CPU configuration comparison.
+No helper research, validator/scheduler change, source mutation, live or admission.

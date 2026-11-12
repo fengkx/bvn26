@@ -38,5 +38,19 @@ func _run() -> void:
 	wrong_identity = identity.duplicate(true)
 	wrong_identity.sources_sha256["game/fighter/fz/kon.swf"] = "incorrect"
 	assert(Identity.runtime_error(fixture, wrong_identity) == "generated_helper_identity_mismatch")
-	print("R13_IDENTITY_OK positive_and_six_negative_cases")
+	# The pinned build omits p1cpu; its bootstrap explicitly assigns false.
+	assert(not identity.configuration.has("p1cpu"))
+	wrong = fixture.duplicate(true)
+	wrong.session.p1cpu = true
+	assert(Identity.runtime_error(wrong, identity) == "runtime_configuration_mismatch")
+	var cpu_identity := identity.duplicate(true)
+	cpu_identity.configuration.p1cpu = false
+	assert(Identity.runtime_error(fixture, cpu_identity) == "")
+	# Synthetic contract cases, not another qualified receipt/profile.
+	cpu_identity.configuration.p1cpu = true
+	assert(Identity.runtime_error(fixture, cpu_identity) == "runtime_configuration_mismatch")
+	assert(Identity.runtime_error(wrong, cpu_identity) == "")
+	cpu_identity.configuration.p1cpu = "false"
+	assert(Identity.runtime_error(fixture, cpu_identity) == "invalid_p1_cpu_configuration")
+	print("R13_IDENTITY_OK prior_cases_and_p1_cpu_default_explicit_mismatch_and_type_cases")
 	quit()

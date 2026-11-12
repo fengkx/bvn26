@@ -25,6 +25,11 @@ static func runtime_error(game, identity: Dictionary) -> String:
 	if not identity.get("error", "missing_identity").is_empty():
 		return "unqualified_receipt"
 	var config: Dictionary = identity.configuration
+	# The hash-pinned r13 build omits p1cpu; its instrumentation.diff bootstrap
+	# explicitly sets p1cpu=false (line 223). Do not infer this from the runtime.
+	var expected_p1_cpu: Variant = config.get("p1cpu", false)
+	if not expected_p1_cpu is bool:
+		return "invalid_p1_cpu_configuration"
 	var fighters := [game.naruto, game.ichigo]
 	for i in 2:
 		var fighter = fighters[i]
@@ -34,7 +39,7 @@ static func runtime_error(game, identity: Dictionary) -> String:
 		for pair in [["swf_path", "swf_sha256"], ["script_bundle_path", "script_bundle_sha256"]]:
 			if identity.sources_sha256.get(model.source[pair[0]], "") != model.source[pair[1]]:
 				return "generated_source_identity_mismatch"
-	if game.selected_stage != config.stage or game.session.modo != config.modo or game.session.ai_level != config.AI or game.session.p2cpu != config.p2cpu or game.session.p1cpu:
+	if game.selected_stage != config.stage or game.session.modo != config.modo or game.session.ai_level != config.AI or game.session.p2cpu != config.p2cpu or game.session.p1cpu != expected_p1_cpu:
 		return "runtime_configuration_mismatch"
 	if game.naruto_helper.helper_id != config.p1sf or game.ichigo_helper.helper_id != config.p2sf:
 		return "runtime_helper_identity_mismatch"
