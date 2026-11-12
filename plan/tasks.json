@@ -994,9 +994,18 @@
         "spec/performance-budget.json"
       ],
       "acceptance": "记录设备、浏览器、首次/缓存加载、p95 逻辑/渲染耗时和内存峰值；不通过降低战斗频率达标。",
-      "evidence": [],
+      "evidence": [
+        "evidence/performance/g0-instrumentation/README.md",
+        "evidence/performance/g0-instrumentation/dry-run.json"
+      ],
       "estimated_person_days": null,
-      "actual_person_days": null
+      "actual_person_days": null,
+      "progress_note": "2026-11-12: G0 instrumentation preparation adds isolated exclusive timers and a fixed single-player browser workload, with sampled-input-to-submit correlation and UNKNOWN GPU timing. Development validation is not a G0 pass; weak-machine budget qualification remains pending. See docs/G0_INSTRUMENTATION.md. Actual person-days remain unmeasured.",
+      "current_artifacts": [
+        "tools/build_g0_workload.py",
+        "tools/analyze_g0_workload.py",
+        "docs/G0_INSTRUMENTATION.md"
+      ]
     },
     {
       "id": "M5-01",

@@ -1,0 +1,26 @@
+extends SceneTree
+const Timing = preload("res://g0/timing.gd")
+func _initialize() -> void:
+	Timing.enabled = true
+	Timing.begin("advance", 0)
+	Timing.begin("materialize", 10)
+	Timing.begin("materialize", 20)
+	Timing.end(40)
+	Timing.end(70)
+	Timing.end(100)
+	var sample := Timing.take()
+	assert(sample.advance_total_us == 100)
+	assert(sample.materialize_in_advance_us == 60)
+	assert(sample.simulation_excluding_materialize_us == 40)
+	assert(sample.exclusive_us.materialize == 60)
+	Timing.begin("materialize", 110)
+	Timing.end(130)
+	sample = Timing.take()
+	assert(sample.materialize_in_advance_us == 0)
+	assert(sample.exclusive_us.materialize == 20)
+	Timing.enabled = false
+	Timing.begin("advance", 0)
+	Timing.end(100)
+	assert(Timing.take().advance_total_us == 0)
+	print("G0_TIMING_SMOKE_OK")
+	quit()
