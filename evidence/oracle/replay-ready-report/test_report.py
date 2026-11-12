@@ -65,5 +65,25 @@ class ReadyReportTests(unittest.TestCase):
         self.assertEqual(result["first_reason"], "source_build_provenance_not_clean")
 
 
+class ObservationBindingReportTests(unittest.TestCase):
+    def test_r13_prior_fields_are_unchanged(self):
+        before = load(HERE / "replay.json.gz")
+        after = load(HERE / "binding-fix/replay.json.gz")
+        self.assertEqual({key: after[key] for key in before}, before)
+        self.assertEqual(after["report_failure"], {})
+        self.assertEqual(len(after["native_checkpoint"]["helpers"]), 2)
+        self.assertIsNone(after["native_checkpoint"]["actors"][0]["touchFloor"])
+
+    def test_actual_refusal_serializes_all_false_flags(self):
+        refused = load(HERE / "binding-fix/refusal.json.gz")
+        success = load(HERE / "binding-fix/replay.json.gz")
+        self.assertEqual(refused["status"], "identity_refused")
+        self.assertEqual(refused["native_checkpoint"], {})
+        for flag in ("production_admitted", "native_parity_proven", "oracle_accepted",
+                     "certified_global_tick", "os_input_join_proven", "original_parity_verified"):
+            self.assertIs(refused[flag], False)
+            self.assertIs(success[flag], False)
+
+
 if __name__ == "__main__":
     unittest.main()
