@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-12 M0-02 recipe audit: replay preflight silently discarded duplicate/malformed list-form player recipes before resource checks. Require exactly two explicit unique p1/p2 objects; three old failing negatives now pass. Historical replay checks/refusals unchanged, all flags false/M0-02 pending; no capture. [Evidence](../evidence/oracle/replay-recipe-identity/README.md).
+
 - 2026-11-12 M0-02 acceptance audit: reproduced silent Ready subgate success when duplicate actor rows collapse into a slot map. Require exactly two original rows plus unique p1/p2 slots; negative tests pass, historical r12/r13 checks/refusals unchanged. No capture; all flags false/M0-02 pending. [Evidence](../evidence/oracle/ready-acceptance-uniqueness/README.md).
 
 - 2026-11-12 M0-02 builder isolation: explicit helper-observation profile bypasses the diagnostic pipeline; unspecified profiles refuse. Offline five-DoAction audit and negative tests pass. helper_init_observer remains an intervention; historical r12/r13 checks/refusals unchanged, all flags false/M0-02 pending. No capture. [Evidence](../evidence/oracle/helper-profile-isolation/README.md).

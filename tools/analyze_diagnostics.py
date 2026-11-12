@@ -589,7 +589,13 @@ def replay_preflight(report: dict[str, Any], project_root: Path) -> list[str]:
 
     players = match.get("players", {})
     if isinstance(players, list):
-        players = {str(player.get("slot", index)): player for index, player in enumerate(players) if isinstance(player, dict)}
+        # Check the original observations before indexing: a map would hide
+        # duplicate identities or silently discard malformed player recipes.
+        if (len(players) != 2 or any(not isinstance(player, dict) for player in players)
+                or sorted(str(player.get("slot")) for player in players) != ["p1", "p2"]):
+            problems.append("Replay requires exactly p1 and p2 in the match recipe.")
+            return problems
+        players = {player["slot"]: player for player in players}
     if not isinstance(players, dict) or set(players) != {"p1", "p2"}:
         problems.append("Replay requires exactly p1 and p2 in the match recipe.")
         return problems
