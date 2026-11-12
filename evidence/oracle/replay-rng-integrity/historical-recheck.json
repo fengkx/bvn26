@@ -1,0 +1,32 @@
+{
+  "status": "unknown",
+  "first_reason": "source_build_provenance_not_clean",
+  "limits": [
+    "Ready checkpoint scope excludes boot/load/intro parity.",
+    "Only source-observed events are accepted; no frame shifting or synthetic draw is allowed.",
+    "Validated result covers this selected 600-tick CPU replay, not all AI inputs or full parity."
+  ],
+  "source_build_provenance": {
+    "clean": false,
+    "intervention_flags": [
+      "body_boundaries"
+    ]
+  },
+  "random_subcheck": {
+    "replay_start_sequence": 795,
+    "local_cursor_offset": 56,
+    "expected_local_cursor_at_ready": 85,
+    "replay_local_cursor_at_ready": null,
+    "sequence_match": false,
+    "scope_complete": false,
+    "replay_consumed": 110
+  },
+  "expected_random_records": 288,
+  "reported_original_indices": 288,
+  "input_sha256": {
+    "evidence/ai/input-alias-r12/events.jsonl": "781c3f1946f6fae4f0d822f332f135a8ad5359a8658737350c697fa681d9725d",
+    "evidence/ai/input-alias-r12/build.json": "d37b1f0b126f8c66a86c9b32a14490d4c97ee31064a262110dd3d20a99786f84",
+    "evidence/ai/input-alias-r12/random-tape.json": "e263fb08dfabe4bbeec695af4a617985521fc65af1f184506a992eb45689a87a",
+    "evidence/ai/input-alias-r12-first-difference.json": "df0d653be30adf09aff459e4579f36ea3795075d37d20237a40868f59b9700ca"
+  }
+}

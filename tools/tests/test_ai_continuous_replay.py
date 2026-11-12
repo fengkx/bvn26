@@ -18,9 +18,11 @@ class ContinuousReplayValidationTests(unittest.TestCase):
             events = [
                 {"sequence": 1, "kind": "random", "fight_tick": -1,
                  "value": "1,main#music,f:1:0:0:0"},
-                {"sequence": 2, "kind": "random", "fight_tick": -1,
-                 "value": "2,fighter/Byakuya#ai:1,f:1:0:100663296:0"},
-                {"sequence": 3, "kind": "ready", "fight_tick": 0,
+                {"sequence": 2, "kind": "intro_poll_state", "fight_tick": -1,
+                 "display_tick": 9, "value": "0,true,0,0,1,1"},
+                {"sequence": 3, "kind": "random", "fight_tick": -1,
+                 "value": "2,fighter/Byakuya#ai:1,f:1:-1:100663296:0"},
+                {"sequence": 4, "kind": "ready", "fight_tick": 0,
                  "display_tick": 10, "value": ""},
             ]
             for tick in range(2):
@@ -39,8 +41,8 @@ class ContinuousReplayValidationTests(unittest.TestCase):
                                "value": "p2,1,f:1:4:83886080:0,f:-1:7:104857600:0,f:1:6:104857600:0,false,undefined,undefined,undefined,undefined,undefined"})
             events.extend([
                 {"sequence": len(events) + 1, "kind": "random", "fight_tick": 1,
-                 "value": "3,fighter/Byakuya#ai:2,f:-1:0:100663296:0"},
-                {"sequence": len(events) + 1, "kind": "done", "fight_tick": 1,
+                 "value": "3,fighter/Byakuya#ai:2,f:1:-2:67108864:0"},
+                {"sequence": len(events) + 2, "kind": "done", "fight_tick": 1,
                  "display_tick": 11, "value": ""},
             ])
             source.write_text("\n".join(json.dumps(event) for event in events) + "\n")
@@ -68,13 +70,14 @@ class ContinuousReplayValidationTests(unittest.TestCase):
                 "state_comparisons": state_rows,
                 "geometry_comparisons": geometry_rows,
                 "random_original_indices": [2, 3],
-                "random_consumed": [{"site": "fighter/Byakuya#ai:1", "value": 1.5},
-                                     {"site": "fighter/Byakuya#ai:2", "value": -1.5}],
+                "random_consumed": [{"site": "fighter/Byakuya#ai:1", "value": 0.75},
+                                     {"site": "fighter/Byakuya#ai:2", "value": 0.25}],
                 "random_tape_complete": True, "random_failure": "",
                 "clock_tape_complete": True,
             }))
             result = validate(source, replay, 1, build)
             self.assertEqual(result["status"], "unknown")
+            self.assertTrue(result["checks"]["random_consumers"]["scope_complete"])
             self.assertEqual(result["checks"]["random_consumers"]["local_cursor_offset"], 1)
             self.assertFalse(result["checks"]["post_ready_helpers"]["matched"])
             self.assertEqual(result["first_reason"], "ready_checkpoint_restore_incomplete")
