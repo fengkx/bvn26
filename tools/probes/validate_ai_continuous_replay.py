@@ -244,7 +244,7 @@ def validate(source: Path, replay: Path, horizon: int, source_build: Path) -> di
     build = json.loads(source_build.read_text())
     intervention_flags = [name for name in ("frame_order_probe", "recovery_order_probe",
                          "schedule_probe", "recovery_walk_first", "match_flow",
-                         "body_boundaries", "body_callback_observer")
+                         "body_boundaries", "body_callback_observer", "helper_init_observer")
                          if bool(build.get(name, build.get("configuration", {}).get(name, False)))]
     provenance_ok = (int(build.get("frames_after_ready", -1)) == horizon
                      and bool(build.get("configuration", {}).get("p2cpu"))
