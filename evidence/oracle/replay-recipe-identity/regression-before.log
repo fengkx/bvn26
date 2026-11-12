@@ -1,0 +1,29 @@
+FFF
+======================================================================
+FAIL: test_list_identity_must_survive_without_discarding_rows (tools.tests.test_replay_recipe_players.RecipePlayerTests.test_list_identity_must_survive_without_discarding_rows) (players=[{'slot': 'p1', 'fighter': 'fixture', 'resourcePath': 'res://wrong'}, {'slot': 'p1', 'fighter': 'fixture', 'resourcePath': 'res://generated/fighters/fixture'}, {'slot': 'p2', 'fighter': 'fixture', 'resourcePath': 'res://generated/fighters/fixture'}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_replay_recipe_players.py", line 49, in test_list_identity_must_survive_without_discarding_rows
+    self.assertTrue(any('exactly p1 and p2' in p for p in problems), problems)
+AssertionError: False is not true : []
+
+======================================================================
+FAIL: test_list_identity_must_survive_without_discarding_rows (tools.tests.test_replay_recipe_players.RecipePlayerTests.test_list_identity_must_survive_without_discarding_rows) (players=[{'slot': 'p1', 'fighter': 'fixture', 'resourcePath': 'res://generated/fighters/fixture'}, {'slot': 'p1', 'fighter': 'fixture', 'resourcePath': 'res://generated/fighters/fixture'}, {'slot': 'p2', 'fighter': 'fixture', 'resourcePath': 'res://generated/fighters/fixture'}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_replay_recipe_players.py", line 49, in test_list_identity_must_survive_without_discarding_rows
+    self.assertTrue(any('exactly p1 and p2' in p for p in problems), problems)
+AssertionError: False is not true : []
+
+======================================================================
+FAIL: test_list_identity_must_survive_without_discarding_rows (tools.tests.test_replay_recipe_players.RecipePlayerTests.test_list_identity_must_survive_without_discarding_rows) (players=[None, {'slot': 'p1', 'fighter': 'fixture', 'resourcePath': 'res://generated/fighters/fixture'}, {'slot': 'p2', 'fighter': 'fixture', 'resourcePath': 'res://generated/fighters/fixture'}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_replay_recipe_players.py", line 49, in test_list_identity_must_survive_without_discarding_rows
+    self.assertTrue(any('exactly p1 and p2' in p for p in problems), problems)
+AssertionError: False is not true : []
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=3)
