@@ -50,7 +50,8 @@ class HelperInitTests(unittest.TestCase):
             output = Path(directory) / "must-not-exist"
             with self.assertRaises(ValueError):
                 build(Path(directory) / "unused.jar", output, "synthetic", 600,
-                      helper_init_observer=True)
+                      helper_init_observer=True, profile="diagnostic", diagnostic_auto_start=True,
+                      diagnostic_key_injection=True, diagnostic_trace_hooks=True)
             self.assertFalse(output.exists())
 
     def test_source_anchors_and_call_preservation(self):
@@ -127,12 +128,16 @@ class HelperInitTests(unittest.TestCase):
             replay.write_bytes(gzip.decompress((ROOT / "evidence/oracle/replay-ready-report/replay.json.gz").read_bytes()))
             build = directory / "synthetic-build.json"
             # Isolate the new intervention flag; this is not a source receipt.
-            build.write_text(json.dumps({"frames_after_ready": 600, "configuration": {"p2cpu": True},
-                                         "helper_init_observer": self.config}))
-            result = validate(ROOT / "evidence/ai/input-binary-r13/events.jsonl", replay, 600, build)
-            self.assertEqual(result["source_build_provenance"]["intervention_flags"], ["helper_init_observer"])
-            self.assertEqual(result["first_reason"], "source_build_provenance_not_clean")
-            self.assertEqual(result["status"], "unknown")
+            for flag, value in (("helper_init_observer", self.config), ("auto_start", True),
+                                ("key_injection", True), ("diagnostic_trace_hooks", True)):
+                with self.subTest(flag=flag):
+                    build.write_text(json.dumps({"frames_after_ready": 600, "configuration": {"p2cpu": True},
+                                                 flag: value}))
+                    result = validate(ROOT / "evidence/ai/input-binary-r13/events.jsonl", replay, 600, build)
+                    self.assertEqual(result["source_build_provenance"]["intervention_flags"], [flag])
+                    self.assertEqual(result["first_reason"], "source_build_provenance_not_clean")
+                    self.assertEqual(result["status"], "unknown")
+
 
 
 if __name__ == "__main__":

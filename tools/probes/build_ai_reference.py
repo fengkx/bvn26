@@ -9,11 +9,13 @@ from __future__ import annotations
 import argparse
 import difflib
 import json
+import inspect
 from pathlib import Path
 import re
 import subprocess
 
 try:
+    from .helper_observation_profile import build as build_helper_observation, flags as non_admission_flags
     from .helper_init_observer import instrument as instrument_helper_init, configuration as helper_init_configuration, SITES as HELPER_INIT_SITES
     from .yulong_display_completion import instrument as instrument_display_completion, validate_case as validate_display_completion_case
     from .yulong_k1atm_observer import instrument_source as instrument_k1_source, instrument_geometry as instrument_k1_geometry, validate_case as validate_k1_case
@@ -25,6 +27,7 @@ try:
     from .shadow_instrumentation import instrument as instrument_shadow
     from .hit_receive_observer import instrument_hit_receive, observer_schema
 except ImportError:
+    from helper_observation_profile import build as build_helper_observation, flags as non_admission_flags
     from helper_init_observer import instrument as instrument_helper_init, configuration as helper_init_configuration, SITES as HELPER_INIT_SITES
     from yulong_display_completion import instrument as instrument_display_completion, validate_case as validate_display_completion_case
     from yulong_k1atm_observer import instrument_source as instrument_k1_source, instrument_geometry as instrument_k1_geometry, validate_case as validate_k1_case
@@ -181,7 +184,30 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False, chad_lifecycle: bool = False, deidara_atm1: bool = False, yulong_k1atm: bool = False, yulong_display_completion: bool = False, deidara_atm1_load_stamp: bool = False, helper_init_observer: bool = False) -> dict:
+def validate_profile(options: dict, defaults: dict) -> None:
+    profile = options.get("profile")
+    if profile not in ("helper-observation", "diagnostic"):
+        raise ValueError("Explicit --profile helper-observation or diagnostic is required")
+    if profile == "diagnostic":
+        if not all(options.get(key) is True for key in
+                   ("diagnostic_auto_start", "diagnostic_key_injection", "diagnostic_trace_hooks")):
+            raise ValueError("Diagnostic profile requires explicit auto-start, key-injection and trace-hooks consent")
+        return
+    allowed = {"ffdec", "output", "run_id", "frames", "profile", "p1_helper", "p2_helper", "helper_init_observer"}
+    if options.get("helper_init_observer") is not True:
+        raise ValueError("Observation profile requires explicit --helper-init-observer")
+    helper_init_configuration(options.get("p1_helper"), options.get("p2_helper"))
+    for key, value in options.items():
+        if key not in allowed and value != defaults.get(key):
+            raise ValueError("Observation profile forbids diagnostic option: " + key)
+
+
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False, chad_lifecycle: bool = False, deidara_atm1: bool = False, yulong_k1atm: bool = False, yulong_display_completion: bool = False, deidara_atm1_load_stamp: bool = False, helper_init_observer: bool = False, profile: str | None = None, diagnostic_auto_start: bool = False, diagnostic_key_injection: bool = False, diagnostic_trace_hooks: bool = False) -> dict:
+    options = locals().copy()
+    defaults = {key: value.default for key, value in inspect.signature(build).parameters.items()}
+    validate_profile(options, defaults)
+    if profile == "helper-observation":
+        return build_helper_observation(ffdec, output, run_id, p1_helper, p2_helper)
     helper_init_config = helper_init_configuration(p1_helper, p2_helper) if helper_init_observer else None
     if deidara_atm1_load_stamp:
         validate_atm1_case(move_case)
@@ -801,6 +827,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
     }
+    report.update(non_admission_flags())
+    report.update(profile="diagnostic", auto_start=True, key_injection=True, diagnostic_trace_hooks=True)
     if helper_init_observer:
         report["helper_init_observer"] = helper_init_config
     (output / "build.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
@@ -854,10 +882,18 @@ def main() -> None:
     parser.add_argument("--yulong-k1atm", action="store_true")
     parser.add_argument("--yulong-display-completion", action="store_true")
     parser.add_argument("--helper-init-observer", action="store_true", help="Observe explicit Gaara/Kon request, load-complete callback and source frame-1 tail")
+    parser.add_argument("--profile", help="Required: helper-observation or diagnostic; no implicit profile")
+    parser.add_argument("--diagnostic-auto-start", action="store_true")
+    parser.add_argument("--diagnostic-key-injection", action="store_true")
+    parser.add_argument("--diagnostic-trace-hooks", action="store_true", help="Explicitly enable legacy random/timer/predicate/intro/state logging")
     args = parser.parse_args()
-    if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
-        parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite, args.chad_lifecycle, args.deidara_atm1, args.yulong_k1atm, args.yulong_display_completion, args.deidara_atm1_load_stamp, args.helper_init_observer), ensure_ascii=False))
+    try:
+        if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
+            raise ValueError("Use an alphanumeric run ID and a positive frame count")
+        print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite, args.chad_lifecycle, args.deidara_atm1, args.yulong_k1atm, args.yulong_display_completion, args.deidara_atm1_load_stamp, args.helper_init_observer, args.profile, args.diagnostic_auto_start, args.diagnostic_key_injection, args.diagnostic_trace_hooks), ensure_ascii=False))
+    except (ValueError, OSError, subprocess.CalledProcessError) as error:
+        print(json.dumps({**non_admission_flags(), "status": "build_refused", "reason": str(error)}))
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

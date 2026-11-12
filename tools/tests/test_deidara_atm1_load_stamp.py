@@ -59,7 +59,9 @@ class Atm1LoadStampTests(unittest.TestCase):
     def test_wrong_configuration_rejected_before_build(self):
         config = dict(ffdec=Path('/unused'), output=Path('/unused'), run_id='test', frames=60,
                       move_case=CASE, p1_character='迪达拉', p2_character='一护',
-                      p1_helper='我爱罗', p2_helper='魂', deidara_atm1_load_stamp=True)
+                      p1_helper='我爱罗', p2_helper='魂', deidara_atm1_load_stamp=True,
+                      profile='diagnostic', diagnostic_auto_start=True,
+                      diagnostic_key_injection=True, diagnostic_trace_hooks=True)
         for override in ({'frames': 61}, {'p1_helper': '魂'}, {'p2_character': '鸣人'},
                          {'sampling_display': True}, {'sampling_bitmap': True},
                          {'dynamic_move_case': True}, {'sampling_callsite': True}):
