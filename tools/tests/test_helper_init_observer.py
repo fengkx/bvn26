@@ -120,6 +120,26 @@ class HelperInitTests(unittest.TestCase):
         self.assertEqual(result["reason"], "incomplete_helper_initialization")
         self.assertFalse(result["oracle_accepted"])
 
+    def test_top_level_false_cannot_mask_configured_intervention(self):
+        from tools.probes.validate_ai_continuous_replay import validate
+        with tempfile.TemporaryDirectory() as directory:
+            directory = Path(directory)
+            replay = directory / "replay.json"
+            replay.write_bytes(gzip.decompress((ROOT / "evidence/oracle/replay-ready-report/replay.json.gz").read_bytes()))
+            build = directory / "synthetic-build.json"
+            for flag in ("body_boundaries", "helper_init_observer", "auto_start",
+                         "key_injection", "diagnostic_trace_hooks"):
+                for top_value in (False, None, 0, ""):
+                    with self.subTest(flag=flag, top_value=top_value):
+                        # Deliberately contradictory synthetic metadata, not a
+                        # change to the retained source receipt or its provenance.
+                        build.write_text(json.dumps({"frames_after_ready": 600, flag: top_value,
+                            "configuration": {"p2cpu": True, flag: True}}))
+                        result = validate(ROOT / "evidence/ai/input-binary-r13/events.jsonl", replay, 600, build)
+                        self.assertFalse(result["source_build_provenance"]["clean"])
+                        self.assertIn(flag, result["source_build_provenance"]["intervention_flags"])
+                        self.assertEqual(result["first_reason"], "source_build_provenance_not_clean")
+
     def test_new_observer_is_not_clean_full_acceptance(self):
         from tools.probes.validate_ai_continuous_replay import validate
         with tempfile.TemporaryDirectory() as directory:
