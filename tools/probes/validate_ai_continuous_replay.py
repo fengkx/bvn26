@@ -242,11 +242,13 @@ def random_consumption_matches(expected: list[dict[str, Any]], report: dict[str,
 def validate(source: Path, replay: Path, horizon: int, source_build: Path) -> dict[str, Any]:
     events = load_events(source)
     build = json.loads(source_build.read_text())
+    # Either supported metadata location is evidence of intervention. A false
+    # top-level field must not erase an affirmative nested configuration.
     intervention_flags = [name for name in ("frame_order_probe", "recovery_order_probe",
                          "schedule_probe", "recovery_walk_first", "match_flow",
                          "body_boundaries", "body_callback_observer", "helper_init_observer",
                          "auto_start", "key_injection", "diagnostic_trace_hooks")
-                         if bool(build.get(name, build.get("configuration", {}).get(name, False)))]
+                         if bool(build.get(name)) or bool(build.get("configuration", {}).get(name))]
     provenance_ok = (int(build.get("frames_after_ready", -1)) == horizon
                      and bool(build.get("configuration", {}).get("p2cpu"))
                      and not intervention_flags)
