@@ -1,0 +1,60 @@
+--- main/DefineSprite_1900/frame_1/DoAction.as
++++ observer/main/DefineSprite_1900/frame_1/DoAction.as
+@@ -89,6 +89,7 @@
+ {
+    trace("loadfz:" + pr + "," + _root[pr + "sf"]);
+    var _loc3_ = _root.getFighterData(_root[pr + "sf"]);
++   _root.aiEvent("helper_init_request", pr + "," + _root[pr + "sf"] + "," + _root.fzDir + _loc3_.fzurl + "," + _root.game[pr + "fz"]._target);
+    _this._loader.loadClip(_root.fzDir + _loc3_.fzurl,_root.game[pr + "fz"]);
+ }
+ stop();
+@@ -123,7 +124,11 @@
+ };
+ LO.onLoadError = loadError;
+ LO.onLoadComplete = function(target)
+-{
++{
++   if(target === _root.game.p1fz || target === _root.game.p2fz)
++   {
++      _root.aiEvent("helper_init_load_complete", (target === _root.game.p1fz ? "p1" : (target === _root.game.p2fz ? "p2" : "unknown")) + "," + target._target + "," + target._url);
++   }
+    loadStep++;
+    loadSteps[loadStep]();
+ };
+--- main/frame_1/DoAction.as
++++ observer/main/frame_1/DoAction.as
+@@ -1,3 +1,8 @@
++_root.aiSeq = 0;
++_root.aiEvent = function(kind, value)
++{
++   trace("AIREF|helper-profile-offline-20261112|" + (++_root.aiSeq) + "|" + getTimer() + "|-1|-1|" + kind + "|" + value);
++};
+ function showCommt()
+ {
+    if(allowGoLink)
+--- main/frame_8/DoAction.as
++++ observer/main/frame_8/DoAction.as
+@@ -475,6 +475,7 @@
+    _root.zhanting = false;
+    _root.readying = false;
+    _root.setMenuEnable(true);
++   _root.aiEvent("ready", "startFight-source-tail");
+ }
+ function KOplay(pn)
+ {
+--- fighter/fz/woailuo/frame_1/DoAction.as
++++ observer/fighter/fz/woailuo/frame_1/DoAction.as
+@@ -46,3 +46,5 @@
+ gjl.atm1x = 0;
+ gjl.atm1tm = 500;
+ gjl.atm1dz = "被打";
++
++_root.aiEvent("helper_init_frame_tail", (this === _root.game.p1fz ? "p1" : (this === _root.game.p2fz ? "p2" : "unknown")) + ",woailuo," + this._target + "," + this._url + "," + _currentframe + "," + inited + "," + attacking);
+--- fighter/fz/kon/frame_1/DoAction.as
++++ observer/fighter/fz/kon/frame_1/DoAction.as
+@@ -46,3 +46,5 @@
+ gjl.atm1x = 1;
+ gjl.atm1tm = 300;
+ gjl.atm1dz = "被打";
++
++_root.aiEvent("helper_init_frame_tail", (this === _root.game.p1fz ? "p1" : (this === _root.game.p2fz ? "p2" : "unknown")) + ",kon," + this._target + "," + this._url + "," + _currentframe + "," + inited + "," + attacking);
