@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-12 M0-02 future helper observation: explicit Gaara/Kon configuration adds source-pinned request, existing load-complete callback and frame1-tail markers to temporary copies. Offline builds/audits and negative tests pass; no live completion observed, no historical tape repair. New observer remains an intervention rejected by full acceptance; all flags false/M0-02 pending. [Preparation](../evidence/oracle/helper-init-preparation/README.md).
+
 - 2026-11-12 M0-02 reporting correctness: reproduced positional Ready actor misbinding under reordered observations; replaced it with synchronous tick/phase/slot/Godot-instance/source-model validation and explicit false flags on identity refusal. Adversarial tests pass; normal r13 report fields unchanged and full acceptance remains exit 1. No live; five flags false, M0-02 pending. [Evidence](../evidence/oracle/replay-ready-report/README.md).
 
 - 2026-11-12 M0-02 r13 reporting: receipt/runtime identity checks plus actual-state and root-phase Ready snapshots. Ready+600 state rows now match 1202/1202; full acceptance still exits 1 for intervention provenance and unjoined helper identities (two runtime helpers vs no source helper_load rows). No state filling, validator change or live; five flags false/M0-02 pending. [Checks](../evidence/oracle/replay-ready-report/README.md).

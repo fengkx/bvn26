@@ -14,6 +14,7 @@ import re
 import subprocess
 
 try:
+    from .helper_init_observer import instrument as instrument_helper_init, configuration as helper_init_configuration, SITES as HELPER_INIT_SITES
     from .yulong_display_completion import instrument as instrument_display_completion, validate_case as validate_display_completion_case
     from .yulong_k1atm_observer import instrument_source as instrument_k1_source, instrument_geometry as instrument_k1_geometry, validate_case as validate_k1_case
     from .deidara_atm1_observer import instrument_load as instrument_atm1_load, instrument_stamp as instrument_atm1_stamp, validate_case as validate_atm1_case
@@ -24,6 +25,7 @@ try:
     from .shadow_instrumentation import instrument as instrument_shadow
     from .hit_receive_observer import instrument_hit_receive, observer_schema
 except ImportError:
+    from helper_init_observer import instrument as instrument_helper_init, configuration as helper_init_configuration, SITES as HELPER_INIT_SITES
     from yulong_display_completion import instrument as instrument_display_completion, validate_case as validate_display_completion_case
     from yulong_k1atm_observer import instrument_source as instrument_k1_source, instrument_geometry as instrument_k1_geometry, validate_case as validate_k1_case
     from deidara_atm1_observer import instrument_load as instrument_atm1_load, instrument_stamp as instrument_atm1_stamp, validate_case as validate_atm1_case
@@ -179,7 +181,8 @@ def instrument_schedule(source: str, origin: str) -> str:
     return event('enter') + source + event('exit')
 
 
-def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False, chad_lifecycle: bool = False, deidara_atm1: bool = False, yulong_k1atm: bool = False, yulong_display_completion: bool = False, deidara_atm1_load_stamp: bool = False) -> dict:
+def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe: bool = False, body_boundaries: bool = False, recovery_order_probe: bool = False, recovery_walk_first: bool = False, match_flow: bool = False, helper_probe: str | None = None, dash_probe: str | None = None, dash_trigger_frame: int | None = None, dash_duration: int = 36, timeout_probe: str | None = None, ghost_probe: str | None = None, mode_probe: int | None = None, move_case: Path | None = None, dynamic_move_case: bool = False, p1_character: str = "鸣人", p2_character: str = "一护", presentation_probe: bool = False, body_call_scope_probe: bool = False, schedule_probe: bool = False, hurt_summon_probe: bool = False, shadow_probe: bool = False, p1_helper: str | None = None, p2_helper: str | None = None, effect_phase_probe: bool = False, hit_receive_probe: bool = False, sampling_geometry: bool = False, sampling_display: bool = False, sampling_bitmap: bool = False, sampling_doaction: bool = False, sampling_clipaction: bool = False, sampling_callsite: bool = False, chad_lifecycle: bool = False, deidara_atm1: bool = False, yulong_k1atm: bool = False, yulong_display_completion: bool = False, deidara_atm1_load_stamp: bool = False, helper_init_observer: bool = False) -> dict:
+    helper_init_config = helper_init_configuration(p1_helper, p2_helper) if helper_init_observer else None
     if deidara_atm1_load_stamp:
         validate_atm1_case(move_case)
         if (frames != 60 or p1_character != "迪达拉" or p2_character != "一护"
@@ -538,6 +541,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
     if display_completion_window:
         bootstrap = instrument_display_completion(bootstrap)
     observed_actions = []
+    helper_init_sites = set()
     hooks, battle = bootstrap.split("_root.aiHeld = {};", 1)
     battle = "_root.aiHeld = {};" + battle
     helper_sources = {"fighter/fz/kon", "fighter/fz/woailuo"}
@@ -721,6 +725,10 @@ _root.aiFixtureLoader.load(__CASE_URI__);
                 updated = instrument_chad_lifecycle(original, updated, name, script["path"])
             if sampling_doaction:
                 updated = instrument_action(updated, action_records[script['path']])
+            if helper_init_observer:
+                updated = instrument_helper_init(original, updated, name, script["path"])
+                if (name, script["path"]) in HELPER_INIT_SITES:
+                    helper_init_sites.add((name, script["path"]))
             if updated == original:
                 continue
             target = patch / script["path"]
@@ -733,6 +741,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
             subprocess.run(["java", "-Djava.awt.headless=true", "-jar", str(ffdec),
                             "-importScript", str(input_swf), str(game / (name + ".swf")), str(patch)],
                            stdout=stream, stderr=subprocess.STDOUT, check=True)
+    if helper_init_observer and helper_init_sites != set(HELPER_INIT_SITES):
+        raise ValueError("Incomplete helper initialization instrumentation scope")
     (output / "instrumentation.diff").write_text("".join(changes))
     report = {
         "run_id": run_id, "status": "built_not_run", "frames_after_ready": frames,
@@ -791,6 +801,8 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
         "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
     }
+    if helper_init_observer:
+        report["helper_init_observer"] = helper_init_config
     (output / "build.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     return report
 
@@ -841,10 +853,11 @@ def main() -> None:
                         help="Stamp only the source-bound s64 Woailuo atm1 load lifetime")
     parser.add_argument("--yulong-k1atm", action="store_true")
     parser.add_argument("--yulong-display-completion", action="store_true")
+    parser.add_argument("--helper-init-observer", action="store_true", help="Observe explicit Gaara/Kon request, load-complete callback and source frame-1 tail")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", args.run_id) or args.frames < 1:
         parser.error("Use an alphanumeric run ID and a positive frame count")
-    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite, args.chad_lifecycle, args.deidara_atm1, args.yulong_k1atm, args.yulong_display_completion, args.deidara_atm1_load_stamp), ensure_ascii=False))
+    print(json.dumps(build(args.ffdec.resolve(), args.output.resolve(), args.run_id, args.frames, args.frame_order_probe, args.body_boundaries, args.recovery_order_probe, args.recovery_walk_first, args.match_flow, args.helper_probe, args.dash_probe, args.dash_trigger_frame, args.dash_duration, args.timeout_probe, args.ghost_probe, args.mode_probe, args.move_case, args.dynamic_move_case, args.p1_character, args.p2_character, args.presentation_probe, args.body_call_scope_probe, args.schedule_probe, args.hurt_summon_probe, args.shadow_probe, args.p1_helper, args.p2_helper, args.effect_phase_probe, args.hit_receive_probe, args.sampling_geometry, args.sampling_display, args.sampling_bitmap, args.sampling_doaction, args.sampling_clipaction, args.sampling_callsite, args.chad_lifecycle, args.deidara_atm1, args.yulong_k1atm, args.yulong_display_completion, args.deidara_atm1_load_stamp, args.helper_init_observer), ensure_ascii=False))
 
 
 if __name__ == "__main__":
