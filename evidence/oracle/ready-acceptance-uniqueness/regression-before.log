@@ -1,0 +1,21 @@
+FF
+======================================================================
+FAIL: test_nonzero_source_random_index_maps_local_cursor_and_value (tools.tests.test_ai_continuous_replay.ContinuousReplayValidationTests.test_nonzero_source_random_index_maps_local_cursor_and_value) (actor_rows=[{'frame': 7, 'x': 0.0, 'y': 0.0, 'xscale': 100.0, 'action': 0, 'hp': -123, 'ql': 0.0, 'sw': False, 'touch': True, 'touchFloor': True, 'hits': 0, 'paused': False, 'hstm': 0, 'hurtSkling': False, 'slot': 'p1', 'display_tick': 10}, {'frame': 7, 'x': 0.0, 'y': 0.0, 'xscale': 100.0, 'action': 0, 'hp': 1000.0, 'ql': 0.0, 'sw': False, 'touch': True, 'touchFloor': True, 'hits': 0, 'paused': False, 'hstm': 0, 'hurtSkling': False, 'slot': 'p1', 'display_tick': 10}, {'frame': 2, 'x': 0.0, 'y': 0.0, 'xscale': 100.0, 'action': 0, 'hp': 1000.0, 'ql': 0.0, 'sw': False, 'touch': True, 'touchFloor': True, 'hits': 0, 'paused': False, 'hstm': 0, 'hurtSkling': False, 'slot': 'p2', 'display_tick': 10}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_ai_continuous_replay.py", line 100, in test_nonzero_source_random_index_maps_local_cursor_and_value
+    self.assertFalse(validate(source, replay, 1, build)["checks"]["ready_checkpoint"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_nonzero_source_random_index_maps_local_cursor_and_value (tools.tests.test_ai_continuous_replay.ContinuousReplayValidationTests.test_nonzero_source_random_index_maps_local_cursor_and_value) (actor_rows=[{'frame': 7, 'x': 0.0, 'y': 0.0, 'xscale': 100.0, 'action': 0, 'hp': 1000.0, 'ql': 0.0, 'sw': False, 'touch': True, 'touchFloor': True, 'hits': 0, 'paused': False, 'hstm': 0, 'hurtSkling': False, 'slot': 'p1', 'display_tick': 10}, {'frame': 7, 'x': 0.0, 'y': 0.0, 'xscale': 100.0, 'action': 0, 'hp': 1000.0, 'ql': 0.0, 'sw': False, 'touch': True, 'touchFloor': True, 'hits': 0, 'paused': False, 'hstm': 0, 'hurtSkling': False, 'slot': 'p1', 'display_tick': 10}, {'frame': 2, 'x': 0.0, 'y': 0.0, 'xscale': 100.0, 'action': 0, 'hp': 1000.0, 'ql': 0.0, 'sw': False, 'touch': True, 'touchFloor': True, 'hits': 0, 'paused': False, 'hstm': 0, 'hurtSkling': False, 'slot': 'p2', 'display_tick': 10}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-next-slice/tools/tests/test_ai_continuous_replay.py", line 100, in test_nonzero_source_random_index_maps_local_cursor_and_value
+    self.assertFalse(validate(source, replay, 1, build)["checks"]["ready_checkpoint"])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.004s
+
+FAILED (failures=2)

@@ -82,6 +82,26 @@ class ContinuousReplayValidationTests(unittest.TestCase):
             self.assertFalse(result["checks"]["post_ready_helpers"]["matched"])
             self.assertEqual(result["first_reason"], "ready_checkpoint_restore_incomplete")
 
+            # Synthetic exact actor values isolate the Ready subcheck. Other
+            # deliberately incomplete replay fields still refuse full acceptance.
+            from tools.probes.validate_ai_continuous_replay import _source_state_map
+            actors = [row for row in _source_state_map(events, 4, 1).values()
+                      if row["display_tick"] == 10]
+            data = json.loads(replay.read_text())
+            data["native_checkpoint"]["actors"] = actors
+            replay.write_text(json.dumps(data))
+            self.assertTrue(validate(source, replay, 1, build)["checks"]["ready_checkpoint"])
+            for rows in ([dict(actors[0], hp=-123), *actors],
+                         [actors[0], *actors], [actors[0]], [],
+                         [dict(actors[0], slot="p3"), actors[1]]):
+                with self.subTest(actor_rows=rows):
+                    data["native_checkpoint"]["actors"] = rows
+                    replay.write_text(json.dumps(data))
+                    self.assertFalse(validate(source, replay, 1, build)["checks"]["ready_checkpoint"])
+            data["native_checkpoint"]["actors"] = list(reversed(actors))
+            replay.write_text(json.dumps(data))
+            self.assertTrue(validate(source, replay, 1, build)["checks"]["ready_checkpoint"])
+
 
 if __name__ == "__main__":
     unittest.main()
