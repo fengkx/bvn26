@@ -444,7 +444,8 @@ func _run() -> void:
 	assert(agreed_result.epoch == hub.epoch and agreed_result.winner == 1,
 		"Source KO result had an unexpected epoch or winner: " + str(agreed_result))
 	hub.release_p2_result()
-	for _attempt in 90:
+	var result_deadline := Time.get_ticks_msec() + 3000
+	while Time.get_ticks_msec() < result_deadline:
 		if room_results_committed.p1.size() == 1 and room_results_committed.p2.size() == 1:
 			break
 		await process_frame

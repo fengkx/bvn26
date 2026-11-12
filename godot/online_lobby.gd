@@ -152,6 +152,7 @@ var _invitation_row: HBoxContainer
 var _copy_invite_button: Button
 var _nickname: LineEdit
 var _endpoint: LineEdit
+var _mode_choice: OptionButton
 var _time_choice: OptionButton
 var _life_choice: OptionButton
 var _delay_choice: OptionButton
@@ -545,6 +546,11 @@ func _build_home_view() -> void:
 
 
 func _build_room_view() -> void:
+	_mode_choice = _option()
+	_mode_choice.add_item("回滚联机")
+	_mode_choice.add_item("主机权威（实验）")
+	_mode_choice.item_selected.connect(_on_mode_selected)
+	_room_view.add_child(_row("联机模式", _mode_choice))
 	_member_status = Label.new()
 	_member_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_room_view.add_child(_member_status)
@@ -2470,6 +2476,8 @@ func _refresh_room_view() -> void:
 	var local_member := _as_dictionary(members[_slot]) if _slot >= 0 and _slot < members.size() else {}
 	var remote_slot := 1 - _slot
 	var remote_member := _as_dictionary(members[remote_slot]) if remote_slot >= 0 and remote_slot < members.size() else {}
+	_mode_choice.select(1 if _authority_mode() else 0)
+	_mode_choice.disabled = _slot != 0 or _busy or _room_state.get("phase") != "lobby" or _selection_active or _map_active or room_client.has_uncertain_command()
 	var owner := _slot == 0
 	var lobby_phase := str(_room_state.get("phase", "")) == "lobby"
 	var local_ready := bool(local_member.get("ready", false))
@@ -2521,41 +2529,41 @@ func _refresh_room_view() -> void:
 			int(network_profile.get("predictionWindow", 0)),
 			"局域网" if network_profile_id.ends_with("-lan") else "互联网",
 		]
+	if _authority_mode():
+		_stage_summary.text = "主机权威实验 · 开局自动选主机 · 客端零缓冲\n现世 · 鸣人/我爱罗 对 一护/魂\n弱机与双机性能尚未验收"
 	_stage_summary.text += "\n" + _roster_status.text
 	_owner_settings.visible = owner
-	_time_choice.disabled = _busy or _selection_active or _map_active or not lobby_phase
-	_life_choice.disabled = _busy or _selection_active or _map_active or not lobby_phase
+	_time_choice.disabled = _authority_mode() or _busy or _selection_active or _map_active or not lobby_phase
+	_life_choice.disabled = _authority_mode() or _busy or _selection_active or _map_active or not lobby_phase
 	var network_profile_busy := _busy or _room_connection_starting \
 		or not _pending_network_profile.is_empty() \
 		or (room_client != null and (room_client.has_uncertain_command() or room_client.is_command_in_flight()))
 	var can_edit_network_profile := owner and lobby_phase and not network_profile_busy \
 		and not _selection_active and not _selection_commit_busy and not _map_active and not _map_committing
-	_delay_choice.disabled = not can_edit_network_profile
-	_prediction_choice.disabled = not can_edit_network_profile
+	_delay_choice.disabled = not can_edit_network_profile or _authority_mode()
+	_prediction_choice.disabled = not can_edit_network_profile or _authority_mode()
 	_lan_candidate_opt_in.disabled = not can_edit_network_profile
-	var map_matches_state := _map_handshake_complete \
-		and _map_handshake_setup_revision == int(_room_state.get("setupRevision", -1)) \
-		and _map_handshake_stage_id == stage_id
+	var map_matches_state := _map_handshake_matches_room()
 	var common_gate := lobby_phase and not _busy and not network_profile_busy and not _selection_active \
 		and not _selection_commit_busy and not _map_active and not _map_committing
 	var local_choice_ok := _valid_selection_choice(local_choice)
 	var remote_choice_ok := _valid_selection_choice(remote_choice)
 	var ready_gate := common_gate and not _dirty and not _profile_draft_dirty \
-		and both_choices and map_matches_state and _room_connection_ready \
-		and connection_profiles_match and local_choice_ok and remote_choice_ok \
+		and both_choices and map_matches_state and (_room_connection_ready or _authority_mode()) \
+		and (connection_profiles_match or _authority_mode()) and local_choice_ok and remote_choice_ok \
 		and has_both_members
 	if not lobby_phase or _busy or _selection_active or _selection_commit_busy or _map_active:
 		_room_primary_action = ""
 		_connect_selection_button.visible = false
 	else:
 		_connect_selection_button.visible = true
-		if not _room_connection_ready:
+		if not _room_connection_ready and not _authority_mode():
 			_room_primary_action = "connect"
 			_connect_selection_button.text = "连接并选择角色" if not _room_connection_starting else "正在连接…"
 			_connect_selection_button.disabled = _busy or network_profile_busy or _profile_draft_dirty \
 				or _room_connection_starting or not has_both_members \
 				or remote_member.is_empty()
-		elif not both_choices or not map_matches_state or not connection_profiles_match or _dirty:
+		elif not both_choices or not map_matches_state or (not connection_profiles_match and not _authority_mode()) or _dirty:
 			if owner and both_choices and map_matches_state and _dirty:
 				_room_primary_action = "wait"
 				_connect_selection_button.text = "先应用规则并选图"
@@ -2577,12 +2585,12 @@ func _refresh_room_view() -> void:
 			_room_primary_action = "ready"
 			_connect_selection_button.text = "取消准备" if local_ready else "准备"
 			_connect_selection_button.disabled = not ready_gate
-	_setup_button.visible = owner and lobby_phase and _room_connection_ready and both_choices \
+	_setup_button.visible = not _authority_mode() and owner and lobby_phase and _room_connection_ready and both_choices \
 		and not _selection_active and not _map_active and not _selection_commit_busy
 	_setup_button.text = "应用规则并选图" if _dirty else "改选地图"
 	_setup_button.disabled = _busy or network_profile_busy or _profile_draft_dirty \
 		or _map_committing or (local_ready and remote_ready and not owner)
-	_reselect_button.visible = lobby_phase and _room_connection_ready and both_choices \
+	_reselect_button.visible = not _authority_mode() and lobby_phase and _room_connection_ready and both_choices \
 		and not _selection_active and not _map_active
 	_reselect_button.disabled = _busy or network_profile_busy or _selection_commit_busy or not has_both_members
 	_leave_button.disabled = _busy or not lobby_phase
@@ -2598,6 +2606,36 @@ func _refresh_room_view() -> void:
 		_retry_button.text = "重试开局"
 	if _advanced_toggle != null:
 		_advanced_toggle.disabled = _busy or _selection_active or _map_active
+
+
+func _authority_mode() -> bool:
+	return _room_state.get("mode", "rollback") == "host-authoritative"
+
+func _on_mode_selected(index: int) -> void:
+	if _slot != 0 or _busy or _room_state.get("phase") != "lobby": return
+	_close_room_connection()
+	await _submit_operation({"type": "configure_mode", "revision": int(_room_state.get("setupRevision", 0)),
+		"mode": "host-authoritative" if index == 1 else "rollback"})
+	_dirty = false
+	_refresh_room_view()
+
+func _authority_scene(role: String, state: Dictionary) -> Dictionary:
+	if game_root != null and not game_root.presentation_only and game_root.session.root_label == "游戏场景": game_root._goto_menu()
+	game_root = render_surface.recreate_game_scene(role == "guest")
+	if role == "guest": return {"game": game_root}
+	var settings := state.duplicate(true)
+	if role == "probe":
+		settings.match.seed = 727
+		settings.rules = {"life": 1, "time": 90}
+	var problem := _configure_live_game(settings)
+	if not problem.is_empty(): return {"error": problem}
+	if role == "probe": game_root.stage_sound.stop()
+	return {"game": game_root}
+
+func _intro_can_skip() -> bool:
+	if game_root == null: return false
+	if _authority_mode() and coordinator != null: return coordinator.intro_skippable()
+	return game_root.battle_intro != null and game_root.battle_intro.active and game_root.battle_intro.polling
 
 
 func _sync_options_from_state() -> void:
@@ -2785,6 +2823,7 @@ func _on_start_pressed() -> void:
 
 
 func _map_handshake_matches_room() -> bool:
+	if _authority_mode(): return _room_state.get("stage") == "现世"
 	return _map_handshake_complete \
 		and _map_handshake_setup_revision == int(_room_state.get("setupRevision", -1)) \
 		and _map_handshake_stage_id == str(_room_state.get("stage", ""))
@@ -2794,6 +2833,8 @@ func _can_ready_current_room() -> bool:
 	var profile := _authoritative_network_profile()
 	if profile.is_empty() or _profile_draft_dirty or not _pending_network_profile.is_empty():
 		return false
+	if _authority_mode():
+		return _room_state.get("phase") == "lobby" and _has_both_committed_choices() and not _dirty
 	return str(_room_state.get("phase", "")) == "lobby" \
 		and not _dirty and not _selection_active and not _selection_commit_busy and not _map_active \
 		and _room_connection_ready and _local_connection_profile_id == _remote_connection_profile_id \
@@ -3138,7 +3179,7 @@ func _start_prepared_match(state: Dictionary) -> void:
 			await _startup_failed(epoch, str(socket_reply.error), generation)
 			return
 
-	var apply_error := _configure_live_game(state)
+	var apply_error := "" if _authority_mode() else _configure_live_game(state)
 	if not apply_error.is_empty():
 		await _startup_failed(epoch, apply_error, generation)
 		return
@@ -3159,11 +3200,13 @@ func _start_prepared_match(state: Dictionary) -> void:
 		"clockBaseline": int(match_state.get("clockBaseline", 0)),
 		"setupRevision": int(state.get("setupRevision", 0)),
 	}
-	var match_script: Script = load("res://online_match.gd")
+	canonical_setup["mode"] = state.get("mode", "rollback")
+	var match_script: Script = load("res://authority_match.gd" if _authority_mode() else "res://online_match.gd")
 	if match_script == null:
 		await _startup_failed(epoch, "match_coordinator_missing", generation)
 		return
 	coordinator = match_script.new()
+	if _authority_mode(): coordinator.scene_factory = _authority_scene.bind(state.duplicate(true))
 	var configure_error := str(coordinator.configure(game_root, canonical_setup, slot_name, room_client, peer_transport))
 	if not configure_error.is_empty():
 		await _startup_failed(epoch, configure_error, generation)
@@ -3364,8 +3407,7 @@ func _on_match_started(epoch: String, generation: int) -> void:
 	_match_status.text = "点对点对局已开始"
 	_pause_button.text = "请求暂停"
 	_exit_button.text = "退出本局"
-	_intro_skip_button.visible = game_root != null and game_root.battle_intro.active \
-		and game_root.battle_intro.polling
+	_intro_skip_button.visible = _intro_can_skip()
 	_exit_confirmation_deadline = -1
 	_sync_match_hud_controls()
 	_register_web_match_hud()
@@ -3383,7 +3425,7 @@ func _physics_process(_delta: float) -> void:
 		return
 	if not _match_started or coordinator == null or game_root == null:
 		return
-	_intro_skip_button.visible = bool(game_root.battle_intro.active and game_root.battle_intro.polling)
+	_intro_skip_button.visible = _intro_can_skip()
 	var local_input: Dictionary = game_root.session.fighter_input("p1")
 	var issue := str(coordinator.process_tick(Time.get_ticks_msec(), local_input))
 	if not issue.is_empty() and issue not in ["waiting_for_start", "waiting_for_peer", "waiting_for_input", "waiting_for_confirmation", "match_finished"]:
@@ -3511,7 +3553,8 @@ func _sync_match_hud_controls() -> void:
 	var active := _match_started and coordinator != null and not _starting_epoch.is_empty()
 	var terminal_waiting := not _starting_epoch.is_empty() and _terminal_pending_epoch == _starting_epoch
 	if _pause_button != null:
-		_pause_button.disabled = not active or _busy
+		_pause_button.disabled = not active or _busy or _authority_mode()
+		_pause_button.visible = not _authority_mode()
 	if _exit_button != null:
 		_exit_button.disabled = not active or _busy or terminal_waiting
 	if _intro_skip_button != null:

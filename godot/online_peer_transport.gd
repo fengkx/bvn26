@@ -14,7 +14,14 @@ const MAX_CANDIDATES_BEFORE_SDP := 256
 const MAX_RECENT_UNORDERED_SEQUENCES := 4096
 const CHANNEL_RELIABLE := "reliable"
 const CHANNEL_INPUT := "input"
-const CHANNELS := [CHANNEL_RELIABLE, CHANNEL_INPUT]
+const CHANNEL_STATE := "state"
+const CHANNELS := [CHANNEL_RELIABLE, CHANNEL_INPUT, CHANNEL_STATE]
+const AuthorityWire = preload("res://authority_wire.gd")
+var enable_state_channel := false
+var _state_wire := AuthorityWire.new()
+var _pending_state: Dictionary = {}
+var _state_sequence := 0
+var _last_state_sequence := 0
 const TYPE_PATTERN := "^[A-Za-z0-9_.-]{1,64}$"
 
 var _room_id := ""
@@ -98,6 +105,12 @@ func create_peer(ice_servers: Array) -> bool:
 			return _fail("data_channel_create_failed")
 		_channels[CHANNEL_RELIABLE] = reliable
 		_channels[CHANNEL_INPUT] = input
+		if enable_state_channel:
+			var state := _peer.create_data_channel(CHANNEL_STATE, {"ordered": false, "maxRetransmits": 0})
+			if state == null:
+				close_peer()
+				return _fail("state_channel_unavailable")
+			_channels[CHANNEL_STATE] = state
 	return true
 
 
@@ -140,6 +153,11 @@ func handle_signal(message: Dictionary) -> bool:
 
 
 func send_peer_message(channel: String, type: String, payload: Variant) -> bool:
+	if channel == CHANNEL_STATE:
+		if not enable_state_channel or type != "authority_state" or not payload is Dictionary:
+			return _fail("invalid_state_channel_message")
+		_pending_state = payload.duplicate(true)
+		return _flush_state()
 	if not CHANNELS.has(channel):
 		return _fail("unknown_data_channel")
 	if _peer == null:
@@ -220,6 +238,7 @@ func _process(_delta: float) -> void:
 			if _receive_packet(channel_name, packet):
 				messages_delivered += 1
 	message_drain_completed.emit(messages_delivered)
+	if enable_state_channel: _flush_state()
 
 
 func _on_session_description_created(kind: String, sdp: String) -> void:
@@ -247,7 +266,7 @@ func _on_ice_candidate_created(media: String, index: int, candidate: String) -> 
 
 func _on_data_channel_received(data_channel: WebRTCDataChannel) -> void:
 	var label := data_channel.get_label()
-	if not CHANNELS.has(label):
+	if not CHANNELS.has(label) or (label == CHANNEL_STATE and not enable_state_channel):
 		data_channel.close()
 		_fail("unknown_data_channel_label")
 		return
@@ -310,6 +329,17 @@ func _add_remote_candidate(candidate: Dictionary) -> bool:
 
 
 func _receive_packet(channel: String, packet: PackedByteArray) -> bool:
+	if channel == CHANNEL_STATE:
+		if not enable_state_channel: return _fail("unexpected_state_channel")
+		var value := _state_wire.decode(packet)
+		if not _state_wire.error.is_empty(): return _fail(_state_wire.error)
+		if value.get("epoch") != _epoch: return false
+		if not _validate_envelope(value, channel) or value.get("type") != "authority_state":
+			return _fail("invalid_state_envelope")
+		if int(value.seq) <= _last_state_sequence: return false
+		_last_state_sequence = int(value.seq)
+		peer_message.emit(channel, value.type, value.payload, int(value.seq))
+		return true
 	if packet.size() > MAX_MESSAGE_BYTES:
 		_fail("peer_message_too_large")
 		return false
@@ -354,6 +384,7 @@ func _validate_envelope(value: Dictionary, _channel: String) -> bool:
 		return false
 	if not _is_integer(value["seq"]) or int(value["seq"]) <= 0:
 		return false
+	if enable_state_channel and not value["payload"] is Dictionary: return false
 	return value["type"] is String and _valid_message_type(value["type"])
 
 
@@ -401,6 +432,9 @@ func _is_configured() -> bool:
 
 
 func _reset_sequences() -> void:
+	_pending_state.clear()
+	_state_sequence = 0
+	_last_state_sequence = 0
 	_outgoing_sequences[CHANNEL_RELIABLE] = 0
 	_outgoing_sequences[CHANNEL_INPUT] = 0
 	_last_reliable_sequence = 0
@@ -480,3 +514,27 @@ func _is_hex_codepoint(codepoint: int) -> bool:
 func _fail(code: String) -> bool:
 	transport_error.emit(code)
 	return false
+
+
+func state_buffered_amount() -> int:
+	var channel: WebRTCDataChannel = _channels.get(CHANNEL_STATE)
+	if channel == null or not channel.has_method("get_buffered_amount"): return -1
+	return channel.get_buffered_amount()
+
+func _flush_state() -> bool:
+	if _pending_state.is_empty(): return true
+	var channel: WebRTCDataChannel = _channels.get(CHANNEL_STATE)
+	if channel == null or channel.get_ready_state() != WebRTCDataChannel.STATE_OPEN: return false
+	var buffered := state_buffered_amount()
+	if buffered < 0: return _fail("state_backpressure_unobservable")
+	if buffered >= AuthorityWire.MAX_WIRE_BYTES * 2: return true
+	var envelope := {"version": PROTOCOL_VERSION, "roomId": _room_id, "epoch": _epoch,
+		"from": _local_slot, "seq": _state_sequence + 1, "type": "authority_state", "payload": _pending_state}
+	var packet := _state_wire.encode(envelope)
+	if not _state_wire.error.is_empty(): return _fail(_state_wire.error)
+	if buffered + packet.size() > AuthorityWire.MAX_WIRE_BYTES * 2: return true
+	var result := channel.put_packet(packet)
+	if result != OK: return _fail("state_send_failed_%d" % result)
+	_state_sequence += 1
+	_pending_state.clear()
+	return true

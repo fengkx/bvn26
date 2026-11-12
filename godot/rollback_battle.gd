@@ -18,8 +18,9 @@ var _terminal_frame := -1
 var _input_enabled := false
 var _unhandled_enabled := false
 var _advancing := false
+var _retain_checkpoints := true
 
-func configure(scene: Node) -> String:
+func configure(scene: Node, retain_checkpoints: bool = true) -> String:
 	if game != null or scene.physics_tick != 0 or scene.session.root_label != "游戏场景" or scene.session.p1cpu or scene.session.p2cpu:
 		return "Rollback requires a fresh PvP battle"
 	if scene.is_physics_processing() or not scene.ko_recorded_timers or not scene.recorded_training_timers:
@@ -46,7 +47,8 @@ func configure(scene: Node) -> String:
 	game.match_input.source = _sample
 	game.match_input.intro_source = _sample_intro
 	game.set_meta("rollback_terminal_barrier", true)
-	checkpoint.configure(game)
+	_retain_checkpoints = retain_checkpoints
+	if _retain_checkpoints: checkpoint.configure(game)
 	return ""
 
 func set_frame_events(frame: int, time_ms: int, skip: bool = false, events: Array = []) -> String:
@@ -116,6 +118,11 @@ func advance(frame: int, players: Dictionary) -> String:
 		game._advance_fight(_journal[frame].events)
 	_advancing = false
 	if game.ko_terminal_pending: _terminal_frame = frame
+	if not _retain_checkpoints:
+		_journal.clear()
+		_clock_journal.clear()
+		_intro_skip_journal.clear()
+		confirm_through(frame)
 	return game.match_input.error if not game.match_input.error.is_empty() else ("" if game.physics_tick == frame else "Battle did not advance")
 
 func save_state() -> Dictionary:
@@ -187,7 +194,7 @@ func close() -> void:
 	game.match_input.source = Callable()
 	game.match_input.intro_source = Callable()
 	game.remove_meta("rollback_terminal_barrier")
-	checkpoint.close()
+	if _retain_checkpoints: checkpoint.close()
 	_journal.clear()
 	_clock_journal.clear()
 	_intro_skip_journal.clear()

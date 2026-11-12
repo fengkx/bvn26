@@ -17,6 +17,7 @@ const MAIN_FIELDS := ["game_world", "naruto", "ichigo", "current_world", "naruto
 	"source_root_intervals", "source_form_root_values",
 	"source_frame_sequence", "source_child_frames", "player_body_services", "training_timer"]
 const MAIN_EXTERNAL := [
+	"presentation_only",
 	"tick_label",
 	"state_label",
 	"config_label",

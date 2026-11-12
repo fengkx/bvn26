@@ -4,6 +4,7 @@ import {
   type Compatibility,
   type Profile,
   type Rules,
+  type NetMode,
   NEGOTIATION_MAX_LIFETIME_MS,
   NEGOTIATION_TTL_MS,
   PREPARE_MS,
@@ -28,6 +29,9 @@ interface Result {
   winner: 0 | 1 | null;
 }
 export interface Match {
+  mode?: NetMode;
+  authoritySlot?: 0 | 1 | null;
+  authorityAcks?: [0 | 1 | null, 0 | 1 | null];
   epoch: string;
   seed: number;
   clockBaseline: number;
@@ -39,6 +43,7 @@ export interface Match {
 }
 export interface State {
   schema: 1;
+  mode?: NetMode;
   id: string;
   creationHash: string;
   inviteHash: string;
@@ -52,7 +57,13 @@ export interface State {
   networkProfile?: Profile;
   phase: "lobby" | "preparing" | "active" | "closed";
   match: Match | null;
-  lastResult: { epoch: string; winner: 0 | 1 | null; reason: string } | null;
+  lastResult: {
+    epoch: string;
+    winner: 0 | 1 | null;
+    reason: string;
+    mode?: NetMode;
+    authoritySlot?: 0 | 1 | null;
+  } | null;
   negotiation: {
     id: string;
     epoch: string | null;
@@ -110,6 +121,7 @@ export function projection(
   } = state;
   return {
     ...publicState,
+    mode: state.mode ?? "rollback",
     networkProfile: networkProfile(state),
     members: members.map(
       (seat, index) =>
@@ -139,7 +151,14 @@ export function finish(
   winner: 0 | 1 | null = null,
 ): void {
   if (state.match)
-    state.lastResult = { epoch: state.match.epoch, reason, winner };
+    state.lastResult = {
+      epoch: state.match.epoch,
+      reason,
+      winner,
+      ...(state.match.mode === "host-authoritative"
+        ? { mode: state.match.mode, authoritySlot: state.match.authoritySlot }
+        : {}),
+    };
   state.phase = "lobby";
   state.match = null;
   invalidate(state);
@@ -168,6 +187,12 @@ export function apply(
         "unsupported_content",
         400,
       );
+      if (state.mode === "host-authoritative")
+        requireThat(
+          op.choice.fighter === (slot === 0 ? "minren" : "yihu") &&
+            op.choice.helper === (slot === 0 ? "woailuo" : "kon"),
+          "authority_fixed_content",
+        );
       seat.choice = op.choice;
       invalidate(state);
       break;
@@ -178,10 +203,46 @@ export function apply(
         "unsupported_content",
         400,
       );
+      if (state.mode === "host-authoritative")
+        requireThat(op.stage === "现世", "authority_fixed_content");
       state.stage = op.stage;
       state.rules = op.rules;
       invalidate(state);
       break;
+    case "configure_mode":
+      requireThat(slot === 0, "owner_required", 403);
+      if ((state.mode ?? "rollback") !== op.mode) {
+        state.mode = op.mode;
+        if (op.mode === "host-authoritative") {
+          state.stage = "现世";
+          state.members[0].choice = { fighter: "minren", helper: "woailuo" };
+          if (state.members[1])
+            state.members[1].choice = { fighter: "yihu", helper: "kon" };
+        }
+        invalidate(state);
+      }
+      break;
+    case "authority_ack": {
+      const match = state.match!;
+      requireThat(
+        state.phase === "preparing" && match.mode === "host-authoritative",
+        "authority_not_preparing",
+      );
+      requireThat(!match.loaded.some(Boolean), "authority_already_loaded");
+      const acks = match.authorityAcks!;
+      requireThat(
+        acks[slot] === null || acks[slot] === op.authoritySlot,
+        "conflicting_authority_ack",
+      );
+      requireThat(
+        acks[1 - slot] === null || acks[1 - slot] === op.authoritySlot,
+        "authority_disagreement",
+      );
+      acks[slot] = op.authoritySlot;
+      if (acks[0] !== null && acks[0] === acks[1])
+        match.authoritySlot = acks[0];
+      break;
+    }
     case "configure_network":
       requireThat(slot === 0, "owner_required", 403);
       {
@@ -212,6 +273,13 @@ export function apply(
         "not_ready",
       );
       state.match = {
+        ...(state.mode === "host-authoritative"
+          ? {
+              mode: state.mode,
+              authoritySlot: null,
+              authorityAcks: [null, null] as [null, null],
+            }
+          : {}),
         epoch: crypto.randomUUID(),
         seed: crypto.getRandomValues(new Uint32Array(1))[0],
         clockBaseline: 0,
@@ -228,6 +296,11 @@ export function apply(
     case "loaded": {
       requireThat(state.phase === "preparing", "not_preparing");
       const match = state.match!;
+      if (match.mode === "host-authoritative")
+        requireThat(
+          match.authoritySlot === 0 || match.authoritySlot === 1,
+          "authority_barrier_pending",
+        );
       requireThat(
         !match.loaded[slot] || match.loaded[slot] === op.initialHash,
         "conflicting_initial_state",
@@ -268,7 +341,11 @@ export function apply(
           JSON.stringify(match.results[0]) === JSON.stringify(match.results[1]);
         finish(
           state,
-          agreed ? "agreed" : "result_mismatch",
+          agreed
+            ? match.mode === "host-authoritative"
+              ? "host-declared/guest-received"
+              : "agreed"
+            : "result_mismatch",
           agreed ? op.winner : null,
         );
       }

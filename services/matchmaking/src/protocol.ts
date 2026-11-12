@@ -57,6 +57,8 @@ export const joinByCode = z.strictObject({
   nickname,
   compatibility,
 });
+export const netMode = z.enum(["rollback", "host-authoritative"]);
+export type NetMode = z.infer<typeof netMode>;
 export const profile = z.strictObject({
   id,
   inputDelay: z.number().int().min(0).max(8),
@@ -91,6 +93,16 @@ export const operation = z.discriminatedUnion("type", [
     revision,
     ready: z.boolean(),
     profile,
+  }),
+  z.strictObject({
+    type: z.literal("configure_mode"),
+    revision,
+    mode: netMode,
+  }),
+  z.strictObject({
+    type: z.literal("authority_ack"),
+    epoch,
+    authoritySlot: z.union([z.literal(0), z.literal(1)]),
   }),
   z.strictObject({ type: z.literal("prepare"), revision }),
   z.strictObject({ type: z.literal("loaded"), epoch, initialHash: digest }),

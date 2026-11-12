@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-12 optional host-authority experiment: room mode switch preserves rollback; fixed Naruto/Ichigo presentation-only guest, start-of-match p95/stall host selection, binary state channel, recovery and receipt-based result barriers. Local service/coordinator and exported offline-display checks pass; browser WebRTC connection remains unverified after local ICE failures. G0/weak-machine/real two-machine performance gates remain pending; proof flags unchanged. [Handoff](HOST_AUTHORITY_EXPERIMENT.md).
+
 - 2026-11-12 G0 preparation: isolated timing wrappers and a fixed single-player browser workload added. Exclusive per-call timing, submit correlation, browser stalls and UNKNOWN GPU reporting; instrumentation only, G0 not passed, no host protocol or proof-flag changes. [Handoff](G0_INSTRUMENTATION.md).
 
 - 2026-11-12 M0-02 provenance audit: reproduced top-level false-like metadata masking an affirmative nested intervention, incorrectly reporting clean. Union both supported locations; 20 negative subcases now refuse. Historical r12/r13 verdicts unchanged, all flags false/M0-02 pending; no capture. [Evidence](../evidence/oracle/provenance-conflict-refusal/README.md).

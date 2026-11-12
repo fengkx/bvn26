@@ -2,21 +2,23 @@ extends Control
 
 signal before_recorded_intro_poll(event: Dictionary)
 
-@onready var tick_label: Label = %TickLabel
-@onready var state_label: Label = %StateLabel
-@onready var config_label: Label = %Config
-@onready var game_world: GameWorld = %Game
-@onready var naruto: FighterRuntime = %Naruto
-@onready var ichigo: FighterRuntime = %Ichigo
-@onready var current_world: TimelinePreview = %CurrentWorld
-@onready var naruto_energy: EnergyBar = %NarutoEnergy
-@onready var ichigo_energy: EnergyBar = %IchigoEnergy
-@onready var fight_hud: Control = %FightHud
-@onready var title_menu: TitleMenu = %TitleMenu
-@onready var key_settings: KeySettings = %KeySettings
-@onready var combo_hud: ComboHud = %ComboHud
-@onready var black_mu: ScriptedTimelinePreview = %BlackMu
-@onready var ts_face: TimelinePreview = %TsFace
+var presentation_only := false
+
+@onready var tick_label: Label = null if presentation_only else %TickLabel
+@onready var state_label: Label = null if presentation_only else %StateLabel
+@onready var config_label: Label = null if presentation_only else %Config
+@onready var game_world: GameWorld = null if presentation_only else %Game
+@onready var naruto: FighterRuntime = null if presentation_only else %Naruto
+@onready var ichigo: FighterRuntime = null if presentation_only else %Ichigo
+@onready var current_world: TimelinePreview = null if presentation_only else %CurrentWorld
+@onready var naruto_energy: EnergyBar = null if presentation_only else %NarutoEnergy
+@onready var ichigo_energy: EnergyBar = null if presentation_only else %IchigoEnergy
+@onready var fight_hud: Control = null if presentation_only else %FightHud
+@onready var title_menu: TitleMenu = null if presentation_only else %TitleMenu
+@onready var key_settings: KeySettings = null if presentation_only else %KeySettings
+@onready var combo_hud: ComboHud = null if presentation_only else %ComboHud
+@onready var black_mu: ScriptedTimelinePreview = null if presentation_only else %BlackMu
+@onready var ts_face: TimelinePreview = null if presentation_only else %TsFace
 
 var countdown: MatchCountdown
 var timeout_timeline: KoTimeline
@@ -108,7 +110,29 @@ void fragment() {
 """
 
 
+func prepare_presentation_only() -> void:
+	assert(not is_inside_tree(), "Presentation mode must precede every child lifecycle")
+	presentation_only = true
+	diagnostics.free()
+	diagnostics = null
+	for child in get_children():
+		remove_child(child)
+		child.free()
+	set_physics_process(false)
+	set_process(false)
+	set_process_input(false)
+	set_process_unhandled_input(false)
+	session.root_label = "游戏场景"
+
+
 func _ready() -> void:
+	if presentation_only:
+		session.load_store()
+		set_physics_process(false)
+		set_process(false)
+		set_process_input(false)
+		set_process_unhandled_input(false)
+		return
 	# Keep transformation blocked until a complete source-bound profile graph is configured.
 	naruto.disabled_actions = ["万解"]
 	ichigo.disabled_actions = ["万解"]
@@ -787,6 +811,9 @@ func _chushi() -> void:
 
 
 func _advance_fight(recorded_events: Array = [], root_observer: Callable = Callable(), event_supplier: Callable = Callable()) -> void:
+	if presentation_only:
+		push_error("Presentation-only Main cannot simulate")
+		return
 	if not _deliver_recorded_controls():
 		return
 	black_mu.advance_display_timeline()
@@ -1633,6 +1660,9 @@ func _set_diagnostic_actor(fighter: FighterRuntime, slot: String) -> void:
 
 
 func _diagnostic_snapshot(capture_initial: bool = false) -> Dictionary:
+	if presentation_only:
+		return {"presentationOnly": true, "fightTick": 0, "inputBindings": session.codes.duplicate(true),
+			"replayability": {"inputSource": "authority_presenter", "checkpointKind": "none"}}
 	var current_players := {
 		"p1": _diagnostic_player(naruto, naruto_helper),
 		"p2": _diagnostic_player(ichigo, ichigo_helper),

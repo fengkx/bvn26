@@ -31,11 +31,11 @@ class OnlineRoundAdapter extends RefCounted:
 		game.battle_intro.recorded_polling = true
 		for driver in [game.player_body_driver._driver, game.opponent_driver]:
 			driver.timeouts.recorded = true
-		timers = TimerAuthority.new()
-		var problem: String = timers.configure(game, 0)
-		if not problem.is_empty(): return problem
 		battle = Battle.new()
-		problem = battle.configure(game)
+		var problem: String = battle.configure(game)
+		if not problem.is_empty(): return problem
+		timers = TimerAuthority.new()
+		problem = timers.configure(game, 0)
 		if not problem.is_empty(): return problem
 		return battle.set_event_supplier(Callable(timers, "events_for_phase"))
 
@@ -146,5 +146,5 @@ func _run() -> void:
 	adapter.dispose()
 	assert(battle_ref.get_ref() == null and timer_ref.get_ref() == null, "Round teardown retained its battle/timer owners")
 	adapter = null
-	await process_frame
+	await create_timer(0.1).timeout
 	quit()

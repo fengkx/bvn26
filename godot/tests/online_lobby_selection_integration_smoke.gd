@@ -201,8 +201,8 @@ func _run() -> void:
 	var room_options := 0
 	for node in host._room_view.find_children("*", "OptionButton", true, false):
 		room_options += 1
-	assert(room_options == 4,
-		"Room should expose only time/life/network dropdowns; choices and map use the original visual pickers")
+	assert(room_options == 5,
+		"Room should expose only mode/time/life/network dropdowns; choices and map use the original visual pickers")
 	var connection_profile := {"version": 1, "id": "chrome-exp-d1-p2-lan"}
 	host.call("_on_room_connection_message", "selection_connection_profile", connection_profile, 1)
 	guest.call("_on_room_connection_message", "selection_connection_profile", connection_profile, 1)

@@ -178,6 +178,7 @@ func _start_frame_sounds() -> void:
 		player.volume_db = 0.0 if not segments.is_empty() else _sound_volume_db(event)
 		player.autoplay = true
 		add_child(player)
+		preload("res://authority_audio.gd").accepted(self, player)
 
 
 func _sound_volume_db(event: Dictionary) -> float:

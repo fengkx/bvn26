@@ -57,6 +57,7 @@ func _play_start_sounds() -> void:
 		# SWF SOUNDINFO positions are always measured in 44.1 kHz samples.
 		var start := float(event.get("in_point", 0)) / 44100.0
 		player.play(start)
+		preload("res://authority_audio.gd").accepted(self, player, start, float(event["out_point"]) / 44100.0 if event.has("out_point") else -1.0)
 		if event.has("out_point"):
 			var timer := Timer.new()
 			timer.one_shot = true
