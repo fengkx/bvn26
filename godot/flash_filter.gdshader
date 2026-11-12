@@ -13,10 +13,9 @@ uniform vec4 row_b = vec4(0.0, 0.0, 1.0, 0.0);
 uniform vec4 row_a = vec4(0.0, 0.0, 0.0, 1.0);
 uniform vec4 offsets = vec4(0.0);
 
-vec4 sample_zero(sampler2D image, vec2 uv) {
-    if (any(lessThan(uv, vec2(0.0))) || any(greaterThanEqual(uv, vec2(1.0)))) { return vec4(0.0); }
-    return texture(image, uv);
-}
+// Keep TEXTURE in fragment scope: dummy shader compilation has no custom sampler
+// mapping for a built-in sampler forwarded through a function argument.
+#define SAMPLE_ZERO(uv) ((any(lessThan((uv), vec2(0.0))) || any(greaterThanEqual((uv), vec2(1.0)))) ? vec4(0.0) : texture(TEXTURE, (uv)))
 
 void fragment() {
     vec4 pixel = texture(TEXTURE, UV);
@@ -27,7 +26,7 @@ void fragment() {
         for (int i = 1; i <= edge; i++) {
             float weight = clamp(radius - float(i) + 1.0, 0.0, 1.0);
             vec2 delta = direction * TEXTURE_PIXEL_SIZE * float(i);
-            sum += (sample_zero(TEXTURE, UV - delta) + sample_zero(TEXTURE, UV + delta)) * weight;
+            sum += (SAMPLE_ZERO(UV - delta) + SAMPLE_ZERO(UV + delta)) * weight;
         }
         pixel = floor(clamp(sum / max(1.0, blur_size), vec4(0.0), vec4(1.0)) * 255.0 + 0.0001) / 255.0;
     } else if (operation == 1) {
@@ -40,7 +39,7 @@ void fragment() {
         vec2 uv = UV - floor(offset) * TEXTURE_PIXEL_SIZE;
         vec2 dx = vec2(TEXTURE_PIXEL_SIZE.x, 0.0);
         vec2 dy = vec2(0.0, TEXTURE_PIXEL_SIZE.y);
-        vec4 samples = floor(vec4(sample_zero(TEXTURE, uv).a, sample_zero(TEXTURE, uv-dx).a, sample_zero(TEXTURE, uv-dy).a, sample_zero(TEXTURE, uv-dx-dy).a) * 255.0 + 0.5);
+        vec4 samples = floor(vec4(SAMPLE_ZERO(uv).a, SAMPLE_ZERO(uv-dx).a, SAMPLE_ZERO(uv-dy).a, SAMPLE_ZERO(uv-dx-dy).a) * 255.0 + 0.5);
         float shadow_alpha = floor(dot(samples, vec4(weights, last_weight)) / 256.0) / 255.0;
         float alpha = clamp(shadow_alpha * glow_strength, 0.0, 1.0) * glow_color.a;
         vec4 glow = floor(vec4(glow_color.rgb * alpha, alpha) * 255.0 + 0.5);
