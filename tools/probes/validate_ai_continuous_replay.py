@@ -16,6 +16,11 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+if __package__:
+    from .collect_ai_reference import decode_number
+else:
+    from collect_ai_reference import decode_number
+
 
 def load_events(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
@@ -173,6 +178,67 @@ def _source_helper_map(events: list[dict[str, Any]], ready_sequence: int,
     return rows
 
 
+def source_random_window(events: list[dict[str, Any]], ready_sequence: int) -> dict[str, Any]:
+    """Validate the retained stream before selecting its existing replay boundary.
+
+    Contiguity proves no missing numbered observation in this stream, not that
+    the observer covered every native RNG call. Never infer a boundary from a
+    missing intro poll or renumber draws to match the replay.
+    """
+    if not events or any(type(e.get("sequence")) is not int or e["sequence"] != i
+                         for i, e in enumerate(events, 1)):
+        raise ValueError("Source event sequence must be contiguous from one")
+    true_polls = [e for e in events if e.get("kind") == "intro_poll_state"
+                  and str(e.get("value", "")).split(",")[1:2] == ["true"]]
+    if not true_polls or true_polls[0]["sequence"] >= ready_sequence:
+        raise ValueError("Source lacks a loaded intro poll before Ready")
+    start = true_polls[0]["sequence"]
+    records = []
+    for event in events:
+        if event.get("kind") != "random":
+            continue
+        try:
+            prefix, encoded = event["value"].rsplit(",", 1)
+            index_text, site = prefix.split(",", 1)
+            index = int(index_text)
+            value = decode_number(encoded)
+        except (KeyError, TypeError, AttributeError, ValueError, OverflowError) as exc:
+            raise ValueError("Malformed source random record") from exc
+        if index_text != str(len(records) + 1) or index != len(records) + 1:
+            raise ValueError("Source random indices must be contiguous from one")
+        if not site.strip() or not math.isfinite(value) or not 0 <= value < 1:
+            raise ValueError("Source Math.random site/value is invalid")
+        records.append({"index": index, "site": site, "value": value,
+                        "sequence": event["sequence"]})
+    offset = sum(row["sequence"] <= start for row in records)
+    ready_cursor = sum(row["sequence"] < ready_sequence for row in records)
+    return {"replay_start_sequence": start, "local_cursor_offset": offset,
+            "expected_local_cursor_at_ready": ready_cursor - offset,
+            "records": [row for row in records if row["sequence"] > start]}
+
+
+def random_consumption_matches(expected: list[dict[str, Any]], report: dict[str, Any]) -> bool:
+    """Require the complete ordered index/site/value vector, without coercion."""
+    indices = report.get("random_original_indices")
+    consumed = report.get("random_consumed")
+    if not isinstance(indices, list) or not isinstance(consumed, list):
+        return False
+    if (any(type(index) is not int for index in indices)
+            or indices != [row["index"] for row in expected]
+            or len(consumed) != len(expected)):
+        return False
+    for actual, source in zip(consumed, expected):
+        if not isinstance(actual, dict):
+            return False
+        value = actual.get("value")
+        if (actual.get("site") != source["site"]
+                or type(value) not in (int, float)
+                or not math.isfinite(value) or not 0 <= value < 1
+                or value != source["value"]):
+            return False
+    return True
+
+
 def validate(source: Path, replay: Path, horizon: int, source_build: Path) -> dict[str, Any]:
     events = load_events(source)
     build = json.loads(source_build.read_text())
@@ -263,26 +329,17 @@ def validate(source: Path, replay: Path, horizon: int, source_build: Path) -> di
     input_ok = report.get("input_transitions") == expected_inputs
     # The continuous runner starts at the first source-accepted intro poll. Its
     # tape's original-index slice is therefore explicit and must be complete.
-    true_polls = [e for e in events if e.get("kind") == "intro_poll_state"
-                  and str(e.get("value", "")).split(",")[1:2] == ["true"]]
-    replay_start = min((int(e["sequence"]) for e in true_polls), default=-1)
-    expected_random = []
-    for event in events:
-        if event.get("kind") != "random" or int(event.get("sequence", -1)) <= replay_start:
-            continue
-        parts = str(event["value"]).split(",", 2)
-        expected_random.append((int(parts[0]), parts[1], _decode_source_number(parts[2])))
+    random_window = source_random_window(events, ready_sequence)
+    replay_start = random_window["replay_start_sequence"]
+    expected_random = random_window["records"]
     consumed_rows = report.get("random_consumed", [])
-    actual_indices = [int(value) for value in report.get("random_original_indices", [])]
-    random_ok = bool(report.get("random_tape_complete")) and not report.get("random_failure")
-    random_sequence_ok = (actual_indices == [record[0] for record in expected_random]
-                          and [str(value.get("site", "")) for value in consumed_rows]
-                          == [record[1] for record in expected_random]
-                          and all(math.isclose(float(value.get("value")), record[2], rel_tol=0.0, abs_tol=0.0)
-                                  for value, record in zip(consumed_rows, expected_random)))
-    cursor_offset = actual_indices[0] - 1 if actual_indices else -1
-    expected_local_cursor = int(window["random_cursor_at_ready"]) - cursor_offset if cursor_offset >= 0 else -1
-    random_cursor_ok = int(checkpoint.get("random_absolute_index", -1)) == expected_local_cursor
+    actual_indices = report.get("random_original_indices", [])
+    random_ok = report.get("random_tape_complete") is True and not report.get("random_failure")
+    random_sequence_ok = random_consumption_matches(expected_random, report)
+    cursor_offset = random_window["local_cursor_offset"]
+    expected_local_cursor = random_window["expected_local_cursor_at_ready"]
+    random_cursor_ok = (type(checkpoint.get("random_absolute_index")) is int
+                        and checkpoint["random_absolute_index"] == expected_local_cursor)
     random_scope_ok = random_sequence_ok and random_cursor_ok
     expected_clock = []
     for event in events:
@@ -325,7 +382,7 @@ def validate(source: Path, replay: Path, horizon: int, source_build: Path) -> di
             "post_ready_helpers": {"expected": len(source_helpers), "actual": len(native_helpers), "matched": helper_ok,
                                     "fields": ["frame", "x", "y", "xscale/facing", "attacking", "action", "hits"]},
             "input_transitions": {"expected": expected_inputs, "actual": report.get("input_transitions"), "matched": input_ok},
-            "random_consumers": {"replay_start_sequence": replay_start, "expected_original_indices": [r[0] for r in expected_random],
+            "random_consumers": {"replay_start_sequence": replay_start, "expected_original_indices": [r["index"] for r in expected_random],
                                   "replay_original_indices": actual_indices, "local_cursor_offset": cursor_offset,
                                   "expected_local_cursor_at_ready": expected_local_cursor,
                                   "replay_local_cursor_at_ready": checkpoint.get("random_absolute_index"),
@@ -335,7 +392,7 @@ def validate(source: Path, replay: Path, horizon: int, source_build: Path) -> di
         "first_reason": first_reason, "replay_status": report.get("status"),
         "limits": ["Ready checkpoint scope excludes boot/load/intro parity.",
                    "Only source-observed events are accepted; no frame shifting or synthetic draw is allowed.",
-                   "Validated result covers this selected 180-tick CPU replay, not all AI inputs or full parity."],
+                   f"Validated result covers this selected {horizon}-tick CPU replay, not all AI inputs or full parity."],
     }
 
 def main() -> int:
@@ -349,7 +406,14 @@ def main() -> int:
     source_build = args.source_build or args.source.parent / "build.json"
     if not source_build.exists():
         parser.error(f"source build metadata not found: {source_build}")
-    result = validate(args.source, args.replay, args.horizon, source_build)
+    try:
+        result = validate(args.source, args.replay, args.horizon, source_build)
+    except (ValueError, KeyError, TypeError, OverflowError) as exc:
+        result = {"status": "unknown", "acceptance_status": "unknown",
+                  "first_reason": "invalid_capture_or_replay_evidence", "error": str(exc)}
+        args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+        print(json.dumps(result, ensure_ascii=False))
+        return 1
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
     print(json.dumps({"status": result["status"], "first_reason": result["first_reason"],
                       "source_states": result["source_window"]["state_rows"],

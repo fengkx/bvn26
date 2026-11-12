@@ -1,0 +1,60 @@
+{
+  "kind": "synthetic-offline-regression-not-native-proof",
+  "base": "af538c7aafc1fa0114440c0a80c0b077c316fa4a",
+  "baseline_tool_sha256": "0e4be738f4fa7ed8027fec0b5757d46694b5c248461b0617afb6e5bb667e164b",
+  "baseline_test_sha256": "07018cd04a2028b0680ed346d775c9b1f7a33f22905f83aae3cc4c5f28b4f37f",
+  "fixture_defects": [
+    "no loaded intro poll",
+    "duplicate terminal sequence",
+    "Math.random values 1.5 and -1.5"
+  ],
+  "original_fixture_before": {
+    "overall_status": "unknown",
+    "first_reason": "ready_checkpoint_restore_incomplete",
+    "random_consumers": {
+      "replay_start_sequence": -1,
+      "expected_original_indices": [
+        1,
+        2,
+        3
+      ],
+      "replay_original_indices": [
+        2,
+        3
+      ],
+      "local_cursor_offset": 1,
+      "expected_local_cursor_at_ready": 1,
+      "replay_local_cursor_at_ready": 1,
+      "sequence_match": false,
+      "scope_complete": false,
+      "replay_consumed": 2
+    }
+  },
+  "matching_invalid_vector_before": {
+    "overall_status": "unknown",
+    "first_reason": "ready_checkpoint_restore_incomplete",
+    "random_consumers": {
+      "replay_start_sequence": -1,
+      "expected_original_indices": [
+        1,
+        2,
+        3
+      ],
+      "replay_original_indices": [
+        1,
+        2,
+        3
+      ],
+      "local_cursor_offset": 0,
+      "expected_local_cursor_at_ready": 2,
+      "replay_local_cursor_at_ready": 2,
+      "sequence_match": true,
+      "scope_complete": true,
+      "replay_consumed": 3
+    }
+  },
+  "matching_invalid_vector_after": {
+    "rejected": true,
+    "reason": "Source event sequence must be contiguous from one"
+  }
+}
