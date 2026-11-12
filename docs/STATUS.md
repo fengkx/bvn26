@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-12 M0-02 r13 reporting: receipt/runtime identity checks plus actual-state and root-phase Ready snapshots. Ready+600 state rows now match 1202/1202; full acceptance still exits 1 for intervention provenance and unjoined helper identities (two runtime helpers vs no source helper_load rows). No state filling, validator change or live; five flags false/M0-02 pending. [Checks](../evidence/oracle/replay-ready-report/README.md).
+
 - 2026-11-12 M0-02 offline replay cleanup: fixed built-in sampler forwarding in the filter shader and waited for audio retirement at test shutdown. r12/r13 strict logs now pass; replay reports unchanged. r13 1166 boundaries and Ready+600 geometry match, but complete checkpoint/state/provenance acceptance still refuses (exit 1). No live/visual/native proof; five flags false, M0-02 pending. [Validation](../evidence/oracle/replay-runtime-cleanup/README.md).
 
 - 2026-11-12 M0-02 replay RNG integrity: strengthened existing continuous-replay validator to reject missing intro boundary, event/draw gaps, invalid Math.random values and coerced/incomplete consumption vectors; derives cursor from source and writes structured refusal. Synthetic before/after and immutable input-alias-r12 regression checked; no new native proof, runtime change or live. Five flags false/M0-02 pending; independent code review required. [RNG integrity](../evidence/oracle/replay-rng-integrity/README.md).

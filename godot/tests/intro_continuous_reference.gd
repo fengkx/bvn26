@@ -16,6 +16,8 @@ var boundary_records: Array = []
 var boundary_cursor := 0
 var boundary_failure: Dictionary = {}
 var boundary_frames: Dictionary = {}
+var native_checkpoint: Dictionary = {}
+var report_identity: Dictionary = {}
 
 
 func observe_body_boundary(frame: int, entering: bool, fighter: FighterRuntime) -> void:
@@ -126,6 +128,7 @@ func compare_frames(fighters: Array[FighterRuntime], tick: int, original: Dictio
 			if actual_state[field] != expected[field]:
 				differences[field] = {"expected": expected[field], "actual": actual_state[field]}
 		state_comparisons.append({"display_tick": tick, "slot": "p%d" % (i + 1),
+			"expected": expected.duplicate(true), "actual": actual_state.duplicate(true),
 			"differences": differences})
 		mismatch = mismatch or not differences.is_empty()
 
@@ -159,9 +162,19 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
-	assert(args.size() in [2, 3], "Pass events, report and optional combat mode")
-	boundary_mode = args.size() == 3 and args[2] == "combat-boundaries"
-	var combat_mode := args.size() == 3 and args[2] in ["combat", "combat-boundaries"]
+	assert(args.size() in [2, 3, 4], "Pass events, report, optional combat mode and r13-report")
+	var complete_report := args.size() == 4
+	if complete_report:
+		if args[2] != "combat-boundaries" or args[3] != "r13-report":
+			push_error("Unsupported complete report mode")
+			quit(1)
+			return
+		report_identity = preload("res://tests/r13_report_identity.gd").qualify(args[0])
+		if not report_identity.error.is_empty():
+			write_identity_refusal(args[1], report_identity)
+			return
+	boundary_mode = args.size() >= 3 and args[2] == "combat-boundaries"
+	var combat_mode := args.size() >= 3 and args[2] in ["combat", "combat-boundaries"]
 	var source_events: Array = []
 	var polls: Array = []
 	var original_ready: Array = []
@@ -203,6 +216,20 @@ func _run() -> void:
 	root.add_child(game)
 	game.set_physics_process(false)
 	game._enter_current_fight(2)
+	if complete_report:
+		var identity_error: String = preload("res://tests/r13_report_identity.gd").runtime_error(game, report_identity)
+		if not identity_error.is_empty():
+			game.queue_free()
+			await process_frame
+			await preload("res://tests/audio_shutdown.gd").drain(self)
+			write_identity_refusal(args[1], {"error": identity_error})
+			return
+	if complete_report:
+		report_identity["runtime"] = game._input_setup()
+		report_identity["generated_models_sha256"] = {}
+		for fighter in [game.naruto, game.ichigo]:
+			var model_path: String = fighter.fighter_directory.path_join("fighter.json")
+			report_identity.generated_models_sha256[model_path] = FileAccess.get_sha256(model_path)
 	bind_recorded_input(game)
 	game.ichigo.ai_random_clock.cancel()
 	var fighters: Array[FighterRuntime] = [game.naruto, game.ichigo]
@@ -295,6 +322,8 @@ func _run() -> void:
 				if not present:
 					assert(game.opponent_driver == null and game.player_body_driver == null and not game.game_world.visible)
 				compare_frames(fighters, observation_tick, original_frames, present)
+				if complete_report and present and not intro.active and native_checkpoint.is_empty():
+					record_ready(game, fighters, observation_tick)
 				return observation_tick == last_tick)
 		else:
 			assert(scheduled.get(current_tick, []).is_empty(), "Source timer survived fight teardown")
@@ -316,6 +345,7 @@ func _run() -> void:
 		"observation_phase": "after_initial_frames_before_deferred_targets",
 		"termination": "original_done_root_observer" if combat_mode else "intro_segment_cutoff",
 		"reference_sha256": FileAccess.get_sha256(args[0]),
+		"native_checkpoint": native_checkpoint, "report_identity": report_identity,
 		"boundary_mode": boundary_mode, "boundary_failure": boundary_failure,
 		"boundary_comparisons": boundary_records, "boundary_consumed": boundary_cursor,
 		"boundary_expected": boundary_expected.size(),
@@ -328,7 +358,9 @@ func _run() -> void:
 		"random_original_indices": tape.map(func(record): return record.original_index),
 		"input_transitions": input_transitions.duplicate(true),
 		"random_tape_complete": game.source_random.replay_complete() if combat_mode else false,
-		"original_parity_verified": false, "comparisons": comparisons,
+		"original_parity_verified": false, "production_admitted": false, "native_parity_proven": false,
+		"oracle_accepted": false, "certified_global_tick": false, "os_input_join_proven": false,
+		"comparisons": comparisons,
 		"frame_comparisons": frame_comparisons,
 		"state_comparisons": state_comparisons,
 		"geometry_comparisons": geometry_comparisons,
@@ -355,3 +387,35 @@ func _run() -> void:
 		return
 	print("INTRO_CONTINUOUS_REFERENCE_DONE ", report.status, " polls=", comparisons.size())
 	quit()
+
+
+func write_identity_refusal(path: String, identity: Dictionary) -> void:
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	file.store_string(JSON.stringify({"status": "identity_refused", "report_identity": identity,
+		"native_checkpoint": {}, "original_parity_verified": false}, "  ") + "\n")
+	file.close()
+	push_error("Replay identity refused: " + str(identity))
+	quit(1)
+
+
+func record_ready(game, fighters: Array[FighterRuntime], tick: int) -> void:
+	# Read at the same root-observer boundary as state rows, never from expected rows.
+	native_checkpoint = {"display_tick": tick, "fight_tick": 0, "actors": [],
+		"observation_phase": "after_initial_frames_before_deferred_targets",
+		"random_absolute_index": game.source_random.absolute_index,
+		"clock_absolute_index": game.source_clock.absolute_index,
+		"battle_intro_active": game.battle_intro.active, "pending_frame_actions": [], "helpers": []}
+	for i in 2:
+		var fighter := fighters[i]
+		var row: Dictionary = state_comparisons[state_comparisons.size() - 2 + i].actual.duplicate(true)
+		row.merge({"slot": fighter.player_slot, "frame": fighter.current_source_frame(),
+			"x": fighter.source_x, "y": fighter.source_y, "xscale": fighter.scale.x * 100})
+		native_checkpoint.actors.append(row)
+		native_checkpoint.pending_frame_actions.append(fighter._ai_pending_frames.size())
+	for helper in [game.naruto_helper, game.ichigo_helper]:
+		if helper == null:
+			continue
+		native_checkpoint.helpers.append({"slot": helper.diagnostic_slot, "helper_id": helper.helper_id,
+			"frame": helper.current_source_frame(), "source_action": helper.source_action,
+			"attacking": helper.attacking, "visible": helper.visible,
+			"timeline_playing": helper.timeline_playing, "deferred_frame": helper._deferred_frame})
