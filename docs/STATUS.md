@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-12 M0-02 reporting correctness: reproduced positional Ready actor misbinding under reordered observations; replaced it with synchronous tick/phase/slot/Godot-instance/source-model validation and explicit false flags on identity refusal. Adversarial tests pass; normal r13 report fields unchanged and full acceptance remains exit 1. No live; five flags false, M0-02 pending. [Evidence](../evidence/oracle/replay-ready-report/README.md).
+
 - 2026-11-12 M0-02 r13 reporting: receipt/runtime identity checks plus actual-state and root-phase Ready snapshots. Ready+600 state rows now match 1202/1202; full acceptance still exits 1 for intervention provenance and unjoined helper identities (two runtime helpers vs no source helper_load rows). No state filling, validator change or live; five flags false/M0-02 pending. [Checks](../evidence/oracle/replay-ready-report/README.md).
 
 - 2026-11-12 M0-02 offline replay cleanup: fixed built-in sampler forwarding in the filter shader and waited for audio retirement at test shutdown. r12/r13 strict logs now pass; replay reports unchanged. r13 1166 boundaries and Ready+600 geometry match, but complete checkpoint/state/provenance acceptance still refuses (exit 1). No live/visual/native proof; five flags false, M0-02 pending. [Validation](../evidence/oracle/replay-runtime-cleanup/README.md).

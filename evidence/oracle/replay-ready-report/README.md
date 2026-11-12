@@ -127,3 +127,63 @@ Residual review notes deliberately not included: record_ready's last-two-row
 indexing and the refusal report's absence of five explicit flag keys are separate
 reporting concerns, not prerequisites for the CPU configuration comparison.
 No helper research, validator/scheduler change, source mutation, live or admission.
+
+## Ready observation binding correction (base 99f9adc9)
+
+The original record_ready read the last two global state rows and overwrote
+slot/frame/geometry with current fighters. It never checked row slot, tick or
+phase. In an isolated Godot regression, the verbatim old method receives [p2,p1]
+and assigns P2's HP=700 to slot P1 (whose actual HP row is900). This demonstrates
+a reporting bug under reordered observations, not a claim that the recorded r13
+normal path suffered it. The earlier real report remains unchanged.
+
+compare_frames now returns its own synchronous observation batch. Ready reporting
+checks exactly two unique p1/p2 rows, the expected display tick and root phase,
+and the Godot instance ID plus source model path for each previously qualified
+fighter. It assembles each actor's state, frame, geometry and pending actions
+from that same row, not fresh reads mixed with old state. Reordered valid rows
+are keyed by slot; missing, duplicate, stale, foreign-instance, wrong-phase or
+incomplete rows return a structured refusal without a checkpoint. The runner
+marks first_difference, reports the error, cleans up and exits1. Godot IDs are
+local run identity only, not proof of Flash identity/lifetime or a global clock.
+
+No expected values are used to fill actual fields. Null touchFloor and both
+helpers remain. A shared non-admission schema now supplies all five explicit
+false flags (and original_parity_verified=false) for success and identity refusal.
+This resolves the two previously deferred reporting concerns without changing
+source provenance, gameplay scheduling, validator gates, helper coverage or tapes.
+
+Executed with the same pinned Godot4.7.2 executable:
+- ready_observation_test: strict exit0, old misbinding reproduced; valid reorder
+  bound correctly; missing/duplicate/extra/stale/wrong-phase/foreign/unknown-slot
+  and missing-field cases refused; null retained; refusal flag schema checked.
+- r13 identity test and full r13 replay: strict exit0. All previous r13 report
+  fields, including checkpoint/state/boundary/RNG values, equal the retained
+  report; only report_failure={} is added.
+- Full validator: exit1, source_build_provenance_not_clean and helper checkpoint
+  refusal unchanged. No acceptance or visual proof.
+- End-to-end r12 input passed to r13-report: exit1 before scene initialization;
+  the refusal JSON explicitly contains all false flags. The r12 tape is unchanged.
+- Five package Python tests, six existing unit tests, verify/handoff/diff checks
+  pass. New raw evidence is under binding-fix/; previous execution receipts remain.
+
+Run the new adversarial test:
+
+```sh
+python3.11 tools/run_godot_checked.py --log /tmp/ready-binding.log -- "$GODOT" --headless --quit-after 120 --log-file /tmp/ready-binding-engine.log --path godot -s res://tests/ready_observation_test.gd
+```
+
+To also reproduce the old method's misbinding, create the temporary adapter below
+and append `-- /tmp/bvn-ready-legacy.gd` to that command. This extracts the old
+method verbatim; only its host is a RefCounted adapter with the two stored fields.
+The test uses real FighterRuntime nodes and frees them, without a game/live run.
+
+```sh
+python3.11 - <<'PY'
+import subprocess
+from pathlib import Path
+source = subprocess.check_output(['git', 'show', '99f9adc9:godot/tests/intro_continuous_reference.gd'], text=True)
+method = source[source.index('func record_ready('):]
+Path('/tmp/bvn-ready-legacy.gd').write_text('extends RefCounted\nvar state_comparisons: Array = []\nvar native_checkpoint: Dictionary = {}\n' + method)
+PY
+```
