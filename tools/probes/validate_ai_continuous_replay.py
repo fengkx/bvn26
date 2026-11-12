@@ -266,10 +266,14 @@ def validate(source: Path, replay: Path, horizon: int, source_build: Path) -> di
                       for row in ready_rows]
     ready_ok = report.get("original_ready") == expected_ready and report.get("native_ready") == expected_ready
     checkpoint = report.get("native_checkpoint", {})
-    checkpoint_actors = {str(row.get("slot")): row for row in checkpoint.get("actors", [])}
+    checkpoint_actor_rows = checkpoint.get("actors", [])
+    checkpoint_actors = {str(row.get("slot")): row for row in checkpoint_actor_rows}
     checkpoint_fields = ("frame", "x", "y", "xscale", "action", "hp", "ql", "sw",
                          "touch", "touchFloor", "hits", "paused", "hstm", "hurtSkling")
-    actor_fields_ok = (set(checkpoint_actors) == {"p1", "p2"}
+    # A slot map alone discards duplicate observations, including contradictory
+    # states. Require exactly one original row per actor before comparing fields.
+    actor_fields_ok = (len(checkpoint_actor_rows) == 2
+                       and set(checkpoint_actors) == {"p1", "p2"}
                        and all({field: checkpoint_actors[slot].get(field) for field in checkpoint_fields}
                                == {field: ready_rows[i].get(field) for field in checkpoint_fields}
                                for i, slot in enumerate(("p1", "p2"))))

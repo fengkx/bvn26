@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-12 M0-02 acceptance audit: reproduced silent Ready subgate success when duplicate actor rows collapse into a slot map. Require exactly two original rows plus unique p1/p2 slots; negative tests pass, historical r12/r13 checks/refusals unchanged. No capture; all flags false/M0-02 pending. [Evidence](../evidence/oracle/ready-acceptance-uniqueness/README.md).
+
 - 2026-11-12 M0-02 builder isolation: explicit helper-observation profile bypasses the diagnostic pipeline; unspecified profiles refuse. Offline five-DoAction audit and negative tests pass. helper_init_observer remains an intervention; historical r12/r13 checks/refusals unchanged, all flags false/M0-02 pending. No capture. [Evidence](../evidence/oracle/helper-profile-isolation/README.md).
 
 - 2026-11-12 M0-02 future helper observation: explicit Gaara/Kon configuration adds source-pinned request, existing load-complete callback and frame1-tail markers to temporary copies. Offline builds/audits and negative tests pass; no live completion observed, no historical tape repair. New observer remains an intervention rejected by full acceptance; all flags false/M0-02 pending. [Preparation](../evidence/oracle/helper-init-preparation/README.md).
