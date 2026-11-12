@@ -626,6 +626,7 @@ func _start_sound_player(
 	player.finished.connect(player.queue_free)
 	_sound_layer().add_child(player)
 	player.play()
+	preload("res://authority_audio.gd").accepted(self, player)
 	return true
 
 

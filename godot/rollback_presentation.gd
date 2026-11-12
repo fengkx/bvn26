@@ -1,6 +1,10 @@
 extends RefCounted
 
 static func allow_sound(node: Node, event: String) -> bool:
+	var parent := node
+	while parent != null:
+		if parent.has_meta("authority_probe"): return false
+		parent = parent.get_parent()
 	var checkpoint: Variant = preload("res://rollback_lifetime.gd").owner(node)
 	return checkpoint == null or checkpoint.allow_sound(node, event)
 

@@ -15,6 +15,7 @@ void fragment() {
 }
 """
 
+var authority_pose: Dictionary = {}
 var source_alpha: float
 var captured_frame: int
 var bitmap_size: Vector2i
@@ -39,21 +40,34 @@ func capture(actor: FighterRuntime, rgb: Dictionary, callbacks: SourceCallbackRe
 	var checkpoint: Variant = preload("res://rollback_lifetime.gd").owner(actor)
 	if checkpoint != null:
 		checkpoint.flush_display(actor)
+	var authority_owner := actor.get_parent()
+	while authority_owner != null and not authority_owner.has_meta("authority_projector"):
+		authority_owner = authority_owner.get_parent()
+	if authority_owner != null:
+		var projector: RefCounted = authority_owner.get_meta("authority_projector")
+		authority_pose = {"pose": projector.capture_timeline(actor), "scale": [actor.scale.x, actor.scale.y], "rgb": rgb.duplicate()}
 	set_meta("source_shadow", true)
 	registry = callbacks
 	captured_frame = actor.current_source_frame()
-	# getBounds includes authored invisible receivers, unlike visible-pixel bounds.
-	for placement: Dictionary in actor._frames[captured_frame]["display_list"]:
-		var placed := _placement_bounds(actor, placement, captured_frame, actor._wrapper_transform())
-		if placed.has_area():
-			bounds = bounds.merge(placed) if bounds.has_area() else placed
-	bitmap_size = Vector2i(int(bounds.size.x * absf(actor.scale.x)), int(bounds.size.y * absf(actor.scale.y)))
-	assert(bitmap_size.x > 0 and bitmap_size.y > 0, "Invalid source BitmapData dimensions")
+	_capture_visual(actor, rgb, actor.scale)
 	source_x = SourceCoordinate.store(actor.source_x + SourceCoordinate.from_projection(bounds.position.x) * signf(actor.scale.x))
 	source_y = SourceCoordinate.store(actor.source_y + SourceCoordinate.from_projection(bounds.position.y))
 	position = Vector2(source_x, source_y)
 	scale.x = actor.scale.x
 	z_index = int(spec.layer_depth)
+	source_alpha = float(spec.alpha_start)
+	registration = registry.register(self, "fade", tick)
+	source_event.emit("spawn", [captured_frame, source_x, source_y, scale.x * 100, bitmap_size.x, bitmap_size.y, source_alpha,
+		bounds.position.x, bounds.position.y, bounds.end.x, bounds.end.y])
+
+func _capture_visual(actor: TimelinePreview, rgb: Dictionary, actor_scale: Vector2) -> void:
+	# getBounds includes authored invisible receivers, unlike visible-pixel bounds.
+	for placement: Dictionary in actor._frames[captured_frame]["display_list"]:
+		var placed := _placement_bounds(actor, placement, captured_frame, actor._wrapper_transform())
+		if placed.has_area():
+			bounds = bounds.merge(placed) if bounds.has_area() else placed
+	bitmap_size = Vector2i(int(bounds.size.x * absf(actor_scale.x)), int(bounds.size.y * absf(actor_scale.y)))
+	assert(bitmap_size.x > 0 and bitmap_size.y > 0, "Invalid source BitmapData dimensions")
 	capture_viewport = SubViewport.new()
 	capture_viewport.size = bitmap_size
 	capture_viewport.transparent_bg = true
@@ -81,12 +95,9 @@ func capture(actor: FighterRuntime, rgb: Dictionary, callbacks: SourceCallbackRe
 	tint.set_shader_parameter("offsets", Vector3(float(rgb.get("R", 0)), float(rgb.get("G", 0)), float(rgb.get("B", 0))) / 255.0)
 	bitmap.material = tint
 	add_child(bitmap)
-	source_alpha = float(spec.alpha_start)
-	registration = registry.register(self, "fade", tick)
-	source_event.emit("spawn", [captured_frame, source_x, source_y, scale.x * 100, bitmap_size.x, bitmap_size.y, source_alpha,
-		bounds.position.x, bounds.position.y, bounds.end.x, bounds.end.y])
 
-func _placement_bounds(actor: FighterRuntime, placement: Dictionary, frame: int, parent_matrix: Transform2D) -> Rect2:
+
+func _placement_bounds(actor: TimelinePreview, placement: Dictionary, frame: int, parent_matrix: Transform2D) -> Rect2:
 	var definition: Dictionary = actor._definitions.get(int(placement.character_id), {})
 	if definition.is_empty():
 		return Rect2()
@@ -106,7 +117,7 @@ func _placement_bounds(actor: FighterRuntime, placement: Dictionary, frame: int,
 	var frames: Array = definition.get("display_list_frames", [])
 	var local_frame := actor._nested_frame(placement, frame, frames.size())
 	if placement.get("name", "") == spec.controller.instance:
-		if not actor.ai_predicate_context.use_ai:
+		if not actor is FighterRuntime or not actor.ai_predicate_context.use_ai:
 			return Rect2()
 		local_frame = int(spec.controller.cpu_frame)
 	var children: Array = frames[local_frame - 1] if not frames.is_empty() else definition.get("first_frame_display_list", [])

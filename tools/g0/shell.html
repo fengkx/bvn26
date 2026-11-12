@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>G0 instrumentation — not a pass</title>
+<style>body{background:#222;color:white}canvas{width:600px;height:400px}pre{white-space:pre-wrap}</style>
+<button id="start">Start fixed 30-second workload</button><button id="save" disabled>Save raw report</button>
+<canvas id="canvas" width="600" height="400"></canvas><pre id="status">G0 NOT PASSED. Keep visible; fixed 600×400 canvas, DPR=1 required.</pre>
+<script src="g0-browser.js"></script><script src="$GODOT_URL"></script><script>
+const engine = new Engine({...$GODOT_CONFIG, onPrint: (...args) => console.log(...args), onPrintError: (...args) => console.error(...args)});
+document.querySelector('#start').onclick = async () => {
+  if (devicePixelRatio !== 1) { document.querySelector('#status').textContent = 'Refused: set DPR to 1 before starting.'; return; }
+  document.querySelector('#start').disabled = true;
+  try { await engine.startGame({canvas: document.querySelector('#canvas')}); }
+  catch (error) { document.querySelector('#status').textContent = String(error); }
+};
+</script></html>

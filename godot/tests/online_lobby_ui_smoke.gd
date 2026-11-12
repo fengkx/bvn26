@@ -134,8 +134,9 @@ func _run() -> void:
 	var room_options := 0
 	for node in lobby._room_view.find_children("*", "OptionButton", true, false):
 		room_options += 1
-	assert(room_options == 4,
-		"Room should retain time/life/network options only; map selection uses the original picker")
+	assert(room_options == 5,
+		"Room includes the online mode switch, time/life/network options; map selection uses the original picker")
+	assert(lobby._mode_choice.item_count == 2 and lobby._mode_choice.get_item_text(0) == "回滚联机")
 	assert(lobby._member_status.text.contains("房主"))
 	var dialog := lobby.find_child("OnlineDialog", true, false) as Control
 	assert(dialog != null)

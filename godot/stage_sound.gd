@@ -87,7 +87,9 @@ func start() -> void:
 		add_child(_player)
 	_player.stream = stream
 	_player.volume_db = volume_db()
-	_player.play(float(_manifest.get("playback", {}).get("start_offset_seconds", 0)))
+	var offset := float(_manifest.get("playback", {}).get("start_offset_seconds", 0))
+	_player.play(offset)
+	preload("res://authority_audio.gd").accepted(self, _player, offset)
 
 
 func stop() -> void:

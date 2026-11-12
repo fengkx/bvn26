@@ -31,6 +31,7 @@ var _last_display_tick := -1
 
 
 func _ready() -> void:
+	if not _source_spec.is_empty(): return
 	_source_spec = JSON.parse_string(FileAccess.get_file_as_string(SOURCE_DIRECTORY + "/presentation.json"))
 	var layout: Dictionary = _source_spec["layout"]
 	var bounds: Dictionary = layout["wrapper_composite_bounds"]

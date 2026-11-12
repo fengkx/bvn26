@@ -1699,3 +1699,117 @@ test("lockstep delay profiles stay frozen and retired signaling cannot poison a 
     assert.equal(room.state.phase, "lobby");
   }
 });
+
+test("authority mode freezes content, selects P2 independently, and records receipt semantics", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server);
+  let response = await op(server, room, 0, {
+    type: "configure_mode",
+    revision: room.state.setupRevision,
+    mode: "host-authoritative",
+  });
+  assert.equal(response.status, 200);
+  const joined = await joinRoom(server, room);
+  assert.equal(joined.status, 201);
+  room.state = joined.state;
+  assert.deepEqual(
+    room.state.members.map((seat) => seat.choice),
+    [
+      { fighter: "minren", helper: "woailuo" },
+      { fighter: "yihu", helper: "kon" },
+    ],
+  );
+  response = await op(server, room, 1, {
+    type: "configure_mode",
+    revision: room.state.setupRevision,
+    mode: "rollback",
+  });
+  assert.equal(response.error, "owner_required");
+  response = await op(server, room, 1, {
+    type: "select",
+    revision: room.state.setupRevision,
+    choice: { fighter: "minren", helper: "kon" },
+  });
+  assert.equal(response.error, "authority_fixed_content");
+  for (const slot of [0, 1]) {
+    response = await op(server, room, slot, {
+      type: "ready",
+      revision: room.state.setupRevision,
+      ready: true,
+      profile,
+    });
+    assert.equal(response.status, 200);
+  }
+  response = await op(server, room, 0, {
+    type: "prepare",
+    revision: room.state.setupRevision,
+  });
+  assert.equal(response.status, 200);
+  const epoch = room.state.match.epoch;
+  response = await op(server, room, 0, {
+    type: "loaded",
+    epoch,
+    initialHash: "c".repeat(64),
+  });
+  assert.equal(response.error, "authority_barrier_pending");
+  response = await op(server, room, 0, {
+    type: "authority_ack",
+    epoch,
+    authoritySlot: 1,
+  });
+  assert.equal(response.status, 200);
+  response = await op(server, room, 1, {
+    type: "authority_ack",
+    epoch,
+    authoritySlot: 0,
+  });
+  assert.equal(response.error, "authority_disagreement");
+  response = await op(server, room, 1, {
+    type: "authority_ack",
+    epoch,
+    authoritySlot: 1,
+  });
+  assert.equal(response.state.match.authoritySlot, 1);
+  for (const slot of [0, 1]) {
+    response = await op(server, room, slot, {
+      type: "loaded",
+      epoch,
+      initialHash: "c".repeat(64),
+    });
+    assert.equal(response.status, 200);
+  }
+  for (const slot of [0, 1]) {
+    response = await op(server, room, slot, { type: "start_ack", epoch });
+    assert.equal(response.status, 200);
+  }
+  response = await op(server, room, 0, {
+    type: "configure_mode",
+    revision: room.state.setupRevision,
+    mode: "rollback",
+  });
+  assert.equal(response.error, "not_in_lobby");
+  for (const slot of [1, 0]) {
+    response = await op(server, room, slot, {
+      type: "result",
+      epoch,
+      frame: 300,
+      hash: "d".repeat(64),
+      winner: 0,
+    });
+    assert.equal(response.status, 200);
+  }
+  assert.deepEqual(room.state.lastResult, {
+    epoch,
+    winner: 0,
+    reason: "host-declared/guest-received",
+    mode: "host-authoritative",
+    authoritySlot: 1,
+  });
+  response = await op(server, room, 0, {
+    type: "configure_mode",
+    revision: room.state.setupRevision,
+    mode: "rollback",
+  });
+  assert.equal(response.state.mode, "rollback");
+  assert.ok(response.state.members.every((seat) => !seat.ready));
+});

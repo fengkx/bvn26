@@ -3,6 +3,8 @@ extends Control
 
 const DIRECTORY := "res://generated/main/health"
 const PORTRAITS := "res://generated/main/helper_portraits"
+var presentation_health: Array = []
+var presentation_countdown: Dictionary = {}
 var countdown: MatchCountdown
 var spec: Dictionary
 var portraits: Dictionary
@@ -18,6 +20,7 @@ var win_frames := PackedInt32Array([1, 1])
 
 
 func _ready() -> void:
+	if spec != null and not spec.is_empty(): return
 	spec = JSON.parse_string(FileAccess.get_file_as_string(DIRECTORY + "/presentation.json"))
 	portraits = JSON.parse_string(FileAccess.get_file_as_string(PORTRAITS + "/presentation.json"))
 	for label in portrait_labels:
@@ -84,7 +87,7 @@ func _layer(id: int, transform_matrix: Transform2D, alpha: float = 1.0, texture_
 
 
 func _draw() -> void:
-	if spec.is_empty() or fighters.size() != 2:
+	if spec.is_empty() or (fighters.size() != 2 and presentation_health.size() != 2):
 		return
 	var base := _matrix(spec["outer"]) * _matrix(spec["placement"])
 	for part: Dictionary in spec["parts"]:
@@ -102,9 +105,11 @@ func _draw() -> void:
 					var warning: Texture2D = warning_textures[low_frame[index]] if low_health[index] else null
 					_layer(1787, transform_matrix * local, 1.0, warning)
 				elif bar_name == "bar" or bar_name == "bar2":
-					var hp := fighters[index].health if bar_name == "bar" else trail[index] * fighters[index].max_health / 100.0
+					var maximum := float(presentation_health[index][1]) if not presentation_health.is_empty() else fighters[index].max_health
+					var current := float(presentation_health[index][0]) if not presentation_health.is_empty() else fighters[index].health
+					var hp := current if bar_name == "bar" else trail[index] * maximum / 100.0
 					# Keep the authored fill direction while applying the HP percentage.
-					local.x *= clampf(hp / fighters[index].max_health, 0, 1)
+					local.x *= clampf(hp / maximum, 0, 1)
 					if hp > 0:
 						_layer(1792 if bar_name == "bar" else 591, transform_matrix * local, 1.0 if bar_name == "bar" else 205.0 / 256)
 		elif name_string.ends_with("head"):
@@ -124,15 +129,17 @@ func _draw() -> void:
 				uv.append((inverse * vertex) / texture.get_size())
 			draw_set_transform_matrix(transform_matrix)
 			draw_polygon(points, PackedColorArray([Color.WHITE]), uv, texture)
-		elif int(part.character_id) == 1813 and countdown != null:
+		elif int(part.character_id) == 1813 and (countdown != null or not presentation_countdown.is_empty()):
+			var unlimited: bool = presentation_countdown.unlimited if not presentation_countdown.is_empty() else countdown.unlimited
+			var digits: Dictionary = presentation_countdown.digits if not presentation_countdown.is_empty() else countdown.digit_frames
 			var timer_spec: Dictionary = spec["timer"]
-			var parts: Array = timer_spec.unlimited_parts if countdown.unlimited else timer_spec.initial_parts
+			var parts: Array = timer_spec.unlimited_parts if unlimited else timer_spec.initial_parts
 			for timer_part: Dictionary in parts:
 				var local := transform_matrix * _matrix(timer_part)
-				if countdown.unlimited:
+				if unlimited:
 					_layer(int(timer_part.character_id), local)
 				else:
-					var frame := str(countdown.digit_frames[timer_part.name])
+					var frame := str(digits[timer_part.name])
 					for glyph: Dictionary in timer_spec.digit_frames[frame]:
 						_layer(int(glyph.character_id), local * _matrix(glyph))
 	draw_set_transform_matrix(Transform2D.IDENTITY)

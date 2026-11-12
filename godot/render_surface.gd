@@ -49,19 +49,20 @@ func _ready() -> void:
 	online_lobby.configure(self, game)
 
 
-func _create_game_scene() -> Control:
+func _create_game_scene(presentation_only: bool = false) -> Control:
 	var scene: Control = preload("res://main.tscn").instantiate()
+	if presentation_only: scene.prepare_presentation_only()
 	source_viewport.add_child(scene)
 	scene.session.render_quality_changed.connect(apply_quality)
 	apply_quality(scene.session.render_quality)
 	return scene
 
 
-func recreate_game_scene() -> Control:
+func recreate_game_scene(presentation_only: bool = false) -> Control:
 	if game != null and is_instance_valid(game):
 		game.set_physics_process(false)
 		game.queue_free()
-	game = _create_game_scene()
+	game = _create_game_scene(presentation_only)
 	if online_lobby != null and is_instance_valid(online_lobby):
 		online_lobby.configure(self, game)
 	return game

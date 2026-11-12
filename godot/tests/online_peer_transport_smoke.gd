@@ -72,6 +72,24 @@ func _run() -> void:
 	invalid["version"] = 2
 	_expect(not transport._validate_envelope(invalid, "input"), "unsupported peer protocol version was accepted")
 
+	transport.enable_state_channel = true
+	var wire := preload("res://authority_wire.gd").new()
+	var state_packet := _envelope(2)
+	state_packet.type = "authority_state"
+	var count_before := received.size()
+	transport._receive_packet("state", wire.encode(state_packet))
+	state_packet.seq = 1
+	transport._receive_packet("state", wire.encode(state_packet))
+	_expect(received.size() == count_before + 1, "state channel applied an older snapshot")
+	state_packet.seq = 3
+	state_packet.epoch = "55555555-5555-4555-8555-555555555555"
+	transport._receive_packet("state", wire.encode(state_packet))
+	_expect(received.size() == count_before + 1, "state channel accepted a retired epoch")
+	state_packet.epoch = EPOCH
+	state_packet.payload = []
+	transport._receive_packet("state", wire.encode(state_packet))
+	_expect(errors.has("invalid_state_envelope"), "state channel accepted a non-object payload")
+
 	if failures.is_empty():
 		print("ONLINE_PEER_TRANSPORT_SMOKE_OK reordered_input=true reliable_order=true envelope_validation=true early_ice_queue=true")
 	else:
