@@ -350,5 +350,8 @@ func _run() -> void:
 	game._goto_menu()
 	game.queue_free()
 	await process_frame
+	if not await preload("res://tests/audio_shutdown.gd").drain(self):
+		quit(1)
+		return
 	print("INTRO_CONTINUOUS_REFERENCE_DONE ", report.status, " polls=", comparisons.size())
 	quit()

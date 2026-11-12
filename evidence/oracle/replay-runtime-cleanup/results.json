@@ -1,0 +1,93 @@
+{
+  "base": "6437bd8b80a51fd3f573bb32fcca6a445b4f04b9",
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "godot_binary_sha256": "c7cccbf8fb143e34e02fd6521e09be2c2b974f0d5db080b19071c9c570718ccf",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "regression": [
+    {
+      "case": "old-shader",
+      "exit": 1,
+      "output": "GODOT_RAW_LOG label=strict path=/tmp/bvn-replay-regression/old-shader/strict.log exit=0\nGODOT_LOG_SCAN_FAIL scriptErrors=0 godotErrors=1 log=/tmp/bvn-replay-regression/old-shader/strict.log\n/tmp/bvn-replay-regression/old-shader/strict.log:3:ERROR: Condition \"!actions.custom_samplers.has(function->arguments[j].tex_builtin)\" is true. Continuing.\n"
+    },
+    {
+      "case": "no-drain",
+      "exit": 1,
+      "output": "GODOT_RAW_LOG label=strict path=/tmp/bvn-replay-regression/no-drain/strict.log exit=0\nGODOT_LOG_SCAN_FAIL scriptErrors=1 godotErrors=0 log=/tmp/bvn-replay-regression/no-drain/strict.log\n/tmp/bvn-replay-regression/no-drain/strict.log:3:SCRIPT ERROR: Assertion failed: Playback must be retired before exit\n"
+    },
+    {
+      "case": "fixed",
+      "exit": 0,
+      "output": "GODOT_RAW_LOG label=strict path=/tmp/bvn-replay-regression/fixed/strict.log exit=0\nGODOT_LOG_SCAN_OK markers=none log=/tmp/bvn-replay-regression/fixed/strict.log\n"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact": "bvn-runtime-before.log.gz",
+      "uncompressed_sha256": "bf6644c759e2d40c5e5a078997739daa422e4f8bd226aec2e387020914954045"
+    },
+    {
+      "artifact": "bvn-runtime-before.json.gz",
+      "uncompressed_sha256": "86116a0e77e199c8f94ff2bdda17cd4c421704b447b905019efce8c0a9e47b8b"
+    },
+    {
+      "artifact": "bvn-runtime-r12-before.log.gz",
+      "uncompressed_sha256": "ab427df075fd46d07b13716f108e0aff9f0efd5ba0c0bc9097c8d2b65de27cb1"
+    },
+    {
+      "artifact": "bvn-runtime-r12-before.json.gz",
+      "uncompressed_sha256": "521200d6e8f415c5c7f3999fbe73562e1bc7903e8ae0ad783cf0d25241672d42"
+    },
+    {
+      "artifact": "bvn-runtime-r12-after.log.gz",
+      "uncompressed_sha256": "4bde3ecd5d31bf3d4358201b65e484c96d169799f1a7bfcc55c1fcfb91fb5953"
+    },
+    {
+      "artifact": "bvn-runtime-r12-after.json.gz",
+      "uncompressed_sha256": "521200d6e8f415c5c7f3999fbe73562e1bc7903e8ae0ad783cf0d25241672d42"
+    },
+    {
+      "artifact": "bvn-runtime-r12-after-acceptance.json.gz",
+      "uncompressed_sha256": "a497a6a9b38ca6b6b7ea338432d351b19c192deffff67a5b622d106e3a595326"
+    },
+    {
+      "artifact": "bvn-runtime-r13-after.log.gz",
+      "uncompressed_sha256": "dba3d999243a3b095a411b1f4feee95c552e06e401f062918e8c358d4799dd41"
+    },
+    {
+      "artifact": "bvn-runtime-r13-after.json.gz",
+      "uncompressed_sha256": "86116a0e77e199c8f94ff2bdda17cd4c421704b447b905019efce8c0a9e47b8b"
+    },
+    {
+      "artifact": "bvn-runtime-r13-after-acceptance.json.gz",
+      "uncompressed_sha256": "15728e298dde1aa0b41c74934a399b8ec32e412a8606570500feeef75c796dd0"
+    },
+    {
+      "artifact": "bvn-runtime-checkpoint-after.log.gz",
+      "uncompressed_sha256": "f6e946022aa496df5dfc3298e5fa4e8e5df3996a760f0e26251bdb6397f3869d"
+    },
+    {
+      "artifact": "bvn-runtime-checkpoint-after.json.gz",
+      "uncompressed_sha256": "4fee8faf57c99074815b323252570b0794f0e6801aed0fc484ef9ca4f098b5fe"
+    },
+    {
+      "artifact": "bvn-runtime-checkpoint-after-acceptance.json.gz",
+      "uncompressed_sha256": "ba681e1b9f6a94fdba12e169b85445bb8386744c4e2d43c26c0ab4e467d45890"
+    },
+    {
+      "artifact": "old-shader-strict.log.gz",
+      "uncompressed_sha256": "89f74202054c4fa4d9335e35d687e3a3520fbcf51d511da0ca1b37126e76e462"
+    },
+    {
+      "artifact": "no-drain-strict.log.gz",
+      "uncompressed_sha256": "cdd230e7879e9ef089e5b98a451c43788b2d36201a5f0d90a86d88ac5a862448"
+    },
+    {
+      "artifact": "fixed-strict.log.gz",
+      "uncompressed_sha256": "5bdc3d8ba7836ad487a1787aac47dd3d4778464d9fd9321d54c5c7e2f2cf168c"
+    }
+  ]
+}
