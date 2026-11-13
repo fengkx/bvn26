@@ -1773,6 +1773,10 @@ func source_projectile_target_bounds(source_name: String) -> Rect2:
 		for rename: Dictionary in projectile.get("rename_frames", []):
 			if instance_clip_frame(authored) >= int(rename["frame"]):
 				current_name = rename["instance_name"]
+				if rename.has("name_field"):
+					var variables := instance_source_variables(authored)
+					assert(variables.has(rename["name_field"]), "Undeclared projectile rename local")
+					current_name = str(variables[rename["name_field"]])
 		if current_name == source_name:
 			return super.instance_global_bounds(authored)
 		if authored == source_name:

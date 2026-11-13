@@ -171,7 +171,7 @@ PROJECTILE_LOAD = re.compile(
 )
 PROJECTILE_LITERAL_DECLARATION = re.compile(
     r"var\s+(?P<name>[A-Za-z_]\w*)\s*=\s*"
-    r"(?P<value>true|false|-?\d+(?:\.\d+)?)\s*;"
+    r'(?P<value>true|false|-?\d+(?:\.\d+)?|"[^"\n]*")\s*;'
 )
 SOURCE_HEALTH_LOSS = re.compile(
     r"if\s*\(\s*hp\s*>\s*(?P<threshold>\d+(?:\.\d+)?)\s*\)\s*\{\s*"
@@ -189,7 +189,7 @@ DIRECT_YFGJ_CALL = re.compile(r"_root\.yfgj\(\s*_parent\._name\s*\)\s*;")
 NESTED_FRAME_SCRIPT = re.compile(
     r"^DefineSprite_(?P<sprite>\d+)/frame_(?P<frame>\d+)/DoAction"
 )
-CLIP_RENAME = re.compile(r"(?:this\.)?_name\s*=\s*\"(?P<name>[^\"]+)\"")
+CLIP_RENAME = re.compile(r"(?<![\w.])(?:this\.)?_name\s*=\s*\"(?P<name>[^\"]+)\"")
 # Root timeline actions can rename a placed instance (for example
 # `dogs._name = "sbsatm"`) without giving the instance its final authored
 # name in the display list.  Keep this separate from CLIP_RENAME: nested clip
@@ -1044,18 +1044,28 @@ def parse_clip_timeline(
             "source_path": script["path"],
             "source_sha256": text_sha256(script["source"]),
         }
-        motion_init = re.fullmatch(
-            r"stop\(\);\s*var movspeed = (-?\d+(?:\.\d+)?);\s*var played = 0;", source
-        )
-        if source == "stop();" or motion_init is not None:
+        declarations = list(PROJECTILE_LITERAL_DECLARATION.finditer(source))
+        remainder = PROJECTILE_LITERAL_DECLARATION.sub("", source).strip()
+        literal_initialization = bool(declarations) and remainder in ("", "stop();")
+        if source == "stop();" or (literal_initialization and remainder == "stop();"):
             stop_frames.append(record)
-        if motion_init is not None:
+        if literal_initialization:
             if frame != 1:
                 raise ValueError("Projectile initialization outside frame 1: " + script["path"])
             initial_motion = {
-                "initial_variables": {"movspeed": float(motion_init[1]), "played": 0},
+                "initial_variables": {
+                    declaration["name"]: json.loads(declaration["value"])
+                    for declaration in declarations
+                },
                 "initial_motion_source": record,
             }
+        variable_rename = re.fullmatch(r'(?:this\.)?_name\s*=\s*([A-Za-z_]\w*)\s*;', source)
+        if variable_rename is not None:
+            field = variable_rename[1]
+            initial = initial_motion.get("initial_variables", {}).get(field)
+            if not isinstance(initial, str):
+                raise ValueError("Undeclared string rename local: " + script["path"])
+            rename_frames.append({**record, "instance_name": initial, "name_field": field})
         rename = CLIP_RENAME.search(script["source"])
         if rename is not None:
             random_suffix = re.fullmatch(r'(?:this\.)?_name\s*=\s*"[^"\n]+"\s*\+\s*Math\.random\(\);\s*', source)
