@@ -190,12 +190,7 @@ export function apply(
       );
       requireThat(!seat.ready, "lineup_locked");
       seat.choice = op.choice;
-      if (state.mapConfirmed === undefined) invalidate(state);
-      else {
-        state.setupRevision++;
-        seat.profile = null;
-        state.negotiation = null;
-      }
+      invalidate(state);
       break;
     case "configure":
       requireThat(slot === 0, "owner_required", 403);

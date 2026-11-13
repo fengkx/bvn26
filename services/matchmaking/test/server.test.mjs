@@ -1790,6 +1790,44 @@ test("authority lobby accepts selected content, locks mode and lineup, and recor
   });
   assert.equal(response.error, "lineup_locked");
   response = await op(server, room, 0, {
+    type: "ready",
+    revision: room.state.setupRevision,
+    ready: false,
+    profile,
+  });
+  assert.equal(response.status, 200);
+  assert.equal(room.state.members[1].ready, true);
+  response = await op(server, room, 0, {
+    type: "select",
+    revision: room.state.setupRevision,
+    choice: { fighter: "yihu", helper: "you" },
+  });
+  assert.equal(response.status, 200);
+  assert.deepEqual(
+    room.state.members.map((seat) => seat.ready),
+    [false, false],
+  );
+  assert.ok(room.state.members.every((seat) => seat.profile === null));
+  response = await op(server, room, 0, {
+    type: "ready",
+    revision: room.state.setupRevision,
+    ready: true,
+    profile,
+  });
+  assert.equal(response.status, 200);
+  response = await op(server, room, 0, {
+    type: "prepare",
+    revision: room.state.setupRevision,
+  });
+  assert.equal(response.error, "not_ready");
+  response = await op(server, room, 1, {
+    type: "ready",
+    revision: room.state.setupRevision,
+    ready: true,
+    profile,
+  });
+  assert.equal(response.status, 200);
+  response = await op(server, room, 0, {
     type: "configure_rules",
     revision: room.state.setupRevision,
     rules: { time: 90, life: 1 },
