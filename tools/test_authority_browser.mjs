@@ -1,8 +1,16 @@
 #!/usr/bin/env node
 // Dedicated testing browsers only. This is a local wiring check, never a performance gate.
 import { writeFile } from "node:fs/promises";
+import {
+  rtcDiagnostics,
+  localPermissionOrigin,
+} from "./authority_browser_diagnostics.mjs";
 const [firstEndpoint, secondEndpoint, url, output] = process.argv.slice(2);
 if (!output) throw new Error("Usage: ENDPOINT1 ENDPOINT2 TEST_URL REPORT");
+const localIcePermissionOverride = process.env.BVN_LOCAL_ICE_PERMISSION === "1";
+const permissionOrigin = localIcePermissionOverride
+  ? localPermissionOrigin(url)
+  : null;
 async function connect(endpoint) {
   const targets = await (await fetch(endpoint + "/json/list")).json();
   const socket = new WebSocket(
@@ -38,11 +46,23 @@ async function connect(endpoint) {
       calls.set(++id, { resolve, reject });
       socket.send(JSON.stringify({ id, method, params }));
     });
-  const evaluate = async (expression) =>
-    (await send("Runtime.evaluate", { expression, returnByValue: true })).result
-      .value;
+  const evaluate = async (expression) => {
+    const result = await send("Runtime.evaluate", {
+      expression,
+      returnByValue: true,
+      awaitPromise: true,
+    });
+    if (result.exceptionDetails) throw new Error(result.exceptionDetails.text);
+    return result.result.value;
+  };
   await send("Runtime.enable");
   await send("Page.enable");
+  const browserVersion = (await send("Browser.getVersion")).product;
+  if (permissionOrigin)
+    await send("Browser.grantPermissions", {
+      origin: permissionOrigin,
+      permissions: ["audioCapture"],
+    });
   await send("Page.addScriptToEvaluateOnNewDocument", {
     source: `globalThis.authorityRtc=[]; const Native=globalThis.RTCPeerConnection; globalThis.RTCPeerConnection=new Proxy(Native,{construct(target,args){const peer=new target(...args);authorityRtc.push(peer);peer.authorityChannels=[];peer.authorityCalls=[];for(const name of ['createOffer','setLocalDescription','setRemoteDescription']){const call=peer[name].bind(peer);peer[name]=(...v)=>{peer.authorityCalls.push(name);return call(...v).catch(error=>{peer.authorityCalls.push(name+':'+error.name+':'+error.message);throw error})}};const create=peer.createDataChannel.bind(peer);peer.createDataChannel=(...values)=>{const channel=create(...values);peer.authorityChannels.push(channel);return channel};peer.addEventListener('datachannel',event=>peer.authorityChannels.push(event.channel));return peer}});`,
   });
@@ -52,13 +72,15 @@ async function connect(endpoint) {
     deviceScaleFactor: 1,
     mobile: false,
   });
-  return { socket, send, evaluate, errors, consoleLines };
+  return { socket, send, evaluate, errors, consoleLines, browserVersion };
 }
 const offline = url.includes("offline=1");
 const peers = await Promise.all([
   connect(firstEndpoint),
   connect(secondEndpoint),
 ]);
+let outcome = "failed";
+let inputCheck = null;
 let reports = [],
   status = [],
   guestStarted = false;
@@ -67,6 +89,11 @@ try {
     peers.map((p) => p.send("Page.navigate", { url: "about:blank" })),
   );
   await new Promise((resolve) => setTimeout(resolve, 100));
+  for (const peer of peers) {
+    await peer.send("Runtime.discardConsoleEntries");
+    peer.errors.length = 0;
+    peer.consoleLines.length = 0;
+  }
   await peers[0].send("Page.navigate", { url });
   const deadline = Date.now() + 180000;
   let lastLog = 0;
@@ -77,7 +104,7 @@ try {
     status = await Promise.all(
       peers.map((p) =>
         p.evaluate(
-          "({status:globalThis.authorityStatus,rtc:globalThis.authorityRtc?.map(p=>({connection:p.connectionState,ice:p.iceConnectionState,signaling:p.signalingState,calls:p.authorityCalls,channels:p.authorityChannels.map(c=>({label:c.label,state:c.readyState}))}))})",
+          `(async()=>({status:globalThis.authorityStatus,rtc:await (${rtcDiagnostics.toString()})()}))()`,
         ),
       ),
     );
@@ -86,6 +113,43 @@ try {
         url: url + "?invite=" + encodeURIComponent(reports[0].invite),
       });
       guestStarted = true;
+    }
+    if (
+      !offline &&
+      !inputCheck &&
+      reports.every(
+        (report) => report?.phase === "playing" && report.localTicks >= 120,
+      )
+    ) {
+      const slot = 1 - reports[0].authority;
+      if (reports[slot].rightKey !== 68)
+        throw new Error("Smoke requires fresh default D/right binding");
+      inputCheck = {
+        slot,
+        startX: reports[slot].positions[slot],
+        released: false,
+        releaseAt: Date.now() + 1000,
+      };
+      await peers[slot].evaluate("document.querySelector('canvas').focus()");
+      await peers[slot].send("Input.dispatchKeyEvent", {
+        type: "keyDown",
+        code: "KeyD",
+        key: "d",
+        windowsVirtualKeyCode: 68,
+      });
+    }
+    if (
+      inputCheck &&
+      !inputCheck.released &&
+      Date.now() >= inputCheck.releaseAt
+    ) {
+      await peers[inputCheck.slot].send("Input.dispatchKeyEvent", {
+        type: "keyUp",
+        code: "KeyD",
+        key: "d",
+        windowsVirtualKeyCode: 68,
+      });
+      inputCheck.released = true;
     }
     if (Date.now() - lastLog > 10000) {
       console.log(JSON.stringify({ reports, status }));
@@ -112,6 +176,22 @@ try {
     )
       throw new Error("Offline display coverage missing");
   } else {
+    for (const peer of status) {
+      if (
+        !peer.rtc.some(
+          (connection) =>
+            connection.connection === "connected" &&
+            connection.selectedPair?.state === "succeeded" &&
+            ["reliable", "input", "state"].every((label) =>
+              connection.channels?.some(
+                (channel) =>
+                  channel.label === label && channel.state === "open",
+              ),
+            ),
+        )
+      )
+        throw new Error("Three connected WebRTC channels not observed");
+    }
     if (reports[0].authority !== reports[1].authority)
       throw new Error("Authority differs");
     const host = reports[reports[0].authority],
@@ -125,17 +205,39 @@ try {
       reports.some((x) => x.error)
     )
       throw new Error("Missing host/presenter coverage");
+    if (
+      !inputCheck?.released ||
+      !host.remoteRightSeen ||
+      !(guest.positions[inputCheck.slot] > inputCheck.startX)
+    )
+      throw new Error(
+        "Guest keyboard input did not reach host simulation and guest display",
+      );
   }
+  outcome = "passed";
   console.log(
     offline
       ? "AUTHORITY_BROWSER_PROJECTION_OK not-a-pass"
       : "AUTHORITY_BROWSER_PAIR_OK not-a-pass",
   );
 } finally {
+  if (inputCheck && !inputCheck.released)
+    await peers[inputCheck.slot]
+      .send("Input.dispatchKeyEvent", {
+        type: "keyUp",
+        code: "KeyD",
+        key: "d",
+        windowsVirtualKeyCode: 68,
+      })
+      .catch(() => {});
   await writeFile(
     output,
     JSON.stringify(
       {
+        outcome,
+        inputCheck,
+        localIcePermissionOverride,
+        browsers: peers.map((peer) => peer.browserVersion),
         notAPass: true,
         g0Passed: false,
         weakMachineAccepted: false,

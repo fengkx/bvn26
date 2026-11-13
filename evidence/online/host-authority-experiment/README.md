@@ -22,3 +22,5 @@ Two dedicated local Chromium instances did not open WebRTC channels: SDP/ICE sig
 Weak-machine G0 and display/application/packet/latency budgets remain unmeasured. GPU completion is UNKNOWN; submit CPU is not GPU completion or time-to-photons. No native parity or production admission is claimed. The guest currently rebuilds visual owners for each applied state, with immutable resource templates cached; its weak-machine cost must be measured.
 
 The menu subset was regenerated with the existing OFL font tool using the installed Sarasa UI SC Regular face (index 199); source hash and covered literals are in `godot/generated/main/title_menu/font.json`. Gameplay assets and locked `game/` / `scripts/` inputs were not changed. Exported content/build fingerprints are regenerated after Godot import by the existing Web build pipeline; the historical checked-in manifest is not claimed as this experiment's exported identity.
+
+Follow-up: [2026-11-13 local connectivity investigation](../host-authority-connectivity/README.md) adds new scoped browser evidence and receive-queue fixes. The original failed runs and unpassed gates above are unchanged.
