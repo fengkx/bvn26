@@ -83,6 +83,7 @@ const epoch = z.string().uuid();
 export const operation = z.discriminatedUnion("type", [
   z.strictObject({ type: z.literal("select"), revision, choice }),
   z.strictObject({ type: z.literal("configure"), revision, stage: id, rules }),
+  z.strictObject({ type: z.literal("configure_rules"), revision, rules }),
   z.strictObject({
     type: z.literal("configure_network"),
     revision,

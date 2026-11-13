@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-13 approved online lobby: new rooms default to host authority, independent existing character/helper UI returns to the room, host-only map confirmation and explicit host Start replace fixed setup/auto-start. Rollback remains in room settings; local Worker/native checks pass. Production and all admission/performance/network gates remain unchanged. [Evidence](../evidence/online/lobby-menu-2026-11-13/README.md).
+
 - 2026-11-13 host-authority connectivity: local browser candidate-permission/routing diagnosis separated from a real receiver-buffer overflow. Presenter-ready/initial pacing and applied-state credit limit stale-state bursts; local WebRTC evidence is scoped to dedicated browsers with an explicit permission override. Rollback/default, proof flags and G0/weak-machine/TURN/Internet/two-machine gates unchanged. [Follow-up evidence](../evidence/online/host-authority-connectivity/README.md).
 
 - 2026-11-12 optional host-authority experiment: room mode switch preserves rollback; fixed Naruto/Ichigo presentation-only guest, start-of-match p95/stall host selection, binary state channel, recovery and receipt-based result barriers. Local service/coordinator and exported offline-display checks pass; browser WebRTC connection remains unverified after local ICE failures. G0/weak-machine/real two-machine performance gates remain pending; proof flags unchanged. [Handoff](HOST_AUTHORITY_EXPERIMENT.md).

@@ -101,7 +101,7 @@ func _run() -> void:
 
 	client.connected = false
 	lobby._on_socket_state_changed(false)
-	assert(lobby._status.text.begins_with("信令已断开"),
+	assert(lobby._status.text.begins_with("连接已断开"),
 		"A dropped lobby socket did not schedule a visible reconnect: " + lobby._status.text)
 	lobby._process(0.4)
 	assert(client.connect_calls == 1, "Lobby reconnect did not wait out its backoff")

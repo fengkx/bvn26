@@ -301,6 +301,8 @@ export class Room extends DurableObject<Env> {
         }
         const state: State = {
           schema: 1,
+          mode: "host-authoritative",
+          mapConfirmed: false,
           id,
           creationHash: fingerprint,
           inviteHash,
@@ -350,8 +352,6 @@ export class Room extends DurableObject<Env> {
           });
         requireThat(!state.members[1], "room_full");
         state.members[1] = member(credential, input.nickname);
-        if (state.mode === "host-authoritative")
-          state.members[1].choice = { fighter: "yihu", helper: "kon" };
         invalidate(state);
         state.revision++;
         state.lastActivity = Date.now();
@@ -391,8 +391,6 @@ export class Room extends DurableObject<Env> {
         requireThat(existing === -1, "invalid_invite", 403);
         requireThat(!state.members[1], "room_full");
         state.members[1] = member(credential, input.nickname);
-        if (state.mode === "host-authoritative")
-          state.members[1].choice = { fighter: "yihu", helper: "kon" };
         invalidate(state);
         state.revision++;
         state.lastActivity = Date.now();
@@ -738,6 +736,11 @@ export class Room extends DurableObject<Env> {
         seat.connection !== attached.connection
       )
         return;
+      if (state.phase === "lobby" && state.mapConfirmed !== undefined) {
+        invalidate(state);
+        state.revision++;
+        this.write(state);
+      }
       this.broadcast(state, socket);
     } catch {
       /* The room row may already be gone. */

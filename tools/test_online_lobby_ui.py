@@ -7,6 +7,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -30,6 +31,10 @@ def find_godot() -> str:
 def main() -> int:
     godot = find_godot()
     cases = (
+        (
+            "res://tests/online_menu_flow_smoke.gd",
+            ("ONLINE_MENU_FLOW_OK",),
+        ),
         (
             "res://tests/online_lobby_auto_connect_smoke.gd",
             ("ONLINE_LOBBY_AUTO_CONNECT_SMOKE_OK",),
@@ -98,6 +103,8 @@ def main() -> int:
             str(ROOT / "godot"),
             "--script",
             script,
+            "--log-file",
+            str(Path(tempfile.gettempdir()) / f"bvn-lobby-{os.getpid()}-{Path(script).stem}.log"),
             "--quit-after",
             frame_budget,
         ]
