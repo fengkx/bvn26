@@ -1,8 +1,10 @@
 # Karin / 香磷 base-form port
 
-Base: `b905eb5f9441c94bf3c75d87e6c8d8fa73ed0563`, branch `feat/karin`.
-Targeted native parity and production rollback pass; final repository gates and
-saved-roster replay are tracked in `checks.json`.
+Original base: `b905eb5f9441c94bf3c75d87e6c8d8fa73ed0563`, branch `feat/karin`.
+Integrated current master `147155cb3ecd6387dfd9ae60b3e3522dfbb02f78`.
+Targeted native parity, production rollback and repository gates pass.
+Saved-roster replay matches all 216 cases / 127,672 actor states;
+execution details and residual scope are tracked in `checks.json`.
 Coverage remains partial. No merge or deployment.
 
 ## Source-first answers
@@ -141,3 +143,15 @@ local import metadata also differs. `online-manifest-impact.json` separates
 those from this port's four runtime and five existing content-file changes.
 No cleanup of old `.import`/`.uid` fingerprints or prior fighter packages was
 performed. The regenerated manifest records the actual local build inputs.
+
+## Current-master integration
+
+The final branch includes the current online lobby and font changes. The four
+modified combat runtime files and fighter packages are identical before and
+after this integration. The saved-roster run spans integration and validates
+each executed output. Font coverage, matchmaking, verify, handoff and online
+manifest checks are rerun on the integrated tree. `checks.json` records results.
+`online-manifest-impact.json` describes the original-base generation;
+`integration-manifest-impact.json` records final inputs against both current
+master and the pre-rebase port. The inherited missing delivery-hash update for
+`docs/OPERATIONS.md` is corrected after reviewing commit 147155cb.

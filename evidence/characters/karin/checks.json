@@ -1,5 +1,5 @@
 {
-  "status": "targeted_parity_passed_remaining_gates_running",
+  "status": "targeted_validation_passed_full_acceptance_pending",
   "base": "b905eb5f9441c94bf3c75d87e6c8d8fa73ed0563",
   "branch": "feat/karin",
   "coverage": "partial",
@@ -925,9 +925,16 @@
     ]
   },
   "saved_roster": {
-    "status": "running",
-    "cases_planned": 216,
-    "index": "roster-index.json"
+    "status": "matched",
+    "cases": 216,
+    "passed": 216,
+    "source_states": 127672,
+    "native_states": 127672,
+    "seconds": 4886.740989124868,
+    "index": "roster-index.json",
+    "report": "regressions.json",
+    "log": "logs/roster-replay.log.gz",
+    "scope": "Saved native Flash references replayed in Godot; no new Flash capture."
   },
   "deviations": [
     "PR #37 protected interrupted-super recovery remains byte-identical; no new intentional gameplay difference."
@@ -968,6 +975,31 @@
       "before": "4c48358891cf12f92568f044bd533a5092a26cab16384900bb4891beef87a305",
       "after": "3a3084e9638f53875c20d1d4f43f7349207da140fac1df7f3f4f01b03fd519e2",
       "reason": "147155cb adds the reviewed font-regeneration instructions without updating delivery hash."
+    },
+    "checks": {
+      "font_static_non_ascii": {
+        "passed": 1,
+        "skipped": 0,
+        "log": "logs/bvn-karin-rebase-font.log.gz"
+      },
+      "matchmaking": {
+        "typecheck": "passed",
+        "passed": 32,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 61.042491166,
+        "log": "logs/bvn-karin-rebase-matchmaking.log.gz"
+      },
+      "verify": "logs/bvn-karin-rebase-verify-r02.log.gz",
+      "handoff": "logs/bvn-karin-rebase-handoff.log.gz",
+      "manifest_generation": "logs/bvn-karin-rebase-manifest.log.gz",
+      "manifest_check": "logs/bvn-karin-rebase-manifest-check.log.gz"
+    },
+    "manifest_impact": "integration-manifest-impact.json",
+    "compatibility": {
+      "protocol": 1,
+      "build": "c8febca2915a8779eaf67b09b05a36529a254501c6e5524a9888f2185916c336",
+      "content": "eeb2ed7edbe0b51b262d35e1ef7d7deb7f2f7f7396e711666ac4c70ab86f358f"
     }
   }
 }
