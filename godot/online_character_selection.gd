@@ -10,6 +10,7 @@ const FIGHTER_PHASE := "fighter"
 const HELPER_PHASE := "helper"
 const MAX_REVISION := 9_007_199_254_740_991
 
+var independent_selection := false
 var local_slot := -1
 var selection_session_id := ""
 
@@ -154,7 +155,7 @@ func _maybe_advance_phase() -> void:
 	if not _selection_active or not _active:
 		return
 	var phase_name := _phase_name()
-	if not bool(_local_confirmed[phase_name]) or not bool(_remote_confirmed[phase_name]):
+	if not bool(_local_confirmed[phase_name]) or (not independent_selection and not bool(_remote_confirmed[phase_name])):
 		return
 	if phase == 0:
 		_advance_to_helper_phase()

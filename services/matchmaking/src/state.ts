@@ -53,6 +53,7 @@ export interface State {
   setupRevision: number;
   members: [Member, Member | null];
   stage: string;
+  mapConfirmed?: boolean;
   rules: Rules;
   networkProfile?: Profile;
   phase: "lobby" | "preparing" | "active" | "closed";
@@ -187,14 +188,14 @@ export function apply(
         "unsupported_content",
         400,
       );
-      if (state.mode === "host-authoritative")
-        requireThat(
-          op.choice.fighter === (slot === 0 ? "minren" : "yihu") &&
-            op.choice.helper === (slot === 0 ? "woailuo" : "kon"),
-          "authority_fixed_content",
-        );
+      requireThat(!seat.ready, "lineup_locked");
       seat.choice = op.choice;
-      invalidate(state);
+      if (state.mapConfirmed === undefined) invalidate(state);
+      else {
+        state.setupRevision++;
+        seat.profile = null;
+        state.negotiation = null;
+      }
       break;
     case "configure":
       requireThat(slot === 0, "owner_required", 403);
@@ -203,22 +204,21 @@ export function apply(
         "unsupported_content",
         400,
       );
-      if (state.mode === "host-authoritative")
-        requireThat(op.stage === "现世", "authority_fixed_content");
       state.stage = op.stage;
+      state.mapConfirmed = true;
+      state.rules = op.rules;
+      invalidate(state);
+      break;
+    case "configure_rules":
+      requireThat(slot === 0, "owner_required", 403);
       state.rules = op.rules;
       invalidate(state);
       break;
     case "configure_mode":
       requireThat(slot === 0, "owner_required", 403);
+      requireThat(!state.members[1], "mode_locked");
       if ((state.mode ?? "rollback") !== op.mode) {
         state.mode = op.mode;
-        if (op.mode === "host-authoritative") {
-          state.stage = "现世";
-          state.members[0].choice = { fighter: "minren", helper: "woailuo" };
-          if (state.members[1])
-            state.members[1].choice = { fighter: "yihu", helper: "kon" };
-        }
         invalidate(state);
       }
       break;
@@ -254,6 +254,8 @@ export function apply(
     case "ready":
       requireThat(seat.choice && state.members[1], "incomplete_setup");
       if (op.ready)
+        requireThat(state.mapConfirmed !== false, "map_not_confirmed");
+      if (op.ready)
         requireThat(
           sameProfile(op.profile, networkProfile(state)),
           "network_profile_mismatch",
@@ -266,7 +268,10 @@ export function apply(
       const guest = state.members[1];
       const authority = networkProfile(state);
       requireThat(
-        seat.ready &&
+        state.mapConfirmed !== false &&
+          !!seat.choice &&
+          !!guest?.choice &&
+          seat.ready &&
           guest?.ready &&
           sameProfile(seat.profile, authority) &&
           sameProfile(guest.profile, authority),

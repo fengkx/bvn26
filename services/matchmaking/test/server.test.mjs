@@ -81,7 +81,7 @@ function stripSignaling(state) {
     }),
   };
 }
-async function createRoom(server, override = {}) {
+async function createRoom(server, override = {}, mode = "rollback") {
   const input = {
     createToken: token(),
     sessionToken: token(),
@@ -92,7 +92,7 @@ async function createRoom(server, override = {}) {
   };
   const response = await request(server, "/v1/rooms", input);
   assert.equal(response.status, 201, JSON.stringify(response));
-  return {
+  const room = {
     ...response,
     input,
     owner: input.sessionToken,
@@ -100,6 +100,16 @@ async function createRoom(server, override = {}) {
     ownerSeq: 0,
     guestSeq: 0,
   };
+  assert.equal(room.state.mode, "host-authoritative");
+  assert.equal(room.state.mapConfirmed, false);
+  if (mode === "rollback") {
+    await op(server, room, 0, {
+      type: "configure_mode",
+      revision: room.state.setupRevision,
+      mode,
+    });
+  }
+  return room;
 }
 const endpoint = (room, action) => `/v1/rooms/${room.roomId}/${action}`;
 async function joinRoom(
@@ -132,10 +142,12 @@ async function op(server, room, slot, operation, seq) {
   return response;
 }
 async function setup(server, room) {
-  assert.equal((await joinRoom(server, room)).status, 201);
+  const joined = await joinRoom(server, room);
+  assert.equal(joined.status, 201);
+  room.state = joined.state;
   let response = await op(server, room, 0, {
     type: "select",
-    revision: 2,
+    revision: room.state.setupRevision,
     choice: { fighter: "minren", helper: "you" },
   });
   assert.equal(response.status, 200);
@@ -143,6 +155,13 @@ async function setup(server, room) {
     type: "select",
     revision: response.state.setupRevision,
     choice: { fighter: "yihu", helper: "kon" },
+  });
+  assert.equal(response.status, 200);
+  response = await op(server, room, 0, {
+    type: "configure",
+    revision: room.state.setupRevision,
+    stage: "现世",
+    rules: { time: 90, life: 1 },
   });
   assert.equal(response.status, 200);
   const revision = response.state.setupRevision;
@@ -485,7 +504,7 @@ test("short invitation codes are private, single-use, retryable and rotatable", 
   const reinviteToken = token();
   const reinviteCommand = {
     version: 1,
-    seq: 1,
+    seq: room.ownerSeq + 1,
     operation: { type: "reinvite", inviteToken: reinviteToken },
   };
   const reinvited = await request(
@@ -545,7 +564,7 @@ test("short invitation codes are private, single-use, retryable and rotatable", 
 
   const nextReinviteCommand = {
     version: 1,
-    seq: 2,
+    seq: room.ownerSeq + 2,
     operation: { type: "reinvite", inviteToken: token() },
   };
   const nextReinvite = await request(
@@ -602,7 +621,7 @@ test("short invitation codes are private, single-use, retryable and rotatable", 
   const closed = await request(
     server,
     endpoint(closingRoom, "commands"),
-    { version: 1, seq: 1, operation: { type: "leave" } },
+    { version: 1, seq: closingRoom.ownerSeq + 1, operation: { type: "leave" } },
     closingRoom.owner,
   );
   assert.equal(closed.status, 200);
@@ -1700,37 +1719,84 @@ test("lockstep delay profiles stay frozen and retired signaling cannot poison a 
   }
 });
 
-test("authority mode freezes content, selects P2 independently, and records receipt semantics", async (t) => {
+test("authority lobby accepts selected content, locks mode and lineup, and records receipt semantics", async (t) => {
   const server = await withServer(t);
-  const room = await createRoom(server);
+  const room = await createRoom(server, {}, "host-authoritative");
+  assert.equal(room.state.members[0].choice, null);
   let response = await op(server, room, 0, {
-    type: "configure_mode",
+    type: "select",
     revision: room.state.setupRevision,
-    mode: "host-authoritative",
+    choice: { fighter: "sasuke", helper: "you" },
   });
   assert.equal(response.status, 200);
+  response = await op(server, room, 0, {
+    type: "configure_rules",
+    revision: room.state.setupRevision,
+    rules: { time: 60, life: 2 },
+  });
+  assert.equal(response.status, 200);
+  assert.equal(room.state.mapConfirmed, false);
   const joined = await joinRoom(server, room);
   assert.equal(joined.status, 201);
   room.state = joined.state;
-  assert.deepEqual(
-    room.state.members.map((seat) => seat.choice),
-    [
-      { fighter: "minren", helper: "woailuo" },
-      { fighter: "yihu", helper: "kon" },
-    ],
-  );
-  response = await op(server, room, 1, {
+  assert.equal(room.state.members[1].choice, null);
+  response = await op(server, room, 0, {
     type: "configure_mode",
     revision: room.state.setupRevision,
     mode: "rollback",
   });
-  assert.equal(response.error, "owner_required");
+  assert.equal(response.error, "mode_locked");
   response = await op(server, room, 1, {
     type: "select",
     revision: room.state.setupRevision,
     choice: { fighter: "minren", helper: "kon" },
   });
-  assert.equal(response.error, "authority_fixed_content");
+  assert.equal(response.status, 200);
+  response = await op(server, room, 1, {
+    type: "ready",
+    revision: room.state.setupRevision,
+    ready: true,
+    profile,
+  });
+  assert.equal(response.error, "map_not_confirmed");
+  response = await op(server, room, 1, {
+    type: "configure",
+    revision: room.state.setupRevision,
+    stage: "流魂街",
+    rules: { time: 60, life: 2 },
+  });
+  assert.equal(response.error, "owner_required");
+  response = await op(server, room, 0, {
+    type: "configure",
+    revision: room.state.setupRevision,
+    stage: "流魂街",
+    rules: { time: 60, life: 2 },
+  });
+  assert.equal(response.status, 200);
+  for (const slot of [0, 1]) {
+    response = await op(server, room, slot, {
+      type: "ready",
+      revision: room.state.setupRevision,
+      ready: true,
+      profile,
+    });
+    assert.equal(response.status, 200);
+  }
+  assert.equal(room.state.phase, "lobby");
+  response = await op(server, room, 1, {
+    type: "select",
+    revision: room.state.setupRevision,
+    choice: { fighter: "yihu", helper: "kon" },
+  });
+  assert.equal(response.error, "lineup_locked");
+  response = await op(server, room, 0, {
+    type: "configure_rules",
+    revision: room.state.setupRevision,
+    rules: { time: 90, life: 1 },
+  });
+  assert.equal(response.status, 200);
+  assert.ok(room.state.members.every((seat) => !seat.ready));
+  assert.equal(room.state.mapConfirmed, true);
   for (const slot of [0, 1]) {
     response = await op(server, room, slot, {
       type: "ready",
@@ -1810,6 +1876,6 @@ test("authority mode freezes content, selects P2 independently, and records rece
     revision: room.state.setupRevision,
     mode: "rollback",
   });
-  assert.equal(response.state.mode, "rollback");
-  assert.ok(response.state.members.every((seat) => !seat.ready));
+  assert.equal(response.error, "mode_locked");
+  assert.ok(room.state.members.every((seat) => !seat.ready));
 });

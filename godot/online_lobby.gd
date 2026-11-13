@@ -192,6 +192,19 @@ var _intro_skip_button: Button
 var _diagnostic_button: Button
 var _home_close_button: Button
 var _diagnostic_report: Dictionary = {}
+var _rollback_options: VBoxContainer
+var _player_cards: Array[Label] = []
+var _player_portraits: Array[TextureRect] = []
+var _room_body: HBoxContainer
+var _portrait_cache := {}
+var _save_rules_button: Button
+var _start_button: Button
+var _create_button: Button
+var _join_button: Button
+var _leave_confirmed := false
+var _invite_link_checked := false
+var _needs_new_invite := false
+var _leave_confirmation: ConfirmationDialog
 
 
 func _ready() -> void:
@@ -389,7 +402,7 @@ func _build_ui() -> void:
 
 	_veil = ColorRect.new()
 	_veil.name = "OnlineVeil"
-	_veil.color = Color(0.025, 0.035, 0.055, 0.94)
+	_veil.color = Color("191719")
 	_veil.mouse_filter = Control.MOUSE_FILTER_STOP
 	_veil.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_veil.visible = false
@@ -407,6 +420,7 @@ func _build_ui() -> void:
 	_dialog.z_index = 1101
 	_dialog.visible = false
 	add_child(_dialog)
+	WIDGETS.style_theme(online_theme)
 	_dialog.theme = online_theme
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -419,12 +433,12 @@ func _build_ui() -> void:
 	pages.add_theme_constant_override("separation", 8)
 	margin.add_child(pages)
 	var title := Label.new()
-	title.text = "联机对战 · 实验功能"
+	title.text = "联机对战"
 	title.add_theme_font_size_override("font_size", 20)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	pages.add_child(title)
 	_status = Label.new()
-	_status.text = "局域网/本机测试。网络参数仍需实测。"
+	_status.text = "与朋友约一场对战"
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	pages.add_child(_status)
@@ -445,6 +459,7 @@ func _build_ui() -> void:
 	pages.add_child(_startup_footer)
 	var page_content := VBoxContainer.new()
 	page_content.add_theme_constant_override("separation", 7)
+	page_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	page_scroll.add_child(page_content)
 
 	_home_view = VBoxContainer.new()
@@ -512,17 +527,22 @@ func _build_ui() -> void:
 
 
 func _build_home_view() -> void:
-	_nickname = _line_edit("玩家", "昵称")
+	var preferences := ConfigFile.new()
+	preferences.load("user://online-menu.cfg")
+	_nickname = _line_edit(str(preferences.get_value("profile", "nickname", "玩家")), "昵称")
 	_endpoint = _line_edit(DEFAULT_SERVICE_URL, "服务地址")
 	_home_view.add_child(_row("昵称", _nickname))
-	_home_view.add_child(_row("服务地址", _endpoint))
-	var create := _button("创建好友房间", _on_create_pressed)
-	_home_view.add_child(create)
-	_room_code = _line_edit("", "好友邀请码或旧版邀请串")
+	_endpoint.visible = false
+	_home_view.add_child(_endpoint)
+	_create_button = _button("创建房间", _on_create_pressed)
+	_home_view.add_child(_create_button)
+	WIDGETS.primary(_create_button)
+	_room_code = _line_edit("", "输入房间码或粘贴邀请链接")
 	_room_code.custom_minimum_size.x = 300
 	_home_view.add_child(_row("加入码", _room_code))
-	var join := _button("加入房间", _on_join_pressed)
-	_home_view.add_child(join)
+	_join_button = _button("加入房间", _on_join_pressed)
+	_home_view.add_child(_join_button)
+	WIDGETS.primary(_join_button)
 	_admission_retry_button = _button("重试上次房间请求", _on_retry_admission_pressed)
 	_admission_retry_button.visible = false
 	var admission_actions := HBoxContainer.new()
@@ -550,10 +570,18 @@ func _build_room_view() -> void:
 	_mode_choice.add_item("回滚联机")
 	_mode_choice.add_item("主机权威（实验）")
 	_mode_choice.item_selected.connect(_on_mode_selected)
-	_room_view.add_child(_row("联机模式", _mode_choice))
+
 	_member_status = Label.new()
 	_member_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_room_view.add_child(_member_status)
+	var cards := HBoxContainer.new()
+	cards.add_theme_constant_override("separation", 12)
+	_room_view.add_child(cards)
+	for slot in 2:
+		var card := WIDGETS.player_card(slot)
+		cards.add_child(card)
+		_player_cards.append(card.get_child(0).get_child(0))
+		_player_portraits.append(card.get_child(0).get_child(1))
 	_stage_summary = Label.new()
 	_stage_summary.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_room_view.add_child(_stage_summary)
@@ -566,7 +594,7 @@ func _build_room_view() -> void:
 	_invitation_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	_invitation_row.add_child(_room_code_output)
 	_room_view.add_child(_invitation_row)
-	_copy_invite_button = _button("复制加入码", _copy_invitation)
+	_copy_invite_button = _button("复制邀请", _copy_invitation)
 	invitation_actions.add_child(_copy_invite_button)
 	_rotate_invite_button = _button("换一个加入码", _on_rotate_invitation_pressed)
 	_rotate_invite_button.visible = false
@@ -576,7 +604,7 @@ func _build_room_view() -> void:
 	_room_view.add_child(_retry_button)
 
 	_advanced_toggle = CheckButton.new()
-	_advanced_toggle.text = "高级设置"
+	_advanced_toggle.text = "房间设置"
 	_advanced_toggle.toggled.connect(_on_advanced_toggled)
 	_room_view.add_child(_advanced_toggle)
 	_advanced_settings = VBoxContainer.new()
@@ -584,14 +612,17 @@ func _build_room_view() -> void:
 	_advanced_settings.visible = false
 	_room_view.add_child(_advanced_settings)
 	_advanced_settings.add_child(_rotate_invite_button)
+	_rotate_invite_button.hide()
 	_room_visibility_hint = Label.new()
 	_room_visibility_hint.text = "同机联调时请把两个窗口并排并保持可见。"
 	_room_visibility_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_room_visibility_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_advanced_settings.add_child(_room_visibility_hint)
+	_room_visibility_hint.hide()
 	_owner_settings = VBoxContainer.new()
 	_owner_settings.add_theme_constant_override("separation", 2)
 	_advanced_settings.add_child(_owner_settings)
+	_owner_settings.add_child(_row("联机模式", _mode_choice))
 	var owner_rules_grid := GridContainer.new()
 	owner_rules_grid.columns = 2
 	_owner_settings.add_child(owner_rules_grid)
@@ -603,7 +634,9 @@ func _build_room_view() -> void:
 	profile_grid.columns = 2
 	profile_grid.add_theme_constant_override("h_separation", 12)
 	profile_grid.add_theme_constant_override("v_separation", 4)
-	_owner_settings.add_child(profile_grid)
+	_rollback_options = VBoxContainer.new()
+	_owner_settings.add_child(_rollback_options)
+	_rollback_options.add_child(profile_grid)
 	_delay_choice = _option()
 	_add_number_options(profile_grid, "输入延迟", _delay_choice, [0, 1, 2, 3, 4], " 帧")
 	_select_number(_delay_choice, 2)
@@ -614,7 +647,8 @@ func _build_room_view() -> void:
 	profile_latency_hint.text = "默认增加约 67 毫秒操作延迟以减少等待；由房主统一设置。"
 	profile_latency_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	profile_latency_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_owner_settings.add_child(profile_latency_hint)
+	_rollback_options.add_child(profile_latency_hint)
+	_rollback_options.add_child(_button("恢复推荐值", _reset_rollback_options))
 	for picker in [_time_choice, _life_choice]:
 		picker.item_selected.connect(_on_setup_picker_changed)
 	for picker in [_delay_choice, _prediction_choice]:
@@ -624,15 +658,21 @@ func _build_room_view() -> void:
 	_roster_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_roster_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_advanced_settings.add_child(_roster_status)
+	_roster_status.hide()
 	_profile_status = Label.new()
 	_profile_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_profile_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_advanced_settings.add_child(_profile_status)
+	_profile_status.hide()
 	_lan_candidate_opt_in = CheckBox.new()
 	_lan_candidate_opt_in.text = "本机 / 同一局域网对战（无需中转）"
 	_lan_candidate_opt_in.tooltip_text = "只用于本机或同一局域网测试；跨网络对战仍需服务端配置 TURN。由房主选择并同步双方。"
 	_lan_candidate_opt_in.toggled.connect(_on_profile_option_toggled)
+	_save_rules_button = _button("保存房间设置", _save_room_rules)
+	_owner_settings.add_child(_save_rules_button)
+	WIDGETS.primary(_save_rules_button)
 	_owner_settings.add_child(_lan_candidate_opt_in)
+	_lan_candidate_opt_in.hide()
 
 	var actions := HBoxContainer.new()
 	actions.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -645,14 +685,41 @@ func _build_room_view() -> void:
 	_setup_button = _button("改选地图", _on_commit_setup_pressed)
 	_setup_button.visible = false
 	actions.add_child(_setup_button)
+	_start_button = _button("开始对战", _on_start_pressed)
+	actions.add_child(_start_button)
 	_startup_cancel_button = _button("取消开局并返回房间", _on_cancel_start_pressed)
 	_startup_cancel_button.visible = false
 	_startup_footer.add_child(_startup_cancel_button)
 	_startup_abandon_button = _button("放弃等待并返回主菜单", _on_abandon_startup_pressed)
 	_startup_abandon_button.visible = false
 	_startup_footer.add_child(_startup_abandon_button)
+	_leave_confirmation = ConfirmationDialog.new()
+	_leave_confirmation.dialog_text = "离开将关闭房间，确定离开？"
+	_leave_confirmation.confirmed.connect(func():
+		_leave_confirmed = true
+		_on_leave_room_pressed())
+	add_child(_leave_confirmation)
 	_leave_button = _button("离开房间", _on_leave_room_pressed)
 	_room_view.add_child(_leave_button)
+	# Keep identities and rules above the actions within the native 600x400 canvas.
+	_room_body = HBoxContainer.new()
+	_room_body.add_theme_constant_override("separation", 12)
+	_room_view.add_child(_room_body)
+	cards.reparent(_room_body)
+	cards.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_stage_summary.reparent(_room_body)
+	_stage_summary.custom_minimum_size.x = 140
+	_stage_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_stage_summary.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_copy_invite_button.reparent(_invitation_row)
+	_advanced_toggle.reparent(_invitation_row)
+	_leave_button.reparent(_invitation_row)
+	_room_view.move_child(_invitation_row, 0)
+	_room_view.move_child(_room_body, 1)
+	_member_status.hide()
+	invitation_actions.hide()
+	WIDGETS.primary(_connect_selection_button)
+	WIDGETS.primary(_start_button)
 
 
 func _build_result_view() -> void:
@@ -682,7 +749,9 @@ func _open_home() -> void:
 	_room_view.visible = false
 	_match_view.visible = false
 	_match_hud.visible = false
-	_status.text = "局域网/本机测试。网络参数仍需实测。"
+	_status.text = "与朋友约一场对战"
+	if OS.has_feature("web") and _room_code.text.is_empty():
+		_room_code.text = str(JavaScriptBridge.eval("new URLSearchParams(location.search).get('invite') || ''"))
 	_nickname.grab_focus()
 
 
@@ -717,8 +786,11 @@ func _on_create_pressed() -> void:
 		return
 	_busy = true
 	var request_generation := _lifecycle_generation
+	_create_button.text = "创建中…"
 	_status.text = "正在创建房间…"
+	_remember_nickname()
 	var response: Dictionary = await room_client.create_room(_nickname.text, _compatibility())
+	_create_button.text = "创建房间"
 	if request_generation != _lifecycle_generation:
 		return
 	_busy = false
@@ -748,6 +820,8 @@ func _on_join_pressed() -> void:
 		return
 	_busy = true
 	var request_generation := _lifecycle_generation
+	_join_button.text = "加入中…"
+	_remember_nickname()
 	_status.text = "正在加入房间…"
 	var response: Dictionary
 	if invitation.get("kind") == "legacy":
@@ -758,6 +832,7 @@ func _on_join_pressed() -> void:
 		response = await room_client.join_by_code(
 			str(invitation.get("code", "")), _nickname.text, _compatibility()
 		)
+	_join_button.text = "加入房间"
 	if request_generation != _lifecycle_generation:
 		return
 	_busy = false
@@ -837,6 +912,7 @@ func _on_abandon_admission_pressed() -> void:
 	if generation != _lifecycle_generation:
 		return
 	_set_admission_uncertain(false)
+	_needs_new_invite = false
 	_room_state.clear()
 	_pending_network_profile.clear()
 	_network_profile_authority.clear()
@@ -941,7 +1017,7 @@ func _ensure_lobby_signaling() -> void:
 			return
 		_schedule_lobby_reconnect()
 		if _can_show_lobby_presence_status():
-			_status.text = "信令已断开，约 %d 秒后重新连接。" % int(ceili(_lobby_reconnect_wait))
+			_status.text = "连接已断开，约 %d 秒后重试。" % int(ceili(_lobby_reconnect_wait))
 		return
 	_signal_connected = true
 	_lobby_reconnect_attempt = 0
@@ -1056,7 +1132,7 @@ func _status_is_lobby_presence() -> bool:
 		or text.begins_with("邀请口令已显示") \
 		or text.begins_with("已加入房间") \
 		or text.begins_with("双方已在房间") \
-		or text.begins_with("信令已断开") \
+		or text.begins_with("信令已断开") or text.begins_with("连接已断开") \
 		or text.begins_with("正在创建房间") \
 		or text.begins_with("正在加入房间")
 
@@ -1070,6 +1146,8 @@ func _refresh_lobby_presence_status(force := false) -> void:
 
 
 func _lobby_presence_status_text() -> String:
+	if _uses_room_setup():
+		return "邀请朋友加入，也可以先选好阵容。" if _room_state.members[1] == null else "选好阵容和地图，准备后由房主开始。"
 	var connected := room_client != null and is_instance_valid(room_client) \
 		and room_client.is_signaling_connected()
 	var members := _as_array(_room_state.get("members", []))
@@ -1321,6 +1399,9 @@ func _same_network_profile(left: Dictionary, right: Dictionary) -> bool:
 
 
 func _on_reselect_pressed() -> void:
+	if _uses_room_setup():
+		_open_lineup()
+		return
 	if _busy or _selection_active or _selection_commit_busy or not _room_connection_ready:
 		return
 	if _slot == 0:
@@ -1526,7 +1607,7 @@ func _begin_map_selection_session(
 		or game_root == null or not is_instance_valid(game_root):
 		return false
 	if _map_adapter == null or not is_instance_valid(_map_adapter):
-		var map_script := load("res://online_map_selection.gd") as Script
+		var map_script := load("res://online_room_map.gd" if _uses_room_setup() else "res://online_map_selection.gd") as Script
 		if map_script == null:
 			_show_error("map_selection_adapter_missing")
 			return false
@@ -1536,6 +1617,7 @@ func _begin_map_selection_session(
 			return false
 		_map_adapter.name = "OnlineMapSelection"
 		var map_control := _map_adapter as Control
+		map_control.theme = _dialog.theme
 		map_control.z_index = 200
 		map_control.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		_map_adapter.connect("snapshot_changed", Callable(self, "_on_map_snapshot_changed"))
@@ -1635,6 +1717,9 @@ func _wire_nonnegative_integer(value: Variant) -> bool:
 
 
 func _on_map_selection_confirmed(stage_id: String, session_id: String, revision: int) -> void:
+	if _uses_room_setup():
+		await _save_room_map(stage_id, session_id)
+		return
 	if not _map_active or not _map_host_authority or _map_committing \
 		or session_id != _map_session_id or not _stage_labels.has(stage_id) or revision < 0:
 		return
@@ -2035,6 +2120,7 @@ func _begin_selection_session(session_id: String, initial_choices: Array) -> boo
 	_veil.visible = false
 	_dialog.visible = false
 	game_root.remove_meta("online_modal_open")
+	_selection_adapter.independent_selection = _uses_room_setup()
 	var issue := str(_selection_adapter.begin(_slot, session_id, initial_choices))
 	if not issue.is_empty():
 		_end_selection_session(false)
@@ -2053,6 +2139,9 @@ func _on_selection_snapshot_changed(snapshot: Dictionary) -> void:
 
 
 func _on_selection_completed(choice: Dictionary) -> void:
+	if _uses_room_setup():
+		await _save_lineup(choice)
+		return
 	if not _selection_active or choice.is_empty():
 		return
 	_selection_completed_choice = choice.duplicate(true)
@@ -2255,7 +2344,7 @@ func _submit_selection_choice(choice: Dictionary, session_id: String) -> Diction
 		if str(latest.get("phase", "")) != "lobby":
 			return {"error": "room_not_in_lobby"}
 		var members := _as_array(latest.get("members", []))
-		if members.size() != 2 or not members[0] is Dictionary or not members[1] is Dictionary:
+		if members.size() != 2 or not members[_slot] is Dictionary:
 			return {"error": "room_member_missing"}
 		var local_member := _as_dictionary(members[_slot])
 		var current_choice := _as_dictionary(local_member.get("choice"))
@@ -2380,8 +2469,16 @@ func _accept_state(state: Variant) -> void:
 	if next_network_profile.is_empty():
 		_show_error("server_upgrade_required")
 		return
+	var previous_members := _as_array(_room_state.get("members"))
+	var incoming_members := _as_array(incoming.get("members"))
+	if incoming.has("mapConfirmed") and _slot == 0 and previous_members.size() == 2 \
+		and incoming_members.size() == 2 and previous_members[1] is Dictionary and incoming_members[1] == null:
+		_invite_code = ""
+		_needs_new_invite = true
 	var previous_network_profile := _network_profile_authority.duplicate(true)
 	_room_state = incoming
+	if _uses_room_setup() and _dirty and _room_state.get("rules") == _rules_draft:
+		_dirty = false
 	_network_profile_authority = next_network_profile.duplicate(true)
 	if not previous_network_profile.is_empty() \
 		and not _same_network_profile(previous_network_profile, next_network_profile):
@@ -2413,6 +2510,7 @@ func _accept_state(state: Variant) -> void:
 
 
 func _maybe_accept_connection_request() -> void:
+	if _uses_room_setup(): return
 	if _slot != 1 or _room_id.is_empty() or _room_state.get("phase") != "lobby" \
 		or _busy or _startup_busy or _room_connection_starting or _room_connection_ready \
 		or _selection_active or _selection_commit_busy or _map_active \
@@ -2441,6 +2539,14 @@ func _on_room_state_changed(state: Dictionary) -> void:
 		_stop_lobby_presence()
 		_close_room_connection()
 		_show_error("room_closed")
+		if _uses_room_setup():
+			_room_view.hide()
+			_match_view.show()
+			_result_status.text = "房间已结束\n房主已离开，请返回联机入口。"
+			_rematch_button.hide()
+			_result_leave_button.text = "返回联机入口"
+			_result_leave_button.pressed.disconnect(_on_leave_room_pressed)
+			_result_leave_button.pressed.connect(_return_from_closed_room)
 
 
 func _on_signaling_message(message: Dictionary) -> void:
@@ -2462,7 +2568,7 @@ func _on_socket_state_changed(connected: bool) -> void:
 		if _can_show_lobby_presence_status() and (
 			_status_is_lobby_presence() or _status.text.begins_with("信令已断开")
 		):
-			_status.text = "信令已断开，约 %d 秒后重新连接。" % int(ceili(_lobby_reconnect_wait))
+			_status.text = "连接已断开，约 %d 秒后重试。" % int(ceili(_lobby_reconnect_wait))
 
 
 func _on_room_error(code: String) -> void:
@@ -2470,6 +2576,9 @@ func _on_room_error(code: String) -> void:
 
 
 func _refresh_room_view() -> void:
+	if _uses_room_setup():
+		_refresh_menu_room()
+		return
 	if _room_view == null or _room_state.is_empty():
 		return
 	var members := _as_array(_room_state.get("members", []))
@@ -2612,6 +2721,7 @@ func _authority_mode() -> bool:
 	return _room_state.get("mode", "rollback") == "host-authoritative"
 
 func _on_mode_selected(index: int) -> void:
+	if _uses_room_setup() and _room_state.members[1] != null: return
 	if _slot != 0 or _busy or _room_state.get("phase") != "lobby": return
 	_close_room_connection()
 	await _submit_operation({"type": "configure_mode", "revision": int(_room_state.get("setupRevision", 0)),
@@ -2670,10 +2780,13 @@ func _on_setup_picker_changed(_index: int) -> void:
 func _on_advanced_toggled(visible: bool) -> void:
 	if _advanced_settings != null:
 		_advanced_settings.visible = visible
+		if _room_body != null: _room_body.visible = not visible
 
 
 func _on_room_primary_pressed() -> void:
 	match _room_primary_action:
+		"select":
+			_open_lineup()
 		"connect":
 			await _on_connect_selection_pressed()
 		"ready":
@@ -2791,6 +2904,10 @@ func _retry_pending_network_profile() -> void:
 
 
 func _on_commit_setup_pressed() -> void:
+	if _uses_room_setup():
+		if _slot == 0 and not _busy and not _map_active and not _selection_active:
+			_begin_map_selection_session(Crypto.new().generate_random_bytes(16).hex_encode(), true, str(_room_state.stage))
+		return
 	if _busy or _selection_active or _selection_commit_busy or _map_active \
 		or _slot != 0 or _room_state.is_empty():
 		return
@@ -2823,6 +2940,7 @@ func _on_start_pressed() -> void:
 
 
 func _map_handshake_matches_room() -> bool:
+	if _uses_room_setup(): return bool(_room_state.get("mapConfirmed", false))
 	if _authority_mode(): return _room_state.get("stage") == "现世"
 	return _map_handshake_complete \
 		and _map_handshake_setup_revision == int(_room_state.get("setupRevision", -1)) \
@@ -2830,6 +2948,8 @@ func _map_handshake_matches_room() -> bool:
 
 
 func _can_ready_current_room() -> bool:
+	if _uses_room_setup():
+		return _room_state.get("phase") == "lobby" and _has_both_committed_choices() and _map_handshake_matches_room() and not _dirty and not _selection_active and not _map_active and not _profile_draft_dirty and _menu_members_connected()
 	var profile := _authoritative_network_profile()
 	if profile.is_empty() or _profile_draft_dirty or not _pending_network_profile.is_empty():
 		return false
@@ -2862,6 +2982,7 @@ func _can_prepare_current_room() -> bool:
 
 
 func _maybe_auto_prepare(explicit_retry: bool = false) -> void:
+	if _uses_room_setup(): return
 	if _slot != 0 or str(_room_state.get("phase", "")) != "lobby":
 		return
 	var room_id := _room_id
@@ -3305,6 +3426,7 @@ func _on_abandon_startup_pressed() -> void:
 	_close_match_runtime("user_abandoned_unconfirmed_startup")
 	if room_client != null:
 		room_client.clear_credentials()
+	_needs_new_invite = false
 	_room_state.clear()
 	_pending_network_profile.clear()
 	_network_profile_authority.clear()
@@ -3433,6 +3555,17 @@ func _physics_process(_delta: float) -> void:
 
 
 func _process(delta: float) -> void:
+	if not _invite_link_checked and OS.has_feature("web") and game_root != null and _is_title_menu():
+		_invite_link_checked = true
+		if str(JavaScriptBridge.eval("new URLSearchParams(location.search).get('invite') || ''")) != "":
+			_open_home()
+	if _create_button != null:
+		_create_button.disabled = _busy or _admission_uncertain
+		_join_button.disabled = _busy or _admission_uncertain
+	if _needs_new_invite and not _room_id.is_empty() and not _busy and not _selection_active \
+		and not _map_active and not room_client.is_command_in_flight() and not room_client.has_uncertain_command():
+		_needs_new_invite = false
+		_on_rotate_invitation_pressed.call_deferred()
 	_tick_lobby_presence(delta)
 	_tick_connection_wait_status()
 	_tick_room_state_poll(delta)
@@ -4087,6 +4220,7 @@ func _finish_room_match_abort(report: Dictionary, epoch: String, generation: int
 		var known_result: bool = service_result.get("epoch") == epoch and not service_result.is_empty()
 		var result_line := _format_result(service_result) if known_result else "本局最终结果未能从房间服务确认。"
 		room_client.clear_credentials()
+		_needs_new_invite = false
 		_room_state.clear()
 		_pending_network_profile.clear()
 		_network_profile_authority.clear()
@@ -4232,6 +4366,10 @@ func _on_rematch_pressed() -> void:
 
 
 func _on_leave_room_pressed() -> void:
+	if _uses_room_setup() and _slot == 0 and _room_state.members[1] != null and not _leave_confirmed and not _busy:
+		_leave_confirmation.popup_centered()
+		return
+	_leave_confirmed = false
 	if _busy:
 		return
 	if not _starting_epoch.is_empty() and _terminal_pending_epoch == _starting_epoch:
@@ -4279,6 +4417,7 @@ func _on_leave_room_pressed() -> void:
 		_arm_lobby_presence(false)
 		return
 	room_client.clear_credentials()
+	_needs_new_invite = false
 	_room_state.clear()
 	_pending_network_profile.clear()
 	_network_profile_authority.clear()
@@ -4342,6 +4481,7 @@ func _abandon_pending_terminal() -> void:
 		if leave_reply.has("error"):
 			leave_issue = str(leave_reply.get("error", "server_unreachable"))
 	room_client.clear_credentials()
+	_needs_new_invite = false
 	_room_state.clear()
 	_pending_network_profile.clear()
 	_network_profile_authority.clear()
@@ -4383,7 +4523,10 @@ func _abort_reason(report: Dictionary) -> String:
 func _copy_invitation() -> void:
 	if _invite_code.is_empty():
 		return
-	DisplayServer.clipboard_set(_invite_code)
+	var base := ""
+	if OS.has_feature("web"):
+		base = str(JavaScriptBridge.eval("location.origin + location.pathname"))
+	DisplayServer.clipboard_set(base + "?invite=" + _invite_code.uri_encode() if not base.is_empty() else _invite_code)
 	_status.text = "加入码已复制；请通过你信任的渠道发送给好友。"
 
 
@@ -4407,6 +4550,8 @@ func _on_rotate_invitation_pressed() -> void:
 
 func _parse_invitation(value: String) -> Dictionary:
 	var normalized := value.strip_edges()
+	if normalized.contains("?invite="):
+		normalized = normalized.get_slice("?invite=", 1).get_slice("&", 0).get_slice("#", 0).uri_decode()
 	var pieces := normalized.split(".", false, 2)
 	if pieces.size() == 2 and pieces[0].length() == 64 and pieces[1].length() == 43:
 		return {"kind": "legacy", "room_id": pieces[0], "invite_token": pieces[1]}
@@ -4527,6 +4672,9 @@ func _show_error(code: String) -> void:
 	push_warning("Online lobby diagnostic: " + JSON.stringify(diagnostic))
 	var messages := {
 		"invalid_service_url": "服务地址需以 http:// 或 https:// 开头。",
+		"mode_locked": "朋友已加入，联机方式已锁定。请新建房间后切换。",
+		"lineup_locked": "请先取消准备，再修改阵容。",
+		"map_not_confirmed": "请等待房主确认地图。",
 		"invalid_invitation": "加入码格式不正确。",
 		"invalid_invite": "加入码不正确。请核对朋友发来的口令。",
 		"invite_expired": "加入码已过期，房间已关闭。请让房主重新创建房间。",
@@ -4580,3 +4728,176 @@ func _as_array(value: Variant) -> Array:
 
 func _is_title_menu() -> bool:
 	return is_instance_valid(game_root) and str(game_root.session.root_label) == "MENU"
+
+
+func _uses_room_setup() -> bool:
+	# Older rooms retain their existing peer setup handshake until they expire.
+	return _room_state.has("mapConfirmed")
+
+
+func _refresh_menu_room() -> void:
+	if _room_view == null: return
+	var members: Array = _room_state.members
+	var local := _as_dictionary(members[_slot])
+	var guest_present := members[1] is Dictionary
+	var owner := _slot == 0
+	var ready := bool(local.get("ready", false))
+	var locked: bool = _busy or _selection_active or _map_active or _selection_commit_busy \
+		or _room_state.phase != "lobby" or room_client.has_uncertain_command()
+	_member_status.text = "好友房间"
+	for slot in 2:
+		var member := _as_dictionary(members[slot])
+		var choice := _as_dictionary(member.get("choice"))
+		_update_room_portrait(slot, choice)
+		_player_cards[slot].text = "%s%s · %s\n%s / %s\n%s" % [
+			"房主" if slot == 0 else "客人", " · 你" if slot == _slot else "",
+			_member_name(members, slot), _choice_label(choice), _choice_helper_label(choice),
+			"已准备" if bool(member.get("ready", false)) else ("尚未准备" if not member.is_empty() else "邀请朋友加入")]
+	_invitation_row.visible = owner
+	_copy_invite_button.visible = owner
+	_room_code_output.text = _invite_code
+	_rotate_invite_button.hide()
+	_mode_choice.select(1 if _authority_mode() else 0)
+	_mode_choice.disabled = not owner or guest_present or locked
+	_owner_settings.visible = owner
+	_rollback_options.visible = not _authority_mode()
+	_time_choice.disabled = locked
+	_life_choice.disabled = locked
+	_delay_choice.disabled = locked
+	_prediction_choice.disabled = locked
+	_sync_network_profile_controls_from_state()
+	if not _dirty: _sync_options_from_state()
+	var rules := _as_dictionary(_room_state.rules)
+	_stage_summary.text = "%s\n%d 秒 · 生命 ×%d\n%s" % [
+		str(_stage_labels.get(_room_state.stage, _room_state.stage)) if _map_handshake_matches_room() else "等待房主确认地图",
+		int(rules.time), int(rules.life), "主机权威（实验）" if _authority_mode() else "回滚联机"]
+	_stage_summary.text += "\n\n" + ("双方已准备，可以开始。" if _can_prepare_current_room() else
+		("已准备，等待房主开始。" if ready and not owner else
+		("等待朋友加入。" if not guest_present else "确认阵容与地图后准备。")))
+	_reselect_button.visible = true
+	_reselect_button.text = "选择角色与援助" if local.get("choice") == null else "修改阵容"
+	_reselect_button.disabled = locked or ready
+	_setup_button.visible = owner
+	_setup_button.text = "应用规则并选图" if _dirty else "选择地图"
+	_setup_button.disabled = locked
+	_connect_selection_button.visible = true
+	_room_primary_action = "ready"
+	_connect_selection_button.text = "取消准备" if ready else "准备"
+	_connect_selection_button.disabled = locked or (not ready and not _can_ready_current_room())
+	_start_button.visible = owner
+	_start_button.disabled = locked or not _can_prepare_current_room()
+	_start_button.text = "开始对战" if _can_prepare_current_room() else "等待双方准备"
+	_leave_button.disabled = _busy
+	_retry_button.visible = room_client.has_uncertain_command()
+	_advanced_toggle.disabled = locked
+	_save_rules_button.disabled = locked or not _dirty
+
+
+func _open_lineup() -> void:
+	if _busy or _selection_active or _map_active or _room_state.get("phase") != "lobby": return
+	var members: Array = _room_state.members
+	if bool(_as_dictionary(members[_slot]).get("ready", false)): return
+	var choices: Array = []
+	for member in members:
+		choices.append(_as_dictionary(_as_dictionary(member).get("choice")))
+	_begin_selection_session(Crypto.new().generate_random_bytes(16).hex_encode(), choices)
+
+
+func _save_lineup(choice: Dictionary) -> void:
+	if not _selection_active or _selection_commit_busy: return
+	_selection_commit_busy = true
+	var session_id := _selection_session_id
+	var response := await _submit_selection_choice(choice, session_id)
+	if session_id != _selection_session_id: return
+	_end_selection_session()
+	_show_room()
+	if response.has("error"):
+		_show_command_error(response)
+	else:
+		_status.text = "阵容已确认。准备后将锁定，取消准备即可修改。"
+	_refresh_room_view()
+
+
+func _save_room_map(stage_id: String, session_id: String) -> void:
+	if _slot != 0 or not _map_active or session_id != _map_session_id or _map_committing: return
+	_map_committing = true
+	var generation := _lifecycle_generation
+	var response: Dictionary = await room_client.command({
+		"type": "configure", "revision": int(_room_state.setupRevision),
+		"stage": stage_id, "rules": _rules_draft.duplicate(true)})
+	if generation != _lifecycle_generation or session_id != _map_session_id: return
+	_end_map_selection_session(session_id, true)
+	if response.has("error"):
+		_show_command_error(response)
+	else:
+		_dirty = false
+		_accept_state(response.get("state"))
+		_status.text = "地图与规则已确认，请双方重新准备。"
+	_refresh_room_view()
+
+
+func _remember_nickname() -> void:
+	var preferences := ConfigFile.new()
+	preferences.set_value("profile", "nickname", _nickname.text)
+	preferences.save("user://online-menu.cfg")
+
+
+func _return_from_closed_room() -> void:
+	room_client.clear_credentials()
+	_needs_new_invite = false
+	_room_state.clear()
+	_room_id = ""
+	_slot = -1
+	_match_view.hide()
+	_home_view.show()
+	_home_footer.show()
+	_result_leave_button.pressed.disconnect(_return_from_closed_room)
+	_result_leave_button.pressed.connect(_on_leave_room_pressed)
+	_rematch_button.show()
+	_status.text = "与朋友约一场对战"
+
+
+func _update_room_portrait(slot: int, choice: Dictionary) -> void:
+	var display_name := str(_fighter_labels.get(choice.get("fighter", ""), ""))
+	if not _portrait_cache.has(display_name):
+		var portraits: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/character_selection/portraits.json"))
+		var portrait := _as_dictionary(portraits.get(display_name))
+		var textures: Array = portrait.get("textures", [])
+		var cropped: AtlasTexture
+		if not textures.is_empty():
+			var texture: Texture2D = load("res://generated/main/character_selection/" + str(textures.back()))
+			cropped = AtlasTexture.new()
+			cropped.atlas = texture
+			cropped.region = texture.get_image().get_used_rect()
+		_portrait_cache[display_name] = cropped
+	_player_portraits[slot].texture = _portrait_cache[display_name]
+
+
+func _menu_members_connected() -> bool:
+	for member in _as_array(_room_state.get("members")):
+		if not member is Dictionary or not bool(member.get("signaling", false)): return false
+	return true
+
+
+func _reset_rollback_options() -> void:
+	_select_number(_delay_choice, 2)
+	_select_number(_prediction_choice, 6)
+	await _commit_network_profile_from_controls()
+
+
+func _save_room_rules() -> void:
+	if not _uses_room_setup() or _slot != 0 or _busy or not _dirty: return
+	var generation := _lifecycle_generation
+	_busy = true
+	_refresh_room_view()
+	var response: Dictionary = await room_client.command({"type": "configure_rules",
+		"revision": int(_room_state.setupRevision), "rules": _rules_draft.duplicate(true)})
+	if generation != _lifecycle_generation: return
+	_busy = false
+	if response.has("error"):
+		_show_command_error(response)
+	else:
+		_dirty = false
+		_accept_state(response.get("state"))
+		_status.text = "规则已保存，请双方重新准备。"
+	_refresh_room_view()

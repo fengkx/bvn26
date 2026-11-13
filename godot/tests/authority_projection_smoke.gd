@@ -4,7 +4,11 @@ const DisplayProjection = preload("res://authority_projection.gd")
 const Wire = preload("res://authority_wire.gd")
 
 func _run() -> void:
-	var fixture := Fixture.create(self, ["鸣人", "一护"], ["我爱罗", "魂"], "现世")
+	var selected_roster := "--selected-roster" in OS.get_cmdline_user_args()
+	var fixture := Fixture.create(self,
+		["佐助", "日番谷"] if selected_roster else ["鸣人", "一护"],
+		["鼬", "魂"] if selected_roster else ["我爱罗", "魂"],
+		"流魂街" if selected_roster else "现世")
 	fixture.battle.close()
 	assert(fixture.battle.configure(fixture.game, false).is_empty())
 	var capture := DisplayProjection.new()
