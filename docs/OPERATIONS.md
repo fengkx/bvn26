@@ -122,6 +122,36 @@ godot --headless --path godot --export-release Web ../dist/web/index.html
 `stageSound` 的选曲清单与曲目。嵌套动画、平台碰撞、滤镜和生产数据编译器仍未完成；
 BGM 清单尚未接进 `main.gd`。不得把当前预览冒充完成的转换器或战斗实现。
 
+### UI 静态非 ASCII 文案与字体覆盖（必做）
+
+修改 `tools/test_online_manifest.py` 中
+`test_online_ui_font_metadata_covers_static_non_ascii_strings` 扫描的任一源文件内的
+静态非 ASCII UI 文案（中文、全角标点等）后，**必须在新建或更新 PR 前**用现有
+字体流水线重建菜单字体和元数据。目前测试扫描 `godot/online_lobby.gd` 与
+`godot/title_menu.gd`；以后新增扫描源也适用，以测试中的实际列表为准。
+生成器还读取 `godot/generated/main/title_menu/controller.gd`，其文案变化也须重建。
+
+在已安装 `fontTools` 的 Python 环境中执行（路径和字体集合索引按实际来源替换，
+索引必须对应 `Sarasa UI SC`，可核对现有 `font.json` 的来源记录）：
+
+```bash
+python3 tools/importer/build_menu_font.py \
+  --font /absolute/path/to/sarasa.ttc \
+  --font-number <Sarasa-UI-SC-index> \
+  --license /absolute/path/to/OFL.txt
+python3 tools/test_online_manifest.py OnlineManifestTests.test_online_ui_font_metadata_covers_static_non_ascii_strings -v
+```
+
+核对并随文案提交 `godot/generated/main/title_menu/menu-font.ttf`、`font.json` 及
+流水线所需的许可证产物；按差异更新 `manifest.json` 中受影响的 `file_sha256`，
+用 `python3 tools/build_online_manifest.py` 重建在线清单及输入记录，再运行
+`python3 tools/verify.py`、`python3 tools/check_handoff.py` 和
+`python3 tools/build_online_manifest.py --check`。
+
+`test_online_ui_font_metadata_covers_static_non_ascii_strings` **实际执行并通过**是
+本地和 Web 构建通过的必要条件；缺元数据导致的 skip 不算通过。缺字应重建字体，
+不得删除、跳过、放宽该测试或增加一次性绕过，也不得只手改元数据字符表伪造覆盖。
+
 ## Web 发布要求
 
 最终 `dist/web/` 只包含 Godot 的 HTML/JS/WASM/资源包和转码资源。WebAssembly 本身允许使用；禁止的是执行 Flash/AS2 的运行时。不得混入源 `game/`、`scripts/`、开发追踪、源码映射、旧 Ruffle 文件或游戏平台桥接。
