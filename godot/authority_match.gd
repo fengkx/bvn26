@@ -9,6 +9,9 @@ const DisplayProjection = preload("res://authority_projection.gd")
 const Wire = preload("res://authority_wire.gd")
 const SAFETY_STALL_MS := 1000
 const SAFETY_ABORT_MS := 10000
+const INITIAL_STATE_RETRY_MS := 1000
+# Reserve room for one loss-recovery probe below the 64 KiB receive buffer.
+const MAX_UNACKED_STATES := 2
 var scene_factory: Callable
 var authority_slot := -1
 var _probe := HostProbe.new()
@@ -19,6 +22,7 @@ var _inputs := InputQueue.new()
 var _initial := {}
 var _initial_hash := ""
 var _initial_ack := false
+var _display_ready := false
 var _pending_display := {}
 var _latest_display := {}
 var _state_serial := 0
@@ -128,6 +132,7 @@ func _start_authority(generation: int) -> String:
 		_initial_hash = _display_hash(_initial)
 	else:
 		_projector.configure_presenter(game)
+		if not _send_peer("authority_display_ready", {"epoch": epoch}): return "authority_display_ready_send"
 	problem = await _wait_until(func() -> bool: return _initial_ack, generation, true)
 	if not problem.is_empty(): return problem
 	reply = await _room_command({"type": "loaded", "epoch": epoch, "initialHash": _initial_hash}, _startup_deadline_ms())
@@ -155,7 +160,11 @@ func _wait_until(predicate: Callable, generation: int, initial: bool = false) ->
 	while Time.get_ticks_msec() < deadline:
 		if _startup_cancelled(generation): return "match_closed"
 		if not error.is_empty(): return error
-		if initial and _is_host(): _send_display(_initial, true)
+		# Resource loading can outlast several poll intervals on the other peer.
+		# Do not fill its bounded receive buffer with the same initial snapshot.
+		if initial and _is_host() and _display_ready and not _initial_ack \
+			and (_last_send_ms == 0 or Time.get_ticks_msec() - _last_send_ms >= INITIAL_STATE_RETRY_MS):
+			_send_display(_initial, true)
 		if predicate.call(): return ""
 		await client.get_tree().create_timer(0.05).timeout
 	return "authority_startup_timeout"
@@ -175,6 +184,13 @@ func _visible() -> bool:
 	return bool(JavaScriptBridge.eval("document.visibilityState === 'visible'")) if OS.has_feature("web") else page_visible
 
 func _send_display(snapshot: Dictionary, initial: bool = false) -> void:
+	# Browser bufferedAmount only measures the sender, not a busy guest receiver.
+	# Keep simulating, but replace unsent display states with the freshest one.
+	if not initial and _state_serial - _ack_serial >= MAX_UNACKED_STATES:
+		var now := Time.get_ticks_msec()
+		# Unreliable packets may all be lost. A fresh heartbeat proves the guest
+		# is processing again; send one probe per second, never a catch-up burst.
+		if now - _last_send_ms < SAFETY_STALL_MS or now - _last_heartbeat_received_ms > 250: return
 	_state_serial += 1
 	_last_snapshot_hash = _display_hash(snapshot)
 	peer_transport.send_peer_message("state", "authority_state", {"epoch": epoch, "authority": authority_slot,
@@ -216,6 +232,9 @@ func receive_peer_message(channel: String, type: String, payload: Dictionary, _s
 			var slot: Variant = _wire_integer(payload.get("slot"), 0, 1)
 			if slot == null or (_selection_ack >= 0 and _selection_ack != slot): _abort_local("invalid_authority_selection", {})
 			else: _selection_ack = slot
+		"authority_display_ready":
+			if not _is_host(): _abort_local("authority_display_ready_sender", {})
+			else: _display_ready = true
 		"authority_initial_ack":
 			if not _is_host() or payload.get("hash") != _initial_hash: _abort_local("authority_initial_hash", {})
 			else: _initial_ack = true
@@ -230,6 +249,12 @@ func receive_peer_message(channel: String, type: String, payload: Dictionary, _s
 			_peer_visible = payload.visible
 			_last_heartbeat_received_ms = now
 			var serial: Variant = _wire_integer(payload.get("serial"), 0, _state_serial if _is_host() else 2147483647)
+			if serial != null and serial > _ack_serial:
+				_ack_serial = serial
+				_ack_progress_ms = now
+		"authority_state_ack":
+			if not _is_host(): return
+			var serial: Variant = _wire_integer(payload.get("serial"), 1, _state_serial)
 			if serial != null and serial > _ack_serial:
 				_ack_serial = serial
 				_ack_progress_ms = now
@@ -271,6 +296,7 @@ func _on_transport_message_drain_completed(_count: int) -> void:
 			return
 	_latest_display = packet.display
 	_received_serial = packet.serial
+	_send_peer("authority_state_ack", {"epoch": epoch, "serial": _received_serial})
 	_last_state_ms = Time.get_ticks_msec()
 	if packet.initial:
 		_initial = packet.display

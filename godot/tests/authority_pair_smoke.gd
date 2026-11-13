@@ -11,6 +11,9 @@ class Coordinator extends Authority:
 
 class Hub extends Pair.FakeHub:
 	var wire := Wire.new()
+	var display_ready := false
+	var block_state_acks := false
+	var initial_send_times: Array[int] = []
 	func command(slot: int, operation: Dictionary) -> Dictionary:
 		if operation.type == "authority_ack":
 			state.match.authoritySlot = operation.authoritySlot
@@ -25,6 +28,13 @@ class Hub extends Pair.FakeHub:
 	var authority := 0
 	func send_peer(slot: int, channel: String, type: String, payload: Dictionary) -> void:
 		if not peers.has(1 - slot): return
+		if type == "authority_state_ack" and block_state_acks: return
+		if type == "authority_display_ready": display_ready = true
+		if channel == "state" and payload.get("initial", false):
+			assert(display_ready, "Initial state preceded presenter readiness")
+			initial_send_times.append(Time.get_ticks_msec())
+			if initial_send_times.size() == 1: return # Exercise unreliable initial-state loss.
+			assert(initial_send_times[-1] - initial_send_times[-2] >= Authority.INITIAL_STATE_RETRY_MS)
 		var value: Dictionary
 		if channel == "state":
 			var bytes := wire.encode(payload)
@@ -107,6 +117,7 @@ func _run() -> void:
 		while starts.size() < 2 and Time.get_ticks_msec() < deadline: await process_frame
 		assert(starts.size() == 2, "startup timeout")
 		assert(starts[0].is_empty() and starts[1].is_empty(), str(starts))
+		assert(hub.initial_send_times.size() == 2, "Initial loss did not recover with one paced retry")
 		for coordinator in coordinators: assert(coordinator.authority_slot == host_slot)
 		var host: Coordinator = coordinators[host_slot]
 		var guest: Coordinator = coordinators[1 - host_slot]
@@ -119,6 +130,23 @@ func _run() -> void:
 			assert(guest.game.physics_tick == 0 and guest._latest_display.frame == frame)
 			assert(not host.game.has_meta("rollback_checkpoint"))
 			await process_frame
+		hub.block_state_acks = true
+		var serial_before: int = host._state_serial
+		for attempt in 8: host._send_display(host._latest_display)
+		assert(host._state_serial - serial_before == Authority.MAX_UNACKED_STATES, "Receiver window was not bounded")
+		host._last_send_ms -= Authority.SAFETY_STALL_MS
+		host._last_heartbeat_received_ms = Time.get_ticks_msec() - Authority.SAFETY_STALL_MS
+		host._send_display(host._latest_display)
+		assert(host._state_serial == serial_before + Authority.MAX_UNACKED_STATES, "Stalled guest received more states")
+		host._last_heartbeat_received_ms = Time.get_ticks_msec()
+		host._send_display(host._latest_display)
+		assert(host._state_serial == serial_before + Authority.MAX_UNACKED_STATES + 1, "Lost state window could not recover")
+		host._send_display(host._latest_display)
+		assert(host._state_serial == serial_before + Authority.MAX_UNACKED_STATES + 1, "Recovery probe flooded")
+		hub.block_state_acks = false
+		guest._send_peer("authority_state_ack", {"epoch": guest.epoch, "serial": guest._received_serial})
+		host._send_display(host._latest_display)
+		assert(host._state_serial == serial_before + Authority.MAX_UNACKED_STATES + 2, "Guest credit did not resume fresh states")
 		var frozen: int = host.game.physics_tick
 		host.page_visible = false
 		host.process_tick(Time.get_ticks_msec(), _players(1).p1)

@@ -5,6 +5,7 @@ var ready_sent := false
 var finished := false
 var local_ticks := 0
 var phase := "boot"
+var remote_right_seen := false
 
 func _ready() -> void:
 	if bool(JavaScriptBridge.eval("new URLSearchParams(location.search).has('offline')")):
@@ -42,17 +43,19 @@ func _physics_process(_delta: float) -> void:
 	var match_state: RefCounted = lobby.coordinator
 	if match_state == null: return
 	local_ticks += 1
+	if match_state._is_host() and match_state._inputs.held.right: remote_right_seen = true
 	if local_ticks < 90 and match_state.intro_skippable(): match_state.request_intro_skip()
 	if local_ticks % 30 == 0:
 		_publish({"phase": phase, "localTicks": local_ticks, "authority": match_state.authority_slot,
 			"slot": lobby._slot, "simTicks": lobby.game_root.physics_tick,
 			"stateSerial": match_state._received_serial, "running": match_state.running,
-			"error": match_state.error, "paused": match_state.paused})
+			"error": match_state.error, "paused": match_state.paused, "positions": _positions(match_state), "rightKey": lobby.game_root.session.codes.d})
 	if local_ticks == 240:
 		finished = true
 		_publish({"phase": "complete", "authority": match_state.authority_slot, "slot": lobby._slot,
 			"simTicks": lobby.game_root.physics_tick, "receivedStates": match_state._received_serial,
-			"running": match_state.running, "error": match_state.error, "notAPass": true})
+			"running": match_state.running, "error": match_state.error, "notAPass": true,
+			"positions": _positions(match_state), "remoteRightSeen": remote_right_seen})
 		print("AUTHORITY_BROWSER_SMOKE_OK " + JSON.stringify(match_state.performance_report()))
 
 func _process(_delta: float) -> void:
@@ -66,3 +69,12 @@ func _fail(reason: String) -> void:
 	finished = true
 	_publish({"phase": "failed", "reason": reason})
 	push_error(reason)
+
+func _positions(match_state: RefCounted) -> Array:
+	var result := [null, null]
+	for record in match_state._latest_display.get("owners", []):
+		if record.kind != "timeline": continue
+		var resource: String = match_state._projector.resources[record.state.resource]
+		if resource == "res://generated/fighters/minren": result[0] = record.transform[4]
+		if resource == "res://generated/fighters/yihu": result[1] = record.transform[4]
+	return result

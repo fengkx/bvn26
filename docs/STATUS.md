@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-13 host-authority connectivity: local browser candidate-permission/routing diagnosis separated from a real receiver-buffer overflow. Presenter-ready/initial pacing and applied-state credit limit stale-state bursts; local WebRTC evidence is scoped to dedicated browsers with an explicit permission override. Rollback/default, proof flags and G0/weak-machine/TURN/Internet/two-machine gates unchanged. [Follow-up evidence](../evidence/online/host-authority-connectivity/README.md).
+
 - 2026-11-12 optional host-authority experiment: room mode switch preserves rollback; fixed Naruto/Ichigo presentation-only guest, start-of-match p95/stall host selection, binary state channel, recovery and receipt-based result barriers. Local service/coordinator and exported offline-display checks pass; browser WebRTC connection remains unverified after local ICE failures. G0/weak-machine/real two-machine performance gates remain pending; proof flags unchanged. [Handoff](HOST_AUTHORITY_EXPERIMENT.md).
 
 - 2026-11-12 G0 preparation: isolated timing wrappers and a fixed single-player browser workload added. Exclusive per-call timing, submit correlation, browser stalls and UNKNOWN GPU reporting; instrumentation only, G0 not passed, no host protocol or proof-flag changes. [Handoff](G0_INSTRUMENTATION.md).
