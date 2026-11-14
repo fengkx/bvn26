@@ -86,10 +86,22 @@ def projectile_local_scope(
     return conditions, tuple(block_starts)
 
 
-def parse_projectile_motion(source: str) -> dict[str, Any] | None:
+def parse_projectile_motion(
+    source: str, frame_labels: dict[str, int] | None = None,
+) -> dict[str, Any] | None:
     if ("_X = _X" not in source and "_Y = _Y" not in source
             and PROJECTILE_PARENT_WRITE.search(source) is None):
         return None
+    # Resolve the authored stop/play pair before parsing its guarded goto.
+    def resolve_label(match: re.Match[str]) -> str:
+        label = match["label"]
+        if frame_labels is None or label not in frame_labels:
+            raise ValueError("Missing projectile target label: " + label)
+        return f"gotoAndPlay({frame_labels[label]})"
+    source = re.sub(
+        r'gotoAndStop\("(?P<label>[^"\n]+)"\);\s*play\(\)',
+        resolve_label, source,
+    )
     motion: dict[str, Any] = {}
     x_move = PROJECTILE_X.search(source)
     y_move = PROJECTILE_Y.search(source)
@@ -157,6 +169,41 @@ def parse_projectile_motion(source: str) -> dict[str, Any] | None:
                 "operator": condition["operator"],
                 "value": value,
             }]
+    if hit_branch is not None:
+        sequential = re.match(
+            r"\s*if\s*\((?P<condition>[^{}]*)\)\s*\{", source[hit_end + 1:]
+        )
+        if sequential is not None:
+            condition = PROJECTILE_LOCAL_CONDITION.fullmatch(sequential["condition"].strip())
+            if condition is None:
+                raise ValueError("Uncompiled sequential projectile movement guard")
+            raw = condition["value"]
+            value = raw == "true" if raw in ("true", "false") else float(raw)
+            motion["motion_after_collision"] = True
+            motion["local_motion_conditions"] = [{
+                "field": condition["name"], "operator": condition["operator"], "value": value,
+            }]
+    if hit_branch is None:
+        moves = [m for m in (x_move, y_move, *literal_moves) if m is not None]
+        guards = []
+        for move in moves:
+            conditions = []
+            for branch in re.finditer(r"if\s*\((?P<condition>[^{}]*)\)\s*\{", source[:move.start()]):
+                if _matching_brace(source, branch.end() - 1) < move.start():
+                    continue
+                if branch["condition"].strip() == "_root.zhanting == false":
+                    continue
+                condition = PROJECTILE_LOCAL_CONDITION.fullmatch(branch["condition"].strip())
+                if condition is None:
+                    raise ValueError("Uncompiled movement-only projectile guard")
+                raw = condition["value"]
+                conditions.append({"field": condition["name"], "operator": condition["operator"],
+                                   "value": raw == "true" if raw in ("true", "false") else float(raw)})
+            guards.append(conditions)
+        if guards and any(g != guards[0] for g in guards):
+            raise ValueError("Projectile axes have different motion guards")
+        if guards and guards[0]:
+            motion["local_motion_conditions"] = guards[0]
     hit_gotos = list(PROJECTILE_HIT_GOTO.finditer(source))
     if any(hit_branch is None or not hit_start <= match.start() < hit_end
            for match in hit_gotos):

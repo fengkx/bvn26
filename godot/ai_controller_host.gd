@@ -64,6 +64,9 @@ class Projectile extends RefCounted:
 					var variables := host.fighter.instance_source_variables(model["instance_name"])
 					assert(variables.has(rename["name_field"]), "Undeclared projectile rename local")
 					instance_name = str(variables[rename["name_field"]])
+				if rename.has("local_writes"):
+					var host: AiControllerHost = host_ref.get_ref()
+					host.fighter._apply_projectile_local_write(model["instance_name"], {"writes": rename["local_writes"]})
 				if rename.get("random_suffix", false):
 					var host: AiControllerHost = host_ref.get_ref()
 					instance_name += str(host.fighter.source_random.next_value(str(rename["random_site"])))

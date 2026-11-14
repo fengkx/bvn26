@@ -126,6 +126,7 @@ class ProjectileContactTests(unittest.TestCase):
     def test_all_shipped_projectile_fields_match_their_source(self):
         sources = {}
         bundles = {}
+        timelines = {}
         for path in (ROOT / "scripts/fighter").glob("*.json"):
             bundle = json.loads(path.read_text())
             bundles[Path(bundle["game_file"]).stem.lower()] = bundle
@@ -144,7 +145,12 @@ class ProjectileContactTests(unittest.TestCase):
                 if isinstance(node, dict):
                     source_path = node.get("source_path", node.get("path", source_path))
                     if "collision_queries" in node:
-                        compiled = parse_projectile_motion(sources[role][source_path])
+                        if role not in timelines:
+                            timelines[role] = json.loads((ROOT / f"data/slices/{role}-base.timeline.json").read_text())
+                        timeline = timelines[role]
+                        definition = next((d for d in timeline.get("definitions", [])
+                                           if d.get("character_id") == node.get("character_id")), {})
+                        compiled = parse_projectile_motion(sources[role][source_path], definition.get("frame_labels", {}))
                         with self.subTest(file=str(path.relative_to(ROOT)), source=source_path):
                             load_path = source_path.replace("onClipEvent(enterFrame)", "onClipEvent(load)")
                             initial = parse_projectile_initialization(sources[role].get(load_path, ""))

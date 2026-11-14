@@ -1,0 +1,29 @@
+{
+  "status": "blocked",
+  "verbatim": {
+    "LSDisplayName": "loginwindow",
+    "CGSSessionScreenIsLocked": true,
+    "kCGSSessionOnConsoleKey": true,
+    "kCGSessionLoginDoneKey": true
+  },
+  "impact": "Prior foreground capture while locked produced both actors sw=true at tick 123. Latest read-only session check remains locked. Five comparisons remain red; wall-clock timeout evidence does not prove all later differences are exclusively environmental. An unlocked foreground session is required to retry the missing and red captures without changing input/timing/precision.",
+  "base_sha": "b905eb5f9441c94bf3c75d87e6c8d8fa73ed0563",
+  "pr_created": false,
+  "committed": false,
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "native_initialization_complete": false,
+  "recorded_at": "2026-11-13T17:38:17.502916+08:00",
+  "resolved_difference": "Ranged tick 164/165 divergence corrected by source-derived projectile initialization, named hit jump and played guard. Final regenerated replay matches 722 actor states on all 14 fields; see ranged-fix.md and comparisons.json.",
+  "remaining": "Five focused comparisons remain different; upper-attack, upper-super, ultimate and corrected interrupt-normal need completed, acceptable source captures. See acceptance-matrix.json. No complete focused 12-case acceptance is claimed.",
+  "updated_at": "2026-11-13T12:01:50.436674+00:00",
+  "focused_matrix": "acceptance-matrix.json",
+  "resumed_screen_state_record": "resumed-environment.json",
+  "godot_visual_capture": "visual/metadata.json; completed without unlocking, not original pixel parity",
+  "unaccepted_scope": "Aligned original pixel/audio, browser, AI and exhaustive boundaries remain unaccepted, as in the Juugo partial-coverage bar.",
+  "offline_work": "Completed: source-derived ranged fix, native-only remaining fixtures, rollback/protected recovery/projectile/player/font checks, Godot visuals, required tool checks, scoped Python cohort, compiler impact, online manifest check and 204-case saved-roster replay. Original capture/parity gap remains.",
+  "final_screen_state_record": "final-screen-state.json"
+}

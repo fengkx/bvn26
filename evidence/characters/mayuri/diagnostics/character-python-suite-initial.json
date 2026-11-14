@@ -1,0 +1,107 @@
+{
+  "scope": "Current versions of the 65 PR #44 test modules, plus Mayuri, import guards and compound-assignment checks; not the unrelated historical-sampling test inventory.",
+  "inventory_revision": "875506cf",
+  "seconds": 529.0693593341857,
+  "tests_run": 383,
+  "passed": false,
+  "failures": [
+    [
+      "test_selection_portrait_alpha.SelectionPortraitAlphaTests.test_all_roster_frames_use_high_resolution_raster_at_source_logical_size",
+      "Traceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-mayuri/tools/tests/test_selection_portrait_alpha.py\", line 157, in test_all_roster_frames_use_high_resolution_raster_at_source_logical_size\n    self.assertEqual(len(portraits), 26)\nAssertionError: 27 != 26\n"
+    ]
+  ],
+  "errors": [
+    [
+      "test_shadow_rules.ShadowRulesTest.test_all_fighter_wrappers_share_the_audited_service",
+      "Traceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-mayuri/tools/tests/test_shadow_rules.py\", line 7, in test_all_fighter_wrappers_share_the_audited_service\n    spec = build()\n           ^^^^^^^\n  File \"/Users/fengkx/me/agent-code/bvn2_6-mayuri/tools/importer/build_shadow_rules.py\", line 64, in build\n    raise ValueError(f'Shadow layer depth differs across stages: {depths}')\nValueError: Shadow layer depth differs across stages: set()\n"
+    ],
+    [
+      "test_shadow_rules.ShadowRulesTest.test_changed_call_cadence_is_rejected",
+      "Traceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-mayuri/tools/tests/test_shadow_rules.py\", line 21, in test_changed_call_cadence_is_rejected\n    source = build()['sources'][1]['function']\n             ^^^^^^^\n  File \"/Users/fengkx/me/agent-code/bvn2_6-mayuri/tools/importer/build_shadow_rules.py\", line 64, in build\n    raise ValueError(f'Shadow layer depth differs across stages: {depths}')\nValueError: Shadow layer depth differs across stages: set()\n"
+    ],
+    [
+      "test_shadow_rules.ShadowRulesTest.test_changed_fade_or_pause_condition_is_rejected",
+      "Traceback (most recent call last):\n  File \"/Users/fengkx/me/agent-code/bvn2_6-mayuri/tools/tests/test_shadow_rules.py\", line 14, in test_changed_fade_or_pause_condition_is_rejected\n    source = build()['sources'][0]['function']\n             ^^^^^^^\n  File \"/Users/fengkx/me/agent-code/bvn2_6-mayuri/tools/importer/build_shadow_rules.py\", line 64, in build\n    raise ValueError(f'Shadow layer depth differs across stages: {depths}')\nValueError: Shadow layer depth differs across stages: set()\n"
+    ]
+  ],
+  "skipped": [
+    [
+      "test_analyze_diagnostics.AnalyzeDiagnosticsTests.test_native_main_capture_reports_fresh_start_coverage_and_last_hit",
+      "Native Main diagnostic capture is not available in this environment"
+    ],
+    [
+      "test_analyze_diagnostics.AnalyzeDiagnosticsTests.test_replay_preflight_requires_matching_build_and_catalog_resolved_resources",
+      "Native Main diagnostic capture is not available in this environment"
+    ]
+  ],
+  "modules": {
+    "tools/tests/test_ai_capture_boundary.py": "eac05d098f98c4b5ec4b3e9adfd7b962f3ff15d3c320d0141b6df8e73e3354bf",
+    "tools/tests/test_ai_continuous_replay.py": "068a265b13b91191d20cb8f58c88479da6c469fe0b943305472fbbb7c5340b4b",
+    "tools/tests/test_analyze_diagnostics.py": "a87f5a1ed441cb252570ae339405945c58489db9a3981fb4d07d26f70b46e74e",
+    "tools/tests/test_bitmap_shape_polygon.py": "bae1b12e695c2c2a9e5083bd327ece86e1bd02ff9cfdeaf6edcde07c5cb82cc1",
+    "tools/tests/test_build_web_pipeline.py": "5fedcfa48917f3ed7b08d775af69343d6d8ae02c5a802e08e2570c9b72c5717c",
+    "tools/tests/test_byakuya_source_audit.py": "73d2642170ac50cdce4468581e15b7b2719bcfb55f1453fa3ac4d69059a4a246",
+    "tools/tests/test_capture_runtime_fighter.py": "2bb78d198d0480a579e7309e396580021c3a3e217af40611f5b73597dbaf0958",
+    "tools/tests/test_capture_serialization.py": "768b639c3c8a3dfba7e6c64b1c86ae6b19422700bec966f088e539cebffee869",
+    "tools/tests/test_chad_import.py": "ce68ac47c53f932b3ac6a4f44c87aa38e7450ff8677da28e4035635c448ae373",
+    "tools/tests/test_character_import.py": "58a6568a5545b0eb5aaa4db860eda83c1b4aff2fc4f357321f33884ddbab3dd3",
+    "tools/tests/test_controller_aliases.py": "438ad14ac65c2781c9f7338ebed1fb4f06867f00dce8fdc62d01e8606cc158b9",
+    "tools/tests/test_controller_compound_assignment.py": "370f769480db5d23b2d989669205678a54ca2058016e30fbe94d678d80ab0ecd",
+    "tools/tests/test_daitu_import.py": "bd4bd84d00aaeddb4d3eedde7492acc991d1ad0efeaee5a3661417ff63b1907f",
+    "tools/tests/test_didala_import.py": "42db481284bf2bb26aee1b8e8d41d79372310352ad32a19185faec729f96b85b",
+    "tools/tests/test_effect_clip_inventory.py": "ea32ea3876f808a9423dcc3647d66a6dd66c297a67aa50ac90561a7d40c4a6fa",
+    "tools/tests/test_energy_presentation.py": "67aa045d944f36446f3adf0853f0ae46f106a1fc08479df944fdfe28ee444f25",
+    "tools/tests/test_gaara_import.py": "8935a37c18e761a8c41462d63335547752126f94e6d1112b70dcd6d29cea5aeb",
+    "tools/tests/test_godot_result.py": "bb6ca3a93648a176458322683900ec18ef838f44510f462aa95f0f2d122856bd",
+    "tools/tests/test_helper_reference_compare.py": "56717695df0c4eb00710644b3a4b4c66de02bf5f0ebd76985d8f9c55be302a79",
+    "tools/tests/test_helper_schedule.py": "bce8f3a7d1d3900fc4fe43dcf97c751c349720a0e0130b8b001e0653a2dbe267",
+    "tools/tests/test_helper_source_resolution.py": "037b0bdbc5b0427f488b1c5c0a0c3ffa8a3cb7fecde63dd574a2b6fdccf7b145",
+    "tools/tests/test_helper_timing.py": "95da26b1ce0f5a9625223d9eb6dcf599130cb75f24944f06ebbac7a07f2daf60",
+    "tools/tests/test_hit_receive_observer.py": "df89308a160ec0842a218d6390b28671e22045c067ca3265963d22dd504bd61d",
+    "tools/tests/test_ikkaku_import.py": "00b20627dcb85facb334604e64a424560f218ad96ad4753144314d7a20577d05",
+    "tools/tests/test_import_guards.py": "94f8fff5e85548e91dfd0c7bf6212c31f86961303ff5e4597dd4372619291d94",
+    "tools/tests/test_intro_roster.py": "8151224177a58d02ce7dc2129ee271ffc15438618933b1bd1e4d2ad0ebcc566b",
+    "tools/tests/test_intro_source.py": "2dc69ea00bc74109a4ce16536e19f9d2d5e2e5ae4a8d229177a4080d1f41bc75",
+    "tools/tests/test_itachi_import.py": "939d1c2af179b665bc15b33e9575798d4c61a923dfb8069394ea4c227ab71a2f",
+    "tools/tests/test_jianba_import.py": "5478d749fb4028171da7cc439dba7a55855c11f188dbf2fee28cf01f5d25fb3c",
+    "tools/tests/test_jiraiya_import.py": "703daca82dad6dd496b4082334ebe08bfe2011a9abb7fdb72abf9d7c2b8a3d13",
+    "tools/tests/test_juggo_import.py": "ce89fbc6b417f8e13117050c2485d75f69b204141d9b5b358558adbb04eafc3c",
+    "tools/tests/test_kakashi_compilers.py": "af544e179c263640eded4fb83a2fbeb4fb19672c60148a0e48948b5b6c732b9e",
+    "tools/tests/test_kakashi_source_audit.py": "8ab24bcc2e65404ed8ddc3623f53f6c70acd46c8d297a8081674532700fbdc8f",
+    "tools/tests/test_konan_import.py": "b2a9a5e4f46e78221ccb93e80c0fb2dcfddfadc064445975edeefa66d4b5e08d",
+    "tools/tests/test_lanran_import.py": "d9017953a939eccbd77eb3f7c0d6eb0f608de538bc88ff1d72463b8e0519be17",
+    "tools/tests/test_lee_source_audit.py": "4b92fe716a4dc6c7e529a913fd45277700469f039e1bf20c9cac77a15109d3e0",
+    "tools/tests/test_map_selection.py": "aa079bcbf48691fcf2b572fec371c22989d8ffb54973336ec37fba6883d88e93",
+    "tools/tests/test_mayuri_import.py": "c973c7809e8428c4c593bd8d69bcd30c2c0f3d25e3330d021d2e3c9ed16ead68",
+    "tools/tests/test_move_acceptance_harness.py": "ed0cbeacb1b98399b810310ee8e79182ffb35f367bbff9bcf08554029a88eb31",
+    "tools/tests/test_move_cases_paths.py": "73818733bffd4e7ab08fb7683d0144f0f4854a15989df90c7efd650a69064057",
+    "tools/tests/test_move_cases_targets.py": "60b395e42b152664c55578d4763459acc2ce430c11a595db9398e9ec8ceafa22",
+    "tools/tests/test_move_reference_capture_preflight.py": "733bd512d6cee90c4ac0d070799885dff57f9ef913b11e1deaa892ab14cfc68f",
+    "tools/tests/test_move_reference_helper_mapping.py": "a58fe30dd9f81602257ad40748ac0cd63939f386269d0b19626766eae3cac794",
+    "tools/tests/test_move_reference_mapping.py": "2a4e86792a6929b40ef3b73c23a8aad782a8b621700304a06fe6deb30374a29b",
+    "tools/tests/test_neji_import.py": "37a052b27c78686a6b722c71ea2db1907b3475a6cf510bae4e409198a6f14b41",
+    "tools/tests/test_nested_timeline_sounds.py": "5b4e6fadb9afc5d7d39b794a9ef996f380061bb6f62140104b24b4a1fd9d0457",
+    "tools/tests/test_orochimaru_import.py": "7068ace03efbb282c452d4310419f24e4c3ac818c9a74cf935ece822ddb0eca5",
+    "tools/tests/test_pain_import.py": "ca00e39aa44bc8848f16265945b1aad1accc675f9c32a5e5d55ffb5ba65d8ddf",
+    "tools/tests/test_probe_builder.py": "0d2fc347ec706bab7d38d1477eebd614e5417516404ae0439059b0a259da10ef",
+    "tools/tests/test_projectile_contacts.py": "1dae302967b17617e3b794efc5f0a8df8943d6caaa88940fce941a583895a8d5",
+    "tools/tests/test_renamed_attack_clips.py": "c90a2cce4a31ed3460aa08b1077dfea08b17bece1550b0163cc459bb95c4f080",
+    "tools/tests/test_renji_import.py": "cf9b292a676bc0d718793fd848d5be5bc3c5795526bb7e0ed44e16b3a917b48f",
+    "tools/tests/test_root_renamed_hitboxes.py": "b9b29bc5c100f012f71621d53aff40ecfbe6e5749ce95474e04daba63da4a538",
+    "tools/tests/test_sasuke_compilers.py": "92ac2cc2ceeab8e586e0227a59340e178887528750b59bd8a92b1e7f81427d99",
+    "tools/tests/test_selection_portrait_alpha.py": "29a71bb6c6ebb40f7bb1922fed4eadb4e4a54af9798184a8f9b2a9b41f9d78db",
+    "tools/tests/test_selection_registry.py": "6e94756afe4636e2cdc58f74624eaae44da1563ac9e5b00118fbe62035940361",
+    "tools/tests/test_shadow_rules.py": "311efaa254edd409f950ece4c30377c88bf12ef1140176ad7a19ea00694f8496",
+    "tools/tests/test_sound_segments.py": "3dd6cf2c4851090901053d090ff675f77fcc8dbea4ba9b20330869280a3e1cac",
+    "tools/tests/test_source_inventory.py": "24029fc3831dbda0e50c2cb39c435a1a5173caef48e6e18f30838df2cb3c3d71",
+    "tools/tests/test_special_cost_fallthrough.py": "553ea529a445c40c8c4086fca6c93e5db1a6c310a7c4112d4f17f402c298a5a7",
+    "tools/tests/test_stage_catalog.py": "a079bcfbaee34821b6df543f97c4ebb418a6f5695a687f657cc7da9fc167bc95",
+    "tools/tests/test_start_sound_observations.py": "c6cfa1dc5d0768cd5917148f3ed0592ae0dca3b54c48eeadb76759e00dc8456a",
+    "tools/tests/test_start_sound_probe.py": "544681ba44a3787ef7d72894d31d012142bcf33bd22e6e1c466abb94af49238e",
+    "tools/tests/test_timeline_geometry.py": "e749758a27d898d06a911d3d25f34b3037ff53b299e6cb6660311ff03f70c957",
+    "tools/tests/test_timeout_badges.py": "0f8a488c162f907842ceee686fa4f5cdbae0384b6caafcbc6523d35c0547b06c",
+    "tools/tests/test_uryu_compilers.py": "81b6d43634f32851307ace6b4643af8f5069d08dffde5096aa27eb3c67a9718d",
+    "tools/tests/test_web_diagnostics_metadata.py": "c5cf76107efd5d78ef13143a1aa8394252f8f6b095b9d47f7c324b1081472709",
+    "tools/tests/test_yin_import.py": "eb59f58cf6c0fabaa444244c5f88dc48ab00cc82f8015a9a2baa0fbb6b66c78d"
+  }
+}
