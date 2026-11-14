@@ -178,6 +178,12 @@ def compile_body(
                           'if not adapter.controller_alive():', '\treturn null']
         elif line[:-1] in CALLS and line.endswith(';'):
             translated = [CALLS[line[:-1]]]
+        elif match := re.fullmatch(r'_parent\._parent\.showdow\(\{((?:[RGB]:-?\d+,?)+)\}\);', line):
+            pairs = re.findall(r'([RGB]):(-?\d+)', match[1])
+            if len({key for key, _ in pairs}) != len(pairs):
+                raise ValueError('Duplicate source shadow channel: ' + line)
+            color = {key: int(value) for key, value in pairs}
+            translated = ['adapter.effect_with_args("showdow", [' + json.dumps(color) + '])']
         elif match := re.fullmatch(r'_parent\._parent\.(moveX|moveY)\((.+)\);', line):
             translated = [f'adapter.move_axis("{match[1]}", ' + translate(match[2],locals_,source_fields, call_aliases) + ')']
         elif match := re.fullmatch(r'_parent\.(fangyux|beidax)\((.*)\);', line):

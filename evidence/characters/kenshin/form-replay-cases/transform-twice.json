@@ -1,0 +1,127 @@
+{
+  "id": "kenshin-transform-twice",
+  "fighter": "kenshin",
+  "slot": "p1",
+  "label": "万解",
+  "scenario": "transform-twice",
+  "frames": 360,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "attack",
+        "jump"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "attack",
+        "jump"
+      ],
+      "start": 180,
+      "end": 183
+    }
+  ],
+  "target_frames": [
+    1126,
+    1165
+  ],
+  "has_source_timeline": true,
+  "fighters": {
+    "p1": "kenshin",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "resource_interventions": [
+    {
+      "id": "second-form-energy",
+      "tick": 175,
+      "slot": "p1",
+      "resource": "energy",
+      "value": 300
+    }
+  ],
+  "form_interval_tape": [
+    {
+      "before_tick": 64,
+      "id": 1,
+      "source_sequence": 4918,
+      "source_origin": "fighter/Kenshin#DefineSprite_643/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 95,
+      "id": 1,
+      "source_sequence": 6005,
+      "source_origin": "fighter/Kenshin#DefineSprite_643/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 125,
+      "id": 1,
+      "source_sequence": 7201,
+      "source_origin": "fighter/Kenshin#DefineSprite_643/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 155,
+      "id": 1,
+      "source_sequence": 8397,
+      "source_origin": "fighter/Kenshin#DefineSprite_643/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 185,
+      "id": 1,
+      "source_sequence": 9576,
+      "source_origin": "fighter/Kenshin#DefineSprite_643/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 219,
+      "id": 2,
+      "source_sequence": 9953,
+      "source_origin": "fighter/Kenshin#DefineSprite_1473/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 249,
+      "id": 2,
+      "source_sequence": 10512,
+      "source_origin": "fighter/Kenshin#DefineSprite_1473/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 280,
+      "id": 2,
+      "source_sequence": 11742,
+      "source_origin": "fighter/Kenshin#DefineSprite_1473/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 310,
+      "id": 2,
+      "source_sequence": 12938,
+      "source_origin": "fighter/Kenshin#DefineSprite_1473/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 341,
+      "id": 2,
+      "source_sequence": 14179,
+      "source_origin": "fighter/Kenshin#DefineSprite_1473/frame_1/DoAction.as"
+    }
+  ],
+  "wrapper_probe": true,
+  "form_interval_provenance": {
+    "events": "evidence/characters/kenshin/original/wrapper-r02/kenshin-transform-twice/events.jsonl",
+    "sha256": "30affe6a44ddfe12fff20bab4261f6e21471d5044983c9a190df18400b1cbe11",
+    "phase": "After root state N, before next display; delivered before tick N+1.",
+    "ids": "First registration 1; source clearInterval then second registration 2."
+  }
+}

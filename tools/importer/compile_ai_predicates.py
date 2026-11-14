@@ -112,6 +112,57 @@ func source_less2(a: Variant, b: Variant) -> Variant:
 '''
 
 
+def normalize_ternary(expr: str) -> str:
+    """Preserve grouping when a conditional is an arithmetic operand."""
+    tokens = list(re.finditer(r'"(?:\\.|[^"\\])*"|[()?:]', expr))
+    depth = 0
+    start = 0
+    cursor = 0
+    parts = []
+    for token in tokens:
+        value = token[0]
+        if value == '(':
+            if depth == 0:
+                start = token.start()
+            depth += 1
+        elif value == ')':
+            depth -= 1
+            if depth < 0:
+                raise ValueError('Unbalanced source expression')
+            if depth == 0:
+                parts.extend([expr[cursor:start + 1], normalize_ternary(expr[start + 1:token.start()]), ')'])
+                cursor = token.end()
+    if depth:
+        raise ValueError('Unbalanced source expression')
+    parts.append(expr[cursor:])
+    expr = ''.join(parts)
+    depth = 0
+    question = None
+    nested = 0
+    for token in re.finditer(r'"(?:\\.|[^"\\])*"|[()?:]', expr):
+        value = token[0]
+        if value == '(':
+            depth += 1
+        elif value == ')':
+            depth -= 1
+        elif depth == 0 and value == '?':
+            if question is None:
+                question = token.start()
+            else:
+                nested += 1
+        elif depth == 0 and value == ':' and question is not None:
+            if nested:
+                nested -= 1
+                continue
+            condition = expr[:question]
+            yes = normalize_ternary(expr[question + 1:token.start()])
+            no = normalize_ternary(expr[token.end():])
+            return f'({yes}) if ({condition}) else ({no})'
+    if question is not None:
+        raise ValueError('Source conditional has no false branch')
+    return expr
+
+
 def normalize(expr: str) -> str:
     expr = re.sub(r'_parent\.kis\(_parent\.(左|右|上|下|斩|跳|冲|招|必杀|换)\)',
                   lambda match: 'source_key(' + json.dumps(match[1], ensure_ascii=False) + ')', expr)
@@ -133,11 +184,7 @@ def normalize(expr: str) -> str:
     expr = re.sub(r'\bundefined\b', 'None', expr)
     expr = expr.replace('&&', ' and ').replace('||', ' or ')
     expr = re.sub(r'!(?!=)', 'not ', expr)
-    # Source has one ternary, in rush's facing assignment.
-    if '?' in expr:
-        cond, branches = expr.split('?', 1)
-        yes, no = branches.split(':', 1)
-        expr = f'({yes}) if ({cond}) else ({no})'
+    expr = normalize_ternary(expr)
     return expr.strip()
 
 
