@@ -1,0 +1,115 @@
+{
+  "status": "targeted_parity_matched_partial_coverage",
+  "verify": {
+    "status": "passed",
+    "assets": 75,
+    "dependencies": 74,
+    "swfs": 62,
+    "script_bundles": 62,
+    "script_exports": 8853
+  },
+  "handoff": {
+    "status": "passed",
+    "documents": 26,
+    "local_links": 1043,
+    "tasks": 31,
+    "requirements": 20,
+    "fighter_configs": 64,
+    "maps": 10
+  },
+  "contracts": {
+    "schemas": 6,
+    "examples": 6,
+    "passed": true
+  },
+  "godot": "godot-checks.json",
+  "focused_parity": "comparisons.json",
+  "prior_roster": "regressions.json",
+  "compiler_impact": "compiler-impact.json",
+  "blocker": "blocker.json",
+  "online_compatibility_manifest": "ONLINE_MANIFEST_OK fighters=27 helpers=5 stages=10 build=15ba0a587b6c92c2b1aebfcc711f4212264c6aaf03ee9b251350188fa120aea6 content=5eb53f5812dffb6b7c6a4f80c2424d5c524f33c716b97dfbc42a6cbbc407d431",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "native_initialization_complete": false,
+  "resumed_verification": "verify and handoff passed after reviewed source-derived changes",
+  "source_compiler_tests": {
+    "group_passed": 41,
+    "final_mayuri_passed": 8,
+    "selection_and_intro_passed": 6,
+    "font_python_passed": 3
+  },
+  "frame_calls": {
+    "contexts": 27,
+    "compiled": 27,
+    "cache_passed": 27,
+    "candidates": 1438
+  },
+  "native_only": "native-only/results.json (historical; all four now have matched original captures)",
+  "visual": "visual/metadata.json; Godot only, not original pixel acceptance",
+  "shared_modes": {
+    "status": "matched",
+    "pvp_states": 602,
+    "training_timer_states": 602,
+    "harness_timeout_seconds": 600,
+    "note": "Original 90-second wall-clock subprocess budget timed out under concurrent validation. Same commands, source fixtures and comparison passed with a longer process budget; no simulation time/input/precision changes."
+  },
+  "character_python_suite": "python-tests.json",
+  "focused_evidence_hash_check": {
+    "rows": 12,
+    "passed": true,
+    "decompressed_source_and_native": true
+  },
+  "prior_roster_result": {
+    "status": "matched",
+    "cases": 204,
+    "actor_states": 119008,
+    "fields": 14,
+    "report": "regressions.json"
+  },
+  "final_runtime_hashes_match_recorded_environment": true,
+  "final_integrity_checks": {
+    "verify": "logs/verify-20261114-final.log.gz",
+    "handoff": "logs/handoff-20261114-final.log.gz",
+    "online": "logs/online-20261114-final-check.log.gz",
+    "git_diff_check": "passed"
+  },
+  "focused_result": {
+    "cases": 12,
+    "actor_states": 8664,
+    "fields": 14,
+    "status": "matched"
+  },
+  "font_gate": {
+    "status": "passed",
+    "tests": 1,
+    "skipped": 0,
+    "log": "logs/font-20261114.log.gz"
+  },
+  "post_rebase": "post-rebase-checks.json",
+  "post_rebase_python": {
+    "tests": 28,
+    "passed": 28,
+    "seconds": 5.728
+  },
+  "matchmaking": {
+    "typecheck": "passed",
+    "server_tests": 31,
+    "wrangler_local_test": "passed with approved escalation after sandbox registry EPERM",
+    "logs": [
+      "logs/matchmaking-20261114.log.gz",
+      "logs/wrangler-20261114.log.gz"
+    ],
+    "deployed": false
+  },
+  "editor_import": {
+    "font_source_md5": "b28b4eae3feac125534e89b594d88e69",
+    "cache_matches_source": true,
+    "scope": "Inherited master font was reimported; created untracked UID sidecars removed, no unrelated tracked imports/UIDs changed.",
+    "residual": "Editor preferences save denied by sandbox after completed import; not claimed as an error-free editor session.",
+    "log": "logs/import-20261114.log.gz"
+  },
+  "inherited_manifest_repair": "Reviewed master docs/OPERATIONS.md font SOP content had a stale manifest hash; corrected only that entry."
+}

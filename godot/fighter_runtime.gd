@@ -1621,13 +1621,14 @@ func run_projectile_callback(projectile: Dictionary) -> bool:
 			jumped_hit = true
 		# A hit write or opponent goto does not block this child clip's natural
 		# advance. Only a source-authored child goto is a child timeline jump.
-		return jumped_hit
-	else:
+		if not projectile.get("motion_after_collision", false):
+			return jumped_hit
+	if not blocked or projectile.get("motion_after_collision", false):
 		var offset := instance_local_offset(instance_name)
 		var source_variables := instance_source_variables(instance_name)
 		var motion_conditions: Array = projectile.get("local_motion_conditions", [])
 		if not _projectile_conditions_match(source_variables, motion_conditions):
-			return false
+			return jumped_hit
 		var step := float(source_variables.get("movspeed", projectile.get("initial_speed",
 			speed * float(projectile.get("speed_factor", 1.0)))))
 		# The source sets movspeed=0 on impact; losing contact cannot restart it.

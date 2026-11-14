@@ -491,10 +491,12 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
                 'child_controller': True,
             })
             continue
-        motion = parse_projectile_motion(script['source'])
+        frame, character, depth = map(int, match.groups())
+        definition = next((d for d in timeline.get('definitions', [])
+                           if d.get('character_id') == character), {})
+        motion = parse_projectile_motion(script['source'], definition.get('frame_labels', {}))
         if motion is None:
             raise ValueError('Uncompiled child callback: ' + script['path'])
-        frame, character, depth = map(int, match.groups())
         clip = parse_clip_timeline(bundle, character, frame_counts)
         clip.update(parse_child_stop_frames(bundle, timeline, character))
         if 'initial_variables' not in clip:
