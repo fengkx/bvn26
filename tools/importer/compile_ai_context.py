@@ -263,6 +263,15 @@ def implicit_controller_fields(bundle: dict, sprite: int) -> set[str]:
 
 
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
+    increment = re.fullmatch(
+        r'if\((\w+) < (-?\d+(?:\.\d+)?)\)\s*\{\s*'
+        r'\1 \+= (-?\d+(?:\.\d+)?);\s*\}\s*', text)
+    if increment and increment[1] in FIELDS | {'hp', 'ql'}:
+        return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': increment[1], 'operator': 'lt',
+                                 'value': json.loads(increment[2])}],
+                 'calls': [{'op': 'frame_field', 'field_name': increment[1],
+                            'operator': '+=', 'value': json.loads(increment[3])}]}]
     parent = re.fullmatch(
         r'if\(_parent\.(\w+) == (true|false)\)\s*\{\s*'
         r'_root\.(cbsw|bsw)\(pn\);\s*bs = 0;\s*\}\s*', text)
@@ -555,9 +564,20 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
     frame_calls={}
     frames_by_number = {int(item['frame']): item for item in timeline['frames']}
     root_rename_history: list[dict] = []
+    scripts_by_frame = {}
+    for path in scripts:
+        match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/DoAction(?:_(\d+))?\.as', path)
+        if match:
+            scripts_by_frame.setdefault(int(match[1]), []).append((int(match[2] or 1), path))
+    frame_scripts = []
     for frame in timeline['frames']:
-        path=f'DefineSprite_{sprite}/frame_{frame["frame"]}/DoAction.as'
-        text=root if frame['frame']==1 else scripts.get(path,'')
+        prefix = f'DefineSprite_{sprite}/frame_{frame["frame"]}/'
+        # JPEXS numbers subsequent DoAction tags in their authored tag order.
+        # They share a frame, but remain separate scripts with exact provenance.
+        paths = [path for _, path in sorted(scripts_by_frame.get(frame['frame'], []))]
+        frame_scripts.extend((frame, path) for path in paths or [prefix + 'DoAction.as'])
+    for frame, path in frame_scripts:
+        text=root if path == first_path else scripts.get(path,'')
         if form_replacement and frame['frame'] != 1:
             from compile_form_frames import compile_form_frame
             form_calls = compile_form_frame(bundle, text, path, frame['frame'], form_frame)
@@ -583,8 +603,10 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
         events=writes(scalar_text,path,controller_scope_fields=scoped_fields)
         if frame['frame'] == 1 and any(event['field'] in ('inited', '_lastX') for event in events):
             raise ValueError('First-init projection conflicts with unconditional frame state writes')
-        if events:frame_writes[str(frame['frame'])]=events
+        if events:frame_writes.setdefault(str(frame['frame']), []).extend(events)
         calls=conditional_frame_calls(text, path, frame["frame"])
+        if frame['frame'] != 1 and re.search(r'\bhp\s*[+*/-]?=', text) and not calls:
+            raise ValueError('Uncompiled health write: ' + path)
         for match in hit_test_pattern.finditer(text.replace('\r\n', '\n')):
             calls.append({'op': 'frame_hit_test', 'field_name': match[1],
                           'instance': match[2], 'path': path, 'frame': frame['frame'],
@@ -740,7 +762,7 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
                 if not any(event.get('op') in ('conditional_frame', 'parent_conditional_frame') for event in calls):
                     raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled frame call: {line}")
         if calls:
-            frame_calls[str(frame['frame'])]=calls
+            frame_calls.setdefault(str(frame['frame']), []).extend(calls)
     parent_state = parent_initial_values(bundle, frame_calls, form_replacement=form_replacement)
     hit=functions['onBeHit0']
     if re.search(r'\b(if|else|while|for)\b',hit):

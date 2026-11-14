@@ -1,0 +1,3 @@
+The first repeat candidate executed three ranged attacks but its short movement inputs occurred during hitstun and did not cross the opponent. It is not mirror coverage. The final fixture moves after recovery and checks actual facing at each cast. No original output was changed; this initial native-only calibration was never accepted as Flash parity.
+
+A second walking candidate reached body contact and pushed the player instead of crossing. The final candidate uses Karin's already source-verified low-attack warp between ranged casts (frames 348/362), rather than assuming grounded bodies can walk through each other. It preserves three ordinary ranged casts with two source-authored side switches.

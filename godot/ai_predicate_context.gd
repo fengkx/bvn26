@@ -19,6 +19,7 @@ func read_field(key: String) -> Variant:
 		"scale_X": return fighter.facing
 		"xscale": return fighter.scale.x * 100.0
 		"ql": return fighter.energy
+		"hp": return fighter.health
 		"root_paused": return fighter.root_zhanting
 		"gravity": return gravity
 		"opponent_x": return fighter.opponent.source_x if fighter.opponent != null else null
