@@ -2,7 +2,8 @@
 
 Base: `b905eb5f9441c94bf3c75d87e6c8d8fa73ed0563`, branch `feat/mayuri`.
 Rebased onto `147155cb3ecd6387dfd9ae60b3e3522dfbb02f78`.
-Status: **targeted parity matched, partial coverage**. No merge or deployment.
+Status: **targeted parity matched, partial coverage**.
+[Draft PR #290](https://github.com/fengkx/bvn2_6/pull/290); no merge or deployment.
 
 ## Source-first review
 
