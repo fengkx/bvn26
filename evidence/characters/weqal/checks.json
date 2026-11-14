@@ -1,0 +1,98 @@
+{
+  "status": "blocked_in_progress_no_pr",
+  "base": "32ab99eecde34730fc2d6a5a7d26a403bd08faf5",
+  "branch": "port/weqal-base",
+  "worktree": "/Users/fengkx/me/agent-code/bvn2_6-weqal",
+  "character": "小乌",
+  "source": "weqal.swf",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "native_initialization_complete": false,
+  "native_flash": {
+    "cases": 12,
+    "matched": 12,
+    "states": 8664,
+    "fields": 14,
+    "complete": true,
+    "all_targets_seen": true,
+    "clean_native_batch": true,
+    "report": "comparisons.json",
+    "scope": "Diagnostic key injection, ticks 0-360, both actors; not full matrix/pixel/audio/OS-input proof"
+  },
+  "blockers": [
+    "Source frame 1148 wankai and frame 1152 parent goto require reviewed BODY 808 form graph; variants are user-deferred. Strict frame-call and online manifest gates remain failed.",
+    "Source failure-label fallthrough into transformation prevents assuming the deferred path is unreachable based only on disabled J+K."
+  ],
+  "shared_runtime_changed": false,
+  "shared_compiler_changed": false,
+  "font": {
+    "actual_regeneration": true,
+    "font_number": 199,
+    "source_family": "Sarasa UI SC",
+    "build_log": "logs/font-build-r03.log",
+    "coverage_log": "logs/font-coverage-r03.log",
+    "coverage_passed": true,
+    "generated_sha256": "5df7bc48bb23c574484386b74b44837b866304fba148ad7ec80dd0d6afc49ccc",
+    "metadata_sha256": "3f2d208b48ed2be8dc3d1581ca6e133607b0effb380293aa111ffed73fd35dab"
+  },
+  "source_tests": {
+    "passed": 9,
+    "logs": [
+      "logs/source-tests.log",
+      "logs/hit-receive-source.log"
+    ]
+  },
+  "rollback": {
+    "passed": true,
+    "scope": "Natural opening, ultimate snapshot replay, late guard input, round reset"
+  },
+  "saved_roster": {
+    "cases": 3,
+    "report": "saved-roster-results.json",
+    "full_roster_executed": false
+  },
+  "visual": {
+    "directory": "visual-final",
+    "scope": "Native selection/full footer and source frame 493; not Flash pixel parity",
+    "residual": "Renderer reports resource/RID leaks on process exit; not treated as clean lifecycle acceptance."
+  },
+  "remaining": [
+    "Complete source-backed deferred-form design or separately authorized form implementation and parity",
+    "Passing online manifest and required complete saved-roster regressions",
+    "Full audiovisual/browser/AI and exhaustive move boundary acceptance"
+  ],
+  "weekly_quota": {
+    "current_remaining": null,
+    "last_user_report": "approximately 10%",
+    "hard_block_observed": false
+  },
+  "flash_running": false,
+  "pr_opened": false,
+  "merged": false,
+  "deployed": false,
+  "validation": {
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 26,
+      "local_links": 1049,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    },
+    "online_manifest": "failed: missing reviewed frame-call requirements; graph audit blocked",
+    "diff_check": "passed"
+  },
+  "elapsed_note": "Wall-clock capture/test logs retained; no person-days inferred. Weekly remainder is unavailable to this tool session."
+}
