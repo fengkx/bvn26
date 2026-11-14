@@ -139,3 +139,8 @@ timer workaround, shortened comparison window or font/parity gate bypass is used
 Master integration with Karin is recorded in [master-integration/](master-integration/README.md):
 29 retained cases / 20,938 states and eight Godot checks pass; all 28 base
 fighter compiler outputs match their respective parents. Coverage remains partial.
+
+Killer Bee master integration is recorded in [master-integration-qilabi/](master-integration-qilabi/README.md):
+50 retained cases / 36,100 states (49 positive, one energy-negative), nine Godot
+checks and 40 Python tests pass. Qilabi source metadata refresh and font pipeline
+results are documented separately; no full admission or old-head review is claimed.
