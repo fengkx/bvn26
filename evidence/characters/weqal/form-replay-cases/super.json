@@ -1,0 +1,128 @@
+{
+  "id": "weqal-form2-super",
+  "fighter": "weqal",
+  "slot": "p1",
+  "label": "必杀",
+  "scenario": "transform-then-super",
+  "frames": 360,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "attack",
+        "jump"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "special"
+      ],
+      "start": 150,
+      "end": 153
+    },
+    {
+      "slot": "p2",
+      "keys": [
+        "down"
+      ],
+      "start": 140,
+      "end": 360
+    }
+  ],
+  "target_frames": [
+    734,
+    822
+  ],
+  "has_source_timeline": true,
+  "fighters": {
+    "p1": "weqal",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "resource_interventions": [
+    {
+      "id": "refill-after-source-transformation",
+      "tick": 140,
+      "slot": "p1",
+      "resource": "energy",
+      "value": 300
+    }
+  ],
+  "form_interval_tape": [
+    {
+      "before_tick": 89,
+      "id": 1,
+      "source_sequence": 5011,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 119,
+      "id": 1,
+      "source_sequence": 5411,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 150,
+      "id": 1,
+      "source_sequence": 6502,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 181,
+      "id": 1,
+      "source_sequence": 6924,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 212,
+      "id": 1,
+      "source_sequence": 7295,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 243,
+      "id": 1,
+      "source_sequence": 7924,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 274,
+      "id": 1,
+      "source_sequence": 8980,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 304,
+      "id": 1,
+      "source_sequence": 10002,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 335,
+      "id": 1,
+      "source_sequence": 11058,
+      "source_origin": "fighter/weqal#DefineSprite_387/frame_1/DoAction.as"
+    }
+  ],
+  "wrapper_probe": true,
+  "form_interval_provenance": {
+    "events": "evidence/characters/weqal/original-forms-r02/weqal-form2-super/events.jsonl",
+    "sha256": "918bd99b0ac5f5f84a9be38bfb307d7a6863bc56f14618907cf18d037ffdb7db",
+    "phase": "After root state N, before next display; delivered before tick N+1.",
+    "ids": "First registration 1; source clearInterval then second registration 2."
+  }
+}

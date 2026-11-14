@@ -28,7 +28,7 @@ def collect():
         if len(candidates) != 1:
             raise ValueError(f'{case["id"]}: expected one original capture')
         source = candidates[0]
-        native = OUT / 'native-final' / (case['id'] + '.json')
+        native = OUT / 'native-base-form-r02' / (case['id'] + '.json')
         comparison = compare(source, native)
         rows = source_rows(source)
         low, high = case['target_frames']
@@ -44,12 +44,12 @@ def collect():
                                   [('fixture',fixture),('source',source),('native',native)]},
                         'hashes': {'fixture':sha(fixture),'source':sha(source),'native':sha(native)}})
     write(OUT / 'comparisons.json', results)
-    log = (OUT / 'logs/native-final.log').read_text()
+    log = (OUT / 'native-base-form-r02/run.log').read_text()
     clean = 'MOVE_CASE_BATCH_OK 12' in log and 'SCRIPT ERROR' not in log and 'ERROR:' not in log
     flags = {key: False for key in ('production_admitted','native_parity_proven','oracle_accepted',
                                    'certified_global_tick','os_input_join_proven','native_initialization_complete')}
     report = {
-        'status': 'blocked_in_progress_no_pr', 'base': '32ab99eecde34730fc2d6a5a7d26a403bd08faf5',
+        'status': 'targeted_sop_candidate_pending_final_checks', 'base': '32ab99eecde34730fc2d6a5a7d26a403bd08faf5',
         'branch': 'port/weqal-base', 'worktree': str(ROOT), 'character': '小乌', 'source': 'weqal.swf',
         **flags,
         'native_flash': {'cases': len(results), 'matched':sum(r['comparison']['status']=='matched' for r in results),
@@ -58,23 +58,54 @@ def collect():
                          'all_targets_seen':all(r['target_seen'] for r in results),
                          'clean_native_batch':clean, 'report':'comparisons.json',
                          'scope':'Diagnostic key injection, ticks 0-360, both actors; not full matrix/pixel/audio/OS-input proof'},
-        'blockers': ['Source frame 1148 wankai and frame 1152 parent goto require reviewed BODY 808 form graph; variants are user-deferred. Strict frame-call and online manifest gates remain failed.',
-                     'Source failure-label fallthrough into transformation prevents assuming the deferred path is unreachable based only on disabled J+K.'],
+        'blockers': [],
         'shared_runtime_changed':False,'shared_compiler_changed':False,
         'font': {'actual_regeneration':True,'font_number':199,'source_family':'Sarasa UI SC',
                  'build_log':'logs/font-build-r03.log','coverage_log':'logs/font-coverage-r03.log','coverage_passed':True},
         'source_tests': {'passed':9,'logs':['logs/source-tests.log','logs/hit-receive-source.log']},
         'rollback':{'passed':'WEQAL_ROLLBACK_SMOKE_OK' in (OUT/'logs/rollback.log').read_text(),
                     'scope':'Natural opening, ultimate snapshot replay, late guard input, round reset'},
-        'saved_roster':{'cases':3,'report':'saved-roster-results.json','full_roster_executed':False},
+        'saved_roster':{'report':'regressions-form-r02/flash-replay/report.json','full_roster_executed':False},
         'visual':{'directory':'visual-final','scope':'Native selection/full footer and source frame 493; not Flash pixel parity',
                   'residual':'Renderer reports resource/RID leaks on process exit; not treated as clean lifecycle acceptance.'},
-        'remaining':['Complete source-backed deferred-form design or separately authorized form implementation and parity',
-                     'Passing online manifest and required complete saved-roster regressions',
-                     'Full audiovisual/browser/AI and exhaustive move boundary acceptance'],
-        'weekly_quota':{'current_remaining':None,'last_user_report':'approximately 10%','hard_block_observed':False},
+        'remaining':['Full audiovisual/browser/AI and exhaustive move boundary acceptance'],
+        'weekly_quota':{'current_remaining':None,'last_user_report':'approximately 8% at continuation start; live exact remainder unavailable','hard_block_observed':False},
         'flash_running':False,'pr_opened':False,'merged':False,'deployed':False,
     }
+    forms = json.loads((OUT / 'form-comparisons.json').read_text())
+    report['form_native_flash'] = {
+        'cases': len(forms), 'matched': sum(row['comparison']['status'] == 'matched' for row in forms),
+        'states': sum(row['comparison']['source_states'] for row in forms),
+        'complete': all(row['comparison']['complete'] for row in forms),
+        'all_targets_seen': all(row['target_seen'] for row in forms),
+        'report': 'form-comparisons.json',
+        'scope': 'Diagnostic transformation, target combo/supers/mirror warp; recorded source interval delivery; explicit target-form energy refills.'}
+    report['source_tests']['passed'] = 11
+    report['source_tests']['logs'].append('source-form-tests-r01.log')
+    report['replacement_graph'] = {'nodes': 2, 'sprites': [387, 808], 'audit': 'form-graph.json',
+        'strict_guard_passed': True, 'lifecycle_log': 'weqal_replacement_checkpoint-r02.log',
+        'input_log': 'weqal_input_activation-r02.log', 'failure_fallthrough_tested': True,
+        'explicit_parent_goto_tested': True}
+    regressions = OUT / report['saved_roster']['report']
+    if regressions.exists():
+        rows = json.loads(regressions.read_text())['results']
+        report['saved_roster'].update(cases=len(rows),
+            states=sum(row['comparison']['source_states'] for row in rows if row['comparison']),
+            full_roster_executed=len(rows) == 288,
+            all_matched=all(row['execution']['executed'] and row['comparison']['status'] == 'matched' for row in rows))
+    report['rollback'] = {
+        'passed': 'WEQAL_ROLLBACK_SMOKE_OK' in (OUT / 'weqal_rollback_smoke-r02.log').read_text(),
+        'scope': 'Natural opening, ultimate snapshot replay, late guard input, round reset',
+        'log': 'weqal_rollback_smoke-r02.log'}
+    report['replacement_graph']['timer_round_log'] = 'form-lifecycle.log'
+    report['form_native_flash']['clean_native_batches'] = all(
+        'ERROR:' not in (OUT / path).read_text() and 'SCRIPT ERROR' not in (OUT / path).read_text()
+        for path in ['native-forms-r01/run-r02.log', 'native-forms-r03/run.log'])
+    report['web'] = json.loads((OUT / 'web/browser-check.json').read_text())
+    report['online_manifest'] = {
+        'passed': 'ONLINE_MANIFEST_OK' in (OUT / 'online-manifest-check-r03.log').read_text(),
+        'log': 'online-manifest-check-r03.log'}
+    report['visual']['form_directory'] = 'visual-form'
     write(OUT/'checks.json',report)
     print(json.dumps(report['native_flash']))
 

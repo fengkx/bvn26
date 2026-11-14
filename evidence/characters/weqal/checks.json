@@ -1,5 +1,5 @@
 {
-  "status": "blocked_in_progress_no_pr",
+  "status": "targeted_sop_candidate_pending_final_checks",
   "base": "32ab99eecde34730fc2d6a5a7d26a403bd08faf5",
   "branch": "port/weqal-base",
   "worktree": "/Users/fengkx/me/agent-code/bvn2_6-weqal",
@@ -18,14 +18,11 @@
     "fields": 14,
     "complete": true,
     "all_targets_seen": true,
-    "clean_native_batch": true,
+    "clean_native_batch": false,
     "report": "comparisons.json",
     "scope": "Diagnostic key injection, ticks 0-360, both actors; not full matrix/pixel/audio/OS-input proof"
   },
-  "blockers": [
-    "Source frame 1148 wankai and frame 1152 parent goto require reviewed BODY 808 form graph; variants are user-deferred. Strict frame-call and online manifest gates remain failed.",
-    "Source failure-label fallthrough into transformation prevents assuming the deferred path is unreachable based only on disabled J+K."
-  ],
+  "blockers": [],
   "shared_runtime_changed": false,
   "shared_compiler_changed": false,
   "font": {
@@ -34,15 +31,14 @@
     "source_family": "Sarasa UI SC",
     "build_log": "logs/font-build-r03.log",
     "coverage_log": "logs/font-coverage-r03.log",
-    "coverage_passed": true,
-    "generated_sha256": "5df7bc48bb23c574484386b74b44837b866304fba148ad7ec80dd0d6afc49ccc",
-    "metadata_sha256": "3f2d208b48ed2be8dc3d1581ca6e133607b0effb380293aa111ffed73fd35dab"
+    "coverage_passed": true
   },
   "source_tests": {
-    "passed": 9,
+    "passed": 11,
     "logs": [
       "logs/source-tests.log",
-      "logs/hit-receive-source.log"
+      "logs/hit-receive-source.log",
+      "source-form-tests-r01.log"
     ]
   },
   "rollback": {
@@ -50,8 +46,7 @@
     "scope": "Natural opening, ultimate snapshot replay, late guard input, round reset"
   },
   "saved_roster": {
-    "cases": 3,
-    "report": "saved-roster-results.json",
+    "report": "regressions-form-r02/flash-replay/report.json",
     "full_roster_executed": false
   },
   "visual": {
@@ -60,39 +55,37 @@
     "residual": "Renderer reports resource/RID leaks on process exit; not treated as clean lifecycle acceptance."
   },
   "remaining": [
-    "Complete source-backed deferred-form design or separately authorized form implementation and parity",
-    "Passing online manifest and required complete saved-roster regressions",
     "Full audiovisual/browser/AI and exhaustive move boundary acceptance"
   ],
   "weekly_quota": {
     "current_remaining": null,
-    "last_user_report": "approximately 10%",
+    "last_user_report": "approximately 8% at continuation start; live exact remainder unavailable",
     "hard_block_observed": false
   },
   "flash_running": false,
   "pr_opened": false,
   "merged": false,
   "deployed": false,
-  "validation": {
-    "verify": {
-      "status": "passed",
-      "assets": 75,
-      "dependencies": 74,
-      "swfs": 62,
-      "script_bundles": 62,
-      "script_exports": 8853
-    },
-    "handoff": {
-      "status": "passed",
-      "documents": 26,
-      "local_links": 1049,
-      "tasks": 31,
-      "requirements": 20,
-      "fighter_configs": 64,
-      "maps": 10
-    },
-    "online_manifest": "failed: missing reviewed frame-call requirements; graph audit blocked",
-    "diff_check": "passed"
+  "form_native_flash": {
+    "cases": 6,
+    "matched": 6,
+    "states": 4332,
+    "complete": true,
+    "all_targets_seen": true,
+    "report": "form-comparisons.json",
+    "scope": "Diagnostic transformation, target combo/supers/mirror warp; recorded source interval delivery; explicit target-form energy refills."
   },
-  "elapsed_note": "Wall-clock capture/test logs retained; no person-days inferred. Weekly remainder is unavailable to this tool session."
+  "replacement_graph": {
+    "nodes": 2,
+    "sprites": [
+      387,
+      808
+    ],
+    "audit": "form-graph.json",
+    "strict_guard_passed": true,
+    "lifecycle_log": "replacement-checkpoint-r01.log",
+    "input_log": "input-activation-r01.log",
+    "failure_fallthrough_tested": true,
+    "explicit_parent_goto_tested": true
+  }
 }

@@ -1,4 +1,4 @@
-# Ulquiorra / 小乌 base candidate — blocked, no PR
+# Ulquiorra / 小乌 — source-bound base and required replacement
 
 Base commit: `32ab99eecde34730fc2d6a5a7d26a403bd08faf5`.
 Branch: `port/weqal-base`. Worktree: `/Users/fengkx/me/agent-code/bvn2_6-weqal`.
@@ -46,25 +46,40 @@ several previously implemented fighters retain that full-acceptance status.
 | Combo/hits | BODY state and shared receiver | Standing frame 2 resets; guard does not increment |
 | Super pause and face | Root bsd/cbsd/showFace | Authored bsw/cbsw frames release it |
 | Low attack warp | BODY frame 233 | Reads current opponent position and facing on each invocation |
-| Transformation transfer | Wrapper and wankai function | Requires BODY 808 replacement; unresolved in this base-only task |
+| Transformation transfer | Wrapper and wankai function | Transfers HP/energy, replaces BODY with 808; new load resets local fields |
 
-## Blocking admission contract
+## Required replacement graph
 
-The normal compiler rejects `DefineSprite_387/frame_1148/DoAction.as: wankai()`.
-The existing form-aware compiler can preserve the operation and its target
-BODY 808, and also preserves the explicit parent goto at frame 1152. However,
-`frame_call_guard.py` requires a reviewed, complete executable replacement graph
-for a package containing these operations. No such graph is present, because
-the user deferred form variants. `frame-call-audit.json` retains the failure;
-`logs/online-manifest-check.log` retains the missing reviewed requirements failure.
-No requirements entry, source call, assertion or gate was removed to bypass it.
+The base-required graph is `parent 1 / BODY 387 → parent 2 / BODY 808`.
+Standalone selector variants remain deferred; this replacement belongs to 小乌.
+`form-graph.json` audits both complete executable packages, load declarations,
+source-bound functions, frame calls and dependent resources. The frame-call
+requirements entry was added only for this source hash/BODY; no guard is weakened.
+The original failed audit and manifest logs remain as historical evidence.
 
-The source also naturally falls from `失败` into `万解` at frame 1100. Disabling
-the J+K action alone is not evidence that all entry paths are unreachable.
-Consequently this candidate must not be presented as a completed base-only
-production package. Resolving the blocker requires a source-backed design for
-explicit deferred-form boundaries, or separately authorized form implementation
-and parity. This task does not implement the deferred variant.
+- Base failure `1061–1099` has no terminating goto/stop and naturally enters
+  `万解` at 1100. Cost at 1101 and presentation at 1103 remain source-driven.
+- At 1148 `wankai()` stores HP/energy in the wrapper transfer object, starts
+  the authored root interval, calls parent nextFrame and removes the old BODY.
+  The pending replacement is not a usable BODY until its next display tick.
+- Parent frame 2 loads BODY 808 with fresh declarations (including `khit=0`),
+  executes source initialization, binds the opponent slot and enters its opening.
+  The observed replacement tick reports undefined BODY state; next tick is 968.
+- Base frame 1152's explicit parent goto remains compiled and guarded. The
+  earlier natural replacement normally removes that BODY before 1152; a controlled
+  direct entry verifies that the explicit edge can still install the same target.
+- BODY 808 frame 1023 executes `wankai_end`, releasing the source super pause.
+  No second form node is reachable from BODY 808's frame-call graph.
+- The old closure's `feixue` interval dereferences the current BODY. The fresh
+  Flash probe records callback boundaries without altering delivery or callback
+  bodies; native replay receives these recorded external events. This is not a
+  certified global clock or OS timer parity claim.
+
+`source-first-form2.json` retains every target frame/script/placement. Native
+checkpoint coverage includes restore before replacement, redo, restore after
+replacement, fresh-field reset, live interval callback, natural failure fallthrough,
+and the explicit parent goto. These controlled entries are source/lifecycle tests,
+not original same-input captures. Natural J+K activation is separately tested.
 
 ## Build and validation notes
 
@@ -81,26 +96,25 @@ Godot resource import. Its resource-loader errors are retained and that batch
 is diagnostic only, even where actor-state comparison matches. The clean imported replay in `native-final` completed all 12 cases without
 script or resource-loader errors.
 
-Full audiovisual/browser/AI acceptance, exhaustive boundaries, and complete
-saved-roster regression remain unclaimed. See `checks.json` for final executed
+Full audiovisual/AI acceptance and exhaustive boundaries remain unclaimed. See `checks.json` for final executed
 results and remaining work. No Draft PR is opened while the admission blocker
 or other required checks remain unresolved.
 
-## Final scoped results
+## Scoped validation
 
-All 12 fresh original/native cases match 8,664 actor states on the 14 existing
-exact fields, with complete tick/slot coverage and all declared targets seen.
-The original cancel enters the selected super window; this does not establish
-all cancel boundaries. Natural opening/ultimate rollback/late guard/round reset
-passed. Three saved combo fixtures (Kenshin, Juugo, Killer Bee) match; the full
-saved roster was not run. Nine source tests and actual font rebuild/coverage
-passed. Selection/full footer and super frame 493 were visually inspected.
-The headed renderer reports exit-time resource/RID leaks, retained as a
-lifecycle residual. These results do not remove the form-graph/manifest blocker.
+The retained 12 base Flash cases matched 8,664 actor states on 14 exact fields.
+They are replayed again after graph activation. Fresh transformation and target
+form cases extend this matrix; final counts and execution results are recorded in
+`checks.json` and comparison reports. Target form resource refills are explicitly
+recorded fixture interventions, not natural full-match input proof.
 
-Large original logs and event streams are losslessly gzip archived.
-`archive-index.json` records their uncompressed hashes and paths. Scratch
-`game` symlinks were removed from capture-build records; input encodings, build
-metadata, instrumentation diffs and original logs remain in this worktree.
-Locked-input verification and handoff checks passed. The online manifest gate
-remains failed; no online catalog/fingerprint is represented as updated.
+The UI font was regenerated by the real importer and its coverage test passes.
+Selection/full footer and base super frame 493 were inspected. The headed renderer
+reports exit-time resource/RID leaks: this remains an open cleanup residual.
+Graph tests do not clear that renderer residual. Global pixel/waveform, all AI,
+all maps/opponents and exhaustive input/cancel boundaries remain unaccepted.
+All six proof/admission flags remain false; M6 stays pending. No deployment/merge.
+
+Large originals and failed runs remain retained (lossless gzip where applicable).
+Capture metadata contains historical scratch paths; it is provenance, not a claim
+that those temporary builds remain available. See `checks.json` for current scope.

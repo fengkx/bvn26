@@ -9,6 +9,8 @@ sys.path.insert(0, str(ROOT / 'tools/importer'))
 from build_combat_model import parse_body_warp
 from compile_ai_context import compile_context
 from extract_fighter_slice import extract_slice
+from audit_form_profiles import audit_form_manifest
+from frame_call_guard import validate_cached_frame_calls
 
 
 class WeqalImportTests(unittest.TestCase):
@@ -39,9 +41,8 @@ class WeqalImportTests(unittest.TestCase):
         self.assertEqual(self.scripts['DefineSprite_387/frame_470/DoAction.as'].strip(),
                          '动作 = 3;\r\nbs = 1;\r\nql -= 100;')
 
-    def test_deferred_form_is_a_real_build_blocker(self):
-        # Preserve the strict admission failure; a base import must not erase
-        # the source's reachable wrapper replacement to make a manifest green.
+    def test_replacement_calls_require_the_complete_graph(self):
+        # A form-unaware compile must still reject the reachable source call.
         with self.assertRaisesRegex(ValueError, 'uncompiled form replacement call'):
             compile_context(self.bundle, self.timeline)
         compiled = compile_context(self.bundle, self.timeline, form_replacement=True)
@@ -49,6 +50,20 @@ class WeqalImportTests(unittest.TestCase):
         self.assertEqual(calls[0]['op'], 'body_form_call')
         self.assertEqual(calls[0]['replacement']['target_body_sprite'], 808)
         self.assertEqual(compiled['frame_calls']['1152'][0]['op'], 'parent_form_goto')
+
+    def test_reviewed_graph_closes_both_replacement_edges(self):
+        directory = ROOT / 'godot/generated/fighters/weqal'
+        contract = audit_form_manifest(directory, self.bundle)
+        self.assertEqual(len(contract['nodes']), 2)
+        context = json.loads((directory / 'ai.json').read_text())
+        timeline = json.loads((directory / 'timeline.json').read_text())
+        validate_cached_frame_calls(timeline, context, directory=directory)
+        self.assertEqual(context['frame_calls']['1152'][0]['replacement']['target_body_sprite'], 808)
+
+    def test_failure_falls_through_without_input(self):
+        combat = json.loads((ROOT / 'data/actions/weqal-base.json').read_text())
+        entries = combat['timeline_fallthroughs']
+        self.assertTrue(any(row.get('from') == '失败' and row.get('to') == '万解' for row in entries), entries)
 
 
 if __name__ == '__main__':
