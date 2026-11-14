@@ -173,6 +173,16 @@ def extract_slice(
         raise ValueError("Explicit parent frame requires allow_forms and a positive integer")
     form_frame = parent_frame if parent_frame is not None else int(fighter.get("WKframe", 1))
     base_placements = [item for item in root_placements(swf_path) if item["frame"] == form_frame]
+    if len(base_placements) > 1:
+        # A wrapper may place presentation siblings alongside its fighter BODY.
+        # Resolve the authored controller callback, never an assumed depth.
+        paths = {item["path"]: item["source"] for item in scripts}
+        base_placements = [item for item in base_placements if re.fullmatch(
+            r"onClipEvent\(enterFrame\)\s*\{\s*on_enterframe\(\);\s*\}\s*",
+            paths.get(
+                f"frame_{form_frame}/PlaceObject{2 if item['tag'] == 26 else 3}_"
+                f"{item['character_id']}_{item['depth']}/CLIPACTIONRECORD onClipEvent(enterFrame).as", ""),
+        )]
     if len(base_placements) != 1:
         raise ValueError(f"Expected one base-form placement in {swf_path}, got {base_placements}")
     timeline_id = base_placements[0]["character_id"]

@@ -103,6 +103,7 @@ PARENT_WARP_X = re.compile(
     r"|"
     r"_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\.mc\.bdmn\._width"
     r"(?:\s*\*\s*(?P<wfac>\d+(?:\.\d+)?))?"
+    r"(?:\s*(?P<x_extra_op>[+-])\s*(?P<x_extra_num>\d+(?:\.\d+)?))?"
     r"))?\s*;"
 )
 PARENT_WARP_Y = re.compile(
@@ -321,6 +322,9 @@ def _warp_x_fields(source: str) -> dict[str, Any] | None:
     elif match["x_op"] and match["x_num"] is None:
         factor = float(match["wfac"]) if match["wfac"] else 1.0
         fields["x_bdmn_width"] = -factor if match["x_op"] == "-" else factor
+        extra_x = _signed_pixel(match, "x_extra_op", "x_extra_num")
+        if extra_x:
+            fields["x_pixels"] = extra_x
     return fields
 
 

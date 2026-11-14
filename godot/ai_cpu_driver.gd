@@ -193,7 +193,7 @@ func _scope_value(key: String) -> Variant:
 	return _scope[key]
 
 
-func _controller_effect(name: String) -> void:
+func _controller_effect(name: String, args: Array = []) -> void:
 	if name.begins_with("receive:"):
 		_external("receive", [name.trim_prefix("receive:")])
 	elif name.begins_with("counter:"):
@@ -205,7 +205,7 @@ func _controller_effect(name: String) -> void:
 	elif name == "bdfyxg2":
 		fighter.emit_source_guard_effect(2)
 	else:
-		_external(name, [])
+		_external(name, args)
 
 
 func _body_call(name: String, args: Array) -> void:

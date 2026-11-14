@@ -203,6 +203,11 @@ class Adapter extends RefCounted:
 		assert(host.effects.is_valid(), "Unconnected source effect: " + name)
 		host.effects.call(name)
 
+	func effect_with_args(name: String, args: Array) -> void:
+		var host: AiControllerHost = host_ref.get_ref()
+		assert(host.effects.is_valid(), "Unconnected source effect: " + name)
+		host.effects.call(name, args)
+
 	func move_axis(axis: String, value: Variant) -> void:
 		var host: AiControllerHost = host_ref.get_ref()
 		if axis == "moveX":

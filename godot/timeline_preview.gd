@@ -22,6 +22,7 @@ var _current_frame: int
 var _instance_local_offsets: Dictionary = {}
 var _instance_local_frames: Dictionary = {}
 var _retained_visual_clips: Dictionary = {}
+var _wrapper_visual_clips: Dictionary = {}
 var independent_visual_clock := false
 var hidden_instance_names: PackedStringArray = []
 # Source StartSound on the current timeline frame. Hit sparks use the
@@ -432,6 +433,8 @@ func advance_retained_visual_clips() -> void:
 	_sync_retained_visual_clips()
 	for clip: Dictionary in _retained_visual_clips.values():
 		_advance_visual_clip(clip)
+	for clip: Dictionary in _wrapper_visual_clips.values():
+		_advance_visual_clip(clip)
 
 
 func _advance_visual_clip(clip: Dictionary) -> void:
@@ -488,6 +491,7 @@ func _sync_visual_list(placements: Array, previous_clips: Dictionary) -> Diction
 
 
 func _sync_retained_visual_clips() -> void:
+	_wrapper_visual_clips = _sync_visual_list(_timeline.get("wrapper_siblings", []), _wrapper_visual_clips)
 	if independent_visual_clock and _frames.has(_current_frame):
 		_retained_visual_clips = _sync_visual_list(_frames[_current_frame]["display_list"], _retained_visual_clips)
 
@@ -552,6 +556,10 @@ func materialize_display() -> void:
 			1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips)
 		if wrapper_blend not in [0, 1]:
 			_compose_blend_group(first_child, 1.0, 0, wrapper_blend)
+	# These authored siblings live outside mc: its transform, color and
+	# paused playhead must not affect their independently retained clocks.
+	_render_display_list(_timeline.get("wrapper_siblings", []), Transform2D.IDENTITY, 1.0,
+		0, 1, 0, Color.WHITE, Color(0, 0, 0, 0), [], true, 1, _wrapper_visual_clips)
 	queue_redraw()
 
 

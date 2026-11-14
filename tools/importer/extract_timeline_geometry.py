@@ -461,7 +461,7 @@ def extract_wrapper_placement(
     return None
 
 
-def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, Any]:
+def extract_frames(xml_path: Path, sprite_id: int | None = None, *, wrapper_siblings: bool = False) -> dict[str, Any]:
     root = ET.parse(xml_path).getroot()
     xml_version = (
         int(root.attrib["_xmlExportMajor"]),
@@ -507,6 +507,28 @@ def extract_frames(xml_path: Path, sprite_id: int | None = None) -> dict[str, An
         if wrapper is not None:
             result["wrapper"] = wrapper
     result["definitions"] = referenced_definitions(root, frames)
+    if wrapper_siblings and result.get("wrapper"):
+        wrapper = result["wrapper"]
+        parent = build_frames(root.findall("./tags/item"), str(xml_path) + '/root')
+        siblings = [p for p in parent[wrapper['root_frame'] - 1]['display_list']
+                    if p['depth'] != wrapper['depth']]
+        for placement in siblings:
+            if placement['depth'] <= wrapper['depth'] or placement.get('clip_actions'):
+                raise ValueError('Unsupported wrapper sibling order or callback')
+            if placement['placed_frame'] != wrapper['root_frame']:
+                raise ValueError('Retained wrapper sibling needs an earlier placement clock')
+        if siblings:
+            definitions = referenced_definitions(root, [{'display_list': siblings}])
+            for definition in definitions:
+                for events in definition.get('display_list_frame_events', []):
+                    if events:
+                        raise ValueError('Wrapper sibling frame actions/sounds require a source consumer')
+                for children in definition.get('display_list_frames', []):
+                    if any(p.get('clip_actions') for p in children):
+                        raise ValueError('Wrapper sibling child callbacks require a source consumer')
+            result['wrapper_siblings'] = siblings
+            merged = {d['character_id']: d for d in result['definitions'] + definitions}
+            result['definitions'] = [merged[key] for key in sorted(merged)]
     finite_numbers(result, str(xml_path))
     return result
 

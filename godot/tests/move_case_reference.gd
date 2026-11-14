@@ -11,6 +11,7 @@ var presentation_rows: Array = []
 var geometry_rows: Array = []
 var contact_rows: Array = []
 var projectile_rows: Array = []
+var wrapper_rows: Array = []
 var recovery_events: Dictionary = {}
 var intervention_rows: Array = []
 var applied_interventions: Dictionary = {}
@@ -68,6 +69,7 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 	geometry_rows = []
 	contact_rows = []
 	projectile_rows = []
+	wrapper_rows = []
 	recovery_events = {}
 	intervention_rows = []
 	applied_interventions = {}
@@ -94,6 +96,10 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 	game.set_physics_process(false)
 	game.diagnostics.event_recorded.connect(_on_diagnostic_event)
 	game.recorded_training_timers = true
+	game.recorded_form_timers = fixture.has("form_interval_tape")
+	if game.recorded_form_timers:
+		var provenance: Dictionary = fixture.get("form_interval_provenance", {})
+		assert(not str(provenance.get("sha256", "")).is_empty())
 	if fixture.has("fighters"):
 		for helper_key in ["p1_helper", "p2_helper"]:
 			if not fixture.has(helper_key) or str(fixture[helper_key]).is_empty():
@@ -143,6 +149,10 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		# Timer callbacks occur after the preceding source snapshot and before
 		# the next fight advance. Deliver the external clock at that boundary.
 		_drive_source_timers(1000.0 / Engine.physics_ticks_per_second)
+		for delivery: Dictionary in fixture.get("form_interval_tape", []):
+			if int(delivery.before_tick) == tick:
+				assert(game.source_root_intervals != null)
+				assert(game.source_root_intervals.fire_recorded(int(delivery.id)))
 		game._advance_fight(recovery_events.get(tick, []), func() -> bool:
 			_observe(tick)
 			return tick == bitmap_tick)
@@ -178,6 +188,8 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		FileAccess.open(output_path + ".contacts.json", FileAccess.WRITE).store_string(JSON.stringify(contact_rows, "", true, true))
 	if fixture.has("projectile_probe"):
 		FileAccess.open(output_path + ".projectiles.json", FileAccess.WRITE).store_string(JSON.stringify(projectile_rows, "", true, true))
+	if fixture.get("wrapper_probe", false):
+		FileAccess.open(output_path + ".wrappers.json", FileAccess.WRITE).store_string(JSON.stringify(wrapper_rows, "", true, true))
 	FileAccess.open(output_path + ".interventions.json", FileAccess.WRITE).store_string(JSON.stringify(intervention_rows, "", true, true))
 	game._goto_menu()
 	game.queue_free()
@@ -301,13 +313,28 @@ func _observe(tick: int) -> void:
 			actor.energy = setup.energy
 			_apply_source_state_preconditions(actor)
 	for actor in [game.naruto, game.ichigo]:
-		rows.append({"tick": tick, "slot": actor.player_slot, "frame": actor.current_source_frame(),
+		var available: bool = actor.source_body_available
+		if fixture.get("wrapper_probe", false):
+			var sibling_frame: Variant = null
+			if actor._wrapper_visual_clips.has(45):
+				sibling_frame = actor._wrapper_visual_clips[45].frame
+			elif not available:
+				var driver: AiCpuDriver = game.player_body_driver._driver if actor == game.naruto else game.opponent_driver
+				for placement: Dictionary in driver._pending_form.get("profile", {}).get("timeline", {}).get("wrapper_siblings", []):
+					if int(placement.depth) == 45: sibling_frame = 1
+			wrapper_rows.append({"tick": tick, "slot": actor.player_slot,
+				"parent_frame": actor.source_parent_frame,
+				"body_frame": actor.current_source_frame() if available else 1,
+				"sibling_frame": sibling_frame})
+		# The wrapper has placed frame 1 of the new mc, but its frame/load
+		# initialization has not run at this observer boundary yet.
+		rows.append({"tick": tick, "slot": actor.player_slot, "frame": actor.current_source_frame() if available else 1,
 			"x": actor.source_x, "y": actor.source_y, "xscale": actor.scale.x * 100,
-			"action": actor.ai_source_state.read_field("动作"), "hp": actor.health,
-			"ql": actor.energy, "sw": actor.sw, "touch": actor.ai_source_state.read_field("touch"),
-			"touchFloor": actor.ai_source_state.read_field("touchFloor"), "hits": actor.hits,
-			"paused": actor.root_zhanting, "hstm": actor.ai_source_state.read_field("hstm"),
-			"hurtSkling": actor.ai_source_state.read_field("hurtSkling")})
+			"action": actor.ai_source_state.read_field("动作") if available else null, "hp": actor.health if available else null,
+			"ql": actor.energy if available else null, "sw": actor.sw if available else null, "touch": actor.ai_source_state.read_field("touch") if available else null,
+			"touchFloor": actor.ai_source_state.read_field("touchFloor") if available else null, "hits": actor.hits if available else null,
+			"paused": actor.root_zhanting, "hstm": actor.ai_source_state.read_field("hstm") if available else null,
+			"hurtSkling": actor.ai_source_state.read_field("hurtSkling") if available else null})
 	_capture_geometry(tick)
 	for actor: FighterRuntime in [game.naruto, game.ichigo]:
 		for instance_name: String in fixture.get("projectile_probe", {}).get(actor.player_slot, []):
