@@ -1,0 +1,164 @@
+{
+  "status": "targeted_validation_passed_full_acceptance_pending",
+  "base": "147155cb3ecd6387dfd9ae60b3e3522dfbb02f78",
+  "branch": "feat/qilabi",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "native_initialization_complete": false,
+  "native_flash_parity": {
+    "status": "matched",
+    "cases": 21,
+    "source_states": 15162,
+    "fields": 14,
+    "report": "comparisons.json",
+    "scope": "Controlled instrumented character-SOP actor states, not M0-02/native-live/FDB or audiovisual parity."
+  },
+  "saved_roster": {
+    "status": "matched",
+    "cases": 216,
+    "states": 127672,
+    "fields": 14,
+    "seconds": 1175.4292557500303,
+    "report": "regressions.json"
+  },
+  "validation": {
+    "source_tests": {
+      "passed": 27,
+      "log": "logs/source-final3.log.gz"
+    },
+    "prior_source_tests": {
+      "passed": 41,
+      "log": "logs/source-tests.log.gz"
+    },
+    "godot_smokes": [
+      {
+        "test": "interrupted_super_lock_smoke",
+        "exit": 0,
+        "seconds": 1.7281760410405695,
+        "passed": true
+      },
+      {
+        "test": "player_controller_smoke",
+        "exit": 0,
+        "seconds": 1.4059244580566883,
+        "passed": true
+      },
+      {
+        "test": "player_visual_smoke",
+        "exit": 0,
+        "seconds": 5.148043707944453,
+        "passed": true
+      },
+      {
+        "test": "character_selection_smoke",
+        "exit": 0,
+        "seconds": 6.4610483748838305,
+        "passed": true
+      },
+      {
+        "test": "online_character_selection_smoke",
+        "exit": 0,
+        "seconds": 3.8962482502683997,
+        "passed": true
+      }
+    ],
+    "rollback": {
+      "status": "passed",
+      "scope": "Natural opening, ultimate pause/checkpoint, delayed inputs, round reset, continuous low attack and placement-local replay",
+      "log": "logs/rollback4.log.gz"
+    },
+    "shared_modes": {
+      "status": "matched",
+      "pvp_states": 602,
+      "training_timer_states": 602
+    },
+    "online_manifest": "passed",
+    "matchmaking": "TypeScript and 31 tests passed; Wrangler sandbox registry write failed, isolated escalated retry passed. No deploy.",
+    "contracts": "6 schemas / 6 examples passed",
+    "verify": {
+      "status": "passed",
+      "assets": 75,
+      "dependencies": 74,
+      "swfs": 62,
+      "script_bundles": 62,
+      "script_exports": 8853
+    },
+    "handoff": {
+      "status": "passed",
+      "documents": 26,
+      "local_links": 1043,
+      "tasks": 31,
+      "requirements": 20,
+      "fighter_configs": 64,
+      "maps": 10
+    },
+    "full_python_suite": {
+      "tests": 1532,
+      "initial_failures": 24,
+      "errors": 5,
+      "skips": 2,
+      "new_failure_records_resolved": 9,
+      "remaining_inherited_failures": 15,
+      "remaining_inherited_errors": 5,
+      "evidence": "diagnostics/inherited-failures.json"
+    }
+  },
+  "compiler_audit": {
+    "prior_fighters": 26,
+    "combat_unchanged": true,
+    "controllers_unchanged": true,
+    "reports": [
+      "combat-impact.json",
+      "controller-impact.json",
+      "warp-impact.json"
+    ]
+  },
+  "web": {
+    "status": "passed_scoped_local_smoke",
+    "method": "Synthetic DOM keyboard events through the exported production UI; no runtime state writes. Diagnostic export observed via Blob interception; no OS keyboard proof.",
+    "buildID": "6a08c8c81fc55ff509bc21b1d6b58dc6d702009f2770f20521f7cf0b36eb0562",
+    "pckSha256": "4a1c7e5e10d725acbc5ea091f2f69ce01e58b7f5fb4b95d07febf2dcb4b2cacb",
+    "resourceVersion": "5c4cac820f436bb07f152511148168831c72f691faa18dbac7cc8ac6d92c3b95",
+    "receipt": "web-receipt.json",
+    "scope": [
+      "Production title, fighter/helper selection and map confirmation",
+      "Natural opening",
+      "Movement and held attack: four normals, opponent HP 1000 to 790",
+      "User pause and resume",
+      "Natural round reset while inspecting"
+    ],
+    "errors": 0,
+    "limitations": [
+      "Synthetic browser DOM keyboard events; no human/OS-input or focus-loss proof.",
+      "No Web/Flash pixel or audio comparison.",
+      "Build snapshot records post-import UIDs/settings; clean workspace compatibility hash differs by design.",
+      "No deployment."
+    ]
+  },
+  "screenshots": [
+    "screenshots/selection.png",
+    "screenshots/in-fight.png",
+    "screenshots/web-selection.png",
+    "screenshots/web-in-fight.png"
+  ],
+  "limitations": [
+    "Full audiovisual, browser parity, CPU AI and exhaustive boundary acceptance remain pending.",
+    "Native screenshots are visual inspection, not Flash pixel equality.",
+    "PR #37 interrupted-super recovery unchanged (intentional prior deviation).",
+    "No merge or production deployment."
+  ],
+  "runtime_sha256": {
+    "godot/fighter_runtime.gd": "519499df9921fa213c168ff2ab3ff8b0bef77b046d64b1c311036bbd11a83c73",
+    "godot/ai_controller_host.gd": "dae3a4497c6b0b5d16e1d3f4f9000fb6f79b3d8b2bbcb0aa1fc86a0dfeb0caa9",
+    "godot/timeline_preview.gd": "59eb1a1a443ddb0f8d433735771852ba1694b978edb81b942d40c94bde3f5de9"
+  },
+  "compiler_sha256": {
+    "tools/importer/build_combat_model.py": "a9ba20c182de3b0800120e96a17db717ba8e61878a311b394d3a299e884d318c",
+    "tools/importer/compile_ai_controller.py": "ff6dc3b5a5f478043dc6647a31d4d7f64e07cb9709cf54210951d502c44aadbb"
+  },
+  "measured_elapsed_seconds": 3114,
+  "elapsed_note": "Wall time since goal creation, including Flash lock wait, capture, imports and validation; no person-days inferred."
+}

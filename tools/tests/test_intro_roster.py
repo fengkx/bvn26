@@ -24,6 +24,7 @@ class IntroRosterTests(unittest.TestCase):
             "gaara": (1176, 1283),
             "juggo": (1226, 1313),
             "karin": (1220, 1293),
+            "qilabi": (1131, 1203),
             "jianba": (1132, 1188),
             "minren": (1099, 1178),
             "yihu": (822, 901),
