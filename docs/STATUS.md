@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-14 Killer Bee branch integration: merged Karin master `bf4b7a43` while preserving both ports and partial coverage. Regenerated combined manifests and the source-authored frame-556 flash index; no Flash recapture or deployment. [Integration evidence](../evidence/characters/qilabi/master-integration-2026-11-14/README.md).
+
 - 2026-11-14 Killer Bee base port: original catalog/selector confirms `qilabi.swf` after Karin/Mayuri. Twenty-one character-SOP Flash fixtures match 15,162 actor states on 14 exact fields; source placement locals/helpers, X-only facing warp and stopped projectile initialization compile to shared behavior. Coverage remains partial; six proof/admission flags false, no merge or deployment. [Evidence and residuals](../evidence/characters/qilabi/README.md).
 
 - 2026-11-13 approved online lobby: new rooms default to host authority, independent existing character/helper UI returns to the room, host-only map confirmation and explicit host Start replace fixed setup/auto-start. Rollback remains in room settings; local Worker/native checks pass. Production and all admission/performance/network gates remain unchanged. [Evidence](../evidence/online/lobby-menu-2026-11-13/README.md).
@@ -1894,6 +1896,8 @@ remains pending. No merge or Worker/Vercel deployment.
 - 2026-10-21：我爱罗基础形态已源编译并接入本地／联机选人，已有 woailuo 援助保持不变。12 条原生 Flash 对照匹配 8,664 条角色状态、14 字段；普通／必杀防御实测削 3／4 HP、零连击，超必杀 23 连击／540 伤害且恢复站立。自然开场、迟到输入回滚、回合重置通过。通用源跟随／可见性分支／子剪辑跳转与只改对手 X 的事件均由源编译；PR #37 恢复不变。最终全角色保存回放、截图及耗时见[我爱罗检查记录](../evidence/characters/gaara/checks.json)。coverage 仍 partial，完整视听／浏览器／AI／全部边界未验收，未合并或部署。
 
 - 2026-10-21：重吾基础形态已源编译并接入本地／联机选人，无独立援助。12 条原生 Flash 对照匹配 8,664 条角色状态、14 字段；超必杀 450 伤害／7 连击，重复上必杀第二次空挥与原版一致。取消时序按源第 200 帧校准；无名弹体、脚部判定、子剪辑牵引和条件跳转由通用编译字段执行。回滚、全角色回放、真实截图及实际耗时见[重吾检查记录](../evidence/characters/juggo/checks.json)。PR #37 恢复保持不变，coverage 仍 partial，完整视听／浏览器／AI／全部边界未验收，未合并或部署。
+
+- 2026-11-13：香磷基础形态已源编译并接入本地／联机选人，源立绘、页脚和自然开场已接线；无独立援助，沿用已有默认鼬。17 条独占锁原生 Flash 用例匹配 12,274 条角色状态、14 字段，包含 998→1003 治疗边界、弹体局部变量／动态命名、连续远程双朝向和换边闪现。五项 Godot 回滚／受保护恢复／输入／视觉控制检查通过；两条反击尝试未实际打断香磷，不计作打断覆盖。编译影响、保存角色回放、最终工具检查及实测耗时见[香磷检查记录](../evidence/characters/karin/checks.json)。PR #37 恢复字节不变，coverage 仍 partial；完整视听／浏览器／AI／全部边界未验收，六项 admission/init 标志保持 false，未合并或部署。
 
 2026-10-23 Draft PR #48：导入器严格检查与滤镜工作仍在进行。小对象模糊已通过 242 组、37,280 个原版 alpha 采样点对照；颜色滤镜和完整语义审计仍有阻塞，全角色最终验收未完成。未新增角色、未合并部署，不提升里程碑状态。见[本轮证据](../evidence/importer-loud-fail/r02/README.md)。
 
