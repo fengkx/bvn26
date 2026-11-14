@@ -65,7 +65,7 @@ def collect():
         'source_tests': {'passed':9,'logs':['logs/source-tests.log','logs/hit-receive-source.log']},
         'rollback':{'passed':'WEQAL_ROLLBACK_SMOKE_OK' in (OUT/'logs/rollback.log').read_text(),
                     'scope':'Natural opening, ultimate snapshot replay, late guard input, round reset'},
-        'saved_roster':{'report':'regressions-form-r02/flash-replay/report.json','full_roster_executed':False},
+        'saved_roster':{'report':'saved-roster-full-results.json','full_roster_executed':False},
         'visual':{'directory':'visual-final','scope':'Native selection/full footer and source frame 493; not Flash pixel parity',
                   'residual':'Renderer reports resource/RID leaks on process exit; not treated as clean lifecycle acceptance.'},
         'remaining':['Full audiovisual/browser/AI and exhaustive move boundary acceptance'],
@@ -101,6 +101,8 @@ def collect():
     report['form_native_flash']['clean_native_batches'] = all(
         'ERROR:' not in (OUT / path).read_text() and 'SCRIPT ERROR' not in (OUT / path).read_text()
         for path in ['native-forms-r01/run-r02.log', 'native-forms-r03/run.log'])
+    report['saved_roster']['exit_resource_residuals'] = 7
+    report['saved_roster']['raw_archive'] = 'regressions-form-r02.tar.gz'
     report['web'] = json.loads((OUT / 'web/browser-check.json').read_text())
     report['online_manifest'] = {
         'passed': 'ONLINE_MANIFEST_OK' in (OUT / 'online-manifest-check-r03.log').read_text(),

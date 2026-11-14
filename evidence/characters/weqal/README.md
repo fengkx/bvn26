@@ -118,3 +118,48 @@ All six proof/admission flags remain false; M6 stays pending. No deployment/merg
 Large originals and failed runs remain retained (lossless gzip where applicable).
 Capture metadata contains historical scratch paths; it is provenance, not a claim
 that those temporary builds remain available. See `checks.json` for current scope.
+
+## Export and execution provenance
+
+The local Web export is bound to `web/build-metadata.json` and its PCK SHA-256.
+It records the then-current candidate commit plus the actual dirty source paths;
+subsequent commits preserve that runtime content and add tests/documentation.
+`web/browser-check.json` records actual training selection, natural opening,
+J+K replacement, standing/pause release and live HP drain in isolated headed
+Chrome. `web/packed-check.log` verifies target resources from an empty project
+with only the PCK, including a missing-profile negative check. The sandbox denied
+editor-settings writes on exit; that log is retained separately from the passing
+resource assertion. It does not claim a clean editor-settings exit.
+
+The ordinary browser connectors were unavailable (existing profile in use / native
+pipe closed). `web/browser_check.mjs` uses the repository's Chromium test transport
+with a dedicated temporary profile. The first sequential key attempt did not enter
+transformation and is retained as `browser-transform-r01.png` and its diagnostic.
+Concurrent J/K dispatch then entered the source transformation and completed it.
+This is programmatic browser input, not physical OS-input proof.
+
+Earlier native runs failed to write the default user log path. Their actor-state
+matches are diagnostic only. The final runs explicitly write logs inside this
+worktree: base `native-base-form-r02`, transformation `native-forms-r01/run-r02.log`,
+form actions `native-forms-r03`, and lifecycle `weqal_*-r02.log` / `form-lifecycle.log`.
+The initial relative-path saved-roster execution failure is losslessly archived in
+`regressions-form-r01.tar.gz`; it is never counted among accepted replays.
+
+## Final targeted results
+
+- 18 fresh diagnostic Flash/native cases, 12,996 actor states, 14 exact fields:
+  all matched, complete tick/slot coverage, declared target ranges observed.
+  Twelve base cases and six transformation/target-form cases remain separate reports.
+- All 288 preserved roster cases matched 180,736 actor states. Negative/overlap/
+  interrupted fixtures are retained without changing their input or expected trace.
+  Five do not enter their declared move range; this is not reported as move coverage.
+  Seven runs report exit-time resources still in use; see `saved-roster-errors.log`.
+  Full raw runs are retained in `regressions-form-r02.tar.gz`, with readable
+  `saved-roster-full-results.json`. No script-error/comparison failure is hidden.
+- Source graph tests (6), shared hit/receive invariants (5), natural input activation,
+  replacement checkpoints, timer pause/threshold/next-round lifecycle and rollback pass.
+- Actual font regeneration and non-skipped static coverage, online manifest gate,
+  schema checks, local Web packed-profile preflight and headed browser replacement pass.
+
+These are targeted character SOP results, not complete 1:1/production admission.
+The renderer cleanup residual and untested audiovisual/AI/matrix scope remain open.
