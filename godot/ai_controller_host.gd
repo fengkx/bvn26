@@ -59,6 +59,11 @@ class Projectile extends RefCounted:
 		for rename: Dictionary in model.get("rename_frames", []):
 			if int(rename["frame"]) == frame:
 				instance_name = rename["instance_name"]
+				if rename.has("name_field"):
+					var host: AiControllerHost = host_ref.get_ref()
+					var variables := host.fighter.instance_source_variables(model["instance_name"])
+					assert(variables.has(rename["name_field"]), "Undeclared projectile rename local")
+					instance_name = str(variables[rename["name_field"]])
 				if rename.has("local_writes"):
 					var host: AiControllerHost = host_ref.get_ref()
 					host.fighter._apply_projectile_local_write(model["instance_name"], {"writes": rename["local_writes"]})

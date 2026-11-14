@@ -135,3 +135,7 @@ replays remain byte-identical, all six Godot checks pass, 28 Python tests pass,
 and the static UI font coverage gate executes without skip. The rebase did not
 change the simulation/compiler used by the retained 204-case roster replay. No merge/deployment, admission-flag change,
 timer workaround, shortened comparison window or font/parity gate bypass is used.
+
+Master integration with Karin is recorded in [master-integration/](master-integration/README.md):
+29 retained cases / 20,938 states and eight Godot checks pass; all 28 base
+fighter compiler outputs match their respective parents. Coverage remains partial.

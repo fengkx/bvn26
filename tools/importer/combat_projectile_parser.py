@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Any
 PROJECTILE_X = re.compile(r"_X\s*=\s*_X\s*(?P<op>\+|-)\s*movspeed(?:\s*(?P<scale_op>[*/])\s*(?P<scale>\d+(?:\.\d+)?))?\s*;")
@@ -12,7 +13,7 @@ PROJECTILE_LITERAL_DELTA = re.compile(
 )
 PROJECTILE_HIT_GOTO = re.compile(r"gotoAndPlay\((?P<frame>\d+)\)")
 PROJECTILE_LOCAL_WRITE = re.compile(
-    r"(?P<name>[A-Za-z_]\w*)\s*=\s*(?P<value>true|false|-?\d+(?:\.\d+)?)\s*;"
+    r'(?<![\w.])(?P<name>[A-Za-z_]\w*)\s*=\s*(?P<value>true|false|-?\d+(?:\.\d+)?|"[^"\n]*")\s*;'
 )
 PROJECTILE_LOCAL_CONDITION = re.compile(
     r"(?P<name>[A-Za-z_]\w*)\s*(?P<operator>==|!=)\s*"
@@ -241,15 +242,11 @@ def parse_projectile_motion(
         hit_events.append((opponent_goto.start(), {"op": "goto", **goto}))
     local_writes = list(PROJECTILE_LOCAL_WRITE.finditer(source))
     for write in local_writes:
-        if write["name"] not in {"played", "movspeed"}:
-            continue
         if hit_branch is None or not hit_start <= write.start() < hit_end:
             continue
         if _brace_depth(source, hit_start, write.start()) == 0:
             raise ValueError("Projectile local hit write has no one-shot guard")
-        literal = write["value"]
-        value: Any = (literal == "true" if literal in ("true", "false")
-                      else float(literal) if "." in literal else int(literal))
+        value: Any = json.loads(write["value"])
         # Preserve scalar one-shot guards around writes. Collision and pause
         # guards are represented by the callback/collision scheduler itself.
         conditions, scope = projectile_local_scope(source, hit_start, write.start())

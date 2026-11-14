@@ -1,0 +1,1 @@
+Rejected visual attempt: new Karin portrait/footer PNGs had not yet been imported into the local Godot cache. The process printed its marker despite ResourceLoader and SCRIPT ERROR failures. These images do not establish selection wiring. The pinned editor import and a clean fresh capture are required.

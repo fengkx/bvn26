@@ -23,6 +23,7 @@ class IntroRosterTests(unittest.TestCase):
             "lanran": (1617, 1693),
             "gaara": (1176, 1283),
             "juggo": (1226, 1313),
+            "karin": (1220, 1293),
             "mayuri": (1141, 1197),
             "jianba": (1132, 1188),
             "minren": (1099, 1178),
