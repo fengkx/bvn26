@@ -121,11 +121,13 @@ FACING_BODY_WARP = re.compile(
     r"if\s*\(\s*_parent\._xscale\s*(?P<cmp>[<>])\s*0\s*\)\s*\{\s*"
     r"(?:_parent\.scale_X\s*=\s*(?P<then_facing_before>-?1)\s*;\s*)?"
     r"_parent\._xscale\s*=\s*(?P<then_scale>-?\d+)\s*;\s*"
+    r"(?:_parent\.scale_X\s*=\s*(?P<then_facing_middle>-?1)\s*;\s*)?"
     r"(?P<then_x>_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x[^;]*;)\s*"
     r"(?:_parent\.scale_X\s*=\s*(?P<then_facing>-?1)\s*;\s*)?"
     r"\}\s*else\s*\{\s*"
     r"(?:_parent\.scale_X\s*=\s*(?P<else_facing_before>-?1)\s*;\s*)?"
     r"_parent\._xscale\s*=\s*(?P<else_scale>-?\d+)\s*;\s*"
+    r"(?:_parent\.scale_X\s*=\s*(?P<else_facing_middle>-?1)\s*;\s*)?"
     r"(?P<else_x>_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x[^;]*;)\s*"
     r"(?:_parent\.scale_X\s*=\s*(?P<else_facing>-?1)\s*;\s*)?"
     r"\}",
@@ -351,7 +353,8 @@ def parse_body_warp(source: str) -> dict[str, Any] | None:
         then_branch = {"set_xscale": float(facing["then_scale"]), **then_x}
         else_branch = {"set_xscale": float(facing["else_scale"]), **else_x}
         for prefix, branch in (("then", then_branch), ("else", else_branch)):
-            logical_facing = facing[prefix + "_facing"] or facing[prefix + "_facing_before"]
+            logical_facing = (facing[prefix + "_facing"] or facing[prefix + "_facing_middle"]
+                              or facing[prefix + "_facing_before"])
             if logical_facing is not None:
                 branch["set_scale_x"] = int(logical_facing)
         result: dict[str, Any] = {
@@ -1045,7 +1048,7 @@ def parse_clip_timeline(
             "source_sha256": text_sha256(script["source"]),
         }
         motion_init = re.fullmatch(
-            r"stop\(\);\s*var movspeed = (-?\d+(?:\.\d+)?);\s*var played = 0;", source
+            r"stop\(\);\s*(?:var movspeed = (-?\d+(?:\.\d+)?);\s*)?var played = 0;", source
         )
         if source == "stop();" or motion_init is not None:
             stop_frames.append(record)
@@ -1053,7 +1056,10 @@ def parse_clip_timeline(
             if frame != 1:
                 raise ValueError("Projectile initialization outside frame 1: " + script["path"])
             initial_motion = {
-                "initial_variables": {"movspeed": float(motion_init[1]), "played": 0},
+                "initial_variables": {
+                    **({"movspeed": float(motion_init[1])} if motion_init[1] is not None else {}),
+                    "played": 0,
+                },
                 "initial_motion_source": record,
             }
         rename = CLIP_RENAME.search(script["source"])

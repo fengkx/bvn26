@@ -1662,7 +1662,8 @@ func _apply_projectile_local_write(instance_name: String, event: Dictionary) -> 
 	if not _projectile_conditions_match(variables, conditions):
 		return false
 	for write: Dictionary in event.get("writes", []):
-		assert(variables.has(write["field"]), "Projectile writes an undeclared local")
+		# A source assignment can create a property on the clip; a preceding
+		# `var` declaration is not required. Reads still require compiled state.
 		variables[str(write["field"])] = write["value"]
 	var record: Dictionary = _instance_local_frames.get(instance_name, {})
 	record["source_variables"] = variables

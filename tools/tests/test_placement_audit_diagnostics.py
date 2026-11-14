@@ -84,7 +84,7 @@ class PlacementAuditDiagnosticsTests(unittest.TestCase):
 
     def test_full_source_audit_accepts_all_current_form_aware_caches(self):
         rows = audit_shipped_contexts()
-        self.assertEqual(len(rows), 26)
+        self.assertEqual(len(rows), 27)
         self.assertEqual({r['status'] for r in rows}, {'passed'})
         for row in rows:
             self.assertEqual(row['compile_status'], 'passed')

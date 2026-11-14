@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-14 Killer Bee base port: original catalog/selector confirms `qilabi.swf` after Karin/Mayuri. Twenty-one character-SOP Flash fixtures match 15,162 actor states on 14 exact fields; source placement locals/helpers, X-only facing warp and stopped projectile initialization compile to shared behavior. Coverage remains partial; six proof/admission flags false, no merge or deployment. [Evidence and residuals](../evidence/characters/qilabi/README.md).
+
 - 2026-11-13 approved online lobby: new rooms default to host authority, independent existing character/helper UI returns to the room, host-only map confirmation and explicit host Start replace fixed setup/auto-start. Rollback remains in room settings; local Worker/native checks pass. Production and all admission/performance/network gates remain unchanged. [Evidence](../evidence/online/lobby-menu-2026-11-13/README.md).
 
 - 2026-11-13 host-authority connectivity: local browser candidate-permission/routing diagnosis separated from a real receiver-buffer overflow. Presenter-ready/initial pacing and applied-state credit limit stale-state bursts; local WebRTC evidence is scoped to dedicated browsers with an explicit permission override. Rollback/default, proof flags and G0/weak-machine/TURN/Internet/two-machine gates unchanged. [Follow-up evidence](../evidence/online/host-authority-connectivity/README.md).
