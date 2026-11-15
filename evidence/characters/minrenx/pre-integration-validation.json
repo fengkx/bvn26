@@ -1,0 +1,69 @@
+{
+  "status": "candidate_blocked_on_serial_integration_and_remaining_acceptance",
+  "recorded_at": "2026-11-15T06:41:50.246636+00:00",
+  "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "jpexs": "26.2.1",
+  "base": "a3b479414546250b7d0cd6e35cbc3ae52b3169d1",
+  "character": "仙鸣",
+  "source": "game/fighter/minrenx.swf",
+  "branch": "port/minrenx-base",
+  "proof_flags": {
+    "production_admitted": false,
+    "native_parity_proven": false,
+    "oracle_accepted": false,
+    "certified_global_tick": false,
+    "os_input_join_proven": false,
+    "native_initialization_complete": false
+  },
+  "targeted": {
+    "cases": 22,
+    "state_rows": 16364,
+    "status": "matched_14_character_state_fields",
+    "negative_cases": 1,
+    "controlled_post_transform_energy_refills": 5
+  },
+  "saved_roster": {
+    "cases": 300,
+    "state_rows": 189400,
+    "status": "matched_character_states",
+    "exit_residuals": [
+      {
+        "case": "pain-ultimate-guard",
+        "archive": "saved-roster.tar.gz",
+        "log": "pain-ultimate-guard/process.log",
+        "lines": [
+          "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+          "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+        ]
+      }
+    ]
+  },
+  "controlled_form_checkpoint_lifecycle": "passed_r03",
+  "focused_python_tests": "17 passed; logs/focused-tests-r02.log",
+  "verify": "passed; logs/verify-final.log",
+  "handoff": "passed; logs/handoff-final.log",
+  "font": "actual isolated candidate regeneration; 502 characters covered; font-check.json",
+  "shared_files": "8 pinned hashes unchanged",
+  "runtime_and_packages": "807 during-capture hashes unchanged",
+  "unaccepted_residuals": [
+    "Initial incomplete-import native diagnostic has missing-resource and RID/ObjectDB exit errors.",
+    "Base matched batch has sandbox user-log write errors.",
+    "Saved-roster exit warnings/errors listed separately; matching states do not accept leaks.",
+    "Headed resource cleanup is not established or accepted."
+  ],
+  "not_verified": [
+    "standard roster integration",
+    "actual Web gameplay",
+    "aligned visual and effect-instance parity",
+    "audio parity",
+    "full character acceptance",
+    "production admission"
+  ],
+  "draft_pr_opened": false,
+  "quota": {
+    "last_user_report_percent": 100,
+    "current_remaining": "not exposed",
+    "hard_block_observed": false,
+    "purchased": false
+  }
+}

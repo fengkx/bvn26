@@ -1,8 +1,10 @@
 # Sage Naruto / 仙鸣 independent author lane
 
 Base: `a3b479414546250b7d0cd6e35cbc3ae52b3169d1`.
-Branch: `port/minrenx-base`. This is a source-first candidate awaiting serial
-integration, not full parity or production admission. No Draft PR has been opened.
+Branch: `port/minrenx-base`. Source-first base and required transformation are
+integrated in this branch. The release Web export and packed-form check pass; foreground Web gameplay
+validation is blocked by the confirmed locked Mac desktop. Full parity and
+production admission remain false. No Draft PR has been opened yet.
 
 ## Roster identity
 
@@ -71,21 +73,24 @@ Form activation for local diagnostic fixtures is in the character's own
 `form_profiles.json`; it does not admit the character to the shared roster.
 The shared frame-call requirement is retained as a fragment for serial integration.
 
-## Shared-file boundary and residuals
+## Integration and residuals
 
-The real `build_menu_font.py` regeneration and output cmap check passed for
-455 baseline characters. A follow-up staged candidate applies `font-builder.patch`
-to include dynamic available-roster labels and passes 502 characters, including
-仙鸣. Its regenerated artifact and provenance are kept in
-`font/`; the shared menu font was restored byte-for-byte to the pinned base.
-No shared catalog, available registry or global manifest is overwritten.
+At `82b5ad6d4`, shared roster wiring was withheld under an overly broad reading
+of the parallel-lane restriction. The user clarified that required in-repo wiring
+belongs in this same branch. Selection, catalog, portraits/footer, natural opening,
+reviewed frame-call obligations and the actual shared menu font are now integrated.
+No other worktree or parallel character package was copied or changed.
 
-All six proof/admission flags remain false. Full audiovisual parity, exhaustive
-AI and boundaries, production admission, and headed exit-leak acceptance are
-not established. The initial native diagnostic ran before first asset import
-finished and contains missing-resource errors and exit leaks; it is retained
-but cannot count as a clean native pass. Fresh source/native comparisons and
-final check receipts must be consulted separately from build success.
+The actual `tools/importer/build_menu_font.py` now covers dynamic available-roster
+labels and was run against this branch. `font-integrated-check.json` verifies all
+502 required glyphs, including 仙鸣. The earlier isolated candidate and 455-glyph
+baseline receipts remain historical evidence. Catalog ordering was made consistent
+with available (including the pre-existing Kenshin order mismatch); guards were
+not relaxed. The source selector's card order remains unchanged.
+
+All six proof/admission flags remain false. Early incomplete-import diagnostics
+and later headed exit RID/ObjectDB/resources-still-in-use errors remain unaccepted.
+`native-visual-execution.json` separates completed image capture from exit cleanup.
 
 ## Fresh targeted behavior evidence
 
@@ -120,22 +125,47 @@ the recorded source instead of depending on absolute temporary paths. Capture
 folders' legacy `native.json` files are collector output, not Godot evidence;
 Godot outputs are in the explicitly named `native-*` directories.
 
-## Delivery blocker
+## Resumed targeted delivery
 
-The standard selectable roster does not yet register this candidate. Shared
-available/catalog entries, selection portrait/footer and intro indexes,
-reviewed frame-call requirements and global manifests must be integrated serially
-with the other author lanes. `integration-plan.json` describes these edits;
-`selection/`, the reviewed frame-call fragment and the staged font are durable
-inputs. The unchanged global frame-call guard correctly rejects the unregistered
-character; it has not been bypassed for release.
+The former integration blocker is resolved in this worktree. `integration-plan.json`
+and `shared-integration-blocker.json` retain its history and the user's clarification.
+The initial 22-case set below remains immutable; `receive-comparisons.json` adds
+normal guard, incoming guard/guard break and interruption: 25 cases / 18,530 rows
+in total. Normal guard chips the opponent by 3 HP with zero hits; incoming
+guard then low attack leaves Sage Naruto at 916 HP / one hit; interruption
+leaves 960 HP / one hit (`receive-observations.json`). Failed wall-clock-limited attempts are retained in r01/r02 logs; the final
+native r03 and original r02 captures complete all 360 logical frames unchanged.
 
-Consequently this lane does not meet the Draft PR delivery bar. Actual Web
-selection/gameplay, aligned visual/effect-instance and audio evidence, and clean
-headed exit behavior remain unverified. Early missing-resource/RID/ObjectDB
-failures are retained and not accepted. The base headless batch also records
-sandbox user-log write errors despite matching all states; later explicit-log
-form/lifecycle runs are clean. No claim of complete 1:1 behavior is made.
+`minrenx_rollback_smoke.gd` passes natural opening, ultimate pause checkpoint/replay,
+late guard inputs through the production rollback session and next-round reset.
+Native selection, super and required transformed-form images were inspected in
+`screenshots/` and `form-screenshots/`. They demonstrate rendering, not pixel parity.
+The headed exit leaks remain explicitly unaccepted and are not hidden by marker checks.
+
+The initial saved-roster/targeted receipt is `pre-integration-validation.json`.
+The old `finalize_evidence.py` seals that pre-integration phase and intentionally
+expects its historical baseline; it is not the resumed integration finalizer.
+The official local release Web build passes strict import/export error scans,
+manifest checks and online UI checks. Its PCK SHA-256 is
+`7121947e451eef8cbf0003ac88ad00ee956a81f9871e8ff0b958838e420313af`.
+`web/source-freeze-check.json` matches 17,008 runtime files plus catalog/guards
+to this branch; the build truthfully records working-tree changes atop `82b5ad6d4`.
+The exported required form passes `packed_profile_check.gd`, including rejection
+of a missing form. This does not substitute for foreground browser gameplay.
+
+Two headed CDP attempts remain failed: r01 never entered a match; r02 explicitly
+stopped before input because the canvas was focused but the page was hidden.
+Read-only system inspection at 15:26 Asia/Shanghai confirmed both
+`IOConsoleLocked` and `CGSSessionScreenIsLocked`. No unlock was attempted and
+foreground retries stopped. `web/execution.json` records the exact blocker;
+`web-r01/` and `web-r02/` retain failures. The user has been asked to unlock,
+without re-requesting the already-granted reservation. After unlock, rerun
+`web_smoke.mjs` under the specified exclusive lock against the same built artifact.
+No Draft PR is justified until that targeted browser check passes.
+
+`seal_integration.py` updates required repository hashes and truthfully seals
+either the passed state or this explicit browser blocker. It cannot convert a
+blocked run into a Web pass. All six proof/admission flags remain false.
 
 ## Final saved-roster regression
 

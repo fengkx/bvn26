@@ -1,0 +1,22 @@
+{
+  "status": "passed_scoped_checks",
+  "checks": [
+    {
+      "name": "production_rollback",
+      "log": "logs/rollback-integrated.log",
+      "scope": "Natural opening, ultimate pause checkpoint/replay, late guard inputs, next round"
+    },
+    {
+      "name": "form_lifecycle",
+      "log": "logs/form-lifecycle-integrated.log",
+      "scope": "Source replacement, fresh locals, transferred state, pause/timer threshold, checkpoint/next round"
+    },
+    {
+      "name": "packed_form",
+      "log": "logs/packed-profile.log",
+      "scope": "Exported required form prepare succeeds; missing form rejected"
+    }
+  ],
+  "headed_exit_cleanup": "not accepted; see native-visual-execution.json",
+  "protected_recovery_log": "logs/protected-integrated.log"
+}
