@@ -1,0 +1,35 @@
+{
+  "original_repeat_entries": [
+    {
+      "tick": 11,
+      "source_frame": 688.0,
+      "p1_x": 300.0,
+      "p2_x": 350.0,
+      "energy": 300.0,
+      "facing": 100.0
+    },
+    {
+      "tick": 131,
+      "source_frame": 688.0,
+      "p1_x": 300.0,
+      "p2_x": 800.0,
+      "energy": 200.0,
+      "facing": 100.0
+    },
+    {
+      "tick": 251,
+      "source_frame": 688.0,
+      "p1_x": 300.0,
+      "p2_x": 800.0,
+      "energy": 100.0,
+      "facing": 100.0
+    }
+  ],
+  "expected_inputs": [
+    10,
+    130,
+    250
+  ],
+  "comparison": "comparisons.json",
+  "scope": "Three casts in one original instance; P2 right input 100-105 moves the target; mirror fixture is a separate fresh fight; rollback/round reset tested natively."
+}
