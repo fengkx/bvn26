@@ -22,6 +22,18 @@ func _observe(tick: int) -> void:
 func _save_groups() -> void:
 	await RenderingServer.frame_post_draw
 	var groups := []
+	var draw_nodes := []
+	for parent in [game, game.game_world, game.current_world, game.naruto]:
+		for child in parent.get_children():
+			if child is CanvasItem:
+				var entry := {"path": str(child.get_path()), "visible": child.is_visible_in_tree(),
+					"z": child.z_index, "relative": child.z_as_relative,
+					"transform": str(child.get_global_transform()), "queued": child.is_queued_for_deletion()}
+				if child is Sprite2D:
+					entry["texture"] = child.texture.resource_path if child.texture != null else "null"
+					entry["rect"] = str(child.get_rect())
+				draw_nodes.append(entry)
+	FileAccess.open(bitmap_directory.path_join("draw-nodes.json"), FileAccess.WRITE).store_string(JSON.stringify(draw_nodes, "  "))
 	for actor in [game.naruto, game.current_world]:
 		for child in actor.get_children():
 			if child.has_method("source_bounds") and child.has_node("Contents"):

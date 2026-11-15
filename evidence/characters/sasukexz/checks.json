@@ -1,5 +1,5 @@
 {
-  "status": "visual_audio_web_gaps_and_foreground_blocker",
+  "status": "shine_lower_layers_fixed_audio_and_web_pending",
   "character": "佐助须佐",
   "source": "game/fighter/sasukexz.swf",
   "base_commit": "a3b479414546250b7d0cd6e35cbc3ae52b3169d1",
@@ -12,7 +12,7 @@
     "native_initialization_complete": false
   },
   "flash_running_for_this_task": false,
-  "foreground": "Resume: two headed native diagnostic experiments completed under lock; third stopped before Godot launch because desktop locked or unknown. No repeated checks. Lock wrapper exited; no Flash or browser launched this resume.",
+  "foreground": "Exclusive lock used for native diagnostics and browser programmatic lifecycle checks. Browser closed and lock released; later native tests finished. Sound capture pending fresh probe.",
   "draft_pr": null,
   "source_tests": {
     "passed": 4
@@ -32,9 +32,10 @@
   },
   "rollback": {
     "passed": true,
-    "scope": "natural intro, ultimate, guard, pause checkpoint replay, round reset, late input"
+    "scope": "natural intro, ultimate, guard, pause checkpoint replay, round reset, late input",
+    "report": "logs/rollback-r02.log"
   },
-  "shared_runtime_changed": false,
+  "shared_runtime_changed": true,
   "shared_compiler_changed": false,
   "original_flash": {
     "status": "targeted_actor_states_matched",
@@ -55,9 +56,9 @@
     "status": "matched",
     "cases": 30,
     "states": 18300,
-    "seconds": 110.28467162512243,
-    "scope": "one saved source-pinned fixture per covered fighter; not full 288-case matrix",
-    "report": "saved-roster-r01/flash-replay/report.json"
+    "seconds": 61.214887416921556,
+    "scope": "30 representative source-pinned fighter state cases after render-only shared change; not full288 or audiovisual regressions",
+    "report": "saved-roster-r02/flash-replay/report.json"
   },
   "web": {
     "status": "local_build_and_training_entry_observed_not_full_sop",
@@ -78,7 +79,10 @@
       "web/training-snapshot-r02.json",
       "web/training-battle-r02.png",
       "web/selection-training-r02.png"
-    ]
+    ],
+    "resume_before_fix": "Full super enters, hits and returns at source868; pause snapshots stable and resume clears pause. Actual blur/visibility transition not established; no focus recovery pass.",
+    "resume_report": "web/lifecycle-r03.json",
+    "postfix_build": "running; no completed post-fix browser acceptance"
   },
   "lifecycle_native": {
     "cases": 2,
@@ -166,17 +170,19 @@
     }
   },
   "visual": {
-    "status": "differences_found",
+    "status": "targeted_lower_layer_omission_fixed",
     "report": "visual-comparisons-r01.json",
     "actor_states_matched": 162,
     "pixel_parity": false,
     "audio": "not_captured",
     "limitations": [
-      "Seven selected ticks, separate native match per image",
-      "Tick43 black flames differ; timer and stage foreground also differ",
-      "No accepted audiovisual lifecycle comparison"
+      "Full-frame raster differences remain; no global pixel acceptance.",
+      "No shared wall-clock tape; timer/HUD timing remains unaccepted.",
+      "Continuous audiovisual lifecycle and audio acceptance incomplete."
     ],
-    "investigation": "visual-investigation-r02.json"
+    "investigation": "visual-investigation-r02.json",
+    "fixed_report": "visual-fixed-r12.json",
+    "source_root_cause": "shine-backdrop-source.md"
   },
   "final_record_checks": {
     "comparison_collection": "19 cases / 14198 states / 14 fields matched",
@@ -200,5 +206,13 @@
     "warnings": "No ERROR/WARNING/RID/resources-still matches in completed headed experiment logs; inherited cleanup residuals remain unaccepted.",
     "verify": "passed_after_reviewed_test_runner_hash_update",
     "handoff": "passed"
-  }
+  },
+  "shared_runtime_scope": "Refresh ScreenFlash backdrop at its own depth; no source logic or compiler changes.",
+  "shine_regression": {
+    "without_refresh_exit": 1,
+    "fixed_exit": 0,
+    "fixed_clean_log": true,
+    "earlier_test_harness_leaks_retained": true
+  },
+  "source_guards_resume_passed": 26
 }

@@ -16,7 +16,8 @@ for fighter in ['orochimaru', 'jiraiya', 'pain', 'konan', 'daitu', 'didala', 'la
         index['results'].append({'id': row['id'], 'fixture': row['paths']['fixture'],
                                  'source': row['paths']['source'], 'hashes': row['hashes']})
 
-# No shared compiler/runtime change: retain one source-pinned case per saved fighter.
+# Representative state coverage across saved fighters; rendering is checked
+# separately by the shine backdrop regression and source-pinned visual phases.
 selected = {}
 for case in index['results']:
     fixture = json.loads(Path(case['fixture']).read_text())
