@@ -1,0 +1,20 @@
+test_each_selectable_base_fighter_has_own_source_opening_chain (tools.tests.test_intro_roster.IntroRosterTests.test_each_selectable_base_fighter_has_own_source_opening_chain) ... FAIL
+test_published_candidate_roster_has_source_openings (tools.tests.test_intro_roster.IntroRosterTests.test_published_candidate_roster_has_source_openings) ... ok
+test_source_audit_and_runtime_intro_have_same_roster (tools.tests.test_intro_roster.IntroRosterTests.test_source_audit_and_runtime_intro_have_same_roster) ... ok
+
+======================================================================
+FAIL: test_each_selectable_base_fighter_has_own_source_opening_chain (tools.tests.test_intro_roster.IntroRosterTests.test_each_selectable_base_fighter_has_own_source_opening_chain)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-sasukexz/tools/tests/test_intro_roster.py", line 47, in test_each_selectable_base_fighter_has_own_source_opening_chain
+    self.assertEqual(set(spec["fighters"]), set(expected))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'sasukexz'
+'kenshin'
+'weqal'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.010s
+
+FAILED (failures=1)

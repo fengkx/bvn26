@@ -53,7 +53,20 @@
     "report": "saved-roster-r01/flash-replay/report.json"
   },
   "web": {
-    "status": "not_run"
+    "status": "local_build_passed_browser_not_run",
+    "exit_code": 0,
+    "metadata_tests": 11,
+    "online_manifest_tests": 8,
+    "lobby_ui_runner": "passed_headless",
+    "roster": 32,
+    "build_id": "c894217bbc8c9489f7be9bbfb26adeb9ee169d97b60a01df156e5edc624b0ada",
+    "pck_sha256": "187492ab9d5f1ce33e75a5c94dc55d560f13e8396290929fa4683570c1ca327d",
+    "source_commit": "981877340b2b8247dfa9ff3c8f69ec588fdab19a",
+    "dirty_provenance_recorded": true,
+    "metadata": "web-build-metadata-r01.json",
+    "log": "logs/web-build-r01.log",
+    "headed_browser": "blocked_desktop_locked_and_minrenx_priority",
+    "production_deploy": false
   },
   "lifecycle_native": {
     "cases": 2,
@@ -66,7 +79,9 @@
     ],
     "followup_contact_entries": 1,
     "followup_repeat_status": "not_proven",
-    "original_comparison": "not_run"
+    "original_comparison": "not_run",
+    "followup_r02_entries": 2,
+    "followup_r03_entries": 2
   },
   "verify": "passed",
   "handoff": "passed",
@@ -74,5 +89,41 @@
     "remaining": "not_available",
     "reset": "not_available",
     "hard_block_observed": false
+  },
+  "intro_roster_tests": {
+    "passed": 3,
+    "initial_failure": "Static expected roster omitted master Kenshin/Ulquiorra and new Susanoo Sasuke; added source-derived opening ranges."
+  },
+  "global_frame_audit": {
+    "status": "failed",
+    "contexts": 32,
+    "compiled": 26,
+    "cache_passed": 20,
+    "candidate_context": "passed",
+    "unchanged_baseline_failures": 12,
+    "details": "baseline-audit-residuals.json"
+  },
+  "negative_native": {
+    "cases": 2,
+    "states": 964,
+    "insufficient_energy": {
+      "body_frames": [
+        1,
+        7
+      ],
+      "energy": 0
+    },
+    "missing_transform_label": {
+      "keys": [
+        "attack",
+        "jump"
+      ],
+      "body_frames": [
+        1,
+        7
+      ],
+      "energy": 300
+    },
+    "scope": "Native-only; original-player comparisons pending; no key disabling"
   }
 }
