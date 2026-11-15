@@ -19,9 +19,10 @@ for fighter in ['orochimaru', 'jiraiya', 'pain', 'konan', 'daitu', 'didala', 'la
 # Representative state coverage across saved fighters; rendering is checked
 # separately by the shine backdrop regression and source-pinned visual phases.
 selected = {}
+full_roster = '--full' in sys.argv
 for case in index['results']:
     fixture = json.loads(Path(case['fixture']).read_text())
-    selected.setdefault(fixture['fighter'], case)
+    selected.setdefault(case['id'] if full_roster else fixture['fighter'], case)
 index['results'] = list(selected.values())
 (out.parent / 'selection.json').write_text(json.dumps(index['results'], ensure_ascii=False, indent=2) + '\n')
 for case in index['results']:
@@ -60,7 +61,7 @@ def replay(case):
 started = time.monotonic()
 with ThreadPoolExecutor(max_workers=4) as pool:
     results = list(pool.map(replay, index['results']))
-report = {'seconds': time.monotonic() - started, 'results': results}
+report = {'seconds': time.monotonic() - started, 'scope': 'full_saved_corpus' if full_roster else 'representative_fighters', 'results': results}
 (out / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
 assert all(r['execution']['executed'] and r['comparison']['status'] == 'matched' for r in results)
 assert len(results) == len(selected)

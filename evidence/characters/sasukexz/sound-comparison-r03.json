@@ -1,0 +1,69 @@
+{
+  "status": "targeted_body_sound_tag_and_native_start_matched",
+  "scope": "One normal super; BODY727 top-level StartSound markers and actual native AudioStreamPlayer creation/playing observations. Not audible waveform or global/nested/voice/helper coverage.",
+  "source": [
+    {
+      "marker_sequence": 4060,
+      "marker_fight_tick": 13,
+      "following_root_tick": 14,
+      "frame": 776,
+      "sound_id": 331,
+      "following_frame": 776
+    }
+  ],
+  "native": [
+    {
+      "frame": 776,
+      "instance_id": 443858040086,
+      "observed_playing": true,
+      "stream": "res://generated/fighters/sasukexz/sound_segments/331-d389ac68a4fff187.wav",
+      "tick": 14,
+      "volume_db": 0.0,
+      "sound_id": 331,
+      "source_event": {
+        "type": "start_sound",
+        "sound_id": 331
+      },
+      "segment_sha256": "604030905035f69e8a32e4108ccf88d302d090bc733df81056fc9eb99671f34e",
+      "play_count": 1
+    }
+  ],
+  "actor_states": {
+    "status": "matched",
+    "source_states": 722,
+    "native_states": 722,
+    "complete": true,
+    "fields": [
+      "frame",
+      "x",
+      "y",
+      "xscale",
+      "action",
+      "hp",
+      "ql",
+      "sw",
+      "touch",
+      "touchFloor",
+      "hits",
+      "paused",
+      "hstm",
+      "hurtSkling"
+    ],
+    "differences": []
+  },
+  "phase_alignment": "Marker executes after StartSound before the next root observation. Source marker fight_tick13 is followed by root tick14/body776. Native player creation precedes its tick14 observer. No blanket tick offset was applied.",
+  "limitations": [
+    "No original waveform/audio-device latency measurement.",
+    "No sound pause/cleanup or repeated-cast audio acceptance.",
+    "Native fast diagnostic replay observes streams starting, not real-time envelope output."
+  ],
+  "paths": {
+    "events": "evidence/characters/sasukexz/original-sound-r03/sasukexz-super/events.jsonl",
+    "native": "evidence/characters/sasukexz/native-sound-r03.json",
+    "instrumentation": "evidence/characters/sasukexz/probe-sound-r03/sound-instrumentation.json"
+  },
+  "hashes": {
+    "events": "e3920781b3389f5eca88a688f29e68962dc47e9b665af517164c52b182991fa6",
+    "native": "d508396dfb33d6f4b14c899a91d3aa8cbf094e69a1cc05e750250e091a8a5917"
+  }
+}
