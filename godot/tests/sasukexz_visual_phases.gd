@@ -17,6 +17,7 @@ func _run() -> void:
 		await _run_case(args[0], bitmap_directory.path_join("state-%03d.json" % tick))
 	FileAccess.open(bitmap_directory.path_join("phases.json"), FileAccess.WRITE).store_string(JSON.stringify({
 		"ticks": ticks,
+		"render_settle_frames": bitmap_settle_frames,
 		"fixture_sha256": FileAccess.get_sha256(args[0]),
 		"engine": Engine.get_version_info(),
 		"scope": "Native root-observer snapshots; a separate match replay per image, not continuous lifecycle evidence",

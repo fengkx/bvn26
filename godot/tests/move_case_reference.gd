@@ -3,6 +3,7 @@ extends SceneTree
 var game
 var bitmap_tick := -1
 var bitmap_directory := ""
+var bitmap_settle_frames := 1
 var fixture: Dictionary
 var mode: int
 var rows: Array = []
@@ -160,8 +161,9 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		# Terminal observer skips deferred frame scripts; pause all processing
 		# while pending CanvasItem draws settle, without advancing gameplay.
 		game.process_mode = Node.PROCESS_MODE_DISABLED
-		await process_frame
-		await RenderingServer.frame_post_draw
+		for settle_frame in bitmap_settle_frames:
+			await process_frame
+			await RenderingServer.frame_post_draw
 		var image := root.get_texture().get_image()
 		assert(image.get_size() == Vector2i(600, 400), "Unexpected bitmap size")
 		image.convert(Image.FORMAT_RGBA8)

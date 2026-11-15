@@ -1,5 +1,5 @@
 {
-  "status": "targeted_behavior_matched_visual_audio_acceptance_incomplete",
+  "status": "visual_audio_web_gaps_and_foreground_blocker",
   "character": "佐助须佐",
   "source": "game/fighter/sasukexz.swf",
   "base_commit": "a3b479414546250b7d0cd6e35cbc3ae52b3169d1",
@@ -12,7 +12,7 @@
     "native_initialization_complete": false
   },
   "flash_running_for_this_task": false,
-  "foreground": "Coordinator released priority window at 19:40. Original captures and local headed browser completed under exclusive lock; own browser closed and lock released.",
+  "foreground": "Resume: two headed native diagnostic experiments completed under lock; third stopped before Godot launch because desktop locked or unknown. No repeated checks. Lock wrapper exited; no Flash or browser launched this resume.",
   "draft_pr": null,
   "source_tests": {
     "passed": 4
@@ -175,7 +175,8 @@
       "Seven selected ticks, separate native match per image",
       "Tick43 black flames differ; timer and stage foreground also differ",
       "No accepted audiovisual lifecycle comparison"
-    ]
+    ],
+    "investigation": "visual-investigation-r02.json"
   },
   "final_record_checks": {
     "comparison_collection": "19 cases / 14198 states / 14 fields matched",
@@ -187,5 +188,17 @@
     ],
     "raw_archive": "53 files, every decompressed member SHA256 verified",
     "original_untracked_uid_count": 265
+  },
+  "resume_visual_checks": {
+    "source_tests": 4,
+    "render_settle_exit": 0,
+    "display_rebuild_exit": 0,
+    "actor_comparison_each": 162,
+    "group_script_parse": "passed",
+    "headless_state_probe": "completed_after_absolute_path_retry",
+    "retained_initial_failure": "logs/visual-state-r01.log",
+    "warnings": "No ERROR/WARNING/RID/resources-still matches in completed headed experiment logs; inherited cleanup residuals remain unaccepted.",
+    "verify": "passed_after_reviewed_test_runner_hash_update",
+    "handoff": "passed"
   }
 }

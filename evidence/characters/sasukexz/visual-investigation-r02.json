@@ -1,0 +1,93 @@
+{
+  "status": "unresolved",
+  "baseline_commit": "4a12657ffb6d6d76b90acf6ab39e7c896608f767",
+  "experiments": {
+    "r02": "Three render waits with gameplay disabled, instead of one. No source advance.",
+    "r03": "Same three waits plus rebuilding actor/world derived CanvasItems at terminal observer. No source advance.",
+    "r04": "Not launched: exclusive lock child rejected desktop state as locked or unknown before Godot launch."
+  },
+  "images": [
+    {
+      "tick": 0,
+      "sha256": [
+        "e617f15647d45f5fcc0641dae0f97bea64f9ee6557456ce9a2d353f5062b7d45",
+        "7ad8d24f44de3a04890a2486ec27a36b8734c56f46c29fab6bd1990acd7a33d9",
+        "7ad8d24f44de3a04890a2486ec27a36b8734c56f46c29fab6bd1990acd7a33d9"
+      ],
+      "r01_equals_r02": false,
+      "r02_equals_r03": true
+    },
+    {
+      "tick": 11,
+      "sha256": [
+        "0cb7f6155f3c5dc96b21194a967f19b137c89cedd8f674f78082952d39910d83",
+        "ae3b527f7e72ae1266c46a70dd9e5c95ee8f9dd40d1263381b5678872510ef66",
+        "ae3b527f7e72ae1266c46a70dd9e5c95ee8f9dd40d1263381b5678872510ef66"
+      ],
+      "r01_equals_r02": false,
+      "r02_equals_r03": true
+    },
+    {
+      "tick": 15,
+      "sha256": [
+        "c3b8e564eaf7b1de56ad2b589dfd1511a91e6887cbb973139adccd955af2d06e",
+        "c3b8e564eaf7b1de56ad2b589dfd1511a91e6887cbb973139adccd955af2d06e",
+        "c3b8e564eaf7b1de56ad2b589dfd1511a91e6887cbb973139adccd955af2d06e"
+      ],
+      "r01_equals_r02": true,
+      "r02_equals_r03": true
+    },
+    {
+      "tick": 40,
+      "sha256": [
+        "b539e72c9de83f1019226c1ee528d67a20634dd69cd7ca30de55c0664c9e2d09",
+        "b539e72c9de83f1019226c1ee528d67a20634dd69cd7ca30de55c0664c9e2d09",
+        "b539e72c9de83f1019226c1ee528d67a20634dd69cd7ca30de55c0664c9e2d09"
+      ],
+      "r01_equals_r02": true,
+      "r02_equals_r03": true
+    },
+    {
+      "tick": 43,
+      "sha256": [
+        "bbe8beafb376313d695f9a17a93a3c5847cba684b376cbb0089c15609c8391ec",
+        "bbe8beafb376313d695f9a17a93a3c5847cba684b376cbb0089c15609c8391ec",
+        "bbe8beafb376313d695f9a17a93a3c5847cba684b376cbb0089c15609c8391ec"
+      ],
+      "r01_equals_r02": true,
+      "r02_equals_r03": true
+    },
+    {
+      "tick": 60,
+      "sha256": [
+        "c122140f34723d1393b339217aa7e66da16de0a6559fb1f78f62c95186019276",
+        "937cc07924997fcab5603f8bb35988f33c549c920cfea190726678c3935ce77e",
+        "2b778d9dc5d847a4caf567d9d9040451dfc3bc006fe389bf7e56d72ed26bf998"
+      ],
+      "r01_equals_r02": false,
+      "r02_equals_r03": false
+    },
+    {
+      "tick": 80,
+      "sha256": [
+        "eef69680cf3a3e4d8b2607a0b31459f82b358b7371004d319f012b336a13000d",
+        "fd2bfe44ffc39a48789723f790f9ec5ce2d3f9edc368f7f29612557f406f49e1",
+        "05866705e14e5b8d4b9849f16632fa3e045e4ed3b78531aef15b3286b8bdb792"
+      ],
+      "r01_equals_r02": false,
+      "r02_equals_r03": false
+    }
+  ],
+  "findings": [
+    "Tick43 missing/different black flames and foreground persist after render waits and display rebuild.",
+    "Tick60 does contain black flames in both source/native; asset is not entirely missing.",
+    "Native observer at43 has BODY805, bs2atm sprite368 local frame1, no pending body frames, and no hidden stage names.",
+    "Source main DefineSprite_1813/frame_1/DoAction.as uses setInterval(time,1000). Bitmap sampling is expensive; source elapsed timer differs and no shared wall-clock tape was supplied. Do not count HUD timing as parity."
+  ],
+  "audio": "Still unverified; sound trigger timing is required by character SOP and VALIDATION, not replaced by state comparisons.",
+  "web": "No new browser run this resume. Prior training entry only.",
+  "runtime_changed": false,
+  "compiler_changed": false,
+  "foreground": "Stopped after DESKTOP_LOCKED_OR_UNKNOWN_STOP; no repeated lock checks; lock wrapper exited.",
+  "six_flags": "unchanged_false"
+}
