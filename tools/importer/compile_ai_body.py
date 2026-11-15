@@ -152,6 +152,8 @@ def compile_function(name: str, params: str, body: str, extra_calls: frozenset[s
 
 
 def compile_body(bundle: dict, sprite: int, *, player: bool = False, form_callbacks: bool = False, form_helpers: bool = False) -> tuple[str, dict]:
+    from undefined_body_calls import resolve_undefined_body_calls
+    undefined_calls = resolve_undefined_body_calls(bundle, sprite)
     form_callbacks = form_callbacks or form_helpers
     path = f'DefineSprite_{sprite}/frame_1/DoAction.as'
     if hashlib.sha256((ROOT / bundle['game_file']).read_bytes()).hexdigest() != bundle['swf_sha256']:
@@ -217,11 +219,17 @@ def compile_body(bundle: dict, sprite: int, *, player: bool = False, form_callba
         except (ValueError, SyntaxError, KeyError) as error:
             raise ValueError(f"{bundle['game_file']}:{path}#form_helpers: {error}") from error
         compiled_names += list(FORM_NAMES)
-    return text, {'status': 'compiled_not_integrated', 'functions': compiled_names,
+    for resolved in undefined_calls:
+        text += ('\n# The retained source method is absent; keep an explicit call target.\n'
+                 'func ' + resolved['name'] + '(_direction: Variant = null) -> Variant:\n\treturn null\n')
+    metadata = {'status': 'compiled_not_integrated', 'functions': compiled_names,
                   'host_services': sorted(HOST_CALLS), 'callbacks': list(callbacks),
                   'scalar_fields': sorted(FIELDS), 'external_fields': sorted(set(REFS.values())), 'path': path,
                   'source_swf': bundle['game_file'], 'swf_sha256': bundle['swf_sha256'],
                   'source_sha256': hashlib.sha256(source.encode()).hexdigest()}
+    if undefined_calls:
+        metadata['undefined_body_calls'] = undefined_calls
+    return text, metadata
 
 
 def compile_player_body(bundle: dict, sprite: int, timeline: dict, *,
