@@ -76,6 +76,9 @@ Generated assets, intro, portraits and footer are activated in the 32-fighter
 selection and matchmaking catalogs. Native headed selection/combat screenshots
 are retained under `visual-resume`.
 The source compiler accepts the package without shared runtime changes.
+Reference fixtures explicitly select the existing Gaara/Kon helpers on both ends;
+the Web run selects Kon/Gaara. The independent Temari assist is not part of this
+base-fighter port, and canonical default-helper initialization is not certified.
 
 The UI font was actually regenerated from Sarasa UI SC collection index 199,
 using `build_menu_font.py`; the non-ASCII coverage test ran and passed. The first
@@ -109,6 +112,21 @@ It completed and released the lock; unrelated PID 24366 is untouched.
   natural intro, Vs Com receiving hits, and training special entry, source pause,
   contact and recovery. Seven repeated normal-special entries are recorded.
   This is not a headed-browser or physical-keyboard acceptance claim.
+
+Final t342 export also passed import/export (exit 0), strict log scans, eight
+online-manifest tests, the online UI runner and the post-export fingerprint check.
+`web/final-build-metadata.json` records source commit `004dceb8`, build ID
+`f121dbc04f3107750f136fd6395cef0578727bb4a9861c067dc9b1e5ef691530`, and PCK
+SHA-256 `b2f515f136575b45276f59917b71c5a9722eac6185a234a06df987b4fb2b8f2c`.
+The snapshot honestly reports dirty: 176 generated UID files plus the bound export
+preset and derived online manifest. No clean-HEAD claim is made. The final package
+browser identity matches both sidecar and runtime. The same final package also
+records seven normal-special entries, pause/contact and recovery after natural
+intro in training (`web/final-package/validation.json`). See its
+[selection](web/final-package/browser-select.png) and
+[battle](web/final-package/browser-super.png) screenshots.
+The frozen product inputs are unchanged by the later evidence/document commits.
+Expected negative lobby-fixture warnings remain in `web/final-export-logs`.
 
 Headed native capture exited with five resources still in use and shader,
 material and texture RID leaks. These remain unaccepted, as do prior saved-roster

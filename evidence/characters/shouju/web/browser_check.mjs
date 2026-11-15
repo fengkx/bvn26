@@ -1,6 +1,6 @@
 // Local isolated headless export check using the repository's Chromium test transport.
 import {writeFile} from 'node:fs/promises';
-const folder = new URL('./', import.meta.url);
+const folder = new URL(process.env.BVN_WEB_OUTPUT || './', import.meta.url);
 const pages = await fetch('http://127.0.0.1:58731/json/list').then(r => r.json());
 const target = pages.find(p => p.type === 'page');
 if (!target) throw new Error('Dedicated test page missing');
@@ -29,6 +29,8 @@ async function key(key, code, virtualKey) {
 }
 const keys={d:['d','KeyD',68],s:['s','KeyS',83],w:['w','KeyW',87],a:['a','KeyA',65],j:['j','KeyJ',74],n:['1','Numpad1',97]};
 await call('Runtime.enable'); await call('Page.enable');
+await call('Network.enable');
+await call('Network.setCacheDisabled',{cacheDisabled:true});
 await call('Emulation.setDeviceMetricsOverride',{width:1100,height:850,deviceScaleFactor:1,mobile:false});
 const mode=process.argv[2];
 await call('Page.bringToFront');
@@ -36,8 +38,9 @@ await call('Emulation.setFocusEmulationEnabled',{enabled:true});
 try {
   if(mode==='key') {
     await evaluate('document.querySelector("canvas").focus()');
+    await delay(1500);
     await key(...keys[process.argv[3]]);
-    await delay(3000);
+    await delay(Number(process.env.BVN_WEB_SETTLE_MS || 3000));
   } else if(mode==='boot') {
     await call('Page.navigate',{url:'http://127.0.0.1:58730/?temari-r25'});
     messages.length=0;
@@ -63,6 +66,7 @@ try {
     await call('Input.dispatchKeyEvent',{type:'keyUp',key:'o',code:'KeyO',windowsVirtualKeyCode:79});
   } else if(mode==='super') {
     await evaluate('document.querySelector("canvas").focus()');
+    await delay(1500);
     await call('Input.dispatchKeyEvent',{type:'keyDown',key:'i',code:'KeyI',windowsVirtualKeyCode:73});
     await delay(12000);
     await call('Input.dispatchKeyEvent',{type:'keyUp',key:'i',code:'KeyI',windowsVirtualKeyCode:73});

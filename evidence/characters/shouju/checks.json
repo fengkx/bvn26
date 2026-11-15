@@ -106,8 +106,15 @@
       "log": "logs/visual-resume.log"
     },
     "web_export": {
-      "status": "passed_previous_resume",
-      "log": "logs/web-build-resume-r02.log"
+      "status": "passed",
+      "log": "logs/web-build-t342.log",
+      "raw_logs": "web/final-export-logs",
+      "metadata": "web/final-build-metadata.json",
+      "online_manifest_tests": 8,
+      "import_exit": 0,
+      "export_exit": 0,
+      "strict_import_export_log_scan": "passed",
+      "note": "Expected negative lobby diagnostic warnings retained in raw smoke logs; prior headed RID leaks remain unaccepted."
     },
     "web_functional": {
       "status": "passed_targeted_path",
@@ -135,6 +142,22 @@
       "status": "passed",
       "states": 1082,
       "log": "logs/native-crossing-r04.log"
+    },
+    "final_package_boot": {
+      "status": "matched_identity",
+      "evidence": "web/final-package/identity.json"
+    },
+    "web_functional_final": {
+      "status": "passed_targeted_final_package",
+      "evidence": "web/final-package/validation.json",
+      "special_entries": 7,
+      "build_id": "f121dbc04f3107750f136fd6395cef0578727bb4a9861c067dc9b1e5ef691530",
+      "scope": "Actual final-package selection, natural intro, training repeated special, pause/contact and recovery via CDP. Not full audiovisual/browser/OS-input admission."
+    },
+    "final_materials_validation": {
+      "status": "passed",
+      "verify_log": "logs/verify-pr-head-t342.log",
+      "handoff_log": "logs/handoff-pr-head-t342.log"
     }
   },
   "pending": [
@@ -157,12 +180,18 @@
     "Prior saved-roster exit resources-in-use remains unaccepted",
     "Godot editor cannot write external editor_settings-4.7.tres in sandbox"
   ],
-  "draft_pr": null,
   "preservation": {
     "commit": "be5ab318",
     "archive": "/Users/fengkx/me/agent-code/shouju-wip-20261115.tar.gz",
     "archive_sha256": "4ec34d820852c5680a35635a7057ec3b1c2d212225f2d2a012d908c2abc2ffc7",
     "files": 1146
   },
-  "flash_lock_final": "free"
+  "draft_pr_at_validation_freeze": null,
+  "draft_pr_tracking": "GitHub branch port/shouju-base; creation follows final local export checks.",
+  "flash_lock_after_capture": "free",
+  "flash_lock_at_handoff": {
+    "holder": "bvn-lane3-next-port",
+    "belongs_to_this_task": false,
+    "note": "Observed after this task completed capture; no interference with the other holder."
+  }
 }

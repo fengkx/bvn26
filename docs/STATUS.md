@@ -1932,4 +1932,4 @@ lock blocker is resolved. Actual same-instance three-cast side-switch now matche
 crossing attempt is retained separately and excluded from that coverage.
 Local Web selection/natural intro/receiving hits/training special and recovery
 are observed, with programmatic CDP input; full browser lifecycle remains unaccepted. Headed RID/resource leaks remain unaccepted. All six proof/admission
-flags false; M6 remains pending. No PR, merge or deployment.
+flags false; M6 remains pending. Draft review only; no merge or deployment.
