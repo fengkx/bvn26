@@ -1,0 +1,20 @@
+E................
+======================================================================
+ERROR: test_online_manifest (unittest.loader._FailedTest.test_online_manifest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_online_manifest
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "/Users/fengkx/me/agent-code/bvn2_6-minrenx/tools/test_online_manifest.py", line 18, in <module>
+    SPEC.loader.exec_module(manifest_tool)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-minrenx/tools/build_online_manifest.py", line 14, in <module>
+    from importer.visual_blend_modes import validate_timeline_blends
+ModuleNotFoundError: No module named 'importer'
+
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.402s
+
+FAILED (errors=1)

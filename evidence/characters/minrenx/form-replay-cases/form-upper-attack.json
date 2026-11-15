@@ -1,0 +1,133 @@
+{
+  "id": "minrenx-form-upper-attack",
+  "fighter": "minrenx",
+  "slot": "p1",
+  "label": "砍技2",
+  "scenario": "form-upper-attack",
+  "frames": 360,
+  "setup": {
+    "p1": {
+      "x": 300,
+      "energy": 300
+    },
+    "p2": {
+      "x": 350,
+      "energy": 300
+    }
+  },
+  "inputs": [
+    {
+      "slot": "p1",
+      "keys": [
+        "attack",
+        "jump"
+      ],
+      "start": 10,
+      "end": 13
+    },
+    {
+      "slot": "p1",
+      "keys": [
+        "up",
+        "attack"
+      ],
+      "start": 120,
+      "end": 123
+    }
+  ],
+  "target_frames": [
+    450,
+    528
+  ],
+  "has_source_timeline": true,
+  "fighters": {
+    "p1": "minrenx",
+    "p2": "yihu"
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "resource_interventions": [
+    {
+      "id": "post-transform-energy",
+      "tick": 100,
+      "slot": "p1",
+      "resource": "energy",
+      "value": 300
+    }
+  ],
+  "form_interval_tape": [
+    {
+      "before_tick": 58,
+      "id": 1,
+      "source_sequence": 4441,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 88,
+      "id": 1,
+      "source_sequence": 4773,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 118,
+      "id": 1,
+      "source_sequence": 5487,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 148,
+      "id": 1,
+      "source_sequence": 6058,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 172,
+      "id": 1,
+      "source_sequence": 6356,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 205,
+      "id": 1,
+      "source_sequence": 6774,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 235,
+      "id": 1,
+      "source_sequence": 7501,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 265,
+      "id": 1,
+      "source_sequence": 8824,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 295,
+      "id": 1,
+      "source_sequence": 10206,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 326,
+      "id": 1,
+      "source_sequence": 11627,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    },
+    {
+      "before_tick": 356,
+      "id": 1,
+      "source_sequence": 13003,
+      "source_origin": "fighter/minrenx#DefineSprite_449/frame_1/DoAction.as"
+    }
+  ],
+  "wrapper_probe": true,
+  "form_interval_provenance": {
+    "events": "/Users/fengkx/me/agent-code/bvn2_6-minrenx/evidence/characters/minrenx/original-forms-r01/minrenx-form-upper-attack/events.jsonl",
+    "sha256": "aeb199c2bfbf146fd379b768ac3f407a99c7ac7e06e37620741dfffacf5b2449",
+    "phase": "After root state N, before next display; delivered before tick N+1.",
+    "ids": "First registration 1; source clearInterval then second registration 2."
+  }
+}

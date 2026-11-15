@@ -1,8 +1,8 @@
 # Sage Naruto / 仙鸣 independent author lane
 
 Base: `a3b479414546250b7d0cd6e35cbc3ae52b3169d1`.
-Branch: `port/minrenx-base`. This is an in-progress source-first candidate,
-not full parity or production admission. No PR is justified by compilation alone.
+Branch: `port/minrenx-base`. This is a source-first candidate awaiting serial
+integration, not full parity or production admission. No Draft PR has been opened.
 
 ## Roster identity
 
@@ -74,7 +74,9 @@ The shared frame-call requirement is retained as a fragment for serial integrati
 ## Shared-file boundary and residuals
 
 The real `build_menu_font.py` regeneration and output cmap check passed for
-455 declared characters. Its regenerated artifact and provenance are kept in
+455 baseline characters. A follow-up staged candidate applies `font-builder.patch`
+to include dynamic available-roster labels and passes 502 characters, including
+仙鸣. Its regenerated artifact and provenance are kept in
 `font/`; the shared menu font was restored byte-for-byte to the pinned base.
 No shared catalog, available registry or global manifest is overwritten.
 
@@ -84,3 +86,72 @@ not established. The initial native diagnostic ran before first asset import
 finished and contains missing-resource errors and exit leaks; it is retained
 but cannot count as a clean native pass. Fresh source/native comparisons and
 final check receipts must be consulted separately from build success.
+
+## Fresh targeted behavior evidence
+
+The accepted targeted set contains 22 fixtures and 16,364 paired character-state
+rows, with zero differences across the comparator's 14 fields. See
+`comparisons.json` (13 base cases), `form-comparisons.json` (7 transformation/form
+cases), `cancel-comparisons.json` (one source-window cancel), and
+`crossing-comparisons.json` (one uninterrupted three-cast jumping crossover).
+The base set includes one insufficient-energy negative; it must remain separate
+from successful move reachability. The five post-transform move fixtures explicitly
+refill energy at tick 100; these are controlled interventions, not full matches.
+
+The jumping crossover casts face right, left, then right (ticks 11, 211, 411),
+without recreating the fighter. The older walking-only fixture also matches
+1,202 rows but never crosses the opponent; `walking-comparisons.json` is diagnostic
+and excluded from the 22-case total. No original inputs or tolerances were changed
+to turn that diagnostic into crossing evidence.
+
+`godot/tests/minrenx_form_lifecycle.gd` separately checks a controlled transform
+edge, transferred state, fresh local initialization, pause/resume, HP threshold,
+checkpoint replay and next-round form retention. Its clean receipt is
+`logs/form-lifecycle-r03.log`. It is not an original-player input replay.
+`checkpoint-frame-calibration.json` preserves the initial wrong test expectation
+and the fresh Flash observation used to correct it; runtime behavior was unchanged.
+
+`runtime-hashes-during.json` records 807 runtime/package hashes during capture;
+the final receipt verifies they stayed unchanged. This is explicitly not a
+before-capture hash snapshot. Capture build metadata, instrumentation diffs,
+events, clock/random tapes and fixtures are retained. Temporary `game` symlinks
+are inventoried in `excluded-scratch-links.json`; rebuild those scratch games from
+the recorded source instead of depending on absolute temporary paths. Capture
+folders' legacy `native.json` files are collector output, not Godot evidence;
+Godot outputs are in the explicitly named `native-*` directories.
+
+## Delivery blocker
+
+The standard selectable roster does not yet register this candidate. Shared
+available/catalog entries, selection portrait/footer and intro indexes,
+reviewed frame-call requirements and global manifests must be integrated serially
+with the other author lanes. `integration-plan.json` describes these edits;
+`selection/`, the reviewed frame-call fragment and the staged font are durable
+inputs. The unchanged global frame-call guard correctly rejects the unregistered
+character; it has not been bypassed for release.
+
+Consequently this lane does not meet the Draft PR delivery bar. Actual Web
+selection/gameplay, aligned visual/effect-instance and audio evidence, and clean
+headed exit behavior remain unverified. Early missing-resource/RID/ObjectDB
+failures are retained and not accepted. The base headless batch also records
+sandbox user-log write errors despite matching all states; later explicit-log
+form/lifecycle runs are clean. No claim of complete 1:1 behavior is made.
+
+## Final saved-roster regression
+
+The pinned-base saved roster passed 300 cases / 189,400 state rows: the inherited
+288-case runner plus the 12 Weqal cases introduced at the pinned base. This does
+not include parallel author lanes. `saved-roster-report.json` and
+`saved-weqal-report.json` contain execution and comparison results; their matching
+archives retain every new native state output and process/engine log. Original
+saved Flash traces remain in the pinned repository and were hash-checked before
+replay. Exit residuals are listed separately in `validation-summary.json` and
+are not accepted by the state-match result.
+
+`validation-summary.json` is the final scoped receipt. `artifact-manifest.json`
+hashes the durable lane files and packages; it is not a global release manifest.
+
+Raw instrumentation diffs retain source CRLF/trailing whitespace and raw logs retain
+their original ending. Whole-evidence `git diff --check` reports those bytes;
+the authored code/metadata check passes (`diff-check.json`). Captured evidence
+was not normalized to silence a whitespace check.
