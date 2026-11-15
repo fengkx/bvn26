@@ -12,7 +12,7 @@
     "native_initialization_complete": false
   },
   "flash_running_for_this_task": false,
-  "foreground": "Task-owned Flash/native captures completed; isolated browser page and local server closed, exclusive lock released. Existing PID24366 untouched.",
+  "foreground": "New task-only Flash sound observer completed under exclusive lock; lock released. Chrome task window may remain open because bounded transport is unavailable; PID24366 untouched.",
   "draft_pr": null,
   "source_tests": {
     "passed": 4
@@ -230,7 +230,21 @@
       "No original waveform or latency",
       "No sound pause/cleanup or repeated audio acceptance",
       "No global/nested/voice/helper coverage"
-    ]
+    ],
+    "position_probe": {
+      "observations": 69,
+      "position": "all undefined",
+      "duration": "all undefined",
+      "actor_states_matched": 722,
+      "report": "sound-position-comparison-r04.json"
+    },
+    "native_pause_cleanup": {
+      "status": "source_invariants_observed_not_audio_acceptance",
+      "report": "sound-pause-cleanup-r02.json",
+      "driver": "Dummy",
+      "exit": "2 ObjectDB instances /1 resource warning retained",
+      "initial_failed_assumption": "frame776 bs=1 makes source stopMc condition false; initial unconditional timeline-stop assertion failed"
+    }
   },
   "saved_roster_full": {
     "status": "actor_states_matched_with_unaccepted_exit_residuals",
@@ -254,5 +268,10 @@
     "source_note": "Only evidence/document commits were added while this run executed; runtime and replay runner were unchanged.",
     "report": "saved-roster-full-summary-r03.json",
     "raw_archive": "saved-roster-full-r03.tar.gz"
+  },
+  "bounded_connection_repair": {
+    "status": "failed_public_reinitialization",
+    "report": "web/transport-diagnosis-r07.json",
+    "whole_chrome_access": false
   }
 }
