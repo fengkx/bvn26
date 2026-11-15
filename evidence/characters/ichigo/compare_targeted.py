@@ -21,7 +21,9 @@ def main():
     fixtures = json.loads((directory / 'native-all-batch.json').read_text())
     results = []
     for name in fixtures:
-        fixture = Path(name)
+        recorded = Path(name)
+        parts = recorded.parts
+        fixture = ROOT.joinpath(*parts[parts.index('evidence'):])
         spec = json.loads(fixture.read_text())
         native = directory / 'native-targeted-r02' / (spec['id'] + '.json')
         if not native.exists():

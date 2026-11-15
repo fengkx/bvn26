@@ -49,11 +49,21 @@ def replay(case):
     print(case['id'], comparison['status'] if comparison else execution, flush=True)
     return {'id': case['id'], 'execution': execution, 'comparison': comparison,
             'seconds': time.monotonic() - started}
+# Resume only the immutable, previously retained 25 matching cases.
+prior_path = os.environ.get('BVN_ACCEPTED_PARTIAL')
+prior = json.loads(Path(prior_path).read_text()) if prior_path else None
+accepted = {row['id']: row for row in prior['results']} if prior else {}
+for case in index['results']:
+    if case['id'] in accepted:
+        row = accepted[case['id']]
+        assert row['hashes'] == case['hashes']
+        assert row['comparison']['status'] == 'matched' and row['comparison']['complete']
+remaining = [case for case in index['results'] if case['id'] not in accepted]
 started = time.monotonic()
-with ThreadPoolExecutor(max_workers=2) as pool:
-    results = list(pool.map(replay, index['results']))
-report = {'seconds': time.monotonic() - started, 'results': results}
+with ThreadPoolExecutor(max_workers=4) as pool:
+    results = list(pool.map(replay, remaining))
+report = {'seconds': time.monotonic() - started, 'accepted_prior': list(accepted), 'prior_report': prior_path, 'results': results}
 (out / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
 assert all(r['execution']['executed'] and r['comparison']['status'] == 'matched' for r in results)
-assert len(results) == len(index['results'])
+assert len(results) + len(accepted) == len(index['results']) == 300
 print('FLASH_REPLAY_OK', len(results), sum(r['comparison']['source_states'] for r in results), report['seconds'])

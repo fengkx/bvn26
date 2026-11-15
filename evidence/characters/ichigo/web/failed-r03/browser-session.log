@@ -1,0 +1,33 @@
+127.0.0.1 - - [15/Nov/2026 15:18:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [15/Nov/2026 15:18:05] "GET /index.png HTTP/1.1" 200 -
+127.0.0.1 - - [15/Nov/2026 15:18:05] "GET /index.js HTTP/1.1" 200 -
+127.0.0.1 - - [15/Nov/2026 15:18:05] "GET /build-metadata.json HTTP/1.1" 200 -
+127.0.0.1 - - [15/Nov/2026 15:18:05] "GET /index.wasm HTTP/1.1" 200 -
+127.0.0.1 - - [15/Nov/2026 15:18:05] "GET /index.pck HTTP/1.1" 200 -
+127.0.0.1 - - [15/Nov/2026 15:18:05] "GET /index.icon.png HTTP/1.1" 200 -
+127.0.0.1 - - [15/Nov/2026 15:18:07] "GET /index.audio.position.worklet.js HTTP/1.1" 200 -
+127.0.0.1 - - [15/Nov/2026 15:18:07] "GET /index.audio.worklet.js HTTP/1.1" 200 -
+file:///Users/fengkx/me/agent-code/bvn2_6-ichigo/evidence/characters/ichigo/web/browser_check.mjs:36
+  throw new Error('Snapshot condition timed out: '+name);
+        ^
+
+Error: Snapshot condition timed out: before-transform
+    at waitSnapshot (file:///Users/fengkx/me/agent-code/bvn2_6-ichigo/evidence/characters/ichigo/web/browser_check.mjs:36:9)
+    at async file:///Users/fengkx/me/agent-code/bvn2_6-ichigo/evidence/characters/ichigo/web/browser_check.mjs:62:16
+
+Node.js v24.18.0
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/evidence/characters/ichigo/web/browser_session.py", line 55, in <module>
+    main()
+    ~~~~^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/evidence/characters/ichigo/web/browser_session.py", line 44, in main
+    subprocess.run(['/Users/fengkx/.local/share/mise/installs/node/24.18.0/bin/node',
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    str(HERE / 'browser_check.mjs'), str(debug_port), str(server.server_port)],
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   check=True, timeout=420)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/Users/fengkx/.local/share/mise/installs/node/24.18.0/bin/node', '/Users/fengkx/me/agent-code/bvn2_6-ichigo/evidence/characters/ichigo/web/browser_check.mjs', '55962', '55961']' returned non-zero exit status 1.
