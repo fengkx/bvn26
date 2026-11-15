@@ -158,8 +158,12 @@ stopped before input because the canvas was focused but the page was hidden.
 Read-only system inspection at 15:26 Asia/Shanghai confirmed both
 `IOConsoleLocked` and `CGSSessionScreenIsLocked`. No unlock was attempted and
 foreground retries stopped. `web/execution.json` records the exact blocker;
-`web-r01/` and `web-r02/` retain failures. The user has been asked to unlock,
-without re-requesting the already-granted reservation. After unlock, rerun
+`web-r01/` and `web-r02/` retain failures. The user renewed the exclusive reservation at 17:28 Asia/Shanghai. A single
+locked preflight at 17:31:44 acquired the specified lock, confirmed the desktop
+was still locked, and stopped before launching a browser. The lock was released;
+no unlock or input was attempted. See `web/foreground-preflight-r03.json`.
+The two earlier browser failures remain unchanged. After the user unlocks the
+desktop and indicates readiness under the valid reservation, rerun
 `web_smoke.mjs` under the specified exclusive lock against the same built artifact.
 No Draft PR is justified until that targeted browser check passes.
 
