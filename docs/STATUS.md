@@ -1922,11 +1922,14 @@ remains pending. No merge or Worker/Vercel deployment.
 
 2026-11-15 continuation: Ulquiorra (小乌 / weqal.swf) now includes its source-required BODY 387→808 lifecycle and reviewed complete replacement graph. Both the natural failure→transformation fallthrough and explicit parent goto remain executable. See [the character record](../evidence/characters/weqal/README.md) and [checks](../evidence/characters/weqal/checks.json) for exact diagnostic comparisons, full saved-roster regressions and export checks. Standalone roster variants remain deferred. The headed renderer resource/RID leak remains an open residual. M6 stays pending; all six proof/admission flags false. No merge or deployment.
 
-## Temari continuation — blocked candidate (2026-11-15)
+## Temari continuation — partial targeted candidate (2026-11-15)
 
 Verified next base: 手鞠 / shouju.swf, BODY 541, from master a3b47941.
-An isolated source-bound asset/controller candidate and strict source tests are
-retained in [the WIP record](../evidence/characters/shouju/README.md). Fresh Flash
-capture is blocked by the locked desktop. Selection activation, targeted native
-parity, saved-roster replay and headed/Web verification remain pending.
-All six proof/admission flags remain false; M6 is not complete. No PR or deploy.
+Selection/catalog integration, 17 exact primary diagnostic comparisons (12,634 actor
+states / 14 fields), rollback and 30 saved-roster regressions are retained in
+[the character record](../evidence/characters/shouju/README.md). The old desktop
+lock blocker is resolved. Actual same-instance three-cast side-switch now matches; the earlier named
+crossing attempt is retained separately and excluded from that coverage.
+Local Web selection/natural intro/receiving hits/training special and recovery
+are observed, with programmatic CDP input; full browser lifecycle remains unaccepted. Headed RID/resource leaks remain unaccepted. All six proof/admission
+flags false; M6 remains pending. No PR, merge or deployment.

@@ -31,5 +31,87 @@
     250
   ],
   "comparison": "comparisons.json",
-  "scope": "Three casts in one original instance; P2 right input 100-105 moves the target; mirror fixture is a separate fresh fight; rollback/round reset tested natively."
+  "scope": "Three casts in one original instance; P2 right input 100-105 moves the target; mirror fixture is a separate fresh fight; rollback/round reset tested natively.",
+  "crossing_entries": [
+    {
+      "tick": 11,
+      "p1_x": 300.0,
+      "p2_x": 350.0,
+      "facing": 100.0,
+      "energy": 300.0
+    },
+    {
+      "tick": 191,
+      "p1_x": 300.0,
+      "p2_x": 458.0,
+      "facing": 100.0,
+      "energy": 200.0
+    },
+    {
+      "tick": 291,
+      "p1_x": 300.0,
+      "p2_x": 908.0,
+      "facing": 100.0,
+      "energy": 100.0
+    }
+  ],
+  "crossing_comparison": "crossing-comparison.json",
+  "crossing_scope": "Attempt matched but did not cross: P2 remained to the right at all three cast entries. Not accepted as continuous side-switch coverage.",
+  "accepted_crossing": {
+    "status": "matched",
+    "source_states": 1082,
+    "native_states": 1082,
+    "complete": true,
+    "fields": [
+      "frame",
+      "x",
+      "y",
+      "xscale",
+      "action",
+      "hp",
+      "ql",
+      "sw",
+      "touch",
+      "touchFloor",
+      "hits",
+      "paused",
+      "hstm",
+      "hurtSkling"
+    ],
+    "differences": [],
+    "cast_entries": [
+      {
+        "tick": 11,
+        "p1_x": 300.0,
+        "p2_x": 350.0,
+        "facing": 100.0,
+        "energy": 300.0
+      },
+      {
+        "tick": 281,
+        "p1_x": 300.0,
+        "p2_x": 122.0,
+        "facing": -100.0,
+        "energy": 200.0
+      },
+      {
+        "tick": 421,
+        "p1_x": 300.0,
+        "p2_x": 122.0,
+        "facing": -100.0,
+        "energy": 100.0
+      }
+    ],
+    "paths": {
+      "source": "evidence/characters/shouju/original-crossing-r05/shouju-repeat-crossing-r04/events.jsonl",
+      "native": "evidence/characters/shouju/native-crossing-r04/shouju-repeat-crossing-r04.json",
+      "fixture": "evidence/characters/shouju/cases-crossing-r04/repeat-crossing.json"
+    },
+    "hashes": {
+      "source": "96a86f46a21041dd62c54ee934b647351fbc4029ab7211fb1275a739cf3ed541",
+      "native": "eb3dfb310e0dd296df240a6192149734c8ae477f9ddfc553e5997194f1ae3595",
+      "fixture": "fe575664c3e6a36c490db91dd373fc26f49f439d537c33d6dbb224f58e3add8c"
+    },
+    "scope": "Three casts in one original instance with P2 jumping across via ordinary input. Initial energy 300; no mid-run refill/reposition. Full recovery reaches standing frame 4 at final tick 540."
+  }
 }
