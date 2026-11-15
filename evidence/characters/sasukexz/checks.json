@@ -1,5 +1,5 @@
 {
-  "status": "offline_candidate_live_evidence_blocked",
+  "status": "offline_candidate_waiting_foreground_queue",
   "character": "佐助须佐",
   "source": "game/fighter/sasukexz.swf",
   "base_commit": "a3b479414546250b7d0cd6e35cbc3ae52b3169d1",
@@ -12,7 +12,7 @@
     "native_initialization_complete": false
   },
   "flash_running_for_this_task": false,
-  "foreground": "Coordinator reports IOConsoleLocked=Yes at 17:32. No repeated lock checks; wait for Sage Naruto browser completion after unlock.",
+  "foreground": "Desktop reported unlocked at 19:34. Coordinator confirms Sage Naruto browser window still in progress; do not launch even if lock reports free. Await explicit completion notification.",
   "draft_pr": null,
   "source_tests": {
     "passed": 4
@@ -125,5 +125,29 @@
       "energy": 300
     },
     "scope": "Native-only; original-player comparisons pending; no key disabling"
+  },
+  "resume_interactions": {
+    "cases": 2,
+    "states": 1444,
+    "status": "native_only_not_parity",
+    "guard_hp_loss": 20,
+    "interrupted_hp_loss": 160,
+    "interruption_scope": "Low ranged interrupted at frames607/608 before opponent hide; not mid-hidden interruption coverage",
+    "log": "logs/native-interaction-r01.log"
+  },
+  "prepared_probes": {
+    "base": {
+      "directory": "probe-r01",
+      "frames": 360
+    },
+    "lifecycle": {
+      "directory": "probe-lifecycle-r01",
+      "frames": 600,
+      "presentation_probe": true
+    },
+    "negative": {
+      "directory": "probe-negative-r01",
+      "frames": 240
+    }
   }
 }

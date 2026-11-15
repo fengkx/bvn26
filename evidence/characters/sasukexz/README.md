@@ -24,7 +24,7 @@ The source five-question record is incomplete until original-player observation:
 
 ## Execution and blockers
 
-Desktop was reported locked at 17:32 Asia/Shanghai. Foreground is suspended without repeated lock checks; Sage Naruto has first claim after unlock, then this lane. `probe-r01` is built, not run. No Flash process has been started by this task and PID24366 is untouched.
+Desktop was reported locked at 17:32 and unlocked at 19:34 Asia/Shanghai. The coordinator subsequently confirmed Sage Naruto still occupies its priority browser window. This lane is waiting for explicit completion notification even if the lock appears free. Base, 600-tick lifecycle and 240-tick negative probes are built, not run. No Flash process has been started by this task and PID24366 is untouched.
 
 The first headless Godot import retained editor-settings sandbox write errors and is not a clean exit. A normally approved second headless import writes the standard editor settings; its result is tracked separately. Prior headed RID/resources-in-use failures remain unaccepted inherited residuals; this candidate has no headed acceptance evidence yet.
 
