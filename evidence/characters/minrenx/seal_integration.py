@@ -25,6 +25,12 @@ def main():
     web = read(OUT / 'web/execution.json')
     web_passed = web['status'] == 'passed_targeted_keyboard_and_transformation'
     assert web_passed or web['status'] == 'blocked_on_locked_desktop'
+    if web_passed:
+        review = read(OUT / 'web/visual-review.json')
+        assert review['status'] == 'passed_targeted_display_review'
+        assert len(review['images']) == 5 and not web['errors']
+        assert all(digest(ROOT / row['file']) == row['published_sha256']
+                   for row in review['images'])
     assert 'MINRENX_PACKED_PROFILES_OK' in (OUT / 'logs/packed-profile.log').read_text()
     comparisons = [row for name in ['comparisons.json', 'form-comparisons.json',
                     'cancel-comparisons.json', 'crossing-comparisons.json', 'receive-comparisons.json']

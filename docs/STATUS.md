@@ -1,6 +1,6 @@
 # 当前状态、风险与待验证项
 
-- 2026-11-15 Sage Naruto / 仙鸣: source-bound base and required replacement, selection/catalog/portrait/footer/intro integration in the independent minrenx branch. 25 Flash/native fixtures / 18,530 actor states and 300 saved-roster cases / 189,400 states match. Native rollback/rendering and local Web export/packed-form checks pass; foreground Web gameplay is blocked by the confirmed locked Mac desktop. Coverage partial, all six proof/admission flags false; headed exit leaks unaccepted. [Evidence](../evidence/characters/minrenx/README.md).
+- 2026-11-15 Sage Naruto / 仙鸣: source-bound base and required replacement, selection/catalog/portrait/footer/intro integration in the independent minrenx branch. 25 Flash/native fixtures / 18,530 actor states and 300 saved-roster cases / 189,400 states match. Native rollback/rendering and local Web export/packed-form checks pass; headed Web keyboard flow and required transformation pass with inspected system screenshots; CDP black-canvas screenshots remain a capture limitation. Coverage partial, all six proof/admission flags false; headed exit leaks unaccepted. [Evidence](../evidence/characters/minrenx/README.md).
 
 - 2026-11-15 剑心：源驱动基础形态及 643→1473→2506 替换链已接入；22 组原版 Flash/原生同输入、16,964 条角色状态匹配；两次替换、独立特效时钟、回滚及 204+62 组旧角色轨迹回归通过；实际 Web 选人、开场与两次变身复测通过，导出资源预检与字体覆盖已验证。保持 partial、M6-01 pending、六项证明标志 false；无合并或部署。[记录与实际验证范围](../evidence/characters/kenshin/README.md)。
 

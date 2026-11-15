@@ -38,7 +38,7 @@ async function key(letter, down) {
     code: `Key${letter.toUpperCase()}`, windowsVirtualKeyCode: letter.toUpperCase().charCodeAt(0) });
 }
 async function tap(letter, hold = 110, settle = 600) { await key(letter, true); await delay(hold); await key(letter, false); await delay(settle); }
-async function screenshot(name) { const r = await call('Page.captureScreenshot', { format: 'png' }); await writeFile(`${out}/${name}.png`, Buffer.from(r.data, 'base64')); }
+async function screenshot(name) { const r = await call('Page.captureScreenshot', { format: 'png' }); await writeFile(`${out}/${name}.png`, Buffer.from(r.data, 'base64')); execFileSync('/usr/sbin/screencapture', ['-x', `${out}/${name}-desktop.png`]); }
 async function snapshot() {
   return evaluate(`(async()=>{let resolve;const result=new Promise(r=>resolve=r);
     const original=URL.createObjectURL, click=HTMLAnchorElement.prototype.click;

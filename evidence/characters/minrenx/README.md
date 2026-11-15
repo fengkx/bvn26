@@ -165,7 +165,7 @@ no unlock or input was attempted. See `web/foreground-preflight-r03.json`.
 The two earlier browser failures remain unchanged. After the user unlocks the
 desktop and indicates readiness under the valid reservation, rerun
 `web_smoke.mjs` under the specified exclusive lock against the same built artifact.
-No Draft PR is justified until that targeted browser check passes.
+This historical blocker was resolved by the user unlocking the desktop at 19:34.
 
 `seal_integration.py` updates required repository hashes and truthfully seals
 either the passed state or this explicit browser blocker. It cannot convert a
@@ -189,3 +189,22 @@ Raw instrumentation diffs retain source CRLF/trailing whitespace and raw logs re
 their original ending. Whole-evidence `git diff --check` reports those bytes;
 the authored code/metadata check passes (`diff-check.json`). Captured evidence
 was not normalized to silence a whitespace check.
+
+## Unlocked headed Web validation
+
+At 19:35–19:37 Asia/Shanghai, r04 and r05 ran under the exclusive
+`bvn-lane2-next-port` lock against the retained local release PCK. Both CDP
+keyboard sequences passed normal selection, natural opening, movement, combo,
+super and J+K replacement into `minrenx-2`, recovering to standing. Build
+identity matched; no JavaScript exceptions or Flash/Ruffle requests were recorded.
+The isolated browser closed before the lock was released. Flash PID 24366 was
+never operated.
+
+CDP screenshots show a black canvas and cannot prove rendering. The r05 macOS
+system screenshots show the selection portrait/footer, red-cloak base fight and
+golden replacement. Published screenshots crop only the browser window to avoid
+unrelated desktop UI; original hashes and crop coordinates are in
+`web/visual-review.json`. This is targeted display review, not aligned Flash
+pixel/audio parity or physical OS keyboard testing. r01/r02 failures, r03 locked
+preflight, and r04 black CDP captures remain preserved. Native headed exit
+resource/RID leaks remain unaccepted and are not treated as full-port admission.
