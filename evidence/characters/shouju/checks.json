@@ -1,0 +1,85 @@
+{
+  "status": "blocked_incomplete_candidate",
+  "base_commit": "a3b479414546250b7d0cd6e35cbc3ae52b3169d1",
+  "character": "手鞠",
+  "source": "game/fighter/shouju.swf",
+  "branch": "port/shouju-base",
+  "worktree": "/Users/fengkx/me/agent-code/bvn2_6-shouju",
+  "flags": {
+    "production_admitted": false,
+    "native_parity_proven": false,
+    "oracle_accepted": false,
+    "certified_global_tick": false,
+    "os_input_join_proven": false,
+    "native_initialization_complete": false
+  },
+  "tests": {
+    "source_tests": {
+      "passed": 3,
+      "log": "logs/source-tests.log"
+    },
+    "hit_receive_tests": {
+      "passed": 5,
+      "log": "logs/hit-receive-tests.log"
+    },
+    "shared_receiver_audit": {
+      "status": "passed",
+      "log": "logs/shared-receiver.log"
+    },
+    "font_regeneration": {
+      "status": "passed",
+      "log": "logs/font-build-r02.log"
+    },
+    "font_coverage": {
+      "passed": 1,
+      "skipped": 0,
+      "log": "logs/font-test.log"
+    },
+    "native_player_controller_smoke": {
+      "status": "passed_existing_roster_only",
+      "log": "logs/controller-smoke.log"
+    },
+    "godot_import": {
+      "status": "import_completed_with_editor_settings_write_errors",
+      "log": "logs/import-r02.log"
+    },
+    "import_guards": {
+      "passed": 22,
+      "log": "logs/import-guard-tests.log"
+    },
+    "handoff": {
+      "status": "passed",
+      "log": "logs/handoff-r02.log"
+    },
+    "verify": {
+      "status": "passed",
+      "log": "logs/verify-r02.log"
+    },
+    "online_manifest": {
+      "status": "passed",
+      "log": "logs/online-manifest-check-r02.log"
+    }
+  },
+  "pending": [
+    "Fresh original Flash captures",
+    "Temari native targeted parity and repeated lifecycle",
+    "Selection/catalog activation",
+    "Saved-roster regressions",
+    "Headed visual/audio and Web checks"
+  ],
+  "blocker": "Desktop locked: CGSSessionScreenIsLocked=Yes",
+  "flash_launched": false,
+  "flash_running_for_this_task": false,
+  "quota": {
+    "handoff_remaining_percent_approx": 4,
+    "current_remaining": null,
+    "reason": "No live quota meter exposed by task tools",
+    "hard_block_observed": false
+  },
+  "residuals": [
+    "Prior headed renderer RID/resource leaks remain unaccepted",
+    "Prior saved-roster exit resources-in-use remains unaccepted",
+    "Godot editor cannot write external editor_settings-4.7.tres in sandbox"
+  ],
+  "draft_pr": null
+}
