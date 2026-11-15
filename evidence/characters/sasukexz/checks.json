@@ -1,5 +1,5 @@
 {
-  "status": "offline_candidate_waiting_foreground_queue",
+  "status": "targeted_behavior_matched_visual_audio_acceptance_incomplete",
   "character": "佐助须佐",
   "source": "game/fighter/sasukexz.swf",
   "base_commit": "a3b479414546250b7d0cd6e35cbc3ae52b3169d1",
@@ -12,7 +12,7 @@
     "native_initialization_complete": false
   },
   "flash_running_for_this_task": false,
-  "foreground": "Desktop reported unlocked at 19:34. Coordinator confirms Sage Naruto browser window still in progress; do not launch even if lock reports free. Await explicit completion notification.",
+  "foreground": "Coordinator released priority window at 19:40. Original captures and local headed browser completed under exclusive lock; own browser closed and lock released.",
   "draft_pr": null,
   "source_tests": {
     "passed": 4
@@ -37,12 +37,19 @@
   "shared_runtime_changed": false,
   "shared_compiler_changed": false,
   "original_flash": {
-    "status": "built_not_run",
-    "matched_cases": 0
+    "status": "targeted_actor_states_matched",
+    "matched_cases": 19,
+    "states": 14198,
+    "fields": 14,
+    "declared_targets_seen": true,
+    "report": "comparisons.json"
   },
   "residuals": [
     "First import editor-settings sandbox write failure retained; approved second import clean.",
-    "Inherited headed RID/resources-in-use cleanup remains unaccepted; no headed run this task."
+    "Inherited headed RID/resources-in-use cleanup remains unaccepted. This native visual run had no matching warning in its retained log.",
+    "Original/native pixel differences remain unresolved; audio is unverified.",
+    "Dynamic display visibility probe refused observation boundary change; supported static-input probe used without weakening guard.",
+    "Web fight entry observed; full action/pause/focus lifecycle not accepted."
   ],
   "saved_roster": {
     "status": "matched",
@@ -53,7 +60,7 @@
     "report": "saved-roster-r01/flash-replay/report.json"
   },
   "web": {
-    "status": "local_build_passed_browser_not_run",
+    "status": "local_build_and_training_entry_observed_not_full_sop",
     "exit_code": 0,
     "metadata_tests": 11,
     "online_manifest_tests": 8,
@@ -65,8 +72,13 @@
     "dirty_provenance_recorded": true,
     "metadata": "web-build-metadata-r01.json",
     "log": "logs/web-build-r01.log",
-    "headed_browser": "blocked_desktop_locked_and_minrenx_priority",
-    "production_deploy": false
+    "headed_browser": "Sasuke selected and training entered against Naruto on world; snapshot and screenshot retained. Programmatic keyboard events, not OS-input proof. Super input attempted without retained action trace; not counted. Pause/focus recovery not completed.",
+    "production_deploy": false,
+    "evidence": [
+      "web/training-snapshot-r02.json",
+      "web/training-battle-r02.png",
+      "web/selection-training-r02.png"
+    ]
   },
   "lifecycle_native": {
     "cases": 2,
@@ -77,11 +89,14 @@
       -100,
       100
     ],
-    "followup_contact_entries": 1,
-    "followup_repeat_status": "not_proven",
-    "original_comparison": "not_run",
+    "followup_contact_entries": 2,
+    "followup_repeat_status": "two_source_native_contacts_matched",
+    "original_comparison": "matched",
     "followup_r02_entries": 2,
-    "followup_r03_entries": 2
+    "followup_r03_entries": 2,
+    "visibility_rows": 1202,
+    "visibility_report": "visibility-comparison-r01.json",
+    "root_position_report": "root-position-comparisons.json"
   },
   "verify": "passed",
   "handoff": "passed",
@@ -124,12 +139,12 @@
       ],
       "energy": 300
     },
-    "scope": "Native-only; original-player comparisons pending; no key disabling"
+    "scope": "Both cases matched original player; no disabled keys"
   },
   "resume_interactions": {
     "cases": 2,
     "states": 1444,
-    "status": "native_only_not_parity",
+    "status": "targeted_source_native_matched",
     "guard_hp_loss": 20,
     "interrupted_hp_loss": 160,
     "interruption_scope": "Low ranged interrupted at frames607/608 before opponent hide; not mid-hidden interruption coverage",
@@ -149,5 +164,28 @@
       "directory": "probe-negative-r01",
       "frames": 240
     }
+  },
+  "visual": {
+    "status": "differences_found",
+    "report": "visual-comparisons-r01.json",
+    "actor_states_matched": 162,
+    "pixel_parity": false,
+    "audio": "not_captured",
+    "limitations": [
+      "Seven selected ticks, separate native match per image",
+      "Tick43 black flames differ; timer and stage foreground also differ",
+      "No accepted audiovisual lifecycle comparison"
+    ]
+  },
+  "final_record_checks": {
+    "comparison_collection": "19 cases / 14198 states / 14 fields matched",
+    "verify": "passed: 75 assets, 62 SWFs, 8853 script exports",
+    "handoff": "passed: 26 documents, 1050 links",
+    "initial_retry_failures": [
+      "System Python was too old for PEP604 type hints; rerun with installed Homebrew Python passed.",
+      "verify initially rejected updated STATUS/tasks hashes; only those reviewed manifest entries updated, then passed."
+    ],
+    "raw_archive": "53 files, every decompressed member SHA256 verified",
+    "original_untracked_uid_count": 265
   }
 }
