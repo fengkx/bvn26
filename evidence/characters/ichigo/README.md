@@ -57,8 +57,12 @@ No Draft PR, merge, deployment, Worker modification or production admission.
 
 ## Validation scope and residuals
 
-`comparisons.json` and `checks.json`, when finalized, are the authoritative
-executed counts. Initial failed importer, output-directory, resource-import and
+`comparisons.json` and `checks.json` are the authoritative executed counts.
+All 15 fresh targeted cases matched 10,830 actor states across 14 exact fields.
+The final batch exited 0 with no script/resource-loader errors or exit residuals.
+The saved-roster run completed 25/300 cases (17,810 states), all matched, then
+was stopped at the serial integration blocker; 275 remain unrun. Its raw partial
+output is retained in `saved-roster-partial.tar.gz`. This is not a full-roster pass. Initial failed importer, output-directory, resource-import and
 incorrect capture-frame runs remain diagnostic, not passing evidence. Tests
 must inspect script errors as well as exit codes: Godot assertions can return
 from a function while the runner later prints a success marker.

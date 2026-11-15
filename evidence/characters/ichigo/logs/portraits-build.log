@@ -1,0 +1,16 @@
+Downloading pillow (4.6MiB)
+ Downloaded pillow
+Installed 1 package in 11ms
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/build_selection_portraits.py", line 221, in <module>
+    build(args.workspace, args.temporary, args.output, args.ffdec, args.names,
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/build_selection_portraits.py", line 120, in build
+    report = json.loads((workspace / 'export-report.json').read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/pathlib.py", line 1058, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/.local/share/mise/installs/python/3.11.15/lib/python3.11/pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/fengkx/me/agent-code/.cache/ichigo-lane3-main-export/export-report.json'
