@@ -192,8 +192,11 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		FileAccess.open(output_path + ".wrappers.json", FileAccess.WRITE).store_string(JSON.stringify(wrapper_rows, "", true, true))
 	FileAccess.open(output_path + ".interventions.json", FileAccess.WRITE).store_string(JSON.stringify(intervention_rows, "", true, true))
 	game._goto_menu()
+	game._stop_combat_drivers()
 	game.queue_free()
 	await process_frame
+	game = null
+	assert(await preload("res://tests/audio_shutdown.gd").drain(self))
 	print("MOVE_CASE_REFERENCE_OK ", fixture.id)
 
 

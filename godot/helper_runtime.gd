@@ -316,6 +316,12 @@ func _apply_frame_events_at(frame: int, from_deferred_queue: bool = false) -> vo
 			last_event = "helper_drain_%s" % helper_id
 	if owner_fighter == null:
 		return
+	for event: Dictionary in _combat.get("health_events", []):
+		if int(event["frame"]) != frame:
+			continue
+		assert(event["target"] == "owner" and event["op"] == "add", "Unsupported compiled helper health event")
+		# Source writes HP directly; do not invent a maximum-health clamp.
+		owner_fighter.health += float(event["delta"])
 	var runtime: SuperRuntime = owner_fighter.super_runtime
 	for event: Dictionary in _combat.get("presentation_events", []):
 		if int(event["frame"]) != frame:

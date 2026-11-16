@@ -1963,3 +1963,23 @@ flags false; M6 remains pending. Draft review only; no merge or deployment.
 - These targeted integrations do not complete M6 or certify full character
   parity. All six proof/admission flags remain false; aligned audiovisual,
   exhaustive AI/boundaries and physical keyboard/focus acceptance remain open.
+
+## 2026-11-16 Orihime assist (partial)
+
+The new `port/zhiji-helper` branch imports the locked 91-frame Orihime assist,
+16 reachable assets, source footer and regenerated menu font. Local selection
+and matchmaking catalogs retain all 34 fighters and now expose six helpers.
+The helper compiler retains seven independent owner HP additions; the runtime
+interprets the compiled events without a character branch or invented HP cap.
+
+Four original Flash/native diagnostic cases match 2,228 actor rows (14 fields)
+and 2,228 helper rows (six fields), covering both slots, overflow, three casts
+on one instance with opponent movement, and insufficient energy. Checkpoint
+rollback and actual native rendering pass. Existing Kenpachi assist/combo
+regressions also match 1,204 actor rows. Raw failed and successful runs and
+remaining acceptance scope are in `evidence/helpers/zhiji/README.md`.
+
+This is partial integration, not completed M6 or full character certification.
+All six coverage flags stay false. Full audiovisual, exhaustive interruption
+and round/focus boundaries, and physical Web input remain open. Web export and
+startup evidence are recorded separately when finished; no deployment claimed.

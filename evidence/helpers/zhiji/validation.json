@@ -1,0 +1,43 @@
+{
+  "status": "targeted_source_runtime_comparisons_passed_full_acceptance_pending",
+  "base": "df36e43f55677297785b829ff26bedfb690bbe98",
+  "actors": {
+    "cases": 4,
+    "rows": 2228,
+    "fields": 14
+  },
+  "helpers": {
+    "rows": 2228,
+    "fields": 6,
+    "extra_fields_uncompared": true
+  },
+  "roster": {
+    "fighters": 34,
+    "helpers": 6
+  },
+  "font_characters": 505,
+  "runtime": "Generic compiled owner health additions; no per-helper gameplay branch or clamp.",
+  "source_player": "Native Flash, explicit window activation, controlled initial HP/energy and fixed diagnostic key injection.",
+  "preconditions": "Owner baseline 950 HP; repeat 600 HP; P2 1000 HP; insufficient 99 energy. These are diagnostic fixtures, not untouched full matches.",
+  "alias_note": "Initial source fixture selects 织姬; its native fixture uses the canonical zhiji directory. Both resolve to the same locked game/fighter/fz/zhiji.swf; keys, ticks and initial state are identical. Later fixtures use canonical IDs on both sides.",
+  "residuals": [
+    "Full aligned Flash/Godot audiovisual comparison",
+    "Interruption and all pause/round/focus boundaries",
+    "Physical keyboard/Web gameplay acceptance",
+    "Full character acceptance and all six proof/admission flags remain false"
+  ],
+  "initial_failures": [
+    "Compiler test used an absolute SWF path against a relative pinned timeline; corrected test arguments.",
+    "Baseline runtime omitted all seven heals: first actor difference tick 55; raw outputs retained.",
+    "First screenshot attempt lacked imported footer texture; imported and reran with clean logs.",
+    "Initial native replay runner emitted resource leak diagnostics; stop drivers, release scene reference and drain audio now produce clean reruns.",
+    "Initial matchmaking check found list-order mismatch; retained prior fighter order and regenerated font provenance and manifest.",
+    "First Web snapshot was canceled after the registry-order correction; its log is retained."
+  ],
+  "timing": {
+    "start": "2026-11-16T08:03:50.385711+00:00",
+    "recorded_at": "2026-11-16T08:24:42.184717+00:00",
+    "elapsed_wall_seconds": 1251.8,
+    "scope": "Worktree creation through this evidence packaging; parallel subprocess times are not added."
+  }
+}

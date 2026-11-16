@@ -1,0 +1,542 @@
+[
+  {
+    "id": "zhiji-owner-heal",
+    "fixture": "cases/owner-heal-native.json",
+    "hashes": {
+      "fixture": "c5c0ac9822c9471904d722f379de2f072cc54ae01e7619927fcd7b9c9de52574",
+      "source_events": "fc3d8114c737cd91bda7d39cff7263e8a8aafa885533e0a91fad3ea5669a1bd1",
+      "native_states": "53b90f8584512164776253742c5046c70a8d91c6139e4ada802c6f4f1adbf59e"
+    },
+    "actors": {
+      "status": "matched",
+      "source_states": 482,
+      "native_states": 482,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": []
+    },
+    "helpers": {
+      "status": "matched",
+      "source_rows": 482,
+      "native_rows": 482,
+      "complete": true,
+      "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+      "fields_compared": [
+        {
+          "name": "frame",
+          "source": "frame",
+          "native": "frame",
+          "transform": "identity"
+        },
+        {
+          "name": "x",
+          "source": "x",
+          "native": "x",
+          "transform": "identity"
+        },
+        {
+          "name": "y",
+          "source": "y",
+          "native": "y",
+          "transform": "identity"
+        },
+        {
+          "name": "orientation",
+          "source": "xscale",
+          "native": "facing",
+          "transform": "source xscale percent / 100 = native facing sign"
+        },
+        {
+          "name": "action",
+          "source": "action",
+          "native": "action",
+          "transform": "identity"
+        },
+        {
+          "name": "attacking",
+          "source": "attacking",
+          "native": "attacking",
+          "transform": "identity"
+        }
+      ],
+      "source_only_fields": [
+        "hits",
+        "atm1",
+        "atm2",
+        "atm3"
+      ],
+      "native_only_fields": [],
+      "active_row_counts": {
+        "source": {
+          "p1": 90,
+          "p2": 0
+        },
+        "native": {
+          "p1": 90,
+          "p2": 0
+        }
+      },
+      "active_boundaries": {
+        "p1": {
+          "source_first_active": {
+            "tick": 16,
+            "slot": "p1",
+            "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+            "frame": 2.0,
+            "x": 280.0,
+            "y": -25.0,
+            "xscale": 100.0,
+            "attacking": true,
+            "action": null,
+            "hits": null,
+            "atm1": null,
+            "atm2": null,
+            "atm3": null
+          },
+          "native_at_source_first_active_tick": {
+            "tick": 16,
+            "slot": "p1",
+            "frame": 2,
+            "x": 280.0,
+            "y": -25.0,
+            "action": null,
+            "attacking": true,
+            "facing": 1
+          },
+          "native_first_active": {
+            "tick": 16,
+            "slot": "p1",
+            "frame": 2,
+            "x": 280.0,
+            "y": -25.0,
+            "action": null,
+            "attacking": true,
+            "facing": 1
+          }
+        },
+        "p2": {
+          "source_first_active": null,
+          "native_at_source_first_active_tick": null,
+          "native_first_active": null
+        }
+      },
+      "compared_rows": 482,
+      "difference_count": 0,
+      "differences": [],
+      "first_difference": null
+    },
+    "scope": "14 actor fields and six helper fields; helper extras are retained but not claimed as compared."
+  },
+  {
+    "id": "zhiji-repeat",
+    "fixture": "cases/repeat.json",
+    "hashes": {
+      "fixture": "c935bc83578ed5aa2fb33fef5a8565f81528eec86ea1956e54a2d80b10bf19fa",
+      "source_events": "1ba00b570e0c37324fcd08fd703a3b570c6b7afb0f7080f9078351a5849a594a",
+      "native_states": "32fb388b3f88c2b83b2972482df8ceedeb84faa5f1b69bdb805db850079f111b"
+    },
+    "actors": {
+      "status": "matched",
+      "source_states": 782,
+      "native_states": 782,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": []
+    },
+    "helpers": {
+      "status": "matched",
+      "source_rows": 782,
+      "native_rows": 782,
+      "complete": true,
+      "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+      "fields_compared": [
+        {
+          "name": "frame",
+          "source": "frame",
+          "native": "frame",
+          "transform": "identity"
+        },
+        {
+          "name": "x",
+          "source": "x",
+          "native": "x",
+          "transform": "identity"
+        },
+        {
+          "name": "y",
+          "source": "y",
+          "native": "y",
+          "transform": "identity"
+        },
+        {
+          "name": "orientation",
+          "source": "xscale",
+          "native": "facing",
+          "transform": "source xscale percent / 100 = native facing sign"
+        },
+        {
+          "name": "action",
+          "source": "action",
+          "native": "action",
+          "transform": "identity"
+        },
+        {
+          "name": "attacking",
+          "source": "attacking",
+          "native": "attacking",
+          "transform": "identity"
+        }
+      ],
+      "source_only_fields": [
+        "hits",
+        "atm1",
+        "atm2",
+        "atm3"
+      ],
+      "native_only_fields": [],
+      "active_row_counts": {
+        "source": {
+          "p1": 270,
+          "p2": 0
+        },
+        "native": {
+          "p1": 270,
+          "p2": 0
+        }
+      },
+      "active_boundaries": {
+        "p1": {
+          "source_first_active": {
+            "tick": 16,
+            "slot": "p1",
+            "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+            "frame": 2.0,
+            "x": 280.0,
+            "y": -25.0,
+            "xscale": 100.0,
+            "attacking": true,
+            "action": null,
+            "hits": null,
+            "atm1": null,
+            "atm2": null,
+            "atm3": null
+          },
+          "native_at_source_first_active_tick": {
+            "tick": 16,
+            "slot": "p1",
+            "frame": 2,
+            "x": 280.0,
+            "y": -25.0,
+            "action": null,
+            "attacking": true,
+            "facing": 1
+          },
+          "native_first_active": {
+            "tick": 16,
+            "slot": "p1",
+            "frame": 2,
+            "x": 280.0,
+            "y": -25.0,
+            "action": null,
+            "attacking": true,
+            "facing": 1
+          }
+        },
+        "p2": {
+          "source_first_active": null,
+          "native_at_source_first_active_tick": null,
+          "native_first_active": null
+        }
+      },
+      "compared_rows": 782,
+      "difference_count": 0,
+      "differences": [],
+      "first_difference": null
+    },
+    "scope": "14 actor fields and six helper fields; helper extras are retained but not claimed as compared."
+  },
+  {
+    "id": "zhiji-p2",
+    "fixture": "cases/p2.json",
+    "hashes": {
+      "fixture": "6d149581087fd569dd1adf80c6bdcee2a9a39236ca3892bf12b8cdf7da840980",
+      "source_events": "50dc0a5dd33e7aaf0ea6cf659156ef7827c9116ec555c4d7a96060ef3cf77245",
+      "native_states": "a6c646f0a63ae59a91f18e74ced33dd1fa16eb41cdf40c981b45a787e52eefa6"
+    },
+    "actors": {
+      "status": "matched",
+      "source_states": 482,
+      "native_states": 482,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": []
+    },
+    "helpers": {
+      "status": "matched",
+      "source_rows": 482,
+      "native_rows": 482,
+      "complete": true,
+      "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+      "fields_compared": [
+        {
+          "name": "frame",
+          "source": "frame",
+          "native": "frame",
+          "transform": "identity"
+        },
+        {
+          "name": "x",
+          "source": "x",
+          "native": "x",
+          "transform": "identity"
+        },
+        {
+          "name": "y",
+          "source": "y",
+          "native": "y",
+          "transform": "identity"
+        },
+        {
+          "name": "orientation",
+          "source": "xscale",
+          "native": "facing",
+          "transform": "source xscale percent / 100 = native facing sign"
+        },
+        {
+          "name": "action",
+          "source": "action",
+          "native": "action",
+          "transform": "identity"
+        },
+        {
+          "name": "attacking",
+          "source": "attacking",
+          "native": "attacking",
+          "transform": "identity"
+        }
+      ],
+      "source_only_fields": [
+        "hits",
+        "atm1",
+        "atm2",
+        "atm3"
+      ],
+      "native_only_fields": [],
+      "active_row_counts": {
+        "source": {
+          "p1": 0,
+          "p2": 90
+        },
+        "native": {
+          "p1": 0,
+          "p2": 90
+        }
+      },
+      "active_boundaries": {
+        "p1": {
+          "source_first_active": null,
+          "native_at_source_first_active_tick": null,
+          "native_first_active": null
+        },
+        "p2": {
+          "source_first_active": {
+            "tick": 16,
+            "slot": "p2",
+            "source_raw_value": "p2,2,f:1:8:123207680:0,f:-1:4:104857600:0,f:-1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+            "frame": 2.0,
+            "x": 470.0,
+            "y": -25.0,
+            "xscale": -100.0,
+            "attacking": true,
+            "action": null,
+            "hits": null,
+            "atm1": null,
+            "atm2": null,
+            "atm3": null
+          },
+          "native_at_source_first_active_tick": {
+            "tick": 16,
+            "slot": "p2",
+            "frame": 2,
+            "x": 470.0,
+            "y": -25.0,
+            "action": null,
+            "attacking": true,
+            "facing": -1
+          },
+          "native_first_active": {
+            "tick": 16,
+            "slot": "p2",
+            "frame": 2,
+            "x": 470.0,
+            "y": -25.0,
+            "action": null,
+            "attacking": true,
+            "facing": -1
+          }
+        }
+      },
+      "compared_rows": 482,
+      "difference_count": 0,
+      "differences": [],
+      "first_difference": null
+    },
+    "scope": "14 actor fields and six helper fields; helper extras are retained but not claimed as compared."
+  },
+  {
+    "id": "zhiji-insufficient",
+    "fixture": "cases/insufficient.json",
+    "hashes": {
+      "fixture": "80c3b5526308134926260ee1a064c747534e13c19701c0fbdaad2964d33f5b7d",
+      "source_events": "115a2b0a7cd2935184792a1541a54afbcf3a631493e82637d47d3eae328bb3ad",
+      "native_states": "be5a1917af1227c4005569befc71dc5e9d401e453b04ef2a5faf11dc1a3c8560"
+    },
+    "actors": {
+      "status": "matched",
+      "source_states": 482,
+      "native_states": 482,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": []
+    },
+    "helpers": {
+      "status": "matched",
+      "source_rows": 482,
+      "native_rows": 482,
+      "complete": true,
+      "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+      "fields_compared": [
+        {
+          "name": "frame",
+          "source": "frame",
+          "native": "frame",
+          "transform": "identity"
+        },
+        {
+          "name": "x",
+          "source": "x",
+          "native": "x",
+          "transform": "identity"
+        },
+        {
+          "name": "y",
+          "source": "y",
+          "native": "y",
+          "transform": "identity"
+        },
+        {
+          "name": "orientation",
+          "source": "xscale",
+          "native": "facing",
+          "transform": "source xscale percent / 100 = native facing sign"
+        },
+        {
+          "name": "action",
+          "source": "action",
+          "native": "action",
+          "transform": "identity"
+        },
+        {
+          "name": "attacking",
+          "source": "attacking",
+          "native": "attacking",
+          "transform": "identity"
+        }
+      ],
+      "source_only_fields": [
+        "hits",
+        "atm1",
+        "atm2",
+        "atm3"
+      ],
+      "native_only_fields": [],
+      "active_row_counts": {
+        "source": {
+          "p1": 0,
+          "p2": 0
+        },
+        "native": {
+          "p1": 0,
+          "p2": 0
+        }
+      },
+      "active_boundaries": {
+        "p1": {
+          "source_first_active": null,
+          "native_at_source_first_active_tick": null,
+          "native_first_active": null
+        },
+        "p2": {
+          "source_first_active": null,
+          "native_at_source_first_active_tick": null,
+          "native_first_active": null
+        }
+      },
+      "compared_rows": 482,
+      "difference_count": 0,
+      "differences": [],
+      "first_difference": null
+    },
+    "scope": "14 actor fields and six helper fields; helper extras are retained but not claimed as compared."
+  }
+]
