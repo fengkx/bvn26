@@ -129,8 +129,17 @@ func _run() -> void:
 	assert(lobby._selected_number(lobby._time_choice) == 60)
 	assert(lobby._selected_number(lobby._life_choice) == 2)
 	var visible_stage_label := str(lobby._stage_labels.get(initial_stage, ""))
-	assert(not visible_stage_label.is_empty() and lobby._stage_summary.text.contains(visible_stage_label),
-		"The room summary should show the service map without exposing a map dropdown")
+	assert(not visible_stage_label.is_empty() and not lobby._stage_summary.text.contains(visible_stage_label))
+	assert(lobby._stage_summary.text.contains("地图待选择"))
+	lobby._map_handshake_complete = true
+	lobby._map_handshake_setup_revision = int(state.setupRevision)
+	lobby._map_handshake_stage_id = initial_stage
+	lobby._show_room()
+	assert(lobby._stage_summary.text.contains(visible_stage_label))
+	lobby._map_handshake_setup_revision -= 1
+	lobby._show_room()
+	assert(lobby._stage_summary.text.contains("地图待选择"))
+	lobby._map_handshake_complete = false
 	var room_options := 0
 	for node in lobby._room_view.find_children("*", "OptionButton", true, false):
 		room_options += 1

@@ -206,6 +206,7 @@ func receive_peer_message(channel: String, type: String, payload: Dictionary, _s
 			_abort_local("authority_state_sender", {})
 			return
 		if not payload.get("serial") is int or payload.serial <= _received_serial: return
+		if not _pending_display.is_empty() and payload.serial <= int(_pending_display.serial): return
 		if payload.get("authority") != authority_slot or not payload.get("display") is Dictionary or not payload.get("initial") is bool or not payload.get("paused") is bool or not payload.get("safety") is int or not payload.get("inputAck") is int or payload.inputAck < 0 or payload.inputAck > _input_sequence or not _is_digest(str(payload.get("hash", ""))):
 			_abort_local("authority_state_envelope", {})
 			return

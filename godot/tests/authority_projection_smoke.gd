@@ -4,11 +4,13 @@ const DisplayProjection = preload("res://authority_projection.gd")
 const Wire = preload("res://authority_wire.gd")
 
 func _run() -> void:
-	var selected_roster := "--selected-roster" in OS.get_cmdline_user_args()
-	var fixture := Fixture.create(self,
-		["佐助", "日番谷"] if selected_roster else ["鸣人", "一护"],
-		["鼬", "魂"] if selected_roster else ["我爱罗", "魂"],
-		"流魂街" if selected_roster else "现世")
+	var args := OS.get_cmdline_user_args()
+	var selection := ["鸣人", "一护", "我爱罗", "魂", "现世"]
+	if "--selected-roster" in args:
+		selection = ["佐助", "日番谷", "鼬", "魂", "流魂街"]
+	elif not args.is_empty():
+		selection = JSON.parse_string(args[0])
+	var fixture := Fixture.create(self, selection.slice(0, 2), selection.slice(2, 4), selection[4])
 	fixture.battle.close()
 	assert(fixture.battle.configure(fixture.game, false).is_empty())
 	var capture := DisplayProjection.new()
@@ -34,13 +36,19 @@ func _run() -> void:
 		var decoded := wire.decode(bytes)
 		var problem := display.apply(decoded)
 		assert(problem.is_empty(), problem)
+		# Canvas transform notifications settle before the draw being compared.
+		_flush_transforms(fixture.game)
+		_flush_transforms(presenter)
 		for host_id in capture._ids:
 			var id: int = capture._ids[host_id]
 			if not display.nodes.has(id) or not is_instance_id_valid(host_id): continue
 			var host_node: Node = instance_from_id(host_id)
 			if not host_node is TimelinePreview: continue
 			var difference := State.first_difference(_visual(host_node), _visual(display.nodes[id]))
-			assert(difference.is_empty(), "%s frame=%d %s" % [host_node.name, frame, difference])
+			if not difference.is_empty():
+				push_error("%s frame=%d %s" % [host_node.fighter_directory, frame, difference])
+				quit(1)
+				return
 		assert(presenter.physics_tick == 0)
 		await process_frame
 	fixture.game.naruto.goto_ai_label("走", false)
@@ -61,4 +69,10 @@ func _run() -> void:
 	Fixture.dispose(fixture.game, fixture.battle)
 	presenter.free()
 	await process_frame
+	assert(await preload("res://tests/audio_shutdown.gd").drain(self))
 	quit()
+
+func _flush_transforms(node: Node) -> void:
+	if node is CanvasItem and node.is_inside_tree(): node.force_update_transform()
+	for child in node.get_children():
+		if not child.is_queued_for_deletion(): _flush_transforms(child)

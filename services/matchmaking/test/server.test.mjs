@@ -1916,4 +1916,54 @@ test("authority lobby accepts selected content, locks mode and lineup, and recor
   });
   assert.equal(response.error, "mode_locked");
   assert.ok(room.state.members.every((seat) => !seat.ready));
+  const retainedChoices = room.state.members.map((seat) => seat.choice);
+  for (const slot of [0, 1]) {
+    response = await op(server, room, slot, {
+      type: "ready",
+      revision: room.state.setupRevision,
+      ready: true,
+      profile,
+    });
+    assert.equal(response.status, 200);
+  }
+  response = await op(server, room, 0, {
+    type: "prepare",
+    revision: room.state.setupRevision,
+  });
+  assert.equal(response.status, 200);
+  const rematchEpoch = room.state.match.epoch;
+  assert.notEqual(rematchEpoch, epoch);
+  assert.equal(room.state.match.authoritySlot, null);
+  for (const slot of [0, 1]) {
+    response = await op(server, room, slot, {
+      type: "authority_ack",
+      epoch: rematchEpoch,
+      authoritySlot: 0,
+    });
+    assert.equal(response.status, 200);
+  }
+  for (const slot of [0, 1]) {
+    response = await op(server, room, slot, {
+      type: "loaded",
+      epoch: rematchEpoch,
+      initialHash: "e".repeat(64),
+    });
+    assert.equal(response.status, 200);
+  }
+  for (const slot of [0, 1]) {
+    response = await op(server, room, slot, {
+      type: "start_ack",
+      epoch: rematchEpoch,
+    });
+    assert.equal(response.status, 200);
+  }
+  assert.equal(room.state.phase, "active");
+  response = await op(server, room, 1, { type: "abort", epoch: rematchEpoch });
+  assert.equal(response.status, 200);
+  assert.equal(room.state.phase, "lobby");
+  assert.deepEqual(
+    room.state.members.map((seat) => seat.choice),
+    retainedChoices,
+  );
+  assert.ok(room.state.members.every((seat) => !seat.ready));
 });

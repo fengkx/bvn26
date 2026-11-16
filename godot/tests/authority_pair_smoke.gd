@@ -57,6 +57,9 @@ class Transport extends Pair.FakeTransport:
 
 var starts := {}
 var scenes := {}
+var selected_fighters := ["鸣人", "一护"]
+var selected_helpers := ["我爱罗", "魂"]
+var selected_stage := "现世"
 
 func _scene(role: String, slot: int) -> Dictionary:
 	if scenes.has(slot):
@@ -74,8 +77,8 @@ func _scene(role: String, slot: int) -> Dictionary:
 		game.recorded_training_timers = true
 		game.source_random.use_seed(727)
 		game.source_clock.use_explicit_time(0)
-		game._replace_selected_actors(["鸣人", "一护"], ["我爱罗", "魂"])
-		game._load_selected_stage("现世")
+		game._replace_selected_actors(selected_fighters, selected_helpers)
+		game._load_selected_stage(selected_stage)
 		game._enter_current_fight(3)
 		game.battle_intro.recorded_polling = true
 		for timer in game.title_menu.find_children("*", "Timer", true, false): timer.stop()
@@ -90,6 +93,13 @@ func _run() -> void:
 		starts.clear()
 		var setup := {"mode": "host-authoritative", "members": [{"choice": {"fighter": "minren", "helper": "woailuo"}}, {"choice": {"fighter": "yihu", "helper": "kon"}}],
 			"stage": "现世", "rules": {"time": 90, "life": 1}, "profile": {"id": "chrome-exp-d2-p6", "inputDelay": 2, "predictionWindow": 6}, "seed": 727, "clockBaseline": 0, "setupRevision": 1}
+		if host_slot == 1:
+			selected_fighters = ["佐助", "日番谷"]
+			selected_helpers = ["鼬", "魂"]
+			selected_stage = "木叶村"
+			setup.members[0].choice = {"fighter": "sasuke", "helper": "you"}
+			setup.members[1].choice = {"fighter": "rifagu", "helper": "kon"}
+			setup.stage = selected_stage
 		var hub := Hub.new(setup)
 		hub.authority = host_slot
 		hub.state.mode = "host-authoritative"
@@ -130,6 +140,16 @@ func _run() -> void:
 			assert(guest.game.physics_tick == 0 and guest._latest_display.frame == frame)
 			assert(not host.game.has_meta("rollback_checkpoint"))
 			await process_frame
+		# Unordered state delivery must retain the newest packet within one drain.
+		var newer := {"epoch": guest.epoch, "authority": host_slot, "serial": guest._received_serial + 2,
+			"initial": false, "paused": false, "safety": 0, "inputAck": 0,
+			"display": guest._latest_display, "hash": guest._display_hash(guest._latest_display)}
+		guest.receive_peer_message("state", "authority_state", newer, 0)
+		var older := newer.duplicate(true)
+		older.serial -= 1
+		guest.receive_peer_message("state", "authority_state", older, 0)
+		assert(guest._pending_display.serial == newer.serial)
+		guest._pending_display.clear()
 		hub.block_state_acks = true
 		var serial_before: int = host._state_serial
 		for attempt in 8: host._send_display(host._latest_display)

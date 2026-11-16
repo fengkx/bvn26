@@ -2,6 +2,8 @@ extends Node
 
 var lobby: OnlineLobby
 var ready_sent := false
+var setup_started := false
+var start_sent := false
 var finished := false
 var local_ticks := 0
 var phase := "boot"
@@ -21,7 +23,7 @@ func _ready() -> void:
 	if invite.is_empty():
 		await lobby._on_create_pressed()
 		if lobby._room_id.is_empty(): return _fail("create:" + lobby._status.text)
-		await lobby._on_mode_selected(1)
+		assert(lobby._authority_mode())
 		await lobby._submit_operation({"type": "configure_network", "revision": int(lobby._room_state.setupRevision),
 			"profile": {"id": "chrome-exp-d2-p6-lan", "inputDelay": 2, "predictionWindow": 6}})
 		_publish({"phase": "invite", "invite": lobby._invite_code})
@@ -33,6 +35,12 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	if lobby == null or finished or phase == "boot": return
+	if not setup_started and phase == "lobby":
+		setup_started = true
+		_prepare_room.call_deferred()
+	if lobby._slot == 0 and not start_sent and lobby._can_prepare_current_room() and not lobby._busy:
+		start_sent = true
+		lobby._on_start_pressed()
 	if not ready_sent and lobby._can_ready_current_room() and not lobby._busy:
 		ready_sent = true
 		lobby._on_ready_pressed()
@@ -50,7 +58,7 @@ func _physics_process(_delta: float) -> void:
 			"slot": lobby._slot, "simTicks": lobby.game_root.physics_tick,
 			"stateSerial": match_state._received_serial, "running": match_state.running,
 			"error": match_state.error, "paused": match_state.paused, "positions": _positions(match_state), "rightKey": lobby.game_root.session.codes.d})
-	if local_ticks == 240:
+	if local_ticks == 480:
 		finished = true
 		_publish({"phase": "complete", "authority": match_state.authority_slot, "slot": lobby._slot,
 			"simTicks": lobby.game_root.physics_tick, "receivedStates": match_state._received_serial,
@@ -75,6 +83,20 @@ func _positions(match_state: RefCounted) -> Array:
 	for record in match_state._latest_display.get("owners", []):
 		if record.kind != "timeline": continue
 		var resource: String = match_state._projector.resources[record.state.resource]
-		if resource == "res://generated/fighters/minren": result[0] = record.transform[4]
-		if resource == "res://generated/fighters/yihu": result[1] = record.transform[4]
+		if resource == "res://generated/fighters/sasuke": result[0] = record.transform[4]
+		if resource == "res://generated/fighters/rifagu": result[1] = record.transform[4]
 	return result
+
+func _prepare_room() -> void:
+	lobby._open_lineup()
+	var adapter = lobby._selection_adapter
+	assert(adapter != null and adapter.independent_selection)
+	adapter._apply_choice_resource_ids(lobby._slot, {"fighter": "sasuke" if lobby._slot == 0 else "rifagu", "helper": "you" if lobby._slot == 0 else "kon"})
+	adapter._on_local_confirmation_timeout(lobby._slot)
+	adapter._on_local_confirmation_timeout(lobby._slot)
+	while lobby._selection_active:
+		await get_tree().process_frame
+	if lobby._slot == 0:
+		lobby._on_commit_setup_pressed()
+		lobby._map_adapter._select("木叶村")
+		lobby._map_adapter._confirm()

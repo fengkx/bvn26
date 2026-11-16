@@ -1,0 +1,48 @@
+
+> @bvn/matchmaking@0.1.0 test
+> npm run typecheck && node --test test/*.test.mjs
+
+
+> @bvn/matchmaking@0.1.0 typecheck
+> tsc
+
+✔ server content IDs match the enabled menu catalog (5.005875ms)
+✔ atomic admission, private capabilities, isolation and compatibility (637.658458ms)
+✔ room network profile is owner controlled, authoritative, and independent of map setup (260.266792ms)
+✔ legacy state projects a default network profile without changing the current match profile (282.19275ms)
+✔ setting the legacy default lazily does not invalidate matching readiness (136.548375ms)
+✔ short invitation codes are private, single-use, retryable and rotatable (162.739709ms)
+✔ setup revisions, transactional rejection, retries, barriers and rematch epochs (221.254417ms)
+✔ CORS preflight and room responses allow every origin (87.092291ms)
+✔ WebSockets accept every Origin but still require a valid one-use ticket (121.363708ms)
+✔ real WebSockets authenticate, scope signaling, revoke seats and tolerate disconnect (299.145333ms)
+✔ lobby handshake survives guest-first, host-late, resume, and socket replacement (366.375834ms)
+✔ a new host attempt rotates the id within TTL while command retries and resume preserve it (215.125959ms)
+✔ negotiate cannot extend the same id past three TTLs (103.82175ms)
+✔ stored signals replay after the room object is evicted (247.368709ms)
+✔ ten concurrent leases cannot overbook and owner departure releases capacity (219.468042ms)
+✔ alarm expiry runs without a client request; active play and prepare timeout differ (386.341375ms)
+✔ SQLite restart restores epoch, seats and idempotency with new real WebSockets (298.143958ms)
+✔ TURN REST issuance is authenticated, short-lived and rate limited (154.153625ms)
+✔ malformed and oversized requests remain rejected with wildcard CORS (135.699416ms)
+✔ initial-state and confirmed-result mismatches end without a winner (223.333375ms)
+✔ disabled content is rejected without consuming sequence (125.393375ms)
+✔ revoked invitations, single-use socket tickets and expired leases cannot be replayed (147.614708ms)
+✔ unknown codes stay invalid_invite and a released code is invite_expired (113.807583ms)
+✔ a recently pinged lobby socket keeps the room past the idle deadline (122.782458ms)
+✔ an open lobby socket without a recent ping still expires (111.955041ms)
+✔ signaling sockets reject binary, oversized and flooded messages (200.652792ms)
+✔ admission cleanup alarms stop instead of polling tombstones (107.338875ms)
+✔ owner leave stops the room alarm, stores a closed marker, and drops revoked codes (115.39625ms)
+✔ a pinging lobby still closes at the two hour maximum (123.326166ms)
+✔ lockstep delay profiles stay frozen and retired signaling cannot poison a rematch (198.799584ms)
+✔ authority lobby accepts selected content, locks mode and lineup, and records receipt semantics (192.707459ms)
+✔ production Wrangler configuration serves authenticated room WebSockets (1319.171333ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6548.98325

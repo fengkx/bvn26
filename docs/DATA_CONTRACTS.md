@@ -488,3 +488,14 @@ The existing per-activation frame-event state supplies once-per-frame dispatch,
 is cleared on reactivation, and is retained by production rollback snapshots.
 Full lifecycle evidence for the first consumer is in
 `../evidence/helpers/zhiji/README.md`; schema validation alone is not acceptance.
+
+## Host-authoritative display schema v2
+
+`godot/authority_wire.gd::VERSION` binds the display snapshot and initial-state
+hash. Version 2 adds `wrapper_clips` to each timeline record, including shadow
+poses. Both body `clips` and wrapper records share the clip depth/count/resource
+limits and bind only to local compiled placements. The catalog includes shipped
+`generated/forms` resources. Packet (16 KiB), decompressed size (256 KiB) and
+plain-value restrictions are unchanged. Room build/content identity prevents
+mixed-schema peers from starting. A drain retains the highest state serial,
+even when unordered delivery puts an older packet last.

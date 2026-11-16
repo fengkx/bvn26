@@ -1,0 +1,51 @@
+{
+  "status": "local_friend_room_passed_production_backend_deployed",
+  "roster_cases": 34,
+  "projection_ticks": 11220,
+  "applied_snapshots": 3740,
+  "form_replacement_edges": 5,
+  "helpers": 5,
+  "maps": 10,
+  "worker_tests": 32,
+  "lobby_suite": "passed",
+  "pair": "both authority slots; nondefault roster/map; initial loss, flow control, unordered drain, safety recovery, KO receipt",
+  "browser": {
+    "status": "passed",
+    "host_ticks": 479,
+    "guest_states": 277,
+    "guest_simulation_ticks": 0,
+    "local_ice_override": true,
+    "scope": "two isolated Chromium processes on one machine; CDP keyboard; local Worker"
+  },
+  "production_web": {
+    "status": "export_and_chromium_boot_passed",
+    "buildID": "0121ea731ff8829177cf7eb8a9dced63d3fd284316ee23594e69e254b4842a8b",
+    "pckSha256": "76b8c5e38e80e8b36d16e26cfcf757dec1ef7d22e4432caa3a207379a8b872db",
+    "dirty_snapshot": true,
+    "entry": "render_surface.tscn"
+  },
+  "runtime_hashes": {
+    "authority_match.gd": "82fe382634d6a664c2d4655f4e2324791fc87c627b3cb0f3f00b058acf11bf04",
+    "authority_projection.gd": "2091964503a569dd8d2a8b16e5a76962892ec30957da6825bd50915503121942",
+    "authority_timeline.gd": "42d55a66a78b151caffabd151bab1935ce55b730b973790d197df47f5e7778e9",
+    "authority_wire.gd": "9eb9db560db3501b1e73eec41a1bc78bbf1be2f2db98d77fa56114dde0359210",
+    "online_lobby.gd": "a03b7b4d14c38c921d0593473c8118f208a80422d9c7d1bea4a010f271f35804"
+  },
+  "wall_seconds_since_saved_continuation": 1320.3,
+  "production_check": {
+    "status": "authorized_completed",
+    "evidence": "production-service-check.json",
+    "room_created": true,
+    "room_cleaned": true,
+    "turn_credentials_issued": true,
+    "deployed_default_mode": "rollback",
+    "deployed_map_confirmed": null
+  },
+  "remaining": [
+    "Compatible frontend deployment and real cross-network relay traffic",
+    "Two physical machines and weak-machine performance",
+    "Deployment not performed",
+    "Full Flash audiovisual/character acceptance unchanged"
+  ],
+  "production_backend_deployment": "production-backend-deployment.json"
+}

@@ -568,7 +568,7 @@ func _build_home_view() -> void:
 func _build_room_view() -> void:
 	_mode_choice = _option()
 	_mode_choice.add_item("回滚联机")
-	_mode_choice.add_item("主机权威（实验）")
+	_mode_choice.add_item("主机权威（默认）")
 	_mode_choice.item_selected.connect(_on_mode_selected)
 
 	_member_status = Label.new()
@@ -2628,7 +2628,7 @@ func _refresh_room_view() -> void:
 	_profile_status.text += "\n连接方式：" + ("本机 / 同一局域网" if network_profile_id.ends_with("-lan") else "互联网连接（需服务配置中转）")
 	var stage_id := str(_room_state.get("stage", ""))
 	var rules := _as_dictionary(_room_state.get("rules"))
-	var stage_name := str(_stage_labels.get(stage_id, "未确认地图"))
+	var stage_name := str(_stage_labels.get(stage_id, "未确认地图")) if _map_handshake_matches_room() else "地图待选择"
 	_stage_summary.text = "%s · %d秒 · 生命×%d" % [
 		stage_name, int(rules.get("time", 90)), int(rules.get("life", 1)),
 	]
@@ -2639,11 +2639,13 @@ func _refresh_room_view() -> void:
 			"局域网" if network_profile_id.ends_with("-lan") else "互联网",
 		]
 	if _authority_mode():
-		_stage_summary.text = "主机权威实验 · 开局自动选主机 · 客端零缓冲\n现世 · 鸣人/我爱罗 对 一护/魂\n弱机与双机性能尚未验收"
+		_stage_summary.text = "%s · %d秒 · 生命×%d\n主机权威 · 开局自动选择主机" % [
+			stage_name, int(rules.get("time", 90)), int(rules.get("life", 1)),
+		]
 	_stage_summary.text += "\n" + _roster_status.text
 	_owner_settings.visible = owner
-	_time_choice.disabled = _authority_mode() or _busy or _selection_active or _map_active or not lobby_phase
-	_life_choice.disabled = _authority_mode() or _busy or _selection_active or _map_active or not lobby_phase
+	_time_choice.disabled = _busy or _selection_active or _map_active or not lobby_phase
+	_life_choice.disabled = _busy or _selection_active or _map_active or not lobby_phase
 	var network_profile_busy := _busy or _room_connection_starting \
 		or not _pending_network_profile.is_empty() \
 		or (room_client != null and (room_client.has_uncertain_command() or room_client.is_command_in_flight()))
@@ -2658,21 +2660,21 @@ func _refresh_room_view() -> void:
 	var local_choice_ok := _valid_selection_choice(local_choice)
 	var remote_choice_ok := _valid_selection_choice(remote_choice)
 	var ready_gate := common_gate and not _dirty and not _profile_draft_dirty \
-		and both_choices and map_matches_state and (_room_connection_ready or _authority_mode()) \
-		and (connection_profiles_match or _authority_mode()) and local_choice_ok and remote_choice_ok \
+		and both_choices and map_matches_state and _room_connection_ready \
+		and connection_profiles_match and local_choice_ok and remote_choice_ok \
 		and has_both_members
 	if not lobby_phase or _busy or _selection_active or _selection_commit_busy or _map_active:
 		_room_primary_action = ""
 		_connect_selection_button.visible = false
 	else:
 		_connect_selection_button.visible = true
-		if not _room_connection_ready and not _authority_mode():
+		if not _room_connection_ready:
 			_room_primary_action = "connect"
 			_connect_selection_button.text = "连接并选择角色" if not _room_connection_starting else "正在连接…"
 			_connect_selection_button.disabled = _busy or network_profile_busy or _profile_draft_dirty \
 				or _room_connection_starting or not has_both_members \
 				or remote_member.is_empty()
-		elif not both_choices or not map_matches_state or (not connection_profiles_match and not _authority_mode()) or _dirty:
+		elif not both_choices or not map_matches_state or not connection_profiles_match or _dirty:
 			if owner and both_choices and map_matches_state and _dirty:
 				_room_primary_action = "wait"
 				_connect_selection_button.text = "先应用规则并选图"
@@ -2694,12 +2696,12 @@ func _refresh_room_view() -> void:
 			_room_primary_action = "ready"
 			_connect_selection_button.text = "取消准备" if local_ready else "准备"
 			_connect_selection_button.disabled = not ready_gate
-	_setup_button.visible = not _authority_mode() and owner and lobby_phase and _room_connection_ready and both_choices \
+	_setup_button.visible = owner and lobby_phase and _room_connection_ready and both_choices \
 		and not _selection_active and not _map_active and not _selection_commit_busy
 	_setup_button.text = "应用规则并选图" if _dirty else "改选地图"
 	_setup_button.disabled = _busy or network_profile_busy or _profile_draft_dirty \
 		or _map_committing or (local_ready and remote_ready and not owner)
-	_reselect_button.visible = not _authority_mode() and lobby_phase and _room_connection_ready and both_choices \
+	_reselect_button.visible = lobby_phase and _room_connection_ready and both_choices \
 		and not _selection_active and not _map_active
 	_reselect_button.disabled = _busy or network_profile_busy or _selection_commit_busy or not has_both_members
 	_leave_button.disabled = _busy or not lobby_phase
@@ -2941,7 +2943,6 @@ func _on_start_pressed() -> void:
 
 func _map_handshake_matches_room() -> bool:
 	if _uses_room_setup(): return bool(_room_state.get("mapConfirmed", false))
-	if _authority_mode(): return _room_state.get("stage") == "现世"
 	return _map_handshake_complete \
 		and _map_handshake_setup_revision == int(_room_state.get("setupRevision", -1)) \
 		and _map_handshake_stage_id == str(_room_state.get("stage", ""))
@@ -2953,8 +2954,6 @@ func _can_ready_current_room() -> bool:
 	var profile := _authoritative_network_profile()
 	if profile.is_empty() or _profile_draft_dirty or not _pending_network_profile.is_empty():
 		return false
-	if _authority_mode():
-		return _room_state.get("phase") == "lobby" and _has_both_committed_choices() and not _dirty
 	return str(_room_state.get("phase", "")) == "lobby" \
 		and not _dirty and not _selection_active and not _selection_commit_busy and not _map_active \
 		and _room_connection_ready and _local_connection_profile_id == _remote_connection_profile_id \
@@ -4770,7 +4769,7 @@ func _refresh_menu_room() -> void:
 	var rules := _as_dictionary(_room_state.rules)
 	_stage_summary.text = "%s\n%d 秒 · 生命 ×%d\n%s" % [
 		str(_stage_labels.get(_room_state.stage, _room_state.stage)) if _map_handshake_matches_room() else "等待房主确认地图",
-		int(rules.time), int(rules.life), "主机权威（实验）" if _authority_mode() else "回滚联机"]
+		int(rules.time), int(rules.life), "主机权威（默认）" if _authority_mode() else "回滚联机"]
 	_stage_summary.text += "\n\n" + ("双方已准备，可以开始。" if _can_prepare_current_room() else
 		("已准备，等待房主开始。" if ready and not owner else
 		("等待朋友加入。" if not guest_present else "确认阵容与地图后准备。")))
