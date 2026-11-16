@@ -2,12 +2,12 @@
   "status": "targeted_source_runtime_comparisons_passed_full_acceptance_pending",
   "base": "df36e43f55677297785b829ff26bedfb690bbe98",
   "actors": {
-    "cases": 4,
-    "rows": 2228,
+    "cases": 7,
+    "rows": 4034,
     "fields": 14
   },
   "helpers": {
-    "rows": 2228,
+    "rows": 4034,
     "fields": 6,
     "extra_fields_uncompared": true
   },
@@ -22,7 +22,7 @@
   "alias_note": "Initial source fixture selects 织姬; its native fixture uses the canonical zhiji directory. Both resolve to the same locked game/fighter/fz/zhiji.swf; keys, ticks and initial state are identical. Later fixtures use canonical IDs on both sides.",
   "residuals": [
     "Full aligned Flash/Godot audiovisual comparison",
-    "Interruption and all pause/round/focus boundaries",
+    "Exhaustive pause/round/focus boundaries; three targeted interruption/re-summon comparisons passed",
     "Physical keyboard/Web gameplay acceptance",
     "Full character acceptance and all six proof/admission flags remain false"
   ],
@@ -46,5 +46,10 @@
     "pckSha256": "43c107d93c1e512b2c51c02f4f7b4115c9a3c5c697e5cee2a60e05020d6da53d",
     "gitCommit": "e23fff50d249faa6d26b8f57a9c6945635c9e5ec",
     "scope": "Local export, packed helper lifecycle and Chromium startup; physical keyboard and full Web gameplay remain pending."
+  },
+  "boundary_continuation": {
+    "evidence": "boundary-r02/comparisons.json",
+    "round_scope": "Direct compiled nextfight callback smoke; not original KO replay",
+    "elapsed_wall_seconds": 298.9
   }
 }

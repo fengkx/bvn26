@@ -85,3 +85,27 @@ Run `python3 -m unittest tools.tests.test_helper_health_compilation
 Local standard Web export, packed healing (950 → 1090) and Chromium startup
 passed; see `web/` for the PCK/build identity, raw logs and screenshot.
 Frozen-snapshot dirty provenance is retained, not relabeled a clean build.
+
+## Boundary continuation
+
+Three additional original Flash/native cases match 1,806 actor rows on the
+same 14 exact fields and 1,806 helper rows on the same six fields. Combined
+with the four baseline cases this is seven cases and 4,034 rows per stream.
+See `boundary-r02/comparisons.json`, fixed input cases and raw archive.
+
+- Caster hit: a 15-HP incoming hit at tick 54 does not cancel the seven heals;
+  owner HP finishes at 1075 from 950.
+- Opponent super: all seven heals still occur while the incoming special deals
+  nine hits totaling 320 HP; owner HP finishes at 770.
+- Active re-summon: the second summon really activates the same helper root
+  again. One heal precedes the restart and seven follow, finishing at 1110 HP.
+  This is a restart, not two concurrent helpers or two complete heal cycles.
+
+The extended production rollback test directly invokes the compiled `nextfight`
+callback after the three-cast replay. It checks HP reset, retained energy and
+helper identity, then explicitly supplies 100 energy and verifies another
+seven-heal cast to 1140 HP. `boundary-r02/round-rollback.log` records the clean
+run. This callback smoke is not a full original-player KO/next-round comparison.
+No production runtime changed in this continuation; retained Web build evidence
+still applies to the unchanged runtime. Exhaustive pause/focus/round boundaries,
+aligned audiovisual equality and physical Web input remain unaccepted.

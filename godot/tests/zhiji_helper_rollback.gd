@@ -69,6 +69,26 @@ func _run() -> void:
 	battle.end_replay()
 	var difference: String = State.first_difference(expected, battle.save_state())
 	assert(difference.is_empty(), difference)
+	# Source nextfight calls chushi to reset HP; it does not replace helper roots.
+	# This is a direct callback invariant check, not a full original KO replay.
+	var retained_energy: float = game.naruto.energy
+	game.ko_timeline.controller.nextfight()
+	assert(game.naruto.health == game.session.maxhp and game.ichigo.health == game.session.maxhp)
+	assert(game.naruto.energy == retained_energy)
+	assert(game.naruto_helper == original_helper and not original_helper.attacking)
+	for tick in 700:
+		game._advance_fight()
+		if not game.battle_intro.active:
+			break
+	assert(not game.battle_intro.active)
+	# Explicit diagnostic resource precondition, as in the source replay fixtures.
+	game.naruto.energy = 100
+	game.naruto.enter_frame({"summon": true})
+	for tick in 180:
+		game._advance_fight()
+	assert(game.naruto_helper == original_helper)
+	assert(game.naruto.health == game.session.maxhp + 140)
+	assert(game.naruto.energy == 0 and not original_helper.attacking)
 	battle.close()
 	game._stop_combat_drivers()
 	game.queue_free()
@@ -76,5 +96,5 @@ func _run() -> void:
 	battle = null
 	fixture.clear()
 	assert(await preload("res://tests/audio_shutdown.gd").drain(self))
-	print("ZHIJI_HELPER_ROLLBACK_OK repeat=3 health=1020 pause=true same_instance=true checkpoint_replay=true")
+	print("ZHIJI_HELPER_ROLLBACK_OK repeat=3 health=1020 pause=true same_instance=true checkpoint_replay=true round_callback=true post_round_heal=1140")
 	quit()
