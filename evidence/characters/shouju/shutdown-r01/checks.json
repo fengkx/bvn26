@@ -1,0 +1,52 @@
+{
+  "status": "passed_headless_teardown_only",
+  "source_commit": "d2025984d7b0831c2be8482707b661384fb172cf",
+  "cases": [
+    {
+      "lane": "shouju",
+      "case": "shouju_visual_capture",
+      "command": [
+        "/Users/fengkx/me/agent-code/toolchains/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-shouju/godot",
+        "--log-file",
+        "/private/tmp/bvn-pr-continuation/shouju_visual_capture/engine.log",
+        "--script",
+        "res://tests/shouju_visual_capture.gd",
+        "--",
+        "/private/tmp/bvn-pr-continuation/shouju_visual_capture",
+        "--check-shutdown"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.521,
+      "marker": true,
+      "diagnostics": [],
+      "script_sha256": "02b1d880b6bb7d9661bd44829e78db23449c4fdec302f0fceba158c69098820d",
+      "metadata": {
+        "engine": "4.7.2-stable (official)",
+        "fight_source_frame": 618,
+        "fighter": "手鞠",
+        "limitations": "Headless lifecycle/teardown check; no images or rendering acceptance.",
+        "method": "Native Godot Compatibility renderer; production selection, natural opening and super input",
+        "opponent": "一护",
+        "screenshots_captured": false,
+        "shutdown_check_only": true,
+        "stage": "现世",
+        "viewport": [
+          64,
+          64
+        ]
+      },
+      "log": "evidence/characters/shouju/shutdown-r01/shouju_visual_capture.log.gz",
+      "log_sha256": "f17f69936c192a1d64524b8ebfc864bbdf92dd087dec15846598cb9239e91425"
+    }
+  ],
+  "measured_godot_seconds": 2.521,
+  "scope": "Test harness cleanup only. No shared gameplay, compiler, package, fixture or tolerance changes. No new images, headed run, native capture or production admission. Historical failures remain retained.",
+  "repository_checks": {
+    "verify": "passed",
+    "check_handoff": "passed",
+    "diff_check": "passed"
+  }
+}
