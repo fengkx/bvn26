@@ -249,3 +249,7 @@ rows; see `merge-validation-r01/integrated-replay.json` and its raw archive.
 Menu font was actually rebuilt with available-roster coverage (503 characters).
 Godot resources were imported before the accepted replay.
 No gameplay/compiler behavior was changed during this integration.
+
+Local standard Web export, packed replacement-form loading and Chromium boot
+passed; see `merge-validation-r01/web/` for build identity, PCK hash, raw
+logs and browser screenshot. Snapshot dirty provenance is explicitly retained.

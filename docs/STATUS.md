@@ -1947,3 +1947,19 @@ crossing attempt is retained separately and excluded from that coverage.
 Local Web selection/natural intro/receiving hits/training special and recovery
 are observed, with programmatic CDP input; full browser lifecycle remains unaccepted. Headed RID/resource leaks remain unaccepted. All six proof/admission
 flags false; M6 remains pending. Draft review only; no merge or deployment.
+
+## 2026-11-16 final PR 294/295/296 integration validation
+
+- The integrated source roster retains 34 selectable base fighters, including
+  Temari, Ichigo Zero and Sage Naruto, plus the required White Ichigo and Golden
+  Naruto replacement assets. No existing roster entry was removed.
+- All 62 retained original-input diagnostic cases match 45,604 actor-state rows
+  with unchanged source/fixture hashes and the existing 14-field comparator.
+  Focused source/selection/opening checks (28) and matchmaking tests (32) pass.
+- The actual licensed menu font was regenerated with 503-character coverage.
+  Standard local Web export, packed required-form checks and Chromium startup
+  passed. Build/PCK identity, dirty snapshot provenance, logs and screenshots:
+  `evidence/characters/minrenx/merge-validation-r01/`.
+- These targeted integrations do not complete M6 or certify full character
+  parity. All six proof/admission flags remain false; aligned audiovisual,
+  exhaustive AI/boundaries and physical keyboard/focus acceptance remain open.
