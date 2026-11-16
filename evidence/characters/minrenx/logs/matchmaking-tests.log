@@ -1,0 +1,156 @@
+
+> @bvn/matchmaking@0.1.0 test
+> npm run typecheck && node --test test/*.test.mjs
+
+
+> @bvn/matchmaking@0.1.0 typecheck
+> tsc
+
+✖ server content IDs match the enabled menu catalog (14.834208ms)
+✔ atomic admission, private capabilities, isolation and compatibility (2008.108041ms)
+✔ room network profile is owner controlled, authoritative, and independent of map setup (1261.70125ms)
+✔ legacy state projects a default network profile without changing the current match profile (730.741ms)
+✔ setting the legacy default lazily does not invalidate matching readiness (742.773667ms)
+✔ short invitation codes are private, single-use, retryable and rotatable (915.947833ms)
+✔ setup revisions, transactional rejection, retries, barriers and rematch epochs (780.706792ms)
+✔ CORS preflight and room responses allow every origin (427.549542ms)
+✔ WebSockets accept every Origin but still require a valid one-use ticket (376.021458ms)
+✔ real WebSockets authenticate, scope signaling, revoke seats and tolerate disconnect (675.113833ms)
+✔ lobby handshake survives guest-first, host-late, resume, and socket replacement (1030.633ms)
+✔ a new host attempt rotates the id within TTL while command retries and resume preserve it (783.507625ms)
+✔ negotiate cannot extend the same id past three TTLs (449.747875ms)
+✔ stored signals replay after the room object is evicted (788.093833ms)
+✔ ten concurrent leases cannot overbook and owner departure releases capacity (1016.561375ms)
+✔ alarm expiry runs without a client request; active play and prepare timeout differ (941.613208ms)
+✔ SQLite restart restores epoch, seats and idempotency with new real WebSockets (1047.977708ms)
+✔ TURN REST issuance is authenticated, short-lived and rate limited (318.980959ms)
+✔ malformed and oversized requests remain rejected with wildcard CORS (339.703291ms)
+✔ initial-state and confirmed-result mismatches end without a winner (754.793542ms)
+✔ disabled content is rejected without consuming sequence (556.636333ms)
+✔ revoked invitations, single-use socket tickets and expired leases cannot be replayed (611.890209ms)
+✔ unknown codes stay invalid_invite and a released code is invite_expired (381.326125ms)
+✔ a recently pinged lobby socket keeps the room past the idle deadline (592.115875ms)
+✔ an open lobby socket without a recent ping still expires (383.968ms)
+✔ signaling sockets reject binary, oversized and flooded messages (731.248542ms)
+✔ admission cleanup alarms stop instead of polling tombstones (500.118458ms)
+✔ owner leave stops the room alarm, stores a closed marker, and drops revoked codes (461.520958ms)
+✔ a pinging lobby still closes at the two hour maximum (368.06875ms)
+✔ lockstep delay profiles stay frozen and retired signaling cannot poison a rematch (706.485625ms)
+✔ authority lobby accepts selected content, locks mode and lineup, and records receipt semantics (870.270459ms)
+✖ production Wrangler configuration serves authenticated room WebSockets (5851.21975ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 30
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23144.553875
+
+✖ failing tests:
+
+test at test/catalog.test.mjs:5:1
+✖ server content IDs match the enabled menu catalog (14.834208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'rifagu',
+      'renji',
+      'rukia',
+      'yihu',
+  ...
+      'kakashi',
+  +   'kenshin',
+      'byakuya',
+      'chad',
+      'lee',
+      'neji',
+      'yulong',
+  ...
+      'qilabi',
+  -   'kenshin',
+      'weqal',
+      'minrenx'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/fengkx/me/agent-code/bvn2_6-minrenx/services/matchmaking/test/catalog.test.mjs:15:10)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'rifagu',  'renji',   'rukia',
+      'yihu',    'minren',  'sakura',
+      'sasuke',  'kakashi', 'kenshin',
+      'byakuya', 'chad',    'lee',
+      'neji',    'yulong',  'yin',
+      'yijiao',  'itachi',  'orochimaru',
+      'jiraiya', 'pain',    'konan',
+      'daitu',   'didala',  'lanran',
+      'jianba',  'gaara',   'juggo',
+      'mayuri',  'karin',   'qilabi',
+      'weqal',   'minrenx'
+    ],
+    expected: [
+      'rifagu', 'renji',      'rukia',
+      'yihu',   'minren',     'sakura',
+      'sasuke', 'kakashi',    'byakuya',
+      'chad',   'lee',        'neji',
+      'yulong', 'yin',        'yijiao',
+      'itachi', 'orochimaru', 'jiraiya',
+      'pain',   'konan',      'daitu',
+      'didala', 'lanran',     'jianba',
+      'gaara',  'juggo',      'mayuri',
+      'karin',  'qilabi',     'kenshin',
+      'weqal',  'minrenx'
+    ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/wrangler.test.mjs:11:1
+✖ production Wrangler configuration serves authenticated room WebSockets (5851.21975ms)
+  AssertionError [ERR_ASSERTION]: 
+   ⛅️ wrangler 4.136.2 (update available 4.162.0)
+  ───────────────────────────────────────────────
+  Your Worker has access to the following bindings:
+  Binding                                                   Resource                  Mode
+  env.ROOMS (Room)                                          Durable Object            local
+  env.ADMISSION (Admission)                                 Durable Object            local
+  env.TURN_KEY_ID ("52afdeb2c09716a62100c64888f86b1e")      Environment Variable      local
+  
+  ⎔ Starting local server...
+  Wrangler detected this dev session is running in an AI agent.
+  The Local Explorer API is available at http://127.0.0.1:25453/cdn-cgi/local/explorer/api
+  Useful routes:
+    GET http://127.0.0.1:25453/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings
+    GET http://127.0.0.1:25453/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces
+    GET http://127.0.0.1:25453/cdn-cgi/local/explorer/api/d1/database - D1 databases
+    GET http://127.0.0.1:25453/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets
+    GET http://127.0.0.1:25453/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces
+    GET http://127.0.0.1:25453/cdn-cgi/local/explorer/api/workflows - Workflows
+    POST http://127.0.0.1:25453/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:
+      curl -X POST http://127.0.0.1:25453/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{"sql":"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20"}'
+    POST http://127.0.0.1:25453/cdn-cgi/local/explorer/api/local/observability/clear - clear all captured traces and logs
+  If the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):
+    GET http://127.0.0.1:25453/cdn-cgi/local/explorer/api - OpenAPI schema
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mEPERM: operation not permitted, open '/Users/fengkx/Library/Preferences/.wrangler/registry/bvn-matchmaking'[0m
+  
+  
+  [32mIf you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose[0m
+  Note that there is a newer version of Wrangler available (4.162.0). Consider checking whether upgrading resolves this error.
+  🪵  Logs were written to "/var/folders/h1/_0mhxzfx6cx5cl2ff9tfp84h0000gn/T/bvn-wrangler-8JmuRV/wrangler.log"
+  
+      at TestContext.<anonymous> (file:///Users/fengkx/me/agent-code/bvn2_6-minrenx/services/matchmaking/test/wrangler.test.mjs:63:12)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

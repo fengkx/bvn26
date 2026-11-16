@@ -1,5 +1,10 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-16 minrenx merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/minrenx/README.md).
+
+- 2026-11-16 minrenx capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/minrenx/README.md).
+
+- 2026-11-15 Sage Naruto / 仙鸣: source-bound base and required replacement, selection/catalog/portrait/footer/intro integration in the independent minrenx branch. 25 Flash/native fixtures / 18,530 actor states and 300 saved-roster cases / 189,400 states match. Native rollback/rendering and local Web export/packed-form checks pass; headed Web keyboard flow and required transformation pass with inspected system screenshots; CDP black-canvas screenshots remain a capture limitation. Coverage partial, all six proof/admission flags false; headed exit leaks unaccepted. [Evidence](../evidence/characters/minrenx/README.md).
 - 2026-11-16 ichigo merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/ichigo/README.md).
 
 - 2026-11-16 ichigo capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/ichigo/README.md).
@@ -1942,3 +1947,19 @@ crossing attempt is retained separately and excluded from that coverage.
 Local Web selection/natural intro/receiving hits/training special and recovery
 are observed, with programmatic CDP input; full browser lifecycle remains unaccepted. Headed RID/resource leaks remain unaccepted. All six proof/admission
 flags false; M6 remains pending. Draft review only; no merge or deployment.
+
+## 2026-11-16 final PR 294/295/296 integration validation
+
+- The integrated source roster retains 34 selectable base fighters, including
+  Temari, Ichigo Zero and Sage Naruto, plus the required White Ichigo and Golden
+  Naruto replacement assets. No existing roster entry was removed.
+- All 62 retained original-input diagnostic cases match 45,604 actor-state rows
+  with unchanged source/fixture hashes and the existing 14-field comparator.
+  Focused source/selection/opening checks (28) and matchmaking tests (32) pass.
+- The actual licensed menu font was regenerated with 503-character coverage.
+  Standard local Web export, packed required-form checks and Chromium startup
+  passed. Build/PCK identity, dirty snapshot provenance, logs and screenshots:
+  `evidence/characters/minrenx/merge-validation-r01/`.
+- These targeted integrations do not complete M6 or certify full character
+  parity. All six proof/admission flags remain false; aligned audiovisual,
+  exhaustive AI/boundaries and physical keyboard/focus acceptance remain open.

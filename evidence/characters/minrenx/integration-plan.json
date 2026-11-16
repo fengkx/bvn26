@@ -1,0 +1,42 @@
+{
+  "status": "applied_in_same_author_branch_web_foreground_blocked_on_locked_desktop",
+  "base": "a3b479414546250b7d0cd6e35cbc3ae52b3169d1",
+  "base_shared_sha256": {
+    "godot/generated/main/character_selection/available.json": "53db0f18991782313230b00cd59f914382334ba5260fc82408e3665efa0cad6c",
+    "services/matchmaking/src/catalog.json": "58d5a4822c1f63572bd516454c35562a332e6e1143fa79055d7fec8f8e4cbc75",
+    "tools/importer/frame_call_requirements.json": "0f79d83e140234f94f98dae14ce8c44132e80db34ad34cc3473de4cdc1a9a544",
+    "manifest.json": "7a9c4a28a131f34edb6c3be80ab4a5b58b351e86f912ffbc286f96c140db1746",
+    "plan/coverage.json": "65fa7e4011c29eadbd58b8c41aada5a9daceea939988571b53566877fc19bfba",
+    "plan/tasks.json": "21dd298750f4254a75fa24e9f5acfa26305404e0ddd02b321f6770e90344f0bc",
+    "docs/STATUS.md": "29ddfd2ef1452bcaeab3ca1a68e1624b1126ffa94ea59e9356aa88756e33e9fa",
+    "godot/generated/main/title_menu/menu-font.ttf": "5df7bc48bb23c574484386b74b44837b866304fba148ad7ec80dd0d6afc49ccc"
+  },
+  "fighter": {
+    "source_id": "仙鸣",
+    "slug": "minrenx",
+    "source": "game/fighter/minrenx.swf",
+    "forms": [
+      1,
+      2
+    ]
+  },
+  "required_integration": [
+    "Merge frame-call-requirements.fragment.json through the source audit without replacing other lanes entries.",
+    "Regenerate available, portrait/footer and intro indexes from source after all lane packages are installed.",
+    "Add minrenx to the matchmaking catalog and rebuild its dependent manifests in the serial integration worktree.",
+    "Apply/reconcile font-builder.patch so dynamic available roster labels are covered by the static UI font; then regenerate against the combined registry.",
+    "Run build_menu_font.py against the final combined UI inputs; retain the lane-local font regeneration receipt.",
+    "Update coverage/status/task evidence without setting any proof/admission flags true.",
+    "Regenerate reviewed file hashes and online manifests after final integration; rerun guards and relevant tests."
+  ],
+  "proof_flags": {
+    "production_admitted": false,
+    "native_parity_proven": false,
+    "oracle_accepted": false,
+    "certified_global_tick": false,
+    "os_input_join_proven": false,
+    "native_initialization_complete": false
+  },
+  "authorization": "User clarified at head 82b5ad6d4 that in-repo selection/catalog/global-manifest integration is required in this worktree; no production Worker changes.",
+  "base_shared_sha256_note": "Historical pre-integration baseline, not current-file hashes."
+}

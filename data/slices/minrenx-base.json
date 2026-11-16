@@ -1,0 +1,1784 @@
+{
+  "format": "bvn26-fighter-slice-v1",
+  "status": "reverse_engineering_intermediate",
+  "fighter_id": "仙鸣",
+  "display_name": "漩涡·鸣人 仙人",
+  "form_frame": 1,
+  "source": {
+    "swf_path": "game/fighter/minrenx.swf",
+    "swf_sha256": "3ab1aa4fa7bf8301cc4ec480517ab8f23e29dc82867ee8bcc1741fee20637bde",
+    "script_bundle_path": "scripts/fighter/minrenx.json",
+    "script_bundle_sha256": "cdde1136bf7e2068dd09acb1802c405c2dc5f6c60eb80be43cc334b47fc41339",
+    "timeline_symbol_id": 449,
+    "timeline_path": "data/slices/minrenx-base.timeline.json"
+  },
+  "movement_constants": {
+    "speed_per_tick": 10,
+    "jump_power": 20,
+    "source": {
+      "path": "frame_1/PlaceObject2_449_1/CLIPACTIONRECORD onClipEvent(load).as",
+      "sha256": "84bbd6e9175a532e1ec32d98e1ad3a38f57c914e7427d735c021c914a99bc098",
+      "source": "onClipEvent(load){\r\n   var kcplayed = 0;\r\n   var movspeed = 0;\r\n   var fall = false;\r\n   var touch = true;\r\n   var sw = false;\r\n   var jump = 0;\r\n   var khit = 0;\r\n   var fan = 0;\r\n   var jumped = 1;\r\n   var bisha = 0;\r\n   var played = 0;\r\n   var jhp = 0;\r\n   var ql = 0;\r\n   var speed = 0;\r\n   var kis = Key.isDown;\r\n   var spd = 10;\r\n   var jumpPower = 20;\r\n}\r\n"
+    }
+  },
+  "actions": {
+    "movement": {
+      "站立": {
+        "start_frame": 1,
+        "end_frame": 9
+      },
+      "走": {
+        "start_frame": 10,
+        "end_frame": 19
+      },
+      "瞬步": {
+        "start_frame": 20,
+        "end_frame": 34
+      },
+      "跳": {
+        "start_frame": 40,
+        "end_frame": 55
+      },
+      "落": {
+        "start_frame": 56,
+        "end_frame": 71
+      },
+      "跳2": {
+        "start_frame": 72,
+        "end_frame": 88
+      },
+      "落2": {
+        "start_frame": 89,
+        "end_frame": 114
+      },
+      "落地": {
+        "start_frame": 115,
+        "end_frame": 126
+      }
+    },
+    "ground_combo": {
+      "砍1": {
+        "start_frame": 165,
+        "end_frame": 180
+      },
+      "砍2": {
+        "start_frame": 181,
+        "end_frame": 200
+      },
+      "砍3": {
+        "start_frame": 201,
+        "end_frame": 227
+      }
+    },
+    "hurt": {
+      "被打": {
+        "start_frame": 1053,
+        "end_frame": 1065
+      }
+    },
+    "special": {
+      "必杀": {
+        "start_frame": 544,
+        "end_frame": 648
+      }
+    },
+    "extended_actions": {
+      "收": {
+        "start_frame": 35,
+        "end_frame": 39
+      },
+      "跳砍": {
+        "start_frame": 127,
+        "end_frame": 138
+      },
+      "跳招": {
+        "start_frame": 139,
+        "end_frame": 164
+      },
+      "砍4": {
+        "start_frame": 228,
+        "end_frame": 256
+      },
+      "砍技1": {
+        "start_frame": 257,
+        "end_frame": 316
+      },
+      "砍技2": {
+        "start_frame": 317,
+        "end_frame": 369
+      },
+      "招1": {
+        "start_frame": 370,
+        "end_frame": 379
+      },
+      "招12": {
+        "start_frame": 380,
+        "end_frame": 408
+      },
+      "招2": {
+        "start_frame": 409,
+        "end_frame": 428
+      },
+      "招22": {
+        "start_frame": 429,
+        "end_frame": 467
+      },
+      "招3": {
+        "start_frame": 468,
+        "end_frame": 505
+      },
+      "招31": {
+        "start_frame": 506,
+        "end_frame": 543
+      },
+      "上必杀": {
+        "start_frame": 649,
+        "end_frame": 743
+      },
+      "空中必杀": {
+        "start_frame": 744,
+        "end_frame": 874
+      },
+      "超必杀": {
+        "start_frame": 875,
+        "end_frame": 990
+      },
+      "招换": {
+        "start_frame": 991,
+        "end_frame": 1028
+      },
+      "防御": {
+        "start_frame": 1029,
+        "end_frame": 1029
+      },
+      "防御2": {
+        "start_frame": 1030,
+        "end_frame": 1040
+      },
+      "防住": {
+        "start_frame": 1041,
+        "end_frame": 1052
+      },
+      "击飞": {
+        "start_frame": 1066,
+        "end_frame": 1077
+      },
+      "击落地": {
+        "start_frame": 1078,
+        "end_frame": 1114
+      },
+      "起身": {
+        "start_frame": 1115,
+        "end_frame": 1137
+      },
+      "开场": {
+        "start_frame": 1138,
+        "end_frame": 1196
+      },
+      "胜利": {
+        "start_frame": 1197,
+        "end_frame": 1239
+      },
+      "失败": {
+        "start_frame": 1240,
+        "end_frame": 1277
+      },
+      "万解": {
+        "start_frame": 1278,
+        "end_frame": 1308
+      }
+    }
+  },
+  "hit_parameters": {
+    "source_path": "frame_1/DoAction.as",
+    "attacks": {
+      "bs": {
+        "damage": 50,
+        "impact_strength": 4,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 18,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "bs1": {
+        "damage": 40,
+        "impact_strength": 5,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 20,
+        "hitstun_ms": 500,
+        "reaction_label": "击飞"
+      },
+      "cbs": {
+        "damage": 100,
+        "impact_strength": 15,
+        "vertical_impulse": 15,
+        "horizontal_impulse": 20,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
+      "cbs1": {
+        "damage": 70,
+        "impact_strength": 4,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 0,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "k1": {
+        "damage": 30,
+        "impact_strength": 2,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 1,
+        "hitstun_ms": 400,
+        "reaction_label": "被打"
+      },
+      "k2": {
+        "damage": 20,
+        "impact_strength": 2,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 5,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "k3": {
+        "damage": 40,
+        "impact_strength": 3,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 2,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "k4": {
+        "damage": 60,
+        "impact_strength": 3,
+        "vertical_impulse": 7,
+        "horizontal_impulse": 4,
+        "hitstun_ms": 700,
+        "reaction_label": "被打"
+      },
+      "kj1": {
+        "damage": 20,
+        "impact_strength": 4,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 1,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "kj2": {
+        "damage": 40,
+        "impact_strength": 1,
+        "vertical_impulse": 8,
+        "horizontal_impulse": 3,
+        "hitstun_ms": 600,
+        "reaction_label": "被打"
+      },
+      "kj21": {
+        "damage": 40,
+        "impact_strength": 1,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 2,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "sbs": {
+        "damage": 200,
+        "impact_strength": 5,
+        "vertical_impulse": 5,
+        "horizontal_impulse": 6,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
+      "sbs1": {
+        "damage": 50,
+        "impact_strength": 4,
+        "vertical_impulse": -6,
+        "horizontal_impulse": 2,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "sbs2": {
+        "damage": 25,
+        "impact_strength": 1,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 1,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "sbs3": {
+        "damage": 50,
+        "impact_strength": 15,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 15,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
+      "tk": {
+        "damage": 40,
+        "impact_strength": 1,
+        "vertical_impulse": -2,
+        "horizontal_impulse": 2,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "tz": {
+        "damage": 100,
+        "impact_strength": 6,
+        "vertical_impulse": -10,
+        "horizontal_impulse": 5,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
+      "zh1": {
+        "damage": 90,
+        "impact_strength": 3,
+        "vertical_impulse": 8,
+        "horizontal_impulse": 0,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "zh2": {
+        "damage": 60,
+        "impact_strength": 13,
+        "vertical_impulse": 0,
+        "horizontal_impulse": 10,
+        "hitstun_ms": 700,
+        "reaction_label": "被打"
+      },
+      "zh21": {
+        "damage": 60,
+        "impact_strength": 3,
+        "vertical_impulse": 3,
+        "horizontal_impulse": 10,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      },
+      "zh3": {
+        "damage": 15,
+        "impact_strength": 4,
+        "vertical_impulse": 8,
+        "horizontal_impulse": 3,
+        "hitstun_ms": 500,
+        "reaction_label": "被打"
+      },
+      "zh31": {
+        "damage": 15,
+        "impact_strength": 4,
+        "vertical_impulse": 3,
+        "horizontal_impulse": 1,
+        "hitstun_ms": 600,
+        "reaction_label": "被打"
+      },
+      "zh32": {
+        "damage": 80,
+        "impact_strength": 5,
+        "vertical_impulse": 10,
+        "horizontal_impulse": 10,
+        "hitstun_ms": 0,
+        "reaction_label": "击飞"
+      }
+    },
+    "attacks_by_form": {
+      "1": {
+        "form": 1,
+        "status": "extracted",
+        "attacks": {
+          "bs": {
+            "damage": 50,
+            "impact_strength": 4,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 18,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "bs1": {
+            "damage": 40,
+            "impact_strength": 5,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 20,
+            "hitstun_ms": 500,
+            "reaction_label": "击飞"
+          },
+          "cbs": {
+            "damage": 100,
+            "impact_strength": 15,
+            "vertical_impulse": 15,
+            "horizontal_impulse": 20,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "cbs1": {
+            "damage": 70,
+            "impact_strength": 4,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 0,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "k1": {
+            "damage": 30,
+            "impact_strength": 2,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 1,
+            "hitstun_ms": 400,
+            "reaction_label": "被打"
+          },
+          "k2": {
+            "damage": 20,
+            "impact_strength": 2,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 5,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "k3": {
+            "damage": 40,
+            "impact_strength": 3,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 2,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "k4": {
+            "damage": 60,
+            "impact_strength": 3,
+            "vertical_impulse": 7,
+            "horizontal_impulse": 4,
+            "hitstun_ms": 700,
+            "reaction_label": "被打"
+          },
+          "kj1": {
+            "damage": 20,
+            "impact_strength": 4,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 1,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "kj2": {
+            "damage": 40,
+            "impact_strength": 1,
+            "vertical_impulse": 8,
+            "horizontal_impulse": 3,
+            "hitstun_ms": 600,
+            "reaction_label": "被打"
+          },
+          "kj21": {
+            "damage": 40,
+            "impact_strength": 1,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 2,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "sbs": {
+            "damage": 200,
+            "impact_strength": 5,
+            "vertical_impulse": 5,
+            "horizontal_impulse": 6,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "sbs1": {
+            "damage": 50,
+            "impact_strength": 4,
+            "vertical_impulse": -6,
+            "horizontal_impulse": 2,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "sbs2": {
+            "damage": 25,
+            "impact_strength": 1,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 1,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "sbs3": {
+            "damage": 50,
+            "impact_strength": 15,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 15,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "tk": {
+            "damage": 40,
+            "impact_strength": 1,
+            "vertical_impulse": -2,
+            "horizontal_impulse": 2,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "tz": {
+            "damage": 100,
+            "impact_strength": 6,
+            "vertical_impulse": -10,
+            "horizontal_impulse": 5,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "zh1": {
+            "damage": 90,
+            "impact_strength": 3,
+            "vertical_impulse": 8,
+            "horizontal_impulse": 0,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "zh2": {
+            "damage": 60,
+            "impact_strength": 13,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 10,
+            "hitstun_ms": 700,
+            "reaction_label": "被打"
+          },
+          "zh21": {
+            "damage": 60,
+            "impact_strength": 3,
+            "vertical_impulse": 3,
+            "horizontal_impulse": 10,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "zh3": {
+            "damage": 15,
+            "impact_strength": 4,
+            "vertical_impulse": 8,
+            "horizontal_impulse": 3,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "zh31": {
+            "damage": 15,
+            "impact_strength": 4,
+            "vertical_impulse": 3,
+            "horizontal_impulse": 1,
+            "hitstun_ms": 600,
+            "reaction_label": "被打"
+          },
+          "zh32": {
+            "damage": 80,
+            "impact_strength": 5,
+            "vertical_impulse": 10,
+            "horizontal_impulse": 10,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          }
+        }
+      },
+      "2": {
+        "form": 2,
+        "status": "extracted",
+        "attacks": {
+          "bs": {
+            "damage": 10,
+            "impact_strength": 1,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 40,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "bs1": {
+            "damage": 20,
+            "impact_strength": 4,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 0,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "bs2": {
+            "damage": 30,
+            "impact_strength": 5,
+            "vertical_impulse": 15,
+            "horizontal_impulse": 20,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "cbs": {
+            "damage": 200,
+            "impact_strength": 15,
+            "vertical_impulse": 20,
+            "horizontal_impulse": 30,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "cbs1": {
+            "damage": 150,
+            "impact_strength": 5,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 20,
+            "hitstun_ms": 1000,
+            "reaction_label": "被打"
+          },
+          "k1": {
+            "damage": 30,
+            "impact_strength": 2,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 3,
+            "hitstun_ms": 300,
+            "reaction_label": "被打"
+          },
+          "k2": {
+            "damage": 40,
+            "impact_strength": 2,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 3,
+            "hitstun_ms": 300,
+            "reaction_label": "被打"
+          },
+          "k3": {
+            "damage": 60,
+            "impact_strength": 3,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 2,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "k4": {
+            "damage": 30,
+            "impact_strength": 2,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 5,
+            "hitstun_ms": 600,
+            "reaction_label": "被打"
+          },
+          "k5": {
+            "damage": 70,
+            "impact_strength": 3,
+            "vertical_impulse": 10,
+            "horizontal_impulse": 8,
+            "hitstun_ms": 700,
+            "reaction_label": "被打"
+          },
+          "kbs": {
+            "damage": 300,
+            "impact_strength": 3,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 10,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "kbs1": {
+            "damage": 10,
+            "impact_strength": 2,
+            "vertical_impulse": -20,
+            "horizontal_impulse": 0,
+            "hitstun_ms": 0,
+            "reaction_label": "被打"
+          },
+          "kj1": {
+            "damage": 100,
+            "impact_strength": 3,
+            "vertical_impulse": 10,
+            "horizontal_impulse": 8,
+            "hitstun_ms": 700,
+            "reaction_label": "被打"
+          },
+          "kj12": {
+            "damage": 30,
+            "impact_strength": 2,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 5,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "kj13": {
+            "damage": 50,
+            "impact_strength": 3,
+            "vertical_impulse": 5,
+            "horizontal_impulse": 10,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "kj2": {
+            "damage": 20,
+            "impact_strength": 2,
+            "vertical_impulse": 4,
+            "horizontal_impulse": 1,
+            "hitstun_ms": 700,
+            "reaction_label": "被打"
+          },
+          "kj21": {
+            "damage": 20,
+            "impact_strength": 2,
+            "vertical_impulse": 6,
+            "horizontal_impulse": 3,
+            "hitstun_ms": 700,
+            "reaction_label": "被打"
+          },
+          "kj22": {
+            "damage": 50,
+            "impact_strength": 5,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 15,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "kj23": {
+            "damage": 30,
+            "impact_strength": 4,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 2,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "sbs": {
+            "damage": 350,
+            "impact_strength": 5,
+            "vertical_impulse": 10,
+            "horizontal_impulse": 15,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "tk": {
+            "damage": 50,
+            "impact_strength": 2,
+            "vertical_impulse": -2,
+            "horizontal_impulse": 2,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "tk2": {
+            "damage": 40,
+            "impact_strength": 2,
+            "vertical_impulse": -8,
+            "horizontal_impulse": 0,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "tz": {
+            "damage": 10,
+            "impact_strength": 1,
+            "vertical_impulse": -20,
+            "horizontal_impulse": 1,
+            "hitstun_ms": 300,
+            "reaction_label": "被打"
+          },
+          "zh1": {
+            "damage": 30,
+            "impact_strength": 4,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 0,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          },
+          "zh11": {
+            "damage": 10,
+            "impact_strength": 1,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 10,
+            "hitstun_ms": 600,
+            "reaction_label": "被打"
+          },
+          "zh12": {
+            "damage": 40,
+            "impact_strength": 5,
+            "vertical_impulse": 5,
+            "horizontal_impulse": 10,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "zh2": {
+            "damage": 100,
+            "impact_strength": 3,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 5,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "zh21": {
+            "damage": 50,
+            "impact_strength": 12,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 0,
+            "hitstun_ms": 1000,
+            "reaction_label": "被打"
+          },
+          "zh22": {
+            "damage": 50,
+            "impact_strength": 12,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 0,
+            "hitstun_ms": 1000,
+            "reaction_label": "被打"
+          },
+          "zh3": {
+            "damage": 100,
+            "impact_strength": 3,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 15,
+            "hitstun_ms": 0,
+            "reaction_label": "击飞"
+          },
+          "zh31": {
+            "damage": 20,
+            "impact_strength": 4,
+            "vertical_impulse": 0,
+            "horizontal_impulse": 7,
+            "hitstun_ms": 500,
+            "reaction_label": "被打"
+          }
+        }
+      }
+    }
+  },
+  "shared_control_scripts": [
+    {
+      "path": "DefineSprite_16/frame_1/DoAction.as",
+      "sha256": "2b0bebac6f726da5bc15c525c07c88fdb558cf49c0722121ef7da0a915732f63",
+      "source": "function gameRunning()\r\n{\r\n   return _root.zhanting == false && _root.game[\"p\" + _parent.pn].mc.sw == false;\r\n}\r\nfunction wankai()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳);\r\n   }\r\n   return false;\r\n}\r\nfunction moveLeft()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.左);\r\n   }\r\n   if(_parent._parent._x > _root.game[\"p\" + _parent.pn]._x + 20)\r\n   {\r\n      return _parent.goran < 120;\r\n   }\r\n   return false;\r\n}\r\nfunction moveRight()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.右);\r\n   }\r\n   if(_parent._parent._x < _root.game[\"p\" + _parent.pn]._x - 20)\r\n   {\r\n      return _parent.goran < 120;\r\n   }\r\n   return false;\r\n}\r\nfunction airhit(combo)\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.斩);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 120;\r\n      }\r\n      return false;\r\n   }\r\n   if(_parent.AImain.tkanmian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 120;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.attran < 100;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.attran > 200 && _parent.attran < 300;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction airMagichit(combo)\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.招);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 120;\r\n      }\r\n      return false;\r\n   }\r\n   if(_parent.AImain.tkanmian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"tz\") > 10)\r\n      {\r\n         return _parent.attran < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.attran < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.attran > 200 && _parent.attran < 300;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction holdJ()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.斩);\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n   {\r\n      return _parent.attran < 120 == false;\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n   {\r\n      return _parent.attran < 100;\r\n   }\r\n   return _parent.attran > 100 && _parent.attran < 300;\r\n}\r\nfunction holdU()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.招);\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n   {\r\n      return _parent.attran < 120 == false;\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n   {\r\n      return _parent.attran < 100;\r\n   }\r\n   return _parent.attran > 100 && _parent.attran < 300;\r\n}\r\nfunction nornalhit(combo)\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.斩) && !_parent.kis(_parent.跳) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      return combohitAI();\r\n   }\r\n   if(_parent.AImain.kanmian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 120;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.attran < 100;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.attran > 200 && _parent.attran < 300;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction combohitAI(act)\r\n{\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n   {\r\n      return _parent.attran < 120;\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n   {\r\n      return _parent.attran > 50 && _parent.attran < 100;\r\n   }\r\n   if(act != undefined && isPoFangAct(act))\r\n   {\r\n      return _parent.attran < 90;\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n   {\r\n      return _parent.attran > 80 && _parent.attran < 150;\r\n   }\r\n   return false;\r\n}\r\nfunction magichit1(combo)\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.招);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      return combohitAI(\"zh1\");\r\n   }\r\n   if(_parent.AImain.zh1mian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"zh1\"))\r\n      {\r\n         return _parent.attran < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 70;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.attran < 50;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.attran > 200 && _parent.attran < 300;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction magichit2(combo)\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.下) && _parent.kis(_parent.招);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      return combohitAI(\"zh2\");\r\n   }\r\n   if(_parent.AImain.zh2mian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"zh2\"))\r\n      {\r\n         return _parent.attran < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 80;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.attran < 55;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.attran > 200 && _parent.attran < 300;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction magichit3(combo)\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.上) && _parent.kis(_parent.招);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      return combohitAI(\"zh3\");\r\n   }\r\n   if(_parent.AImain.zh3mian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"zh3\"))\r\n      {\r\n         return _parent.attran < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 80;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.attran < 50;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.attran > 200 && _parent.attran < 300;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction skill1(combo)\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.下) && _parent.kis(_parent.斩);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      return combohitAI(\"kj1\");\r\n   }\r\n   if(_parent.AImain.kj1mian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"kj1\"))\r\n      {\r\n         return _parent.attran < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 80;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.attran < 50;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.attran > 200 && _parent.attran < 300;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction skill2(combo)\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.上) && _parent.kis(_parent.斩);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      return combohitAI(\"kj2\");\r\n   }\r\n   if(_parent.AImain.kj2mian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"kj2\"))\r\n      {\r\n         return _parent.attran < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.attran < 80;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.attran < 50;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.attran > 200 && _parent.attran < 300;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction jump()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.跳) && !_parent.kis(_parent.斩);\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 < 3)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn]._y < _parent._parent._y - 20)\r\n      {\r\n         return _parent.jumpran < 100;\r\n      }\r\n      return _parent.jumpran > 100 && _parent.jumpran < 130;\r\n   }\r\n   return false;\r\n}\r\nfunction jumpDown()\r\n{\r\n   if(_parent.touchFloor)\r\n   {\r\n      return false;\r\n   }\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.下) && _parent.kis(_parent.跳);\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 < 3)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn]._y > _parent._parent._y + 50)\r\n      {\r\n         return _parent.jumpran < 100;\r\n      }\r\n      return _parent.jumpran > 100 && _parent.jumpran < 130;\r\n   }\r\n   return false;\r\n}\r\nfunction rush()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.冲) && !_parent.kis(_parent.上) && !_parent.kis(_parent.下);\r\n   }\r\n   var _loc3_;\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == 1)\r\n   {\r\n      return _parent.goran < 40;\r\n   }\r\n   if(Math.abs(_root.game[\"p\" + _parent.pn]._x - _parent._parent._x) > 80)\r\n   {\r\n      _loc3_ = _parent.goran < 80;\r\n      if(_loc3_)\r\n      {\r\n         _parent._parent.scale_X = _parent._parent._x <= _root.game[\"p\" + _parent.pn]._x ? 1 : -1;\r\n         _parent._parent._xscale = _parent._parent.scale_X * 100;\r\n         return true;\r\n      }\r\n   }\r\n   return _parent.goran > 120 && _parent.goran < 200;\r\n}\r\nfunction hide()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.下) && _parent.kis(_parent.冲);\r\n   }\r\n   var _loc3_;\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == 1)\r\n   {\r\n      return _parent.goran < 50;\r\n   }\r\n   return _parent.goran > 100 && _parent.goran < 200;\r\n}\r\nfunction defence()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.下);\r\n   }\r\n   if(!_parent.canhit)\r\n   {\r\n      return false;\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == 3 || _root.game[\"p\" + _parent.pn + \"fz\"].动作 == 1)\r\n   {\r\n      return _parent.defran < 130;\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == 1)\r\n   {\r\n      return _parent.defran < 100;\r\n   }\r\n   return false;\r\n}\r\nfunction standup()\r\n{\r\n   if(_parent.sw == false)\r\n   {\r\n      if(!_parent._parent.useAI)\r\n      {\r\n         return _parent.kis(_parent.冲);\r\n      }\r\n      return _parent.goran < 40;\r\n   }\r\n   return false;\r\n}\r\nfunction zhaoHuan()\r\n{\r\n   if(_parent.ql < 100)\r\n   {\r\n      return false;\r\n   }\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.换);\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n   {\r\n      return _parent.attran > 90 && _parent.bisharan < 100;\r\n   }\r\n   if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n   {\r\n      return _parent.attran > 200 && _parent.attran < 220;\r\n   }\r\n   return false;\r\n}\r\nfunction bisha(combo, qi)\r\n{\r\n   if(isNaN(qi))\r\n   {\r\n      qi = 100;\r\n   }\r\n   if(_parent.ql < qi)\r\n   {\r\n      return false;\r\n   }\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.必杀);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.bisharan < 90;\r\n      }\r\n      return false;\r\n   }\r\n   if(_parent.AImain.bsmian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"bs\"))\r\n      {\r\n         return _parent.bisharan < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.bisharan < 80;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.bisharan > 95;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.bisharan > 200 && _parent.bisharan < 250;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction bishaUP(combo, qi)\r\n{\r\n   if(isNaN(qi))\r\n   {\r\n      qi = 100;\r\n   }\r\n   if(_parent.ql < qi)\r\n   {\r\n      return false;\r\n   }\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.上) && _parent.kis(_parent.必杀);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.bisharan < 90;\r\n      }\r\n      return false;\r\n   }\r\n   if(_parent.AImain.sbsmian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"sbs\"))\r\n      {\r\n         return _parent.bisharan < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.bisharan < 100;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.bisharan > 95;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.bisharan > 200 && _parent.bisharan < 250;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction bishaAir(combo, qi)\r\n{\r\n   if(isNaN(qi))\r\n   {\r\n      qi = 100;\r\n   }\r\n   if(_parent.ql < qi)\r\n   {\r\n      return false;\r\n   }\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.必杀);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.bisharan < 90;\r\n      }\r\n      return false;\r\n   }\r\n   if(_parent.AImain.absmian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"kbs\"))\r\n      {\r\n         return _parent.bisharan < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.bisharan < 80;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.bisharan > 95;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.bisharan > 200 && _parent.bisharan < 250;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction bishaSuper(combo, qi)\r\n{\r\n   if(isNaN(qi))\r\n   {\r\n      qi = 300;\r\n   }\r\n   if(_parent.ql < qi)\r\n   {\r\n      return false;\r\n   }\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.kis(_parent.下) && _parent.kis(_parent.必杀);\r\n   }\r\n   if(combo === true)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.bisharan < 80;\r\n      }\r\n      return false;\r\n   }\r\n   if(_parent.AImain.cbsmian.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n   {\r\n      if(isPoFangAct(\"cbs\"))\r\n      {\r\n         return _parent.bisharan < 60;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == -1)\r\n      {\r\n         return _parent.bisharan < 90;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 < 2)\r\n      {\r\n         return _parent.bisharan > 95;\r\n      }\r\n      if(_root.game[\"p\" + _parent.pn].mc.动作 == 2)\r\n      {\r\n         return _parent.bisharan > 200 && _parent.bisharan < 250;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction onJumping(step)\r\n{\r\n   if(isNaN(step))\r\n   {\r\n      step = 1;\r\n   }\r\n   if(step == 1 || step == 4)\r\n   {\r\n      if(!jumpinggg)\r\n      {\r\n         jumpinggg = true;\r\n         js = _parent.jumpPower;\r\n         _root.jumpxg(_parent._parent);\r\n      }\r\n   }\r\n   else\r\n   {\r\n      jumpinggg = false;\r\n   }\r\n   if(gameRunning())\r\n   {\r\n      if(moveLeft())\r\n      {\r\n         _parent._parent._x -= _parent.speed;\r\n      }\r\n      if(moveRight())\r\n      {\r\n         _parent._parent._x += _parent.speed;\r\n      }\r\n      if(step == 1 || step == 2)\r\n      {\r\n         if(rush())\r\n         {\r\n            _parent.gotoAndPlay(\"瞬步\");\r\n         }\r\n      }\r\n      if(step == 2 || step == 3)\r\n      {\r\n         if(jump())\r\n         {\r\n            _parent.gotoAndPlay(\"跳2\");\r\n         }\r\n      }\r\n      if(_parent.khit == 0)\r\n      {\r\n         if(airhit())\r\n         {\r\n            _parent.gotoAndPlay(\"跳砍\");\r\n         }\r\n         if(airMagichit())\r\n         {\r\n            _parent.gotoAndPlay(\"跳招\");\r\n         }\r\n         if(bishaAir())\r\n         {\r\n            _parent.gotoAndPlay(\"空中必杀\");\r\n         }\r\n      }\r\n      if(step == 1 || step == 4)\r\n      {\r\n         js -= 1;\r\n      }\r\n      if(step == 1 || step == 2 || step == 4 || step == 5)\r\n      {\r\n         _parent._parent._y -= js;\r\n      }\r\n   }\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(step == 3 || step == 6)\r\n      {\r\n         if(_parent.touch == true)\r\n         {\r\n            _root.luodixg(_parent._parent);\r\n            _parent.gotoAndPlay(\"落地\");\r\n         }\r\n      }\r\n   }\r\n}\r\nfunction doDropDown()\r\n{\r\n   if(jumpDown())\r\n   {\r\n      _parent._parent._y += _root.zhongli;\r\n      _parent.jumped = 0;\r\n      _parent.fall = true;\r\n      _parent.gotoAndPlay(\"落2\");\r\n   }\r\n}\r\nfunction onDashing(spdPlus)\r\n{\r\n   if(isNaN(spdPlus))\r\n   {\r\n      spdPlus = 2;\r\n   }\r\n   moveX(_parent.speed * spdPlus);\r\n   if(!touchFloor)\r\n   {\r\n      if(bishaAir())\r\n      {\r\n         _parent.gotoAndPlay(\"空中必杀\");\r\n      }\r\n   }\r\n   else\r\n   {\r\n      if(bishaUP())\r\n      {\r\n         _parent.gotoAndPlay(\"上必杀\");\r\n      }\r\n      if(bishaSuper())\r\n      {\r\n         _parent.gotoAndPlay(\"超必杀\");\r\n      }\r\n      if(bisha())\r\n      {\r\n         _parent.gotoAndPlay(\"必杀\");\r\n      }\r\n   }\r\n}\r\nfunction onDefence()\r\n{\r\n   if(defence())\r\n   {\r\n      _parent.gotoAndPlay(\"防御2\");\r\n   }\r\n   if(skill1())\r\n   {\r\n      _parent.gotoAndPlay(\"砍技1\");\r\n   }\r\n   if(magichit2())\r\n   {\r\n      _parent.gotoAndPlay(\"招2\");\r\n   }\r\n   if(bishaSuper())\r\n   {\r\n      _parent.gotoAndPlay(\"超必杀\");\r\n   }\r\n   doDropDown();\r\n}\r\nfunction doStand()\r\n{\r\n   if(!standed)\r\n   {\r\n      _parent.resColor();\r\n      standed = true;\r\n   }\r\n   if(defence())\r\n   {\r\n      _parent.gotoAndPlay(\"防御\");\r\n      return undefined;\r\n   }\r\n   if(nornalhit())\r\n   {\r\n      _parent.gotoAndPlay(\"砍1\");\r\n   }\r\n   if(skill2())\r\n   {\r\n      _parent.gotoAndPlay(\"砍技2\");\r\n   }\r\n   if(skill1())\r\n   {\r\n      _parent.gotoAndPlay(\"砍技1\");\r\n   }\r\n   if(magichit3())\r\n   {\r\n      _parent.gotoAndPlay(\"招3\");\r\n   }\r\n   if(magichit2())\r\n   {\r\n      _parent.gotoAndPlay(\"招2\");\r\n   }\r\n   if(magichit1())\r\n   {\r\n      _parent.gotoAndPlay(\"招1\");\r\n   }\r\n}\r\nfunction doAllAction(special)\r\n{\r\n   if(special == undefined)\r\n   {\r\n      special = \"\";\r\n   }\r\n   if(defence())\r\n   {\r\n      _parent.gotoAndPlay(\"防御\");\r\n   }\r\n   if(nornalhit())\r\n   {\r\n      _parent.gotoAndPlay(\"砍1\");\r\n   }\r\n   if(wankai())\r\n   {\r\n      _parent.gotoAndPlay(\"万解\");\r\n   }\r\n   if(skill2())\r\n   {\r\n      _parent.gotoAndPlay(\"砍技2\");\r\n   }\r\n   if(skill1())\r\n   {\r\n      _parent.gotoAndPlay(\"砍技1\");\r\n   }\r\n   if(magichit3())\r\n   {\r\n      _parent.gotoAndPlay(\"招3\");\r\n   }\r\n   if(magichit2())\r\n   {\r\n      _parent.gotoAndPlay(\"招2\");\r\n   }\r\n   if(magichit1())\r\n   {\r\n      _parent.gotoAndPlay(\"招1\");\r\n   }\r\n   if(bishaSuper())\r\n   {\r\n      _parent.gotoAndPlay(\"超必杀\");\r\n   }\r\n   if(bishaUP())\r\n   {\r\n      _parent.gotoAndPlay(\"上必杀\");\r\n   }\r\n   if(bisha())\r\n   {\r\n      _parent.gotoAndPlay(\"必杀\");\r\n   }\r\n   if(zhaoHuan())\r\n   {\r\n      _parent.gotoAndPlay(\"招换\");\r\n   }\r\n   var _loc3_ = moveLeft();\r\n   var _loc2_ = moveRight();\r\n   if(_loc3_)\r\n   {\r\n      _parent._parent._xscale = -100;\r\n      _parent._parent.scale_X = -1;\r\n   }\r\n   if(_loc2_)\r\n   {\r\n      _parent._parent._xscale = 100;\r\n      _parent._parent.scale_X = 1;\r\n   }\r\n   if(rush())\r\n   {\r\n      _parent.gotoAndPlay(\"瞬步\");\r\n   }\r\n   if(jump())\r\n   {\r\n      _parent.gotoAndPlay(\"跳\");\r\n   }\r\n   if(_loc3_)\r\n   {\r\n      _parent._parent._x -= _parent.speed;\r\n      _parent.gotoAndPlay(\"走\");\r\n   }\r\n   if(_loc2_)\r\n   {\r\n      _parent._parent._x += _parent.speed;\r\n      _parent.gotoAndPlay(\"走\");\r\n   }\r\n   if(!_loc3_ && !_loc2_)\r\n   {\r\n      _parent.updateDirect();\r\n   }\r\n   doDropDown();\r\n}\r\nfunction isPoFangAct(name)\r\n{\r\n   return _parent._parent._curGJL[name + \"zl\"] > 10;\r\n}\r\nfunction moveX(spd)\r\n{\r\n   _parent._parent.moveX(spd);\r\n}\r\nfunction moveY(spd)\r\n{\r\n   _parent._parent.moveY(- spd);\r\n}\r\nvar js = 0;\r\nvar jumpinggg;\r\nvar standed = false;\r\nvar allF = 0;\r\nvar walkF = 0;\r\n"
+    },
+    {
+      "path": "DefineSprite_2/frame_1/DoAction.as",
+      "sha256": "944904cc8cc1b735e6c1ad749b1a16f792b83b503ff25418b536245bf57e3524",
+      "source": "function gameRunning()\r\n{\r\n   return _root.zhanting == false && _root.game[\"p\" + _parent.pn].mc.sw == false;\r\n}\r\nfunction beida()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.time = 0;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n   }\r\n   _parent.gotoAndPlay(_loc2_.htype);\r\n}\r\nfunction fangyu()\r\n{\r\n   var _loc2_ = checkHit();\r\n   if(!_loc2_)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.jhp = _loc2_.pw;\r\n   _parent.htx = _loc2_.hitx;\r\n   _parent.yup = _loc2_.yup;\r\n   _parent.bdzl = _loc2_.zl;\r\n   _parent.tdtime = _loc2_.hdtime / 1000 * 30;\r\n   if(isNaN(_parent.tdtime))\r\n   {\r\n      _parent.tdtime = 0;\r\n   }\r\n   if(_parent.bdzl > 10)\r\n   {\r\n      _parent.bdzl -= 10;\r\n      _parent.gotoAndPlay(_loc2_.htype);\r\n   }\r\n   else\r\n   {\r\n      _parent.yup = 0;\r\n      _parent.gotoAndPlay(\"防住\");\r\n   }\r\n}\r\nfunction checkHit()\r\n{\r\n   if(!gameRunning())\r\n   {\r\n      return null;\r\n   }\r\n   if(!_parent.canhit)\r\n   {\r\n      return null;\r\n   }\r\n   var _loc3_ = getHitObj(_fsArray,_root.game[\"p\" + _parent.pn].mc,\"atm\",_parent.pw);\r\n   if(!_loc3_)\r\n   {\r\n      _loc3_ = getHitObj(_fzfsArray,_root.game[\"p\" + _parent.pn + \"fz\"],\"\",_parent.fzpw);\r\n   }\r\n   if(!_loc3_)\r\n   {\r\n      _loc3_ = getStgHitObj();\r\n   }\r\n   return _loc3_;\r\n}\r\nfunction getHitObj(array, player, afterFix, ppw)\r\n{\r\n   if(afterFix == undefined)\r\n   {\r\n      afterFix = \"\";\r\n   }\r\n   var _loc2_;\r\n   var _loc4_;\r\n   for(var _loc14_ in array)\r\n   {\r\n      _loc2_ = array[_loc14_];\r\n      _loc4_ = player[_loc2_ + afterFix];\r\n      if(_loc4_)\r\n      {\r\n         if(this.hitTest(_loc4_))\r\n         {\r\n            return {pw:ppw[_loc2_ + \"pw\"],zl:ppw[_loc2_ + \"zl\"],yup:ppw[_loc2_ + \"up\"],hitx:ppw[_loc2_ + \"x\"],hdtime:ppw[_loc2_ + \"tm\"],htype:ppw[_loc2_ + \"dz\"]};\r\n         }\r\n      }\r\n   }\r\n   return null;\r\n}\r\nfunction getStgHitObj()\r\n{\r\n   var _loc4_;\r\n   for(var _loc5_ in stgks)\r\n   {\r\n      _loc4_ = _root.game.layer_effect[stgks[_loc5_] + \"_P\" + _parent.pn];\r\n      if(_loc4_)\r\n      {\r\n         if(this.hitTest(_loc4_.mian))\r\n         {\r\n            return _loc4_.hitObj;\r\n         }\r\n      }\r\n   }\r\n}\r\nvar hitks = [\"tk\",\"tz\",\"k1\",\"k2\",\"k3\",\"k4\",\"k5\",\"kj1\",\"kj2\",\"zh1\",\"zh2\",\"zh3\",\"bs\",\"sbs\",\"cbs\",\"kbs\"];\r\nvar stgks = [\"stgk1\",\"stgk2\",\"stgk3\",\"stgk4\",\"stgk5\",\"stgk6\",\"stgk7\",\"stgk8\",\"stgk9\",\"stgk10\"];\r\nvar _fsArray = [];\r\nvar i = 0;\r\nwhile(i < hitks.length)\r\n{\r\n   var kv = hitks[i];\r\n   _fsArray.push(kv);\r\n   var k = 1;\r\n   while(k <= 5)\r\n   {\r\n      _fsArray.push(kv + k);\r\n      k++;\r\n   }\r\n   i++;\r\n}\r\nvar _fzfsArray = [\"atm1\",\"atm2\",\"atm3\",\"atm4\",\"atm5\"];\r\n"
+    }
+  ],
+  "timeline_scripts": [
+    {
+      "frame": 1,
+      "path": "DefineSprite_449/frame_1/DoAction.as",
+      "sha256": "46d0d657f9a9d5a7066ec2f65a058e47904d487733c605f02f18365e4c8935df",
+      "source": "function setColor(o)\r\n{\r\n   var _loc1_ = new Color(_this);\r\n   _loc1_.setTransform(o);\r\n}\r\nfunction resColor()\r\n{\r\n   colors = null;\r\n   _cgap = 1;\r\n   setColor({ra:100,rb:0,ga:100,gb:0,ba:100,bb:0,aa:100,ab:0});\r\n   _this.filters = [];\r\n}\r\nfunction applyColors()\r\n{\r\n   if(colors && colors.length > 0)\r\n   {\r\n      setColor(colors[_csn]);\r\n      if(++_csn > colors.length - 1)\r\n      {\r\n         _csn = 0;\r\n      }\r\n   }\r\n}\r\nfunction initWudi()\r\n{\r\n   if(_initwudi)\r\n   {\r\n      return undefined;\r\n   }\r\n   if(!_root.wudi)\r\n   {\r\n      return undefined;\r\n   }\r\n   if(_root.modo == undefined || _parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initwudi\" + _root.modo + \",\" + _parent.useAI);\r\n   _initwudi = true;\r\n   wudi = _root.modo == 1 && _parent.useAI == false;\r\n   if(wudi)\r\n   {\r\n      ql = 300;\r\n   }\r\n}\r\nfunction followMc(mc, fx, fy, lockx)\r\n{\r\n   trace(\"followMc , \" + fx + \",\" + fy + \",\" + lockx);\r\n   if(fx == undefined)\r\n   {\r\n      fx = true;\r\n   }\r\n   if(fy == undefined)\r\n   {\r\n      fy = true;\r\n   }\r\n   if(lockx == undefined)\r\n   {\r\n      lockx = false;\r\n   }\r\n   if(fx == true)\r\n   {\r\n      if(_parent._xscale > 0)\r\n      {\r\n         if(lockx == true)\r\n         {\r\n            if(_parent._x < _root.game[\"p\" + pn]._x)\r\n            {\r\n               mc._x = _root.game[\"p\" + pn]._x - _parent._x;\r\n            }\r\n         }\r\n         else\r\n         {\r\n            mc._x = _root.game[\"p\" + pn]._x - _parent._x;\r\n         }\r\n      }\r\n      else if(lockx == true)\r\n      {\r\n         if(_parent._x > _root.game[\"p\" + pn]._x)\r\n         {\r\n            mc._x = _parent._x - _root.game[\"p\" + pn]._x;\r\n         }\r\n      }\r\n      else\r\n      {\r\n         mc._x = _parent._x - _root.game[\"p\" + pn]._x;\r\n      }\r\n   }\r\n   if(fy == true)\r\n   {\r\n      mc._y = _root.game[\"p\" + pn]._y - _parent._y;\r\n   }\r\n}\r\nfunction doWanKai()\r\n{\r\n   initCtrl();\r\n   if(_parent.万解)\r\n   {\r\n      hp = _parent.中转.hp;\r\n      ql = _parent.中转.ql;\r\n      if(_parent._name == \"p1\")\r\n      {\r\n         trace(\"p1\");\r\n         _this.上 = _root.w;\r\n         _this.下 = _root.s;\r\n         _this.左 = _root.a;\r\n         _this.右 = _root.d;\r\n         _this.斩 = _root.j;\r\n         _this.跳 = _root.k;\r\n         _this.冲 = _root.l;\r\n         _this.招 = _root.u;\r\n         _this.必杀 = _root.i;\r\n         _this.换 = _root.o;\r\n      }\r\n      else\r\n      {\r\n         trace(\"p2\");\r\n         _this.上 = _root.上箭;\r\n         _this.下 = _root.下箭;\r\n         _this.左 = _root.左箭;\r\n         _this.右 = _root.右箭;\r\n         _this.斩 = _root.N1;\r\n         _this.跳 = _root.N2;\r\n         _this.冲 = _root.N3;\r\n         _this.招 = _root.N4;\r\n         _this.必杀 = _root.N5;\r\n         _this.换 = _root.N6;\r\n      }\r\n      gotoAndStop(\"开场\");\r\n      play();\r\n   }\r\n}\r\nfunction loseHp(v)\r\n{\r\n   if(wudi)\r\n   {\r\n      return undefined;\r\n   }\r\n   hp -= v;\r\n}\r\nfunction onDefence(xgtype)\r\n{\r\n   if(isNaN(xgtype))\r\n   {\r\n      xgtype = 1;\r\n   }\r\n   if(xgtype == 1)\r\n   {\r\n      _root.bdfyxg(_this);\r\n   }\r\n   else\r\n   {\r\n      _root.bdfyxg2(_this);\r\n   }\r\n   updateDirect(true);\r\n   var _loc3_ = _root.game[\"p\" + pn];\r\n   if(_root.to == false)\r\n   {\r\n      loseHp(jhp / 10);\r\n      ql += jhp / 15;\r\n      if(_loc3_.mc.动作 != 3)\r\n      {\r\n         _loc3_.mc.ql += jhp / 10;\r\n      }\r\n   }\r\n   if(_parent.getDepth() > _loc3_.getDepth())\r\n   {\r\n      _parent.swapDepths(_loc3_);\r\n   }\r\n   checkDead(false);\r\n}\r\nfunction onBeHit0()\r\n{\r\n   动作 = -1;\r\n   beida = 1;\r\n   jumped = 0;\r\n   jump = 1;\r\n   hited = 1;\r\n   time = 0;\r\n   play();\r\n}\r\nfunction onBeHit(flying)\r\n{\r\n   onBeHit0();\r\n   _root.bdxg(_this);\r\n   hits++;\r\n   if(hits > 1)\r\n   {\r\n      _root[\"p\" + pn + \"hits\"].gotoAndPlay(\"连击\");\r\n   }\r\n   hitlosehp();\r\n   updateDirect(true);\r\n   checkDead(flying);\r\n   var _loc3_ = _root.game[\"p\" + pn];\r\n   var _loc4_ = 0.8;\r\n   if(!flying)\r\n   {\r\n      _loc4_ = jhp <= 60 ? 0.1 : 0.5;\r\n   }\r\n   hurtVoice(_loc4_);\r\n   var _loc5_;\r\n   if(_parent.hitWall)\r\n   {\r\n      _loc5_ = Math.abs(_parent._x - _loc3_._x);\r\n      hitNear = _loc5_ < 100;\r\n      if(hitNear)\r\n      {\r\n         hitNear = _parent.scale_X != 1 ? _parent._x > 500 : _parent._x < 500;\r\n      }\r\n   }\r\n   if(_parent.getDepth() > _loc3_.getDepth())\r\n   {\r\n      _parent.swapDepths(_loc3_);\r\n   }\r\n}\r\nfunction hurtVoice(p)\r\n{\r\n   if(sw)\r\n   {\r\n      if(getTimer() - _dievoicen < 1000)\r\n      {\r\n         return undefined;\r\n      }\r\n      _dievoicen = getTimer();\r\n      dieSnd.start();\r\n      return undefined;\r\n   }\r\n   if(Math.random() > p)\r\n   {\r\n      return undefined;\r\n   }\r\n   if(getTimer() - _lastvoice < 2000)\r\n   {\r\n      return undefined;\r\n   }\r\n   var _loc2_ = _root.getRandInArray(hurtSnds);\r\n   _loc2_.start();\r\n   _lastvoice = getTimer();\r\n}\r\nfunction hitlosehp()\r\n{\r\n   var _loc2_ = _root.game[\"p\" + pn];\r\n   if(_root.to == false)\r\n   {\r\n      loseHp(jhp);\r\n      ql += jhp / 10;\r\n      if(_loc2_.mc.动作 != 3)\r\n      {\r\n         _loc2_.mc.ql += jhp / 5;\r\n      }\r\n   }\r\n}\r\nfunction beidax(flying)\r\n{\r\n   applyColors();\r\n   if(_root.zhanting == true)\r\n   {\r\n      return undefined;\r\n   }\r\n   if(hitNear && time <= 5 && htx > 0)\r\n   {\r\n      _root.game[\"p\" + pn].moveX((- htx) * 1.5);\r\n   }\r\n   else\r\n   {\r\n      _parent.moveX(- htx);\r\n   }\r\n   _parent.moveY(- yup);\r\n   hstm++;\r\n   if(!flying && hstm < 20)\r\n   {\r\n      doHurtSkill();\r\n   }\r\n   time++;\r\n   if(time > 13)\r\n   {\r\n      yup = 0;\r\n      if(!flying)\r\n      {\r\n         htx = 0;\r\n      }\r\n   }\r\n   if(time > 15)\r\n   {\r\n      jump = 0;\r\n   }\r\n   if(flying)\r\n   {\r\n      if(touch == 1)\r\n      {\r\n         if(yup < 0)\r\n         {\r\n            if(hited == 1)\r\n            {\r\n               gotoAndStop(\"击落地\");\r\n               play();\r\n            }\r\n         }\r\n         else if(time > 15)\r\n         {\r\n            gotoAndStop(\"击落地\");\r\n            play();\r\n         }\r\n      }\r\n      return undefined;\r\n   }\r\n   if(time == 0 || tdtime == 0 || isNaN(tdtime))\r\n   {\r\n      play();\r\n      return undefined;\r\n   }\r\n   if(time >= tdtime)\r\n   {\r\n      play();\r\n   }\r\n}\r\nfunction hurtSkill()\r\n{\r\n   if(hp <= 0)\r\n   {\r\n      return false;\r\n   }\r\n   if(sw)\r\n   {\r\n      return false;\r\n   }\r\n   if(ql < 100)\r\n   {\r\n      return false;\r\n   }\r\n   if(_root.game[\"p\" + pn].mc.动作 == 3)\r\n   {\r\n      return false;\r\n   }\r\n   if(!_parent.useAI)\r\n   {\r\n      return kis(换);\r\n   }\r\n   return goran < 30;\r\n}\r\nfunction doHurtSkill()\r\n{\r\n   if(hurtSkling)\r\n   {\r\n      return undefined;\r\n   }\r\n   if(!hurtSkill())\r\n   {\r\n      return undefined;\r\n   }\r\n   ql -= 100;\r\n   hurtSkling = true;\r\n   wdFrame = 0;\r\n   wdFrameX = 10;\r\n   var _loc3_ = _root.game[\"p\" + pn];\r\n   if(_parent.getDepth() < _loc3_.getDepth())\r\n   {\r\n      _parent.swapDepths(_loc3_);\r\n   }\r\n   if(_parent.isNaruto)\r\n   {\r\n      _root.bsd(pn,\"XG_tishen\",false);\r\n      _parent.moveX(150);\r\n      updateDirect();\r\n      _root.addChildXG(_parent,\"XG_tishen2\");\r\n      gotoAndStop(\"站立\");\r\n      play();\r\n      setTimeout(function()\r\n      {\r\n         _root.bsw(pn,false);\r\n      }\r\n      ,800);\r\n   }\r\n   else\r\n   {\r\n      _root.bsd(pn,\"XG_bsq\",false);\r\n      setTimeout(function()\r\n      {\r\n         hurtSkling = true;\r\n         _root.bsw(pn,false);\r\n         gotoAndStop(\"招换\");\r\n         play();\r\n         _root.addStgHit(pn,\"XG_baoqi\",{pw:80,zl:5,yup:0,hitx:15,hdtime:0,htype:\"击飞\"});\r\n      }\r\n      ,600);\r\n   }\r\n}\r\nfunction doZhaoHuan()\r\n{\r\n   if(hurtSkling)\r\n   {\r\n      return undefined;\r\n   }\r\n   _root.yfgj(_parent._name);\r\n   bs = 1;\r\n   ql -= 100;\r\n}\r\nfunction beidaStop(flying)\r\n{\r\n   stop();\r\n   hited = 1;\r\n}\r\nfunction fangyux()\r\n{\r\n   if(_root.zhanting)\r\n   {\r\n      return undefined;\r\n   }\r\n   _parent.moveX(- htx);\r\n}\r\nfunction onHitDown()\r\n{\r\n   resColor();\r\n   if(sw == true)\r\n   {\r\n      stop();\r\n   }\r\n}\r\nfunction checkDead(fly)\r\n{\r\n   if(sw)\r\n   {\r\n      return false;\r\n   }\r\n   if(hp <= 0)\r\n   {\r\n      if(_root.modo != 4)\r\n      {\r\n         bdzl = 0;\r\n         sw = true;\r\n         _root.KOplay(pn);\r\n         if(!fly)\r\n         {\r\n            gotoAndStop(\"击飞\");\r\n            play();\r\n         }\r\n         return true;\r\n      }\r\n   }\r\n   return false;\r\n}\r\nfunction initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}\r\nfunction on_enterframe()\r\n{\r\n   initWudi();\r\n   if(ql < 0)\r\n   {\r\n      ql = 0;\r\n   }\r\n   if(ql > 300)\r\n   {\r\n      ql = 300;\r\n   }\r\n   if(hp < 0)\r\n   {\r\n      hp = 0;\r\n   }\r\n   if(_parent._x < 20)\r\n   {\r\n      _parent._x = 20;\r\n   }\r\n   if(_parent._x > _root.mapSizeX - 30)\r\n   {\r\n      _parent._x = _root.mapSizeX - 30;\r\n   }\r\n   if(dashing)\r\n   {\r\n      onDashing();\r\n      if(_parent._y > _root.floorY)\r\n      {\r\n         _parent._y = _root.floorY;\r\n      }\r\n      _lastX = _parent._x;\r\n      return undefined;\r\n   }\r\n   if(_root.zhanting)\r\n   {\r\n      return undefined;\r\n   }\r\n   if(wdFrameX > 0 && !isNaN(wdFrameX) && !isNaN(wdFrame))\r\n   {\r\n      canhit = false;\r\n      if(++wdFrame >= wdFrameX)\r\n      {\r\n         canhit = true;\r\n         wdFrame = wdFrameX = 0;\r\n      }\r\n   }\r\n   if(!dashing)\r\n   {\r\n      doDashX();\r\n   }\r\n   var _loc6_ = _root.game[\"p\" + pn];\r\n   var _loc4_ = _parent._x - _lastX;\r\n   if(_loc4_ > 30)\r\n   {\r\n      _loc4_ = 30;\r\n   }\r\n   if(_loc4_ < -30)\r\n   {\r\n      _loc4_ = -30;\r\n   }\r\n   var _loc3_ = _loc4_ * _parent.scale_X;\r\n   if(_loc3_ > 0)\r\n   {\r\n      _loc3_ += _loc6_.vecx / 2;\r\n      _parent.vecx = _loc3_;\r\n   }\r\n   else\r\n   {\r\n      _parent.vecx = 0;\r\n   }\r\n   var _loc8_;\r\n   var _loc5_;\r\n   var _loc11_;\r\n   if(airBody == false && _root.game[\"p\" + pn].mc.airBody == false)\r\n   {\r\n      if(_loc3_ >= 0 && bdmn.hitTest(_root.game[\"p\" + pn].mc.bdmn))\r\n      {\r\n         if(_loc3_ == 0 && _loc6_.vecx == 0)\r\n         {\r\n            _loc3_ = 10;\r\n         }\r\n         _loc8_ = _loc6_.heavy - _parent.heavy;\r\n         if(_loc8_ < 0)\r\n         {\r\n            _loc8_ = 0;\r\n         }\r\n         _loc5_ = _loc3_ / 2 - _loc8_;\r\n         if(_loc5_ < 0)\r\n         {\r\n            _loc5_ = 0;\r\n         }\r\n         _loc11_ = _loc3_ - _loc5_;\r\n         _loc6_._x += _loc5_ * _parent.scale_X;\r\n         _parent.moveX(- _loc11_);\r\n      }\r\n   }\r\n   _lastX = _parent._x;\r\n   var _loc10_ = true;\r\n   var _loc7_ = _parent._y;\r\n   if(_loc7_ == _root.floorY)\r\n   {\r\n      touch = true;\r\n      touchFloor = true;\r\n      return undefined;\r\n   }\r\n   var _loc9_;\r\n   if(_loc7_ < _root.floorY)\r\n   {\r\n      _loc9_ = isHitBan();\r\n      hitBan = _loc9_ != 0;\r\n      if(jump == 1)\r\n      {\r\n         touch = false;\r\n         touchFloor = false;\r\n         return undefined;\r\n      }\r\n      if(hitBan)\r\n      {\r\n         touch = true;\r\n         touchFloor = false;\r\n         _parent._y = _loc9_;\r\n         return undefined;\r\n      }\r\n   }\r\n   if(_loc7_ > _root.floorY - 10)\r\n   {\r\n      _parent._y = _root.floorY;\r\n      touch = true;\r\n      touchFloor = true;\r\n      return undefined;\r\n   }\r\n   if(_loc10_)\r\n   {\r\n      touch = false;\r\n      _parent._y += _root.zhongli;\r\n      if(jumped == 1)\r\n      {\r\n         gotoAndStop(\"落\");\r\n         play();\r\n         jumped = 0;\r\n      }\r\n      if(jumped == 2)\r\n      {\r\n         gotoAndStop(\"落2\");\r\n         play();\r\n         jumped = 0;\r\n      }\r\n   }\r\n}\r\nfunction isHitBan()\r\n{\r\n   var _loc8_ = _parent._y;\r\n   i = 2;\r\n   var _loc4_;\r\n   var _loc3_;\r\n   var _loc6_;\r\n   var _loc5_;\r\n   var _loc7_;\r\n   while(i <= 30)\r\n   {\r\n      if(_root.game[\"ban\" + i])\r\n      {\r\n         _loc4_ = _root.game[\"ban\" + i];\r\n         _loc3_ = _loc4_._y;\r\n         if(_loc8_ <= _loc3_ && _loc8_ > _loc3_ - 10)\r\n         {\r\n            _loc6_ = _parent._x;\r\n            _loc5_ = _loc4_._x;\r\n            _loc7_ = _loc4_._width;\r\n            if(_loc6_ >= _loc5_ && _loc6_ <= _loc5_ + _loc7_)\r\n            {\r\n               return _loc3_;\r\n            }\r\n         }\r\n      }\r\n      i++;\r\n   }\r\n   return 0;\r\n}\r\nfunction zhaoHuan()\r\n{\r\n   if(hp <= 0)\r\n   {\r\n      return false;\r\n   }\r\n   if(ql < 100)\r\n   {\r\n      return false;\r\n   }\r\n   if(!touchFloor && !hitBan)\r\n   {\r\n      return false;\r\n   }\r\n   if(jump == 1)\r\n   {\r\n      return false;\r\n   }\r\n   if(动作 != 0 && 动作 != 2)\r\n   {\r\n      return false;\r\n   }\r\n   if(_root.game[\"p\" + pn].mc.sw == true)\r\n   {\r\n      return false;\r\n   }\r\n   if(_root.game[_parent._name + \"fz\"].attacking === true)\r\n   {\r\n      return false;\r\n   }\r\n   if(!_parent.useAI)\r\n   {\r\n      return kis(换);\r\n   }\r\n   if(_root.game[\"p\" + pn].mc.动作 < 2)\r\n   {\r\n      return attran > 90 && bisharan < 100;\r\n   }\r\n   if(_root.game[\"p\" + pn].mc.动作 == 2)\r\n   {\r\n      return attran > 200 && attran < 220;\r\n   }\r\n   return false;\r\n}\r\nfunction dash()\r\n{\r\n   if(hp <= 0)\r\n   {\r\n      return false;\r\n   }\r\n   if(sw)\r\n   {\r\n      return false;\r\n   }\r\n   if(ql < dashQL)\r\n   {\r\n      return false;\r\n   }\r\n   if(动作 != 0 && 动作 != 1 && 动作 != 2)\r\n   {\r\n      return false;\r\n   }\r\n   if(_root.game[\"p\" + pn].mc.sw == true)\r\n   {\r\n      return false;\r\n   }\r\n   var _loc4_ = _root.game[\"p\" + pn];\r\n   if(!_parent.useAI)\r\n   {\r\n      if(kis(冲))\r\n      {\r\n         if(kis(上))\r\n         {\r\n            dashX = 0;\r\n            dashY = -14;\r\n            return true;\r\n         }\r\n         if(kis(下))\r\n         {\r\n            if(hitBan || touch)\r\n            {\r\n               dashX = 10;\r\n               dashY = 0;\r\n               updateDirect();\r\n            }\r\n            else\r\n            {\r\n               dashX = 0;\r\n               dashY = 12;\r\n            }\r\n            return true;\r\n         }\r\n         return false;\r\n      }\r\n   }\r\n   if(!hitBan && !touch)\r\n   {\r\n      return false;\r\n   }\r\n   var _loc3_;\r\n   var _loc5_ = Math.abs(_loc4_._x - _parent._x);\r\n   if(动作 == 1 && _loc4_.mc.动作 == -1)\r\n   {\r\n      _loc3_ = goran < 40;\r\n   }\r\n   if(动作 == 2 && _loc4_.mc.动作 == 1)\r\n   {\r\n      _loc3_ = goran < 30;\r\n   }\r\n   if(动作 == 1)\r\n   {\r\n      _loc3_ = goran > 120 && goran < 140;\r\n   }\r\n   if(_loc3_)\r\n   {\r\n      dashX = 10;\r\n      dashY = 0;\r\n      updateDirect();\r\n      return true;\r\n   }\r\n   return false;\r\n}\r\nfunction doDashX()\r\n{\r\n   if(dash())\r\n   {\r\n      dashing = true;\r\n      ql -= dashQL;\r\n      dashF = 0;\r\n      _root.bsd(pn,\"XG_xdash\",false);\r\n   }\r\n}\r\nfunction onDashing()\r\n{\r\n   if(++dashF < 10)\r\n   {\r\n      if(dashY != 0)\r\n      {\r\n         _parent.moveY(dashY);\r\n         hitBan = false;\r\n         touch = false;\r\n         gotoAndStop(\"落\");\r\n      }\r\n      else\r\n      {\r\n         _parent.moveX(dashX);\r\n         gotoAndStop(\"走\");\r\n      }\r\n      _parent.showdow({R:20,G:-100,B:255});\r\n   }\r\n   else\r\n   {\r\n      _root.bsw(pn,false);\r\n      dashing = false;\r\n      updateDirect();\r\n      if(dashY != 0)\r\n      {\r\n         gotoAndStop(\"落2\");\r\n         play();\r\n      }\r\n      else\r\n      {\r\n         updateDirect();\r\n         gotoAndStop(\"站立\");\r\n         play();\r\n      }\r\n   }\r\n}\r\nfunction randAI()\r\n{\r\n   var _loc2_ = 100 * _root.AI;\r\n   attran = Math.random() * _loc2_;\r\n   defran = Math.random() * _loc2_;\r\n   goran = Math.random() * _loc2_;\r\n   jumpran = Math.random() * _loc2_;\r\n   bisharan = Math.random() * _loc2_;\r\n}\r\nfunction wankai()\r\n{\r\n   _parent.万解 = true;\r\n   _parent.中转.ql = ql;\r\n   _parent.中转.hp = hp;\r\n   if(!wudi)\r\n   {\r\n      clearInterval(_root.feiint);\r\n      _root.feiint = setInterval(feixue,1000);\r\n   }\r\n   _parent.nextFrame();\r\n   _root._y = 0;\r\n}\r\nfunction wankai_start()\r\n{\r\n   动作 = 3;\r\n   bs = 1;\r\n   ql -= 300;\r\n   jump = 1;\r\n   _root.cbsd(pn);\r\n}\r\nfunction wankai_end()\r\n{\r\n   if(_parent.万解)\r\n   {\r\n      _root.cbsw(pn);\r\n      bs = 0;\r\n      _parent.万解 = false;\r\n   }\r\n}\r\nfunction updateDirect(bhit)\r\n{\r\n   if(bhit)\r\n   {\r\n      _parent.scale_X = _root.game[\"p\" + pn]._xscale >= 0 ? -1 : 1;\r\n   }\r\n   else\r\n   {\r\n      _parent.scale_X = _parent._x <= _root.game[\"p\" + pn]._x ? 1 : -1;\r\n   }\r\n   _parent._xscale = _parent.scale_X * 100;\r\n}\r\nvar khit = 0;\r\nvar jump = 0;\r\nvar movspeed = 0;\r\nvar jumped = 1;\r\nvar yup = 0;\r\nvar htx = 0;\r\nvar tdtime = 0;\r\nvar bdzl = 0;\r\nvar hited = 0;\r\nvar 动作 = 0;\r\nvar beida = 0;\r\nvar bs = 0;\r\nvar sw;\r\nvar time = 0;\r\nvar touch;\r\nvar touchFloor;\r\nvar wudi;\r\nvar canHide = true;\r\nvar speed = spd;\r\nvar canhit = true;\r\nvar wdFrame;\r\nvar wdFrameX;\r\nvar hits = 0;\r\nvar airBody = false;\r\nvar _this = this;\r\nvar 动作 = 0;\r\nvar hurtSnds = [];\r\nvar hurtSndAttach = [\"voice_hurt1\",\"voice_hurt2\"];\r\nvar dieSnd = new Sound(_this);\r\ndieSnd.attachSound(\"voice_die\");\r\nvar i = 0;\r\nwhile(i < hurtSndAttach.length)\r\n{\r\n   var hv = hurtSndAttach[i];\r\n   var snd = new Sound(_this);\r\n   snd.attachSound(hv);\r\n   hurtSnds.push(snd);\r\n   i++;\r\n}\r\nresColor();\r\n_parent.scale_X = _parent._xscale <= 0 ? -1 : 1;\r\n_parent._visible = true;\r\n_visible = true;\r\nvar inited;\r\nif(!inited)\r\n{\r\n   trace(\"inited\");\r\n   inited = true;\r\n   _lastX = 0;\r\n   pn = _parent._name != \"p1\" ? 1 : 2;\r\n   doWanKai();\r\n   if(!_parent.万解)\r\n   {\r\n      updateDirect();\r\n   }\r\n}\r\nvar colors;\r\nvar _cgap = 0;\r\nvar _csn = 0;\r\nvar _initwudi;\r\nvar hitNear = false;\r\nvar _lastvoice = 0;\r\nvar _dievoicen = 0;\r\nvar hstm = 0;\r\nvar hurtSkling = false;\r\nvar _lastX;\r\nvar hitBan;\r\nvar dashQL = 100;\r\nvar dashing;\r\nvar dashX;\r\nvar dashY;\r\nvar dashF = 0;\r\nfeixue = function()\r\n{\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_this.hp > _root.maxhp / 5)\r\n      {\r\n         loseHp(10);\r\n      }\r\n   }\r\n};\r\n"
+    },
+    {
+      "frame": 1,
+      "path": "DefineSprite_449/frame_1/PlaceObject2_16_31/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "552614720eac86a13093bb10e6732d7e05222b348c079e5ac6cd6118ad947ec7",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      doAllAction();\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 1,
+      "path": "DefineSprite_449/frame_1/PlaceObject2_2_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 2,
+      "path": "DefineSprite_449/frame_2/DoAction.as",
+      "sha256": "5945dc9bd06c19062d43c753efb05816891856090f3e54f16b42c4353f79d871",
+      "source": "hits = 0;\r\n"
+    },
+    {
+      "frame": 8,
+      "path": "DefineSprite_449/frame_8/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 13,
+      "path": "DefineSprite_449/frame_13/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 21,
+      "path": "DefineSprite_449/frame_21/DoAction.as",
+      "sha256": "959104852cd78b4021ce0f7f48631e3ed0cf0b71c94da436fa97f3d887390590",
+      "source": "_root.shunbuxg(_parent);\r\n"
+    },
+    {
+      "frame": 21,
+      "path": "DefineSprite_449/frame_21/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "b9e367ff04e51bebbc46c33ce7d4221d146a25f534d66074663271e3f1f1d955",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      _parent._parent._x += _parent.speed * 2 * _parent._parent.scale_X;\r\n      if(bishaUP())\r\n      {\r\n         _parent.gotoAndPlay(\"上必杀\");\r\n      }\r\n      if(bishaSuper())\r\n      {\r\n         _parent.gotoAndPlay(\"超必杀\");\r\n      }\r\n      if(bisha())\r\n      {\r\n         _parent.gotoAndPlay(\"必杀\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 30,
+      "path": "DefineSprite_449/frame_30/PlaceObject2_2_38/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 32,
+      "path": "DefineSprite_449/frame_32/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 37,
+      "path": "DefineSprite_449/frame_37/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 42,
+      "path": "DefineSprite_449/frame_42/DoAction.as",
+      "sha256": "b890a77fc0b2700bee5d0bb3f7b92b99349b6a62d2f20d8d115b30d037b3613a",
+      "source": "jump = 1;\r\n"
+    },
+    {
+      "frame": 42,
+      "path": "DefineSprite_449/frame_42/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "15d993e9b1598e78ddb3e8ca35054bb2a562bea05b7c388fbcae371981dc8ff2",
+      "source": "onClipEvent(enterFrame){\r\n   onJumping(1);\r\n}\r\n"
+    },
+    {
+      "frame": 50,
+      "path": "DefineSprite_449/frame_50/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "0e74ab6cac90234a068c43bdd8851d4525e750d49fbd8dc7d579dc727df256c3",
+      "source": "onClipEvent(enterFrame){\r\n   onJumping(2);\r\n}\r\n"
+    },
+    {
+      "frame": 56,
+      "path": "DefineSprite_449/frame_56/DoAction.as",
+      "sha256": "8e9c06fc81a61e04678abae1c01b81280c25d36522c0d5b5ab8721fb9c6ffb8a",
+      "source": "jump = 0;\r\n"
+    },
+    {
+      "frame": 56,
+      "path": "DefineSprite_449/frame_56/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "1dd832a1ce74067bd825f06d162d2b22e4c1a2c467a47e0dba4c6b9b2e29ac9e",
+      "source": "onClipEvent(enterFrame){\r\n   onJumping(3);\r\n}\r\n"
+    },
+    {
+      "frame": 68,
+      "path": "DefineSprite_449/frame_68/DoAction.as",
+      "sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e",
+      "source": "gotoAndStop(\"落\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 72,
+      "path": "DefineSprite_449/frame_72/DoAction.as",
+      "sha256": "77d8ecec992ad9b2739d382fb920a33b321349fcb0a770339700673228ce12b4",
+      "source": "jump = 1;\r\njumped = 0;\r\n"
+    },
+    {
+      "frame": 72,
+      "path": "DefineSprite_449/frame_72/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "a5e83704d5060297001dd8191822a1fdb310052896c4d0d1f9d69ca1f9a495f0",
+      "source": "onClipEvent(enterFrame){\r\n   onJumping(4);\r\n}\r\n"
+    },
+    {
+      "frame": 83,
+      "path": "DefineSprite_449/frame_83/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "092e6f38f29accd57b1b3367b69d2128273fbf865dda02bb9e6ba70780771c6e",
+      "source": "onClipEvent(enterFrame){\r\n   onJumping(5);\r\n}\r\n"
+    },
+    {
+      "frame": 89,
+      "path": "DefineSprite_449/frame_89/DoAction.as",
+      "sha256": "8e9c06fc81a61e04678abae1c01b81280c25d36522c0d5b5ab8721fb9c6ffb8a",
+      "source": "jump = 0;\r\n"
+    },
+    {
+      "frame": 89,
+      "path": "DefineSprite_449/frame_89/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "767f0d510bc837c4f8ed84dd2c726b752ce3806104bd8670ea9debc210d94b6d",
+      "source": "onClipEvent(enterFrame){\r\n   onJumping(6);\r\n}\r\n"
+    },
+    {
+      "frame": 101,
+      "path": "DefineSprite_449/frame_101/DoAction.as",
+      "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8",
+      "source": "gotoAndStop(\"落2\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 116,
+      "path": "DefineSprite_449/frame_116/DoAction.as",
+      "sha256": "254f13f0db54ab20a90ae1668ab15d48b30e8bca3b4be9634ac2f485d73d3e8f",
+      "source": "khit = 0;\r\njump = 0;\r\n"
+    },
+    {
+      "frame": 116,
+      "path": "DefineSprite_449/frame_116/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "f3bddb1fde31648861b8017538a5812ec7e720bb8209a8fbf9f939f3cb117bcc",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(nornalhit())\r\n      {\r\n         _parent.gotoAndPlay(\"砍1\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 120,
+      "path": "DefineSprite_449/frame_120/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 127,
+      "path": "DefineSprite_449/frame_127/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "1a0262fd9bf1dda1da6ba9e3435725a308adf7c014248098cca166e4fbf060dd",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      moveX(_parent.speed);\r\n      moveY(-5);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 128,
+      "path": "DefineSprite_449/frame_128/DoAction.as",
+      "sha256": "9b79c9423446b2ba8f6b389e4d8c56548a32adc976bbd8513c19784bfaf4888b",
+      "source": "khit = 1;\r\n动作 = 1;\r\n"
+    },
+    {
+      "frame": 130,
+      "path": "DefineSprite_449/frame_130/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "4e97bb99b1129c52d653cc0c2aee3022005f012e64f5e51ccd28907cb2437973",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(magichit1())\r\n      {\r\n         _parent.gotoAndPlay(\"跳招\");\r\n      }\r\n      moveX(_parent.speed);\r\n      moveY(-5);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 134,
+      "path": "DefineSprite_449/frame_134/DoAction.as",
+      "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8",
+      "source": "gotoAndStop(\"落2\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 139,
+      "path": "DefineSprite_449/frame_139/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "3fa4ef98fc877987339f98805ff577aff5793b115a3e88b223a735f23dd8a31c",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      moveX(-5);\r\n      moveY(10);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 140,
+      "path": "DefineSprite_449/frame_140/DoAction.as",
+      "sha256": "4a082f7642ae426b3e98fbe9926255acf49a3b071382d3267721ef9dac836d71",
+      "source": "khit = 1;\r\n动作 = 1;\r\njump = 1;\r\njumped = 0;\r\n"
+    },
+    {
+      "frame": 144,
+      "path": "DefineSprite_449/frame_144/PlaceObject2_85_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "39e90ad63b16813322b75dfe566eb78cce224d4a6d3f8f5565f23d754221e256",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      _X = _X + movspeed;\r\n      _Y = _Y + movspeed;\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 144,
+      "path": "DefineSprite_449/frame_144/PlaceObject2_85_28/CLIPACTIONRECORD onClipEvent(load).as",
+      "sha256": "f079519fe4dca345ade213408d1243529770e85e060ad24a34f2ecd788dca105",
+      "source": "onClipEvent(load){\r\n   movspeed = _parent.speed * 1.5;\r\n}\r\n"
+    },
+    {
+      "frame": 154,
+      "path": "DefineSprite_449/frame_154/DoAction.as",
+      "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8",
+      "source": "gotoAndStop(\"落2\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 165,
+      "path": "DefineSprite_449/frame_165/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "351b3f0438e4f3803f286dd53edab31ef21b8bed0b01f22eed9017b430cd1146",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      moveX(_parent.speed / 2);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 166,
+      "path": "DefineSprite_449/frame_166/DoAction.as",
+      "sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "source": "动作 = 1;\r\n"
+    },
+    {
+      "frame": 170,
+      "path": "DefineSprite_449/frame_170/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "fb469d99fe4f41d84dfcdbfe54694ce49632d19b79cff12037d505830a13a643",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(nornalhit(true))\r\n      {\r\n         _parent.gotoAndPlay(\"砍2\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 175,
+      "path": "DefineSprite_449/frame_175/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 182,
+      "path": "DefineSprite_449/frame_182/DoAction.as",
+      "sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "source": "动作 = 1;\r\n"
+    },
+    {
+      "frame": 184,
+      "path": "DefineSprite_449/frame_184/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "351b3f0438e4f3803f286dd53edab31ef21b8bed0b01f22eed9017b430cd1146",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      moveX(_parent.speed / 2);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 190,
+      "path": "DefineSprite_449/frame_190/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "f4826bb9b89a1f23951eb280dd03a8f8e14a90272b85b57734cf31f79bd4f5e8",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(magichit2())\r\n      {\r\n         _parent.gotoAndPlay(\"招2\");\r\n      }\r\n      if(nornalhit(true))\r\n      {\r\n         _parent.gotoAndPlay(\"砍3\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 195,
+      "path": "DefineSprite_449/frame_195/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 202,
+      "path": "DefineSprite_449/frame_202/DoAction.as",
+      "sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "source": "动作 = 1;\r\n"
+    },
+    {
+      "frame": 203,
+      "path": "DefineSprite_449/frame_203/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "a9d8cb5f517ad2cac59e2c188843719a409b0efa3cb00e5cfba860283831bb2d",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      moveX(_parent.speed);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 211,
+      "path": "DefineSprite_449/frame_211/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "823046d21fab6b375c93cb4da80c535c484f35e1c1b390b12a7873290f3f3b9b",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(bisha())\r\n      {\r\n         _parent.gotoAndPlay(\"必杀\");\r\n      }\r\n      if(skill2())\r\n      {\r\n         _parent.gotoAndPlay(\"砍技2\");\r\n      }\r\n      if(magichit1())\r\n      {\r\n         _parent.gotoAndPlay(\"招1\");\r\n      }\r\n      if(nornalhit(true))\r\n      {\r\n         _parent.gotoAndPlay(\"砍4\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 226,
+      "path": "DefineSprite_449/frame_226/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 229,
+      "path": "DefineSprite_449/frame_229/DoAction.as",
+      "sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "source": "动作 = 1;\r\n"
+    },
+    {
+      "frame": 237,
+      "path": "DefineSprite_449/frame_237/DoAction.as",
+      "sha256": "a7080452bb70355f49776a5abd6d08d2e8e9221b78d6d2aaa679a5a3205a08bb",
+      "source": "_root.shine(16291840);\r\n"
+    },
+    {
+      "frame": 237,
+      "path": "DefineSprite_449/frame_237/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "a9d8cb5f517ad2cac59e2c188843719a409b0efa3cb00e5cfba860283831bb2d",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      moveX(_parent.speed);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 243,
+      "path": "DefineSprite_449/frame_243/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "45f2210c27eefa9dbe92dbff4593ff94dee7487037243501b151e14d04014042",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(bishaSuper())\r\n      {\r\n         _parent.gotoAndPlay(\"超必杀\");\r\n      }\r\n      if(bishaUP())\r\n      {\r\n         _parent.gotoAndPlay(\"上必杀\");\r\n      }\r\n      if(magichit3())\r\n      {\r\n         _parent.gotoAndPlay(\"招3\");\r\n      }\r\n      if(rush())\r\n      {\r\n         _parent.gotoAndPlay(\"瞬步\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 253,
+      "path": "DefineSprite_449/frame_253/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 258,
+      "path": "DefineSprite_449/frame_258/DoAction.as",
+      "sha256": "60990b45e0280c238afb72fea87292298b295381172d3bc48e5fa3d2fc6e10db",
+      "source": "动作 = 1;\r\nql += 10;\r\njump = 1;\r\n"
+    },
+    {
+      "frame": 259,
+      "path": "DefineSprite_449/frame_259/DoAction.as",
+      "sha256": "01c933ae2a3c6a02c6578ce3c0173f52d277a3db2807b8305b80b02f8c6e3ccf",
+      "source": "_parent._x = _root.game[\"p\" + pn]._x;\r\n_parent._y = _root.game[\"p\" + pn]._y - 50;\r\n"
+    },
+    {
+      "frame": 269,
+      "path": "DefineSprite_449/frame_269/DoAction.as",
+      "sha256": "e03f423368821c266a9badb23b8c62cea03720dd73008b0d55b55f93df32b564",
+      "source": "_root.shine(630253);\r\n"
+    },
+    {
+      "frame": 269,
+      "path": "DefineSprite_449/frame_269/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "9e09817899a69a023fcac47f31ee7f51f249c4f9601d3551f0459151664875c9",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      moveY(-2);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 299,
+      "path": "DefineSprite_449/frame_299/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "4210b15668016d9bd9d5b5bd09085aedb78981a9e01b910b7d2d1710c227792a",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(nornalhit(true))\r\n      {\r\n         _parent.gotoAndPlay(\"砍3\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 309,
+      "path": "DefineSprite_449/frame_309/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 317,
+      "path": "DefineSprite_449/frame_317/DoAction.as",
+      "sha256": "dc1e798b2bc3bf2ecf4f058c6ec3d54c7d43199185f6d6f55f755f64e2c9c6f7",
+      "source": "_root.shine(1403539);\r\n"
+    },
+    {
+      "frame": 317,
+      "path": "DefineSprite_449/frame_317/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "de3024996a0c5e2185b0222d7b6d770673e793509b0500f5a9f29aec97137720",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      moveX(-10);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 318,
+      "path": "DefineSprite_449/frame_318/DoAction.as",
+      "sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3",
+      "source": "动作 = 1;\r\nql += 10;\r\n"
+    },
+    {
+      "frame": 326,
+      "path": "DefineSprite_449/frame_326/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 331,
+      "path": "DefineSprite_449/frame_331/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "eef19c8462a9b6e95dc8bb77e7e09f6aca834241853ccde26e33a9cdbc28c611",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(bishaUP())\r\n      {\r\n         _parent.gotoAndPlay(\"上必杀\");\r\n      }\r\n      if(magichit3())\r\n      {\r\n         _parent.gotoAndPlay(\"招3\");\r\n      }\r\n      if(rush())\r\n      {\r\n         _parent.gotoAndPlay(\"瞬步\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 347,
+      "path": "DefineSprite_449/frame_347/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 370,
+      "path": "DefineSprite_449/frame_370/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "c1a819c795bc16a8838a5499cc33c60c191798af144878a2448f12e52aa54f58",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.sw == false)\r\n      {\r\n         if(_parent._parent._xscale < 0)\r\n         {\r\n            if(_parent.zh10atm.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n            {\r\n               _parent.gotoAndPlay(\"招12\");\r\n            }\r\n            else\r\n            {\r\n               _parent._parent._x -= _parent.speed * 3;\r\n            }\r\n         }\r\n         else if(_parent.zh10atm.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n         {\r\n            _parent.gotoAndPlay(\"招12\");\r\n         }\r\n         else\r\n         {\r\n            _parent._parent._x += _parent.speed * 3;\r\n         }\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 371,
+      "path": "DefineSprite_449/frame_371/DoAction.as",
+      "sha256": "5228b50886cfc616238948a11f34c6d24ed70e2ca391c314e4e5478c087005b5",
+      "source": "动作 = 1;\r\nql += 5;\r\n_root.shunbuxg(_parent);\r\n"
+    },
+    {
+      "frame": 379,
+      "path": "DefineSprite_449/frame_379/DoAction.as",
+      "sha256": "e9465843a54a0b7224d42eb63a884bb4248136c85d6803f1fddc7fbf16548116",
+      "source": "gotoAndStop(\"招121\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 385,
+      "path": "DefineSprite_449/frame_385/DoAction.as",
+      "sha256": "89fc1597c6f2cc9cb7fbd1afe287cb900125f7eec60bd4b2c70b3702d300206c",
+      "source": "动作 = 1;\r\nql += 5;\r\n"
+    },
+    {
+      "frame": 388,
+      "path": "DefineSprite_449/frame_388/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "4a5506e8838ada38efe6324b61686d83494b2bb6225e6b026ceb803d6adc0edb",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(skill2())\r\n      {\r\n         _parent.gotoAndPlay(\"砍技2\");\r\n      }\r\n      if(magichit3())\r\n      {\r\n         _parent.gotoAndPlay(\"招3\");\r\n      }\r\n      if(jump())\r\n      {\r\n         _parent.gotoAndPlay(\"跳\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 390,
+      "path": "DefineSprite_449/frame_390/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 399,
+      "path": "DefineSprite_449/frame_399/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 409,
+      "path": "DefineSprite_449/frame_409/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "78153107b1aaf9c49e457170ed690ef5bfba951a26be0a372f62f5ed501f5e16",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game[\"p\" + _parent.pn].mc.sw == false)\r\n      {\r\n         if(_parent._parent._xscale < 0)\r\n         {\r\n            if(_parent.zh10atm.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n            {\r\n               _parent.gotoAndPlay(\"招12\");\r\n            }\r\n            else\r\n            {\r\n               _parent._parent._x -= _parent.speed;\r\n            }\r\n         }\r\n         else if(_parent.zh10atm.hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn))\r\n         {\r\n            _parent.gotoAndPlay(\"招12\");\r\n         }\r\n         else\r\n         {\r\n            _parent._parent._x += _parent.speed;\r\n         }\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 410,
+      "path": "DefineSprite_449/frame_410/DoAction.as",
+      "sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3",
+      "source": "动作 = 1;\r\nql += 10;\r\n"
+    },
+    {
+      "frame": 415,
+      "path": "DefineSprite_449/frame_415/DoAction.as",
+      "sha256": "a7080452bb70355f49776a5abd6d08d2e8e9221b78d6d2aaa679a5a3205a08bb",
+      "source": "_root.shine(16291840);\r\n"
+    },
+    {
+      "frame": 418,
+      "path": "DefineSprite_449/frame_418/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "6035ee3217052d8e1758dd466333e38d2d901714d7d2223c650ffbf4fb7abe1f",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(bishaSuper())\r\n      {\r\n         _parent.gotoAndPlay(\"超必杀\");\r\n      }\r\n      if(bisha())\r\n      {\r\n         _parent.gotoAndPlay(\"必杀\");\r\n      }\r\n      if(magichit2())\r\n      {\r\n         _parent.gotoAndPlay(\"招22\");\r\n      }\r\n      if(skill2())\r\n      {\r\n         _parent.gotoAndPlay(\"砍技2\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 428,
+      "path": "DefineSprite_449/frame_428/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 430,
+      "path": "DefineSprite_449/frame_430/DoAction.as",
+      "sha256": "0c831b7ae214ca94a4d45d60f416f05b84edfba97251fb68abed491d6137cbd3",
+      "source": "动作 = 1;\r\nql += 10;\r\n"
+    },
+    {
+      "frame": 431,
+      "path": "DefineSprite_449/frame_431/DoAction.as",
+      "sha256": "a7080452bb70355f49776a5abd6d08d2e8e9221b78d6d2aaa679a5a3205a08bb",
+      "source": "_root.shine(16291840);\r\n"
+    },
+    {
+      "frame": 447,
+      "path": "DefineSprite_449/frame_447/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 469,
+      "path": "DefineSprite_449/frame_469/DoAction.as",
+      "sha256": "5867451e689894234bd0d8b04e2fb494dfe67c2df7a6c6c5121a5801923fd067",
+      "source": "动作 = 1;\r\nql += 5;\r\njump = 1;\r\njumped = 0;\r\n"
+    },
+    {
+      "frame": 472,
+      "path": "DefineSprite_449/frame_472/DoAction.as",
+      "sha256": "e03f423368821c266a9badb23b8c62cea03720dd73008b0d55b55f93df32b564",
+      "source": "_root.shine(630253);\r\n"
+    },
+    {
+      "frame": 473,
+      "path": "DefineSprite_449/frame_473/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "7c9eff79b2e666f63bb15e471cd960020c34bd54021c14796dbd7b07b188b3b2",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_parent._parent._xscale < 0)\r\n      {\r\n         _parent._parent._x -= _parent.speed * 1.3;\r\n      }\r\n      else\r\n      {\r\n         _parent._parent._x += _parent.speed * 1.3;\r\n      }\r\n      _parent._parent._y -= _parent.speed * 1.8;\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 493,
+      "path": "DefineSprite_449/frame_493/PlaceObject2_16_40/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "474ce6a9361d5b0b892bc68a69f0324196744e9f633da96c86cff4d818af8db4",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(magichit3())\r\n      {\r\n         _parent.gotoAndPlay(\"招31\");\r\n      }\r\n      if(bisha())\r\n      {\r\n         _parent.gotoAndPlay(\"空中必杀\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 504,
+      "path": "DefineSprite_449/frame_504/DoAction.as",
+      "sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e",
+      "source": "gotoAndStop(\"落\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 507,
+      "path": "DefineSprite_449/frame_507/DoAction.as",
+      "sha256": "5867451e689894234bd0d8b04e2fb494dfe67c2df7a6c6c5121a5801923fd067",
+      "source": "动作 = 1;\r\nql += 5;\r\njump = 1;\r\njumped = 0;\r\n"
+    },
+    {
+      "frame": 518,
+      "path": "DefineSprite_449/frame_518/DoAction.as",
+      "sha256": "e03f423368821c266a9badb23b8c62cea03720dd73008b0d55b55f93df32b564",
+      "source": "_root.shine(630253);\r\n"
+    },
+    {
+      "frame": 542,
+      "path": "DefineSprite_449/frame_542/DoAction.as",
+      "sha256": "7caf728941964e3620b50d296860fe02efe4afbcfff3f2d77b99aa651bc7ce9e",
+      "source": "gotoAndStop(\"落\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 545,
+      "path": "DefineSprite_449/frame_545/DoAction.as",
+      "sha256": "89553624084fa3307c720d8f23e636eb2ac5da0b06cf946e5c80e72b3ea93cdb",
+      "source": "动作 = 3;\r\nbs = 1;\r\nql -= 100;\r\njump = 1;\r\n"
+    },
+    {
+      "frame": 547,
+      "path": "DefineSprite_449/frame_547/DoAction.as",
+      "sha256": "772e9963b1331951f0a7a4d83b5ef76859c43115361ec9a51d74b7bf4210c240",
+      "source": "_root.bsd(pn);\r\n_root.showFace(pn,\"鸣人2\");\r\n"
+    },
+    {
+      "frame": 568,
+      "path": "DefineSprite_449/frame_568/DoAction.as",
+      "sha256": "8b4d2146b59f91ec3e0d1b5910b7bb9ddc3b89d13cafd56dc493ecaec42c360f",
+      "source": "_root.bsw(pn);\r\nbs = 0;\r\n"
+    },
+    {
+      "frame": 568,
+      "path": "DefineSprite_449/frame_568/DoAction_2.as",
+      "sha256": "e03f423368821c266a9badb23b8c62cea03720dd73008b0d55b55f93df32b564",
+      "source": "_root.shine(630253);\r\n"
+    },
+    {
+      "frame": 568,
+      "path": "DefineSprite_449/frame_568/PlaceObject2_16_39/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "0673ca6b8add9725037c70892e3d8c6324c8cbea40ad4761032b88450e906485",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      moveX(10);\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 598,
+      "path": "DefineSprite_449/frame_598/DoAction.as",
+      "sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5",
+      "source": "_root.shine();\r\n"
+    },
+    {
+      "frame": 598,
+      "path": "DefineSprite_449/frame_598/PlaceObject2_2_35/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 602,
+      "path": "DefineSprite_449/frame_602/DoAction.as",
+      "sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "source": "动作 = 0;\r\n"
+    },
+    {
+      "frame": 610,
+      "path": "DefineSprite_449/frame_610/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 650,
+      "path": "DefineSprite_449/frame_650/DoAction.as",
+      "sha256": "3116fa13ed12e2e73acbbdf78f42962eb93a03c2b69db9c479c5e66e4a3dfb6e",
+      "source": "动作 = 3;\r\nbs = 1;\r\nql -= 100;\r\n"
+    },
+    {
+      "frame": 651,
+      "path": "DefineSprite_449/frame_651/DoAction.as",
+      "sha256": "772e9963b1331951f0a7a4d83b5ef76859c43115361ec9a51d74b7bf4210c240",
+      "source": "_root.bsd(pn);\r\n_root.showFace(pn,\"鸣人2\");\r\n"
+    },
+    {
+      "frame": 707,
+      "path": "DefineSprite_449/frame_707/DoAction.as",
+      "sha256": "8b4d2146b59f91ec3e0d1b5910b7bb9ddc3b89d13cafd56dc493ecaec42c360f",
+      "source": "_root.bsw(pn);\r\nbs = 0;\r\n"
+    },
+    {
+      "frame": 707,
+      "path": "DefineSprite_449/frame_707/PlaceObject2_2_33/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 710,
+      "path": "DefineSprite_449/frame_710/DoAction.as",
+      "sha256": "813bfff85e091935a077085056f521c6b837736bb14f05b5c5782199a57bb9bc",
+      "source": "_parent._x = _root.game[\"p\" + pn]._x - 10;\r\n_parent._y = _root.game[\"p\" + pn]._y - 60;\r\njump = 1;\r\n"
+    },
+    {
+      "frame": 710,
+      "path": "DefineSprite_449/frame_710/DoAction_2.as",
+      "sha256": "e03f423368821c266a9badb23b8c62cea03720dd73008b0d55b55f93df32b564",
+      "source": "_root.shine(630253);\r\n"
+    },
+    {
+      "frame": 711,
+      "path": "DefineSprite_449/frame_711/PlaceObject2_2_38/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 735,
+      "path": "DefineSprite_449/frame_735/DoAction.as",
+      "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8",
+      "source": "gotoAndStop(\"落2\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 745,
+      "path": "DefineSprite_449/frame_745/DoAction.as",
+      "sha256": "89553624084fa3307c720d8f23e636eb2ac5da0b06cf946e5c80e72b3ea93cdb",
+      "source": "动作 = 3;\r\nbs = 1;\r\nql -= 100;\r\njump = 1;\r\n"
+    },
+    {
+      "frame": 746,
+      "path": "DefineSprite_449/frame_746/DoAction.as",
+      "sha256": "772e9963b1331951f0a7a4d83b5ef76859c43115361ec9a51d74b7bf4210c240",
+      "source": "_root.bsd(pn);\r\n_root.showFace(pn,\"鸣人2\");\r\n"
+    },
+    {
+      "frame": 800,
+      "path": "DefineSprite_449/frame_800/DoAction.as",
+      "sha256": "8b4d2146b59f91ec3e0d1b5910b7bb9ddc3b89d13cafd56dc493ecaec42c360f",
+      "source": "_root.bsw(pn);\r\nbs = 0;\r\n"
+    },
+    {
+      "frame": 801,
+      "path": "DefineSprite_449/frame_801/DoAction.as",
+      "sha256": "b2f447545c81b8d0c5300af0a55e4cb5da61bf70a4af7830dea2f9bb76a0ca4a",
+      "source": "_root.shine(630253);\r\n_root.shine();\r\n"
+    },
+    {
+      "frame": 804,
+      "path": "DefineSprite_449/frame_804/PlaceObject2_2_34/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 806,
+      "path": "DefineSprite_449/frame_806/PlaceObject2_281_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "ad61349ff98353afc46c8ac0abd23457b8f44945dfacff25fde110b823e3bc73",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(played == 1)\r\n      {\r\n         return undefined;\r\n      }\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) || hitTest(_root.game[\"p\" + _parent.pn].mc.mian))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            played = 1;\r\n            movspeed = 0;\r\n            gotoAndPlay(5);\r\n         }\r\n      }\r\n      else\r\n      {\r\n         _X = _X + movspeed;\r\n         _Y = _Y + movspeed;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 861,
+      "path": "DefineSprite_449/frame_861/DoAction.as",
+      "sha256": "9eb54b269b3954e2fc2b2cb54db30787a6ba2092a0422d1a2ef10ecc169402c8",
+      "source": "gotoAndStop(\"落2\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 875,
+      "path": "DefineSprite_449/frame_875/DoAction.as",
+      "sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1",
+      "source": "动作 = 3;\r\nbs = 1;\r\nql -= 300;\r\n"
+    },
+    {
+      "frame": 876,
+      "path": "DefineSprite_449/frame_876/DoAction.as",
+      "sha256": "f210ee7cef5a6c6f7991dab528e82413e2b2a54056c2882653bdd2ffda02100b",
+      "source": "_root.cbsd(pn);\r\n_root.showFace(pn,\"鸣人1\");\r\n"
+    },
+    {
+      "frame": 920,
+      "path": "DefineSprite_449/frame_920/DoAction.as",
+      "sha256": "b2c3199d47e043d6b41d1702b5817321f6847e22bef05066fd3563862a852677",
+      "source": "_root.cbsw(pn);\r\nbs = 0;\r\n"
+    },
+    {
+      "frame": 968,
+      "path": "DefineSprite_449/frame_968/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 991,
+      "path": "DefineSprite_449/frame_991/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 995,
+      "path": "DefineSprite_449/frame_995/DoAction.as",
+      "sha256": "9a4e1df3b75d75b39859f0968d785f77d37ac0a8433d1017068d334da3f65753",
+      "source": "doZhaoHuan();\r\n"
+    },
+    {
+      "frame": 1020,
+      "path": "DefineSprite_449/frame_1020/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 1030,
+      "path": "DefineSprite_449/frame_1030/DoAction.as",
+      "sha256": "c79c57fe780892f8a30745b2003f21b14e03cdd4b32f99798fe31014ffd7b9ba",
+      "source": "动作 = 2;\r\n"
+    },
+    {
+      "frame": 1030,
+      "path": "DefineSprite_449/frame_1030/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "7b81aee77c5eeebbf460b5decf923073d9ad71d249dfc9131ed9850180718750",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(defence())\r\n      {\r\n         _parent.gotoAndPlay(\"防御2\");\r\n      }\r\n      if(skill1())\r\n      {\r\n         _parent.gotoAndPlay(\"砍技1\");\r\n      }\r\n      if(magichit2())\r\n      {\r\n         _parent.gotoAndPlay(\"招2\");\r\n      }\r\n      if(bishaSuper())\r\n      {\r\n         _parent.gotoAndPlay(\"超必杀\");\r\n      }\r\n      doDropDown();\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 1030,
+      "path": "DefineSprite_449/frame_1030/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef",
+      "source": "onClipEvent(enterFrame){\r\n   fangyu();\r\n}\r\n"
+    },
+    {
+      "frame": 1037,
+      "path": "DefineSprite_449/frame_1037/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 1041,
+      "path": "DefineSprite_449/frame_1041/DoAction.as",
+      "sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155",
+      "source": "play();\r\n"
+    },
+    {
+      "frame": 1041,
+      "path": "DefineSprite_449/frame_1041/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "9aff64fd97286135684e203c95eab8ccb6275d8e91f9babf73d4064d505c5460",
+      "source": "onClipEvent(enterFrame){\r\n   _parent.fangyux();\r\n}\r\n"
+    },
+    {
+      "frame": 1042,
+      "path": "DefineSprite_449/frame_1042/DoAction.as",
+      "sha256": "c3e46f26ed26ad9231fd1d28ec5d960a463c27cba346b54dcf106430ec013acb",
+      "source": "onDefence(2);\r\n"
+    },
+    {
+      "frame": 1044,
+      "path": "DefineSprite_449/frame_1044/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "8f77706763c11d7a0847a1d4fefbfccb9a5be22528f4970454234f05954b64ef",
+      "source": "onClipEvent(enterFrame){\r\n   fangyu();\r\n}\r\n"
+    },
+    {
+      "frame": 1046,
+      "path": "DefineSprite_449/frame_1046/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "f8c45bc590e3677cdd9c881a4d2e0f08a7474a26feb01f17db38df2769a701f6",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.game[\"p\" + _parent.pn].mc.sw == false)\r\n   {\r\n      if(defence())\r\n      {\r\n         _parent.gotoAndPlay(\"防御2\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 1050,
+      "path": "DefineSprite_449/frame_1050/DoAction.as",
+      "sha256": "39a34bfb601f26a1ece84d9ee5f252161cd1505845b601742e1bf0c38b890a13",
+      "source": "gotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 1053,
+      "path": "DefineSprite_449/frame_1053/DoAction.as",
+      "sha256": "def945151f8ef0b76625ef9e76fdb08c9ca249c12f1068d4090861a554bfa155",
+      "source": "play();\r\n"
+    },
+    {
+      "frame": 1054,
+      "path": "DefineSprite_449/frame_1054/DoAction.as",
+      "sha256": "a70f7b00382927dcb89b970656bc905839113d7af180dae43aa869dec2523aab",
+      "source": "onBeHit();\r\n"
+    },
+    {
+      "frame": 1055,
+      "path": "DefineSprite_449/frame_1055/PlaceObject2_16_30/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "820f6d41d52a2df712ecc60a0f87a933ebe00f55e376951756a9d91d3940bb36",
+      "source": "onClipEvent(enterFrame){\r\n   _parent.beidax();\r\n}\r\n"
+    },
+    {
+      "frame": 1056,
+      "path": "DefineSprite_449/frame_1056/PlaceObject2_2_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "54461cce6106432bc9da0b1ae96bc085c795fc558a75a7513a6fe46a5900b24e",
+      "source": "onClipEvent(enterFrame){\r\n   beida();\r\n}\r\n"
+    },
+    {
+      "frame": 1059,
+      "path": "DefineSprite_449/frame_1059/DoAction.as",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n"
+    },
+    {
+      "frame": 1063,
+      "path": "DefineSprite_449/frame_1063/DoAction.as",
+      "sha256": "f676beb77e38fb8e23db76ae82358d149713a77ebcc7a651ede2c7efa223392a",
+      "source": "jump = 0;\r\njumped = 1;\r\ngotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 1066,
+      "path": "DefineSprite_449/frame_1066/DoAction.as",
+      "sha256": "3d2e60b632e641408e73682b4e270113e69a7f17483f991da9ff5baa235e91ba",
+      "source": "hited = 0;\r\nplay();\r\n"
+    },
+    {
+      "frame": 1067,
+      "path": "DefineSprite_449/frame_1067/DoAction.as",
+      "sha256": "199b3ff7630d12585e1d7c77d60d58609e063b7028f54d6a5dd6f0078493ea59",
+      "source": "onBeHit(true);\r\n"
+    },
+    {
+      "frame": 1068,
+      "path": "DefineSprite_449/frame_1068/PlaceObject2_16_29/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "9848c11dc3a3e4b1cf1933b347f15901bef201cb0b702c273e2bb5d21f44d90b",
+      "source": "onClipEvent(enterFrame){\r\n   _parent.beidax(true);\r\n}\r\n"
+    },
+    {
+      "frame": 1074,
+      "path": "DefineSprite_449/frame_1074/DoAction.as",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n"
+    },
+    {
+      "frame": 1078,
+      "path": "DefineSprite_449/frame_1078/DoAction.as",
+      "sha256": "0857faf6455fb0d653d39f90f2ec476c4ac51ff49a817e9a701adf18d3f15835",
+      "source": "_root.touchFloorEffect(_parent);\r\n"
+    },
+    {
+      "frame": 1078,
+      "path": "DefineSprite_449/frame_1078/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "81288a38fc1ff90270ebad5d537f0b6ca79760db2b93b64846ae3bfaa46c1eff",
+      "source": "onClipEvent(enterFrame){\r\n   if(gameRunning())\r\n   {\r\n      if(standup())\r\n      {\r\n         _parent.gotoAndPlay(\"起身\");\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 1086,
+      "path": "DefineSprite_449/frame_1086/DoAction.as",
+      "sha256": "e6ca4a79578cbb546594bd65ac4d2d2aad15c20ec5c951c3dc9a7c4b8fd5371c",
+      "source": "if(sw == true)\r\n{\r\n   stop();\r\n}\r\n"
+    },
+    {
+      "frame": 1101,
+      "path": "DefineSprite_449/frame_1101/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "4b5b0b8cd00a1a07a11bc12b23d5897342e71260c34faee7ee1bf40ff81b5043",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_parent._parent._xscale > 0)\r\n      {\r\n         _parent._parent._x += Math.round(_parent.speed / 2);\r\n      }\r\n      else\r\n      {\r\n         _parent._parent._x -= Math.round(_parent.speed / 2);\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 1106,
+      "path": "DefineSprite_449/frame_1106/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 1116,
+      "path": "DefineSprite_449/frame_1116/DoAction.as",
+      "sha256": "8d23d84b12e136d5b2b06a528b88fe1aedb91b39aa50aad17afd66ff0cb5be7f",
+      "source": "_root._y = 0;\r\n"
+    },
+    {
+      "frame": 1117,
+      "path": "DefineSprite_449/frame_1117/PlaceObject2_16_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "sha256": "c99afb396036e5858bad62112ad9b4830014d6a99d4991aef37fba22a137bbab",
+      "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_parent._parent._xscale < 0)\r\n      {\r\n         _parent._parent._x += _parent.speed * 0.8;\r\n      }\r\n      else\r\n      {\r\n         _parent._parent._x -= _parent.speed * 0.8;\r\n      }\r\n   }\r\n}\r\n"
+    },
+    {
+      "frame": 1127,
+      "path": "DefineSprite_449/frame_1127/DoAction.as",
+      "sha256": "b51a9b4368213a5c9ccbda497124be169d0b3fbca54a06c377f7cafba3c9630f",
+      "source": "gotoAndStop(\"收\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 1139,
+      "path": "DefineSprite_449/frame_1139/DoAction.as",
+      "sha256": "75da4bf137c019a91cb5648913735b8aa18615b6f37acaa6a061ed4ba0aec672",
+      "source": "kcplayed = 1;\r\n"
+    },
+    {
+      "frame": 1141,
+      "path": "DefineSprite_449/frame_1141/DoAction.as",
+      "sha256": "33a4f0db67fbae495243fdb38278a68fbec9cda2667ab91011c6b16e55f08344",
+      "source": "kcplayed = 3;\r\n"
+    },
+    {
+      "frame": 1184,
+      "path": "DefineSprite_449/frame_1184/DoAction.as",
+      "sha256": "90e101e421acc5fc26a2a49a0916985b048a36c8760a105ae1ba799475785642",
+      "source": "kcplayed = 2;\r\ngotoAndStop(\"站立\");\r\nplay();\r\n"
+    },
+    {
+      "frame": 1197,
+      "path": "DefineSprite_449/frame_1197/DoAction.as",
+      "sha256": "8a71e262ef9614d18d6506ee584cfd49613fbd2cd78a054e2b7380f1df3cab99",
+      "source": "_root.shine();\r\n_root.shine(303095);\r\n"
+    },
+    {
+      "frame": 1232,
+      "path": "DefineSprite_449/frame_1232/DoAction.as",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n"
+    },
+    {
+      "frame": 1260,
+      "path": "DefineSprite_449/frame_1260/DoAction.as",
+      "sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655",
+      "source": "stop();\r\n"
+    },
+    {
+      "frame": 1279,
+      "path": "DefineSprite_449/frame_1279/DoAction.as",
+      "sha256": "a1c8bfad2334dde97380b7de87c48786cc937e84a0569a21ed2d4dbda9544df1",
+      "source": "动作 = 3;\r\nbs = 1;\r\nql -= 300;\r\n"
+    },
+    {
+      "frame": 1281,
+      "path": "DefineSprite_449/frame_1281/DoAction.as",
+      "sha256": "c4872ef9226a5e93148aaf1e5ceae15ae36cf26c939bf8eaab644258a59d5f81",
+      "source": "wankai_start();\r\n"
+    },
+    {
+      "frame": 1294,
+      "path": "DefineSprite_449/frame_1294/DoAction.as",
+      "sha256": "5bfd9ad4d193695032067801ead5a30760b36da065b4740288ecaf2e41e19f36",
+      "source": "wankai();\r\n"
+    },
+    {
+      "frame": 1297,
+      "path": "DefineSprite_449/frame_1297/DoAction.as",
+      "sha256": "cec97a876ae222f598bab97d7829af7ee183b61e1accb10afcc3f1e2e0d03171",
+      "source": "_parent.gotoAndStop(2);\r\n"
+    },
+    {
+      "frame": 1300,
+      "path": "DefineSprite_449/frame_1300/DoAction.as",
+      "sha256": "571df4526f82a11ac83f2998b2b58c9a64bf20e05e02ab711383d10e883a1685",
+      "source": "trace(\"hz\");\r\n"
+    }
+  ],
+  "validation_notice": "Frame spans come from SWF labels and values come from exact AS2 assignments. Execution order and collision geometry remain pending M0-03/M1-02 evidence."
+}
