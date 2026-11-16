@@ -1,5 +1,5 @@
 {
-  "status": "local_friend_room_flow_passed_production_connectivity_requires_approval",
+  "status": "local_friend_room_passed_production_turn_issued_service_upgrade_required",
   "roster_cases": 34,
   "projection_ticks": 11220,
   "applied_snapshots": 3740,
@@ -32,9 +32,17 @@
     "online_lobby.gd": "a03b7b4d14c38c921d0593473c8118f208a80422d9c7d1bea4a010f271f35804"
   },
   "wall_seconds_since_saved_continuation": 1320.3,
-  "production_check": "blocked by automatic approval review before any room or TURN request",
+  "production_check": {
+    "status": "authorized_completed",
+    "evidence": "production-service-check.json",
+    "room_created": true,
+    "room_cleaned": true,
+    "turn_credentials_issued": true,
+    "deployed_default_mode": "rollback",
+    "deployed_map_confirmed": null
+  },
   "remaining": [
-    "Production TURN and real cross-network connectivity",
+    "Production friend-room service upgrade and real cross-network relay traffic",
     "Two physical machines and weak-machine performance",
     "Deployment not performed",
     "Full Flash audiovisual/character acceptance unchanged"

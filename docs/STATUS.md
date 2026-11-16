@@ -1976,3 +1976,9 @@ in `evidence/online/host-authority-friend-room/`. No deployment or production TU
 request was made: automatic approval review requires explicit authorization for
 the production connectivity check. Full original parity, Internet/two-machine
 performance and existing admission flags remain unchanged.
+
+2026-11-16 authorized production check: room creation, TURN credential issuance
+and confirmed room cleanup succeeded. The live service still defaults to rollback
+and omits mapConfirmed, so its friend-room contract is older than master. Service
+and frontend deployment remain necessary; real relay traffic is not yet tested.
+Evidence: `evidence/online/host-authority-friend-room/production-service-check.json`.

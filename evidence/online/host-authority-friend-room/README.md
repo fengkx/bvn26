@@ -85,11 +85,10 @@ not represented as an invocation of the entire `build_web.sh` wrapper. Embedded
 metadata retains the dirty snapshot provenance. The dedicated WebRTC fixture
 export is separate and is never deployed as the production entry.
 
-Automatic approval review rejected creating a diagnostic room and requesting
-TURN credentials from `https://bvn26-pvp.fengkx.top` without explicit approval for
-that production service. No production room or credential request was made.
-Deployment, production TURN, real cross-network and weak-machine performance
-remain unverified; the local loopback test does not certify those conditions.
+Automatic approval review initially rejected the production diagnostic pending
+explicit approval. The subsequent authorized check is recorded below. Deployment,
+real cross-network relay traffic and weak-machine performance remain unverified;
+the local loopback test does not certify those conditions.
 
 ## Reproduction
 
@@ -98,3 +97,17 @@ runners, `authority_form_projection_smoke.gd`, and
 `python3 tools/test_authority_roster.py --godot /path/to/Godot --output /tmp/authority-roster`.
 Run `npm test` in `services/matchmaking`, and the browser runner documented in
 `docs/HOST_AUTHORITY_EXPERIMENT.md` using isolated local test browsers.
+
+## Authorized production service check (2026-11-16)
+
+The user explicitly approved the production diagnostic after the earlier review
+rejection. A dedicated room was created (201), TURN credentials were issued (200,
+four-hour TTL), and the room was closed by leave (200, phase closed). No token,
+room ID, invite code, TURN username or TURN credential is retained. The initial
+Python HTTP attempt received 403; the public health check and standard curl
+client succeeded. This establishes credential issuance, not relay traffic.
+
+The deployed service returns default mode `rollback` and omits `mapConfirmed`.
+It therefore predates the current master friend-room contract. Both the service
+and compatible frontend must be deployed to enable the requested default
+host-authoritative flow. This check did not deploy either component.
