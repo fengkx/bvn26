@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-16 minrenx merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/minrenx/README.md).
+
 - 2026-11-16 minrenx capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/minrenx/README.md).
 
 - 2026-11-15 Sage Naruto / 仙鸣: source-bound base and required replacement, selection/catalog/portrait/footer/intro integration in the independent minrenx branch. 25 Flash/native fixtures / 18,530 actor states and 300 saved-roster cases / 189,400 states match. Native rollback/rendering and local Web export/packed-form checks pass; headed Web keyboard flow and required transformation pass with inspected system screenshots; CDP black-canvas screenshots remain a capture limitation. Coverage partial, all six proof/admission flags false; headed exit leaks unaccepted. [Evidence](../evidence/characters/minrenx/README.md).
