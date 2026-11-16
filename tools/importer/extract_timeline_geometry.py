@@ -14,7 +14,7 @@ from visual_blend_modes import validate_blend_mode
 from visual_filters import compile_filters
 from import_guards import finite_numbers, validate_placement, validate_wrapper_fields
 from visual_control_guard import ROOT, validate_nested_controls
-from bitmap_shape_polygon import bitmap_shape_fill_polygons, bitmap_shape_polygon
+from bitmap_shape_polygon import adjacent_fill_boundary, bitmap_shape_fill_polygons, bitmap_shape_polygon
 
 
 SUPPORTED_XML_EXPORTS = {(2, 2), (3, 2)}
@@ -282,10 +282,13 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
                 if record.get('type') == 'StyleChangeRecord':
                     record.set('stateLineStyle', 'false')
             contours = bitmap_shape_fill_polygons(mask_shape)
-            # Unused fill-table slots do not draw a contour. Keep requiring
-            # exactly one actual boundary; multiple contours still need a
-            # renderer that preserves union/hole semantics.
+            # Unused styles paint nothing. Adjacent authored fills can share
+            # one outer boundary; holes and disjoint regions remain rejected.
             boundaries = [contour for fill in contours for contour in fill] if contours is not None else []
+            if len(boundaries) > 1:
+                combined = adjacent_fill_boundary(boundaries)
+                if combined is not None:
+                    boundaries = [combined]
             if len(boundaries) != 1:
                 raise ValueError(f'Unsupported clipDepth mask geometry: {item_id}')
             definition['mask_polygon'] = boundaries[0]

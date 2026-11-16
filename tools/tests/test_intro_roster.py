@@ -14,6 +14,8 @@ class IntroRosterTests(unittest.TestCase):
     def test_each_selectable_base_fighter_has_own_source_opening_chain(self):
         spec = json.loads((ROOT / "godot/generated/main/intro/intro.json").read_text())
         expected = {
+            "ichigo": (701, 780),
+            "shouju": (1115, 1204),
             "minrenx": (1138, 1196),
             "weqal": (921, 997),
             "kenshin": (989, 1068),

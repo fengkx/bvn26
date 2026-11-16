@@ -1,0 +1,35 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WARNING: Online lobby diagnostic: {"busy":false,"code":"command_outcome_uncertain","commandUncertain":true,"connected":false,"inRoom":true,"negotiationPresent":false,"phase":"idle","profileDraftDirty":true,"roomPhase":"lobby","signalingConnected":false,"slot":0,"starting":false}
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _show_error (res://online_lobby.gd:4672)
+       [1] _show_command_error (res://online_lobby.gd:3176)
+       [2] _commit_network_profile_from_controls (res://online_lobby.gd:2852)
+       [3] _on_profile_option_toggled (res://online_lobby.gd:2805)
+       [4] _run (res://tests/online_lobby_map_selection_integration_smoke.gd:368)
+WARNING: Online lobby diagnostic: {"busy":false,"code":"fixture_refresh_failed","commandUncertain":false,"connected":true,"inRoom":true,"negotiationPresent":false,"phase":"idle","profileDraftDirty":false,"roomPhase":"lobby","signalingConnected":false,"slot":0,"starting":false}
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _show_error (res://online_lobby.gd:4672)
+       [1] _finish_map_commit_failure (res://online_lobby.gd:2025)
+       [2] _commit_host_map_selection (res://online_lobby.gd:1749)
+WARNING: Online lobby diagnostic: {"busy":false,"code":"fixture_refresh_failed","commandUncertain":false,"connected":true,"inRoom":true,"negotiationPresent":false,"phase":"idle","profileDraftDirty":false,"roomPhase":"lobby","signalingConnected":false,"slot":1,"starting":false}
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _show_error (res://online_lobby.gd:4672)
+       [1] _show_command_error (res://online_lobby.gd:3178)
+       [2] _verify_guest_map_commit (res://online_lobby.gd:1908)
+WARNING: Online lobby diagnostic: {"busy":false,"code":"fixture_prepare_rejected","commandUncertain":false,"connected":true,"inRoom":true,"negotiationPresent":false,"phase":"idle","profileDraftDirty":false,"roomPhase":"lobby","signalingConnected":false,"slot":0,"starting":false}
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _show_error (res://online_lobby.gd:4672)
+       [1] _show_command_error (res://online_lobby.gd:3178)
+       [2] _auto_prepare_request (res://online_lobby.gd:3079)
+WARNING: Online lobby diagnostic: {"busy":false,"code":"fixture_prepare_rejected","commandUncertain":false,"connected":true,"inRoom":true,"negotiationPresent":false,"phase":"idle","profileDraftDirty":false,"roomPhase":"lobby","signalingConnected":false,"slot":0,"starting":false}
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _show_error (res://online_lobby.gd:4672)
+       [1] _show_command_error (res://online_lobby.gd:3178)
+       [2] _auto_prepare_request (res://online_lobby.gd:3079)
+ONLINE_LOBBY_MAP_SELECTION_INTEGRATION_SMOKE_OK network_authority=true guest_read_only=true push_before_http=true profile_change_clears_ready=true uncertain_exact_retry=true map_preserves_profile=true host_authority=true guest_mirror=true map_commit_handshake=true rules_draft=true null_profiles_ready=true auto_prepare_gated=true auto_prepare_deduplicated=true explicit_retry=true cancel_and_reentry=true guest_pending_snapshot=true host_refresh_failure_returns=true guest_refresh_retry=true

@@ -1,0 +1,72 @@
+✖ server content IDs match the enabled menu catalog (47.974958ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 313.470625
+
+✖ failing tests:
+
+test at services/matchmaking/test/catalog.test.mjs:5:1
+✖ server content IDs match the enabled menu catalog (47.974958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'rifagu',
+      'renji',
+      'rukia',
+      'yihu',
+  ...
+      'kakashi',
+  +   'kenshin',
+      'byakuya',
+      'chad',
+      'lee',
+      'neji',
+      'yulong',
+  ...
+      'qilabi',
+  -   'kenshin',
+      'weqal',
+  -   'ichigo'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/fengkx/me/agent-code/bvn2_6-ichigo/services/matchmaking/test/catalog.test.mjs:15:10)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'rifagu',  'renji',   'rukia',
+      'yihu',    'minren',  'sakura',
+      'sasuke',  'kakashi', 'kenshin',
+      'byakuya', 'chad',    'lee',
+      'neji',    'yulong',  'yin',
+      'yijiao',  'itachi',  'orochimaru',
+      'jiraiya', 'pain',    'konan',
+      'daitu',   'didala',  'lanran',
+      'jianba',  'gaara',   'juggo',
+      'mayuri',  'karin',   'qilabi',
+      'weqal'
+    ],
+    expected: [
+      'rifagu', 'renji',      'rukia',
+      'yihu',   'minren',     'sakura',
+      'sasuke', 'kakashi',    'byakuya',
+      'chad',   'lee',        'neji',
+      'yulong', 'yin',        'yijiao',
+      'itachi', 'orochimaru', 'jiraiya',
+      'pain',   'konan',      'daitu',
+      'didala', 'lanran',     'jianba',
+      'gaara',  'juggo',      'mayuri',
+      'karin',  'qilabi',     'kenshin',
+      'weqal',  'ichigo'
+    ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

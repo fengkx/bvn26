@@ -1,0 +1,23 @@
+{"frames": 28, "format": "bvn26-sound-segments-v1"}
+{"parent_frame": 1, "sprite": 274, "directory": "/Users/fengkx/me/agent-code/bvn2_6-ichigo/godot/generated/fighters/ichigo"}
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/compile_ai_controller.py", line 317, in compile_at
+    return compile_body(name, *args, avm1_comparisons=form_replacement, **kwargs)
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/compile_ai_controller.py", line 205, in compile_body
+    raise ValueError(f'Unsupported statement in {name}: {line}')
+ValueError: Unsupported statement in child_frame_300_depth_36_controller_386: _parent.setDirect(1);
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/evidence/characters/ichigo/build_port.py", line 70, in <module>
+    build(args.workspace, args.ffdec, args.ffmpeg)
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/evidence/characters/ichigo/build_port.py", line 48, in build
+    compile_programs(directory, bundle, runtime_timeline)
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/build_form_profile.py", line 65, in compile_programs
+    code, meta = compile_controller(bundle, sprite, timeline, player=player, form_replacement=True)
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/compile_ai_controller.py", line 509, in compile_controller
+    child_code = compile_at(
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/compile_ai_controller.py", line 319, in compile_at
+    raise ValueError(f"{bundle['game_file']}:{path}#{name}: {error}") from error
+ValueError: game/fighter/ichigo.swf:DefineSprite_632/frame_300/PlaceObject2_386_36/CLIPACTIONRECORD onClipEvent(enterFrame).as#child_frame_300_depth_36_controller_386: Unsupported statement in child_frame_300_depth_36_controller_386: _parent.setDirect(1);

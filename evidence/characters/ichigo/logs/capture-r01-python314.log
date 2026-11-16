@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/test_move_references.py", line 287, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/test_move_references.py", line 207, in main
+    if resolve_fixture_character(fighter, catalog) != selected:
+       ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/test_move_references.py", line 33, in resolve_fixture_character
+    directory = resolve_fixture_directory(fixture_id, fighters_root.iterdir())
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/test_move_references.py", line 26, in resolve_fixture_directory
+    raise ValueError(f'Unknown or ambiguous fixture fighter directory: {fixture_id}')
+ValueError: Unknown or ambiguous fixture fighter directory: ichigo

@@ -1,0 +1,16 @@
+11月 15, 2026 1:10:14 下午 com.jpexs.decompiler.flash.gui.Main clearLogFile
+SEVERE: Cannot initialize logging
+java.nio.file.FileSystemException: /Users/fengkx/Library/Application Support/FFDec/logs/log.txt.lck: Operation not permitted
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:102)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:108)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:113)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.newFileChannel(UnixFileSystemProvider.java:214)
+	at java.base/java.nio.channels.FileChannel.open(FileChannel.java:301)
+	at java.base/java.nio.channels.FileChannel.open(FileChannel.java:353)
+	at java.logging/java.util.logging.FileHandler.openFiles(FileHandler.java:490)
+	at java.logging/java.util.logging.FileHandler.<init>(FileHandler.java:300)
+	at com.jpexs.decompiler.flash.gui.Main.clearLogFile(Main.java:3964)
+	at com.jpexs.decompiler.flash.gui.Main.initLogging(Main.java:4046)
+	at com.jpexs.decompiler.flash.gui.Main.main(Main.java:3598)
+	at com.jpexs.decompiler.flash.cli.CommandlineInterface.main(CommandlineInterface.java:32)
+

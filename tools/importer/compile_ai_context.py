@@ -263,6 +263,19 @@ def implicit_controller_fields(bundle: dict, sprite: int) -> set[str]:
 
 
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
+    opponent_jump = re.fullmatch(
+        r'if\(_root\.game\["p" \+ pn\]\.mc\.动作 != (-?\d+)\)\s*'
+        r'\{\s*gotoAnd(Play|Stop)\("([^"\n]+)"\);\s*play\(\);\s*\}\s*', text)
+    if opponent_jump:
+        # Negate the complete predicate through the existing else branch,
+        # preserving the separate gotoAndStop and subsequent play calls.
+        return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': 'opponent_action', 'operator': 'eq',
+                                 'value': int(opponent_jump[1])}],
+                 'calls': [],
+                 'else_calls': [{'op': 'timeline_goto', 'label': opponent_jump[3],
+                                 'play': opponent_jump[2] == 'Play'},
+                                {'op': 'timeline_play'}]}]
     health = re.fullmatch(r'\s*hp (\+=|-=|=) (-?\d+(?:\.\d+)?);\s*', text)
     if health:
         return [{'op': 'frame_field', 'path': path, 'line': 1, 'frame': frame,

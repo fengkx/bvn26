@@ -242,3 +242,10 @@ selection/opening checks. Current admitted base entries are added explicitly,
 with opening intervals and kcplayed assignments verified against pinned source
 bundles. Source audit records retain timeline changes and exact script paths.
 No gameplay fixture, source output or comparison tolerance is changed.
+
+Serial integration now retains 34 selectable base fighters. The combined
+original-input replay passes 62 cases / 45604 exact actor
+rows; see `merge-validation-r01/integrated-replay.json` and its raw archive.
+Menu font was actually rebuilt with available-roster coverage (503 characters).
+Godot resources were imported before the accepted replay.
+No gameplay/compiler behavior was changed during this integration.
