@@ -1,5 +1,6 @@
 extends RefCounted
 
+const Wire = preload("res://authority_wire.gd")
 const AudioLedger = preload("res://authority_audio.gd")
 var audio := AudioLedger.new()
 var _visual_root: Node
@@ -22,7 +23,7 @@ var _intro_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("r
 var _helper_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/helper_portraits/presentation.json"))
 
 func _init() -> void:
-	for path in ["res://generated/fighters", "res://generated/helpers", "res://generated/stages",
+	for path in ["res://generated/fighters", "res://generated/forms", "res://generated/helpers", "res://generated/stages",
 		"res://generated/main/intro", "res://generated/main/blackMu", "res://generated/main/ts_face",
 		"res://generated/main/ko", "res://generated/main/timeout", "res://generated/effects"]:
 		_catalog(path)
@@ -55,6 +56,7 @@ func capture_timeline(node: TimelinePreview) -> Dictionary:
 		"matrix": node._source_color_matrix.duplicate(), "filters_cleared": node._source_placement_filters_cleared,
 		"preserve_depths": node.preserve_root_depths, "hidden": Array(node.hidden_instance_names),
 		"offsets": offsets, "intro": node is IntroClip,
+		"wrapper_clips": _capture_clips(node, node._timeline.get("wrapper_siblings", []), 1, 0, node._wrapper_visual_clips),
 		"clips": _capture_clips(node, node._frames.get(node._current_frame, {}).get("display_list", []), node._current_frame, 0, node._retained_visual_clips)}
 
 func _capture_clips(node: TimelinePreview, placements: Array, frame: int, age: int, retained: Dictionary, level: int = 0) -> Array:
@@ -102,7 +104,7 @@ func capture(game: Node) -> Dictionary:
 	if records.size() > MAX_OWNERS: error = "display_owner_limit"
 	var sound_state := audio.capture(game.physics_tick)
 	if not audio.error.is_empty(): error = audio.error
-	return {"version": 1, "frame": game.physics_tick, "owners": records, "audio": sound_state,
+	return {"version": Wire.VERSION, "frame": game.physics_tick, "owners": records, "audio": sound_state,
 		"intro_active": game.battle_intro.active, "intro_polling": game.battle_intro.polling,
 		"terminal": game.ko_terminal_pending, "winner": null if game.ko_state.get("_root.p1ws", 1) == game.ko_state.get("_root.p2ws", 1) else (0 if game.ko_state.get("_root.p1ws", 1) > game.ko_state.get("_root.p2ws", 1) else 1)} if error.is_empty() else {}
 
@@ -171,7 +173,7 @@ func configure_presenter(root: Node) -> void:
 
 func apply(snapshot: Dictionary) -> String:
 	error = ""
-	if _root == null or snapshot.get("version") != 1 or not snapshot.get("owners") is Array \
+	if _root == null or snapshot.get("version") != Wire.VERSION or not snapshot.get("owners") is Array \
 		or snapshot.owners.size() > MAX_OWNERS or not snapshot.get("frame") is int:
 		return "invalid_display_snapshot"
 	if snapshot.frame < _last_frame: return "stale_display_snapshot"
@@ -269,8 +271,8 @@ func _validate_state(kind: String, state: Dictionary) -> String:
 	return ""
 
 func _validate_timeline(state: Dictionary) -> String:
-	if state.size() != 11 or not state.get("resource") is int or state.resource < 0 or state.resource >= resources.size(): return "invalid_display_resource"
-	if not state.get("frame") is int or state.frame < 1 or not state.get("clips") is Array or not state.get("offsets") is Dictionary: return "invalid_display_playheads"
+	if state.size() != 12 or not state.get("resource") is int or state.resource < 0 or state.resource >= resources.size(): return "invalid_display_resource"
+	if not state.get("frame") is int or state.frame < 1 or not state.get("clips") is Array or not state.get("wrapper_clips") is Array or not state.get("offsets") is Dictionary: return "invalid_display_playheads"
 	if not _numbers(state.get("mul"), 4) or not _numbers(state.get("add"), 4) or not state.get("matrix") is Array or state.matrix.size() not in [0, 20] or not _numbers(state.matrix, state.matrix.size()): return "invalid_display_color"
 	for key in ["filters_cleared", "preserve_depths", "intro"]:
 		if not state.get(key) is bool: return "invalid_display_flags"
@@ -279,7 +281,8 @@ func _validate_timeline(state: Dictionary) -> String:
 		if not name is String or name.length() > 256: return "invalid_display_hidden"
 	for name in state.offsets:
 		if not name is String or name.length() > 256 or not _numbers(state.offsets[name], 2): return "invalid_display_offset"
-	return _validate_clips(state.clips)
+	var problem := _validate_clips(state.clips)
+	return problem if not problem.is_empty() else _validate_clips(state.wrapper_clips)
 
 func _validate_clips(clips: Array, level: int = 0) -> String:
 	if level > 20: return "display_clip_depth"

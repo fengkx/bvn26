@@ -32,6 +32,8 @@ func apply_inputs(value: Dictionary) -> String:
 	_placement_frames.clear()
 	_retained_visual_clips = _bind(value.clips, _frames[_current_frame].display_list)
 	if not error.is_empty(): return error
+	_wrapper_visual_clips = _bind(value.wrapper_clips, _timeline.get("wrapper_siblings", []))
+	if not error.is_empty(): return error
 	materialize_display()
 	return ""
 

@@ -59,6 +59,8 @@ func run() -> void:
 	assert(not lobby._lan_candidate_opt_in.is_visible_in_tree())
 	assert(not lobby._rotate_invite_button.is_visible_in_tree())
 	assert(not lobby._rollback_options.visible)
+	assert(not lobby._stage_summary.text.contains("流魂街"))
+	assert(not lobby._stage_summary.text.contains("实验"))
 	assert(not lobby._reselect_button.disabled)
 	assert(lobby._connect_selection_button.disabled)
 	assert(lobby._rules_draft == {"time": 60, "life": 2})
@@ -86,6 +88,7 @@ func run() -> void:
 	await process_frame
 	assert(not lobby._map_active and lobby._room_state.mapConfirmed)
 	assert(lobby._room_state.stage == "流魂街")
+	assert(lobby._stage_summary.text.contains("流魂街"))
 	lobby._room_state.mapConfirmed = false
 	var choice := {"fighter": "sasuke", "helper": "you"}
 	lobby._room_state.members[0].choice = choice

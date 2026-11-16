@@ -1963,3 +1963,28 @@ flags false; M6 remains pending. Draft review only; no merge or deployment.
 - These targeted integrations do not complete M6 or certify full character
   parity. All six proof/admission flags remain false; aligned audiovisual,
   exhaustive AI/boundaries and physical keyboard/focus acceptance remain open.
+
+## 2026-11-16 Default host-authoritative friend rooms
+
+The integrated friend-room UI defaults to host authority and allows independent
+fighter/helper selection, host map/rules, readiness and explicit start. The old
+experimental labels and legacy fixed-map shortcuts are removed. Display schema
+v2 includes transformed-form resources and independently retained wrapper clips;
+unordered packets cannot replace a newer pending display with an older one.
+Validation, raw failures/reruns and the local production Web artifact are recorded
+in `evidence/online/host-authority-friend-room/`. No deployment or production TURN
+request was made: automatic approval review requires explicit authorization for
+the production connectivity check. Full original parity, Internet/two-machine
+performance and existing admission flags remain unchanged.
+
+2026-11-16 authorized production check: room creation, TURN credential issuance
+and confirmed room cleanup succeeded. The live service still defaults to rollback
+and omits mapConfirmed, so its friend-room contract is older than master. Service
+and frontend deployment remain necessary; real relay traffic is not yet tested.
+Evidence: `evidence/online/host-authority-friend-room/production-service-check.json`.
+
+2026-11-16: User-authorized friend-room backend deployment completed: Worker
+`73947345-7dda-4c76-a4a6-531259c65260`. All 32 backend tests pass. Live room
+creation now defaults to host-authoritative with mapConfirmed false; TURN
+issuance and room cleanup pass. Frontend was not deployed; real relay traffic
+remains unverified. Evidence: [backend deployment](../evidence/online/host-authority-friend-room/production-backend-deployment.json).
