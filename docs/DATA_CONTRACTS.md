@@ -475,3 +475,14 @@ Fighters, helpers, stage hits and hit effects use the same retained clock.
 See [native evidence and regression coverage](../evidence/characters/pain/visual-parity/README.md).
 The [review follow-up](../evidence/characters/pain/visual-parity/review/README.md)
 records the roster-wide native component comparisons and blend fixtures.
+
+## Host-authoritative display schema v2
+
+`godot/authority_wire.gd::VERSION` binds the display snapshot and initial-state
+hash. Version 2 adds `wrapper_clips` to each timeline record, including shadow
+poses. Both body `clips` and wrapper records share the clip depth/count/resource
+limits and bind only to local compiled placements. The catalog includes shipped
+`generated/forms` resources. Packet (16 KiB), decompressed size (256 KiB) and
+plain-value restrictions are unchanged. Room build/content identity prevents
+mixed-schema peers from starting. A drain retains the highest state serial,
+even when unordered delivery puts an older packet last.

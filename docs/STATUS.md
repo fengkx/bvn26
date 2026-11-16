@@ -1963,3 +1963,16 @@ flags false; M6 remains pending. Draft review only; no merge or deployment.
 - These targeted integrations do not complete M6 or certify full character
   parity. All six proof/admission flags remain false; aligned audiovisual,
   exhaustive AI/boundaries and physical keyboard/focus acceptance remain open.
+
+## 2026-11-16 Default host-authoritative friend rooms
+
+The integrated friend-room UI defaults to host authority and allows independent
+fighter/helper selection, host map/rules, readiness and explicit start. The old
+experimental labels and legacy fixed-map shortcuts are removed. Display schema
+v2 includes transformed-form resources and independently retained wrapper clips;
+unordered packets cannot replace a newer pending display with an older one.
+Validation, raw failures/reruns and the local production Web artifact are recorded
+in `evidence/online/host-authority-friend-room/`. No deployment or production TURN
+request was made: automatic approval review requires explicit authorization for
+the production connectivity check. Full original parity, Internet/two-machine
+performance and existing admission flags remain unchanged.
