@@ -111,3 +111,14 @@ The deployed service returns default mode `rollback` and omits `mapConfirmed`.
 It therefore predates the current master friend-room contract. Both the service
 and compatible frontend must be deployed to enable the requested default
 host-authoritative flow. This check did not deploy either component.
+
+## Backend deployment (2026-11-16)
+
+After explicit user authorization, Wrangler deployed Worker version
+`73947345-7dda-4c76-a4a6-531259c65260` from source commit `57ccc0e19`.
+The prior version is `6d55aa00-ccf0-4e0c-b89a-c984f584af4f`. All 32 backend
+tests passed with loopback permissions; the sandbox attempt failed to bind ports.
+Post-deployment creation returned `host-authoritative` and `mapConfirmed: false`;
+TURN issuance and room cleanup both returned 200. See
+`production-backend-deployment.json`. Frontend deployment and real relay traffic
+remain unverified. Existing secrets and Durable Object bindings were retained.

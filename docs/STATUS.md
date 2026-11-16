@@ -1982,3 +1982,9 @@ and confirmed room cleanup succeeded. The live service still defaults to rollbac
 and omits mapConfirmed, so its friend-room contract is older than master. Service
 and frontend deployment remain necessary; real relay traffic is not yet tested.
 Evidence: `evidence/online/host-authority-friend-room/production-service-check.json`.
+
+2026-11-16: User-authorized friend-room backend deployment completed: Worker
+`73947345-7dda-4c76-a4a6-531259c65260`. All 32 backend tests pass. Live room
+creation now defaults to host-authoritative with mapConfirmed false; TURN
+issuance and room cleanup pass. Frontend was not deployed; real relay traffic
+remains unverified. Evidence: [backend deployment](../evidence/online/host-authority-friend-room/production-backend-deployment.json).
