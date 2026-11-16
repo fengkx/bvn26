@@ -139,3 +139,21 @@ same isolated browser while this lane holds the approved foreground lock.
 Training recovers HP every second; the diagnostic eventually observed HP 990,
 not a sustained loss. No runtime state was assigned by browser automation.
 Programmatic CDP inputs are not physical OS-input proof. No production deploy.
+
+## Capture teardown follow-up (2026-11-16)
+
+The capture harness now closes the existing rollback adapter, stops combat
+drivers (including KO callback unbinding), frees the scene and waits for audio
+mixer retirement before reporting success. This removes the retained snapshot
+resources and KO dispatch reference cycles in the reproduced headless path.
+`--check-shutdown` explicitly skips images and records that fact in metadata;
+it cannot serve as visual acceptance. Original capture targets, inputs and
+energy interventions remain unchanged.
+
+`shutdown-r01/checks.json` and compressed raw logs record the executed base/form
+checks, source frames, script hashes and measured process durations. All listed
+checks exit zero with no script, resource, RID or ObjectDB diagnostics. The first
+sandbox attempt had a macOS certificate-access error; a normal-permission rerun
+produced the retained clean results. Headed renderer exit cleanup, historical
+saved-roster exit warnings, full audiovisual/AI/boundary acceptance and all six
+proof/admission flags remain pending/false. No merge or deployment.

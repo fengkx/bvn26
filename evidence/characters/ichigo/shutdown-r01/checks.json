@@ -1,0 +1,96 @@
+{
+  "status": "passed_headless_teardown_only",
+  "source_commit": "e6fd9370c204807717b462b3cd47d51d78ded2cd",
+  "cases": [
+    {
+      "lane": "ichigo",
+      "case": "ichigo_visual_capture",
+      "command": [
+        "/Users/fengkx/me/agent-code/toolchains/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-ichigo/godot",
+        "--log-file",
+        "/private/tmp/bvn-pr-continuation/ichigo_visual_capture/engine.log",
+        "--script",
+        "res://tests/ichigo_visual_capture.gd",
+        "--",
+        "/private/tmp/bvn-pr-continuation/ichigo_visual_capture",
+        "--check-shutdown"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.572,
+      "marker": true,
+      "diagnostics": [],
+      "script_sha256": "f44f496534a025a440ae64215677261cce04cdbaf244516073d0c8307023e9a3",
+      "metadata": {
+        "engine": "4.7.2-stable (official)",
+        "fight_source_frame": 400,
+        "fighter": "一护2",
+        "limitations": "Headless lifecycle/teardown check; no images or rendering acceptance.",
+        "method": "Native Godot Compatibility renderer; production selection, natural opening and super input",
+        "opponent": "一护",
+        "screenshots_captured": false,
+        "shutdown_check_only": true,
+        "stage": "现世",
+        "synthetic_setup": "Energy set to 300 after natural opening",
+        "transformation": false,
+        "viewport": [
+          64,
+          64
+        ]
+      },
+      "log": "evidence/characters/ichigo/shutdown-r01/ichigo_visual_capture.log.gz",
+      "log_sha256": "2394279f039d36fe6d008fcea9767cffe628956a3ffd3c386ec155e62cf4ac74"
+    },
+    {
+      "lane": "ichigo",
+      "case": "ichigo_visual_capture-form",
+      "command": [
+        "/Users/fengkx/me/agent-code/toolchains/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-ichigo/godot",
+        "--log-file",
+        "/private/tmp/bvn-pr-continuation/ichigo_visual_capture-form/engine.log",
+        "--script",
+        "res://tests/ichigo_visual_capture.gd",
+        "--",
+        "/private/tmp/bvn-pr-continuation/ichigo_visual_capture-form",
+        "form",
+        "--check-shutdown"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.684,
+      "marker": true,
+      "diagnostics": [],
+      "script_sha256": "f44f496534a025a440ae64215677261cce04cdbaf244516073d0c8307023e9a3",
+      "metadata": {
+        "engine": "4.7.2-stable (official)",
+        "fight_source_frame": 1015,
+        "fighter": "一护2",
+        "limitations": "Headless lifecycle/teardown check; no images or rendering acceptance.",
+        "method": "Native Godot Compatibility renderer; production selection, natural opening and super input",
+        "opponent": "一护",
+        "screenshots_captured": false,
+        "shutdown_check_only": true,
+        "stage": "现世",
+        "synthetic_setup": "Energy set to 300 after natural opening",
+        "transformation": true,
+        "viewport": [
+          64,
+          64
+        ]
+      },
+      "log": "evidence/characters/ichigo/shutdown-r01/ichigo_visual_capture-form.log.gz",
+      "log_sha256": "bc5331513579ee24856dfd2c6dd4dac9c1314e86198472848aed75c6c91c645e"
+    }
+  ],
+  "measured_godot_seconds": 5.256,
+  "scope": "Test harness cleanup only. No shared gameplay, compiler, package, fixture or tolerance changes. No new images, headed run, native capture or production admission. Historical failures remain retained.",
+  "repository_checks": {
+    "verify": "passed",
+    "check_handoff": "passed",
+    "diff_check": "passed"
+  }
+}

@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-16 ichigo capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/ichigo/README.md).
+
 - 2026-11-15 Ichigo Zero / 一护2: source-bound standalone `ichigo.swf` port includes BODY 274→632 White Ichigo, source selection/footer/opening and in-repository matchmaking catalog wiring. Targeted native/Flash, preserved-roster and local Web evidence is tracked in [the character checks](../evidence/characters/ichigo/checks.json). Partial coverage; six proof/admission flags remain false. Headed resource/RID exit leaks remain unaccepted. No production deployment.
 
 - 2026-11-15 剑心：源驱动基础形态及 643→1473→2506 替换链已接入；22 组原版 Flash/原生同输入、16,964 条角色状态匹配；两次替换、独立特效时钟、回滚及 204+62 组旧角色轨迹回归通过；实际 Web 选人、开场与两次变身复测通过，导出资源预检与字体覆盖已验证。保持 partial、M6-01 pending、六项证明标志 false；无合并或部署。[记录与实际验证范围](../evidence/characters/kenshin/README.md)。
