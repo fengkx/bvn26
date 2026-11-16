@@ -1,0 +1,139 @@
+{
+  "source_swf_sha256": "b13277fdf268be9a0a6863d73d5cd17347cc2d0863365fa6757c62c34a891f81",
+  "script_bundle_sha256": "9aace1c4f3e8c48fcced965a1d3079b02287cc8c9532a7e971ec3856daf92e4e",
+  "source_timeline_sha256": "2de7a98089c238c431f793c46b89da87f04bda7647b147641fe09ce4899930fa",
+  "scope": "Source inventory for the generic projectile correction; child position/pixel parity remains unaccepted.",
+  "projectiles": [
+    {
+      "character_id": 220,
+      "instance_name": "abcd",
+      "placement": {
+        "depth": 28,
+        "character_id": 220,
+        "name": "abcd",
+        "ratio": 394,
+        "matrix": {
+          "hasRotate": "false",
+          "hasScale": "false",
+          "nRotateBits": 0,
+          "nScaleBits": 0,
+          "nTranslateBits": 11,
+          "translateX": 539,
+          "translateY": -440,
+          "type": "MATRIX"
+        },
+        "clip_actions": [
+          {
+            "events": [
+              "EnterFrame"
+            ],
+            "action_bytes_sha256": "76c599bec3295a836af7e9a054a0d034939bdc23117a7fed3bb32a92d27163f2"
+          }
+        ],
+        "placed_frame": 395
+      },
+      "root_lifetime": [
+        395,
+        443
+      ],
+      "frame_count": 48,
+      "frame_labels": {
+        "hit": 15
+      },
+      "scripts": [
+        {
+          "path": "DefineSprite_220/frame_1/DoAction.as",
+          "source": "var movspeed = 15;\r\nvar played = 0;\r\n",
+          "source_sha256": "35de9db2e8636ec07975d98b161eef8c7960f0c952e7f83a49137b761495c721"
+        },
+        {
+          "path": "DefineSprite_220/frame_15/DoAction.as",
+          "source": "this._name = \"zh2atm\";\r\nplayed = 1;\r\n",
+          "source_sha256": "72c5e55163ec81fb42e6703361f28ff0951d192f4d24fd49a16940bea5a38c8e"
+        },
+        {
+          "path": "DefineSprite_220/frame_16/DoAction.as",
+          "source": "this._name = \"zh2atm\";\r\nplayed = 1;\r\n",
+          "source_sha256": "72c5e55163ec81fb42e6703361f28ff0951d192f4d24fd49a16940bea5a38c8e"
+        },
+        {
+          "path": "DefineSprite_220/frame_17/DoAction.as",
+          "source": "_root.shine(8978176);\r\n",
+          "source_sha256": "4b51b825b3947a3aeb449d7aafc570ee2c63526b20e82c56e33f71886fb9e20f"
+        },
+        {
+          "path": "DefineSprite_220/frame_48/DoAction.as",
+          "source": "stop();\r\n",
+          "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+        },
+        {
+          "path": "DefineSprite_487/frame_395/PlaceObject2_220_28/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(hitTest(_root.game[\"p\" + _parent.pn].mc.bdmn) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh1atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.zh2atm) or hitmc.hitTest(_root.game[\"p\" + _parent.pn].mc.zh3atm) or hitTest(_root.game[\"p\" + _parent.pn].mc.abcd))\r\n      {\r\n         if(played == 0)\r\n         {\r\n            gotoAndStop(\"hit\");\r\n            play();\r\n         }\r\n      }\r\n      if(played == 0)\r\n      {\r\n         _X = _X + movspeed;\r\n      }\r\n   }\r\n}\r\n",
+          "source_sha256": "6fe84387681f44041952b40983fcbec434876638cdc782180ec1c804f3cecf20"
+        }
+      ]
+    },
+    {
+      "character_id": 464,
+      "instance_name": "cbs1atm",
+      "placement": {
+        "depth": 27,
+        "character_id": 464,
+        "name": "cbs1atm",
+        "ratio": 870,
+        "matrix": {
+          "hasRotate": "false",
+          "hasScale": "false",
+          "nRotateBits": 0,
+          "nScaleBits": 0,
+          "nTranslateBits": 12,
+          "translateX": -1415,
+          "translateY": -606,
+          "type": "MATRIX"
+        },
+        "clip_actions": [
+          {
+            "events": [
+              "EnterFrame"
+            ],
+            "action_bytes_sha256": "7c72a66c3a60082fc6261dc0cfb8e2c76691b88071c3a4aefd842ddba8820e5f"
+          }
+        ],
+        "placed_frame": 871
+      },
+      "root_lifetime": [
+        871,
+        960
+      ],
+      "frame_count": 45,
+      "frame_labels": {},
+      "scripts": [
+        {
+          "path": "DefineSprite_464/frame_1/DoAction.as",
+          "source": "var played = 0;\r\n",
+          "source_sha256": "697268665ff04121c395c66af0cea2102f3dce2470d4720b09dd09c108a1b850"
+        },
+        {
+          "path": "DefineSprite_464/frame_40/DoAction.as",
+          "source": "this._name = \"cbsatm\";\r\nplayed = 1;\r\n",
+          "source_sha256": "d274b4127942701e308d61e44c6e7fd4baec27e0ef620132ecf1f33b1637ed49"
+        },
+        {
+          "path": "DefineSprite_464/frame_42/DoAction.as",
+          "source": "_root.shine(4580164);\r\n",
+          "source_sha256": "eb169ea36c5e4e1a8fda2b5fffc018794ca33a844587bf647a5343666263c912"
+        },
+        {
+          "path": "DefineSprite_464/frame_45/DoAction.as",
+          "source": "stop();\r\n",
+          "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+        },
+        {
+          "path": "DefineSprite_487/frame_871/PlaceObject2_464_27/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+          "source": "onClipEvent(enterFrame){\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(played == 0)\r\n      {\r\n         _X = _X + 10;\r\n      }\r\n   }\r\n}\r\n",
+          "source_sha256": "c35409f8bff2076863425237c706764788cedb2eae1056f147be924b82c9886b"
+        }
+      ]
+    }
+  ]
+}

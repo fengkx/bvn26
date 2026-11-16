@@ -29,6 +29,15 @@ func _run() -> void:
 	var state := _state(ROOM_ID, 7, [local_member, remote_member])
 	_expect(client._validate_room_state(state, ROOM_ID, 1, false), "valid room projection was rejected")
 	_expect(client._validate_state_reply({"slot": 1, "state": state}), "GET state response shape was rejected")
+	var menu_state := state.duplicate(true)
+	menu_state.mode = "host-authoritative"
+	menu_state.mapConfirmed = false
+	_expect(client._validate_room_state(menu_state, ROOM_ID, 1, false), "valid menu setup rejected")
+	menu_state.mapConfirmed = "false"
+	_expect(not client._validate_room_state(menu_state, ROOM_ID, 1, false), "non-boolean map confirmation accepted")
+	menu_state.mapConfirmed = false
+	menu_state.mode = "unknown"
+	_expect(not client._validate_room_state(menu_state, ROOM_ID, 1, false), "unknown online mode accepted")
 	var legacy_state := state.duplicate(true)
 	legacy_state.erase("networkProfile")
 	_expect(client._room_state_reply_missing_network_profile({"slot": 1, "state": legacy_state}),

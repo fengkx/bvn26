@@ -263,6 +263,32 @@ def implicit_controller_fields(bundle: dict, sprite: int) -> set[str]:
 
 
 def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
+    opponent_jump = re.fullmatch(
+        r'if\(_root\.game\["p" \+ pn\]\.mc\.动作 != (-?\d+)\)\s*'
+        r'\{\s*gotoAnd(Play|Stop)\("([^"\n]+)"\);\s*play\(\);\s*\}\s*', text)
+    if opponent_jump:
+        # Negate the complete predicate through the existing else branch,
+        # preserving the separate gotoAndStop and subsequent play calls.
+        return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': 'opponent_action', 'operator': 'eq',
+                                 'value': int(opponent_jump[1])}],
+                 'calls': [],
+                 'else_calls': [{'op': 'timeline_goto', 'label': opponent_jump[3],
+                                 'play': opponent_jump[2] == 'Play'},
+                                {'op': 'timeline_play'}]}]
+    health = re.fullmatch(r'\s*hp (\+=|-=|=) (-?\d+(?:\.\d+)?);\s*', text)
+    if health:
+        return [{'op': 'frame_field', 'path': path, 'line': 1, 'frame': frame,
+                 'field_name': 'hp', 'operator': health[1], 'value': json.loads(health[2])}]
+    increment = re.fullmatch(
+        r'if\((\w+) < (-?\d+(?:\.\d+)?)\)\s*\{\s*'
+        r'\1 \+= (-?\d+(?:\.\d+)?);\s*\}\s*', text)
+    if increment and increment[1] in FIELDS | {'hp', 'ql'}:
+        return [{'op': 'conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'conditions': [{'field': increment[1], 'operator': 'lt',
+                                 'value': json.loads(increment[2])}],
+                 'calls': [{'op': 'frame_field', 'field_name': increment[1],
+                            'operator': '+=', 'value': json.loads(increment[3])}]}]
     parent = re.fullmatch(
         r'if\(_parent\.(\w+) == (true|false)\)\s*\{\s*'
         r'_root\.(cbsw|bsw)\(pn\);\s*bs = 0;\s*\}\s*', text)
@@ -347,8 +373,17 @@ def conditional_frame_calls(text: str, path: str, frame: int) -> list[dict]:
 
 
 def inline_frame_function(source: str, path: str, frame: int) -> list[dict]:
-    """Compile a complete straight-line function, preserving statement order."""
+    """Compile a complete function, preserving statement order."""
     body = source[source.index('{') + 1:source.rindex('}')]
+    release = re.fullmatch(
+        r'\s*if\(_parent\.(万解)\)\s*\{\s*_root\.(cbsw|bsw)\(pn\);'
+        r'\s*bs = 0;\s*_parent\.\1 = false;\s*\}\s*', body)
+    if release:
+        return [{'op': 'parent_conditional_frame', 'path': path, 'line': 1, 'frame': frame,
+                 'field_name': release[1], 'value': True,
+                 'calls': [{'op': 'super_end', 'kind': release[2]},
+                           {'op': 'frame_field', 'field_name': 'bs', 'operator': '=', 'value': 0},
+                           {'op': 'parent_frame_field', 'field_name': release[1], 'value': False}]}]
     result = []
     for number, raw in enumerate(body.splitlines(), 1):
         line = raw.strip()
@@ -555,9 +590,20 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
     frame_calls={}
     frames_by_number = {int(item['frame']): item for item in timeline['frames']}
     root_rename_history: list[dict] = []
+    scripts_by_frame = {}
+    for path in scripts:
+        match = re.fullmatch(rf'DefineSprite_{sprite}/frame_(\d+)/DoAction(?:_(\d+))?\.as', path)
+        if match:
+            scripts_by_frame.setdefault(int(match[1]), []).append((int(match[2] or 1), path))
+    frame_scripts = []
     for frame in timeline['frames']:
-        path=f'DefineSprite_{sprite}/frame_{frame["frame"]}/DoAction.as'
-        text=root if frame['frame']==1 else scripts.get(path,'')
+        prefix = f'DefineSprite_{sprite}/frame_{frame["frame"]}/'
+        # JPEXS numbers subsequent DoAction tags in their authored tag order.
+        # They share a frame, but remain separate scripts with exact provenance.
+        paths = [path for _, path in sorted(scripts_by_frame.get(frame['frame'], []))]
+        frame_scripts.extend((frame, path) for path in paths or [prefix + 'DoAction.as'])
+    for frame, path in frame_scripts:
+        text=root if path == first_path else scripts.get(path,'')
         if form_replacement and frame['frame'] != 1:
             from compile_form_frames import compile_form_frame
             form_calls = compile_form_frame(bundle, text, path, frame['frame'], form_frame)
@@ -583,8 +629,10 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
         events=writes(scalar_text,path,controller_scope_fields=scoped_fields)
         if frame['frame'] == 1 and any(event['field'] in ('inited', '_lastX') for event in events):
             raise ValueError('First-init projection conflicts with unconditional frame state writes')
-        if events:frame_writes[str(frame['frame'])]=events
+        if events:frame_writes.setdefault(str(frame['frame']), []).extend(events)
         calls=conditional_frame_calls(text, path, frame["frame"])
+        if frame['frame'] != 1 and re.search(r'\bhp\s*[+*/-]?=', text) and not calls:
+            raise ValueError('Uncompiled health write: ' + path)
         for match in hit_test_pattern.finditer(text.replace('\r\n', '\n')):
             calls.append({'op': 'frame_hit_test', 'field_name': match[1],
                           'instance': match[2], 'path': path, 'frame': frame['frame'],
@@ -629,10 +677,11 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
             movement=re.fullmatch(r'_parent\.(moveX|moveY)\((.+)\);',line)
             if re.search(r'_parent\.(?:moveX|moveY)\s*\(', line) and not movement:
                 raise ValueError(f"Uncompiled wrapper movement: {bundle['game_file']}:{path}:{number}: {line}")
-            if line == 'wankai_start();':
+            if line in ('wankai_start();', 'wankai_end();'):
+                method = line.removesuffix('();')
                 calls.append({'op': 'inline_frame', 'path': path, 'line': number,
                               'frame': frame['frame'], 'calls': inline_frame_function(
-                                  functions['wankai_start'], first_path + '#wankai_start', frame['frame'])})
+                                  functions[method], first_path + '#' + method, frame['frame'])})
             elif child_effect := re.fullmatch(r'_root\.(touchFloorEffect|shunbuxg)\(_parent\);', line):
                 calls.append({**root_child_effect(child_effect[1]), 'path': path,
                               'line': number, 'frame': frame['frame']})
@@ -733,14 +782,14 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
             owned = re.match(
                 r'^(?:_parent\.(?:moveX|moveY)|_root\.(?:bsd|cbsd|bsw|cbsw|showFace|touchFloorEffect)|'
                 r'_root\.(?:shine|shunbuxg)|(?:\w+\.)?(?:gotoAndPlay|gotoAndStop|play|stop)|'
-                r'followMc|resColor|updateDirect|wankai_start)\s*\(', line.lstrip())
+                r'followMc|resColor|updateDirect|wankai_start|wankai_end)\s*\(', line.lstrip())
             if frame['frame'] != 1 and owned and len(calls) == before and not allowed_frame_source(
                     bundle, path, text, form_frame):
                 # Whole-block conditional compilation already owns its calls.
                 if not any(event.get('op') in ('conditional_frame', 'parent_conditional_frame') for event in calls):
                     raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled frame call: {line}")
         if calls:
-            frame_calls[str(frame['frame'])]=calls
+            frame_calls.setdefault(str(frame['frame']), []).extend(calls)
     parent_state = parent_initial_values(bundle, frame_calls, form_replacement=form_replacement)
     hit=functions['onBeHit0']
     if re.search(r'\b(if|else|while|for)\b',hit):

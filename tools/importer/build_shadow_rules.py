@@ -54,7 +54,11 @@ def build() -> dict:
     wrapper = sources[1]['function']
     layer = re.search(r'var _loc7_ = _root.game.(\w+);', main)[1]
     depths = set()
-    for path in sorted((ROOT / 'godot/generated/stages/catalog').glob('frame_*/timeline.json')):
+    catalog_directory = ROOT / 'godot/generated/stages/catalog'
+    catalog = json.loads((catalog_directory / 'catalog.json').read_text())
+    directories = {stage['directory'] for stage in catalog['stages']}
+    for directory in sorted(directories):
+        path = catalog_directory / directory / 'timeline.json'
         timeline = json.loads(path.read_text())
         for frame in timeline['frames']:
             for placement in frame['display_list']:

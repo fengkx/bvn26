@@ -743,6 +743,10 @@ func _validate_room_state(
 		return false
 	if not _validate_network_profile(value.get("networkProfile")):
 		return false
+	if value.has("mapConfirmed") and not value.mapConfirmed is bool:
+		return false
+	if value.has("mode") and value.mode not in ["rollback", "host-authoritative"]:
+		return false
 	var members: Variant = value.get("members")
 	var validation_slot := expected_slot if expected_slot in [0, 1] else _slot
 	if not members is Array or members.size() != 2 or validation_slot not in [0, 1]:

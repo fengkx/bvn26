@@ -1,0 +1,74 @@
+{
+  "status": "targeted_character_sop_pass_full_acceptance_partial",
+  "base": "e7876e6f7eb14625a973cc79aaffa52dea169a06",
+  "targeted": {
+    "cases": 22,
+    "actor_states": 16964,
+    "fields": 14,
+    "status": "matched",
+    "clean_batch": "native-final; exit 0; MOVE_CASE_BATCH_OK 22; no SCRIPT ERROR or ERROR"
+  },
+  "wrapper_clock": "matched",
+  "python_tests": {
+    "kenshin_source": 7,
+    "shared_source": 49
+  },
+  "font": {
+    "pipeline": "tools/importer/build_menu_font.py",
+    "font": "/Users/fengkx/Library/Fonts/Sarasa-SuperTTC.ttc",
+    "font_number": 199,
+    "regenerated": true,
+    "coverage_test": "passed_not_skipped",
+    "sha256": "a98c766a8aeba002d9a88c9ea10f18d0f0773770528acf6a6896422a40079f04",
+    "actual_cmap": {
+      "status": "passed",
+      "required_static_codepoints": 350,
+      "missing": [],
+      "sha256": "a98c766a8aeba002d9a88c9ea10f18d0f0773770528acf6a6896422a40079f04"
+    }
+  },
+  "elapsed": "Source trace time_ms and regression runner monotonic durations are retained; no person-day estimate invented.",
+  "weekly_remaining_percent_last_observed": 11,
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "native_initialization_complete": false,
+  "saved_roster": {
+    "status": "matched",
+    "cases": 204,
+    "states": 119008,
+    "seconds": 1009.1893823328428,
+    "report": "regressions-r02/report.json"
+  },
+  "native_checks": [
+    "KENSHIN_FORM_LIFECYCLE_OK",
+    "KENSHIN_ROLLBACK_SMOKE_OK",
+    "PLAYER_CONTROLLER_SMOKE_OK",
+    "PLAYER_VISUAL_SMOKE_OK",
+    "FORM_WANKAI_GRAPH_OK",
+    "PROTECTED_FUNCTION_OK",
+    "KENSHIN_INPUT_ACTIVATION_OK 1/1",
+    "FORM_INPUT_ACTIVATION_OK 7/7"
+  ],
+  "source_input_integrity": "tools/verify.py passed",
+  "contracts": "6 schemas / 6 examples passed; not gameplay proof",
+  "handoff": "passed",
+  "recent_ports": {
+    "status": "matched",
+    "cases": 62,
+    "states": 44764,
+    "seconds": 559.8188557499088,
+    "report": "recent-regressions/report.json"
+  },
+  "web_build": {
+    "status": "passed",
+    "build_id": "a53fda1343e515402bcd5028d42979e5717191faee1b7f8142cb97e961afe38a",
+    "pck_sha256": "84d6c66b7c44a133919b583e2ca44f5fa15a590c3506bf7d88fc22441e6ee611",
+    "browser": "passed scoped natural selection/opening and both J+K replacements; web/browser-check.json",
+    "packed_profiles": "2/2 passed in empty project; missing profile rejected"
+  },
+  "flash_running": false,
+  "flash_lock_last_observed": "free"
+}

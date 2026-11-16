@@ -1,0 +1,64 @@
+{
+  "status": "passed_targeted_headed_capture_and_shutdown",
+  "cases": [
+    {
+      "lane": "ichigo",
+      "script": "ichigo_visual_capture",
+      "args": [],
+      "command": [
+        "/Users/fengkx/me/agent-code/toolchains/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-ichigo/godot",
+        "--rendering-method",
+        "gl_compatibility",
+        "--log-file",
+        "/private/tmp/bvn-merge-294-296/ichigo_visual_capture/engine.log",
+        "-s",
+        "res://tests/ichigo_visual_capture.gd",
+        "--",
+        "/private/tmp/bvn-merge-294-296/ichigo_visual_capture"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.606,
+      "marker": true,
+      "diagnostics": [],
+      "images": [
+        "selection.png",
+        "in-fight.png"
+      ],
+      "visual_review": "Rendered fighter and stage inspected; White/Golden replacement visible where requested. No aligned Flash pixel or audio claim."
+    },
+    {
+      "lane": "ichigo",
+      "script": "ichigo_visual_capture",
+      "args": [
+        "form"
+      ],
+      "command": [
+        "/Users/fengkx/me/agent-code/toolchains/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-ichigo/godot",
+        "--rendering-method",
+        "gl_compatibility",
+        "--log-file",
+        "/private/tmp/bvn-merge-294-296/ichigo_visual_capture-form/engine.log",
+        "-s",
+        "res://tests/ichigo_visual_capture.gd",
+        "--",
+        "/private/tmp/bvn-merge-294-296/ichigo_visual_capture-form",
+        "form"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.063,
+      "marker": true,
+      "diagnostics": [],
+      "images": [
+        "selection.png",
+        "in-fight.png"
+      ],
+      "visual_review": "Rendered fighter and stage inspected; White/Golden replacement visible where requested. No aligned Flash pixel or audio claim."
+    }
+  ],
+  "elapsed_seconds": 8.669,
+  "flags_changed": false
+}

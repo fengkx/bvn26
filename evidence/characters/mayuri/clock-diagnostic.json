@@ -1,0 +1,124 @@
+{
+  "status": "diagnostic_not_acceptance",
+  "interpretation": "Both actor sw fields change simultaneously during a much slower-than-30Hz native run. The source wall-clock timeout chain can set both fields; timer phase is not proven by the actor-only comparison. Do not treat this as full parity or change time limits/tapes.",
+  "source": [
+    {
+      "path": "DefineSprite_1813/frame_1/DoAction.as",
+      "sha256": "75db20d90bb50b9589a5f05ff181b99f267d8b251f7788f07ab773c5d7158cec",
+      "source": "stop();\r\n_root.gametime = _root.maxtime;\r\ntime = function()\r\n{\r\n   if(_root.zhanting == false)\r\n   {\r\n      if(_root.game.p1.mc.sw == false and _root.game.p2.mc.sw == false)\r\n      {\r\n         if(_root.modo != 4)\r\n         {\r\n            _root.gametime -= 1;\r\n         }\r\n      }\r\n   }\r\n   tm = _root.gametime;\r\n   if(tm <= 0)\r\n   {\r\n      if(_root.timeover.played == 0)\r\n      {\r\n         _root.to = true;\r\n         _root.timeover.play();\r\n         played = 1;\r\n      }\r\n      tm = 0;\r\n   }\r\n   else\r\n   {\r\n      _root.to = false;\r\n   }\r\n   if(tm >= 10)\r\n   {\r\n      shi = Math.floor(tm / 10);\r\n      gs = tm - shi * 10;\r\n   }\r\n   if(tm < 10)\r\n   {\r\n      shi = 0;\r\n      gs = tm;\r\n   }\r\n   十.gotoAndStop(shi + 1);\r\n   个.gotoAndStop(gs + 1);\r\n};\r\nif(_root.maxtime == 100 or _root.modo == 4)\r\n{\r\n   gotoAndStop(\"无限时\");\r\n}\r\nelse\r\n{\r\n   _root.timeset = setInterval(time,1000);\r\n}\r\n"
+    },
+    {
+      "path": "DefineSprite_1848/frame_2/DoAction.as",
+      "sha256": "c81bc82c61c4534cb77e1872ac61fd559ad59638d038de4ff1a7b915ab6f25df",
+      "source": "_root.game.p1.mc.sw = true;\r\n_root.game.p2.mc.sw = true;\r\n"
+    }
+  ],
+  "captures": [
+    {
+      "run": "flash-r02",
+      "events_sha256": "b94ca0f7c7300532963dd84bcf2511ffb3c92b3a81434432a3d6d4fba3160f34",
+      "ready": {
+        "run_id": "moves-mayuri-air-ranged-b99a6bf54c",
+        "sequence": 2982,
+        "time_ms": 29365,
+        "display_tick": 449,
+        "fight_tick": 0,
+        "kind": "ready",
+        "value": ""
+      },
+      "first_sw_difference_tick": 131,
+      "states": [
+        {
+          "run_id": "moves-mayuri-air-ranged-b99a6bf54c",
+          "sequence": 6192,
+          "time_ms": 148598,
+          "display_tick": 579,
+          "fight_tick": 130,
+          "kind": "state",
+          "value": "p1,1,f:1:8:87556096:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "run_id": "moves-mayuri-air-ranged-b99a6bf54c",
+          "sequence": 6196,
+          "time_ms": 148600,
+          "display_tick": 579,
+          "fight_tick": 130,
+          "kind": "state",
+          "value": "p2,2,f:1:9:81657856:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:107479040:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "run_id": "moves-mayuri-air-ranged-b99a6bf54c",
+          "sequence": 6235,
+          "time_ms": 150547,
+          "display_tick": 580,
+          "fight_tick": 131,
+          "kind": "state",
+          "value": "p1,2,f:1:8:87556096:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,true,true,true,0,false,0,false"
+        },
+        {
+          "run_id": "moves-mayuri-air-ranged-b99a6bf54c",
+          "sequence": 6239,
+          "time_ms": 150657,
+          "display_tick": 580,
+          "fight_tick": 131,
+          "kind": "state",
+          "value": "p2,3,f:1:9:81657856:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:107479040:0,f:1:8:78643200:0,true,true,true,0,false,0,false"
+        }
+      ],
+      "elapsed_ready_to_first_difference_ms": 121182
+    },
+    {
+      "run": "flash-foreground-r01",
+      "events_sha256": "6352dbdaccc8d0f6a898b805d62791ee9895fe5b4dcf2aa256a6f9cacbdc0350",
+      "ready": {
+        "run_id": "moves-mayuri-air-ranged-caf080afc8",
+        "sequence": 2963,
+        "time_ms": 29585,
+        "display_tick": 447,
+        "fight_tick": 0,
+        "kind": "ready",
+        "value": ""
+      },
+      "first_sw_difference_tick": 123,
+      "states": [
+        {
+          "run_id": "moves-mayuri-air-ranged-caf080afc8",
+          "sequence": 5822,
+          "time_ms": 141143,
+          "display_tick": 569,
+          "fight_tick": 122,
+          "kind": "state",
+          "value": "p1,7,f:1:8:87556096:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "run_id": "moves-mayuri-air-ranged-caf080afc8",
+          "sequence": 5826,
+          "time_ms": 141287,
+          "display_tick": 569,
+          "fight_tick": 122,
+          "kind": "state",
+          "value": "p2,1,f:1:9:81657856:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:107479040:0,f:1:8:78643200:0,false,true,true,0,false,0,false"
+        },
+        {
+          "run_id": "moves-mayuri-air-ranged-caf080afc8",
+          "sequence": 5869,
+          "time_ms": 142608,
+          "display_tick": 570,
+          "fight_tick": 123,
+          "kind": "state",
+          "value": "p1,1,f:1:8:87556096:0,f:-1:4:104857600:0,f:1:6:104857600:0,0,f:1:9:131072000:0,f:1:8:78643200:0,true,true,true,0,false,0,false"
+        },
+        {
+          "run_id": "moves-mayuri-air-ranged-caf080afc8",
+          "sequence": 5873,
+          "time_ms": 142633,
+          "display_tick": 570,
+          "fight_tick": 123,
+          "kind": "state",
+          "value": "p2,2,f:1:9:81657856:0,f:-1:4:104857600:0,f:-1:6:104857600:0,0,f:1:9:107479040:0,f:1:8:78643200:0,true,true,true,0,false,0,false"
+        }
+      ],
+      "elapsed_ready_to_first_difference_ms": 113023
+    }
+  ]
+}

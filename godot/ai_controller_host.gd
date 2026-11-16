@@ -59,6 +59,14 @@ class Projectile extends RefCounted:
 		for rename: Dictionary in model.get("rename_frames", []):
 			if int(rename["frame"]) == frame:
 				instance_name = rename["instance_name"]
+				if rename.has("name_field"):
+					var host: AiControllerHost = host_ref.get_ref()
+					var variables := host.fighter.instance_source_variables(model["instance_name"])
+					assert(variables.has(rename["name_field"]), "Undeclared projectile rename local")
+					instance_name = str(variables[rename["name_field"]])
+				if rename.has("local_writes"):
+					var host: AiControllerHost = host_ref.get_ref()
+					host.fighter._apply_projectile_local_write(model["instance_name"], {"writes": rename["local_writes"]})
 				if rename.get("random_suffix", false):
 					var host: AiControllerHost = host_ref.get_ref()
 					instance_name += str(host.fighter.source_random.next_value(str(rename["random_site"])))
@@ -194,6 +202,11 @@ class Adapter extends RefCounted:
 		var host: AiControllerHost = host_ref.get_ref()
 		assert(host.effects.is_valid(), "Unconnected source effect: " + name)
 		host.effects.call(name)
+
+	func effect_with_args(name: String, args: Array) -> void:
+		var host: AiControllerHost = host_ref.get_ref()
+		assert(host.effects.is_valid(), "Unconnected source effect: " + name)
+		host.effects.call(name, args)
 
 	func move_axis(axis: String, value: Variant) -> void:
 		var host: AiControllerHost = host_ref.get_ref()

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/extract_timeline_geometry.py", line 573, in <module>
+    main()
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/extract_timeline_geometry.py", line 548, in main
+    result = extract_frames(args.xml, None if args.root else args.sprite_id)
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/extract_timeline_geometry.py", line 509, in extract_frames
+    result["definitions"] = referenced_definitions(root, frames)
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/extract_timeline_geometry.py", line 290, in referenced_definitions
+    raise ValueError(f'Unsupported clipDepth mask geometry: {item_id}')
+ValueError: Unsupported clipDepth mask geometry: 309

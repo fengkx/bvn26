@@ -1,5 +1,28 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-16 minrenx merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/minrenx/README.md).
+
+- 2026-11-16 minrenx capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/minrenx/README.md).
+
+- 2026-11-15 Sage Naruto / 仙鸣: source-bound base and required replacement, selection/catalog/portrait/footer/intro integration in the independent minrenx branch. 25 Flash/native fixtures / 18,530 actor states and 300 saved-roster cases / 189,400 states match. Native rollback/rendering and local Web export/packed-form checks pass; headed Web keyboard flow and required transformation pass with inspected system screenshots; CDP black-canvas screenshots remain a capture limitation. Coverage partial, all six proof/admission flags false; headed exit leaks unaccepted. [Evidence](../evidence/characters/minrenx/README.md).
+- 2026-11-16 ichigo merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/ichigo/README.md).
+
+- 2026-11-16 ichigo capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/ichigo/README.md).
+
+- 2026-11-15 Ichigo Zero / 一护2: source-bound standalone `ichigo.swf` port includes BODY 274→632 White Ichigo, source selection/footer/opening and in-repository matchmaking catalog wiring. Targeted native/Flash, preserved-roster and local Web evidence is tracked in [the character checks](../evidence/characters/ichigo/checks.json). Partial coverage; six proof/admission flags remain false. Headed resource/RID exit leaks remain unaccepted. No production deployment.
+- 2026-11-16 shouju merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/shouju/README.md).
+
+- 2026-11-16 shouju capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/shouju/README.md).
+
+- 2026-11-15 剑心：源驱动基础形态及 643→1473→2506 替换链已接入；22 组原版 Flash/原生同输入、16,964 条角色状态匹配；两次替换、独立特效时钟、回滚及 204+62 组旧角色轨迹回归通过；实际 Web 选人、开场与两次变身复测通过，导出资源预检与字体覆盖已验证。保持 partial、M6-01 pending、六项证明标志 false；无合并或部署。[记录与实际验证范围](../evidence/characters/kenshin/README.md)。
+
+- 2026-11-14 Killer Bee branch integration: merged Karin master `bf4b7a43` while preserving both ports and partial coverage. Regenerated combined manifests and the source-authored frame-556 flash index; no Flash recapture or deployment. [Integration evidence](../evidence/characters/qilabi/master-integration-2026-11-14/README.md).
+
+- 2026-11-14 Killer Bee base port: original catalog/selector confirms `qilabi.swf` after Karin/Mayuri. Twenty-one character-SOP Flash fixtures match 15,162 actor states on 14 exact fields; source placement locals/helpers, X-only facing warp and stopped projectile initialization compile to shared behavior. Coverage remains partial; six proof/admission flags false, no merge or deployment. [Evidence and residuals](../evidence/characters/qilabi/README.md).
+- 2026-11-14 Mayuri base port: source assets/controllers, local and online selection, portraits/footer and natural opening wired with existing default assist. Twelve focused original Flash cases match 8,664 states on 14 fields after an unlocked foreground recapture; prior failures retained. Source-derived projectile fix, rollback/protected recovery and 204 saved-roster cases / 119,008 states pass. Coverage remains partial and all six proof/admission flags remain false; no merge or deployment. [Evidence](../evidence/characters/mayuri/README.md).
+
+- 2026-11-13 approved online lobby: new rooms default to host authority, independent existing character/helper UI returns to the room, host-only map confirmation and explicit host Start replace fixed setup/auto-start. Rollback remains in room settings; local Worker/native checks pass. Production and all admission/performance/network gates remain unchanged. [Evidence](../evidence/online/lobby-menu-2026-11-13/README.md).
+
 - 2026-11-13 host-authority connectivity: local browser candidate-permission/routing diagnosis separated from a real receiver-buffer overflow. Presenter-ready/initial pacing and applied-state credit limit stale-state bursts; local WebRTC evidence is scoped to dedicated browsers with an explicit permission override. Rollback/default, proof flags and G0/weak-machine/TURN/Internet/two-machine gates unchanged. [Follow-up evidence](../evidence/online/host-authority-connectivity/README.md).
 
 - 2026-11-12 optional host-authority experiment: room mode switch preserves rollback; fixed Naruto/Ichigo presentation-only guest, start-of-match p95/stall host selection, binary state channel, recovery and receipt-based result barriers. Local service/coordinator and exported offline-display checks pass; browser WebRTC connection remains unverified after local ICE failures. G0/weak-machine/real two-machine performance gates remain pending; proof flags unchanged. [Handoff](HOST_AUTHORITY_EXPERIMENT.md).
@@ -1891,6 +1914,8 @@ remains pending. No merge or Worker/Vercel deployment.
 
 - 2026-10-21：重吾基础形态已源编译并接入本地／联机选人，无独立援助。12 条原生 Flash 对照匹配 8,664 条角色状态、14 字段；超必杀 450 伤害／7 连击，重复上必杀第二次空挥与原版一致。取消时序按源第 200 帧校准；无名弹体、脚部判定、子剪辑牵引和条件跳转由通用编译字段执行。回滚、全角色回放、真实截图及实际耗时见[重吾检查记录](../evidence/characters/juggo/checks.json)。PR #37 恢复保持不变，coverage 仍 partial，完整视听／浏览器／AI／全部边界未验收，未合并或部署。
 
+- 2026-11-13：香磷基础形态已源编译并接入本地／联机选人，源立绘、页脚和自然开场已接线；无独立援助，沿用已有默认鼬。17 条独占锁原生 Flash 用例匹配 12,274 条角色状态、14 字段，包含 998→1003 治疗边界、弹体局部变量／动态命名、连续远程双朝向和换边闪现。五项 Godot 回滚／受保护恢复／输入／视觉控制检查通过；两条反击尝试未实际打断香磷，不计作打断覆盖。编译影响、保存角色回放、最终工具检查及实测耗时见[香磷检查记录](../evidence/characters/karin/checks.json)。PR #37 恢复字节不变，coverage 仍 partial；完整视听／浏览器／AI／全部边界未验收，六项 admission/init 标志保持 false，未合并或部署。
+
 2026-10-23 Draft PR #48：导入器严格检查与滤镜工作仍在进行。小对象模糊已通过 242 组、37,280 个原版 alpha 采样点对照；颜色滤镜和完整语义审计仍有阻塞，全角色最终验收未完成。未新增角色、未合并部署，不提升里程碑状态。见[本轮证据](../evidence/importer-loud-fail/r02/README.md)。
 
 
@@ -1907,3 +1932,34 @@ remains pending. No merge or Worker/Vercel deployment.
 2026-11-08: s334 executes only AFTER-s326 rank #8 AImain allocation. Complete locked s325 replay is retained validation, not new layout or pool proof. Three inspected adapters provide allocator import slots, CPU registers and process custody, but neither separate byte-bound parent/depth lookup nor saved-reference dereference. Both paths and all live bindings remain null; actual clearing/replacement/free/reuse with uninterrupted pool generations remain unproved and controls deferred. Base exit 0; four proof gates exit 1. production_admitted=false; native_parity_proven=false; M0-02 pending. Ranks 1–7 deliveries stay closed; rank 9 planning only; authority unchanged. Zero builds, launches, attaches, memory reads or captures. Actual costs: evidence/sampling-upgrade/s334/project-checks.json and session-timing.json; person-days unknown. See [s334](../evidence/sampling-upgrade/s334/README.md).
 
 2026-11-08: s335 executes only AFTER-s326 rank #9 strict digit residual. Complete locked s326 replay is retained validation, not new pixel progress. All 61 boundaries remain inadmissible; zero corresponding same-capture scene pairs. Capture and exact source-bound edge/interior RGBA classification stop before execution; residuals remain null. Base exit 0; three proof gates exit 1. production_admitted=false; native_parity_proven=false; M0-02 pending; zero product obligations closed. Ranks 1–8 delivered as s327–s334 remain closed; this is the final rank, with no re-ranking or authority edits. Zero admission repairs, builds, launches, captures or new images. Actual costs: evidence/sampling-upgrade/s335/project-checks.json and session-timing.json; person-days unknown. See [s335](../evidence/sampling-upgrade/s335/README.md).
+
+
+2026-11-15 continuation: Ulquiorra (小乌 / weqal.swf) now includes its source-required BODY 387→808 lifecycle and reviewed complete replacement graph. Both the natural failure→transformation fallthrough and explicit parent goto remain executable. See [the character record](../evidence/characters/weqal/README.md) and [checks](../evidence/characters/weqal/checks.json) for exact diagnostic comparisons, full saved-roster regressions and export checks. Standalone roster variants remain deferred. The headed renderer resource/RID leak remains an open residual. M6 stays pending; all six proof/admission flags false. No merge or deployment.
+
+## Temari continuation — partial targeted candidate (2026-11-15)
+
+Verified next base: 手鞠 / shouju.swf, BODY 541, from master a3b47941.
+Selection/catalog integration, 17 exact primary diagnostic comparisons (12,634 actor
+states / 14 fields), rollback and 30 saved-roster regressions are retained in
+[the character record](../evidence/characters/shouju/README.md). The old desktop
+lock blocker is resolved. Actual same-instance three-cast side-switch now matches; the earlier named
+crossing attempt is retained separately and excluded from that coverage.
+Local Web selection/natural intro/receiving hits/training special and recovery
+are observed, with programmatic CDP input; full browser lifecycle remains unaccepted. Headed RID/resource leaks remain unaccepted. All six proof/admission
+flags false; M6 remains pending. Draft review only; no merge or deployment.
+
+## 2026-11-16 final PR 294/295/296 integration validation
+
+- The integrated source roster retains 34 selectable base fighters, including
+  Temari, Ichigo Zero and Sage Naruto, plus the required White Ichigo and Golden
+  Naruto replacement assets. No existing roster entry was removed.
+- All 62 retained original-input diagnostic cases match 45,604 actor-state rows
+  with unchanged source/fixture hashes and the existing 14-field comparator.
+  Focused source/selection/opening checks (28) and matchmaking tests (32) pass.
+- The actual licensed menu font was regenerated with 503-character coverage.
+  Standard local Web export, packed required-form checks and Chromium startup
+  passed. Build/PCK identity, dirty snapshot provenance, logs and screenshots:
+  `evidence/characters/minrenx/merge-validation-r01/`.
+- These targeted integrations do not complete M6 or certify full character
+  parity. All six proof/admission flags remain false; aligned audiovisual,
+  exhaustive AI/boundaries and physical keyboard/focus acceptance remain open.

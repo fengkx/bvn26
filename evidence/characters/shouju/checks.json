@@ -1,0 +1,197 @@
+{
+  "status": "targeted_sop_pass_partial_acceptance",
+  "base_commit": "a3b479414546250b7d0cd6e35cbc3ae52b3169d1",
+  "character": "手鞠",
+  "source": "game/fighter/shouju.swf",
+  "branch": "port/shouju-base",
+  "worktree": "/Users/fengkx/me/agent-code/bvn2_6-shouju",
+  "flags": {
+    "production_admitted": false,
+    "native_parity_proven": false,
+    "oracle_accepted": false,
+    "certified_global_tick": false,
+    "os_input_join_proven": false,
+    "native_initialization_complete": false
+  },
+  "tests": {
+    "source_tests": {
+      "passed": 3,
+      "log": "logs/source-tests.log"
+    },
+    "hit_receive_tests": {
+      "passed": 5,
+      "log": "logs/hit-receive-tests.log"
+    },
+    "shared_receiver_audit": {
+      "status": "passed",
+      "log": "logs/shared-receiver.log"
+    },
+    "font_regeneration": {
+      "status": "passed",
+      "log": "logs/font-build-r02.log"
+    },
+    "font_coverage": {
+      "passed": 1,
+      "skipped": 0,
+      "log": "logs/font-test.log"
+    },
+    "native_player_controller_smoke": {
+      "status": "passed_existing_roster_only",
+      "log": "logs/controller-smoke.log"
+    },
+    "godot_import": {
+      "status": "import_completed_with_editor_settings_write_errors",
+      "log": "logs/import-r02.log"
+    },
+    "import_guards": {
+      "passed": 22,
+      "log": "logs/import-guard-tests.log"
+    },
+    "handoff": {
+      "status": "passed",
+      "log": "logs/handoff-t342.log"
+    },
+    "verify": {
+      "status": "passed",
+      "log": "logs/verify-t342.log"
+    },
+    "online_manifest": {
+      "status": "passed",
+      "fighters": 32,
+      "log": "logs/online-manifest-check-t342.log"
+    },
+    "targeted_comparisons": {
+      "cases": 17,
+      "action_cases": 16,
+      "absent_label_negative_cases": 1,
+      "actor_states": 12634,
+      "fields": 14,
+      "status": "matched",
+      "evidence": [
+        "comparisons.json",
+        "crossing-r04-comparison.json"
+      ],
+      "supplemental_attempt": {
+        "comparison": "crossing-comparison.json",
+        "states": 722,
+        "note": "Matches but did not cross; excluded from accepted crossing coverage and primary total."
+      }
+    },
+    "source_tests_t342": {
+      "passed": 30,
+      "log": "logs/source-tests-t342.log"
+    },
+    "font_coverage_t342": {
+      "passed": 1,
+      "skipped": 0,
+      "log": "logs/font-coverage-t342.log"
+    },
+    "saved_roster": {
+      "passed": 30,
+      "actor_states": 18300,
+      "full_288_run": false,
+      "log": "logs/roster-resume.log",
+      "rationale": "Additive fighter/assets and hash-pinned frame-call requirements; no shared runtime/compiler behavior changes. SOP section 6 is impact-based."
+    },
+    "rollback": {
+      "status": "passed",
+      "log": "logs/rollback-resume.log"
+    },
+    "missing_label": {
+      "status": "passed_with_disabled_actions_empty",
+      "log": "logs/missing-label-r02.log"
+    },
+    "headed_visual": {
+      "status": "captured_nonclean_exit",
+      "log": "logs/visual-resume.log"
+    },
+    "web_export": {
+      "status": "passed",
+      "log": "logs/web-build-t342.log",
+      "raw_logs": "web/final-export-logs",
+      "metadata": "web/final-build-metadata.json",
+      "online_manifest_tests": 8,
+      "import_exit": 0,
+      "export_exit": 0,
+      "strict_import_export_log_scan": "passed",
+      "note": "Expected negative lobby diagnostic warnings retained in raw smoke logs; prior headed RID leaks remain unaccepted."
+    },
+    "web_functional": {
+      "status": "passed_targeted_path",
+      "evidence": "web/validation.json",
+      "scope": "Selection, natural intro, Vs Com receiving hits, training special/pause/contact/recovery. Isolated headless Chrome/CDP, not physical keys or complete Web lifecycle."
+    },
+    "continuous_crossing": {
+      "status": "matched",
+      "casts": [
+        11,
+        281,
+        421
+      ],
+      "facings": [
+        100,
+        -100,
+        -100
+      ],
+      "final_recovery_frame": 4,
+      "frames": 540,
+      "evidence": "crossing-r04-comparison.json",
+      "original_capture": "original-crossing-r05"
+    },
+    "native_crossing_preflight": {
+      "status": "passed",
+      "states": 1082,
+      "log": "logs/native-crossing-r04.log"
+    },
+    "final_package_boot": {
+      "status": "matched_identity",
+      "evidence": "web/final-package/identity.json"
+    },
+    "web_functional_final": {
+      "status": "passed_targeted_final_package",
+      "evidence": "web/final-package/validation.json",
+      "special_entries": 7,
+      "build_id": "f121dbc04f3107750f136fd6395cef0578727bb4a9861c067dc9b1e5ef691530",
+      "scope": "Actual final-package selection, natural intro, training repeated special, pause/contact and recovery via CDP. Not full audiovisual/browser/OS-input admission."
+    },
+    "final_materials_validation": {
+      "status": "passed",
+      "verify_log": "logs/verify-pr-head-t342.log",
+      "handoff_log": "logs/handoff-pr-head-t342.log"
+    }
+  },
+  "pending": [
+    "Full audiovisual/pixel/audio/AI and exhaustive boundary acceptance",
+    "Headed RID/resource cleanup (unaccepted residual)",
+    "Production/global initialization/OS-input proofs"
+  ],
+  "blocker": null,
+  "flash_launched": true,
+  "flash_running_for_this_task": false,
+  "quota": {
+    "current_remaining": null,
+    "reset_display": null,
+    "reason": "No quota tool exposed; Computer Use rejected access to com.openai.codex for safety reasons. Current percentage/reset could not be read; no bypass attempted.",
+    "previous_turn_hard_block_reported": true,
+    "hard_block_observed_this_resume": false
+  },
+  "residuals": [
+    "Prior headed renderer RID/resource leaks remain unaccepted",
+    "Prior saved-roster exit resources-in-use remains unaccepted",
+    "Godot editor cannot write external editor_settings-4.7.tres in sandbox"
+  ],
+  "preservation": {
+    "commit": "be5ab318",
+    "archive": "/Users/fengkx/me/agent-code/shouju-wip-20261115.tar.gz",
+    "archive_sha256": "4ec34d820852c5680a35635a7057ec3b1c2d212225f2d2a012d908c2abc2ffc7",
+    "files": 1146
+  },
+  "draft_pr_at_validation_freeze": null,
+  "draft_pr_tracking": "GitHub branch port/shouju-base; creation follows final local export checks.",
+  "flash_lock_after_capture": "free",
+  "flash_lock_at_handoff": {
+    "holder": "bvn-lane3-next-port",
+    "belongs_to_this_task": false,
+    "note": "Observed after this task completed capture; no interference with the other holder."
+  }
+}

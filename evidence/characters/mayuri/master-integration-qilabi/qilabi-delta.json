@@ -1,0 +1,18 @@
+{
+  "status": "source_derived_metadata_refresh",
+  "source_bundle": "scripts/fighter/qilabi.json",
+  "source_sha256": "944184d1989f0da331cfa6fbf33c5a4bc4b66591e4aae11ae19ac44852f868b4",
+  "placement": "DefineSprite_766/frame_493/PlaceObject2_256_28",
+  "lifetime_root_frames": [
+    493,
+    511
+  ],
+  "initialization": "DefineSprite_256/frame_1/DoAction.as: stop(); var played = 0;",
+  "callback": "On contact and played == 0: played=1; movspeed=0; gotoAndPlay(5). Otherwise move X +25 / Y -15 only while played==0.",
+  "rename_write": "DefineSprite_256/frame_6/DoAction.as: _name = \"zh3atm\"; played = 1;",
+  "remaining_timeline": "Frame 9 renames aaa, frame 12 stops. No invented end-of-label recovery.",
+  "state_lifetime": "Each new placement initializes played=0; retained MOVE keeps state; removal ends the instance. The frame-6 assignment follows the earlier guarded contact write.",
+  "delta": "Only local_writes played=1 at rename frame 6 added to the combat model and both controller metadata; four JSON files including data/actions. All other fields and controller code equal incoming master.",
+  "other_compiler_outputs": "28 prior base fighters unchanged versus 7759d483, with identical inputs and compiler entry points.",
+  "validation": "Strict shipped-projectile source test now passes; final original trace results must be read from the integration replay report. No Flash recapture or fixture/source mutation."
+}

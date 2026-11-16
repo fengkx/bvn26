@@ -103,6 +103,7 @@ PARENT_WARP_X = re.compile(
     r"|"
     r"_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\.mc\.bdmn\._width"
     r"(?:\s*\*\s*(?P<wfac>\d+(?:\.\d+)?))?"
+    r"(?:\s*(?P<x_extra_op>[+-])\s*(?P<x_extra_num>\d+(?:\.\d+)?))?"
     r"))?\s*;"
 )
 PARENT_WARP_Y = re.compile(
@@ -121,11 +122,13 @@ FACING_BODY_WARP = re.compile(
     r"if\s*\(\s*_parent\._xscale\s*(?P<cmp>[<>])\s*0\s*\)\s*\{\s*"
     r"(?:_parent\.scale_X\s*=\s*(?P<then_facing_before>-?1)\s*;\s*)?"
     r"_parent\._xscale\s*=\s*(?P<then_scale>-?\d+)\s*;\s*"
+    r"(?:_parent\.scale_X\s*=\s*(?P<then_facing_middle>-?1)\s*;\s*)?"
     r"(?P<then_x>_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x[^;]*;)\s*"
     r"(?:_parent\.scale_X\s*=\s*(?P<then_facing>-?1)\s*;\s*)?"
     r"\}\s*else\s*\{\s*"
     r"(?:_parent\.scale_X\s*=\s*(?P<else_facing_before>-?1)\s*;\s*)?"
     r"_parent\._xscale\s*=\s*(?P<else_scale>-?\d+)\s*;\s*"
+    r"(?:_parent\.scale_X\s*=\s*(?P<else_facing_middle>-?1)\s*;\s*)?"
     r"(?P<else_x>_parent\._x\s*=\s*_root\.game\[\s*\"p\"\s*\+\s*pn\s*\]\._x[^;]*;)\s*"
     r"(?:_parent\.scale_X\s*=\s*(?P<else_facing>-?1)\s*;\s*)?"
     r"\}",
@@ -171,7 +174,7 @@ PROJECTILE_LOAD = re.compile(
 )
 PROJECTILE_LITERAL_DECLARATION = re.compile(
     r"var\s+(?P<name>[A-Za-z_]\w*)\s*=\s*"
-    r"(?P<value>true|false|-?\d+(?:\.\d+)?)\s*;"
+    r'(?P<value>true|false|-?\d+(?:\.\d+)?|"[^"\n]*")\s*;'
 )
 SOURCE_HEALTH_LOSS = re.compile(
     r"if\s*\(\s*hp\s*>\s*(?P<threshold>\d+(?:\.\d+)?)\s*\)\s*\{\s*"
@@ -189,7 +192,7 @@ DIRECT_YFGJ_CALL = re.compile(r"_root\.yfgj\(\s*_parent\._name\s*\)\s*;")
 NESTED_FRAME_SCRIPT = re.compile(
     r"^DefineSprite_(?P<sprite>\d+)/frame_(?P<frame>\d+)/DoAction"
 )
-CLIP_RENAME = re.compile(r"(?:this\.)?_name\s*=\s*\"(?P<name>[^\"]+)\"")
+CLIP_RENAME = re.compile(r"(?<![\w.])(?:this\.)?_name\s*=\s*\"(?P<name>[^\"]+)\"")
 # Root timeline actions can rename a placed instance (for example
 # `dogs._name = "sbsatm"`) without giving the instance its final authored
 # name in the display list.  Keep this separate from CLIP_RENAME: nested clip
@@ -319,6 +322,9 @@ def _warp_x_fields(source: str) -> dict[str, Any] | None:
     elif match["x_op"] and match["x_num"] is None:
         factor = float(match["wfac"]) if match["wfac"] else 1.0
         fields["x_bdmn_width"] = -factor if match["x_op"] == "-" else factor
+        extra_x = _signed_pixel(match, "x_extra_op", "x_extra_num")
+        if extra_x:
+            fields["x_pixels"] = extra_x
     return fields
 
 
@@ -351,7 +357,8 @@ def parse_body_warp(source: str) -> dict[str, Any] | None:
         then_branch = {"set_xscale": float(facing["then_scale"]), **then_x}
         else_branch = {"set_xscale": float(facing["else_scale"]), **else_x}
         for prefix, branch in (("then", then_branch), ("else", else_branch)):
-            logical_facing = facing[prefix + "_facing"] or facing[prefix + "_facing_before"]
+            logical_facing = (facing[prefix + "_facing"] or facing[prefix + "_facing_middle"]
+                              or facing[prefix + "_facing_before"])
             if logical_facing is not None:
                 branch["set_scale_x"] = int(logical_facing)
         result: dict[str, Any] = {
@@ -1030,6 +1037,7 @@ def parse_clip_timeline(
         raise ValueError(f"Missing source frame_count for character {character_id}")
     stop_frames: list[dict[str, Any]] = []
     rename_frames: list[dict[str, Any]] = []
+    frame_events: list[dict[str, Any]] = []
     initial_motion: dict[str, Any] = {}
     for script in script_bundle["scripts"]:
         match = NESTED_FRAME_SCRIPT.match(script["path"])
@@ -1044,18 +1052,32 @@ def parse_clip_timeline(
             "source_path": script["path"],
             "source_sha256": text_sha256(script["source"]),
         }
-        motion_init = re.fullmatch(
-            r"stop\(\);\s*var movspeed = (-?\d+(?:\.\d+)?);\s*var played = 0;", source
-        )
-        if source == "stop();" or motion_init is not None:
+        flash = re.fullmatch(r"_root\.shine\((\d*)\);", source)
+        if flash is not None:
+            frame_events.append({**record, "op": "screen_flash",
+                                 "color_rgb24": int(flash[1]) if flash[1] else 0xFFFFFF})
+        declarations = list(PROJECTILE_LITERAL_DECLARATION.finditer(source))
+        remainder = PROJECTILE_LITERAL_DECLARATION.sub("", source).strip()
+        literal_initialization = bool(declarations) and remainder in ("", "stop();")
+        if source == "stop();" or (literal_initialization and remainder == "stop();"):
             stop_frames.append(record)
-        if motion_init is not None:
+        if literal_initialization:
             if frame != 1:
                 raise ValueError("Projectile initialization outside frame 1: " + script["path"])
             initial_motion = {
-                "initial_variables": {"movspeed": float(motion_init[1]), "played": 0},
+                "initial_variables": {
+                    declaration["name"]: json.loads(declaration["value"])
+                    for declaration in declarations
+                },
                 "initial_motion_source": record,
             }
+        variable_rename = re.fullmatch(r'(?:this\.)?_name\s*=\s*([A-Za-z_]\w*)\s*;', source)
+        if variable_rename is not None:
+            field = variable_rename[1]
+            initial = initial_motion.get("initial_variables", {}).get(field)
+            if not isinstance(initial, str):
+                raise ValueError("Undeclared string rename local: " + script["path"])
+            rename_frames.append({**record, "instance_name": initial, "name_field": field})
         rename = CLIP_RENAME.search(script["source"])
         if rename is not None:
             random_suffix = re.fullmatch(r'(?:this\.)?_name\s*=\s*"[^"\n]+"\s*\+\s*Math\.random\(\);\s*', source)
@@ -1063,6 +1085,13 @@ def parse_clip_timeline(
             if random_suffix:
                 fighter = Path(script_bundle["game_file"]).stem
                 event.update(random_suffix=True, random_site=f"fighter/{fighter}#{script['path']}:1")
+            writes = list(re.finditer(r"(?<![\w.])played\s*=\s*(\d+)\s*;", source))
+            if writes and re.fullmatch(
+                r'(?:this\.)?_name\s*=\s*"[^"\n]+";\s*played\s*=\s*\d+\s*;', source
+            ) is None:
+                raise ValueError("Uncompiled projectile rename/local write ordering: " + script["path"])
+            if writes:
+                event["local_writes"] = [{"field": "played", "value": int(w[1])} for w in writes]
             rename_frames.append(event)
     stop_frames.sort(key=lambda item: item["frame"])
     rename_frames.sort(key=lambda item: item["frame"])
@@ -1074,6 +1103,8 @@ def parse_clip_timeline(
         timeline["stop_sources"] = stop_frames
     if rename_frames:
         timeline["rename_frames"] = rename_frames
+    if frame_events:
+        timeline["frame_events"] = frame_events
     return timeline
 
 
@@ -1726,7 +1757,10 @@ def build_model(
         if speed_match is not None:
             projectile_speeds[(script["frame"], depth)] = float(speed_match["factor"])
     for script, depth in clip_scripts:
-        projectile = parse_projectile_motion(script["source"])
+        character_id = placement_character_id(frames_by_number, script["frame"], depth)
+        definition = next((d for d in timeline.get("definitions", [])
+                           if d.get("character_id") == character_id), {})
+        projectile = parse_projectile_motion(script["source"], definition.get("frame_labels", {}))
         if projectile is not None:
             end_frame, bytecode_hash = clip_lifetime(
                 frames_by_number, script["frame"], depth

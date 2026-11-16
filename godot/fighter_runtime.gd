@@ -1621,13 +1621,14 @@ func run_projectile_callback(projectile: Dictionary) -> bool:
 			jumped_hit = true
 		# A hit write or opponent goto does not block this child clip's natural
 		# advance. Only a source-authored child goto is a child timeline jump.
-		return jumped_hit
-	else:
+		if not projectile.get("motion_after_collision", false):
+			return jumped_hit
+	if not blocked or projectile.get("motion_after_collision", false):
 		var offset := instance_local_offset(instance_name)
 		var source_variables := instance_source_variables(instance_name)
 		var motion_conditions: Array = projectile.get("local_motion_conditions", [])
 		if not _projectile_conditions_match(source_variables, motion_conditions):
-			return false
+			return jumped_hit
 		var step := float(source_variables.get("movspeed", projectile.get("initial_speed",
 			speed * float(projectile.get("speed_factor", 1.0)))))
 		# The source sets movspeed=0 on impact; losing contact cannot restart it.
@@ -1662,7 +1663,8 @@ func _apply_projectile_local_write(instance_name: String, event: Dictionary) -> 
 	if not _projectile_conditions_match(variables, conditions):
 		return false
 	for write: Dictionary in event.get("writes", []):
-		assert(variables.has(write["field"]), "Projectile writes an undeclared local")
+		# A source assignment can create a property on the clip; a preceding
+		# `var` declaration is not required. Reads still require compiled state.
 		variables[str(write["field"])] = write["value"]
 	var record: Dictionary = _instance_local_frames.get(instance_name, {})
 	record["source_variables"] = variables
@@ -1773,6 +1775,10 @@ func source_projectile_target_bounds(source_name: String) -> Rect2:
 		for rename: Dictionary in projectile.get("rename_frames", []):
 			if instance_clip_frame(authored) >= int(rename["frame"]):
 				current_name = rename["instance_name"]
+				if rename.has("name_field"):
+					var variables := instance_source_variables(authored)
+					assert(variables.has(rename["name_field"]), "Undeclared projectile rename local")
+					current_name = str(variables[rename["name_field"]])
 		if current_name == source_name:
 			return super.instance_global_bounds(authored)
 		if authored == source_name:
@@ -2008,12 +2014,15 @@ func _apply_body_warp_event(event: Dictionary, invocation_serial: int = -1) -> v
 	# Flash MovieClip._width/_height round transformed bounds to the nearest twip.
 	# Lee/Yihu: 26.63017 -> 26.65 and 44.71463 -> 44.7; Lee/Naruto:
 	# 26.610... -> 26.6. This quantizes only source dimension reads.
-	var source_body_size := Vector2(roundf(body_size.x * 20.0) / 20.0, roundf(body_size.y * 20.0) / 20.0)
+	# Keep dimension reads in double precision. Vector2 would turn 26.65 into
+	# 26.649999..., losing a twip at the subsequent AS2 coordinate setter.
+	var source_body_width := roundf(body_size.x * 20.0) / 20.0
+	var source_body_height := roundf(body_size.y * 20.0) / 20.0
 	if (not x_reads_body_width or body_exists) and bool(warp.get("place_x", true)):
 		source_x = (
 			opponent.source_x
 			+ float(branch.get("x_pixels", 0.0))
-			+ source_body_size.x * float(branch.get("x_bdmn_width", 0.0))
+			+ source_body_width * float(branch.get("x_bdmn_width", 0.0))
 		)
 	if branch.has("set_scale_x"):
 		facing = int(branch["set_scale_x"])
@@ -2021,7 +2030,7 @@ func _apply_body_warp_event(event: Dictionary, invocation_serial: int = -1) -> v
 		source_y = (
 			opponent.source_y
 			+ float(warp.get("y_pixels", 0.0))
-			+ source_body_size.y * float(warp.get("y_bdmn_height", 0.0))
+			+ source_body_height * float(warp.get("y_bdmn_height", 0.0))
 		)
 	if bool(warp.get("set_jump", false)):
 		_scripted_jump = true
@@ -2473,6 +2482,7 @@ func retire_source_body() -> void:
 
 func install_source_profile(profile: Dictionary, load_declarations: Array) -> void:
 	assert(not source_body_available and source_body == null)
+	_wrapper_visual_clips.clear()
 	fighter_directory = profile.directory
 	_timeline = profile.timeline
 	_fighter = profile.fighter

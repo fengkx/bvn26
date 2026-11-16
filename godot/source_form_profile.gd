@@ -21,14 +21,17 @@ static func prepare(directory: String, source_sha256: String) -> Dictionary:
 		if initialization.get(field) != true:
 			return {"error": "Unsupported replacement initialization " + field + ": " + directory}
 	for asset: Dictionary in result.assets.get("assets", []):
-		if not FileAccess.file_exists(directory.path_join(str(asset.get("path", "")))):
+		# Exported textures and scripts are remapped resources, not loose files.
+		if not ResourceLoader.exists(directory.path_join(str(asset.get("path", "")))):
 			return {"error": "Missing replacement asset: " + str(asset.get("path", ""))}
 	var controller := directory.path_join("player_controller")
 	for name in ["body.gd", "body.json", "controller.gd", "controller.json", "predicates.gd"]:
-		if not FileAccess.file_exists(controller.path_join(name)):
+		var path := controller.path_join(name)
+		var exists := ResourceLoader.exists(path) if name.ends_with(".gd") else FileAccess.file_exists(path)
+		if not exists:
 			return {"error": "Missing replacement controller: " + controller.path_join(name)}
 	var hit_path := directory.path_join("ai_hit_state.gd")
-	if not FileAccess.file_exists(hit_path):
+	if not ResourceLoader.exists(hit_path):
 		return {"error": "Missing replacement hit consumer: " + hit_path}
 	result["controller_directory"] = controller
 	result["hit_state_script"] = load(hit_path)

@@ -1,0 +1,93 @@
+{
+  "status": "passed_headless_teardown_only",
+  "source_commit": "b801c304a5609ce8b4ef427952c07603771c8723",
+  "cases": [
+    {
+      "lane": "minrenx",
+      "case": "minrenx_form_visual_capture",
+      "command": [
+        "/Users/fengkx/me/agent-code/toolchains/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-minrenx/godot",
+        "--log-file",
+        "/private/tmp/bvn-pr-continuation/minrenx_form_visual_capture/engine.log",
+        "--script",
+        "res://tests/minrenx_form_visual_capture.gd",
+        "--",
+        "/private/tmp/bvn-pr-continuation/minrenx_form_visual_capture",
+        "--check-shutdown"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.831,
+      "marker": true,
+      "diagnostics": [],
+      "script_sha256": "bc1d7eae93a7bb438dc6612c637a527c0b09fc6afc8f558c84679bfe5275e3cf",
+      "metadata": {
+        "engine": "4.7.2-stable (official)",
+        "fight_source_frame": 1,
+        "fighter": "仙鸣",
+        "fighter_directory": "res://generated/forms/minrenx-2",
+        "limitations": "Headless lifecycle/teardown check; no images or rendering acceptance.",
+        "method": "Native Godot Compatibility renderer; production selection, natural opening and transformation input",
+        "opponent": "一护",
+        "paused": false,
+        "screenshots_captured": false,
+        "shutdown_check_only": true,
+        "stage": "现世",
+        "viewport": [
+          64,
+          64
+        ]
+      },
+      "log": "evidence/characters/minrenx/shutdown-r01/minrenx_form_visual_capture.log.gz",
+      "log_sha256": "5a7dfb7a48ecb516d9d2b35ee0b85cb540451b2147430c60241ad22e668d6fed"
+    },
+    {
+      "lane": "minrenx",
+      "case": "minrenx_visual_capture",
+      "command": [
+        "/Users/fengkx/me/agent-code/toolchains/godot-4.7.2/Godot.app/Contents/MacOS/Godot",
+        "--headless",
+        "--path",
+        "/Users/fengkx/me/agent-code/bvn2_6-minrenx/godot",
+        "--log-file",
+        "/private/tmp/bvn-pr-continuation/minrenx_visual_capture/engine.log",
+        "--script",
+        "res://tests/minrenx_visual_capture.gd",
+        "--",
+        "/private/tmp/bvn-pr-continuation/minrenx_visual_capture",
+        "--check-shutdown"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.795,
+      "marker": true,
+      "diagnostics": [],
+      "script_sha256": "8c1c8fa6b9907fef7f9de5a5360e7caaaa707d43418b2f45b8727e0a5b8dbd2d",
+      "metadata": {
+        "engine": "4.7.2-stable (official)",
+        "fight_source_frame": 580,
+        "fighter": "仙鸣",
+        "limitations": "Headless lifecycle/teardown check; no images or rendering acceptance.",
+        "method": "Native Godot Compatibility renderer; production selection, natural opening and super input",
+        "opponent": "一护",
+        "screenshots_captured": false,
+        "shutdown_check_only": true,
+        "stage": "现世",
+        "viewport": [
+          64,
+          64
+        ]
+      },
+      "log": "evidence/characters/minrenx/shutdown-r01/minrenx_visual_capture.log.gz",
+      "log_sha256": "9bf96a79a73f0488bdbdf39c84c37f8cfec181e103e3d19dbac60005d746f0db"
+    }
+  ],
+  "measured_godot_seconds": 5.6259999999999994,
+  "scope": "Test harness cleanup only. No shared gameplay, compiler, package, fixture or tolerance changes. No new images, headed run, native capture or production admission. Historical failures remain retained.",
+  "repository_checks": {
+    "verify": "passed",
+    "check_handoff": "passed",
+    "diff_check": "passed"
+  }
+}

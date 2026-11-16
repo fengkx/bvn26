@@ -11,6 +11,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import textwrap
 
 from source_instance_key import instance_key
 
@@ -106,12 +107,14 @@ def compile_body(
     scope_fields: set[str] | None = None,
     call_aliases=None,
     avm1_comparisons: bool = False,
+    instance_locals=(),
+    undefined_body_calls=(),
 ) -> str:
     def translate(source, locals_, fields, aliases):
         return source_expression(source, locals_, fields, aliases, avm1_comparisons=avm1_comparisons)
 
     params_list = [x.strip() for x in params.split(',') if x.strip()]
-    locals_ = LOCALS | set(params_list)
+    locals_ = LOCALS | set(params_list) | set(instance_locals)
     source_fields = scope_fields or set()
     # Resolve bounded container aliases offline. They denote stable fighter
     # wrappers throughout one callback; only mapped scalar members are emitted.
@@ -155,6 +158,10 @@ def compile_body(
             local, initial = match.groups()
             locals_.add(local)
             translated = [f'var {local}: Variant = ' + (translate(initial,locals_,source_fields, call_aliases) if initial else 'null')]
+        elif match := re.fullmatch(r'(\w+)(\+\+|--);', line):
+            if match[1] not in instance_locals:
+                raise ValueError(f'Unsupported instance update in {name}: {line}')
+            translated = [f'{match[1]} = number({match[1]}) {"+" if match[2] == "++" else "-"} 1']
         elif match := re.fullmatch(r'(.+?) (\+=|-=|\*=|=) (.+);', line):
             target, op, rhs = match.groups()
             value = translate(rhs,locals_,source_fields, call_aliases)
@@ -172,9 +179,17 @@ def compile_body(
                           'if not adapter.controller_alive():', '\treturn null']
         elif line[:-1] in CALLS and line.endswith(';'):
             translated = [CALLS[line[:-1]]]
+        elif match := re.fullmatch(r'_parent\._parent\.showdow\(\{((?:[RGB]:-?\d+,?)+)\}\);', line):
+            pairs = re.findall(r'([RGB]):(-?\d+)', match[1])
+            if len({key for key, _ in pairs}) != len(pairs):
+                raise ValueError('Duplicate source shadow channel: ' + line)
+            color = {key: int(value) for key, value in pairs}
+            translated = ['adapter.effect_with_args("showdow", [' + json.dumps(color) + '])']
         elif match := re.fullmatch(r'_parent\._parent\.(moveX|moveY)\((.+)\);', line):
             translated = [f'adapter.move_axis("{match[1]}", ' + translate(match[2],locals_,source_fields, call_aliases) + ')']
-        elif match := re.fullmatch(r'_parent\.(fangyux|beidax)\((.*)\);', line):
+        elif match := re.fullmatch(r'_parent\.(fangyux|beidax|setDirect)\((.*)\);', line):
+            if match[1] == 'setDirect' and match[1] not in undefined_body_calls:
+                raise ValueError('Unreviewed undefined BODY method: ' + line)
             args = translate(match[2],locals_,source_fields, call_aliases) if match[2] else ''
             translated = [f'adapter.body_call("{match[1]}", [{args}])',
                           'if not adapter.controller_alive():', '\treturn null']
@@ -184,10 +199,10 @@ def compile_body(
             else:
                 translated = ['pass # The original unqualified function is undefined in this scope.']
         elif match := re.fullmatch(r'(\w+)\((.*)\);',line):
-            if match[1] not in {*NAMES,*DISPATCH_NAMES}:
+            if match[1] not in {*NAMES,*DISPATCH_NAMES, *(call_aliases or {})}:
                 raise ValueError(f'Unsupported call in {name}: {line}')
             translated = [translate(line[:-1],locals_,source_fields, call_aliases)]
-            if match[1] in DISPATCH_NAMES:
+            if match[1] in DISPATCH_NAMES or match[1] in (call_aliases or {}):
                 translated += ['if not adapter.controller_alive():','\treturn null']
         else:
             raise ValueError(f'Unsupported statement in {name}: {line}')
@@ -295,6 +310,8 @@ def nested_controller_source(bundle: dict, symbol: int) -> tuple[dict, dict[str,
 
 
 def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: bool = False, form_replacement: bool = False) -> tuple[str,dict]:
+    from undefined_body_calls import resolve_undefined_body_calls
+    undefined_calls = resolve_undefined_body_calls(bundle, sprite)
     swf = ROOT / bundle['game_file']
     if hashlib.sha256(swf.read_bytes()).hexdigest() != bundle['swf_sha256']:
         raise ValueError('Retained source SWF hash mismatch')
@@ -302,7 +319,8 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         raise ValueError('Controller and timeline do not share the retained source')
     def compile_at(path, name, *args, **kwargs):
         try:
-            return compile_body(name, *args, avm1_comparisons=form_replacement, **kwargs)
+            return compile_body(name, *args, avm1_comparisons=form_replacement,
+                                undefined_body_calls=[item['name'] for item in undefined_calls], **kwargs)
         except (ValueError, SyntaxError) as error:
             raise ValueError(f"{bundle['game_file']}:{path}#{name}: {error}") from error
 
@@ -348,6 +366,27 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         if not body.startswith('onClipEvent(enterFrame){\n') or not body.endswith('}\n'):
             raise ValueError(f'Unexpected callback format: {script["path"]}')
         method = f'frame_{frame}_depth_{depth}'
+        load_path = script['path'].replace('onClipEvent(enterFrame)', 'onClipEvent(load)')
+        load = next((s['source'] for s in bundle['scripts'] if s['path'] == load_path), '')
+        local_aliases = {}
+        local_fields = {}
+        if load:
+            load_body = textwrap.dedent(load.replace('\r\n', '\n').split('\n', 1)[1].rsplit('}', 1)[0])
+            load_functions = {m[1]: (m[2], m[3]) for m in FUNCTION.finditer(load_body)}
+            remainder = FUNCTION.sub('', load_body).strip()
+            for declaration in remainder.splitlines():
+                initial = re.fullmatch(r'var (\w+) = (-?\d+(?:\.\d+)?|true|false|null);', declaration.strip())
+                if initial is None:
+                    raise ValueError('Unsupported placement initialization: ' + load_path)
+                field = method + '_' + initial[1]
+                local_fields[initial[1]] = field
+                text += f'\nvar {field}: Variant = {initial[2]}\n'
+            local_aliases = {name: method + '_' + name for name in load_functions}
+            for name, (params, function_body) in load_functions.items():
+                text += compile_at(load_path, local_aliases[name], params, function_body,
+                                   scope_fields=scope_fields, call_aliases=local_aliases)
+            for original, field in local_fields.items():
+                body = re.sub(rf'(?<![.\w]){re.escape(original)}\b', field, body)
         unbound = set(re.findall(r'(?<![\w.])(fangyux|beidax)\(', body))
         if unbound:
             main_path = ROOT / 'scripts/main.json'
@@ -361,6 +400,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         text += compile_at(
             script['path'], method, '', body.split('\n',1)[1].rsplit('}',1)[0],
             unbound_calls=unbound, scope_fields=scope_fields,
+            call_aliases=local_aliases, instance_locals=local_fields.values(),
         )
         membership = []
         for f,display in enumerate(timeline['frames'],1):
@@ -370,7 +410,11 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         if not membership:
             raise ValueError(f'No matching display-list instance: {script["path"]}')
         hooks.append({'method':method,'path':script['path'],'controller_id':controller_id,
-                      'placement_frame':frame,'depth':depth,'member_frames':membership})
+                      'placement_frame':frame,'depth':depth,'member_frames':membership,
+                      **({'initialization_source': {
+                          'path': load_path,
+                          'sha256': hashlib.sha256(load.encode()).hexdigest(),
+                      }} if load else {})})
     receiver_hooks = []
     receiver_ids = set()
     for script in bundle['scripts']:
@@ -491,10 +535,12 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
                 'child_controller': True,
             })
             continue
-        motion = parse_projectile_motion(script['source'])
+        frame, character, depth = map(int, match.groups())
+        definition = next((d for d in timeline.get('definitions', [])
+                           if d.get('character_id') == character), {})
+        motion = parse_projectile_motion(script['source'], definition.get('frame_labels', {}))
         if motion is None:
             raise ValueError('Uncompiled child callback: ' + script['path'])
-        frame, character, depth = map(int, match.groups())
         clip = parse_clip_timeline(bundle, character, frame_counts)
         clip.update(parse_child_stop_frames(bundle, timeline, character))
         if 'initial_variables' not in clip:

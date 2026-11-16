@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-weqal/evidence/characters/weqal/build_port.py", line 78, in <module>
+    build(p.parse_args().workspace)
+  File "/Users/fengkx/me/agent-code/bvn2_6-weqal/evidence/characters/weqal/build_port.py", line 44, in build
+    write(directory / 'ai.json', compile_context(bundle, runtime_timeline))
+  File "/Users/fengkx/me/agent-code/bvn2_6-weqal/tools/importer/compile_ai_context.py", line 605, in compile_context
+    raise ValueError(f"{bundle['game_file']}:{path}:{number}: uncompiled form replacement call: "
+ValueError: game/fighter/weqal.swf:DefineSprite_387/frame_1148/DoAction.as:1: uncompiled form replacement call: wankai();; definition DefineSprite_387/frame_1/DoAction.as#wankai sha256=87309150f1d0fc4028f84561c31792aa4d124e8e6eeadb587b1c1da9e8204bfe; requires wrapper transfer, interval lifetime and parent replacement consumer

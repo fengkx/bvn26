@@ -22,8 +22,7 @@ var _intro_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("r
 var _helper_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/helper_portraits/presentation.json"))
 
 func _init() -> void:
-	for path in ["res://generated/fighters/minren", "res://generated/fighters/yihu",
-		"res://generated/helpers/woailuo", "res://generated/helpers/kon", "res://generated/stages",
+	for path in ["res://generated/fighters", "res://generated/helpers", "res://generated/stages",
 		"res://generated/main/intro", "res://generated/main/blackMu", "res://generated/main/ts_face",
 		"res://generated/main/ko", "res://generated/main/timeout", "res://generated/effects"]:
 		_catalog(path)

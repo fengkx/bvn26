@@ -193,7 +193,7 @@ func _scope_value(key: String) -> Variant:
 	return _scope[key]
 
 
-func _controller_effect(name: String) -> void:
+func _controller_effect(name: String, args: Array = []) -> void:
 	if name.begins_with("receive:"):
 		_external("receive", [name.trim_prefix("receive:")])
 	elif name.begins_with("counter:"):
@@ -205,7 +205,7 @@ func _controller_effect(name: String) -> void:
 	elif name == "bdfyxg2":
 		fighter.emit_source_guard_effect(2)
 	else:
-		_external(name, [])
+		_external(name, args)
 
 
 func _body_call(name: String, args: Array) -> void:
@@ -330,13 +330,15 @@ func _frame_service(event: Dictionary) -> void:
 		"frame_field":
 			var key: String = event["field_name"]
 			var value: Variant = event["value"]
-			if event["operator"] == "-=":
-				var current: Variant = fighter.energy if key == "ql" else fighter.ai_source_state.read_field(key)
-				value = current - value
+			if event["operator"] in ["-=", "+="]:
+				var current: Variant = fighter.ai_predicate_context.read_field(key)
+				value = current + value if event["operator"] == "+=" else current - value
 			else:
 				assert(event["operator"] == "=")
 			if key == "ql":
 				fighter.energy = float(value)
+			elif key == "hp":
+				fighter.health = float(value)
 			else:
 				fighter.ai_source_state.values[key] = value
 				if key in ["hited", "beida", "bs", "sw"]:
@@ -389,6 +391,7 @@ func _frame_condition(condition: Dictionary) -> bool:
 	var value: Variant = context.body_hit(condition["instance"]) if condition.has("instance") else context.read_field(condition["field"])
 	match condition["operator"]:
 		"gt": return value != null and value > condition["value"]
+		"lt": return value != null and value < condition["value"]
 		"eq": return value == condition["value"]
 		_: assert(false, "Uncompiled frame condition")
 	return false
