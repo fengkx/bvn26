@@ -1,0 +1,12 @@
+{
+  "status": "source_only_pending_live_observation",
+  "functions": {
+    "DefineSprite_20/frame_1/DoAction.as#wankai": "function wankai()\r\n{\r\n   if(!_parent._parent.useAI)\r\n   {\r\n      return _parent.ql >= 300 && _parent.kis(_parent.斩) && _parent.kis(_parent.跳);\r\n   }\r\n   return false;\r\n}",
+    "DefineSprite_541/frame_1/DoAction.as#doWanKai": "function doWanKai()\r\n{\r\n   initCtrl();\r\n   if(_parent.万解)\r\n   {\r\n      hp = _parent.中转.hp;\r\n      ql = _parent.中转.ql;\r\n      if(_parent._name == \"p1\")\r\n      {\r\n         trace(\"p1\");\r\n         _this.上 = _root.w;\r\n         _this.下 = _root.s;\r\n         _this.左 = _root.a;\r\n         _this.右 = _root.d;\r\n         _this.斩 = _root.j;\r\n         _this.跳 = _root.k;\r\n         _this.冲 = _root.l;\r\n         _this.招 = _root.u;\r\n         _this.必杀 = _root.i;\r\n         _this.换 = _root.o;\r\n      }\r\n      else\r\n      {\r\n         trace(\"p2\");\r\n         _this.上 = _root.上箭;\r\n         _this.下 = _root.下箭;\r\n         _this.左 = _root.左箭;\r\n         _this.右 = _root.右箭;\r\n         _this.斩 = _root.N1;\r\n         _this.跳 = _root.N2;\r\n         _this.冲 = _root.N3;\r\n         _this.招 = _root.N4;\r\n         _this.必杀 = _root.N5;\r\n         _this.换 = _root.N6;\r\n      }\r\n      gotoAndStop(\"开场\");\r\n      play();\r\n   }\r\n}",
+    "DefineSprite_541/frame_1/DoAction.as#initCtrl": "function initCtrl()\r\n{\r\n   if(_parent.useAI == undefined)\r\n   {\r\n      return undefined;\r\n   }\r\n   trace(\"initCtrl: \" + _parent.useAI);\r\n   _parent.updateGJL();\r\n   _root.game[\"p\" + pn].updateGJL();\r\n   if(_parent.useAI)\r\n   {\r\n      AImain.gotoAndStop(2);\r\n      _root.airanset = setInterval(randAI,500);\r\n   }\r\n   else\r\n   {\r\n      AImain.gotoAndStop(1);\r\n      AImain.unloadMovie();\r\n   }\r\n}",
+    "DefineSprite_541/frame_1/DoAction.as#wankai": "function wankai()\r\n{\r\n   _parent.万解 = true;\r\n   _parent.中转.ql = ql;\r\n   _parent.中转.hp = hp;\r\n   if(!wudi)\r\n   {\r\n      clearInterval(_root.feiint);\r\n      _root.feiint = setInterval(feixue,1000);\r\n   }\r\n   _parent.nextFrame();\r\n   _root._y = 0;\r\n}",
+    "frame_1/DoAction.as#initCtrl": "function initCtrl(ai)\r\n{\r\n   useAI = ai;\r\n   mc.initCtrl();\r\n}"
+  },
+  "body_labels_have_wankai": false,
+  "note": "Shared wankai functions alone do not establish a reachable replacement. No transformation key was disabled by this candidate."
+}

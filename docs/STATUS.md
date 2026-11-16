@@ -1,5 +1,9 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-16 shouju merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/shouju/README.md).
+
+- 2026-11-16 shouju capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/shouju/README.md).
+
 - 2026-11-15 剑心：源驱动基础形态及 643→1473→2506 替换链已接入；22 组原版 Flash/原生同输入、16,964 条角色状态匹配；两次替换、独立特效时钟、回滚及 204+62 组旧角色轨迹回归通过；实际 Web 选人、开场与两次变身复测通过，导出资源预检与字体覆盖已验证。保持 partial、M6-01 pending、六项证明标志 false；无合并或部署。[记录与实际验证范围](../evidence/characters/kenshin/README.md)。
 
 - 2026-11-14 Killer Bee branch integration: merged Karin master `bf4b7a43` while preserving both ports and partial coverage. Regenerated combined manifests and the source-authored frame-556 flash index; no Flash recapture or deployment. [Integration evidence](../evidence/characters/qilabi/master-integration-2026-11-14/README.md).
@@ -1921,3 +1925,15 @@ remains pending. No merge or Worker/Vercel deployment.
 
 
 2026-11-15 continuation: Ulquiorra (小乌 / weqal.swf) now includes its source-required BODY 387→808 lifecycle and reviewed complete replacement graph. Both the natural failure→transformation fallthrough and explicit parent goto remain executable. See [the character record](../evidence/characters/weqal/README.md) and [checks](../evidence/characters/weqal/checks.json) for exact diagnostic comparisons, full saved-roster regressions and export checks. Standalone roster variants remain deferred. The headed renderer resource/RID leak remains an open residual. M6 stays pending; all six proof/admission flags false. No merge or deployment.
+
+## Temari continuation — partial targeted candidate (2026-11-15)
+
+Verified next base: 手鞠 / shouju.swf, BODY 541, from master a3b47941.
+Selection/catalog integration, 17 exact primary diagnostic comparisons (12,634 actor
+states / 14 fields), rollback and 30 saved-roster regressions are retained in
+[the character record](../evidence/characters/shouju/README.md). The old desktop
+lock blocker is resolved. Actual same-instance three-cast side-switch now matches; the earlier named
+crossing attempt is retained separately and excluded from that coverage.
+Local Web selection/natural intro/receiving hits/training special and recovery
+are observed, with programmatic CDP input; full browser lifecycle remains unaccepted. Headed RID/resource leaks remain unaccepted. All six proof/admission
+flags false; M6 remains pending. Draft review only; no merge or deployment.
