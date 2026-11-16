@@ -164,3 +164,20 @@ proof/admission flags remain pending/false. No merge or deployment.
 The retained pre-fix diagnostic copy only bypasses screenshot rendering. Its
 raw log reproduces 24 ObjectDB leaks, three CanvasItem RIDs and five resources
 still in use; the fix reaches the same super source frame 618 without leaks.
+
+## Merge validation (2026-11-16)
+
+The existing Compatibility renderer capture targets were rerun under the
+exclusive foreground lock. All lane cases exit zero without script errors,
+RID/ObjectDB leaks or resources-in-use warnings. Selection and combat PNGs
+and raw compressed logs are retained in `merge-validation-r01`. Fighter and
+required replacement images were inspected. This closes the capture-harness
+headed exit residual for these runs; historical saved-roster warnings and full
+aligned audiovisual/AI/exhaustive acceptance remain unresolved. Six flags
+remain false. The user authorized merging these targeted character ports.
+
+Pre-merge roster tests exposed stale hand-maintained expectations in inherited
+selection/opening checks. Current admitted base entries are added explicitly,
+with opening intervals and kcplayed assignments verified against pinned source
+bundles. Source audit records retain timeline changes and exact script paths.
+No gameplay fixture, source output or comparison tolerance is changed.

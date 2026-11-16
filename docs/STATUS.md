@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-16 shouju merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/shouju/README.md).
+
 - 2026-11-16 shouju capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/shouju/README.md).
 
 - 2026-11-15 剑心：源驱动基础形态及 643→1473→2506 替换链已接入；22 组原版 Flash/原生同输入、16,964 条角色状态匹配；两次替换、独立特效时钟、回滚及 204+62 组旧角色轨迹回归通过；实际 Web 选人、开场与两次变身复测通过，导出资源预检与字体覆盖已验证。保持 partial、M6-01 pending、六项证明标志 false；无合并或部署。[记录与实际验证范围](../evidence/characters/kenshin/README.md)。
