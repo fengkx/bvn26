@@ -476,6 +476,19 @@ See [native evidence and regression coverage](../evidence/characters/pain/visual
 The [review follow-up](../evidence/characters/pain/visual-parity/review/README.md)
 records the roster-wide native component comparisons and blend fixtures.
 
+### Optional compiled helper health events
+
+`bvn26-helper-model-v1.health_events` is present only for supported standalone
+root-frame owner HP additions. Each event contains `frame`, `target: "owner"`,
+`op: "add"`, numeric `delta`, `source_path` and the exact script `source_sha256`.
+The importer accepts the complete direct assignment, rejecting conditional,
+nested, opponent-target and compound health writes instead of dropping their
+control flow. It does not aggregate separate frames or invent a maximum cap.
+The existing per-activation frame-event state supplies once-per-frame dispatch,
+is cleared on reactivation, and is retained by production rollback snapshots.
+Full lifecycle evidence for the first consumer is in
+`../evidence/helpers/zhiji/README.md`; schema validation alone is not acceptance.
+
 ## Host-authoritative display schema v2
 
 `godot/authority_wire.gd::VERSION` binds the display snapshot and initial-state

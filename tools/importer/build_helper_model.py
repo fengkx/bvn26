@@ -35,6 +35,10 @@ CONTACT_GOTO = re.compile(
 ENERGY_DRAIN = re.compile(
     r'_root\.game\["p" \+ pn\]\.mc\.ql\s*-=\s*(?P<value>\d+(?:\.\d+)?)'
 )
+OWNER_HEALTH_ADD = re.compile(
+    r'_root\.game\["p" \+ sn\]\.mc\.hp\s*\+=\s*(?P<value>\d+(?:\.\d+)?)\s*;'
+)
+HEALTH_WRITE = re.compile(r'\.hp\s*(?:[+*/-]?=|\+\+|--)')
 ROOT_STOP_ONE = re.compile(r"gotoAndStop\s*\(\s*1\s*\)\s*;")
 
 
@@ -139,6 +143,7 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
     hide_frames: list[int] = []
     hide_frame_events: list[dict[str, Any]] = []
     drain_events: list[dict[str, Any]] = []
+    health_events: list[dict[str, Any]] = []
     indexed = []
     presentation_events = []
     clip_load_events = []
@@ -153,6 +158,20 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
             "source_sha256": text_sha256(script["source"]),
         }
         indexed.append(record)
+        if HEALTH_WRITE.search(script["source"]):
+            health = OWNER_HEALTH_ADD.fullmatch(script["source"].strip())
+            health_frame = re.fullmatch(r"frame_(\d+)/DoAction.as", script["path"])
+            # A substring match would discard conditions or callback ownership.
+            if health is None or health_frame is None:
+                raise ValueError(f"Unsupported helper health write: {script['path']}")
+            health_events.append({
+                "frame": int(health_frame[1]),
+                "target": "owner",
+                "op": "add",
+                "delta": parse_literal(health["value"]),
+                "source_path": script["path"],
+                "source_sha256": record["source_sha256"],
+            })
         nested = re.fullmatch(r"DefineSprite_(\d+)/frame_(\d+)/DoAction.as", script["path"])
         if nested and script["source"].strip() == "stop();":
             nested_stops.append({"sprite_id": int(nested[1]), "frame": int(nested[2]),
@@ -238,7 +257,7 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
                     "source_sha256": record["source_sha256"],
                 }
             )
-    return {
+    model = {
         "format": "bvn26-helper-model-v1",
         "status": "reverse_engineering_intermediate",
         "helper_id": helper_id,
@@ -264,6 +283,11 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
         "drain_events": sorted(drain_events, key=lambda item: item["frame"]),
         "indexed_source_events": indexed,
     }
+
+    # Keep existing helper artifacts byte-stable until they actually use this field.
+    if health_events:
+        model["health_events"] = sorted(health_events, key=lambda event: event["frame"])
+    return model
 
 
 def main() -> None:

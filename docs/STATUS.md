@@ -1964,6 +1964,54 @@ flags false; M6 remains pending. Draft review only; no merge or deployment.
   parity. All six proof/admission flags remain false; aligned audiovisual,
   exhaustive AI/boundaries and physical keyboard/focus acceptance remain open.
 
+## 2026-11-16 Orihime assist (partial)
+
+The new `port/zhiji-helper` branch imports the locked 91-frame Orihime assist,
+16 reachable assets, source footer and regenerated menu font. Local selection
+and matchmaking catalogs retain all 34 fighters and now expose six helpers.
+The helper compiler retains seven independent owner HP additions; the runtime
+interprets the compiled events without a character branch or invented HP cap.
+
+Four original Flash/native diagnostic cases match 2,228 actor rows (14 fields)
+and 2,228 helper rows (six fields), covering both slots, overflow, three casts
+on one instance with opponent movement, and insufficient energy. Checkpoint
+rollback and actual native rendering pass. Existing Kenpachi assist/combo
+regressions also match 1,204 actor rows. Raw failed and successful runs and
+remaining acceptance scope are in `evidence/helpers/zhiji/README.md`.
+
+This is partial integration, not completed M6 or full character certification.
+All six coverage flags stay false. Full audiovisual, exhaustive interruption
+and round/focus boundaries, and physical Web input remain open. Web export and
+startup evidence are recorded separately when finished; no deployment claimed.
+
+Orihime follow-up: local standard Web export, packed helper lifecycle and
+Chromium boot also passed; evidence is in `evidence/helpers/zhiji/web/`.
+This does not certify physical Web input or full audiovisual parity.
+
+## Boundary continuation
+
+Three additional original Flash/native cases match 1,806 actor rows on the
+same 14 exact fields and 1,806 helper rows on the same six fields. Combined
+with the four baseline cases this is seven cases and 4,034 rows per stream.
+See `evidence/helpers/zhiji/boundary-r02/comparisons.json`, fixed input cases and raw archive.
+
+- Caster hit: a 15-HP incoming hit at tick 54 does not cancel the seven heals;
+  owner HP finishes at 1075 from 950.
+- Opponent super: all seven heals still occur while the incoming special deals
+  nine hits totaling 320 HP; owner HP finishes at 770.
+- Active re-summon: the second summon really activates the same helper root
+  again. One heal precedes the restart and seven follow, finishing at 1110 HP.
+  This is a restart, not two concurrent helpers or two complete heal cycles.
+
+The extended production rollback test directly invokes the compiled `nextfight`
+callback after the three-cast replay. It checks HP reset, retained energy and
+helper identity, then explicitly supplies 100 energy and verifies another
+seven-heal cast to 1140 HP. `evidence/helpers/zhiji/boundary-r02/round-rollback.log` records the clean
+run. This callback smoke is not a full original-player KO/next-round comparison.
+No production runtime changed in this continuation; retained Web build evidence
+still applies to the unchanged runtime. Exhaustive pause/focus/round boundaries,
+aligned audiovisual equality and physical Web input remain unaccepted.
+
 ## 2026-11-16 Default host-authoritative friend rooms
 
 The integrated friend-room UI defaults to host authority and allows independent
