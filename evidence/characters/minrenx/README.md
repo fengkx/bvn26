@@ -2,9 +2,8 @@
 
 Base: `a3b479414546250b7d0cd6e35cbc3ae52b3169d1`.
 Branch: `port/minrenx-base`. Source-first base and required transformation are
-integrated in this branch. The release Web export and packed-form check pass; foreground Web gameplay
-validation is blocked by the confirmed locked Mac desktop. Full parity and
-production admission remain false. No Draft PR has been opened yet.
+integrated in this branch. The release Web export and packed-form check pass; targeted foreground Web gameplay evidence is recorded below. Full parity and
+production admission remain false. Draft PR #296 tracks this candidate.
 
 ## Roster identity
 
@@ -208,3 +207,21 @@ unrelated desktop UI; original hashes and crop coordinates are in
 pixel/audio parity or physical OS keyboard testing. r01/r02 failures, r03 locked
 preflight, and r04 black CDP captures remain preserved. Native headed exit
 resource/RID leaks remain unaccepted and are not treated as full-port admission.
+
+## Capture teardown follow-up (2026-11-16)
+
+The capture harness now closes the existing rollback adapter, stops combat
+drivers (including KO callback unbinding), frees the scene and waits for audio
+mixer retirement before reporting success. This removes the retained snapshot
+resources and KO dispatch reference cycles in the reproduced headless path.
+`--check-shutdown` explicitly skips images and records that fact in metadata;
+it cannot serve as visual acceptance. Original capture targets, inputs and
+energy interventions remain unchanged.
+
+`shutdown-r01/checks.json` and compressed raw logs record the executed base/form
+checks, source frames, script hashes and measured process durations. All listed
+checks exit zero with no script, resource, RID or ObjectDB diagnostics. The first
+sandbox attempt had a macOS certificate-access error; a normal-permission rerun
+produced the retained clean results. Headed renderer exit cleanup, historical
+saved-roster exit warnings, full audiovisual/AI/boundary acceptance and all six
+proof/admission flags remain pending/false. No merge or deployment.

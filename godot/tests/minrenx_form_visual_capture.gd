@@ -1,11 +1,16 @@
 extends SceneTree
 
+var _check_shutdown := false
+
 
 func _initialize() -> void:
 	_run.call_deferred()
 
 
 func _capture(path: String) -> void:
+	if _check_shutdown:
+		await process_frame
+		return
 	await process_frame
 	await RenderingServer.frame_post_draw
 	assert(root.get_texture().get_image().save_png(path) == OK)
@@ -13,6 +18,9 @@ func _capture(path: String) -> void:
 
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
+	_check_shutdown = args.has("--check-shutdown")
+	args.erase("--check-shutdown")
+	assert(_check_shutdown or DisplayServer.get_name() != "headless", "Image capture requires a rendering display")
 	assert(args.size() == 1, "Expected evidence output directory")
 	var output: String = args[0]
 	DirAccess.make_dir_recursive_absolute(output)
@@ -75,6 +83,8 @@ func _run() -> void:
 	assert(captured, "Natural opening and input did not complete required replacement")
 	await _capture(output.path_join("in-fight.png"))
 	FileAccess.open(output.path_join("metadata.json"), FileAccess.WRITE).store_string(JSON.stringify({
+		"screenshots_captured": not _check_shutdown,
+		"shutdown_check_only": _check_shutdown,
 		"method": "Native Godot Compatibility renderer; production selection, natural opening and transformation input",
 		"fighter": "仙鸣", "opponent": "一护", "stage": "现世",
 		"fighter_directory": game.naruto.fighter_directory,
@@ -82,7 +92,18 @@ func _run() -> void:
 		"fight_source_frame": game.naruto.current_source_frame(),
 		"engine": Engine.get_version_info().string,
 		"viewport": [root.size.x, root.size.y],
-		"limitations": "Visual inspection only; no Flash pixel comparison."
+		"limitations": "Headless lifecycle/teardown check; no images or rendering acceptance." if _check_shutdown else "Visual inspection only; no Flash pixel comparison."
 	}, "  ") + "\n")
-	print("MINRENX_FORM_VISUAL_CAPTURE_OK")
+	# Close rollback before retiring nodes so retained snapshots and callback
+	# bindings release their resources while the scene is still valid.
+	battle.close()
+	game._stop_combat_drivers()
+	game.queue_free()
+	await process_frame
+	battle = null
+	assert(await preload("res://tests/audio_shutdown.gd").drain(self))
+	if _check_shutdown:
+		print("MINRENX_FORM_VISUAL_CAPTURE_SHUTDOWN_OK")
+	else:
+		print("MINRENX_FORM_VISUAL_CAPTURE_OK")
 	quit()
