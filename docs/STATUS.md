@@ -1983,3 +1983,7 @@ This is partial integration, not completed M6 or full character certification.
 All six coverage flags stay false. Full audiovisual, exhaustive interruption
 and round/focus boundaries, and physical Web input remain open. Web export and
 startup evidence are recorded separately when finished; no deployment claimed.
+
+Orihime follow-up: local standard Web export, packed helper lifecycle and
+Chromium boot also passed; evidence is in `evidence/helpers/zhiji/web/`.
+This does not certify physical Web input or full audiovisual parity.

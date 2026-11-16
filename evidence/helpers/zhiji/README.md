@@ -81,3 +81,7 @@ Run `python3 -m unittest tools.tests.test_helper_health_compilation
  tools.tests.test_helper_timing tools.tests.test_selection_registry
  tools.tests.test_selection_portrait_alpha` on one command line, then the
 `zhiji_helper_rollback.gd` and `zhiji_visual_capture.gd` Godot runners.
+
+Local standard Web export, packed healing (950 → 1090) and Chromium startup
+passed; see `web/` for the PCK/build identity, raw logs and screenshot.
+Frozen-snapshot dirty provenance is retained, not relabeled a clean build.
