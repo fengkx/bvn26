@@ -108,6 +108,7 @@ def compile_body(
     call_aliases=None,
     avm1_comparisons: bool = False,
     instance_locals=(),
+    undefined_body_calls=(),
 ) -> str:
     def translate(source, locals_, fields, aliases):
         return source_expression(source, locals_, fields, aliases, avm1_comparisons=avm1_comparisons)
@@ -186,7 +187,9 @@ def compile_body(
             translated = ['adapter.effect_with_args("showdow", [' + json.dumps(color) + '])']
         elif match := re.fullmatch(r'_parent\._parent\.(moveX|moveY)\((.+)\);', line):
             translated = [f'adapter.move_axis("{match[1]}", ' + translate(match[2],locals_,source_fields, call_aliases) + ')']
-        elif match := re.fullmatch(r'_parent\.(fangyux|beidax)\((.*)\);', line):
+        elif match := re.fullmatch(r'_parent\.(fangyux|beidax|setDirect)\((.*)\);', line):
+            if match[1] == 'setDirect' and match[1] not in undefined_body_calls:
+                raise ValueError('Unreviewed undefined BODY method: ' + line)
             args = translate(match[2],locals_,source_fields, call_aliases) if match[2] else ''
             translated = [f'adapter.body_call("{match[1]}", [{args}])',
                           'if not adapter.controller_alive():', '\treturn null']
@@ -307,6 +310,8 @@ def nested_controller_source(bundle: dict, symbol: int) -> tuple[dict, dict[str,
 
 
 def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: bool = False, form_replacement: bool = False) -> tuple[str,dict]:
+    from undefined_body_calls import resolve_undefined_body_calls
+    undefined_calls = resolve_undefined_body_calls(bundle, sprite)
     swf = ROOT / bundle['game_file']
     if hashlib.sha256(swf.read_bytes()).hexdigest() != bundle['swf_sha256']:
         raise ValueError('Retained source SWF hash mismatch')
@@ -314,7 +319,8 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
         raise ValueError('Controller and timeline do not share the retained source')
     def compile_at(path, name, *args, **kwargs):
         try:
-            return compile_body(name, *args, avm1_comparisons=form_replacement, **kwargs)
+            return compile_body(name, *args, avm1_comparisons=form_replacement,
+                                undefined_body_calls=[item['name'] for item in undefined_calls], **kwargs)
         except (ValueError, SyntaxError) as error:
             raise ValueError(f"{bundle['game_file']}:{path}#{name}: {error}") from error
 

@@ -6,6 +6,56 @@ import math
 import xml.etree.ElementTree as ET
 
 
+def adjacent_fill_boundary(contours: list) -> list | None:
+    """Join exactly shared reversed edges; reject overlaps, holes and islands.
+
+    Mask colors do not separate adjacent filled regions. Internal authored
+    edges cancel, but unrelated/intersecting contours need a full union engine.
+    """
+    edges = {}
+    joined = False
+    for contour in contours:
+        points = [tuple(point) for point in contour]
+        for start, end in zip(points, points[1:] + points[:1]):
+            if (start, end) in edges:
+                return None
+            if (end, start) in edges:
+                del edges[end, start]
+                joined = True
+            else:
+                edges[start, end] = True
+    if not joined or not edges:
+        return None
+    following = {}
+    for start, end in edges:
+        if start in following:
+            return None
+        following[start] = end
+    start = next(iter(following))
+    boundary = []
+    point = start
+    while point in following:
+        boundary.append(list(point))
+        point = following.pop(point)
+    if point != start or following or len(boundary) < 3:
+        return None
+    def side(a, b, p):
+        return (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0])
+
+    segments = list(zip(boundary, boundary[1:] + boundary[:1]))
+    for i, (a, b) in enumerate(segments):
+        for j in range(i + 1, len(segments)):
+            if j == i + 1 or (i == 0 and j == len(segments) - 1):
+                continue
+            c, d = segments[j]
+            if (max(a[0], b[0]) < min(c[0], d[0]) or max(c[0], d[0]) < min(a[0], b[0])
+                    or max(a[1], b[1]) < min(c[1], d[1]) or max(c[1], d[1]) < min(a[1], b[1])):
+                continue
+            if side(a, b, c) * side(a, b, d) <= 0 and side(c, d, a) * side(c, d, b) <= 0:
+                return None
+    return boundary
+
+
 def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]]] | None:
     """Compile simple, closed SWF bitmap fill contours, one entry per bitmap fill.
 

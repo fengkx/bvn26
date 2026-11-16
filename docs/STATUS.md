@@ -1,5 +1,10 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-16 ichigo merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/ichigo/README.md).
+
+- 2026-11-16 ichigo capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/ichigo/README.md).
+
+- 2026-11-15 Ichigo Zero / 一护2: source-bound standalone `ichigo.swf` port includes BODY 274→632 White Ichigo, source selection/footer/opening and in-repository matchmaking catalog wiring. Targeted native/Flash, preserved-roster and local Web evidence is tracked in [the character checks](../evidence/characters/ichigo/checks.json). Partial coverage; six proof/admission flags remain false. Headed resource/RID exit leaks remain unaccepted. No production deployment.
 - 2026-11-16 shouju merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/shouju/README.md).
 
 - 2026-11-16 shouju capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/shouju/README.md).

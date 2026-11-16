@@ -21,6 +21,7 @@ def build(path, number, license_path):
         OUT/'controller.gd',
         ROOT/'godot/title_menu.gd',
         ROOT/'godot/online_lobby.gd',
+        ROOT/'godot/generated/main/character_selection/available.json',
     ]
     source_text = '\n'.join(source.read_text(encoding='utf-8') for source in coverage_sources)
     source = (OUT/'controller.gd').read_text(encoding='utf-8')

@@ -1,0 +1,25 @@
+test_mask_uses_both_adjacent_authored_fills (test_ichigo_source.IchigoSourceTests) ... ERROR
+test_opponent_recovery_preserves_stop_then_play (test_ichigo_source.IchigoSourceTests) ... FAIL
+
+======================================================================
+ERROR: test_mask_uses_both_adjacent_authored_fills (test_ichigo_source.IchigoSourceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/tests/test_ichigo_source.py", line 37, in test_mask_uses_both_adjacent_authored_fills
+    definition = referenced_definitions(root, [
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/importer/extract_timeline_geometry.py", line 290, in referenced_definitions
+    raise ValueError(f'Unsupported clipDepth mask geometry: {item_id}')
+ValueError: Unsupported clipDepth mask geometry: 309
+
+======================================================================
+FAIL: test_opponent_recovery_preserves_stop_then_play (test_ichigo_source.IchigoSourceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/fengkx/me/agent-code/bvn2_6-ichigo/tools/tests/test_ichigo_source.py", line 20, in test_opponent_recovery_preserves_stop_then_play
+    self.assertEqual(len(calls), 1)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.021s
+
+FAILED (failures=1, errors=1)

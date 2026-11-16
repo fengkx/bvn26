@@ -15,8 +15,9 @@ class IntroRosterTests(unittest.TestCase):
         spec = json.loads((ROOT / "godot/generated/main/intro/intro.json").read_text())
         expected = {
             "shouju": (1115, 1204),
-            "weqal": (921, 997),
             "kenshin": (989, 1068),
+            "weqal": (921, 997),
+            "ichigo": (701, 780),
             "orochimaru": (1186, 1293),
             "jiraiya": (1118, 1220),
             "pain": (1266, 1326),
