@@ -1237,6 +1237,20 @@
         "path": "DefineSprite_951/frame_749/DoAction.as",
         "line": 1,
         "frame": 749
+      },
+      {
+        "op": "super_start",
+        "kind": "cbsd",
+        "path": "DefineSprite_951/frame_749/DoAction_2.as",
+        "line": 1,
+        "frame": 749
+      },
+      {
+        "op": "show_face",
+        "face_label": "日番谷3",
+        "path": "DefineSprite_951/frame_749/DoAction_2.as",
+        "line": 2,
+        "frame": 749
       }
     ],
     "750": [
@@ -1554,6 +1568,41 @@
         "path": "DefineSprite_951/frame_1203/DoAction.as",
         "line": 1,
         "frame": 1203
+      }
+    ],
+    "1251": [
+      {
+        "op": "inline_frame",
+        "path": "DefineSprite_951/frame_1251/DoAction.as",
+        "line": 1,
+        "frame": 1251,
+        "calls": [
+          {
+            "op": "parent_conditional_frame",
+            "path": "DefineSprite_951/frame_1/DoAction.as#wankai_end",
+            "line": 1,
+            "frame": 1251,
+            "field_name": "万解",
+            "value": true,
+            "calls": [
+              {
+                "op": "super_end",
+                "kind": "cbsw"
+              },
+              {
+                "op": "frame_field",
+                "field_name": "bs",
+                "operator": "=",
+                "value": 0
+              },
+              {
+                "op": "parent_frame_field",
+                "field_name": "万解",
+                "value": false
+              }
+            ]
+          }
+        ]
       }
     ],
     "1270": [

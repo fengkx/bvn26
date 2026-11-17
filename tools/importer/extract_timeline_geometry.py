@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
+from solid_shape_geometry import solid_fill_polygons, solid_closed_strokes
 from visual_blend_modes import validate_blend_mode
 from visual_filters import compile_filters
 from import_guards import finite_numbers, validate_placement, validate_wrapper_fields
@@ -270,6 +271,12 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
                     definition["bitmap_clip_polygons"] = fill_polygons
         if solid_fills:
             definition["solid_fills"] = solid_fills
+            contours = solid_fill_polygons(tag)
+            if contours is not None:
+                definition["solid_fill_polygons"] = contours
+            strokes = solid_closed_strokes(tag)
+            if strokes is not None:
+                definition["solid_closed_strokes"] = strokes
         if item_id in mask_ids and tag.attrib['type'].startswith('DefineShape'):
             # Mask geometry uses the same directed fill edges, irrespective of
             # paint color. A temporary bitmap style lets the contour compiler

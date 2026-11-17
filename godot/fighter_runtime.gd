@@ -22,6 +22,10 @@ var source_x: float:
 		_sync_source_position()
 		return _source_x
 	set(value):
+		# Flash ignores NaN transform assignments (for example an undefined
+		# authored hit impulse); converting to twips would turn them into zero.
+		if is_nan(value):
+			return
 		_sync_source_position()
 		_source_x = SourceCoordinateStore.store(value)
 		position.x = _source_x
@@ -31,6 +35,8 @@ var source_y: float:
 		_sync_source_position()
 		return _source_y
 	set(value):
+		if is_nan(value):
+			return
 		_sync_source_position()
 		_source_y = SourceCoordinateStore.store(value)
 		position.y = _source_y
@@ -546,28 +552,30 @@ func _run_frame_actions() -> void:
 func receive_attack(attack: Dictionary, attacker_facing: int, source_context: Dictionary = {}) -> void:
 	var before := _diagnostic_state()
 	pending_hit_diagnostic = source_context.duplicate(true)
-	var damage := float(attack["damage"])
-	var impact_strength := int(attack.get("impact_strength", 0))
 	# Source fangyu() treats zl > 10 as a guard break, then removes the
 	# encoding offset before choosing the normal hit presentation.
 	# Sprite 2 writes the received packet before entering its chosen reaction.
 	# Keep hdtime fractional here; BODY compares its integer time against tdtime.
 	var target: Dictionary = _ai_hit_transfer.transfer({
-		"pw": damage,
-		"zl": impact_strength,
-		"yup": attack.get("vertical_impulse", 0.0),
-		"hitx": attack["horizontal_impulse"],
+		"pw": attack.get("damage"),
+		"zl": attack.get("impact_strength"),
+		"yup": attack.get("vertical_impulse"),
+		"hitx": attack.get("horizontal_impulse"),
 		"hdtime": attack.get("hitstun_ms"),
-		"htype": attack.get("reaction_label", "被打"),
+		"htype": attack.get("reaction_label"),
 	}, guarding)
 	_hurt_motion_ticks = 0
-	_hurt_horizontal_step = attacker_facing * float(attack["horizontal_impulse"])
-	_hurt_vertical_step = -float(attack.get("vertical_impulse", 0.0))
+	_hurt_horizontal_step = attacker_facing * _ai_hit_transfer.number(attack.get("horizontal_impulse"))
+	_hurt_vertical_step = -_ai_hit_transfer.number(attack.get("vertical_impulse"))
 	_guard_horizontal_step = _hurt_horizontal_step
+	hitstun_ticks = ceili(float(ai_source_state.read_field("tdtime")))
+	# getHitObj reads authored fields verbatim, including undefined operands.
+	# An absent reaction target must not synthesize another hit animation.
+	if target["label"] == null:
+		return
 	var reaction := str(target["label"])
 	_launched = reaction == _death_launch_label()
 	_hurt_falling = _launched or _hurt_vertical_step != 0.0 or position.y < _ground_y
-	hitstun_ticks = ceili(float(ai_source_state.read_field("tdtime")))
 	_clear_interrupted_super_preparation()
 	if ai_timeline_controlled:
 		goto_ai_label(reaction, bool(target["play"]))
