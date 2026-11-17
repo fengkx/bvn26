@@ -26,10 +26,12 @@
 
 The ultimate is BODY `DefineSprite_1180`, frames 622–726; frame 717 jumps to
 `站立` and resumes. Shapes 1034/1037 have joined curved edges. Complete BODY
-scripts/placements and the relevant nested graph are retained. Existing sampled
-frames 145/175 do not establish a visible rectangle for these shapes; denser
-samples around the frame-648 placement are required before regenerating this
-form's geometry.
+scripts/placements and the relevant nested graph are retained. Dense same-input native Flash/Godot captures at fight ticks 149, 151, 155 and
+160 confirm that native bounds paint covers the authored purple crescent with
+a solid rectangle. The retained BODY frame scripts and PlaceObject/MOVE graph
+remain unchanged. Compiling the directed curves must preserve winding, shared
+vertices, colors, alpha and placement lifetime; only paint geometry is changed.
+The unchanged original trace is the comparison baseline for the repair.
 
 ## Geometry references
 
@@ -61,3 +63,12 @@ presentation difference remains under investigation and is not a parity pass.
 Validation: 16 solid/bitmap geometry tests, native rendered replay, contract
 validation, input-integrity verification and handoff checks passed. No original
 input files or comparison thresholds were changed.
+
+## Ichigo Bankai repair and validation
+
+The same shared compiler now emits the complex meshes for shapes 1034/1037 in
+BODY 1180. Non-paint fields are unchanged (`yihu-2-paint-only.json`), and the
+parent form package hashes were refreshed. All four dense after images were
+reviewed: the rectangle is gone. The unchanged original trace matches 362 actor
+states and 181 root positions. Remaining opponent occlusion and tick-151 HUD
+absence belong to the separately recorded shared presentation findings.
