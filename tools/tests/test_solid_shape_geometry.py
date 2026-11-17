@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/importer'))
-from solid_shape_geometry import solid_fill_polygons, solid_closed_strokes
+from solid_shape_geometry import solid_fill_polygons, solid_closed_strokes, solid_fill_meshes
 from extract_timeline_geometry import referenced_definitions
 
 
@@ -46,6 +46,50 @@ class SolidShapeGeometryTests(unittest.TestCase):
     def test_non_scaling_stroke_is_not_silently_approximated(self):
         self.shape.find('./shapes/lineStyles/lineStyles2/item').set('noHScaleFlag', 'true')
         self.assertIsNone(solid_closed_strokes(self.shape))
+
+    def mesh_shape(self, contours, nonzero=False):
+        shape = ET.fromstring('''<item usesFillWindingRule="false"><shapes>
+          <fillStyles><fillStyles><item fillStyleType="0"/></fillStyles></fillStyles>
+          <shapeRecords/></shapes></item>''')
+        shape.set('usesFillWindingRule', str(nonzero).lower())
+        records = shape.find('./shapes/shapeRecords')
+        for contour in contours:
+            ET.SubElement(records, 'item', type='StyleChangeRecord', stateMoveTo='true',
+                          moveDeltaX=str(contour[0][0]), moveDeltaY=str(contour[0][1]),
+                          stateFillStyle1='true', fillStyle1='1')
+            for a, b in zip(contour, contour[1:] + contour[:1]):
+                ET.SubElement(records, 'item', type='StraightEdgeRecord',
+                              deltaX=str(b[0] - a[0]), deltaY=str(b[1] - a[1]))
+        return shape
+
+    def mesh_area(self, shape):
+        mesh = solid_fill_meshes(shape)[0]
+        area = 0
+        for triangle in mesh['triangles']:
+            a, b, c = [mesh['vertices'][index] for index in triangle]
+            area += abs((b[0] - a[0]) * (c[1] - a[1])
+                        - (b[1] - a[1]) * (c[0] - a[0])) / 2
+        return area
+
+    def test_even_odd_hole_is_not_painted(self):
+        outer = [(0, 0), (200, 0), (200, 200), (0, 200)]
+        inner = [(40, 40), (160, 40), (160, 160), (40, 160)]
+        self.assertAlmostEqual(self.mesh_area(self.mesh_shape([outer, inner])), 64)
+        self.assertAlmostEqual(self.mesh_area(self.mesh_shape([outer, inner], True)), 100)
+        self.assertAlmostEqual(self.mesh_area(self.mesh_shape([outer, inner[::-1]], True)), 64)
+
+    def test_touching_contours_keep_both_filled_regions(self):
+        first = [(0, 0), (20, 0), (20, 20), (0, 20)]
+        second = [(20, 20), (40, 20), (40, 40), (20, 40)]
+        self.assertAlmostEqual(self.mesh_area(self.mesh_shape([first, second])), 2)
+
+    def test_unused_mesh_is_empty_and_open_edges_are_rejected(self):
+        self.assertEqual(solid_fill_meshes(self.mesh_shape([])),
+                         [{'vertices': [], 'triangles': []}])
+        shape = self.mesh_shape([[(0, 0), (20, 0), (20, 20), (0, 20)]])
+        records = shape.find('./shapes/shapeRecords')
+        records.remove(records[-1])
+        self.assertIsNone(solid_fill_meshes(shape))
 
 
 if __name__ == '__main__':

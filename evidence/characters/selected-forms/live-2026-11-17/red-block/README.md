@@ -10,18 +10,17 @@
    scale/translation and alpha. Its XML (`shape948.xml`) has eight quadratic
    curves with an active red fill and a red round 20-twip stroke. The shape
    bounds include the stroke; they are not the painted contour.
-3. Shape removal and BODY exits remain the retained timeline/scripts; this
-   change only compiles paint geometry and does not change playback or input.
+3. BODY frame 609 executes `gotoAndStop("落2"); play();`. Shape removal
+   remains the retained display-list transition. This change only compiles
+   paint geometry and does not change playback or input.
 4. The invariant is a curved fill plus its authored stroke, not an AABB. Neither
    sprite ID nor character identity belongs in the renderer's geometry decision.
 5. Same-input Flash and Godot bitmap samples at fight tick 40 reproduce a circle
    in Flash and a rectangle in Godot. Flash capture timed out during tick 93;
    complete bitmap frames 0–92 remain usable evidence, not a completed 100-frame
-   capture. The original logs and comparison samples are currently in
-   `/private/tmp/bvn-red-block` pending final archive.
+   capture. The retained excerpts and provenance are archived alongside this document.
 
-Visual defect confirmed. Corrected render comparison and browser verification
-are pending; this is not a full audiovisual parity certification.
+Visual defect reproduced in production and repaired in both native and Web renders.
 
 ## Measured repair
 
@@ -29,7 +28,10 @@ The native macOS renderer reproduces the source circular fill and round stroke
 at fight tick 40 after the repair; the pre-repair image shows the same rectangle
 as the user's report. The production Web build was also exercised in the in-app
 browser: Training → Naruto One Tail → upper special reproduces the rectangle.
-The repaired Web build is pending verification.
+The repaired Web build was then exercised through the same Training selection
+and W+I keyboard input in the in-app browser. Its effect has the source circular
+boundary; the rectangular red overlay is gone. Build identity is retained in
+`web-build-metadata.json`.
 
 The source RLE excerpts retain all non-bitmap events and complete bitmaps at
 ticks 40 and 50; provenance records the full unmodified raw capture hash.

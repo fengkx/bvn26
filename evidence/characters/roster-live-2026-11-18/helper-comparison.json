@@ -1,0 +1,866 @@
+[
+  {
+    "id": "jianba-helper-live",
+    "capture": "helper-captures/jianba-helper-live.tar.gz",
+    "sha256": "c1d595925c7b17b0db0651283971a0333fcc2cc1446d821248def3d926e60104",
+    "comparison": {
+      "status": "matched",
+      "source_states": 842,
+      "native_states": 842,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": [],
+      "root_position": {
+        "status": "matched",
+        "source_rows": 421,
+        "native_rows": 421,
+        "differences": []
+      },
+      "helpers": {
+        "status": "matched",
+        "source_rows": 842,
+        "native_rows": 842,
+        "complete": true,
+        "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+        "fields_compared": [
+          {
+            "name": "frame",
+            "source": "frame",
+            "native": "frame",
+            "transform": "identity"
+          },
+          {
+            "name": "x",
+            "source": "x",
+            "native": "x",
+            "transform": "identity"
+          },
+          {
+            "name": "y",
+            "source": "y",
+            "native": "y",
+            "transform": "identity"
+          },
+          {
+            "name": "orientation",
+            "source": "xscale",
+            "native": "facing",
+            "transform": "source xscale percent / 100 = native facing sign"
+          },
+          {
+            "name": "action",
+            "source": "action",
+            "native": "action",
+            "transform": "identity"
+          },
+          {
+            "name": "attacking",
+            "source": "attacking",
+            "native": "attacking",
+            "transform": "identity"
+          }
+        ],
+        "source_only_fields": [
+          "hits",
+          "atm1",
+          "atm2",
+          "atm3"
+        ],
+        "native_only_fields": [],
+        "active_row_counts": {
+          "source": {
+            "p1": 103,
+            "p2": 0
+          },
+          "native": {
+            "p1": 103,
+            "p2": 0
+          }
+        },
+        "active_boundaries": {
+          "p1": {
+            "source_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+              "frame": 2.0,
+              "x": 280.0,
+              "y": -25.0,
+              "xscale": 100.0,
+              "attacking": true,
+              "action": null,
+              "hits": null,
+              "atm1": null,
+              "atm2": null,
+              "atm3": null
+            },
+            "native_at_source_first_active_tick": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            },
+            "native_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            }
+          },
+          "p2": {
+            "source_first_active": null,
+            "native_at_source_first_active_tick": null,
+            "native_first_active": null
+          }
+        },
+        "compared_rows": 842,
+        "difference_count": 0,
+        "differences": [],
+        "first_difference": null
+      }
+    }
+  },
+  {
+    "id": "jinye-helper-live",
+    "capture": "helper-captures/jinye-helper-live.tar.gz",
+    "sha256": "7ef58ac675b03eb133706e97a4a836b27bbeee2fda8d0549001251b7b1c2d006",
+    "comparison": {
+      "status": "matched",
+      "source_states": 842,
+      "native_states": 842,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": [],
+      "root_position": {
+        "status": "matched",
+        "source_rows": 421,
+        "native_rows": 421,
+        "differences": []
+      },
+      "helpers": {
+        "status": "matched",
+        "source_rows": 842,
+        "native_rows": 842,
+        "complete": true,
+        "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+        "fields_compared": [
+          {
+            "name": "frame",
+            "source": "frame",
+            "native": "frame",
+            "transform": "identity"
+          },
+          {
+            "name": "x",
+            "source": "x",
+            "native": "x",
+            "transform": "identity"
+          },
+          {
+            "name": "y",
+            "source": "y",
+            "native": "y",
+            "transform": "identity"
+          },
+          {
+            "name": "orientation",
+            "source": "xscale",
+            "native": "facing",
+            "transform": "source xscale percent / 100 = native facing sign"
+          },
+          {
+            "name": "action",
+            "source": "action",
+            "native": "action",
+            "transform": "identity"
+          },
+          {
+            "name": "attacking",
+            "source": "attacking",
+            "native": "attacking",
+            "transform": "identity"
+          }
+        ],
+        "source_only_fields": [
+          "hits",
+          "atm1",
+          "atm2",
+          "atm3"
+        ],
+        "native_only_fields": [],
+        "active_row_counts": {
+          "source": {
+            "p1": 72,
+            "p2": 0
+          },
+          "native": {
+            "p1": 72,
+            "p2": 0
+          }
+        },
+        "active_boundaries": {
+          "p1": {
+            "source_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+              "frame": 2.0,
+              "x": 280.0,
+              "y": -25.0,
+              "xscale": 100.0,
+              "attacking": true,
+              "action": null,
+              "hits": null,
+              "atm1": null,
+              "atm2": null,
+              "atm3": null
+            },
+            "native_at_source_first_active_tick": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            },
+            "native_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            }
+          },
+          "p2": {
+            "source_first_active": null,
+            "native_at_source_first_active_tick": null,
+            "native_first_active": null
+          }
+        },
+        "compared_rows": 842,
+        "difference_count": 0,
+        "differences": [],
+        "first_difference": null
+      }
+    }
+  },
+  {
+    "id": "kon-helper-live",
+    "capture": "helper-captures/kon-helper-live.tar.gz",
+    "sha256": "42923da8b72fd4974a44f551d5bdfa8ce3d5537bc9940ee9de750e18b3055ae7",
+    "comparison": {
+      "status": "matched",
+      "source_states": 842,
+      "native_states": 842,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": [],
+      "root_position": {
+        "status": "matched",
+        "source_rows": 421,
+        "native_rows": 421,
+        "differences": []
+      },
+      "helpers": {
+        "status": "matched",
+        "source_rows": 842,
+        "native_rows": 842,
+        "complete": true,
+        "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+        "fields_compared": [
+          {
+            "name": "frame",
+            "source": "frame",
+            "native": "frame",
+            "transform": "identity"
+          },
+          {
+            "name": "x",
+            "source": "x",
+            "native": "x",
+            "transform": "identity"
+          },
+          {
+            "name": "y",
+            "source": "y",
+            "native": "y",
+            "transform": "identity"
+          },
+          {
+            "name": "orientation",
+            "source": "xscale",
+            "native": "facing",
+            "transform": "source xscale percent / 100 = native facing sign"
+          },
+          {
+            "name": "action",
+            "source": "action",
+            "native": "action",
+            "transform": "identity"
+          },
+          {
+            "name": "attacking",
+            "source": "attacking",
+            "native": "attacking",
+            "transform": "identity"
+          }
+        ],
+        "source_only_fields": [
+          "hits",
+          "atm1",
+          "atm2",
+          "atm3"
+        ],
+        "native_only_fields": [],
+        "active_row_counts": {
+          "source": {
+            "p1": 101,
+            "p2": 0
+          },
+          "native": {
+            "p1": 101,
+            "p2": 0
+          }
+        },
+        "active_boundaries": {
+          "p1": {
+            "source_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+              "frame": 2.0,
+              "x": 280.0,
+              "y": -25.0,
+              "xscale": 100.0,
+              "attacking": true,
+              "action": null,
+              "hits": null,
+              "atm1": null,
+              "atm2": null,
+              "atm3": null
+            },
+            "native_at_source_first_active_tick": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            },
+            "native_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            }
+          },
+          "p2": {
+            "source_first_active": null,
+            "native_at_source_first_active_tick": null,
+            "native_first_active": null
+          }
+        },
+        "compared_rows": 842,
+        "difference_count": 0,
+        "differences": [],
+        "first_difference": null
+      }
+    }
+  },
+  {
+    "id": "woailuo-helper-live",
+    "capture": "helper-captures/woailuo-helper-live.tar.gz",
+    "sha256": "2a0b79705333ab10f2c69f1a1b7f0b9acf8b3caf03ef5c5b15f16eeff8c1dc94",
+    "comparison": {
+      "status": "matched",
+      "source_states": 842,
+      "native_states": 842,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": [],
+      "root_position": {
+        "status": "matched",
+        "source_rows": 421,
+        "native_rows": 421,
+        "differences": []
+      },
+      "helpers": {
+        "status": "matched",
+        "source_rows": 842,
+        "native_rows": 842,
+        "complete": true,
+        "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+        "fields_compared": [
+          {
+            "name": "frame",
+            "source": "frame",
+            "native": "frame",
+            "transform": "identity"
+          },
+          {
+            "name": "x",
+            "source": "x",
+            "native": "x",
+            "transform": "identity"
+          },
+          {
+            "name": "y",
+            "source": "y",
+            "native": "y",
+            "transform": "identity"
+          },
+          {
+            "name": "orientation",
+            "source": "xscale",
+            "native": "facing",
+            "transform": "source xscale percent / 100 = native facing sign"
+          },
+          {
+            "name": "action",
+            "source": "action",
+            "native": "action",
+            "transform": "identity"
+          },
+          {
+            "name": "attacking",
+            "source": "attacking",
+            "native": "attacking",
+            "transform": "identity"
+          }
+        ],
+        "source_only_fields": [
+          "hits",
+          "atm1",
+          "atm2",
+          "atm3"
+        ],
+        "native_only_fields": [],
+        "active_row_counts": {
+          "source": {
+            "p1": 84,
+            "p2": 0
+          },
+          "native": {
+            "p1": 84,
+            "p2": 0
+          }
+        },
+        "active_boundaries": {
+          "p1": {
+            "source_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+              "frame": 2.0,
+              "x": 280.0,
+              "y": -25.0,
+              "xscale": 100.0,
+              "attacking": true,
+              "action": null,
+              "hits": null,
+              "atm1": null,
+              "atm2": null,
+              "atm3": null
+            },
+            "native_at_source_first_active_tick": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            },
+            "native_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            }
+          },
+          "p2": {
+            "source_first_active": null,
+            "native_at_source_first_active_tick": null,
+            "native_first_active": null
+          }
+        },
+        "compared_rows": 842,
+        "difference_count": 0,
+        "differences": [],
+        "first_difference": null
+      }
+    }
+  },
+  {
+    "id": "you-helper-live",
+    "capture": "helper-captures/you-helper-live.tar.gz",
+    "sha256": "da06e96db0072244f124f861ab2efffd1f1bee8ee37dca88af375399bc62857a",
+    "comparison": {
+      "status": "matched",
+      "source_states": 842,
+      "native_states": 842,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": [],
+      "root_position": {
+        "status": "matched",
+        "source_rows": 421,
+        "native_rows": 421,
+        "differences": []
+      },
+      "helpers": {
+        "status": "matched",
+        "source_rows": 842,
+        "native_rows": 842,
+        "complete": true,
+        "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+        "fields_compared": [
+          {
+            "name": "frame",
+            "source": "frame",
+            "native": "frame",
+            "transform": "identity"
+          },
+          {
+            "name": "x",
+            "source": "x",
+            "native": "x",
+            "transform": "identity"
+          },
+          {
+            "name": "y",
+            "source": "y",
+            "native": "y",
+            "transform": "identity"
+          },
+          {
+            "name": "orientation",
+            "source": "xscale",
+            "native": "facing",
+            "transform": "source xscale percent / 100 = native facing sign"
+          },
+          {
+            "name": "action",
+            "source": "action",
+            "native": "action",
+            "transform": "identity"
+          },
+          {
+            "name": "attacking",
+            "source": "attacking",
+            "native": "attacking",
+            "transform": "identity"
+          }
+        ],
+        "source_only_fields": [
+          "hits",
+          "atm1",
+          "atm2",
+          "atm3"
+        ],
+        "native_only_fields": [],
+        "active_row_counts": {
+          "source": {
+            "p1": 155,
+            "p2": 0
+          },
+          "native": {
+            "p1": 155,
+            "p2": 0
+          }
+        },
+        "active_boundaries": {
+          "p1": {
+            "source_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+              "frame": 2.0,
+              "x": 280.0,
+              "y": -25.0,
+              "xscale": 100.0,
+              "attacking": true,
+              "action": null,
+              "hits": null,
+              "atm1": null,
+              "atm2": null,
+              "atm3": null
+            },
+            "native_at_source_first_active_tick": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            },
+            "native_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            }
+          },
+          "p2": {
+            "source_first_active": null,
+            "native_at_source_first_active_tick": null,
+            "native_first_active": null
+          }
+        },
+        "compared_rows": 842,
+        "difference_count": 0,
+        "differences": [],
+        "first_difference": null
+      }
+    }
+  },
+  {
+    "id": "zhiji-helper-live",
+    "capture": "helper-captures/zhiji-helper-live.tar.gz",
+    "sha256": "b585fc65403974e0b883e235f832d500d89fb4cbfb96263871255dfc348bf2c2",
+    "comparison": {
+      "status": "matched",
+      "source_states": 842,
+      "native_states": 842,
+      "complete": true,
+      "fields": [
+        "frame",
+        "x",
+        "y",
+        "xscale",
+        "action",
+        "hp",
+        "ql",
+        "sw",
+        "touch",
+        "touchFloor",
+        "hits",
+        "paused",
+        "hstm",
+        "hurtSkling"
+      ],
+      "differences": [],
+      "root_position": {
+        "status": "matched",
+        "source_rows": 421,
+        "native_rows": 421,
+        "differences": []
+      },
+      "helpers": {
+        "status": "matched",
+        "source_rows": 842,
+        "native_rows": 842,
+        "complete": true,
+        "canonical_tick_filter": "helper_state events with fight_tick >= 0; no offset",
+        "fields_compared": [
+          {
+            "name": "frame",
+            "source": "frame",
+            "native": "frame",
+            "transform": "identity"
+          },
+          {
+            "name": "x",
+            "source": "x",
+            "native": "x",
+            "transform": "identity"
+          },
+          {
+            "name": "y",
+            "source": "y",
+            "native": "y",
+            "transform": "identity"
+          },
+          {
+            "name": "orientation",
+            "source": "xscale",
+            "native": "facing",
+            "transform": "source xscale percent / 100 = native facing sign"
+          },
+          {
+            "name": "action",
+            "source": "action",
+            "native": "action",
+            "transform": "identity"
+          },
+          {
+            "name": "attacking",
+            "source": "attacking",
+            "native": "attacking",
+            "transform": "identity"
+          }
+        ],
+        "source_only_fields": [
+          "hits",
+          "atm1",
+          "atm2",
+          "atm3"
+        ],
+        "native_only_fields": [],
+        "active_row_counts": {
+          "source": {
+            "p1": 90,
+            "p2": 0
+          },
+          "native": {
+            "p1": 90,
+            "p2": 0
+          }
+        },
+        "active_boundaries": {
+          "p1": {
+            "source_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "source_raw_value": "p1,2,f:1:8:73400320:0,f:-1:4:104857600:0,f:1:6:104857600:0,true,undefined,undefined,undefined,undefined,undefined",
+              "frame": 2.0,
+              "x": 280.0,
+              "y": -25.0,
+              "xscale": 100.0,
+              "attacking": true,
+              "action": null,
+              "hits": null,
+              "atm1": null,
+              "atm2": null,
+              "atm3": null
+            },
+            "native_at_source_first_active_tick": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            },
+            "native_first_active": {
+              "tick": 16,
+              "slot": "p1",
+              "frame": 2,
+              "x": 280.0,
+              "y": -25.0,
+              "action": null,
+              "attacking": true,
+              "facing": 1
+            }
+          },
+          "p2": {
+            "source_first_active": null,
+            "native_at_source_first_active_tick": null,
+            "native_first_active": null
+          }
+        },
+        "compared_rows": 842,
+        "difference_count": 0,
+        "differences": [],
+        "first_difference": null
+      }
+    }
+  }
+]

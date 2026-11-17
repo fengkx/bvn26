@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 2026-11-18 全角色 live 首轮：40 个可选角色/形态在原版 Flash 与 Godot 下运行相同输入，33,680 条角色状态全部匹配；根坐标 37/40 匹配，李洛克、鼬、卡卡西共 8 个震屏 tick 有差异。仙人鸣人的风圈矩形已修复，原输入复测 842 条角色状态和 421 条根坐标保持一致；随机旋转漏编译、角色遮挡顺序、部分大招 HUD 缺失及烟雾滤镜差异已登记。六个辅助的状态/出场时长对照全部匹配；35 个基础角色专项破防的 2,310 条角色状态和 1,155 条根坐标全部匹配，均观测到原版 break 分支。加密采样另发现卍解一护的紫色月牙矩形，已用同一编译器修复并复测 362 条角色状态及 181 条根坐标。六辅助黑底时机差异及非选人形态 yihu-3 的曲线候选仍待跟进，完整视觉验收未通过。[实测与缺陷](../evidence/characters/roster-live-2026-11-18/README.md)，[PR #304](https://github.com/fengkx/bvn2_6/pull/304)。
+
 - 2026-11-16 minrenx merge validation: actual Compatibility captures now exit cleanly; images inspected, roster/opening source checks updated. Full parity/admission remain false. [Evidence](../evidence/characters/minrenx/README.md).
 
 - 2026-11-16 minrenx capture harness: explicit rollback close, combat callback teardown and audio retirement; base/form headless shutdown checks clean. Headed cleanup and full character acceptance remain pending; six flags false. [Evidence](../evidence/characters/minrenx/README.md).
@@ -2097,8 +2099,13 @@ Evidence: [upper-special geometry](../evidence/characters/selected-forms/live-20
 The broader audit also found stale numbered DoAction calls in selected forms and
 an incomplete Hitsugaya ultimate hit packet. Fresh compilation and undefined
 operand handling repair the measured differences. All 97 native fixtures run
-without script errors; original capture/comparison and browser checks are still
-in progress. Shared PvP/training each match 602 actor states. The retained long
+without script errors. All 97 scenarios match original actor states and root
+positions, including one unchanged-input repeat after an external round timeout.
+The repaired Web build passes the upper-special live check. Ten guard/guard-break
+visual pairs match actor states; remaining presentation differences are recorded
+in the [live audit](../evidence/characters/selected-forms/live-2026-11-17/README.md).
+PR #303 is merged. The [full roster live audit](../evidence/characters/roster-live-2026-11-18/README.md)
+now covers all 40 selectable entries and is in progress. Shared PvP/training each match 602 actor states. The retained long
 match r15 still differs at round reset, identically with the pre-change runtime;
 this is an open baseline limitation, not a passing reference. Full M6 audiovisual
 acceptance remains pending.
