@@ -20,7 +20,12 @@ handoff links, contracts and font coverage pass. The first backend run was
 blocked by sandbox loopback restrictions; the approved rerun passed. The first
 sound invocation omitted its output argument; the corrected invocation passed.
 The first Web build used the default missing template path; the rerun uses the
-installed matching 4.7.2 template. Web validation is being finalized.
+installed matching 4.7.2 template. Standard Web export and Chromium WebGL boot pass. The exported PCK contains all
+35 fighters and six helpers, with Sasuke portraits and opening.
+`web/build-metadata.json` retains the dirty product-snapshot provenance;
+`web/boot.json` and `packed.log.gz` bind the executed checks.
+The backend catalog was deployed as version
+`67b985df-0b85-466e-bc69-24d44ebac31c`.
 
 `summary.json`, retained logs and `replay-raw.tar.gz` contain current evidence.
 Native screenshots were inspected: the selectable card, full portrait/footer,
@@ -29,5 +34,4 @@ HUD, actor and attack are present. These are render checks, not pixel equality.
 Remaining full acceptance work: complete raster/audio parity, hidden-opponent
 interruption timing, and physical browser focus recovery. These are separate
 follow-up coverage, not additional gates for this targeted character delivery.
-All six proof/admission flags and M6 remain unchanged. No production deployment
-is certified by this record.
+All six proof/admission flags and M6 remain unchanged. Frontend production deployment is separate from this local Web validation.

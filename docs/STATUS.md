@@ -2077,3 +2077,4 @@ sound cleanup and headed rendering pass. Backend: 32 tests pass. Historical
 full audiovisual gaps are tracked separately from this targeted delivery.
 See [integration evidence](../evidence/characters/sasukexz/integration-2026-11-17/README.md).
 M6 and all proof/admission flags remain unchanged.
+Standard Web export, Chromium WebGL boot and packed 35-fighter/six-assist checks pass. Backend catalog deployed as `67b985df-0b85-466e-bc69-24d44ebac31c`; local Web provenance is retained.
