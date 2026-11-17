@@ -1,0 +1,55 @@
+{
+  "reference": "evidence/ai/match-flow-r15/events.jsonl",
+  "baseline_commit": "cffb4ea767ea4a3f2dead44c3620a467178b819d",
+  "baseline_runtime_files": [
+    "godot/fighter_runtime.gd",
+    "godot/timeline_preview.gd"
+  ],
+  "baseline_status": "first_difference",
+  "modified_status": "first_difference",
+  "state_comparisons_equal": true,
+  "frame_comparisons_equal": true,
+  "first_state_difference": {
+    "display_tick": 2593,
+    "slot": "p1",
+    "expected": {
+      "action": 0.0,
+      "hp": 1000.0,
+      "ql": 187.26666666666625,
+      "sw": false,
+      "touch": true,
+      "touchFloor": true,
+      "hits": 0.0,
+      "paused": true,
+      "hstm": 0.0,
+      "hurtSkling": false
+    },
+    "actual": {
+      "hp": 1000.0,
+      "ql": 187.26666666666625,
+      "action": -1.0,
+      "sw": false,
+      "touch": true,
+      "touchFloor": true,
+      "hits": 1,
+      "paused": true,
+      "hstm": 16.0,
+      "hurtSkling": false
+    },
+    "differences": {
+      "action": {
+        "expected": 0.0,
+        "actual": -1.0
+      },
+      "hits": {
+        "expected": 0.0,
+        "actual": 1
+      },
+      "hstm": {
+        "expected": 0.0,
+        "actual": 16.0
+      }
+    }
+  },
+  "scope": "Existing round reset difference; not a passing full-match reference."
+}

@@ -33,7 +33,7 @@ func checkHit() -> bool:
 func packet_field(key: String) -> Variant:
 \treturn packet.get(key)
 
-func _target(label: String, play: bool) -> void:
+func _target(label: Variant, play: bool) -> void:
 \ttarget = {"label": label, "play": play}
 '''
 

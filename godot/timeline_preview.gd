@@ -1076,8 +1076,8 @@ func _render_solid_fills(
 	alpha: float,
 	blend: int = 1
 ) -> void:
-	# fillStyleType 0. blackMu frame 2 is one black rectangle; render the
-	# compiled shape AABB rather than a homemade full-viewport overlay.
+	# Older packages retain only bounds; newly compiled solids carry the
+	# actual directed fill contours, including explicit empty paint slots.
 	if not definition.has("shape_bounds_twips"):
 		return
 	var fills: Array = definition.get("solid_fills", [])
@@ -1090,10 +1090,6 @@ func _render_solid_fills(
 	var y1 := float(bounds["Ymax"]) / 20.0
 	for fill_index in fills.size():
 		var fill: Dictionary = fills[fill_index]
-		var poly := Polygon2D.new()
-		poly.polygon = PackedVector2Array(
-			[Vector2(x0, y0), Vector2(x1, y0), Vector2(x1, y1), Vector2(x0, y1)]
-		)
 		var fill_color := Color(
 			float(fill.get("red", 0)) / 255.0,
 			float(fill.get("green", 0)) / 255.0,
@@ -1106,11 +1102,38 @@ func _render_solid_fills(
 			fill_color.b * rgb_mul.b + rgb_add.b * fill_color.a,
 			fill_color.a * alpha
 		)
-		poly.color = fill_color
-		poly.z_index = depth
-		poly.transform = placement_transform
-		_apply_blend(poly, blend)
-		add_child(poly)
+		var contours: Array = [[[x0, y0], [x1, y0], [x1, y1], [x0, y1]]]
+		if definition.has("solid_fill_polygons"):
+			contours = definition.solid_fill_polygons[fill_index]
+		for contour: Array in contours:
+			var poly := Polygon2D.new()
+			var vertices := PackedVector2Array()
+			for point: Array in contour:
+				vertices.append(Vector2(float(point[0]), float(point[1])))
+			poly.polygon = vertices
+			poly.color = fill_color
+			poly.z_index = depth
+			poly.transform = placement_transform
+			_apply_blend(poly, blend)
+			add_child(poly)
+	for stroke: Dictionary in definition.get("solid_closed_strokes", []):
+		var color := Color(float(stroke.color.red) / 255.0, float(stroke.color.green) / 255.0,
+			float(stroke.color.blue) / 255.0, float(stroke.color.alpha) / 255.0)
+		color = Color(color.r * rgb_mul.r + rgb_add.r * color.a,
+			color.g * rgb_mul.g + rgb_add.g * color.a,
+			color.b * rgb_mul.b + rgb_add.b * color.a, color.a * alpha)
+		for contour: Array in stroke.paths:
+			var line := Line2D.new()
+			for point: Array in contour:
+				line.add_point(Vector2(float(point[0]), float(point[1])))
+			line.closed = true
+			line.width = float(stroke.width)
+			line.joint_mode = Line2D.LINE_JOINT_ROUND
+			line.default_color = color
+			line.transform = placement_transform
+			line.z_index = depth
+			_apply_blend(line, blend)
+			add_child(line)
 
 
 func _cxform_mul(color_transform: Dictionary) -> Color:

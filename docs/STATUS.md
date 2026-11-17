@@ -2083,3 +2083,22 @@ Standard Web export, Chromium WebGL boot and packed 35-fighter/six-assist checks
 
 Enabled Hitsugaya Bankai, Rukia Shikai, Ichigo Bankai, Naruto One Tail and Curse Mark Sasuke: 40 original fighter cards and six assists. Direct selection uses fresh source WKframe initialization and BODY registration order; existing transformation graphs remain active. Ten original/native fixtures match 8,420 states across 14 fields. Both-slot opening/attack/rollback/next-round, CPU initialization, five paired host-authority projections and native renders pass. Evidence: [selected forms](../evidence/characters/selected-forms/README.md). Full M6 audiovisual acceptance is unchanged.
 Web export, packed 40-card inventory and Chromium WebGL boot pass. The friend-room backend is deployed as `444b827a-551c-4d1b-94f3-e0eac227a68f`; live selection accepted all five forms.
+
+
+## 2026-11-17 selectable-form live audit (in progress)
+
+A production-browser training run reproduced Naruto One Tail's upper-special
+red rectangle. Source shape 948 contains eight quadratic curves, a red fill and
+a round one-pixel stroke; the old solid renderer painted its bounds. The importer
+now emits solid fill contours and supported closed strokes, and the native
+renderer matches the source circular silhouette in same-input bitmap samples.
+Evidence: [upper-special geometry](../evidence/characters/selected-forms/live-2026-11-17/red-block/README.md).
+
+The broader audit also found stale numbered DoAction calls in selected forms and
+an incomplete Hitsugaya ultimate hit packet. Fresh compilation and undefined
+operand handling repair the measured differences. All 97 native fixtures run
+without script errors; original capture/comparison and browser checks are still
+in progress. Shared PvP/training each match 602 actor states. The retained long
+match r15 still differs at round reset, identically with the pre-change runtime;
+this is an open baseline limitation, not a passing reference. Full M6 audiovisual
+acceptance remains pending.

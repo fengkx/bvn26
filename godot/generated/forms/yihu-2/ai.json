@@ -946,6 +946,13 @@
         "operator": "+=",
         "pixels": 2.0,
         "line": 1
+      },
+      {
+        "op": "screen_flash",
+        "color_rgb24": 1183014,
+        "path": "DefineSprite_1180/frame_243/DoAction_2.as",
+        "line": 1,
+        "frame": 243
       }
     ],
     "244": [
@@ -1560,6 +1567,41 @@
         "operator": "=",
         "pixels": 0.0,
         "line": 1
+      }
+    ],
+    "918": [
+      {
+        "op": "inline_frame",
+        "path": "DefineSprite_1180/frame_918/DoAction.as",
+        "line": 1,
+        "frame": 918,
+        "calls": [
+          {
+            "op": "parent_conditional_frame",
+            "path": "DefineSprite_1180/frame_1/DoAction.as#wankai_end",
+            "line": 1,
+            "frame": 918,
+            "field_name": "万解",
+            "value": true,
+            "calls": [
+              {
+                "op": "super_end",
+                "kind": "cbsw"
+              },
+              {
+                "op": "frame_field",
+                "field_name": "bs",
+                "operator": "=",
+                "value": 0
+              },
+              {
+                "op": "parent_frame_field",
+                "field_name": "万解",
+                "value": false
+              }
+            ]
+          }
+        ]
       }
     ],
     "929": [

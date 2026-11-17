@@ -12,7 +12,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/importer'))
-from compile_ai_hit_state import FUNCTION, PATH, compile_transfer
+from compile_ai_hit_state import FUNCTION, compile_transfer
 
 NODE = r'''
 const fs=require('fs'),vm=require('vm'),dir=process.argv[2];
@@ -33,7 +33,8 @@ const gates=input.gates.map(test=>{
  vm.createContext(context);vm.runInContext(input.guard_source,context);
  return context.checkHit()!=null;
 });
-fs.writeFileSync(dir+'/expected.json',JSON.stringify({transfers:results,gates}));
+fs.writeFileSync(dir+'/expected.json',JSON.stringify({transfers:results,gates},
+  (_key,value)=>value===undefined?null:value));
 '''
 
 RUN = '''extends SceneTree
@@ -66,12 +67,15 @@ def main() -> None:
     args.output.mkdir(parents=True, exist_ok=True)
     bundle = json.loads((ROOT / 'scripts/fighter/yihu.json').read_text())
     code, metadata = compile_transfer(bundle)
-    source = next(s['source'] for s in bundle['scripts'] if s['path'] == PATH)
+    source = next(s['source'] for s in bundle['scripts'] if s['path'] == metadata['path'])
     functions = {m[1]: m[0] for m in FUNCTION.finditer(source.replace('\r\n', '\n'))}
     packets = [{}]
     for strength, duration, reaction in itertools.product([0, 5, 10, 11, 15, 25], [0, 10, 33, 100, 250], ['被打', '击飞']):
         packets.append({'pw': 80, 'zl': strength, 'yup': -2, 'hitx': 7, 'hdtime': duration, 'htype': reaction})
     packets.append({'pw': 80, 'zl': 5, 'yup': 2, 'hitx': 7, 'htype': '被打'})
+    # Rifagu gjl2.cbs2 supplies only damage and duration; absent operands
+    # must survive the transfer instead of inventing a reaction or impulse.
+    packets.append({'pw': 0, 'hdtime': 5000})
     cases = [{'packet': packet, 'guard': guard, 'state': {'time': 7, 'yup': 3, 'htx': 4, 'bdzl': 0, 'tdtime': 5, 'jhp': 0}}
              for packet, guard in itertools.product(packets, [False, True])]
     gates = [{'running': running, 'canhit': canhit} for running, canhit in itertools.product([False, True], [None, False, True, 0, 1])]

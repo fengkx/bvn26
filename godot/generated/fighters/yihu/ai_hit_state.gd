@@ -69,7 +69,7 @@ func checkHit() -> bool:
 func packet_field(key: String) -> Variant:
 	return packet.get(key)
 
-func _target(label: String, play: bool) -> void:
+func _target(label: Variant, play: bool) -> void:
 	target = {"label": label, "play": play}
 
 func allows_hit(running: Variant = null) -> Variant:
