@@ -55,3 +55,11 @@ The friend-room backend catalog was deployed as
 (default host authority, map unconfirmed), selected all five forms successfully,
 received TURN credentials and closed the room. `live-service.json` records the
 redacted results; no credentials or room tokens are retained.
+
+Standard Web export, its lobby/compatibility checks and isolated Chromium WebGL
+boot pass. The executed PCK contains all 40 cards, six helpers and the five forms
+with portraits, openings and compiled controllers. The first packed probe used
+FileAccess for an exported script; the corrected probe uses ResourceLoader to
+follow Godot script remaps. Both logs are retained. `web/build-metadata.json`
+records the build snapshot and PCK hash; generated UID/import sidecars explain
+its dirty snapshot status. Frontend production deployment is tracked separately.

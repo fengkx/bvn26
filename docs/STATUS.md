@@ -2082,3 +2082,4 @@ Standard Web export, Chromium WebGL boot and packed 35-fighter/six-assist checks
 ## 2026-11-17: Remaining five source selection cards
 
 Enabled Hitsugaya Bankai, Rukia Shikai, Ichigo Bankai, Naruto One Tail and Curse Mark Sasuke: 40 original fighter cards and six assists. Direct selection uses fresh source WKframe initialization and BODY registration order; existing transformation graphs remain active. Ten original/native fixtures match 8,420 states across 14 fields. Both-slot opening/attack/rollback/next-round, CPU initialization, five paired host-authority projections and native renders pass. Evidence: [selected forms](../evidence/characters/selected-forms/README.md). Full M6 audiovisual acceptance is unchanged.
+Web export, packed 40-card inventory and Chromium WebGL boot pass. The friend-room backend is deployed as `444b827a-551c-4d1b-94f3-e0eac227a68f`; live selection accepted all five forms.
