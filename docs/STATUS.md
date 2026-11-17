@@ -2097,8 +2097,13 @@ Evidence: [upper-special geometry](../evidence/characters/selected-forms/live-20
 The broader audit also found stale numbered DoAction calls in selected forms and
 an incomplete Hitsugaya ultimate hit packet. Fresh compilation and undefined
 operand handling repair the measured differences. All 97 native fixtures run
-without script errors; original capture/comparison and browser checks are still
-in progress. Shared PvP/training each match 602 actor states. The retained long
+without script errors. All 97 scenarios match original actor states and root
+positions, including one unchanged-input repeat after an external round timeout.
+The repaired Web build passes the upper-special live check. Ten guard/guard-break
+visual pairs match actor states; remaining presentation differences are recorded
+in the [live audit](../evidence/characters/selected-forms/live-2026-11-17/README.md).
+PR #303 is merged. The [full roster live audit](../evidence/characters/roster-live-2026-11-18/README.md)
+now covers all 40 selectable entries and is in progress. Shared PvP/training each match 602 actor states. The retained long
 match r15 still differs at round reset, identically with the pre-change runtime;
 this is an open baseline limitation, not a passing reference. Full M6 audiovisual
 acceptance remains pending.

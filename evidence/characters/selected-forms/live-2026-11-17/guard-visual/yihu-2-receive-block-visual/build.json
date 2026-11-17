@@ -1,0 +1,239 @@
+{
+  "run_id": "yihu-2-receive-block-visual",
+  "status": "built_not_run",
+  "frames_after_ready": 32,
+  "configuration": {
+    "modo": 3,
+    "p1": "一护万解",
+    "p2": "鸣人",
+    "p2cpu": false,
+    "AI": 5,
+    "stage": "现世",
+    "p1sf": "我爱罗",
+    "p2sf": "魂"
+  },
+  "sources_sha256": {
+    "game/main.swf": "707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d",
+    "scripts/main.json": "1c4c70c7fb73f945d2ea069b1f4e5feee8d75394790c5df37530354bfc3c027d",
+    "game/fighter/yihu.swf": "9f089bd3ee428382d8b99543a7534fb0f271ede09ed264b74847ca7cffcf1ac8",
+    "scripts/fighter/yihu.json": "5c4996b3767c2e31810595604c5b869c511c9c4f1cd8c123e059212294fc5d5b",
+    "game/fighter/minren.swf": "3640d0ea2355cc07b648b75c4f6022cb1c4477748ea0b719307d8072a32f4c2d",
+    "scripts/fighter/minren.json": "fffb87f0cab1d15c1a39a68a62bb6c51f307c910e0a08a619c89a60a1c82333a",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201",
+    "scripts/fighter/fz/kon.json": "25ecff7ed90806b1c9fa042218005629a8394b63db10c590838c6ebbeaad00fe",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "scripts/fighter/fz/woailuo.json": "ef1de22cce7ffbfafb24e9e880cc10e4d7d328eae6622db8b4c585c5c6cbba46"
+  },
+  "ffdec_sha256": "090ab695053ad94cba6408574c7d7eea20ec60b6ae789ee6056a23f45106762f",
+  "outputs_sha256": {
+    "game/main.swf": "615fba749fe1ada1078fe70b4da73fd7e36307ac6e2650810735d2061edbcb7e",
+    "game/fighter/yihu.swf": "604f814006506bc0315e8be81ea40575d6954f84cc58d4d2766bd4e01b63783a",
+    "game/fighter/minren.swf": "59d5fb1946f4d02e83fac02582f846bf4e11343432f96ccffb248291160015b4",
+    "game/fighter/fz/woailuo.swf": "f501b7c4ed0425e85f499c8ba65e0bf520c79054bbbc63d502c663105ca1ab14",
+    "game/fighter/fz/kon.swf": "a4fdb0f810b8e305145f593cf48c9e4fb5440316ab0d104acd6df1dc47921201"
+  },
+  "instrumentation_sha256": "4c45bae7b213e8c406f125b4b3bd3a4903a7f41d13f2b3b64cc065a6949c852e",
+  "frame_order_probe": false,
+  "body_boundaries": false,
+  "body_callback_observer": false,
+  "recovery_order_probe": false,
+  "recovery_walk_first": false,
+  "match_flow": false,
+  "helper_probe": null,
+  "dash_probe": null,
+  "dash_trigger_frame": null,
+  "dash_duration": 36,
+  "timeout_probe": null,
+  "ghost_probe": null,
+  "mode_probe": 3,
+  "sampling_geometry": false,
+  "sampling_display": false,
+  "sampling_bitmap": true,
+  "sampling_doaction": false,
+  "sampling_clipaction": false,
+  "sampling_callsite": false,
+  "chad_lifecycle": false,
+  "deidara_atm1": false,
+  "deidara_atm1_load_stamp": false,
+  "yulong_k1atm": false,
+  "yulong_display_completion": false,
+  "display_completion_window": false,
+  "callsite_specification": null,
+  "doaction_inventory": [],
+  "move_case": {
+    "id": "yihu-2-receive-block-visual",
+    "fighter": "yihu",
+    "slot": "p1",
+    "label": "防御2",
+    "scenario": "receive-block",
+    "frames": 32,
+    "setup": {
+      "p1": {
+        "x": 300,
+        "energy": 300
+      },
+      "p2": {
+        "x": 350,
+        "energy": 300
+      }
+    },
+    "inputs": [
+      {
+        "slot": "p1",
+        "keys": [
+          "down"
+        ],
+        "start": 1,
+        "end": 350
+      },
+      {
+        "slot": "p2",
+        "keys": [
+          "attack"
+        ],
+        "start": 10,
+        "end": 13
+      }
+    ],
+    "target_frames": [
+      763,
+      773
+    ],
+    "has_source_timeline": true,
+    "fighters": {
+      "p1": "yihu",
+      "p2": "minren"
+    },
+    "selected_forms": {
+      "p1": 2
+    },
+    "p1_helper": "我爱罗",
+    "p2_helper": "魂"
+  },
+  "dynamic_move_case": false,
+  "fixture_url": null,
+  "player_display": "windowed_showAll",
+  "presentation_probe": false,
+  "root_write_observer": false,
+  "body_call_scope_probe": false,
+  "schedule_probe": false,
+  "hurt_summon_probe": false,
+  "shadow_probe": false,
+  "effect_phase_probe": false,
+  "hit_receive_probe": true,
+  "projectile_probe": {},
+  "hit_receive_event_schema": {
+    "source_hit_test": [
+      "receiver_instance",
+      "receiver_frame",
+      "receiver_depth",
+      "receiver_action",
+      "receiver_x",
+      "receiver_y",
+      "receiver_xscale",
+      "receiver_yscale",
+      "receiver_rotation",
+      "receiver_matrix_a",
+      "receiver_matrix_b",
+      "receiver_matrix_c",
+      "receiver_matrix_d",
+      "receiver_matrix_tx",
+      "receiver_matrix_ty",
+      "receiver_bounds_xmin",
+      "receiver_bounds_ymin",
+      "receiver_bounds_xmax",
+      "receiver_bounds_ymax",
+      "target_bdmn_instance",
+      "target_bdmn_frame",
+      "target_bdmn_depth",
+      "target_bdmn_matrix_a",
+      "target_bdmn_matrix_b",
+      "target_bdmn_matrix_c",
+      "target_bdmn_matrix_d",
+      "target_bdmn_matrix_tx",
+      "target_bdmn_matrix_ty",
+      "target_bdmn_bounds_xmin",
+      "target_bdmn_bounds_ymin",
+      "target_bdmn_bounds_xmax",
+      "target_bdmn_bounds_ymax",
+      "target_clip",
+      "hit_key",
+      "attack_instance",
+      "attack_frame",
+      "attack_depth",
+      "attack_parent",
+      "attack_parent_frame",
+      "attack_x",
+      "attack_y",
+      "attack_xscale",
+      "attack_yscale",
+      "attack_rotation",
+      "attack_matrix_a",
+      "attack_matrix_b",
+      "attack_matrix_c",
+      "attack_matrix_d",
+      "attack_matrix_tx",
+      "attack_matrix_ty",
+      "attack_bounds_xmin",
+      "attack_bounds_ymin",
+      "attack_bounds_xmax",
+      "attack_bounds_ymax",
+      "pw",
+      "zl",
+      "up",
+      "x",
+      "tm",
+      "dz",
+      "hit_test_result"
+    ],
+    "source_guard_packet": [
+      "receiver_instance",
+      "receiver_frame",
+      "receiver_x",
+      "receiver_y",
+      "receiver_facing",
+      "pw",
+      "zl",
+      "htype",
+      "source_branch_zl_gt_10"
+    ],
+    "source_hit_packet": [
+      "receiver_instance",
+      "receiver_frame",
+      "receiver_x",
+      "receiver_y",
+      "receiver_facing",
+      "pw",
+      "zl",
+      "htype",
+      "source_branch_zl_gt_10"
+    ]
+  },
+  "p1_helper": "我爱罗",
+  "p2_helper": "魂",
+  "helper_sources": {
+    "p1": {
+      "character_id": "我爱罗",
+      "asset": "woailuo",
+      "url": "woailuo.swf"
+    },
+    "p2": {
+      "character_id": "魂",
+      "asset": "kon",
+      "url": "kon.swf"
+    }
+  },
+  "input_injection": "body_kis_alias_with_per_read_trace",
+  "number_encoding": "binary53_for_random_samples_hp_ql_and_state_geometry",
+  "capture_scope": "Math.random in selected bundles and getTimer in hurtVoice; random(n) is not wrapped",
+  "production_admitted": false,
+  "native_parity_proven": false,
+  "oracle_accepted": false,
+  "certified_global_tick": false,
+  "os_input_join_proven": false,
+  "native_initialization_complete": false,
+  "profile": "diagnostic",
+  "auto_start": true,
+  "key_injection": true,
+  "diagnostic_trace_hooks": true
+}

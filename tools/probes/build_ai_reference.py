@@ -526,6 +526,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
             bootstrap = (Path(__file__).parent / 'as2/ai_reference/sampling_display.as').read_text() + bootstrap
             calls += '   _root.aiDisplaySample();\n'
         bootstrap = bootstrap.replace(needle, calls + needle)
+    bitmap_ticks = None
     if sampling_bitmap:
         if move_case is None:
             raise ValueError("Sampling bitmap requires a move case")
@@ -533,7 +534,18 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         if bootstrap.count(needle) != 1:
             raise ValueError("Missing bitmap sampling boundary")
         bootstrap = (Path(__file__).parent / 'as2/ai_reference/sampling_bitmap.as').read_text() + bootstrap
-        bootstrap = bootstrap.replace(needle, '   _root.aiBitmapSample();\n' + needle)
+        bitmap_ticks = move_case_data.get('bitmap_ticks')
+        call = '   _root.aiBitmapSample();\n'
+        if bitmap_ticks is not None:
+            if (not isinstance(bitmap_ticks, list) or not bitmap_ticks
+                    or any(type(tick) is not int or not 0 <= tick <= frames for tick in bitmap_ticks)
+                    or bitmap_ticks != sorted(set(bitmap_ticks))):
+                raise ValueError('bitmap_ticks must be sorted unique observation ticks within the fixture')
+            # Keep the root observation boundary; only suppress expensive bitmap
+            # serialization between requested samples, never actor advancement.
+            condition = ' || '.join(f'aiFight == {tick}' for tick in bitmap_ticks)
+            call = f'   if({condition}) _root.aiBitmapSample();\n'
+        bootstrap = bootstrap.replace(needle, call + needle)
         # Bitmap tracing can outlast a display period. Close the observation
         # window after done while the player's asynchronous quit is pending.
         bootstrap = bootstrap.replace('aiEvent("done", "");',
@@ -797,6 +809,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "sampling_geometry": sampling_geometry,
         "sampling_display": sampling_display,
         "sampling_bitmap": sampling_bitmap,
+        "sampling_bitmap_ticks": bitmap_ticks,
         "sampling_doaction": sampling_doaction,
         "sampling_clipaction": sampling_clipaction,
         "sampling_callsite": sampling_callsite,
