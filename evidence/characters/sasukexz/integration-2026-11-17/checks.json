@@ -1,0 +1,43 @@
+[
+  {
+    "name": "selection",
+    "exit": 0,
+    "seconds": 7.186790833249688,
+    "diagnostics": [
+      "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+      "CHARACTER_SELECTION_SMOKE_OK"
+    ]
+  },
+  {
+    "name": "online-selection",
+    "exit": 0,
+    "seconds": 5.6832391251809895,
+    "diagnostics": [
+      "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+      "ONLINE_CHARACTER_SELECTION_SMOKE_OK local_slots=true phase_barrier=true helper_phase=true choice_freeze=true buffered_phase_validation=true service_ids=true offline_chain_isolated=true",
+      "ONLINE_CHARACTER_SELECTION_RESELECT_SMOKE_OK stale_session_rejected=true cancel_keeps_choice=true",
+      "ONLINE_CHARACTER_SELECTION_LIFECYCLE_SMOKE_OK pending_timer_stopped=true teardown_rejects_late_snapshot=true reentry=true",
+      "ONLINE_CHARACTER_SELECTION_SOURCE_RULE_SMOKE_OK same_fighter_helper_rejected=true invalid_old_helper_not_restored=true"
+    ]
+  },
+  {
+    "name": "authority",
+    "exit": 0,
+    "seconds": 31.157047333195806,
+    "diagnostics": [
+      "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+      "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+      "AUTHORITY_PROJECTION_OK frames=330 dropped=220 max_bytes=15665 guest_ticks=0"
+    ]
+  },
+  {
+    "name": "sound",
+    "exit": 0,
+    "seconds": 27.759969583246857,
+    "diagnostics": [
+      "ERROR: Condition \"ret != noErr\" is true. Returning: \"\"",
+      "M0_BOOT_OK {\"display_server\":\"headless\",\"godot\":\"4.7.2-stable (official)\",\"physics_hz\":30}",
+      "SCRIPT ERROR: Assertion failed."
+    ]
+  }
+]
