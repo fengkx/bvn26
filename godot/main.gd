@@ -1835,6 +1835,12 @@ func _setup_screen_flash() -> void:
 	screen_flash.material = material
 	screen_flash.visible = false
 	add_child(screen_flash)
+	# Lower blended objects may have copied an earlier screen. Shine blends
+	# against every completed lower layer, including those objects and fgmc.
+	var backdrop := BackBufferCopy.new()
+	backdrop.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
+	backdrop.show_behind_parent = true
+	screen_flash.add_child(backdrop)
 
 
 func _start_screen_flash(color_rgb24: int) -> void:

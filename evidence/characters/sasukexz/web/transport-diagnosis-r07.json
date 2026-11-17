@@ -1,0 +1,32 @@
+{
+  "status": "public_reinitialize_did_not_repair_transport",
+  "scope": "Only provider metadata and exact task URL; no whole-Chrome app or private-page access",
+  "public_reports": [
+    "https://github.com/openai/codex/issues/41168",
+    "https://github.com/openai/codex/issues/58981"
+  ],
+  "observations": [
+    {
+      "operation": "cua.listBrowsers()",
+      "result": "native pipe closed before response"
+    },
+    {
+      "operation": "cua_repl.js_reset",
+      "result": "js kernel reset"
+    },
+    {
+      "operation": "cua.getTab exact http://127.0.0.1:58741/ in chrome",
+      "result": "native pipe write failed: Broken pipe (os error 32)"
+    }
+  ],
+  "diagnosis": "Provider transport failed before task page binding. Root cause below that boundary is not established. This is not merely an observed empty discovery list.",
+  "available_public_recovery": "Task JS reset was available and tried once; no documented deeper reconnect exposed in current CUA API.",
+  "scope_limits_respected": [
+    "No whole-browser reread",
+    "No raw CDP or internal APIs",
+    "No process kills or browser restart",
+    "No persistent permission changes"
+  ],
+  "lock": "Acquired with bvn-temari-port; desktop unlocked; released normally",
+  "os_focus_recovery_accepted": false
+}

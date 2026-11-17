@@ -2059,3 +2059,21 @@ a separately versioned runner and pinned-input tests. Capture timeouts and lost
 foreground cannot be treated as valid input observations. A classified failure
 receipt and any hidden-page input policy need their own evidence and tests;
 PR 299's suggested weakening of these checks is not adopted by this change.
+
+2026-11-15: Susanoo Sasuke (佐助须佐 / sasukexz.swf, BODY727) is an offline source-compiled candidate on a3b47941. Selection, opening and portraits are wired in its isolated branch. Thirteen native-only action cases reach their targets; 19 original/native cases now match14198 actor states; local headed Web training entry was observed. Pixel differences, audio and remaining Web lifecycle acceptance block Draft readiness. See [candidate record](../evidence/characters/sasukexz/README.md). Pending Temari, Sage Naruto and Ichigo2 assets are not imported. All six proof flags remain false; no Draft PR or deployment.
+
+Susanoo Sasuke follow-up: render-wait and derived-display rebuild experiments did not resolve the tick43 flame/foreground difference. Both retain 162 matched actor states. The next headed buffer diagnostic stopped before launch because desktop lock state was locked or unknown. Audio and full Web lifecycle gates remain incomplete; no Draft PR. See `evidence/characters/sasukexz/visual-investigation-r02.json`.
+
+Susanoo Sasuke shine correction: a BackBufferCopy immediately behind ScreenFlash prevents its overlay from overwriting darken-blended flame and later foreground with a stale backdrop. Source/failed/corrected evidence is in `evidence/characters/sasukexz/shine-backdrop-source.md`. Thirty saved-roster state representatives and rollback pass. Audio, final Web lifecycle and wider pixel/timer acceptance remain incomplete; no Draft PR or admission.
+
+Susanoo Sasuke latest: fresh BODY sound331 tag arrival and native stream creation match at source776 (722 actor states still matched), without waveform/pause/cleanup acceptance. Post-fix local Web export and programmatic full-super/pause/resume pass; actual OS focus-loss recovery remains unproven and native Chrome access was rejected by automatic review. Full saved corpus completed:300 cases /189400 actor states matched; retained exit-resource residuals are not accepted as clean exits. No Draft PR, deployment or admission.
+
+### 2026-11-17 — Susanoo Sasuke targeted integration
+
+Integrated the existing source-bound Sasuke candidate with all 35 selectable
+fighters and six assists. Current-runtime replay matches 19 cases / 14,198 actor
+states; offline/online selection, authority projection, rollback/round reset,
+sound cleanup and headed rendering pass. Backend: 32 tests pass. Historical
+full audiovisual gaps are tracked separately from this targeted delivery.
+See [integration evidence](../evidence/characters/sasukexz/integration-2026-11-17/README.md).
+M6 and all proof/admission flags remain unchanged.
