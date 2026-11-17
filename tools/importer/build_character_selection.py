@@ -21,7 +21,7 @@ def _artifact_ready(directory: Path, required: tuple[str, ...]) -> bool:
     return all((directory / path).is_file() for path in required)
 
 
-def build_available(root: Path = ROOT) -> dict[str, dict[str, str]]:
+def build_available(root: Path = ROOT) -> dict[str, dict]:
     """Publish only source catalog entries with complete native artifacts.
 
     Selection cards remain source-defined in ``selection.json``. This separate
@@ -40,16 +40,31 @@ def build_available(root: Path = ROOT) -> dict[str, dict[str, str]]:
         "player_controller/controller.gd", "player_controller/predicates.gd",
     )
     helper_required = ("timeline.json", "combat.json", "assets.json")
-    available = {"fighters": {}, "helpers": {}}
+    available = {"fighters": {}, "helpers": {}, "forms": {}}
+    selection = json.loads((root / "data/menus/character-selection.json").read_text())
+    selectable = {card["id"] for phase in selection["phases"]
+                  if phase["kind"] == "fighter" for card in phase["cards"]}
     for kind, helper in (("fighters", False), ("helpers", True)):
         base = root / "godot/generated/helpers" if helper else root / "godot/generated/fighters"
         for name, entry in catalog.items():
-            if not helper and "WKframe" in entry:
-                continue
             slug = _runtime_slug(entry, helper=helper)
             if slug is None:
                 continue
             directory = base / slug
+            form = int(entry.get("WKframe", 1)) if not helper else 1
+            if form > 1:
+                if name not in selectable:
+                    continue
+                graph_path = directory / "form_profiles.json"
+                if not graph_path.is_file():
+                    continue
+                graph = json.loads(graph_path.read_text())
+                profile = graph.get("profiles", {}).get(str(form), {})
+                form_slug = f"{slug}-{form}"
+                expected = f"res://generated/forms/{form_slug}"
+                if profile.get("directory") != expected:
+                    continue
+                directory = root / "godot/generated/forms" / form_slug
             required = helper_required if helper else fighter_required
             if not _artifact_ready(directory, required):
                 continue
@@ -59,8 +74,11 @@ def build_available(root: Path = ROOT) -> dict[str, dict[str, str]]:
                     continue
             else:
                 model = json.loads((directory / "fighter.json").read_text(encoding="utf-8"))
-                if model.get("fighter_id") != name or int(model.get("form_frame", 0)) != 1:
+                if model.get("fighter_id") != name or int(model.get("form_frame", 0)) != form:
                     continue
+            if form > 1:
+                available["forms"][form_slug] = {"base": slug, "frame": form}
+                slug = form_slug
             available[kind][name] = slug
     return available
 

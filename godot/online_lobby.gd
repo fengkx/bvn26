@@ -3474,7 +3474,7 @@ func _configure_live_game(state: Dictionary) -> String:
 		if not _fighter_ids.has(fighter) or not _helper_ids.has(helper):
 			return "unsupported_content"
 		players["p%d" % (index + 1)] = {
-			"resourcePath": "res://generated/fighters/" + fighter,
+			"resourcePath": FighterSelection.directory(fighter),
 			"helper": {"resourcePath": "res://generated/helpers/" + helper},
 		}
 	var rules := _as_dictionary(state.get("rules"))

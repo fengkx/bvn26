@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 
 from extract_timeline_geometry import extract_frames, placement_delta
 from materialize_timeline_assets import materialize
+from build_character_selection import build_available
 
 
 def scripts(path):
@@ -93,12 +94,13 @@ def build(workspace, output, jar):
         # keeping a hand-maintained roster here silently drops newly imported
         # source forms (for example Byakuya and Lee).
         fighter_root = Path('godot/generated/fighters')
-        candidates = sorted(
-            folder.name for folder in fighter_root.iterdir()
+        candidates = {
+            folder.name: folder for folder in fighter_root.iterdir()
             if folder.is_dir() and (folder / 'fighter.json').is_file()
-        )
-        for name in candidates:
-            folder = Path('godot/generated/fighters') / name
+        }
+        for name in build_available().get('forms', {}):
+            candidates[name] = Path('godot/generated/forms') / name
+        for name, folder in sorted(candidates.items()):
             fighter = json.loads((folder / 'fighter.json').read_text())
             timeline = json.loads((folder / 'timeline.json').read_text())
             action = next(group['开场'] for group in fighter['actions'].values() if '开场' in group)
@@ -129,7 +131,8 @@ def build(workspace, output, jar):
                              'scripts': [e for e in evidence if f'/frame_{f["frame"]}/' in e['path']]}
                             for f in timeline['frames'] if action['start_frame'] <= f['frame'] <= action['end_frame']]
             spec['fighters'][name] = {'action': action, 'state_frames': state_frames, 'scripts': evidence, 'frames': audit_frames}
-            timeline_path = fighter['source'].get('timeline_path', f'data/slices/{name}-base.timeline.json')
+            timeline_path = fighter['source'].get('timeline_path',
+                str(folder / 'timeline.json') if int(fighter['form_frame']) > 1 else f'data/slices/{name}-base.timeline.json')
             timeline_file = Path(timeline_path)
             timeline_sha256 = hashlib.sha256(timeline_file.read_bytes()).hexdigest() if timeline_file.is_file() else ''
             intro = {

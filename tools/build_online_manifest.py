@@ -125,7 +125,8 @@ def content_inputs() -> tuple[list[Path], dict[str, list[str]]]:
             raise ValueError(f"service and Godot {kind} catalogs differ")
         names[kind] = sorted(str(value) for value in ids)
         for content_id in names[kind]:
-            directory = GODOT / "generated" / kind / content_id
+            category = "forms" if kind == "fighters" and content_id in selection.get("forms", {}) else kind
+            directory = GODOT / "generated" / category / content_id
             paths.extend(files_under(directory))
 
     stage_ids = room_catalog.get("stages")
