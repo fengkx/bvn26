@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
-from solid_shape_geometry import solid_fill_polygons, solid_closed_strokes
+from solid_shape_geometry import solid_fill_polygons, solid_fill_meshes, solid_closed_strokes
 from visual_blend_modes import validate_blend_mode
 from visual_filters import compile_filters
 from import_guards import finite_numbers, validate_placement, validate_wrapper_fields
@@ -274,6 +274,10 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             contours = solid_fill_polygons(tag)
             if contours is not None:
                 definition["solid_fill_polygons"] = contours
+            else:
+                meshes = solid_fill_meshes(tag)
+                if meshes is not None:
+                    definition["solid_fill_meshes"] = meshes
             strokes = solid_closed_strokes(tag)
             if strokes is not None:
                 definition["solid_closed_strokes"] = strokes

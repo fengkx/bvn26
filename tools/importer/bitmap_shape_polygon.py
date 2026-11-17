@@ -56,25 +56,8 @@ def adjacent_fill_boundary(contours: list) -> list | None:
     return boundary
 
 
-def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]]] | None:
-    """Compile simple, closed SWF bitmap fill contours, one entry per bitmap fill.
-
-    SWF edges can border two fills. fillStyle1 follows the recorded edge and
-    fillStyle0 uses it in reverse, so each fill gets its own directed contour.
-    Unsupported/open/ambiguous geometry returns None and keeps the legacy
-    bounding-box renderer instead of inventing a mask.
-    """
-    style_items = shape.findall('.//fillStyles/item')
-    bitmap_style_indices: dict[int, int] = {}
-    placeholder_indices: set[int] = set()
-    for style_index, item in enumerate(style_items, 1):
-        if 'bitmapId' in item.attrib:
-            if int(item.attrib['bitmapId']) == 65535:
-                placeholder_indices.add(len(bitmap_style_indices))
-            bitmap_style_indices[style_index] = len(bitmap_style_indices)
-    if not bitmap_style_indices:
-        return None
-
+def shape_fill_edges(shape: ET.Element, style_indices: dict[int, int]) -> list | None:
+    """Decode directed fill edges with the source style-table ownership."""
     initial_styles = shape.findall('./shapes/fillStyles/fillStyles/item')
     fill_base = 0
     active_style_count = len(initial_styles)
@@ -82,7 +65,7 @@ def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]
     current_fill1 = 0
     x = y = 0
     edges: list[list[tuple[tuple[int, int], tuple[int, int], list[tuple[int, int]]]]] = [
-        [] for _ in bitmap_style_indices
+        [] for _ in style_indices
     ]
 
     def append_edge(points: list[tuple[int, int]]) -> bool:
@@ -91,12 +74,12 @@ def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]
         start, end = points[0], points[-1]
         if current_fill0:
             global_style = fill_base + current_fill0
-            output_style = bitmap_style_indices.get(global_style)
+            output_style = style_indices.get(global_style)
             if output_style is not None:
                 edges[output_style].append((end, start, list(reversed(points))))
         if current_fill1:
             global_style = fill_base + current_fill1
-            output_style = bitmap_style_indices.get(global_style)
+            output_style = style_indices.get(global_style)
             if output_style is not None:
                 edges[output_style].append((start, end, points))
         return True
@@ -153,6 +136,32 @@ def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]
         if not append_edge(points):
             return None
         x, y = nx, ny
+
+    return edges
+
+
+def bitmap_shape_fill_polygons(shape: ET.Element) -> list[list[list[list[float]]]] | None:
+    """Compile simple, closed SWF bitmap fill contours, one entry per bitmap fill.
+
+    SWF edges can border two fills. fillStyle1 follows the recorded edge and
+    fillStyle0 uses it in reverse, so each fill gets its own directed contour.
+    Unsupported/open/ambiguous geometry returns None and keeps the legacy
+    bounding-box renderer instead of inventing a mask.
+    """
+    style_items = shape.findall('.//fillStyles/item')
+    bitmap_style_indices: dict[int, int] = {}
+    placeholder_indices: set[int] = set()
+    for style_index, item in enumerate(style_items, 1):
+        if 'bitmapId' in item.attrib:
+            if int(item.attrib['bitmapId']) == 65535:
+                placeholder_indices.add(len(bitmap_style_indices))
+            bitmap_style_indices[style_index] = len(bitmap_style_indices)
+    if not bitmap_style_indices:
+        return None
+
+    edges = shape_fill_edges(shape, bitmap_style_indices)
+    if edges is None:
+        return None
 
     output: list[list[list[list[float]]]] = []
     for fill_index, fill_edges in enumerate(edges):

@@ -1102,15 +1102,26 @@ func _render_solid_fills(
 			fill_color.b * rgb_mul.b + rgb_add.b * fill_color.a,
 			fill_color.a * alpha
 		)
-		var contours: Array = [[[x0, y0], [x1, y0], [x1, y1], [x0, y1]]]
-		if definition.has("solid_fill_polygons"):
-			contours = definition.solid_fill_polygons[fill_index]
-		for contour: Array in contours:
+		var paints: Array = [{"vertices": [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]}]
+		if definition.has("solid_fill_meshes"):
+			paints = [definition.solid_fill_meshes[fill_index]]
+		elif definition.has("solid_fill_polygons"):
+			paints = []
+			for contour: Array in definition.solid_fill_polygons[fill_index]:
+				paints.append({"vertices": contour})
+		for paint: Dictionary in paints:
+			if paint.vertices.is_empty():
+				continue
 			var poly := Polygon2D.new()
 			var vertices := PackedVector2Array()
-			for point: Array in contour:
+			for point: Array in paint.vertices:
 				vertices.append(Vector2(float(point[0]), float(point[1])))
 			poly.polygon = vertices
+			if paint.has("triangles"):
+				var polygons: Array[PackedInt32Array] = []
+				for triangle: Array in paint.triangles:
+					polygons.append(PackedInt32Array(triangle))
+				poly.polygons = polygons
 			poly.color = fill_color
 			poly.z_index = depth
 			poly.transform = placement_transform
