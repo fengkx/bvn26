@@ -109,7 +109,11 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 				return
 		var names: Array = []
 		for slot in ["p1", "p2"]:
-			var display := _fixture_display_id("fighters", str(fixture.fighters[slot]))
+			var resource_id := str(fixture.fighters[slot])
+			var selected_form := int(fixture.get("selected_forms", {}).get(slot, 1))
+			if selected_form > 1:
+				resource_id += "-%d" % selected_form
+			var display := _fixture_display_id("fighters", resource_id)
 			if display.is_empty():
 				return
 			names.append(display)

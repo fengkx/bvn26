@@ -517,7 +517,7 @@ func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
 		var old: FighterRuntime = naruto if i == 0 else ichigo
 		var fighter := FighterRuntime.new()
 		fighter.disabled_actions = ["万解"]
-		fighter.fighter_directory = "res://generated/fighters/" + str(character_selection.available.fighters[fighters[i]])
+		fighter.fighter_directory = FighterSelection.directory(str(character_selection.available.fighters[fighters[i]]))
 		fighter.name = old.name
 		fighter.player_slot = "p%d" % (i + 1)
 		fighter.position = old.position
@@ -1368,32 +1368,45 @@ func _start_combat_drivers() -> void:
 	player_body_services.stage_lookup_order = cpu_services.stage_lookup_order.duplicate()
 	player_body_services.effect_parent = game_world
 	player_body_services.remaining_services = _player_visual_service
-	player_body_driver = preload("res://player_body_driver.gd").new()
-	add_child(player_body_driver)
-	player_body_driver.configure(naruto, naruto.fighter_directory + "/player_controller", platforms,
-		naruto._ground_y, game_world.map_size_x, player_body_services.invoke, source_callbacks)
-	_configure_fighter_forms(naruto, player_body_driver)
-	opponent_driver = AiCpuDriver.new()
-	add_child(opponent_driver)
-	opponent_input_context = null
-	if not session.p2cpu:
-		opponent_input_context = preload("res://player_body_driver.gd").Context.new(ichigo)
-		opponent_input_context.use_ai = false
-	opponent_driver.configure(ichigo, ichigo.fighter_directory + "/player_controller", platforms,
-		ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false,
-		source_callbacks, opponent_input_context)
-	opponent_driver.controller.context.use_ai = session.p2cpu
-	if opponent_input_context != null:
-		opponent_driver.controller.key_reader = opponent_input_context.source_key
-	_configure_fighter_forms(ichigo, opponent_driver)
-	opponent_driver.body.updateDirect()
-	opponent_driver.begin_display_tick(physics_tick)
+	var configure_player := func() -> void:
+		player_body_driver = preload("res://player_body_driver.gd").new()
+		add_child(player_body_driver)
+		player_body_driver.configure(naruto, naruto.fighter_directory + "/player_controller", platforms,
+			naruto._ground_y, game_world.map_size_x, player_body_services.invoke, source_callbacks)
+		_configure_fighter_forms(naruto, player_body_driver)
+	var configure_opponent := func() -> void:
+		opponent_driver = AiCpuDriver.new()
+		add_child(opponent_driver)
+		opponent_input_context = null
+		if not session.p2cpu:
+			opponent_input_context = preload("res://player_body_driver.gd").Context.new(ichigo)
+			opponent_input_context.use_ai = false
+		opponent_driver.configure(ichigo, ichigo.fighter_directory + "/player_controller", platforms,
+			ichigo._ground_y, game_world.map_size_x, {"touchFloor": null}, cpu_services.invoke, false,
+			source_callbacks, opponent_input_context)
+		opponent_driver.controller.context.use_ai = session.p2cpu
+		if opponent_input_context != null:
+			opponent_driver.controller.key_reader = opponent_input_context.source_key
+		_configure_fighter_forms(ichigo, opponent_driver)
+		opponent_driver.body.updateDirect()
+		opponent_driver.begin_display_tick(physics_tick)
+	# Sprite 1900/frame 5 replaces P1, then P2, after both base wrappers
+	# loaded. A P1-only WKframe is therefore newer than the retained P2 BODY.
+	var p1_selected_form := not FighterSelection.form(naruto.fighter_directory.get_file()).is_empty()
+	var p2_selected_form := not FighterSelection.form(ichigo.fighter_directory.get_file()).is_empty()
+	if p1_selected_form and not p2_selected_form:
+		configure_opponent.call()
+		configure_player.call()
+	else:
+		configure_player.call()
+		configure_opponent.call()
 	# Loaded helper timelines retain their place between the fighter bodies
 	# and newer action clips in Flash's global instance traversal.
 	for helper in [naruto_helper, ichigo_helper]:
 		helper.bind_source_frames(source_callbacks, physics_tick)
 		helper.source_child_frame_requested.connect(_queue_source_child_frame)
-	if session.p2cpu:
+	if session.p2cpu and not p2_selected_form:
+		# Selected forms register their source airanset in doWanKai/initCtrl.
 		opponent_driver.start_random(source_random, session.ai_level)
 
 
@@ -1433,7 +1446,13 @@ func _prepare_form_root_owner() -> void:
 
 
 func _configure_fighter_forms(fighter: FighterRuntime, driver: Node) -> void:
-	var path := fighter.fighter_directory.path_join("form_profiles.json")
+	var selected_form := FighterSelection.form(fighter.fighter_directory.get_file())
+	var base_directory := fighter.fighter_directory
+	var parent_frame := 1
+	if not selected_form.is_empty():
+		base_directory = "res://generated/fighters/" + str(selected_form.base)
+		parent_frame = int(selected_form.frame)
+	var path := base_directory.path_join("form_profiles.json")
 	if not FileAccess.file_exists(path):
 		return
 	var manifest: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
@@ -1446,7 +1465,12 @@ func _configure_fighter_forms(fighter: FighterRuntime, driver: Node) -> void:
 	_prepare_form_root_owner()
 	# configure_forms preflights actual profiles/assets and required BODY
 	# functions. A manifest is an activation contract, not an unchecked switch.
-	driver.configure_forms(manifest.profiles, source_root_intervals, source_form_root_values, 1)
+	driver.configure_forms(manifest.profiles, source_root_intervals, source_form_root_values, parent_frame)
+	if parent_frame > 1:
+		# main Sprite 1900/frame 5 selects WKframe before the opening. The
+		# wrapper is fresh, so doWanKai takes its untransformed initCtrl path.
+		assert(not fighter.read_parent_field("万解"))
+		driver.body.doWanKai()
 	# Only a validated, executable profile graph can enter the source form action.
 	fighter.disabled_actions.erase("万解")
 

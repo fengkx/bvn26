@@ -262,6 +262,8 @@ def build(ffdec: Path, output: Path, run_id: str, frames: int, frame_order_probe
         fighter_names = {"p1": p1_character, "p2": p2_character}
         for slot, expected_id in expected_fighters.items():
             record = catalog.get(fighter_names.get(slot, ""), {})
+            if slot in case.get("selected_forms", {}) and int(record.get("WKframe", 1)) != int(case["selected_forms"][slot]):
+                raise ValueError("move fixture selected form mismatch for " + slot)
             if Path(str(record.get("url", ""))).stem.lower() != str(expected_id).lower():
                 raise ValueError("move fixture fighter mismatch for %s: %s != %s" %
                                  (slot, fighter_names.get(slot), expected_id))
