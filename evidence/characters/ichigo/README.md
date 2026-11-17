@@ -3,7 +3,8 @@
 Base: `a3b479414546250b7d0cd6e35cbc3ae52b3169d1`; branch `port/ichigo-base`.
 This is an independent author lane for `game/fighter/ichigo.swf`, including
 White Ichigo / 白一护. It is not the existing `yihu.swf` fighter or its forms.
-Targeted draft review only; no merge, production deployment or admission.
+Merged as a targeted port in PR #295 on 2026-11-16. Full production admission
+remains false; this character record does not certify deployment.
 The source-controlled matchmaking catalog is in scope; production Worker
 configuration and network changes are not part of this port.
 

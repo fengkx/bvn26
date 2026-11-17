@@ -5,7 +5,8 @@ Branch: `port/shouju-base`.
 Worktree: `/Users/fengkx/me/agent-code/bvn2_6-shouju`.
 
 This is committed, playable native WIP with partial targeted evidence. Targeted SOP evidence is recorded below; full character admission remains
-unaccepted. Draft handoff only; no merge or deployment.
+unaccepted. Merged as a targeted port in PR #294 on 2026-11-16; full admission
+remains false. The original handoff below does not certify production deployment.
 The source selector, manifest catalog and coverage order confirm 手鞠 from
 `game/fighter/shouju.swf` immediately after 小乌. See `selection-order.json`.
 Standalone form variants remain deferred. No other character is started.

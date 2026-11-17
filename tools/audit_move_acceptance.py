@@ -64,7 +64,17 @@ def audit(cases, native_results, references, deferred_labels=()):
     counts = {}
     for row in rows:
         counts[row['status']] = counts.get(row['status'], 0) + 1
-    return {'status': 'not_accepted', 'scope': '_'.join(fighters) + '_base_forms',
+    matched_statuses = {'matched', 'matched_negative_case', 'matched_source_missing_label'}
+    targeted_matched = bool(rows) and all(
+        row['status'] in matched_statuses and row['native'] and row['native']['executed']
+        for row in rows)
+    # Keep the legacy full-acceptance field conservative for existing consumers.
+    return {'status': 'not_accepted',
+            'targeted_status': 'targeted_cases_matched' if targeted_matched else 'not_accepted',
+            'targeted_unmatched_cases': [row['id'] for row in rows
+                                       if row['status'] not in matched_statuses
+                                       or not row['native'] or not row['native']['executed']],
+            'full_acceptance': 'not_accepted', 'scope': '_'.join(fighters) + '_base_forms',
             'deferred_labels': list(deferred_labels),
             'case_counts': counts, 'cases': rows, 'labels': labels,
             'source_window_boundaries': windows,
@@ -77,7 +87,9 @@ def audit(cases, native_results, references, deferred_labels=()):
                 'KO/timeover/round reset while attacks, helpers and timers remain active',
                 'Jump floor/platform transitions and both stage walls',
                 'Ghost/ordinary dash cancellation and repeated-input boundaries',
-                'Input release, same-tick conflict, focus loss and browser recovery',
+                'Input release and same-tick conflict',
+                'OS/canvas focus loss and held-key release',
+                'Page visibility changes and browser recovery',
                 *([] if '万解' in deferred_labels else
                   ['Form-switch retained state and replacement callback registration'])],
             'acceptance_rule': 'No empty, native-only, unexercised or unrecorded row implies original parity.'}
@@ -94,7 +106,7 @@ def main():
     result = audit([json.loads(p.read_text()) for p in sorted(args.cases.glob('*.json'))],
                    json.loads(args.native_results.read_text()), json.loads(args.reference_results.read_text()), args.defer_label)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
-    print(json.dumps({'status': result['status'], 'case_counts': result['case_counts'],
+    print(json.dumps({'status': result['status'], 'targeted_status': result['targeted_status'], 'case_counts': result['case_counts'],
                       'source_window_boundaries': len(result['source_window_boundaries'])}))
 
 

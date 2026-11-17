@@ -2036,3 +2036,26 @@ Evidence: `evidence/online/host-authority-friend-room/production-service-check.j
 creation now defaults to host-authoritative with mapConfirmed false; TURN
 issuance and room cleanup pass. Frontend was not deployed; real relay traffic
 remains unverified. Evidence: [backend deployment](../evidence/online/host-authority-friend-room/production-backend-deployment.json).
+
+## 2026-11-17 Targeted acceptance reporting follow-up to PR 299
+
+PR 299 was closed without merge; its review findings were evaluated separately.
+Character SOP now distinguishes targeted integration from full admission and
+binds review reuse to the product SHA and changed scope. The Temari, Ichigo Zero
+and Sage Naruto headers reflect their verified PR 294/295/296 merges. Historical
+status entries remain dated evidence, not current merge prohibitions. Other
+character merge states were not inferred from row counts.
+
+The move audit adds targeted_status and targeted_unmatched_cases while keeping
+legacy status and full_acceptance at not_accepted. Empty/missing/native-failed/
+unexercised evidence cannot pass the scoped summary; negative and source-missing
+label cases retain separate counts. Architecture now distinguishes canvas/OS
+focus loss, page visibility and capture foreground ownership. All 23 targeted
+audit and existing acceptance-harness tests pass. No gameplay, source-first
+gates, sampler admission flags, golden outputs or thresholds changed.
+
+Historical recursive diagnosis archives were not rewritten; replacing them needs
+a separately versioned runner and pinned-input tests. Capture timeouts and lost
+foreground cannot be treated as valid input observations. A classified failure
+receipt and any hidden-page input policy need their own evidence and tests;
+PR 299's suggested weakening of these checks is not adopted by this change.
