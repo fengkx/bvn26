@@ -3,7 +3,8 @@
 Base: `a3b479414546250b7d0cd6e35cbc3ae52b3169d1`.
 Branch: `port/minrenx-base`. Source-first base and required transformation are
 integrated in this branch. The release Web export and packed-form check pass; targeted foreground Web gameplay evidence is recorded below. Full parity and
-production admission remain false. Draft PR #296 tracks this candidate.
+production admission remain false. Merged as a targeted port in PR #296 on
+2026-11-16; this record does not certify production deployment.
 
 ## Roster identity
 
