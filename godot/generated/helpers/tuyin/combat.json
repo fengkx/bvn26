@@ -1,0 +1,144 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "土影",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/tuyin.swf",
+    "swf_sha256": "dd4c82f4b826baf6f405e309645f0accfc99ed6b9f3a110d614519ebdf91d2a0",
+    "script_bundle": "scripts/fighter/fz/tuyin.json",
+    "header_fps": 30.0,
+    "root_frames": 66
+  },
+  "start_frame": 2,
+  "end_frame": 66,
+  "hide_frames": [],
+  "hide_frame_events": [],
+  "nested_stops": [],
+  "action_events": [
+    {
+      "frame": 13,
+      "value": 1,
+      "source_path": "frame_13/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "frame": 62,
+      "value": 0,
+      "source_path": "frame_62/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [],
+  "contact_gotos": [],
+  "attacks": {
+    "atm1": {
+      "damage": 20,
+      "impact_strength": 2,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 5,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "atm2": {
+      "damage": 50,
+      "impact_strength": 1,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "atm3": {
+      "damage": 100,
+      "impact_strength": 3,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 16,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_16/DoAction.as"
+    },
+    {
+      "frame": 30,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_30/DoAction.as"
+    },
+    {
+      "frame": 36,
+      "op": "shine",
+      "color": 9461816,
+      "source_path": "frame_36/DoAction.as"
+    },
+    {
+      "frame": 66,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_66/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_23/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "02b8249792222b96797b2d2450f8c7d988a6baec3991e0bece452b0d961f40db",
+      "frame": 1
+    },
+    {
+      "path": "frame_13/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "frame": 13
+    },
+    {
+      "path": "frame_16/DoAction.as",
+      "source_sha256": "2941da485f7ab205ab1ca30eb889e0fea9a5095b07c828aaecea42c92a911eb3",
+      "frame": 16
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_30/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 30
+    },
+    {
+      "path": "frame_36/DoAction.as",
+      "source_sha256": "bad757989c77ef7938372a5ef0a31755ea5777e654a0053bb554e982ec24a35a",
+      "frame": 36
+    },
+    {
+      "path": "frame_62/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 62
+    },
+    {
+      "path": "frame_66/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 66
+    }
+  ]
+}
