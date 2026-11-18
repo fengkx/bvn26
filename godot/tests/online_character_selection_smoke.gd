@@ -103,26 +103,11 @@ func _run() -> void:
 	assert(not str(p1.helpers[0]).is_empty() and not str(p2.helpers[1]).is_empty(), "Helper phase did not choose defaults")
 	assert(p1.enabled == [true, false] and p2.enabled == [false, true])
 	assert(str(p1.helpers[1]) == str(p2.helpers[1]), "Mismatched future helper snapshot overrode the confirmed fighter")
-	var remote_fighter_snapshot: Dictionary = p1._as_dictionary(p1._remote_snapshots.get("fighter"))
 	var changed_fighter_snapshot := {
 		"version": 1, "sessionId": SESSION, "revision": int(p1._remote_revisions["fighter"]) + 100,
 		"phase": "fighter", "choice": {"fighter": mismatched_fighter, "helper": ""}, "confirmed": true,
 	}
 	assert(not p1.apply_remote_snapshot(changed_fighter_snapshot), "A remote peer changed its fighter after confirmation")
-	var confirmed_remote_fighter := str(p1._as_dictionary(remote_fighter_snapshot.get("choice")).get("fighter", ""))
-	var confirmed_remote_helper := str(p1.available.helpers.get(str(p1.helpers[1]), ""))
-	var mismatched_helper := ""
-	for candidate_helper in p1.available.helpers.values():
-		if str(candidate_helper) != confirmed_remote_helper:
-			mismatched_helper = str(candidate_helper)
-			break
-	assert(not mismatched_helper.is_empty())
-	var changed_helper_snapshot := {
-		"version": 1, "sessionId": SESSION, "revision": int(p1._remote_revisions["helper"]) + 100,
-		"phase": "helper", "choice": {"fighter": confirmed_remote_fighter, "helper": mismatched_helper},
-		"confirmed": true,
-	}
-
 	var p1_helper_before_move := str(p1.helpers[0])
 	var p2_helper_before_move := str(p2.helpers[1])
 	p1.repeats[0] = int(p1.spec.repeat_frames) - 1
@@ -141,6 +126,14 @@ func _run() -> void:
 	p1_to_p2.flush()
 	p2_to_p1.flush()
 	assert(p1._remote_confirmed["helper"], "The faster peer's confirmed helper choice was not recorded")
+	var confirmed_choice: Dictionary = p1._remote_snapshots["helper"]["choice"].duplicate()
+	var previous_helper := p1._resource_id("helpers", p2_helper_before_move)
+	assert(not previous_helper.is_empty() and previous_helper != confirmed_choice.helper)
+	var changed_helper_snapshot := {
+		"version": 1, "sessionId": SESSION, "revision": int(p1._remote_revisions["helper"]) + 1,
+		"phase": "helper", "choice": {"fighter": confirmed_choice.fighter, "helper": previous_helper},
+		"confirmed": true,
+	}
 	assert(not p1.apply_remote_snapshot(changed_helper_snapshot), "A remote peer changed its helper after confirmation")
 	_confirm(p1)
 	await create_timer(float(p1.spec.confirm_delay_ms) / 1000.0 + 0.05).timeout
