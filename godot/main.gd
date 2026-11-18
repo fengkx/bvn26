@@ -1716,6 +1716,7 @@ func _diagnostic_snapshot(capture_initial: bool = false) -> Dictionary:
 		"stageResourcePath": current_world.fighter_directory if current_world != null else "",
 		"physicsHz": Engine.physics_ticks_per_second,
 		"fightTick": physics_tick,
+		"rendering": _diagnostic_rendering(),
 		"players": current_players,
 		"initialState": _diagnostic_initial_players,
 		"inputBindings": session.codes.duplicate(true),
@@ -1735,6 +1736,37 @@ func _diagnostic_snapshot(capture_initial: bool = false) -> Dictionary:
 			"limitation": "This recipe describes a fresh Main match only; snapshots do not restore arbitrary scene state.",
 		},
 	}
+
+
+func _diagnostic_render_surface() -> RenderSurface:
+	var node := get_parent()
+	while node != null:
+		if node is RenderSurface:
+			return node as RenderSurface
+		node = node.get_parent()
+	return null
+
+
+func _diagnostic_rendering() -> Dictionary:
+	var surface := _diagnostic_render_surface()
+	var rendering := {
+		"renderQuality": session.render_quality,
+		"sourceQuality": session.source_quality,
+		"sampleGrid": null,
+		"physicalSize": null,
+		"rasterSize": null,
+		"rasterPixels": null,
+		"webRasterPixelBudget": null,
+	}
+	if surface == null:
+		return rendering
+	rendering.sampleGrid = surface.sample_grid
+	rendering.physicalSize = [surface.physical_output.x, surface.physical_output.y]
+	rendering.rasterSize = [surface.raster_size.x, surface.raster_size.y]
+	rendering.rasterPixels = surface.raster_size.x * surface.raster_size.y
+	if OS.has_feature("web"):
+		rendering.webRasterPixelBudget = RenderSurface.WEB_RASTER_PIXEL_BUDGET
+	return rendering
 
 
 func _diagnostic_player(fighter: FighterRuntime, helper: HelperRuntime) -> Dictionary:

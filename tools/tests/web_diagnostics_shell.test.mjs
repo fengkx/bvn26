@@ -240,6 +240,7 @@ test('exports a v2 report with legacy fields, bounded runtime events, tape, and 
     assert.equal(report.runtime.snapshotStatus, 'acknowledged');
     assert.equal(report.runtime.snapshot.match.players[0].state.hp, 900);
     assert.deepEqual(report.runtime.inputTape.map(event => event.seq), [3]);
+    assert.equal(report.runtime.tickClock, null);
     assert.deepEqual(report.runtime.criticalEvents.map(event => event.type), ['pause_state']);
     assert.equal(report.runtime.criticalIncidents.length, 1);
     assert.deepEqual(report.runtime.criticalIncidents[0].events.map(event => event.seq), [2, 3]);
@@ -269,6 +270,41 @@ test('does not fabricate build identity when runtime and sidecar disagree', asyn
     assert.equal(report.build.status, 'mismatch');
     assert.equal(report.build.buildID, 'd'.repeat(64));
     assert.equal(report.build.sidecarBuildID, 'a'.repeat(64));
+});
+
+test('exports rolling tickClock Hz from retained input_consumed events', async () => {
+    const page = createPage(sidecar);
+    const { window, elements, context, getBlob } = page;
+    await new Promise(resolve => setImmediate(resolve));
+    context.setNow(1_000);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 1, type: 'input_consumed', monoMs: 1_000, fightTick: 2215, buildID: sha, payload: { slot: 1 },
+    }));
+    context.setNow(60_939);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 2, type: 'input_consumed', monoMs: 60_939, fightTick: 3921, buildID: sha, payload: { slot: 1 },
+    }));
+    window.bvnDiagnosticsRegister((command, requestId) => {
+        if (command === 'visibility') return;
+        window.bvnDiagnosticsSetSnapshot(JSON.stringify({
+            requestId,
+            buildID: sha,
+            match: {
+                rendering: { renderQuality: 'HIGH', sampleGrid: 4, rasterPixels: 3_840_000 },
+            },
+        }));
+    });
+    await elements.get('download').dispatch('click');
+    const report = JSON.parse(await getBlob().text());
+    assert.deepEqual(report.runtime.tickClock, {
+        tickCount: 1707,
+        wallMs: 59_939,
+        hz: 1707 / (59_939 / 1000),
+        firstFightTick: 2215,
+        lastFightTick: 3921,
+        sampleCount: 2,
+    });
+    assert.equal(report.runtime.snapshot.match.rendering.renderQuality, 'HIGH');
 });
 
 test('routes online edit shortcuts and lets Godot receive the native text paste event', async () => {

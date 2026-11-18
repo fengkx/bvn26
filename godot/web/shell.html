@@ -1278,6 +1278,29 @@ button:disabled { opacity: .5; cursor: default; }
         if (!callback || callback === diagnosticsRequestCallback) diagnosticsRequestCallback = null;
     };
 
+    function rollingTickClock(events) {
+        const ticks = [];
+        for (const event of events || []) {
+            if (!event || event.type !== 'input_consumed') continue;
+            if (typeof event.fightTick !== 'number' || typeof event.monoMs !== 'number') continue;
+            ticks.push(event);
+        }
+        if (ticks.length < 2) return null;
+        const first = ticks[0];
+        const last = ticks[ticks.length - 1];
+        const wallMs = last.monoMs - first.monoMs;
+        const tickCount = last.fightTick - first.fightTick + 1;
+        if (!(wallMs > 0) || !(tickCount > 0)) return null;
+        return {
+            tickCount,
+            wallMs,
+            hz: tickCount / (wallMs / 1000),
+            firstFightTick: first.fightTick,
+            lastFightTick: last.fightTick,
+            sampleCount: ticks.length,
+        };
+    }
+
     function requestRuntimeSnapshot() {
         if (!diagnosticsRequestCallback) return Promise.resolve({ status: 'runtime_unavailable', snapshot: latestRuntimeSnapshot });
         const requestId = makeRunReportId('snapshot');
@@ -1411,6 +1434,7 @@ button:disabled { opacity: .5; cursor: default; }
                     droppedEvents: incident.droppedEvents,
                 })),
                 inputTape: retainedEvents.filter(event => event.type === 'input_consumed'),
+                tickClock: rollingTickClock(retainedEvents),
                 buffer: {
                     windowMs: logWindowMs,
                     coverageMs: firstEvent ? Math.max(0, Math.min(logWindowMs, nowMonoMs - firstEvent.receivedMonoMs)) : 0,
