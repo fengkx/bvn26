@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 石田·雨龙辅助已接入选人和联机目录。[原版与 Godot 对照](../evidence/helpers/yulong/README.md)
+
 - 2026-11-18 土影辅助导入，已接入第八个可选辅助及联机目录。原版多段攻击与两侧召唤对照记录见[土影复刻记录](../evidence/helpers/tuyin/README.md)，完整音画和 Web 验收仍待完成。
 
 - 2026-11-18 佐井辅助已接入本地选人和联机目录。两组原版与 Godot 同输入实测覆盖 P1 召唤、P2 反向连续召唤，734 条角色状态与 734 条辅助状态均匹配。见[佐井复刻记录](../evidence/helpers/zuojin/README.md)。

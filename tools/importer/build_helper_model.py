@@ -212,6 +212,19 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
                     "source_path": script["path"],
                     "source_sha256": record["source_sha256"],
                 })
+            anchor = re.fullmatch(
+                r'_X = _root\.game\["p" \+ pn\]\._x;\s*'
+                r'_Y = _root\.game\["p" \+ pn\]\._y ([+-]) (\d+);',
+                script["source"].strip(),
+            )
+            if anchor:
+                position_events.append({
+                    "frame": frame,
+                    "op": "place_relative_to_opponent",
+                    "offset_y": int(anchor[2]) * (-1 if anchor[1] == "-" else 1),
+                    "source_path": script["path"],
+                    "source_sha256": record["source_sha256"],
+                })
         placement = re.fullmatch(
             r"frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD "
             r"onClipEvent\(enterFrame\)\.as", script["path"]

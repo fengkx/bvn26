@@ -1,0 +1,136 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "石田",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/yulong.swf",
+    "swf_sha256": "0a3c088d2dc67d0ea526c1533dd96e688826ab4f9768cfb7fcdf65f7077b71ff",
+    "script_bundle": "scripts/fighter/fz/yulong.json",
+    "header_fps": 30.0,
+    "root_frames": 49
+  },
+  "start_frame": 2,
+  "end_frame": 49,
+  "hide_frames": [],
+  "hide_frame_events": [],
+  "nested_stops": [],
+  "action_events": [
+    {
+      "frame": 6,
+      "value": 1,
+      "source_path": "frame_6/DoAction.as",
+      "source_sha256": "e8b067d85be0021ced88c83e72e1f931c46a2fc5884ab324deef3aa3dedff13c"
+    },
+    {
+      "frame": 33,
+      "value": 0,
+      "source_path": "frame_33/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [
+    {
+      "frame": 3,
+      "op": "place_relative_to_opponent",
+      "offset_y": -100,
+      "source_path": "frame_3/DoAction.as",
+      "source_sha256": "b610158f559d6070faf301f1c00b585ac7953fa0d25c74a46a29d1a0e01a36e1"
+    }
+  ],
+  "contact_gotos": [],
+  "attacks": {
+    "atm1": {
+      "damage": 150,
+      "impact_strength": 5,
+      "vertical_impulse": -10,
+      "horizontal_impulse": 3,
+      "hitstun_ms": 800,
+      "reaction_label": "被打"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 6,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_6/DoAction.as"
+    },
+    {
+      "frame": 25,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_25/DoAction.as"
+    },
+    {
+      "frame": 27,
+      "op": "shine",
+      "color": 7329791,
+      "source_path": "frame_27/DoAction.as"
+    },
+    {
+      "frame": 49,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_49/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_35/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "1d39d00689ea24a9b0bdb73301c19f8ca5947d4f372980dfa6beb45dae23c270",
+      "frame": 1
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_25/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 25
+    },
+    {
+      "path": "frame_27/DoAction.as",
+      "source_sha256": "6e82fbd9e23b7e8aec524a4ee602e03241deef2c53a5aae53a3623d92cea4650",
+      "frame": 27
+    },
+    {
+      "path": "frame_3/DoAction.as",
+      "source_sha256": "b610158f559d6070faf301f1c00b585ac7953fa0d25c74a46a29d1a0e01a36e1",
+      "frame": 3
+    },
+    {
+      "path": "frame_33/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 33
+    },
+    {
+      "path": "frame_49/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 49
+    },
+    {
+      "path": "frame_6/DoAction.as",
+      "source_sha256": "e8b067d85be0021ced88c83e72e1f931c46a2fc5884ab324deef3aa3dedff13c",
+      "frame": 6
+    }
+  ]
+}
