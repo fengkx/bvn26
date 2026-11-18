@@ -25,8 +25,11 @@ def build(fighters: list[str] | None = None) -> None:
     selector_offset = main_source.index(selector) + selector.index("Math.random()")
     selector_index = main_source[:selector_offset].count("Math.random()") + 1
     for name in fighters or ["minren", "yihu"]:
-        sprite = json.loads((ROOT / f"data/slices/{name}-base.timeline.json").read_text())["sprite_id"]
-        bundle = json.loads((ROOT / f"scripts/fighter/{name}.json").read_text())
+        directory = ROOT / "godot/generated/fighters" / name
+        fighter_source = json.loads((directory / "fighter.json").read_text())["source"]
+        sprite = fighter_source["timeline_symbol_id"]
+        bundle = json.loads((ROOT / fighter_source["script_bundle_path"]).read_text())
+        origin = Path(bundle["game_file"]).relative_to("game").with_suffix("").as_posix()
         path = f"DefineSprite_{sprite}/frame_1/DoAction.as"
         source = next(s["source"] for s in bundle["scripts"] if s["path"] == path)
         voice = functions(source)["hurtVoice"]
@@ -39,12 +42,12 @@ def build(fighters: list[str] | None = None) -> None:
         ordinal = source[:offset].count("Math.random()") + 1
         if len(re.findall(r'getTimer\(\)', voice)) != 4:
             raise ValueError("Unexpected hurtVoice clock sites")
-        clock_sites = {key: f"fighter/{name}#{path}#hurtVoice:getTimer:{i + 1}"
+        clock_sites = {key: f"{origin}#{path}#hurtVoice:getTimer:{i + 1}"
                        for i, key in enumerate(("death_check", "death_write", "hurt_check", "hurt_write"))}
         spec = {"clock_sites": clock_sites,
             "source_path": path, "source_sha256": sha(voice.encode()),
             "source": voice, "selector_source": selector,
-            "probability_site": f"fighter/{name}#{path}:{ordinal}",
+            "probability_site": f"{origin}#{path}:{ordinal}",
             "selector_site": f"main#frame_8/DoAction.as:{selector_index}",
             "death_cooldown_ms": int(re.search(r"_dievoicen < (\d+)", voice)[1]),
             "hurt_cooldown_ms": int(re.search(r"_lastvoice < (\d+)", voice)[1]),
@@ -55,7 +58,7 @@ def build(fighters: list[str] | None = None) -> None:
             "hurt_linkages": names[:2], "death_linkage": names[2],
             "linkages_absent_in": inputs,
         }
-        (ROOT / f"godot/generated/fighters/{name}/hurt_voice.json").write_text(
+        (directory / "hurt_voice.json").write_text(
             json.dumps(spec, ensure_ascii=False, indent=2) + "\n")
 
 

@@ -224,12 +224,6 @@ func _ready() -> void:
 	ichigo_helper = _make_helper("res://generated/helpers/kon")
 	_set_diagnostic_actor(naruto, "p1")
 	_set_diagnostic_actor(ichigo, "p2")
-	var helper_presentation: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/helper_portraits/presentation.json"))
-	var depths: Dictionary = helper_presentation["depths"]
-	naruto.z_index = int(depths["p1"])
-	ichigo.z_index = int(depths["p2"])
-	naruto_helper.z_index = int(depths["p1fz"])
-	ichigo_helper.z_index = int(depths["p2fz"])
 	naruto_energy.set_helper(naruto_helper.helper_id)
 	ichigo_energy.set_helper(ichigo_helper.helper_id)
 	game_world.snap(naruto, ichigo)
@@ -523,7 +517,6 @@ func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
 		fighter.position = old.position
 		fighter.facing = old.facing
 		fighter.z_index = old.z_index
-		fighter.display_depth = old.display_depth
 		game_world.remove_child(old)
 		old.queue_free()
 		game_world.add_child(fighter)
@@ -770,6 +763,12 @@ func _enter_current_fight(modo: int) -> void:
 
 
 func _initialize_fight() -> void:
+	var helper_presentation: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/helper_portraits/presentation.json"))
+	var depths: Dictionary = helper_presentation["depths"]
+	naruto.z_index = int(depths["p1"])
+	ichigo.z_index = int(depths["p2"])
+	naruto_helper.z_index = int(depths["p1fz"])
+	ichigo_helper.z_index = int(depths["p2fz"])
 	health_hud.reset()
 	# Fresh match allocation also resets presentation and runtime state.
 	naruto.modo = session.modo

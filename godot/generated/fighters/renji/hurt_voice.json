@@ -1,15 +1,15 @@
 {
   "clock_sites": {
-    "death_check": "fighter/renji#DefineSprite_717/frame_1/DoAction.as#hurtVoice:getTimer:1",
-    "death_write": "fighter/renji#DefineSprite_717/frame_1/DoAction.as#hurtVoice:getTimer:2",
-    "hurt_check": "fighter/renji#DefineSprite_717/frame_1/DoAction.as#hurtVoice:getTimer:3",
-    "hurt_write": "fighter/renji#DefineSprite_717/frame_1/DoAction.as#hurtVoice:getTimer:4"
+    "death_check": "fighter/Renji#DefineSprite_717/frame_1/DoAction.as#hurtVoice:getTimer:1",
+    "death_write": "fighter/Renji#DefineSprite_717/frame_1/DoAction.as#hurtVoice:getTimer:2",
+    "hurt_check": "fighter/Renji#DefineSprite_717/frame_1/DoAction.as#hurtVoice:getTimer:3",
+    "hurt_write": "fighter/Renji#DefineSprite_717/frame_1/DoAction.as#hurtVoice:getTimer:4"
   },
   "source_path": "DefineSprite_717/frame_1/DoAction.as",
   "source_sha256": "dbd7fad57954ea4dbe79ba614ec8215b6613aa83d7e8f9b5201db69e251caedb",
   "source": "function hurtVoice(p)\r\n{\r\n   if(sw)\r\n   {\r\n      if(getTimer() - _dievoicen < 1000)\r\n      {\r\n         return undefined;\r\n      }\r\n      _dievoicen = getTimer();\r\n      dieSnd.start();\r\n      return undefined;\r\n   }\r\n   if(Math.random() > p)\r\n   {\r\n      return undefined;\r\n   }\r\n   if(getTimer() - _lastvoice < 2000)\r\n   {\r\n      return undefined;\r\n   }\r\n   var _loc2_ = _root.getRandInArray(hurtSnds);\r\n   _loc2_.start();\r\n   _lastvoice = getTimer();\r\n}",
   "selector_source": "function getRandInArray(a, remove, beside)\r\n{\r\n   var _loc2_ = Math.floor(Math.random() * a.length);\r\n   var _loc3_ = a[_loc2_];\r\n   if(_loc3_ == beside)\r\n   {\r\n      return getRandInArray(a,remove,beside);\r\n   }\r\n   if(remove)\r\n   {\r\n      a.splice(_loc2_,1);\r\n   }\r\n   return _loc3_;\r\n}",
-  "probability_site": "fighter/renji#DefineSprite_717/frame_1/DoAction.as:1",
+  "probability_site": "fighter/Renji#DefineSprite_717/frame_1/DoAction.as:1",
   "selector_site": "main#frame_8/DoAction.as:1",
   "death_cooldown_ms": 1000,
   "hurt_cooldown_ms": 2000,

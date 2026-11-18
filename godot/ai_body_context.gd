@@ -36,10 +36,10 @@ func read_field(key: String) -> Variant:
 		"ql": return fighter.energy if fighter.source_body_available else null
 		"vecx": return fighter.body_forward_velocity
 		"heavy": return fighter.body_heavy
-		"depth": return fighter.display_depth
+		"depth": return fighter.z_index
 		"opponent_vecx": return fighter.opponent.body_forward_velocity
 		"opponent_heavy": return fighter.opponent.body_heavy
-		"opponent_depth": return fighter.opponent.display_depth
+		"opponent_depth": return fighter.opponent.z_index
 		"opponent_xscale": return fighter.opponent.scale.x * 100.0
 		"opponent_airBody": return fighter.opponent.ai_source_state.read_field("airBody")
 		"root_wudi": return root_wudi
@@ -105,12 +105,7 @@ func platform_field(index: Variant, key: String) -> Variant:
 
 
 func swap_depths() -> void:
-	var depth := fighter.display_depth
-	fighter.display_depth = fighter.opponent.display_depth
-	fighter.opponent.display_depth = depth
-	var visual_depth := fighter.z_index
-	fighter.z_index = fighter.opponent.z_index
-	fighter.opponent.z_index = visual_depth
+	fighter.swap_opponent_depths()
 
 
 func body_service(name: String) -> Variant:
