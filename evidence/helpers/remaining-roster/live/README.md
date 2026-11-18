@@ -41,3 +41,5 @@ Use the sibling summon fixture for each helper and add the five `bitmap_ticks` f
 
 
 The compressed files under `traces/` include the input fixture, original actor and helper events, and native projections for replaying both comparators. Full-size frame pairs for the HUD, player markers and hit effects are under `detail/`. The [QA scene script](runners/browser_case.gd) is attached to an otherwise empty Node scene used as the test export entry point. The [browser driver](runners/browser_keys.mjs) connects to a dedicated Chromium debug endpoint. The ordinary headed browser was throttled during concurrent native window captures. The completed 17-case browser run used an isolated headless Chromium WebGL session.
+
+The [follow-up verification](../live-fixes/README.md) records the fixes and the original-projector comparisons for guard, guard break, dash and the contact boundary.

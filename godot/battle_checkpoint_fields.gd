@@ -7,7 +7,7 @@ const IMMUTABLE := ["source_form_profiles", "_pending_form", "_timeline", "_figh
 const MAIN_FIELDS := ["game_world", "naruto", "ichigo", "current_world", "naruto_energy",
 	"ichigo_energy", "combo_hud", "black_mu", "ts_face", "countdown", "timeout_timeline",
 	"timeout_clip", "nextfight_from_timeout", "_source_nextfight_goto_phase", "_intro_just_finished",
-	"pause_menu", "health_hud", "stage_background", "battle_intro", "source_random", "source_clock",
+	"pause_menu", "player_markers", "health_hud", "stage_background", "battle_intro", "source_random", "source_clock",
 	"selected_stage", "opponent_driver", "opponent_input_context", "cpu_services", "cpu_stage_registry",
 	"ko_timeline", "ko_clip", "ko_state", "ko_active", "ko_paused", "ko_menu_enabled",
 	"ko_terminal_pending", "ko_nextfight_timer", "ko_interval_sequence", "match_input", "_match_inputs",

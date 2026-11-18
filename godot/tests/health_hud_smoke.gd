@@ -10,6 +10,23 @@ func _run() -> void:
 	scene._enter_current_fight(3)
 	var hud: HealthHud = scene.health_hud
 	assert(hud.visible)
+	assert(hud.size == Vector2(600, 400))
+	scene.game_world.focus = "all"
+	scene.naruto.position = Vector2(200, -400)
+	scene.ichigo.position = Vector2(700, 100)
+	scene._advance_world_and_markers([])
+	var target := GameWorld.compute_target(scene.naruto.position, scene.ichigo.position, "all", scene.game_world.map_size_x)
+	for index in 2:
+		var marker: TimelinePreview = scene.player_markers[index]
+		var actor: FighterRuntime = [scene.naruto, scene.ichigo][index]
+		assert(marker.visible)
+		var origin := marker.position + marker.wrapper_translation()
+		assert(is_equal_approx(origin.x, SourceCoordinate.store(target.x + actor.position.x * target.scale)))
+		assert(is_equal_approx(origin.y, [60.0, 390.0][index]))
+	scene.naruto.position = Vector2(300, -25)
+	scene.ichigo.position = Vector2(550, -25)
+	scene._advance_world_and_markers([])
+	assert(not scene.player_markers[0].visible and not scene.player_markers[1].visible)
 	assert(not scene.fight_hud.visible)
 	assert(hud.trail == [100.0, 100.0])
 	scene.ichigo.health = 650

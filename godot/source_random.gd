@@ -18,10 +18,45 @@ var _rng := RandomNumberGenerator.new()
 
 # AVM random(n) is independent of the recorded Math.random call sequence.
 var _effect_rng := RandomNumberGenerator.new()
+var _effect_angles: Array = []
+var _effect_cursor := -1
 
 
-func effect_angle(limit: int) -> int:
-	return _effect_rng.randi_range(0, limit - 1)
+func use_recorded_effect_angles(records: Array) -> bool:
+	if not _valid_effect_angles(records):
+		_fail("Invalid effect angle tape")
+		return false
+	_effect_angles = records.duplicate(true)
+	_effect_cursor = 0
+	return true
+
+
+func effect_replay_complete() -> bool:
+	return failure.is_empty() and (_effect_cursor < 0 or _effect_cursor == _effect_angles.size())
+
+
+func _valid_effect_angles(records: Array) -> bool:
+	for draw in records:
+		if not draw is Dictionary or not draw.get("source") is String:
+			return false
+		var angle: Variant = draw.get("angle")
+		if typeof(angle) not in [TYPE_INT, TYPE_FLOAT] or not is_finite(float(angle)) or float(angle) != floorf(float(angle)) or angle < 0 or angle >= 180:
+			return false
+	return true
+
+
+func effect_angle(limit: int, source: String) -> int:
+	if _effect_cursor < 0:
+		return _effect_rng.randi_range(0, limit - 1)
+	if _effect_cursor >= _effect_angles.size():
+		_fail("Effect angle tape exhausted before " + source)
+		return 0
+	var draw: Dictionary = _effect_angles[_effect_cursor]
+	if draw.source != source or int(draw.angle) < 0 or int(draw.angle) >= limit:
+		_fail("Invalid recorded effect rotation for " + source)
+		return 0
+	_effect_cursor += 1
+	return int(draw.angle)
 
 
 func use_recorded_tape(records: Array, start_index: int = 0) -> bool:
@@ -51,6 +86,8 @@ func use_recorded_tape(records: Array, start_index: int = 0) -> bool:
 
 
 func use_live_random() -> void:
+	_effect_cursor = -1
+	_effect_angles.clear()
 	_replaying = false
 	_tape.clear()
 	_cursor = 0
@@ -63,6 +100,8 @@ func use_live_random() -> void:
 
 
 func use_seed(seed_value: int) -> void:
+	_effect_cursor = -1
+	_effect_angles.clear()
 	# Explicit opt-in; ordinary local play retains the live stream.
 	_replaying = false
 	_tape.clear()
@@ -80,7 +119,7 @@ func save_state() -> Dictionary:
 		"cursor": _cursor, "absolute_index": absolute_index,
 		"dropped": live_retained_dropped, "failure": failure,
 		"consumed": consumed.duplicate(true), "seed": _rng.seed, "state": _rng.state,
-		"effect_state": _effect_rng.state}
+		"effect_state": _effect_rng.state, "effect_angles": _effect_angles.duplicate(true), "effect_cursor": _effect_cursor}
 
 
 func validate_state(state: Variant) -> String:
@@ -100,6 +139,12 @@ func validate_state(state: Variant) -> String:
 		return "Invalid random position"
 	if state.replaying and state.cursor > state.tape.size():
 		return "Random cursor outside tape"
+	var angles: Variant = state.get("effect_angles", [])
+	var cursor: Variant = state.get("effect_cursor", -1)
+	if not angles is Array or not cursor is int or cursor < -1 or cursor > angles.size():
+		return "Invalid effect angle replay position"
+	if not _valid_effect_angles(angles):
+		return "Invalid effect angle record"
 	for records in [state.tape, state.consumed]:
 		for record in records:
 			if not record is Dictionary or not record.get("site") is String:
@@ -123,6 +168,8 @@ func load_state(state: Variant) -> String:
 	consumed.assign(state.consumed.duplicate(true))
 	_rng.seed = state.seed
 	_rng.state = state.state
+	_effect_angles = state.get("effect_angles", []).duplicate(true)
+	_effect_cursor = state.get("effect_cursor", -1)
 	_effect_rng.state = state.get("effect_state", state.state)
 	return ""
 

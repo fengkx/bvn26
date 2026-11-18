@@ -20,6 +20,9 @@ var win_frames := PackedInt32Array([1, 1])
 
 
 func _ready() -> void:
+	# Root hit shake can move the origin off screen while the drawn bars remain visible.
+	size = Vector2(600, 400)
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if spec != null and not spec.is_empty(): return
 	spec = JSON.parse_string(FileAccess.get_file_as_string(DIRECTORY + "/presentation.json"))
 	portraits = JSON.parse_string(FileAccess.get_file_as_string(PORTRAITS + "/presentation.json"))

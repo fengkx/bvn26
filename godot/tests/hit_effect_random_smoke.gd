@@ -37,7 +37,7 @@ func _run() -> void:
 		assert(effect.effect_frame == 19 and effect.is_queued_for_deletion())
 	assert(random.replay_complete())
 	var saved := random.save_state()
-	var expected := random.effect_angle(180)
+	var expected := random.effect_angle(180, "DefineSprite_125_XG_kanx/frame_1/DoAction.as")
 	assert(random.load_state(saved).is_empty())
 	var rotated := HitEffectRuntime.new()
 	rotated.auto_advance = false
@@ -46,6 +46,15 @@ func _run() -> void:
 	rotated.configure("XG_kanx", Vector2.ZERO, 1)
 	assert(is_equal_approx(rotated.rotation_degrees, float(expected)))
 	assert(random.replay_complete() and random.consumed.size() == 8)
+	random.use_recorded_effect_angles([{"source": "DefineSprite_125_XG_kanx/frame_1/DoAction.as", "angle": 20}])
+	var mirrored := HitEffectRuntime.new()
+	mirrored.source_random = random
+	root.add_child(mirrored)
+	mirrored.configure("XG_kanx", Vector2.ZERO, -1)
+	assert(mirrored.transform.x.is_equal_approx(Vector2.LEFT.rotated(deg_to_rad(20))))
+	assert(mirrored.transform.y.is_equal_approx(Vector2.DOWN.rotated(deg_to_rad(20))))
+	assert(random.effect_replay_complete())
+	mirrored.queue_free()
 	rotated.queue_free()
 	await process_frame
 	print("HIT_EFFECT_RANDOM_SMOKE_OK")
