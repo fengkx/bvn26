@@ -296,6 +296,10 @@ def _clip_events_for_prefix(script_bundle: dict[str, Any], prefix: str) -> list[
             continue
         frame = int(match["frame"])
         source = script["source"]
+        rotation = re.search(r"this\._rotation\s*=\s*random\((\d+)\);", source)
+        if rotation:
+            events.append({"frame": frame, "op": "random_rotation", "limit": int(rotation[1]),
+                           "source_path": script["path"]})
         if PAUSE_RE.search(source):
             events.append({"frame": frame, "op": "pause_game", "source_path": script["path"]})
         shine = SHINE_RE.search(source)

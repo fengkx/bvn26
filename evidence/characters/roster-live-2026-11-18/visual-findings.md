@@ -67,3 +67,10 @@ fixture; it was not regenerated on the strength of the other form alone.
 Local Web keyboard follow-up reproduced neither repaired rectangle. Browser logs
 contain two viewport lifecycle errors (`is_input_handled` / `push_input`); trigger
 not isolated, retained in `web/browser-errors.json`.
+
+Follow-up repair: frame 1 now applies the source integer rotation for XG_kanx,
+XG_kan, XG_ice and XG_fire. Gaara's tick-205 terminal replay is retained as
+`particle-followup/gaara-rotation-fixed-205.png`. Through this frame, all
+412 actor rows and 206 root rows match the previous same-input terminal run.
+The integer draw has a checkpointed generator because the existing Flash tape
+only records Math.random. Individual sampled Flash angles remain unrecorded.
