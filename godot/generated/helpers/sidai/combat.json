@@ -1,0 +1,320 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "四代",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/sidai.swf",
+    "swf_sha256": "931d6000ed25d24ee67e119113e8b8ce88081746428c4d28a5c44d58d90ffc48",
+    "script_bundle": "scripts/fighter/fz/sidai.json",
+    "header_fps": 24.0,
+    "root_frames": 181
+  },
+  "start_frame": 2,
+  "end_frame": 181,
+  "hide_frames": [
+    90
+  ],
+  "hide_frame_events": [
+    {
+      "frame": 90,
+      "op": "root_goto_and_stop",
+      "target_frame": 1,
+      "source_path": "frame_90/DoAction.as",
+      "source_line": 1,
+      "source_sha256": "7e1b5714d1810265f312cd677af1055e4d5d494010ae462ef4839e77dea49e13"
+    }
+  ],
+  "nested_stops": [],
+  "action_events": [
+    {
+      "frame": 3,
+      "value": 1,
+      "source_path": "frame_3/DoAction.as",
+      "source_sha256": "e8b067d85be0021ced88c83e72e1f931c46a2fc5884ab324deef3aa3dedff13c"
+    },
+    {
+      "frame": 85,
+      "value": 0,
+      "source_path": "frame_85/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "frame": 164,
+      "value": 0,
+      "source_path": "frame_164/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [
+    {
+      "op": "warp_by_facing",
+      "cases": {
+        "1": {
+          "x": -60
+        },
+        "-1": {
+          "x": 60
+        }
+      },
+      "frame": 31,
+      "source_path": "frame_31/DoAction.as",
+      "source_sha256": "9af67f23b9def730320b280f8a65afaefdd6b4e527aaf74b54389ce6198900db"
+    },
+    {
+      "op": "warp_by_facing",
+      "cases": {
+        "1": {
+          "x": 10
+        },
+        "-1": {
+          "x": -10
+        }
+      },
+      "frame": 70,
+      "source_path": "frame_70/DoAction.as",
+      "source_sha256": "9e7907587ce9bcbe0f0f698e85f41827d8d303de8a519d720b381b0091abbfc6"
+    },
+    {
+      "op": "warp_by_facing",
+      "cases": {
+        "1": {
+          "x": -40
+        },
+        "-1": {
+          "x": 40
+        }
+      },
+      "frame": 99,
+      "source_path": "frame_99/DoAction.as",
+      "source_sha256": "4f0833f022e13473ba76c0a527760291f6911a2b92713e0697bb1e0046210456"
+    },
+    {
+      "op": "warp_by_facing",
+      "cases": {
+        "1": {
+          "x": -30,
+          "y": -10
+        },
+        "-1": {
+          "x": 30,
+          "y": -10
+        }
+      },
+      "frame": 134,
+      "source_path": "frame_134/DoAction.as",
+      "source_sha256": "90972c88ece0ddb3fe8c63ec3dbd09670c37ef5adf0c3f2d53a1fc9ab154642b"
+    }
+  ],
+  "contact_gotos": [],
+  "attacks": {
+    "atm1": {
+      "damage": 50,
+      "impact_strength": 5,
+      "vertical_impulse": -10,
+      "horizontal_impulse": 0,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    },
+    "atm3": {
+      "damage": 50,
+      "impact_strength": 3,
+      "vertical_impulse": 10,
+      "horizontal_impulse": 5,
+      "hitstun_ms": 1000,
+      "reaction_label": "被打"
+    },
+    "atm5": {
+      "damage": 10,
+      "impact_strength": 4,
+      "vertical_impulse": -1,
+      "horizontal_impulse": 0,
+      "hitstun_ms": 300,
+      "reaction_label": "被打"
+    },
+    "atm2": {
+      "damage": 50,
+      "impact_strength": 3,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 10,
+      "hitstun_ms": 1000,
+      "reaction_label": "被打"
+    },
+    "atm4": {
+      "damage": 50,
+      "impact_strength": 16,
+      "vertical_impulse": 0,
+      "horizontal_impulse": -8,
+      "hitstun_ms": 1000,
+      "reaction_label": "被打"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 3,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_3/DoAction.as"
+    },
+    {
+      "frame": 34,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_34/DoAction.as"
+    },
+    {
+      "frame": 35,
+      "op": "shine",
+      "color": 16777215,
+      "source_path": "frame_35/DoAction.as"
+    },
+    {
+      "frame": 35,
+      "op": "shine",
+      "color": 1069248,
+      "source_path": "frame_35/DoAction.as"
+    },
+    {
+      "frame": 92,
+      "op": "shine",
+      "color": 16777215,
+      "source_path": "frame_92/DoAction.as"
+    },
+    {
+      "frame": 92,
+      "op": "shine",
+      "color": 1069248,
+      "source_path": "frame_92/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_17/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "DefineSprite_46/frame_1/DoAction.as",
+      "source_sha256": "2e779ee84753f0c918debe45f8956e33fddcbd60eb2d30818fa0e64b1e03b1a3"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "91945e52f9b4f759448f1c5dbf3bcb20842931874d3c7ba3e30343341014358c",
+      "frame": 1
+    },
+    {
+      "path": "frame_134/DoAction.as",
+      "source_sha256": "90972c88ece0ddb3fe8c63ec3dbd09670c37ef5adf0c3f2d53a1fc9ab154642b",
+      "frame": 134
+    },
+    {
+      "path": "frame_139/PlaceObject2_46_7/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c54fac697a62fe0eafcdd63874bbfb2381cf1cae8222787bd2f3ecd11d09c3c4",
+      "frame": 139
+    },
+    {
+      "path": "frame_164/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 164
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_3/DoAction.as",
+      "source_sha256": "e8b067d85be0021ced88c83e72e1f931c46a2fc5884ab324deef3aa3dedff13c",
+      "frame": 3
+    },
+    {
+      "path": "frame_31/DoAction.as",
+      "source_sha256": "9af67f23b9def730320b280f8a65afaefdd6b4e527aaf74b54389ce6198900db",
+      "frame": 31
+    },
+    {
+      "path": "frame_34/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 34
+    },
+    {
+      "path": "frame_35/DoAction.as",
+      "source_sha256": "f84c8b7e3961b0fedf6c241774ae46521a21e56d0c45924582091441daf0016f",
+      "frame": 35
+    },
+    {
+      "path": "frame_50/DoAction.as",
+      "source_sha256": "ec8cec58e97bb7ed691788a0fb576c445f700bd74d465af6f67009bae5be598d",
+      "frame": 50
+    },
+    {
+      "path": "frame_60/DoAction.as",
+      "source_sha256": "cceb609792b1d29a83e3c0bd5ba838cdbd352424c23038140c2cc6af785785c5",
+      "frame": 60
+    },
+    {
+      "path": "frame_70/DoAction.as",
+      "source_sha256": "9e7907587ce9bcbe0f0f698e85f41827d8d303de8a519d720b381b0091abbfc6",
+      "frame": 70
+    },
+    {
+      "path": "frame_85/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 85
+    },
+    {
+      "path": "frame_90/DoAction.as",
+      "source_sha256": "7e1b5714d1810265f312cd677af1055e4d5d494010ae462ef4839e77dea49e13",
+      "frame": 90
+    },
+    {
+      "path": "frame_92/DoAction.as",
+      "source_sha256": "f84c8b7e3961b0fedf6c241774ae46521a21e56d0c45924582091441daf0016f",
+      "frame": 92
+    },
+    {
+      "path": "frame_99/DoAction.as",
+      "source_sha256": "4f0833f022e13473ba76c0a527760291f6911a2b92713e0697bb1e0046210456",
+      "frame": 99
+    }
+  ],
+  "clip_events": [
+    {
+      "op": "move_owner",
+      "forward": 0,
+      "vertical": 4,
+      "frame": 139,
+      "depth": 7,
+      "character_id": 46,
+      "source_path": "frame_139/PlaceObject2_46_7/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "c54fac697a62fe0eafcdd63874bbfb2381cf1cae8222787bd2f3ecd11d09c3c4"
+    }
+  ],
+  "root_gotos": [
+    {
+      "frame": 50,
+      "target_frame": 62,
+      "requires_hurt": true,
+      "requires_health": true,
+      "source_path": "frame_50/DoAction.as"
+    },
+    {
+      "frame": 60,
+      "target_frame": 92,
+      "requires_hurt": false,
+      "requires_health": false,
+      "source_path": "frame_60/DoAction.as"
+    }
+  ]
+}

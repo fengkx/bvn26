@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 原版目录的 26 个辅助均已接入选角和联机目录。本批 17 个辅助完成 24 组原版 Flash 与 Godot 同输入对照，每条状态流各 10,008 行匹配。完整音画、浏览器实战和全员回滚验收仍待完成。[逐角色结果](../evidence/helpers/remaining-roster/README.md)
+
 - 石田·雨龙辅助已接入选人和联机目录。[原版与 Godot 对照](../evidence/helpers/yulong/README.md)
 
 - 2026-11-18 土影辅助导入，已接入第八个可选辅助及联机目录。原版多段攻击与两侧召唤对照记录见[土影复刻记录](../evidence/helpers/tuyin/README.md)，完整音画和 Web 验收仍待完成。

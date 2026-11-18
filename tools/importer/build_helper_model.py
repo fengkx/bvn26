@@ -13,6 +13,11 @@ from typing import Any
 TOOLS_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS_DIR))
 
+try:
+    from .helper_motion import compile_warp, compile_clip
+except ImportError:
+    from helper_motion import compile_warp, compile_clip
+
 from inspect_swf import inspect  # noqa: E402
 
 FIELD_NAMES = {
@@ -151,6 +156,12 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
     position_events = []
     contact_gotos = []
     nested_stops = []
+    clip_events = []
+    nested_clip_events = []
+    nested_shines = []
+    clip_speeds = {}
+    root_gotos = []
+    catch_frames = {}
     instance_names = {}
     label_frames = _source_label_frames(timeline_path, swf_path) if timeline_path else {}
     for script in bundle["scripts"]:
@@ -178,13 +189,39 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
             nested_stops.append({"sprite_id": int(nested[1]), "frame": int(nested[2]),
                                  "source_path": script["path"], "source_sha256": record["source_sha256"]})
         if nested and re.search(r"\b_name\s*=", script["source"]):
-            rename = re.fullmatch(r'_name\s*=\s*"([A-Za-z_][A-Za-z0-9_]*)"\s*;', script["source"].strip())
+            source = script["source"].strip()
+            if source.endswith("catched = true;"):
+                catch_frames[nested[1]] = int(nested[2])
+                source = source.removesuffix("catched = true;").strip()
+            source = source.removeprefix("this.")
+            rename = re.fullmatch(r'_name\s*=\s*"([A-Za-z_][A-Za-z0-9_]*)"\s*;', source)
             if rename is None:
                 raise ValueError(f"Unsupported helper instance rename: {script['path']}")
             instance_names.setdefault(nested[1], []).append({
                 "frame": int(nested[2]), "name": rename[1],
                 "source_path": script["path"], "source_sha256": record["source_sha256"],
             })
+        if nested:
+            speed = re.search(r'var movspeed = (\d+);', script["source"])
+            if speed:
+                clip_speeds[nested[1]] = int(speed[1])
+            if script["source"].strip() == "_root.shine();":
+                nested_shines.append(dict(record, sprite_id=int(nested[1]), frame=int(nested[2])))
+        child = re.fullmatch(r"DefineSprite_(\d+)/frame_(\d+)/PlaceObject2_(\d+)_(\d+)/CLIPACTIONRECORD onClipEvent\(enterFrame\)\.as", script["path"])
+        if child:
+            operation = compile_clip(script["source"])
+            if operation:
+                # _parent.pn resolves against the holder, not the helper root.
+                # An unbound holder selects pundefined, so only the else motion runs.
+                if operation["op"] == "projectile":
+                    holder = f"DefineSprite_{child[1]}/"
+                    assigns_slot = any(entry["path"].startswith(holder) and
+                                       re.search(r"(?<![.\w])pn\s*=", entry["source"])
+                                       for entry in bundle["scripts"])
+                    if not assigns_slot and operation["keep_moving"]:
+                        operation = {"op": "move_clip", "speed": int(operation["speed"])}
+                nested_clip_events.append(dict(operation, parent_sprite=int(child[1]), frame=int(child[2]),
+                                               character_id=int(child[3]), depth=int(child[4]), source_path=script["path"]))
         root_match = ROOT_FRAME.match(script["path"])
         if root_match is None:
             continue
@@ -212,6 +249,15 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
                     "source_path": script["path"],
                     "source_sha256": record["source_sha256"],
                 })
+            warp = compile_warp(script["source"])
+            if warp:
+                position_events.append(dict(warp, frame=frame, source_path=script["path"], source_sha256=record["source_sha256"]))
+            source = " ".join(script["source"].split())
+            jump = re.fullmatch(r'(?:if\(_root\.game\["p" \+ pn\]\.mc\.(hp > 0 && _root\.game\["p" \+ pn\]\.mc\.)?动作 == 2\) \{ )?gotoAndStop\("([^"]+)"\); play\(\);(?: \})?', source)
+            if jump:
+                root_gotos.append({"frame": frame, "target_frame": label_frames[jump[2]],
+                                   "requires_hurt": source.startswith("if"), "requires_health": bool(jump[1]),
+                                   "source_path": script["path"]})
             anchor = re.fullmatch(
                 r'_X = _root\.game\["p" \+ pn\]\._x;\s*'
                 r'_Y = _root\.game\["p" \+ pn\]\._y ([+-]) (\d+);',
@@ -230,6 +276,16 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
             r"onClipEvent\(enterFrame\)\.as", script["path"]
         )
         if placement:
+            operation = compile_clip(script["source"])
+            source = " ".join(script["source"].split())
+            if source.startswith("onClipEvent(enterFrame){ if(catched)") and "_parent.pn" in source:
+                operation = {"op": "track_until_caught", "until_frame": catch_frames[placement[2]]}
+            if operation and operation.get("speed") == "movspeed":
+                operation["speed"] = clip_speeds[placement[2]]
+            if operation:
+                clip_events.append(dict(operation, frame=frame, depth=int(placement[3]),
+                                        character_id=int(placement[2]), source_path=script["path"],
+                                        source_sha256=record["source_sha256"]))
             contact = CONTACT_GOTO.fullmatch(script["source"].strip())
             if contact:
                 label = contact["label"]
@@ -259,8 +315,10 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
                 "kind": call[1], "xg": call[2] or "XG_bs", "helper": call[3] == "true",
                 "source_path": script["path"],
             })
-        for call in re.finditer(r'_root\.shine\((\d+)\)', source):
-            presentation_events.append({"frame": frame, "op": "shine", "color": int(call[1]), "source_path": script["path"]})
+        if "_root.shunbuxg(this)" in source:
+            presentation_events.append({"frame": frame, "op": "effect", "xg": "XG_rush", "source_path": script["path"]})
+        for call in re.finditer(r'_root\.shine\((\d*)\)', source):
+            presentation_events.append({"frame": frame, "op": "shine", "color": int(call[1] or 0xffffff), "source_path": script["path"]})
         placement = re.search(r'/PlaceObject2_(\d+)_(\d+)/', script["path"])
         if placement and 'onClipEvent(load)' in source:
             if '_root.game["p" + _parent.pn]._x - _parent._x' not in source:
@@ -307,6 +365,14 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
     }
 
     # Keep existing helper artifacts byte-stable until they actually use this field.
+    if clip_events:
+        model["clip_events"] = clip_events
+    if nested_shines:
+        model["nested_shines"] = nested_shines
+    if nested_clip_events:
+        model["nested_clip_events"] = nested_clip_events
+    if root_gotos:
+        model["root_gotos"] = root_gotos
     if instance_names:
         model["instance_names"] = {
             sprite: sorted(events, key=lambda event: event["frame"])

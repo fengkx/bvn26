@@ -1,0 +1,216 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "碎蜂",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/soifong.swf",
+    "swf_sha256": "345e4951288053a4d7331f8b557c33e90643f8bf9f5e611cb4353bc015dcd746",
+    "script_bundle": "scripts/fighter/fz/soifong.json",
+    "header_fps": 30.0,
+    "root_frames": 85
+  },
+  "start_frame": 2,
+  "end_frame": 85,
+  "hide_frames": [],
+  "hide_frame_events": [],
+  "nested_stops": [
+    {
+      "sprite_id": 101,
+      "frame": 12,
+      "source_path": "DefineSprite_101/frame_12/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "sprite_id": 99,
+      "frame": 25,
+      "source_path": "DefineSprite_99/frame_25/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    }
+  ],
+  "action_events": [
+    {
+      "frame": 15,
+      "value": 1,
+      "source_path": "frame_15/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "frame": 76,
+      "value": 0,
+      "source_path": "frame_76/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [],
+  "contact_gotos": [],
+  "attacks": {
+    "atm1": {
+      "damage": 400,
+      "impact_strength": 7,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 20,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 16,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_16/DoAction.as"
+    },
+    {
+      "frame": 45,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_45/DoAction.as"
+    },
+    {
+      "frame": 49,
+      "op": "shine",
+      "color": 16777215,
+      "source_path": "frame_49/DoAction.as"
+    },
+    {
+      "frame": 85,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_85/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_101/frame_1/DoAction.as",
+      "source_sha256": "933f6677a96d605bcda835c769e7cb0e9c00cde37905defd130277bfadb15f01"
+    },
+    {
+      "path": "DefineSprite_101/frame_12/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "path": "DefineSprite_101/frame_5/DoAction.as",
+      "source_sha256": "411b61cae7e8c339a6548c1ed4d30fb15e196c61a11ec37df0325c0d8a73a29d"
+    },
+    {
+      "path": "DefineSprite_101/frame_6/DoAction.as",
+      "source_sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5"
+    },
+    {
+      "path": "DefineSprite_101/frame_9/DoAction.as",
+      "source_sha256": "ba6049aea132c2570a6d019706611784667f06611663dd25497d2ac55ff2274e"
+    },
+    {
+      "path": "DefineSprite_99/frame_25/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "e3786782975a16b9264f0d3c5dd8db3ed4837a5733972bb9305dcdce958531d9",
+      "frame": 1
+    },
+    {
+      "path": "frame_15/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "frame": 15
+    },
+    {
+      "path": "frame_16/DoAction.as",
+      "source_sha256": "2941da485f7ab205ab1ca30eb889e0fea9a5095b07c828aaecea42c92a911eb3",
+      "frame": 16
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_45/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 45
+    },
+    {
+      "path": "frame_49/DoAction.as",
+      "source_sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5",
+      "frame": 49
+    },
+    {
+      "path": "frame_49/PlaceObject2_101_2/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "bc8dfdc86551c6d762f76033515e945e6502a0eaf9dca1b74fa16dca3d0eae38",
+      "frame": 49
+    },
+    {
+      "path": "frame_76/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 76
+    },
+    {
+      "path": "frame_85/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 85
+    }
+  ],
+  "clip_events": [
+    {
+      "op": "projectile",
+      "targets": [
+        "bdmn",
+        "zh1atm",
+        "zh2atm",
+        "zh3atm",
+        "abcd"
+      ],
+      "hitmc_targets": [
+        "bdmn",
+        "zh1atm",
+        "zh2atm",
+        "zh3atm",
+        "abcd"
+      ],
+      "keep_moving": false,
+      "speed": 30,
+      "frame": 49,
+      "depth": 2,
+      "character_id": 101,
+      "source_path": "frame_49/PlaceObject2_101_2/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "bc8dfdc86551c6d762f76033515e945e6502a0eaf9dca1b74fa16dca3d0eae38"
+    }
+  ],
+  "nested_shines": [
+    {
+      "path": "DefineSprite_101/frame_6/DoAction.as",
+      "source_sha256": "86d23e77e9c18a76f1ec3a027bacd5528dd9888a4d33eaa17c4de6ae4d85abd5",
+      "sprite_id": 101,
+      "frame": 6
+    }
+  ],
+  "instance_names": {
+    "101": [
+      {
+        "frame": 5,
+        "name": "atm1",
+        "source_path": "DefineSprite_101/frame_5/DoAction.as",
+        "source_sha256": "411b61cae7e8c339a6548c1ed4d30fb15e196c61a11ec37df0325c0d8a73a29d"
+      },
+      {
+        "frame": 9,
+        "name": "bbb",
+        "source_path": "DefineSprite_101/frame_9/DoAction.as",
+        "source_sha256": "ba6049aea132c2570a6d019706611784667f06611663dd25497d2ac55ff2274e"
+      }
+    ]
+  }
+}

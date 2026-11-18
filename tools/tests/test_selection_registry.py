@@ -22,7 +22,10 @@ class SelectionRegistryTests(unittest.TestCase):
             set(first["fighters"]),
             {"鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次", "樱", "露其雅", "石田", "白哉", "小李", "银", "茶渡", "宁次", "一角", "鼬", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染", "剑八", "我爱罗", "重吾", "涅茧利", "香磷", "奇拉比", "一护2", "手鞠", "剑心", "小乌", "仙鸣", "佐助须佐", "日番谷万解", "露其雅始解", "一护万解", "鸣人九尾", "佐助咒怨"},
         )
-        self.assertEqual(set(first["helpers"]), {"我爱罗", "魂", "鼬", "松本", "剑八", "织姬", "佐井", "土影", "石田"})
+        catalog = json.loads((ROOT / "manifest.json").read_text())["fighter_catalog"]
+        self.assertEqual(first["helpers"], {
+            name: Path(entry["fzurl"]).stem for name, entry in catalog.items() if "fzurl" in entry
+        })
 
         published = json.loads(
             (ROOT / "godot/generated/main/character_selection/available.json").read_text()
@@ -62,10 +65,7 @@ class SelectionRegistryTests(unittest.TestCase):
         )
         self.assertEqual(
             set(footer),
-            {"土影", "佐井", "织姬",
-                "鸣人", "一护", "日番谷", "佐助", "卡卡西", "恋次",
-                "樱", "露其雅", "石田", "白哉", "小李", "银", "茶渡", "宁次", "一角", "魂", "我爱罗", "鼬", "松本", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染", "剑八", "重吾", "涅茧利", "香磷", "奇拉比", "一护2", "手鞠", "剑心", "小乌", "仙鸣", "佐助须佐", "日番谷万解", "露其雅始解", "一护万解", "鸣人九尾", "佐助咒怨",
-            },
+            set(portraits) | set(build_available(ROOT)["helpers"]),
         )
         for entry in portraits.values():
             for texture in entry["textures"]:
