@@ -15,6 +15,14 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class HelperTimingTests(unittest.TestCase):
+    def test_uryu_anchor_is_a_single_root_frame_write(self):
+        model = build_model(ROOT / 'scripts/fighter/fz/yulong.json',
+                            ROOT / 'game/fighter/fz/yulong.swf', '石田')
+        event, = model['position_events']
+        self.assertEqual((event['frame'], event['op'], event['offset_y']),
+                         (3, 'place_relative_to_opponent', -100))
+        self.assertEqual(event['source_path'], 'frame_3/DoAction.as')
+
     def test_root_stop_is_source_level_and_not_nested_control_flow(self):
         self.assertTrue(has_unconditional_root_stop('_root.fzccXg(this);\n' 'gotoAndStop(1);'))
         self.assertTrue(has_unconditional_root_stop('if (miss) {\n}\n' 'gotoAndStop ( 1 );'))

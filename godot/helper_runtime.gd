@@ -325,9 +325,15 @@ func _apply_frame_events_at(frame: int, from_deferred_queue: bool = false) -> vo
 		if int(event["frame"]) == frame:
 			_aim_placed_clip(event, frame)
 	for event: Dictionary in _combat.get("position_events", []):
-		if int(event.get("frame", -1)) == frame and event.get("op") == "aim_opponent_x":
-			if is_instance_valid(owner_fighter) and is_instance_valid(owner_fighter.opponent):
+		if int(event["frame"]) != frame:
+			continue
+		if not is_instance_valid(owner_fighter) or not is_instance_valid(owner_fighter.opponent):
+			continue
+		match event["op"]:
+			"aim_opponent_x":
 				position.x = owner_fighter.opponent.position.x
+			"place_relative_to_opponent":
+				position = owner_fighter.opponent.position + Vector2(0, float(event["offset_y"]))
 	for event: Dictionary in _combat.get("drain_events", []):
 		if int(event["frame"]) != frame:
 			continue

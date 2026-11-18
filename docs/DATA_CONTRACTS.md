@@ -501,3 +501,5 @@ mixed-schema peers from starting. A drain retains the highest state serial,
 even when unordered delivery puts an older packet last.
 
 Optional helper field `instance_names` maps a sprite ID to child-frame name assignments in ascending frame order. Each entry records the new name, source path and source hash. Resolve contact against the live child frame and the placed instance geometry. The load-time offset remains attached to the original placement.
+
+Helper position events may use `place_relative_to_opponent` to copy both opponent coordinates and add the signed source-space `offset_y` on the specified root frame.
