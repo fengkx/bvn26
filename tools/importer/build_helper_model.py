@@ -151,6 +151,7 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
     position_events = []
     contact_gotos = []
     nested_stops = []
+    instance_names = {}
     label_frames = _source_label_frames(timeline_path, swf_path) if timeline_path else {}
     for script in bundle["scripts"]:
         record = {
@@ -176,6 +177,14 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
         if nested and script["source"].strip() == "stop();":
             nested_stops.append({"sprite_id": int(nested[1]), "frame": int(nested[2]),
                                  "source_path": script["path"], "source_sha256": record["source_sha256"]})
+        if nested and re.search(r"\b_name\s*=", script["source"]):
+            rename = re.fullmatch(r'_name\s*=\s*"([A-Za-z_][A-Za-z0-9_]*)"\s*;', script["source"].strip())
+            if rename is None:
+                raise ValueError(f"Unsupported helper instance rename: {script['path']}")
+            instance_names.setdefault(nested[1], []).append({
+                "frame": int(nested[2]), "name": rename[1],
+                "source_path": script["path"], "source_sha256": record["source_sha256"],
+            })
         root_match = ROOT_FRAME.match(script["path"])
         if root_match is None:
             continue
@@ -285,6 +294,11 @@ def build_model(scripts_path: Path, swf_path: Path, helper_id: str,
     }
 
     # Keep existing helper artifacts byte-stable until they actually use this field.
+    if instance_names:
+        model["instance_names"] = {
+            sprite: sorted(events, key=lambda event: event["frame"])
+            for sprite, events in instance_names.items()
+        }
     if health_events:
         model["health_events"] = sorted(health_events, key=lambda event: event["frame"])
     return model
