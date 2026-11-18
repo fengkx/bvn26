@@ -54,6 +54,17 @@ func _run() -> void:
 			check(child is Polygon2D, "Blade segment rendered as a full bitmap")
 		for child in preview.get_children():
 			child.free()
+	# The same SWF sampling flag governs both full sprites and clipped polygons.
+	for style in [0x40, 0x41, 0x42, 0x43]:
+		var shape: Dictionary = preview._definitions[180].duplicate(true)
+		for fill: Dictionary in shape.bitmap_fills:
+			fill.fill_style_type = style
+		preview._definitions[-2] = shape
+		preview._render_placement({"character_id": -2}, Transform2D.IDENTITY, 1.0, 0, 1)
+		var expected := CanvasItem.TEXTURE_FILTER_LINEAR if style < 0x42 else CanvasItem.TEXTURE_FILTER_NEAREST
+		for leaf in preview.get_children():
+			check(leaf.texture_filter == expected, "Wrong sampling for SWF bitmap fill %d" % style)
+			leaf.free()
 	preview.free()
 	_check_corpus()
 	for up in [false, true]:
