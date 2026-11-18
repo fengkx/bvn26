@@ -982,6 +982,8 @@ func _render_placement(
 	var compiled_fill_masks: Array = definition.get("bitmap_clip_polygons", [])
 	for fill_index in fills.size():
 		var fill: Dictionary = fills[fill_index]
+		# SWF 0x40/0x41 are smoothed bitmap fills, 0x42/0x43 are unsmoothed.
+		var texture_filter_mode := CanvasItem.TEXTURE_FILTER_LINEAR if int(fill.get("fill_style_type", -1)) in [0x40, 0x41] else CanvasItem.TEXTURE_FILTER_NEAREST
 		var bitmap_id := int(fill["bitmap_id"])
 		if not _assets.has(bitmap_id):
 			continue
@@ -1014,7 +1016,7 @@ func _render_placement(
 				polygon.polygon = vertices
 				polygon.uv = uvs
 				polygon.texture = source_texture
-				polygon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+				polygon.texture_filter = texture_filter_mode
 				polygon.transform = placement_transform
 				polygon.z_index = depth
 				_apply_cxform(polygon, rgb_mul, rgb_add, alpha)
@@ -1023,7 +1025,7 @@ func _render_placement(
 			continue
 		var sprite := Sprite2D.new()
 		sprite.centered = false
-		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		sprite.texture_filter = texture_filter_mode
 		sprite.z_index = depth
 		var draw_transform := bitmap_transform
 		var texture_region := _shape_texture_region(definition, bitmap_transform, source_texture)
