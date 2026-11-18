@@ -36,6 +36,17 @@ func _run() -> void:
 		effect.advance_effect()
 		assert(effect.effect_frame == 19 and effect.is_queued_for_deletion())
 	assert(random.replay_complete())
+	var saved := random.save_state()
+	var expected := random.effect_angle(180)
+	assert(random.load_state(saved).is_empty())
+	var rotated := HitEffectRuntime.new()
+	rotated.auto_advance = false
+	rotated.source_random = random
+	root.add_child(rotated)
+	rotated.configure("XG_kanx", Vector2.ZERO, 1)
+	assert(is_equal_approx(rotated.rotation_degrees, float(expected)))
+	assert(random.replay_complete() and random.consumed.size() == 8)
+	rotated.queue_free()
 	await process_frame
 	print("HIT_EFFECT_RANDOM_SMOKE_OK")
 	quit()

@@ -16,6 +16,14 @@ var _replaying: bool = false
 var _rng := RandomNumberGenerator.new()
 
 
+# AVM random(n) is independent of the recorded Math.random call sequence.
+var _effect_rng := RandomNumberGenerator.new()
+
+
+func effect_angle(limit: int) -> int:
+	return _effect_rng.randi_range(0, limit - 1)
+
+
 func use_recorded_tape(records: Array, start_index: int = 0) -> bool:
 	_tape = records.duplicate(true)
 	_cursor = 0
@@ -51,6 +59,7 @@ func use_live_random() -> void:
 	failure = ""
 	consumed.clear()
 	_rng.randomize()
+	_effect_rng.randomize()
 
 
 func use_seed(seed_value: int) -> void:
@@ -63,13 +72,15 @@ func use_seed(seed_value: int) -> void:
 	failure = ""
 	consumed.clear()
 	_rng.seed = seed_value
+	_effect_rng.seed = seed_value
 
 
 func save_state() -> Dictionary:
 	return {"version": 1, "replaying": _replaying, "tape": _tape.duplicate(true),
 		"cursor": _cursor, "absolute_index": absolute_index,
 		"dropped": live_retained_dropped, "failure": failure,
-		"consumed": consumed.duplicate(true), "seed": _rng.seed, "state": _rng.state}
+		"consumed": consumed.duplicate(true), "seed": _rng.seed, "state": _rng.state,
+		"effect_state": _effect_rng.state}
 
 
 func validate_state(state: Variant) -> String:
@@ -112,6 +123,7 @@ func load_state(state: Variant) -> String:
 	consumed.assign(state.consumed.duplicate(true))
 	_rng.seed = state.seed
 	_rng.state = state.state
+	_effect_rng.state = state.get("effect_state", state.state)
 	return ""
 
 

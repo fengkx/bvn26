@@ -121,6 +121,8 @@ func _apply_frame_events() -> void:
 		var op := str(event.get("op", ""))
 		last_ops.append(op)
 		match op:
+			"random_rotation":
+				rotation_degrees = source_random.effect_angle(int(event.limit))
 			"random_offset":
 				assert(source_random != null, "Hit effect requires the shared source random stream")
 				var positive := source_random.next_value(event["random_sites"][0])
