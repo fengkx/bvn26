@@ -1,5 +1,7 @@
 # 当前状态、风险与待验证项
 
+- 本批 17 个辅助已完成 Chromium WebGL 按 O 召唤测试。实机画面对照复现了部分命中帧的顶栏、镜头及特效方向差异。[截图与逐角色结果](../evidence/helpers/remaining-roster/live/README.md)
+
 - 原版目录的 26 个辅助均已接入选角和联机目录。本批 17 个辅助完成 24 组原版 Flash 与 Godot 同输入对照，每条状态流各 10,008 行匹配。完整音画、浏览器实战和全员回滚验收仍待完成。[逐角色结果](../evidence/helpers/remaining-roster/README.md)
 
 - 石田·雨龙辅助已接入选人和联机目录。[原版与 Godot 对照](../evidence/helpers/yulong/README.md)

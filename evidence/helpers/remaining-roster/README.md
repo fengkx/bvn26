@@ -27,3 +27,5 @@ The diagnostic fixtures start Ichigo and Naruto at x=300 and x=450. Every assist
 The 24 cases match 10,008 rows on each stream. The strict comparisons cover 14 actor fields and six helper fields. Full audiovisual parity, browser gameplay, exhaustive guard/interrupt boundaries and rollback across the entire roster remain open. The service catalog requires deployment before live matchmaking exposes the new IDs.
 
 Ban's moving clip exposes its attack name in callback order. Charging helpers can retain or replace the moving clip at a contact jump. Soifong's child projectile stops at contact and its renamed attack becomes observable after the target frame script. Tenten's five projectiles reference an unbound slot on their immediate holder and continue moving. These behaviors are exercised by the retained replays.
+
+The [live verification](live/README.md) includes fresh Flash and Godot frame pairs plus browser keyboard summons for all 17 entries.
