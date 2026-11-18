@@ -237,6 +237,26 @@ func _emit_diagnostic(event_type: String, payload: Dictionary) -> void:
 	diagnostic_runtime.call("push_event", event_type, event_payload, diagnostic_tick)
 
 
+func instance_global_bounds(instance_name: String) -> Rect2:
+	var renames: Dictionary = _combat.get("instance_names", {})
+	if renames.is_empty():
+		return super.instance_global_bounds(instance_name)
+	var frame := current_source_frame()
+	for placement: Dictionary in _frames.get(frame, {}).get("display_list", []):
+		var name_at_frame := str(placement.get("name", ""))
+		var sprite := str(int(placement["character_id"]))
+		if renames.has(sprite):
+			var definition: Dictionary = _definitions[int(placement["character_id"])]
+			var child_frame := _nested_frame(placement, frame, int(definition["frame_count"]))
+			for event: Dictionary in renames[sprite]:
+				if int(event["frame"]) > child_frame:
+					break
+				name_at_frame = event["name"]
+		if name_at_frame == instance_name:
+			return source_placement_global_bounds(placement, frame)
+	return Rect2()
+
+
 func attack_contact(defender: FighterRuntime) -> Dictionary:
 	if not attacking or not has_visual_timeline():
 		return {}

@@ -499,3 +499,5 @@ limits and bind only to local compiled placements. The catalog includes shipped
 plain-value restrictions are unchanged. Room build/content identity prevents
 mixed-schema peers from starting. A drain retains the highest state serial,
 even when unordered delivery puts an older packet last.
+
+Optional helper field `instance_names` maps a sprite ID to child-frame name assignments in ascending frame order. Each entry records the new name, source path and source hash. Resolve contact against the live child frame and the placed instance geometry. The load-time offset remains attached to the original placement.

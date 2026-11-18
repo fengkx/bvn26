@@ -1,0 +1,172 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "佐井",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/zuojin.swf",
+    "swf_sha256": "1574bbea789547adf87d7bc8b2e1eadd8acc14749f2d2e8a11f8ada271540588",
+    "script_bundle": "scripts/fighter/fz/zuojin.json",
+    "header_fps": 30.0,
+    "root_frames": 71
+  },
+  "start_frame": 2,
+  "end_frame": 71,
+  "hide_frames": [],
+  "hide_frame_events": [],
+  "nested_stops": [
+    {
+      "sprite_id": 27,
+      "frame": 23,
+      "source_path": "DefineSprite_27/frame_23/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    }
+  ],
+  "action_events": [
+    {
+      "frame": 12,
+      "value": 1,
+      "source_path": "frame_12/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "frame": 54,
+      "value": 0,
+      "source_path": "frame_54/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [],
+  "contact_gotos": [],
+  "attacks": {
+    "atm1": {
+      "damage": 200,
+      "impact_strength": 15,
+      "vertical_impulse": 12,
+      "horizontal_impulse": 0,
+      "hitstun_ms": 800,
+      "reaction_label": "被打"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 15,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_15/DoAction.as"
+    },
+    {
+      "frame": 31,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_31/DoAction.as"
+    },
+    {
+      "frame": 33,
+      "op": "shine",
+      "color": 0,
+      "source_path": "frame_33/DoAction.as"
+    },
+    {
+      "frame": 71,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_71/DoAction.as"
+    }
+  ],
+  "clip_load_events": [
+    {
+      "frame": 32,
+      "op": "aim_opponent_x",
+      "character_id": 27,
+      "depth": 2,
+      "source_path": "frame_32/PlaceObject2_27_2/CLIPACTIONRECORD onClipEvent(load).as"
+    }
+  ],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_27/frame_23/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "path": "DefineSprite_27/frame_5/DoAction.as",
+      "source_sha256": "9de7f209979a751cdb8e4fc43c9c7b51464baf84f14eb54a34f7cd73d9a72069"
+    },
+    {
+      "path": "DefineSprite_27/frame_8/DoAction.as",
+      "source_sha256": "3ee27f3170fb7e8bd4c3d0bf03621c7a617d0d8ee467517523ac6a7af68d9966"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "d17a2e6e8a517d9a8cec02752e181c94b398f271efe69dc11180f7f65a35943c",
+      "frame": 1
+    },
+    {
+      "path": "frame_12/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "frame": 12
+    },
+    {
+      "path": "frame_15/DoAction.as",
+      "source_sha256": "2941da485f7ab205ab1ca30eb889e0fea9a5095b07c828aaecea42c92a911eb3",
+      "frame": 15
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_31/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 31
+    },
+    {
+      "path": "frame_32/PlaceObject2_27_2/CLIPACTIONRECORD onClipEvent(load).as",
+      "source_sha256": "4b6155ae48e264392d0fed8dea5b5fa4fc06227721e32f5c398edcc1a4e6e80c",
+      "frame": 32
+    },
+    {
+      "path": "frame_33/DoAction.as",
+      "source_sha256": "6ac251b8ece2eb7db8837a3d7a5b6590ae611a42f2289b8b7bd3f8edb5db9389",
+      "frame": 33
+    },
+    {
+      "path": "frame_54/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 54
+    },
+    {
+      "path": "frame_71/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 71
+    }
+  ],
+  "instance_names": {
+    "27": [
+      {
+        "frame": 5,
+        "name": "atm1",
+        "source_path": "DefineSprite_27/frame_5/DoAction.as",
+        "source_sha256": "9de7f209979a751cdb8e4fc43c9c7b51464baf84f14eb54a34f7cd73d9a72069"
+      },
+      {
+        "frame": 8,
+        "name": "abcd",
+        "source_path": "DefineSprite_27/frame_8/DoAction.as",
+        "source_sha256": "3ee27f3170fb7e8bd4c3d0bf03621c7a617d0d8ee467517523ac6a7af68d9966"
+      }
+    ]
+  }
+}
