@@ -75,7 +75,6 @@ var source_parent_frame: int = 1
 var source_power_fields: Dictionary = {}
 var source_projectiles: Dictionary = {}
 
-@export var display_depth: int = 1
 @export var facing: int = 1
 
 var fighter_name: String
@@ -620,6 +619,17 @@ func _apply_hit_settlement_frame(frame: int) -> void:
 			_settle_source_hit(true, false, int(event["xgtype"]))
 
 
+func swap_opponent_depths() -> void:
+	var depth := z_index
+	z_index = opponent.z_index
+	opponent.z_index = depth
+
+
+func _settle_receiver_depth() -> void:
+	if is_instance_valid(opponent) and z_index > opponent.z_index:
+		swap_opponent_depths()
+
+
 func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
 	# Read mutable receiver fields when the source DoAction executes.
 	var damage := float(ai_source_state.read_field("jhp"))
@@ -654,6 +664,8 @@ func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
 			opponent.energy += damage / (10.0 if defended else 5.0)
 	if not defended and source_body != null:
 		source_body.updateDirect(true)
+	if defended:
+		_settle_receiver_depth()
 	_check_dead(flying)
 	_emit_diagnostic("hit_settled", {
 		"slot": diagnostic_slot,
@@ -678,6 +690,8 @@ func _settle_source_hit(defended: bool, flying: bool, xgtype: int) -> void:
 		if near:
 			near = source_x > float(wall_rule["side_split_x"]) if facing != 1 else source_x < float(wall_rule["side_split_x"])
 		ai_source_state.values["hitNear"] = near
+	if not defended:
+		_settle_receiver_depth()
 	last_event = "guard_settlement" if defended else "hit_settlement"
 	if RollbackPresentation.should_emit_combat_console_event(self):
 		print("COMBAT_EVENT ", JSON.stringify(snapshot()))

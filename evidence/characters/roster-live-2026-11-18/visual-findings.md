@@ -74,3 +74,19 @@ XG_kan, XG_ice and XG_fire. Gaara's tick-205 terminal replay is retained as
 412 actor rows and 206 root rows match the previous same-input terminal run.
 The integer draw has a checkpointed generator because the existing Flash tape
 only records Math.random. Individual sampled Flash angles remain unrecorded.
+
+Receiver depth follow-up: the source swaps the receiver behind the opponent on
+settlement when it was in front. In onDefence(xgtype) this precedes checkDead;
+in onBeHit(flying) it follows hurtVoice and the wall check. Both operate on the
+two existing fighter wrappers and preserve their playing frames. Godot now reads
+and swaps the rendered wrapper depths for both settlement and hurtSkill.
+A fresh match uses the original stage placements.
+
+The graphical terminal replay used the retained Flash inputs, random draws and
+clock reads. All 35 base guard breaks through tick 32, Obito through tick 205,
+and Susanoo Sasuke through tick 175 matched 3,074 actor rows and 1,537 root
+positions. The rerun also identified incorrect case in Renji and Sasuke hurtVoice
+consumer IDs; the compiler now uses the SWF path stored in the source bundle.
+See [frame comparisons](depth-followup/comparison.png) (Flash, prior native,
+fixed native) and [per-case counts](depth-followup/results.json). The images show
+the receiver/attack overlap correction; HUD parity remains open.
