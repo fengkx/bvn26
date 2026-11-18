@@ -1,0 +1,161 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "史塔克",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/stake.swf",
+    "swf_sha256": "4ecf77ea0687914cf4c1558287c3ca4e90c289435891976671f5fc0e14991f35",
+    "script_bundle": "scripts/fighter/fz/stake.json",
+    "header_fps": 30.0,
+    "root_frames": 80
+  },
+  "start_frame": 2,
+  "end_frame": 80,
+  "hide_frames": [],
+  "hide_frame_events": [],
+  "nested_stops": [],
+  "action_events": [
+    {
+      "frame": 19,
+      "value": 1,
+      "source_path": "frame_19/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "frame": 70,
+      "value": 0,
+      "source_path": "frame_70/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [
+    {
+      "op": "warp_by_facing",
+      "cases": {
+        "-1": {
+          "x": -50,
+          "facing": 1,
+          "y": 0
+        },
+        "1": {
+          "x": 50,
+          "facing": -1,
+          "y": 0
+        }
+      },
+      "frame": 21,
+      "source_path": "frame_21/DoAction.as",
+      "source_sha256": "77cb01625e4a434ca2835555d4ce165891f29c6575b29e93b39f01f3aa48198d"
+    }
+  ],
+  "contact_gotos": [],
+  "attacks": {
+    "atm1": {
+      "damage": 20,
+      "impact_strength": 2,
+      "vertical_impulse": 0,
+      "horizontal_impulse": -4,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "atm2": {
+      "damage": 30,
+      "impact_strength": 1,
+      "vertical_impulse": 0,
+      "horizontal_impulse": -2,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "atm3": {
+      "damage": 80,
+      "impact_strength": 5,
+      "vertical_impulse": 0,
+      "horizontal_impulse": -10,
+      "hitstun_ms": 800,
+      "reaction_label": "被打"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 5,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_5/DoAction.as"
+    },
+    {
+      "frame": 16,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_16/DoAction.as"
+    },
+    {
+      "frame": 80,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_80/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_10/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "DefineSprite_43/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "f257125149f34e2e001c7e12e9002fae441c4ce1335ea7ca5c4c6dcf72d70d64",
+      "frame": 1
+    },
+    {
+      "path": "frame_16/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 16
+    },
+    {
+      "path": "frame_19/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "frame": 19
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_21/DoAction.as",
+      "source_sha256": "77cb01625e4a434ca2835555d4ce165891f29c6575b29e93b39f01f3aa48198d",
+      "frame": 21
+    },
+    {
+      "path": "frame_5/DoAction.as",
+      "source_sha256": "2941da485f7ab205ab1ca30eb889e0fea9a5095b07c828aaecea42c92a911eb3",
+      "frame": 5
+    },
+    {
+      "path": "frame_70/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 70
+    },
+    {
+      "path": "frame_80/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 80
+    }
+  ]
+}

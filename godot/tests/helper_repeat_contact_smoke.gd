@@ -83,8 +83,11 @@ func _run() -> void:
 			assert(helper.attack_contact(defender).is_empty())
 		defender.ai_source_state.values["canhit"] = true
 		# Sprite 48 stops on its empty frame 33; it must never wrap to frame 1.
+		while helper.current_source_frame() < 75:
+			helper.advance_timeline()
 		for frame in range(76, 86):
-			helper.play_source_frame(frame)
+			helper.advance_timeline()
+			assert(helper.current_source_frame() == frame)
 			if helper.instance_global_bounds("atm1").has_area():
 				push_error("Stopped helper sand reappeared at root frame %d" % frame)
 				failed = true

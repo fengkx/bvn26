@@ -300,6 +300,15 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
                 combined = adjacent_fill_boundary(boundaries)
                 if combined is not None:
                     boundaries = [combined]
+            if len(boundaries) != 1 and definition.get("solid_fill_meshes"):
+                from shapely import union_all
+                from shapely.geometry import Polygon
+                region = union_all([
+                    Polygon([mesh["vertices"][index] for index in triangle])
+                    for mesh in definition["solid_fill_meshes"] for triangle in mesh["triangles"]
+                ])
+                if region.geom_type == "Polygon" and not region.interiors and not region.is_empty:
+                    boundaries = [list(region.exterior.coords)[:-1]]
             if len(boundaries) != 1:
                 raise ValueError(f'Unsupported clipDepth mask geometry: {item_id}')
             definition['mask_polygon'] = boundaries[0]

@@ -573,6 +573,7 @@ func receive_attack(attack: Dictionary, attacker_facing: int, source_context: Di
 	if target["label"] == null:
 		return
 	var reaction := str(target["label"])
+	var guard_branch := ("blocked" if reaction == "防住" else "break") if guarding else "hit"
 	_launched = reaction == _death_launch_label()
 	_hurt_falling = _launched or _hurt_vertical_step != 0.0 or position.y < _ground_y
 	_clear_interrupted_super_preparation()
@@ -581,7 +582,7 @@ func receive_attack(attack: Dictionary, attacker_facing: int, source_context: Di
 	else:
 		start_action(reaction, "received_hit")
 	_emit_diagnostic("hit_received", {"slot": diagnostic_slot,
-		"before": before, "after": _diagnostic_state(), "attack": source_context})
+		"before": before, "after": _diagnostic_state(), "guardBranch": guard_branch, "attack": source_context})
 
 
 func _clear_interrupted_super_preparation(mark_pending: bool = true) -> void:

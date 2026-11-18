@@ -1415,9 +1415,17 @@ func _shape_texture_region(
 	return Rect2(start, finish - start)
 
 
+func _offset_key(placement: Dictionary) -> String:
+	return str(placement.get("name", "@%s/%s/%s" % [placement.get("character_id"), placement.get("depth"), placement.get("placed_frame", 1)]))
+
+
+func _placement_offset(placement: Dictionary) -> Vector2:
+	return instance_local_offset(_offset_key(placement))
+
+
 func _placement_transform(placement: Dictionary) -> Transform2D:
 	var transform_2d := _matrix_transform(placement.get("matrix", {}), 1.0)
-	transform_2d.origin += instance_local_offset(str(placement.get("name", "")))
+	transform_2d.origin += _placement_offset(placement)
 	return transform_2d
 
 
@@ -1562,9 +1570,8 @@ func _collect_source_bounds(
 
 
 func _source_placement_matrix(placement: Dictionary) -> Dictionary:
-	var instance_name := str(placement.get("name", ""))
 	return SourceBoundsMath.from_swf(
-		placement.get("matrix", {}), instance_local_offset(instance_name)
+		placement.get("matrix", {}), _placement_offset(placement)
 	)
 
 

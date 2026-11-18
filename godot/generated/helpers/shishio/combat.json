@@ -1,0 +1,243 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "志志雄",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/shishio.swf",
+    "swf_sha256": "b1bf4bae3089429af81f3a006af40aa7b3648043980325cacdd62272e02e9317",
+    "script_bundle": "scripts/fighter/fz/shishio.json",
+    "header_fps": 30.0,
+    "root_frames": 117
+  },
+  "start_frame": 2,
+  "end_frame": 117,
+  "hide_frames": [
+    60
+  ],
+  "hide_frame_events": [
+    {
+      "frame": 60,
+      "op": "root_goto_and_stop",
+      "target_frame": 1,
+      "source_path": "frame_60/DoAction.as",
+      "source_line": 2,
+      "source_sha256": "798054ba4ca5a45e58aabace0d24a775d4ea9e721de27a0a89b2fbdcbdd20a7a"
+    }
+  ],
+  "nested_stops": [
+    {
+      "sprite_id": 59,
+      "frame": 30,
+      "source_path": "DefineSprite_59/frame_30/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    }
+  ],
+  "action_events": [
+    {
+      "frame": 13,
+      "value": 1,
+      "source_path": "frame_13/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "frame": 57,
+      "value": 0,
+      "source_path": "frame_57/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    },
+    {
+      "frame": 96,
+      "value": 0,
+      "source_path": "frame_96/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [],
+  "contact_gotos": [
+    {
+      "frame": 35,
+      "placed_frame": 35,
+      "character_id": 14,
+      "depth": 4,
+      "target_frame": 65,
+      "target_label": "攻击2",
+      "play": true,
+      "source_path": "frame_35/PlaceObject2_14_4/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f48ef683a9330c89e8fd3e15155cfb98d6b5db8885c6d8104d6eadef6446784d"
+    }
+  ],
+  "attacks": {
+    "atm1": {
+      "damage": 20,
+      "impact_strength": 12,
+      "vertical_impulse": 1,
+      "horizontal_impulse": 0,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "atm3": {
+      "damage": 50,
+      "impact_strength": 1,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 0,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "atm2": {
+      "damage": 250,
+      "impact_strength": 7,
+      "vertical_impulse": 0,
+      "horizontal_impulse": 15,
+      "hitstun_ms": 0,
+      "reaction_label": "击飞"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 16,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_16/DoAction.as"
+    },
+    {
+      "frame": 35,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_35/DoAction.as"
+    },
+    {
+      "frame": 35,
+      "op": "effect",
+      "xg": "XG_rush",
+      "source_path": "frame_35/DoAction.as"
+    },
+    {
+      "frame": 60,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_60/DoAction.as"
+    },
+    {
+      "frame": 66,
+      "op": "shine",
+      "color": 9461864,
+      "source_path": "frame_66/DoAction.as"
+    },
+    {
+      "frame": 81,
+      "op": "shine",
+      "color": 16281600,
+      "source_path": "frame_81/DoAction.as"
+    },
+    {
+      "frame": 117,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_117/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_12/frame_1/DoAction.as",
+      "source_sha256": "2e779ee84753f0c918debe45f8956e33fddcbd60eb2d30818fa0e64b1e03b1a3"
+    },
+    {
+      "path": "DefineSprite_14/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "DefineSprite_59/frame_30/DoAction.as",
+      "source_sha256": "3271a793e3f9600314c6b0facc05023c4f3ed09c116d452966200a5d04735655"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "9288f11336fbf3cfc304a1147a727660b4d863b696a1589f2e3731efae3b268b",
+      "frame": 1
+    },
+    {
+      "path": "frame_117/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 117
+    },
+    {
+      "path": "frame_13/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "frame": 13
+    },
+    {
+      "path": "frame_16/DoAction.as",
+      "source_sha256": "2941da485f7ab205ab1ca30eb889e0fea9a5095b07c828aaecea42c92a911eb3",
+      "frame": 16
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_35/DoAction.as",
+      "source_sha256": "ea177db90ed6e89a5dcbc6783b569c5b8caf975a7852e0c89c0c7222b38f996a",
+      "frame": 35
+    },
+    {
+      "path": "frame_35/PlaceObject2_12_2/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "4d075209cb03150e23fcc9aa55f4c0c4374f62ba800b362a6a6a2fa82dacc820",
+      "frame": 35
+    },
+    {
+      "path": "frame_35/PlaceObject2_14_4/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f48ef683a9330c89e8fd3e15155cfb98d6b5db8885c6d8104d6eadef6446784d",
+      "frame": 35
+    },
+    {
+      "path": "frame_57/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 57
+    },
+    {
+      "path": "frame_60/DoAction.as",
+      "source_sha256": "798054ba4ca5a45e58aabace0d24a775d4ea9e721de27a0a89b2fbdcbdd20a7a",
+      "frame": 60
+    },
+    {
+      "path": "frame_66/DoAction.as",
+      "source_sha256": "aefa518db995a3e374f56e550e56d2f4ea223751616b65480afb90ca102985b0",
+      "frame": 66
+    },
+    {
+      "path": "frame_81/DoAction.as",
+      "source_sha256": "74f9862516b029d61f22b006a71b216d265a6d3add077efe51440f89ca37fc4d",
+      "frame": 81
+    },
+    {
+      "path": "frame_96/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 96
+    }
+  ],
+  "clip_events": [
+    {
+      "op": "move_owner",
+      "forward": 20,
+      "vertical": 0,
+      "frame": 35,
+      "depth": 2,
+      "character_id": 12,
+      "source_path": "frame_35/PlaceObject2_12_2/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "4d075209cb03150e23fcc9aa55f4c0c4374f62ba800b362a6a6a2fa82dacc820"
+    }
+  ]
+}

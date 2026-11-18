@@ -503,3 +503,12 @@ even when unordered delivery puts an older packet last.
 Optional helper field `instance_names` maps a sprite ID to child-frame name assignments in ascending frame order. Each entry records the new name, source path and source hash. Resolve contact against the live child frame and the placed instance geometry. The load-time offset remains attached to the original placement.
 
 Helper position events may use `place_relative_to_opponent` to copy both opponent coordinates and add the signed source-space `offset_y` on the specified root frame.
+
+
+Helper models use optional `clip_events` and `nested_clip_events` for placement-owned
+enterFrame operations. The placement depth, character ID and birth frame identify
+the callback. A contact jump can replace the moving instance or retain it across
+the jump. `warp_by_facing` selects one branch from the incoming facing before
+applying opponent-relative coordinates and a new facing. `root_gotos` retain
+the original opponent action and health guards. `nested_shines` fire when the
+child playhead reaches the source frame.

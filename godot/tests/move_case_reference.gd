@@ -11,6 +11,7 @@ var helper_rows: Array = []
 var presentation_rows: Array = []
 var geometry_rows: Array = []
 var contact_rows: Array = []
+var receive_rows: Array = []
 var projectile_rows: Array = []
 var wrapper_rows: Array = []
 var recovery_events: Dictionary = {}
@@ -69,6 +70,7 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 	presentation_rows = []
 	geometry_rows = []
 	contact_rows = []
+	receive_rows = []
 	projectile_rows = []
 	wrapper_rows = []
 	recovery_events = {}
@@ -139,6 +141,10 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		failed = true
 		return
 	game._enter_current_fight(mode)
+	if fixture.has("effect_angle_tape") and not game.source_random.use_recorded_effect_angles(fixture.effect_angle_tape):
+		push_error(game.source_random.failure)
+		failed = true
+		return
 	for tick in 700:
 		game._advance_fight([], func() -> bool:
 			if not game.battle_intro.active:
@@ -161,6 +167,10 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		game._advance_fight(recovery_events.get(tick, []), func() -> bool:
 			_observe(tick)
 			return tick == bitmap_tick)
+	if fixture.has("effect_angle_tape") and (not game.source_random.failure.is_empty() or (bitmap_tick < 0 and not game.source_random.effect_replay_complete())):
+		push_error("Effect angle replay diverged or has unused draws")
+		failed = true
+		return
 	if bitmap_tick >= 0:
 		# Terminal observer skips deferred frame scripts; pause all processing
 		# while pending CanvasItem draws settle, without advancing gameplay.
@@ -190,6 +200,8 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 	FileAccess.open(output_path + ".presentation.json", FileAccess.WRITE).store_string(JSON.stringify(presentation_rows, "", true, true))
 	if not geometry_rows.is_empty():
 		FileAccess.open(output_path + ".geometry.json", FileAccess.WRITE).store_string(JSON.stringify(geometry_rows, "", true, true))
+	if fixture.get("observe_hit_packets", false):
+		FileAccess.open(output_path + ".received.json", FileAccess.WRITE).store_string(JSON.stringify(receive_rows))
 	if not contact_rows.is_empty():
 		FileAccess.open(output_path + ".contacts.json", FileAccess.WRITE).store_string(JSON.stringify(contact_rows, "", true, true))
 	if fixture.has("projectile_probe"):
@@ -515,6 +527,11 @@ func _transform_record(transform: Transform2D) -> Dictionary:
 
 
 func _on_diagnostic_event(event: Dictionary) -> void:
+	if fixture.get("observe_hit_packets", false) and event.type == "hit_received":
+		var received: Dictionary = event.payload
+		receive_rows.append({"tick_before_observation": int(rows.size() / 2) - 1,
+			"slot": received.slot, "branch": received.guardBranch, "before": received.before,
+			"after": received.after, "source": received.attack})
 	if str(event.get("type", "")) != "hit_contact":
 		return
 	var payload: Dictionary = event.get("payload", {})

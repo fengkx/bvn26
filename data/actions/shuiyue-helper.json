@@ -1,0 +1,204 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "水月",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/shuiyue.swf",
+    "swf_sha256": "701df5bfd1ac3eafb69399ef45477d5642b361640d85bbda021370dd5fcf4570",
+    "script_bundle": "scripts/fighter/fz/shuiyue.json",
+    "header_fps": 30.0,
+    "root_frames": 92
+  },
+  "start_frame": 2,
+  "end_frame": 92,
+  "hide_frames": [],
+  "hide_frame_events": [],
+  "nested_stops": [],
+  "action_events": [
+    {
+      "frame": 13,
+      "value": 1,
+      "source_path": "frame_13/DoAction.as",
+      "source_sha256": "e8b067d85be0021ced88c83e72e1f931c46a2fc5884ab324deef3aa3dedff13c"
+    },
+    {
+      "frame": 80,
+      "value": 0,
+      "source_path": "frame_80/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [
+    {
+      "op": "warp_by_facing",
+      "cases": {
+        "-1": {
+          "facing": 1,
+          "x": -80
+        },
+        "1": {
+          "facing": -1,
+          "x": 80
+        }
+      },
+      "frame": 35,
+      "source_path": "frame_35/DoAction.as",
+      "source_sha256": "7a61f314665b1f69c0d9d77c293edb66922936a0db57a6eac8c8af0e234883aa"
+    }
+  ],
+  "contact_gotos": [],
+  "attacks": {
+    "atm1": {
+      "damage": 50,
+      "impact_strength": 16,
+      "vertical_impulse": 0,
+      "horizontal_impulse": -6,
+      "hitstun_ms": 500,
+      "reaction_label": "被打"
+    },
+    "atm2": {
+      "damage": 50,
+      "impact_strength": 6,
+      "vertical_impulse": 8,
+      "horizontal_impulse": -8,
+      "hitstun_ms": 600,
+      "reaction_label": "被打"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 13,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_13/DoAction.as"
+    },
+    {
+      "frame": 28,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_28/DoAction.as"
+    },
+    {
+      "frame": 92,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_92/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_12/frame_1/DoAction.as",
+      "source_sha256": "2e779ee84753f0c918debe45f8956e33fddcbd60eb2d30818fa0e64b1e03b1a3"
+    },
+    {
+      "path": "DefineSprite_14/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "6384a493acb3cf9350951856fc4ab1da4e48d3d33862492924529cc337acf380",
+      "frame": 1
+    },
+    {
+      "path": "frame_13/DoAction.as",
+      "source_sha256": "e8b067d85be0021ced88c83e72e1f931c46a2fc5884ab324deef3aa3dedff13c",
+      "frame": 13
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_28/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 28
+    },
+    {
+      "path": "frame_35/DoAction.as",
+      "source_sha256": "7a61f314665b1f69c0d9d77c293edb66922936a0db57a6eac8c8af0e234883aa",
+      "frame": 35
+    },
+    {
+      "path": "frame_43/PlaceObject2_12_3/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "10cb0f0cbc105037f7dadf4eabba6ab232f7e90700395b7ec21a739025108f87",
+      "frame": 43
+    },
+    {
+      "path": "frame_43/PlaceObject2_14_5/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8f57dea780026987c3d24aa5311fe4d19c2859b557006e1d856359cc1ba14469",
+      "frame": 43
+    },
+    {
+      "path": "frame_69/PlaceObject2_12_3/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "10cb0f0cbc105037f7dadf4eabba6ab232f7e90700395b7ec21a739025108f87",
+      "frame": 69
+    },
+    {
+      "path": "frame_70/PlaceObject2_14_5/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8f57dea780026987c3d24aa5311fe4d19c2859b557006e1d856359cc1ba14469",
+      "frame": 70
+    },
+    {
+      "path": "frame_80/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 80
+    },
+    {
+      "path": "frame_92/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 92
+    }
+  ],
+  "clip_events": [
+    {
+      "op": "move_owner",
+      "forward": 10,
+      "vertical": 0,
+      "frame": 43,
+      "depth": 3,
+      "character_id": 12,
+      "source_path": "frame_43/PlaceObject2_12_3/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "10cb0f0cbc105037f7dadf4eabba6ab232f7e90700395b7ec21a739025108f87"
+    },
+    {
+      "op": "restart_hurt_on_contact",
+      "frame": 43,
+      "depth": 5,
+      "character_id": 14,
+      "source_path": "frame_43/PlaceObject2_14_5/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8f57dea780026987c3d24aa5311fe4d19c2859b557006e1d856359cc1ba14469"
+    },
+    {
+      "op": "move_owner",
+      "forward": 10,
+      "vertical": 0,
+      "frame": 69,
+      "depth": 3,
+      "character_id": 12,
+      "source_path": "frame_69/PlaceObject2_12_3/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "10cb0f0cbc105037f7dadf4eabba6ab232f7e90700395b7ec21a739025108f87"
+    },
+    {
+      "op": "restart_hurt_on_contact",
+      "frame": 70,
+      "depth": 5,
+      "character_id": 14,
+      "source_path": "frame_70/PlaceObject2_14_5/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "8f57dea780026987c3d24aa5311fe4d19c2859b557006e1d856359cc1ba14469"
+    }
+  ]
+}

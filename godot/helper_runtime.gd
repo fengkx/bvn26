@@ -155,6 +155,16 @@ func enter_frame() -> void:
 	if _deferred_frame_generation == _activation_generation and _deferred_frame == current_source_frame():
 		return
 	_apply_frame_events()
+	for jump: Dictionary in _combat.get("root_gotos", []):
+		if int(jump.frame) != current_source_frame() or not is_instance_valid(owner_fighter.opponent):
+			continue
+		var foe := owner_fighter.opponent
+		if jump.requires_hurt and foe.ai_source_state.read_field("动作") != 2:
+			continue
+		if jump.requires_health and foe.health <= 0:
+			continue
+		_jump_to_helper_frame(int(jump.target_frame), true)
+		return
 	var root_stop_events: Array = _combat.get("hide_frame_events", [])
 	if not root_stop_events.is_empty():
 		for event: Dictionary in root_stop_events:
@@ -248,6 +258,8 @@ func instance_global_bounds(instance_name: String) -> Rect2:
 		if renames.has(sprite):
 			var definition: Dictionary = _definitions[int(placement["character_id"])]
 			var child_frame := _nested_frame(placement, frame, int(definition["frame_count"]))
+			var clock := _visual_clip_at(placement, _retained_visual_clips)
+			child_frame = int(clock.get("script_frame", child_frame))
 			for event: Dictionary in renames[sprite]:
 				if int(event["frame"]) > child_frame:
 					break
@@ -332,6 +344,15 @@ func _apply_frame_events_at(frame: int, from_deferred_queue: bool = false) -> vo
 		match event["op"]:
 			"aim_opponent_x":
 				position.x = owner_fighter.opponent.position.x
+			"warp_by_facing":
+				var writes: Dictionary = event["cases"][str(facing)]
+				var target := owner_fighter.opponent.position
+				if writes.has("x"):
+					position.x = target.x + float(writes.x)
+				if writes.has("y"):
+					position.y = target.y + float(writes.y)
+				if writes.has("facing"):
+					set_facing(int(writes.facing))
 			"place_relative_to_opponent":
 				position = owner_fighter.opponent.position + Vector2(0, float(event["offset_y"]))
 	for event: Dictionary in _combat.get("drain_events", []):
@@ -366,6 +387,26 @@ func _apply_frame_events_at(frame: int, from_deferred_queue: bool = false) -> vo
 func run_nested_clip_callback(event: Dictionary) -> void:
 	if owner_fighter == null or not is_instance_valid(owner_fighter.opponent):
 		return
+	# Child frame actions become observable in the placement's callback order.
+	if event.get("op") in ["track_until_caught", "projectile"] and not event.has("parent_depth"):
+		var clock: Dictionary = _retained_visual_clips.get(int(event.depth), {})
+		if not clock.is_empty():
+			clock.script_frame = clock.frame
+	match str(event.get("op", "")):
+		"move_owner":
+			if current_source_frame() != _nested_dispatch_frame:
+				var retained: Dictionary = _retained_visual_clips.get(int(event.depth), {})
+				if retained.is_empty() or int(retained.placement.placed_frame) != int(event.frame) or int(retained.placement.character_id) != int(event.character_id):
+					return
+			position += Vector2(facing * float(event.forward), float(event.vertical))
+			return
+		"track_until_caught":
+			if _nested_dispatch_frame - int(event.frame) + 1 < int(event.until_frame):
+				_aim_placed_clip(event, _nested_dispatch_frame)
+			return
+		"projectile", "move_clip":
+			_advance_projectile(event)
+			return
 	var body := owner_fighter.opponent.instance_global_bounds("bdmn")
 	if not body.has_area():
 		return
@@ -373,9 +414,16 @@ func run_nested_clip_callback(event: Dictionary) -> void:
 	var clip := _contact_clip_bounds(event, source_frame)
 	if not clip.has_area() or not SourceHitTest.intersects(body, clip):
 		return
-	var target_frame := int(event["target_frame"])
+	if event.get("op") == "restart_hurt_on_contact":
+		if owner_fighter.opponent.ai_source_state.read_field("动作") == 2:
+			owner_fighter.opponent.source_goto_label("被打", true)
+		return
+	_jump_to_helper_frame(int(event.target_frame), bool(event.get("play", true)))
+
+
+func _jump_to_helper_frame(target_frame: int, play: bool) -> void:
 	play_source_frame(target_frame)
-	timeline_playing = bool(event.get("play", true))
+	timeline_playing = play
 	# The source callback changes the playhead during dispatch. Its target
 	# frame script runs through main's existing FIFO after root observation.
 	_deferred_frame_generation = _activation_generation
@@ -387,7 +435,7 @@ func run_nested_clip_callback(event: Dictionary) -> void:
 		_sync_nested_callbacks()
 	else:
 		source_child_frame_requested.emit(_run_deferred_frame.bind(target_frame, _activation_generation))
-	last_event = "helper_goto_%s" % str(event.get("target_label", event["target_frame"]))
+	last_event = "helper_goto_%s" % str(target_frame)
 
 
 func _run_deferred_frame(target_frame: int, generation: int) -> void:
@@ -397,10 +445,10 @@ func _run_deferred_frame(target_frame: int, generation: int) -> void:
 	if generation != _activation_generation or not attacking:
 		return
 	_apply_frame_events_at(target_frame, true)
-	_sync_nested_callbacks()
+	_sync_nested_callbacks(_callback_registry.current_tick if _callback_registry != null else -1)
 
 
-func _sync_nested_callbacks() -> void:
+func _sync_nested_callbacks(placed_tick: int = -1) -> void:
 	# Calls outside registry dispatch describe the next callback's parent
 	# display list. During dispatch keep the existing snapshot stable.
 	if _callback_registry != null and _callback_registry.registration_tick() != _callback_registry.current_tick:
@@ -412,9 +460,19 @@ func _sync_nested_callbacks() -> void:
 		return
 	var wanted: Dictionary = {}
 	for placement: Dictionary in _frames[current_source_frame()]["display_list"]:
+		for nested: Dictionary in _combat.get("nested_clip_events", []):
+			if int(placement.character_id) != int(nested.parent_sprite):
+				continue
+			var parent: Dictionary = _retained_visual_clips.get(int(placement.depth), {})
+			var child: Dictionary = parent.get("children", {}).get(int(nested.depth), {})
+			if child.is_empty() or int(child.placement.character_id) != int(nested.character_id) or int(child.placement.placed_frame) != int(nested.frame):
+				continue
+			var event := nested.duplicate()
+			event.parent_depth = int(placement.depth)
+			wanted["%s:%s" % [placement.placed_frame, nested.source_path]] = event
 		if placement.get("clip_actions", []).is_empty():
 			continue
-		for event: Dictionary in _combat.get("contact_gotos", []):
+		for event: Dictionary in _combat.get("contact_gotos", []) + _combat.get("clip_events", []):
 			if int(event.get("character_id", -1)) != int(placement.get("character_id", -2)):
 				continue
 			if int(event.get("depth", -1)) != int(placement.get("depth", -2)):
@@ -439,7 +497,7 @@ func _sync_nested_callbacks() -> void:
 		_nested_callbacks[key] = {
 			"callback": callback,
 			# A newly placed clip receives enterFrame starting on the next display tick.
-			"registration": _callback_registry.register(callback, "enter_frame", _callback_registry.registration_tick()),
+			"registration": _callback_registry.register(callback, "enter_frame", placed_tick if placed_tick >= 0 else _callback_registry.registration_tick()),
 		}
 
 
@@ -471,7 +529,7 @@ func _contact_clip_bounds(event: Dictionary, source_frame: int = -1) -> Rect2:
 
 
 func _aim_placed_clip(event: Dictionary, frame: int = -1) -> void:
-	if event.get("op") != "aim_opponent_x" or not is_instance_valid(owner_fighter):
+	if not is_instance_valid(owner_fighter):
 		return
 	if not is_instance_valid(owner_fighter.opponent):
 		return
@@ -483,9 +541,63 @@ func _aim_placed_clip(event: Dictionary, frame: int = -1) -> void:
 			continue
 		if int(placement["character_id"]) != int(event["character_id"]):
 			continue
-		var instance_name := str(placement["name"])
-		var placed := named_instance_origin(instance_name)
+		var instance_name := _offset_key(placement)
+		var placed_x := float(placement.get("matrix", {}).get("translateX", 0)) / 20.0
 		var delta_x := owner_fighter.opponent.position.x - position.x
 		var local_x := -delta_x if scale.x < 0.0 else delta_x
-		set_instance_local_offset(instance_name, Vector2(local_x - placed.x, 0.0))
+		set_instance_local_offset(instance_name, Vector2(local_x - placed_x, 0.0))
 		refresh_display()
+
+func _queue_visual_frame(frame: int, sprite: int) -> void:
+	for event: Dictionary in _combat.get("nested_shines", []):
+		if int(event.sprite_id) == sprite and int(event.frame) == frame and is_instance_valid(owner_fighter) and owner_fighter.super_runtime != null:
+			owner_fighter.super_runtime.shine_requested.emit(0xffffff)
+
+
+func _advance_projectile(event: Dictionary) -> void:
+	if owner_fighter.super_runtime != null and owner_fighter.super_runtime.zhanting:
+		return
+	var ancestor_list: Array[Dictionary] = []
+	var placements: Array = _frames.get(current_source_frame(), {}).get("display_list", [])
+	if event.has("parent_depth"):
+		var parent_clip: Dictionary = _retained_visual_clips.get(int(event.parent_depth), {})
+		if parent_clip.is_empty():
+			return
+		ancestor_list.append(parent_clip.placement)
+		placements = _definitions[int(parent_clip.placement.character_id)].display_list_frames[int(parent_clip.frame) - 1]
+	for placement: Dictionary in placements:
+		if int(placement.depth) != int(event.depth) or int(placement.character_id) != int(event.character_id):
+			continue
+		var clock := _visual_clip_for_path(placement, ancestor_list)
+		var key := _offset_key(placement)
+		var offset := instance_local_offset(key)
+		if event.op == "move_clip":
+			offset.x += float(event.speed)
+		else:
+			var foe := owner_fighter.opponent
+			var bounds := source_placement_global_bounds(placement, current_source_frame(), ancestor_list)
+			var contact := false
+			for target: String in event.targets:
+				var target_bounds := foe.instance_global_bounds(target)
+				var hit_bounds := bounds
+				if target in event.hitmc_targets:
+					hit_bounds = Rect2()
+					for child: Dictionary in _definitions[int(placement.character_id)].display_list_frames[int(clock.frame) - 1]:
+						if child.get("name") == "hitmc":
+							var ancestors := ancestor_list.duplicate()
+							ancestors.append(placement)
+							hit_bounds = source_placement_global_bounds(child, current_source_frame(), ancestors)
+							break
+				if hit_bounds.has_area() and target_bounds.has_area() and SourceHitTest.intersects(hit_bounds, target_bounds):
+					contact = true
+					break
+			if contact:
+				if not clock.get("played", false):
+					clock.played = true
+					clock.frame = 5
+					clock.playing = true
+					_sync_visual_children(clock, _definitions[int(placement.character_id)])
+			elif not clock.get("played", false) or event.get("keep_moving", false):
+				offset.x += float(event.speed)
+		set_instance_local_offset(key, offset)
+		return

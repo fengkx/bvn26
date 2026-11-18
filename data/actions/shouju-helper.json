@@ -1,0 +1,166 @@
+{
+  "format": "bvn26-helper-model-v1",
+  "status": "reverse_engineering_intermediate",
+  "helper_id": "手鞠",
+  "simulation_hz": 30,
+  "source": {
+    "swf": "game/fighter/fz/shouju.swf",
+    "swf_sha256": "6492737cf106fa63e366ee6dee61cf3c3adadf01964d83560734e3a754d56f4f",
+    "script_bundle": "scripts/fighter/fz/shouju.json",
+    "header_fps": 30.0,
+    "root_frames": 97
+  },
+  "start_frame": 2,
+  "end_frame": 97,
+  "hide_frames": [],
+  "hide_frame_events": [],
+  "nested_stops": [],
+  "action_events": [
+    {
+      "frame": 17,
+      "value": 1,
+      "source_path": "frame_17/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a"
+    },
+    {
+      "frame": 86,
+      "value": 0,
+      "source_path": "frame_86/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3"
+    }
+  ],
+  "position_events": [],
+  "contact_gotos": [
+    {
+      "frame": 36,
+      "placed_frame": 36,
+      "character_id": 16,
+      "depth": 5,
+      "target_frame": 55,
+      "target_label": "攻击2",
+      "play": true,
+      "source_path": "frame_36/PlaceObject2_16_5/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f48ef683a9330c89e8fd3e15155cfb98d6b5db8885c6d8104d6eadef6446784d"
+    }
+  ],
+  "attacks": {
+    "atm1": {
+      "damage": 25,
+      "impact_strength": 4,
+      "vertical_impulse": 7,
+      "horizontal_impulse": 1,
+      "hitstun_ms": 300,
+      "reaction_label": "被打"
+    }
+  },
+  "presentation_events": [
+    {
+      "frame": 2,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_2/DoAction.as"
+    },
+    {
+      "frame": 20,
+      "op": "super_start",
+      "kind": "bsd",
+      "xg": "XG_fzbs",
+      "helper": true,
+      "source_path": "frame_20/DoAction.as"
+    },
+    {
+      "frame": 36,
+      "op": "super_end",
+      "kind": "bsw",
+      "xg": "XG_bs",
+      "helper": false,
+      "source_path": "frame_36/DoAction.as"
+    },
+    {
+      "frame": 56,
+      "op": "shine",
+      "color": 9461864,
+      "source_path": "frame_56/DoAction.as"
+    },
+    {
+      "frame": 97,
+      "op": "effect",
+      "xg": "XG_fzcc",
+      "source_path": "frame_97/DoAction.as"
+    }
+  ],
+  "clip_load_events": [],
+  "drain_events": [],
+  "indexed_source_events": [
+    {
+      "path": "DefineSprite_14/frame_1/DoAction.as",
+      "source_sha256": "2e779ee84753f0c918debe45f8956e33fddcbd60eb2d30818fa0e64b1e03b1a3"
+    },
+    {
+      "path": "DefineSprite_16/frame_1/DoAction.as",
+      "source_sha256": "c22b7c2b79195802af6c4395ca061f449a39c43b8caf3d6b565cddee4ecc51c0"
+    },
+    {
+      "path": "frame_1/DoAction.as",
+      "source_sha256": "88eaa970d1d845defa309bb0050b0e7c2b252fa5111619c6a4eea01ce3d71007",
+      "frame": 1
+    },
+    {
+      "path": "frame_17/DoAction.as",
+      "source_sha256": "0ac6eda32688c6b4d70b886fb171318e499cafd2282fc5306bcb8a624894431a",
+      "frame": 17
+    },
+    {
+      "path": "frame_2/DoAction.as",
+      "source_sha256": "66f20c3e04e17bd6e938311f4c61705e07a94446c605d8f3b28f321fa3f4652a",
+      "frame": 2
+    },
+    {
+      "path": "frame_20/DoAction.as",
+      "source_sha256": "2941da485f7ab205ab1ca30eb889e0fea9a5095b07c828aaecea42c92a911eb3",
+      "frame": 20
+    },
+    {
+      "path": "frame_36/DoAction.as",
+      "source_sha256": "faca36694ef8c1ddbe7d864650fb84fc3b78578c254d03f7143778f3a64efa25",
+      "frame": 36
+    },
+    {
+      "path": "frame_36/PlaceObject2_14_3/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "10cb0f0cbc105037f7dadf4eabba6ab232f7e90700395b7ec21a739025108f87",
+      "frame": 36
+    },
+    {
+      "path": "frame_36/PlaceObject2_16_5/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "f48ef683a9330c89e8fd3e15155cfb98d6b5db8885c6d8104d6eadef6446784d",
+      "frame": 36
+    },
+    {
+      "path": "frame_56/DoAction.as",
+      "source_sha256": "aefa518db995a3e374f56e550e56d2f4ea223751616b65480afb90ca102985b0",
+      "frame": 56
+    },
+    {
+      "path": "frame_86/DoAction.as",
+      "source_sha256": "6ba392006a9e5e3168a77b0e4378864a58976d79adadff53c31faaef1a84e1e3",
+      "frame": 86
+    },
+    {
+      "path": "frame_97/DoAction.as",
+      "source_sha256": "827410412828c3fe7ccba302f2bffd5b7c31904f04680cffe7888ec0e67c8df5",
+      "frame": 97
+    }
+  ],
+  "clip_events": [
+    {
+      "op": "move_owner",
+      "forward": 10,
+      "vertical": 0,
+      "frame": 36,
+      "depth": 3,
+      "character_id": 14,
+      "source_path": "frame_36/PlaceObject2_14_3/CLIPACTIONRECORD onClipEvent(enterFrame).as",
+      "source_sha256": "10cb0f0cbc105037f7dadf4eabba6ab232f7e90700395b7ec21a739025108f87"
+    }
+  ]
+}

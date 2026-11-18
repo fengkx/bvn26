@@ -28,6 +28,7 @@ var _source_nextfight_goto_phase := false
 var _intro_just_finished := false
 var config_menu: ConfigMenu
 var pause_menu: BattlePauseMenu
+var player_markers: Array[TimelinePreview] = []
 var health_hud: HealthHud
 var character_selection: CharacterSelection
 var map_selection: MapSelection
@@ -165,6 +166,15 @@ func _ready() -> void:
 	pause_menu.opened.connect(_pause_battle)
 	pause_menu.resume_requested.connect(_resume_battle)
 	pause_menu.title_requested.connect(_return_to_title)
+	for slot in [1, 2]:
+		var marker := TimelinePreview.new()
+		marker.fighter_directory = "res://generated/main/player_markers/p%d" % slot
+		marker.autoplay = false
+		marker.show_collision_shapes = false
+		marker.z_index = 63 + slot * 2
+		marker.visible = false
+		add_child(marker)
+		player_markers.append(marker)
 	health_hud = HealthHud.new()
 	health_hud.z_index = 110
 	health_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -680,6 +690,8 @@ func _goto_menu() -> void:
 	if stage_background != null:
 		stage_background.visible = false
 	game_world.visible = false
+	for marker in player_markers:
+		marker.hide()
 	if black_mu != null:
 		black_mu.visible = false
 	if ts_face != null:
@@ -711,6 +723,8 @@ func _goto_key_settings() -> void:
 	if stage_background != null:
 		stage_background.visible = false
 	game_world.visible = false
+	for marker in player_markers:
+		marker.hide()
 	if black_mu != null:
 		black_mu.visible = false
 	if ts_face != null:
@@ -951,7 +965,7 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 	_intro_just_finished = false
 	if not defer_world_for_intro_boundary:
 		_apply_focus()
-		game_world.enter_frame(naruto, ichigo, helpers)
+		_advance_world_and_markers(helpers)
 	for event: Dictionary in _recorded_events_for_phase(recorded_events, "before_root_observer", event_supplier):
 		assert(event["kind"] == "nextfight" and ko_recorded_timers)
 		if ko_nextfight_timer != null:
@@ -976,7 +990,7 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		return
 	if defer_world_for_intro_boundary:
 		_apply_focus()
-		game_world.enter_frame(naruto, ichigo, helpers)
+		_advance_world_and_markers(helpers)
 	# Goto targets wait behind the other actors' already queued frame scripts.
 	while true:
 		var next_fighter: FighterRuntime
@@ -1831,6 +1845,20 @@ func _spawn_hit_effect(effect_name: String, source_position: Vector2, source_fac
 	game_world.add_child(effect)
 	if opponent_driver != null:
 		effect.register_source_frames(source_callbacks, physics_tick)
+
+
+func _advance_world_and_markers(helpers: Array) -> void:
+	var target: Dictionary = game_world.enter_frame(naruto, ichigo, helpers).target
+	# Sprite 1991 positions both root arrows using the camera target before tweening.
+	var actors := [naruto, ichigo]
+	for index in player_markers.size():
+		var marker := player_markers[index]
+		marker.visible = float(target.scale) < 1.5
+		if marker.visible:
+			var foot: Vector2 = actors[index].position
+			marker.position = Vector2(
+				SourceCoordinate.store(target.x + foot.x * target.scale),
+				SourceCoordinate.store(clampf(target.y + (foot.y - 50.0) * target.scale, 60.0, 390.0))) - marker.wrapper_translation()
 
 
 func _apply_root_position(axis: String, operator: String, pixels: float) -> void:

@@ -23,6 +23,9 @@ func _run() -> void:
 	helper.source_child_frame_requested.connect(func(operation: Callable) -> void: queued_frames.append(operation))
 	helper.bind_source_frames(registry, 0)
 	helper.activate({"x": 280.0, "y": -25.0, "facing": 1, "start_frame": 2}, owner)
+	# Settle activation before counting the two placement callbacks below.
+	assert(queued_frames.size() == 1)
+	queued_frames.pop_front().call()
 	helper.play_source_frame(48)
 	# Keep two source-keyed callbacks on one placement to exercise full cleanup.
 	var duplicate_contact: Dictionary = helper._combat.contact_gotos[0].duplicate()
@@ -76,6 +79,7 @@ func _run() -> void:
 	# root gotoAndStop(1); the root stop then invalidates that generation.
 	queued_frames.clear()
 	helper.activate({"x": 280.0, "y": -25.0, "facing": 1, "start_frame": 2}, owner)
+	queued_frames.pop_front().call()
 	var nested_generation := helper._activation_generation
 	var nested_marker := {"ran": false}
 	var nested_operation := func() -> void:

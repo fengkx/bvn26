@@ -533,7 +533,14 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         needle = f'   if(aiFight >= {frames})'
         if bootstrap.count(needle) != 1:
             raise ValueError("Missing bitmap sampling boundary")
-        bootstrap = (Path(__file__).parent / 'as2/ai_reference/sampling_bitmap.as').read_text() + bootstrap
+        bitmap = (Path(__file__).parent / 'as2/ai_reference/sampling_bitmap.as').read_text()
+        bitmap_space = move_case_data.get("bitmap_space", "root")
+        if bitmap_space not in ("root", "stage"):
+            raise ValueError("bitmap_space must be root or stage")
+        if bitmap_space == "stage":
+            # BitmapData.draw ignores the source clip's own transform.
+            bitmap = bitmap.replace("image.draw(_root);", "image.draw(_root,_root.transform.matrix);")
+        bootstrap = bitmap + bootstrap
         bitmap_ticks = move_case_data.get('bitmap_ticks')
         call = '   _root.aiBitmapSample();\n'
         if bitmap_ticks is not None:
@@ -604,6 +611,13 @@ _root.aiFixtureLoader.load(__CASE_URI__);
             updated = instrument(original, name + "#" + script["path"], name != "main")
             if hit_receive_probe and name in fighter_sources:
                 updated = instrument_hit_receive(updated, name + "#" + script["path"])
+            if sampling_bitmap and name == "main" and "this._rotation = random(180);" in updated:
+                # Observe the actual draw exactly once, including mirrored clips.
+                updated = updated.replace("this._rotation = random(180);",
+                    'var aiAngle = random(180); this._rotation = aiAngle; '
+                    f'_root.aiEvent("effect_angle","{script["path"]}," + aiAngle + "," + '
+                    'this.transform.matrix.a + "," + this.transform.matrix.b + "," + '
+                    'this.transform.matrix.c + "," + this.transform.matrix.d);')
             if (p1_helper is not None or p2_helper is not None) and name == "main":
                 if script["path"] == "DefineSprite_1900/frame_1/DoAction.as":
                     updated, count = re.subn(
@@ -810,6 +824,7 @@ _root.aiFixtureLoader.load(__CASE_URI__);
         "sampling_display": sampling_display,
         "sampling_bitmap": sampling_bitmap,
         "sampling_bitmap_ticks": bitmap_ticks,
+        "sampling_bitmap_space": bitmap_space if sampling_bitmap else None,
         "sampling_doaction": sampling_doaction,
         "sampling_clipaction": sampling_clipaction,
         "sampling_callsite": sampling_callsite,

@@ -122,7 +122,11 @@ func _apply_frame_events() -> void:
 		last_ops.append(op)
 		match op:
 			"random_rotation":
-				rotation_degrees = source_random.effect_angle(int(event.limit))
+				var angle := source_random.effect_angle(int(event.limit), str(event.source_path))
+				# Flash rotates the signed X axis of the attached clip. Decomposing
+				# a mirrored Godot basis can instead move its reflection onto Y.
+				var facing := signf(transform.determinant())
+				transform = Transform2D(deg_to_rad(angle), Vector2(facing, 1.0), 0.0, position)
 			"random_offset":
 				assert(source_random != null, "Hit effect requires the shared source random stream")
 				var positive := source_random.next_value(event["random_sites"][0])
