@@ -240,6 +240,7 @@ test('exports a v2 report with legacy fields, bounded runtime events, tape, and 
     assert.equal(report.runtime.snapshotStatus, 'acknowledged');
     assert.equal(report.runtime.snapshot.match.players[0].state.hp, 900);
     assert.deepEqual(report.runtime.inputTape.map(event => event.seq), [3]);
+    assert.equal(report.runtime.tickClock, null);
     assert.deepEqual(report.runtime.criticalEvents.map(event => event.type), ['pause_state']);
     assert.equal(report.runtime.criticalIncidents.length, 1);
     assert.deepEqual(report.runtime.criticalIncidents[0].events.map(event => event.seq), [2, 3]);
@@ -269,6 +270,171 @@ test('does not fabricate build identity when runtime and sidecar disagree', asyn
     assert.equal(report.build.status, 'mismatch');
     assert.equal(report.build.buildID, 'd'.repeat(64));
     assert.equal(report.build.sidecarBuildID, 'a'.repeat(64));
+});
+
+test('exports rolling tickClock Hz from retained input_consumed events', async () => {
+    const page = createPage(sidecar);
+    const { window, elements, context, getBlob } = page;
+    await new Promise(resolve => setImmediate(resolve));
+    context.setNow(1_000);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 1, type: 'input_consumed', monoMs: 1_000, fightTick: 2215, matchId: 'match-long',
+        buildID: sha, payload: { slot: 1 },
+    }));
+    context.setNow(60_939);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 2, type: 'input_consumed', monoMs: 60_939, fightTick: 3921, matchId: 'match-long',
+        buildID: sha, payload: { slot: 1 },
+    }));
+    window.bvnDiagnosticsRegister((command, requestId) => {
+        if (command === 'visibility') return;
+        window.bvnDiagnosticsSetSnapshot(JSON.stringify({
+            requestId,
+            buildID: sha,
+            match: {
+                rendering: {
+                    renderQuality: 'HIGH',
+                    sampleGrid: 4,
+                    compositeSize: [600, 400],
+                    rasterPixels: 3_840_000,
+                },
+            },
+        }));
+    });
+    await elements.get('download').dispatch('click');
+    const report = JSON.parse(await getBlob().text());
+    // tickDelta = 3921-2215; inclusive +1 would overestimate (~28.479 vs ~28.462).
+    assert.deepEqual(report.runtime.tickClock, {
+        matchId: 'match-long',
+        tickDelta: 1706,
+        wallMs: 59_939,
+        hz: 1706 / (59_939 / 1000),
+        firstFightTick: 2215,
+        lastFightTick: 3921,
+        sampleCount: 2,
+    });
+    assert.equal(report.runtime.snapshot.match.rendering.renderQuality, 'HIGH');
+    assert.deepEqual(report.runtime.snapshot.match.rendering.compositeSize, [600, 400]);
+});
+
+test('tickClock uses endpoint tick delta so a 33.333ms step reports 30 Hz not 60', async () => {
+    const page = createPage(sidecar);
+    const { window, elements, context, getBlob } = page;
+    await new Promise(resolve => setImmediate(resolve));
+    context.setNow(1_000);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 1, type: 'input_consumed', monoMs: 1_000, fightTick: 1, matchId: 'short',
+        buildID: sha, payload: { slot: 1 },
+    }));
+    context.setNow(1_033.333333);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 2, type: 'input_consumed', monoMs: 1_033.333333, fightTick: 2, matchId: 'short',
+        buildID: sha, payload: { slot: 1 },
+    }));
+    await elements.get('download').dispatch('click');
+    const report = JSON.parse(await getBlob().text());
+    assert.equal(report.runtime.tickClock.matchId, 'short');
+    assert.equal(report.runtime.tickClock.tickDelta, 1);
+    assert.ok(Math.abs(report.runtime.tickClock.wallMs - (1000 / 30)) < 1e-6);
+    assert.ok(Math.abs(report.runtime.tickClock.hz - 30) < 1e-6);
+    // Inclusive endpoint count (+1) would report ~60 Hz on this two-sample window.
+    assert.ok(report.runtime.tickClock.hz < 35);
+});
+
+test('tickClock ignores cross-match menu dwell and reports the latest match segment', async () => {
+    const page = createPage(sidecar);
+    const { window, elements, context, getBlob } = page;
+    await new Promise(resolve => setImmediate(resolve));
+    // Match A: 30 ticks over 1s at 30 Hz.
+    for (let i = 0; i < 30; i++) {
+        const monoMs = 1_000 + i * (1000 / 30);
+        context.setNow(monoMs);
+        window.bvnDiagnosticsPush(JSON.stringify({
+            seq: i + 1, type: 'input_consumed', monoMs, fightTick: i, matchId: 'match-a',
+            buildID: sha, payload: { slot: 1 },
+        }));
+    }
+    // 30s menu dwell with no fight ticks, then match B for another 1s at 30 Hz.
+    for (let i = 0; i < 30; i++) {
+        const monoMs = 1_000 + 30_000 + 1_000 + i * (1000 / 30);
+        context.setNow(monoMs);
+        window.bvnDiagnosticsPush(JSON.stringify({
+            seq: 100 + i, type: 'input_consumed', monoMs, fightTick: i, matchId: 'match-b',
+            buildID: sha, payload: { slot: 1 },
+        }));
+    }
+    await elements.get('download').dispatch('click');
+    const report = JSON.parse(await getBlob().text());
+    assert.equal(report.runtime.tickClock.matchId, 'match-b');
+    assert.equal(report.runtime.tickClock.tickDelta, 29);
+    assert.ok(Math.abs(report.runtime.tickClock.hz - 30) < 1e-6,
+        `expected ~30 Hz for latest match, got ${report.runtime.tickClock.hz}`);
+    // Mixing both matches across the menu gap would yield ~0.94 Hz with the old formula.
+    assert.ok(report.runtime.tickClock.hz > 25);
+});
+
+test('tickClock cuts on fightTick rollback after scene recreation', async () => {
+    const page = createPage(sidecar);
+    const { window, elements, context, getBlob } = page;
+    await new Promise(resolve => setImmediate(resolve));
+    context.setNow(1_000);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 1, type: 'input_consumed', monoMs: 1_000, fightTick: 900, matchId: 'old-scene',
+        buildID: sha, payload: { slot: 1 },
+    }));
+    context.setNow(1_033.333333);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 2, type: 'input_consumed', monoMs: 1_033.333333, fightTick: 901, matchId: 'old-scene',
+        buildID: sha, payload: { slot: 1 },
+    }));
+    // New scene / match resets the fight clock.
+    context.setNow(5_000);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 3, type: 'input_consumed', monoMs: 5_000, fightTick: 0, matchId: 'new-scene',
+        buildID: sha, payload: { slot: 1 },
+    }));
+    context.setNow(5_033.333333);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 4, type: 'input_consumed', monoMs: 5_033.333333, fightTick: 1, matchId: 'new-scene',
+        buildID: sha, payload: { slot: 1 },
+    }));
+    await elements.get('download').dispatch('click');
+    const report = JSON.parse(await getBlob().text());
+    assert.equal(report.runtime.tickClock.matchId, 'new-scene');
+    assert.equal(report.runtime.tickClock.firstFightTick, 0);
+    assert.equal(report.runtime.tickClock.lastFightTick, 1);
+    assert.equal(report.runtime.tickClock.tickDelta, 1);
+    assert.ok(Math.abs(report.runtime.tickClock.hz - 30) < 1e-6);
+});
+
+test('tickClock still segments on tick rollback when matchId is absent', async () => {
+    const page = createPage(sidecar);
+    const { window, elements, context, getBlob } = page;
+    await new Promise(resolve => setImmediate(resolve));
+    context.setNow(1_000);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 1, type: 'input_consumed', monoMs: 1_000, fightTick: 50, buildID: sha, payload: { slot: 1 },
+    }));
+    context.setNow(2_000);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 2, type: 'input_consumed', monoMs: 2_000, fightTick: 80, buildID: sha, payload: { slot: 1 },
+    }));
+    context.setNow(3_000);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 3, type: 'input_consumed', monoMs: 3_000, fightTick: 0, buildID: sha, payload: { slot: 1 },
+    }));
+    context.setNow(3_500);
+    window.bvnDiagnosticsPush(JSON.stringify({
+        seq: 4, type: 'input_consumed', monoMs: 3_500, fightTick: 15, buildID: sha, payload: { slot: 1 },
+    }));
+    await elements.get('download').dispatch('click');
+    const report = JSON.parse(await getBlob().text());
+    // Mixing pre/post rollback would make tickDelta negative and used to return null.
+    assert.equal(report.runtime.tickClock.matchId, null);
+    assert.equal(report.runtime.tickClock.firstFightTick, 0);
+    assert.equal(report.runtime.tickClock.lastFightTick, 15);
+    assert.equal(report.runtime.tickClock.tickDelta, 15);
+    assert.equal(report.runtime.tickClock.hz, 15 / 0.5);
 });
 
 test('routes online edit shortcuts and lets Godot receive the native text paste event', async () => {

@@ -5,12 +5,22 @@ extends Control
 # changing bitmap filtering or relying on an unsupported viewport setting.
 const RESOLVE := preload("res://sample_resolve.gdshader")
 const ONLINE_LOBBY := preload("res://online_lobby.gd")
+# Flash stage is 600×400. HIGH sample_grid is 4 → 2400×1600 (3.84 MP). Texture
+# size clamps only prevent GPU OOM; this budget keeps HiDPI web from scheduling
+# ~34 MP supersamples that miss 30 Hz. Keep aligned with tools/web_raster_budget.py.
+# Tradeoff: the cap shrinks physical_output (composite grid). On a large HiDPI
+# canvas, HIGH can resolve to ~600×400 then upscale — coarser than budgeted
+# MEDIUM (~1200×800) — while still running sample_grid² taps per fragment.
+# Lower raster MP does not by itself prove a sustained 30 Hz.
+const WEB_RASTER_PIXEL_BUDGET: int = 3_840_000
 var source_viewport: SubViewport
 var presentation: TextureRect
 var game: Control
 var online_lobby: OnlineLobby
 var sample_grid: int = 4
 var texture_limit: int = 0
+var physical_output: Vector2i = Vector2i.ONE
+var raster_size: Vector2i = Vector2i.ONE
 var held_keys: Dictionary = {}
 var rules: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/config/config.json")).rendering
 
@@ -74,6 +84,18 @@ func apply_quality(quality: String) -> void:
 	_resize_surface()
 
 
+static func fit_physical_to_raster_budget(physical_size: Vector2i, grid: int, pixel_budget: int) -> Vector2i:
+	var width := maxi(physical_size.x, 1)
+	var height := maxi(physical_size.y, 1)
+	var safe_grid := maxi(grid, 1)
+	var safe_budget := maxi(pixel_budget, 1)
+	var raster_pixels := float(width) * float(height) * float(safe_grid * safe_grid)
+	if raster_pixels <= float(safe_budget):
+		return Vector2i(width, height)
+	var scale := sqrt(float(safe_budget) / raster_pixels)
+	return Vector2i(Vector2(width, height) * scale).max(Vector2i.ONE)
+
+
 func _resize_surface() -> void:
 	if source_viewport == null or presentation == null:
 		return
@@ -89,8 +111,14 @@ func _resize_surface() -> void:
 		var maximum_output := texture_limit / maximum_grid
 		var fit := minf(1.0, float(maximum_output) / float(maxi(physical_size.x, physical_size.y)))
 		physical_size = Vector2i(Vector2(physical_size) * fit).max(Vector2i.ONE)
+	if OS.has_feature("web"):
+		# Perf budget, not an OOM clamp: cap physical_size * sample_grid megapixels.
+		# physical_output below is this post-budget composite size.
+		physical_size = fit_physical_to_raster_budget(physical_size, sample_grid, WEB_RASTER_PIXEL_BUDGET)
+	physical_output = physical_size
+	raster_size = physical_size * sample_grid
 	source_viewport.size_2d_override = logical_size
-	source_viewport.size = physical_size * sample_grid
+	source_viewport.size = raster_size
 	presentation.material.set_shader_parameter("sample_grid", sample_grid)
 	presentation.material.set_shader_parameter("output_size", Vector2(physical_size))
 

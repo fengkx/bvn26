@@ -1278,6 +1278,58 @@ button:disabled { opacity: .5; cursor: default; }
         if (!callback || callback === diagnosticsRequestCallback) diagnosticsRequestCallback = null;
     };
 
+    // Estimate fight simulation Hz from retained input_consumed samples.
+    // Meaning: tickDelta / wallSeconds over one contiguous match segment.
+    // Group by matchId and cut on fightTick rollback so menu dwell / scene
+    // recreation cannot dilute or invert the rate. Prefer the latest usable
+    // segment (current match), not the whole rolling window.
+    function rollingTickClock(events) {
+        const samples = [];
+        for (const event of events || []) {
+            if (!event || event.type !== 'input_consumed') continue;
+            if (typeof event.fightTick !== 'number' || typeof event.monoMs !== 'number') continue;
+            samples.push(event);
+        }
+        if (samples.length < 2) return null;
+
+        const matchKey = event => (typeof event.matchId === 'string' && event.matchId)
+            ? event.matchId
+            : null;
+
+        let best = null;
+        let start = 0;
+        const consider = end => {
+            if (end - start < 2) return;
+            const first = samples[start];
+            const last = samples[end - 1];
+            const wallMs = last.monoMs - first.monoMs;
+            // Interval between endpoints, not an inclusive endpoint count.
+            const tickDelta = last.fightTick - first.fightTick;
+            if (!(wallMs > 0) || !(tickDelta > 0)) return;
+            best = {
+                matchId: matchKey(first),
+                tickDelta,
+                wallMs,
+                hz: tickDelta / (wallMs / 1000),
+                firstFightTick: first.fightTick,
+                lastFightTick: last.fightTick,
+                sampleCount: end - start,
+            };
+        };
+
+        for (let i = 1; i <= samples.length; i++) {
+            const cut = i === samples.length
+                || matchKey(samples[i]) !== matchKey(samples[i - 1])
+                || samples[i].fightTick < samples[i - 1].fightTick
+                || samples[i].monoMs < samples[i - 1].monoMs;
+            if (cut) {
+                consider(i);
+                start = i;
+            }
+        }
+        return best;
+    }
+
     function requestRuntimeSnapshot() {
         if (!diagnosticsRequestCallback) return Promise.resolve({ status: 'runtime_unavailable', snapshot: latestRuntimeSnapshot });
         const requestId = makeRunReportId('snapshot');
@@ -1411,6 +1463,7 @@ button:disabled { opacity: .5; cursor: default; }
                     droppedEvents: incident.droppedEvents,
                 })),
                 inputTape: retainedEvents.filter(event => event.type === 'input_consumed'),
+                tickClock: rollingTickClock(retainedEvents),
                 buffer: {
                     windowMs: logWindowMs,
                     coverageMs: firstEvent ? Math.max(0, Math.min(logWindowMs, nowMonoMs - firstEvent.receivedMonoMs)) : 0,
