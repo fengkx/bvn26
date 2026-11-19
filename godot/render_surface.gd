@@ -8,6 +8,10 @@ const ONLINE_LOBBY := preload("res://online_lobby.gd")
 # Flash stage is 600×400. HIGH sample_grid is 4 → 2400×1600 (3.84 MP). Texture
 # size clamps only prevent GPU OOM; this budget keeps HiDPI web from scheduling
 # ~34 MP supersamples that miss 30 Hz. Keep aligned with tools/web_raster_budget.py.
+# Tradeoff: the cap shrinks physical_output (composite grid). On a large HiDPI
+# canvas, HIGH can resolve to ~600×400 then upscale — coarser than budgeted
+# MEDIUM (~1200×800) — while still running sample_grid² taps per fragment.
+# Lower raster MP does not by itself prove a sustained 30 Hz.
 const WEB_RASTER_PIXEL_BUDGET: int = 3_840_000
 var source_viewport: SubViewport
 var presentation: TextureRect
@@ -109,6 +113,7 @@ func _resize_surface() -> void:
 		physical_size = Vector2i(Vector2(physical_size) * fit).max(Vector2i.ONE)
 	if OS.has_feature("web"):
 		# Perf budget, not an OOM clamp: cap physical_size * sample_grid megapixels.
+		# physical_output below is this post-budget composite size.
 		physical_size = fit_physical_to_raster_budget(physical_size, sample_grid, WEB_RASTER_PIXEL_BUDGET)
 	physical_output = physical_size
 	raster_size = physical_size * sample_grid

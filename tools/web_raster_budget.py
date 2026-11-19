@@ -4,6 +4,12 @@ Flash stage is 600×400. HIGH sample_grid is 4, so a 1:1 Flash-scale raster is
 2400×1600 (3.84 MP). HiDPI web canvases (~1785×1190 at DPR 2) times that grid
 reach ~34 MP and miss the 30 Hz clock; WebGL texture_limit only prevents OOM.
 
+The budget scales the composite output grid (physical_output / shader
+output_size). Keeping sample_grid=4 does not preserve uncapped HIGH detail:
+capped HIGH can be a coarser upscaled composite than uncapped MEDIUM, and the
+16-tap resolve still runs per fragment. Offline formula checks are not a live
+Godot/browser acceptance of sustained 30 Hz.
+
 Keep this formula aligned with godot/render_surface.gd.
 """
 from __future__ import annotations

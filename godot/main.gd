@@ -1749,11 +1749,14 @@ func _diagnostic_render_surface() -> RenderSurface:
 
 func _diagnostic_rendering() -> Dictionary:
 	var surface := _diagnostic_render_surface()
+	# compositeSize is the post-budget resolve output grid (shader output_size),
+	# not the pre-cap canvas pixel size. Under WEB_RASTER_PIXEL_BUDGET, HIGH can
+	# therefore report a coarser composite than MEDIUM while sampleGrid stays 4.
 	var rendering := {
 		"renderQuality": session.render_quality,
 		"sourceQuality": session.source_quality,
 		"sampleGrid": null,
-		"physicalSize": null,
+		"compositeSize": null,
 		"rasterSize": null,
 		"rasterPixels": null,
 		"webRasterPixelBudget": null,
@@ -1761,7 +1764,7 @@ func _diagnostic_rendering() -> Dictionary:
 	if surface == null:
 		return rendering
 	rendering.sampleGrid = surface.sample_grid
-	rendering.physicalSize = [surface.physical_output.x, surface.physical_output.y]
+	rendering.compositeSize = [surface.physical_output.x, surface.physical_output.y]
 	rendering.rasterSize = [surface.raster_size.x, surface.raster_size.y]
 	rendering.rasterPixels = surface.raster_size.x * surface.raster_size.y
 	if OS.has_feature("web"):

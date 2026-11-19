@@ -1278,27 +1278,56 @@ button:disabled { opacity: .5; cursor: default; }
         if (!callback || callback === diagnosticsRequestCallback) diagnosticsRequestCallback = null;
     };
 
+    // Estimate fight simulation Hz from retained input_consumed samples.
+    // Meaning: tickDelta / wallSeconds over one contiguous match segment.
+    // Group by matchId and cut on fightTick rollback so menu dwell / scene
+    // recreation cannot dilute or invert the rate. Prefer the latest usable
+    // segment (current match), not the whole rolling window.
     function rollingTickClock(events) {
-        const ticks = [];
+        const samples = [];
         for (const event of events || []) {
             if (!event || event.type !== 'input_consumed') continue;
             if (typeof event.fightTick !== 'number' || typeof event.monoMs !== 'number') continue;
-            ticks.push(event);
+            samples.push(event);
         }
-        if (ticks.length < 2) return null;
-        const first = ticks[0];
-        const last = ticks[ticks.length - 1];
-        const wallMs = last.monoMs - first.monoMs;
-        const tickCount = last.fightTick - first.fightTick + 1;
-        if (!(wallMs > 0) || !(tickCount > 0)) return null;
-        return {
-            tickCount,
-            wallMs,
-            hz: tickCount / (wallMs / 1000),
-            firstFightTick: first.fightTick,
-            lastFightTick: last.fightTick,
-            sampleCount: ticks.length,
+        if (samples.length < 2) return null;
+
+        const matchKey = event => (typeof event.matchId === 'string' && event.matchId)
+            ? event.matchId
+            : null;
+
+        let best = null;
+        let start = 0;
+        const consider = end => {
+            if (end - start < 2) return;
+            const first = samples[start];
+            const last = samples[end - 1];
+            const wallMs = last.monoMs - first.monoMs;
+            // Interval between endpoints, not an inclusive endpoint count.
+            const tickDelta = last.fightTick - first.fightTick;
+            if (!(wallMs > 0) || !(tickDelta > 0)) return;
+            best = {
+                matchId: matchKey(first),
+                tickDelta,
+                wallMs,
+                hz: tickDelta / (wallMs / 1000),
+                firstFightTick: first.fightTick,
+                lastFightTick: last.fightTick,
+                sampleCount: end - start,
+            };
         };
+
+        for (let i = 1; i <= samples.length; i++) {
+            const cut = i === samples.length
+                || matchKey(samples[i]) !== matchKey(samples[i - 1])
+                || samples[i].fightTick < samples[i - 1].fightTick
+                || samples[i].monoMs < samples[i - 1].monoMs;
+            if (cut) {
+                consider(i);
+                start = i;
+            }
+        }
+        return best;
     }
 
     function requestRuntimeSnapshot() {

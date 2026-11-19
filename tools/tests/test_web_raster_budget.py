@@ -62,6 +62,18 @@ class WebRasterBudgetTests(unittest.TestCase):
         self.assertEqual(fit_physical_to_raster_budget(1785, 1190, 1), (1785, 1190))
         self.assertLess(raster_pixels(1785, 1190, 1), WEB_RASTER_PIXEL_BUDGET)
 
+    def test_capped_high_composite_is_coarser_than_capped_medium(self) -> None:
+        # Budget keeps sample_grid semantics but shrinks the composite grid.
+        # On this HiDPI canvas both MEDIUM and HIGH bind; HIGH's resolve target
+        # (600×400 upscaled) is coarser than MEDIUM's (1200×800) even though
+        # HIGH still runs more supersample taps per fragment.
+        high = fit_physical_to_raster_budget(1785, 1190, 4)
+        medium = fit_physical_to_raster_budget(1785, 1190, 2)
+        self.assertEqual(medium, (1200, 800))
+        self.assertEqual(high, (600, 400))
+        self.assertLess(high[0] * high[1], medium[0] * medium[1])
+        self.assertEqual(raster_pixels(*high, 4), raster_pixels(*medium, 2))
+
 
 if __name__ == "__main__":
     unittest.main()
