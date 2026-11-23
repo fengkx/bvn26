@@ -14,13 +14,6 @@ func _run() -> void:
 			menu.remove_child(child)
 			child.free()
 	menu._sounds.clear()
-	assert(menu._online_entry.flat, "Online entry must not paint a rectangle behind the label")
-	for state in ["normal", "hover", "pressed", "disabled", "focus", "hover_pressed"]:
-		assert(menu._online_entry.get_theme_stylebox(state) is StyleBoxEmpty,
-			"Online entry %s state must remain transparent" % state)
-	var online_font := menu._online_entry.get_theme_font("font") as FontVariation
-	assert(online_font != null and online_font.variation_embolden > 0.0,
-		"Online entry should use the menu's outlined, heavier text treatment")
 	menu.source_frame = 63
 	menu._wheel_born = true
 	menu.controller.reset()
@@ -32,6 +25,11 @@ func _run() -> void:
 		assert(menu.select == expected, "Down navigation skipped menu slot: %d" % expected)
 		if expected == 6:
 			assert(menu.current_item().id == "online")
+			menu._refresh()
+			var sprite: Sprite2D = menu._buttons[menu.ONLINE_SLOT]
+			assert(sprite.visible and sprite.texture == menu.ONLINE_ART)
+			assert(menu._online_entry.position == sprite.position)
+			assert(menu._online_entry.size.is_equal_approx(sprite.texture.get_size()))
 	_move(menu, "up")
 	assert(menu.select == 6 and menu.current_item().id == "online")
 	var confirmed_ids: Array[String] = []
@@ -40,6 +38,9 @@ func _run() -> void:
 	assert(confirmed_ids.is_empty() and menu.pending_item.id == "online")
 	for _frame in 14:
 		menu.apply_held({})
+		if menu.button_frame in [3, 5]:
+			var tint: Color = menu._buttons[menu.ONLINE_SLOT].material.get_shader_parameter("cx_add")
+			assert(tint == (Color(1, 1, 1, 0) if menu.button_frame == 3 else menu._online_tint))
 	assert(confirmed_ids == ["online"], "Mouse confirmation skipped the source menu animation")
 	menu.reset()
 	menu.source_frame = 63

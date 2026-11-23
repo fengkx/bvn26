@@ -271,7 +271,7 @@ func _frame_service(event: Dictionary) -> void:
 				assert(event["axis"] == "moveY")
 				fighter.source_y += pixels
 			return
-		"root_position", "frame_child_effect":
+		"root_position", "frame_child_effect", "camera_focus":
 			_external(event["op"], [event])
 			return
 		"inline_frame":

@@ -11,6 +11,26 @@ import extract_timeline_geometry as timeline_geometry
 
 
 class TimelineGeometryTests(unittest.TestCase):
+    def test_linear_gradient_keeps_contour_matrix_and_alpha_stops(self):
+        shape = ET.fromstring("""<item><shapes><fillStyles><fillStyles>
+          <item fillStyleType="16"><gradientMatrix scaleX="0.0" scaleY="0.0"
+            rotateSkew0="0.25" rotateSkew1="-0.25"/>
+            <gradient spreadMode="0" interpolationMode="0"><gradientRecords>
+              <item ratio="0"><color red="0" green="0" blue="0" alpha="255"/></item>
+              <item ratio="122"><color red="0" green="0" blue="0" alpha="0"/></item>
+              <item ratio="255"><color red="0" green="0" blue="0" alpha="255"/></item>
+            </gradientRecords></gradient></item></fillStyles></fillStyles>
+          <shapeRecords><item type="StyleChangeRecord" stateFillStyle1="true" fillStyle1="1"
+            stateMoveTo="true" moveDeltaX="0" moveDeltaY="0"/>
+            <item type="StraightEdgeRecord" deltaX="40"/><item type="StraightEdgeRecord" deltaY="20"/>
+            <item type="StraightEdgeRecord" deltaX="-40"/><item type="StraightEdgeRecord" deltaY="-20"/>
+            <item type="EndShapeRecord"/></shapeRecords></shapes></item>""")
+        fill = timeline_geometry.single_linear_gradient(shape)
+        self.assertEqual(len(fill['polygon']), 4)
+        self.assertEqual(fill['matrix']['rotateSkew0'], 0.25)
+        self.assertEqual([(s['ratio'], s['rgba'][3]) for s in fill['stops']],
+                         [(0, 255), (122, 0), (255, 255)])
+
     def test_place_modify_remove_preserves_display_list_state(self):
         root = ET.fromstring(
             """<swf _xmlExportMajor="2" _xmlExportMinor="2">

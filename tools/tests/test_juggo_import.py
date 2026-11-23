@@ -36,6 +36,13 @@ class JuugoImportTests(unittest.TestCase):
                          [(1142, False), (1155, True)])
         self.assertEqual(model['action_exits']['被打']['frame'], 1151)
 
+    def test_camera_focus_follows_body_frame_writes(self):
+        for fighter, start, end in [('juggo', 918, 1000), ('lee', 643, 673)]:
+            calls = read(f'godot/generated/fighters/{fighter}/ai.json')['frame_calls']
+            for frame, target in [(start, 'caster'), (end, 'all')]:
+                self.assertEqual([event['target'] for event in calls[str(frame)]
+                                  if event['op'] == 'camera_focus'], [target])
+
     def test_child_callbacks_and_unnamed_projectile_identity(self):
         model = read('godot/generated/fighters/juggo/player_controller/controller.json')
         ops = {h['placement_frame']: h for h in model['hooks'] if 'source_child_operation' in h}

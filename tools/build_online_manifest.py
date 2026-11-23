@@ -154,6 +154,9 @@ def content_inputs() -> tuple[list[Path], dict[str, list[str]]]:
         paths.append(stage_root / "music" / music)
 
     # These generated tables contain shared move, stage, hit, menu and rendering data.
+    ui = GODOT / "ui"
+    if ui.is_dir():
+        paths.extend(files_under(ui))
     for shared in (GODOT / "generated/main", GODOT / "generated/effects"):
         paths.extend(files_under(shared))
     # Runtime music and the bundled default stage also load outside the selected

@@ -137,7 +137,7 @@ func compare_frames(fighters: Array[FighterRuntime], tick: int, original: Dictio
 				continue
 			helper_snapshots.append({"display_tick": tick, "tick": tick,
 				"slot": helper.diagnostic_slot, "frame": helper.current_source_frame(),
-				"x": helper.position.x, "y": helper.position.y,
+				"x": helper.source_x, "y": helper.source_y,
 				"facing": helper.facing, "action": helper.source_action,
 				"attacking": helper.attacking, "hits": helper.hited})
 
@@ -360,7 +360,7 @@ func _run() -> void:
 					"visible": helper.visible, "deferred_frame": helper._deferred_frame})
 				helper_snapshots.append({"display_tick": current_tick + 1, "tick": current_tick + 1,
 					"slot": helper.diagnostic_slot, "frame": helper.current_source_frame(),
-					"x": helper.position.x, "y": helper.position.y,
+					"x": helper.source_x, "y": helper.source_y,
 					"facing": helper.facing, "action": helper.source_action,
 					"attacking": helper.attacking, "hits": helper.hited})
 			ready_recorded = true

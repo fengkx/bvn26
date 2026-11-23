@@ -59,6 +59,20 @@ def verify_key_reads(events: list[dict], build: dict) -> dict:
             'reads': reads, 'pressed_reads': dict(pressed)}
 
 
+def bitmap_replay_case(move_case: dict, events: list[dict], draws: list[dict]) -> dict:
+    # The native fixture installs Math.random replay after observing Ready tick 0.
+    boundary = next(e['sequence'] for e in events if e['kind'] == 'state'
+                    and e['fight_tick'] == 0 and e['value'].startswith('p2,'))
+    angles = []
+    for event in events:
+        if event['kind'] == 'effect_angle':
+            source, angle, *_ = event['value'].split(',')
+            angles.append({'source': source, 'angle': int(angle)})
+    return {**move_case, 'effect_angle_tape': angles, 'fight_random_tape': [
+        {'site': r['site'], 'value': r['value']} for r in draws if r['sequence'] > boundary
+    ]}
+
+
 def main() -> None:
     parser=argparse.ArgumentParser()
     parser.add_argument('--build',required=True,type=Path)
@@ -128,6 +142,9 @@ def main() -> None:
     if [r['index'] for r in rng]!=list(range(1,len(rng)+1)):
         raise ValueError('Random draw index is not contiguous')
     (args.output/'random-tape.json').write_text(json.dumps(rng,ensure_ascii=False,indent=2)+'\n')
+    if build.get('sampling_bitmap') and build.get('move_case'):
+        replay = bitmap_replay_case(build['move_case'], events, rng)
+        (args.output / 'replay-case.json').write_text(json.dumps(replay, ensure_ascii=False, indent=2) + '\n')
     clock = []
     for event in events:
         if event['kind'] != 'clock':

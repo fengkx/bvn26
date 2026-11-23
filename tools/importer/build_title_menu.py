@@ -60,8 +60,8 @@ def build(workspace, jar, xml):
     bounds = subprocess.check_output(java+['-cp',str(jar),str(ROOT/'tools/importer/MenuExport.java'),str(ROOT/'game/main.swf'),str(workspace/'background.swf')],text=True)
     subprocess.run(java+['-jar',str(jar),'-selectid','666,594,597,600,603,606,609,612,615,672','-export','sprite',str(workspace/'raster'),str(workspace/'background.swf')],check=True,stdout=subprocess.DEVNULL)
     rects={int(v[0]):list(map(int,v[1:])) for v in (line.split() for line in bounds.splitlines())}
-    # JPEXS sprite export adds a five-pixel border around the sprite bounds.
-    crop=(-rects[666][0]//20+5,-rects[666][1]//20+5)
+    # The portal-free sprite raster starts at the authored bounds.
+    crop=(-rects[666][0]//20,-rects[666][1]//20)
     for frame in range(1,73):
         im=Image.open(workspace/f'raster/DefineSprite_666/{frame}.png')
         im.crop((*crop,crop[0]+600,crop[1]+400)).save(OUT/f'background-{frame}.png')

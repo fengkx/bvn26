@@ -21,6 +21,36 @@ from bitmap_shape_polygon import adjacent_fill_boundary, bitmap_shape_fill_polyg
 SUPPORTED_XML_EXPORTS = {(2, 2), (3, 2)}
 
 
+def single_linear_gradient(shape: ET.Element) -> dict | None:
+    fills = shape.findall('./shapes/fillStyles/fillStyles/item')
+    if len(fills) != 1 or fills[0].get('fillStyleType') != '16' or shape.findall('.//lineStyles2/item'):
+        return None
+    gradient = fills[0].find('gradient')
+    matrix = fills[0].find('gradientMatrix')
+    if (matrix is None or gradient is None or gradient.get('spreadMode') != '0'
+            or gradient.get('interpolationMode') != '0'):
+        return None
+    determinant = (float(matrix.get('scaleX', 1)) * float(matrix.get('scaleY', 1))
+                   - float(matrix.get('rotateSkew0', 0)) * float(matrix.get('rotateSkew1', 0)))
+    if determinant == 0:
+        return None
+    contour_shape = copy.deepcopy(shape)
+    contour_shape.find('./shapes/fillStyles/fillStyles/item').set('bitmapId', '0')
+    contours = bitmap_shape_fill_polygons(contour_shape)
+    if not contours or len(contours) != 1 or len(contours[0]) != 1:
+        return None
+    polygon = contours[0][0]
+    stops = []
+    for record in gradient.findall('./gradientRecords/item'):
+        color = record.find('color')
+        stops.append({'ratio': int(record.attrib['ratio']), 'rgba': [
+            int(color.attrib[channel]) for channel in ('red', 'green', 'blue')
+        ] + [int(color.get('alpha', 255))]})
+    if len(stops) < 2:
+        return None
+    return {'polygon': polygon, 'matrix': attributes(matrix), 'stops': stops}
+
+
 def sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("ascii")).hexdigest()
 
@@ -232,6 +262,9 @@ def referenced_definitions(root: ET.Element, frames: list[dict[str, Any]]) -> li
             definition["shape_bounds_twips"] = {
                 key: int(bounds.attrib[key]) for key in ("Xmin", "Ymin", "Xmax", "Ymax")
             }
+        gradient = single_linear_gradient(tag)
+        if gradient:
+            definition["linear_gradient"] = gradient
         bitmap_fills = []
         solid_fills = []
         for fill in tag.findall(".//fillStyles/item"):

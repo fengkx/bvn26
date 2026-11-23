@@ -36,6 +36,8 @@ def build(workspace: Path, output: Path, manifest_path: Path, source: Path,
         if (match := re.fullmatch(r"DefineSprite_(\d+)/frame_1/DoAction.as", item["path"]))
         and item["source"].strip() == "_visible = false;"
     }
+    # Static publisher text symbols, one for each stage in the locked SWF.
+    hidden_ids.update({1683, 1694, 1701, 1705, 1712, 1718, 1722, 1729, 1733, 1737})
     previous_catalog = output / "catalog.json"
     previous_stages = (json.loads(previous_catalog.read_text())["stages"]
                        if previous_catalog.is_file() else [])

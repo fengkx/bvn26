@@ -156,6 +156,10 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		# both fighter snapshots instead of producing an empty trace.
 		if not game.battle_intro.active and rows.size() == 2: break
 	assert(not game.battle_intro.active and rows.size() == 2)
+	if fixture.has("fight_random_tape") and not game.source_random.use_recorded_tape(fixture.fight_random_tape):
+		push_error(game.source_random.failure)
+		failed = true
+		return
 	for tick in range(1, (bitmap_tick if bitmap_tick >= 0 else int(fixture.frames)) + 1):
 		# Timer callbacks occur after the preceding source snapshot and before
 		# the next fight advance. Deliver the external clock at that boundary.
@@ -167,6 +171,10 @@ func _run_case(fixture_path: String, output_path: String) -> void:
 		game._advance_fight(recovery_events.get(tick, []), func() -> bool:
 			_observe(tick)
 			return tick == bitmap_tick)
+	if fixture.has("fight_random_tape") and (not game.source_random.failure.is_empty() or (bitmap_tick < 0 and not game.source_random.replay_complete())):
+		push_error("Fight random replay diverged or has unused draws: " + game.source_random.failure)
+		failed = true
+		return
 	if fixture.has("effect_angle_tape") and (not game.source_random.failure.is_empty() or (bitmap_tick < 0 and not game.source_random.effect_replay_complete())):
 		push_error("Effect angle replay diverged or has unused draws")
 		failed = true
@@ -377,7 +385,7 @@ func _observe(tick: int) -> void:
 				"played": variables.get("played"), "movspeed": variables.get("movspeed")})
 	for helper in [game.naruto_helper, game.ichigo_helper]:
 		helper_rows.append({"tick": tick, "slot": "p1" if helper == game.naruto_helper else "p2",
-			"frame": helper.current_source_frame(), "x": helper.position.x, "y": helper.position.y,
+			"frame": helper.current_source_frame(), "x": helper.source_x, "y": helper.source_y,
 			"facing": helper.facing, "attacking": helper.attacking,
 			"action": helper.source_action, "visible": helper.visible,
 			"root_paused": helper.owner_fighter.root_zhanting if is_instance_valid(helper.owner_fighter) else false,
