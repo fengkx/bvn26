@@ -9,6 +9,19 @@ signal source_child_frame_requested(operation: Callable)
 
 @export var helper_directory: String
 
+# Helper positions are authored in twips. Node2D keeps a float32 projection.
+var source_x: float:
+	get:
+		return SourceCoordinate.from_projection(position.x)
+	set(value):
+		position.x = SourceCoordinate.store(value)
+
+var source_y: float:
+	get:
+		return SourceCoordinate.from_projection(position.y)
+	set(value):
+		position.y = SourceCoordinate.store(value)
+
 var helper_id: String
 var attacking: bool = false
 var facing: int = 1
@@ -85,7 +98,8 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 	_events_applied.clear()
 	_clear_nested_callbacks()
 	_reset_preview_offsets()
-	position = Vector2(float(spawn.get("x", -200.0)), float(spawn.get("y", -200.0)))
+	source_x = float(spawn.get("x", -200.0))
+	source_y = float(spawn.get("y", -200.0))
 	set_facing(int(spawn.get("facing", 1)))
 	var start_frame := int(spawn.get("start_frame", _combat.get("start_frame", 2)))
 	play_source_frame(start_frame)
@@ -226,7 +240,7 @@ func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
 		"instanceName": attack_name, "attack": attack.duplicate(true),
 		"attackBounds": _diagnostic_rect(instance_global_bounds(attack_name)),
 		"defenderBounds": _diagnostic_rect(defender.instance_global_bounds("bdmn")),
-		"attackerPosition": {"x": position.x, "y": position.y}}
+		"attackerPosition": {"x": source_x, "y": source_y}}
 	_emit_diagnostic("hit_contact", hit_source)
 	defender.receive_attack(attack, facing, hit_source)
 	last_event = "helper_hit_%s" % attack.get("instance_name", "unknown")
@@ -297,8 +311,8 @@ func snapshot() -> Dictionary:
 	return {
 		"helper": helper_id,
 		"frame": current_source_frame(),
-		"x": position.x,
-		"y": position.y,
+		"x": source_x,
+		"y": source_y,
 		"facing": facing,
 		"attacking": attacking,
 		"event": last_event,
@@ -343,18 +357,19 @@ func _apply_frame_events_at(frame: int, from_deferred_queue: bool = false) -> vo
 			continue
 		match event["op"]:
 			"aim_opponent_x":
-				position.x = owner_fighter.opponent.position.x
+				source_x = owner_fighter.opponent.source_x
 			"warp_by_facing":
 				var writes: Dictionary = event["cases"][str(facing)]
-				var target := owner_fighter.opponent.position
+				var target := owner_fighter.opponent
 				if writes.has("x"):
-					position.x = target.x + float(writes.x)
+					source_x = target.source_x + float(writes.x)
 				if writes.has("y"):
-					position.y = target.y + float(writes.y)
+					source_y = target.source_y + float(writes.y)
 				if writes.has("facing"):
 					set_facing(int(writes.facing))
 			"place_relative_to_opponent":
-				position = owner_fighter.opponent.position + Vector2(0, float(event["offset_y"]))
+				source_x = owner_fighter.opponent.source_x
+				source_y = owner_fighter.opponent.source_y + float(event["offset_y"])
 	for event: Dictionary in _combat.get("drain_events", []):
 		if int(event["frame"]) != frame:
 			continue
@@ -398,7 +413,8 @@ func run_nested_clip_callback(event: Dictionary) -> void:
 				var retained: Dictionary = _retained_visual_clips.get(int(event.depth), {})
 				if retained.is_empty() or int(retained.placement.placed_frame) != int(event.frame) or int(retained.placement.character_id) != int(event.character_id):
 					return
-			position += Vector2(facing * float(event.forward), float(event.vertical))
+			source_x += facing * float(event.forward)
+			source_y += float(event.vertical)
 			return
 		"track_until_caught":
 			if _nested_dispatch_frame - int(event.frame) + 1 < int(event.until_frame):

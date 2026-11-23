@@ -10,7 +10,7 @@ func _run() -> void:
 	var sites := "main#DefineSprite_256_XG_qdj/frame_1/DoAction.as:"
 	var tape: Array = []
 	for i in 8:
-		tape.append({"index": i + 1, "site": sites + str(i % 4 + 1), "value": 0.25})
+		tape.append({"index": i + 1, "site": sites + str(i % 4 + 1), "value": 0.234 if i % 4 == 1 else 0.25})
 	assert(random.use_recorded_tape(tape))
 	var effects: Array[HitEffectRuntime] = []
 	for i in 2:
@@ -27,7 +27,7 @@ func _run() -> void:
 		effect.run_initial_frame()
 		assert(random.consumed.size() == (i + 1) * 4)
 		# _X/_Y are parent coordinates; mirroring the sprite must not flip the offset.
-		assert(effect.position == Vector2(100, 197.5))
+		assert(effect.position == Vector2(100.15, 197.5))
 		effect.run_initial_frame()
 		assert(random.consumed.size() == (i + 1) * 4)
 		for frame in range(2, 19):

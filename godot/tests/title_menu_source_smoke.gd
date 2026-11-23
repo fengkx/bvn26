@@ -1,13 +1,17 @@
 extends SceneTree
 
+# Exercise the authored wheel before the port filters unavailable destinations.
+class SourceMenu extends TitleMenu:
+	func _skip_unavailable(_initial: bool = false) -> void:
+		pass
+
+
 func _initialize() -> void:
 	_run.call_deferred()
 
 func _run() -> void:
 	root.size = Vector2i(600, 400)
-	var menu := TitleMenu.new()
-	# Keep the locked original oracle separate from the requested hidden-mode policy.
-	menu.hide_single = false
+	var menu := SourceMenu.new()
 	menu.reset()
 	root.add_child(menu)
 	var chosen: Array = []

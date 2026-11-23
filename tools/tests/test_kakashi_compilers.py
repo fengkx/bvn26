@@ -34,6 +34,9 @@ class KakashiCompilerTests(unittest.TestCase):
                  for item in metadata["projectile_hooks"]}
         self.assertEqual(hooks[162]["frame_count"], 1)
         self.assertEqual(hooks[425]["frame_count"], 9)
+        for first, second in [(425, 437), (431, 443)]:
+            self.assertEqual(hooks[first]["authored_name"], hooks[second]["authored_name"])
+            self.assertNotEqual(hooks[first]["instance_name"], hooks[second]["instance_name"])
 
     def test_missing_source_frame_count_fails_closed(self):
         timeline = json.loads(json.dumps(self.timeline))

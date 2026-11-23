@@ -1602,6 +1602,9 @@ func _fighter_visual_service(actor: FighterRuntime, service: String, _args: Arra
 		var effect: Dictionary = _args[0]
 		_spawn_hit_effect(effect["clip"], actor.position + Vector2(float(effect["offset_x"]), 0), actor.facing, float(effect["offset_y"]))
 		return null
+	if service == "camera_focus":
+		super_runtime.last_focus = actor.player_slot if _args[0].target == "caster" else "all"
+		return null
 	if service == "root_position":
 		var write: Dictionary = _args[0]
 		_apply_root_position(write["axis"], write["operator"], float(write["pixels"]))
@@ -1780,8 +1783,8 @@ func _diagnostic_player(fighter: FighterRuntime, helper: HelperRuntime) -> Dicti
 			"resourcePath": helper.helper_directory,
 			"action": helper.source_action,
 			"sourceFrame": helper.current_source_frame(),
-			"x": helper.position.x,
-			"y": helper.position.y,
+			"x": helper.source_x,
+			"y": helper.source_y,
 			"facing": helper.facing,
 			"attacking": helper.attacking,
 			"bs": helper.bs,

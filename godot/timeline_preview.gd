@@ -15,6 +15,7 @@ var _timeline: Dictionary
 var _fighter: Dictionary
 var _definitions: Dictionary = {}
 var _assets: Dictionary = {}
+var _gradient_ramps: Dictionary = {}
 var _frames: Dictionary = {}
 var _action_start: int
 var _action_end: int
@@ -157,7 +158,7 @@ func instance_local_bounds(instance_name: String) -> Rect2:
 	if not _frames.has(_current_frame):
 		return Rect2()
 	for placement: Dictionary in _frames[_current_frame]["display_list"]:
-		if str(placement.get("name", "")) == instance_name:
+		if _matches_placement(placement, instance_name):
 			return _rooted_placement_bounds(placement)
 	return Rect2()
 
@@ -166,7 +167,7 @@ func instance_global_bounds(instance_name: String) -> Rect2:
 	if not _frames.has(_current_frame):
 		return Rect2()
 	for placement: Dictionary in _frames[_current_frame]["display_list"]:
-		if str(placement.get("name", "")) == instance_name:
+		if _matches_placement(placement, instance_name):
 			return _source_placement_bounds(placement, _current_frame, [], true, true)
 	return Rect2()
 
@@ -175,7 +176,7 @@ func child_instance_global_bounds(parent_name: String, child_name: String) -> Re
 	if not _frames.has(_current_frame):
 		return Rect2()
 	for placement: Dictionary in _frames[_current_frame]["display_list"]:
-		if str(placement.get("name", "")) != parent_name:
+		if not _matches_placement(placement, parent_name):
 			continue
 		var definition: Dictionary = _definitions.get(int(placement["character_id"]), {})
 		var frames: Array = definition.get("display_list_frames", [])
@@ -255,7 +256,7 @@ func named_instance_origin(instance_name: String) -> Vector2:
 	if not _frames.has(_current_frame):
 		return Vector2.INF
 	for placement: Dictionary in _frames[_current_frame]["display_list"]:
-		if str(placement.get("name", "")) != instance_name:
+		if not _matches_placement(placement, instance_name):
 			continue
 		var matrix: Dictionary = placement.get("matrix", {})
 		return Vector2(
@@ -294,7 +295,7 @@ func set_instance_clip_frame(
 
 func _instance_children(instance_name: String, local_frame: int) -> Array:
 	for placement: Dictionary in _frames.get(_current_frame, {}).get("display_list", []):
-		if str(placement.get("name", "")) != instance_name:
+		if not _matches_placement(placement, instance_name):
 			continue
 		var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
 		var frames: Array = definition.get("display_list_frames", [])
@@ -344,7 +345,7 @@ func instance_clip_frame(instance_name: String) -> int:
 	if not _frames.has(_current_frame):
 		return 0
 	for placement: Dictionary in _frames[_current_frame]["display_list"]:
-		if str(placement.get("name", "")) != instance_name:
+		if not _matches_placement(placement, instance_name):
 			continue
 		var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
 		var sprite_frames: Array = definition.get("display_list_frames", [])
@@ -387,6 +388,7 @@ func current_named_instances() -> PackedStringArray:
 
 
 func _load_data() -> void:
+	_gradient_ramps.clear()
 	if fighter_directory == "":
 		return
 	var timeline_path := "%s/timeline.json" % fighter_directory
@@ -455,7 +457,7 @@ func _queue_visual_frame(_frame: int, _sprite: int) -> void:
 
 
 func _visual_source_record(placement: Dictionary) -> Dictionary:
-	var name := str(placement.get("name", ""))
+	var name := _placement_state_key(placement)
 	if not _instance_local_frames.has(name):
 		return {}
 	for root_placement: Dictionary in _frames.get(_current_frame, {}).get("display_list", []):
@@ -713,7 +715,7 @@ func _collect_nested_start_sounds(
 	_nested_sound_container_states[instance_id] = container_state
 	var previous_frame := int(_nested_sound_instance_frames.get(instance_id, -1))
 	if previous_frame != local_frame:
-		var instance_name := str(placement.get("name", ""))
+		var instance_name := _placement_state_key(placement)
 		var child_playhead: Dictionary = _instance_local_frames.get(instance_name, {})
 		if not bool(child_playhead.get("source_timeline_event_driver", false)):
 			var frame_events: Array = definition.get("display_list_frame_events", [])
@@ -723,7 +725,7 @@ func _collect_nested_start_sounds(
 						_play_nested_source_sound(event, instance_id, character_id, local_frame)
 		_nested_sound_instance_frames[instance_id] = local_frame
 	var child_age := clip_age
-	var instance_name := str(placement.get("name", ""))
+	var instance_name := _placement_state_key(placement)
 	if instance_name != "" and _instance_local_frames.has(instance_name):
 		child_age = int(_instance_local_frames[instance_name].get("age", 0))
 	for child: Dictionary in sprite_frames[local_frame - 1]:
@@ -946,10 +948,10 @@ func _render_placement(
 	# Display lists are depth-sorted. Traverse each subtree contiguously;
 	# child depths are local to their SWF container, never added globally.
 	var depth := parent_depth
-	var instance_name := str(placement.get("name", ""))
+	var instance_name := _placement_state_key(placement)
 	if instance_name != "":
 		for hidden_name in hidden_instance_names:
-			if hidden_name == instance_name:
+			if hidden_name == placement.get("name", ""):
 				return
 	if definition["type"] == "DefineSpriteTag":
 		var sprite_frames: Array = definition.get("display_list_frames", [])
@@ -1043,7 +1045,54 @@ func _render_placement(
 		add_child(sprite)
 	if not usable_fills.is_empty():
 		return
+	if definition.has("linear_gradient"):
+		var fill: Dictionary = definition.linear_gradient
+		var ramp := _gradient_ramp(definition)
+		var contours: Array = [fill.polygon]
+		if not clip_masks.is_empty():
+			contours = _clip_bitmap_masks(contours, Transform2D.IDENTITY, placement_transform, ramp, clip_masks)
+		var inverse := _matrix_transform(fill.matrix, 1.0).affine_inverse()
+		for contour: Array in contours:
+			var vertices := PackedVector2Array()
+			var uvs := PackedVector2Array()
+			for point: Array in contour:
+				var vertex := Vector2(float(point[0]), float(point[1]))
+				vertices.append(vertex)
+				# SWF linear gradients span -16384 to +16384 twips on the X axis.
+				var ratio := (inverse * vertex).x * TWIPS_PER_PIXEL / 32768.0 + 0.5
+				uvs.append(Vector2(0.5 + 255.0 * ratio, 0.5))
+			var polygon := Polygon2D.new()
+			polygon.polygon = vertices
+			polygon.uv = uvs
+			polygon.texture = ramp
+			polygon.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			polygon.texture_repeat = CanvasItem.TEXTURE_REPEAT_DISABLED
+			polygon.transform = placement_transform
+			polygon.z_index = depth
+			_apply_cxform(polygon, rgb_mul, rgb_add, alpha)
+			_apply_blend(polygon, blend)
+			add_child(polygon)
+		return
 	_render_solid_fills(definition, placement_transform, depth, rgb_mul, rgb_add, alpha, blend)
+
+
+func _gradient_ramp(definition: Dictionary) -> GradientTexture1D:
+	var fill: Dictionary = definition.linear_gradient
+	var id := int(definition.character_id)
+	if not _gradient_ramps.has(id):
+		var gradient := Gradient.new()
+		var offsets := PackedFloat32Array()
+		var colors := PackedColorArray()
+		for stop: Dictionary in fill.stops:
+			offsets.append(float(stop.ratio) / 255.0)
+			colors.append(Color8(int(stop.rgba[0]), int(stop.rgba[1]), int(stop.rgba[2]), int(stop.rgba[3])))
+		gradient.offsets = offsets
+		gradient.colors = colors
+		var ramp := GradientTexture1D.new()
+		ramp.width = 256
+		ramp.gradient = gradient
+		_gradient_ramps[id] = ramp
+	return _gradient_ramps[id]
 
 
 func _mask_is_full_bitmap(masks: Array, bitmap_transform: Transform2D, texture: Texture2D) -> bool:
@@ -1417,7 +1466,25 @@ func _shape_texture_region(
 	return Rect2(start, finish - start)
 
 
+func bind_placement_state_key(hook: Dictionary) -> void:
+	for frame: int in hook.member_frames:
+		for placement: Dictionary in _frames[frame].display_list:
+			if int(placement.depth) == int(hook.depth) and int(placement.placed_frame) == int(hook.placement_frame):
+				placement["state_key"] = hook.projectile.instance_name
+				break
+
+
+func _matches_placement(placement: Dictionary, key: String) -> bool:
+	return placement.get("name", "") == key or placement.get("state_key") == key
+
+
+func _placement_state_key(placement: Dictionary) -> String:
+	return str(placement.get("state_key", placement.get("name", "")))
+
+
 func _offset_key(placement: Dictionary) -> String:
+	if placement.has("state_key"):
+		return placement.state_key
 	return str(placement.get("name", "@%s/%s/%s" % [placement.get("character_id"), placement.get("depth"), placement.get("placed_frame", 1)]))
 
 
@@ -1549,7 +1616,7 @@ func _collect_source_bounds(
 		else definition.get("first_frame_display_list", [])
 	)
 	var child_clip_age := clip_age
-	var instance_name := str(placement.get("name", ""))
+	var instance_name := _placement_state_key(placement)
 	if instance_name != "" and _instance_local_frames.has(instance_name):
 		child_clip_age = int(_instance_local_frames[instance_name].get("age", clip_age))
 	var result := Rect2i()
@@ -1678,7 +1745,7 @@ func _nested_frame(
 	frame_count: int,
 	clip_age: int = 0
 ) -> int:
-	var instance_name := str(placement.get("name", ""))
+	var instance_name := _placement_state_key(placement)
 	if instance_name != "" and _instance_local_frames.has(instance_name):
 		return maxi(1, int(_instance_local_frames[instance_name]["local_start"]))
 	if frame_count <= 1:

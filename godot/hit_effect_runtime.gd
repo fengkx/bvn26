@@ -135,10 +135,10 @@ func _apply_frame_events() -> void:
 					return
 				var offset := positive * float(event["positive_factor"]) - negative * float(event["negative_factor"])
 				if event["axis"] == "x":
-					position.x += offset
+					position.x = SourceCoordinate.store(SourceCoordinate.from_projection(position.x) + offset)
 				else:
 					assert(event["axis"] == "y")
-					position.y += offset
+					position.y = SourceCoordinate.store(SourceCoordinate.from_projection(position.y) + offset)
 			"pause_game":
 				game_paused = true
 				pause_requested.emit()

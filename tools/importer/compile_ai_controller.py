@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from itertools import combinations
 from pathlib import Path
 import re
 import textwrap
@@ -88,6 +89,27 @@ CALLS = {
     'bdfyxg()': 'pass # Source guard-effect call has no receiver argument.',
     'bdfyxg2()': 'pass # Source guard-effect call has no receiver argument.',
 }
+
+def separate_overlapping_projectiles(hooks: list[dict]) -> None:
+    # A renamed projectile may still be playing when another copy is placed
+    # under its original name. Each callback keeps its own MovieClip state.
+    groups = {}
+    for hook in hooks:
+        if 'projectile' in hook:
+            groups.setdefault(hook['projectile']['instance_name'], []).append(hook)
+    for name, group in groups.items():
+        for first, second in combinations(group, 2):
+            if set(first['member_frames']).isdisjoint(second['member_frames']):
+                continue
+            for hook in (first, second):
+                model = hook['projectile']
+                model['authored_name'] = name
+                model['instance_name'] = instance_key({
+                    'depth': hook['depth'], 'character_id': model['character_id'],
+                    'placed_frame': hook['placement_frame'],
+                })
+
+
 def source_expression(source: str, locals_: set[str], scope_fields: set[str], call_aliases=None, *, avm1_comparisons: bool = False) -> str:
     for field in sorted(scope_fields, key=len, reverse=True):
         source = re.sub(
@@ -569,6 +591,7 @@ def compile_controller(bundle: dict, sprite: int, timeline: dict, *, player: boo
                                  'member_frames': [f for f, _ in placements],
                                  'projectile': {'instance_name': instance_key(placements[0][1]), **clip, **motion}})
     projectile_hooks.extend(renamed_timeline_hooks(bundle, sprite, timeline, projectile_hooks))
+    separate_overlapping_projectiles(projectile_hooks)
     return text,{'status':'compiled_not_integrated','sprite_id':sprite,'hooks':hooks,
                  'excluded_controller_aliases': excluded_controller_aliases,
                  **({'unbound_call_sites': unbound_call_sites} if unbound_call_sites else {}),

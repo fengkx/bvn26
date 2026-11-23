@@ -14,7 +14,9 @@ class MenuExport {
   ArrayList<Tag> tags=new ArrayList<>(); for(Tag t:main.getTags()) tags.add(t);
   for(Tag t:tags) if(t instanceof PlaceObject2Tag) {
    PlaceObject2Tag p=(PlaceObject2Tag)t;
-   if(p.characterId==620 || p.characterId==665 || p.depth==20) main.removeTag(t);
+   // These placements belong to the original hosting portal: panel, logo and links.
+   boolean portalOverlay = Set.of(646, 648, 652, 655, 665).contains(p.characterId);
+   if(portalOverlay || p.characterId==620 || p.depth==20) main.removeTag(t);
   }
   main.setModified(true);s.saveTo(new FileOutputStream(args[1]));
  }

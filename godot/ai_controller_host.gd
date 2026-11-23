@@ -238,6 +238,8 @@ func configure(owner_fighter: FighterRuntime, directory: String) -> void:
 		# JSON numbers are floats in Godot; Array.has uses Variant type identity.
 		# Source frame identity is integer-valued on both sides of membership.
 		hook["member_frames"] = PackedInt32Array(hook["member_frames"])
+		if hook.get("projectile", {}).has("authored_name"):
+			fighter.bind_placement_state_key(hook)
 	# Source placements are visited in timeline/depth order. A shared registry
 	# then dispatches newest registrations first, independent of current depth.
 	_hooks.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
@@ -290,8 +292,9 @@ func _create_instance(hook: Dictionary, generation: int) -> RefCounted:
 		projectile.model = hook["projectile"].duplicate(true)
 		projectile.source_path = hook["path"]
 		projectile.generation = generation
-		projectile.instance_name = projectile.model["instance_name"]
-		fighter.source_projectiles[projectile.instance_name] = weakref(projectile)
+		var state_key: String = projectile.model["instance_name"]
+		projectile.instance_name = projectile.model.get("authored_name", state_key)
+		fighter.source_projectiles[state_key] = weakref(projectile)
 		if projectile.model.has("initial_speed_field"):
 			projectile.model["initial_speed"] = float(context.read_field(projectile.model["initial_speed_field"])) * float(projectile.model["initial_speed_factor"])
 		fighter.set_instance_local_offset(projectile.model["instance_name"], Vector2.ZERO)

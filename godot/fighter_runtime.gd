@@ -1774,18 +1774,25 @@ func _projectile_blocked(instance_name: String, projectile: Dictionary = {}) -> 
 
 func source_projectile_target_bounds(source_name: String) -> Rect2:
 	# A source rename replaces the property used by the other fighter's query.
-	for authored: String in source_projectiles:
-		var projectile: RefCounted = source_projectiles[authored].get_ref()
+	var hidden_authored_name := false
+	var newest_generation := -1
+	var bound_key := ""
+	for key: String in source_projectiles:
+		var projectile: RefCounted = source_projectiles[key].get_ref()
 		if projectile == null:
 			continue
 		var current_name: Variant = projectile.current_source_name()
 		if current_name == null:
 			continue
-		if current_name == source_name:
-			return super.instance_global_bounds(authored)
-		if authored == source_name:
-			return Rect2()
-	var hidden_authored_name := false
+		if current_name == source_name and projectile.generation > newest_generation:
+			newest_generation = projectile.generation
+			bound_key = key
+		if projectile.model.get("authored_name", key) == source_name:
+			hidden_authored_name = true
+	if bound_key != "":
+		return super.instance_global_bounds(bound_key)
+	if hidden_authored_name:
+		return Rect2()
 	for projectile: Dictionary in _combat.get("projectiles", []):
 		var authored := str(projectile["instance_name"])
 		if source_projectiles.has(authored):
@@ -2211,15 +2218,15 @@ func _yfgj_spawn(event: Dictionary) -> Dictionary:
 	# Source yfgj(): helper._x = caster._x - 20 * (xscale <= 0 ? -1 : 1)
 	# and helper faces the opponent, then gotoAndPlay(2).
 	var behind := float(event.get("behind_pixels", 20.0))
-	var spawn_x := position.x - behind * facing
+	var spawn_x := source_x - behind * facing
 	var helper_facing := facing
 	if opponent != null and is_instance_valid(opponent):
-		helper_facing = -1 if position.x >= opponent.position.x else 1
+		helper_facing = -1 if source_x >= opponent.source_x else 1
 	return {
 		"helper_id": str(event.get("helper_id", "")),
 		"helper_swf": str(event.get("helper_swf", "")),
 		"x": spawn_x,
-		"y": position.y,
+		"y": source_y,
 		"facing": helper_facing,
 		"start_frame": int(event.get("start_frame", 2)),
 	}

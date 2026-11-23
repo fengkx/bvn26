@@ -682,6 +682,9 @@ def compile_context(bundle: dict,timeline: dict, *, form_replacement: bool = Fal
                 calls.append({'op': 'inline_frame', 'path': path, 'line': number,
                               'frame': frame['frame'], 'calls': inline_frame_function(
                                   functions[method], first_path + '#' + method, frame['frame'])})
+            elif line in ('_root.焦点 = "all";', '_root.焦点 = pn != 2 ? "p2" : "p1";'):
+                calls.append({'op': 'camera_focus', 'target': 'all' if '"all"' in line else 'caster',
+                              'path': path, 'line': number, 'frame': frame['frame']})
             elif child_effect := re.fullmatch(r'_root\.(touchFloorEffect|shunbuxg)\(_parent\);', line):
                 calls.append({**root_child_effect(child_effect[1]), 'path': path,
                               'line': number, 'frame': frame['frame']})
