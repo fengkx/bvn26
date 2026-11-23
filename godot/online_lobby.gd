@@ -2133,7 +2133,13 @@ func _begin_selection_session(session_id: String, initial_choices: Array) -> boo
 func _on_selection_snapshot_changed(snapshot: Dictionary) -> void:
 	if not _selection_active or str(snapshot.get("sessionId", "")) != _selection_session_id:
 		return
+	var opening := _pending_selection_snapshot.is_empty()
 	_pending_selection_snapshot = snapshot.duplicate(true)
+	if _uses_room_setup():
+		if snapshot.phase == "fighter":
+			_pending_selection_snapshot.choice.helper = ""
+		room_client.send_lineup_cursor(_pending_selection_snapshot.choice, opening)
+		return
 	if _room_connection != null and _room_connection_ready:
 		_room_connection.send_peer_message("selection_snapshot", snapshot)
 
@@ -2165,6 +2171,8 @@ func _on_selection_cancelled() -> void:
 
 
 func _end_selection_session(_notify_peer: bool = false) -> void:
+	if _selection_active and _uses_room_setup() and is_instance_valid(room_client):
+		room_client.send_lineup_cursor(null)
 	var was_active := _selection_active or _selection_root_restore_pending
 	_end_selection_commit()
 	if _selection_adapter != null and is_instance_valid(_selection_adapter):
@@ -2477,6 +2485,11 @@ func _accept_state(state: Variant) -> void:
 		_needs_new_invite = true
 	var previous_network_profile := _network_profile_authority.duplicate(true)
 	_room_state = incoming
+	if _selection_active and _uses_room_setup():
+		var peer := _as_dictionary(incoming_members[1 - _slot])
+		var previous := _as_dictionary(previous_members[1 - _slot])
+		if not peer.get("signaling", false) or peer.get("choice") != previous.get("choice"):
+			_selection_adapter.show_peer_lineup(_as_dictionary(peer.get("choice")))
 	if _uses_room_setup() and _dirty and _room_state.get("rules") == _rules_draft:
 		_dirty = false
 	_network_profile_authority = next_network_profile.duplicate(true)
@@ -2550,12 +2563,21 @@ func _on_room_state_changed(state: Dictionary) -> void:
 
 
 func _on_signaling_message(message: Dictionary) -> void:
+	if message.get("type") == "lineup_cursor" and _selection_active and _uses_room_setup():
+		var choice: Variant = message.get("choice")
+		if choice == null:
+			choice = _as_dictionary(_room_state.members[1 - _slot]).get("choice")
+		_selection_adapter.show_peer_lineup(_as_dictionary(choice))
+		if message.get("requestPeer") == true and not _pending_selection_snapshot.is_empty():
+			room_client.send_lineup_cursor(_pending_selection_snapshot.choice)
 	if message.get("type") == "socket_closed":
 		_match_status.text = "房间信令已断开；正在等待恢复。"
 
 
 func _on_socket_state_changed(connected: bool) -> void:
 	_signal_connected = connected
+	if connected and _selection_active and _uses_room_setup() and not _pending_selection_snapshot.is_empty():
+		room_client.send_lineup_cursor(_pending_selection_snapshot.choice, true)
 	if _retry_button != null:
 		_retry_button.visible = room_client != null and room_client.has_uncertain_command()
 	if connected:

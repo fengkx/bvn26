@@ -14,6 +14,7 @@ import {
   SOCKET_ACTIVITY_MS,
   join,
   joinByCode,
+  lineupCursor,
   json,
   MAX_BYTES,
   parse,
@@ -41,6 +42,9 @@ interface Attachment {
   seq: number;
   window: number;
   count: number;
+  cursorWindow?: number;
+  cursorCount?: number;
+  viewingLineup?: boolean;
 }
 
 export class Room extends DurableObject<Env> {
@@ -633,6 +637,44 @@ export class Room extends DurableObject<Env> {
         401,
       );
       const window = Math.floor(Date.now() / 60_000);
+      let decoded: unknown;
+      try {
+        decoded = JSON.parse(message);
+      } catch {
+        decoded = undefined;
+      }
+      if (
+        decoded &&
+        typeof decoded === "object" &&
+        "type" in decoded &&
+        decoded.type === "lineup_cursor"
+      ) {
+        attached.cursorCount =
+          attached.cursorWindow === window
+            ? (attached.cursorCount ?? 0) + 1
+            : 1;
+        attached.cursorWindow = window;
+        socket.serializeAttachment(attached);
+        requireThat(attached.cursorCount <= 900, "rate_limited", 429);
+        if (state.phase !== "lobby") return;
+        const cursor = parse(lineupCursor, decoded);
+        if (attached.viewingLineup !== (cursor.choice !== null)) {
+          attached.viewingLineup = cursor.choice !== null;
+          socket.serializeAttachment(attached);
+        }
+        for (const peer of this.ctx.getWebSockets()) {
+          const target = peer.deserializeAttachment() as Attachment;
+          const member = state.members[target.slot];
+          if (
+            target.slot !== attached.slot &&
+            target.viewingLineup &&
+            member?.credential === target.credential &&
+            member.connection === target.connection
+          )
+            this.send(peer, cursor);
+        }
+        return;
+      }
       attached.count = attached.window === window ? attached.count + 1 : 1;
       attached.window = window;
       socket.serializeAttachment(attached);
@@ -649,12 +691,7 @@ export class Room extends DurableObject<Env> {
         this.write(state);
         await this.schedule(state);
       }
-      let decoded: unknown;
-      try {
-        decoded = JSON.parse(message);
-      } catch {
-        throw new Fault(400, "invalid_json");
-      }
+      requireThat(decoded !== undefined, "invalid_json", 400);
       const input = parse(signal, decoded);
       requireThat(input.seq > attached.seq, "invalid_sequence");
       const negotiation = state.negotiation;

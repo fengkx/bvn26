@@ -11,6 +11,9 @@ class Game extends Control:
 class Room extends OnlineRoomClient:
 	var state: Dictionary = {}
 	var operations: Array[Dictionary] = []
+	var cursors: Array = []
+	func send_lineup_cursor(choice: Variant, request_peer: bool = false) -> void:
+		cursors.append({"choice": choice, "requestPeer": request_peer})
 	func refresh_state() -> Dictionary:
 		return {"state": state.duplicate(true)}
 	func command(operation: Dictionary) -> Dictionary:
@@ -69,7 +72,18 @@ func run() -> void:
 	assert(lobby._selection_adapter is CharacterSelection)
 	assert(lobby._selection_adapter.independent_selection)
 	assert(not lobby._dialog.visible)
+	assert(client.cursors.size() == 1 and client.cursors[0].requestPeer)
+	var selector := lobby._selection_adapter
+	assert(selector.selected[1] == -1)
+	var peer_choice := {"fighter": "neji", "helper": ""}
+	lobby._on_signaling_message({"type": "lineup_cursor", "choice": peer_choice, "requestPeer": true})
+	assert(selector.selected[1] >= 0 and selector.available.fighters[selector.fighters[1]] == "neji")
+	assert(client.cursors.size() == 2 and not client.cursors.back().requestPeer)
+	selector.tick_local({"right": true})
+	assert(client.cursors.back().choice == selector._local_choice_resource_ids())
+	assert(client.operations.is_empty())
 	lobby._on_selection_cancelled()
+	assert(client.cursors.back().choice == null)
 	assert(lobby._dialog.visible)
 	assert(lobby._room_state.members[0].choice == null)
 	lobby._open_lineup()

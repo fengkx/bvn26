@@ -11,6 +11,7 @@ const HELPER_PHASE := "helper"
 const MAX_REVISION := 9_007_199_254_740_991
 
 var independent_selection := false
+var _peer_lineup: Dictionary = {}
 var local_slot := -1
 var selection_session_id := ""
 
@@ -53,6 +54,7 @@ func begin(slot: int, session_id: String, initial_choices: Array = []) -> String
 	_next_revision = 0
 	_remote_revisions = {FIGHTER_PHASE: -1, HELPER_PHASE: -1}
 	_remote_snapshots.clear()
+	_peer_lineup.clear()
 	_local_confirmed = {FIGHTER_PHASE: false, HELPER_PHASE: false}
 	_remote_confirmed = {FIGHTER_PHASE: false, HELPER_PHASE: false}
 	mode = 3
@@ -65,6 +67,9 @@ func begin(slot: int, session_id: String, initial_choices: Array = []) -> String
 			if not choice is Dictionary:
 				continue
 			_apply_choice_resource_ids(player, choice)
+	if independent_selection:
+		var initial: Variant = initial_choices[1 - slot] if initial_choices.size() == 2 else {}
+		show_peer_lineup(_as_dictionary(initial))
 	_update_view()
 	_publish_snapshot(false)
 	return ""
@@ -183,6 +188,8 @@ func _advance_to_helper_phase() -> void:
 		_remote_snapshots.erase(HELPER_PHASE)
 		_remote_confirmed[HELPER_PHASE] = false
 	_set_control_slot()
+	if independent_selection:
+		show_peer_lineup(_peer_lineup)
 	_publish_snapshot(false)
 
 
@@ -214,6 +221,26 @@ func _publish_snapshot(confirmed: bool) -> void:
 	}
 	_next_revision += 1
 	snapshot_changed.emit(snapshot)
+
+
+func show_peer_lineup(choice: Dictionary) -> void:
+	if not independent_selection or not _selection_active or local_slot < 0:
+		return
+	var remote := 1 - local_slot
+	var fighter := _display_id("fighters", str(choice.get("fighter", "")))
+	var helper := _display_id("helpers", str(choice.get("helper", "")))
+	if not choice.is_empty() and (fighter.is_empty() or (choice.get("helper", "") != "" and helper.is_empty())):
+		return
+	_peer_lineup = choice.duplicate()
+	var display_id := fighter if phase == 0 else helper
+	if (fighters[remote] if phase == 0 else helpers[remote]) != display_id:
+		_portrait_frames[remote] = 1
+		_text_counts[remote] = 0
+	fighters[remote] = fighter
+	helpers[remote] = helper
+	selected[remote] = -1
+	_select_display_card(remote, display_id)
+	_update_view()
 
 
 func _apply_remote_choice(choice: Dictionary) -> void:
