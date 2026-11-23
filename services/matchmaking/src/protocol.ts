@@ -130,6 +130,14 @@ export const command = z.strictObject({
   seq: z.number().int().positive().max(Number.MAX_SAFE_INTEGER),
   operation,
 });
+export const lineupCursor = z.strictObject({
+  type: z.literal("lineup_cursor"),
+  choice: z
+    .strictObject({ fighter: id, helper: z.string().max(80) })
+    .nullable(),
+  requestPeer: z.boolean(),
+});
+
 export const signal = z.strictObject({
   version: z.literal(VERSION),
   type: z.literal("signal"),

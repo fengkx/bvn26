@@ -1967,3 +1967,43 @@ test("authority lobby accepts selected content, locks mode and lineup, and recor
   );
   assert.ok(room.state.members.every((seat) => !seat.ready));
 });
+
+test("open lineup selectors exchange transient cursors without locking a choice", async (t) => {
+  const server = await withServer(t);
+  const room = await createRoom(server, {}, "host-authoritative");
+  await joinRoom(server, room);
+  const host = await socket(server, room, room.owner);
+  const guest = await socket(server, room, room.guest);
+  t.after(() => {
+    host.ws.terminate();
+    guest.ws.terminate();
+  });
+  const cursor = (fighter, helper = "", requestPeer = false) => ({
+    type: "lineup_cursor",
+    choice: { fighter, helper },
+    requestPeer,
+  });
+  const first = cursor("neji", "", true);
+  host.ws.send(JSON.stringify(first));
+  host.ws.send("ping");
+  await host.receive("pong");
+  const second = cursor("shouju", "", true);
+  guest.ws.send(JSON.stringify(second));
+  assert.deepEqual(await host.receive("lineup_cursor"), second);
+  const moved = cursor("juggo", "ban");
+  host.ws.send(JSON.stringify(moved));
+  assert.deepEqual(await guest.receive("lineup_cursor"), moved);
+  const closed = { type: "lineup_cursor", choice: null, requestPeer: false };
+  guest.ws.send(JSON.stringify(closed));
+  assert.deepEqual(await host.receive("lineup_cursor"), closed);
+  const { state } = await request(
+    server,
+    endpoint(room, "state"),
+    undefined,
+    room.owner,
+  );
+  assert.deepEqual(
+    state.members.map((seat) => seat.choice),
+    [null, null],
+  );
+});

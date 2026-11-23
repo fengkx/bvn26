@@ -625,6 +625,11 @@ func _request_json(method: int, path: String, body_text: String, authenticated: 
 	return {"ok": true, "value": parsed}
 
 
+func send_lineup_cursor(choice: Variant, request_peer: bool = false) -> void:
+	if is_signaling_connected():
+		_socket.send_text(JSON.stringify({"type": "lineup_cursor", "choice": choice, "requestPeer": request_peer}))
+
+
 func _handle_socket_packet(packet: PackedByteArray) -> void:
 	if packet.size() > MAX_SIGNAL_BYTES:
 		_socket_protocol_error("socket_message_too_large")
@@ -661,6 +666,9 @@ func _handle_socket_packet(packet: PackedByteArray) -> void:
 					_recent_signals.pop_front()
 				_recent_signals.append(message.duplicate(true))
 			signaling_message.emit(message.duplicate(true))
+		"lineup_cursor":
+			if message.get("requestPeer") is bool and (message.get("choice") == null or message.choice is Dictionary):
+				signaling_message.emit(message)
 		"signal_ack":
 			if not _is_integer(message.get("seq")) or not message.get("delivered") is bool:
 				_socket_protocol_error("invalid_signal_ack")
