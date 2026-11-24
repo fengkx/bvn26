@@ -53,7 +53,7 @@ function createElement(id = '') {
     };
 }
 
-function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined) {
+function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, device = {}) {
     let now = 0;
     let nextIntervalId = 1;
     const intervalCallbacks = new Map();
@@ -103,7 +103,7 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined) 
     const context = vm.createContext({
         window,
         document,
-        navigator: { userAgent: 'diagnostics-test', language: 'zh-CN' },
+        navigator: { userAgent: 'diagnostics-test', language: 'zh-CN', ...device },
         location: { origin: 'http://localhost', pathname: '/' },
         performance: { now: () => now },
         setNow(value) { now = value; },
@@ -726,7 +726,7 @@ test('places online controls in the existing toolbar and hides inactive controls
     const viewportStart = html.indexOf('<div id="viewport"');
     assert.ok(toolbarStart >= 0 && onlineStart > toolbarStart && viewportStart > onlineStart);
     assert.match(html, /#online-controls\[hidden\], #online-controls \[hidden\] \{ display: none !important; \}/);
-    assert.match(html, /#player:fullscreen #toolbar/);
+    assert.match(html, /#player:is\(:fullscreen, \.touch-fullscreen\) #toolbar/);
     assert.match(html, /#edge-indicator\.online-request \.edge-label/);
 });
 
@@ -936,4 +936,20 @@ test('every player button has one TinyTraffic click event', async () => {
     assert.equal(events.at(-1), 'Exit Fullscreen');
     await elements.get('volume-slider').dispatch('change');
     assert.equal(events.at(-1), 'Adjust Volume');
+});
+
+test('mobile controls stay off on desktop including touch laptops', () => {
+    for (const [device, expected] of [
+        [{ platform: 'Win32', userAgent: 'Windows NT 10.0', maxTouchPoints: 10 }, false],
+        [{ platform: 'MacIntel', maxTouchPoints: 0 }, false],
+        [{ platform: 'Linux x86_64', maxTouchPoints: 10 }, false],
+        [{ platform: 'MacIntel', userAgent: 'Macintosh', maxTouchPoints: 10 }, false],
+        [{ platform: 'MacIntel', userAgent: 'Macintosh', maxTouchPoints: 5, standalone: false }, true],
+        [{ userAgent: 'Android', maxTouchPoints: 5 }, true],
+        [{ userAgent: 'iPhone', maxTouchPoints: 5 }, true],
+    ]) {
+        const { window, elements } = createPage(null, null, undefined, device);
+        assert.equal(window.bvnMobileGamepadEnabled, expected);
+        assert.equal(elements.get('fullscreen').disabled, !expected);
+    }
 });

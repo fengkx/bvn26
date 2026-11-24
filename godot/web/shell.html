@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, viewport-fit=cover">
 		<title>$GODOT_PROJECT_NAME</title>
 		<script defer data-domain="bvn26.vercel.app" src="https://tt.fengkx.top/js/script.js"></script>
 		<style>
@@ -147,39 +147,39 @@ button:disabled { opacity: .5; cursor: default; }
 }
 #canvas { position: absolute; inset: 0; }
 #feedback { min-height: 1.5em; margin: 14px 20px; color: #d0b6a5; font-size: 12px; text-align: center; }
-#player:fullscreen {
+#player:is(:fullscreen, .touch-fullscreen) {
     background: black; overflow: hidden; width: 100%; height: 100%;
     min-height: 0; justify-content: center;
 }
-#player:fullscreen #viewport {
+#player:is(:fullscreen, .touch-fullscreen) #viewport {
     width: min(100vw, 150dvh); height: min(100dvh, calc(100vw / 1.5));
     box-shadow: none;
 }
-#player:fullscreen #help, #player:fullscreen #brand { display: none; }
-#player:fullscreen #toolbar {
+#player:is(:fullscreen, .touch-fullscreen) #help, #player:is(:fullscreen, .touch-fullscreen) #brand { display: none; }
+#player:is(:fullscreen, .touch-fullscreen) #toolbar {
     position: absolute; top: 12px; right: 14px; z-index: 6; width: auto;
     box-sizing: border-box; max-width: calc(100vw - 28px); padding: 8px; border: 0; border-bottom: 1px solid #6b3434;
     border-radius: 0 0 3px 3px; background: #151112e8; flex-wrap: wrap; justify-content: flex-end;
     opacity: 0; transform: translateY(calc(-100% - 14px)); pointer-events: none;
     transition: opacity .18s ease, transform .18s ease;
 }
-#player:fullscreen:not(.tools-collapsed) #toolbar:hover,
-#player:fullscreen:not(.tools-collapsed) #toolbar.keyboard-focus:focus-within,
-#player:fullscreen.tools-visible #toolbar {
+#player:is(:fullscreen, .touch-fullscreen):not(.tools-collapsed) #toolbar:hover,
+#player:is(:fullscreen, .touch-fullscreen):not(.tools-collapsed) #toolbar.keyboard-focus:focus-within,
+#player:is(:fullscreen, .touch-fullscreen).tools-visible #toolbar {
     opacity: 1; transform: translateY(0); pointer-events: auto;
 }
-#player:fullscreen.tools-collapsed #toolbar { opacity: 0; transform: translateY(calc(-100% - 14px)); pointer-events: none; }
+#player:is(:fullscreen, .touch-fullscreen).tools-collapsed #toolbar { opacity: 0; transform: translateY(calc(-100% - 14px)); pointer-events: none; }
 #edge-indicator { display: none; }
-#player:fullscreen #edge-indicator {
+#player:is(:fullscreen, .touch-fullscreen) #edge-indicator {
     display: block; position: absolute; z-index: 7; top: 0; right: 14px;
     box-sizing: border-box; width: 132px; height: 24px; padding: 0; border: 0; border-radius: 0 0 10px 10px;
     background: transparent; opacity: .92; cursor: pointer;
     transform: none; transition: opacity .18s ease, background .18s ease;
 }
-#player:fullscreen #edge-indicator:hover { background: transparent; }
-#player:fullscreen #edge-indicator:hover,
-#player:fullscreen.tools-visible #edge-indicator:hover { opacity: 1; }
-#player:fullscreen.tools-visible #edge-indicator { opacity: .22; }
+#player:is(:fullscreen, .touch-fullscreen) #edge-indicator:hover { background: transparent; }
+#player:is(:fullscreen, .touch-fullscreen) #edge-indicator:hover,
+#player:is(:fullscreen, .touch-fullscreen).tools-visible #edge-indicator:hover { opacity: 1; }
+#player:is(:fullscreen, .touch-fullscreen).tools-visible #edge-indicator { opacity: .22; }
 #edge-indicator > span:first-child {
     position: relative; display: block; box-sizing: border-box; width: 64px; height: 18px; margin: 3px auto 0;
     border: 1px solid #c5aaa28c; border-top-color: #ad3d35b8; border-radius: 2px 2px 9px 9px;
@@ -202,9 +202,9 @@ button:disabled { opacity: .5; cursor: default; }
 }
 #edge-indicator.online-active .edge-label { display: block; }
 #edge-indicator.online-request .edge-label { border-color: #e34238; color: #fff; }
-#player:fullscreen.tools-visible:not(.tools-collapsed) #edge-indicator.online-active { opacity: .85; }
+#player:is(:fullscreen, .touch-fullscreen).tools-visible:not(.tools-collapsed) #edge-indicator.online-active { opacity: .85; }
 #online-controls #online-collapse-tools { display: none; }
-#player:fullscreen #online-controls #online-collapse-tools { display: inline-block; }
+#player:is(:fullscreen, .touch-fullscreen) #online-controls #online-collapse-tools { display: inline-block; }
 #audio-control { position: relative; }
 #audio-toggle {
     display: inline-flex; align-items: center; justify-content: center; gap: 7px;
@@ -239,12 +239,12 @@ button:disabled { opacity: .5; cursor: default; }
 #volume-status { min-height: 1.2em; margin-top: 9px; color: #aa9993; font-size: 10px; }
 #audio-control:focus-within #volume-panel { outline: none; }
 #toolbar button { flex: none; }
-#player:fullscreen #feedback {
+#player:is(:fullscreen, .touch-fullscreen) #feedback {
     position: absolute; bottom: 28px; z-index: 5; margin: 0 20px; min-height: 0;
     padding: 12px 20px; background: #100d0ee8; border-left: 3px solid #df392e;
     color: #fff; pointer-events: none; opacity: 0;
 }
-#player:fullscreen.tools-visible #feedback { opacity: 1; }
+#player:is(:fullscreen, .touch-fullscreen).tools-visible #feedback { opacity: 1; }
 @media (max-width: 600px) {
     #toolbar { padding-top: 14px; }
     #brand { flex: 1 1 100%; justify-content: space-between; }
@@ -253,13 +253,59 @@ button:disabled { opacity: .5; cursor: default; }
     #volume-panel { width: min(256px, calc(100vw - 24px)); }
     #online-controls { flex: 1 1 100%; }
     #online-status { max-width: 100%; flex: 1 1 100%; }
-    #player:fullscreen #online-controls { flex: 1 1 100%; }
-    #player:fullscreen #online-status { max-width: 100%; }
+    #player:is(:fullscreen, .touch-fullscreen) #online-controls { flex: 1 1 100%; }
+    #player:is(:fullscreen, .touch-fullscreen) #online-status { max-width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-    button, #player:fullscreen #toolbar, #player:fullscreen #edge-indicator,
-    #player:fullscreen #feedback { transition: none; }
+    button, #player:is(:fullscreen, .touch-fullscreen) #toolbar, #player:is(:fullscreen, .touch-fullscreen) #edge-indicator,
+    #player:is(:fullscreen, .touch-fullscreen) #feedback { transition: none; }
 }
+#touch-pad, #rotate-hint { display: none; }
+#player.touch-fullscreen { position: fixed; inset: 0; z-index: 20; }
+@media (orientation: portrait) {
+    #player.touch-playing #rotate-hint {
+        display: block; position: absolute; bottom: 8%; color: #e3d2ca;
+    }
+}
+@media (orientation: landscape) {
+    #player.touch-playing #touch-pad:not([hidden]) {
+        display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+        --touch-key: clamp(44px, 5.52vw, 48px);
+    }
+    #player.touch-playing.touch-layout #viewport {
+        position: absolute; top: 50%; left: var(--game-center); transform: translate(-50%, -50%);
+        width: var(--game-width); height: auto;
+    }
+}
+#touch-stick, #touch-actions {
+    position: absolute; bottom: max(12%, env(safe-area-inset-bottom)); pointer-events: auto;
+    touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+}
+#touch-stick {
+    left: max(7px, env(safe-area-inset-left)); width: clamp(108px, 29dvh, 124px); aspect-ratio: 1;
+    border: 1px solid #cfb6ac; border-radius: 50%; box-sizing: border-box;
+    background: radial-gradient(circle, transparent 19%, #c4a99d66 20% 21%, transparent 22%), rgb(28 22 25 / .35);
+}
+#touch-stick span, #touch-knob {
+    position: absolute; top: 50%; left: 50%; pointer-events: none;
+    transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 0px));
+}
+#touch-stick span { color: white; font: 600 16px system-ui; text-shadow: 0 1px 3px black; }
+#touch-stick span.active { color: #ffeaa7; }
+#touch-knob {
+    width: 35%; aspect-ratio: 1; border: 1px solid #c7a59a; border-radius: 50%;
+    background: #3c2b2ee0; box-shadow: 0 2px 4px #0006;
+}
+#touch-stick.held #touch-knob { background: #8f403aeb; border-color: #ffd6c3; }
+#touch-actions { right: max(7px, env(safe-area-inset-right)); display: grid; grid-template-columns: repeat(3, var(--touch-key)); gap: 4px; }
+#touch-actions button {
+    width: var(--touch-key); height: var(--touch-key); padding: 0; transform: none; border: 1px solid #cdb9b4;
+    border-radius: 9px; color: white; font: 650 18px/1 system-ui; text-shadow: 0 1px 2px #000, 0 0 3px #000;
+    background: linear-gradient(to right, #211c20 0 var(--start,100%), rgb(25 20 24 / .35) var(--start,100%) var(--end,100%), #211c20 var(--end,100%) 100%);
+}
+#touch-actions button[aria-pressed=true] { background: #983e32bf; border-color: #ffdaaa; }
+#touch-actions small { display: block; margin-top: 2px; font: 550 10px/1.2 system-ui; }
+#touch-actions.menu { grid-template-columns: repeat(2, var(--touch-key)); }
         </style>
 		$GODOT_HEAD_INCLUDE
 	</head>
@@ -323,6 +369,15 @@ button:disabled { opacity: .5; cursor: default; }
 		</div>
 
         </div>
+        <div id="touch-pad" hidden>
+            <div id="touch-stick" role="group" aria-label="八向摇杆">
+                <span data-slot="w" style="--y:-2.55em">↑</span><span data-slot="s" style="--y:2.55em">↓</span>
+                <span data-slot="a" style="--x:-2.55em">←</span><span data-slot="d" style="--x:2.55em">→</span>
+                <i id="touch-knob"></i>
+            </div>
+            <div id="touch-actions" role="group" aria-label="游戏按键"></div>
+        </div>
+        <p id="rotate-hint">请横屏游玩</p>
         <p id="feedback" role="status" aria-live="polite"></p>
         </main>
         <script>
@@ -366,7 +421,7 @@ button:disabled { opacity: .5; cursor: default; }
     const DEFAULT_VOLUME = 72;
     // Resolve toggle actions before the control changes its state.
     const buttonEvents = {
-        fullscreen: () => document.fullscreenElement ? 'Exit Fullscreen' : 'Enter Fullscreen',
+        fullscreen: () => isFullscreen() ? 'Exit Fullscreen' : 'Enter Fullscreen',
         download: () => 'Export Diagnostics',
         'audio-toggle': () => volumePanel.hidden ? 'Open Volume Panel' : 'Close Volume Panel',
         'mute-toggle': () => audioSettings.muted || audioSettings.volume === 0 ? 'Unmute Audio' : 'Mute Audio',
@@ -609,7 +664,7 @@ button:disabled { opacity: .5; cursor: default; }
     volumeValue.value = `${audioSettings.volume}%`;
     volumeValue.textContent = `${audioSettings.volume}%`;
     syncAudioControls();
-    function isFullscreen() { return document.fullscreenElement === player; }
+    function isFullscreen() { return document.fullscreenElement === player || player.classList.contains('touch-fullscreen'); }
     function scheduleHideTools(delay = 700) {
         clearTimeout(toolsTimer);
         toolsTimer = setTimeout(() => {
@@ -1421,12 +1476,24 @@ button:disabled { opacity: .5; cursor: default; }
     fitCanvasToViewport();
     record('session', 'Web player started');
     const available = document.fullscreenEnabled && player.requestFullscreen;
-    fullscreen.disabled = !available;
-    if (!available) fullscreen.textContent = '浏览器不支持全屏';
+    // iPadOS can advertise a desktop Mac UA. Windows touchscreens remain desktop clients.
+    const mobilePlatform = /Android|iPad|iPhone|iPod/i.test(navigator.userAgent)
+        || navigator.userAgentData?.mobile === true
+        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && 'standalone' in navigator);
+    const touchDevice = navigator.maxTouchPoints > 0 && mobilePlatform;
+    window.bvnMobileGamepadEnabled = touchDevice;
+    fullscreen.disabled = !available && !touchDevice;
+    if (fullscreen.disabled) fullscreen.textContent = '浏览器不支持全屏';
     fullscreen.addEventListener('click', async () => {
         try {
             if (document.fullscreenElement) await document.exitFullscreen();
-            else await player.requestFullscreen();
+            else if (available) {
+                await player.requestFullscreen();
+                if (touchDevice) await screen.orientation?.lock?.('landscape').catch(() => {});
+            } else if (touchDevice) {
+                player.classList.toggle('touch-fullscreen');
+                document.dispatchEvent(new Event('fullscreenchange'));
+            }
             canvas.focus();
         } catch (error) {
             record('error', error);
@@ -1645,5 +1712,146 @@ const engine = new Engine({
 	}
 }());
 		</script>
-	</body>
+	<script type="module">
+if (window.bvnMobileGamepadEnabled) initializeTouchControls();
+
+function initializeTouchControls() {
+    const player = document.getElementById('player');
+    const pad = document.getElementById('touch-pad');
+    const stick = document.getElementById('touch-stick');
+    const knob = document.getElementById('touch-knob');
+    const actions = document.getElementById('touch-actions');
+    const pause = document.createElement('button');
+    pause.type = 'button';
+    pause.textContent = '暂停游戏';
+    pause.hidden = true;
+    document.getElementById('toolbar').insertBefore(pause, document.getElementById('fullscreen'));
+    pause.onclick = () => { callback?.(-2); document.getElementById('canvas').focus(); };
+    const landscape = matchMedia('(orientation: landscape)');
+    const keys = 'wsadjkluio';
+    const sectors = ['d', 'sd', 's', 'sa', 'a', 'wa', 'w', 'wd'];
+    const labels = { u: '技能', i: '必杀', o: '援助', j: '攻击', k: '跳跃', l: '冲刺' };
+    const touches = new Map();
+    let callback, mode = 'hidden', direction = '', owner = null, lastMask = 0;
+    for (const [key, label] of Object.entries(labels)) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.slot = key;
+        button.append(key.toUpperCase(), document.createElement('small'));
+        button.lastChild.textContent = label;
+        actions.append(button);
+    }
+    function publish() {
+        const down = new Set([...direction, ...touches.values()]);
+        let mask = 0;
+        for (const key of down) mask |= 1 << keys.indexOf(key);
+        for (const button of actions.children) button.setAttribute('aria-pressed', String(down.has(button.dataset.slot)));
+        for (const arrow of stick.querySelectorAll('[data-slot]')) arrow.classList.toggle('active', down.has(arrow.dataset.slot));
+        if (mask !== lastMask) callback?.(mask);
+        lastMask = mask;
+    }
+    function centerStick() {
+        owner = null;
+        direction = '';
+        stick.classList.remove('held');
+        knob.style.removeProperty('--x');
+        knob.style.removeProperty('--y');
+    }
+    function release() {
+        if (owner !== null && stick.hasPointerCapture(owner)) stick.releasePointerCapture(owner);
+        for (const id of touches.keys()) {
+            if (actions.hasPointerCapture(id)) actions.releasePointerCapture(id);
+        }
+        centerStick();
+        touches.clear();
+        publish();
+        callback?.(-1);
+    }
+    function moveStick(event) {
+        const rect = stick.getBoundingClientRect(), radius = rect.width / 2;
+        const x = (event.clientX - rect.left - radius) / radius;
+        const y = (event.clientY - rect.top - radius) / radius;
+        const distance = Math.hypot(x, y);
+        direction = distance <= .21 ? '' : sectors[(Math.round(Math.atan2(y, x) / (Math.PI / 4)) + 8) % 8];
+        const travel = radius * .60 / Math.max(1, distance);
+        knob.style.setProperty('--x', x * travel + 'px');
+        knob.style.setProperty('--y', y * travel + 'px');
+        publish();
+    }
+    stick.onpointerdown = event => {
+        if (owner !== null) return;
+        event.preventDefault();
+        owner = event.pointerId;
+        stick.setPointerCapture(owner);
+        stick.classList.add('held');
+        moveStick(event);
+    };
+    stick.onpointermove = event => { if (owner === event.pointerId) moveStick(event); };
+    stick.onpointerup = stick.onpointercancel = stick.onlostpointercapture = event => {
+        if (owner === event.pointerId) { centerStick(); publish(); }
+    };
+    function moveAction(event) {
+        const button = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-slot]');
+        if (button && actions.contains(button)) touches.set(event.pointerId, button.dataset.slot);
+        else touches.delete(event.pointerId);
+        publish();
+    }
+    actions.onpointerdown = event => {
+        event.preventDefault();
+        actions.setPointerCapture(event.pointerId);
+        moveAction(event);
+    };
+    actions.onpointermove = event => { if (actions.hasPointerCapture(event.pointerId)) moveAction(event); };
+    actions.onpointerup = actions.onpointercancel = actions.onlostpointercapture = event => {
+        if (touches.delete(event.pointerId)) publish();
+    };
+    function layout() {
+        const playing = Boolean(callback) && (document.fullscreenElement === player || player.classList.contains('touch-fullscreen'));
+        player.classList.toggle('touch-playing', playing);
+        const visible = playing && landscape.matches && mode !== 'hidden';
+        if (!visible && !pad.hidden) release();
+        pad.hidden = !visible;
+        pause.hidden = !visible || mode !== 'fight';
+        player.classList.toggle('touch-layout', visible);
+        if (!visible) return;
+        const area = player.getBoundingClientRect();
+        const left = stick.getBoundingClientRect().right, right = actions.getBoundingClientRect().left;
+        const native = Math.min(area.width, area.height * 1.5);
+        const gap = right - left;
+        const width = gap >= native * .9 ? Math.min(native, gap) : native;
+        const middle = Math.max(width / 2, Math.min(area.width - width / 2, (left + right) / 2 - area.left));
+        player.style.setProperty('--game-center', middle + 'px');
+        player.style.setProperty('--game-width', width + 'px');
+        const edge = area.left + middle - width / 2;
+        for (const button of actions.children) {
+            if (button.hidden) continue;
+            const rect = button.getBoundingClientRect();
+            const percent = x => Math.max(0, Math.min(100, (x - rect.left) / rect.width * 100)) + '%';
+            button.style.setProperty('--start', percent(edge));
+            button.style.setProperty('--end', percent(edge + width));
+        }
+    }
+    window.bvnTouchRegister = listener => { release(); callback = listener; layout(); };
+    window.bvnTouchSetMode = value => {
+        release();
+        mode = value;
+        const menu = !['fight', 'online-fight'].includes(mode);
+        actions.classList.toggle('menu', menu);
+        for (const button of actions.children) {
+            const key = button.dataset.slot;
+            button.hidden = menu && key !== 'j' && (key !== 'k' || mode === 'pause');
+            button.lastChild.textContent = menu ? (key === 'j' ? '确认' : '返回') : labels[key];
+        }
+        layout();
+    };
+    new ResizeObserver(layout).observe(player);
+    window.addEventListener('resize', layout);
+    document.addEventListener('fullscreenchange', layout);
+    window.addEventListener('blur', release);
+    window.addEventListener('pagehide', release);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
+}
+</script>
+
+</body>
 </html>

@@ -57,6 +57,8 @@ func _ready() -> void:
 	online_lobby.z_index = 1000
 	add_child(online_lobby)
 	online_lobby.configure(self, game)
+	if OS.has_feature("web") and JavaScriptBridge.eval("typeof window.bvnTouchRegister === 'function'"):
+		add_child(preload("res://web_touch_input.gd").new())
 
 
 func _create_game_scene(presentation_only: bool = false) -> Control:

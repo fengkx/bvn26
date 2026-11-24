@@ -161,6 +161,7 @@ const SHOW_KEY_NAME := {
 	109: "Num-",
 }
 
+var touch_slots: Dictionary = {}
 var keyboard := preload("res://keyboard_input_source.gd").new()
 
 var training_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/training.json"))

@@ -282,6 +282,16 @@ func get_connection_diagnostic() -> Dictionary:
 	}
 
 
+func touch_control_mode() -> String:
+	if _selection_active or _map_active:
+		return "menu"
+	if _match_started:
+		return "online-fight"
+	if _veil != null and _veil.visible:
+		return "hidden"
+	return ""
+
+
 func blocks_game_input(event: InputEvent) -> bool:
 	return _veil != null and _veil.visible
 

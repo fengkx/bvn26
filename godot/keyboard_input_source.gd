@@ -6,7 +6,7 @@ const BUTTONS := ["up", "down", "left", "right", "attack", "jump", "dash", "rang
 
 func is_slot_down(session: RefCounted, slot: String) -> bool:
 	var key: Key = session.flash_to_key(int(session.codes[slot]))
-	return Input.is_physical_key_pressed(key) or Input.is_key_pressed(key)
+	return session.touch_slots.has(slot) or Input.is_physical_key_pressed(key) or Input.is_key_pressed(key)
 
 
 func fighter_input(session: RefCounted, player: String) -> Dictionary:
