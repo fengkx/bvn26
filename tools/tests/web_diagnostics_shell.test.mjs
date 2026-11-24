@@ -918,3 +918,22 @@ test('does not attach listeners or start sampling when a peer is already closed 
     assert.equal(peer.listeners.size, 0);
     assert.equal(page.intervalCount, 0);
 });
+
+test('every player button has one TinyTraffic click event', async () => {
+    const { elements, window, document } = createPage(null);
+    const events = [];
+    window.tinytraffic = name => events.push(name);
+    const buttons = [...html.matchAll(/<button id="([^"]+)"/g)].map(match => match[1]);
+    for (const id of buttons) {
+        const before = events.length;
+        await elements.get(id).dispatch('click');
+        assert.equal(events.length, before + 1, id);
+    }
+    assert.equal(new Set(events).size, buttons.length);
+    assert.ok(events.includes('Enter Fullscreen'));
+    document.fullscreenElement = elements.get('player');
+    await elements.get('fullscreen').dispatch('click');
+    assert.equal(events.at(-1), 'Exit Fullscreen');
+    await elements.get('volume-slider').dispatch('change');
+    assert.equal(events.at(-1), 'Adjust Volume');
+});

@@ -364,6 +364,26 @@ button:disabled { opacity: .5; cursor: default; }
     const seenOnlineSessions = new Set();
     const AUDIO_KEY = 'bvn26.audio.v1';
     const DEFAULT_VOLUME = 72;
+    // Resolve toggle actions before the control changes its state.
+    const buttonEvents = {
+        fullscreen: () => document.fullscreenElement ? 'Exit Fullscreen' : 'Enter Fullscreen',
+        download: () => 'Export Diagnostics',
+        'audio-toggle': () => volumePanel.hidden ? 'Open Volume Panel' : 'Close Volume Panel',
+        'mute-toggle': () => audioSettings.muted || audioSettings.volume === 0 ? 'Unmute Audio' : 'Mute Audio',
+        'edge-indicator': () => edgePointerType === 'touch' && touchPinned ? 'Hide Game Tools' : 'Show Game Tools',
+        'online-collapse-tools': () => 'Hide Game Tools',
+        'online-pause': () => onlineControlsSnapshot?.canResume ? 'Resume Match' : 'Request Pause',
+        'online-accept-pause': () => 'Accept Pause',
+        'online-refuse-pause': () => 'Decline Pause',
+        'online-skip-intro': () => 'Request Intro Skip',
+        'online-exit': () => 'Exit Online Match',
+    };
+    for (const [id, eventName] of Object.entries(buttonEvents)) {
+        const button = document.getElementById(id);
+        button.addEventListener('click', () => window.tinytraffic?.(eventName()), true);
+    }
+    volumeSlider.addEventListener('change', () => window.tinytraffic?.('Adjust Volume'));
+
     function validOnlineControlsSnapshot(value) {
         if (!value || typeof value !== 'object' || Array.isArray(value) || value.schemaVersion !== 1
                 || typeof value.active !== 'boolean' || typeof value.session !== 'string' || value.session.length > 128
