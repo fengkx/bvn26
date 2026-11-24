@@ -1,0 +1,40 @@
+name: 游戏问题反馈
+description: 报告对战、角色招式、画面、声音或联机异常。
+title: "[问题] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **遇到问题后，请先保留当前游戏页面。** 在网页顶部点击「导出日志」，保存下载的 `bvn26-log-….json`。全屏时可以先退出全屏。刷新页面会重新开始记录。
+        如果是联机问题，请房主和客人分别导出本次对战的日志，并在附件旁注明身份。
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 实际表现和预期表现
+      placeholder: 例如，我方选择一护，对手选择小李。客机左侧血条显示鸣人头像，预期应显示一护。
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 怎么触发这个问题？
+      description: 从进入哪个模式写起。涉及招式时请写明角色、援助、按键顺序，以及问题是否每次都出现。
+      placeholder: |
+        1. 进入……
+        2. 选择……
+        3. 按下……时出现……
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 游玩环境
+      description: 请填写设备、操作系统、浏览器或本地客户端。联机时请注明哪一端出现问题。
+      placeholder: 例如，MacBook，macOS 15，Chrome 131，联机客人端
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 导出的日志、截图或录像
+      description: 把导出的 JSON 文件拖到这里即可上传。截图或录像能帮助定位具体画面。如果页面已崩溃或无法导出，直接说明也可以提交。
