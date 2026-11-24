@@ -384,6 +384,7 @@ class WebBuildPipelineTests(unittest.TestCase):
             for name in (
                 "build_web.sh",
                 "bind_web_export_template.py",
+                "optimize_web_pack_loader.py",
                 "build_web_diagnostics_metadata.py",
                 "run_godot_checked.py",
                 "build_online_manifest.py",
@@ -474,6 +475,11 @@ class WebBuildPipelineTests(unittest.TestCase):
                         output = Path(args[args.index('--export-release') + 2])
                         for suffix in ['.html', '.js', '.wasm', '.pck']:
                             output.with_suffix(suffix).write_bytes(b'exported fixture')
+                        output.with_suffix('.js').write_text(
+                            "const tr = getTrackedResponse(response, tracker[file]); buffer: buf, "
+                            "copy_to_fs:function(path,buffer){FS.writeFile(path,new Uint8Array(buffer))} "
+                            "me.rtenv['copyToFS'](file.path, file.buffer)"
+                        )
                         if os.environ.get('FIXTURE_MUTATE_EXPORT') == '1':
                             (project / 'generated/music/track.mp3.import').write_text('changed during export')
                     """), encoding="utf-8")

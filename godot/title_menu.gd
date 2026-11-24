@@ -190,7 +190,10 @@ func _request_online_confirmation() -> void:
 func _refresh() -> void:
 	if _background == null:
 		return
-	_background.texture = _texture("background-%d.png" % source_frame)
+	# The intro has 72 full-screen frames. Only the displayed frame needs a strong reference.
+	var background_path := "res://generated/main/title_menu/background-%d.png" % source_frame
+	if _background.texture == null or _background.texture.resource_path != background_path:
+		_background.texture = load(background_path)
 	_hint.text = hint_shown
 	var placement: Variant = spec.wheel_frames[source_frame - 1]
 	_wheel.visible = placement != null

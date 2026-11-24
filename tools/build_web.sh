@@ -198,6 +198,8 @@ for extension in html js wasm pck; do
   test -s "$EXPORT_STAGE/index.$extension"
 done
 
+python3 "$ROOT_DIR/tools/optimize_web_pack_loader.py" "$EXPORT_STAGE/index.js"
+
 STAGED_SIDECAR="$BUILD_TEMP_DIR/build-metadata.json"
 python3 "$ROOT_DIR/tools/build_web_diagnostics_metadata.py" finalize \
   --embedded "$EMBEDDED_METADATA" \
