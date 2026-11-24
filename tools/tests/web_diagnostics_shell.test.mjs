@@ -953,3 +953,17 @@ test('mobile controls stay off on desktop including touch laptops', () => {
         assert.equal(elements.get('fullscreen').disabled, !expected);
     }
 });
+
+test('page zoom gestures are cancelled only inside fullscreen play', async () => {
+    const { elements, document } = createPage(null);
+    const player = elements.get('player');
+    for (const mode of ['window', 'native', 'fallback', 'window']) {
+        document.fullscreenElement = mode === 'native' ? player : null;
+        player.classList.toggle('touch-fullscreen', mode === 'fallback');
+        for (const type of ['gesturestart', 'gesturechange', 'dblclick']) {
+            let prevented = false;
+            await player.dispatch(type, { cancelable: true, preventDefault() { prevented = true; } });
+            assert.equal(prevented, mode !== 'window', type + ' in ' + mode);
+        }
+    }
+});
