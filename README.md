@@ -1,70 +1,85 @@
-# 死神 VS 火影 2.6 · Godot Web 移植交接包
+<div align="center">
 
-版本 1.0 · 基线 2026-09-03 · 状态同步 2026-09-08
+# 死神 vs 火影 2.6
 
-目标是把普通 2.6 移植为在桌面浏览器运行的原生 Godot 游戏。包内已有锁定资源、反编译脚本、技术规格、实施计划、数据接口和验收办法，并已开始实现可运行的鸣人/一护/日番谷/现世开发切片；它仍不是完整或逐帧验收通过的网页成品。
+**不用 Flash，打开桌面浏览器就能开打的原生 Web 复刻版**
 
-## 建议阅读顺序
+### [立即在浏览器游玩 → bvn26.vercel.app](https://bvn26.vercel.app/)
 
-1. [SPEC.md](SPEC.md)：范围、12 项功能要求、8 项技术要求和一比一验收边界。
-2. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)：M0–M7 实施顺序、阶段门槛与估算方法。
-3. [当前状态](docs/STATUS.md)：已完成事项、风险和下一步。
-4. [架构](docs/ARCHITECTURE.md) → [逆向手册](docs/REVERSE_ENGINEERING.md) → [源优先闸门](docs/SOURCE_FIRST.md) → [受击链落地 SOP](docs/HIT_RECEIVE_SOP.md) → [数据契约](docs/DATA_CONTRACTS.md)。
-5. [角色还原与缺陷验收 SOP](docs/CHARACTER_PARITY_SOP.md) → [验收计划](docs/VALIDATION.md)与[操作手册](docs/OPERATIONS.md)：如何取得对照证据、使用工具和准备后续 Web 导出。
+[阵容与战场](#阵容与战场) · [游玩模式](#游玩模式) · [操作与设置](#操作与设置) · [参与开发](#参与开发)
 
-## 包内内容
+</div>
 
-| 路径 | 内容与状态 |
-|---|---|
-| `game/` | 主 SWF、35 个角色 SWF、26 个援助 SWF、13 个外部 MP3，共 75 个锁定输入文件 |
-| `scripts/` | 62 个 JSON bundle，包含 8,853 个原路径与脚本片段，用于分析和重写 |
-| [manifest.json](manifest.json) | 版本、来源、哈希、74 个外部依赖、64 条人物配置、10 条地图配置及仓库对照 |
-| [基准审计](docs/BASELINE_AUDIT.md) | 上传入口完整性、补齐过程、GitHub 改版差异与精简依据 |
-| `spec/schemas/` | Asset、Fighter、Action、Replay、Trace 五类 JSON Schema |
-| `spec/examples/` | 五份可校验格式示例；部分来自静态提取，部分为合成格式，均非完整运行数据 |
-| [任务表](plan/tasks.json) | 含依赖、产物、验收条件和状态的实施任务；未来产物路径不代表文件已存在 |
-| [电脑 AI 复刻规格](docs/AI_SPEC.md) | 五档难度、随机/时间轴决策、控制器变体、感知区域与待验证项；仅静态分析 |
-| [内容覆盖表](plan/coverage.json) | 64 条人物配置与 10 条地图的逐项检查起点；逐项完整验收尚未通过，局部实现见状态页 |
-| `tools/` | 资源校验、SWF 结构检查、脚本查阅、契约与交接包检查工具 |
-| [来源说明](docs/SOURCES.md) | 来源链接、版本依据和证据限制 |
-| [本次校验记录](docs/PACKAGE_CHECKS.md) | 已执行的资料验证与明确未验证的运行内容 |
-| [AGENTS.md](AGENTS.md) | 后续开发者或编码助手的接手约束；实现机制前必读 [源优先闸门](docs/SOURCE_FIRST.md)；重击/破防/连击/必杀横幅按 [受击链落地 SOP](docs/HIT_RECEIVE_SOP.md) |
+<p align="center">
+  <img src="docs/assets/readme/hero-banner.png" alt="死神 vs 火影 2.6 视觉概念插画（AI 生成装饰图，非实机画面）" width="100%">
+</p>
+<p align="center">
+  <sub>概念插画（AI 生成装饰图，非实机画面）</sub>
+</p>
 
-人物配置数包含形态和援助，不等于可选角色数。原始 SWF 和脚本仅用于开发分析，未来发布物必须不包含 Flash/AS2/AVM/Ruffle 运行依赖。
+把当年在网页里打过无数局的普通版《死神 vs 火影 2.6》（600×400，30 FPS）用原生 Godot Web 重做了一遍——不用安装 Flash Player，也不靠 Ruffle 模拟，点开桌面浏览器就能直接开战。
 
-## 基准决定
+项目以尽量忠实还原普通 2.6 为方向，仍在持续打磨中；开发进度与已知差异见 [状态页](docs/STATUS.md)。
 
-`game/main.swf` 与上传的 `166.swf` 字节相同：普通 V 2.6，600×400，30 FPS。
+---
 
-SHA-256：`707fac0ec6bb2af1a3d18dc308dd403cb556a0988144b0f6f10555382287f92d`
+## 阵容与战场
 
-Brx86/BVN2.6 仓库为 29 FPS 的“社长改”，不能整套替换普通版。本包只采用其中 25 个与当前普通版依赖完全相同的资源，49 个不同文件保留匹配本入口的版本。结构和依赖已核对；完整原版运行、历史作者原包身份和 Godot 行为一致性仍需分别验证。详情见基准审计。
+- **40 个可选人物与形态**：覆盖普通 2.6 全部 **35 位基础角色**与 **5 张独立形态卡片**（日番谷万解、露其雅始解、一护万解、鸣人九尾、佐助咒怨），其中一护、鸣人、日番谷、佐助、白哉、剑心等 11 位角色支持战中变身或万解。
+- **26 位原版援助**：普通 2.6 全部 26 名辅助角色均可在选人阶段自由搭配。
+- **10 张经典战场**：现世、流魂街、双极、静涎亭、尸魂界通道、木叶村、温泉、终结之谷、楼顶、宇智波一族，配有原版选图界面与场景配乐。
 
-未保留重复压缩包、改版完整副本、Flask/Ruffle 网页外壳、重复导出的散图/声音、缓存和运行日志。可重建的导出物后续由工具产生。
+<p align="center">
+  <img src="docs/assets/readme/arena-atmosphere.png" alt="死神 vs 火影 2.6 复刻版实机对战画面：一护在现世地图向鸣人释放月牙斩击" width="85%">
+</p>
+<p align="center">
+  <sub>复刻版实机画面：一护与鸣人在现世地图对战</sub>
+</p>
 
-## 开始使用
+---
 
-在解压后的 `bvn26/` 中运行，Python ≥3.10：
+## 游玩模式
 
-```bash
-python3 tools/verify.py
-python3 tools/check_handoff.py
-python3 tools/read_script.py scripts/fighter/minren.json --path frame_1/DoAction.as
-python3 tools/read_script.py scripts/main.json --search loadClip --limit 3
-```
+主菜单直接提供五种玩法入口：
 
-前两项仅验证资料和交接关系，不会启动游戏。检查 JSON Schema 与格式示例：
+- **单人闯关（`SINGLE PLAY`）**：选定角色与援助，沿着该角色的 8 关专属路线一路打到底。
+- **人机对战（`VS COM`）**：自选双方阵容与战场，随时和电脑来一局。
+- **本地双人（`VS MODE`）**：一台电脑同键盘双人对战，支持改键适配无小键盘设备。
+- **格斗练习（`TRAINING`）**：自由练招试连段，血量与气槽会自动回复。
+- **好友房联机（`联机对战` · 实验性）**：建房分享邀请码或链接，好友入房后可实时同步选人光标，由房主确认地图开局（详见 [联机说明](docs/online-multiplayer/README.md)）。
 
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements-dev.txt
-.venv/bin/python tools/validate_contracts.py
-```
+<p align="center">
+  <img src="docs/assets/readme/versus-online-banner.png" alt="死神 vs 火影 2.6 复刻版联机对战好友房间实机界面（等待朋友加入）" width="85%">
+</p>
+<p align="center">
+  <sub>复刻版实机画面：好友联机房间界面（邀请码与等待朋友加入状态）</sub>
+</p>
 
-Windows 对应使用 `.venv\Scripts\python.exe`。资源校验与脚本查阅只依赖 Python 标准库；契约校验依赖固定版本的 `jsonschema`。Godot、导出模板、Java、JPEXS 和原版参照播放器不随包分发，见操作手册。
+---
 
-## 接下来做什么
+## 操作与设置
 
-Godot Web 工程和原生 Flash 参照播放器已建立；先补 `M0-01` 的 Firefox/Safari 实测、`M0-02` 的固定输入捕获和 `M0-03` 的未决探针。先校准调度和导入，再完成鸣人/一护基础形态的一场完整对战，随后扩展机制和全内容。保持未验证项可见，不把资料完整、可启动、可战斗和一比一完成混为同一状态。
+沿用普通 2.6 原版默认键位：
 
-当前优先验收日番谷基础形态，万解暂缓。逐项对照与尚未通过的边界见[基础形态验收记录](evidence/combat/rifagu-base/README.md)。
+| 动作 | P1 默认键位 | P2 默认键位 |
+| --- | --- | --- |
+| 移动 / 方向 | `W` `S` `A` `D` | `↑` `↓` `←` `→` |
+| 近战攻击 / 确认 | `J` | 小键盘 `1` |
+| 跳跃 | `K` | 小键盘 `2` |
+| 冲刺 / 瞬步 | `L` | 小键盘 `3` |
+| 远程攻击 | `U` | 小键盘 `4` |
+| 必杀技 | `I` | 小键盘 `5` |
+| 召唤援助 | `O` | 小键盘 `6` |
+
+- 游玩前请切换为**英文输入法**（按物理键位采样，避免输入法吞键）；没有小键盘可在主菜单 **`SETTING`** 随时改键。
+- **`SETTING`** 还支持调整电脑难度、画质、局时与生命倍率；对战中按 **`Enter`** 可暂停查看招式说明或返回主菜单。
+- 网页端首次点击画面后解锁音效，切出窗口会自动暂停，支持全屏游玩。
+
+---
+
+## 参与开发
+
+本项目基于原生 **Godot 4.7.2 + WebAssembly** 构建，本地运行、Web 导出、资料校验、联机房间服务与普通 2.6 基准等技术文档均收录在独立目录：
+
+- **[开发者指南（docs/DEVELOPMENT.md）](docs/DEVELOPMENT.md)** — 环境准备、本地构建与校验命令、联机服务端运行与仓库结构
+- **[接手与贡献约定（AGENTS.md）](AGENTS.md)** · **[技术规格（SPEC.md）](SPEC.md)** · **[实施计划（IMPLEMENTATION_PLAN.md）](IMPLEMENTATION_PLAN.md)** · **[操作手册（docs/OPERATIONS.md）](docs/OPERATIONS.md)**
