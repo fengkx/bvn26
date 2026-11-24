@@ -40,8 +40,13 @@ def validate_wrapper_obligation(wrapper: dict, fields: dict, source: str) -> Non
             raise ValueError(f'{source}: dropped/changed wrapper {field}')
 
 
-def validate_build_placements(timeline: dict, source: str) -> None:
-    catalog = json.loads(Path(__file__).with_name('placement_requirements.json').read_text())
+def load_placement_catalog() -> dict:
+    return json.loads(Path(__file__).with_name('placement_requirements.json').read_text())
+
+
+def validate_build_placements(timeline: dict, source: str, catalog: dict | None = None) -> None:
+    if catalog is None:
+        catalog = load_placement_catalog()
     digest = timeline.get('source_swf', {}).get('sha256')
     if digest is None:
         visual = json.loads(Path(__file__).with_name('visual_control_requirements.json').read_text())

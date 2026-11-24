@@ -45,7 +45,7 @@ def build_dependencies(root: Path) -> set[str]:
             ):
                 # dist is generated; evidence screenshots are optional publishing
                 # inputs. The Godot tree is covered by its project entry below.
-                if relative.startswith(("dist/", "evidence/")):
+                if relative == "node_modules/bvn-web-cache" or relative.startswith(("dist/", "evidence/")):
                     continue
                 if "$" in relative or any(c in relative for c in "*?["):
                     raise AssertionError(f"Unresolved build input in {source}: {relative}")
@@ -385,6 +385,7 @@ class WebBuildPipelineTests(unittest.TestCase):
                 "build_web.sh",
                 "bind_web_export_template.py",
                 "optimize_web_pack_loader.py",
+                "web_import_cache.py",
                 "build_web_diagnostics_metadata.py",
                 "run_godot_checked.py",
                 "build_online_manifest.py",

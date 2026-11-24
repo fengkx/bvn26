@@ -44,6 +44,16 @@ case "$LOG_PHYSICAL/" in
     ;;
 esac
 echo "Web build raw logs: $LOG_PHYSICAL"
+# Vercel restores node_modules for static builds, including projects without npm dependencies.
+CACHE_ROOT="${BVN_WEB_CACHE_DIR:-}"
+if [[ -z "$CACHE_ROOT" && "${VERCEL:-}" == "1" ]]; then
+  CACHE_ROOT="$ROOT_DIR/node_modules/bvn-web-cache"
+fi
+last_stage=$SECONDS
+report_time() {
+  echo "WEB_BUILD_TIME $1=$((SECONDS - last_stage))s"
+  last_stage=$SECONDS
+}
 
 # Prefer an already-installed local editor. Vercel and Linux CI fall back to the
 # temporary download below, so the same script works in both environments.
@@ -72,19 +82,25 @@ if [[ -z "${GODOT_BIN:-}" ]]; then
   mkdir -p "$BUILD_TOOLS_DIR"
   RELEASE_URL="https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable"
   EDITOR_NAME="Godot_v${GODOT_VERSION}-stable_linux.x86_64"
-  curl --fail --location --retry 3 "$RELEASE_URL/$EDITOR_NAME.zip" -o "$BUILD_TOOLS_DIR/editor.zip"
-  curl --fail --location --retry 3 \
-    "$RELEASE_URL/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" \
-    -o "$BUILD_TOOLS_DIR/templates.tpz"
-  unzip -q "$BUILD_TOOLS_DIR/editor.zip" -d "$BUILD_TOOLS_DIR"
-
-  # Keep downloads outside the project and install only the Web templates.
-  export XDG_DATA_HOME="$BUILD_TOOLS_DIR/data"
-  TEMPLATE_DIR="$XDG_DATA_HOME/godot/export_templates/${GODOT_VERSION}.stable"
+  TEMPLATE_DIR="$BUILD_TOOLS_DIR/data/godot/export_templates/${GODOT_VERSION}.stable"
   mkdir -p "$TEMPLATE_DIR"
-  unzip -j -q "$BUILD_TOOLS_DIR/templates.tpz" \
-    'templates/web_nothreads_release.zip' 'templates/web_nothreads_debug.zip' \
-    'templates/version.txt' -d "$TEMPLATE_DIR"
+  # Keep the editor archive and the two Web templates across builds.
+  downloads="${CACHE_ROOT:-$BUILD_TOOLS_DIR}/linux-x86_64-$GODOT_VERSION"
+  mkdir -p "$downloads"
+  if ! unzip -qo "$downloads/editor.zip" -d "$BUILD_TOOLS_DIR" 2>/dev/null; then
+    curl --fail --location --retry 3 "$RELEASE_URL/$EDITOR_NAME.zip" -o "$BUILD_TOOLS_DIR/editor-download.zip"
+    unzip -qo "$BUILD_TOOLS_DIR/editor-download.zip" -d "$BUILD_TOOLS_DIR"
+    mv "$BUILD_TOOLS_DIR/editor-download.zip" "$downloads/editor.zip"
+  fi
+  if [[ ! -s "$downloads/version.txt" ]] ||
+     ! unzip -tq "$downloads/web_nothreads_release.zip" >/dev/null 2>&1 ||
+     ! unzip -tq "$downloads/web_nothreads_debug.zip" >/dev/null 2>&1; then
+    curl --fail --location --retry 3 "$RELEASE_URL/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o "$BUILD_TOOLS_DIR/templates.tpz"
+    unzip -joq "$BUILD_TOOLS_DIR/templates.tpz" 'templates/web_nothreads_release.zip' \
+      'templates/web_nothreads_debug.zip' 'templates/version.txt' -d "$downloads"
+  fi
+  cp "$downloads"/{web_nothreads_release.zip,web_nothreads_debug.zip,version.txt} "$TEMPLATE_DIR/"
+  export XDG_DATA_HOME="$BUILD_TOOLS_DIR/data"
   GODOT_BIN="$BUILD_TOOLS_DIR/$EDITOR_NAME"
   chmod +x "$GODOT_BIN"
 fi
@@ -96,6 +112,7 @@ esac
 
 # Python smoke runners must use the same editor, including the CI download.
 export GODOT_BIN
+report_time toolchain
 python3 "$ROOT_DIR/tools/tests/test_web_diagnostics_metadata.py"
 
 run_godot_checked() {
@@ -161,7 +178,9 @@ cp "$ROOT_DIR/services/matchmaking/src/protocol.ts" "$STAGING_REPO/services/matc
 cp "$ROOT_DIR/services/matchmaking/src/catalog.json" "$STAGING_REPO/services/matchmaking/src/catalog.json"
 
 # Build and check compatibility fingerprints only in the temporary snapshot.
-python3 "$STAGING_REPO/tools/build_online_manifest.py"
+if [[ ! -s "$PROJECT_STAGE/generated/online/manifest.json" ]]; then
+  python3 "$STAGING_REPO/tools/build_online_manifest.py"
+fi
 
 EMBEDDED_METADATA="$PROJECT_STAGE/generated/build_metadata.json"
 prepare_metadata() {
@@ -178,19 +197,29 @@ prepare_metadata() {
 # after import has generated any stable source-side .uid/.import files.
 prepare_metadata
 
+report_time staging
+if [[ -n "$CACHE_ROOT" ]]; then
+  cache_args=("$PROJECT_STAGE" "$CACHE_ROOT/imports-v1" "$BUILD_TEMP_DIR/import-plan.json" "$("$GODOT_BIN" --version)")
+  python3 "$ROOT_DIR/tools/web_import_cache.py" restore "${cache_args[@]}"
+fi
 run_godot_checked import --headless --path "$PROJECT_STAGE" --editor --import --quit
+if [[ -n "$CACHE_ROOT" ]]; then
+  python3 "$ROOT_DIR/tools/web_import_cache.py" store "${cache_args[@]}"
+fi
+report_time import
 # Clean CI uploads omit .import files. Import creates them, and the content
 # fingerprint includes their settings, so finalize compatibility after import.
 python3 "$STAGING_REPO/tools/build_online_manifest.py"
 python3 "$STAGING_REPO/tools/test_online_manifest.py"
-python3 "$STAGING_REPO/tools/build_online_manifest.py" --check
 python3 "$STAGING_REPO/tools/test_online_lobby_ui.py"
 prepare_metadata
 
+report_time validation
 EXPORT_STAGE="$BUILD_TEMP_DIR/export"
 mkdir -p "$EXPORT_STAGE"
 run_godot_checked export --headless --path "$PROJECT_STAGE" \
   --export-release Web "$EXPORT_STAGE/index.html"
+report_time export
 # Never publish an export that changed the finalized compatibility inputs.
 python3 "$STAGING_REPO/tools/build_online_manifest.py" --check
 
@@ -253,3 +282,4 @@ if not sidecar.get("gitCommit") or not sidecar.get("buildID"):
     raise SystemExit("build-metadata.json is missing build identity")
 print(f"WEB_BUILD_METADATA_OK buildID={sidecar['buildID']} pckSha256={digest}")
 PY
+report_time finalize

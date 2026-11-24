@@ -14,7 +14,7 @@ from typing import Iterable
 from importer.visual_blend_modes import validate_timeline_blends
 from importer.import_guards import finite_numbers
 from importer.visual_control_guard import validate_build_controls
-from importer.placement_build_guard import validate_build_placements
+from importer.placement_build_guard import load_placement_catalog, validate_build_placements
 from importer.frame_call_guard import validate_cached_frame_calls
 
 
@@ -170,11 +170,12 @@ def content_inputs() -> tuple[list[Path], dict[str, list[str]]]:
 
 
 def make_documents() -> tuple[dict[str, object], dict[str, object]]:
+    placement_catalog = load_placement_catalog()
     for timeline in (GODOT / "generated").rglob("timeline.json"):
         data = load_json(timeline)
         validate_timeline_blends(data, relative(timeline))
         validate_build_controls(data, relative(timeline))
-        validate_build_placements(data, relative(timeline))
+        validate_build_placements(data, relative(timeline), placement_catalog)
         if timeline.parent.parent == GODOT / "generated/fighters":
             validate_cached_frame_calls(data, load_json(timeline.with_name('ai.json')), directory=timeline.parent)
     protocol_text = MATCHMAKING_PROTOCOL.read_text(encoding="utf-8")
