@@ -18,7 +18,7 @@ var hint_shown: String = ""
 var pending_item: Dictionary = {}
 var source_frame: int = 1
 var button_frame: int = 1
-const HIDDEN_ITEMS := ["single", "more", "exit"]
+const HIDDEN_ITEMS := ["more", "exit"]
 var _navigation_direction: int = 1
 var _wheel_born: bool = false
 var _selected_button: int = 0
@@ -35,7 +35,6 @@ var _online_tint: Color
 func _init() -> void:
 	controller.positions = {13: NAN, 14: NAN}
 	controller.reset()
-	_skip_unavailable(true)
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -123,7 +122,6 @@ func apply_held(held: Dictionary) -> Dictionary:
 		if not _wheel_born:
 			_wheel_born = true
 			controller.reset()
-			_skip_unavailable(true)
 		else:
 			if not pending_item.is_empty():
 				button_frame += 1
@@ -161,7 +159,6 @@ func _advance_hint() -> void:
 
 func reset() -> void:
 	controller.reset()
-	_skip_unavailable(true)
 	controller.confirmed_index = 0
 	controller.hint = ""
 	controller.sounds.clear()
@@ -229,13 +226,8 @@ func _refresh() -> void:
 	_online_entry.size = ONLINE_ART.get_size()
 
 
-func _skip_unavailable(initial: bool = false) -> void:
+func _skip_unavailable() -> void:
 	# Only expose destinations implemented by the Web port.
-	if initial:
-		controller.reset()
-		controller.select = 2
-		for index in controller.positions:
-			controller.positions[index] -= 56.0
-	elif str(current_item().id) in HIDDEN_ITEMS:
-		controller.select = ONLINE_SLOT if _navigation_direction < 0 else 2
+	if str(current_item().id) in HIDDEN_ITEMS:
+		controller.select = ONLINE_SLOT if _navigation_direction < 0 else 1
 		controller.an = 1

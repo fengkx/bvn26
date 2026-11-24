@@ -29,15 +29,15 @@ func _run() -> void:
 	var menu := TitleMenu.new()
 	var chosen := []
 	menu.confirmed.connect(func(item_id: String) -> void: chosen.append(item_id))
-	assert(menu.select == 2 and menu.current_item().id == "vs_com")
+	assert(menu.select == 1 and menu.current_item().id == "single")
 	for tick in 62: menu.apply_held({})
 	for tick in 10: menu.apply_held({})
-	assert(menu.select == 2 and menu.current_item().id == "vs_com")
+	assert(menu.select == 1 and menu.current_item().id == "single")
 	menu.apply_held({"confirm": true})
 	for tick in 13: menu.apply_held({"confirm": true})
 	assert(chosen.is_empty())
 	menu.apply_held({"confirm": true})
-	assert(chosen == ["vs_com"])
+	assert(chosen == ["single"])
 
 	var keys := KeySettings.new()
 	keys.session = session

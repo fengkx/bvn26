@@ -20,7 +20,11 @@ func _run_match(winning_side: int) -> void:
 	var game = load("res://main.tscn").instantiate()
 	root.add_child(game)
 	game.set_physics_process(false)
-	game._enter_current_fight(mode)
+	if mode == 1:
+		game._goto_character_selection(1)
+		game._on_characters_confirmed(["鸣人", ""], ["我爱罗", ""])
+	else:
+		game._enter_current_fight(mode)
 	game.ichigo.ai_random_clock.cancel()
 	for tick in 600:
 		game._advance_fight()
@@ -30,11 +34,15 @@ func _run_match(winning_side: int) -> void:
 	assert(game.ko_state["_root.p1ws"] == 1)
 	var loser: FighterRuntime = game.ichigo if winning_side == 1 else game.naruto
 	var counter := "_root.p%dws" % winning_side
+	var terminal := ("YOUWIN" if winning_side == 1 else "继续") if mode == 1 else "选人画面"
 	for round_index in [1, 2]:
 		loser.receive_attack({"damage": 2000, "horizontal_impulse": 0,
-			"vertical_impulse": 0, "hitstun_ms": 100, "impact_strength": 1}, 1)
+			"vertical_impulse": 0, "hitstun_ms": 100, "impact_strength": 1, "reaction_label": "被打"}, 1)
 		assert(not game.ko_active and not loser.sw)
-		game._advance_fight()
+		for tick in 30:
+			game._advance_fight()
+			if game.ko_active:
+				break
 		assert(game.ko_active and loser.sw)
 		assert(game.ko_state["_root.焦点"] == loser.player_slot)
 		var saw_pause := false
@@ -67,9 +75,9 @@ func _run_match(winning_side: int) -> void:
 			for tick in 10:
 				game._advance_fight()
 		else:
-			assert(game.session.root_label == "选人画面" and game.opponent_driver == null and game.session.modo == mode)
+			assert(game.session.root_label == terminal and game.opponent_driver == null and game.session.modo == mode)
 	await process_frame
-	assert(game.session.root_label == "选人画面")
+	assert(game.session.root_label == terminal)
 	assert(game.opponent_driver == null and game.ko_timeline == null)
 	assert(game.ko_nextfight_timer == null)
 	game.queue_free()

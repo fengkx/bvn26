@@ -17,12 +17,12 @@ func _run() -> void:
 	game.set_physics_process(false)
 	game.session.store_path = "/tmp/bvn-config-flow-test.cfg"
 	for tick in 85: game.title_menu.apply_held({})
-	assert(game.title_menu.current_item().id == "vs_com")
+	assert(game.title_menu.current_item().id == "single")
 	for direction in ["down", "up"]:
 		for tick in 700:
 			game.title_menu.apply_held({direction: true})
-			assert(game.title_menu.current_item().id in ["vs_com", "versus", "training", "key_settings"])
-	for index in [1, 6, 7, 8, 9, 10, 11]:
+			assert(game.title_menu.current_item().id in ["single", "vs_com", "versus", "training", "key_settings", "online"])
+	for index in [7, 8, 9, 10]:
 		assert(not game.title_menu._buttons[index].visible)
 	game._on_menu_confirmed("key_settings")
 	assert(game.session.root_label == "游戏设置" and game.config_menu.visible)

@@ -32,6 +32,9 @@ var player_markers: Array[TimelinePreview] = []
 var health_hud: HealthHud
 var character_selection: CharacterSelection
 var map_selection: MapSelection
+const ArcadeScreen := preload("res://arcade_screen.gd")
+var arcade: ArcadeScreen
+var arcade_result := ""
 var stage_background: TimelinePreview
 var battle_intro: BattleIntro
 var stage_sound: StageSound
@@ -148,6 +151,12 @@ func _ready() -> void:
 	stage_sound = StageSound.new()
 	stage_sound.random_source = source_random
 	add_child(stage_sound)
+	arcade = ArcadeScreen.new()
+	arcade.session = session
+	arcade.z_index = 200
+	add_child(arcade)
+	arcade.selected.connect(_on_arcade_action)
+	arcade.quote_requested.connect(_on_arcade_quote_requested)
 	character_selection = CharacterSelection.new()
 	character_selection.z_index = 200
 	character_selection.visible = false
@@ -251,6 +260,10 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if arcade != null and arcade.visible and event is InputEventKey and event.pressed and not event.echo:
+		if arcade.key_down(event, session):
+			get_viewport().set_input_as_handled()
+		return
 	if session.root_label == "游戏设置" and event is InputEventKey and event.pressed:
 		config_menu.key_down(session.menu_held())
 		get_viewport().set_input_as_handled()
@@ -414,6 +427,8 @@ func _physics_process(_delta: float) -> void:
 	match session.root_label:
 		"MENU":
 			title_menu.apply_held(session.menu_held())
+		"HOWTOPLAY", "YOUWIN", "继续", "gameover", "congratution":
+			arcade.tick()
 		"游戏设置":
 			config_menu.tick()
 		"键位设置":
@@ -488,6 +503,13 @@ func _on_menu_confirmed(item_id: String) -> void:
 	for item in TitleMenu.ITEMS:
 		if str(item["id"]) != item_id:
 			continue
+		if item_id == "single":
+			session.modo = 1
+			arcade.reset_run()
+			title_menu.hide()
+			session.root_label = "HOWTOPLAY"
+			arcade.open("tutorial")
+			return
 		if item_id == "key_settings":
 			_goto_config()
 			return
@@ -508,12 +530,50 @@ func _goto_character_selection(modo: int) -> void:
 
 
 func _on_characters_confirmed(fighters: Array, helpers: Array) -> void:
+	if session.modo == 1:
+		arcade.player = fighters[0]
+		arcade.helper = helpers[0]
+		character_selection.leave()
+		_start_arcade_stage()
+		return
 	_replace_selected_actors(fighters, helpers)
 	character_selection.leave()
 	_goto_map_selection(session.modo)
 
 
-func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
+func _start_arcade_stage() -> void:
+	var encounter := arcade.encounter()
+	var forms: Dictionary = arcade.data.forms
+	var opponent_form: Dictionary = forms.get(encounter.fighter, {})
+	_replace_selected_actors([arcade.player, encounter.fighter], [arcade.helper, encounter.helper], opponent_form)
+	_load_selected_stage(encounter.map)
+	_enter_current_fight(1)
+	stage_sound.select(encounter.music)
+	stage_sound.start()
+
+
+func _on_arcade_quote_requested() -> void:
+	var quotes: Array = arcade.data.quotes[arcade.player]
+	if not quotes.is_empty():
+		var draw := source_random.next_value("main#DefineSprite_2019/frame_1/DoAction.as:1")
+		arcade.set_quote(str(quotes[int(draw * quotes.size())]))
+
+
+func _on_arcade_action(action: String) -> void:
+	arcade.close()
+	match action:
+		"select": _goto_character_selection(1)
+		"next": _start_arcade_stage()
+		"menu": _goto_menu()
+		"gameover":
+			session.root_label = "gameover"
+			arcade.open("gameover")
+		"ending":
+			session.root_label = "congratution"
+			arcade.open("ending")
+
+
+func _replace_selected_actors(fighters: Array, helpers: Array, opponent_form: Dictionary = {}) -> void:
 	_stop_combat_drivers()
 	var replacements: Array[FighterRuntime] = []
 	var helper_replacements: Array[HelperRuntime] = []
@@ -521,7 +581,11 @@ func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
 		var old: FighterRuntime = naruto if i == 0 else ichigo
 		var fighter := FighterRuntime.new()
 		fighter.disabled_actions = ["万解"]
-		fighter.fighter_directory = FighterSelection.directory(str(character_selection.available.fighters[fighters[i]]))
+		if i == 1 and not opponent_form.is_empty():
+			fighter.fighter_directory = "res://generated/forms/" + str(opponent_form.id)
+			fighter.set_meta("initial_form", opponent_form)
+		else:
+			fighter.fighter_directory = FighterSelection.directory(str(character_selection.available.fighters[fighters[i]]))
 		fighter.name = old.name
 		fighter.player_slot = "p%d" % (i + 1)
 		fighter.position = old.position
@@ -554,7 +618,7 @@ func _replace_selected_actors(fighters: Array, helpers: Array) -> void:
 	_set_diagnostic_actor(naruto, "p1")
 	_set_diagnostic_actor(ichigo, "p2")
 	health_hud.fighters = [naruto, ichigo]
-	health_hud.set_fighter_portraits(fighters)
+	health_hud.set_fighter_portraits([fighters[0], opponent_form.get("portrait", fighters[1])])
 	naruto_energy.set_helper(naruto_helper.helper_id)
 	ichigo_energy.set_helper(ichigo_helper.helper_id)
 
@@ -659,6 +723,11 @@ func _return_to_title() -> void:
 
 
 func _goto_menu() -> void:
+	arcade.reset_run()
+	_clear_battle_view()
+
+
+func _clear_battle_view() -> void:
 	_finish_match_input("title")
 	diagnostics.end_match("left_battle")
 	_stop_ko()
@@ -739,10 +808,9 @@ func _enter_current_fight(modo: int) -> void:
 	_stop_ko()
 	_stop_combat_drivers()
 	# Fighters/assists remain locked; the map comes from the original map selector.
-	# Source 597/600/603: only modo=2 enables p2cpu. Selection is fixed here.
 	session.modo = modo
 	session.p1cpu = false
-	session.p2cpu = modo == 2
+	session.p2cpu = modo in [1, 2]
 	_set_diagnostic_actor(naruto, "p1")
 	_set_diagnostic_actor(ichigo, "p2")
 	session.root_label = "游戏场景"
@@ -848,6 +916,8 @@ func _advance_fight(recorded_events: Array = [], root_observer: Callable = Calla
 		ko_timeline.advance_timelines()
 		ko_clip.refresh_from_scheduler()
 		if ko_terminal_pending:
+			if session.modo == 1:
+				_ko_return_to_fixed_selection()
 			return
 	_advance_screen_flash()
 	health_hud.spec["placement"] = battle_intro.spec["hud_frames"][str(battle_intro.hud_frame)]
@@ -1216,8 +1286,8 @@ func _ko_service(operation: String, args: Array) -> Variant:
 			elif args[0] == "_root.qjxg":
 				battle_intro.clips.qjxg.visible = true
 				battle_intro._goto("qjxg", int(battle_intro.spec.clips.qjxg.labels[args[1]]), bool(args[2]))
-			elif args[0] == "_root" and args[1] == "选人画面":
-				# This user-requested slice fixes fighters and already skips selection.
+			elif args[0] == "_root" and args[1] in ["选人画面", "YOUWIN", "继续"]:
+				arcade_result = str(args[1])
 				ko_terminal_pending = true
 			else:
 				assert(false, "Unbound KO goto target")
@@ -1324,9 +1394,24 @@ func _diagnostic_fight_started() -> void:
 
 
 func _ko_return_to_fixed_selection() -> void:
+	if session.modo == 1:
+		_clear_battle_view()
+		title_menu.hide()
+		session.root_label = arcade_result
+		if arcade_result == "YOUWIN":
+			arcade.open("win", character_selection.available.fighters[arcade.player])
+		else:
+			arcade.open("continue")
+		return
 	var mode := session.modo
 	_goto_menu()
 	_goto_character_selection(mode)
+
+
+func _initial_fighter_form(fighter: FighterRuntime) -> Dictionary:
+	if fighter.has_meta("initial_form"):
+		return fighter.get_meta("initial_form")
+	return FighterSelection.form(fighter.fighter_directory.get_file())
 
 
 func _start_combat_drivers() -> void:
@@ -1405,8 +1490,8 @@ func _start_combat_drivers() -> void:
 		opponent_driver.begin_display_tick(physics_tick)
 	# Sprite 1900/frame 5 replaces P1, then P2, after both base wrappers
 	# loaded. A P1-only WKframe is therefore newer than the retained P2 BODY.
-	var p1_selected_form := not FighterSelection.form(naruto.fighter_directory.get_file()).is_empty()
-	var p2_selected_form := not FighterSelection.form(ichigo.fighter_directory.get_file()).is_empty()
+	var p1_selected_form := not _initial_fighter_form(naruto).is_empty()
+	var p2_selected_form := not _initial_fighter_form(ichigo).is_empty()
 	if p1_selected_form and not p2_selected_form:
 		configure_opponent.call()
 		configure_player.call()
@@ -1459,7 +1544,7 @@ func _prepare_form_root_owner() -> void:
 
 
 func _configure_fighter_forms(fighter: FighterRuntime, driver: Node) -> void:
-	var selected_form := FighterSelection.form(fighter.fighter_directory.get_file())
+	var selected_form := _initial_fighter_form(fighter)
 	var base_directory := fighter.fighter_directory
 	var parent_frame := 1
 	if not selected_form.is_empty():
@@ -1824,6 +1909,7 @@ func _diagnostic_pause_state() -> Dictionary:
 
 func _diagnostic_mode_name(mode: int) -> String:
 	match mode:
+		1: return "single"
 		2: return "vs_com"
 		3: return "versus"
 		4: return "training"

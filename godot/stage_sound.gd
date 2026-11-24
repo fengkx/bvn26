@@ -44,13 +44,13 @@ func load_manifest(path: String = MUSIC_DIRECTORY + "/music.json") -> bool:
 	return true
 
 
-func select() -> String:
+func select(steps: Array = _manifest.get("selection", {}).get("steps", [])) -> String:
 	# loadSound(): the fighter step is skipped entirely when the catalog entry
 	# has no music, so that case draws no random at all.
 	draws.clear()
 	selected_file = ""
 	selected_source = ""
-	for step: Dictionary in _manifest.get("selection", {}).get("steps", []):
+	for step: Dictionary in steps:
 		if not step.has("random_below"):
 			selected_file = str(step.get("file", ""))
 			selected_source = str(step.get("source", ""))

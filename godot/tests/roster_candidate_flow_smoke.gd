@@ -100,18 +100,20 @@ func _selection_neighbor(index: int, direction: String) -> int:
 	return index
 
 
-func _source_keyboard_path(candidate: Dictionary) -> Array:
+func _source_keyboard_path(candidate: Dictionary, player := 0, use_arrows := false) -> Array:
 	var target := -1
 	for index in game.character_selection.cards.size():
 		if str(game.character_selection.cards[index].id) == str(candidate.name):
 			target = index
 			break
 	assert(target >= 0, "Source grid has no candidate card")
-	var start := int(game.character_selection.selected[0])
+	var start := int(game.character_selection.selected[player])
 	var queue: Array = [start]
 	var previous: Dictionary = {start: {"index": -1, "direction": ""}}
 	# P1's source keyboard bindings are WASD; arrows belong to P2.
 	var directions := {"left": KEY_A, "right": KEY_D, "up": KEY_W, "down": KEY_S}
+	if use_arrows:
+		directions = {"left": KEY_LEFT, "right": KEY_RIGHT, "up": KEY_UP, "down": KEY_DOWN}
 	while not queue.is_empty() and not previous.has(target):
 		var current: int = queue.pop_front()
 		for direction: String in directions:
@@ -141,6 +143,8 @@ func _select_match(candidate: Dictionary, use_source_path: bool = false) -> void
 	game.battle_intro.fight_started.connect(func() -> void: intro_started[0] = true)
 
 	await _step(72)
+	assert(game.title_menu.current_item().id == "single")
+	await _tap(KEY_S)
 	assert(game.title_menu.current_item().id == "vs_com")
 	await _tap(KEY_S)
 	assert(game.title_menu.current_item().id == "versus")
@@ -166,12 +170,13 @@ func _select_match(candidate: Dictionary, use_source_path: bool = false) -> void
 	await _confirm_after_source_delay()
 	assert(game.character_selection.phase == 1)
 
-	await _tap(KEY_D)
-	await _tap(KEY_D)
+	for code: Key in _source_keyboard_path({"name": "松本"}):
+		await _tap(code)
 	assert(game.character_selection.helpers[0] == "松本")
 	await _tap(KEY_J)
 	await _confirm_after_source_delay()
-	await _tap(KEY_LEFT)
+	for code: Key in _source_keyboard_path({"name": "魂"}, 1, true):
+		await _tap(code)
 	assert(game.character_selection.helpers[1] == "魂")
 	await _tap(KEY_KP_1)
 	await _confirm_after_source_delay()
