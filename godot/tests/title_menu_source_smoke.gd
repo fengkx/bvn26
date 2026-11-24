@@ -2,7 +2,7 @@ extends SceneTree
 
 # Exercise the authored wheel before the port filters unavailable destinations.
 class SourceMenu extends TitleMenu:
-	func _skip_unavailable(_initial: bool = false) -> void:
+	func _skip_unavailable() -> void:
 		pass
 
 

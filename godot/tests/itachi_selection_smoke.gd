@@ -10,6 +10,8 @@ func _run() -> void:
 	_assert_candidate_available(candidate)
 	game.battle_intro.fight_started.connect(func() -> void: intro_started[0] = true)
 	await _step(72)
+	assert(game.title_menu.current_item().id == "single")
+	await _tap(KEY_S)
 	assert(game.title_menu.current_item().id == "vs_com")
 	_key(KEY_J, true)
 	while game.session.root_label != "选人画面":
@@ -29,12 +31,13 @@ func _run() -> void:
 	await _tap(KEY_J)
 	await _confirm_after_source_delay()
 	assert(game.character_selection.phase == 1)
-	await _tap(KEY_D)
-	await _tap(KEY_D)
+	for code: Key in _source_keyboard_path({"name": "松本"}):
+		await _tap(code)
 	assert(game.character_selection.helpers[0] == "松本")
 	await _tap(KEY_J)
 	await _confirm_after_source_delay()
-	await _tap(KEY_A)
+	for code: Key in _source_keyboard_path({"name": "魂"}, 1, false):
+		await _tap(code)
 	assert(game.character_selection.helpers[1] == "魂")
 	await _tap(KEY_J)
 	await _confirm_after_source_delay()

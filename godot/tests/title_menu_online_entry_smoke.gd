@@ -20,7 +20,7 @@ func _run() -> void:
 	menu.controller.select = 2
 	menu._refresh()
 	assert(menu.current_item().id == "vs_com")
-	for expected in [3, 4, 5, 6, 2]:
+	for expected in [3, 4, 5, 6, 1]:
 		_move(menu, "down")
 		assert(menu.select == expected, "Down navigation skipped menu slot: %d" % expected)
 		if expected == 6:
