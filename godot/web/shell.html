@@ -276,19 +276,19 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
 @media (orientation: landscape) {
     #player.touch-playing #touch-pad:not([hidden]) {
         display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none;
-        --touch-key: clamp(44px, 5.52vw, 48px);
+        --touch-key: max(44px, calc(clamp(44px, 5.52vw, 48px) * var(--action-scale, 1)));
     }
     #player.touch-playing.touch-layout #viewport {
         position: absolute; top: 50%; left: var(--game-center); transform: translate(-50%, -50%);
         width: var(--game-width); height: auto;
     }
 }
-#touch-stick, #touch-actions {
+#touch-stick, #touch-cross, #touch-actions {
     position: absolute; bottom: max(12%, env(safe-area-inset-bottom)); pointer-events: auto;
     touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
 }
 #touch-stick {
-    left: max(7px, env(safe-area-inset-left)); width: clamp(108px, 29dvh, 124px); aspect-ratio: 1;
+    left: max(7px, env(safe-area-inset-left)); width: calc(clamp(108px, 29dvh, 124px) * var(--direction-scale, 1)); aspect-ratio: 1;
     border: 1px solid #cfb6ac; border-radius: 50%; box-sizing: border-box;
     background: radial-gradient(circle, transparent 19%, #c4a99d66 20% 21%, transparent 22%), rgb(28 22 25 / .35);
 }
@@ -296,7 +296,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     position: absolute; top: 50%; left: 50%; pointer-events: none;
     transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 0px));
 }
-#touch-stick span { color: white; font: 600 16px system-ui; text-shadow: 0 1px 3px black; }
+#touch-stick span { color: white; font: 600 calc(16px * var(--direction-scale, 1)) system-ui; text-shadow: 0 1px 3px black; }
 #touch-stick span.active { color: #ffeaa7; }
 #touch-knob {
     width: 35%; aspect-ratio: 1; border: 1px solid #c7a59a; border-radius: 50%;
@@ -312,6 +312,53 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
 #touch-actions button[aria-pressed=true] { background: #983e32bf; border-color: #ffdaaa; }
 #touch-actions small { display: block; margin-top: 2px; font: 550 10px/1.2 system-ui; }
 #touch-actions.menu { grid-template-columns: repeat(2, var(--touch-key)); }
+
+#touch-pad [hidden], #touch-settings[hidden], #touch-settings-open[hidden] { display: none; }
+#touch-cross {
+    left: max(7px, env(safe-area-inset-left)); display: grid; gap: 2px;
+    --arrow-size: max(44px, calc(48px * var(--direction-scale, 1)));
+    grid-template: repeat(3, var(--arrow-size)) / repeat(3, var(--arrow-size));
+}
+#touch-cross button { padding: 0; transform: none; border-radius: 8px; background: #291f24aa; border-color: #cfb6ac; font-size: 19px; }
+#touch-cross button[aria-pressed=true] { background: #983e32bf; }
+#touch-cross [data-slot=w] { grid-area: 1 / 2; }
+#touch-cross [data-slot=a] { grid-area: 2 / 1; }
+#touch-cross [data-slot=d] { grid-area: 2 / 3; }
+#touch-cross [data-slot=s] { grid-area: 3 / 2; }
+#touch-pad.swapped :is(#touch-stick, #touch-cross) { left: auto; right: max(7px, env(safe-area-inset-right)); }
+#touch-pad.swapped #touch-actions { right: auto; left: max(7px, env(safe-area-inset-left)); }
+#touch-actions.arc:not(.menu) { width: calc(4.2 * var(--touch-key)); height: calc(3 * var(--touch-key)); display: block; }
+#touch-actions.arc:not(.menu) button {
+    position: absolute; left: calc(var(--x) * var(--touch-key)); top: calc(var(--y) * var(--touch-key));
+    transform: translate(-50%, -50%); border-radius: 50%;
+}
+#touch-actions.arc:not(.menu) [data-slot=j] {
+    --x: 2.1; --y: 2.2; width: calc(1.5 * var(--touch-key)); height: calc(1.5 * var(--touch-key));
+    border-color: #ffae8a; background-color: #7c3026cc; background-image: none; font-size: 24px;
+}
+#touch-actions.arc:not(.menu) [data-slot=j][aria-pressed=true] { background: #b74d36; }
+#touch-actions [data-slot=k] { --x: .5; --y: 2.2; }
+#touch-actions [data-slot=u] { --x: .95; --y: 1.05; }
+#touch-actions [data-slot=i] { --x: 2.1; --y: .5; }
+#touch-actions [data-slot=o] { --x: 3.25; --y: 1.05; }
+#touch-actions [data-slot=l] { --x: 3.7; --y: 2.2; }
+#touch-settings {
+    position: absolute; z-index: 8; top: max(6px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%);
+    width: min(430px, 94%); box-sizing: border-box; max-height: 92%; overflow: auto;
+    padding: 10px 14px; border: 1px solid #795f54; border-top: 3px solid #ee6851;
+    border-radius: 8px; background: #201a1bf5; color: #fff4ea;
+}
+#touch-settings header, #touch-settings footer, #touch-settings .setting-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+#touch-settings header { padding-bottom: 5px; border-bottom: 1px solid #523c3a; }
+#touch-settings footer { margin-top: 6px; font-size: 12px; color: #c5b1a9; }
+#touch-settings .setting-row { margin-top: 5px; }
+#touch-settings button { padding: 5px 10px; transform: none; border-radius: 4px; }
+#touch-settings button[aria-pressed=true], #touch-settings-done { background: #84372e; border-color: #e87e66; }
+#touch-settings input { flex: 1; max-width: 155px; min-width: 50px; accent-color: #ed7358; }
+#touch-settings label { margin-right: auto; }
+#touch-settings output { min-width: 4ch; text-align: right; font-variant-numeric: tabular-nums; }
         </style>
 		$GODOT_HEAD_INCLUDE
 	</head>
@@ -381,8 +428,21 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                 <span data-slot="a" style="--x:-2.55em">←</span><span data-slot="d" style="--x:2.55em">→</span>
                 <i id="touch-knob"></i>
             </div>
+            <div id="touch-cross" role="group" aria-label="独立方向键" hidden>
+                <button data-slot="w" aria-label="上">↑</button><button data-slot="a" aria-label="左">←</button>
+                <button data-slot="d" aria-label="右">→</button><button data-slot="s" aria-label="下">↓</button>
+            </div>
             <div id="touch-actions" role="group" aria-label="游戏按键"></div>
         </div>
+        <section id="touch-settings" aria-label="触控设置" hidden>
+            <header><strong>触控设置</strong><button id="touch-settings-done">完成</button></header>
+            <div class="setting-row">左右布局<div role="group" aria-label="左右布局"><button type="button" data-setting="hand" value="left">左手移动</button> <button type="button" data-setting="hand" value="right">右手移动</button></div></div>
+            <div class="setting-row">方向控制<div role="group" aria-label="方向控制"><button type="button" data-setting="direction" value="stick">摇杆</button> <button type="button" data-setting="direction" value="cross">独立方向键</button></div></div>
+            <div class="setting-row">动作键布局<div role="group" aria-label="动作键布局"><button type="button" data-setting="actions" value="grid">六键方阵</button> <button type="button" data-setting="actions" value="arc">大攻击键 · 弧形</button></div></div>
+            <div class="setting-row"><label for="directionSize">方向区大小</label><input id="directionSize" type="range" min="80" max="130" step="5"><output for="directionSize"></output></div>
+            <div class="setting-row"><label for="actionSize">动作键大小</label><input id="actionSize" type="range" min="90" max="130" step="5"><output for="actionSize"></output></div>
+            <footer>可在两侧试按，设置自动保存<button id="touch-settings-reset">恢复默认</button></footer>
+        </section>
         <p id="rotate-hint">请横屏游玩</p>
         <p id="feedback" role="status" aria-live="polite"></p>
         </main>
@@ -429,6 +489,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     const buttonEvents = {
         fullscreen: () => isFullscreen() ? 'Exit Fullscreen' : 'Enter Fullscreen',
         download: () => 'Export Diagnostics',
+        'touch-settings-reset': () => 'Reset Touch Settings',
+        'touch-settings-done': () => 'Close Touch Settings',
         'audio-toggle': () => volumePanel.hidden ? 'Open Volume Panel' : 'Close Volume Panel',
         'mute-toggle': () => audioSettings.muted || audioSettings.volume === 0 ? 'Unmute Audio' : 'Mute Audio',
         'edge-indicator': () => edgePointerType === 'touch' && touchPinned ? 'Hide Game Tools' : 'Show Game Tools',
@@ -1733,6 +1795,83 @@ function initializeTouchControls() {
     const stick = document.getElementById('touch-stick');
     const knob = document.getElementById('touch-knob');
     const actions = document.getElementById('touch-actions');
+    const cross = document.getElementById('touch-cross');
+    const settings = document.getElementById('touch-settings');
+    const openSettings = document.createElement('button');
+    openSettings.id = 'touch-settings-open';
+    openSettings.textContent = '触控设置';
+    openSettings.hidden = true;
+    openSettings.setAttribute('aria-controls', settings.id);
+    openSettings.setAttribute('aria-expanded', 'false');
+    document.getElementById('toolbar').insertBefore(openSettings, document.getElementById('fullscreen'));
+    const storageKey = 'bvn.touchSettings.v1';
+    const defaults = { hand: 'left', direction: 'stick', actions: 'grid', directionSize: 100, actionSize: 100 };
+    const preferences = { ...defaults };
+    const choices = [...settings.querySelectorAll('[data-setting]')];
+    const sliders = [...settings.querySelectorAll('input[type=range]')];
+    try {
+        const saved = JSON.parse(localStorage.getItem(storageKey));
+        for (const { dataset, value } of choices) {
+            if (saved?.[dataset.setting] === value) preferences[dataset.setting] = value;
+        }
+        for (const slider of sliders) {
+            const size = saved?.[slider.id];
+            if (Number.isInteger(size) && size >= +slider.min && size <= +slider.max && size % +slider.step === 0) {
+                preferences[slider.id] = size;
+            }
+        }
+    } catch { /* Storage can be unavailable in private browsing. */ }
+    function applyPreferences() {
+        const swapped = preferences.hand === 'right';
+        pad.classList.toggle('swapped', swapped);
+        stick.hidden = preferences.direction !== 'stick';
+        cross.hidden = !stick.hidden;
+        actions.classList.toggle('arc', preferences.actions === 'arc');
+        pad.style.setProperty('--direction-scale', preferences.directionSize / 100);
+        pad.style.setProperty('--action-scale', preferences.actionSize / 100);
+        for (const button of choices) {
+            button.setAttribute('aria-pressed', String(button.value === preferences[button.dataset.setting]));
+        }
+        for (const slider of sliders) {
+            slider.value = preferences[slider.id];
+            settings.querySelector('output[for="' + slider.id + '"]').value = slider.value + '%';
+        }
+        settings.querySelector('label[for=directionSize]').textContent = (swapped ? '右侧' : '左侧') + '方向区大小';
+        settings.querySelector('label[for=actionSize]').textContent = (swapped ? '左侧' : '右侧') + '动作键大小';
+        layout();
+    }
+    function savePreferences() {
+        release();
+        applyPreferences();
+        try { localStorage.setItem(storageKey, JSON.stringify(preferences)); } catch { /* Session-only settings. */ }
+    }
+    for (const button of choices) button.onclick = () => {
+        window.tinytraffic?.('Change Touch Layout', { props: { setting: button.dataset.setting, value: button.value } });
+        preferences[button.dataset.setting] = button.value;
+        savePreferences();
+    };
+    for (const slider of sliders) slider.oninput = () => {
+        preferences[slider.id] = Number(slider.value);
+        savePreferences();
+    };
+    settings.querySelector('#touch-settings-reset').onclick = () => {
+        Object.assign(preferences, defaults);
+        savePreferences();
+    };
+    function showSettings(open) {
+        if (open === !settings.hidden) return;
+        release();
+        settings.hidden = !open;
+        openSettings.setAttribute('aria-expanded', String(open));
+    }
+    openSettings.onclick = () => {
+        window.tinytraffic?.(settings.hidden ? 'Open Touch Settings' : 'Close Touch Settings');
+        showSettings(settings.hidden);
+    };
+    settings.querySelector('#touch-settings-done').onclick = () => {
+        showSettings(false);
+        document.getElementById('canvas').focus({ preventScroll: true });
+    };
     const pause = document.createElement('button');
     pause.type = 'button';
     pause.textContent = '暂停游戏';
@@ -1757,9 +1896,9 @@ function initializeTouchControls() {
         const down = new Set([...direction, ...touches.values()]);
         let mask = 0;
         for (const key of down) mask |= 1 << keys.indexOf(key);
-        for (const button of actions.children) button.setAttribute('aria-pressed', String(down.has(button.dataset.slot)));
+        for (const button of [...actions.children, ...cross.children]) button.setAttribute('aria-pressed', String(down.has(button.dataset.slot)));
         for (const arrow of stick.querySelectorAll('[data-slot]')) arrow.classList.toggle('active', down.has(arrow.dataset.slot));
-        if (mask !== lastMask) callback?.(mask);
+        if (settings.hidden && mask !== lastMask) callback?.(mask);
         lastMask = mask;
     }
     function centerStick() {
@@ -1772,7 +1911,9 @@ function initializeTouchControls() {
     function release() {
         if (owner !== null && stick.hasPointerCapture(owner)) stick.releasePointerCapture(owner);
         for (const id of touches.keys()) {
-            if (actions.hasPointerCapture(id)) actions.releasePointerCapture(id);
+            for (const group of [actions, cross]) {
+                if (group.hasPointerCapture(id)) group.releasePointerCapture(id);
+            }
         }
         centerStick();
         touches.clear();
@@ -1802,21 +1943,24 @@ function initializeTouchControls() {
     stick.onpointerup = stick.onpointercancel = stick.onlostpointercapture = event => {
         if (owner === event.pointerId) { centerStick(); publish(); }
     };
-    function moveAction(event) {
+    function moveButton(event) {
+        const group = event.currentTarget;
         const button = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-slot]');
-        if (button && actions.contains(button)) touches.set(event.pointerId, button.dataset.slot);
+        if (button && group.contains(button)) touches.set(event.pointerId, button.dataset.slot);
         else touches.delete(event.pointerId);
         publish();
     }
-    actions.onpointerdown = event => {
-        event.preventDefault();
-        actions.setPointerCapture(event.pointerId);
-        moveAction(event);
-    };
-    actions.onpointermove = event => { if (actions.hasPointerCapture(event.pointerId)) moveAction(event); };
-    actions.onpointerup = actions.onpointercancel = actions.onlostpointercapture = event => {
-        if (touches.delete(event.pointerId)) publish();
-    };
+    for (const group of [actions, cross]) {
+        group.onpointerdown = event => {
+            event.preventDefault();
+            group.setPointerCapture(event.pointerId);
+            moveButton(event);
+        };
+        group.onpointermove = event => { if (group.hasPointerCapture(event.pointerId)) moveButton(event); };
+        group.onpointerup = group.onpointercancel = group.onlostpointercapture = event => {
+            if (touches.delete(event.pointerId)) publish();
+        };
+    }
     function layout() {
         const playing = Boolean(callback) && (document.fullscreenElement === player || player.classList.contains('touch-fullscreen'));
         // Browser chrome and page zoom can move the visible area inside the layout viewport.
@@ -1831,11 +1975,17 @@ function initializeTouchControls() {
         const visible = playing && landscape.matches && mode !== 'hidden';
         if (!visible && !pad.hidden) release();
         pad.hidden = !visible;
+        openSettings.hidden = !visible;
+        if (!visible) showSettings(false);
         pause.hidden = !visible || mode !== 'fight';
         player.classList.toggle('touch-layout', visible);
         if (!visible) return;
         const area = player.getBoundingClientRect();
-        const left = stick.getBoundingClientRect().right, right = actions.getBoundingClientRect().left;
+        const directionRect = (stick.hidden ? cross : stick).getBoundingClientRect();
+        const actionRect = actions.getBoundingClientRect();
+        const swapped = preferences.hand === 'right';
+        const left = (swapped ? actionRect : directionRect).right;
+        const right = (swapped ? directionRect : actionRect).left;
         const native = Math.min(area.width, area.height * 1.5);
         const gap = right - left;
         const width = gap >= native * .9 ? Math.min(native, gap) : native;
@@ -1871,6 +2021,7 @@ function initializeTouchControls() {
     }, { passive: false });
     window.visualViewport?.addEventListener('resize', layout);
     window.visualViewport?.addEventListener('scroll', layout);
+    applyPreferences();
     new ResizeObserver(layout).observe(player);
     window.addEventListener('resize', layout);
     document.addEventListener('fullscreenchange', layout);

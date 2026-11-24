@@ -59,7 +59,7 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, 
     const intervalCallbacks = new Map();
     const elements = new Map();
     for (const id of ['player', 'canvas', 'fullscreen', 'feedback', 'edge-indicator', 'toolbar',
-        'online-controls', 'online-status', 'online-request', 'online-pause', 'online-accept-pause',
+        'touch-settings-reset', 'touch-settings-done', 'online-controls', 'online-status', 'online-request', 'online-pause', 'online-accept-pause',
         'online-refuse-pause', 'online-skip-intro', 'online-exit', 'online-collapse-tools', 'edge-label',
         'audio-control', 'audio-toggle', 'mute-toggle', 'volume-panel', 'volume-slider',
         'volume-value', 'volume-status', 'viewport', 'status', 'status-splash', 'status-progress', 'download']) {
