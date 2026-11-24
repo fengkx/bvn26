@@ -1,6 +1,6 @@
 extends RefCounted
 
-const VERSION := 2
+const VERSION := 3
 const MAX_WIRE_BYTES := 16_384
 const MAX_RAW_BYTES := 262_144
 const MAX_DEPTH := 24

@@ -36,6 +36,9 @@ func _run() -> void:
 		var decoded := wire.decode(bytes)
 		var problem := display.apply(decoded)
 		assert(problem.is_empty(), problem)
+		var guest_hud: HealthHud = display.nodes[capture._id(fixture.game.health_hud)]
+		assert(guest_hud.portrait_labels == selection.slice(0, 2))
+		assert(guest_hud.portrait_textures == fixture.game.health_hud.portrait_textures)
 		# Canvas transform notifications settle before the draw being compared.
 		_flush_transforms(fixture.game)
 		_flush_transforms(presenter)

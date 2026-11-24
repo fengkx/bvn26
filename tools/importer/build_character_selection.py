@@ -12,6 +12,12 @@ from extract_timeline_geometry import extract_frames, file_sha256
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def selection_display_name(catalog, name):
+    # These source IDs must stay stable for selection and matchmaking.
+    corrections = {"松本": "山中井野", "史塔克": "柯雅泰·史塔克"}
+    return corrections.get(name, catalog[name]["name"])
+
+
 def _runtime_slug(entry: dict, *, helper: bool) -> str | None:
     source = entry.get("fzurl" if helper else "url")
     return Path(source).stem.lower() if source else None
@@ -111,7 +117,7 @@ def build(workspace: Path, output: Path) -> dict:
             if name not in catalog or name not in labels:
                 raise ValueError(f"Missing original portrait/catalog: {name}")
             matrix = item["matrix"]
-            cards.append({"id": name, "display_name": catalog[name]["name"],
+            cards.append({"id": name, "display_name": selection_display_name(catalog, name),
                           "grid": [int(matrix["translateX"] / 600), int(matrix["translateY"] / 600)],
                           "placement": item, "portrait_frame": labels[name],
                           "is_naruto": bool(catalog[name].get("isNaruto", False))})

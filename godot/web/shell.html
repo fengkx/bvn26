@@ -103,7 +103,15 @@ body {
     display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
     border-bottom: 1px solid #6b3434;
 }
-#toolbar strong { margin-right: auto; font-size: clamp(20px, 3vw, 30px); font-style: italic; letter-spacing: -1px; }
+#brand { display: flex; align-items: center; gap: 20px; margin-right: auto; }
+#repository {
+    display: inline-flex; align-items: center; gap: 5px; min-height: 36px;
+    padding: 0 4px; color: #ccb9b0; font: 600 13px system-ui, sans-serif; text-decoration: none;
+}
+#repository svg { width: 13px; height: 13px; color: #ed7168; }
+#repository:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+#repository:focus-visible { outline: 2px solid #f5b095; outline-offset: 2px; border-radius: 2px; }
+#toolbar strong { font-size: clamp(20px, 3vw, 30px); font-style: italic; letter-spacing: -1px; }
 #toolbar strong span { color: #ed4339; font-size: .75em; margin: 0 5px; }
 #toolbar strong small { display: block; margin-top: 5px; font: 10px system-ui, sans-serif; letter-spacing: 4px; color: #a99a94; }
 #online-controls[hidden], #online-controls [hidden] { display: none !important; }
@@ -146,7 +154,7 @@ button:disabled { opacity: .5; cursor: default; }
     width: min(100vw, 150dvh); height: min(100dvh, calc(100vw / 1.5));
     box-shadow: none;
 }
-#player:fullscreen #help, #player:fullscreen #toolbar strong { display: none; }
+#player:fullscreen #help, #player:fullscreen #brand { display: none; }
 #player:fullscreen #toolbar {
     position: absolute; top: 12px; right: 14px; z-index: 6; width: auto;
     box-sizing: border-box; max-width: calc(100vw - 28px); padding: 8px; border: 0; border-bottom: 1px solid #6b3434;
@@ -238,6 +246,7 @@ button:disabled { opacity: .5; cursor: default; }
 #player:fullscreen.tools-visible #feedback { opacity: 1; }
 @media (max-width: 600px) {
     #toolbar { padding-top: 14px; }
+    #brand { flex: 1 1 100%; justify-content: space-between; }
     button { padding: 9px 12px; }
     #toolbar strong small { letter-spacing: 2px; }
     #volume-panel { width: min(256px, calc(100vw - 24px)); }
@@ -256,7 +265,13 @@ button:disabled { opacity: .5; cursor: default; }
 	<body>
         <main id="player">
         <nav id="toolbar" aria-label="游戏工具">
-            <strong>死神 <span>VS</span> 火影 <span>2.6</span><small>BLEACH VS NARUTO</small></strong>
+            <div id="brand">
+                <strong>死神 <span>VS</span> 火影 <span>2.6</span><small>BLEACH VS NARUTO</small></strong>
+                <a id="repository" href="https://github.com/fengkx/bvn26" target="_blank" rel="noopener noreferrer" aria-label="在新标签页打开 GitHub 项目仓库">
+                    GitHub
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12 12 4M4.5 4H12v7.5"/></svg>
+                </a>
+            </div>
             <section id="online-controls" aria-label="联机对战控制" hidden>
                 <span id="online-status" role="status" aria-live="polite"></span>
                 <span id="online-request" hidden></span>

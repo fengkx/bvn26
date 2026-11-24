@@ -70,6 +70,10 @@ class SelectionRegistryTests(unittest.TestCase):
         for entry in portraits.values():
             for texture in entry["textures"]:
                 self.assertTrue((directory / texture).is_file(), texture)
+        helper_names = {card["id"]: card["display_name"] for card in selection["phases"][1]["cards"]}
+        for name, expected in {"松本": "山中井野", "史塔克": "柯雅泰·史塔克"}.items():
+            self.assertEqual(helper_names[name], expected)
+            self.assertEqual(footer[name]["text"], expected)
         for entry in footer.values():
             self.assertTrue((directory / entry["texture"]).is_file(), entry["texture"])
         for name in ("白哉", "小李", "银", "茶渡", "宁次", "一角", "鼬", "大蛇丸", "自来也", "佩恩", "小南", "带土", "迪达拉", "蓝染", "剑八", "我爱罗", "重吾", "涅茧利", "香磷", "奇拉比", "一护2", "手鞠", "剑心", "小乌", "仙鸣", "佐助须佐", "日番谷万解", "露其雅始解", "一护万解", "鸣人九尾", "佐助咒怨"):

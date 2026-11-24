@@ -110,7 +110,7 @@ func capture(game: Node) -> Dictionary:
 
 func _capture_node(node: Node, parent: int, records: Array) -> void:
 	if node.is_queued_for_deletion(): return
-	if node in [_host.title_menu, _host.key_settings, _host.config_menu, _host.character_selection,
+	if node in [_host.arcade, _host.title_menu, _host.key_settings, _host.config_menu, _host.character_selection,
 		_host.map_selection, _host.pause_menu, _host.fight_hud, _host.combo_hud]: return
 	if node is AudioStreamPlayer or node is Timer: return
 	var kind := "group"
@@ -123,7 +123,7 @@ func _capture_node(node: Node, parent: int, records: Array) -> void:
 	elif node is HealthHud:
 		kind = "health"
 		state = {"health": [[_host.naruto.health, _host.naruto.max_health], [_host.ichigo.health, _host.ichigo.max_health]],
-			"trail": node.trail.duplicate(), "low_frame": node.low_frame.duplicate(), "low_health": node.low_health.duplicate(),
+			"portraits": node.portrait_labels.duplicate(), "trail": node.trail.duplicate(), "low_frame": node.low_frame.duplicate(), "low_health": node.low_health.duplicate(),
 			"wins": Array(node.win_frames), "placement": _host.battle_intro.hud_frame,
 			"timer": {"unlimited": node.countdown.unlimited, "digits": node.countdown.digit_frames.duplicate()} if node.countdown != null else {}}
 		terminal = true
@@ -255,7 +255,10 @@ func _validate_state(kind: String, state: Dictionary) -> String:
 		"energy":
 			if state.size() != 4 or not _numbers([state.get("energy")], 1) or state.energy < 0 or state.energy > 300 or not _integers([state.get("child_frame")], 1, 1, 10) or not state.get("mirrored") is bool or not state.get("helper") is String or not _helper_spec.portraits.has(state.helper): return "invalid_display_energy"
 		"health":
-			if state.size() != 7 or not state.get("health") is Array or state.health.size() != 2: return "invalid_display_health"
+			if state.size() != 8 or not state.get("health") is Array or state.health.size() != 2: return "invalid_display_health"
+			if not state.get("portraits") is Array or state.portraits.size() != 2: return "invalid_display_portraits"
+			for label in state.portraits:
+				if not label is String or not _helper_spec.portraits.has(label): return "invalid_display_portraits"
 			for pair in state.health:
 				if not _numbers(pair, 2) or pair[1] <= 0: return "invalid_display_health"
 			if not _numbers(state.get("trail"), 2) or not _integers(state.get("low_frame"), 2, 0, 19) or not state.get("low_health") is Array or state.low_health.size() != 2: return "invalid_display_health_trail"
@@ -357,6 +360,8 @@ func _apply_owner(node: Node, record: Dictionary) -> String:
 			node.bitmap.modulate.a = maxf(state.alpha / 100.0, 0)
 			actor.free()
 		"health":
+			if node.portrait_labels != state.portraits:
+				node.set_fighter_portraits(state.portraits)
 			node.presentation_health = state.health
 			node.presentation_countdown = state.timer
 			node.trail.assign(state.trail)

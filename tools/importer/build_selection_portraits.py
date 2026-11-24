@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import xml.etree.ElementTree as ET
 
+from build_character_selection import selection_display_name
 from extract_timeline_geometry import extract_frames, file_sha256
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -169,22 +170,26 @@ def build(workspace, temporary, output, jar, names, raster_scale=2, portraits_on
     if portraits_only:
         return
 
+    catalog = json.loads((ROOT / 'manifest.json').read_text())['fighter_catalog']
+    footer_names = list(dict.fromkeys(names + ['魂', '我爱罗', '鼬', '松本']))
+    footer = {name: {'texture': f'footer-name-{index}.png', 'text': selection_display_name(catalog, name)}
+              for index, name in enumerate(footer_names)}
+    render_footer(xml, temporary, output, jar, footer)
+    (output / 'footer.json').write_text(json.dumps(footer, ensure_ascii=False, indent=2) + '\n')
+
+
+def render_footer(xml, temporary, output, jar, footer):
+    java = ['java', '-Djava.awt.headless=true']
     tree = ET.parse(xml)
     tags = tree.getroot().find('tags')
     template = next(t for t in tags if t.get('characterID') == '670')
-    catalog = json.loads((ROOT / 'manifest.json').read_text())['fighter_catalog']
-    footer = {}
-    # Keep footer text source-built for every helper exposed by the shared
-    # selector. The third helper is an in-scope base roster entry; omitting it
-    # leaves a valid card with a blank selected-name label.
-    footer_names = list(dict.fromkeys(names + ['魂', '我爱罗', '鼬', '松本']))
     ids = []
-    for index, name in enumerate(footer_names):
+    for index, name in enumerate(footer):
         sid, tid = 8000 + index * 2, 8001 + index * 2
         text = copy.deepcopy(template)
         text.set('characterID', str(tid))
         text.set('hasText', 'true')
-        text.set('initialText', catalog[name]['name'])
+        text.set('initialText', footer[name]['text'])
         sprite = ET.Element('item', {'type': 'DefineSpriteTag', 'spriteId': str(sid), 'frameCount': '1'})
         children = ET.SubElement(sprite, 'subTags')
         ET.SubElement(children, 'item', {'type': 'PlaceObject2Tag', 'depth': '1', 'characterId': str(tid),
@@ -192,17 +197,15 @@ def build(workspace, temporary, output, jar, names, raster_scale=2, portraits_on
         ET.SubElement(children, 'item', {'type': 'ShowFrameTag'})
         tags.extend([text, sprite])
         ids.append(sid)
-        footer[name] = {'texture': f'footer-name-{index}.png', 'text': catalog[name]['name']}
     derived = temporary / 'footer.xml'
     tree.write(derived, encoding='utf-8', xml_declaration=True)
     swf = derived.with_suffix('.swf')
     subprocess.run(java + ['-jar', str(jar), '-xml2swf', str(derived), str(swf)], check=True, stdout=subprocess.DEVNULL)
     subprocess.run(java + ['-jar', str(jar), '-zoom', '2', '-selectid', ','.join(map(str, ids)), '-export', 'sprite', str(temporary / 'footer-raster'), str(swf)], check=True, stdout=subprocess.DEVNULL)
     from PIL import Image
-    for index, name in enumerate(footer_names):
+    for index, name in enumerate(footer):
         with Image.open(temporary / f'footer-raster/DefineSprite_{ids[index]}/1.png') as image:
             image.crop(image.getbbox()).save(output / footer[name]['texture'])
-    (output / 'footer.json').write_text(json.dumps(footer, ensure_ascii=False, indent=2) + '\n')
 
 
 if __name__ == '__main__':
