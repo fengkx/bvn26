@@ -292,6 +292,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     border: 1px solid #cfb6ac; border-radius: 50%; box-sizing: border-box;
     background: radial-gradient(circle, transparent 19%, #c4a99d66 20% 21%, transparent 22%), rgb(28 22 25 / .35);
 }
+/* The thumb can land just outside the ring without covering more of the stage. */
+#touch-stick::before { content: ""; position: absolute; inset: -10px; border-radius: 50%; }
 #touch-stick span, #touch-knob {
     position: absolute; top: 50%; left: 50%; pointer-events: none;
     transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 0px));
@@ -344,6 +346,13 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
 #touch-actions [data-slot=i] { --x: 2.1; --y: .5; }
 #touch-actions [data-slot=o] { --x: 3.25; --y: 1.05; }
 #touch-actions [data-slot=l] { --x: 3.7; --y: 2.2; }
+#touch-actions #touch-transform {
+    position: absolute; left: 50%; top: auto; bottom: calc(100% + min(var(--touch-key), 9dvh));
+    transform: translateX(-50%); width: calc(1.65 * var(--touch-key)); height: max(44px, calc(.8 * var(--touch-key)));
+    border-radius: 100px; border-color: #dfad58; background: #312415d9; color: #ffdc99;
+    font: 650 16px/1 system-ui;
+}
+#touch-actions #touch-transform[aria-pressed=true] { background: #76521e; }
 #touch-settings {
     position: absolute; z-index: 8; top: max(6px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%);
     width: min(430px, 94%); box-sizing: border-box; max-height: 92%; overflow: auto;
@@ -425,7 +434,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
 
         </div>
         <div id="touch-pad" hidden>
-            <div id="touch-stick" role="group" aria-label="八向摇杆">
+            <div id="touch-stick" role="group" aria-label="四向摇杆">
                 <span data-slot="w" style="--y:-2.55em">↑</span><span data-slot="s" style="--y:2.55em">↓</span>
                 <span data-slot="a" style="--x:-2.55em">←</span><span data-slot="d" style="--x:2.55em">→</span>
                 <i id="touch-knob"></i>
@@ -922,6 +931,96 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     const snapshotWaiters = new Map();
     let buildSidecar = null;
     let buildSidecarStatus = 'pending';
+    // The renderer may disappear without firing a final event. Keep small observations
+    // on disk during play, independently of the full in-memory replay buffer.
+    const journalPrefix = 'bvn26.crash-run.';
+    const tabHistoryKey = 'bvn26.crash-history';
+    const journal = {
+        runId: sessionId, startedAt, userAgent: navigator.userAgent,
+        navigation: performance.getEntriesByType?.('navigation')[0]?.type || 'unknown',
+        signals: [], checkpoints: [], lifecycle: 'active', enginePhase: 'bootstrap',
+    };
+    const previousRuns = [];
+    let persistence = 'available';
+    let historyIds = window.history?.state?.bvnCrashRuns;
+    try {
+        historyIds = JSON.parse(sessionStorage.getItem(tabHistoryKey)) || historyIds;
+    } catch (_) { /* The navigation entry also survives same-tab reloads. */ }
+    const readRun = key => {
+        try { return JSON.parse(localStorage.getItem(key)); }
+        catch (_) { return null; }
+    };
+    for (const id of Array.isArray(historyIds) ? historyIds.slice(0, 3) : []) {
+        const run = readRun(journalPrefix + id);
+        if (run?.runId === id) previousRuns.push(run);
+    }
+    const unfinished = previousRuns.filter(run => run.lifecycle === 'active');
+    const interruptedRun = unfinished.find(run => run.checkpoints?.length)
+        || unfinished.find(run => run.signals?.length || run.enginePhase === 'starting');
+    const lastSignal = interruptedRun?.signals?.at(-1);
+    const recovery = interruptedRun ? {
+        runId: interruptedRun.runId,
+        observation: 'reload_without_observed_pagehide',
+        browserReportedDiscard: interruptedRun === previousRuns[0] && typeof document.wasDiscarded === 'boolean'
+            ? document.wasDiscarded : null,
+        lastSavedAt: interruptedRun.updatedAt,
+        lastCheckpoint: interruptedRun.checkpoints.at(-1) || null,
+        lastSignal: lastSignal || null,
+        cause: 'unconfirmed',
+    } : null;
+    if (recovery) feedback.textContent = '已找到上次中断前的现场。点击「导出日志」可一起保存。';
+    // Keep the latest interrupted game through repeated reloads of the loading screen.
+    const recentIds = [sessionId, ...previousRuns.map(run => run.runId)].slice(0, 3);
+    if (interruptedRun && !recentIds.includes(interruptedRun.runId)) recentIds[2] = interruptedRun.runId;
+    let linked = false;
+    try { sessionStorage.setItem(tabHistoryKey, JSON.stringify(recentIds)); linked = true; } catch (_) {}
+    try {
+        if (window.history) {
+            window.history.replaceState({ ...window.history.state, bvnCrashRuns: recentIds }, '');
+            linked = true;
+        }
+    } catch (_) {}
+    if (!linked) persistence = 'unavailable';
+    try {
+        const stored = Object.keys(localStorage).filter(key => key.startsWith(journalPrefix));
+        if (stored.length >= 12) {
+            const removable = stored.filter(key => !recentIds.includes(key.slice(journalPrefix.length)))
+                .map(key => ({ key, time: readRun(key)?.updatedAt || '' }))
+                .sort((a, b) => a.time.localeCompare(b.time));
+            for (const { key } of removable.slice(0, stored.length - 11)) localStorage.removeItem(key);
+        }
+    } catch (_) { persistence = 'unavailable'; }
+    function saveJournal() {
+        if (persistence !== 'available') return;
+        journal.updatedAt = new Date().toISOString();
+        journal.visibility = document.visibilityState;
+        journal.buildID = runtimeBuildId || buildSidecar?.buildID || null;
+        journal.canvas = [canvas.width, canvas.height];
+        try { localStorage.setItem(journalPrefix + sessionId, JSON.stringify(journal)); }
+        catch (_) { persistence = 'unavailable'; }
+    }
+    function journalSignal(kind, detail = '') {
+        const message = String(detail).slice(0, 800);
+        const last = journal.signals.at(-1);
+        if (last?.kind === kind && last.detail === message && performance.now() - last.monoMs < 1000) return;
+        journal.signals.push({ kind, detail: message, monoMs: performance.now(), at: new Date().toISOString() });
+        if (journal.signals.length > 12) journal.signals.shift();
+        saveJournal();
+    }
+    window.bvnCrashCheckpoint = serialized => {
+        if (typeof serialized !== 'string' || serialized.length > 8192) return;
+        const state = JSON.parse(serialized);
+        journal.checkpoints.push({ at: new Date().toISOString(), ...state });
+        if (journal.checkpoints.length > 12) journal.checkpoints.shift();
+        saveJournal();
+    };
+    window.bvnCrashEnginePhase = phase => { journal.enginePhase = phase; saveJournal(); };
+    window.addEventListener('pagehide', event => {
+        journal.lifecycle = event.persisted ? 'pagehide_cached' : 'pagehide';
+        saveJournal();
+    });
+    window.addEventListener('pageshow', () => { journal.lifecycle = 'active'; saveJournal(); });
+    saveJournal();
     function format(value) {
         if (value instanceof Error) return value.stack || value.message;
         if (typeof value === 'string') return value;
@@ -938,7 +1037,13 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             entries.shift();
             dropped++;
         }
-        if (level === 'error') appendShellEvent('diagnostic_exception', { level, message });
+        if (level === 'error') {
+            const kind = /out of memory|memory allocation failed|cannot enlarge memory/i.test(message)
+                ? 'allocation_error' : /wasm trap|unreachable|memory access out of bounds/i.test(message)
+                    ? 'runtime_trap' : 'error';
+            journalSignal(kind, message);
+            appendShellEvent('diagnostic_exception', { level, message });
+        }
     }
     window.bvnLog = record;
 
@@ -1523,11 +1628,15 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     window.addEventListener('error', event => record('error', event.error || event.message || 'Resource failed: ' + event.target?.src), true);
     window.addEventListener('unhandledrejection', event => record('error', event.reason));
     document.addEventListener('visibilitychange', () => {
+        saveJournal();
         record('lifecycle', document.visibilityState);
         appendShellEvent('page_visibility', { state: document.visibilityState });
         if (diagnosticsRequestCallback) diagnosticsRequestCallback('visibility', document.visibilityState);
     });
-    canvas.addEventListener('webglcontextlost', () => record('error', 'WebGL context lost'));
+    canvas.addEventListener('webglcontextlost', () => {
+        journalSignal('webgl_context_lost');
+        record('error', 'WebGL context lost');
+    });
     const viewport = document.getElementById('viewport');
     function fitCanvasToViewport() {
         const rect = viewport.getBoundingClientRect();
@@ -1660,6 +1769,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                     dropped: { ...runtimeDropped },
                 },
             },
+            reloadDiagnostics: {
+                persistence, recovery, previousRuns, currentRun: journal,
+                interpretation: 'An active last checkpoint without pagehide means the end was unobserved. It does not establish OS memory termination.',
+            },
             webrtc: rtcSnapshot(),
         };
         const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
@@ -1671,8 +1784,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 10000);
         feedback.textContent = snapshotResult.status === 'acknowledged'
-            ? '日志已导出，请在反馈问题时附上文件和复现步骤。日志仅保存在本地，刷新后重新记录。'
+            ? '日志已导出，请在反馈问题时附上文件和复现步骤。同一标签页重新加载后，可导出之前保存的现场。'
             : '日志已导出，但游戏状态回执未完成；文件中会标明这一点。';
+        if (previousRuns.length) feedback.textContent += ' 已附上重载前的现场记录。';
+        if (persistence === 'unavailable') feedback.textContent += ' 浏览器未能保存跨重载记录。';
         revealTools();
         canvas.focus({ preventScroll: true });
     });
@@ -1723,6 +1838,7 @@ const engine = new Engine({
 	}
 
 	function displayFailureNotice(err) {
+		window.bvnCrashEnginePhase('startup_failed');
 		console.error(err);
 		if (err instanceof Error) {
 			setStatusNotice(err.message);
@@ -1772,6 +1888,7 @@ const engine = new Engine({
 		}
 	} else {
 		setStatusMode('progress');
+		window.bvnCrashEnginePhase('starting');
 		engine.startGame({
 			'onProgress': function (current, total) {
 				if (current > 0 && total > 0) {
@@ -1783,6 +1900,7 @@ const engine = new Engine({
 				}
 			},
 		}).then(() => {
+			window.bvnCrashEnginePhase('running');
 			setStatusMode('hidden');
 		}, displayFailureNotice);
 	}
@@ -1882,7 +2000,6 @@ function initializeTouchControls() {
     pause.onclick = () => { callback?.(-2); document.getElementById('canvas').focus({ preventScroll: true }); };
     const landscape = matchMedia('(orientation: landscape)');
     const keys = 'wsadjkluio';
-    const sectors = ['d', 'sd', 's', 'sa', 'a', 'wa', 'w', 'wd'];
     const labels = { u: '技能', i: '必杀', o: '援助', j: '攻击', k: '跳跃', l: '冲刺' };
     const touches = new Map();
     let callback, mode = 'hidden', direction = '', owner = null, lastMask = 0;
@@ -1894,11 +2011,33 @@ function initializeTouchControls() {
         button.lastChild.textContent = label;
         actions.append(button);
     }
+    const transformButton = document.createElement('button');
+    transformButton.type = 'button';
+    transformButton.id = 'touch-transform';
+    transformButton.dataset.slot = 'transform';
+    transformButton.textContent = '变身';
+    transformButton.hidden = true;
+    actions.append(transformButton);
+    window.bvnTouchSetTransformReady = ready => {
+        transformButton.hidden = !ready || !['fight', 'online-fight'].includes(mode);
+        if (transformButton.hidden) {
+            for (const [id, slot] of touches) if (slot === 'transform') touches.delete(id);
+            publish();
+        }
+    };
     function publish() {
-        const down = new Set([...direction, ...touches.values()]);
+        const down = new Set();
+        let movement = direction;
+        for (const slot of touches.values()) {
+            if (!slot) continue;
+            if ('wsad'.includes(slot)) movement = slot;
+            else if (slot === 'transform') { down.add('j'); down.add('k'); }
+            else down.add(slot);
+        }
+        if (movement) down.add(movement);
         let mask = 0;
         for (const key of down) mask |= 1 << keys.indexOf(key);
-        for (const button of [...actions.children, ...cross.children]) button.setAttribute('aria-pressed', String(down.has(button.dataset.slot)));
+        for (const button of [...actions.children, ...cross.querySelectorAll('button')]) button.setAttribute('aria-pressed', String(button === transformButton ? [...touches.values()].includes('transform') : down.has(button.dataset.slot)));
         for (const arrow of stick.querySelectorAll('[data-slot]')) arrow.classList.toggle('active', down.has(arrow.dataset.slot));
         if (settings.hidden && mask !== lastMask) callback?.(mask);
         lastMask = mask;
@@ -1922,12 +2061,24 @@ function initializeTouchControls() {
         publish();
         callback?.(-1);
     }
+    function thumbDirection(x, y, previous = '') {
+        if (Math.hypot(x, y) <= (previous ? .14 : .20)) return '';
+        const horizontal = Math.abs(x), vertical = Math.abs(y);
+        // Keep the held axis near the boundary so a thumb wobble cannot turn a walk into a crouch.
+        if (previous === 'a' || previous === 'd') {
+            if (vertical <= horizontal * 1.2) return x < 0 ? 'a' : 'd';
+        } else if (previous === 'w' || previous === 's') {
+            if (horizontal <= vertical * 1.2) return y < 0 ? 'w' : 's';
+        }
+        if (horizontal >= vertical) return x < 0 ? 'a' : 'd';
+        return y < 0 ? 'w' : 's';
+    }
     function moveStick(event) {
         const rect = stick.getBoundingClientRect(), radius = rect.width / 2;
         const x = (event.clientX - rect.left - radius) / radius;
         const y = (event.clientY - rect.top - radius) / radius;
         const distance = Math.hypot(x, y);
-        direction = distance <= .21 ? '' : sectors[(Math.round(Math.atan2(y, x) / (Math.PI / 4)) + 8) % 8];
+        direction = thumbDirection(x, y, direction);
         const travel = radius * .60 / Math.max(1, distance);
         knob.style.setProperty('--x', x * travel + 'px');
         knob.style.setProperty('--y', y * travel + 'px');
@@ -1947,7 +2098,8 @@ function initializeTouchControls() {
     };
     function moveButton(event) {
         const group = event.currentTarget;
-        const button = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-slot]');
+        const target = document.elementFromPoint(event.clientX, event.clientY);
+        const button = target?.closest('[data-slot]');
         if (button && group.contains(button)) touches.set(event.pointerId, button.dataset.slot);
         else touches.delete(event.pointerId);
         publish();
@@ -2008,6 +2160,7 @@ function initializeTouchControls() {
         const menu = !['fight', 'online-fight'].includes(mode);
         actions.classList.toggle('menu', menu);
         for (const button of actions.children) {
+            if (button === transformButton) { button.hidden = true; continue; }
             const key = button.dataset.slot;
             button.hidden = menu && key !== 'j' && (key !== 'k' || mode === 'pause');
             button.lastChild.textContent = menu ? (key === 'j' ? '确认' : '返回') : labels[key];

@@ -34,6 +34,11 @@ func _ready() -> void:
 		"buildID": build_id, "resourceVersion": resource_version})
 
 
+func record_web_checkpoint(state: Dictionary) -> void:
+	if _web_window != null and _web_window.bvnCrashCheckpoint != null:
+		_web_window.bvnCrashCheckpoint(JSON.stringify(state))
+
+
 func _exit_tree() -> void:
 	if OS.has_feature("web") and _web_window != null and _web_callback != null:
 		_web_window.bvnDiagnosticsUnregister(_web_callback)

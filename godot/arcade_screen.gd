@@ -71,6 +71,8 @@ func open(label: String, winner_id := "") -> void:
 
 
 func set_quote(value: String) -> void:
+	if not value.is_empty() and not _quote.has_theme_font_override("font"):
+		_quote.add_theme_font_override("font", OnlineUserTextFont.get_cjk_fallback())
 	_quote.text = value
 
 

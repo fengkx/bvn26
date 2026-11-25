@@ -9,6 +9,7 @@ var surface: RenderSurface
 var window: JavaScriptObject
 var callback: JavaScriptObject
 var mode := ""
+var transform_ready := false
 var mask := 0
 var pending: Array[int] = []
 
@@ -70,7 +71,16 @@ func _physics_process(_delta: float) -> void:
 	if next_mode != mode:
 		_clear()
 		mode = next_mode
+		transform_ready = false
 		window.bvnTouchSetMode(mode)
+	var available := false
+	if mode == "fight":
+		available = game.touch_transform_ready("p1")
+	elif mode == "online-fight" and surface.online_lobby.coordinator != null:
+		available = surface.online_lobby.coordinator.local_touch_transform_ready()
+	if available != transform_ready:
+		transform_ready = available
+		window.bvnTouchSetTransformReady(available)
 	if pending.is_empty():
 		return
 	var next := pending.pop_front() as int

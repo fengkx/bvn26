@@ -53,7 +53,7 @@ function createElement(id = '') {
     };
 }
 
-function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, device = {}) {
+function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, device = {}, storage = {}) {
     let now = 0;
     let nextIntervalId = 1;
     const intervalCallbacks = new Map();
@@ -86,6 +86,7 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, 
         body: { appendChild() {} },
     };
     const window = {
+        history: storage.history,
         devicePixelRatio: 2,
         innerWidth: 1280,
         innerHeight: 720,
@@ -110,7 +111,8 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, 
         innerWidth: 1280,
         innerHeight: 720,
         devicePixelRatio: 2,
-        localStorage,
+        localStorage: storage.local || localStorage,
+        sessionStorage: storage.tab || localStorage,
         console: { log() {}, info() {}, warn() {}, error() {} },
         URL: urlApi,
         Blob,
@@ -122,7 +124,7 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, 
         clearTimeout,
         Date,
         Math,
-        crypto: { randomUUID: () => 'test-session-id' },
+        crypto: { randomUUID: () => storage.id || 'test-session-id' },
         Promise,
         setInterval(callback) {
             const id = nextIntervalId++;
@@ -896,8 +898,7 @@ test('caps retained RTC connections and releases live references on pagehide', a
     assert.equal(peers[0].listeners.get('connectionstatechange').length, 0,
         'closed peers detach diagnostic listeners');
     new page.window.RTCPeerConnection({});
-    const pagehide = page.windowHandlers.get('pagehide')[0];
-    pagehide();
+    for (const handler of page.windowHandlers.get('pagehide')) handler({ persisted: false });
     assert.equal(page.intervalCount, 0);
 
     await page.elements.get('download').dispatch('click');
@@ -966,4 +967,50 @@ test('page zoom gestures are cancelled only inside fullscreen play', async () =>
             assert.equal(prevented, mode !== 'window', type + ' in ' + mode);
         }
     }
+});
+
+test('recovers a killed renderer in the same tab and separates observed pagehide and other tabs', async () => {
+    const makeStorage = () => ({
+        getItem(key) { return this[key] ?? null; },
+        setItem(key, value) { this[key] = value; },
+        removeItem(key) { delete this[key]; },
+    });
+    const local = makeStorage();
+    const tab = makeStorage();
+    const history = { state: {}, replaceState(state) { this.state = state; } };
+    const open = (id, session = tab) => createPage(sidecar, null, undefined, {}, { local, tab: session, id, history: session === tab ? history : undefined });
+    async function report(page) {
+        await page.elements.get('download').dispatch('click');
+        return JSON.parse(await page.getBlob().text()).reloadDiagnostics;
+    }
+    const first = open('fight');
+    for (let tick = 0; tick < 15; tick++) {
+        first.window.bvnCrashCheckpoint(JSON.stringify({ fightTick: tick, phase: 'sample', scene: '游戏场景' }));
+    }
+    first.context.console.error('RuntimeError: memory access out of bounds');
+    // A discarded renderer never sends pagehide.
+    tab.removeItem('bvn26.crash-history');
+    const second = open('reload');
+    assert.match(second.elements.get('feedback').textContent, /导出日志/);
+    const saved = (await report(second)).previousRuns[0];
+    assert.equal(saved.lifecycle, 'active');
+    assert.equal(saved.checkpoints.length, 12);
+    assert.equal(saved.checkpoints.at(-1).fightTick, 14);
+    assert.equal(saved.signals.at(-1).kind, 'runtime_trap');
+    for (const handler of second.windowHandlers.get('pagehide')) handler({ persisted: false });
+    const third = open('another-reload');
+    assert.deepEqual((await report(third)).previousRuns.map(run => run.lifecycle), ['pagehide', 'active']);
+    assert.deepEqual((await report(open('another-tab', makeStorage()))).previousRuns, []);
+    for (let i = 0; i < 4; i++) {
+        const retry = open('retry-' + i);
+        retry.window.bvnCrashEnginePhase('starting');
+        const { recovery } = await report(retry);
+        assert.equal(recovery.runId, 'fight');
+        assert.equal(recovery.lastCheckpoint.fightTick, 14);
+        assert.equal(recovery.cause, 'unconfirmed');
+    }
+    const blocked = createPage(sidecar, null, undefined, {}, {
+        local: { setItem() { throw new Error('QuotaExceededError'); } }, tab: makeStorage(),
+    });
+    assert.equal((await report(blocked)).persistence, 'unavailable');
 });

@@ -73,8 +73,12 @@ func _run() -> void:
 	assert(lobby._selected_number(lobby._delay_choice) == 2
 		and lobby._selected_number(lobby._prediction_choice) == 6,
 		"A new online lobby should default to the 2-frame delay / 6-frame prediction profile")
+	assert(not ResourceLoader.has_cached(OnlineUserTextFont.CJK_FALLBACK_PATH))
+	lobby._dialog.show()
+	await process_frame
 	var nickname_font: Font = lobby._nickname.get_theme_font("font")
 	assert(nickname_font.has_char(0x9F98), "Nickname LineEdit is missing the supported CJK fallback glyph 龘")
+	lobby._dialog.hide()
 	assert(lobby._endpoint.placeholder_text == "服务地址", "Service URL placeholder should not use development-only wording")
 	assert(lobby._lan_candidate_opt_in.text == "本机 / 同一局域网对战（无需中转）")
 	assert(lobby._room_visibility_hint.text.contains("两个窗口并排") and lobby._room_visibility_hint.text.contains("保持可见"))

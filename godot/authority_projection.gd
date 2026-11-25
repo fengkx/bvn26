@@ -105,6 +105,7 @@ func capture(game: Node) -> Dictionary:
 	var sound_state := audio.capture(game.physics_tick)
 	if not audio.error.is_empty(): error = audio.error
 	return {"version": Wire.VERSION, "frame": game.physics_tick, "owners": records, "audio": sound_state,
+		"transform_mask": int(game.touch_transform_ready("p1")) | (int(game.touch_transform_ready("p2")) << 1),
 		"intro_active": game.battle_intro.active, "intro_polling": game.battle_intro.polling,
 		"terminal": game.ko_terminal_pending, "winner": null if game.ko_state.get("_root.p1ws", 1) == game.ko_state.get("_root.p2ws", 1) else (0 if game.ko_state.get("_root.p1ws", 1) > game.ko_state.get("_root.p2ws", 1) else 1)} if error.is_empty() else {}
 
@@ -177,7 +178,9 @@ func apply(snapshot: Dictionary) -> String:
 		or snapshot.owners.size() > MAX_OWNERS or not snapshot.get("frame") is int:
 		return "invalid_display_snapshot"
 	if snapshot.frame < _last_frame: return "stale_display_snapshot"
-	if snapshot.size() != 8 or snapshot.frame < 0 or not snapshot.get("intro_active") is bool or not snapshot.get("intro_polling") is bool or not snapshot.get("terminal") is bool or snapshot.get("winner") not in [null, 0, 1]:
+	if snapshot.has("transform_mask") and (not snapshot.transform_mask is int or snapshot.transform_mask < 0 or snapshot.transform_mask > 3):
+		return "invalid_display_envelope"
+	if snapshot.size() != (9 if snapshot.has("transform_mask") else 8) or snapshot.frame < 0 or not snapshot.get("intro_active") is bool or not snapshot.get("intro_polling") is bool or not snapshot.get("terminal") is bool or snapshot.get("winner") not in [null, 0, 1]:
 		return "invalid_display_envelope"
 	var sound_problem := audio.validate(snapshot.get("audio"), snapshot.frame)
 	if not sound_problem.is_empty(): return sound_problem

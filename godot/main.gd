@@ -67,6 +67,7 @@ var _match_input_active := false
 
 var session := GameSession.new()
 var diagnostics := DiagnosticRuntime.new()
+var _next_web_checkpoint_ms := 0
 var _diagnostic_initial_players: Dictionary = {}
 var _diagnostic_progress_signature := ""
 var _diagnostic_progress_tick := 0
@@ -447,7 +448,27 @@ func _physics_process(_delta: float) -> void:
 			_advance_fight()
 
 
+func _web_checkpoint(phase: String, detail: Dictionary = {}) -> void:
+	if not OS.has_feature("web") or presentation_only:
+		return
+	var state := {
+		"phase": phase, "scene": session.root_label, "mode": session.modo,
+		"arcadeStageIndex": arcade.stage if session.modo == 1 else null,
+		"map": selected_stage, "fightTick": physics_tick, "matchId": diagnostics.match_id,
+		"resources": Performance.get_monitor(Performance.OBJECT_RESOURCE_COUNT),
+		"godotStaticBytes": Performance.get_monitor(Performance.MEMORY_STATIC),
+		"videoBytes": Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED),
+	}
+	if session.root_label == "游戏场景" and is_instance_valid(naruto) and is_instance_valid(ichigo):
+		state["players"] = [_diagnostic_player(naruto, naruto_helper), _diagnostic_player(ichigo, ichigo_helper)]
+	state.merge(detail)
+	diagnostics.record_web_checkpoint(state)
+
+
 func _process(delta: float) -> void:
+	if OS.has_feature("web") and Time.get_ticks_msec() >= _next_web_checkpoint_ms:
+		_next_web_checkpoint_ms = Time.get_ticks_msec() + 2000
+		_web_checkpoint("sample")
 	if diagnostics.match_id.is_empty():
 		return
 	_diagnostic_watchdog_elapsed_ms += int(delta * 1000.0)
@@ -545,7 +566,11 @@ func _start_arcade_stage() -> void:
 	var encounter := arcade.encounter()
 	var forms: Dictionary = arcade.data.forms
 	var opponent_form: Dictionary = forms.get(encounter.fighter, {})
+	var target := {"nextMap": encounter.map, "fighters": [arcade.player, encounter.fighter],
+		"helpers": [arcade.helper, encounter.helper]}
+	_web_checkpoint("loading_arcade_fighters", target)
 	_replace_selected_actors([arcade.player, encounter.fighter], [arcade.helper, encounter.helper], opponent_form)
+	_web_checkpoint("loading_arcade_map", target)
 	_load_selected_stage(encounter.map)
 	_enter_current_fight(1)
 	stage_sound.select(encounter.music)
@@ -1385,6 +1410,15 @@ func _ko_fight_started() -> void:
 	ko_menu_enabled = true
 
 
+func touch_transform_ready(slot: String) -> bool:
+	if presentation_only or session.root_label != "游戏场景" or battle_intro.active or ko_active or ko_terminal_pending:
+		return false
+	if pause_menu.visible or super_runtime.game_paused or super_runtime.zhanting:
+		return false
+	var actor := naruto if slot == "p1" else ichigo
+	return actor != null and not actor.zhanting and actor.can_input_transformation()
+
+
 func _diagnostic_fight_started() -> void:
 	diagnostics.push_event("fight_started", {
 		"mode": session.modo,
@@ -1395,6 +1429,7 @@ func _diagnostic_fight_started() -> void:
 
 func _ko_return_to_fixed_selection() -> void:
 	if session.modo == 1:
+		_web_checkpoint("opening_arcade_result", {"result": arcade_result})
 		_clear_battle_view()
 		title_menu.hide()
 		session.root_label = arcade_result

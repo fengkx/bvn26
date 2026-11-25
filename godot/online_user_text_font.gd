@@ -12,7 +12,7 @@ static func with_cjk_fallback(base_font: Font) -> Font:
 	var configured_font := base_font.duplicate() as Font
 	if configured_font == null:
 		return null
-	var fallback_font := _get_cjk_fallback()
+	var fallback_font := get_cjk_fallback()
 	if fallback_font == null:
 		return null
 	var fallbacks: Array[Font] = []
@@ -24,7 +24,7 @@ static func with_cjk_fallback(base_font: Font) -> Font:
 	return configured_font
 
 
-static func _get_cjk_fallback() -> Font:
+static func get_cjk_fallback() -> Font:
 	if _cjk_fallback == null:
 		_cjk_fallback = load(CJK_FALLBACK_PATH) as Font
 	return _cjk_fallback

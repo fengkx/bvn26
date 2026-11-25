@@ -30,6 +30,10 @@ func _case(profile: Dictionary) -> void:
 	var replaced := false
 	for frame in range(1, 901):
 		if not game.battle_intro.active and attack_start < 0:
+			game.naruto.energy = 299
+			assert(not game.touch_transform_ready("p1"))
+			game.naruto.energy = 300
+			assert(game.touch_transform_ready("p1"), str(profile.id))
 			attack_start = frame
 		var players := {"p1": {}, "p2": {}}
 		for slot in players:
@@ -51,6 +55,9 @@ func _case(profile: Dictionary) -> void:
 	var transfer: Dictionary = game.player_body_driver._driver.source_form_context.transfer
 	assert(transfer.get("hp") != null and transfer.get("ql") != null)
 	assert(game.naruto.source_health_defined and game.naruto.health == transfer.hp and game.naruto.energy == transfer.ql)
+	if not game.naruto.command_is_wired("万解"):
+		game.naruto.energy = 300
+		assert(not game.touch_transform_ready("p1"))
 	passed += 1
 	print("FORM_INPUT_CASE_OK ", profile.id)
 	for audio: AudioStreamPlayer in game.find_children("*", "AudioStreamPlayer", true, false):

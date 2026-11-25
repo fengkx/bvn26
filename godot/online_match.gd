@@ -137,6 +137,10 @@ func _apply_checkpoint_options(sparse: String, stride: String) -> void:
 		checkpoint_stride = int(stride)
 
 
+func local_touch_transform_ready() -> bool:
+	return running and not paused and not recovering and game != null and game.touch_transform_ready(local_slot)
+
+
 func configure(scene: Node, room_setup: Dictionary, player_slot: String, room: Object, transport: Object) -> String:
 	if _configured:
 		return "Online match is already configured"

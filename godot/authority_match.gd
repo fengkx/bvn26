@@ -58,6 +58,13 @@ func configure(scene: Node, room_setup: Dictionary, player_slot: String, room: O
 	_connect_dependencies()
 	return ""
 
+func local_touch_transform_ready() -> bool:
+	if _is_host():
+		return super.local_touch_transform_ready()
+	var bit := 1 if local_slot == "p1" else 2
+	return running and not paused and not recovering and (int(_latest_display.get("transform_mask", 0)) & bit) != 0
+
+
 func _is_host() -> bool:
 	return authority_slot == (0 if local_slot == "p1" else 1)
 

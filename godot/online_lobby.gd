@@ -404,11 +404,16 @@ func _load_catalogs() -> void:
 				break
 
 
-func _build_ui() -> void:
-	var online_theme := Theme.new()
+func _load_visible_panel_font(panel: Control) -> void:
+	if not panel.is_visible_in_tree() or panel.theme.default_font != null:
+		return
 	var menu_font: Font = load("res://generated/main/title_menu/menu-font.ttf")
 	if menu_font != null:
-		online_theme.default_font = ONLINE_USER_TEXT_FONT.with_cjk_fallback(menu_font)
+		panel.theme.default_font = ONLINE_USER_TEXT_FONT.with_cjk_fallback(menu_font)
+
+
+func _build_ui() -> void:
+	var online_theme := Theme.new()
 
 	_veil = ColorRect.new()
 	_veil.name = "OnlineVeil"
@@ -432,6 +437,7 @@ func _build_ui() -> void:
 	add_child(_dialog)
 	WIDGETS.style_theme(online_theme)
 	_dialog.theme = online_theme
+	_dialog.visibility_changed.connect(_load_visible_panel_font.bind(_dialog))
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	margin.add_theme_constant_override("margin_left", 18)
@@ -501,6 +507,7 @@ func _build_ui() -> void:
 	_match_hud.visible = false
 	add_child(_match_hud)
 	_match_hud.theme = online_theme
+	_match_hud.visibility_changed.connect(_load_visible_panel_font.bind(_match_hud))
 	var hud_box := VBoxContainer.new()
 	hud_box.add_theme_constant_override("separation", 2)
 	_match_hud.add_child(hud_box)

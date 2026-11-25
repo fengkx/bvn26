@@ -18,6 +18,7 @@ func _run() -> void:
 	root.add_child(game)
 	game.set_physics_process(false)
 	var screen = game.arcade
+	assert(not screen._quote.has_theme_font_override("font"))
 	for i in 72:
 		game.title_menu.apply_held({})
 	assert(game.title_menu.current_item().id == "single")
@@ -58,6 +59,14 @@ func _run() -> void:
 		assert(screen.screen == "win")
 		for i in 23:
 			screen.tick()
+		if stage == 0:
+			assert(not screen._quote.text.is_empty())
+			var font: Font = screen._quote.get_theme_font("font")
+			assert(font.resource_path == OnlineUserTextFont.CJK_FALLBACK_PATH)
+			for lines: Array in screen.data.quotes.values():
+				for line: String in lines:
+					for character in line:
+						assert(character == "\n" or font.has_char(character.unicode_at(0)), line)
 		if stage < 7:
 			game._input(_key(KEY_J))
 			assert(game.session.root_label == "游戏场景")
