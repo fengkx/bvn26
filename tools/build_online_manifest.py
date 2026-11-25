@@ -89,6 +89,7 @@ def build_inputs() -> list[Path]:
         GODOT / "render_surface.tscn",
         GODOT / "export_presets.cfg",
         GODOT / "web/shell.html",
+        GODOT / "web/battle_packs.js",
         MATCHMAKING_PROTOCOL,
     ]
     paths.extend(GODOT.glob("*.gd"))

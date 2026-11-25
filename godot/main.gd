@@ -261,6 +261,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if is_instance_valid(_pack_screen): return
 	if arcade != null and arcade.visible and event is InputEventKey and event.pressed and not event.echo:
 		if arcade.key_down(event, session):
 			get_viewport().set_input_as_handled()
@@ -425,6 +426,7 @@ func _resume_battle() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if is_instance_valid(_pack_screen): return
 	match session.root_label:
 		"MENU":
 			title_menu.apply_held(session.menu_held())
@@ -550,6 +552,39 @@ func _goto_character_selection(modo: int) -> void:
 	character_selection.reset(modo)
 
 
+var _pack_screen: Control
+var _pending_fighters: Array = []
+var _pending_helpers: Array = []
+
+
+func needs_battle_packs(ids: Array) -> bool:
+	if not OS.has_feature("web"): return false
+	var bridge = JavaScriptBridge.get_interface("bvnBattlePacks")
+	if bridge != null:
+		for id in ids:
+			if bridge.needed(id): return true
+	return false
+
+
+func prepare_battle_packs(ids: Array, labels: Array, parent: Control) -> bool:
+	if not needs_battle_packs(ids): return true
+	if is_instance_valid(_pack_screen): return false
+	_pack_screen = preload("res://battle_pack_loading.gd").new()
+	parent.add_child(_pack_screen)
+	var loaded: bool = await _pack_screen.prepare(ids, labels, character_selection)
+	_pack_screen.hide()
+	_pack_screen.queue_free()
+	_pack_screen = null
+	return loaded
+
+
+func _fighter_resources(labels: Array) -> Array:
+	var result: Array = []
+	for label in labels:
+		result.append(str(character_selection.available.fighters.get(label, "")))
+	return result
+
+
 func _on_characters_confirmed(fighters: Array, helpers: Array) -> void:
 	if session.modo == 1:
 		arcade.player = fighters[0]
@@ -557,7 +592,16 @@ func _on_characters_confirmed(fighters: Array, helpers: Array) -> void:
 		character_selection.leave()
 		_start_arcade_stage()
 		return
-	_replace_selected_actors(fighters, helpers)
+	_pending_fighters.clear()
+	_pending_helpers.clear()
+	var ids := _fighter_resources(fighters)
+	if needs_battle_packs(ids):
+		var bridge = JavaScriptBridge.get_interface("bvnBattlePacks")
+		for id in ids: bridge.start(id)
+		_pending_fighters = fighters.duplicate()
+		_pending_helpers = helpers.duplicate()
+	else:
+		_replace_selected_actors(fighters, helpers)
 	character_selection.leave()
 	_goto_map_selection(session.modo)
 
@@ -568,6 +612,11 @@ func _start_arcade_stage() -> void:
 	var opponent_form: Dictionary = forms.get(encounter.fighter, {})
 	var target := {"nextMap": encounter.map, "fighters": [arcade.player, encounter.fighter],
 		"helpers": [arcade.helper, encounter.helper]}
+	var ids := _fighter_resources(target.fighters)
+	if not opponent_form.is_empty(): ids[1] = opponent_form.id
+	if not await prepare_battle_packs(ids, target.fighters, self):
+		_goto_character_selection(1)
+		return
 	_web_checkpoint("loading_arcade_fighters", target)
 	_replace_selected_actors([arcade.player, encounter.fighter], [arcade.helper, encounter.helper], opponent_form)
 	_web_checkpoint("loading_arcade_map", target)
@@ -693,6 +742,13 @@ func _goto_map_selection(modo: int) -> void:
 
 
 func _on_map_confirmed(stage_id: String) -> void:
+	if not _pending_fighters.is_empty():
+		if not await prepare_battle_packs(_fighter_resources(_pending_fighters), _pending_fighters, self):
+			map_selection.enabled = true
+			return
+		_replace_selected_actors(_pending_fighters, _pending_helpers)
+		_pending_fighters.clear()
+		_pending_helpers.clear()
 	_load_selected_stage(stage_id)
 	map_selection.leave()
 	_enter_current_fight(session.modo)

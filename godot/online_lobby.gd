@@ -2982,6 +2982,17 @@ func _on_commit_setup_pressed() -> void:
 	_start_host_map_selection()
 
 
+func _prepare_room_packs(state: Dictionary) -> bool:
+	var ids: Array = []
+	var labels: Array = []
+	for member in _as_array(state.get("members", [])):
+		var id := str(_as_dictionary(_as_dictionary(member).get("choice")).get("fighter", ""))
+		ids.append(id)
+		labels.append(str(_fighter_labels.get(id, id)))
+	if game_root == null or not game_root.has_method("prepare_battle_packs"): return true
+	return await game_root.prepare_battle_packs(ids, labels, self)
+
+
 func _on_ready_pressed() -> void:
 	if _busy or _selection_active or _selection_commit_busy or _map_active or _room_state.is_empty():
 		return
@@ -2994,6 +3005,11 @@ func _on_ready_pressed() -> void:
 	var ready := not bool(local_member.get("ready", false))
 	if ready and not _can_ready_current_room():
 		return
+	if ready:
+		var revision := int(_room_state.get("setupRevision", 0))
+		var room := _room_id
+		if not await _prepare_room_packs(_room_state): return
+		if _room_id != room or revision != int(_room_state.get("setupRevision", 0)) or not _can_ready_current_room(): return
 	await _submit_operation({
 		"type": "ready", "revision": int(_room_state.get("setupRevision", 0)),
 		"ready": ready, "profile": profile.duplicate(true),
@@ -3365,6 +3381,11 @@ func _start_prepared_match(state: Dictionary) -> void:
 			await _startup_failed(epoch, str(socket_reply.error), generation)
 			return
 
+	var packs_ready := await _prepare_room_packs(state)
+	if generation != _lifecycle_generation or _starting_epoch != epoch: return
+	if not packs_ready:
+		await _startup_failed(epoch, "battle_pack_unavailable", generation)
+		return
 	var apply_error := "" if _authority_mode() else _configure_live_game(state)
 	if not apply_error.is_empty():
 		await _startup_failed(epoch, apply_error, generation)
