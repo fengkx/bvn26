@@ -279,7 +279,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         --touch-key: max(44px, calc(clamp(44px, 5.52vw, 48px) * var(--action-scale, 1)));
     }
     #player.touch-playing.touch-layout #viewport {
-        position: absolute; top: 50%; left: var(--game-center); transform: translate(-50%, -50%);
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
         width: var(--game-width); height: auto;
     }
 }
@@ -1989,10 +1989,8 @@ function initializeTouchControls() {
         const native = Math.min(area.width, area.height * 1.5);
         const gap = right - left;
         const width = gap >= native * .9 ? Math.min(native, gap) : native;
-        const middle = Math.max(width / 2, Math.min(area.width - width / 2, (left + right) / 2 - area.left));
-        player.style.setProperty('--game-center', middle + 'px');
         player.style.setProperty('--game-width', width + 'px');
-        const edge = area.left + middle - width / 2;
+        const edge = area.left + (area.width - width) / 2;
         for (const button of actions.children) {
             if (button.hidden) continue;
             const rect = button.getBoundingClientRect();
