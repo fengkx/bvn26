@@ -240,11 +240,6 @@ func _update_view() -> void:
 	queue_redraw()
 
 
-func loading_portrait(label: String) -> Texture2D:
-	var portrait: Dictionary = _portrait_spec.get(label, {})
-	return null if portrait.is_empty() else _texture(str(portrait.textures.back()))
-
-
 func _texture(name: String) -> Texture2D:
 	if not _textures.has(name):
 		_textures[name] = load(name if name.begins_with("res://") else DIRECTORY + "/" + name)

@@ -2858,7 +2858,7 @@ func _on_room_primary_pressed() -> void:
 		"connect":
 			await _on_connect_selection_pressed()
 		"ready":
-			await _on_ready_pressed()
+			await _on_ready_pressed(true)
 		"retry_prepare":
 			await _retry_auto_prepare()
 		_:
@@ -2982,7 +2982,7 @@ func _on_commit_setup_pressed() -> void:
 	_start_host_map_selection()
 
 
-func _prepare_room_packs(state: Dictionary) -> bool:
+func _prepare_room_packs(state: Dictionary, show_intro := false) -> bool:
 	var ids: Array = []
 	var labels: Array = []
 	for member in _as_array(state.get("members", [])):
@@ -2990,10 +2990,10 @@ func _prepare_room_packs(state: Dictionary) -> bool:
 		ids.append(id)
 		labels.append(str(_fighter_labels.get(id, id)))
 	if game_root == null or not game_root.has_method("prepare_battle_packs"): return true
-	return await game_root.prepare_battle_packs(ids, labels, self)
+	return await game_root.prepare_battle_packs(ids, labels, self, show_intro)
 
 
-func _on_ready_pressed() -> void:
+func _on_ready_pressed(show_intro := false) -> void:
 	if _busy or _selection_active or _selection_commit_busy or _map_active or _room_state.is_empty():
 		return
 	var profile := _authoritative_network_profile()
@@ -3008,7 +3008,7 @@ func _on_ready_pressed() -> void:
 	if ready:
 		var revision := int(_room_state.get("setupRevision", 0))
 		var room := _room_id
-		if not await _prepare_room_packs(_room_state): return
+		if not await _prepare_room_packs(_room_state, show_intro): return
 		if _room_id != room or revision != int(_room_state.get("setupRevision", 0)) or not _can_ready_current_room(): return
 	await _submit_operation({
 		"type": "ready", "revision": int(_room_state.get("setupRevision", 0)),

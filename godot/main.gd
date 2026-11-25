@@ -156,19 +156,19 @@ func _ready() -> void:
 	arcade.session = session
 	arcade.z_index = 200
 	add_child(arcade)
-	arcade.selected.connect(_on_arcade_action)
+	arcade.selected.connect(_on_arcade_action.bind(true))
 	arcade.quote_requested.connect(_on_arcade_quote_requested)
 	character_selection = CharacterSelection.new()
 	character_selection.z_index = 200
 	character_selection.visible = false
 	add_child(character_selection)
-	character_selection.confirmed.connect(_on_characters_confirmed)
+	character_selection.confirmed.connect(_on_characters_confirmed.bind(true))
 	character_selection.cancelled.connect(_goto_menu)
 	map_selection = MapSelection.new()
 	map_selection.z_index = 200
 	map_selection.visible = false
 	add_child(map_selection)
-	map_selection.confirmed.connect(_on_map_confirmed)
+	map_selection.confirmed.connect(_on_map_confirmed.bind(true))
 	map_selection.cancelled.connect(_goto_menu)
 	pause_menu = BattlePauseMenu.new()
 	pause_menu.z_index = 157
@@ -566,12 +566,14 @@ func needs_battle_packs(ids: Array) -> bool:
 	return false
 
 
-func prepare_battle_packs(ids: Array, labels: Array, parent: Control) -> bool:
-	if not needs_battle_packs(ids): return true
+func prepare_battle_packs(ids: Array, labels: Array, parent: Control, show_intro := false) -> bool:
+	if not show_intro and not needs_battle_packs(ids): return true
 	if is_instance_valid(_pack_screen): return false
 	_pack_screen = preload("res://battle_pack_loading.gd").new()
+	_pack_screen.session = session
 	parent.add_child(_pack_screen)
-	var loaded: bool = await _pack_screen.prepare(ids, labels, character_selection)
+	stage_sound.stop()
+	var loaded: bool = await _pack_screen.prepare(ids, labels)
 	_pack_screen.hide()
 	_pack_screen.queue_free()
 	_pack_screen = null
@@ -585,12 +587,12 @@ func _fighter_resources(labels: Array) -> Array:
 	return result
 
 
-func _on_characters_confirmed(fighters: Array, helpers: Array) -> void:
+func _on_characters_confirmed(fighters: Array, helpers: Array, show_intro := false) -> void:
 	if session.modo == 1:
 		arcade.player = fighters[0]
 		arcade.helper = helpers[0]
 		character_selection.leave()
-		_start_arcade_stage()
+		_start_arcade_stage(show_intro)
 		return
 	_pending_fighters.clear()
 	_pending_helpers.clear()
@@ -598,6 +600,7 @@ func _on_characters_confirmed(fighters: Array, helpers: Array) -> void:
 	if needs_battle_packs(ids):
 		var bridge = JavaScriptBridge.get_interface("bvnBattlePacks")
 		for id in ids: bridge.start(id)
+	if show_intro or needs_battle_packs(ids):
 		_pending_fighters = fighters.duplicate()
 		_pending_helpers = helpers.duplicate()
 	else:
@@ -606,7 +609,7 @@ func _on_characters_confirmed(fighters: Array, helpers: Array) -> void:
 	_goto_map_selection(session.modo)
 
 
-func _start_arcade_stage() -> void:
+func _start_arcade_stage(show_intro := false) -> void:
 	var encounter := arcade.encounter()
 	var forms: Dictionary = arcade.data.forms
 	var opponent_form: Dictionary = forms.get(encounter.fighter, {})
@@ -614,7 +617,7 @@ func _start_arcade_stage() -> void:
 		"helpers": [arcade.helper, encounter.helper]}
 	var ids := _fighter_resources(target.fighters)
 	if not opponent_form.is_empty(): ids[1] = opponent_form.id
-	if not await prepare_battle_packs(ids, target.fighters, self):
+	if not await prepare_battle_packs(ids, target.fighters, self, show_intro):
 		_goto_character_selection(1)
 		return
 	_web_checkpoint("loading_arcade_fighters", target)
@@ -633,11 +636,11 @@ func _on_arcade_quote_requested() -> void:
 		arcade.set_quote(str(quotes[int(draw * quotes.size())]))
 
 
-func _on_arcade_action(action: String) -> void:
+func _on_arcade_action(action: String, show_intro := false) -> void:
 	arcade.close()
 	match action:
 		"select": _goto_character_selection(1)
-		"next": _start_arcade_stage()
+		"next": _start_arcade_stage(show_intro)
 		"menu": _goto_menu()
 		"gameover":
 			session.root_label = "gameover"
@@ -741,9 +744,9 @@ func _goto_map_selection(modo: int) -> void:
 	map_selection.reset()
 
 
-func _on_map_confirmed(stage_id: String) -> void:
+func _on_map_confirmed(stage_id: String, show_intro := false) -> void:
 	if not _pending_fighters.is_empty():
-		if not await prepare_battle_packs(_fighter_resources(_pending_fighters), _pending_fighters, self):
+		if not await prepare_battle_packs(_fighter_resources(_pending_fighters), _pending_fighters, self, show_intro):
 			map_selection.enabled = true
 			return
 		_replace_selected_actors(_pending_fighters, _pending_helpers)
