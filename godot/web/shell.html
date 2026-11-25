@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 		<title>$GODOT_PROJECT_NAME</title>
-		<script defer data-domain="bvn26.vercel.app" src="https://tt.fengkx.top/js/script.js"></script>
+		<script defer data-domain="bvn26.keeplink.cc" src="https://tt.fengkx.top/js/script.js"></script>
 		<style>
 html, body, #canvas {
 	margin: 0;
@@ -287,6 +287,13 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     position: absolute; bottom: max(12%, env(safe-area-inset-bottom)); pointer-events: auto;
     touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
 }
+#touch-menu {
+    position: absolute; top: max(12px, env(safe-area-inset-top)); left: max(12px, env(safe-area-inset-left));
+    min-width: 60px; min-height: 44px; padding: 0 10px; pointer-events: auto; touch-action: none;
+    transform: none; border-radius: 8px; border-color: #cfb6ac; background: #291f24ac;
+    font: 600 15px/1 system-ui;
+}
+#touch-pad.swapped #touch-menu { top: max(32px, env(safe-area-inset-top)); left: auto; right: max(12px, env(safe-area-inset-right)); }
 #touch-stick {
     left: max(7px, env(safe-area-inset-left)); width: calc(clamp(108px, 29dvh, 124px) * var(--direction-scale, 1)); aspect-ratio: 1;
     border: 1px solid #cfb6ac; border-radius: 50%; box-sizing: border-box;
@@ -1667,6 +1674,9 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && 'standalone' in navigator);
     const touchDevice = navigator.maxTouchPoints > 0 && mobilePlatform;
     window.bvnMobileGamepadEnabled = touchDevice;
+    if (touchDevice) {
+        document.getElementById('help').textContent = '手机游玩请点击「进入全屏」并横屏，屏幕上就会显示方向键和动作键。';
+    }
     fullscreen.disabled = !available && !touchDevice;
     if (fullscreen.disabled) fullscreen.textContent = '浏览器不支持全屏';
     fullscreen.addEventListener('click', async () => {
@@ -1994,10 +2004,16 @@ function initializeTouchControls() {
     };
     const pause = document.createElement('button');
     pause.type = 'button';
-    pause.textContent = '暂停游戏';
+    pause.id = 'touch-menu';
+    pause.textContent = '菜单';
+    pause.setAttribute('aria-label', '打开对战菜单');
     pause.hidden = true;
-    document.getElementById('toolbar').insertBefore(pause, document.getElementById('fullscreen'));
-    pause.onclick = () => { callback?.(-2); document.getElementById('canvas').focus({ preventScroll: true }); };
+    pad.append(pause);
+    pause.onclick = () => {
+        window.tinytraffic?.('Open Battle Menu');
+        callback?.(-2);
+        document.getElementById('canvas').focus({ preventScroll: true });
+    };
     const landscape = matchMedia('(orientation: landscape)');
     const keys = 'wsadjkluio';
     const labels = { u: '技能', i: '必杀', o: '援助', j: '攻击', k: '跳跃', l: '冲刺' };
@@ -2170,7 +2186,7 @@ function initializeTouchControls() {
     // These controls already deliver every press via pointer events. Suppress
     // WebKit's follow-up tap (and double-tap zoom) only on the virtual pad.
     pad.addEventListener('touchend', event => {
-        if (event.cancelable) event.preventDefault();
+        if (event.target !== pause && event.cancelable) event.preventDefault();
     }, { passive: false });
     window.visualViewport?.addEventListener('resize', layout);
     window.visualViewport?.addEventListener('scroll', layout);

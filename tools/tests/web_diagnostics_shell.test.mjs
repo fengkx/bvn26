@@ -58,7 +58,7 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, 
     let nextIntervalId = 1;
     const intervalCallbacks = new Map();
     const elements = new Map();
-    for (const id of ['player', 'canvas', 'fullscreen', 'feedback', 'edge-indicator', 'toolbar',
+    for (const id of ['player', 'canvas', 'fullscreen', 'help', 'feedback', 'edge-indicator', 'toolbar',
         'touch-settings-reset', 'touch-settings-done', 'online-controls', 'online-status', 'online-request', 'online-pause', 'online-accept-pause',
         'online-refuse-pause', 'online-skip-intro', 'online-exit', 'online-collapse-tools', 'edge-label',
         'audio-control', 'audio-toggle', 'mute-toggle', 'volume-panel', 'volume-slider',
@@ -951,6 +951,7 @@ test('mobile controls stay off on desktop including touch laptops', () => {
     ]) {
         const { window, elements } = createPage(null, null, undefined, device);
         assert.equal(window.bvnMobileGamepadEnabled, expected);
+        assert.equal(elements.get('help').textContent.includes('「进入全屏」并横屏'), expected);
         assert.equal(elements.get('fullscreen').disabled, !expected);
     }
 });
