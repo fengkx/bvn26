@@ -606,7 +606,7 @@ func _on_characters_confirmed(fighters: Array, helpers: Array, show_intro := fal
 	else:
 		_replace_selected_actors(fighters, helpers)
 	character_selection.leave()
-	_goto_map_selection(session.modo)
+	_goto_map_selection(session.modo, str(helpers[1]))
 
 
 func _start_arcade_stage(show_intro := false) -> void:
@@ -734,14 +734,16 @@ func _on_selected_super_event(event: Dictionary, fighter: FighterRuntime) -> voi
 	_on_super_event(event, fighter)
 
 
-func _goto_map_selection(modo: int) -> void:
+func _goto_map_selection(modo: int, p2_helper := "") -> void:
+	if p2_helper.is_empty():
+		p2_helper = _selection_id_for_resource("helpers", ichigo_helper.helper_directory)
 	session.modo = modo
 	session.root_label = "地图"
 	title_menu.visible = false
 	key_settings.visible = false
 	config_menu.visible = false
 	map_selection.visible = true
-	map_selection.reset()
+	map_selection.reset(character_selection.footer_name_texture(p2_helper))
 
 
 func _on_map_confirmed(stage_id: String, show_intro := false) -> void:

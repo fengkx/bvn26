@@ -14,6 +14,7 @@ var _background_frame: int = 1
 var _textures: Dictionary = {}
 var _confirm_timer: Timer
 var _typing_timer: Timer
+var _p2_helper_name: Texture2D
 var _shown_characters: int = 0
 var _sounds: Dictionary = {}
 
@@ -41,7 +42,8 @@ func _ready() -> void:
 		_sounds[key] = player
 
 
-func reset() -> void:
+func reset(p2_helper_name: Texture2D = preload("res://generated/main/map_selection/name_10.png")) -> void:
+	_p2_helper_name = p2_helper_name
 	_confirm_timer.stop()
 	_typing_timer.start()
 	source_frame = int(spec["entry_frame"])
@@ -166,5 +168,6 @@ func _draw() -> void:
 	var width := name_texture.get_width() * float(_shown_characters) / selected_stage().length()
 	var name_position: Array = spec["footer_name_position"]
 	draw_texture_rect_region(name_texture, Rect2(float(name_position[0]), float(name_position[1]), width / raster_scale, name_texture.get_height() / raster_scale), Rect2(0, 0, width, name_texture.get_height()))
-	var helper_name := _texture("name_10.png")
-	draw_texture_rect(helper_name, Rect2(Vector2(600 - 7.5 - helper_name.get_width() / raster_scale, 385.2), helper_name.get_size() / raster_scale), false)
+	if _p2_helper_name != null:
+		var name_size := _p2_helper_name.get_size() / raster_scale
+		draw_texture_rect(_p2_helper_name, Rect2(Vector2(592.2 - name_size.x, 385.2), name_size), false)
