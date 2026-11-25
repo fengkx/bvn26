@@ -151,6 +151,8 @@ var _room_code_output: LineEdit
 var _invitation_row: HBoxContainer
 var _copy_invite_button: Button
 var _nickname: LineEdit
+var preferences_path := "user://online-menu.cfg"
+var _home_advanced_toggle: Button
 var _endpoint: LineEdit
 var _mode_choice: OptionButton
 var _time_choice: OptionButton
@@ -545,12 +547,9 @@ func _build_ui() -> void:
 
 func _build_home_view() -> void:
 	var preferences := ConfigFile.new()
-	preferences.load("user://online-menu.cfg")
+	preferences.load(preferences_path)
 	_nickname = _line_edit(str(preferences.get_value("profile", "nickname", "玩家")), "昵称")
-	_endpoint = _line_edit(DEFAULT_SERVICE_URL, "服务地址")
 	_home_view.add_child(_row("昵称", _nickname))
-	_endpoint.visible = false
-	_home_view.add_child(_endpoint)
 	_create_button = _button("创建房间", _on_create_pressed)
 	_home_view.add_child(_create_button)
 	WIDGETS.primary(_create_button)
@@ -560,6 +559,23 @@ func _build_home_view() -> void:
 	_join_button = _button("加入房间", _on_join_pressed)
 	_home_view.add_child(_join_button)
 	WIDGETS.primary(_join_button)
+	_home_advanced_toggle = Button.new()
+	_home_advanced_toggle.text = "展开高级选项"
+	_home_advanced_toggle.toggle_mode = true
+	_home_view.add_child(_home_advanced_toggle)
+	var saved_url := str(preferences.get_value("profile", "service_url", DEFAULT_SERVICE_URL))
+	_endpoint = _line_edit(_effective_service_url(saved_url), DEFAULT_SERVICE_URL)
+	_endpoint.text_changed.connect(func(value: String) -> void:
+		_save_profile_value("service_url", _effective_service_url(value))
+	)
+	var endpoint_row := _row("PvP 服务器（选填）", _endpoint)
+	endpoint_row.hide()
+	_home_view.add_child(endpoint_row)
+	_home_advanced_toggle.toggled.connect(func(expanded: bool) -> void:
+		endpoint_row.visible = expanded
+		_home_advanced_toggle.text = "收起高级选项" if expanded else "展开高级选项"
+	)
+	_home_view.visibility_changed.connect(_restore_home_advanced_state)
 	_admission_retry_button = _button("重试上次房间请求", _on_retry_admission_pressed)
 	_admission_retry_button.visible = false
 	var admission_actions := HBoxContainer.new()
@@ -805,7 +821,7 @@ func _on_create_pressed() -> void:
 	var request_generation := _lifecycle_generation
 	_create_button.text = "创建中…"
 	_status.text = "正在创建房间…"
-	_remember_nickname()
+	_save_profile_value("nickname", _nickname.text)
 	var response: Dictionary = await room_client.create_room(_nickname.text, _compatibility())
 	_create_button.text = "创建房间"
 	if request_generation != _lifecycle_generation:
@@ -838,7 +854,7 @@ func _on_join_pressed() -> void:
 	_busy = true
 	var request_generation := _lifecycle_generation
 	_join_button.text = "加入中…"
-	_remember_nickname()
+	_save_profile_value("nickname", _nickname.text)
 	_status.text = "正在加入房间…"
 	var response: Dictionary
 	if invitation.get("kind") == "legacy":
@@ -867,6 +883,17 @@ func _on_join_pressed() -> void:
 	_arm_lobby_presence()
 
 
+func _effective_service_url(value: String) -> String:
+	var url := value.strip_edges()
+	return DEFAULT_SERVICE_URL if url.is_empty() or url.trim_suffix("/") == DEFAULT_SERVICE_URL else url
+
+
+func _restore_home_advanced_state() -> void:
+	if _home_view.is_visible_in_tree():
+		_endpoint.text = _effective_service_url(_endpoint.text)
+		_home_advanced_toggle.button_pressed = _endpoint.text != DEFAULT_SERVICE_URL
+
+
 func _configure_service() -> bool:
 	if _admission_uncertain:
 		_show_error("admission_retry_required")
@@ -874,7 +901,7 @@ func _configure_service() -> bool:
 	if not _manifest.has("compatibility"):
 		_show_error("manifest_missing")
 		return false
-	if not room_client.configure_service(_endpoint.text):
+	if not room_client.configure_service(_effective_service_url(_endpoint.text)):
 		_show_error("invalid_service_url")
 		return false
 	if not room_client.get_room_id().is_empty():
@@ -4874,10 +4901,11 @@ func _save_room_map(stage_id: String, session_id: String) -> void:
 	_refresh_room_view()
 
 
-func _remember_nickname() -> void:
+func _save_profile_value(key: String, value: String) -> void:
 	var preferences := ConfigFile.new()
-	preferences.set_value("profile", "nickname", _nickname.text)
-	preferences.save("user://online-menu.cfg")
+	preferences.load(preferences_path)
+	preferences.set_value("profile", key, value)
+	preferences.save(preferences_path)
 
 
 func _return_from_closed_room() -> void:

@@ -58,6 +58,7 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var lobby: OnlineLobby = Lobby.new()
+	lobby.preferences_path = OS.get_temp_dir().path_join("online-menu-test-%d.cfg" % Time.get_ticks_usec())
 	lobby.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.add_child(lobby)
 	await process_frame
@@ -69,7 +70,10 @@ func _run() -> void:
 	assert(lobby._configure_service(), "Production service URL should configure without making a request")
 	lobby._endpoint.text = "http://127.0.0.1:8787"
 	assert(lobby._configure_service(), "Local service endpoint override should remain available")
-	lobby._endpoint.text = "https://bvn26-pvp.fengkx.top"
+	assert(lobby.room_client._base_url == "http://127.0.0.1:8787")
+	lobby._endpoint.text = "   "
+	assert(lobby._configure_service() and lobby.room_client._base_url == OnlineLobby.DEFAULT_SERVICE_URL)
+	lobby._endpoint.text = OnlineLobby.DEFAULT_SERVICE_URL
 	assert(lobby._selected_number(lobby._delay_choice) == 2
 		and lobby._selected_number(lobby._prediction_choice) == 6,
 		"A new online lobby should default to the 2-frame delay / 6-frame prediction profile")
@@ -79,7 +83,31 @@ func _run() -> void:
 	var nickname_font: Font = lobby._nickname.get_theme_font("font")
 	assert(nickname_font.has_char(0x9F98), "Nickname LineEdit is missing the supported CJK fallback glyph 龘")
 	lobby._dialog.hide()
-	assert(lobby._endpoint.placeholder_text == "服务地址", "Service URL placeholder should not use development-only wording")
+	assert(lobby._endpoint.placeholder_text == OnlineLobby.DEFAULT_SERVICE_URL)
+	assert(not lobby._endpoint.get_parent().visible)
+	lobby._home_advanced_toggle.button_pressed = true
+	assert(lobby._endpoint.get_parent().visible)
+	lobby._home_advanced_toggle.button_pressed = false
+	assert(not lobby._endpoint.get_parent().visible)
+	var custom_url := "https://pvp.example.org"
+	lobby._endpoint.text = custom_url
+	lobby._endpoint.text_changed.emit(custom_url)
+	lobby._save_profile_value("nickname", "Tester")
+	var reopened: OnlineLobby = Lobby.new()
+	reopened.preferences_path = lobby.preferences_path
+	root.add_child(reopened)
+	reopened._dialog.show()
+	assert(reopened._endpoint.text == custom_url and reopened._home_advanced_toggle.button_pressed)
+	assert(reopened._nickname.text == "Tester")
+	reopened._endpoint.text = ""
+	reopened._endpoint.text_changed.emit("")
+	reopened._dialog.hide()
+	reopened._dialog.show()
+	assert(reopened._endpoint.text == OnlineLobby.DEFAULT_SERVICE_URL and not reopened._home_advanced_toggle.button_pressed)
+	var saved := ConfigFile.new()
+	assert(saved.load(lobby.preferences_path) == OK and saved.get_value("profile", "service_url") == OnlineLobby.DEFAULT_SERVICE_URL)
+	reopened.free()
+	DirAccess.remove_absolute(lobby.preferences_path)
 	assert(lobby._lan_candidate_opt_in.text == "本机 / 同一局域网对战（无需中转）")
 	assert(lobby._room_visibility_hint.text.contains("两个窗口并排") and lobby._room_visibility_hint.text.contains("保持可见"))
 	lobby._startup_busy = true
