@@ -229,10 +229,13 @@ done
 
 python3 "$ROOT_DIR/tools/optimize_web_pack_loader.py" "$EXPORT_STAGE/index.js"
 
+python3 "$ROOT_DIR/tools/split_web_packs.py" "$EXPORT_STAGE" "$PROJECT_STAGE"
+
+CORE_PACK=("$EXPORT_STAGE"/core-*.pck)
 STAGED_SIDECAR="$BUILD_TEMP_DIR/build-metadata.json"
 python3 "$ROOT_DIR/tools/build_web_diagnostics_metadata.py" finalize \
   --embedded "$EMBEDDED_METADATA" \
-  --pck "$EXPORT_STAGE/index.pck" \
+  --pck "${CORE_PACK[0]}" \
   --output "$STAGED_SIDECAR"
 
 # Publish the completed artifact set only after export and finalization pass.
@@ -263,7 +266,7 @@ for screenshot in sorted(source.glob("*/screenshots/*.png")):
 PY
 cp "$STAGED_SIDECAR" "$ROOT_DIR/dist/web/build-metadata.json"
 
-python3 - "$ROOT_DIR/dist/web/build-metadata.json" "$ROOT_DIR/dist/web/index.pck" <<'PY'
+python3 - "$ROOT_DIR/dist/web/build-metadata.json" "$ROOT_DIR/dist/web/${CORE_PACK[0]##*/}" <<'PY'
 import hashlib
 import json
 import sys
@@ -277,7 +280,7 @@ with pck_path.open("rb") as pck:
         hasher.update(chunk)
 digest = hasher.hexdigest()
 if sidecar.get("pckSha256") != digest:
-    raise SystemExit("build-metadata.json does not match dist/web/index.pck")
+    raise SystemExit("build-metadata.json does not match published core pack")
 if not sidecar.get("gitCommit") or not sidecar.get("buildID"):
     raise SystemExit("build-metadata.json is missing build identity")
 print(f"WEB_BUILD_METADATA_OK buildID={sidecar['buildID']} pckSha256={digest}")

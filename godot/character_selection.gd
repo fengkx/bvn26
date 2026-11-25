@@ -266,6 +266,11 @@ func _draw() -> void:
 			draw_set_transform(Vector2.ZERO)
 
 
+func footer_name_texture(id: String) -> Texture2D:
+	var entry: Dictionary = _footer_spec.get(id, {})
+	return null if entry.is_empty() else _texture(str(entry.texture))
+
+
 func _draw_footer() -> void:
 	_footer_layer.draw_texture_rect(_texture("res://generated/main/map_selection/footer.png"), Rect2(0, 381.5, 600, 20), false)
 	for player in 2:
@@ -273,7 +278,7 @@ func _draw_footer() -> void:
 		if not _footer_spec.has(id):
 			continue
 		var entry: Dictionary = _footer_spec[id]
-		var texture := _texture(str(entry.texture))
+		var texture := footer_name_texture(id)
 		var count := mini(int(_text_counts[player]), str(entry.text).length())
 		var width := texture.get_width() * float(count) / str(entry.text).length()
 		var position := Vector2(7.5, 385.85) if player == 0 else Vector2(592.2 - width / 2.0, 385.2)
