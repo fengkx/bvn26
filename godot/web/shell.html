@@ -317,14 +317,16 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
 #touch-cross {
     left: max(7px, env(safe-area-inset-left)); display: grid; gap: 2px;
     --arrow-size: max(44px, calc(48px * var(--direction-scale, 1)));
-    grid-template: repeat(3, var(--arrow-size)) / repeat(3, var(--arrow-size));
+    width: calc(3 * var(--arrow-size) + 4px); aspect-ratio: 1;
+    --outer-row: max(44px, calc(44px * var(--direction-scale, 1)));
+    grid-template: var(--outer-row) 1fr var(--outer-row) / repeat(2, 1fr);
 }
 #touch-cross button { padding: 0; transform: none; border-radius: 8px; background: #291f24aa; border-color: #cfb6ac; font-size: 19px; }
 #touch-cross button[aria-pressed=true] { background: #983e32bf; }
-#touch-cross [data-slot=w] { grid-area: 1 / 2; }
+#touch-cross [data-slot=w] { grid-area: 1 / 1 / 2 / -1; }
 #touch-cross [data-slot=a] { grid-area: 2 / 1; }
-#touch-cross [data-slot=d] { grid-area: 2 / 3; }
-#touch-cross [data-slot=s] { grid-area: 3 / 2; }
+#touch-cross [data-slot=d] { grid-area: 2 / 2; }
+#touch-cross [data-slot=s] { grid-area: 3 / 1 / 4 / -1; }
 #touch-pad.swapped :is(#touch-stick, #touch-cross) { left: auto; right: max(7px, env(safe-area-inset-right)); }
 #touch-pad.swapped #touch-actions { right: auto; left: max(7px, env(safe-area-inset-left)); }
 #touch-actions.arc:not(.menu) { width: calc(4.2 * var(--touch-key)); height: calc(3 * var(--touch-key)); display: block; }
