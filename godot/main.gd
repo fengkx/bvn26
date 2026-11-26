@@ -463,6 +463,9 @@ func _web_checkpoint(phase: String, detail: Dictionary = {}) -> void:
 	}
 	if session.root_label == "游戏场景" and is_instance_valid(naruto) and is_instance_valid(ichigo):
 		state["players"] = [_diagnostic_player(naruto, naruto_helper), _diagnostic_player(ichigo, ichigo_helper)]
+		state["p1Transform"] = {
+			"charged": touch_transform_charged("p1"), "ready": touch_transform_ready("p1"),
+		}
 	state.merge(detail)
 	diagnostics.record_web_checkpoint(state)
 
@@ -617,6 +620,7 @@ func _start_arcade_stage(show_intro := false) -> void:
 		"helpers": [arcade.helper, encounter.helper]}
 	var ids := _fighter_resources(target.fighters)
 	if not opponent_form.is_empty(): ids[1] = opponent_form.id
+	_web_checkpoint("preparing_arcade_stage", target)
 	if not await prepare_battle_packs(ids, target.fighters, self, show_intro):
 		_goto_character_selection(1)
 		return
@@ -627,6 +631,7 @@ func _start_arcade_stage(show_intro := false) -> void:
 	_enter_current_fight(1)
 	stage_sound.select(encounter.music)
 	stage_sound.start()
+	_web_checkpoint("arcade_stage_started")
 
 
 func _on_arcade_quote_requested() -> void:
@@ -1472,12 +1477,23 @@ func _ko_fight_started() -> void:
 
 
 func touch_transform_ready(slot: String) -> bool:
-	if presentation_only or session.root_label != "游戏场景" or battle_intro.active or ko_active or ko_terminal_pending:
+	if not _touch_transform_in_battle():
 		return false
 	if pause_menu.visible or super_runtime.game_paused or super_runtime.zhanting:
 		return false
 	var actor := naruto if slot == "p1" else ichigo
 	return actor != null and not actor.zhanting and actor.can_input_transformation()
+
+
+func touch_transform_charged(slot: String) -> bool:
+	if not _touch_transform_in_battle():
+		return false
+	var actor := naruto if slot == "p1" else ichigo
+	return actor != null and actor.has_charged_transformation()
+
+
+func _touch_transform_in_battle() -> bool:
+	return not presentation_only and session.root_label == "游戏场景" and not battle_intro.active and not ko_active and not ko_terminal_pending
 
 
 func _diagnostic_fight_started() -> void:
