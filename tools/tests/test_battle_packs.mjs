@@ -28,6 +28,11 @@ test('forms share one verified download, including retries on an old deployment'
     };
     vm.runInNewContext(readFileSync(new URL('../../godot/web/battle_packs.js', import.meta.url), 'utf8'), context);
     const loader = context.window.bvnBattlePacks;
+    const checkMemory = (files, mounted) => {
+        const sample = loader.memorySnapshot();
+        assert.equal(sample.battlePackFileBytes, files);
+        assert.equal(sample.mountedBattlePackBytes, mounted);
+    };
     async function finish(expected) {
         for (let i = 0; i < 100 && loader.state('kenshin') === 'loading'; i++) {
             await new Promise(resolve => setTimeout(resolve, 1));
@@ -38,11 +43,15 @@ test('forms share one verified download, including retries on an old deployment'
     loader.start('kenshin');
     await finish('failed');
     assert.equal(files.length, 0);
+    checkMemory(0, 0);
     damaged = false;
     loader.start('kenshin');
     await finish('ready');
+    checkMemory(bytes.length, 0);
     loader.mounted('kenshin');
+    loader.mounted('kenshin-3');
     loader.start('kenshin-3');
+    checkMemory(bytes.length, bytes.length);
     assert.equal(loader.needed('kenshin-3'), false);
     assert.deepEqual(requests, ['https://game.example', 'https://old.example',
         'https://game.example', 'https://old.example']);

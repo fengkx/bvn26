@@ -1001,17 +1001,27 @@ test('recovers a killed renderer in the same tab and separates observed pagehide
         return JSON.parse(await page.getBlob().text()).reloadDiagnostics;
     }
     const first = open('fight');
+    let wasmHeapCapacityBytes = 64 * 1024 * 1024;
+    first.window.bvnReadEngineMemory = () => ({ wasmHeapCapacityBytes, corePackSizeBytes: 145000000 });
+    first.window.bvnBattlePacks = { memorySnapshot: () => ({ battlePackFileBytes: 6000000, mountedBattlePackBytes: 4000000 }) };
     first.window.bvnCrashCheckpoint(JSON.stringify({
         fightTick: 0, phase: 'preparing_arcade_stage', arcadeStageIndex: 4, videoBytes: 150000000, resources: 617,
     }));
     for (let tick = 0; tick < 15; tick++) {
+        first.context.setNow(tick * 2000);
         first.window.bvnCrashCheckpoint(JSON.stringify({
             fightTick: tick, phase: 'sample', scene: '游戏场景', arcadeStageIndex: 4,
             videoBytes: 145000000, resources: 615,
         }));
     }
+    wasmHeapCapacityBytes *= 2;
+    first.context.setNow(30000);
     first.window.bvnCrashCheckpoint(JSON.stringify({
         fightTick: 15, phase: 'screen_flash_during_assist', arcadeStageIndex: 4, videoBytes: 145000000,
+    }));
+    first.context.setNow(31000);
+    first.window.bvnCrashCheckpoint(JSON.stringify({
+        fightTick: 16, phase: 'arcade_stage_started', arcadeStageIndex: 5, videoBytes: 146000000,
     }));
     first.context.console.error('RuntimeError: memory access out of bounds');
     // A discarded renderer never sends pagehide.
@@ -1021,9 +1031,17 @@ test('recovers a killed renderer in the same tab and separates observed pagehide
     const saved = (await report(second)).previousRuns[0];
     assert.equal(saved.lifecycle, 'active');
     assert.equal(saved.checkpoints.length, 12);
-    assert.equal(saved.checkpoints.at(-1).fightTick, 15);
-    assert.equal(saved.checkpoints.at(-1).phase, 'screen_flash_during_assist');
-    assert.equal(saved.stageTransitions.length, 1);
+    assert.equal(saved.checkpoints.at(-1).fightTick, 16);
+    const flash = saved.checkpoints.find(item => item.phase === 'screen_flash_during_assist');
+    assert.deepEqual(flash.memory, {
+        wasmHeapCapacityBytes, corePackSizeBytes: 145000000, battlePackFileBytes: 6000000,
+        mountedBattlePackBytes: 4000000, browserJsHeapUsedBytes: null,
+    });
+    assert.deepEqual(saved.memoryHistory.map(item => item.fightTick), [0, 16]);
+    assert.deepEqual(saved.memoryHistory.map(item => item.memory.wasmHeapCapacityBytes), [
+        wasmHeapCapacityBytes / 2, wasmHeapCapacityBytes,
+    ]);
+    assert.equal(saved.stageTransitions.length, 2);
     assert.equal(saved.stageTransitions[0].phase, 'preparing_arcade_stage');
     assert.equal(saved.peakVideo.videoBytes, 150000000);
     assert.equal(saved.peakVideo.resources, 617);
@@ -1038,11 +1056,25 @@ test('recovers a killed renderer in the same tab and separates observed pagehide
         retry.window.bvnCrashEnginePhase('starting');
         const { recovery } = await report(retry);
         assert.equal(recovery.runId, 'fight');
-        assert.equal(recovery.lastCheckpoint.fightTick, 15);
+        assert.equal(recovery.lastCheckpoint.fightTick, 16);
         assert.equal(recovery.cause, 'unconfirmed');
     }
     const blocked = createPage(sidecar, null, undefined, {}, {
         local: { setItem() { throw new Error('QuotaExceededError'); } }, tab: makeStorage(),
     });
     assert.equal((await report(blocked)).persistence, 'unavailable');
+});
+
+test('keeps a bounded periodic memory history when browser counters are unavailable', async () => {
+    const page = createPage(null);
+    for (let tick = 0; tick < 70; tick++) {
+        page.context.setNow(tick * 30000);
+        page.window.bvnCrashCheckpoint(JSON.stringify({ fightTick: tick, phase: 'sample' }));
+    }
+    await page.elements.get('download').dispatch('click');
+    const { memorySampling, currentRun } = JSON.parse(await page.getBlob().text()).reloadDiagnostics;
+    assert.equal(currentRun.memoryHistory.length, memorySampling.historyLimit);
+    assert.equal(currentRun.memoryHistory[0].fightTick, 6);
+    assert.equal(currentRun.memoryHistory.at(-1).fightTick, 69);
+    assert.equal(currentRun.memoryHistory[0].memory.wasmHeapCapacityBytes, null);
 });

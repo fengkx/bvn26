@@ -946,9 +946,12 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     const journal = {
         runId: sessionId, startedAt, userAgent: navigator.userAgent,
         navigation: performance.getEntriesByType?.('navigation')[0]?.type || 'unknown',
-        signals: [], checkpoints: [], stageTransitions: [], peakVideo: null,
+        signals: [], checkpoints: [], stageTransitions: [], peakVideo: null, memoryHistory: [],
         lifecycle: 'active', enginePhase: 'bootstrap',
     };
+    const memoryHistoryIntervalMs = 30_000;
+    const memoryHistoryLimit = 64;
+    let lastMemoryHistoryMs = -Infinity;
     const previousRuns = [];
     let persistence = 'available';
     let historyIds = window.history?.state?.bvnCrashRuns;
@@ -1019,7 +1022,28 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     window.bvnCrashCheckpoint = serialized => {
         if (typeof serialized !== 'string' || serialized.length > 8192) return;
         const state = JSON.parse(serialized);
-        const checkpoint = { at: new Date().toISOString(), ...state };
+        const engineMemory = window.bvnReadEngineMemory?.();
+        const packMemory = window.bvnBattlePacks?.memorySnapshot?.();
+        const browserHeap = performance.memory?.usedJSHeapSize;
+        const memory = {
+            wasmHeapCapacityBytes: engineMemory?.wasmHeapCapacityBytes ?? null,
+            corePackSizeBytes: engineMemory?.corePackSizeBytes ?? null,
+            battlePackFileBytes: packMemory?.battlePackFileBytes ?? null,
+            mountedBattlePackBytes: packMemory?.mountedBattlePackBytes ?? null,
+            browserJsHeapUsedBytes: Number.isFinite(browserHeap) ? browserHeap : null,
+        };
+        const checkpoint = { at: new Date().toISOString(), ...state, memory };
+        const now = performance.now();
+        if (state.phase === 'arcade_stage_started'
+            || (state.phase === 'sample' && now - lastMemoryHistoryMs >= memoryHistoryIntervalMs)) {
+            journal.memoryHistory.push({
+                at: checkpoint.at, elapsedMs: Math.round(now), phase: state.phase,
+                arcadeStageIndex: state.arcadeStageIndex, fightTick: state.fightTick,
+                videoBytes: state.videoBytes, godotStaticBytes: state.godotStaticBytes, memory,
+            });
+            if (journal.memoryHistory.length > memoryHistoryLimit) journal.memoryHistory.shift();
+            lastMemoryHistoryMs = now;
+        }
         if (state.arcadeStageIndex != null && [
             'preparing_arcade_stage', 'loading_arcade_fighters', 'loading_arcade_map',
             'arcade_stage_started', 'opening_arcade_result',
@@ -1803,6 +1827,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             reloadDiagnostics: {
                 persistence, recovery, previousRuns, currentRun: journal,
                 interpretation: 'An active last checkpoint without pagehide means the end was unobserved. It does not establish OS memory termination.',
+                memorySampling: {
+                    historyIntervalMs: memoryHistoryIntervalMs, historyLimit: memoryHistoryLimit,
+                    interpretation: 'Wasm capacity is the size of linear memory. Pack sizes are file bytes. JS heap is a browser estimate when available. These counters do not measure total browser process memory and must not be added together.',
+                },
             },
             webrtc: rtcSnapshot(),
         };
@@ -1833,6 +1861,10 @@ const engine = new Engine({
     ...GODOT_CONFIG,
     onPrint: (...args) => console.log(...args),
     onPrintError: (...args) => console.error(...args),
+});
+window.bvnReadEngineMemory = () => ({
+    wasmHeapCapacityBytes: engine.rtenv?.HEAPU8?.buffer?.byteLength || null,
+    corePackSizeBytes: GODOT_CONFIG.fileSizes?.[GODOT_CONFIG.mainPack] ?? null,
 });
 
 (function () {

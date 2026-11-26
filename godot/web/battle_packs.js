@@ -72,6 +72,17 @@ window.bvnBattlePacks = (() => {
         },
         path(id) { return '/' + battlePackConfig.packs[family(id)].file; },
         mounted(id) { mounted.add(family(id)); },
+        memorySnapshot() {
+            let battlePackFileBytes = 0;
+            let mountedBattlePackBytes = 0;
+            for (const [owner, job] of jobs) {
+                if (job.state !== 'ready') continue;
+                const size = battlePackConfig.packs[owner].size;
+                battlePackFileBytes += size;
+                if (mounted.has(owner)) mountedBattlePackBytes += size;
+            }
+            return { battlePackFileBytes, mountedBattlePackBytes };
+        },
         state(id) { return jobs.get(family(id)).state; },
         progress(id) { return jobs.get(family(id)).progress; }
     };
