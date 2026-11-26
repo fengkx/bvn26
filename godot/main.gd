@@ -82,6 +82,7 @@ var naruto_helper: HelperRuntime
 var ichigo_helper: HelperRuntime
 var screen_flash: ColorRect
 var screen_flash_age: int = -1
+var _assist_flash_generation := 0
 # Source pauseGame()/resumeGame() from XG_*x clips. Stops fighter/helper mcs.
 var hit_fx_pause_count: int = 0
 var player_body_driver: Node
@@ -461,6 +462,11 @@ func _web_checkpoint(phase: String, detail: Dictionary = {}) -> void:
 		"godotStaticBytes": Performance.get_monitor(Performance.MEMORY_STATIC),
 		"videoBytes": Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED),
 		"rendering": _diagnostic_rendering(),
+		"performance": {"fps": Performance.get_monitor(Performance.TIME_FPS),
+			"processMs": Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0,
+			"physicsMs": Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0,
+			"nodes": Performance.get_monitor(Performance.OBJECT_NODE_COUNT),
+			"drawCalls": Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)},
 	}
 	if session.root_label == "游戏场景" and is_instance_valid(naruto) and is_instance_valid(ichigo):
 		state["players"] = [_diagnostic_player(naruto, naruto_helper), _diagnostic_player(ichigo, ichigo_helper)]
@@ -1717,11 +1723,13 @@ func _on_helper_spawn_requested(fighter: FighterRuntime) -> void:
 	# request immediately; the end-of-tick fallback remains for older callers.
 	var spawn := fighter.helper_spawn.duplicate(true)
 	fighter.helper_spawn.clear()
-	_web_checkpoint("helper_before_activate", {"helper": helper.helper_id, "ownerSlot": fighter.player_slot})
+	_web_checkpoint("helper_before_activate", {"helper": DiagnosticRuntime.actor_display_name(helper.helper_id),
+		"sourceId": helper.helper_id, "resourcePath": helper.helper_directory, "ownerSlot": fighter.player_slot})
 	helper.activate(spawn, fighter)
 	diagnostics.push_event("helper_lifecycle", {
 		"event": "activate", "ownerSlot": fighter.player_slot,
-		"helper": helper.helper_id, "resourcePath": helper.helper_directory,
+		"helper": DiagnosticRuntime.actor_display_name(helper.helper_id), "sourceId": helper.helper_id,
+		"resourcePath": helper.helper_directory,
 		"spawn": spawn,
 	}, physics_tick)
 
@@ -1978,7 +1986,8 @@ func _diagnostic_player(fighter: FighterRuntime, helper: HelperRuntime) -> Dicti
 	var helper_state := {}
 	if helper != null:
 		helper_state = {
-			"id": helper.helper_id,
+			"displayName": DiagnosticRuntime.actor_display_name(helper.helper_id),
+			"sourceId": helper.helper_id, "id": helper.helper_directory.get_file(),
 			"resourcePath": helper.helper_directory,
 			"action": helper.source_action,
 			"sourceFrame": helper.current_source_frame(),
@@ -1992,7 +2001,8 @@ func _diagnostic_player(fighter: FighterRuntime, helper: HelperRuntime) -> Dicti
 		}
 	return {
 		"slot": fighter.player_slot,
-		"fighter": fighter.fighter_name,
+		"fighter": DiagnosticRuntime.actor_display_name(fighter.fighter_name),
+		"displayName": DiagnosticRuntime.actor_display_name(fighter.fighter_name), "sourceId": fighter.fighter_name,
 		"form": fighter.ai_source_state.read_field("形态"),
 		"resourcePath": fighter.fighter_directory,
 		"helper": helper_state,
@@ -2133,11 +2143,15 @@ func _setup_screen_flash() -> void:
 
 
 func _start_screen_flash(color_rgb24: int) -> void:
-	if OS.has_feature("web") and (
+	_assist_flash_generation += 1
+	if OS.has_feature("web") and not diagnostics.replaying and (
 		(is_instance_valid(naruto_helper) and naruto_helper.attacking)
 		or (is_instance_valid(ichigo_helper) and ichigo_helper.attacking)
 	):
-		_web_checkpoint("screen_flash_during_assist", {"flashColor": color_rgb24})
+		_record_assist_flash("screen_flash_during_assist", color_rgb24, physics_tick, diagnostics.match_id)
+		RenderingServer.frame_post_draw.connect(_record_assist_flash_draw.bind(
+			_assist_flash_generation, color_rgb24, physics_tick, diagnostics.match_id),
+			CONNECT_ONE_SHOT)
 	var tint := Color(
 		float((color_rgb24 >> 16) & 0xFF) / 255.0,
 		float((color_rgb24 >> 8) & 0xFF) / 255.0,
@@ -2148,6 +2162,37 @@ func _start_screen_flash(color_rgb24: int) -> void:
 	material.set_shader_parameter("opacity", float(SHINE_ALPHA_TERMS[0]) / 256.0)
 	screen_flash_age = 0
 	screen_flash.visible = true
+
+
+func _record_assist_flash_draw(generation: int, color_rgb24: int, flash_tick: int, match_id: String) -> void:
+	if generation == _assist_flash_generation and screen_flash.visible:
+		_record_assist_flash("screen_flash_rendered_during_assist", color_rgb24, flash_tick, match_id)
+
+
+func _record_assist_flash(phase: String, color_rgb24: int, flash_tick: int, match_id: String) -> void:
+	if diagnostics.match_id != match_id or session.root_label != "游戏场景":
+		return
+	var caches := {}
+	for helper in [naruto_helper, ichigo_helper]:
+		if not is_instance_valid(helper) or not helper.attacking:
+			continue
+		var report := {"sourceFrame": helper.current_source_frame(), "livePixels": 0,
+			"uncroppedPixels": 0, "queuedFreePixels": 0, "maxWidth": 0, "maxHeight": 0}
+		for child in helper.get_children():
+			if not child.has_method("cache_allocation"):
+				continue
+			var allocation: Vector2i = child.cache_allocation()
+			var pixels := allocation.x * allocation.y
+			if child.is_queued_for_deletion():
+				report.queuedFreePixels += pixels
+				continue
+			var full: Vector2i = child.uncropped_size
+			report.uncroppedPixels += full.x * full.y
+			report.livePixels += pixels
+			report.maxWidth = maxi(report.maxWidth, allocation.x)
+			report.maxHeight = maxi(report.maxHeight, allocation.y)
+		caches[helper.diagnostic_slot] = report
+	_web_checkpoint(phase, {"flashColor": color_rgb24, "flashTick": flash_tick, "assistCaches": caches})
 
 
 func _advance_screen_flash() -> void:

@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        **遇到问题后，请先保留当前游戏页面。** 在网页顶部点击「导出日志」，保存下载的 `bvn26-log-….json`。全屏时可以先退出全屏。若游戏已自动回到加载页，请在同一标签页导出，附上中断的大致时间；日志会包含已保存的重载前现场。
+        **遇到问题后，请先保留当前游戏页面。** 在网页顶部点击「导出日志」，保存下载的 `bvn26-log-….json`。全屏时可以先退出全屏。如果闪退或反复加载，请用游玩时的浏览器打开[独立日志页](https://bvn26.keeplink.cc/diagnostics.html)，按出问题的时间下载。
         如果是联机问题，请房主和客人分别导出本次对战的日志，并在附件旁注明身份。
   - type: textarea
     id: behavior
@@ -18,13 +18,13 @@ body:
     id: reproduction
     attributes:
       label: 怎么触发这个问题？
-      description: 从进入哪个模式写起。涉及招式时请写明角色、援助、按键顺序，以及问题是否每次都出现。
+      description: 记得的话，可以写下模式、角色和按键。仅发生一次也可以反馈。
       placeholder: |
         1. 进入……
         2. 选择……
         3. 按下……时出现……
     validations:
-      required: true
+      required: false
   - type: input
     id: environment
     attributes:
@@ -32,7 +32,7 @@ body:
       description: 请填写设备、操作系统、浏览器或本地客户端。联机时请注明哪一端出现问题。
       placeholder: 例如，MacBook，macOS 15，Chrome 131，联机客人端
     validations:
-      required: true
+      required: false
   - type: textarea
     id: evidence
     attributes:

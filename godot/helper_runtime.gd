@@ -117,7 +117,12 @@ func activate(spawn: Dictionary, caster: FighterRuntime) -> void:
 		source_child_frame_requested.emit(_run_deferred_frame.bind(start_frame, _activation_generation))
 	last_event = "helper_activate_%s" % helper_id
 	if RollbackPresentation.should_emit_combat_console_event(self):
-		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
+		var observation := snapshot()
+		observation["sourceId"] = helper_id
+		observation["resourcePath"] = helper_directory
+		observation["helper"] = DiagnosticRuntime.actor_display_name(helper_id)
+		observation["event"] = "helper_activate"
+		print("COMBAT_EVENT ", JSON.stringify(observation))
 
 
 func deactivate(clear_source_action: bool = true) -> void:
@@ -235,7 +240,8 @@ func instance_placed_origin(instance_name: String) -> Vector2:
 func apply_attack_contact(attack: Dictionary, defender: FighterRuntime) -> void:
 	var attack_name := str(attack.get("instance_name", ""))
 	var hit_source := {"kind": "helper", "slot": diagnostic_slot,
-		"helper": helper_id, "resourcePath": helper_directory,
+		"helper": DiagnosticRuntime.actor_display_name(helper_id), "sourceId": helper_id,
+		"resourcePath": helper_directory,
 		"action": source_action, "sourceFrame": current_source_frame(),
 		"instanceName": attack_name, "attack": attack.duplicate(true),
 		"attackBounds": _diagnostic_rect(instance_global_bounds(attack_name)),

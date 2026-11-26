@@ -7,6 +7,16 @@ signal visibility_changed(visible: bool)
 const SCHEMA_VERSION := 2
 const MAX_SNAPSHOT_BYTES := 16384
 
+static var _selection_names: Dictionary = {}
+
+
+static func actor_display_name(source_id: String) -> String:
+	if _selection_names.is_empty():
+		_selection_names = JSON.parse_string(FileAccess.get_file_as_string(
+			"res://generated/main/character_selection/footer.json"))
+	return str(_selection_names.get(source_id, {}).get("text", source_id))
+
+
 var sequence: int = 0
 var match_id: String = ""
 var build_id: String = ""

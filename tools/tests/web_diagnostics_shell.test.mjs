@@ -5,6 +5,12 @@ import vm from 'node:vm';
 
 const shellPath = new URL('../../godot/web/shell.html', import.meta.url);
 const html = await readFile(shellPath, 'utf8');
+const archiveSource = await readFile(new URL('../../godot/web/crash_archive.js', import.meta.url), 'utf8');
+const available = JSON.parse(await readFile(new URL('../../godot/generated/main/character_selection/available.json', import.meta.url)));
+const labels = JSON.parse(await readFile(new URL('../../godot/generated/main/character_selection/footer.json', import.meta.url)));
+const helperNames = Object.fromEntries(Object.entries(available.helpers).flatMap(([id, slug]) => [
+    ['helper:' + id, labels[id].text], ['res://generated/helpers/' + slug, labels[id].text],
+]));
 const shellScript = html.match(/<script>\s*([\s\S]*?)\s*<\/script>/)?.[1];
 assert.ok(shellScript, 'expected the shell bootstrap script');
 
@@ -133,6 +139,7 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, 
         },
         clearInterval(id) { intervalCallbacks.delete(id); },
     });
+    if (storage.withArchive) vm.runInContext(archiveSource.replace('/* BVN_DIAGNOSTIC_NAMES */ {}', JSON.stringify(helperNames)), context);
     vm.runInContext(shellScript, context, { timeout: 1000 });
     return {
         context, window, elements, player, document, documentHandlers, windowHandlers,
@@ -1077,4 +1084,36 @@ test('keeps a bounded periodic memory history when browser counters are unavaila
     assert.equal(currentRun.memoryHistory[0].fightTick, 6);
     assert.equal(currentRun.memoryHistory.at(-1).fightTick, 69);
     assert.equal(currentRun.memoryHistory[0].memory.wasmHeapCapacityBytes, null);
+});
+
+test('recovers the last draw without pagehide, an engine, session history, or IndexedDB', async () => {
+    const local = {
+        getItem(key) { return this[key] ?? null; },
+        setItem(key, value) { this[key] = value; },
+        removeItem(key) { delete this[key]; },
+    };
+    const page = createPage(sidecar, null, undefined, {}, {local, id: 'lost-tab', withArchive: true});
+    const helper = {id: '松本', resourcePath: 'res://generated/helpers/jinye', sourceFrame: 45};
+    const checkpoint = {matchId: 'fight', fightTick: 100, phase: 'sample', players: [{slot: 'p1', helper}]};
+    page.window.bvnCrashCheckpoint(JSON.stringify(checkpoint));
+    page.context.setNow(80);
+    page.window.bvnDiagnosticsPush(JSON.stringify({type:'input_consumed', seq: 1, fightTick: 101,
+        payload: {slot:'p1', keys:{assist:true}}}));
+    page.window.bvnCrashCheckpoint(JSON.stringify({...checkpoint, phase:'screen_flash_during_assist', fightTick: 101}));
+    assert.equal(JSON.parse(local['bvn26.crash-run.lost-tab']).checkpoints.at(-1).fightTick, 100);
+
+    const reader = createPage(null, null, undefined, {}, {local, id:'unrelated-tab', withArchive:true});
+    const archive = reader.window.bvnCrashArchive;
+    const run = (await archive.listRuns()).find(r => r.runId === 'lost-tab');
+    const report = await archive.recoveredReport(run);
+    assert.equal(run.checkpoints.at(-1).fightTick, 101);
+    assert.equal(run.lastInputs.p1.payload.keys.assist, true);
+    assert.equal(report.reloadDiagnostics.persistedDetail.status, 'unavailable');
+    archive.download(report);
+    const exported = JSON.parse(await reader.getBlob().text());
+    const named = exported.reloadDiagnostics.currentRun.checkpoints.at(-1).players[0].helper;
+    assert.deepEqual([named.displayName, named.id, named.sourceId], ['山中井野','jinye','松本']);
+    const message = 'COMBAT_EVENT ' + JSON.stringify({event:'summon_夜一', fighter:'日番谷'});
+    assert.equal(JSON.parse(archive.nameFields('message', message).slice(13)).event, 'summon_requested');
+    assert.equal(archive.nameFields('helper', {id:'future_helper'}).id, 'future_helper');
 });

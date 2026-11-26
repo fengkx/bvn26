@@ -9,6 +9,20 @@ import split_web_packs as packs
 
 
 class PackFamilies(unittest.TestCase):
+    def test_publishes_standalone_recovery_assets_with_the_roster_labels(self):
+        project = Path(__file__).resolve().parents[2] / "godot"
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)
+            packs.publish_diagnostics(project, output)
+            script = (output / "crash_archive.js").read_text()
+            names = json.loads(script.split("const names = ", 1)[1].split(";", 1)[0])
+            self.assertEqual(names["res://generated/helpers/jinye"], "山中井野")
+            self.assertEqual(names["res://generated/helpers/stake"], "柯雅泰·史塔克")
+            self.assertIn("res://generated/forms/yihu-3", names)
+            page = (output / "diagnostics.html").read_text()
+            self.assertIn('src="crash_archive.js"', page)
+            self.assertNotIn("$GODOT", page)
+
     def test_new_form_must_travel_with_base(self):
         with tempfile.TemporaryDirectory() as tmp:
             project = Path(tmp)

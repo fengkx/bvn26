@@ -1,5 +1,8 @@
 extends Node2D
 
+var clip_offscreen := false
+var uncropped_size := Vector2i.ZERO
+
 # A non-normal Flash blend belongs to the composed display object, including
 # its children. Keep the offscreen buffer aligned to destination pixels.
 func setup(items: Array, opacity: float) -> Sprite2D:
@@ -67,6 +70,20 @@ func _update_buffer() -> void:
 	var bounds := transform * source_bounds()
 	var padding := buffer_padding()
 	bounds = bounds.grow_individual(padding.x, padding.y, padding.x, padding.y)
+	uncropped_size = Vector2i((bounds.end.ceil() - bounds.position.floor()).max(Vector2.ONE))
+	var viewport := get_viewport()
+	if clip_offscreen and viewport is SubViewport and viewport.has_meta("clip_offscreen_caches"):
+		# The composite samples this texture with nearest filtering. Keep its
+		# original integer grid and one pixel of margin at the destination edge.
+		var target := Rect2(Vector2.ZERO, Vector2(viewport.size_2d_override))
+		var canvas := get_canvas_transform()
+		if target.has_area() and canvas.determinant() != 0.0:
+			var visible_bounds := (canvas.affine_inverse() * target).grow(1.0)
+			bounds = bounds.intersection(visible_bounds)
+			$Composite.visible = bounds.has_area()
+			if not bounds.has_area():
+				$Contents.size = Vector2i(2, 2)
+				return
 	var origin := bounds.position.floor()
 	var extent := (bounds.end.ceil() - origin).max(Vector2.ONE)
 	$Contents.size = Vector2i(extent)
@@ -74,3 +91,7 @@ func _update_buffer() -> void:
 	for item in $Contents.get_children():
 		item.transform = shift * transform * Transform2D(item.get_meta("blend_source_transform"))
 	$Composite.transform = transform.affine_inverse() * Transform2D(0.0, origin)
+
+
+func cache_allocation() -> Vector2i:
+	return $Contents.size

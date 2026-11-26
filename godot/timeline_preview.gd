@@ -861,7 +861,7 @@ func _render_display_list(placements: Array, parent_transform: Transform2D,
 			masks.append(mask.polygon)
 		_render_placement(placement, parent_transform, alpha,
 			local_depth if root_list and preserve_root_depths else depth,
-			frame, age, rgb_mul, rgb_add, masks, inherited_blend, visual_clips.get(local_depth, {}))
+			frame, age, rgb_mul, rgb_add, masks, inherited_blend, visual_clips.get(local_depth, {}), root_list)
 
 
 func _clip_bitmap_masks(fill_masks: Array, bitmap_transform: Transform2D,
@@ -903,7 +903,8 @@ func _render_placement(
 	parent_rgb_add: Color = Color(0, 0, 0, 0),
 	clip_masks: Array = [],
 	inherited_blend: int = 1,
-	visual_clip: Dictionary = {}
+	visual_clip: Dictionary = {},
+	root_placement: bool = false
 ) -> void:
 	if bool(placement.get("replaced_by_external_movie", false)):
 		return
@@ -930,7 +931,8 @@ func _render_placement(
 		_compose_blend_group(first_child, filter_alpha, parent_depth,
 			int(placement.get("blend_mode", inherited_blend)), filters, true,
 			_cxform_combine_mul(parent_rgb_mul, filter_mul),
-			_cxform_combine_add(parent_rgb_mul, parent_rgb_add, filter_mul, filter_add))
+			_cxform_combine_add(parent_rgb_mul, parent_rgb_add, filter_mul, filter_add),
+			root_placement and _filter_input_depth == 0 and int(_timeline.get("wrapper", {}).get("blend_mode", 1)) in [0, 1])
 		return
 	var definition: Dictionary = _definitions[character_id]
 	if not bool(definition.get("initial_visible", true)):
@@ -1279,7 +1281,8 @@ func _apply_cxform(sprite: CanvasItem, rgb_mul: Color, rgb_add: Color, alpha: fl
 func _compose_blend_group(
 	first_child: int, opacity: float, depth: int, blend: int,
 	filters: Array = [], isolate: bool = false,
-	post_mul: Color = Color.WHITE, post_add: Color = Color(0, 0, 0, 0)
+	post_mul: Color = Color.WHITE, post_add: Color = Color(0, 0, 0, 0),
+	root_cache: bool = false
 ) -> void:
 	var items := get_children().slice(first_child)
 	if items.is_empty():
@@ -1296,6 +1299,8 @@ func _compose_blend_group(
 	for item: Node in items:
 		remove_child(item)
 	var group = BlendGroupScript.new() if filters.is_empty() else FilterGroupScript.new()
+	group.clip_offscreen = root_cache and blend in [0, 1] and filters.is_empty() and items.all(
+		func(item: Node) -> bool: return item is Sprite2D or item is Polygon2D)
 	if not filters.is_empty():
 		group.set_meta("flash_filters", filters.duplicate(true))
 	group.z_index = depth

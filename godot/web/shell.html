@@ -422,6 +422,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             </div>
             <button id="fullscreen" type="button">进入全屏</button>
             <button id="download" type="button">导出日志</button>
+            <a href="diagnostics.html" target="_blank" rel="noopener">历史日志</a>
         </nav>
         <button id="edge-indicator" type="button" aria-label="显示游戏工具"><span aria-hidden="true"></span><span class="edge-label" hidden></span></button>
         <p id="help">点击画面，开始对战 · 全屏沉浸游玩 · 遇到问题可导出日志反馈</p>
@@ -465,6 +466,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         <p id="rotate-hint">请横屏游玩</p>
         <p id="feedback" role="status" aria-live="polite"></p>
         </main>
+        <script src="crash_archive.js"></script>
         <script>
 (() => {
     const player = document.getElementById('player');
@@ -952,6 +954,32 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     const memoryHistoryIntervalMs = 30_000;
     const memoryHistoryLimit = 64;
     let lastMemoryHistoryMs = -Infinity;
+    journal.consoleTail = [];
+    journal.longTasks = [];
+    journal.lastInputs = {};
+    journal.eventTail = [];
+    const milestones = new Set(['match_started', 'match_ended', 'fight_started', 'action_transition',
+        'helper_lifecycle', 'hit_settled', 'super_state', 'pause_state', 'diagnostic_exception',
+        'page_visibility', 'rtc_connection_state']);
+    const archive = window.bvnCrashArchive?.createRecorder(() => ({
+        runId: sessionId, startedAt, updatedAt: new Date().toISOString(), userAgent: navigator.userAgent,
+        enginePhase: journal.enginePhase, lifecycle: journal.lifecycle, buildID: journal.buildID,
+        build: journal.build, lastCheckpoint: journal.checkpoints.at(-1), snapshot: latestRuntimeSnapshot,
+        signals: journal.signals, consoleTail: journal.consoleTail, longTasks: journal.longTasks,
+        lastInputs: journal.lastInputs, eventTail: journal.eventTail, device: journal.device, graphics: journal.graphics,
+    }));
+    journal.device = {language: navigator.language, devicePixelRatio: window.devicePixelRatio,
+        hardwareConcurrency: navigator.hardwareConcurrency ?? null, maxTouchPoints: navigator.maxTouchPoints ?? null,
+        longTasksSupported: Boolean(window.PerformanceObserver?.supportedEntryTypes?.includes('longtask'))};
+    if (journal.device.longTasksSupported) {
+        const observer = new PerformanceObserver(list => {
+            for (const task of list.getEntries()) {
+                journal.longTasks.push({monoMs: Math.round(task.startTime), durationMs: Math.round(task.duration)});
+            }
+            journal.longTasks = journal.longTasks.slice(-16);
+        });
+        observer.observe({type: 'longtask'});
+    }
     const previousRuns = [];
     let persistence = 'available';
     let historyIds = window.history?.state?.bvnCrashRuns;
@@ -959,7 +987,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         historyIds = JSON.parse(sessionStorage.getItem(tabHistoryKey)) || historyIds;
     } catch (_) { /* The navigation entry also survives same-tab reloads. */ }
     const readRun = key => {
-        try { return JSON.parse(localStorage.getItem(key)); }
+        try {
+            const run = JSON.parse(localStorage.getItem(key));
+            return window.bvnCrashArchive?.mergeTail(run) || run;
+        }
         catch (_) { return null; }
     };
     for (const id of Array.isArray(historyIds) ? historyIds.slice(0, 3) : []) {
@@ -992,24 +1023,64 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             linked = true;
         }
     } catch (_) {}
-    if (!linked) persistence = 'unavailable';
+    journal.tabHistoryLinked = linked;
     try {
         const stored = Object.keys(localStorage).filter(key => key.startsWith(journalPrefix));
         if (stored.length >= 12) {
             const removable = stored.filter(key => !recentIds.includes(key.slice(journalPrefix.length)))
-                .map(key => ({ key, time: readRun(key)?.updatedAt || '' }))
-                .sort((a, b) => a.time.localeCompare(b.time));
-            for (const { key } of removable.slice(0, stored.length - 11)) localStorage.removeItem(key);
+                .map(key => {
+                    const run = readRun(key);
+                    return { key, time: run?.updatedAt || '', evidence: Boolean(run?.checkpoints?.some(c => c.players?.length) || run?.signals?.length) };
+                }).sort((a, b) => Number(a.evidence) - Number(b.evidence) || a.time.localeCompare(b.time));
+            for (const { key } of removable.slice(0, stored.length - 11)) {
+                localStorage.removeItem(key);
+                localStorage.removeItem('bvn26.crash-tail.' + key.slice(journalPrefix.length));
+            }
         }
     } catch (_) { persistence = 'unavailable'; }
-    function saveJournal() {
+    let lastFullSaveMs = -Infinity;
+    let savedCheckpointSeq = 0;
+    let checkpointSeq = 0;
+    function saveJournal(compact = false) {
         if (persistence !== 'available') return;
         journal.updatedAt = new Date().toISOString();
         journal.visibility = document.visibilityState;
         journal.buildID = runtimeBuildId || buildSidecar?.buildID || null;
         journal.canvas = [canvas.width, canvas.height];
-        try { localStorage.setItem(journalPrefix + sessionId, JSON.stringify(journal)); }
-        catch (_) { persistence = 'unavailable'; }
+        journal.archive = archive?.status || {state: 'unavailable'};
+        if (buildSidecar) journal.build = {
+            status: runtimeBuildId ? (runtimeBuildId === buildSidecar.buildID ? 'match' : 'mismatch') : 'unknown',
+            buildID: runtimeBuildId, sidecarBuildID: buildSidecar.buildID, gitCommit: buildSidecar.gitCommit,
+            resourceVersion: buildSidecar.resourceVersion, pckSha256: buildSidecar.pckSha256,
+        };
+        try {
+            if (compact && window.bvnCrashArchive && performance.now() - lastFullSaveMs < 1000) {
+                localStorage.setItem('bvn26.crash-tail.' + sessionId, JSON.stringify({
+                    runId: sessionId, updatedAt: journal.updatedAt, peakVideo: journal.peakVideo,
+                    checkpoints: journal.checkpoints.filter(c => c.recordSeq > savedCheckpointSeq),
+                    lastInputs: journal.lastInputs, eventTail: journal.eventTail,
+                }));
+            } else {
+                localStorage.setItem(journalPrefix + sessionId, JSON.stringify(journal));
+                lastFullSaveMs = performance.now();
+                savedCheckpointSeq = checkpointSeq;
+            }
+        }
+        catch (_) {
+            // Reclaim an older run first. Always try to leave at least one small checkpoint.
+            try {
+                const candidates = Object.keys(localStorage).filter(key => key.startsWith(journalPrefix)
+                    && key !== journalPrefix + sessionId && !recentIds.includes(key.slice(journalPrefix.length)));
+                candidates.sort((a,b) => String(readRun(a)?.updatedAt).localeCompare(String(readRun(b)?.updatedAt)));
+                if (candidates.length) {
+                    localStorage.removeItem(candidates[0]);
+                    localStorage.removeItem('bvn26.crash-tail.' + candidates[0].slice(journalPrefix.length));
+                }
+                localStorage.setItem(journalPrefix + sessionId, JSON.stringify({...journal,
+                    checkpoints: journal.checkpoints.slice(-1), stageTransitions: [], memoryHistory: [],
+                    consoleTail: journal.consoleTail.slice(-2)}));
+            } catch (_) { persistence = 'unavailable'; }
+        }
     }
     function journalSignal(kind, detail = '') {
         const message = String(detail).slice(0, 800);
@@ -1032,7 +1103,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             mountedBattlePackBytes: packMemory?.mountedBattlePackBytes ?? null,
             browserJsHeapUsedBytes: Number.isFinite(browserHeap) ? browserHeap : null,
         };
-        const checkpoint = { at: new Date().toISOString(), ...state, memory };
+        const checkpoint = { at: new Date().toISOString(), ...state, memory, recordSeq: ++checkpointSeq };
         const now = performance.now();
         if (state.phase === 'arcade_stage_started'
             || (state.phase === 'sample' && now - lastMemoryHistoryMs >= memoryHistoryIntervalMs)) {
@@ -1060,17 +1131,36 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         }
         journal.checkpoints.push(checkpoint);
         if (journal.checkpoints.length > 12) journal.checkpoints.shift();
+        saveJournal(String(state.phase).includes('during_assist'));
+    };
+    window.bvnCrashEnginePhase = phase => {
+        journal.enginePhase = phase;
+        if (phase === 'running' && !journal.graphics) {
+            try {
+                const gl = canvas.getContext?.('webgl2');
+                if (gl) journal.graphics = {version: gl.getParameter(gl.VERSION), renderer: gl.getParameter(gl.RENDERER),
+                    maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE), maxRenderbufferSize: gl.getParameter(gl.MAX_RENDERBUFFER_SIZE)};
+            } catch (_) { /* A context may already be lost. */ }
+        }
         saveJournal();
     };
-    window.bvnCrashEnginePhase = phase => { journal.enginePhase = phase; saveJournal(); };
+    let lastDownloadStep = -1;
+    window.bvnCrashLoadProgress = (current, total) => {
+        const step = total > 0 ? Math.floor(10 * current / total) : 0;
+        if (step === lastDownloadStep) return;
+        lastDownloadStep = step;
+        journal.download = {current, total, at: new Date().toISOString()};
+        saveJournal();
+    };
     window.addEventListener('pagehide', event => {
         journal.lifecycle = event.persisted ? 'pagehide_cached' : 'pagehide';
         saveJournal();
+        archive?.flush();
     });
     window.addEventListener('pageshow', () => { journal.lifecycle = 'active'; saveJournal(); });
     saveJournal();
     function format(value) {
-        if (value instanceof Error) return value.stack || value.message;
+        if (value instanceof Error || typeof value?.stack === 'string') return value.stack || value.message;
         if (typeof value === 'string') return value;
         try { return JSON.stringify(value) ?? String(value); } catch { return String(value); }
     }
@@ -1084,6 +1174,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         while (entries.length && (entries[0].receivedMonoMs < receivedMonoMs - logWindowMs || entries.length > legacyEntryLimit)) {
             entries.shift();
             dropped++;
+        }
+        if (['warn', 'error', 'session', 'lifecycle'].includes(level)) {
+            journal.consoleTail.push({time: entries.at(-1).value.time, level, message: message.slice(0, 1200)});
+            if (journal.consoleTail.length > 16) journal.consoleTail.shift();
         }
         if (level === 'error') {
             const kind = /out of memory|memory allocation failed|cannot enlarge memory/i.test(message)
@@ -1153,6 +1247,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         }
     }
 
+    const eventEncoder = new TextEncoder();
     function appendRuntimeEvent(event) {
         if (!event || typeof event !== 'object' || Array.isArray(event) || typeof event.type !== 'string') {
             rejectedRuntimeEvents++;
@@ -1166,11 +1261,24 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             receivedAt: new Date().toISOString(),
             receivedMonoMs,
         };
-        const encoder = new TextEncoder();
-        const byteLength = encoder.encode(JSON.stringify(entry)).byteLength;
+        const encoded = JSON.stringify(entry);
+        const byteLength = eventEncoder.encode(encoded).byteLength;
         if (byteLength > runtimeEventLimitBytes) {
             rejectedRuntimeEvents++;
             return false;
+        }
+        archive?.append(encoded, byteLength);
+        if (entry.type === 'match_started') journal.lastInputs = {};
+        if (entry.type === 'input_consumed' && ['p1', 'p2', 1, 2].includes(entry.payload?.slot)) {
+            journal.lastInputs[entry.payload.slot] = entry;
+        }
+        if (milestones.has(entry.type)) {
+            const payload = entry.payload || {};
+            journal.eventTail.push({type: entry.type, seq: entry.seq, at: entry.receivedAt,
+                matchId: entry.matchId, tick: entry.fightTick, slot: payload.slot || payload.ownerSlot,
+                action: payload.action || payload.to, helper: payload.helper, resourcePath: payload.resourcePath,
+                reason: payload.reason, damage: payload.damage, sourceFrame: payload.sourceFrame});
+            if (journal.eventTail.length > 24) journal.eventTail.shift();
         }
         if (typeof entry.buildID === 'string') runtimeBuildId = entry.buildID;
         runtimeEvents.push({ event: entry, byteLength, receivedMonoMs });
@@ -1192,6 +1300,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                 criticalDropped++;
             }
             beginCriticalIncident(entry, receivedMonoMs);
+            archive?.flush();
         }
         trimRuntimeEvents(receivedMonoMs);
         return true;
@@ -1676,8 +1785,9 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     window.addEventListener('error', event => record('error', event.error || event.message || 'Resource failed: ' + event.target?.src), true);
     window.addEventListener('unhandledrejection', event => record('error', event.reason));
     document.addEventListener('visibilitychange', () => {
-        saveJournal();
         record('lifecycle', document.visibilityState);
+        saveJournal();
+        if (document.hidden) archive?.flush();
         appendShellEvent('page_visibility', { state: document.visibilityState });
         if (diagnosticsRequestCallback) diagnosticsRequestCallback('visibility', document.visibilityState);
     });
@@ -1834,6 +1944,13 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             },
             webrtc: rtcSnapshot(),
         };
+        if (window.bvnCrashArchive && previousRuns.length) {
+            // Only read detailed events for the interrupted run, and only on explicit export.
+            const target = interruptedRun || previousRuns[0];
+            report.reloadDiagnostics.savedRun = {runId: target.runId, ...await window.bvnCrashArchive.detail(target.runId)};
+        }
+        if (window.bvnCrashArchive) window.bvnCrashArchive.download(report);
+        else {
         const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
         const link = document.createElement('a');
         link.href = url;
@@ -1842,8 +1959,9 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         link.click();
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 10000);
+        }
         feedback.textContent = snapshotResult.status === 'acknowledged'
-            ? '日志已导出，请在反馈问题时附上文件和复现步骤。同一标签页重新加载后，可导出之前保存的现场。'
+            ? '日志已导出，请在反馈问题时附上文件。'
             : '日志已导出，但游戏状态回执未完成；文件中会标明这一点。';
         if (previousRuns.length) feedback.textContent += ' 已附上重载前的现场记录。';
         if (persistence === 'unavailable') feedback.textContent += ' 浏览器未能保存跨重载记录。';
@@ -1955,6 +2073,7 @@ window.bvnReadEngineMemory = () => ({
 		window.bvnCrashEnginePhase('starting');
 		engine.startGame({
 			'onProgress': function (current, total) {
+				window.bvnCrashLoadProgress(current, total);
 				if (current > 0 && total > 0) {
 					statusProgress.value = current;
 					statusProgress.max = total;

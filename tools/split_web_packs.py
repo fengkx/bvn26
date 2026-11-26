@@ -8,6 +8,8 @@ from pathlib import Path
 import re
 import struct
 
+from diagnostic_roster import publish as publish_diagnostics
+
 # The main scene instantiates these two actors before the menu is interactive.
 BOOT_FIGHTERS = {"minren", "yihu"}
 
@@ -111,6 +113,7 @@ def split(source, project, output):
 
 
 def prepare(stage, project):
+    publish_diagnostics(project, stage)
     manifest = split(stage / "index.pck", project, stage)
     core = manifest.pop("core")
     (stage / "index.pck").unlink()

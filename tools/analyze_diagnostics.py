@@ -11,10 +11,12 @@ import subprocess
 import sys
 from collections import Counter
 from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 from build_web_diagnostics_metadata import sha256_tree
+from diagnostic_roster import actor_names
 
 
 VOLATILE_EVENT_FIELDS = {
@@ -108,6 +110,43 @@ def _players(snapshot: dict[str, Any] | None) -> list[dict[str, Any]]:
     if isinstance(value, list):
         return [player for player in value if isinstance(player, dict)]
     return []
+
+
+@lru_cache(maxsize=1)
+def _diagnostic_names() -> dict[str, str]:
+    return actor_names(Path(__file__).resolve().parents[1] / "godot")
+
+
+def _named_player(player: dict[str, Any]) -> dict[str, Any]:
+    names = _diagnostic_names()
+    result = dict(player)
+    source = player.get("sourceId") or player.get("fighter")
+    if isinstance(source, str):
+        result["sourceId"] = source
+        result["displayName"] = player.get("displayName") or names.get(player.get("resourcePath")) or names.get("fighter:" + source, source)
+    helper = player.get("helper")
+    if isinstance(helper, dict) and helper:
+        source = str(helper.get("sourceId") or helper.get("id", ""))
+        label = helper.get("displayName") or names.get(helper.get("resourcePath")) or names.get("helper:" + source, source)
+        result["helper"] = {**helper, "sourceId": source, "displayName": label}
+    return result
+
+
+def _saved_observation(report: dict[str, Any]) -> dict[str, Any] | None:
+    diagnostics = report.get("reloadDiagnostics") or {}
+    recovery = diagnostics.get("recovery") or {}
+    if report.get("reportKind") == "saved_run":
+        run = diagnostics.get("currentRun")
+    else:
+        run = next((r for r in diagnostics.get("previousRuns", []) if r.get("runId") == recovery.get("runId")), None)
+    if not run:
+        return None
+    checkpoints = run.get("checkpoints") or []
+    last = (checkpoints[-1] if checkpoints else None) or run.get("lastCheckpoint") or recovery.get("lastCheckpoint") or {}
+    return {"runId": run.get("runId"), "buildID": run.get("buildID"), "savedAt": last.get("at") or run.get("updatedAt"),
+            "phase": last.get("phase") or run.get("enginePhase"), "map": last.get("map"), "fightTick": last.get("fightTick"),
+            "players": [_named_player(player) for player in _players(last)], "signals": run.get("signals", []),
+            "performance": last.get("performance"), "memory": last.get("memory"), "cause": "unconfirmed"}
 
 
 def _runtime_events(report: dict[str, Any]) -> list[dict[str, Any]]:
@@ -307,7 +346,7 @@ def analyze_report(report: dict[str, Any], source_path: str | None = None) -> di
         }
     runtime = report.get("runtime", {}) if isinstance(report.get("runtime"), dict) else {}
     snapshot = _runtime_snapshot(report)
-    players = _players(snapshot)
+    players = [_named_player(player) for player in _players(snapshot)]
     build = report.get("build", {}) if isinstance(report.get("build"), dict) else {}
     incidents = runtime.get("criticalIncidents", [])
     if not isinstance(incidents, list):
@@ -315,6 +354,7 @@ def analyze_report(report: dict[str, Any], source_path: str | None = None) -> di
 
     return {
         "source": source_path,
+        "savedObservation": _saved_observation(report),
         "schemaVersion": version,
         "runId": report.get("runId"),
         "startedAt": report.get("startedAt"),
@@ -384,7 +424,7 @@ def analyze_report(report: dict[str, Any], source_path: str | None = None) -> di
             "players": [
                 {
                     key: player.get(key)
-                    for key in ("slot", "fighter", "form", "resourcePath", "action", "sourceFrame", "hp", "energy", "x", "y", "facing", "bs", "hited", "zhanting", "timelinePlaying", "helper", "state")
+                    for key in ("slot", "fighter", "displayName", "sourceId", "form", "resourcePath", "action", "sourceFrame", "hp", "energy", "x", "y", "facing", "bs", "hited", "zhanting", "timelinePlaying", "helper", "state")
                     if key in player
                 }
                 for player in players
@@ -605,7 +645,7 @@ def replay_preflight(report: dict[str, Any], project_root: Path) -> list[str]:
         if not isinstance(player, dict):
             problems.append(f"Missing {slot} player recipe.")
             continue
-        fighter = player.get("fighter")
+        fighter = player.get("sourceId") or player.get("fighter")
         fighter_aliases = dict(fighter_map)
         fighter_aliases.update({fighter_id: fighter_id for fighter_id in fighter_map.values()})
         for fighter_id_candidate in set(fighter_map.values()):
@@ -726,6 +766,13 @@ def _print_result(value: Any, as_json: bool) -> None:
         runtime = value["runtime"]
         print(f"BVN diagnostics schema v{value['schemaVersion']}  run={value.get('runId') or 'unknown'}")
         print(f"Build: {build['status']}  commit={build.get('gitCommit') or 'unknown'}  pck={build.get('pckSha256') or 'unknown'}")
+        saved = value.get("savedObservation")
+        if saved:
+            print(f"Saved run {saved['runId']} at {saved['savedAt']}  map={saved['map']} tick={saved['fightTick']} phase={saved['phase']}")
+            for actor in saved["players"]:
+                helper = actor.get("helper") or {}
+                print(f"  {actor.get('slot')} {actor.get('displayName')} action={actor.get('action')} "
+                      f"assist={helper.get('displayName')} frame={helper.get('sourceFrame')}")
         print(f"Legacy entries: {value['entries']['count']}  combat events: {value['legacyCombatEvents']['count']}  errors: {len(value['entries']['errors'])}")
         for error in value["entries"]["errors"][:5]:
             print(f"Error {error.get('time') or '?'}: {error['message'].replace(chr(10), ' ')[:240]}")
@@ -762,8 +809,8 @@ def _print_result(value: Any, as_json: bool) -> None:
                 print(f"Match: mode={match.get('modeName', match.get('mode'))} map={match.get('map')} tick={match.get('fightTick')}")
             for player in runtime["players"]:
                 helper = player.get("helper")
-                helper_id = helper.get("id") if isinstance(helper, dict) else None
-                print(f"{player.get('slot', '?')}: {player.get('fighter', '?')} action={player.get('action')} frame={player.get('sourceFrame')} hp={player.get('hp')} energy={player.get('energy')} x/y=({player.get('x')},{player.get('y')}) helper={helper_id or 'none'}")
+                helper_id = helper.get("displayName", helper.get("id")) if isinstance(helper, dict) else None
+                print(f"{player.get('slot', '?')}: {player.get('displayName', player.get('fighter', '?'))} action={player.get('action')} frame={player.get('sourceFrame')} hp={player.get('hp')} energy={player.get('energy')} x/y=({player.get('x')},{player.get('y')}) helper={helper_id or 'none'}")
             print(f"Random records: {runtime['randomEventCount']}  clock records: {runtime['clockEventCount']}  last hit: {runtime['lastHit']}")
             if runtime["pause"] is not None:
                 print(f"Pause: {runtime['pause']}")

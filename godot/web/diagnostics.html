@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>对局日志 · 死神 vs 火影 2.6</title>
+<style>
+:root {color-scheme: light dark; font: 16px/1.6 system-ui,sans-serif}
+body {max-width: 36rem; margin: 8vh auto; padding: 0 1.25rem}
+h1 {font-size: 1.6rem} select,button {font:inherit; padding:.55rem; margin:.3rem 0; max-width:100%}
+select {display:block;width:100%} button {cursor:pointer}
+</style>
+<h1>导出对局日志</h1>
+<p>请选择发生问题的时间，下载后把 JSON 文件附在问题反馈中。记录保存在玩游戏时使用的浏览器里。</p>
+<label for="run">本机记录</label><select id="run" disabled></select>
+<button type="button" disabled>下载所选日志</button>
+<p id="status" role="status" aria-live="polite">正在读取本机记录…</p>
+<script src="crash_archive.js"></script>
+<script>
+(async () => {
+    const select = document.querySelector('select'), button = document.querySelector('button');
+    const status = document.getElementById('status');
+    try {
+        const runs = await window.bvnCrashArchive.listRuns();
+        for (const run of runs) {
+            const last = run.checkpoints?.at(-1) || run.lastCheckpoint;
+            const label = new Date(run.updatedAt || run.startedAt).toLocaleString() + ' · ' +
+                (last?.map || last?.scene || run.enginePhase || '启动') + ' · ' + run.runId.slice(0,8);
+            select.add(new Option(label, run.runId));
+        }
+        if (!runs.length) { status.textContent = '这个浏览器里还没有保存的对局日志。'; return; }
+        const useful = runs.find(run => run.checkpoints?.some(c => c.players?.length) || run.lastCheckpoint?.players?.length || run.signals?.length);
+        if (useful) select.value = useful.runId;
+        select.disabled = button.disabled = false;
+        status.textContent = '';
+        button.onclick = async () => {
+            button.disabled = true;
+            try {
+                const report = await window.bvnCrashArchive.recoveredReport(runs.find(run => run.runId === select.value));
+                window.bvnCrashArchive.download(report);
+                status.textContent = report.runtime.events.length ? '日志已导出。' : '已导出现场摘要；这次没有已保存的详细事件。';
+            } catch (_) { status.textContent = '导出失败，请重试。'; }
+            finally { button.disabled = false; }
+        };
+    } catch (_) { status.textContent = '无法读取本机记录，请用玩游戏时的浏览器打开此页，并检查网站数据权限。'; }
+})();
+</script>
+</html>

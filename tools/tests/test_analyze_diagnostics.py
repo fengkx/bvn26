@@ -35,6 +35,15 @@ class AnalyzeDiagnosticsTests(unittest.TestCase):
         self.assertTrue(any("fighter-local" in note and "global pause" in note for note in summary["notes"]))
         self.assertEqual(summary["entries"]["errors"][0]["message"], "test error")
 
+    def test_legacy_crash_uses_the_selected_resource_and_keeps_source_id(self) -> None:
+        checkpoint = {"phase": "sample", "players": [
+            {"slot": "p1", "helper": {"id": "松本", "resourcePath": "res://generated/helpers/jinye"}}]}
+        run = {"runId": "interrupted", "checkpoints": [checkpoint]}
+        report = {"schemaVersion": 2, "reloadDiagnostics": {"recovery": {"runId": "interrupted"}, "previousRuns": [run]}}
+        helper = diagnostics.analyze_report(report)["savedObservation"]["players"][0]["helper"]
+        self.assertEqual((helper["sourceId"], helper["displayName"]), ("松本", "山中井野"))
+        self.assertNotIn("displayName", checkpoint["players"][0]["helper"])
+
     def test_summarizes_v2_match_build_events_and_replay_gaps(self) -> None:
         report = self._v2_report()
         summary = diagnostics.analyze_report(report)

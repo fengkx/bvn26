@@ -47,6 +47,8 @@ func _ready() -> void:
 	source_viewport.handle_input_locally = false
 	source_viewport.size_2d_override_stretch = true
 	source_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	if _ios_web:
+		source_viewport.set_meta("clip_offscreen_caches", true)
 	add_child(source_viewport)
 	presentation = TextureRect.new()
 	presentation.mouse_filter = Control.MOUSE_FILTER_IGNORE

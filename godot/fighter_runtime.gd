@@ -1950,7 +1950,11 @@ func _execute_summon_event(event: Dictionary) -> void:
 	helper_spawn_requested.emit()
 	last_event = "summon_%s" % event.get("helper_id", "helper")
 	if RollbackPresentation.should_emit_combat_console_event(self):
-		print("COMBAT_EVENT ", JSON.stringify(snapshot()))
+		# The move's authored helper can differ from the player's selected assist.
+		var observation := snapshot()
+		observation["event"] = "summon_requested"
+		observation["sourceCommandHelperId"] = event.get("helper_id")
+		print("COMBAT_EVENT ", JSON.stringify(observation))
 
 
 func _apply_presentation_events() -> void:
