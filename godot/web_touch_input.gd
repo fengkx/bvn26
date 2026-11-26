@@ -10,6 +10,7 @@ var window: JavaScriptObject
 var callback: JavaScriptObject
 var mode := ""
 var transform_ready := false
+var transform_charged := false
 var mask := 0
 var pending: Array[int] = []
 
@@ -72,15 +73,8 @@ func _physics_process(_delta: float) -> void:
 		_clear()
 		mode = next_mode
 		transform_ready = false
+		transform_charged = false
 		window.bvnTouchSetMode(mode)
-	var available := false
-	if mode == "fight":
-		available = game.touch_transform_ready("p1")
-	elif mode == "online-fight" and surface.online_lobby.coordinator != null:
-		available = surface.online_lobby.coordinator.local_touch_transform_ready()
-	if available != transform_ready:
-		transform_ready = available
-		window.bvnTouchSetTransformReady(available)
 	if pending.is_empty():
 		return
 	var next := pending.pop_front() as int
@@ -109,3 +103,18 @@ func _physics_process(_delta: float) -> void:
 			event.physical_keycode = code
 			event.pressed = bool(mask & (1 << i))
 			surface.source_viewport.push_input(event, true)
+
+
+func _process(_delta: float) -> void:
+	var ready := false
+	var charged := false
+	if mode == "fight":
+		ready = surface.game.touch_transform_ready("p1")
+		charged = surface.game.touch_transform_charged("p1")
+	elif mode == "online-fight" and surface.online_lobby.coordinator != null:
+		ready = surface.online_lobby.coordinator.local_touch_transform_ready()
+		charged = ready
+	if ready != transform_ready or charged != transform_charged:
+		transform_ready = ready
+		transform_charged = charged
+		window.bvnTouchSetTransformReady(ready, charged)

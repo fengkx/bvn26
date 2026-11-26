@@ -276,7 +276,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
 @media (orientation: landscape) {
     #player.touch-playing #touch-pad:not([hidden]) {
         display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none;
-        --touch-key: max(44px, calc(clamp(44px, 5.52vw, 48px) * var(--action-scale, 1)));
+        --touch-key: max(44px, min(calc(clamp(44px, 5.52vw, 48px) * var(--action-scale, 1)), 18dvh));
     }
     #player.touch-playing.touch-layout #viewport {
         position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -354,12 +354,13 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
 #touch-actions [data-slot=o] { --x: 3.25; --y: 1.05; }
 #touch-actions [data-slot=l] { --x: 3.7; --y: 2.2; }
 #touch-actions #touch-transform {
-    position: absolute; left: 50%; top: auto; bottom: calc(100% + min(var(--touch-key), 9dvh));
+    position: absolute; left: 50%; top: auto; bottom: calc(100% + min(var(--touch-key), 7dvh));
     transform: translateX(-50%); width: calc(1.65 * var(--touch-key)); height: max(44px, calc(.8 * var(--touch-key)));
     border-radius: 100px; border-color: #dfad58; background: #312415d9; color: #ffdc99;
     font: 650 16px/1 system-ui;
 }
 #touch-actions #touch-transform[aria-pressed=true] { background: #76521e; }
+#touch-actions #touch-transform[aria-disabled=true] { opacity: .65; }
 #touch-settings {
     position: absolute; z-index: 8; top: max(6px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%);
     width: min(430px, 94%); box-sizing: border-box; max-height: 92%; overflow: auto;
@@ -945,7 +946,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     const journal = {
         runId: sessionId, startedAt, userAgent: navigator.userAgent,
         navigation: performance.getEntriesByType?.('navigation')[0]?.type || 'unknown',
-        signals: [], checkpoints: [], lifecycle: 'active', enginePhase: 'bootstrap',
+        signals: [], checkpoints: [], stageTransitions: [], peakVideo: null,
+        lifecycle: 'active', enginePhase: 'bootstrap',
     };
     const previousRuns = [];
     let persistence = 'available';
@@ -1017,7 +1019,19 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     window.bvnCrashCheckpoint = serialized => {
         if (typeof serialized !== 'string' || serialized.length > 8192) return;
         const state = JSON.parse(serialized);
-        journal.checkpoints.push({ at: new Date().toISOString(), ...state });
+        const checkpoint = { at: new Date().toISOString(), ...state };
+        if (state.arcadeStageIndex != null && state.phase !== 'sample') {
+            journal.stageTransitions.push(checkpoint);
+            if (journal.stageTransitions.length > 12) journal.stageTransitions.shift();
+        }
+        if (Number.isFinite(state.videoBytes) && state.videoBytes > (journal.peakVideo?.videoBytes ?? 0)) {
+            journal.peakVideo = {
+                at: checkpoint.at, videoBytes: state.videoBytes, resources: state.resources,
+                arcadeStageIndex: state.arcadeStageIndex, fightTick: state.fightTick, phase: state.phase,
+                canvas: [canvas.width, canvas.height],
+            };
+        }
+        journal.checkpoints.push(checkpoint);
         if (journal.checkpoints.length > 12) journal.checkpoints.shift();
         saveJournal();
     };
@@ -2035,9 +2049,10 @@ function initializeTouchControls() {
     transformButton.textContent = '变身';
     transformButton.hidden = true;
     actions.append(transformButton);
-    window.bvnTouchSetTransformReady = ready => {
-        transformButton.hidden = !ready || !['fight', 'online-fight'].includes(mode);
-        if (transformButton.hidden) {
+    window.bvnTouchSetTransformReady = (ready, charged = ready) => {
+        transformButton.hidden = !charged || !['fight', 'online-fight'].includes(mode);
+        transformButton.setAttribute('aria-disabled', String(!ready));
+        if (!ready || transformButton.hidden) {
             for (const [id, slot] of touches) if (slot === 'transform') touches.delete(id);
             publish();
         }
@@ -2117,7 +2132,9 @@ function initializeTouchControls() {
         const group = event.currentTarget;
         const target = document.elementFromPoint(event.clientX, event.clientY);
         const button = target?.closest('[data-slot]');
-        if (button && group.contains(button)) touches.set(event.pointerId, button.dataset.slot);
+        if (button && group.contains(button) && button.getAttribute('aria-disabled') !== 'true') {
+            touches.set(event.pointerId, button.dataset.slot);
+        }
         else touches.delete(event.pointerId);
         publish();
     }

@@ -985,8 +985,14 @@ test('recovers a killed renderer in the same tab and separates observed pagehide
         return JSON.parse(await page.getBlob().text()).reloadDiagnostics;
     }
     const first = open('fight');
+    first.window.bvnCrashCheckpoint(JSON.stringify({
+        fightTick: 0, phase: 'preparing_arcade_stage', arcadeStageIndex: 4, videoBytes: 150000000, resources: 617,
+    }));
     for (let tick = 0; tick < 15; tick++) {
-        first.window.bvnCrashCheckpoint(JSON.stringify({ fightTick: tick, phase: 'sample', scene: '游戏场景' }));
+        first.window.bvnCrashCheckpoint(JSON.stringify({
+            fightTick: tick, phase: 'sample', scene: '游戏场景', arcadeStageIndex: 4,
+            videoBytes: 145000000, resources: 615,
+        }));
     }
     first.context.console.error('RuntimeError: memory access out of bounds');
     // A discarded renderer never sends pagehide.
@@ -997,6 +1003,11 @@ test('recovers a killed renderer in the same tab and separates observed pagehide
     assert.equal(saved.lifecycle, 'active');
     assert.equal(saved.checkpoints.length, 12);
     assert.equal(saved.checkpoints.at(-1).fightTick, 14);
+    assert.equal(saved.stageTransitions.length, 1);
+    assert.equal(saved.stageTransitions[0].phase, 'preparing_arcade_stage');
+    assert.equal(saved.peakVideo.videoBytes, 150000000);
+    assert.equal(saved.peakVideo.resources, 617);
+    assert.equal(saved.peakVideo.arcadeStageIndex, 4);
     assert.equal(saved.signals.at(-1).kind, 'runtime_trap');
     for (const handler of second.windowHandlers.get('pagehide')) handler({ persisted: false });
     const third = open('another-reload');

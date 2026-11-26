@@ -1304,12 +1304,16 @@ func _dispatch_catalog(context: String, input_state: Dictionary) -> bool:
 	return _try_start_action(label)
 
 
-func can_input_transformation() -> bool:
-	const chord := {"attack": true, "jump": true}
-	if not source_body_available or health <= 0 or _combat_input_locked() or "万解" in disabled_actions:
+func has_charged_transformation() -> bool:
+	if not source_body_available or health <= 0 or "万解" in disabled_actions:
 		return false
 	var command := _commands.entry("万解")
-	if not command.get("has_timeline", false) or energy < float(command.get("energy_min", 300)):
+	return command.get("has_timeline", false) and energy >= float(command.get("energy_min", 300))
+
+
+func can_input_transformation() -> bool:
+	const chord := {"attack": true, "jump": true}
+	if not has_charged_transformation() or _combat_input_locked():
 		return false
 	if action in ["站立", "走"]:
 		return true
