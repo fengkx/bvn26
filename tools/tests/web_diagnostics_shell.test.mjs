@@ -87,7 +87,7 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, 
     };
     const window = {
         history: storage.history,
-        devicePixelRatio: 2,
+        devicePixelRatio: device.devicePixelRatio ?? 2,
         innerWidth: 1280,
         innerHeight: 720,
         RTCPeerConnection: rtcConstructor,
@@ -956,6 +956,22 @@ test('mobile controls stay off on desktop including touch laptops', () => {
     }
 });
 
+test('caps Apple mobile canvas resolution while retaining CSS dimensions', () => {
+    for (const [device, expectedRatio] of [
+        [{ userAgent: 'iPhone', maxTouchPoints: 5, devicePixelRatio: 3 }, 2],
+        [{ platform: 'MacIntel', maxTouchPoints: 5, standalone: false, devicePixelRatio: 3 }, 2],
+        [{ userAgent: 'iPad', maxTouchPoints: 5, devicePixelRatio: 1 }, 1],
+        [{ userAgent: 'Android', maxTouchPoints: 5, devicePixelRatio: 3 }, 3],
+        [{ platform: 'MacIntel', maxTouchPoints: 0, devicePixelRatio: 3 }, 3],
+    ]) {
+        const { window, elements } = createPage(null, null, undefined, device);
+        assert.equal(window.bvnCanvasSize.devicePixelRatio, device.devicePixelRatio);
+        assert.equal(window.bvnCanvasSize.renderPixelRatio, expectedRatio);
+        assert.equal(elements.get('canvas').height, 600 * expectedRatio);
+        assert.equal(elements.get('canvas').style.height, '600px');
+    }
+});
+
 test('page zoom gestures are cancelled only inside fullscreen play', async () => {
     const { elements, document } = createPage(null);
     const player = elements.get('player');
@@ -994,6 +1010,9 @@ test('recovers a killed renderer in the same tab and separates observed pagehide
             videoBytes: 145000000, resources: 615,
         }));
     }
+    first.window.bvnCrashCheckpoint(JSON.stringify({
+        fightTick: 15, phase: 'screen_flash_during_assist', arcadeStageIndex: 4, videoBytes: 145000000,
+    }));
     first.context.console.error('RuntimeError: memory access out of bounds');
     // A discarded renderer never sends pagehide.
     tab.removeItem('bvn26.crash-history');
@@ -1002,7 +1021,8 @@ test('recovers a killed renderer in the same tab and separates observed pagehide
     const saved = (await report(second)).previousRuns[0];
     assert.equal(saved.lifecycle, 'active');
     assert.equal(saved.checkpoints.length, 12);
-    assert.equal(saved.checkpoints.at(-1).fightTick, 14);
+    assert.equal(saved.checkpoints.at(-1).fightTick, 15);
+    assert.equal(saved.checkpoints.at(-1).phase, 'screen_flash_during_assist');
     assert.equal(saved.stageTransitions.length, 1);
     assert.equal(saved.stageTransitions[0].phase, 'preparing_arcade_stage');
     assert.equal(saved.peakVideo.videoBytes, 150000000);
@@ -1018,7 +1038,7 @@ test('recovers a killed renderer in the same tab and separates observed pagehide
         retry.window.bvnCrashEnginePhase('starting');
         const { recovery } = await report(retry);
         assert.equal(recovery.runId, 'fight');
-        assert.equal(recovery.lastCheckpoint.fightTick, 14);
+        assert.equal(recovery.lastCheckpoint.fightTick, 15);
         assert.equal(recovery.cause, 'unconfirmed');
     }
     const blocked = createPage(sidecar, null, undefined, {}, {

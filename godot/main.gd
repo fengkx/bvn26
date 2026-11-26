@@ -460,6 +460,7 @@ func _web_checkpoint(phase: String, detail: Dictionary = {}) -> void:
 		"resources": Performance.get_monitor(Performance.OBJECT_RESOURCE_COUNT),
 		"godotStaticBytes": Performance.get_monitor(Performance.MEMORY_STATIC),
 		"videoBytes": Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED),
+		"rendering": _diagnostic_rendering(),
 	}
 	if session.root_label == "游戏场景" and is_instance_valid(naruto) and is_instance_valid(ichigo):
 		state["players"] = [_diagnostic_player(naruto, naruto_helper), _diagnostic_player(ichigo, ichigo_helper)]
@@ -1716,6 +1717,7 @@ func _on_helper_spawn_requested(fighter: FighterRuntime) -> void:
 	# request immediately; the end-of-tick fallback remains for older callers.
 	var spawn := fighter.helper_spawn.duplicate(true)
 	fighter.helper_spawn.clear()
+	_web_checkpoint("helper_before_activate", {"helper": helper.helper_id, "ownerSlot": fighter.player_slot})
 	helper.activate(spawn, fighter)
 	diagnostics.push_event("helper_lifecycle", {
 		"event": "activate", "ownerSlot": fighter.player_slot,
@@ -1967,8 +1969,8 @@ func _diagnostic_rendering() -> Dictionary:
 	rendering.compositeSize = [surface.physical_output.x, surface.physical_output.y]
 	rendering.rasterSize = [surface.raster_size.x, surface.raster_size.y]
 	rendering.rasterPixels = surface.raster_size.x * surface.raster_size.y
-	if OS.has_feature("web"):
-		rendering.webRasterPixelBudget = RenderSurface.WEB_RASTER_PIXEL_BUDGET
+	if surface.web_raster_pixel_budget > 0:
+		rendering.webRasterPixelBudget = surface.web_raster_pixel_budget
 	return rendering
 
 
@@ -2131,6 +2133,11 @@ func _setup_screen_flash() -> void:
 
 
 func _start_screen_flash(color_rgb24: int) -> void:
+	if OS.has_feature("web") and (
+		(is_instance_valid(naruto_helper) and naruto_helper.attacking)
+		or (is_instance_valid(ichigo_helper) and ichigo_helper.attacking)
+	):
+		_web_checkpoint("screen_flash_during_assist", {"flashColor": color_rgb24})
 	var tint := Color(
 		float((color_rgb24 >> 16) & 0xFF) / 255.0,
 		float((color_rgb24 >> 8) & 0xFF) / 255.0,

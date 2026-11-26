@@ -13,11 +13,17 @@ const ONLINE_LOBBY := preload("res://online_lobby.gd")
 # MEDIUM (~1200×800) — while still running sample_grid² taps per fragment.
 # Lower raster MP does not by itself prove a sustained 30 Hz.
 const WEB_RASTER_PIXEL_BUDGET: int = 3_840_000
+# Full-screen effects can also allocate a screen copy at this raster size.
+# On iOS, bound each of those targets to the 600×400 stage at a 2× sample grid.
+const IOS_WEB_RASTER_PIXEL_BUDGET: int = 960_000
+const IOS_WEB_MAX_SAMPLE_GRID: int = 2
 var source_viewport: SubViewport
 var presentation: TextureRect
 var game: Control
 var online_lobby: OnlineLobby
 var sample_grid: int = 4
+var web_raster_pixel_budget: int = 0
+var _ios_web := false
 var texture_limit: int = 0
 var physical_output: Vector2i = Vector2i.ONE
 var raster_size: Vector2i = Vector2i.ONE
@@ -31,6 +37,11 @@ func _ready() -> void:
 	if OS.has_feature("web"):
 		texture_limit = int(JavaScriptBridge.eval("(() => { const gl = document.getElementById('canvas').getContext('webgl2'); const viewport = gl.getParameter(gl.MAX_VIEWPORT_DIMS); return Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), gl.getParameter(gl.MAX_RENDERBUFFER_SIZE), viewport[0], viewport[1]); })()"))
 		assert(texture_limit > 0, "WebGL render limits unavailable")
+		var browser := JavaScriptBridge.get_interface("window")
+		_ios_web = browser != null and browser.bvnAppleMobile == true
+		web_raster_pixel_budget = IOS_WEB_RASTER_PIXEL_BUDGET if _ios_web else WEB_RASTER_PIXEL_BUDGET
+		if _ios_web:
+			sample_grid = mini(sample_grid, IOS_WEB_MAX_SAMPLE_GRID)
 	source_viewport = SubViewport.new()
 	source_viewport.disable_3d = true
 	source_viewport.handle_input_locally = false
@@ -83,6 +94,8 @@ func recreate_game_scene(presentation_only: bool = false) -> Control:
 func apply_quality(quality: String) -> void:
 	assert(rules.sample_grid.has(quality), "Unsupported source quality: " + quality)
 	sample_grid = int(rules.sample_grid[quality])
+	if _ios_web:
+		sample_grid = mini(sample_grid, IOS_WEB_MAX_SAMPLE_GRID)
 	_resize_surface()
 
 
@@ -109,14 +122,14 @@ func _resize_surface() -> void:
 	if texture_limit > 0:
 		# Keep the same presentation resolution at every quality, including when
 		# a high-DPI canvas would exceed the WebGL attachment size limit at HIGH.
-		var maximum_grid := int(rules.sample_grid.values().max())
+		var maximum_grid := IOS_WEB_MAX_SAMPLE_GRID if _ios_web else int(rules.sample_grid.values().max())
 		var maximum_output := texture_limit / maximum_grid
 		var fit := minf(1.0, float(maximum_output) / float(maxi(physical_size.x, physical_size.y)))
 		physical_size = Vector2i(Vector2(physical_size) * fit).max(Vector2i.ONE)
-	if OS.has_feature("web"):
+	if web_raster_pixel_budget > 0:
 		# Perf budget, not an OOM clamp: cap physical_size * sample_grid megapixels.
 		# physical_output below is this post-budget composite size.
-		physical_size = fit_physical_to_raster_budget(physical_size, sample_grid, WEB_RASTER_PIXEL_BUDGET)
+		physical_size = fit_physical_to_raster_budget(physical_size, sample_grid, web_raster_pixel_budget)
 	physical_output = physical_size
 	raster_size = physical_size * sample_grid
 	source_viewport.size_2d_override = logical_size

@@ -1020,7 +1020,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         if (typeof serialized !== 'string' || serialized.length > 8192) return;
         const state = JSON.parse(serialized);
         const checkpoint = { at: new Date().toISOString(), ...state };
-        if (state.arcadeStageIndex != null && state.phase !== 'sample') {
+        if (state.arcadeStageIndex != null && [
+            'preparing_arcade_stage', 'loading_arcade_fighters', 'loading_arcade_map',
+            'arcade_stage_started', 'opening_arcade_result',
+        ].includes(state.phase)) {
             journal.stageTransitions.push(checkpoint);
             if (journal.stageTransitions.length > 12) journal.stageTransitions.shift();
         }
@@ -1028,7 +1031,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             journal.peakVideo = {
                 at: checkpoint.at, videoBytes: state.videoBytes, resources: state.resources,
                 arcadeStageIndex: state.arcadeStageIndex, fightTick: state.fightTick, phase: state.phase,
-                canvas: [canvas.width, canvas.height],
+                canvas: [canvas.width, canvas.height], rasterSize: state.rendering?.rasterSize,
             };
         }
         journal.checkpoints.push(checkpoint);
@@ -1658,12 +1661,17 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         journalSignal('webgl_context_lost');
         record('error', 'WebGL context lost');
     });
+    // iPadOS can advertise a desktop Mac UA. Windows touchscreens remain desktop clients.
+    const appleMobile = /iPad|iPhone|iPod/i.test(navigator.userAgent)
+        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && 'standalone' in navigator);
+    window.bvnAppleMobile = appleMobile;
     const viewport = document.getElementById('viewport');
     function fitCanvasToViewport() {
         const rect = viewport.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
-        const width = Math.max(1, Math.round(rect.width * dpr));
-        const height = Math.max(1, Math.round(rect.height * dpr));
+        const renderDpr = appleMobile ? Math.min(dpr, 2) : dpr;
+        const width = Math.max(1, Math.round(rect.width * renderDpr));
+        const height = Math.max(1, Math.round(rect.height * renderDpr));
         canvas.style.width = `${rect.width}px`;
         canvas.style.height = `${rect.height}px`;
         if (canvas.width !== width) canvas.width = width;
@@ -1672,6 +1680,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             viewport: { width: rect.width, height: rect.height },
             canvas: { width: canvas.width, height: canvas.height },
             devicePixelRatio: dpr,
+            renderPixelRatio: renderDpr,
         };
         record('canvasresize', window.bvnCanvasSize);
     }
@@ -1682,10 +1691,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     fitCanvasToViewport();
     record('session', 'Web player started');
     const available = document.fullscreenEnabled && player.requestFullscreen;
-    // iPadOS can advertise a desktop Mac UA. Windows touchscreens remain desktop clients.
-    const mobilePlatform = /Android|iPad|iPhone|iPod/i.test(navigator.userAgent)
-        || navigator.userAgentData?.mobile === true
-        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && 'standalone' in navigator);
+    const mobilePlatform = appleMobile || /Android/i.test(navigator.userAgent)
+        || navigator.userAgentData?.mobile === true;
     const touchDevice = navigator.maxTouchPoints > 0 && mobilePlatform;
     window.bvnMobileGamepadEnabled = touchDevice;
     if (touchDevice) {
