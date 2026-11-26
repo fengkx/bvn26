@@ -364,6 +364,11 @@ class WebBuildPipelineTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (repo / "godot/web/shell.html").write_text("<html></html>\n", encoding="utf-8")
+            for asset in ("battle_packs.js", "crash_archive.js", "diagnostics.html"):
+                shutil.copyfile(ROOT / "godot/web" / asset, repo / "godot/web" / asset)
+            (repo / "godot/generated/fighters").mkdir()
+            (repo / "godot/generated/forms").mkdir()
+            (repo / "godot/generated/main/character_selection/footer.json").write_text("{}")
             (repo / "godot/generated/main/character_selection/available.json").write_text(
                 '{"fighters": {}, "helpers": {}}\n', encoding="utf-8"
             )
@@ -385,6 +390,8 @@ class WebBuildPipelineTests(unittest.TestCase):
                 "build_web.sh",
                 "bind_web_export_template.py",
                 "optimize_web_pack_loader.py",
+                "split_web_packs.py",
+                "diagnostic_roster.py",
                 "web_import_cache.py",
                 "build_web_diagnostics_metadata.py",
                 "run_godot_checked.py",
@@ -455,7 +462,7 @@ class WebBuildPipelineTests(unittest.TestCase):
                 (tools / "test_online_lobby_ui.py").write_text("print('LOBBY_FIXTURE_OK')\n")
                 fake_godot.write_text(textwrap.dedent("""\
                     #!/usr/bin/env python3
-                    import hashlib, json, os, sys
+                    import hashlib, json, os, struct, sys
                     from pathlib import Path
                     args = sys.argv[1:]
                     if '--version' in args:
@@ -474,8 +481,13 @@ class WebBuildPipelineTests(unittest.TestCase):
                         import build_web_diagnostics_metadata as metadata
                         assert embedded['sourceTreeSha256'] == metadata.sha256_tree(project, exclude={metadata.METADATA_RELATIVE_PATH})
                         output = Path(args[args.index('--export-release') + 2])
-                        for suffix in ['.html', '.js', '.wasm', '.pck']:
-                            output.with_suffix(suffix).write_bytes(b'exported fixture')
+                        pack = bytearray(116)
+                        struct.pack_into('<4sI', pack, 0, b'GDPC', 4)
+                        struct.pack_into('<IQQ', pack, 20, 2, 112, 112)
+                        output.with_suffix('.pck').write_bytes(pack)
+                        output.with_suffix('.wasm').write_bytes(b'wasm fixture')
+                        config = {'fileSizes': {'index.pck': len(pack), 'index.wasm': 12}}
+                        output.write_text('const GODOT_CONFIG = ' + json.dumps(config) + ';\\n/* BVN_PACK_RUNTIME */')
                         output.with_suffix('.js').write_text(
                             "const tr = getTrackedResponse(response, tracker[file]); buffer: buf, "
                             "copy_to_fs:function(path,buffer){FS.writeFile(path,new Uint8Array(buffer))} "
@@ -519,7 +531,10 @@ class WebBuildPipelineTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                 self.assertIn("WEB_BUILD_METADATA_OK", result.stdout)
                 sidecar = json.loads((output / "build-metadata.json").read_text())
-                self.assertEqual(sidecar["pckSha256"], hashlib.sha256(b"exported fixture").hexdigest())
+                core = next(output.glob("core-*.pck"))
+                self.assertEqual(sidecar["pckSha256"], hashlib.sha256(core.read_bytes()).hexdigest())
+                self.assertTrue((output / "diagnostics.html").is_file())
+                self.assertTrue((output / "crash_archive.js").is_file())
                 self.assertFalse(any(path.name.startswith("bvn26-web-build.") for path in build_tmp.iterdir()))
                 return
 

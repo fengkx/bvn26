@@ -41,7 +41,45 @@ func _run() -> void:
 			"timeline_sha256": timeline_source.sha256,
 		}))
 
+	# Exercise the reported lineup through the normal summon input. The authored
+	# command and helper asset have different source names from the selection UI.
+	game._replace_selected_actors(["日番谷", "一护"], ["松本", "魂"])
+	game._load_selected_stage("楼顶")
+	game._enter_current_fight(3)
+	for tick in 700:
+		game._advance_fight()
+		if not game.battle_intro.active:
+			break
+		if tick % 10 == 0:
+			await process_frame
+	var activations: Array[Dictionary] = []
+	game.diagnostics.event_recorded.connect(func(event: Dictionary) -> void:
+		if event.type == "helper_lifecycle" and event.payload.ownerSlot == "p1":
+			activations.append(event.payload))
+	game.naruto.energy = 300.0
+	game.session.touch_slots.o = true
+	for tick in 15:
+		game._advance_fight()
+		if game.naruto_helper.attacking:
+			break
+	game.session.touch_slots.erase("o")
+	assert(activations.size() == 1)
+	var player: Dictionary = game._diagnostic_player(game.naruto, game.naruto_helper)
+	assert(player.displayName == "日番谷·东狮郎")
+	assert(player.helper.attacking and player.helper.id == "jinye")
+	assert(player.helper.displayName == "山中井野" and player.helper.sourceId == "松本")
+	assert(activations[0].helper == player.helper.displayName)
+	assert(activations[0].sourceId == player.helper.sourceId)
+	assert(activations[0].resourcePath == player.helper.resourcePath)
+
+	game._goto_menu()
+	for node in game.find_children("*", "", true, false):
+		if node is AudioStreamPlayer or node is AudioStreamPlayer2D:
+			node.stop()
+			node.stream = null
+	await process_frame
 	game.queue_free()
 	await process_frame
+	await create_timer(0.2).timeout
 	print("SAKURA_INO_HELPER_BINDING_SMOKE_OK")
 	quit()

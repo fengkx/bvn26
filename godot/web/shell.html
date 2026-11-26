@@ -958,6 +958,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     journal.longTasks = [];
     journal.lastInputs = {};
     journal.eventTail = [];
+    journal.matchHistory = [];
+    let lastIncidentSave = -Infinity;
     const milestones = new Set(['match_started', 'match_ended', 'fight_started', 'action_transition',
         'helper_lifecycle', 'hit_settled', 'super_state', 'pause_state', 'diagnostic_exception',
         'page_visibility', 'rtc_connection_state']);
@@ -966,7 +968,11 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         enginePhase: journal.enginePhase, lifecycle: journal.lifecycle, buildID: journal.buildID,
         build: journal.build, lastCheckpoint: journal.checkpoints.at(-1), snapshot: latestRuntimeSnapshot,
         signals: journal.signals, consoleTail: journal.consoleTail, longTasks: journal.longTasks,
-        lastInputs: journal.lastInputs, eventTail: journal.eventTail, device: journal.device, graphics: journal.graphics,
+        lastInputs: journal.lastInputs, eventTail: journal.eventTail, matchHistory: journal.matchHistory,
+        device: journal.device, graphics: journal.graphics, download: journal.download, visibility: journal.visibility,
+        observedEvents: archive.status.observedEvents, lastIncident: journal.lastIncident,
+        ...(persistence === 'unavailable' && {checkpoints: journal.checkpoints, memoryHistory: journal.memoryHistory,
+            stageTransitions: journal.stageTransitions, peakVideo: journal.peakVideo, canvas: journal.canvas}),
     }));
     journal.device = {language: navigator.language, devicePixelRatio: window.devicePixelRatio,
         hardwareConcurrency: navigator.hardwareConcurrency ?? null, maxTouchPoints: navigator.maxTouchPoints ?? null,
@@ -986,6 +992,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     try {
         historyIds = JSON.parse(sessionStorage.getItem(tabHistoryKey)) || historyIds;
     } catch (_) { /* The navigation entry also survives same-tab reloads. */ }
+    historyIds = Array.isArray(historyIds) ? historyIds.filter(id => typeof id === 'string').slice(0, 3) : [];
     const readRun = key => {
         try {
             const run = JSON.parse(localStorage.getItem(key));
@@ -993,28 +1000,28 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         }
         catch (_) { return null; }
     };
-    for (const id of Array.isArray(historyIds) ? historyIds.slice(0, 3) : []) {
+    for (const id of historyIds) {
         const run = readRun(journalPrefix + id);
         if (run?.runId === id) previousRuns.push(run);
     }
-    const unfinished = previousRuns.filter(run => run.lifecycle === 'active');
-    const interruptedRun = unfinished.find(run => run.checkpoints?.length)
-        || unfinished.find(run => run.signals?.length || run.enginePhase === 'starting');
-    const lastSignal = interruptedRun?.signals?.at(-1);
-    const recovery = interruptedRun ? {
-        runId: interruptedRun.runId,
-        observation: 'reload_without_observed_pagehide',
-        browserReportedDiscard: interruptedRun === previousRuns[0] && typeof document.wasDiscarded === 'boolean'
-            ? document.wasDiscarded : null,
-        lastSavedAt: interruptedRun.updatedAt,
-        lastCheckpoint: interruptedRun.checkpoints.at(-1) || null,
-        lastSignal: lastSignal || null,
-        cause: 'unconfirmed',
-    } : null;
+    function interruptedObservation(runs) {
+        const active = runs.filter(run => run.lifecycle === 'active');
+        const run = active.find(r => r.checkpoints?.some(c => c.players?.length) || r.lastCheckpoint?.players?.length)
+            || active.find(r => r.checkpoints?.length || r.lastCheckpoint)
+            || active.find(r => r.signals?.length || r.enginePhase === 'starting');
+        if (!run) return null;
+        return {runId: run.runId, observation: 'reload_without_observed_pagehide',
+            browserReportedDiscard: run.runId === historyIds[0] && typeof document.wasDiscarded === 'boolean'
+                ? document.wasDiscarded : null,
+            lastSavedAt: run.updatedAt, lastSignal: run.signals?.at(-1) || null,
+            lastCheckpoint: window.bvnCrashArchive?.lastCheckpoint(run) || run.checkpoints?.at(-1) || null,
+            cause: 'unconfirmed'};
+    }
+    const recovery = interruptedObservation(previousRuns);
     if (recovery) feedback.textContent = '已找到上次中断前的现场。点击「导出日志」可一起保存。';
     // Keep the latest interrupted game through repeated reloads of the loading screen.
-    const recentIds = [sessionId, ...previousRuns.map(run => run.runId)].slice(0, 3);
-    if (interruptedRun && !recentIds.includes(interruptedRun.runId)) recentIds[2] = interruptedRun.runId;
+    const recentIds = [sessionId, ...historyIds].slice(0, 3);
+    if (recovery && !recentIds.includes(recovery.runId)) recentIds[2] = recovery.runId;
     let linked = false;
     try { sessionStorage.setItem(tabHistoryKey, JSON.stringify(recentIds)); linked = true; } catch (_) {}
     try {
@@ -1042,23 +1049,24 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     let savedCheckpointSeq = 0;
     let checkpointSeq = 0;
     function saveJournal(compact = false) {
-        if (persistence !== 'available') return;
         journal.updatedAt = new Date().toISOString();
         journal.visibility = document.visibilityState;
         journal.buildID = runtimeBuildId || buildSidecar?.buildID || null;
         journal.canvas = [canvas.width, canvas.height];
         journal.archive = archive?.status || {state: 'unavailable'};
+        journal.observedEvents = archive?.status.observedEvents;
         if (buildSidecar) journal.build = {
             status: runtimeBuildId ? (runtimeBuildId === buildSidecar.buildID ? 'match' : 'mismatch') : 'unknown',
             buildID: runtimeBuildId, sidecarBuildID: buildSidecar.buildID, gitCommit: buildSidecar.gitCommit,
-            resourceVersion: buildSidecar.resourceVersion, pckSha256: buildSidecar.pckSha256,
+            resourceVersion: buildSidecar.resourceVersion, pckSha256: buildSidecar.pckSha256, pckHashKind: buildSidecar.pckHashKind,
         };
+        if (persistence !== 'available') { archive?.markJournalDirty(); return; }
         try {
             if (compact && window.bvnCrashArchive && performance.now() - lastFullSaveMs < 1000) {
                 localStorage.setItem('bvn26.crash-tail.' + sessionId, JSON.stringify({
                     runId: sessionId, updatedAt: journal.updatedAt, peakVideo: journal.peakVideo,
                     checkpoints: journal.checkpoints.filter(c => c.recordSeq > savedCheckpointSeq),
-                    lastInputs: journal.lastInputs, eventTail: journal.eventTail,
+                    lastInputs: journal.lastInputs, eventTail: journal.eventTail, observedEvents: journal.observedEvents,
                 }));
             } else {
                 localStorage.setItem(journalPrefix + sessionId, JSON.stringify(journal));
@@ -1079,7 +1087,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                 localStorage.setItem(journalPrefix + sessionId, JSON.stringify({...journal,
                     checkpoints: journal.checkpoints.slice(-1), stageTransitions: [], memoryHistory: [],
                     consoleTail: journal.consoleTail.slice(-2)}));
-            } catch (_) { persistence = 'unavailable'; }
+            } catch (_) { persistence = 'unavailable'; archive?.markJournalDirty(); }
         }
     }
     function journalSignal(kind, detail = '') {
@@ -1110,7 +1118,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             journal.memoryHistory.push({
                 at: checkpoint.at, elapsedMs: Math.round(now), phase: state.phase,
                 arcadeStageIndex: state.arcadeStageIndex, fightTick: state.fightTick,
-                videoBytes: state.videoBytes, godotStaticBytes: state.godotStaticBytes, memory,
+                videoBytes: state.videoBytes, godotStaticBytes: state.godotStaticBytes, performance: state.performance, memory,
             });
             if (journal.memoryHistory.length > memoryHistoryLimit) journal.memoryHistory.shift();
             lastMemoryHistoryMs = now;
@@ -1207,6 +1215,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             if (!validBuildSidecar(value)) throw new Error('Build metadata sidecar is malformed');
             buildSidecar = value;
             buildSidecarStatus = 'ready';
+            saveJournal();
             return value;
         } catch (error) {
             buildSidecarStatus = 'unknown';
@@ -1268,7 +1277,19 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             return false;
         }
         archive?.append(encoded, byteLength);
-        if (entry.type === 'match_started') journal.lastInputs = {};
+        if (typeof entry.buildID === 'string') runtimeBuildId = entry.buildID;
+        if (entry.type === 'match_started' || entry.type === 'match_ended') {
+            const match = entry.payload?.match;
+            if (match) journal.lastInputs = {};
+            const lineup = Object.values(match?.players || {}).map(actor => ({slot: actor.slot,
+                fighter: actor.fighter, displayName: actor.displayName, sourceId: actor.sourceId,
+                resourcePath: actor.resourcePath, helper: actor.helper && {id: actor.helper.id,
+                    displayName: actor.helper.displayName, sourceId: actor.helper.sourceId, resourcePath: actor.helper.resourcePath}}));
+            journal.matchHistory.push({at: entry.receivedAt, type: entry.type, matchId: entry.matchId,
+                mode: match?.modeName ?? match?.mode, map: match?.map, players: lineup, reason: entry.payload?.reason});
+            if (journal.matchHistory.length > 24) journal.matchHistory.shift();
+            saveJournal();
+        }
         if (entry.type === 'input_consumed' && ['p1', 'p2', 1, 2].includes(entry.payload?.slot)) {
             journal.lastInputs[entry.payload.slot] = entry;
         }
@@ -1276,11 +1297,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             const payload = entry.payload || {};
             journal.eventTail.push({type: entry.type, seq: entry.seq, at: entry.receivedAt,
                 matchId: entry.matchId, tick: entry.fightTick, slot: payload.slot || payload.ownerSlot,
-                action: payload.action || payload.to, helper: payload.helper, resourcePath: payload.resourcePath,
+                action: payload.action || payload.to, helper: payload.helper, sourceId: payload.sourceId, resourcePath: payload.resourcePath,
                 reason: payload.reason, damage: payload.damage, sourceFrame: payload.sourceFrame});
             if (journal.eventTail.length > 24) journal.eventTail.shift();
         }
-        if (typeof entry.buildID === 'string') runtimeBuildId = entry.buildID;
         runtimeEvents.push({ event: entry, byteLength, receivedMonoMs });
         runtimeEventCount++;
         runtimeEventBytes += byteLength;
@@ -1300,6 +1320,12 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                 criticalDropped++;
             }
             beginCriticalIncident(entry, receivedMonoMs);
+            if (entry.type === 'diagnostic_exception' && receivedMonoMs - lastIncidentSave >= 1000) {
+                lastIncidentSave = receivedMonoMs;
+                journal.lastIncident = {at: entry.receivedAt, matchId: entry.matchId, fightTick: entry.fightTick,
+                    reason: entry.payload?.reason || entry.payload?.level, detail: String(entry.payload?.detail || entry.payload?.message || '').slice(0, 1200)};
+                saveJournal();
+            }
             archive?.flush();
         }
         trimRuntimeEvents(receivedMonoMs);
@@ -1786,14 +1812,19 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     window.addEventListener('unhandledrejection', event => record('error', event.reason));
     document.addEventListener('visibilitychange', () => {
         record('lifecycle', document.visibilityState);
+        appendShellEvent('page_visibility', { state: document.visibilityState });
         saveJournal();
         if (document.hidden) archive?.flush();
-        appendShellEvent('page_visibility', { state: document.visibilityState });
         if (diagnosticsRequestCallback) diagnosticsRequestCallback('visibility', document.visibilityState);
     });
     canvas.addEventListener('webglcontextlost', () => {
         journalSignal('webgl_context_lost');
         record('error', 'WebGL context lost');
+    });
+    canvas.addEventListener('webglcontextrestored', () => {
+        journalSignal('webgl_context_restored');
+        appendShellEvent('webgl_context_restored', {});
+        archive?.flush();
     });
     // iPadOS can advertise a desktop Mac UA. Windows touchscreens remain desktop clients.
     const appleMobile = /iPad|iPhone|iPod/i.test(navigator.userAgent)
@@ -1944,27 +1975,33 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             },
             webrtc: rtcSnapshot(),
         };
-        if (window.bvnCrashArchive && previousRuns.length) {
-            // Only read detailed events for the interrupted run, and only on explicit export.
-            const target = interruptedRun || previousRuns[0];
-            report.reloadDiagnostics.savedRun = {runId: target.runId, ...await window.bvnCrashArchive.detail(target.runId)};
+        if (window.bvnCrashArchive && historyIds.length) {
+            const reload = report.reloadDiagnostics;
+            try {
+                const runs = await window.bvnCrashArchive.listRuns();
+                reload.previousRuns = historyIds.map(id => runs.find(run => run.runId === id)
+                    || previousRuns.find(run => run.runId === id)).filter(Boolean);
+                reload.recovery = interruptedObservation(reload.previousRuns);
+            } catch (_) { /* The synchronous journal can still be exported. */ }
+            const id = reload.recovery?.runId || reload.previousRuns[0]?.runId;
+            if (id) reload.savedRun = {runId: id, ...await window.bvnCrashArchive.detail(id)};
         }
         if (window.bvnCrashArchive) window.bvnCrashArchive.download(report);
         else {
-        const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'bvn26-log-' + new Date().toISOString().replace(/[:.]/g, '-') + '.json';
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 10000);
+            const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'bvn26-log-' + new Date().toISOString().replace(/[:.]/g, '-') + '.json';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
         }
         feedback.textContent = snapshotResult.status === 'acknowledged'
             ? '日志已导出，请在反馈问题时附上文件。'
             : '日志已导出，但游戏状态回执未完成；文件中会标明这一点。';
-        if (previousRuns.length) feedback.textContent += ' 已附上重载前的现场记录。';
-        if (persistence === 'unavailable') feedback.textContent += ' 浏览器未能保存跨重载记录。';
+        if (report.reloadDiagnostics.previousRuns.length) feedback.textContent += ' 已附上重载前的现场记录。';
+        if (persistence === 'unavailable' && archive?.status.state !== 'available') feedback.textContent += ' 浏览器未确认保存跨重载记录。';
         revealTools();
         canvas.focus({ preventScroll: true });
     });

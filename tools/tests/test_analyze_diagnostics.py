@@ -3,6 +3,7 @@ from __future__ import annotations
 import contextlib
 import io
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -11,6 +12,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
+NATIVE_CAPTURE = Path(os.environ.get("BVN_DIAGNOSTIC_TEST_CAPTURE", "/private/tmp/bvn-diagnostic-main-r05.json"))
 sys.path.insert(0, str(ROOT / "tools"))
 import analyze_diagnostics as diagnostics  # noqa: E402
 
@@ -41,8 +43,42 @@ class AnalyzeDiagnosticsTests(unittest.TestCase):
         run = {"runId": "interrupted", "checkpoints": [checkpoint]}
         report = {"schemaVersion": 2, "reloadDiagnostics": {"recovery": {"runId": "interrupted"}, "previousRuns": [run]}}
         helper = diagnostics.analyze_report(report)["savedObservation"]["players"][0]["helper"]
-        self.assertEqual((helper["sourceId"], helper["displayName"]), ("松本", "山中井野"))
+        self.assertEqual((helper["id"], helper["sourceId"], helper["displayName"]), ("jinye", "松本", "山中井野"))
         self.assertNotIn("displayName", checkpoint["players"][0]["helper"])
+        checkpoint["players"][0]["helper"]["displayName"] = "松本"
+        self.assertEqual(diagnostics.analyze_report(report)["savedObservation"]["players"][0]["helper"]["displayName"], "山中井野")
+
+    def test_legacy_summon_command_and_selected_helper_have_distinct_identities(self) -> None:
+        report = {"schemaVersion": 1, "entries": [
+            {"message": 'COMBAT_EVENT {"fighter":"日番谷","event":"summon_夜一"}'},
+            {"message": 'COMBAT_EVENT {"helper":"松本","event":"helper_activate_松本"}'},
+        ]}
+        command, activation = diagnostics.legacy_combat_events(report)
+        self.assertEqual(command["type"], "summon_requested")
+        self.assertEqual(command["payload"]["sourceCommandHelperId"], "夜一")
+        self.assertNotIn("helper", command["payload"])
+        self.assertEqual(activation["type"], "helper_activate")
+        self.assertEqual(activation["payload"]["sourceId"], "松本")
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            diagnostics._print_result(diagnostics.analyze_report(report), as_json=False)
+        self.assertIn("helper=山中井野", output.getvalue())
+
+    def test_summarizes_archived_events_from_interrupted_run_after_reload(self) -> None:
+        header = {"runId": "broken", "observedEvents": 88, "checkpoints": [
+            {"recordSeq": 4, "at": "same", "phase": "flash_before"}],
+            "lastCheckpoint": {"recordSeq": 5, "at": "same", "phase": "flash_after"}}
+        detail = {"runId": "broken", "status": "saved", "archive": {"committedThroughEvent": 85,
+                  "overwrittenBatches": 12, "discardedEvents": 2}, "events": [{"type": "helper_lifecycle"}]}
+        report = {"schemaVersion": 2, "runtime": {"events": [{"type": "runtime_ready"}]},
+                  "reloadDiagnostics": {"recovery": {"runId": "broken"}, "savedRun": detail, "previousRuns": [header]}}
+        observation = diagnostics.analyze_report(report)["savedObservation"]
+        self.assertEqual(observation["phase"], "flash_after")
+        coverage = observation["coverage"]
+        self.assertEqual(coverage["eventTypes"], {"helper_lifecycle": 1})
+        self.assertEqual((coverage["observedBeyondCommit"], coverage["discardedEvents"], coverage["overwrittenBatches"]), (3, 2, 12))
+        detail["runId"] = "unrelated"
+        self.assertIsNone(diagnostics.analyze_report(report)["savedObservation"]["coverage"]["retainedEvents"])
 
     def test_summarizes_v2_match_build_events_and_replay_gaps(self) -> None:
         report = self._v2_report()
@@ -129,7 +165,7 @@ class AnalyzeDiagnosticsTests(unittest.TestCase):
         self.assertTrue(any("fighter-local" in note for note in summary["notes"]))
 
     def test_native_main_capture_reports_fresh_start_coverage_and_last_hit(self) -> None:
-        native_capture = Path("/private/tmp/bvn-diagnostic-main-r05.json")
+        native_capture = NATIVE_CAPTURE
         if not native_capture.is_file():
             self.skipTest("Native Main diagnostic capture is not available in this environment")
         summary = diagnostics.analyze_report(diagnostics.load_report(native_capture))
@@ -144,7 +180,7 @@ class AnalyzeDiagnosticsTests(unittest.TestCase):
         self.assertEqual(summary["replayability"]["executorVerdict"], "not_run")
 
     def test_replay_preflight_requires_matching_build_and_catalog_resolved_resources(self) -> None:
-        native_capture = Path("/private/tmp/bvn-diagnostic-main-r05.json")
+        native_capture = NATIVE_CAPTURE
         if not native_capture.is_file():
             self.skipTest("Native Main diagnostic capture is not available in this environment")
         report = diagnostics.load_report(native_capture)

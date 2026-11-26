@@ -80,6 +80,20 @@ def legacy_combat_events(report: dict[str, Any]) -> list[dict[str, Any]]:
         except json.JSONDecodeError:
             continue
         if isinstance(payload, dict):
+            # Old summon messages describe the authored command, not the selected assist.
+            label = payload.get("event")
+            if isinstance(label, str) and label.startswith("summon_") and label != "summon_requested":
+                payload.update(sourceCommandHelperId=label.removeprefix("summon_"), event="summon_requested")
+            helper = payload.get("helper")
+            if isinstance(helper, str):
+                source = str(payload.get("sourceId") or helper)
+                names = _diagnostic_names()
+                name = names.get(str(payload.get("resourcePath"))) or names.get("helper:" + source) or payload.get("displayName") or helper
+                payload.update(sourceId=source, displayName=name, helper=name)
+                if isinstance(label, str) and label.startswith("helper_activate_"):
+                    payload["event"] = "helper_activate"
+            elif isinstance(payload.get("fighter"), str):
+                payload = _named_player(payload)
             events.append({
                 "origin": "legacy_console",
                 "entryIndex": index,
@@ -123,12 +137,15 @@ def _named_player(player: dict[str, Any]) -> dict[str, Any]:
     source = player.get("sourceId") or player.get("fighter")
     if isinstance(source, str):
         result["sourceId"] = source
-        result["displayName"] = player.get("displayName") or names.get(player.get("resourcePath")) or names.get("fighter:" + source, source)
+        result["displayName"] = names.get(str(player.get("resourcePath"))) or names.get("fighter:" + source) or player.get("displayName") or source
     helper = player.get("helper")
     if isinstance(helper, dict) and helper:
         source = str(helper.get("sourceId") or helper.get("id", ""))
-        label = helper.get("displayName") or names.get(helper.get("resourcePath")) or names.get("helper:" + source, source)
+        path = str(helper.get("resourcePath") or "")
+        label = names.get(path) or names.get("helper:" + source) or helper.get("displayName") or source
         result["helper"] = {**helper, "sourceId": source, "displayName": label}
+        if path in names:
+            result["helper"]["id"] = path.rsplit("/", 1)[-1]
     return result
 
 
@@ -137,15 +154,38 @@ def _saved_observation(report: dict[str, Any]) -> dict[str, Any] | None:
     recovery = diagnostics.get("recovery") or {}
     if report.get("reportKind") == "saved_run":
         run = diagnostics.get("currentRun")
+        detail = diagnostics.get("persistedDetail") or {}
+        events = _runtime_events(report)
     else:
         run = next((r for r in diagnostics.get("previousRuns", []) if r.get("runId") == recovery.get("runId")), None)
+        detail = diagnostics.get("savedRun") or {}
+        if not run or detail.get("runId") != run.get("runId"):
+            detail = {}
+        events = [event for event in detail.get("events", []) if isinstance(event, dict)]
     if not run:
         return None
     checkpoints = run.get("checkpoints") or []
-    last = (checkpoints[-1] if checkpoints else None) or run.get("lastCheckpoint") or recovery.get("lastCheckpoint") or {}
+    candidates = [checkpoints[-1] if checkpoints else None, run.get("lastCheckpoint"), recovery.get("lastCheckpoint")]
+    last = max((c for c in candidates if isinstance(c, dict)),
+               key=lambda c: (_as_int(c.get("recordSeq")), str(c.get("at", ""))), default={})
+    archive = detail.get("archive") or run.get("archive") or {}
+    observed = run.get("observedEvents", archive.get("observedEvents"))
+    through = archive.get("committedThroughEvent")
+    coverage = {
+        "status": detail.get("status", "unknown"), "retainedEvents": len(events) if detail else None,
+        "eventTypes": dict(Counter(event.get("type") for event in events if isinstance(event.get("type"), str))),
+        "firstEventAt": events[0].get("receivedAt") if events else None,
+        "lastEventAt": events[-1].get("receivedAt") if events else None,
+        "committedAt": detail.get("committedAt"), "committedBatches": archive.get("committedBatches"),
+        "overwrittenBatches": archive.get("overwrittenBatches"), "discardedEvents": archive.get("discardedEvents"),
+        "unreadableEvents": detail.get("unreadableEvents"),
+        "observedBeyondCommit": max(0, observed - through) if isinstance(observed, int) and isinstance(through, int) else None,
+    }
     return {"runId": run.get("runId"), "buildID": run.get("buildID"), "savedAt": last.get("at") or run.get("updatedAt"),
             "phase": last.get("phase") or run.get("enginePhase"), "map": last.get("map"), "fightTick": last.get("fightTick"),
             "players": [_named_player(player) for player in _players(last)], "signals": run.get("signals", []),
+            "coverage": coverage, "lastIncident": run.get("lastIncident"), "download": run.get("download"),
+            "lastInputs": run.get("lastInputs", {}), "matchHistory": run.get("matchHistory", []),
             "performance": last.get("performance"), "memory": last.get("memory"), "cause": "unconfirmed"}
 
 
@@ -769,6 +809,14 @@ def _print_result(value: Any, as_json: bool) -> None:
         saved = value.get("savedObservation")
         if saved:
             print(f"Saved run {saved['runId']} at {saved['savedAt']}  map={saved['map']} tick={saved['fightTick']} phase={saved['phase']}")
+            coverage = saved["coverage"]
+            if coverage["retainedEvents"] is not None:
+                print(f"  Archive {coverage['status']}  events={coverage['retainedEvents']}  types={coverage['eventTypes']}  "
+                      f"overwritten batches={coverage['overwrittenBatches']}  discarded events={coverage['discardedEvents']}  "
+                      f"observed beyond last commit={coverage['observedBeyondCommit']}")
+            for signal in saved["signals"][-3:]:
+                if isinstance(signal, dict):
+                    print(f"  Signal {signal.get('at')} {signal.get('kind')} {signal.get('detail', '')}")
             for actor in saved["players"]:
                 helper = actor.get("helper") or {}
                 print(f"  {actor.get('slot')} {actor.get('displayName')} action={actor.get('action')} "
@@ -780,7 +828,8 @@ def _print_result(value: Any, as_json: bool) -> None:
             print(f"Legacy combat event types: {value['legacyCombatEvents']['types']}")
             latest = value["legacyCombatEvents"]["last"]
             payload = latest["payload"]
-            print(f"Last legacy event: {latest.get('time')} {latest.get('type')} fighter={payload.get('fighter')} action={payload.get('action')} frame={payload.get('frame')} hp={payload.get('health')} bs={payload.get('bs')} zhanting={payload.get('zhanting')}")
+            actor = f"helper={payload['helper']}" if isinstance(payload.get("helper"), str) else f"fighter={payload.get('displayName', payload.get('fighter'))}"
+            print(f"Last legacy event: {latest.get('time')} {latest.get('type')} {actor} action={payload.get('action')} frame={payload.get('frame')} hp={payload.get('health')} bs={payload.get('bs')} zhanting={payload.get('zhanting')}")
         if runtime["eventCount"] or runtime["snapshotStatus"] is not None:
             match = runtime["match"]
             print(f"Runtime events: {runtime['eventCount']} {runtime['eventTypes']}  inputs: {runtime['inputCount']}  snapshot={runtime['snapshotStatus']}")

@@ -1113,7 +1113,26 @@ test('recovers the last draw without pagehide, an engine, session history, or In
     const exported = JSON.parse(await reader.getBlob().text());
     const named = exported.reloadDiagnostics.currentRun.checkpoints.at(-1).players[0].helper;
     assert.deepEqual([named.displayName, named.id, named.sourceId], ['山中井野','jinye','松本']);
+    assert.equal(archive.nameFields('helper', {...helper, displayName: '松本'}).displayName, '山中井野');
     const message = 'COMBAT_EVENT ' + JSON.stringify({event:'summon_夜一', fighter:'日番谷'});
     assert.equal(JSON.parse(archive.nameFields('message', message).slice(13)).event, 'summon_requested');
     assert.equal(archive.nameFields('helper', {id:'future_helper'}).id, 'future_helper');
+});
+
+test('reload export attaches an IndexedDB-only fight from the same navigation history', async () => {
+    const history = {state: {bvnCrashRuns: ['startup', 'fight']}, replaceState(next) { this.state = next; }};
+    const page = createPage(sidecar, null, undefined, {}, {history, withArchive: true});
+    const archive = page.window.bvnCrashArchive;
+    const checkpoint = {map: '楼顶', players: [{slot: 'p1'}], fightTick: 45};
+    archive.listRuns = async () => [
+        {runId: 'another-tab', lifecycle: 'active', lastCheckpoint: checkpoint},
+        {runId: 'startup', lifecycle: 'active', enginePhase: 'starting'},
+        {runId: 'fight', lifecycle: 'active', lastCheckpoint: checkpoint},
+    ];
+    archive.detail = async id => { assert.equal(id, 'fight'); return {status: 'saved', events: [{seq: 8}]}; };
+    await page.elements.get('download').dispatch('click');
+    const {reloadDiagnostics} = JSON.parse(await page.getBlob().text());
+    assert.deepEqual(reloadDiagnostics.previousRuns.map(r => r.runId), ['startup', 'fight']);
+    assert.equal(reloadDiagnostics.recovery.lastCheckpoint.fightTick, 45);
+    assert.equal(reloadDiagnostics.savedRun.events[0].seq, 8);
 });

@@ -39,10 +39,13 @@ window.bvnCrashArchive = (() => {
 
     function createRecorder(metadata) {
         let pending = [], size = 0, discarded = 0, sequence = 0, busy = false;
+        let journalDirty = false, flushAfterWrite = false;
         const status = { state: 'pending', committedBatches: 0, discardedEvents: 0,
-            overwrittenBatches: 0, intervalMs: 1000, batchSlots, batchByteLimit: batchLimit };
+            observedEvents: 0, committedThroughEvent: 0, overwrittenBatches: 0,
+            intervalMs: 1000, batchSlots, batchByteLimit: batchLimit };
         let lastFailure = -Infinity, lastFlush = -Infinity;
         function append(encoded, bytes) {
+            status.observedEvents++;
             if (size + bytes > batchLimit || pending.length >= 768) {
                 // Retain the most recent activity even when storage cannot keep up.
                 discarded += pending.length;
@@ -51,13 +54,20 @@ window.bvnCrashArchive = (() => {
             }
             pending.push(encoded);
             size += bytes;
-            if ((size >= batchLimit * .7 || pending.length >= 512) && performance.now() - lastFlush >= 250) flush();
+            if (!busy && (size >= batchLimit * .7 || pending.length >= 512) && performance.now() - lastFlush >= 250) flush();
+        }
+        function markJournalDirty() {
+            journalDirty = true;
+            if (!busy && performance.now() - lastFlush >= status.intervalMs) flush();
         }
         async function flush() {
-            if (busy || !pending.length || performance.now() - lastFailure < 10000) return;
+            if ((!pending.length && !journalDirty) || performance.now() - lastFailure < 10000) return;
+            if (busy) { flushAfterWrite = true; return; }
             busy = true;
+            journalDirty = false;
             lastFlush = performance.now();
             const writing = pending;
+            const through = writing.length ? status.observedEvents : status.committedThroughEvent;
             pending = [];
             size = 0;
             try {
@@ -69,44 +79,48 @@ window.bvnCrashArchive = (() => {
                     tx.oncomplete = resolve;
                     tx.onabort = () => reject(tx.error || new Error('Archive transaction aborted'));
                 });
-                const serial = sequence + 1;
-                const batch = { runId: run.runId, slot: sequence % batchSlots, serial,
-                    events: writing, discardedBefore: discarded };
-                chunks.put(batch);
+                const serial = writing.length ? sequence + 1 : sequence;
+                if (writing.length) {
+                    chunks.put({ runId: run.runId, slot: sequence % batchSlots, serial,
+                        events: writing, discardedBefore: discarded });
+                }
                 runs.put({ ...run, archive: { ...status, state: 'available', committedBatches: serial,
-                    discardedEvents: discarded, overwrittenBatches: Math.max(0, serial - batchSlots) } });
+                    committedThroughEvent: through, discardedEvents: discarded, overwrittenBatches: Math.max(0, serial - batchSlots) } });
                 const count = runs.count();
                 count.onsuccess = () => {
-                    let excess = count.result - runLimit;
+                    const excess = count.result - runLimit;
                     if (excess <= 0) return;
-                    const oldest = runs.index('updated').openKeyCursor();
+                    // A restart loop can create many startup-only headers after one lost fight.
+                    const oldest = runs.index('updated').getAll();
                     oldest.onsuccess = () => {
-                        const cursor = oldest.result;
-                        if (!cursor || excess <= 0) return;
-                        if (cursor.primaryKey !== run.runId) {
-                            chunks.delete(range(cursor.primaryKey));
-                            runs.delete(cursor.primaryKey);
-                            excess--;
+                        const hasBattle = r => Boolean(r.matchHistory?.length || r.lastCheckpoint?.players?.length);
+                        const candidates = oldest.result.filter(r => r.runId !== run.runId)
+                            .sort((a,b) => Number(hasBattle(a)) - Number(hasBattle(b)));
+                        for (const candidate of candidates.slice(0, excess)) {
+                            chunks.delete(range(candidate.runId));
+                            runs.delete(candidate.runId);
                         }
-                        cursor.continue();
                     };
                 };
                 await done;
                 sequence = serial;
                 Object.assign(status, {state: 'available', committedBatches: serial,
-                    overwrittenBatches: Math.max(0, serial - batchSlots)});
+                    committedThroughEvent: through, overwrittenBatches: Math.max(0, serial - batchSlots)});
+                delete status.error;
             } catch (error) {
                 discarded += writing.length;
+                journalDirty = true;
                 status.state = 'unavailable';
                 status.error = error?.name || 'StorageError';
                 lastFailure = performance.now();
             } finally {
                 status.discardedEvents = discarded;
                 busy = false;
+                if (flushAfterWrite) { flushAfterWrite = false; flush(); }
             }
         }
         setInterval(flush, status.intervalMs);
-        return { append, flush, status };
+        return { append, flush, markJournalDirty, status };
     }
 
     function requestResult(request) {
@@ -142,8 +156,9 @@ window.bvnCrashArchive = (() => {
                 try { run = mergeTail(JSON.parse(localStorage.getItem(key))); } catch (_) { continue; }
                 if (run?.runId !== key.slice(journalPrefix.length)) continue;
                 const archived = byId.get(run.runId);
-                byId.set(run.runId, {...archived, ...run,
-                    archive: archived?.archive || run.archive, updatedAt: [archived?.updatedAt, run.updatedAt].filter(Boolean).sort().at(-1)});
+                const latest = archived && archived.updatedAt > run.updatedAt
+                    ? {...run, ...archived} : {...archived, ...run};
+                byId.set(run.runId, {...latest, archive: archived?.archive || run.archive});
             }
             readable = true;
         } catch (_) { /* The asynchronous archive may still be readable. */ }
@@ -157,10 +172,14 @@ window.bvnCrashArchive = (() => {
             const [run, chunks] = await Promise.all([requestResult(tx.objectStore('runs').get(runId)),
                 requestResult(tx.objectStore('chunks').getAll(range(runId)))]);
             const events = [];
+            let unreadableEvents = 0;
             for (const chunk of chunks.sort((a,b) => a.serial - b.serial)) {
-                for (const encoded of chunk.events) events.push(JSON.parse(encoded));
+                for (const encoded of chunk.events) {
+                    try { events.push(JSON.parse(encoded)); } catch (_) { unreadableEvents++; }
+                }
             }
-            return { status: run ? 'saved' : 'no_committed_batch', events, archive: run?.archive };
+            return {status: chunks.length ? 'saved' : 'no_committed_batch', events, archive: run?.archive,
+                committedAt: run?.updatedAt, unreadableEvents};
         } catch (error) {
             return { status: 'unavailable', error: error?.name, events: [] };
         }
@@ -183,9 +202,10 @@ window.bvnCrashArchive = (() => {
         if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
         const path = value.resourcePath;
         const helper = typeof value.helper === 'string' ? value.helper : key === 'helper' ? value.id : null;
+        if (!helper && typeof value.fighter !== 'string') return value;
         const source = value.sourceId || helper || (typeof value.fighter === 'string' ? value.fighter : null);
         if (!source) return value;
-        const known = value.displayName || names[path] || names[(helper ? 'helper:' : 'fighter:') + source];
+        const known = names[path] || names[(helper ? 'helper:' : 'fighter:') + source] || value.displayName;
         if (!known) return value;
         const identity = {displayName: known, sourceId: value.sourceId || source};
         if (typeof value.helper === 'string') return {...value, helper: known, ...identity};
@@ -204,20 +224,25 @@ window.bvnCrashArchive = (() => {
         setTimeout(() => URL.revokeObjectURL(url), 10000);
     }
 
+    function lastCheckpoint(run) {
+        const journal = run.checkpoints?.at(-1), archived = run.lastCheckpoint;
+        if (!journal || !archived) return journal || archived;
+        if (journal.recordSeq && archived.recordSeq) return archived.recordSeq > journal.recordSeq ? archived : journal;
+        return archived.at > journal.at ? archived : journal;
+    }
+
     async function recoveredReport(run) {
         const saved = await detail(run.runId);
         const events = saved.events;
-        const checkpoint = run.checkpoints?.at(-1);
-        const last = run.lastCheckpoint && (!checkpoint || run.lastCheckpoint.at > checkpoint.at)
-            ? run.lastCheckpoint : checkpoint;
+        const last = lastCheckpoint(run);
         const snapshot = run.snapshot || null;
         return {schemaVersion: 2, reportKind: 'saved_run', runId: run.runId, startedAt: run.startedAt,
-            exportedAt: new Date().toISOString(), userAgent: run.userAgent, build: run.build || {buildID: run.buildID},
+            exportedAt: new Date().toISOString(), userAgent: run.userAgent, build: run.build || {status: 'unknown', buildID: run.buildID},
             entries: run.consoleTail || [], runtime: {snapshotStatus: snapshot ? 'persisted' : 'unavailable', snapshot,
                 events, inputTape: events.filter(e => e.type === 'input_consumed'),
                 criticalEvents: events.filter(e => e.type === 'diagnostic_exception' || e.type === 'pause_state')},
             reloadDiagnostics: {currentRun: run, previousRuns: [], persistedDetail: {...saved, events: undefined},
                 lastCheckpoint: last || null, cause: 'unconfirmed'}};
     }
-    return {createRecorder, mergeTail, listRuns, detail, download, recoveredReport, nameFields};
+    return {createRecorder, mergeTail, listRuns, detail, download, recoveredReport, nameFields, lastCheckpoint};
 })();

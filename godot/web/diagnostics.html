@@ -22,9 +22,12 @@ select {display:block;width:100%} button {cursor:pointer}
     try {
         const runs = await window.bvnCrashArchive.listRuns();
         for (const run of runs) {
-            const last = run.checkpoints?.at(-1) || run.lastCheckpoint;
-            const label = new Date(run.updatedAt || run.startedAt).toLocaleString() + ' · ' +
-                (last?.map || last?.scene || run.enginePhase || '启动') + ' · ' + run.runId.slice(0,8);
+            const last = window.bvnCrashArchive.lastCheckpoint(run);
+            const player = Object.values(last?.players || {}).find(actor => actor?.slot === 'p1');
+            const fighter = player && window.bvnCrashArchive.nameFields('', player).displayName;
+            const helper = player?.helper && window.bvnCrashArchive.nameFields('helper', player.helper).displayName;
+            const label = [new Date(run.updatedAt || run.startedAt).toLocaleString(),
+                last?.map || last?.scene || run.enginePhase || '启动', fighter, helper, run.runId.slice(0,8)].filter(Boolean).join(' · ');
             select.add(new Option(label, run.runId));
         }
         if (!runs.length) { status.textContent = '这个浏览器里还没有保存的对局日志。'; return; }
@@ -35,7 +38,8 @@ select {display:block;width:100%} button {cursor:pointer}
         button.onclick = async () => {
             button.disabled = true;
             try {
-                const report = await window.bvnCrashArchive.recoveredReport(runs.find(run => run.runId === select.value));
+                const current = (await window.bvnCrashArchive.listRuns()).find(run => run.runId === select.value);
+                const report = await window.bvnCrashArchive.recoveredReport(current);
                 window.bvnCrashArchive.download(report);
                 status.textContent = report.runtime.events.length ? '日志已导出。' : '已导出现场摘要；这次没有已保存的详细事件。';
             } catch (_) { status.textContent = '导出失败，请重试。'; }
