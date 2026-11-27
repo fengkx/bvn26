@@ -129,15 +129,17 @@ body {
 #online-controls button:hover { background: #49302c; }
 #online-controls #online-exit { border-color: #ad3b35; }
 #online-controls #online-collapse-tools { margin-left: 2px; }
-button {
+.log-tools { display: inline-flex; gap: 10px; align-items: center; }
+.history-link { text-decoration: none; }
+button, .history-link {
     padding: 11px 22px; border: 1px solid #71504b; border-radius: 2px;
     color: #f5efea; background: #211a1a; cursor: pointer; font: 600 13px system-ui, sans-serif;
     transform: skew(-8deg); transition: background .15s, border-color .15s;
 }
 #fullscreen { background: #ad241f; border-color: #e84a3f; }
-button:hover { background: #49302c; border-color: #f5b095; }
+button:hover, .history-link:hover { background: #49302c; border-color: #f5b095; }
 #fullscreen:hover { background: #cf3028; }
-button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+button:focus-visible, .history-link:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 button:disabled { opacity: .5; cursor: default; }
 #help { margin: 15px 20px; color: #b8a9a2; font-size: 12px; text-align: center; letter-spacing: 1px; }
 #viewport {
@@ -248,7 +250,7 @@ button:disabled { opacity: .5; cursor: default; }
 @media (max-width: 600px) {
     #toolbar { padding-top: 14px; }
     #brand { flex: 1 1 100%; justify-content: space-between; }
-    button { padding: 9px 12px; }
+    button, .history-link { padding: 9px 12px; }
     #toolbar strong small { letter-spacing: 2px; }
     #volume-panel { width: min(256px, calc(100vw - 24px)); }
     #online-controls { flex: 1 1 100%; }
@@ -257,7 +259,7 @@ button:disabled { opacity: .5; cursor: default; }
     #player:is(:fullscreen, .touch-fullscreen) #online-status { max-width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-    button, #player:is(:fullscreen, .touch-fullscreen) #toolbar, #player:is(:fullscreen, .touch-fullscreen) #edge-indicator,
+    button, .history-link, #player:is(:fullscreen, .touch-fullscreen) #toolbar, #player:is(:fullscreen, .touch-fullscreen) #edge-indicator,
     #player:is(:fullscreen, .touch-fullscreen) #feedback { transition: none; }
 }
 #touch-pad, #rotate-hint { display: none; }
@@ -421,8 +423,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                 </section>
             </div>
             <button id="fullscreen" type="button">进入全屏</button>
-            <button id="download" type="button">导出日志</button>
-            <a href="diagnostics.html" target="_blank" rel="noopener">历史日志</a>
+            <div class="log-tools">
+                <button id="download" type="button">导出日志</button>
+                <a class="history-link" href="diagnostics.html" target="_blank" rel="noopener" aria-label="历史对局（在新标签页打开）">历史对局</a>
+            </div>
         </nav>
         <button id="edge-indicator" type="button" aria-label="显示游戏工具"><span aria-hidden="true"></span><span class="edge-label" hidden></span></button>
         <p id="help">点击画面，开始对战 · 全屏沉浸游玩 · 遇到问题可导出日志反馈</p>
