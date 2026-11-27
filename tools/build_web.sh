@@ -217,8 +217,18 @@ prepare_metadata
 report_time validation
 EXPORT_STAGE="$BUILD_TEMP_DIR/export"
 mkdir -p "$EXPORT_STAGE"
+split_args=("$EXPORT_STAGE" "$PROJECT_STAGE")
+if [[ -n "$CACHE_ROOT" ]]; then
+  cp "$PROJECT_STAGE/export_presets.cfg" "$BUILD_TEMP_DIR/full-export.cfg"
+  python3 "$ROOT_DIR/tools/web_family_cache.py" "$PROJECT_STAGE" "$CACHE_ROOT/fighters-v1" \
+    "$BUILD_TEMP_DIR/reused" "$("$GODOT_BIN" --version)"
+  split_args+=(--reuse "$BUILD_TEMP_DIR/reused")
+fi
 run_godot_checked export --headless --path "$PROJECT_STAGE" \
   --export-release Web "$EXPORT_STAGE/index.html"
+if [[ -n "$CACHE_ROOT" ]]; then
+  mv "$BUILD_TEMP_DIR/full-export.cfg" "$PROJECT_STAGE/export_presets.cfg"
+fi
 report_time export
 # Never publish an export that changed the finalized compatibility inputs.
 python3 "$STAGING_REPO/tools/build_online_manifest.py" --check
@@ -229,7 +239,7 @@ done
 
 python3 "$ROOT_DIR/tools/optimize_web_pack_loader.py" "$EXPORT_STAGE/index.js"
 
-python3 "$ROOT_DIR/tools/split_web_packs.py" "$EXPORT_STAGE" "$PROJECT_STAGE"
+python3 "$ROOT_DIR/tools/split_web_packs.py" "${split_args[@]}"
 
 CORE_PACK=("$EXPORT_STAGE"/core-*.pck)
 STAGED_SIDECAR="$BUILD_TEMP_DIR/build-metadata.json"

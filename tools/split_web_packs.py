@@ -51,7 +51,11 @@ def digest(path):
         return h.hexdigest()
 
 
-def split(source, project, output):
+def split(source, project, output, reuse=None):
+    plan = json.loads((reuse / "plan.json").read_text()) if reuse else {}
+    hits = plan.get("hits", {})
+    uid_path = ".godot/uid_cache.bin"
+    uid_data = None
     imports = {}
     families = family_directories(project)
     for directory, family in families.items():
@@ -69,7 +73,7 @@ def split(source, project, output):
         count, = struct.unpack_from("<I", data, cursor)
         cursor += 4
         groups = {"core": []}
-        remaining = {"generated/" + directory + "/timeline.json" for directory in families}
+        remaining = {"generated/" + directory + "/timeline.json" for directory, family in families.items() if family not in hits}
         for _ in range(count):
             length, = struct.unpack_from("<I", data, cursor)
             name = data[cursor + 4:cursor + 4 + length]
@@ -78,6 +82,8 @@ def split(source, project, output):
             tail = data[cursor + 16:cursor + 36]
             cursor += 36
             path = name.rstrip(b"\0").decode()
+            if path == uid_path:
+                uid_data = bytes(data[base + offset:base + offset + size])
             remaining.discard(path)
             match = re.fullmatch(r"\.godot/imported/.*-([0-9a-f]{32})\.[^/]+", path)
             parts = path.split("/", 3)
@@ -87,8 +93,12 @@ def split(source, project, output):
             groups.setdefault(family or "core", []).append((name, base + offset, size, tail))
         if remaining:
             raise ValueError(f"Missing exported timelines: {sorted(remaining)}")
-        if set(groups) != {"core", *families.values()}:
+        if set(groups) != {"core", *(set(families.values()) - hits.keys())}:
             raise ValueError("Missing fighter resources in exported pack")
+        merged_uids = None
+        if hits:
+            from web_family_cache import merge_uids
+            merged_uids = merge_uids(uid_data, reuse, hits)
         manifest = {}
         for family, entries in groups.items():
             temp = output / (family + ".tmp")
@@ -97,9 +107,15 @@ def split(source, project, output):
                 directory = bytearray(struct.pack("<I", len(entries)))
                 for name, offset, size, tail in entries:
                     dest.write(bytes(-dest.tell() % 16))
+                    payload = memoryview(data)[offset:offset + size]
+                    if merged_uids is not None and name.rstrip(b"\0") == uid_path.encode():
+                        payload = merged_uids
+                        size = len(payload)
+                        tail = hashlib.md5(payload).digest() + tail[16:]
                     directory.extend(struct.pack("<I", len(name)) + name)
                     directory.extend(struct.pack("<QQ", dest.tell() - base, size) + tail)
-                    dest.write(memoryview(data)[offset:offset + size])
+                    dest.write(payload)
+                    del payload
                 dest.write(bytes(-dest.tell() % 16))
                 directory_offset = dest.tell()
                 dest.write(directory)
@@ -109,12 +125,27 @@ def split(source, project, output):
             filename = f"{family}-{sha}.pck"
             temp.rename(output / filename)
             manifest[family] = {"file": filename, "sha": sha, "size": (output / filename).stat().st_size}
+    if plan.get("keys"):
+        from web_family_cache import uid_rows, save
+        rows = {}
+        for path, record in uid_rows(uid_data):
+            parts = path.removeprefix("res://generated/").split("/", 2)
+            family = families.get("/".join(parts[:2]))
+            if family:
+                rows.setdefault(family, []).append(record)
+        for family, key in plan["keys"].items():
+            if family not in hits:
+                meta = manifest[family]
+                save(Path(plan["cache"]), family, key, output / meta["file"], meta["sha"], rows.get(family, []))
+        for family, meta in hits.items():
+            (reuse / meta["file"]).replace(output / meta["file"])
+            manifest[family] = meta
     return manifest
 
 
-def prepare(stage, project):
+def prepare(stage, project, reuse=None):
     publish_diagnostics(project, stage)
-    manifest = split(stage / "index.pck", project, stage)
+    manifest = split(stage / "index.pck", project, stage, reuse)
     core = manifest.pop("core")
     (stage / "index.pck").unlink()
     html = stage / "index.html"
@@ -150,5 +181,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", type=Path)
     parser.add_argument("project", type=Path)
+    parser.add_argument("--reuse", type=Path)
     args = parser.parse_args()
-    prepare(args.stage, args.project)
+    prepare(args.stage, args.project, args.reuse)

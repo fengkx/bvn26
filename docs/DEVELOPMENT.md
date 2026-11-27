@@ -66,6 +66,8 @@ python3 -m http.server 8000 --directory dist/web
 
 随后在桌面浏览器访问 `http://127.0.0.1:8000/`。常用任务快捷入口见 [justfile](../justfile)（如 `just export-web`、`just export-web-clean`、`just list-godot-tests`）。
 
+Vercel 会缓存已导入的素材和按需下载的角色包。本地可用 `BVN_WEB_CACHE_DIR=/tmp/bvn-web-cache ./tools/build_web.sh` 连续构建。日志中的 `Godot fighter pack cache` 显示复用和重新导出的角色包数量，`WEB_BUILD_TIME` 显示各阶段耗时。角色及其形态、导入结果、引擎或导出配置变化时，相应角色包会重新生成。
+
 ### 4.3 本地运行联机房间服务（可选）
 
 房间服务为独立的 TypeScript Cloudflare Worker + SQLite Durable Objects，仅处理房间租约、建房/入房、阵容与地图协调及 WebRTC 信令，不模拟战斗或转发操作帧：

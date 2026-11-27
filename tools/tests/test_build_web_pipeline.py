@@ -393,6 +393,7 @@ class WebBuildPipelineTests(unittest.TestCase):
                 "split_web_packs.py",
                 "diagnostic_roster.py",
                 "web_import_cache.py",
+                "web_family_cache.py",
                 "build_web_diagnostics_metadata.py",
                 "run_godot_checked.py",
                 "build_online_manifest.py",
