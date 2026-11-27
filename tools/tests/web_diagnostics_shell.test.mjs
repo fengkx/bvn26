@@ -1136,3 +1136,81 @@ test('reload export attaches an IndexedDB-only fight from the same navigation hi
     assert.equal(reloadDiagnostics.recovery.lastCheckpoint.fightTick, 45);
     assert.equal(reloadDiagnostics.savedRun.events[0].seq, 8);
 });
+
+test('retains typed faults and foreground progress through a silent reload', async () => {
+    const local = {getItem(key) { return this[key] ?? null; }, setItem(key, value) { this[key] = value; }};
+    const history = {state: {}, replaceState(next) { this.state = next; }};
+    const open = id => createPage(sidecar, null, undefined, {}, {local, history, id, withArchive:true});
+    const game = open('fight');
+    game.window.bvnCrashEnginePhase('running');
+    game.window.requestAnimationFrame = callback => callback();
+    const checkpoint = {scene:'游戏场景', matchId:'m', round:2, fightTick:101, framesDrawn:202, phase:'round_restart_begin'};
+    const save = state => game.window.bvnCrashCheckpoint(JSON.stringify({...checkpoint, ...state}));
+    save({});
+    game.context.setNow(6000);
+    game.advanceIntervals();
+    const stalled = JSON.parse(local['bvn26.crash-run.fight']).browserProgress;
+    assert.equal(stalled.lastGap.msSinceEngineCheckpoint, 6000);
+    assert.ok(stalled.animationFrameAt);
+    save({phase:'round_restart', fightTick:102});
+    save({phase:'round_restart_rendered', fightTick:103, framesDrawn:203, restartTick:102});
+    game.window.bvnDiagnosticsPush(JSON.stringify({type:'input_consumed', matchId:'m', fightTick:104, payload:{slot:'p1'}}));
+    await game.elements.get('canvas').dispatch('webglcontextlost', {statusMessage:'test reset'});
+    await game.elements.get('canvas').dispatch('webglcontextrestored');
+    for (const handler of game.windowHandlers.get('error')) handler({message:'boom', filename:'game.js?q=private', lineno:3, colno:7});
+    for (const handler of game.windowHandlers.get('unhandledrejection')) handler({reason:'promise failed'});
+    game.context.console.error('Aborted(OOM)');
+    game.context.console.error('RuntimeError: Out of bounds memory access');
+    for (let i = 0; i < 18; i++) game.context.console.error('routine diagnostic ' + i);
+    game.window.bvnCrashEngineExit(9);
+    const restarted = open('restart');
+    await restarted.elements.get('download').dispatch('click');
+    const {reloadDiagnostics} = JSON.parse(await restarted.getBlob().text());
+    const saved = reloadDiagnostics.previousRuns[0];
+    assert.equal(saved.browserProgress.lastGap.durationMs, 6000);
+    assert.deepEqual(saved.roundTransitions.map(c => c.phase), ['round_restart_begin','round_restart','round_restart_rendered']);
+    assert.equal(saved.browserEvidence.webgl_context_lost.fightTick, 104);
+    assert.equal(saved.browserEvidence.webgl_context_lost.round, 2);
+    assert.match(saved.browserEvidence.webgl_context_lost.detail, /test reset/);
+    assert.equal(saved.browserEvidence.engine_exit.detail, '9');
+    assert.ok(saved.browserEvidence.unhandled_rejection);
+    assert.match(saved.browserEvidence.uncaught_exception.detail, /game.js:3:7/);
+    const evidence = reloadDiagnostics.recovery.endEvidence;
+    assert.ok(evidence.gapMs >= 0);
+    assert.equal(evidence.nextStartAt, reloadDiagnostics.currentRun.startedAt);
+    assert.equal(evidence.browserReportedDiscard, null);
+    for (const kind of ['webgl_context_lost','webgl_context_restored','allocation_error','runtime_trap','engine_exit']) {
+        assert.ok(evidence.signals.some(signal => signal.kind === kind && signal.msBeforeLastObservation >= 0));
+    }
+    assert.equal(reloadDiagnostics.recovery.cause, 'unconfirmed');
+
+    const archive = restarted.window.bvnCrashArchive;
+    const historical = {runId:'old', lifecycle:'active', updatedAt:'2026-11-27T06:11:48.000Z',
+        signals:[{kind:'error', detail:'old warning', at:'2026-11-27T06:00:48.000Z'}]};
+    const ended = {previousRunId:'old', navigation:'reload', browserReportedDiscard:true, startedAt:'2026-11-27T06:11:49.000Z'};
+    const previous = await archive.recoveredReport(historical, [ended]);
+    assert.equal(previous.reloadDiagnostics.endEvidence.signals[0].msBeforeLastObservation, 660000);
+    assert.equal(previous.reloadDiagnostics.endEvidence.gapMs, 1000);
+    assert.equal(previous.reloadDiagnostics.endEvidence.browserReportedDiscard, true);
+    assert.equal(previous.reloadDiagnostics.cause, 'browser_reported_discard');
+    assert.equal(archive.endEvidence(historical, [], {...ended, previousRunId:'other'}).nextStartAt, null);
+});
+
+test('background time does not appear as a foreground engine stall', async () => {
+    const page = createPage(null);
+    page.window.bvnCrashEnginePhase('running');
+    const sample = () => page.window.bvnCrashCheckpoint(JSON.stringify({phase:'sample', scene:'游戏场景'}));
+    sample();
+    for (const state of ['hidden', 'visible']) {
+        page.document.visibilityState = state;
+        for (const handler of page.documentHandlers.get('visibilitychange')) handler();
+        page.context.setNow(20000);
+        page.advanceIntervals();
+    }
+    sample();
+    page.advanceIntervals();
+    await page.elements.get('download').dispatch('click');
+    const {currentRun} = JSON.parse(await page.getBlob().text()).reloadDiagnostics;
+    assert.equal(currentRun.browserProgress.msSinceEngineCheckpoint, 0);
+    assert.equal(currentRun.browserProgress.lastGap, undefined);
+});

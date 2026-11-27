@@ -83,7 +83,7 @@ var naruto_helper: HelperRuntime
 var ichigo_helper: HelperRuntime
 var screen_flash: ColorRect
 var screen_flash_age: int = -1
-var _assist_flash_generation := 0
+var _pending_assist_flash: Dictionary = {}
 # Source pauseGame()/resumeGame() from XG_*x clips. Stops fighter/helper mcs.
 var hit_fx_pause_count: int = 0
 var player_body_driver: Node
@@ -468,6 +468,7 @@ func _web_checkpoint(phase: String, detail: Dictionary = {}) -> void:
 		"godotStaticBytes": Performance.get_monitor(Performance.MEMORY_STATIC),
 		"videoBytes": Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED),
 		"rendering": _diagnostic_rendering(),
+		"framesDrawn": Engine.get_frames_drawn(),
 		"performance": {"fps": Performance.get_monitor(Performance.TIME_FPS),
 			"processMs": Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0,
 			"physicsMs": Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0,
@@ -690,8 +691,10 @@ func _replace_selected_actors(fighters: Array, helpers: Array, opponent_form: Di
 		fighter.position = old.position
 		fighter.facing = old.facing
 		fighter.z_index = old.z_index
+		# The combat drivers are stopped. Release the old timeline before
+		# add_child loads the replacement and all of its form data.
 		game_world.remove_child(old)
-		old.queue_free()
+		old.free()
 		game_world.add_child(fighter)
 		fighter.owner = self
 		fighter.unique_name_in_owner = true
@@ -703,10 +706,11 @@ func _replace_selected_actors(fighters: Array, helpers: Array, opponent_form: Di
 		fighter.super_event_applied.connect(_on_selected_super_event.bind(fighter))
 		replacements.append(fighter)
 		var old_helper: HelperRuntime = naruto_helper if i == 0 else ichigo_helper
-		var helper := _make_helper("res://generated/helpers/" + str(character_selection.available.helpers[helpers[i]]))
-		helper.z_index = old_helper.z_index
+		var helper_depth := old_helper.z_index
 		game_world.remove_child(old_helper)
-		old_helper.queue_free()
+		old_helper.free()
+		var helper := _make_helper("res://generated/helpers/" + str(character_selection.available.helpers[helpers[i]]))
+		helper.z_index = helper_depth
 		helper_replacements.append(helper)
 	naruto = replacements[0]
 	ichigo = replacements[1]
@@ -1484,6 +1488,7 @@ func _ko_nextfight() -> void:
 	var from_timeout := nextfight_from_timeout and timeout_timeline != null
 	if not from_timeout and ko_timeline == null:
 		return
+	_web_checkpoint("round_restart_begin", {"fromTimeout": from_timeout})
 	_source_nextfight_goto_phase = true
 	if from_timeout:
 		timeout_timeline.controller.nextfight()
@@ -1493,6 +1498,14 @@ func _ko_nextfight() -> void:
 	var detail := {"round": ko_state.get("_root.rounds"), "fromTimeout": from_timeout}
 	diagnostics.push_event("round_restart", detail, physics_tick)
 	_web_checkpoint("round_restart", detail)
+	if OS.has_feature("web") and not presentation_only:
+		_record_round_draw(diagnostics.match_id, int(detail.round), physics_tick)
+
+
+func _record_round_draw(match_id: String, round_number: int, restart_tick: int) -> void:
+	await RenderingServer.frame_post_draw
+	if diagnostics.match_id == match_id and ko_state.get("_root.rounds") == round_number:
+		_web_checkpoint("round_restart_rendered", {"restartTick": restart_tick})
 
 
 func _ko_fight_started() -> void:
@@ -1522,6 +1535,7 @@ func _touch_transform_in_battle() -> bool:
 
 
 func _diagnostic_fight_started() -> void:
+	_web_checkpoint("fight_started")
 	diagnostics.push_event("fight_started", {
 		"mode": session.modo,
 		"map": selected_stage,
@@ -2163,15 +2177,16 @@ func _setup_screen_flash() -> void:
 
 
 func _start_screen_flash(color_rgb24: int) -> void:
-	_assist_flash_generation += 1
+	_pending_assist_flash.clear()
 	if OS.has_feature("web") and not diagnostics.replaying and (
 		(is_instance_valid(naruto_helper) and naruto_helper.attacking)
 		or (is_instance_valid(ichigo_helper) and ichigo_helper.attacking)
 	):
 		_record_assist_flash("screen_flash_during_assist", color_rgb24, physics_tick, diagnostics.match_id)
-		RenderingServer.frame_post_draw.connect(_record_assist_flash_draw.bind(
-			_assist_flash_generation, color_rgb24, physics_tick, diagnostics.match_id),
-			CONNECT_ONE_SHOT)
+		# Several source flashes can precede one draw. Only the last color reaches the screen.
+		_pending_assist_flash = {"color": color_rgb24, "tick": physics_tick, "match": diagnostics.match_id}
+		if not RenderingServer.frame_post_draw.is_connected(_record_assist_flash_draw):
+			RenderingServer.frame_post_draw.connect(_record_assist_flash_draw, CONNECT_ONE_SHOT)
 	var tint := Color(
 		float((color_rgb24 >> 16) & 0xFF) / 255.0,
 		float((color_rgb24 >> 8) & 0xFF) / 255.0,
@@ -2184,9 +2199,11 @@ func _start_screen_flash(color_rgb24: int) -> void:
 	screen_flash.visible = true
 
 
-func _record_assist_flash_draw(generation: int, color_rgb24: int, flash_tick: int, match_id: String) -> void:
-	if generation == _assist_flash_generation and screen_flash.visible:
-		_record_assist_flash("screen_flash_rendered_during_assist", color_rgb24, flash_tick, match_id)
+func _record_assist_flash_draw() -> void:
+	if screen_flash.visible and not _pending_assist_flash.is_empty():
+		_record_assist_flash("screen_flash_rendered_during_assist", _pending_assist_flash.color,
+			_pending_assist_flash.tick, _pending_assist_flash.match)
+	_pending_assist_flash.clear()
 
 
 func _record_assist_flash(phase: String, color_rgb24: int, flash_tick: int, match_id: String) -> void:

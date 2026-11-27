@@ -955,7 +955,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     const journal = {
         runId: sessionId, startedAt, userAgent: navigator.userAgent,
         navigation: performance.getEntriesByType?.('navigation')[0]?.type || 'unknown',
-        signals: [], checkpoints: [], stageTransitions: [], peakVideo: null, memoryHistory: [],
+        signals: [], browserEvidence: {}, roundTransitions: [], checkpoints: [], stageTransitions: [], peakVideo: null, memoryHistory: [],
         lifecycle: 'active', enginePhase: 'bootstrap',
     };
     const memoryHistoryIntervalMs = 30_000;
@@ -974,13 +974,16 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         runId: sessionId, startedAt, updatedAt: new Date().toISOString(), userAgent: navigator.userAgent,
         enginePhase: journal.enginePhase, lifecycle: journal.lifecycle, buildID: journal.buildID,
         build: journal.build, lastCheckpoint: journal.checkpoints.at(-1), snapshot: latestRuntimeSnapshot,
+        previousRunId: journal.previousRunId, browserReportedDiscard: journal.browserReportedDiscard,
+        navigation: journal.navigation, browserEvidence: journal.browserEvidence, roundTransitions: journal.roundTransitions,
+        browserProgress: journal.browserProgress,
         signals: journal.signals, consoleTail: journal.consoleTail, longTasks: journal.longTasks,
         lastInputs: journal.lastInputs, eventTail: journal.eventTail, matchHistory: journal.matchHistory,
         device: journal.device, graphics: journal.graphics, download: journal.download, visibility: journal.visibility,
         observedEvents: archive.status.observedEvents, lastIncident: journal.lastIncident,
         ...(persistence === 'unavailable' && {checkpoints: journal.checkpoints, memoryHistory: journal.memoryHistory,
             stageTransitions: journal.stageTransitions, peakVideo: journal.peakVideo, canvas: journal.canvas}),
-    }), sessionId);
+    }), sessionId, sampleBrowserProgress);
     journal.device = {language: navigator.language, devicePixelRatio: window.devicePixelRatio,
         hardwareConcurrency: navigator.hardwareConcurrency ?? null, maxTouchPoints: navigator.maxTouchPoints ?? null,
         longTasksSupported: Boolean(window.PerformanceObserver?.supportedEntryTypes?.includes('longtask'))};
@@ -1000,6 +1003,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         historyIds = JSON.parse(sessionStorage.getItem(tabHistoryKey)) || historyIds;
     } catch (_) { /* The navigation entry also survives same-tab reloads. */ }
     historyIds = Array.isArray(historyIds) ? historyIds.filter(id => typeof id === 'string').slice(0, 3) : [];
+    journal.previousRunId = historyIds[0] || null;
+    journal.browserReportedDiscard = typeof document.wasDiscarded === 'boolean' ? document.wasDiscarded : null;
     const readRun = key => {
         try {
             const run = JSON.parse(localStorage.getItem(key));
@@ -1011,18 +1016,20 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         const run = readRun(journalPrefix + id);
         if (run?.runId === id) previousRuns.push(run);
     }
-    function interruptedObservation(runs) {
+    function interruptedObservation(runs, events = []) {
         const active = runs.filter(run => run.lifecycle === 'active');
         const run = active.find(r => r.checkpoints?.some(c => c.players?.length) || r.lastCheckpoint?.players?.length)
             || active.find(r => r.checkpoints?.length || r.lastCheckpoint)
             || active.find(r => r.signals?.length || r.enginePhase === 'starting');
         if (!run) return null;
+        const successor = [journal, ...runs].find(next => next.previousRunId === run.runId);
+        const endEvidence = window.bvnCrashArchive?.endEvidence?.(run, events, successor);
         return {runId: run.runId, observation: 'reload_without_observed_pagehide',
-            browserReportedDiscard: run.runId === historyIds[0] && typeof document.wasDiscarded === 'boolean'
-                ? document.wasDiscarded : null,
+            browserReportedDiscard: successor?.browserReportedDiscard ?? null,
+            endEvidence,
             lastSavedAt: run.updatedAt, lastSignal: run.signals?.at(-1) || null,
             lastCheckpoint: window.bvnCrashArchive?.lastCheckpoint(run) || run.checkpoints?.at(-1) || null,
-            cause: 'unconfirmed'};
+            cause: endEvidence?.browserReportedDiscard === true ? 'browser_reported_discard' : 'unconfirmed'};
     }
     const recovery = interruptedObservation(previousRuns);
     if (recovery) feedback.textContent = '已找到上次中断前的现场。点击「导出日志」可一起保存。';
@@ -1101,9 +1108,57 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         const message = String(detail).slice(0, 800);
         const last = journal.signals.at(-1);
         if (last?.kind === kind && last.detail === message && performance.now() - last.monoMs < 1000) return;
-        journal.signals.push({ kind, detail: message, monoMs: performance.now(), at: new Date().toISOString() });
+        const signal = {kind, detail: message, monoMs: performance.now(), at: new Date().toISOString()};
+        if (kind !== 'error') {
+            const checkpoint = journal.checkpoints.at(-1);
+            const input = journal.lastInputs.p1;
+            const useInput = Number.isFinite(input?.fightTick) && (!checkpoint || input.receivedAt >= checkpoint.at);
+            const matchId = useInput ? input.matchId : checkpoint?.matchId;
+            Object.assign(signal, {matchId, fightTick: useInput ? input.fightTick : checkpoint?.fightTick,
+                round: checkpoint?.matchId === matchId ? checkpoint?.round : null,
+                checkpointPhase: checkpoint?.phase, visibility: document.visibilityState});
+            // Preserve each kind independently of a subsequent burst of generic engine errors.
+            journal.browserEvidence[kind] = signal;
+        }
+        journal.signals.push(signal);
         if (journal.signals.length > 12) journal.signals.shift();
         saveJournal();
+        if (kind !== 'error') { archive?.markJournalDirty(); archive?.flush(); }
+    }
+    let lastEngineSampleMs = null;
+    let pendingBrowserFrame = false;
+    let fallbackProgressTimer = null;
+    let lastGapSaveMs = -Infinity;
+    let progressGapOpen = false;
+    function resumeProgressClock() {
+        lastEngineSampleMs = null;
+        progressGapOpen = false;
+    }
+    document.addEventListener('visibilitychange', resumeProgressClock);
+    window.addEventListener('pageshow', resumeProgressClock);
+    // Use a single browser frame per second. Healthy play reuses the existing journal writes.
+    function sampleBrowserProgress() {
+        if (journal.enginePhase !== 'running' || journal.lifecycle !== 'active' || document.visibilityState !== 'visible'
+                || lastEngineSampleMs === null) return;
+        const progress = journal.browserProgress ||= {};
+        const now = performance.now();
+        progress.timerAt = new Date().toISOString();
+        progress.msSinceEngineCheckpoint = Math.round(now - lastEngineSampleMs);
+        if (!pendingBrowserFrame && typeof window.requestAnimationFrame === 'function') {
+            pendingBrowserFrame = true;
+            window.requestAnimationFrame(() => {
+                pendingBrowserFrame = false;
+                progress.animationFrameAt = new Date().toISOString();
+            });
+        }
+        if (progress.msSinceEngineCheckpoint < 5000) return;
+        if (!progressGapOpen) {
+            progress.lastGap = {observedAt: progress.timerAt, msSinceEngineCheckpoint: progress.msSinceEngineCheckpoint};
+            progressGapOpen = true;
+        } else if (now - lastGapSaveMs < 10000) return;
+        lastGapSaveMs = now;
+        saveJournal();
+        archive?.markJournalDirty();
     }
     window.bvnCrashCheckpoint = serialized => {
         if (typeof serialized !== 'string' || serialized.length > 8192) return;
@@ -1120,6 +1175,16 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         };
         const checkpoint = { at: new Date().toISOString(), ...state, memory, recordSeq: ++checkpointSeq };
         const now = performance.now();
+        if (progressGapOpen) {
+            Object.assign(journal.browserProgress.lastGap, {resumedAt: checkpoint.at, durationMs: Math.round(now - lastEngineSampleMs)});
+            progressGapOpen = false;
+        }
+        lastEngineSampleMs = state.scene === '游戏场景' && document.visibilityState === 'visible' ? now : null;
+        if (['round_restart_begin', 'round_restart', 'round_restart_rendered', 'fight_started'].includes(state.phase)) {
+            journal.roundTransitions.push({at: checkpoint.at, phase: state.phase, matchId: state.matchId, fightTick: state.fightTick,
+                round: state.round, readyFrame: state.readyFrame, framesDrawn: state.framesDrawn, restartTick: state.restartTick});
+            if (journal.roundTransitions.length > 16) journal.roundTransitions.shift();
+        }
         if (state.phase === 'arcade_stage_started'
             || (state.phase === 'sample' && now - lastMemoryHistoryMs >= memoryHistoryIntervalMs)) {
             journal.memoryHistory.push({
@@ -1150,6 +1215,9 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     };
     window.bvnCrashEnginePhase = phase => {
         journal.enginePhase = phase;
+        if (phase === 'running' && !archive && fallbackProgressTimer === null) {
+            fallbackProgressTimer = setInterval(sampleBrowserProgress, 1000);
+        }
         if (phase === 'running' && !journal.graphics) {
             try {
                 const gl = canvas.getContext?.('webgl2');
@@ -1158,6 +1226,12 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             } catch (_) { /* A context may already be lost. */ }
         }
         saveJournal();
+    };
+    window.bvnCrashEngineExit = code => {
+        journal.enginePhase = 'exited';
+        clearInterval(fallbackProgressTimer);
+        fallbackProgressTimer = null;
+        journalSignal('engine_exit', String(code));
     };
     let lastDownloadStep = -1;
     window.bvnCrashLoadProgress = (current, total) => {
@@ -1179,7 +1253,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         if (typeof value === 'string') return value;
         try { return JSON.stringify(value) ?? String(value); } catch { return String(value); }
     }
-    function record(level, ...args) {
+    function record(level, ...args) { recordMessage(level, args); }
+    function recordMessage(level, args, source = 'error') {
         const receivedMonoMs = performance.now();
         const message = args.map(format).join(' ').slice(0, legacyMessageLimit);
         entries.push({
@@ -1195,9 +1270,9 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             if (journal.consoleTail.length > 16) journal.consoleTail.shift();
         }
         if (level === 'error') {
-            const kind = /out of memory|memory allocation failed|cannot enlarge memory/i.test(message)
-                ? 'allocation_error' : /wasm trap|unreachable|memory access out of bounds/i.test(message)
-                    ? 'runtime_trap' : 'error';
+            const kind = /out of (?:executable )?memory|memory allocation failed|cannot enlarge memory|Aborted\(OOM\)/i.test(message)
+                ? 'allocation_error' : /wasm trap|(?:RuntimeError|wasm)[^\n]*unreachable|^unreachable$|memory access out of bounds|out of bounds memory access/i.test(message)
+                    ? 'runtime_trap' : /^Aborted\(/i.test(message) ? 'engine_abort' : source;
             journalSignal(kind, message);
             appendShellEvent('diagnostic_exception', { level, message });
         }
@@ -1815,8 +1890,16 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         const original = console[level].bind(console);
         console[level] = (...args) => { record(level, ...args); original(...args); };
     }
-    window.addEventListener('error', event => record('error', event.error || event.message || 'Resource failed: ' + event.target?.src), true);
-    window.addEventListener('unhandledrejection', event => record('error', event.reason));
+    window.addEventListener('error', event => {
+        if (event.error || event.message) {
+            const location = event.filename ? String(event.filename).split(/[?#]/)[0] + ':' + event.lineno + ':' + event.colno : '';
+            recordMessage('error', [event.error || event.message, location], 'uncaught_exception');
+        } else {
+            const url = String(event.target?.src || event.target?.href || '').split(/[?#]/)[0];
+            recordMessage('error', ['Resource failed: ' + url], 'resource_error');
+        }
+    }, true);
+    window.addEventListener('unhandledrejection', event => recordMessage('error', [event.reason], 'unhandled_rejection'));
     document.addEventListener('visibilitychange', () => {
         record('lifecycle', document.visibilityState);
         appendShellEvent('page_visibility', { state: document.visibilityState });
@@ -1824,9 +1907,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         if (document.hidden) archive?.flush();
         if (diagnosticsRequestCallback) diagnosticsRequestCallback('visibility', document.visibilityState);
     });
-    canvas.addEventListener('webglcontextlost', () => {
-        journalSignal('webgl_context_lost');
-        record('error', 'WebGL context lost');
+    canvas.addEventListener('webglcontextlost', event => {
+        recordMessage('error', ['WebGL context lost', event.statusMessage || ''], 'webgl_context_lost');
     });
     canvas.addEventListener('webglcontextrestored', () => {
         journalSignal('webgl_context_restored');
@@ -1990,7 +2072,10 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                 reload.recovery = interruptedObservation(reload.previousRuns);
             } catch (_) { /* The synchronous journal can still be exported. */ }
             const id = reload.recovery?.runId || reload.previousRuns[0]?.runId;
-            if (id) reload.savedRun = {runId: id, ...await window.bvnCrashArchive.detail(id)};
+            if (id) {
+                reload.savedRun = {runId: id, ...await window.bvnCrashArchive.detail(id)};
+                if (reload.recovery) reload.recovery = interruptedObservation(reload.previousRuns, reload.savedRun.events);
+            }
         }
         if (window.bvnCrashArchive) window.bvnCrashArchive.download(report);
         else {
@@ -2022,6 +2107,7 @@ const engine = new Engine({
     ...GODOT_CONFIG,
     onPrint: (...args) => console.log(...args),
     onPrintError: (...args) => console.error(...args),
+    onExit: code => window.bvnCrashEngineExit(code),
 });
 window.bvnReadEngineMemory = () => ({
     wasmHeapCapacityBytes: engine.rtenv?.HEAPU8?.buffer?.byteLength || null,

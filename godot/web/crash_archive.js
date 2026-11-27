@@ -39,7 +39,7 @@ window.bvnCrashArchive = (() => {
 
     const runLock = id => journalPrefix + id;
 
-    function createRecorder(metadata, runId) {
+    function createRecorder(metadata, runId, onInterval) {
         // A live game keeps its log until its document is closed. Crashes release Web Locks too.
         if (runId && navigator.locks) {
             navigator.locks.request(runLock(runId), () => new Promise(() => {})).catch(() => {});
@@ -125,7 +125,7 @@ window.bvnCrashArchive = (() => {
                 if (flushAfterWrite) { flushAfterWrite = false; flush(); }
             }
         }
-        setInterval(flush, status.intervalMs);
+        setInterval(() => { onInterval?.(); flush(); }, status.intervalMs);
         return { append, flush, markJournalDirty, status };
     }
 
@@ -315,18 +315,43 @@ window.bvnCrashArchive = (() => {
         return archived.at > journal.at ? archived : journal;
     }
 
-    async function recoveredReport(run) {
+    // Wall-clock timestamps can also be matched against a device incident report.
+    // An observed exception or GPU loss may precede a successful recovery.
+    function endEvidence(run, events = [], successor) {
+        const checkpoint = lastCheckpoint(run);
+        const lastEvent = events.at(-1);
+        const signals = run.signals || [];
+        const inputs = Object.values(run.lastInputs || {});
+        const times = [checkpoint?.at, lastEvent?.receivedAt, signals.at(-1)?.at, run.browserProgress?.timerAt, run.browserProgress?.animationFrameAt,
+            ...inputs.map(input => input?.receivedAt), run.updatedAt].map(value => Date.parse(value)).filter(Number.isFinite);
+        const end = times.length ? Math.max(...times) : NaN;
+        const next = successor?.previousRunId === run.runId ? Date.parse(successor.startedAt) : NaN;
+        const observations = new Map(signals.map(signal => [signal.kind, signal]));
+        for (const signal of Object.values(run.browserEvidence || {})) observations.set(signal.kind, signal);
+        const signalsByTime = [...observations.values()].sort((a,b) => String(b.at).localeCompare(String(a.at)));
+        return {lastObservedAt: Number.isFinite(end) ? new Date(end).toISOString() : null,
+            nextStartAt: next >= end ? successor.startedAt : null,
+            gapMs: next >= end ? next - end : null,
+            navigation: next >= end ? successor.navigation ?? null : null,
+            browserReportedDiscard: next >= end ? successor.browserReportedDiscard ?? null : null,
+            signals: signalsByTime.map(signal => ({...signal,
+                msBeforeLastObservation: Number.isFinite(end - Date.parse(signal.at)) ? end - Date.parse(signal.at) : null}))};
+    }
+
+    async function recoveredReport(run, runs = []) {
         const saved = await detail(run.runId);
         const events = saved.events;
         const last = lastCheckpoint(run);
         const snapshot = run.snapshot || null;
+        const evidence = endEvidence(run, events, runs.find(next => next.previousRunId === run.runId));
         return {schemaVersion: 2, reportKind: 'saved_run', runId: run.runId, startedAt: run.startedAt,
             exportedAt: new Date().toISOString(), userAgent: run.userAgent, build: run.build || {status: 'unknown', buildID: run.buildID},
             entries: run.consoleTail || [], runtime: {snapshotStatus: snapshot ? 'persisted' : 'unavailable', snapshot,
                 events, inputTape: events.filter(e => e.type === 'input_consumed'),
                 criticalEvents: events.filter(e => e.type === 'diagnostic_exception' || e.type === 'pause_state')},
             reloadDiagnostics: {currentRun: run, previousRuns: [], persistedDetail: {...saved, events: undefined},
-                lastCheckpoint: last || null, cause: 'unconfirmed'}};
+                lastCheckpoint: last || null, endEvidence: evidence,
+                cause: run.lifecycle === 'active' && evidence.browserReportedDiscard === true ? 'browser_reported_discard' : 'unconfirmed'}};
     }
-    return {createRecorder, mergeTail, listRuns, removeRuns, detail, download, describeRun, recoveredReport, nameFields, lastCheckpoint};
+    return {createRecorder, mergeTail, listRuns, removeRuns, detail, download, describeRun, recoveredReport, nameFields, lastCheckpoint, endEvidence};
 })();

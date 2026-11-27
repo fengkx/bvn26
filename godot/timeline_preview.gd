@@ -391,11 +391,7 @@ func _load_data() -> void:
 	_gradient_ramps.clear()
 	if fighter_directory == "":
 		return
-	var timeline_path := "%s/timeline.json" % fighter_directory
-	var timeline_source := FileAccess.get_file_as_string(timeline_path)
-	if timeline_source == "":
-		return
-	_timeline = _read_json(timeline_path)
+	_timeline = _read_json(fighter_directory.path_join("timeline.json"), true)
 	if _timeline.is_empty() or not _timeline.has("frames"):
 		return
 	var segments_path := fighter_directory.path_join("sound_segments.json")
@@ -408,11 +404,7 @@ func _load_data() -> void:
 	var fighter_path := "%s/fighter.json" % fighter_directory
 	if FileAccess.file_exists(fighter_path):
 		_fighter = _read_json(fighter_path)
-	var asset_manifest: Dictionary = {}
-	var assets_path := "%s/assets.json" % fighter_directory
-	var assets_source := FileAccess.get_file_as_string(assets_path)
-	if assets_source != "":
-		asset_manifest = _read_json(assets_path)
+	var asset_manifest := _read_json(fighter_directory.path_join("assets.json"), true)
 	for definition: Dictionary in _timeline.get("definitions", []):
 		_definitions[int(definition["character_id"])] = definition
 	for asset: Dictionary in asset_manifest.get("assets", []):
@@ -421,8 +413,10 @@ func _load_data() -> void:
 		_frames[int(frame["frame"])] = frame
 
 
-func _read_json(path: String) -> Dictionary:
+func _read_json(path: String, optional: bool = false) -> Dictionary:
 	var source := FileAccess.get_file_as_string(path)
+	if optional and source.is_empty():
+		return {}
 	var value = JSON.parse_string(source)
 	if not value is Dictionary:
 		push_error("Cannot parse generated timeline data: %s" % path)
@@ -555,7 +549,7 @@ func materialize_display() -> void:
 	else:
 		_render_display_list(frame["display_list"], wrapper, 1.0, 0, _current_frame,
 			0, _source_color_mul, _source_color_add, [], true,
-			1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips)
+			1 if wrapper_blend not in [0, 1] else wrapper_blend, _retained_visual_clips, wrapper_blend in [0, 1])
 		if wrapper_blend not in [0, 1]:
 			_compose_blend_group(first_child, 1.0, 0, wrapper_blend)
 	# These authored siblings live outside mc: its transform, color and
@@ -843,7 +837,8 @@ func _sound_volume_db(event: Dictionary) -> float:
 
 func _render_display_list(placements: Array, parent_transform: Transform2D,
 		alpha: float, depth: int, frame: int, age: int, rgb_mul: Color,
-		rgb_add: Color, inherited_masks: Array, root_list: bool = false, inherited_blend: int = 1, visual_clips: Dictionary = {}) -> void:
+		rgb_add: Color, inherited_masks: Array, root_list: bool = false, inherited_blend: int = 1, visual_clips: Dictionary = {},
+		direct_to_stage: bool = true) -> void:
 	var active: Array = []
 	for placement: Dictionary in placements:
 		var local_depth := int(placement["depth"])
@@ -861,7 +856,7 @@ func _render_display_list(placements: Array, parent_transform: Transform2D,
 			masks.append(mask.polygon)
 		_render_placement(placement, parent_transform, alpha,
 			local_depth if root_list and preserve_root_depths else depth,
-			frame, age, rgb_mul, rgb_add, masks, inherited_blend, visual_clips.get(local_depth, {}), root_list)
+			frame, age, rgb_mul, rgb_add, masks, inherited_blend, visual_clips.get(local_depth, {}), direct_to_stage)
 
 
 func _clip_bitmap_masks(fill_masks: Array, bitmap_transform: Transform2D,
@@ -904,7 +899,7 @@ func _render_placement(
 	clip_masks: Array = [],
 	inherited_blend: int = 1,
 	visual_clip: Dictionary = {},
-	root_placement: bool = false
+	direct_to_stage: bool = true
 ) -> void:
 	if bool(placement.get("replaced_by_external_movie", false)):
 		return
@@ -931,8 +926,7 @@ func _render_placement(
 		_compose_blend_group(first_child, filter_alpha, parent_depth,
 			int(placement.get("blend_mode", inherited_blend)), filters, true,
 			_cxform_combine_mul(parent_rgb_mul, filter_mul),
-			_cxform_combine_add(parent_rgb_mul, parent_rgb_add, filter_mul, filter_add),
-			root_placement and _filter_input_depth == 0 and int(_timeline.get("wrapper", {}).get("blend_mode", 1)) in [0, 1])
+			_cxform_combine_add(parent_rgb_mul, parent_rgb_add, filter_mul, filter_add), direct_to_stage)
 		return
 	var definition: Dictionary = _definitions[character_id]
 	if not bool(definition.get("initial_visible", true)):
@@ -973,9 +967,10 @@ func _render_placement(
 		var first_child := get_child_count()
 		_render_display_list(children, placement_transform, 1.0 if blend not in [0, 1] else alpha, depth,
 			local_frame, child_age, rgb_mul, rgb_add, clip_masks, false,
-			1 if blend not in [0, 1] else blend, visual_clip.get("children", {}))
+			1 if blend not in [0, 1] else blend, visual_clip.get("children", {}), direct_to_stage and blend in [0, 1])
 		if blend not in [0, 1]:
-			_compose_blend_group(first_child, alpha, depth, blend)
+			_compose_blend_group(first_child, alpha, depth, blend, [], false,
+				Color.WHITE, Color(0, 0, 0, 0), direct_to_stage)
 		return
 	var fills: Array = definition.get("bitmap_fills", [])
 	if not definition["type"].begins_with("DefineShape"):
@@ -1282,7 +1277,7 @@ func _compose_blend_group(
 	first_child: int, opacity: float, depth: int, blend: int,
 	filters: Array = [], isolate: bool = false,
 	post_mul: Color = Color.WHITE, post_add: Color = Color(0, 0, 0, 0),
-	root_cache: bool = false
+	direct_to_stage: bool = false
 ) -> void:
 	var items := get_children().slice(first_child)
 	if items.is_empty():
@@ -1299,7 +1294,9 @@ func _compose_blend_group(
 	for item: Node in items:
 		remove_child(item)
 	var group = BlendGroupScript.new() if filters.is_empty() else FilterGroupScript.new()
-	group.clip_offscreen = root_cache and blend in [0, 1] and filters.is_empty() and items.all(
+	# Blends sample the backdrop at the same screen pixel. A parent filter
+	# can sample outside the visible stage, so keep its inputs at full size.
+	group.clip_offscreen = direct_to_stage and _filter_input_depth == 0 and filters.is_empty() and items.all(
 		func(item: Node) -> bool: return item is Sprite2D or item is Polygon2D)
 	if not filters.is_empty():
 		group.set_meta("flash_filters", filters.duplicate(true))

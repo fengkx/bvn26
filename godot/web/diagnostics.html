@@ -83,9 +83,10 @@ details p {padding:.3rem 0}
         download.onclick = async () => {
             disable(true);
             try {
-                const current = (await archive.listRuns()).find(item => item.runId === run.runId);
+                const runs = await archive.listRuns();
+                const current = runs.find(item => item.runId === run.runId);
                 if (!current) { await refresh('这条记录已删除。'); return; }
-                const report = await archive.recoveredReport(current);
+                const report = await archive.recoveredReport(current, runs);
                 archive.download(report);
                 status.textContent = report.runtime.events.length ? '日志已导出。' : '已导出现场摘要，这次没有已保存的详细事件。';
             } catch (_) { status.textContent = '导出失败，请重试。'; }

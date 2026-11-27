@@ -42,6 +42,7 @@ const MAIN_EXTERNAL := [
 	"_diagnostic_watchdog_elapsed_ms",
 	"_diagnostic_stall_reported",
 	"diagnostic_input_provider",
+	"_pending_assist_flash",
 	"recorded_training_timers", "recorded_form_timers",
 ]
 const EXTERNAL_FIELDS := ["diagnostics", "diagnostic_runtime"]

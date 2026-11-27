@@ -187,7 +187,10 @@ def _saved_observation(report: dict[str, Any]) -> dict[str, Any] | None:
             "players": [_named_player(player) for player in _players(last)], "signals": run.get("signals", []),
             "coverage": coverage, "lastIncident": run.get("lastIncident"), "download": run.get("download"),
             "lastInputs": run.get("lastInputs", {}), "matchHistory": run.get("matchHistory", []),
-            "performance": last.get("performance"), "memory": last.get("memory"), "cause": "unconfirmed"}
+            "performance": last.get("performance"), "memory": last.get("memory"),
+            "cause": recovery.get("cause") or diagnostics.get("cause") or "unconfirmed",
+            "endEvidence": recovery.get("endEvidence") or diagnostics.get("endEvidence"),
+            "browserProgress": run.get("browserProgress"), "roundTransitions": run.get("roundTransitions", [])}
 
 
 def _runtime_events(report: dict[str, Any]) -> list[dict[str, Any]]:
@@ -817,9 +820,15 @@ def _print_result(value: Any, as_json: bool) -> None:
                 print(f"  Archive {coverage['status']}  events={coverage['retainedEvents']}  types={coverage['eventTypes']}  "
                       f"overwritten batches={coverage['overwrittenBatches']}  discarded events={coverage['discardedEvents']}  "
                       f"observed beyond last commit={coverage['observedBeyondCommit']}")
-            for signal in saved["signals"][-3:]:
+            evidence = saved["endEvidence"] or {}
+            if evidence:
+                print(f"  Last observed {evidence.get('lastObservedAt')}  next page {evidence.get('nextStartAt')}  "
+                      f"gap={evidence.get('gapMs')}ms  browser reported discard={evidence.get('browserReportedDiscard')}")
+            for signal in evidence.get("signals", saved["signals"][-3:]):
                 if isinstance(signal, dict):
-                    print(f"  Signal {signal.get('at')} {signal.get('kind')} {signal.get('detail', '')}")
+                    age = signal.get("msBeforeLastObservation")
+                    when = f" ({age}ms before last observation)" if age is not None else ""
+                    print(f"  Signal {signal.get('at')} {signal.get('kind')}{when} {signal.get('detail', '')}")
             for actor in saved["players"]:
                 helper = actor.get("helper") or {}
                 print(f"  {actor.get('slot')} {actor.get('displayName')} action={actor.get('action')} "
