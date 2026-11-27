@@ -69,6 +69,7 @@ var session := GameSession.new()
 var diagnostics := DiagnosticRuntime.new()
 var _next_web_checkpoint_ms := 0
 var _diagnostic_initial_players: Dictionary = {}
+var _diagnostic_online_match := false
 var _diagnostic_progress_signature := ""
 var _diagnostic_progress_tick := 0
 var _diagnostic_last_progress_ms := 0
@@ -460,7 +461,7 @@ func _web_checkpoint(phase: String, detail: Dictionary = {}) -> void:
 	if not OS.has_feature("web") or presentation_only:
 		return
 	var state := {
-		"phase": phase, "scene": session.root_label, "mode": session.modo,
+		"phase": phase, "scene": session.root_label, "mode": session.modo, "online": _diagnostic_online_match,
 		"arcadeStageIndex": arcade.stage if session.modo == 1 else null,
 		"map": selected_stage, "fightTick": physics_tick, "matchId": diagnostics.match_id,
 		"resources": Performance.get_monitor(Performance.OBJECT_RESOURCE_COUNT),
@@ -906,7 +907,8 @@ func _goto_key_settings() -> void:
 	key_settings.reset()
 
 
-func _enter_current_fight(modo: int) -> void:
+func _enter_current_fight(modo: int, online := false) -> void:
+	_diagnostic_online_match = online
 	if match_input.finished:
 		match_input = preload("res://match_input.gd").new()
 	_stop_ko()
@@ -1926,6 +1928,7 @@ func _diagnostic_snapshot(capture_initial: bool = false) -> Dictionary:
 		"matchId": diagnostics.match_id,
 		"mode": session.modo,
 		"modeName": _diagnostic_mode_name(session.modo),
+		"online": _diagnostic_online_match,
 		"p1cpu": session.p1cpu,
 		"p2cpu": session.p2cpu,
 		"map": selected_stage,

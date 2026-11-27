@@ -1293,7 +1293,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                 resourcePath: actor.resourcePath, helper: actor.helper && {id: actor.helper.id,
                     displayName: actor.helper.displayName, sourceId: actor.helper.sourceId, resourcePath: actor.helper.resourcePath}}));
             journal.matchHistory.push({at: entry.receivedAt, type: entry.type, matchId: entry.matchId,
-                mode: match?.modeName ?? match?.mode, map: match?.map, players: lineup, reason: entry.payload?.reason});
+                mode: match?.modeName ?? match?.mode, online: match?.online, map: match?.map, players: lineup, reason: entry.payload?.reason});
             if (journal.matchHistory.length > 24) journal.matchHistory.shift();
             saveJournal();
         }

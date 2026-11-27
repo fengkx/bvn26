@@ -10,7 +10,8 @@ import { test } from 'node:test';
 test('keeps ordered bounded batches across runs and reports overwritten or dropped evidence', {
     skip: !process.env.CHROME_BIN, timeout: 45_000,
 }, async () => {
-    const script = await readFile(new URL('../../godot/web/crash_archive.js', import.meta.url));
+    const script = (await readFile(new URL('../../godot/web/crash_archive.js', import.meta.url), 'utf8'))
+        .replace('/* BVN_DIAGNOSTIC_NAMES */ {}', JSON.stringify({'res://generated/helpers/jinye': '山中井野'}));
     const historyPage = await readFile(new URL('../../godot/web/diagnostics.html', import.meta.url));
     async function exercise() {
         const archive = window.bvnCrashArchive;
@@ -77,11 +78,18 @@ test('keeps ordered bounded batches across runs and reports overwritten or dropp
         const current = game.contentWindow.bvnCrashArchive.createRecorder(() => ({runId: 'live', updatedAt: new Date().toISOString()}), 'live');
         current.append('{"seq":1}', 9);
         await current.flush();
-        localStorage.setItem('bvn26.crash-run.battle', JSON.stringify({runId: 'battle'}));
+        localStorage.setItem('bvn26.crash-run.battle', JSON.stringify({runId: 'battle', matchHistory: [
+            {type:'match_started', at:'2026-11-26T05:00:00Z', matchId:'first', mode:'training',
+                players:[{slot:'p1',fighter:'鸣人'}, {slot:'p2',fighter:'一护'}]},
+            {type:'match_ended', matchId:'first'},
+        ], checkpoints:[{at:'2026-11-26T05:05:00Z', matchId:'second', mode:1, arcadeStageIndex:4, map:'楼顶',
+            players:[{slot:'p2',fighter:'卡卡西'}, {slot:'p1', fighter:'日番谷', helper:{id:'松本',resourcePath:'res://generated/helpers/jinye'}}]},
+            {at:'2026-11-26T05:06:00Z',scene:'MENU'}]}));
         localStorage.setItem('bvn26.crash-tail.battle', JSON.stringify({runId: 'battle'}));
         localStorage.setItem('bvn26.crash-run.legacy', JSON.stringify({runId: 'legacy'}));
         localStorage.setItem('bvn26.audio', 'keep');
         const frame = document.createElement('iframe');
+        frame.width = 320;
         frame.src = '/diagnostics.html';
         document.body.appendChild(frame);
         async function ready(predicate) {
@@ -92,29 +100,45 @@ test('keeps ordered bounded batches across runs and reports overwritten or dropp
             throw new Error('History page did not reach ' + predicate + ': ' + control('status')?.textContent);
         }
         const control = id => frame.contentDocument?.getElementById(id);
-        await ready(() => control('remove') && !control('remove').disabled);
-        control('run').value = 'battle';
+        const battleCard = () => control('runs')?.querySelector('[data-run-id="battle"]');
+        await ready(() => battleCard()?.querySelector('.remove'));
+        const card = battleCard();
+        metrics.title = card.querySelector('h2').textContent;
+        metrics.mode = card.querySelector('.mode').textContent;
+        const doc = frame.contentDocument;
+        metrics.mobileFits = doc.documentElement.scrollWidth <= doc.documentElement.clientWidth;
+        metrics.modes = ['single', 'vs_com', 'versus', 'training', 'versus'].map((mode, i) => archive.describeRun({
+            matchHistory: [{type: 'match_started', matchId: 'one', mode, online: i === 4}],
+            checkpoints: [{matchId: 'one', mode: i === 4 ? 3 : i + 1, players: {p1:{fighter:'鸣人'}}}],
+        })[0].mode);
+        metrics.meta = card.querySelector('.meta').textContent;
+        card.querySelector('summary').click();
+        metrics.earlier = card.querySelector('details[open] p').textContent;
+        const view = frame.contentWindow;
+        view.HTMLAnchorElement.prototype.click = function () { metrics.filename = this.download; };
+        card.querySelector('.download').click();
+        await ready(() => metrics.filename && !card.querySelector('.remove').disabled);
         frame.contentWindow.confirm = () => false;
-        control('remove').click();
+        card.querySelector('.remove').click();
         metrics.cancelled = (await archive.detail('battle')).events.length;
         frame.contentWindow.confirm = () => true;
-        control('remove').click();
-        await ready(() => !control('remove').disabled && control('run').value !== 'battle');
+        card.querySelector('.remove').click();
+        await ready(() => !control('clear').disabled && !battleCard());
         metrics.deleted = [(await archive.detail('battle')).events.length,
             localStorage.getItem('bvn26.crash-run.battle'), localStorage.getItem('bvn26.crash-tail.battle')];
         control('clear').click();
-        await ready(() => !control('clear').disabled && control('run').options.length === 1);
+        await ready(() => !control('clear').disabled && control('runs').children.length === 1);
         const loaded = new Promise(resolve => frame.addEventListener('load', resolve, {once: true}));
         frame.contentWindow.location.reload();
         await loaded;
         await ready(() => !control('clear').disabled);
-        metrics.remaining = Array.from(control('run').options, option => option.value);
+        metrics.remaining = Array.from(control('runs').children, row => row.dataset.runId);
         game.remove();
         await navigator.locks.request('bvn26.crash-run.live', () => {});
         frame.contentWindow.confirm = () => true;
         control('clear').click();
         await ready(() => control('status').textContent.includes('还没有保存'));
-        metrics.empty = control('run').options.length === 0 && control('download').disabled && control('clear').disabled;
+        metrics.empty = control('runs').children.length === 0 && control('clear').disabled;
         metrics.audio = localStorage.getItem('bvn26.audio');
         return metrics;
     }
@@ -161,6 +185,13 @@ test('keeps ordered bounded batches across runs and reports overwritten or dropp
         assert.equal(result.through, 2);
         assert.equal(result.startupBatches, 0);
         assert.equal(result.survivedRestarts, 2);
+        assert.equal(result.title, '日番谷 对阵 卡卡西');
+        assert.equal(result.mode, '闯关模式');
+        assert.equal(result.mobileFits, true);
+        assert.deepEqual(result.modes, ['闯关模式', '人机对战', '双人对战', '训练模式', '联机对战']);
+        assert.match(result.meta, /第 5 关.*楼顶.*山中井野/);
+        assert.match(result.earlier, /训练模式.*鸣人 对阵 一护/);
+        assert.match(result.filename, /^bvn26-log-闯关模式-日番谷 对阵 卡卡西-.*\.json$/);
         assert.equal(result.cancelled, 2);
         assert.deepEqual(result.deleted, [0, null, null]);
         assert.deepEqual(result.remaining, ['live']);

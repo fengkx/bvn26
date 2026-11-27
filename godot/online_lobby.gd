@@ -3583,7 +3583,7 @@ func _configure_live_game(state: Dictionary) -> String:
 	if not _stage_ids.has(stage):
 		return "unsupported_stage"
 	game_root._load_selected_stage(stage)
-	game_root._enter_current_fight(3)
+	game_root._enter_current_fight(3, true)
 	game_root.battle_intro.recorded_polling = true
 	game_root.stage_sound.select()
 	game_root.stage_sound.start()

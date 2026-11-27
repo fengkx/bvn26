@@ -2,71 +2,114 @@
 <html lang="zh-CN">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>对局日志 · 死神 vs 火影 2.6</title>
+<title>历史对局 · 死神 vs 火影 2.6</title>
 <style>
-:root {color-scheme: light dark; font: 16px/1.6 system-ui,sans-serif}
-body {max-width: 36rem; margin: 8vh auto; padding: 0 1.25rem}
-h1 {font-size: 1.6rem} select,button {font:inherit; padding:.55rem; margin:.3rem 0; max-width:100%}
-select {display:block;width:100%} button {cursor:pointer}
+:root {color-scheme:dark;font:16px/1.55 "PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#f6eee7;background:#171417}
+* {box-sizing:border-box}
+body {max-width:48rem;margin:0 auto;padding:clamp(1.25rem,6vh,4rem) 1rem 3rem}
+header,.card-head,.actions {display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+h1,h2,p {margin:0}
+h1 {font-size:clamp(1.6rem,5vw,2rem)}
+h2 {font-size:1.18rem;line-height:1.5;margin:.45rem 0 .15rem;overflow-wrap:anywhere}
+.hint,.meta,time,#status {color:#c7bbb5;font-size:.9rem}
+.hint {margin:.25rem 0 1rem}
+#runs {padding:0;margin:0;list-style:none;display:grid;gap:.75rem}
+li {padding:1rem 1.15rem;border:1px solid #4e4242;border-radius:.65rem;background:#241f22}
+.mode {font-size:.85rem;font-weight:bold;color:#f3b48e}
+button {font:inherit;min-height:44px;padding:.45rem .9rem;color:inherit;background:#342b2c;border:1px solid #655251;border-radius:.4rem;cursor:pointer}
+button:focus-visible,summary:focus-visible {outline:2px solid #ffc28c;outline-offset:3px}
+button:disabled {opacity:.5;cursor:default}
+.actions {justify-content:flex-start;margin-top:.7rem}
+.download {background:#f3c49d;color:#291d18;border-color:#f3c49d;font-weight:600}
+details {margin:.65rem 0;color:#ddcfc8;font-size:.9rem}
+summary {cursor:pointer;padding:.3rem 0}
+details p {padding:.3rem 0}
+#status {margin:.6rem 0}
 </style>
-<h1>历史对局</h1>
-<p>请选择发生问题的时间，下载后把 JSON 文件附在问题反馈中。记录保存在玩游戏时使用的浏览器里。</p>
-<label for="run">本机记录</label><select id="run" disabled></select>
-<button type="button" id="download" disabled>下载所选日志</button>
-<button type="button" id="remove" disabled>删除所选记录</button>
-<button type="button" id="clear" disabled>清空历史记录</button>
+<header><h1>历史对局</h1><button type="button" id="clear" disabled>清空历史记录</button></header>
+<p class="hint">按最近记录时间排列。遇到问题时，可以下载对应日志用于反馈。</p>
 <p id="status" role="status" aria-live="polite">正在读取本机记录…</p>
+<ul id="runs" aria-label="本机对局日志"></ul>
 <script src="crash_archive.js"></script>
 <script>
 (async () => {
     const archive = window.bvnCrashArchive;
-    const select = document.getElementById('run');
-    const download = document.getElementById('download');
-    const remove = document.getElementById('remove');
+    const list = document.getElementById('runs');
     const clear = document.getElementById('clear');
     const status = document.getElementById('status');
+    let ids = [];
+    const dateFormat = new Intl.DateTimeFormat('zh-CN', {year:'numeric', month:'numeric', day:'numeric',
+        hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
+    function element(tag, text, className) {
+        const node = document.createElement(tag);
+        if (text) node.textContent = text;
+        if (className) node.className = className;
+        return node;
+    }
     function disable(value) {
-        for (const control of [select, download, remove, clear]) control.disabled = value;
+        clear.disabled = value || !ids.length;
+        for (const button of list.querySelectorAll('button')) button.disabled = value;
+    }
+    function card(run) {
+        const [last, ...earlier] = archive.describeRun(run);
+        const date = new Date(run.updatedAt || run.startedAt);
+        const time = Number.isNaN(date.getTime()) ? '时间未记录' : dateFormat.format(date);
+        const row = element('li');
+        row.dataset.runId = run.runId;
+        const head = element('div', '', 'card-head');
+        head.append(element('span', last ? last.mode || '模式未记录' : '运行日志', 'mode'), element('time', time));
+        const title = last?.title || (run.enginePhase === 'startup_failed' ? '游戏启动失败' :
+            run.enginePhase === 'starting' || run.enginePhase === 'bootstrap' ? '游戏启动记录' : '未记录到对局');
+        row.append(head, element('h2', title));
+        if (last) {
+            const description = [last.stage && '第 ' + last.stage + ' 关', last.map,
+                last.helpers.p1 && '1P 援助：' + last.helpers.p1, last.helpers.p2 && '2P 援助：' + last.helpers.p2];
+            row.append(element('p', description.filter(Boolean).join(' · '), 'meta'));
+        }
+        if (earlier.length) {
+            const details = element('details');
+            details.append(element('summary', '查看同一份日志中的其他对局（' + earlier.length + '）'));
+            for (const match of earlier) {
+                details.append(element('p', [match.mode, match.title, match.stage && '第 ' + match.stage + ' 关', match.map].filter(Boolean).join(' · ')));
+            }
+            row.append(details);
+        }
+        const actions = element('div', '', 'actions');
+        const download = element('button', '下载日志', 'download');
+        const remove = element('button', '删除', 'remove');
+        const label = [last?.mode, title, time].filter(Boolean).join(' · ');
+        download.setAttribute('aria-label', '下载日志：' + label);
+        remove.setAttribute('aria-label', '删除记录：' + label);
+        download.onclick = async () => {
+            disable(true);
+            try {
+                const current = (await archive.listRuns()).find(item => item.runId === run.runId);
+                if (!current) { await refresh('这条记录已删除。'); return; }
+                const report = await archive.recoveredReport(current);
+                archive.download(report);
+                status.textContent = report.runtime.events.length ? '日志已导出。' : '已导出现场摘要，这次没有已保存的详细事件。';
+            } catch (_) { status.textContent = '导出失败，请重试。'; }
+            finally { disable(false); }
+        };
+        remove.onclick = () => clean([run.runId], '「' + label + '」');
+        actions.append(download, remove);
+        row.append(actions);
+        return row;
     }
     async function refresh(message = '') {
-        const selected = select.value;
         const runs = await archive.listRuns();
-        select.replaceChildren();
-        for (const run of runs) {
-            const last = window.bvnCrashArchive.lastCheckpoint(run);
-            const player = Object.values(last?.players || {}).find(actor => actor?.slot === 'p1');
-            const fighter = player && window.bvnCrashArchive.nameFields('', player).displayName;
-            const helper = player?.helper && window.bvnCrashArchive.nameFields('helper', player.helper).displayName;
-            const label = [new Date(run.updatedAt || run.startedAt).toLocaleString(),
-                last?.map || last?.scene || run.enginePhase || '启动', fighter, helper, run.runId.slice(0,8)].filter(Boolean).join(' · ');
-            select.add(new Option(label, run.runId));
-        }
-        const useful = runs.find(run => run.checkpoints?.some(c => c.players?.length) || run.lastCheckpoint?.players?.length || run.signals?.length);
-        if (runs.some(run => run.runId === selected)) select.value = selected;
-        else if (useful) select.value = useful.runId;
-        disable(!runs.length);
-        status.textContent = [message, runs.length ? '' : '这个浏览器里还没有保存的对局日志。'].filter(Boolean).join(' ');
+        list.replaceChildren(...runs.map(card));
+        ids = runs.map(run => run.runId);
+        disable(false);
+        status.textContent = [message, ids.length ? '' : '这个浏览器里还没有保存的对局日志。'].filter(Boolean).join(' ');
     }
-    download.onclick = async () => {
-        disable(true);
-        try {
-            const current = (await archive.listRuns()).find(run => run.runId === select.value);
-            if (!current) { await refresh('这条记录已删除。'); return; }
-            const report = await archive.recoveredReport(current);
-            archive.download(report);
-            status.textContent = report.runtime.events.length ? '日志已导出。' : '已导出现场摘要，这次没有已保存的详细事件。';
-        } catch (_) { status.textContent = '导出失败，请重试。'; }
-        finally { disable(!select.options.length); }
-    };
-    async function clean(all) {
-        const ids = all ? Array.from(select.options, option => option.value) : [select.value];
-        const target = all ? '列表中的全部 ' + ids.length + ' 条记录' : '「' + select.selectedOptions[0].text + '」';
+    async function clean(targetIds, target) {
         const live = navigator.locks ? '正在记录的游戏会保留。' : '仍打开的游戏可能继续写入日志。';
         if (!window.confirm('删除' + target + '？日志删除后无法恢复。' + live)) return;
         disable(true);
         let message;
         try {
-            const result = await archive.removeRuns(ids);
+            const result = await archive.removeRuns(targetIds);
             message = [result.removed && '已删除 ' + result.removed + ' 条记录。',
                 result.active && '已保留 ' + result.active + ' 条正在记录的游戏日志。关闭对应游戏页后可删除。',
                 result.incomplete && '部分存储不可访问，无法确认日志已全部删除。'].filter(Boolean).join(' ');
@@ -74,8 +117,7 @@ select {display:block;width:100%} button {cursor:pointer}
         try { await refresh(message); }
         catch (_) { status.textContent = message + ' 无法刷新列表，请重新打开此页。'; }
     }
-    remove.onclick = () => clean(false);
-    clear.onclick = () => clean(true);
+    clear.onclick = () => clean(ids, '列表中的全部 ' + ids.length + ' 条记录');
     try { await refresh(); }
     catch (_) { status.textContent = '无法读取本机记录，请用玩游戏时的浏览器打开此页，并检查网站数据权限。'; }
 })();

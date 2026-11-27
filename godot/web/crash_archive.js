@@ -254,11 +254,54 @@ window.bvnCrashArchive = (() => {
         return {...value, fighter: known, ...identity};
     }
 
+    const modeLabels = {1: '闯关模式', single: '闯关模式', 2: '人机对战', vs_com: '人机对战',
+        3: '双人对战', versus: '双人对战', 4: '训练模式', training: '训练模式'};
+
+    function describeRun(run) {
+        const matches = new Map();
+        function observe(record) {
+            if (!record) return;
+            const actors = Object.entries(record.players || {});
+            if (!actors.length && record.type !== 'match_started') return;
+            const id = record.matchId || '';
+            const match = matches.get(id) || {fighters: {}, helpers: {}};
+            for (const [key, actor] of actors) {
+                const slot = actor?.slot || key;
+                if (!actor || !['p1', 'p2'].includes(slot)) continue;
+                const fighter = nameFields('', actor).displayName || actor.fighter;
+                const helper = actor.helper && nameFields('helper', actor.helper).displayName;
+                if (fighter) match.fighters[slot] = fighter;
+                if (helper) match.helpers[slot] = helper;
+            }
+            if (record.online) match.online = true;
+            match.mode = match.online ? '联机对战' : modeLabels[record.modeName] || modeLabels[record.mode] || match.mode;
+            if (record.map) match.map = record.map;
+            if (match.mode === '闯关模式' && Number.isInteger(record.arcadeStageIndex)) {
+                match.stage = record.arcadeStageIndex + 1;
+            }
+            if (record.at) match.at = record.at;
+            matches.set(id, match);
+        }
+        const snapshot = run.snapshot?.match;
+        if (snapshot?.matchId) observe(snapshot);
+        const observations = [...(run.matchHistory || []).filter(entry => entry.type === 'match_started'),
+            ...(run.stageTransitions || []), ...(run.checkpoints || []), run.lastCheckpoint].filter(Boolean);
+        observations.sort((a, b) => String(a.at || '').localeCompare(String(b.at || ''))).forEach(observe);
+        const recent = [...matches.values()].reverse().sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')));
+        for (const match of recent) {
+            const {p1, p2} = match.fighters;
+            match.title = p1 || p2 ? (p1 || '角色未记录') + ' 对阵 ' + (p2 || '对手未记录') : '阵容未记录';
+        }
+        return recent;
+    }
+
     function download(report) {
         const blob = new Blob([JSON.stringify(report, nameFields)], {type: 'application/json'});
         const url = URL.createObjectURL(blob), link = document.createElement('a');
         link.href = url;
-        link.download = 'bvn26-log-' + report.exportedAt.replace(/[:.]/g, '-') + '.json';
+        const match = report.reportKind === 'saved_run' && describeRun(report.reloadDiagnostics.currentRun)[0];
+        const label = match ? [match.mode, match.title].filter(Boolean).join('-').replace(/[\\/:*?"<>|]/g, '_').slice(0, 90) + '-' : '';
+        link.download = 'bvn26-log-' + label + report.exportedAt.replace(/[:.]/g, '-') + '.json';
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -285,5 +328,5 @@ window.bvnCrashArchive = (() => {
             reloadDiagnostics: {currentRun: run, previousRuns: [], persistedDetail: {...saved, events: undefined},
                 lastCheckpoint: last || null, cause: 'unconfirmed'}};
     }
-    return {createRecorder, mergeTail, listRuns, removeRuns, detail, download, recoveredReport, nameFields, lastCheckpoint};
+    return {createRecorder, mergeTail, listRuns, removeRuns, detail, download, describeRun, recoveredReport, nameFields, lastCheckpoint};
 })();
