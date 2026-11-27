@@ -11,7 +11,7 @@ func _run() -> void:
 	await process_frame
 
 	var available: Dictionary = scene.character_selection.available
-	var portraits: Dictionary = scene.character_selection._portrait_spec
+	var portraits: Dictionary = CharacterSelection.portrait_spec
 	var footer: Dictionary = scene.character_selection._footer_spec
 	for name in ["佐助", "卡卡西", "恋次"]:
 		assert(portraits.has(name), "Missing selectable fighter portrait: " + name)

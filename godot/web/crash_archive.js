@@ -37,7 +37,13 @@ window.bvnCrashArchive = (() => {
 
     const range = id => IDBKeyRange.bound([id, 0], [id, batchSlots - 1]);
 
-    function createRecorder(metadata) {
+    const runLock = id => journalPrefix + id;
+
+    function createRecorder(metadata, runId) {
+        // A live game keeps its log until its document is closed. Crashes release Web Locks too.
+        if (runId && navigator.locks) {
+            navigator.locks.request(runLock(runId), () => new Promise(() => {})).catch(() => {});
+        }
         let pending = [], size = 0, discarded = 0, sequence = 0, busy = false;
         let journalDirty = false, flushAfterWrite = false;
         const status = { state: 'pending', committedBatches: 0, discardedEvents: 0,
@@ -165,6 +171,41 @@ window.bvnCrashArchive = (() => {
         if (!readable) throw new Error('Browser storage unavailable');
         return [...byId.values()].sort((a,b) => String(b.updatedAt).localeCompare(String(a.updatedAt)));
     }
+    async function removeRuns(ids) {
+        const result = {removed: 0, active: 0, incomplete: 0};
+        let db;
+        try { db = await database(); } catch (_) { /* Local journals may still be accessible. */ }
+        for (const id of new Set(ids)) {
+            async function remove() {
+                let complete = Boolean(db);
+                if (db) {
+                    const tx = db.transaction(['runs', 'chunks'], 'readwrite');
+                    tx.objectStore('runs').delete(id);
+                    tx.objectStore('chunks').delete(range(id));
+                    await new Promise((resolve, reject) => {
+                        tx.oncomplete = resolve;
+                        tx.onabort = () => reject(tx.error || new Error('Archive deletion aborted'));
+                    });
+                }
+                try {
+                    localStorage.removeItem(journalPrefix + id);
+                    localStorage.removeItem('bvn26.crash-tail.' + id);
+                } catch (_) { complete = false; }
+                if (complete) result.removed++;
+                else result.incomplete++;
+            }
+            if (navigator.locks) {
+                await navigator.locks.request(runLock(id), {ifAvailable: true}, lock => {
+                    if (lock) return remove();
+                    result.active++;
+                });
+            } else {
+                await remove();
+            }
+        }
+        return result;
+    }
+
     async function detail(runId) {
         try {
             const db = await database();
@@ -244,5 +285,5 @@ window.bvnCrashArchive = (() => {
             reloadDiagnostics: {currentRun: run, previousRuns: [], persistedDetail: {...saved, events: undefined},
                 lastCheckpoint: last || null, cause: 'unconfirmed'}};
     }
-    return {createRecorder, mergeTail, listRuns, detail, download, recoveredReport, nameFields, lastCheckpoint};
+    return {createRecorder, mergeTail, listRuns, removeRuns, detail, download, recoveredReport, nameFields, lastCheckpoint};
 })();

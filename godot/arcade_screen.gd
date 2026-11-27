@@ -94,17 +94,20 @@ func _display_frame(value: int) -> void:
 	for rect: Array in patches:
 		var index := int(rect[0])
 		if not _page_cache.has(index):
-			if screen != "win":
-				_page_cache.clear()
-			var image := (load(DIRECTORY + str(_pages[index])) as Texture2D).get_image()
-			if image.is_compressed():
-				image.decompress()
+			_page_cache.clear()
+			var path := DIRECTORY + str(_pages[index])
+			var image := Image.new()
+			if image.load_webp_from_buffer(FileAccess.get_file_as_bytes(path)) != OK:
+				push_error("Unable to decode arcade page: " + path)
+				continue
 			image.convert(Image.FORMAT_RGB8)
 			_page_cache[index] = image
 		_canvas.blit_rect(_page_cache[index], Rect2i(int(rect[1]), int(rect[2]), int(rect[3]), int(rect[4])), Vector2i(int(rect[5]), int(rect[6])))
 	if not patches.is_empty():
 		_texture.update(_canvas)
 		queue_redraw()
+	if value == _length:
+		_page_cache.clear()
 	if screen == "win" and frame == 20:
 		quote_requested.emit()
 	_quote.visible = screen == "win" and frame >= 20

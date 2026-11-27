@@ -13,6 +13,12 @@ func _key(code: Key) -> InputEventKey:
 	return event
 
 
+func _finish_loading(game) -> void:
+	assert(game._pack_screen != null and game._pack_screen.loaded)
+	game._pack_screen._process(float(game._pack_screen.timeline.frames.size()))
+	await process_frame
+
+
 func _run() -> void:
 	var game = load("res://main.tscn").instantiate()
 	root.add_child(game)
@@ -36,6 +42,7 @@ func _run() -> void:
 	selector._finish_confirmation(0)
 	assert(selector.phase == 1 and selector.enabled == [true, false])
 	selector._finish_confirmation(0)
+	await _finish_loading(game)
 	assert(game.session.root_label == "游戏场景" and game.session.p2cpu)
 	assert(not game.map_selection.visible)
 	var player: String = screen.player
@@ -59,6 +66,9 @@ func _run() -> void:
 		assert(screen.screen == "win")
 		for i in 23:
 			screen.tick()
+			assert(screen._page_cache.size() <= 1)
+		if stage < 7:
+			assert(screen._page_cache.is_empty())
 		if stage == 0:
 			assert(not screen._quote.text.is_empty())
 			var font: Font = screen._quote.get_theme_font("font")
@@ -69,11 +79,16 @@ func _run() -> void:
 						assert(character == "\n" or font.has_char(character.unicode_at(0)), line)
 		if stage < 7:
 			game._input(_key(KEY_J))
+			await _finish_loading(game)
 			assert(game.session.root_label == "游戏场景")
 		await process_frame
 	assert(screen.screen == "ending" and screen.stage == 8)
 	while screen.frame < 318:
 		screen.tick()
+		assert(screen._page_cache.size() <= 1)
+		for image: Image in screen._page_cache.values():
+			assert(image.get_data_size() <= 600 * 800 * 3)
+	assert(screen._page_cache.is_empty())
 	game._input(_key(KEY_ENTER))
 	assert(game.session.root_label == "MENU" and screen.stage == 0)
 

@@ -198,7 +198,6 @@ var _rollback_options: VBoxContainer
 var _player_cards: Array[Label] = []
 var _player_portraits: Array[TextureRect] = []
 var _room_body: HBoxContainer
-var _portrait_cache := {}
 var _save_rules_button: Button
 var _start_button: Button
 var _create_button: Button
@@ -490,6 +489,7 @@ func _build_ui() -> void:
 	_room_view.visible = false
 	page_content.add_child(_room_view)
 	_build_room_view()
+	_room_view.visibility_changed.connect(_sync_room_portraits)
 
 	_match_view = VBoxContainer.new()
 	_match_view.add_theme_constant_override("separation", 8)
@@ -4944,20 +4944,33 @@ func _return_from_closed_room() -> void:
 	_status.text = "与朋友约一场对战"
 
 
+func _sync_room_portraits() -> void:
+	var members := _as_array(_room_state.get("members", []))
+	for slot in _player_portraits.size():
+		if _room_view.is_visible_in_tree() and _uses_room_setup() and slot < members.size():
+			_update_room_portrait(slot, _as_dictionary(_as_dictionary(members[slot]).get("choice")))
+		else:
+			_player_portraits[slot].texture = null
+
+
 func _update_room_portrait(slot: int, choice: Dictionary) -> void:
+	if not _room_view.is_visible_in_tree():
+		return
 	var display_name := str(_fighter_labels.get(choice.get("fighter", ""), ""))
-	if not _portrait_cache.has(display_name):
-		var portraits: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://generated/main/character_selection/portraits.json"))
-		var portrait := _as_dictionary(portraits.get(display_name))
-		var textures: Array = portrait.get("textures", [])
-		var cropped: AtlasTexture
-		if not textures.is_empty():
-			var texture: Texture2D = load("res://generated/main/character_selection/" + str(textures.back()))
-			cropped = AtlasTexture.new()
-			cropped.atlas = texture
-			cropped.region = texture.get_image().get_used_rect()
-		_portrait_cache[display_name] = cropped
-	_player_portraits[slot].texture = _portrait_cache[display_name]
+	var portrait := _as_dictionary(CharacterSelection.portrait_spec.get(display_name))
+	var target := _player_portraits[slot]
+	if portrait.is_empty():
+		target.texture = null
+		return
+	var path := CharacterSelection.DIRECTORY + "/" + str(portrait.textures.back())
+	var current := target.texture as AtlasTexture
+	if current != null and current.atlas.resource_path == path:
+		return
+	var region: Array = portrait.room_crop
+	var cropped := AtlasTexture.new()
+	cropped.atlas = load(path)
+	cropped.region = Rect2(region[0], region[1], region[2], region[3])
+	target.texture = cropped
 
 
 func _menu_members_connected() -> bool:

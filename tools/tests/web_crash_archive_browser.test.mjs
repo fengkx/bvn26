@@ -11,6 +11,7 @@ test('keeps ordered bounded batches across runs and reports overwritten or dropp
     skip: !process.env.CHROME_BIN, timeout: 45_000,
 }, async () => {
     const script = await readFile(new URL('../../godot/web/crash_archive.js', import.meta.url));
+    const historyPage = await readFile(new URL('../../godot/web/diagnostics.html', import.meta.url));
     async function exercise() {
         const archive = window.bvnCrashArchive;
         const recorder = id => archive.createRecorder(() => ({runId: id, updatedAt: new Date().toISOString()}));
@@ -60,13 +61,62 @@ test('keeps ordered bounded batches across runs and reports overwritten or dropp
             }
         }
         const startup = (await archive.listRuns()).find(r => r.runId === 'restart-8');
-        return {first: rolled.events[0].seq, last: rolled.events.at(-1).seq, count: rolled.events.length,
+        const metrics = {first: rolled.events[0].seq, last: rolled.events.at(-1).seq, count: rolled.events.length,
             overwritten: rolled.archive.overwrittenBatches, runs: retainedRunCount,
             evicted: (await archive.detail('active')).status, dropped: burst.archive.discardedEvents,
             accounted: burst.events.length + burst.archive.discardedEvents,
             mergedAt: merged.updatedAt, committedAt: rolled.committedAt, checkpoint: merged.checkpoints[0].fightTick,
             drained: durable.events.map(e => e.seq), through: durable.archive.committedThroughEvent,
             startupBatches: startup.archive.committedBatches, survivedRestarts: (await archive.detail('battle')).events.length};
+
+        const game = document.createElement('iframe');
+        const opened = new Promise(resolve => game.addEventListener('load', resolve, {once: true}));
+        game.src = '/diagnostics.html';
+        document.body.appendChild(game);
+        await opened;
+        const current = game.contentWindow.bvnCrashArchive.createRecorder(() => ({runId: 'live', updatedAt: new Date().toISOString()}), 'live');
+        current.append('{"seq":1}', 9);
+        await current.flush();
+        localStorage.setItem('bvn26.crash-run.battle', JSON.stringify({runId: 'battle'}));
+        localStorage.setItem('bvn26.crash-tail.battle', JSON.stringify({runId: 'battle'}));
+        localStorage.setItem('bvn26.crash-run.legacy', JSON.stringify({runId: 'legacy'}));
+        localStorage.setItem('bvn26.audio', 'keep');
+        const frame = document.createElement('iframe');
+        frame.src = '/diagnostics.html';
+        document.body.appendChild(frame);
+        async function ready(predicate) {
+            for (let i = 0; i < 200; i++) {
+                if (predicate()) return;
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+            throw new Error('History page did not reach ' + predicate + ': ' + control('status')?.textContent);
+        }
+        const control = id => frame.contentDocument?.getElementById(id);
+        await ready(() => control('remove') && !control('remove').disabled);
+        control('run').value = 'battle';
+        frame.contentWindow.confirm = () => false;
+        control('remove').click();
+        metrics.cancelled = (await archive.detail('battle')).events.length;
+        frame.contentWindow.confirm = () => true;
+        control('remove').click();
+        await ready(() => !control('remove').disabled && control('run').value !== 'battle');
+        metrics.deleted = [(await archive.detail('battle')).events.length,
+            localStorage.getItem('bvn26.crash-run.battle'), localStorage.getItem('bvn26.crash-tail.battle')];
+        control('clear').click();
+        await ready(() => !control('clear').disabled && control('run').options.length === 1);
+        const loaded = new Promise(resolve => frame.addEventListener('load', resolve, {once: true}));
+        frame.contentWindow.location.reload();
+        await loaded;
+        await ready(() => !control('clear').disabled);
+        metrics.remaining = Array.from(control('run').options, option => option.value);
+        game.remove();
+        await navigator.locks.request('bvn26.crash-run.live', () => {});
+        frame.contentWindow.confirm = () => true;
+        control('clear').click();
+        await ready(() => control('status').textContent.includes('还没有保存'));
+        metrics.empty = control('run').options.length === 0 && control('download').disabled && control('clear').disabled;
+        metrics.audio = localStorage.getItem('bvn26.audio');
+        return metrics;
     }
     let settle;
     const finished = new Promise((resolve, reject) => { settle = {resolve, reject}; });
@@ -82,8 +132,9 @@ test('keeps ordered bounded batches across runs and reports overwritten or dropp
             if (result.error) settle.reject(new Error(result.error));
             else settle.resolve(result.value);
         } else {
-            res.setHeader('Content-Type', req.url === '/archive.js' ? 'text/javascript' : 'text/html');
-            res.end(req.url === '/archive.js' ? script : page);
+            const js = ['/archive.js', '/crash_archive.js'].includes(req.url);
+            res.setHeader('Content-Type', js ? 'text/javascript; charset=utf-8' : 'text/html; charset=utf-8');
+            res.end(js ? script : req.url === '/diagnostics.html' ? historyPage : page);
         }
     });
     const profile = await mkdtemp(join(tmpdir(), 'bvn-archive-test-'));
@@ -110,6 +161,11 @@ test('keeps ordered bounded batches across runs and reports overwritten or dropp
         assert.equal(result.through, 2);
         assert.equal(result.startupBatches, 0);
         assert.equal(result.survivedRestarts, 2);
+        assert.equal(result.cancelled, 2);
+        assert.deepEqual(result.deleted, [0, null, null]);
+        assert.deepEqual(result.remaining, ['live']);
+        assert.equal(result.empty, true);
+        assert.equal(result.audio, 'keep');
     } finally {
         clearTimeout(timer);
         if (chrome?.pid && chrome.exitCode === null && chrome.signalCode === null) {

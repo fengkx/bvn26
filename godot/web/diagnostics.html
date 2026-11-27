@@ -9,18 +9,29 @@ body {max-width: 36rem; margin: 8vh auto; padding: 0 1.25rem}
 h1 {font-size: 1.6rem} select,button {font:inherit; padding:.55rem; margin:.3rem 0; max-width:100%}
 select {display:block;width:100%} button {cursor:pointer}
 </style>
-<h1>导出对局日志</h1>
+<h1>历史对局</h1>
 <p>请选择发生问题的时间，下载后把 JSON 文件附在问题反馈中。记录保存在玩游戏时使用的浏览器里。</p>
 <label for="run">本机记录</label><select id="run" disabled></select>
-<button type="button" disabled>下载所选日志</button>
+<button type="button" id="download" disabled>下载所选日志</button>
+<button type="button" id="remove" disabled>删除所选记录</button>
+<button type="button" id="clear" disabled>清空历史记录</button>
 <p id="status" role="status" aria-live="polite">正在读取本机记录…</p>
 <script src="crash_archive.js"></script>
 <script>
 (async () => {
-    const select = document.querySelector('select'), button = document.querySelector('button');
+    const archive = window.bvnCrashArchive;
+    const select = document.getElementById('run');
+    const download = document.getElementById('download');
+    const remove = document.getElementById('remove');
+    const clear = document.getElementById('clear');
     const status = document.getElementById('status');
-    try {
-        const runs = await window.bvnCrashArchive.listRuns();
+    function disable(value) {
+        for (const control of [select, download, remove, clear]) control.disabled = value;
+    }
+    async function refresh(message = '') {
+        const selected = select.value;
+        const runs = await archive.listRuns();
+        select.replaceChildren();
         for (const run of runs) {
             const last = window.bvnCrashArchive.lastCheckpoint(run);
             const player = Object.values(last?.players || {}).find(actor => actor?.slot === 'p1');
@@ -30,22 +41,43 @@ select {display:block;width:100%} button {cursor:pointer}
                 last?.map || last?.scene || run.enginePhase || '启动', fighter, helper, run.runId.slice(0,8)].filter(Boolean).join(' · ');
             select.add(new Option(label, run.runId));
         }
-        if (!runs.length) { status.textContent = '这个浏览器里还没有保存的对局日志。'; return; }
         const useful = runs.find(run => run.checkpoints?.some(c => c.players?.length) || run.lastCheckpoint?.players?.length || run.signals?.length);
-        if (useful) select.value = useful.runId;
-        select.disabled = button.disabled = false;
-        status.textContent = '';
-        button.onclick = async () => {
-            button.disabled = true;
-            try {
-                const current = (await window.bvnCrashArchive.listRuns()).find(run => run.runId === select.value);
-                const report = await window.bvnCrashArchive.recoveredReport(current);
-                window.bvnCrashArchive.download(report);
-                status.textContent = report.runtime.events.length ? '日志已导出。' : '已导出现场摘要；这次没有已保存的详细事件。';
-            } catch (_) { status.textContent = '导出失败，请重试。'; }
-            finally { button.disabled = false; }
-        };
-    } catch (_) { status.textContent = '无法读取本机记录，请用玩游戏时的浏览器打开此页，并检查网站数据权限。'; }
+        if (runs.some(run => run.runId === selected)) select.value = selected;
+        else if (useful) select.value = useful.runId;
+        disable(!runs.length);
+        status.textContent = [message, runs.length ? '' : '这个浏览器里还没有保存的对局日志。'].filter(Boolean).join(' ');
+    }
+    download.onclick = async () => {
+        disable(true);
+        try {
+            const current = (await archive.listRuns()).find(run => run.runId === select.value);
+            if (!current) { await refresh('这条记录已删除。'); return; }
+            const report = await archive.recoveredReport(current);
+            archive.download(report);
+            status.textContent = report.runtime.events.length ? '日志已导出。' : '已导出现场摘要，这次没有已保存的详细事件。';
+        } catch (_) { status.textContent = '导出失败，请重试。'; }
+        finally { disable(!select.options.length); }
+    };
+    async function clean(all) {
+        const ids = all ? Array.from(select.options, option => option.value) : [select.value];
+        const target = all ? '列表中的全部 ' + ids.length + ' 条记录' : '「' + select.selectedOptions[0].text + '」';
+        const live = navigator.locks ? '正在记录的游戏会保留。' : '仍打开的游戏可能继续写入日志。';
+        if (!window.confirm('删除' + target + '？日志删除后无法恢复。' + live)) return;
+        disable(true);
+        let message;
+        try {
+            const result = await archive.removeRuns(ids);
+            message = [result.removed && '已删除 ' + result.removed + ' 条记录。',
+                result.active && '已保留 ' + result.active + ' 条正在记录的游戏日志。关闭对应游戏页后可删除。',
+                result.incomplete && '部分存储不可访问，无法确认日志已全部删除。'].filter(Boolean).join(' ');
+        } catch (_) { message = '清理未完成，请重试。'; }
+        try { await refresh(message); }
+        catch (_) { status.textContent = message + ' 无法刷新列表，请重新打开此页。'; }
+    }
+    remove.onclick = () => clean(false);
+    clear.onclick = () => clean(true);
+    try { await refresh(); }
+    catch (_) { status.textContent = '无法读取本机记录，请用玩游戏时的浏览器打开此页，并检查网站数据权限。'; }
 })();
 </script>
 </html>

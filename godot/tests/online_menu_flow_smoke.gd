@@ -108,6 +108,16 @@ func run() -> void:
 	lobby._room_state.members[0].choice = choice
 	lobby._room_state.members[1] = {"nickname": "Guest", "signaling": true, "choice": {"fighter": "rifagu", "helper": "kon"}, "ready": false, "profile": null}
 	lobby._refresh_room_view()
+	for slot in 2:
+		var portrait := lobby._player_portraits[slot].texture as AtlasTexture
+		assert(portrait != null and portrait.region.has_area())
+	var first := lobby._player_portraits[0].texture
+	lobby._refresh_room_view()
+	assert(lobby._player_portraits[0].texture == first)
+	lobby._dialog.hide()
+	assert(lobby._player_portraits[0].texture == null and lobby._player_portraits[1].texture == null)
+	lobby._dialog.show()
+	assert(lobby._player_portraits[0].texture != null and lobby._player_portraits[1].texture != null)
 	assert(lobby._mode_choice.disabled)
 	assert(not lobby._can_ready_current_room())
 	lobby._room_state.mapConfirmed = true

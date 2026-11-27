@@ -431,7 +431,12 @@ func _physics_process(_delta: float) -> void:
 	match session.root_label:
 		"MENU":
 			title_menu.apply_held(session.menu_held())
-		"HOWTOPLAY", "YOUWIN", "继续", "gameover", "congratution":
+		"congratution":
+			var previous_frame: int = arcade.frame
+			arcade.tick()
+			if arcade.frame != previous_frame and (arcade.frame % 60 == 0 or arcade.frame == arcade._length):
+				_web_checkpoint("arcade_ending_progress", {"endingFrame": arcade.frame})
+		"HOWTOPLAY", "YOUWIN", "继续", "gameover":
 			arcade.tick()
 		"游戏设置":
 			config_menu.tick()
@@ -659,6 +664,7 @@ func _on_arcade_action(action: String, show_intro := false) -> void:
 			arcade.open("gameover")
 		"ending":
 			session.root_label = "congratution"
+			_web_checkpoint("opening_arcade_ending")
 			arcade.open("ending")
 
 

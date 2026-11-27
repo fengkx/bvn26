@@ -263,6 +263,9 @@ button:disabled { opacity: .5; cursor: default; }
     #player:is(:fullscreen, .touch-fullscreen) #feedback { transition: none; }
 }
 #touch-pad, #rotate-hint { display: none; }
+#player.touch-playing, #touch-pad, #touch-pad * {
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+}
 #player.touch-fullscreen {
     position: fixed; z-index: 20;
     top: var(--visible-top, 0px); left: var(--visible-left, 0px);
@@ -287,7 +290,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
 }
 #touch-stick, #touch-cross, #touch-actions {
     position: absolute; bottom: max(12%, env(safe-area-inset-bottom)); pointer-events: auto;
-    touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+    touch-action: none;
 }
 #touch-menu {
     position: absolute; top: max(12px, env(safe-area-inset-top)); left: max(12px, env(safe-area-inset-left));
@@ -977,7 +980,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         observedEvents: archive.status.observedEvents, lastIncident: journal.lastIncident,
         ...(persistence === 'unavailable' && {checkpoints: journal.checkpoints, memoryHistory: journal.memoryHistory,
             stageTransitions: journal.stageTransitions, peakVideo: journal.peakVideo, canvas: journal.canvas}),
-    }));
+    }), sessionId);
     journal.device = {language: navigator.language, devicePixelRatio: window.devicePixelRatio,
         hardwareConcurrency: navigator.hardwareConcurrency ?? null, maxTouchPoints: navigator.maxTouchPoints ?? null,
         longTasksSupported: Boolean(window.PerformanceObserver?.supportedEntryTypes?.includes('longtask'))};
@@ -1983,8 +1986,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             const reload = report.reloadDiagnostics;
             try {
                 const runs = await window.bvnCrashArchive.listRuns();
-                reload.previousRuns = historyIds.map(id => runs.find(run => run.runId === id)
-                    || previousRuns.find(run => run.runId === id)).filter(Boolean);
+                reload.previousRuns = historyIds.map(id => runs.find(run => run.runId === id)).filter(Boolean);
                 reload.recovery = interruptedObservation(reload.previousRuns);
             } catch (_) { /* The synchronous journal can still be exported. */ }
             const id = reload.recovery?.runId || reload.previousRuns[0]?.runId;
@@ -2136,6 +2138,17 @@ if (window.bvnMobileGamepadEnabled) initializeTouchControls();
 function initializeTouchControls() {
     const player = document.getElementById('player');
     const pad = document.getElementById('touch-pad');
+    // The menu uses a native click. Suppress selection without cancelling its tap.
+    for (const eventName of ['selectstart', 'contextmenu']) {
+        pad.addEventListener(eventName, event => event.preventDefault());
+    }
+    player.addEventListener('pointerdown', event => {
+        if (event.pointerType !== 'touch' || !player.classList.contains('touch-playing')) return;
+        const selection = window.getSelection();
+        if (selection && !selection.isCollapsed && player.contains(selection.anchorNode)) {
+            selection.removeAllRanges();
+        }
+    }, true);
     const stick = document.getElementById('touch-stick');
     const knob = document.getElementById('touch-knob');
     const actions = document.getElementById('touch-actions');

@@ -16,6 +16,14 @@ from extract_timeline_geometry import extract_frames, file_sha256
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def room_crop(path):
+    from PIL import Image
+
+    with Image.open(path) as image:
+        left, top, right, bottom = image.convert("RGBA").getchannel("A").getbbox()
+    return [left, top, right - left, bottom - top]
+
+
 def freeze(sprite, frame):
     children = sprite.find('subTags')
     kept = []
@@ -161,6 +169,7 @@ def build(workspace, temporary, output, jar, names, raster_scale=2, portraits_on
             textures.append(texture)
         result[name] = {
             'textures': textures,
+            'room_crop': room_crop(output / textures[-1]),
             'bounds_twips': bounds,
             'raster_border': 5,
             'raster_scale': raster_scale,

@@ -5,6 +5,7 @@ import json
 import re
 import shutil
 import subprocess
+from collections import Counter
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -71,13 +72,15 @@ def pack_frames(folder, length):
     # Store only changed pixels; stopped timelines require no image uploads.
     pages = []
     changes = {}
-    page = Image.new("RGB", (1800, 1600))
+    page = Image.new("RGB", (600, 800))
     x = y = row = 0
     previous = None
 
     def flush():
-        name = f"{folder.name}-{len(pages)}.webp"
-        page.crop((0, 0, page.width, y + row)).save(OUT / name, lossless=True, method=2)
+        # The player composites patches on the CPU and uploads only the canvas.
+        crop = page.crop((0, 0, page.width, y + row))
+        name = f"{folder.name}-{len(pages)}.bvnwebp"
+        crop.save(OUT / name, format="WEBP", lossless=True, method=2)
         pages.append(name)
 
     for frame in range(1, length + 1):
@@ -104,49 +107,53 @@ def pack_frames(folder, length):
 
 
 def pack_victories(workspace, players):
-    # All winners share the same animated backdrop. Atlas each distinct tile
-    # once across the roster, including the composited source portrait.
+    # Group shared tiles by frame so a winner decodes each required page only once.
     size = 50
-    per_row = 24
-    capacity = per_row ** 2
-    atlas = Image.new("RGB", (size * per_row, size * per_row))
-    tiles = {}
-    screens = {}
-    for player in players:
-        name = "win-" + player
-        previous = {}
-        changes = {}
-        for frame in range(1, 25):
-            with Image.open(workspace / "frames" / name / f"{frame}.png") as png:
+    columns = 12
+    capacity = columns * 8
+    clips = {p: {"pages": [], "changes": {}} for p in players}
+    previous = {p: {} for p in clips}
+    for frame in range(1, 25):
+        uses = Counter()
+        patches = {}
+        for player in clips:
+            patches[player] = []
+            with Image.open(workspace / "frames" / f"win-{player}" / f"{frame}.png") as png:
                 image = png.convert("RGB")
-            patches = []
-            for y in range(0, 400, size):
-                for x in range(0, 600, size):
-                    tile = image.crop((x, y, x + size, y + size))
-                    key = hashlib.sha256(tile.tobytes()).digest()
-                    if previous.get((x, y)) == key:
+            for y in range(0, image.height, size):
+                for x in range(0, image.width, size):
+                    tile = image.crop((x, y, x + size, y + size)).tobytes()
+                    if previous[player].get((x, y)) == tile:
                         continue
-                    previous[x, y] = key
-                    if key not in tiles:
-                        index = len(tiles)
-                        tiles[key] = index
-                        offset = index % capacity
-                        atlas.paste(tile, (offset % per_row * size, offset // per_row * size))
-                        if offset == capacity - 1:
-                            atlas.save(OUT / f"victory-{index // capacity}.webp", lossless=True, method=2)
-                    index = tiles[key]
-                    offset = index % capacity
-                    patches.append([index // capacity, offset % per_row * size, offset // per_row * size,
-                                    size, size, x, y])
-            if patches:
-                changes[str(frame)] = patches
-        screens[name] = changes
-    pages = [f"victory-{i}.webp" for i in range((len(tiles) + capacity - 1) // capacity)]
-    if len(tiles) % capacity:
-        rows = ((len(tiles) - 1) % capacity) // per_row + 1
-        atlas.crop((0, 0, atlas.width, rows * size)).save(OUT / pages[-1], lossless=True, method=2)
-    for name, changes in screens.items():
-        write_json(OUT / (name + ".json"), {"pages": pages, "changes": changes})
+                    previous[player][x, y] = tile
+                    uses[tile] += 1
+                    patches[player].append((tile, x, y))
+
+        positions = {}
+        ordered = [tile for tile, _ in uses.most_common()]
+        for start in range(0, len(ordered), capacity):
+            tiles = ordered[start:start + capacity]
+            page = Image.new("RGB", (columns * size, ((len(tiles) + columns - 1) // columns) * size))
+            name = f"victory-{frame}-{start // capacity}.bvnwebp"
+            for index, tile in enumerate(tiles):
+                left, top = index % columns * size, index // columns * size
+                page.paste(Image.frombytes("RGB", (size, size), tile), (left, top))
+                positions[tile] = (name, left, top)
+            page.save(OUT / name, format="WEBP", lossless=True, method=2)
+
+        for player, updates in patches.items():
+            clip = clips[player]
+            rects = []
+            for tile, x, y in updates:
+                name, left, top = positions[tile]
+                if name not in clip["pages"]:
+                    clip["pages"].append(name)
+                rects.append([clip["pages"].index(name), left, top, size, size, x, y])
+            if rects:
+                # Tiles never overlap, so page order preserves the frame.
+                clip["changes"][str(frame)] = sorted(rects, key=lambda rect: rect[0])
+    for player, clip in clips.items():
+        write_json(OUT / f"win-{player}.json", clip)
 
 
 def build(jar, xml, workspace):

@@ -23,7 +23,9 @@ var _timers: Array[Timer] = []
 var _background_frame: int = 1
 var _sounds: Array[AudioStreamPlayer] = []
 var _active: bool = false
-var _portrait_spec: Dictionary = {}
+static var portrait_spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(DIRECTORY + "/portraits.json"))
+var _portrait_owners := ["", ""]
+var _portrait_textures: Array[Dictionary] = [{}, {}]
 var _footer_spec: Dictionary = {}
 var _portrait_frames: Array = [1, 1]
 var _text_counts: Array = [0, 0]
@@ -35,7 +37,6 @@ var _textures: Dictionary = {}
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_portrait_spec = JSON.parse_string(FileAccess.get_file_as_string(DIRECTORY + "/portraits.json"))
 	_footer_spec = JSON.parse_string(FileAccess.get_file_as_string(DIRECTORY + "/footer.json"))
 	_wipe = Sprite2D.new()
 	_wipe.centered = false
@@ -91,6 +92,8 @@ func reset(selected_mode: int) -> void:
 
 func leave() -> void:
 	_active = false
+	for cache in _portrait_textures:
+		cache.clear()
 	if _typing_timer != null:
 		_typing_timer.stop()
 	enabled = [false, false]
@@ -250,10 +253,17 @@ func _draw() -> void:
 	draw_texture_rect(_texture("res://generated/main/map_selection/background_%d.png" % _background_frame), Rect2(0, 0, 600, 400), false)
 	if phase == 0 or source_frame == 20:
 		for player in 2:
-			if fighters[player] == "" or not _portrait_spec.has(fighters[player]):
+			if _portrait_owners[player] != fighters[player]:
+				_portrait_textures[player].clear()
+				_portrait_owners[player] = fighters[player]
+			if fighters[player] == "" or not portrait_spec.has(fighters[player]):
 				continue
-			var portrait: Dictionary = _portrait_spec[fighters[player]]
-			var texture := _texture(str(portrait.textures[int(_portrait_frames[player]) - 1]))
+			var portrait: Dictionary = portrait_spec[fighters[player]]
+			var path := str(portrait.textures[int(_portrait_frames[player]) - 1])
+			var cache := _portrait_textures[player]
+			if not cache.has(path):
+				cache[path] = load(DIRECTORY + "/" + path)
+			var texture: Texture2D = cache[path]
 			var raster_scale := float(portrait.get("raster_scale", 1.0))
 			var raster_border := float(portrait.get("raster_border", 5.0))
 			var position := Vector2(float(portrait.bounds_twips[0]), float(portrait.bounds_twips[1])) / 20.0 - Vector2.ONE * raster_border
