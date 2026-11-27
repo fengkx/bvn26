@@ -1,5 +1,7 @@
 """Retain the source curved upper-special paint rather than its bounds."""
 import copy
+import gzip
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -35,6 +37,18 @@ class SolidShapeGeometryTests(unittest.TestCase):
         definitions = referenced_definitions(root, [{'display_list': [{'character_id': 948}]}])
         self.assertEqual(definitions[0]['solid_fill_polygons'], solid_fill_polygons(self.shape))
         self.assertEqual(definitions[0]['solid_closed_strokes'], solid_closed_strokes(self.shape))
+
+    def test_hollow_ichigo_super_uses_the_source_crescent_meshes(self):
+        timeline = json.loads((ROOT / 'godot/generated/forms/yihu-3/timeline.json').read_bytes())
+        definitions = {item['character_id']: item for item in timeline['definitions']}
+        evidence = ROOT / 'evidence/characters/roster-live-2026-11-18/curved-paints'
+        with gzip.open(evidence / 'yihu-2-geometry.xml.gz') as stream:
+            source = ET.parse(stream)
+        # Both forms place the same two shapes from yihu.swf.
+        for symbol in (1034, 1037):
+            with self.subTest(symbol=symbol):
+                shape = source.find(f"./item[@shapeId='{symbol}']")
+                self.assertEqual(definitions[symbol]['solid_fill_meshes'], solid_fill_meshes(shape))
 
     def test_unused_fill_paints_nothing(self):
         shape = copy.deepcopy(self.shape)
