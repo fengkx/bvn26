@@ -62,8 +62,8 @@ func _run() -> void:
 	assert(game.arm_input_recording("/tmp/bvn-match-input-smoke.json").is_empty())
 	game.match_input.source = func(slot: String, _tick: int) -> Dictionary: return logical[slot]
 	game.match_input.intro_source = func(tick: int) -> bool: return tick >= 30 and tick < 90
-	game._on_characters_confirmed(["鸣人", "一护"], ["我爱罗", "魂"])
 	game.session.modo = 3
+	game._on_characters_confirmed(["鸣人", "一护"], ["我爱罗", "魂"])
 	game._on_map_confirmed("现世")
 	for tick in range(331):
 		_inputs(tick + 1)

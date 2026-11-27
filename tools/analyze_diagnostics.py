@@ -183,6 +183,7 @@ def _saved_observation(report: dict[str, Any]) -> dict[str, Any] | None:
     }
     return {"runId": run.get("runId"), "buildID": run.get("buildID"), "savedAt": last.get("at") or run.get("updatedAt"),
             "phase": last.get("phase") or run.get("enginePhase"), "map": last.get("map"), "fightTick": last.get("fightTick"),
+            "round": last.get("round"), "introActive": last.get("introActive"), "readyFrame": last.get("readyFrame"),
             "players": [_named_player(player) for player in _players(last)], "signals": run.get("signals", []),
             "coverage": coverage, "lastIncident": run.get("lastIncident"), "download": run.get("download"),
             "lastInputs": run.get("lastInputs", {}), "matchHistory": run.get("matchHistory", []),
@@ -809,6 +810,8 @@ def _print_result(value: Any, as_json: bool) -> None:
         saved = value.get("savedObservation")
         if saved:
             print(f"Saved run {saved['runId']} at {saved['savedAt']}  map={saved['map']} tick={saved['fightTick']} phase={saved['phase']}")
+            if saved["round"] is not None:
+                print(f"  Round {saved['round']}  intro={saved['introActive']}  ready frame={saved['readyFrame']}")
             coverage = saved["coverage"]
             if coverage["retainedEvents"] is not None:
                 print(f"  Archive {coverage['status']}  events={coverage['retainedEvents']}  types={coverage['eventTypes']}  "

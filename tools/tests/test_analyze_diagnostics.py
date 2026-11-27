@@ -67,13 +67,15 @@ class AnalyzeDiagnosticsTests(unittest.TestCase):
     def test_summarizes_archived_events_from_interrupted_run_after_reload(self) -> None:
         header = {"runId": "broken", "observedEvents": 88, "checkpoints": [
             {"recordSeq": 4, "at": "same", "phase": "flash_before"}],
-            "lastCheckpoint": {"recordSeq": 5, "at": "same", "phase": "flash_after"}}
+            "lastCheckpoint": {"recordSeq": 5, "at": "same", "phase": "flash_after",
+                               "round": 2, "introActive": True, "readyFrame": 84}}
         detail = {"runId": "broken", "status": "saved", "archive": {"committedThroughEvent": 85,
                   "overwrittenBatches": 12, "discardedEvents": 2}, "events": [{"type": "helper_lifecycle"}]}
         report = {"schemaVersion": 2, "runtime": {"events": [{"type": "runtime_ready"}]},
                   "reloadDiagnostics": {"recovery": {"runId": "broken"}, "savedRun": detail, "previousRuns": [header]}}
         observation = diagnostics.analyze_report(report)["savedObservation"]
         self.assertEqual(observation["phase"], "flash_after")
+        self.assertEqual((observation["round"], observation["introActive"], observation["readyFrame"]), (2, True, 84))
         coverage = observation["coverage"]
         self.assertEqual(coverage["eventTypes"], {"helper_lifecycle": 1})
         self.assertEqual((coverage["observedBeyondCommit"], coverage["discardedEvents"], coverage["overwrittenBatches"]), (3, 2, 12))

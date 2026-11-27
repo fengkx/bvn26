@@ -57,7 +57,10 @@ func _run() -> void:
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("/tmp/bvn-pause-menu.png")
 	key(scene, KEY_UP)
-	key(scene, KEY_ENTER)
+	var confirm := InputEventKey.new()
+	confirm.keycode = KEY_ENTER
+	root.push_input(confirm, true)
+	assert(scene.is_inside_tree())
 	assert(scene.session.root_label == "MENU")
 	assert(scene.title_menu.visible and not scene.game_world.visible)
 	assert(not scene.pause_menu.visible and not scene.super_runtime.game_paused)

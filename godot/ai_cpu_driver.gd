@@ -45,6 +45,8 @@ func configure(owner_fighter: FighterRuntime, directory: String, platforms: Dict
 	controller.scope_lookup = _scope_value
 	controller.effects = _controller_effect
 	controller.body_calls = _body_call
+	if context_override == null:
+		controller.key_reader = _cpu_source_key
 	var metadata: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(directory.path_join("body.json")))
 	body_context = context_override if context_override != null else AiBodyContext.new(fighter)
 	body_context.configure(controller, metadata, platforms)
@@ -62,6 +64,11 @@ func configure(owner_fighter: FighterRuntime, directory: String, platforms: Dict
 	body_context.timeout_scheduler = timeouts
 	body_context.body_target = weakref(body)
 	_active = true
+
+
+func _cpu_source_key(_key: String) -> bool:
+	# Shared action clips can poll a player key even when the CPU owns the slot.
+	return false
 
 
 func start_random(random: SourceRandom, difficulty: int, recorded: bool = false) -> void:

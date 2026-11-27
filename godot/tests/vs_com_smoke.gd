@@ -25,6 +25,8 @@ func _run() -> void:
 	check(game.naruto.fighter_name == "鸣人" and game.ichigo.fighter_name == "一护", "Fixed fighter selection changed")
 	check(game.ichigo.ai_random_clock.difficulty == 5, "Easy difficulty must use source AI=5")
 	check(game._input_for(game.ichigo).is_empty(), "CPU must not read P2 keyboard input")
+	var cpu_keys: Callable = game.opponent_driver.controller.key_reader
+	check(cpu_keys.is_valid() and not cpu_keys.call("必杀"), "CPU action clips must see an unpressed player special key")
 	var child_count: int = game.game_world.get_child_count()
 	for service: String in ["jumpxg", "luodixg"]:
 		game._cpu_visual_service(service, [])
@@ -40,6 +42,9 @@ func _run() -> void:
 	game.ichigo.ai_random_clock.cancel()
 	game.ichigo.ai_random_clock.initialize(game.ichigo.ai_source_state, game.source_random, 5, true)
 	game.ichigo.ai_random_clock.fire_recorded(500)
+	check(game.source_random.replay_complete(), "CPU must consume the recorded opening samples")
+	# Later hit reactions draw additional random values outside the opening fixture.
+	game.source_random.use_seed(1)
 	for tick in 600:
 		game._advance_fight()
 		if not game.battle_intro.active:

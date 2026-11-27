@@ -475,6 +475,9 @@ func _web_checkpoint(phase: String, detail: Dictionary = {}) -> void:
 			"drawCalls": Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)},
 	}
 	if session.root_label == "游戏场景" and is_instance_valid(naruto) and is_instance_valid(ichigo):
+		state["round"] = ko_state.get("_root.rounds")
+		state["readyFrame"] = battle_intro.clips.ready.current_source_frame()
+		state["introActive"] = battle_intro.active
 		state["players"] = [_diagnostic_player(naruto, naruto_helper), _diagnostic_player(ichigo, ichigo_helper)]
 		state["p1Transform"] = {
 			"charged": touch_transform_charged("p1"), "ready": touch_transform_ready("p1"),
@@ -824,7 +827,8 @@ func _return_to_title() -> void:
 	# Leaving the source battle frame destroys its clips. Recreate the scene
 	# so hitstun, airborne motion, helpers and input history cannot survive.
 	_goto_menu()
-	get_tree().reload_current_scene()
+	# Finish dispatching the menu input before detaching its viewport.
+	get_tree().reload_current_scene.call_deferred()
 
 
 func _goto_menu() -> void:
@@ -1477,12 +1481,18 @@ func _ko_clear_interval(interval_name: String) -> void:
 
 
 func _ko_nextfight() -> void:
+	var from_timeout := nextfight_from_timeout and timeout_timeline != null
+	if not from_timeout and ko_timeline == null:
+		return
 	_source_nextfight_goto_phase = true
-	if nextfight_from_timeout and timeout_timeline != null:
+	if from_timeout:
 		timeout_timeline.controller.nextfight()
-	elif ko_timeline != null:
+	else:
 		ko_timeline.controller.nextfight()
 	_source_nextfight_goto_phase = false
+	var detail := {"round": ko_state.get("_root.rounds"), "fromTimeout": from_timeout}
+	diagnostics.push_event("round_restart", detail, physics_tick)
+	_web_checkpoint("round_restart", detail)
 
 
 func _ko_fight_started() -> void:
@@ -1515,6 +1525,7 @@ func _diagnostic_fight_started() -> void:
 	diagnostics.push_event("fight_started", {
 		"mode": session.modo,
 		"map": selected_stage,
+		"round": ko_state.get("_root.rounds"),
 		"players": _diagnostic_snapshot().get("players", {}),
 	}, physics_tick)
 
