@@ -81,7 +81,7 @@ func apply(value: Dictionary, tick: int, root: Node) -> void:
 		var end: float = stream.get_length() if event.end < 0 else minf(event.end, stream.get_length())
 		if not event.loop and offset >= end: continue
 		var player := AudioStreamPlayer.new()
-		if stream is AudioStreamMP3:
+		if stream is AudioStreamMP3 and stream.loop != event.loop:
 			stream = stream.duplicate()
 			stream.loop = event.loop
 		player.stream = stream

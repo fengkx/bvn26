@@ -95,7 +95,6 @@ var _room_service_available := true
 var _room_state: Dictionary = {}
 var _generation := 0
 var _sampled_frontier := -1
-var _sampled_held: Dictionary = {}
 var _peer_channel_open := false
 var _peer_configured := false
 var _last_heartbeat_sent_ms := -1
@@ -517,7 +516,6 @@ func _process_tick(monotonic_now_ms: int, local_held: Dictionary) -> String:
 	if rollback.frontier > previous_frontier:
 		_pacing_steps += 1
 		_sampled_frontier = -1
-		_sampled_held.clear()
 		_maybe_hash_confirmed()
 		_maybe_finish_result()
 	_poll_control_barriers(monotonic_now_ms)
@@ -1253,12 +1251,13 @@ func _sample_local_once(local_held: Dictionary) -> bool:
 		_abort_local("local_input", {"error": sample.error})
 		return false
 	_sampled_frontier = next_frame
-	_sampled_held = sample.held.duplicate(true)
-	_local_inputs[int(sample.frame)] = sample.held.duplicate(true)
+	# Resends and recovery share the isolated, boolean-only sample from rollback.
+	sample.held.make_read_only()
+	_local_inputs[int(sample.frame)] = sample.held
 	if _unacked_inputs.is_empty():
 		_input_ack_progress_ms = _process_now_ms
 		_input_ack_recovery_started = false
-	_unacked_inputs[int(sample.frame)] = sample.held.duplicate(true)
+	_unacked_inputs[int(sample.frame)] = sample.held
 	return true
 
 
@@ -1276,7 +1275,8 @@ func _send_input_packet() -> void:
 	var frames: Array = _unacked_inputs.keys()
 	frames.sort()
 	var inputs := []
-	for frame in frames.slice(0, INPUT_REDUNDANCY):
+	for index in mini(frames.size(), INPUT_REDUNDANCY):
+		var frame: int = frames[index]
 		inputs.append({"frame": frame, "held": _unacked_inputs[frame]})
 	# Loss is recovered by the next bounded packet, including while lockstep waits.
 	if not peer_transport.send_peer_message("input", "input_batch", {

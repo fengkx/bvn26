@@ -23,13 +23,15 @@ func receive(sequence: int, buttons: Dictionary, now_ms: int) -> String:
 	if seen.has(sequence):
 		return "" if seen[sequence] == buttons else "conflicting_authority_input"
 	if sequence <= consumed_sequence: return ""
-	seen[sequence] = buttons.duplicate()
+	var sample := buttons.duplicate()
+	sample.make_read_only()
+	seen[sequence] = sample
 	for old in seen.keys():
 		if old < sequence - 64: seen.erase(old)
 	if sequence > newest_sequence:
 		newest_sequence = sequence
 		last_received_ms = now_ms
-	pending.append({"sequence": sequence, "held": buttons.duplicate(), "received_ms": now_ms})
+	pending.append({"sequence": sequence, "held": sample, "received_ms": now_ms})
 	pending.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.sequence < b.sequence)
 	if pending.size() > CAPACITY:
 		var latest: Dictionary = pending.back()
@@ -50,7 +52,7 @@ func consume(now_ms: int) -> Dictionary:
 			return held.duplicate()
 		var next: Dictionary = pending.pop_front()
 		_retire(consumed_sequence + 1, int(next.sequence) - 1)
-		held = next.held.duplicate()
+		held = next.held
 		consumed_sequence = int(next.sequence)
 	return held.duplicate()
 

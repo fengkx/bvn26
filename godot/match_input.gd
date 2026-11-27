@@ -44,7 +44,8 @@ func poll_intro(tick: int, keyboard: Callable) -> bool:
 		var event := _expect("intro", tick)
 		return bool(event.get("skip", false))
 	var skip: bool = intro_source.call(tick) if intro_source.is_valid() else keyboard.call()
-	_append({"kind": "intro", "tick": tick, "skip": skip})
+	if recording:
+		document.events.append({"kind": "intro", "tick": tick, "skip": skip})
 	return skip
 
 
@@ -55,25 +56,31 @@ func poll_players(tick: int, keyboard: Callable) -> Dictionary:
 			return {}
 		return {"p1": event.players.p1.held.duplicate(), "p2": event.players.p2.held.duplicate()}
 	var inputs := {}
-	var samples := {}
 	for slot in ["p1", "p2"]:
 		var raw: Dictionary = source.call(slot, tick) if source.is_valid() else keyboard.call(slot)
 		var held := {}
-		var pressed := {}
-		var released := {}
 		for button in BUTTONS:
 			held[button] = bool(raw.get(button, false))
-			pressed[button] = held[button] and not _previous[slot].get(button, false)
-			released[button] = not held[button] and _previous[slot].get(button, false)
 		inputs[slot] = held
-		samples[slot] = {"held": held, "pressed": pressed, "released": released}
-		_previous[slot] = held.duplicate()
-	_append({"kind": "players", "tick": tick, "players": samples})
+	if recording:
+		var samples := {}
+		for slot in inputs:
+			var held: Dictionary = inputs[slot].duplicate()
+			var pressed := {}
+			var released := {}
+			for button in BUTTONS:
+				var prior: bool = _previous[slot].get(button, false)
+				pressed[button] = held[button] and not prior
+				released[button] = not held[button] and prior
+			samples[slot] = {"held": held, "pressed": pressed, "released": released}
+			_previous[slot] = held
+		document.events.append({"kind": "players", "tick": tick, "players": samples})
 	return inputs
 
 
 func record_control(tick: int, control: Dictionary) -> void:
-	_append({"kind": "control", "tick": tick, "control": control.duplicate(true)})
+	if recording:
+		document.events.append({"kind": "control", "tick": tick, "control": control.duplicate(true)})
 
 
 func take_controls(tick: int) -> Array:
@@ -100,15 +107,10 @@ func finish(tick: int, reason: String) -> void:
 		if event.get("reason", "") != reason:
 			error = "Unexpected match exit: " + reason
 	elif recording:
-		_append({"kind": "end", "tick": tick, "reason": reason})
+		document.events.append({"kind": "end", "tick": tick, "reason": reason})
 		document.complete = true
 	finished = true
 	recording = false
-
-
-func _append(event: Dictionary) -> void:
-	if recording:
-		document.events.append(event)
 
 
 func _expect(kind: String, tick: int) -> Dictionary:

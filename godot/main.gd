@@ -1276,7 +1276,8 @@ func _sample_match_player(slot: String) -> Dictionary:
 func _input_for(fighter: FighterRuntime) -> Dictionary:
 	if fighter == ichigo and session.p2cpu:
 		return {}
-	var inputs: Dictionary = _match_inputs[fighter.player_slot].duplicate()
+	var inputs: Dictionary = _match_inputs[fighter.player_slot]
+	inputs.make_read_only()
 	if diagnostics.enabled and not diagnostics.replaying:
 		var input_source := "playback" if match_input.playback else "player"
 		if diagnostic_input_provider.is_valid() and not match_input.playback:

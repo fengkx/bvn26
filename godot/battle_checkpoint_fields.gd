@@ -27,6 +27,8 @@ const MAIN_EXTERNAL := [
 	"config_menu",
 	"character_selection",
 	"map_selection",
+	# Local campaign UI and pre-fight pack selection have no online simulation state.
+	"arcade", "arcade_result", "_pack_screen", "_pending_fighters", "_pending_helpers",
 	"stage_sound",
 	"cpu_profile",
 	"cpu_visual_spec",
@@ -35,6 +37,7 @@ const MAIN_EXTERNAL := [
 	"ko_metadata",
 	"input_recording_path",
 	"diagnostics",
+	"_diagnostic_online_match", "_next_web_checkpoint_ms",
 	"_diagnostic_initial_players",
 	"_diagnostic_progress_signature",
 	"_diagnostic_progress_tick",

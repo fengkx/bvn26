@@ -19,7 +19,10 @@ test('forms share one verified download, including retries on an old deployment'
         window: {}, URL, AbortController, crypto: webcrypto, setTimeout, clearTimeout,
         console: {error() {}}, document: {baseURI: 'https://game.example/'},
         location: {origin: 'https://game.example'},
-        engine: {copyToFS(path, data) { files.push([path, Array.from(new Uint8Array(data))]); }},
+        engine: {rtenv: {copyToFS(path, data, canOwn) {
+            assert.equal(canOwn, true);
+            files.push([path, Array.from(new Uint8Array(data))]);
+        }}},
         async fetch(url) {
             requests.push(url.origin);
             if (url.origin === 'https://game.example') return new Response(null, {status: 404});

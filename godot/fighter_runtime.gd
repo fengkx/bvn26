@@ -871,10 +871,9 @@ func _ordered_attack_instances() -> PackedStringArray:
 	var ordered := PackedStringArray()
 	# Native AVM1 enumerates this dense source Array from the last key to the
 	# first. Overlapping later suffixes (e.g. zh32) must win over zh3/zh31.
-	var source_priority: Array = _combat.get("hit_priority", {}).get("instances", []).duplicate()
-	source_priority.reverse()
-	for instance_name in source_priority:
-		var name := str(instance_name)
+	var source_priority: Array = _combat.get("hit_priority", {}).get("instances", [])
+	for index in range(source_priority.size() - 1, -1, -1):
+		var name := str(source_priority[index])
 		if visible.erase(name):
 			ordered.append(name)
 	# Unknown source names remain usable, but never displace a sourced priority.
@@ -969,7 +968,7 @@ func _reconcile_source_name_bindings() -> void:
 			int(placement.get("character_id", 0)),
 			int(placement.get("placed_frame", _current_frame))
 		)] = true
-	for key in _source_name_bindings.keys().duplicate():
+	for key in _source_name_bindings.keys():
 		if not live.has(key):
 			_source_name_bindings.erase(key)
 
@@ -1060,7 +1059,7 @@ func _expire_absent_hit_instances() -> void:
 			live[str(instance_name)] = true
 	for instance_name in _aliased_hitbox_names():
 		live[instance_name] = true
-	for instance_name in _hit_instances.keys().duplicate():
+	for instance_name in _hit_instances.keys():
 		if not live.has(instance_name):
 			_hit_instances.erase(instance_name)
 
@@ -2177,7 +2176,7 @@ func _expire_clip_placements() -> void:
 	var live: Dictionary = {}
 	for instance_name in current_named_instances():
 		live[str(instance_name)] = true
-	for instance_name in _placement_owned.keys().duplicate():
+	for instance_name in _placement_owned.keys():
 		if live.has(instance_name):
 			continue
 		_instance_local_offsets.erase(instance_name)

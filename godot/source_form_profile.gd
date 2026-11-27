@@ -2,13 +2,17 @@ class_name SourceFormProfile
 extends RefCounted
 
 
-static func prepare(directory: String, source_sha256: String) -> Dictionary:
+static func prepare(directory: String, source_sha256: String, loaded_timeline: Dictionary = {}) -> Dictionary:
 	var result := {"directory": directory}
 	for key in ["timeline", "fighter", "assets", "combat", "ai", "hurt_voice", "sound_segments"]:
 		var path := directory.path_join(str(key) + ".json")
 		if not FileAccess.file_exists(path):
 			return {"error": "Missing form profile: " + path}
-		var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+		var data: Variant
+		if key == "timeline" and not loaded_timeline.is_empty():
+			data = loaded_timeline
+		else:
+			data = JSON.parse_string(FileAccess.get_file_as_string(path))
 		if not data is Dictionary:
 			return {"error": "Malformed form profile: " + path}
 		result[key] = data

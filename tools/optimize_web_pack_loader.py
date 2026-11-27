@@ -35,15 +35,32 @@ def optimize(loader: str) -> str:
     # Only internally downloaded packs can transfer their backing store to MEMFS.
     # Keep copy semantics for buffers supplied through the public Engine API.
     replacements = (
+        # This game creates one engine per document. A cloned fetch response
+        # queues the Wasm on an unread branch during streaming compilation.
+        ("this.config = new InternalConfig(initConfig);",
+         "this.config = new InternalConfig(initConfig);\n\t\tthis.bvnSingleUseWasm = initConfig?.bvnSingleUseWasm === true;"),
+        ("new Response(response.clone().body,", "new Response((me.bvnSingleUseWasm && me.config.unloadAfterInit ? response : response.clone()).body,"),
         (stock, streaming),
         ("buffer: buf,", "buffer: buf,\n                        ownPack: pathOrBuffer.endsWith('.pck'),"),
         ("copy_to_fs:function(path,buffer){", "copy_to_fs:function(path,buffer,canOwn=false){"),
         ("FS.writeFile(path,new Uint8Array(buffer))", "FS.writeFile(path,new Uint8Array(buffer),{canOwn})"),
         ("['copyToFS'](file.path, file.buffer)", "['copyToFS'](file.path, file.buffer, file.ownPack)"),
+        ('const text=evt.clipboardData.getData("text");',
+         'if(!window.bvnEnginePasteEvents?.has(evt))return;const text=evt.clipboardData.getData("text");'),
+        # The single-thread template supplies synchronous subarray views of HEAPF32.
+        # copyToChannel already copies these samples into Web Audio-owned storage.
+        ("audioBuffer.copyToChannel(new Float32Array(subLeft),0,0)", "audioBuffer.copyToChannel(subLeft,0,0)"),
+        ("audioBuffer.copyToChannel(new Float32Array(subRight),1,0)", "audioBuffer.copyToChannel(subRight,1,0)"),
+        # Each playback owns its source node, offset and loop settings. The
+        # registered PCM is read-only and can be shared even by overlapping sounds.
+        ("getAudioBuffer(){return this._duplicateAudioBuffer()}", """getAudioBuffer() {
+            if (this._audioBuffer == null) throw new Error("Audio sample was cleared");
+            return this._audioBuffer;
+        }"""),
     )
     for before, after in replacements:
         if loader.count(before) != 1:
-            raise ValueError(f"Unexpected Godot Web loader; check pack loading at {before!r}")
+            raise ValueError(f"Unexpected Godot Web loader at {before!r}")
         loader = loader.replace(before, after)
     return loader
 

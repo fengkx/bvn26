@@ -899,12 +899,15 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         event.stopImmediatePropagation();
         event.stopPropagation();
     }, true);
+    // Only this focused editor consumes a paste in Godot. The engine listener
+    // consults the same event before pulling any system text into Wasm.
+    window.bvnEnginePasteEvents = new WeakSet();
     window.addEventListener('paste', event => {
         if (!window.bvnOnlinePasteTargetActive || !isOnlineEditTarget(event)
                 || typeof window.bvnOnlinePasteCallback !== 'function' || !event.clipboardData) return;
-        const types = Array.from(event.clipboardData.types || []);
         event.preventDefault();
-        if (!types.includes('text/plain')) return;
+        if (!Array.prototype.includes.call(event.clipboardData.types || [], 'text/plain')) return;
+        window.bvnEnginePasteEvents.add(event);
         // Let Godot's bubble-phase paste handler update its clipboard cache before
         // the deferred native LineEdit MENU_PASTE action runs.
         window.bvnOnlinePasteCallback();
@@ -1241,6 +1244,12 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         journal.download = {current, total, at: new Date().toISOString()};
         saveJournal();
     };
+    // A new document can report back_forward after the old renderer is gone.
+    // Keep the outgoing navigation request if the browser delivers it to us.
+    window.navigation?.addEventListener('navigate', event => {
+        if (event.destination.sameDocument || event.downloadRequest != null) return;
+        journalSignal('navigation_requested', event.navigationType + ', userInitiated=' + event.userInitiated);
+    });
     window.addEventListener('pagehide', event => {
         journal.lifecycle = event.persisted ? 'pagehide_cached' : 'pagehide';
         saveJournal();
@@ -1339,6 +1348,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     }
 
     const eventEncoder = new TextEncoder();
+    const eventScratch = new Uint8Array(runtimeEventLimitBytes);
     function appendRuntimeEvent(event) {
         if (!event || typeof event !== 'object' || Array.isArray(event) || typeof event.type !== 'string') {
             rejectedRuntimeEvents++;
@@ -1353,8 +1363,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             receivedMonoMs,
         };
         const encoded = JSON.stringify(entry);
-        const byteLength = eventEncoder.encode(encoded).byteLength;
-        if (byteLength > runtimeEventLimitBytes) {
+        const { read, written: byteLength } = eventEncoder.encodeInto(encoded, eventScratch);
+        if (read !== encoded.length) {
             rejectedRuntimeEvents++;
             return false;
         }
@@ -1383,13 +1393,14 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                 reason: payload.reason, damage: payload.damage, sourceFrame: payload.sourceFrame});
             if (journal.eventTail.length > 24) journal.eventTail.shift();
         }
-        runtimeEvents.push({ event: entry, byteLength, receivedMonoMs });
+        const item = { event: entry, byteLength, receivedMonoMs };
+        runtimeEvents.push(item);
         runtimeEventCount++;
         runtimeEventBytes += byteLength;
         for (let index = activeIncidents.length - 1; index >= 0; index--) {
             const incident = activeIncidents[index];
             if (receivedMonoMs <= incident.endsMonoMs) {
-                appendIncidentEvent(incident, { event: entry, byteLength });
+                appendIncidentEvent(incident, item);
             } else {
                 incident.status = 'window_complete';
                 activeIncidents.splice(index, 1);
@@ -1415,11 +1426,11 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
     }
 
     function appendIncidentEvent(incident, item) {
-        incident.events.push(item.event);
+        incident.events.push(item);
         incident.bytes += item.byteLength;
         while (incident.events.length > incidentEventLimit || incident.bytes > incidentByteLimit) {
             const removed = incident.events.shift();
-            incident.bytes -= new TextEncoder().encode(JSON.stringify(removed)).byteLength;
+            incident.bytes -= removed.byteLength;
             incident.droppedEvents++;
         }
     }
@@ -1435,8 +1446,8 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
             bytes: 0,
             droppedEvents: 0,
         };
-        const retained = runtimeEvents.slice(runtimeEventHead, runtimeEventHead + runtimeEventCount);
-        for (const item of retained) {
+        for (let index = runtimeEventHead; index < runtimeEvents.length; index++) {
+            const item = runtimeEvents[index];
             if (item.receivedMonoMs >= incident.startMonoMs && item.receivedMonoMs <= incident.endsMonoMs) {
                 appendIncidentEvent(incident, item);
             }
@@ -1986,9 +1997,11 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
         await buildSidecarPromise;
         const nowMonoMs = performance.now();
         trimRuntimeEvents(nowMonoMs);
-        const retainedItems = runtimeEvents.slice(runtimeEventHead, runtimeEventHead + runtimeEventCount);
-        const retainedEvents = retainedItems.map(item => item.event);
-        const firstEvent = retainedItems[0] || null;
+        const retainedEvents = [];
+        for (let index = runtimeEventHead; index < runtimeEvents.length; index++) {
+            retainedEvents.push(runtimeEvents[index].event);
+        }
+        const firstEvent = runtimeEvents[runtimeEventHead];
         for (let index = activeIncidents.length - 1; index >= 0; index--) {
             if (nowMonoMs > activeIncidents[index].endsMonoMs) {
                 activeIncidents[index].status = 'window_complete';
@@ -2032,7 +2045,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                     trigger: incident.trigger,
                     status: incident.status,
                     windowMs: { before: incidentWindowBeforeMs, after: incidentWindowAfterMs },
-                    events: incident.events,
+                    events: incident.events.map(item => item.event),
                     droppedEvents: incident.droppedEvents,
                 })),
                 inputTape: retainedEvents.filter(event => event.type === 'input_consumed'),
@@ -2041,7 +2054,7 @@ html:has(#player.touch-fullscreen), body:has(#player.touch-fullscreen) { overflo
                     windowMs: logWindowMs,
                     coverageMs: firstEvent ? Math.max(0, Math.min(logWindowMs, nowMonoMs - firstEvent.receivedMonoMs)) : 0,
                     startAt: firstEvent?.event.receivedAt || null,
-                    endAt: retainedItems.length ? retainedItems[retainedItems.length - 1].event.receivedAt : null,
+                    endAt: retainedEvents.at(-1)?.receivedAt || null,
                     retainedEvents: retainedEvents.length,
                     retainedBytes: runtimeEventBytes,
                     byteLimit: runtimeByteLimit,

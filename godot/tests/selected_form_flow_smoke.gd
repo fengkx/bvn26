@@ -32,6 +32,8 @@ func _run() -> void:
 			var battle: RefCounted = fixture.battle
 			var actor = game.naruto if selected_slot == 0 else game.ichigo
 			assert(actor.fighter_directory == FighterSelection.directory(resource_id))
+			var driver = game.player_body_driver._driver if selected_slot == 0 else game.opponent_driver
+			assert(is_same(actor._timeline, driver.source_form_profiles[str(actor.source_parent_frame)].profile.timeline))
 			assert(actor.source_parent_frame == 2 and not actor.read_parent_field("万解"))
 			assert(actor.health == game.session.maxhp and actor.energy == 0)
 			assert(not game.source_root_intervals.handles.has("feiint"))

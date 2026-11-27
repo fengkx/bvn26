@@ -490,9 +490,14 @@ class WebBuildPipelineTests(unittest.TestCase):
                         config = {'fileSizes': {'index.pck': len(pack), 'index.wasm': 12}}
                         output.write_text('const GODOT_CONFIG = ' + json.dumps(config) + ';\\n/* BVN_PACK_RUNTIME */')
                         output.with_suffix('.js').write_text(
+                            "this.config = new InternalConfig(initConfig); new Response(response.clone().body, "
                             "const tr = getTrackedResponse(response, tracker[file]); buffer: buf, "
                             "copy_to_fs:function(path,buffer){FS.writeFile(path,new Uint8Array(buffer))} "
-                            "me.rtenv['copyToFS'](file.path, file.buffer)"
+                            "me.rtenv['copyToFS'](file.path, file.buffer) "
+                            'const text=evt.clipboardData.getData("text"); '
+                            "audioBuffer.copyToChannel(new Float32Array(subLeft),0,0) "
+                            "audioBuffer.copyToChannel(new Float32Array(subRight),1,0) "
+                            "getAudioBuffer(){return this._duplicateAudioBuffer()}"
                         )
                         if os.environ.get('FIXTURE_MUTATE_EXPORT') == '1':
                             (project / 'generated/music/track.mp3.import').write_text('changed during export')
@@ -536,6 +541,15 @@ class WebBuildPipelineTests(unittest.TestCase):
                 self.assertEqual(sidecar["pckSha256"], hashlib.sha256(core.read_bytes()).hexdigest())
                 self.assertTrue((output / "diagnostics.html").is_file())
                 self.assertTrue((output / "crash_archive.js").is_file())
+                loader = next(output.glob("engine-*.js")).read_text()
+                html = output.joinpath("index.html").read_text()
+                self.assertIn('"bvnSingleUseWasm": true', html)
+                self.assertIn("me.bvnSingleUseWasm && me.config.unloadAfterInit ? response : response.clone()", loader)
+                self.assertIn("return this._audioBuffer;", loader)
+                self.assertIn("if(!window.bvnEnginePasteEvents?.has(evt))return;", loader)
+                self.assertIn("audioBuffer.copyToChannel(subLeft,0,0)", loader)
+                self.assertIn("audioBuffer.copyToChannel(subRight,1,0)", loader)
+                self.assertNotIn("return this._duplicateAudioBuffer()", loader)
                 self.assertFalse(any(path.name.startswith("bvn26-web-build.") for path in build_tmp.iterdir()))
                 return
 

@@ -842,7 +842,9 @@ func _render_display_list(placements: Array, parent_transform: Transform2D,
 	var active: Array = []
 	for placement: Dictionary in placements:
 		var local_depth := int(placement["depth"])
-		active = active.filter(func(mask: Dictionary) -> bool: return local_depth <= int(mask.end))
+		for index in range(active.size() - 1, -1, -1):
+			if local_depth > int(active[index].end):
+				active.remove_at(index)
 		var definition: Dictionary = _definitions.get(int(placement.get("character_id", -1)), {})
 		if placement.has("clip_depth") and definition.has("mask_polygon"):
 			var polygon := PackedVector2Array()
@@ -851,9 +853,11 @@ func _render_display_list(placements: Array, parent_transform: Transform2D,
 				polygon.append(transform * Vector2(float(point[0]), float(point[1])))
 			active.append({"end": int(placement["clip_depth"]), "polygon": polygon})
 			continue
-		var masks := inherited_masks.duplicate()
-		for mask: Dictionary in active:
-			masks.append(mask.polygon)
+		var masks := inherited_masks
+		if not active.is_empty():
+			masks = inherited_masks.duplicate()
+			for mask: Dictionary in active:
+				masks.append(mask.polygon)
 		_render_placement(placement, parent_transform, alpha,
 			local_depth if root_list and preserve_root_depths else depth,
 			frame, age, rgb_mul, rgb_add, masks, inherited_blend, visual_clips.get(local_depth, {}), direct_to_stage)
@@ -1279,7 +1283,9 @@ func _compose_blend_group(
 	post_mul: Color = Color.WHITE, post_add: Color = Color(0, 0, 0, 0),
 	direct_to_stage: bool = false
 ) -> void:
-	var items := get_children().slice(first_child)
+	var items: Array[Node] = []
+	for index in range(first_child, get_child_count()):
+		items.append(get_child(index))
 	if items.is_empty():
 		return
 	# Non-normal blends cache their input before applying group opacity, even
@@ -1299,7 +1305,7 @@ func _compose_blend_group(
 	group.clip_offscreen = direct_to_stage and _filter_input_depth == 0 and filters.is_empty() and items.all(
 		func(item: Node) -> bool: return item is Sprite2D or item is Polygon2D)
 	if not filters.is_empty():
-		group.set_meta("flash_filters", filters.duplicate(true))
+		group.set_meta("flash_filters", filters)
 	group.z_index = depth
 	var composite: Sprite2D = group.setup(items, opacity)
 	# Viewport textures hold premultiplied RGB. Decode once before blending;
@@ -1787,7 +1793,8 @@ func _transform_rect(transform_2d: Transform2D, rectangle: Rect2) -> Rect2:
 	]
 	var minimum: Vector2 = corners[0]
 	var maximum: Vector2 = corners[0]
-	for corner: Vector2 in corners.slice(1):
+	for index in range(1, corners.size()):
+		var corner: Vector2 = corners[index]
 		minimum = minimum.min(corner)
 		maximum = maximum.max(corner)
 	return Rect2(minimum, maximum - minimum)

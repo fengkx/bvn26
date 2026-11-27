@@ -65,13 +65,19 @@ func decode(packet: PackedByteArray) -> Dictionary:
 	if size <= 0 or size > MAX_RAW_BYTES:
 		error = "authority_raw_limit"
 		return {}
-	var raw := packet.slice(5)
-	if packet[0] == 1: raw = raw.decompress(size, FileAccess.COMPRESSION_DEFLATE)
-	if raw.size() != size:
-		error = "authority_length_mismatch"
-		return {}
 	# Objects are disabled; schema/resource validation still follows this boundary.
-	var value: Variant = bytes_to_var(raw)
+	var value: Variant
+	if packet[0] == 1:
+		var raw := packet.slice(5).decompress(size, FileAccess.COMPRESSION_DEFLATE)
+		if raw.size() != size:
+			error = "authority_length_mismatch"
+			return {}
+		value = bytes_to_var(raw)
+	else:
+		if packet.size() - 5 != size:
+			error = "authority_length_mismatch"
+			return {}
+		value = packet.decode_var(5, false)
 	_items = 0
 	if not value is Dictionary or not _plain(value):
 		error = "invalid_authority_value"

@@ -156,8 +156,12 @@ func send_peer_message(channel: String, type: String, payload: Variant) -> bool:
 	if channel == CHANNEL_STATE:
 		if not enable_state_channel or type != "authority_state" or not payload is Dictionary:
 			return _fail("invalid_state_channel_message")
-		_pending_state = payload.duplicate(true)
-		return _flush_state()
+		# Encoding consumes the projection synchronously unless the channel is busy.
+		_pending_state = payload
+		var accepted := _flush_state()
+		if not _pending_state.is_empty() and is_same(_pending_state, payload):
+			_pending_state = payload.duplicate(true)
+		return accepted
 	if not CHANNELS.has(channel):
 		return _fail("unknown_data_channel")
 	if _peer == null:
@@ -432,7 +436,7 @@ func _is_configured() -> bool:
 
 
 func _reset_sequences() -> void:
-	_pending_state.clear()
+	_pending_state = {}
 	_state_sequence = 0
 	_last_state_sequence = 0
 	_outgoing_sequences[CHANNEL_RELIABLE] = 0
@@ -536,5 +540,5 @@ func _flush_state() -> bool:
 	var result := channel.put_packet(packet)
 	if result != OK: return _fail("state_send_failed_%d" % result)
 	_state_sequence += 1
-	_pending_state.clear()
+	_pending_state = {}
 	return true

@@ -73,6 +73,10 @@ func _run() -> void:
 	_expect(not transport._validate_envelope(invalid, "input"), "unsupported peer protocol version was accepted")
 
 	transport.enable_state_channel = true
+	var queued := {"clips": [{"frame": 1}]}
+	_expect(not transport.send_peer_message("state", "authority_state", queued), "Missing channel reported a send")
+	queued.clips[0].frame = 2
+	_expect(transport._pending_state.clips[0].frame == 1, "Deferred send retained caller-owned state")
 	var wire := preload("res://authority_wire.gd").new()
 	var state_packet := _envelope(2)
 	state_packet.type = "authority_state"

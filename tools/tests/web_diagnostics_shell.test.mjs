@@ -93,6 +93,7 @@ function createPage(buildSidecar, fetchImpl = null, rtcConstructor = undefined, 
     };
     const window = {
         history: storage.history,
+        navigation: storage.navigation,
         devicePixelRatio: device.devicePixelRatio ?? 2,
         innerWidth: 1280,
         innerHeight: 720,
@@ -517,6 +518,7 @@ test('routes online edit shortcuts and lets Godot receive the native text paste 
     bubbled = !textPaste.stopped;
     assert.equal(textPaste.prevented, true, 'paste must not fall through to hidden IME content');
     assert.equal(bubbled, true, 'Godot bubble-phase paste handler must still receive the event');
+    assert.equal(window.bvnEnginePasteEvents.has(textPaste), true);
     assert.equal(pasteCalls, 1);
 
     const imagePaste = {
@@ -528,7 +530,14 @@ test('routes online edit shortcuts and lets Godot receive the native text paste 
     onlinePaste(imagePaste);
     assert.equal(imagePaste.prevented, true);
     assert.equal(imagePaste.stopped, false);
+    assert.equal(window.bvnEnginePasteEvents.has(imagePaste), false);
     assert.equal(pasteCalls, 1, 'image-only clipboard data must not trigger text paste');
+    window.bvnOnlinePasteTargetActive = false;
+    const battlePaste = {...textPaste, prevented: false};
+    onlinePaste(battlePaste);
+    assert.equal(battlePaste.prevented, false);
+    assert.equal(window.bvnEnginePasteEvents.has(battlePaste), false);
+    assert.equal(pasteCalls, 1);
 });
 
 test('preserves bounded error incidents beyond the rolling window and closes post-trigger capture', async () => {
@@ -583,11 +592,29 @@ test('enforces event count and byte limits while rejecting oversized events', as
         bytePage.window.bvnDiagnosticsPush(JSON.stringify({ seq, type: 'runtime_tick', payload: { padding } }));
     }
     bytePage.window.bvnDiagnosticsPush(JSON.stringify({ type: 'runtime_tick', payload: { padding: 'x'.repeat(33_000) } }));
+    assert.equal(bytePage.window.bvnDiagnosticsPush(JSON.stringify({
+        type: 'runtime_tick', payload: { padding: '鸣😀'.repeat(5000) },
+    })), false);
     await bytePage.elements.get('download').dispatch('click');
     const byteReport = JSON.parse(await bytePage.getBlob().text());
     assert.ok(byteReport.runtime.buffer.retainedBytes <= byteReport.runtime.buffer.byteLimit);
     assert.ok(byteReport.runtime.buffer.dropped.bytes > 0);
-    assert.equal(byteReport.runtime.buffer.rejectedEvents, 1);
+    assert.equal(byteReport.runtime.buffer.rejectedEvents, 2);
+    assert.equal(byteReport.runtime.buffer.retainedBytes, byteReport.runtime.events.reduce(
+        (size, event) => size + Buffer.byteLength(JSON.stringify(event)), 0));
+});
+
+test('chunked exports preserve complete live and recovered JSON, including nested incident events', async () => {
+    const page = createPage(sidecar, null, undefined, {}, {withArchive: true});
+    const archive = page.window.bvnCrashArchive;
+    const events = Array.from({length: 1500}, (_, seq) => ({
+        type: 'input_consumed', seq, payload: {helper: '松本', text: '鸣😀\n"\\'},
+    }));
+    const report = {exportedAt: '2026-11-28T00:00:00Z', entries: [], runtime: {
+        events, inputTape: events, criticalIncidents: [{trigger: events[0], events}],
+    }, reloadDiagnostics: {savedRun: {events}, persistedDetail: {events: undefined}}};
+    archive.download(report);
+    assert.equal(await page.getBlob().text(), JSON.stringify(report, archive.nameFields));
 });
 
 test('labels snapshot timeout, missing runtime, and unavailable sidecar explicitly', async () => {
@@ -993,6 +1020,26 @@ test('page zoom gestures are cancelled only inside fullscreen play', async () =>
     }
 });
 
+test('saves outgoing document navigation without treating a request as a completed exit', async () => {
+    const navigation = createElement();
+    const page = createPage(null, null, undefined, {}, { navigation });
+    const navigate = overrides => navigation.dispatch('navigate', {
+        navigationType: 'traverse', userInitiated: true, destination: {sameDocument: false},
+        downloadRequest: null, ...overrides,
+    });
+    async function journal() {
+        await page.elements.get('download').dispatch('click');
+        return JSON.parse(await page.getBlob().text()).reloadDiagnostics.currentRun;
+    }
+    await navigate({destination: {sameDocument: true}});
+    await navigate({downloadRequest: 'log.json'});
+    assert.equal((await journal()).browserEvidence.navigation_requested, undefined);
+    await navigate({});
+    const run = await journal();
+    assert.equal(run.browserEvidence.navigation_requested.detail, 'traverse, userInitiated=true');
+    assert.equal(run.lifecycle, 'active');
+});
+
 test('recovers a killed renderer in the same tab and separates observed pagehide and other tabs', async () => {
     const makeStorage = () => ({
         getItem(key) { return this[key] ?? null; },
@@ -1163,6 +1210,8 @@ test('retains typed faults and foreground progress through a silent reload', asy
     game.context.console.error('RuntimeError: Out of bounds memory access');
     for (let i = 0; i < 18; i++) game.context.console.error('routine diagnostic ' + i);
     game.window.bvnCrashEngineExit(9);
+    // Finish the old document's pending metadata write before simulating its destruction.
+    await new Promise(resolve => setImmediate(resolve));
     const restarted = open('restart');
     await restarted.elements.get('download').dispatch('click');
     const {reloadDiagnostics} = JSON.parse(await restarted.getBlob().text());

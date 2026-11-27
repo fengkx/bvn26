@@ -153,6 +153,7 @@ def prepare(stage, project, reuse=None):
     config_pattern = r"const GODOT_CONFIG = (\{[^\n]+\});"
     config = json.loads(re.search(config_pattern, shell)[1])
     config["mainPack"] = core["file"]
+    config["bvnSingleUseWasm"] = True
     del config["fileSizes"]["index.pck"]
     config["fileSizes"][core["file"]] = core["size"]
     engine_files = sorted(p for p in stage.glob("index.*") if p.suffix in {".js", ".wasm"})

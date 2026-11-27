@@ -823,7 +823,8 @@ def _print_result(value: Any, as_json: bool) -> None:
             evidence = saved["endEvidence"] or {}
             if evidence:
                 print(f"  Last observed {evidence.get('lastObservedAt')}  next page {evidence.get('nextStartAt')}  "
-                      f"gap={evidence.get('gapMs')}ms  browser reported discard={evidence.get('browserReportedDiscard')}")
+                      f"gap={evidence.get('gapMs')}ms  navigation={evidence.get('navigation') or 'unknown'}  "
+                      f"browser reported discard={evidence.get('browserReportedDiscard')}")
             for signal in evidence.get("signals", saved["signals"][-3:]):
                 if isinstance(signal, dict):
                     age = signal.get("msBeforeLastObservation")

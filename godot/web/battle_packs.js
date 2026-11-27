@@ -43,7 +43,8 @@ window.bvnBattlePacks = (() => {
                 if (Array.from(hash, b => b.toString(16).padStart(2, '0')).join('') !== pack.sha) {
                     throw new Error('Pack checksum mismatch');
                 }
-                engine.copyToFS('/' + pack.file, bytes.buffer);
+                // The verified buffer is private to this job and never written again.
+                engine.rtenv['copyToFS']('/' + pack.file, bytes.buffer, true);
                 return;
             } catch (error) {
                 lastError = error;

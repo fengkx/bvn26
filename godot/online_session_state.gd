@@ -4,7 +4,7 @@ extends RefCounted
 # while retaining every value that can affect an online battle in the graph.
 const State = preload("res://simulation_state.gd")
 const CAUSAL_FIELDS := ["modo", "maxhp", "maxtime", "p1cpu", "p2cpu", "root_label"]
-const LOCAL_FIELDS := ["codes", "render_quality", "source_quality", "keyboard", "store_path", "write_success", "ai_level"]
+const LOCAL_FIELDS := ["codes", "render_quality", "source_quality", "keyboard", "touch_slots", "store_path", "write_success", "ai_level"]
 const IMMUTABLE_FIELDS := ["training_spec"]
 
 

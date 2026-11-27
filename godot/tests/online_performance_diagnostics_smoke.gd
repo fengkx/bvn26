@@ -151,18 +151,13 @@ func _test_rollback_profile_counts() -> void:
 	assert(configured.save_count == 1)
 	assert(configured.copy_count == 1)
 	var held := _neutral_input()
-	var first_step_copy_delta := 0
 	for frame in range(1, 4):
 		assert(rollback.sample_local("p1", frame, held).get("error", "").is_empty())
 		assert(rollback.receive("copy-profile", "p2", frame, held).is_empty())
 		var before_step := int(rollback.profile_counters().copy_count)
 		assert(rollback.step().is_empty())
 		var after_step := int(rollback.profile_counters().copy_count)
-		if frame == 3:
-			assert(after_step - before_step == first_step_copy_delta + 2,
-				"Advancing the retained floor must count both input-anchor copies")
-		else:
-			first_step_copy_delta = after_step - before_step
+		assert(after_step - before_step == 2, "Only the adapter input and saved state need isolation")
 	var before_local_packet := int(rollback.profile_counters().copy_count)
 	assert(rollback.sample_local("p1", 4, held).get("error", "").is_empty())
 	var after_local_packet := int(rollback.profile_counters().copy_count)
@@ -178,11 +173,9 @@ func _test_rollback_profile_counts() -> void:
 		if frame > 4:
 			assert(rollback.sample_local("p1", frame, held).get("error", "").is_empty())
 			assert(rollback.receive("copy-profile", "p2", frame, held).is_empty())
-		var old_floor: int = rollback.oldest_frame()
 		var before_step := int(rollback.profile_counters().copy_count)
 		assert(rollback.step().is_empty())
-		var anchor_copies := 2 if rollback.oldest_frame() > old_floor else 0
-		assert(int(rollback.profile_counters().copy_count) - before_step == first_step_copy_delta + anchor_copies)
+		assert(int(rollback.profile_counters().copy_count) - before_step == 2)
 	assert(rollback.oldest_frame() == 30)
 
 

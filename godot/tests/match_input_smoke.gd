@@ -30,6 +30,9 @@ func _run() -> void:
 	recorder.begin_recording({"start_tick": 0})
 	assert(recorder.poll_intro(1, func() -> bool: return session.is_slot_down("j")))
 	var first := recorder.poll_players(1, session.fighter_input)
+	first.p1.attack = false
+	assert(recorder.document.events[1].players.p1.held.attack)
+	first.p1.attack = true
 	for code in [KEY_Q, KEY_A, KEY_D, KEY_KP_2]: _key(code, false)
 	recorder.record_control(1, {"button": "confirm", "pressed": true})
 	recorder.record_control(1, {"button": "confirm", "pressed": false})

@@ -410,7 +410,9 @@ func configure_forms(profiles: Dictionary, intervals: SourceRootIntervals,
 	var prepared := {}
 	for frame in profiles:
 		var entry: Dictionary = profiles[frame]
-		var profile := SourceFormProfile.prepare(entry.directory, str(fighter.ai_source_state.spec.source_swf.sha256))
+		# Selecting a transformed fighter loads its timeline before form preflight.
+		var timeline: Dictionary = fighter._timeline if entry.directory == fighter.fighter_directory else {}
+		var profile := SourceFormProfile.prepare(entry.directory, str(fighter.ai_source_state.spec.source_swf.sha256), timeline)
 		assert(not profile.has("error"), str(profile.get("error", "")))
 		assert(entry.get("load_declarations") is Array)
 		prepared[str(frame)] = {"profile": profile, "load_declarations": entry.load_declarations}

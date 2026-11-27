@@ -113,8 +113,10 @@ func _display_frame(value: int) -> void:
 	_quote.visible = screen == "win" and frame >= 20
 	for cue: Array in _sounds.get(key, []):
 		var audio := AudioStreamPlayer.new()
-		var stream: AudioStreamMP3 = load(DIRECTORY + str(cue[0]) + ".mp3").duplicate()
-		stream.loop = bool(cue[1])
+		var stream: AudioStreamMP3 = load(DIRECTORY + str(cue[0]) + ".mp3")
+		if stream.loop != bool(cue[1]):
+			stream = stream.duplicate()
+			stream.loop = bool(cue[1])
 		audio.stream = stream
 		add_child(audio)
 		_audio.append(audio)

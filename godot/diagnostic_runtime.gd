@@ -91,7 +91,8 @@ func push_event(event_type: String, payload: Dictionary = {}, fight_tick: int = 
 		event["matchId"] = match_id
 	if fight_tick >= 0:
 		event["fightTick"] = fight_tick
-	event_recorded.emit(event.duplicate(true))
+	if event_recorded.has_connections():
+		event_recorded.emit(event.duplicate(true))
 	if OS.has_feature("web") and _web_window != null:
 		_web_window.bvnDiagnosticsPush(JSON.stringify(event))
 	return event
@@ -152,12 +153,12 @@ func _set_shell_snapshot() -> void:
 
 
 func _bounded_snapshot(snapshot: Dictionary) -> Dictionary:
-	var encoded := JSON.stringify(snapshot)
-	if encoded.to_utf8_buffer().size() <= MAX_SNAPSHOT_BYTES:
+	var byte_count := JSON.stringify(snapshot).to_utf8_buffer().size()
+	if byte_count <= MAX_SNAPSHOT_BYTES:
 		return snapshot
 	return {"schemaVersion": SCHEMA_VERSION, "matchId": match_id,
 		"buildID": build_id, "resourceVersion": resource_version,
-		"truncated": true, "originalBytes": encoded.to_utf8_buffer().size()}
+		"truncated": true, "originalBytes": byte_count}
 
 
 func _read_embedded_build_metadata() -> void:

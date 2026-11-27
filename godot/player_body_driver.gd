@@ -40,7 +40,7 @@ func configure(actor: FighterRuntime, directory: String, platforms: Dictionary,
 
 func begin_tick(display_tick: int, inputs: Dictionary) -> void:
 	tick = display_tick
-	context.inputs = inputs.duplicate()
+	context.inputs = inputs if inputs.is_read_only() else inputs.duplicate()
 	_driver.prepare_display_tick(tick)
 
 

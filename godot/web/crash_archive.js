@@ -210,15 +210,25 @@ window.bvnCrashArchive = (() => {
         try {
             const db = await database();
             const tx = db.transaction(['runs', 'chunks']);
-            const [run, chunks] = await Promise.all([requestResult(tx.objectStore('runs').get(runId)),
-                requestResult(tx.objectStore('chunks').getAll(range(runId)))]);
-            const events = [];
             let unreadableEvents = 0;
-            for (const chunk of chunks.sort((a,b) => a.serial - b.serial)) {
-                for (const encoded of chunk.events) {
-                    try { events.push(JSON.parse(encoded)); } catch (_) { unreadableEvents++; }
-                }
-            }
+            const chunks = [];
+            const cursor = tx.objectStore('chunks').openCursor(range(runId));
+            const readChunks = new Promise((resolve, reject) => {
+                cursor.onerror = () => reject(cursor.error);
+                cursor.onsuccess = () => {
+                    const row = cursor.result;
+                    if (!row) { resolve(); return; }
+                    const chunk = row.value;
+                    const events = [];
+                    for (const encoded of chunk.events) {
+                        try { events.push(JSON.parse(encoded)); } catch (_) { unreadableEvents++; }
+                    }
+                    chunks.push({serial: chunk.serial, events});
+                    row.continue();
+                };
+            });
+            const [run] = await Promise.all([requestResult(tx.objectStore('runs').get(runId)), readChunks]);
+            const events = chunks.sort((a,b) => a.serial - b.serial).flatMap(chunk => chunk.events);
             return {status: chunks.length ? 'saved' : 'no_committed_batch', events, archive: run?.archive,
                 committedAt: run?.updatedAt, unreadableEvents};
         } catch (error) {
@@ -295,8 +305,48 @@ window.bvnCrashArchive = (() => {
         return recent;
     }
 
+    function reportBlob(report) {
+        // Events are individually bounded. Seal batches into immutable Blob parts
+        // before visiting the next records, including tapes from an interrupted run.
+        const parts = [];
+        let batch = '';
+        function append(text) {
+            batch += text;
+            if (batch.length >= 64 * 1024) {
+                parts.push(new Blob([batch]));
+                batch = '';
+            }
+        }
+        function writeSection(section) {
+            append('{');
+            let separator = '';
+            for (const [key, value] of Object.entries(section)) {
+                if (value === undefined) continue;
+                append(separator + JSON.stringify(key) + ':');
+                separator = ',';
+                if (Array.isArray(value)) {
+                    append('[');
+                    for (let i = 0; i < value.length; i++) {
+                        if (i) append(',');
+                        if (key === 'criticalIncidents') writeSection(value[i]);
+                        else append(JSON.stringify(value[i], nameFields) ?? 'null');
+                    }
+                    append(']');
+                } else if (value && ['runtime', 'reloadDiagnostics', 'savedRun'].includes(key)) {
+                    writeSection(value);
+                } else {
+                    append(JSON.stringify(value, nameFields));
+                }
+            }
+            append('}');
+        }
+        writeSection(report);
+        parts.push(batch);
+        return new Blob(parts, {type: 'application/json'});
+    }
+
     function download(report) {
-        const blob = new Blob([JSON.stringify(report, nameFields)], {type: 'application/json'});
+        const blob = reportBlob(report);
         const url = URL.createObjectURL(blob), link = document.createElement('a');
         link.href = url;
         const match = report.reportKind === 'saved_run' && describeRun(report.reloadDiagnostics.currentRun)[0];

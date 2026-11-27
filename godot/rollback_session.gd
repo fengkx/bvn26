@@ -88,7 +88,9 @@ func receive(match_epoch: String, slot: String, frame: int, held: Dictionary, de
 		return problem
 	if _actual[slot].has(frame):
 		return "" if _actual[slot][frame] == held else "Conflicting immutable input"
-	_actual[slot][frame] = _profiled_copy_dictionary(held, true)
+	var sample := _profiled_copy_dictionary(held, false)
+	sample.make_read_only()
+	_actual[slot][frame] = sample
 	if frame <= frontier and _used[frame][slot] != held:
 		_dirty_from = frame if _dirty_from < 0 else mini(_dirty_from, frame)
 	while _actual.p1.has(confirmed + 1) and _actual.p2.has(confirmed + 1):
@@ -205,11 +207,11 @@ static func validate_input(held: Dictionary) -> String:
 
 func _input_for(slot: String, frame: int) -> Dictionary:
 	if _actual[slot].has(frame):
-		return _profiled_copy_dictionary(_actual[slot][frame], false)
+		return _actual[slot][frame]
 	if _used.has(frame - 1):
-		return _profiled_copy_dictionary(_used[frame - 1][slot], false)
+		return _used[frame - 1][slot]
 	if not _anchors[slot].is_empty():
-		return _profiled_copy_dictionary(_anchors[slot], false)
+		return _anchors[slot]
 	return _neutral()
 
 
@@ -368,7 +370,7 @@ func _prune() -> void:
 		return
 	_history_floor = history_floor
 	for slot in ["p1", "p2"]:
-		_anchors[slot] = _profiled_copy_dictionary(_used[history_floor][slot], false)
+		_anchors[slot] = _used[history_floor][slot]
 		for frame in _actual[slot].keys():
 			if frame <= history_floor:
 				_actual[slot].erase(frame)
